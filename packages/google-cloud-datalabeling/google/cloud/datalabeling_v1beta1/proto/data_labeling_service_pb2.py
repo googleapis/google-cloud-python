@@ -17,9 +17,8 @@ _sym_db = _symbol_database.Default()
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.api import client_pb2 as google_dot_api_dot_client__pb2
-from google.cloud.datalabeling_v1beta1.proto import (
-    annotation_pb2 as google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_annotation__pb2,
-)
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.datalabeling_v1beta1.proto import (
     annotation_spec_set_pb2 as google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_annotation__spec__set__pb2,
 )
@@ -38,9 +37,6 @@ from google.cloud.datalabeling_v1beta1.proto import (
 from google.cloud.datalabeling_v1beta1.proto import (
     instruction_pb2 as google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_instruction__pb2,
 )
-from google.cloud.datalabeling_v1beta1.proto import (
-    operations_pb2 as google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_operations__pb2,
-)
 from google.longrunning import (
     operations_pb2 as google_dot_longrunning_dot_operations__pb2,
 )
@@ -56,19 +52,19 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n%com.google.cloud.datalabeling.v1beta1P\001ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabeling"
     ),
     serialized_pb=_b(
-        '\nCgoogle/cloud/datalabeling_v1beta1/proto/data_labeling_service.proto\x12!google.cloud.datalabeling.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x38google/cloud/datalabeling_v1beta1/proto/annotation.proto\x1a\x41google/cloud/datalabeling_v1beta1/proto/annotation_spec_set.proto\x1a\x35google/cloud/datalabeling_v1beta1/proto/dataset.proto\x1a\x38google/cloud/datalabeling_v1beta1/proto/evaluation.proto\x1a<google/cloud/datalabeling_v1beta1/proto/evaluation_job.proto\x1a\x45google/cloud/datalabeling_v1beta1/proto/human_annotation_config.proto\x1a\x39google/cloud/datalabeling_v1beta1/proto/instruction.proto\x1a\x38google/cloud/datalabeling_v1beta1/proto/operations.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"c\n\x14\x43reateDatasetRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12;\n\x07\x64\x61taset\x18\x02 \x01(\x0b\x32*.google.cloud.datalabeling.v1beta1.Dataset"!\n\x11GetDatasetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\\\n\x13ListDatasetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"m\n\x14ListDatasetsResponse\x12<\n\x08\x64\x61tasets\x18\x01 \x03(\x0b\x32*.google.cloud.datalabeling.v1beta1.Dataset\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"$\n\x14\x44\x65leteDatasetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\x83\x01\n\x11ImportDataRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x44\n\x0cinput_config\x18\x02 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.InputConfig\x12\x1a\n\x12user_email_address\x18\x03 \x01(\t"\xb0\x01\n\x11\x45xportDataRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x19\n\x11\x61nnotated_dataset\x18\x02 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x03 \x01(\t\x12\x46\n\routput_config\x18\x04 \x01(\x0b\x32/.google.cloud.datalabeling.v1beta1.OutputConfig\x12\x1a\n\x12user_email_address\x18\x05 \x01(\t""\n\x12GetDataItemRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"]\n\x14ListDataItemsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"q\n\x15ListDataItemsResponse\x12?\n\ndata_items\x18\x01 \x03(\x0b\x32+.google.cloud.datalabeling.v1beta1.DataItem\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"*\n\x1aGetAnnotatedDatasetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"e\n\x1cListAnnotatedDatasetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"\x89\x01\n\x1dListAnnotatedDatasetsResponse\x12O\n\x12\x61nnotated_datasets\x18\x01 \x03(\x0b\x32\x33.google.cloud.datalabeling.v1beta1.AnnotatedDataset\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"-\n\x1d\x44\x65leteAnnotatedDatasetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xcd\x05\n\x11LabelImageRequest\x12\x63\n\x1bimage_classification_config\x18\x04 \x01(\x0b\x32<.google.cloud.datalabeling.v1beta1.ImageClassificationConfigH\x00\x12U\n\x14\x62ounding_poly_config\x18\x05 \x01(\x0b\x32\x35.google.cloud.datalabeling.v1beta1.BoundingPolyConfigH\x00\x12L\n\x0fpolyline_config\x18\x06 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.PolylineConfigH\x00\x12T\n\x13segmentation_config\x18\x07 \x01(\x0b\x32\x35.google.cloud.datalabeling.v1beta1.SegmentationConfigH\x00\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12N\n\x0c\x62\x61sic_config\x18\x02 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig\x12M\n\x07\x66\x65\x61ture\x18\x03 \x01(\x0e\x32<.google.cloud.datalabeling.v1beta1.LabelImageRequest.Feature"\x96\x01\n\x07\x46\x65\x61ture\x12\x17\n\x13\x46\x45\x41TURE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x43LASSIFICATION\x10\x01\x12\x10\n\x0c\x42OUNDING_BOX\x10\x02\x12\x19\n\x15ORIENTED_BOUNDING_BOX\x10\x06\x12\x11\n\rBOUNDING_POLY\x10\x03\x12\x0c\n\x08POLYLINE\x10\x04\x12\x10\n\x0cSEGMENTATION\x10\x05\x42\x10\n\x0erequest_config"\xa7\x05\n\x11LabelVideoRequest\x12\x63\n\x1bvideo_classification_config\x18\x04 \x01(\x0b\x32<.google.cloud.datalabeling.v1beta1.VideoClassificationConfigH\x00\x12[\n\x17object_detection_config\x18\x05 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.ObjectDetectionConfigH\x00\x12Y\n\x16object_tracking_config\x18\x06 \x01(\x0b\x32\x37.google.cloud.datalabeling.v1beta1.ObjectTrackingConfigH\x00\x12\x46\n\x0c\x65vent_config\x18\x07 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.EventConfigH\x00\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12N\n\x0c\x62\x61sic_config\x18\x02 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig\x12M\n\x07\x66\x65\x61ture\x18\x03 \x01(\x0e\x32<.google.cloud.datalabeling.v1beta1.LabelVideoRequest.Feature"l\n\x07\x46\x65\x61ture\x12\x17\n\x13\x46\x45\x41TURE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x43LASSIFICATION\x10\x01\x12\x14\n\x10OBJECT_DETECTION\x10\x02\x12\x13\n\x0fOBJECT_TRACKING\x10\x03\x12\t\n\x05\x45VENT\x10\x04\x42\x10\n\x0erequest_config"\xf6\x03\n\x10LabelTextRequest\x12\x61\n\x1atext_classification_config\x18\x04 \x01(\x0b\x32;.google.cloud.datalabeling.v1beta1.TextClassificationConfigH\x00\x12\x66\n\x1dtext_entity_extraction_config\x18\x05 \x01(\x0b\x32=.google.cloud.datalabeling.v1beta1.TextEntityExtractionConfigH\x00\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12N\n\x0c\x62\x61sic_config\x18\x02 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfig\x12L\n\x07\x66\x65\x61ture\x18\x06 \x01(\x0e\x32;.google.cloud.datalabeling.v1beta1.LabelTextRequest.Feature"W\n\x07\x46\x65\x61ture\x12\x17\n\x13\x46\x45\x41TURE_UNSPECIFIED\x10\x00\x12\x17\n\x13TEXT_CLASSIFICATION\x10\x01\x12\x1a\n\x16TEXT_ENTITY_EXTRACTION\x10\x02\x42\x10\n\x0erequest_config"1\n\x11GetExampleRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t"\\\n\x13ListExamplesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"m\n\x14ListExamplesResponse\x12<\n\x08\x65xamples\x18\x01 \x03(\x0b\x32*.google.cloud.datalabeling.v1beta1.Example\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x83\x01\n\x1e\x43reateAnnotationSpecSetRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12Q\n\x13\x61nnotation_spec_set\x18\x02 \x01(\x0b\x32\x34.google.cloud.datalabeling.v1beta1.AnnotationSpecSet"+\n\x1bGetAnnotationSpecSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"f\n\x1dListAnnotationSpecSetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"\x8d\x01\n\x1eListAnnotationSpecSetsResponse\x12R\n\x14\x61nnotation_spec_sets\x18\x01 \x03(\x0b\x32\x34.google.cloud.datalabeling.v1beta1.AnnotationSpecSet\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t".\n\x1e\x44\x65leteAnnotationSpecSetRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"o\n\x18\x43reateInstructionRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x43\n\x0binstruction\x18\x02 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.Instruction"%\n\x15GetInstructionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"(\n\x18\x44\x65leteInstructionRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"`\n\x17ListInstructionsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"y\n\x18ListInstructionsResponse\x12\x44\n\x0cinstructions\x18\x01 \x03(\x0b\x32..google.cloud.datalabeling.v1beta1.Instruction\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"$\n\x14GetEvaluationRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"a\n\x18SearchEvaluationsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"x\n\x19SearchEvaluationsResponse\x12\x42\n\x0b\x65valuations\x18\x01 \x03(\x0b\x32-.google.cloud.datalabeling.v1beta1.Evaluation\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"X\n\x1fSearchExampleComparisonsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"\xdb\x02\n SearchExampleComparisonsResponse\x12r\n\x13\x65xample_comparisons\x18\x01 \x03(\x0b\x32U.google.cloud.datalabeling.v1beta1.SearchExampleComparisonsResponse.ExampleComparison\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x1a\xa9\x01\n\x11\x45xampleComparison\x12H\n\x14ground_truth_example\x18\x01 \x01(\x0b\x32*.google.cloud.datalabeling.v1beta1.Example\x12J\n\x16model_created_examples\x18\x02 \x03(\x0b\x32*.google.cloud.datalabeling.v1beta1.Example"k\n\x1a\x43reateEvaluationJobRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12=\n\x03job\x18\x02 \x01(\x0b\x32\x30.google.cloud.datalabeling.v1beta1.EvaluationJob"\x97\x01\n\x1aUpdateEvaluationJobRequest\x12H\n\x0e\x65valuation_job\x18\x01 \x01(\x0b\x32\x30.google.cloud.datalabeling.v1beta1.EvaluationJob\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"\'\n\x17GetEvaluationJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t")\n\x19PauseEvaluationJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"*\n\x1aResumeEvaluationJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"*\n\x1a\x44\x65leteEvaluationJobRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"b\n\x19ListEvaluationJobsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"\x80\x01\n\x1aListEvaluationJobsResponse\x12I\n\x0f\x65valuation_jobs\x18\x01 \x03(\x0b\x32\x30.google.cloud.datalabeling.v1beta1.EvaluationJob\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t2\xfa\x31\n\x13\x44\x61taLabelingService\x12\xa6\x01\n\rCreateDataset\x12\x37.google.cloud.datalabeling.v1beta1.CreateDatasetRequest\x1a*.google.cloud.datalabeling.v1beta1.Dataset"0\x82\xd3\xe4\x93\x02*"%/v1beta1/{parent=projects/*}/datasets:\x01*\x12\x9d\x01\n\nGetDataset\x12\x34.google.cloud.datalabeling.v1beta1.GetDatasetRequest\x1a*.google.cloud.datalabeling.v1beta1.Dataset"-\x82\xd3\xe4\x93\x02\'\x12%/v1beta1/{name=projects/*/datasets/*}\x12\xae\x01\n\x0cListDatasets\x12\x36.google.cloud.datalabeling.v1beta1.ListDatasetsRequest\x1a\x37.google.cloud.datalabeling.v1beta1.ListDatasetsResponse"-\x82\xd3\xe4\x93\x02\'\x12%/v1beta1/{parent=projects/*}/datasets\x12\x8f\x01\n\rDeleteDataset\x12\x37.google.cloud.datalabeling.v1beta1.DeleteDatasetRequest\x1a\x16.google.protobuf.Empty"-\x82\xd3\xe4\x93\x02\'*%/v1beta1/{name=projects/*/datasets/*}\x12\x9e\x01\n\nImportData\x12\x34.google.cloud.datalabeling.v1beta1.ImportDataRequest\x1a\x1d.google.longrunning.Operation";\x82\xd3\xe4\x93\x02\x35"0/v1beta1/{name=projects/*/datasets/*}:importData:\x01*\x12\x9e\x01\n\nExportData\x12\x34.google.cloud.datalabeling.v1beta1.ExportDataRequest\x1a\x1d.google.longrunning.Operation";\x82\xd3\xe4\x93\x02\x35"0/v1beta1/{name=projects/*/datasets/*}:exportData:\x01*\x12\xac\x01\n\x0bGetDataItem\x12\x35.google.cloud.datalabeling.v1beta1.GetDataItemRequest\x1a+.google.cloud.datalabeling.v1beta1.DataItem"9\x82\xd3\xe4\x93\x02\x33\x12\x31/v1beta1/{name=projects/*/datasets/*/dataItems/*}\x12\xbd\x01\n\rListDataItems\x12\x37.google.cloud.datalabeling.v1beta1.ListDataItemsRequest\x1a\x38.google.cloud.datalabeling.v1beta1.ListDataItemsResponse"9\x82\xd3\xe4\x93\x02\x33\x12\x31/v1beta1/{parent=projects/*/datasets/*}/dataItems\x12\xcc\x01\n\x13GetAnnotatedDataset\x12=.google.cloud.datalabeling.v1beta1.GetAnnotatedDatasetRequest\x1a\x33.google.cloud.datalabeling.v1beta1.AnnotatedDataset"A\x82\xd3\xe4\x93\x02;\x12\x39/v1beta1/{name=projects/*/datasets/*/annotatedDatasets/*}\x12\xdd\x01\n\x15ListAnnotatedDatasets\x12?.google.cloud.datalabeling.v1beta1.ListAnnotatedDatasetsRequest\x1a@.google.cloud.datalabeling.v1beta1.ListAnnotatedDatasetsResponse"A\x82\xd3\xe4\x93\x02;\x12\x39/v1beta1/{parent=projects/*/datasets/*}/annotatedDatasets\x12\xb5\x01\n\x16\x44\x65leteAnnotatedDataset\x12@.google.cloud.datalabeling.v1beta1.DeleteAnnotatedDatasetRequest\x1a\x16.google.protobuf.Empty"A\x82\xd3\xe4\x93\x02;*9/v1beta1/{name=projects/*/datasets/*/annotatedDatasets/*}\x12\xa1\x01\n\nLabelImage\x12\x34.google.cloud.datalabeling.v1beta1.LabelImageRequest\x1a\x1d.google.longrunning.Operation">\x82\xd3\xe4\x93\x02\x38"3/v1beta1/{parent=projects/*/datasets/*}/image:label:\x01*\x12\xa1\x01\n\nLabelVideo\x12\x34.google.cloud.datalabeling.v1beta1.LabelVideoRequest\x1a\x1d.google.longrunning.Operation">\x82\xd3\xe4\x93\x02\x38"3/v1beta1/{parent=projects/*/datasets/*}/video:label:\x01*\x12\x9e\x01\n\tLabelText\x12\x33.google.cloud.datalabeling.v1beta1.LabelTextRequest\x1a\x1d.google.longrunning.Operation"=\x82\xd3\xe4\x93\x02\x37"2/v1beta1/{parent=projects/*/datasets/*}/text:label:\x01*\x12\xbc\x01\n\nGetExample\x12\x34.google.cloud.datalabeling.v1beta1.GetExampleRequest\x1a*.google.cloud.datalabeling.v1beta1.Example"L\x82\xd3\xe4\x93\x02\x46\x12\x44/v1beta1/{name=projects/*/datasets/*/annotatedDatasets/*/examples/*}\x12\xcd\x01\n\x0cListExamples\x12\x36.google.cloud.datalabeling.v1beta1.ListExamplesRequest\x1a\x37.google.cloud.datalabeling.v1beta1.ListExamplesResponse"L\x82\xd3\xe4\x93\x02\x46\x12\x44/v1beta1/{parent=projects/*/datasets/*/annotatedDatasets/*}/examples\x12\xce\x01\n\x17\x43reateAnnotationSpecSet\x12\x41.google.cloud.datalabeling.v1beta1.CreateAnnotationSpecSetRequest\x1a\x34.google.cloud.datalabeling.v1beta1.AnnotationSpecSet":\x82\xd3\xe4\x93\x02\x34"//v1beta1/{parent=projects/*}/annotationSpecSets:\x01*\x12\xc5\x01\n\x14GetAnnotationSpecSet\x12>.google.cloud.datalabeling.v1beta1.GetAnnotationSpecSetRequest\x1a\x34.google.cloud.datalabeling.v1beta1.AnnotationSpecSet"7\x82\xd3\xe4\x93\x02\x31\x12//v1beta1/{name=projects/*/annotationSpecSets/*}\x12\xd6\x01\n\x16ListAnnotationSpecSets\x12@.google.cloud.datalabeling.v1beta1.ListAnnotationSpecSetsRequest\x1a\x41.google.cloud.datalabeling.v1beta1.ListAnnotationSpecSetsResponse"7\x82\xd3\xe4\x93\x02\x31\x12//v1beta1/{parent=projects/*}/annotationSpecSets\x12\xad\x01\n\x17\x44\x65leteAnnotationSpecSet\x12\x41.google.cloud.datalabeling.v1beta1.DeleteAnnotationSpecSetRequest\x1a\x16.google.protobuf.Empty"7\x82\xd3\xe4\x93\x02\x31*//v1beta1/{name=projects/*/annotationSpecSets/*}\x12\xa5\x01\n\x11\x43reateInstruction\x12;.google.cloud.datalabeling.v1beta1.CreateInstructionRequest\x1a\x1d.google.longrunning.Operation"4\x82\xd3\xe4\x93\x02.")/v1beta1/{parent=projects/*}/instructions:\x01*\x12\xad\x01\n\x0eGetInstruction\x12\x38.google.cloud.datalabeling.v1beta1.GetInstructionRequest\x1a..google.cloud.datalabeling.v1beta1.Instruction"1\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{name=projects/*/instructions/*}\x12\xbe\x01\n\x10ListInstructions\x12:.google.cloud.datalabeling.v1beta1.ListInstructionsRequest\x1a;.google.cloud.datalabeling.v1beta1.ListInstructionsResponse"1\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{parent=projects/*}/instructions\x12\x9b\x01\n\x11\x44\x65leteInstruction\x12;.google.cloud.datalabeling.v1beta1.DeleteInstructionRequest\x1a\x16.google.protobuf.Empty"1\x82\xd3\xe4\x93\x02+*)/v1beta1/{name=projects/*/instructions/*}\x12\xb4\x01\n\rGetEvaluation\x12\x37.google.cloud.datalabeling.v1beta1.GetEvaluationRequest\x1a-.google.cloud.datalabeling.v1beta1.Evaluation";\x82\xd3\xe4\x93\x02\x35\x12\x33/v1beta1/{name=projects/*/datasets/*/evaluations/*}\x12\xc7\x01\n\x11SearchEvaluations\x12;.google.cloud.datalabeling.v1beta1.SearchEvaluationsRequest\x1a<.google.cloud.datalabeling.v1beta1.SearchEvaluationsResponse"7\x82\xd3\xe4\x93\x02\x31\x12//v1beta1/{parent=projects/*}/evaluations:search\x12\xff\x01\n\x18SearchExampleComparisons\x12\x42.google.cloud.datalabeling.v1beta1.SearchExampleComparisonsRequest\x1a\x43.google.cloud.datalabeling.v1beta1.SearchExampleComparisonsResponse"Z\x82\xd3\xe4\x93\x02T"O/v1beta1/{parent=projects/*/datasets/*/evaluations/*}/exampleComparisons:search:\x01*\x12\xbe\x01\n\x13\x43reateEvaluationJob\x12=.google.cloud.datalabeling.v1beta1.CreateEvaluationJobRequest\x1a\x30.google.cloud.datalabeling.v1beta1.EvaluationJob"6\x82\xd3\xe4\x93\x02\x30"+/v1beta1/{parent=projects/*}/evaluationJobs:\x01*\x12\xda\x01\n\x13UpdateEvaluationJob\x12=.google.cloud.datalabeling.v1beta1.UpdateEvaluationJobRequest\x1a\x30.google.cloud.datalabeling.v1beta1.EvaluationJob"R\x82\xd3\xe4\x93\x02L2:/v1beta1/{evaluation_job.name=projects/*/evaluationJobs/*}:\x0e\x65valuation_job\x12\xb5\x01\n\x10GetEvaluationJob\x12:.google.cloud.datalabeling.v1beta1.GetEvaluationJobRequest\x1a\x30.google.cloud.datalabeling.v1beta1.EvaluationJob"3\x82\xd3\xe4\x93\x02-\x12+/v1beta1/{name=projects/*/evaluationJobs/*}\x12\xa8\x01\n\x12PauseEvaluationJob\x12<.google.cloud.datalabeling.v1beta1.PauseEvaluationJobRequest\x1a\x16.google.protobuf.Empty"<\x82\xd3\xe4\x93\x02\x36"1/v1beta1/{name=projects/*/evaluationJobs/*}:pause:\x01*\x12\xab\x01\n\x13ResumeEvaluationJob\x12=.google.cloud.datalabeling.v1beta1.ResumeEvaluationJobRequest\x1a\x16.google.protobuf.Empty"=\x82\xd3\xe4\x93\x02\x37"2/v1beta1/{name=projects/*/evaluationJobs/*}:resume:\x01*\x12\xa1\x01\n\x13\x44\x65leteEvaluationJob\x12=.google.cloud.datalabeling.v1beta1.DeleteEvaluationJobRequest\x1a\x16.google.protobuf.Empty"3\x82\xd3\xe4\x93\x02-*+/v1beta1/{name=projects/*/evaluationJobs/*}\x12\xc6\x01\n\x12ListEvaluationJobs\x12<.google.cloud.datalabeling.v1beta1.ListEvaluationJobsRequest\x1a=.google.cloud.datalabeling.v1beta1.ListEvaluationJobsResponse"3\x82\xd3\xe4\x93\x02-\x12+/v1beta1/{parent=projects/*}/evaluationJobs\x1aO\xca\x41\x1b\x64\x61talabeling.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformBx\n%com.google.cloud.datalabeling.v1beta1P\x01ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabelingb\x06proto3'
+        '\nCgoogle/cloud/datalabeling_v1beta1/proto/data_labeling_service.proto\x12!google.cloud.datalabeling.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x41google/cloud/datalabeling_v1beta1/proto/annotation_spec_set.proto\x1a\x35google/cloud/datalabeling_v1beta1/proto/dataset.proto\x1a\x38google/cloud/datalabeling_v1beta1/proto/evaluation.proto\x1a<google/cloud/datalabeling_v1beta1/proto/evaluation_job.proto\x1a\x45google/cloud/datalabeling_v1beta1/proto/human_annotation_config.proto\x1a\x39google/cloud/datalabeling_v1beta1/proto/instruction.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"\x9d\x01\n\x14\x43reateDatasetRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12@\n\x07\x64\x61taset\x18\x02 \x01(\x0b\x32*.google.cloud.datalabeling.v1beta1.DatasetB\x03\xe0\x41\x02"N\n\x11GetDatasetRequest\x12\x39\n\x04name\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\n#datalabeling.googleapis.com/Dataset"\xa0\x01\n\x13ListDatasetsRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x13\n\x06\x66ilter\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x03 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x04 \x01(\tB\x03\xe0\x41\x01"m\n\x14ListDatasetsResponse\x12<\n\x08\x64\x61tasets\x18\x01 \x03(\x0b\x32*.google.cloud.datalabeling.v1beta1.Dataset\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"Q\n\x14\x44\x65leteDatasetRequest\x12\x39\n\x04name\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\n#datalabeling.googleapis.com/Dataset"\xb5\x01\n\x11ImportDataRequest\x12\x39\n\x04name\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\n#datalabeling.googleapis.com/Dataset\x12I\n\x0cinput_config\x18\x02 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.InputConfigB\x03\xe0\x41\x02\x12\x1a\n\x12user_email_address\x18\x03 \x01(\t"\x9d\x02\n\x11\x45xportDataRequest\x12\x39\n\x04name\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\n#datalabeling.googleapis.com/Dataset\x12O\n\x11\x61nnotated_dataset\x18\x02 \x01(\tB4\xe0\x41\x02\xfa\x41.\n,datalabeling.googleapis.com/AnnotatedDataset\x12\x13\n\x06\x66ilter\x18\x03 \x01(\tB\x03\xe0\x41\x01\x12K\n\routput_config\x18\x04 \x01(\x0b\x32/.google.cloud.datalabeling.v1beta1.OutputConfigB\x03\xe0\x41\x02\x12\x1a\n\x12user_email_address\x18\x05 \x01(\t"P\n\x12GetDataItemRequest\x12:\n\x04name\x18\x01 \x01(\tB,\xe0\x41\x02\xfa\x41&\n$datalabeling.googleapis.com/DataItem"\x99\x01\n\x14ListDataItemsRequest\x12;\n\x06parent\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\n#datalabeling.googleapis.com/Dataset\x12\x13\n\x06\x66ilter\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x03 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x04 \x01(\tB\x03\xe0\x41\x01"q\n\x15ListDataItemsResponse\x12?\n\ndata_items\x18\x01 \x03(\x0b\x32+.google.cloud.datalabeling.v1beta1.DataItem\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"`\n\x1aGetAnnotatedDatasetRequest\x12\x42\n\x04name\x18\x01 \x01(\tB4\xe0\x41\x02\xfa\x41.\n,datalabeling.googleapis.com/AnnotatedDataset"\xa1\x01\n\x1cListAnnotatedDatasetsRequest\x12;\n\x06parent\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\n#datalabeling.googleapis.com/Dataset\x12\x13\n\x06\x66ilter\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x03 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x04 \x01(\tB\x03\xe0\x41\x01"\x89\x01\n\x1dListAnnotatedDatasetsResponse\x12O\n\x12\x61nnotated_datasets\x18\x01 \x03(\x0b\x32\x33.google.cloud.datalabeling.v1beta1.AnnotatedDataset\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"c\n\x1d\x44\x65leteAnnotatedDatasetRequest\x12\x42\n\x04name\x18\x01 \x01(\tB4\xe0\x41\x02\xfa\x41.\n,datalabeling.googleapis.com/AnnotatedDataset"\x84\x06\n\x11LabelImageRequest\x12\x63\n\x1bimage_classification_config\x18\x04 \x01(\x0b\x32<.google.cloud.datalabeling.v1beta1.ImageClassificationConfigH\x00\x12U\n\x14\x62ounding_poly_config\x18\x05 \x01(\x0b\x32\x35.google.cloud.datalabeling.v1beta1.BoundingPolyConfigH\x00\x12L\n\x0fpolyline_config\x18\x06 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.PolylineConfigH\x00\x12T\n\x13segmentation_config\x18\x07 \x01(\x0b\x32\x35.google.cloud.datalabeling.v1beta1.SegmentationConfigH\x00\x12;\n\x06parent\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\n#datalabeling.googleapis.com/Dataset\x12S\n\x0c\x62\x61sic_config\x18\x02 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfigB\x03\xe0\x41\x02\x12R\n\x07\x66\x65\x61ture\x18\x03 \x01(\x0e\x32<.google.cloud.datalabeling.v1beta1.LabelImageRequest.FeatureB\x03\xe0\x41\x02"\x96\x01\n\x07\x46\x65\x61ture\x12\x17\n\x13\x46\x45\x41TURE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x43LASSIFICATION\x10\x01\x12\x10\n\x0c\x42OUNDING_BOX\x10\x02\x12\x19\n\x15ORIENTED_BOUNDING_BOX\x10\x06\x12\x11\n\rBOUNDING_POLY\x10\x03\x12\x0c\n\x08POLYLINE\x10\x04\x12\x10\n\x0cSEGMENTATION\x10\x05\x42\x10\n\x0erequest_config"\xde\x05\n\x11LabelVideoRequest\x12\x63\n\x1bvideo_classification_config\x18\x04 \x01(\x0b\x32<.google.cloud.datalabeling.v1beta1.VideoClassificationConfigH\x00\x12[\n\x17object_detection_config\x18\x05 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.ObjectDetectionConfigH\x00\x12Y\n\x16object_tracking_config\x18\x06 \x01(\x0b\x32\x37.google.cloud.datalabeling.v1beta1.ObjectTrackingConfigH\x00\x12\x46\n\x0c\x65vent_config\x18\x07 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.EventConfigH\x00\x12;\n\x06parent\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\n#datalabeling.googleapis.com/Dataset\x12S\n\x0c\x62\x61sic_config\x18\x02 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfigB\x03\xe0\x41\x02\x12R\n\x07\x66\x65\x61ture\x18\x03 \x01(\x0e\x32<.google.cloud.datalabeling.v1beta1.LabelVideoRequest.FeatureB\x03\xe0\x41\x02"l\n\x07\x46\x65\x61ture\x12\x17\n\x13\x46\x45\x41TURE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x43LASSIFICATION\x10\x01\x12\x14\n\x10OBJECT_DETECTION\x10\x02\x12\x13\n\x0fOBJECT_TRACKING\x10\x03\x12\t\n\x05\x45VENT\x10\x04\x42\x10\n\x0erequest_config"\xad\x04\n\x10LabelTextRequest\x12\x61\n\x1atext_classification_config\x18\x04 \x01(\x0b\x32;.google.cloud.datalabeling.v1beta1.TextClassificationConfigH\x00\x12\x66\n\x1dtext_entity_extraction_config\x18\x05 \x01(\x0b\x32=.google.cloud.datalabeling.v1beta1.TextEntityExtractionConfigH\x00\x12;\n\x06parent\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\n#datalabeling.googleapis.com/Dataset\x12S\n\x0c\x62\x61sic_config\x18\x02 \x01(\x0b\x32\x38.google.cloud.datalabeling.v1beta1.HumanAnnotationConfigB\x03\xe0\x41\x02\x12Q\n\x07\x66\x65\x61ture\x18\x06 \x01(\x0e\x32;.google.cloud.datalabeling.v1beta1.LabelTextRequest.FeatureB\x03\xe0\x41\x02"W\n\x07\x46\x65\x61ture\x12\x17\n\x13\x46\x45\x41TURE_UNSPECIFIED\x10\x00\x12\x17\n\x13TEXT_CLASSIFICATION\x10\x01\x12\x1a\n\x16TEXT_ENTITY_EXTRACTION\x10\x02\x42\x10\n\x0erequest_config"c\n\x11GetExampleRequest\x12\x39\n\x04name\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\n#datalabeling.googleapis.com/Example\x12\x13\n\x06\x66ilter\x18\x02 \x01(\tB\x03\xe0\x41\x01"\xa1\x01\n\x13ListExamplesRequest\x12\x44\n\x06parent\x18\x01 \x01(\tB4\xe0\x41\x02\xfa\x41.\n,datalabeling.googleapis.com/AnnotatedDataset\x12\x13\n\x06\x66ilter\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x03 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x04 \x01(\tB\x03\xe0\x41\x01"m\n\x14ListExamplesResponse\x12<\n\x08\x65xamples\x18\x01 \x03(\x0b\x32*.google.cloud.datalabeling.v1beta1.Example\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\xbd\x01\n\x1e\x43reateAnnotationSpecSetRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12V\n\x13\x61nnotation_spec_set\x18\x02 \x01(\x0b\x32\x34.google.cloud.datalabeling.v1beta1.AnnotationSpecSetB\x03\xe0\x41\x02"b\n\x1bGetAnnotationSpecSetRequest\x12\x43\n\x04name\x18\x01 \x01(\tB5\xe0\x41\x02\xfa\x41/\n-datalabeling.googleapis.com/AnnotationSpecSet"\xaa\x01\n\x1dListAnnotationSpecSetsRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x13\n\x06\x66ilter\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x03 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x04 \x01(\tB\x03\xe0\x41\x01"\x8d\x01\n\x1eListAnnotationSpecSetsResponse\x12R\n\x14\x61nnotation_spec_sets\x18\x01 \x03(\x0b\x32\x34.google.cloud.datalabeling.v1beta1.AnnotationSpecSet\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"e\n\x1e\x44\x65leteAnnotationSpecSetRequest\x12\x43\n\x04name\x18\x01 \x01(\tB5\xe0\x41\x02\xfa\x41/\n-datalabeling.googleapis.com/AnnotationSpecSet"\xa9\x01\n\x18\x43reateInstructionRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12H\n\x0binstruction\x18\x02 \x01(\x0b\x32..google.cloud.datalabeling.v1beta1.InstructionB\x03\xe0\x41\x02"V\n\x15GetInstructionRequest\x12=\n\x04name\x18\x01 \x01(\tB/\xe0\x41\x02\xfa\x41)\n\'datalabeling.googleapis.com/Instruction"Y\n\x18\x44\x65leteInstructionRequest\x12=\n\x04name\x18\x01 \x01(\tB/\xe0\x41\x02\xfa\x41)\n\'datalabeling.googleapis.com/Instruction"\xa4\x01\n\x17ListInstructionsRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x13\n\x06\x66ilter\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x03 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x04 \x01(\tB\x03\xe0\x41\x01"y\n\x18ListInstructionsResponse\x12\x44\n\x0cinstructions\x18\x01 \x03(\x0b\x32..google.cloud.datalabeling.v1beta1.Instruction\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"T\n\x14GetEvaluationRequest\x12<\n\x04name\x18\x01 \x01(\tB.\xe0\x41\x02\xfa\x41(\n&datalabeling.googleapis.com/Evaluation"\xa0\x01\n\x18SearchEvaluationsRequest\x12>\n\x06parent\x18\x01 \x01(\tB.\xe0\x41\x02\xfa\x41(\n&datalabeling.googleapis.com/Evaluation\x12\x13\n\x06\x66ilter\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x03 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x04 \x01(\tB\x03\xe0\x41\x01"x\n\x19SearchEvaluationsResponse\x12\x42\n\x0b\x65valuations\x18\x01 \x03(\x0b\x32-.google.cloud.datalabeling.v1beta1.Evaluation\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x92\x01\n\x1fSearchExampleComparisonsRequest\x12>\n\x06parent\x18\x01 \x01(\tB.\xe0\x41\x02\xfa\x41(\n&datalabeling.googleapis.com/Evaluation\x12\x16\n\tpage_size\x18\x02 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x03 \x01(\tB\x03\xe0\x41\x01"\xdb\x02\n SearchExampleComparisonsResponse\x12r\n\x13\x65xample_comparisons\x18\x01 \x03(\x0b\x32U.google.cloud.datalabeling.v1beta1.SearchExampleComparisonsResponse.ExampleComparison\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x1a\xa9\x01\n\x11\x45xampleComparison\x12H\n\x14ground_truth_example\x18\x01 \x01(\x0b\x32*.google.cloud.datalabeling.v1beta1.Example\x12J\n\x16model_created_examples\x18\x02 \x03(\x0b\x32*.google.cloud.datalabeling.v1beta1.Example"\xa5\x01\n\x1a\x43reateEvaluationJobRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x42\n\x03job\x18\x02 \x01(\x0b\x32\x30.google.cloud.datalabeling.v1beta1.EvaluationJobB\x03\xe0\x41\x02"\xa1\x01\n\x1aUpdateEvaluationJobRequest\x12M\n\x0e\x65valuation_job\x18\x01 \x01(\x0b\x32\x30.google.cloud.datalabeling.v1beta1.EvaluationJobB\x03\xe0\x41\x02\x12\x34\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x01"Z\n\x17GetEvaluationJobRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)datalabeling.googleapis.com/EvaluationJob"\\\n\x19PauseEvaluationJobRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)datalabeling.googleapis.com/EvaluationJob"]\n\x1aResumeEvaluationJobRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)datalabeling.googleapis.com/EvaluationJob"]\n\x1a\x44\x65leteEvaluationJobRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)datalabeling.googleapis.com/EvaluationJob"\xa6\x01\n\x19ListEvaluationJobsRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x13\n\x06\x66ilter\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x03 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x04 \x01(\tB\x03\xe0\x41\x01"\x80\x01\n\x1aListEvaluationJobsResponse\x12I\n\x0f\x65valuation_jobs\x18\x01 \x03(\x0b\x32\x30.google.cloud.datalabeling.v1beta1.EvaluationJob\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t2\xa6\x38\n\x13\x44\x61taLabelingService\x12\xb7\x01\n\rCreateDataset\x12\x37.google.cloud.datalabeling.v1beta1.CreateDatasetRequest\x1a*.google.cloud.datalabeling.v1beta1.Dataset"A\x82\xd3\xe4\x93\x02*"%/v1beta1/{parent=projects/*}/datasets:\x01*\xda\x41\x0eparent,dataset\x12\xa4\x01\n\nGetDataset\x12\x34.google.cloud.datalabeling.v1beta1.GetDatasetRequest\x1a*.google.cloud.datalabeling.v1beta1.Dataset"4\x82\xd3\xe4\x93\x02\'\x12%/v1beta1/{name=projects/*/datasets/*}\xda\x41\x04name\x12\xbe\x01\n\x0cListDatasets\x12\x36.google.cloud.datalabeling.v1beta1.ListDatasetsRequest\x1a\x37.google.cloud.datalabeling.v1beta1.ListDatasetsResponse"=\x82\xd3\xe4\x93\x02\'\x12%/v1beta1/{parent=projects/*}/datasets\xda\x41\rparent,filter\x12\x96\x01\n\rDeleteDataset\x12\x37.google.cloud.datalabeling.v1beta1.DeleteDatasetRequest\x1a\x16.google.protobuf.Empty"4\x82\xd3\xe4\x93\x02\'*%/v1beta1/{name=projects/*/datasets/*}\xda\x41\x04name\x12\xf0\x01\n\nImportData\x12\x34.google.cloud.datalabeling.v1beta1.ImportDataRequest\x1a\x1d.google.longrunning.Operation"\x8c\x01\x82\xd3\xe4\x93\x02\x35"0/v1beta1/{name=projects/*/datasets/*}:importData:\x01*\xda\x41\x11name,input_config\xca\x41:\n\x1bImportDataOperationResponse\x12\x1bImportDataOperationMetadata\x12\x8a\x02\n\nExportData\x12\x34.google.cloud.datalabeling.v1beta1.ExportDataRequest\x1a\x1d.google.longrunning.Operation"\xa6\x01\x82\xd3\xe4\x93\x02\x35"0/v1beta1/{name=projects/*/datasets/*}:exportData:\x01*\xda\x41+name,annotated_dataset,filter,output_config\xca\x41:\n\x1b\x45xportDataOperationResponse\x12\x1b\x45xportDataOperationMetadata\x12\xb3\x01\n\x0bGetDataItem\x12\x35.google.cloud.datalabeling.v1beta1.GetDataItemRequest\x1a+.google.cloud.datalabeling.v1beta1.DataItem"@\x82\xd3\xe4\x93\x02\x33\x12\x31/v1beta1/{name=projects/*/datasets/*/dataItems/*}\xda\x41\x04name\x12\xcd\x01\n\rListDataItems\x12\x37.google.cloud.datalabeling.v1beta1.ListDataItemsRequest\x1a\x38.google.cloud.datalabeling.v1beta1.ListDataItemsResponse"I\x82\xd3\xe4\x93\x02\x33\x12\x31/v1beta1/{parent=projects/*/datasets/*}/dataItems\xda\x41\rparent,filter\x12\xd3\x01\n\x13GetAnnotatedDataset\x12=.google.cloud.datalabeling.v1beta1.GetAnnotatedDatasetRequest\x1a\x33.google.cloud.datalabeling.v1beta1.AnnotatedDataset"H\x82\xd3\xe4\x93\x02;\x12\x39/v1beta1/{name=projects/*/datasets/*/annotatedDatasets/*}\xda\x41\x04name\x12\xed\x01\n\x15ListAnnotatedDatasets\x12?.google.cloud.datalabeling.v1beta1.ListAnnotatedDatasetsRequest\x1a@.google.cloud.datalabeling.v1beta1.ListAnnotatedDatasetsResponse"Q\x82\xd3\xe4\x93\x02;\x12\x39/v1beta1/{parent=projects/*/datasets/*}/annotatedDatasets\xda\x41\rparent,filter\x12\xb5\x01\n\x16\x44\x65leteAnnotatedDataset\x12@.google.cloud.datalabeling.v1beta1.DeleteAnnotatedDatasetRequest\x1a\x16.google.protobuf.Empty"A\x82\xd3\xe4\x93\x02;*9/v1beta1/{name=projects/*/datasets/*/annotatedDatasets/*}\x12\xed\x01\n\nLabelImage\x12\x34.google.cloud.datalabeling.v1beta1.LabelImageRequest\x1a\x1d.google.longrunning.Operation"\x89\x01\x82\xd3\xe4\x93\x02\x38"3/v1beta1/{parent=projects/*/datasets/*}/image:label:\x01*\xda\x41\x1bparent,basic_config,feature\xca\x41*\n\x10\x41nnotatedDataset\x12\x16LabelOperationMetadata\x12\xed\x01\n\nLabelVideo\x12\x34.google.cloud.datalabeling.v1beta1.LabelVideoRequest\x1a\x1d.google.longrunning.Operation"\x89\x01\x82\xd3\xe4\x93\x02\x38"3/v1beta1/{parent=projects/*/datasets/*}/video:label:\x01*\xda\x41\x1bparent,basic_config,feature\xca\x41*\n\x10\x41nnotatedDataset\x12\x16LabelOperationMetadata\x12\xea\x01\n\tLabelText\x12\x33.google.cloud.datalabeling.v1beta1.LabelTextRequest\x1a\x1d.google.longrunning.Operation"\x88\x01\x82\xd3\xe4\x93\x02\x37"2/v1beta1/{parent=projects/*/datasets/*}/text:label:\x01*\xda\x41\x1bparent,basic_config,feature\xca\x41*\n\x10\x41nnotatedDataset\x12\x16LabelOperationMetadata\x12\xca\x01\n\nGetExample\x12\x34.google.cloud.datalabeling.v1beta1.GetExampleRequest\x1a*.google.cloud.datalabeling.v1beta1.Example"Z\x82\xd3\xe4\x93\x02\x46\x12\x44/v1beta1/{name=projects/*/datasets/*/annotatedDatasets/*/examples/*}\xda\x41\x0bname,filter\x12\xdd\x01\n\x0cListExamples\x12\x36.google.cloud.datalabeling.v1beta1.ListExamplesRequest\x1a\x37.google.cloud.datalabeling.v1beta1.ListExamplesResponse"\\\x82\xd3\xe4\x93\x02\x46\x12\x44/v1beta1/{parent=projects/*/datasets/*/annotatedDatasets/*}/examples\xda\x41\rparent,filter\x12\xeb\x01\n\x17\x43reateAnnotationSpecSet\x12\x41.google.cloud.datalabeling.v1beta1.CreateAnnotationSpecSetRequest\x1a\x34.google.cloud.datalabeling.v1beta1.AnnotationSpecSet"W\x82\xd3\xe4\x93\x02\x34"//v1beta1/{parent=projects/*}/annotationSpecSets:\x01*\xda\x41\x1aparent,annotation_spec_set\x12\xcc\x01\n\x14GetAnnotationSpecSet\x12>.google.cloud.datalabeling.v1beta1.GetAnnotationSpecSetRequest\x1a\x34.google.cloud.datalabeling.v1beta1.AnnotationSpecSet">\x82\xd3\xe4\x93\x02\x31\x12//v1beta1/{name=projects/*/annotationSpecSets/*}\xda\x41\x04name\x12\xe6\x01\n\x16ListAnnotationSpecSets\x12@.google.cloud.datalabeling.v1beta1.ListAnnotationSpecSetsRequest\x1a\x41.google.cloud.datalabeling.v1beta1.ListAnnotationSpecSetsResponse"G\x82\xd3\xe4\x93\x02\x31\x12//v1beta1/{parent=projects/*}/annotationSpecSets\xda\x41\rparent,filter\x12\xb4\x01\n\x17\x44\x65leteAnnotationSpecSet\x12\x41.google.cloud.datalabeling.v1beta1.DeleteAnnotationSpecSetRequest\x1a\x16.google.protobuf.Empty">\x82\xd3\xe4\x93\x02\x31*//v1beta1/{name=projects/*/annotationSpecSets/*}\xda\x41\x04name\x12\xe5\x01\n\x11\x43reateInstruction\x12;.google.cloud.datalabeling.v1beta1.CreateInstructionRequest\x1a\x1d.google.longrunning.Operation"t\x82\xd3\xe4\x93\x02.")/v1beta1/{parent=projects/*}/instructions:\x01*\xda\x41\x12parent,instruction\xca\x41(\n\x0bInstruction\x12\x19\x43reateInstructionMetadata\x12\xb4\x01\n\x0eGetInstruction\x12\x38.google.cloud.datalabeling.v1beta1.GetInstructionRequest\x1a..google.cloud.datalabeling.v1beta1.Instruction"8\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{name=projects/*/instructions/*}\xda\x41\x04name\x12\xce\x01\n\x10ListInstructions\x12:.google.cloud.datalabeling.v1beta1.ListInstructionsRequest\x1a;.google.cloud.datalabeling.v1beta1.ListInstructionsResponse"A\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{parent=projects/*}/instructions\xda\x41\rparent,filter\x12\xa2\x01\n\x11\x44\x65leteInstruction\x12;.google.cloud.datalabeling.v1beta1.DeleteInstructionRequest\x1a\x16.google.protobuf.Empty"8\x82\xd3\xe4\x93\x02+*)/v1beta1/{name=projects/*/instructions/*}\xda\x41\x04name\x12\xbb\x01\n\rGetEvaluation\x12\x37.google.cloud.datalabeling.v1beta1.GetEvaluationRequest\x1a-.google.cloud.datalabeling.v1beta1.Evaluation"B\x82\xd3\xe4\x93\x02\x35\x12\x33/v1beta1/{name=projects/*/datasets/*/evaluations/*}\xda\x41\x04name\x12\xd7\x01\n\x11SearchEvaluations\x12;.google.cloud.datalabeling.v1beta1.SearchEvaluationsRequest\x1a<.google.cloud.datalabeling.v1beta1.SearchEvaluationsResponse"G\x82\xd3\xe4\x93\x02\x31\x12//v1beta1/{parent=projects/*}/evaluations:search\xda\x41\rparent,filter\x12\x88\x02\n\x18SearchExampleComparisons\x12\x42.google.cloud.datalabeling.v1beta1.SearchExampleComparisonsRequest\x1a\x43.google.cloud.datalabeling.v1beta1.SearchExampleComparisonsResponse"c\x82\xd3\xe4\x93\x02T"O/v1beta1/{parent=projects/*/datasets/*/evaluations/*}/exampleComparisons:search:\x01*\xda\x41\x06parent\x12\xcb\x01\n\x13\x43reateEvaluationJob\x12=.google.cloud.datalabeling.v1beta1.CreateEvaluationJobRequest\x1a\x30.google.cloud.datalabeling.v1beta1.EvaluationJob"C\x82\xd3\xe4\x93\x02\x30"+/v1beta1/{parent=projects/*}/evaluationJobs:\x01*\xda\x41\nparent,job\x12\xf7\x01\n\x13UpdateEvaluationJob\x12=.google.cloud.datalabeling.v1beta1.UpdateEvaluationJobRequest\x1a\x30.google.cloud.datalabeling.v1beta1.EvaluationJob"o\x82\xd3\xe4\x93\x02L2:/v1beta1/{evaluation_job.name=projects/*/evaluationJobs/*}:\x0e\x65valuation_job\xda\x41\x1a\x65valuation_job,update_mask\x12\xbc\x01\n\x10GetEvaluationJob\x12:.google.cloud.datalabeling.v1beta1.GetEvaluationJobRequest\x1a\x30.google.cloud.datalabeling.v1beta1.EvaluationJob":\x82\xd3\xe4\x93\x02-\x12+/v1beta1/{name=projects/*/evaluationJobs/*}\xda\x41\x04name\x12\xaf\x01\n\x12PauseEvaluationJob\x12<.google.cloud.datalabeling.v1beta1.PauseEvaluationJobRequest\x1a\x16.google.protobuf.Empty"C\x82\xd3\xe4\x93\x02\x36"1/v1beta1/{name=projects/*/evaluationJobs/*}:pause:\x01*\xda\x41\x04name\x12\xb2\x01\n\x13ResumeEvaluationJob\x12=.google.cloud.datalabeling.v1beta1.ResumeEvaluationJobRequest\x1a\x16.google.protobuf.Empty"D\x82\xd3\xe4\x93\x02\x37"2/v1beta1/{name=projects/*/evaluationJobs/*}:resume:\x01*\xda\x41\x04name\x12\xa8\x01\n\x13\x44\x65leteEvaluationJob\x12=.google.cloud.datalabeling.v1beta1.DeleteEvaluationJobRequest\x1a\x16.google.protobuf.Empty":\x82\xd3\xe4\x93\x02-*+/v1beta1/{name=projects/*/evaluationJobs/*}\xda\x41\x04name\x12\xd6\x01\n\x12ListEvaluationJobs\x12<.google.cloud.datalabeling.v1beta1.ListEvaluationJobsRequest\x1a=.google.cloud.datalabeling.v1beta1.ListEvaluationJobsResponse"C\x82\xd3\xe4\x93\x02-\x12+/v1beta1/{parent=projects/*}/evaluationJobs\xda\x41\rparent,filter\x1aO\xca\x41\x1b\x64\x61talabeling.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformBx\n%com.google.cloud.datalabeling.v1beta1P\x01ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabelingb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_api_dot_client__pb2.DESCRIPTOR,
-        google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_annotation__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_annotation__spec__set__pb2.DESCRIPTOR,
         google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_dataset__pb2.DESCRIPTOR,
         google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_evaluation__pb2.DESCRIPTOR,
         google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_evaluation__job__pb2.DESCRIPTOR,
         google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_human__annotation__config__pb2.DESCRIPTOR,
         google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_instruction__pb2.DESCRIPTOR,
-        google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_operations__pb2.DESCRIPTOR,
         google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_field__mask__pb2.DESCRIPTOR,
@@ -114,8 +110,8 @@ _LABELIMAGEREQUEST_FEATURE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2571,
-    serialized_end=2721,
+    serialized_start=3223,
+    serialized_end=3373,
 )
 _sym_db.RegisterEnumDescriptor(_LABELIMAGEREQUEST_FEATURE)
 
@@ -155,8 +151,8 @@ _LABELVIDEOREQUEST_FEATURE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3295,
-    serialized_end=3403,
+    serialized_start=4002,
+    serialized_end=4110,
 )
 _sym_db.RegisterEnumDescriptor(_LABELVIDEOREQUEST_FEATURE)
 
@@ -190,8 +186,8 @@ _LABELTEXTREQUEST_FEATURE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3821,
-    serialized_end=3908,
+    serialized_start=4583,
+    serialized_end=4670,
 )
 _sym_db.RegisterEnumDescriptor(_LABELTEXTREQUEST_FEATURE)
 
@@ -218,7 +214,9 @@ _CREATEDATASETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -236,7 +234,7 @@ _CREATEDATASETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -248,8 +246,8 @@ _CREATEDATASETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=749,
-    serialized_end=848,
+    serialized_start=694,
+    serialized_end=851,
 )
 
 
@@ -275,7 +273,9 @@ _GETDATASETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A%\n#datalabeling.googleapis.com/Dataset"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -287,8 +287,8 @@ _GETDATASETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=850,
-    serialized_end=883,
+    serialized_start=853,
+    serialized_end=931,
 )
 
 
@@ -314,7 +314,9 @@ _LISTDATASETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -332,7 +334,7 @@ _LISTDATASETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -350,7 +352,7 @@ _LISTDATASETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -368,7 +370,7 @@ _LISTDATASETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -380,8 +382,8 @@ _LISTDATASETSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=885,
-    serialized_end=977,
+    serialized_start=934,
+    serialized_end=1094,
 )
 
 
@@ -437,8 +439,8 @@ _LISTDATASETSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=979,
-    serialized_end=1088,
+    serialized_start=1096,
+    serialized_end=1205,
 )
 
 
@@ -464,7 +466,9 @@ _DELETEDATASETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A%\n#datalabeling.googleapis.com/Dataset"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -476,8 +480,8 @@ _DELETEDATASETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1090,
-    serialized_end=1126,
+    serialized_start=1207,
+    serialized_end=1288,
 )
 
 
@@ -503,7 +507,9 @@ _IMPORTDATAREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A%\n#datalabeling.googleapis.com/Dataset"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -521,7 +527,7 @@ _IMPORTDATAREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -551,8 +557,8 @@ _IMPORTDATAREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1129,
-    serialized_end=1260,
+    serialized_start=1291,
+    serialized_end=1472,
 )
 
 
@@ -578,7 +584,9 @@ _EXPORTDATAREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A%\n#datalabeling.googleapis.com/Dataset"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -596,7 +604,9 @@ _EXPORTDATAREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A.\n,datalabeling.googleapis.com/AnnotatedDataset"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -614,7 +624,7 @@ _EXPORTDATAREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -632,7 +642,7 @@ _EXPORTDATAREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -662,8 +672,8 @@ _EXPORTDATAREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1263,
-    serialized_end=1439,
+    serialized_start=1475,
+    serialized_end=1760,
 )
 
 
@@ -689,7 +699,9 @@ _GETDATAITEMREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A&\n$datalabeling.googleapis.com/DataItem"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -701,8 +713,8 @@ _GETDATAITEMREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1441,
-    serialized_end=1475,
+    serialized_start=1762,
+    serialized_end=1842,
 )
 
 
@@ -728,7 +740,9 @@ _LISTDATAITEMSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A%\n#datalabeling.googleapis.com/Dataset"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -746,7 +760,7 @@ _LISTDATAITEMSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -764,7 +778,7 @@ _LISTDATAITEMSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -782,7 +796,7 @@ _LISTDATAITEMSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -794,8 +808,8 @@ _LISTDATAITEMSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1477,
-    serialized_end=1570,
+    serialized_start=1845,
+    serialized_end=1998,
 )
 
 
@@ -851,8 +865,8 @@ _LISTDATAITEMSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1572,
-    serialized_end=1685,
+    serialized_start=2000,
+    serialized_end=2113,
 )
 
 
@@ -878,7 +892,9 @@ _GETANNOTATEDDATASETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A.\n,datalabeling.googleapis.com/AnnotatedDataset"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -890,8 +906,8 @@ _GETANNOTATEDDATASETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1687,
-    serialized_end=1729,
+    serialized_start=2115,
+    serialized_end=2211,
 )
 
 
@@ -917,7 +933,9 @@ _LISTANNOTATEDDATASETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A%\n#datalabeling.googleapis.com/Dataset"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -935,7 +953,7 @@ _LISTANNOTATEDDATASETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -953,7 +971,7 @@ _LISTANNOTATEDDATASETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -971,7 +989,7 @@ _LISTANNOTATEDDATASETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -983,8 +1001,8 @@ _LISTANNOTATEDDATASETSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1731,
-    serialized_end=1832,
+    serialized_start=2214,
+    serialized_end=2375,
 )
 
 
@@ -1040,8 +1058,8 @@ _LISTANNOTATEDDATASETSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1835,
-    serialized_end=1972,
+    serialized_start=2378,
+    serialized_end=2515,
 )
 
 
@@ -1067,7 +1085,9 @@ _DELETEANNOTATEDDATASETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A.\n,datalabeling.googleapis.com/AnnotatedDataset"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -1079,8 +1099,8 @@ _DELETEANNOTATEDDATASETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1974,
-    serialized_end=2019,
+    serialized_start=2517,
+    serialized_end=2616,
 )
 
 
@@ -1178,7 +1198,9 @@ _LABELIMAGEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A%\n#datalabeling.googleapis.com/Dataset"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1196,7 +1218,7 @@ _LABELIMAGEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1214,7 +1236,7 @@ _LABELIMAGEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1234,8 +1256,8 @@ _LABELIMAGEREQUEST = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=2022,
-    serialized_end=2739,
+    serialized_start=2619,
+    serialized_end=3391,
 )
 
 
@@ -1333,7 +1355,9 @@ _LABELVIDEOREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A%\n#datalabeling.googleapis.com/Dataset"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1351,7 +1375,7 @@ _LABELVIDEOREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1369,7 +1393,7 @@ _LABELVIDEOREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1389,8 +1413,8 @@ _LABELVIDEOREQUEST = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=2742,
-    serialized_end=3421,
+    serialized_start=3394,
+    serialized_end=4128,
 )
 
 
@@ -1452,7 +1476,9 @@ _LABELTEXTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A%\n#datalabeling.googleapis.com/Dataset"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1470,7 +1496,7 @@ _LABELTEXTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1488,7 +1514,7 @@ _LABELTEXTREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1508,8 +1534,8 @@ _LABELTEXTREQUEST = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=3424,
-    serialized_end=3926,
+    serialized_start=4131,
+    serialized_end=4688,
 )
 
 
@@ -1535,7 +1561,9 @@ _GETEXAMPLEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A%\n#datalabeling.googleapis.com/Example"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1553,7 +1581,7 @@ _GETEXAMPLEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1565,8 +1593,8 @@ _GETEXAMPLEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3928,
-    serialized_end=3977,
+    serialized_start=4690,
+    serialized_end=4789,
 )
 
 
@@ -1592,7 +1620,9 @@ _LISTEXAMPLESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A.\n,datalabeling.googleapis.com/AnnotatedDataset"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1610,7 +1640,7 @@ _LISTEXAMPLESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1628,7 +1658,7 @@ _LISTEXAMPLESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1646,7 +1676,7 @@ _LISTEXAMPLESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1658,8 +1688,8 @@ _LISTEXAMPLESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3979,
-    serialized_end=4071,
+    serialized_start=4792,
+    serialized_end=4953,
 )
 
 
@@ -1715,8 +1745,8 @@ _LISTEXAMPLESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4073,
-    serialized_end=4182,
+    serialized_start=4955,
+    serialized_end=5064,
 )
 
 
@@ -1742,7 +1772,9 @@ _CREATEANNOTATIONSPECSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1760,7 +1792,7 @@ _CREATEANNOTATIONSPECSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1772,8 +1804,8 @@ _CREATEANNOTATIONSPECSETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4185,
-    serialized_end=4316,
+    serialized_start=5067,
+    serialized_end=5256,
 )
 
 
@@ -1799,7 +1831,9 @@ _GETANNOTATIONSPECSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A/\n-datalabeling.googleapis.com/AnnotationSpecSet"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -1811,8 +1845,8 @@ _GETANNOTATIONSPECSETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4318,
-    serialized_end=4361,
+    serialized_start=5258,
+    serialized_end=5356,
 )
 
 
@@ -1838,7 +1872,9 @@ _LISTANNOTATIONSPECSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1856,7 +1892,7 @@ _LISTANNOTATIONSPECSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1874,7 +1910,7 @@ _LISTANNOTATIONSPECSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1892,7 +1928,7 @@ _LISTANNOTATIONSPECSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1904,8 +1940,8 @@ _LISTANNOTATIONSPECSETSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4363,
-    serialized_end=4465,
+    serialized_start=5359,
+    serialized_end=5529,
 )
 
 
@@ -1961,8 +1997,8 @@ _LISTANNOTATIONSPECSETSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4468,
-    serialized_end=4609,
+    serialized_start=5532,
+    serialized_end=5673,
 )
 
 
@@ -1988,7 +2024,9 @@ _DELETEANNOTATIONSPECSETREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A/\n-datalabeling.googleapis.com/AnnotationSpecSet"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -2000,8 +2038,8 @@ _DELETEANNOTATIONSPECSETREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4611,
-    serialized_end=4657,
+    serialized_start=5675,
+    serialized_end=5776,
 )
 
 
@@ -2027,7 +2065,9 @@ _CREATEINSTRUCTIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2045,7 +2085,7 @@ _CREATEINSTRUCTIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2057,8 +2097,8 @@ _CREATEINSTRUCTIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4659,
-    serialized_end=4770,
+    serialized_start=5779,
+    serialized_end=5948,
 )
 
 
@@ -2084,7 +2124,9 @@ _GETINSTRUCTIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A)\n'datalabeling.googleapis.com/Instruction"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -2096,8 +2138,8 @@ _GETINSTRUCTIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4772,
-    serialized_end=4809,
+    serialized_start=5950,
+    serialized_end=6036,
 )
 
 
@@ -2123,7 +2165,9 @@ _DELETEINSTRUCTIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A)\n'datalabeling.googleapis.com/Instruction"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -2135,8 +2179,8 @@ _DELETEINSTRUCTIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4811,
-    serialized_end=4851,
+    serialized_start=6038,
+    serialized_end=6127,
 )
 
 
@@ -2162,7 +2206,9 @@ _LISTINSTRUCTIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2180,7 +2226,7 @@ _LISTINSTRUCTIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2198,7 +2244,7 @@ _LISTINSTRUCTIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2216,7 +2262,7 @@ _LISTINSTRUCTIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2228,8 +2274,8 @@ _LISTINSTRUCTIONSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4853,
-    serialized_end=4949,
+    serialized_start=6130,
+    serialized_end=6294,
 )
 
 
@@ -2285,8 +2331,8 @@ _LISTINSTRUCTIONSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4951,
-    serialized_end=5072,
+    serialized_start=6296,
+    serialized_end=6417,
 )
 
 
@@ -2312,7 +2358,9 @@ _GETEVALUATIONREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A(\n&datalabeling.googleapis.com/Evaluation"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -2324,8 +2372,8 @@ _GETEVALUATIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5074,
-    serialized_end=5110,
+    serialized_start=6419,
+    serialized_end=6503,
 )
 
 
@@ -2351,7 +2399,9 @@ _SEARCHEVALUATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A(\n&datalabeling.googleapis.com/Evaluation"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2369,7 +2419,7 @@ _SEARCHEVALUATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2387,7 +2437,7 @@ _SEARCHEVALUATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2405,7 +2455,7 @@ _SEARCHEVALUATIONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2417,8 +2467,8 @@ _SEARCHEVALUATIONSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5112,
-    serialized_end=5209,
+    serialized_start=6506,
+    serialized_end=6666,
 )
 
 
@@ -2474,8 +2524,8 @@ _SEARCHEVALUATIONSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5211,
-    serialized_end=5331,
+    serialized_start=6668,
+    serialized_end=6788,
 )
 
 
@@ -2501,7 +2551,9 @@ _SEARCHEXAMPLECOMPARISONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A(\n&datalabeling.googleapis.com/Evaluation"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2519,7 +2571,7 @@ _SEARCHEXAMPLECOMPARISONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2537,7 +2589,7 @@ _SEARCHEXAMPLECOMPARISONSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2549,8 +2601,8 @@ _SEARCHEXAMPLECOMPARISONSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5333,
-    serialized_end=5421,
+    serialized_start=6791,
+    serialized_end=6937,
 )
 
 
@@ -2606,8 +2658,8 @@ _SEARCHEXAMPLECOMPARISONSRESPONSE_EXAMPLECOMPARISON = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5602,
-    serialized_end=5771,
+    serialized_start=7118,
+    serialized_end=7287,
 )
 
 _SEARCHEXAMPLECOMPARISONSRESPONSE = _descriptor.Descriptor(
@@ -2662,8 +2714,8 @@ _SEARCHEXAMPLECOMPARISONSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5424,
-    serialized_end=5771,
+    serialized_start=6940,
+    serialized_end=7287,
 )
 
 
@@ -2689,7 +2741,9 @@ _CREATEEVALUATIONJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2707,7 +2761,7 @@ _CREATEEVALUATIONJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2719,8 +2773,8 @@ _CREATEEVALUATIONJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5773,
-    serialized_end=5880,
+    serialized_start=7290,
+    serialized_end=7455,
 )
 
 
@@ -2746,7 +2800,7 @@ _UPDATEEVALUATIONJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2764,7 +2818,7 @@ _UPDATEEVALUATIONJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -2776,8 +2830,8 @@ _UPDATEEVALUATIONJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=5883,
-    serialized_end=6034,
+    serialized_start=7458,
+    serialized_end=7619,
 )
 
 
@@ -2803,7 +2857,9 @@ _GETEVALUATIONJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A+\n)datalabeling.googleapis.com/EvaluationJob"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -2815,8 +2871,8 @@ _GETEVALUATIONJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=6036,
-    serialized_end=6075,
+    serialized_start=7621,
+    serialized_end=7711,
 )
 
 
@@ -2842,7 +2898,9 @@ _PAUSEEVALUATIONJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A+\n)datalabeling.googleapis.com/EvaluationJob"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -2854,8 +2912,8 @@ _PAUSEEVALUATIONJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=6077,
-    serialized_end=6118,
+    serialized_start=7713,
+    serialized_end=7805,
 )
 
 
@@ -2881,7 +2939,9 @@ _RESUMEEVALUATIONJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A+\n)datalabeling.googleapis.com/EvaluationJob"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -2893,8 +2953,8 @@ _RESUMEEVALUATIONJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=6120,
-    serialized_end=6162,
+    serialized_start=7807,
+    serialized_end=7900,
 )
 
 
@@ -2920,7 +2980,9 @@ _DELETEEVALUATIONJOBREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A+\n)datalabeling.googleapis.com/EvaluationJob"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -2932,8 +2994,8 @@ _DELETEEVALUATIONJOBREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=6164,
-    serialized_end=6206,
+    serialized_start=7902,
+    serialized_end=7995,
 )
 
 
@@ -2959,7 +3021,9 @@ _LISTEVALUATIONJOBSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A-\n+cloudresourcemanager.googleapis.com/Project"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2977,7 +3041,7 @@ _LISTEVALUATIONJOBSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -2995,7 +3059,7 @@ _LISTEVALUATIONJOBSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -3013,7 +3077,7 @@ _LISTEVALUATIONJOBSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -3025,8 +3089,8 @@ _LISTEVALUATIONJOBSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=6208,
-    serialized_end=6306,
+    serialized_start=7998,
+    serialized_end=8164,
 )
 
 
@@ -3082,8 +3146,8 @@ _LISTEVALUATIONJOBSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=6309,
-    serialized_end=6437,
+    serialized_start=8167,
+    serialized_end=8295,
 )
 
 _CREATEDATASETREQUEST.fields_by_name[
@@ -4148,8 +4212,8 @@ GetEvaluationRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Required. Name of the evaluation. Format: 'projects/{project\_
-          id}/datasets/{dataset\_id}/evaluations/{evaluation\_id}'
+          Required. Name of the evaluation. Format:  "projects/{project\
+          _id}/datasets/{dataset\_id}/evaluations/{evaluation\_id}'
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.GetEvaluationRequest)
     ),
@@ -4167,26 +4231,46 @@ SearchEvaluationsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Required. Evaluation search parent. Format:
-          projects/{project\_id}
+          Required. Evaluation search parent (project ID). Format:
+          "projects/{project\_id}"
       filter:
-          Optional. Support filtering by model id, job state, start and
-          end time. Format: "evaluation\_job.evaluation\_job\_id =
-          {evaluation\_job\_id} AND
-          evaluation\_job.evaluation\_job\_run\_time\_start =
-          {timestamp} AND
-          evaluation\_job.evaluation\_job\_run\_time\_end = {timestamp}
-          AND annotation\_spec.display\_name = {display\_name}"
+          Optional. To search evaluations, you can filter by the
+          following:  -  evaluation\_job.evaluation\_job\_id (the last
+          part of    [EvaluationJob.name][google.cloud.datalabeling.v1be
+          ta1.EvaluationJob.name]) -  evaluation\_job.model\_id (the
+          {model\_name} portion of    [EvaluationJob.modelVersion][googl
+          e.cloud.datalabeling.v1beta1.EvaluationJob.model\_version]) -
+          evaluation\_job.evaluation\_job\_run\_time\_start (Minimum
+          threshold    for the    [evaluationJobRunTime][google.cloud.da
+          talabeling.v1beta1.Evaluation.evaluation\_job\_run\_time]
+          that created the evaluation) -
+          evaluation\_job.evaluation\_job\_run\_time\_end (Maximum
+          threshold    for the    [evaluationJobRunTime][google.cloud.da
+          talabeling.v1beta1.Evaluation.evaluation\_job\_run\_time]
+          that created the evaluation) -  evaluation\_job.job\_state    
+          ([EvaluationJob.state][google.cloud.datalabeling.v1beta1.Evalu
+          ationJob.state]) -  annotation\_spec.display\_name (the
+          Evaluation contains a metric for    the annotation spec with
+          this    [displayName][google.cloud.datalabeling.v1beta1.Annota
+          tionSpec.display\_name])  To filter by multiple critiera, use
+          the ``AND`` operator or the ``OR`` operator. The following
+          examples shows a string that filters by several critiera:
+          "evaluation\_job.evaluation\_job\_id = {evaluation\_job\_id}
+          AND evaluation\ *job.model\_id = {model\_name} AND
+          evaluation*\ job.evaluation\_job\_run\_time\_start =
+          {timestamp\_1} AND evaluation\
+          *job.evaluation\_job\_run\_time\_end = {timestamp\_2} AND
+          annotation*\ spec.display\_name = {display\_name}"
       page_size:
           Optional. Requested page size. Server may return fewer results
           than requested. Default value is 100.
       page_token:
           Optional. A token identifying a page of results for the server
-          to return. Typically obtained by [SearchEvaluationsResponse.ne
-          xt\_page\_token][google.cloud.datalabeling.v1beta1.SearchEvalu
-          ationsResponse.next\_page\_token] of the previous
-          [DataLabelingService.SearchEvaluations] call. Return first
-          page if empty.
+          to return. Typically obtained by the [nextPageToken][google.cl
+          oud.datalabeling.v1beta1.SearchEvaluationsResponse.next\_page\
+          _token] of the response to a previous search request.  If you
+          don't specify this field, the API call requests the first page
+          of the search.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.SearchEvaluationsRequest)
     ),
@@ -4204,7 +4288,7 @@ SearchEvaluationsResponse = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       evaluations:
-          The list of evaluations to return.
+          The list of evaluations matching the search.
       next_page_token:
           A token to retrieve next page of results.
   """,
@@ -4224,18 +4308,21 @@ SearchExampleComparisonsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Required. Name of the Evaluation resource to search example
-          comparison from. Format: projects/{project\_id}/datasets/{data
-          set\_id}/evaluations/{evaluation\_id}
+          Required. Name of the
+          [Evaluation][google.cloud.datalabeling.v1beta1.Evaluation]
+          resource to search for example comparisons from. Format:  "pro
+          jects/{project\_id}/datasets/{dataset\_id}/evaluations/{evalua
+          tion\_id}"
       page_size:
           Optional. Requested page size. Server may return fewer results
           than requested. Default value is 100.
       page_token:
           Optional. A token identifying a page of results for the server
-          to return. Typically obtained by
-          [SearchExampleComparisons.next\_page\_token][] of the previous
-          [DataLabelingService.SearchExampleComparisons] call. Return
-          first page if empty.
+          to return. Typically obtained by the
+          [nextPageToken][SearchExampleComparisons.next\_page\_token] of
+          the response to a previous search rquest.  If you don't
+          specify this field, the API call requests the first page of
+          the search.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.SearchExampleComparisonsRequest)
     ),
@@ -4252,8 +4339,15 @@ SearchExampleComparisonsResponse = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_SEARCHEXAMPLECOMPARISONSRESPONSE_EXAMPLECOMPARISON,
                 __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
-                __doc__="""Example comparisons containing annotation comparison between groundtruth
-    and predictions.
+                __doc__="""Example comparisons comparing ground truth output and
+    predictions for a specific input.
+    
+    
+    Attributes:
+        ground_truth_example:
+            The ground truth output for the input.
+        model_created_examples:
+            Predictions by the model for the input.
     """,
                 # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.SearchExampleComparisonsResponse.ExampleComparison)
             ),
@@ -4264,6 +4358,8 @@ SearchExampleComparisonsResponse = _reflection.GeneratedProtocolMessageType(
   
   
   Attributes:
+      example_comparisons:
+          A list of example comparisons matching the search criteria.
       next_page_token:
           A token to retrieve next page of results.
   """,
@@ -4284,8 +4380,8 @@ CreateEvaluationJobRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Required. Evaluation job resource parent, format:
-          projects/{project\_id}.
+          Required. Evaluation job resource parent. Format:
+          "projects/{project\_id}"
       job:
           Required. The evaluation job to create.
   """,
@@ -4307,8 +4403,13 @@ UpdateEvaluationJobRequest = _reflection.GeneratedProtocolMessageType(
       evaluation_job:
           Required. Evaluation job that is going to be updated.
       update_mask:
-          Optional. Mask for which field in evaluation\_job should be
-          updated.
+          Optional. Mask for which fields to update. You can only
+          provide the following fields:  -
+          ``evaluationJobConfig.humanAnnotationConfig.instruction`` -
+          ``evaluationJobConfig.exampleCount`` -
+          ``evaluationJobConfig.exampleSamplePercentage``  You can
+          provide more than one of these fields by separating them with
+          commas.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.UpdateEvaluationJobRequest)
     ),
@@ -4327,7 +4428,7 @@ GetEvaluationJobRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       name:
           Required. Name of the evaluation job. Format:
-          'projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}'
+          "projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}"
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.GetEvaluationJobRequest)
     ),
@@ -4347,7 +4448,7 @@ PauseEvaluationJobRequest = _reflection.GeneratedProtocolMessageType(
       name:
           Required. Name of the evaluation job that is going to be
           paused. Format:
-          'projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}'
+          "projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}"
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.PauseEvaluationJobRequest)
     ),
@@ -4367,7 +4468,7 @@ ResumeEvaluationJobRequest = _reflection.GeneratedProtocolMessageType(
       name:
           Required. Name of the evaluation job that is going to be
           resumed. Format:
-          'projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}'
+          "projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}"
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.ResumeEvaluationJobRequest)
     ),
@@ -4387,7 +4488,7 @@ DeleteEvaluationJobRequest = _reflection.GeneratedProtocolMessageType(
       name:
           Required. Name of the evaluation job that is going to be
           deleted. Format:
-          'projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}'
+          "projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}"
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.DeleteEvaluationJobRequest)
     ),
@@ -4405,21 +4506,28 @@ ListEvaluationJobsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Required. Evaluation resource parent. Format:
+          Required. Evaluation job resource parent. Format:
           "projects/{project\_id}"
       filter:
-          Optional. Only support filter by model id and job state.
-          Format: "evaluation\_job.model\_id = {model\_id} AND
-          evaluation\_job.state = {EvaluationJob::State}"
+          Optional. You can filter the jobs to list by model\_id (also
+          known as model\_name, as described in [EvaluationJob.modelVers
+          ion][google.cloud.datalabeling.v1beta1.EvaluationJob.model\_ve
+          rsion]) or by evaluation job state (as described in [Evaluatio
+          nJob.state][google.cloud.datalabeling.v1beta1.EvaluationJob.st
+          ate]). To filter by both criteria, use the ``AND`` operator or
+          the ``OR`` operator. For example, you can use the following
+          string for your filter: "evaluation*job.model\_id =
+          {model\_name} AND evaluation*\ job.state =
+          {evaluation\_job\_state}"
       page_size:
           Optional. Requested page size. Server may return fewer results
           than requested. Default value is 100.
       page_token:
           Optional. A token identifying a page of results for the server
-          to return. Typically obtained by
-          [ListEvaluationJobs.next\_page\_token][] of the previous
-          [DataLabelingService.ListEvaluationJobs] call. Return first
-          page if empty.
+          to return. Typically obtained by the [nextPageToken][google.cl
+          oud.datalabeling.v1beta1.ListEvaluationJobsResponse.next\_page
+          \_token] in the response to the previous request. The request
+          returns the first page if this is empty.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.ListEvaluationJobsRequest)
     ),
@@ -4448,6 +4556,82 @@ _sym_db.RegisterMessage(ListEvaluationJobsResponse)
 
 
 DESCRIPTOR._options = None
+_CREATEDATASETREQUEST.fields_by_name["parent"]._options = None
+_CREATEDATASETREQUEST.fields_by_name["dataset"]._options = None
+_GETDATASETREQUEST.fields_by_name["name"]._options = None
+_LISTDATASETSREQUEST.fields_by_name["parent"]._options = None
+_LISTDATASETSREQUEST.fields_by_name["filter"]._options = None
+_LISTDATASETSREQUEST.fields_by_name["page_size"]._options = None
+_LISTDATASETSREQUEST.fields_by_name["page_token"]._options = None
+_DELETEDATASETREQUEST.fields_by_name["name"]._options = None
+_IMPORTDATAREQUEST.fields_by_name["name"]._options = None
+_IMPORTDATAREQUEST.fields_by_name["input_config"]._options = None
+_EXPORTDATAREQUEST.fields_by_name["name"]._options = None
+_EXPORTDATAREQUEST.fields_by_name["annotated_dataset"]._options = None
+_EXPORTDATAREQUEST.fields_by_name["filter"]._options = None
+_EXPORTDATAREQUEST.fields_by_name["output_config"]._options = None
+_GETDATAITEMREQUEST.fields_by_name["name"]._options = None
+_LISTDATAITEMSREQUEST.fields_by_name["parent"]._options = None
+_LISTDATAITEMSREQUEST.fields_by_name["filter"]._options = None
+_LISTDATAITEMSREQUEST.fields_by_name["page_size"]._options = None
+_LISTDATAITEMSREQUEST.fields_by_name["page_token"]._options = None
+_GETANNOTATEDDATASETREQUEST.fields_by_name["name"]._options = None
+_LISTANNOTATEDDATASETSREQUEST.fields_by_name["parent"]._options = None
+_LISTANNOTATEDDATASETSREQUEST.fields_by_name["filter"]._options = None
+_LISTANNOTATEDDATASETSREQUEST.fields_by_name["page_size"]._options = None
+_LISTANNOTATEDDATASETSREQUEST.fields_by_name["page_token"]._options = None
+_DELETEANNOTATEDDATASETREQUEST.fields_by_name["name"]._options = None
+_LABELIMAGEREQUEST.fields_by_name["parent"]._options = None
+_LABELIMAGEREQUEST.fields_by_name["basic_config"]._options = None
+_LABELIMAGEREQUEST.fields_by_name["feature"]._options = None
+_LABELVIDEOREQUEST.fields_by_name["parent"]._options = None
+_LABELVIDEOREQUEST.fields_by_name["basic_config"]._options = None
+_LABELVIDEOREQUEST.fields_by_name["feature"]._options = None
+_LABELTEXTREQUEST.fields_by_name["parent"]._options = None
+_LABELTEXTREQUEST.fields_by_name["basic_config"]._options = None
+_LABELTEXTREQUEST.fields_by_name["feature"]._options = None
+_GETEXAMPLEREQUEST.fields_by_name["name"]._options = None
+_GETEXAMPLEREQUEST.fields_by_name["filter"]._options = None
+_LISTEXAMPLESREQUEST.fields_by_name["parent"]._options = None
+_LISTEXAMPLESREQUEST.fields_by_name["filter"]._options = None
+_LISTEXAMPLESREQUEST.fields_by_name["page_size"]._options = None
+_LISTEXAMPLESREQUEST.fields_by_name["page_token"]._options = None
+_CREATEANNOTATIONSPECSETREQUEST.fields_by_name["parent"]._options = None
+_CREATEANNOTATIONSPECSETREQUEST.fields_by_name["annotation_spec_set"]._options = None
+_GETANNOTATIONSPECSETREQUEST.fields_by_name["name"]._options = None
+_LISTANNOTATIONSPECSETSREQUEST.fields_by_name["parent"]._options = None
+_LISTANNOTATIONSPECSETSREQUEST.fields_by_name["filter"]._options = None
+_LISTANNOTATIONSPECSETSREQUEST.fields_by_name["page_size"]._options = None
+_LISTANNOTATIONSPECSETSREQUEST.fields_by_name["page_token"]._options = None
+_DELETEANNOTATIONSPECSETREQUEST.fields_by_name["name"]._options = None
+_CREATEINSTRUCTIONREQUEST.fields_by_name["parent"]._options = None
+_CREATEINSTRUCTIONREQUEST.fields_by_name["instruction"]._options = None
+_GETINSTRUCTIONREQUEST.fields_by_name["name"]._options = None
+_DELETEINSTRUCTIONREQUEST.fields_by_name["name"]._options = None
+_LISTINSTRUCTIONSREQUEST.fields_by_name["parent"]._options = None
+_LISTINSTRUCTIONSREQUEST.fields_by_name["filter"]._options = None
+_LISTINSTRUCTIONSREQUEST.fields_by_name["page_size"]._options = None
+_LISTINSTRUCTIONSREQUEST.fields_by_name["page_token"]._options = None
+_GETEVALUATIONREQUEST.fields_by_name["name"]._options = None
+_SEARCHEVALUATIONSREQUEST.fields_by_name["parent"]._options = None
+_SEARCHEVALUATIONSREQUEST.fields_by_name["filter"]._options = None
+_SEARCHEVALUATIONSREQUEST.fields_by_name["page_size"]._options = None
+_SEARCHEVALUATIONSREQUEST.fields_by_name["page_token"]._options = None
+_SEARCHEXAMPLECOMPARISONSREQUEST.fields_by_name["parent"]._options = None
+_SEARCHEXAMPLECOMPARISONSREQUEST.fields_by_name["page_size"]._options = None
+_SEARCHEXAMPLECOMPARISONSREQUEST.fields_by_name["page_token"]._options = None
+_CREATEEVALUATIONJOBREQUEST.fields_by_name["parent"]._options = None
+_CREATEEVALUATIONJOBREQUEST.fields_by_name["job"]._options = None
+_UPDATEEVALUATIONJOBREQUEST.fields_by_name["evaluation_job"]._options = None
+_UPDATEEVALUATIONJOBREQUEST.fields_by_name["update_mask"]._options = None
+_GETEVALUATIONJOBREQUEST.fields_by_name["name"]._options = None
+_PAUSEEVALUATIONJOBREQUEST.fields_by_name["name"]._options = None
+_RESUMEEVALUATIONJOBREQUEST.fields_by_name["name"]._options = None
+_DELETEEVALUATIONJOBREQUEST.fields_by_name["name"]._options = None
+_LISTEVALUATIONJOBSREQUEST.fields_by_name["parent"]._options = None
+_LISTEVALUATIONJOBSREQUEST.fields_by_name["filter"]._options = None
+_LISTEVALUATIONJOBSREQUEST.fields_by_name["page_size"]._options = None
+_LISTEVALUATIONJOBSREQUEST.fields_by_name["page_token"]._options = None
 
 _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
     name="DataLabelingService",
@@ -4457,8 +4641,8 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\033datalabeling.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform"
     ),
-    serialized_start=6440,
-    serialized_end=12834,
+    serialized_start=8298,
+    serialized_end=15504,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateDataset",
@@ -4468,7 +4652,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_CREATEDATASETREQUEST,
             output_type=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_dataset__pb2._DATASET,
             serialized_options=_b(
-                '\202\323\344\223\002*"%/v1beta1/{parent=projects/*}/datasets:\001*'
+                '\202\323\344\223\002*"%/v1beta1/{parent=projects/*}/datasets:\001*\332A\016parent,dataset'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4479,7 +4663,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_GETDATASETREQUEST,
             output_type=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_dataset__pb2._DATASET,
             serialized_options=_b(
-                "\202\323\344\223\002'\022%/v1beta1/{name=projects/*/datasets/*}"
+                "\202\323\344\223\002'\022%/v1beta1/{name=projects/*/datasets/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4490,7 +4674,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_LISTDATASETSREQUEST,
             output_type=_LISTDATASETSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002'\022%/v1beta1/{parent=projects/*}/datasets"
+                "\202\323\344\223\002'\022%/v1beta1/{parent=projects/*}/datasets\332A\rparent,filter"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4501,7 +4685,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_DELETEDATASETREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\002'*%/v1beta1/{name=projects/*/datasets/*}"
+                "\202\323\344\223\002'*%/v1beta1/{name=projects/*/datasets/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4512,7 +4696,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_IMPORTDATAREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                '\202\323\344\223\0025"0/v1beta1/{name=projects/*/datasets/*}:importData:\001*'
+                '\202\323\344\223\0025"0/v1beta1/{name=projects/*/datasets/*}:importData:\001*\332A\021name,input_config\312A:\n\033ImportDataOperationResponse\022\033ImportDataOperationMetadata'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4523,7 +4707,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_EXPORTDATAREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                '\202\323\344\223\0025"0/v1beta1/{name=projects/*/datasets/*}:exportData:\001*'
+                '\202\323\344\223\0025"0/v1beta1/{name=projects/*/datasets/*}:exportData:\001*\332A+name,annotated_dataset,filter,output_config\312A:\n\033ExportDataOperationResponse\022\033ExportDataOperationMetadata'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4534,7 +4718,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_GETDATAITEMREQUEST,
             output_type=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_dataset__pb2._DATAITEM,
             serialized_options=_b(
-                "\202\323\344\223\0023\0221/v1beta1/{name=projects/*/datasets/*/dataItems/*}"
+                "\202\323\344\223\0023\0221/v1beta1/{name=projects/*/datasets/*/dataItems/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4545,7 +4729,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_LISTDATAITEMSREQUEST,
             output_type=_LISTDATAITEMSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\0023\0221/v1beta1/{parent=projects/*/datasets/*}/dataItems"
+                "\202\323\344\223\0023\0221/v1beta1/{parent=projects/*/datasets/*}/dataItems\332A\rparent,filter"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4556,7 +4740,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_GETANNOTATEDDATASETREQUEST,
             output_type=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_dataset__pb2._ANNOTATEDDATASET,
             serialized_options=_b(
-                "\202\323\344\223\002;\0229/v1beta1/{name=projects/*/datasets/*/annotatedDatasets/*}"
+                "\202\323\344\223\002;\0229/v1beta1/{name=projects/*/datasets/*/annotatedDatasets/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4567,7 +4751,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_LISTANNOTATEDDATASETSREQUEST,
             output_type=_LISTANNOTATEDDATASETSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002;\0229/v1beta1/{parent=projects/*/datasets/*}/annotatedDatasets"
+                "\202\323\344\223\002;\0229/v1beta1/{parent=projects/*/datasets/*}/annotatedDatasets\332A\rparent,filter"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4589,7 +4773,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_LABELIMAGEREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                '\202\323\344\223\0028"3/v1beta1/{parent=projects/*/datasets/*}/image:label:\001*'
+                '\202\323\344\223\0028"3/v1beta1/{parent=projects/*/datasets/*}/image:label:\001*\332A\033parent,basic_config,feature\312A*\n\020AnnotatedDataset\022\026LabelOperationMetadata'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4600,7 +4784,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_LABELVIDEOREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                '\202\323\344\223\0028"3/v1beta1/{parent=projects/*/datasets/*}/video:label:\001*'
+                '\202\323\344\223\0028"3/v1beta1/{parent=projects/*/datasets/*}/video:label:\001*\332A\033parent,basic_config,feature\312A*\n\020AnnotatedDataset\022\026LabelOperationMetadata'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4611,7 +4795,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_LABELTEXTREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                '\202\323\344\223\0027"2/v1beta1/{parent=projects/*/datasets/*}/text:label:\001*'
+                '\202\323\344\223\0027"2/v1beta1/{parent=projects/*/datasets/*}/text:label:\001*\332A\033parent,basic_config,feature\312A*\n\020AnnotatedDataset\022\026LabelOperationMetadata'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4622,7 +4806,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_GETEXAMPLEREQUEST,
             output_type=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_dataset__pb2._EXAMPLE,
             serialized_options=_b(
-                "\202\323\344\223\002F\022D/v1beta1/{name=projects/*/datasets/*/annotatedDatasets/*/examples/*}"
+                "\202\323\344\223\002F\022D/v1beta1/{name=projects/*/datasets/*/annotatedDatasets/*/examples/*}\332A\013name,filter"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4633,7 +4817,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_LISTEXAMPLESREQUEST,
             output_type=_LISTEXAMPLESRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002F\022D/v1beta1/{parent=projects/*/datasets/*/annotatedDatasets/*}/examples"
+                "\202\323\344\223\002F\022D/v1beta1/{parent=projects/*/datasets/*/annotatedDatasets/*}/examples\332A\rparent,filter"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4644,7 +4828,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_CREATEANNOTATIONSPECSETREQUEST,
             output_type=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_annotation__spec__set__pb2._ANNOTATIONSPECSET,
             serialized_options=_b(
-                '\202\323\344\223\0024"//v1beta1/{parent=projects/*}/annotationSpecSets:\001*'
+                '\202\323\344\223\0024"//v1beta1/{parent=projects/*}/annotationSpecSets:\001*\332A\032parent,annotation_spec_set'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4655,7 +4839,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_GETANNOTATIONSPECSETREQUEST,
             output_type=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_annotation__spec__set__pb2._ANNOTATIONSPECSET,
             serialized_options=_b(
-                "\202\323\344\223\0021\022//v1beta1/{name=projects/*/annotationSpecSets/*}"
+                "\202\323\344\223\0021\022//v1beta1/{name=projects/*/annotationSpecSets/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4666,7 +4850,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_LISTANNOTATIONSPECSETSREQUEST,
             output_type=_LISTANNOTATIONSPECSETSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\0021\022//v1beta1/{parent=projects/*}/annotationSpecSets"
+                "\202\323\344\223\0021\022//v1beta1/{parent=projects/*}/annotationSpecSets\332A\rparent,filter"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4677,7 +4861,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_DELETEANNOTATIONSPECSETREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\0021*//v1beta1/{name=projects/*/annotationSpecSets/*}"
+                "\202\323\344\223\0021*//v1beta1/{name=projects/*/annotationSpecSets/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4688,7 +4872,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_CREATEINSTRUCTIONREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                '\202\323\344\223\002.")/v1beta1/{parent=projects/*}/instructions:\001*'
+                '\202\323\344\223\002.")/v1beta1/{parent=projects/*}/instructions:\001*\332A\022parent,instruction\312A(\n\013Instruction\022\031CreateInstructionMetadata'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4699,7 +4883,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_GETINSTRUCTIONREQUEST,
             output_type=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_instruction__pb2._INSTRUCTION,
             serialized_options=_b(
-                "\202\323\344\223\002+\022)/v1beta1/{name=projects/*/instructions/*}"
+                "\202\323\344\223\002+\022)/v1beta1/{name=projects/*/instructions/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4710,7 +4894,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_LISTINSTRUCTIONSREQUEST,
             output_type=_LISTINSTRUCTIONSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002+\022)/v1beta1/{parent=projects/*}/instructions"
+                "\202\323\344\223\002+\022)/v1beta1/{parent=projects/*}/instructions\332A\rparent,filter"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4721,7 +4905,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_DELETEINSTRUCTIONREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\002+*)/v1beta1/{name=projects/*/instructions/*}"
+                "\202\323\344\223\002+*)/v1beta1/{name=projects/*/instructions/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4732,7 +4916,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_GETEVALUATIONREQUEST,
             output_type=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_evaluation__pb2._EVALUATION,
             serialized_options=_b(
-                "\202\323\344\223\0025\0223/v1beta1/{name=projects/*/datasets/*/evaluations/*}"
+                "\202\323\344\223\0025\0223/v1beta1/{name=projects/*/datasets/*/evaluations/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4743,7 +4927,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_SEARCHEVALUATIONSREQUEST,
             output_type=_SEARCHEVALUATIONSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\0021\022//v1beta1/{parent=projects/*}/evaluations:search"
+                "\202\323\344\223\0021\022//v1beta1/{parent=projects/*}/evaluations:search\332A\rparent,filter"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4754,7 +4938,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_SEARCHEXAMPLECOMPARISONSREQUEST,
             output_type=_SEARCHEXAMPLECOMPARISONSRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002T"O/v1beta1/{parent=projects/*/datasets/*/evaluations/*}/exampleComparisons:search:\001*'
+                '\202\323\344\223\002T"O/v1beta1/{parent=projects/*/datasets/*/evaluations/*}/exampleComparisons:search:\001*\332A\006parent'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4765,7 +4949,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_CREATEEVALUATIONJOBREQUEST,
             output_type=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_evaluation__job__pb2._EVALUATIONJOB,
             serialized_options=_b(
-                '\202\323\344\223\0020"+/v1beta1/{parent=projects/*}/evaluationJobs:\001*'
+                '\202\323\344\223\0020"+/v1beta1/{parent=projects/*}/evaluationJobs:\001*\332A\nparent,job'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4776,7 +4960,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_UPDATEEVALUATIONJOBREQUEST,
             output_type=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_evaluation__job__pb2._EVALUATIONJOB,
             serialized_options=_b(
-                "\202\323\344\223\002L2:/v1beta1/{evaluation_job.name=projects/*/evaluationJobs/*}:\016evaluation_job"
+                "\202\323\344\223\002L2:/v1beta1/{evaluation_job.name=projects/*/evaluationJobs/*}:\016evaluation_job\332A\032evaluation_job,update_mask"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4787,7 +4971,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_GETEVALUATIONJOBREQUEST,
             output_type=google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_evaluation__job__pb2._EVALUATIONJOB,
             serialized_options=_b(
-                "\202\323\344\223\002-\022+/v1beta1/{name=projects/*/evaluationJobs/*}"
+                "\202\323\344\223\002-\022+/v1beta1/{name=projects/*/evaluationJobs/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4798,7 +4982,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_PAUSEEVALUATIONJOBREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                '\202\323\344\223\0026"1/v1beta1/{name=projects/*/evaluationJobs/*}:pause:\001*'
+                '\202\323\344\223\0026"1/v1beta1/{name=projects/*/evaluationJobs/*}:pause:\001*\332A\004name'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4809,7 +4993,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_RESUMEEVALUATIONJOBREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                '\202\323\344\223\0027"2/v1beta1/{name=projects/*/evaluationJobs/*}:resume:\001*'
+                '\202\323\344\223\0027"2/v1beta1/{name=projects/*/evaluationJobs/*}:resume:\001*\332A\004name'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4820,7 +5004,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_DELETEEVALUATIONJOBREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\002-*+/v1beta1/{name=projects/*/evaluationJobs/*}"
+                "\202\323\344\223\002-*+/v1beta1/{name=projects/*/evaluationJobs/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -4831,7 +5015,7 @@ _DATALABELINGSERVICE = _descriptor.ServiceDescriptor(
             input_type=_LISTEVALUATIONJOBSREQUEST,
             output_type=_LISTEVALUATIONJOBSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002-\022+/v1beta1/{parent=projects/*}/evaluationJobs"
+                "\202\323\344\223\002-\022+/v1beta1/{parent=projects/*}/evaluationJobs\332A\rparent,filter"
             ),
         ),
     ],
