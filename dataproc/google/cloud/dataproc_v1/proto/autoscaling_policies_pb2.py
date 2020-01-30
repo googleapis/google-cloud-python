@@ -790,7 +790,8 @@ AutoscalingPolicy = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_AUTOSCALINGPOLICY,
         __module__="google.cloud.dataproc_v1.proto.autoscaling_policies_pb2",
-        __doc__="""Describes an autoscaling policy for Dataproc cluster autoscaler.
+        __doc__="""Describes an autoscaling policy for Dataproc cluster
+  autoscaler.
   
   
   Attributes:
@@ -903,8 +904,8 @@ InstanceGroupAutoscalingPolicyConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_INSTANCEGROUPAUTOSCALINGPOLICYCONFIG,
         __module__="google.cloud.dataproc_v1.proto.autoscaling_policies_pb2",
-        __doc__="""Configuration for the size bounds of an instance group, including its
-  proportional size to other groups.
+        __doc__="""Configuration for the size bounds of an instance group,
+  including its proportional size to other groups.
   
   
   Attributes:
@@ -1084,7 +1085,8 @@ ListAutoscalingPoliciesResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTAUTOSCALINGPOLICIESRESPONSE,
         __module__="google.cloud.dataproc_v1.proto.autoscaling_policies_pb2",
-        __doc__="""A response to a request to list autoscaling policies in a project.
+        __doc__="""A response to a request to list autoscaling policies in a
+  project.
   
   
   Attributes:
