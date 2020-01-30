@@ -111,10 +111,10 @@ CrawledUrl = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CRAWLEDURL,
         __module__="google.cloud.websecurityscanner_v1alpha.proto.crawled_url_pb2",
-        __doc__="""A CrawledUrl resource represents a URL that was crawled during a
-  ScanRun. Web Security Scanner Service crawls the web applications,
-  following all links within the scope of sites, to find the URLs to test
-  against.
+        __doc__="""A CrawledUrl resource represents a URL that was crawled
+  during a ScanRun. Web Security Scanner Service crawls the web
+  applications, following all links within the scope of sites, to find the
+  URLs to test against.
   
   
   Attributes:
