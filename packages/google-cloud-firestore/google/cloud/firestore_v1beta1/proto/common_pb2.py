@@ -343,9 +343,9 @@ DocumentMask = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DOCUMENTMASK,
         __module__="google.cloud.firestore_v1beta1.proto.common_pb2",
-        __doc__="""A set of field paths on a document. Used to restrict a get or update
-  operation on a document to a subset of its fields. This is different
-  from standard field masks, as this is always scoped to a
+        __doc__="""A set of field paths on a document. Used to restrict a get
+  or update operation on a document to a subset of its fields. This is
+  different from standard field masks, as this is always scoped to a
   [Document][google.firestore.v1beta1.Document], and takes in account the
   dynamic nature of [Value][google.firestore.v1beta1.Value].
   
@@ -367,7 +367,8 @@ Precondition = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PRECONDITION,
         __module__="google.cloud.firestore_v1beta1.proto.common_pb2",
-        __doc__="""A precondition on a document, used for conditional operations.
+        __doc__="""A precondition on a document, used for conditional
+  operations.
   
   
   Attributes:
@@ -395,7 +396,8 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_TRANSACTIONOPTIONS_READWRITE,
                 __module__="google.cloud.firestore_v1beta1.proto.common_pb2",
-                __doc__="""Options for a transaction that can be used to read and write documents.
+                __doc__="""Options for a transaction that can be used to read and
+    write documents.
     
     
     Attributes:
@@ -411,7 +413,8 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_TRANSACTIONOPTIONS_READONLY,
                 __module__="google.cloud.firestore_v1beta1.proto.common_pb2",
-                __doc__="""Options for a transaction that can only be used to read documents.
+                __doc__="""Options for a transaction that can only be used to read
+    documents.
     
     
     Attributes:

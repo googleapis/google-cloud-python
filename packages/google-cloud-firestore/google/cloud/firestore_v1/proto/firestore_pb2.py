@@ -3296,7 +3296,8 @@ WriteRequest = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_WRITEREQUEST,
         __module__="google.cloud.firestore_v1.proto.firestore_pb2",
-        __doc__="""The request for [Firestore.Write][google.firestore.v1.Firestore.Write].
+        __doc__="""The request for
+  [Firestore.Write][google.firestore.v1.Firestore.Write].
   
   The first request creates a stream, or resumes an existing one from a
   token.
@@ -3350,7 +3351,8 @@ WriteResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_WRITERESPONSE,
         __module__="google.cloud.firestore_v1.proto.firestore_pb2",
-        __doc__="""The response for [Firestore.Write][google.firestore.v1.Firestore.Write].
+        __doc__="""The response for
+  [Firestore.Write][google.firestore.v1.Firestore.Write].
   
   
   Attributes:
@@ -3389,7 +3391,8 @@ ListenRequest = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_LISTENREQUEST,
         __module__="google.cloud.firestore_v1.proto.firestore_pb2",
-        __doc__="""A request for [Firestore.Listen][google.firestore.v1.Firestore.Listen]
+        __doc__="""A request for
+  [Firestore.Listen][google.firestore.v1.Firestore.Listen]
   
   
   Attributes:

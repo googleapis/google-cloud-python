@@ -1023,7 +1023,8 @@ StructuredQuery = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_STRUCTUREDQUERY_COMPOSITEFILTER,
                 __module__="google.cloud.firestore_v1beta1.proto.query_pb2",
-                __doc__="""A filter that merges multiple other filters using the given operator.
+                __doc__="""A filter that merges multiple other filters using the
+    given operator.
     
     
     Attributes:
@@ -1100,7 +1101,9 @@ StructuredQuery = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_STRUCTUREDQUERY_FIELDREFERENCE,
                 __module__="google.cloud.firestore_v1beta1.proto.query_pb2",
-                __doc__="""A reference to a field, such as ``max(messages.time) as max_time``.
+                __doc__="""A reference to a field, such as
+    ``max(messages.time) as max_time``.
+    
     """,
                 # @@protoc_insertion_point(class_scope:google.firestore.v1beta1.StructuredQuery.FieldReference)
             ),
