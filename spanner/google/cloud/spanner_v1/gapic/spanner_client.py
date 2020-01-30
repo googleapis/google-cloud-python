@@ -85,12 +85,7 @@ class SpannerClient(object):
 
     @classmethod
     def database_path(cls, project, instance, database):
-        """DEPRECATED. Return a fully-qualified database string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified database string."""
         return google.api_core.path_template.expand(
             "projects/{project}/instances/{instance}/databases/{database}",
             project=project,
@@ -100,12 +95,7 @@ class SpannerClient(object):
 
     @classmethod
     def session_path(cls, project, instance, database, session):
-        """DEPRECATED. Return a fully-qualified session string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified session string."""
         return google.api_core.path_template.expand(
             "projects/{project}/instances/{instance}/databases/{database}/sessions/{session}",
             project=project,
