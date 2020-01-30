@@ -79,6 +79,11 @@ def test_delivery_attempt():
     assert msg.delivery_attempt == delivery_attempt
 
 
+def test_delivery_attempt_is_none():
+    msg = create_message(b"foo", delivery_attempt=0)
+    assert msg.delivery_attempt is None
+
+
 def test_publish_time():
     msg = create_message(b"foo")
     assert msg.publish_time == PUBLISHED

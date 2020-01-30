@@ -653,7 +653,7 @@ def test__on_response_delivery_attempt():
     schedule_calls = scheduler.schedule.mock_calls
     assert len(schedule_calls) == 2
     msg1 = schedule_calls[0][1][1]
-    assert msg1.delivery_attempt == 0
+    assert msg1.delivery_attempt is None
     msg2 = schedule_calls[1][1][1]
     assert msg2.delivery_attempt == 6
 

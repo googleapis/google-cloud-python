@@ -82,13 +82,15 @@ class Message(object):
             message (~.pubsub_v1.types.PubsubMessage): The message received
                 from Pub/Sub.
             ack_id (str): The ack_id received from Pub/Sub.
+            delivery_attempt (int): The delivery_attempt received
+                from Pub/Sub. May be zero.
             request_queue (queue.Queue): A queue provided by the policy that
                 can accept requests; the policy is responsible for handling
                 those requests.
         """
         self._message = message
         self._ack_id = ack_id
-        self._delivery_attempt = delivery_attempt
+        self._delivery_attempt = delivery_attempt if delivery_attempt > 0 else None
         self._request_queue = request_queue
         self.message_id = message.message_id
 
@@ -166,7 +168,7 @@ class Message(object):
     @property
     def delivery_attempt(self):
         """The delivery attempt counter is 1 + (the sum of number of NACKs
-        and number of ack_deadline exceeds) for this message. It is set to zero
+        and number of ack_deadline exceeds) for this message. It is set to None
         if a DeadLetterPolicy is not set on the subscription.
 
         A NACK is any call to ModifyAckDeadline with a 0 deadline. An ack_deadline
@@ -183,7 +185,7 @@ class Message(object):
         for production use. It is not subject to any SLA or deprecation policy.
 
         Returns:
-            int: The delivery attempt counter.
+            Optional[int]: The delivery attempt counter or None.
         """
         return self._delivery_attempt
 
