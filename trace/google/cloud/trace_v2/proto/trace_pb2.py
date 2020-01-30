@@ -1890,7 +1890,8 @@ TruncatableString = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TRUNCATABLESTRING,
         __module__="google.devtools.cloudtrace_v2.proto.trace_pb2",
-        __doc__="""Represents a string that might be shortened to a specified length.
+        __doc__="""Represents a string that might be shortened to a specified
+  length.
   
   
   Attributes:
