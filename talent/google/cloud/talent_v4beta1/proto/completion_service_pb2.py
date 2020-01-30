@@ -16,11 +16,12 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.api import client_pb2 as google_dot_api_dot_client__pb2
 from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.talent_v4beta1.proto import (
     common_pb2 as google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2,
 )
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -31,13 +32,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\026CompletionServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n:google/cloud/talent_v4beta1/proto/completion_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto"\xd1\x03\n\x14\x43ompleteQueryRequest\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x12\n\x05query\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x16\n\x0elanguage_codes\x18\x03 \x03(\t\x12\x16\n\tpage_size\x18\x04 \x01(\x05\x42\x03\xe0\x41\x02\x12\x0f\n\x07\x63ompany\x18\x05 \x01(\t\x12P\n\x05scope\x18\x06 \x01(\x0e\x32\x41.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionScope\x12N\n\x04type\x18\x07 \x01(\x0e\x32@.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionType"K\n\x0f\x43ompletionScope\x12 \n\x1c\x43OMPLETION_SCOPE_UNSPECIFIED\x10\x00\x12\n\n\x06TENANT\x10\x01\x12\n\n\x06PUBLIC\x10\x02"`\n\x0e\x43ompletionType\x12\x1f\n\x1b\x43OMPLETION_TYPE_UNSPECIFIED\x10\x00\x12\r\n\tJOB_TITLE\x10\x01\x12\x10\n\x0c\x43OMPANY_NAME\x10\x02\x12\x0c\n\x08\x43OMBINED\x10\x03"\xc5\x02\n\x15\x43ompleteQueryResponse\x12_\n\x12\x63ompletion_results\x18\x01 \x03(\x0b\x32\x43.google.cloud.talent.v4beta1.CompleteQueryResponse.CompletionResult\x12?\n\x08metadata\x18\x02 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata\x1a\x89\x01\n\x10\x43ompletionResult\x12\x12\n\nsuggestion\x18\x01 \x01(\t\x12N\n\x04type\x18\x02 \x01(\x0e\x32@.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionType\x12\x11\n\timage_uri\x18\x03 \x01(\t2\xd5\x02\n\nCompletion\x12\xd8\x01\n\rCompleteQuery\x12\x31.google.cloud.talent.v4beta1.CompleteQueryRequest\x1a\x32.google.cloud.talent.v4beta1.CompleteQueryResponse"`\x82\xd3\xe4\x93\x02Z\x12//v4beta1/{parent=projects/*/tenants/*}:completeZ\'\x12%/v4beta1/{parent=projects/*}:complete\x1al\xca\x41\x13jobs.googleapis.com\xd2\x41Shttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobsB\x84\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x16\x43ompletionServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n:google/cloud/talent_v4beta1/proto/completion_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x17google/api/client.proto"\x9b\x04\n\x14\x43ompleteQueryRequest\x12;\n\x06parent\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\n#jobs.googleapis.com/TenantOrProject\x12\x12\n\x05query\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x16\n\x0elanguage_codes\x18\x03 \x03(\t\x12\x16\n\tpage_size\x18\x04 \x01(\x05\x42\x03\xe0\x41\x02\x12\x31\n\x07\x63ompany\x18\x05 \x01(\tB \xfa\x41\x1d\n\x1bjobs.googleapis.com/Company\x12P\n\x05scope\x18\x06 \x01(\x0e\x32\x41.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionScope\x12N\n\x04type\x18\x07 \x01(\x0e\x32@.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionType"K\n\x0f\x43ompletionScope\x12 \n\x1c\x43OMPLETION_SCOPE_UNSPECIFIED\x10\x00\x12\n\n\x06TENANT\x10\x01\x12\n\n\x06PUBLIC\x10\x02"`\n\x0e\x43ompletionType\x12\x1f\n\x1b\x43OMPLETION_TYPE_UNSPECIFIED\x10\x00\x12\r\n\tJOB_TITLE\x10\x01\x12\x10\n\x0c\x43OMPANY_NAME\x10\x02\x12\x0c\n\x08\x43OMBINED\x10\x03"\xc5\x02\n\x15\x43ompleteQueryResponse\x12_\n\x12\x63ompletion_results\x18\x01 \x03(\x0b\x32\x43.google.cloud.talent.v4beta1.CompleteQueryResponse.CompletionResult\x12?\n\x08metadata\x18\x02 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata\x1a\x89\x01\n\x10\x43ompletionResult\x12\x12\n\nsuggestion\x18\x01 \x01(\t\x12N\n\x04type\x18\x02 \x01(\x0e\x32@.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionType\x12\x11\n\timage_uri\x18\x03 \x01(\t2\xd5\x02\n\nCompletion\x12\xd8\x01\n\rCompleteQuery\x12\x31.google.cloud.talent.v4beta1.CompleteQueryRequest\x1a\x32.google.cloud.talent.v4beta1.CompleteQueryResponse"`\x82\xd3\xe4\x93\x02Z\x12//v4beta1/{parent=projects/*/tenants/*}:completeZ\'\x12%/v4beta1/{parent=projects/*}:complete\x1al\xca\x41\x13jobs.googleapis.com\xd2\x41Shttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobsB\x84\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x16\x43ompletionServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
-        google_dot_api_dot_client__pb2.DESCRIPTOR,
         google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_talent__v4beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
     ],
 )
 
@@ -64,8 +66,8 @@ _COMPLETEQUERYREQUEST_COMPLETIONSCOPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=520,
-    serialized_end=595,
+    serialized_start=621,
+    serialized_end=696,
 )
 _sym_db.RegisterEnumDescriptor(_COMPLETEQUERYREQUEST_COMPLETIONSCOPE)
 
@@ -94,8 +96,8 @@ _COMPLETEQUERYREQUEST_COMPLETIONTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=597,
-    serialized_end=693,
+    serialized_start=698,
+    serialized_end=794,
 )
 _sym_db.RegisterEnumDescriptor(_COMPLETEQUERYREQUEST_COMPLETIONTYPE)
 
@@ -122,7 +124,9 @@ _COMPLETEQUERYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=_b("\340A\002"),
+            serialized_options=_b(
+                "\340A\002\372A%\n#jobs.googleapis.com/TenantOrProject"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -194,7 +198,7 @@ _COMPLETEQUERYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\372A\035\n\033jobs.googleapis.com/Company"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -245,8 +249,8 @@ _COMPLETEQUERYREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=228,
-    serialized_end=693,
+    serialized_start=255,
+    serialized_end=794,
 )
 
 
@@ -320,8 +324,8 @@ _COMPLETEQUERYRESPONSE_COMPLETIONRESULT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=884,
-    serialized_end=1021,
+    serialized_start=985,
+    serialized_end=1122,
 )
 
 _COMPLETEQUERYRESPONSE = _descriptor.Descriptor(
@@ -376,8 +380,8 @@ _COMPLETEQUERYRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=696,
-    serialized_end=1021,
+    serialized_start=797,
+    serialized_end=1122,
 )
 
 _COMPLETEQUERYREQUEST.fields_by_name[
@@ -427,22 +431,8 @@ CompleteQueryRequest = _reflection.GeneratedProtocolMessageType(
           The list of languages of the query. This is the BCP-47
           language code, such as "en-US" or "sr-Latn". For more
           information, see `Tags for Identifying Languages
-          <https://tools.ietf.org/html/bcp47>`__.  For [CompletionType.J
-          OB\_TITLE][google.cloud.talent.v4beta1.CompleteQueryRequest.Co
-          mpletionType.JOB\_TITLE] type, only open jobs with the same [l
-          anguage\_codes][google.cloud.talent.v4beta1.CompleteQueryReque
-          st.language\_codes] are returned.  For [CompletionType.COMPANY
-          \_NAME][google.cloud.talent.v4beta1.CompleteQueryRequest.Compl
-          etionType.COMPANY\_NAME] type, only companies having open jobs
-          with the same [language\_codes][google.cloud.talent.v4beta1.Co
-          mpleteQueryRequest.language\_codes] are returned.  For [Comple
-          tionType.COMBINED][google.cloud.talent.v4beta1.CompleteQueryRe
-          quest.CompletionType.COMBINED] type, only open jobs with the
-          same [language\_codes][google.cloud.talent.v4beta1.CompleteQue
-          ryRequest.language\_codes] or companies having open jobs with
-          the same [language\_codes][google.cloud.talent.v4beta1.Complet
-          eQueryRequest.language\_codes] are returned.  The maximum
-          number of allowed characters is 255.
+          <https://tools.ietf.org/html/bcp47>`__.  The maximum number of
+          allowed characters is 255.
       page_size:
           Required. Completion result count.  The maximum allowed page
           size is 10.
@@ -516,6 +506,7 @@ DESCRIPTOR._options = None
 _COMPLETEQUERYREQUEST.fields_by_name["parent"]._options = None
 _COMPLETEQUERYREQUEST.fields_by_name["query"]._options = None
 _COMPLETEQUERYREQUEST.fields_by_name["page_size"]._options = None
+_COMPLETEQUERYREQUEST.fields_by_name["company"]._options = None
 
 _COMPLETION = _descriptor.ServiceDescriptor(
     name="Completion",
@@ -525,8 +516,8 @@ _COMPLETION = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\023jobs.googleapis.com\322AShttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobs"
     ),
-    serialized_start=1024,
-    serialized_end=1365,
+    serialized_start=1125,
+    serialized_end=1466,
     methods=[
         _descriptor.MethodDescriptor(
             name="CompleteQuery",

@@ -4,6 +4,39 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.25.0
+
+01-16-2020 11:00 PST
+
+### Implementation Changes
+- fix: replace unsafe six.PY3 with PY2 for better future compatibility with Python 4 ([#10081](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/10081))
+- fix(storage): fix document of delete blob ([#10015](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/10015))
+
+### New Features
+- feat(storage): support optionsRequestedPolicyVersion ([#9989](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/9989))
+
+### Dependencies
+- chore(storage): bump core dependency to 1.2.0 ([#10160](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/10160))
+
+## 1.24.1
+
+01-02-2020 13:20 PST
+
+
+### Implementation Changes
+- Add 'ARCHIVE' storage class ([#9533](https://github.com/googleapis/google-cloud-python/pull/9533))
+
+## 1.24.0
+
+01-02-2020 10:39 PST
+
+
+### Implementation Changes
+-str() metadata for for blob ([#9796](https://github.com/googleapis/google-cloud-python/pull/9796))
+
+### New Features
+- Add timeout parameter to Batch interface to match google-cloud-core ([#10010](https://github.com/googleapis/google-cloud-python/pull/10010))
+
 ## 1.23.0
 
 11-12-2019 12:57 PST

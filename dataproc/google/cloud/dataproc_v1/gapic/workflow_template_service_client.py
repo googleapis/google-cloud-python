@@ -57,7 +57,7 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-dataproc")
 class WorkflowTemplateServiceClient(object):
     """
     The API interface for managing Workflow Templates in the
-    Cloud Dataproc API.
+    Dataproc API.
     """
 
     SERVICE_ADDRESS = "dataproc.googleapis.com:443"

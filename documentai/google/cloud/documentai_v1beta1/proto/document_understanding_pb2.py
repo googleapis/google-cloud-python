@@ -1146,7 +1146,8 @@ BatchProcessDocumentsRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_BATCHPROCESSDOCUMENTSREQUEST,
         __module__="google.cloud.documentai_v1beta1.proto.document_understanding_pb2",
-        __doc__="""Request to batch process documents as an asynchronous operation.
+        __doc__="""Request to batch process documents as an asynchronous
+  operation.
   
   
   Attributes:
@@ -1175,12 +1176,12 @@ ProcessDocumentRequest = _reflection.GeneratedProtocolMessageType(
       input_config:
           Required. Information about the input file.
       output_config:
-          Required. The desired output location.
+          Required. The desired output location.  |
       document_type:
           Specifies a known document type for deeper structure
-          detection. Valid   values are currently "general" and
-          "invoice". If not provided,   "general" is used as default.
-          If any other value is given, the request is   rejected.
+          detection. Valid values are currently "general" and "invoice".
+          If not   provided, "general" | is used as default. If any
+          other value is given, the request is   rejected.
       table_extraction_params:
           Controls table extraction behavior. If not specified, the
           system will decide reasonable defaults.
@@ -1205,8 +1206,8 @@ BatchProcessDocumentsResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_BATCHPROCESSDOCUMENTSRESPONSE,
         __module__="google.cloud.documentai_v1beta1.proto.document_understanding_pb2",
-        __doc__="""Response to an batch document processing request. This is returned in
-  the LRO Operation after the operation is complete.
+        __doc__="""Response to an batch document processing request. This is
+  returned in the LRO Operation after the operation is complete.
   
   
   Attributes:
@@ -1303,7 +1304,8 @@ TableBoundHint = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TABLEBOUNDHINT,
         __module__="google.cloud.documentai_v1beta1.proto.document_understanding_pb2",
-        __doc__="""A hint for a table bounding box on the page for table parsing.
+        __doc__="""A hint for a table bounding box on the page for table
+  parsing.
   
   
   Attributes:
@@ -1462,8 +1464,9 @@ GcsSource = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GCSSOURCE,
         __module__="google.cloud.documentai_v1beta1.proto.document_understanding_pb2",
-        __doc__="""The Google Cloud Storage location where the input file will be read
-  from.
+        __doc__="""The Google Cloud Storage location where the input file
+  will be read from.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.documentai.v1beta1.GcsSource)
     ),
@@ -1476,8 +1479,9 @@ GcsDestination = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GCSDESTINATION,
         __module__="google.cloud.documentai_v1beta1.proto.document_understanding_pb2",
-        __doc__="""The Google Cloud Storage location where the output file will be written
-  to.
+        __doc__="""The Google Cloud Storage location where the output file
+  will be written to.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.documentai.v1beta1.GcsDestination)
     ),

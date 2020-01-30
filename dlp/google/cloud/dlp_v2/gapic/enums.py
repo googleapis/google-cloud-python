@@ -61,10 +61,10 @@ class DayOfWeek(enum.IntEnum):
 
 class DlpJobType(enum.IntEnum):
     """
-    An enum to represent the various type of DLP jobs.
+    An enum to represent the various types of DLP jobs.
 
     Attributes:
-      DLP_JOB_TYPE_UNSPECIFIED (int)
+      DLP_JOB_TYPE_UNSPECIFIED (int): Unused
       INSPECT_JOB (int): The job inspected Google Cloud for sensitive data.
       RISK_ANALYSIS_JOB (int): The job executed a Risk Analysis computation.
     """
@@ -105,7 +105,7 @@ class InfoTypeSupportedBy(enum.IntEnum):
     Parts of the APIs which use certain infoTypes.
 
     Attributes:
-      ENUM_TYPE_UNSPECIFIED (int)
+      ENUM_TYPE_UNSPECIFIED (int): Unused.
       INSPECT (int): Supported by the inspect operations.
       RISK_ANALYSIS (int): Supported by the risk analysis operations.
     """
@@ -173,7 +173,7 @@ class RelationalOperator(enum.IntEnum):
     Operators available for comparing the value of fields.
 
     Attributes:
-      RELATIONAL_OPERATOR_UNSPECIFIED (int)
+      RELATIONAL_OPERATOR_UNSPECIFIED (int): Unused
       EQUAL_TO (int): Equal. Attempts to match even with incompatible types.
       NOT_EQUAL_TO (int): Not equal to. Attempts to match even with incompatible types.
       GREATER_THAN (int): Greater than.
@@ -198,7 +198,7 @@ class StoredInfoTypeState(enum.IntEnum):
     State of a StoredInfoType version.
 
     Attributes:
-      STORED_INFO_TYPE_STATE_UNSPECIFIED (int)
+      STORED_INFO_TYPE_STATE_UNSPECIFIED (int): Unused
       PENDING (int): StoredInfoType version is being created.
       READY (int): StoredInfoType version is ready for use.
       FAILED (int): StoredInfoType creation failed. All relevant error messages are returned
@@ -236,15 +236,17 @@ class BigQueryOptions(object):
 class ByteContentItem(object):
     class BytesType(enum.IntEnum):
         """
+        The type of data being sent to in data.
+
         Attributes:
-          BYTES_TYPE_UNSPECIFIED (int)
-          IMAGE (int)
-          IMAGE_JPEG (int)
-          IMAGE_BMP (int)
-          IMAGE_PNG (int)
-          IMAGE_SVG (int)
-          TEXT_UTF8 (int)
-          AVRO (int)
+          BYTES_TYPE_UNSPECIFIED (int): Unused
+          IMAGE (int): Any image type.
+          IMAGE_JPEG (int): jpeg
+          IMAGE_BMP (int): bmp
+          IMAGE_PNG (int): png
+          IMAGE_SVG (int): svg
+          TEXT_UTF8 (int): plain text
+          AVRO (int): avro
         """
 
         BYTES_TYPE_UNSPECIFIED = 0
@@ -260,8 +262,10 @@ class ByteContentItem(object):
 class CharsToIgnore(object):
     class CommonCharsToIgnore(enum.IntEnum):
         """
+        Convenience enum for indication common characters to not transform.
+
         Attributes:
-          COMMON_CHARS_TO_IGNORE_UNSPECIFIED (int)
+          COMMON_CHARS_TO_IGNORE_UNSPECIFIED (int): Unused.
           NUMERIC (int): 0-9
           ALPHA_UPPER_CASE (int): A-Z
           ALPHA_LOWER_CASE (int): a-z
@@ -304,7 +308,7 @@ class CryptoReplaceFfxFpeConfig(object):
         the "radix". Therefore each corresponds to particular radix.
 
         Attributes:
-          FFX_COMMON_NATIVE_ALPHABET_UNSPECIFIED (int)
+          FFX_COMMON_NATIVE_ALPHABET_UNSPECIFIED (int): Unused.
           NUMERIC (int): [0-9] (radix of 10)
           HEXADECIMAL (int): [0-9A-F] (radix of 16)
           UPPER_CASE_ALPHA_NUMERIC (int): [0-9A-Z] (radix of 36)
@@ -334,8 +338,10 @@ class CustomInfoType(object):
 class DlpJob(object):
     class JobState(enum.IntEnum):
         """
+        Possible states of a job.
+
         Attributes:
-          JOB_STATE_UNSPECIFIED (int)
+          JOB_STATE_UNSPECIFIED (int): Unused.
           PENDING (int): The job has not yet started.
           RUNNING (int): The job is currently running.
           DONE (int): The job is no longer running.
@@ -360,7 +366,7 @@ class JobTrigger(object):
         status to HEALTHY after correcting user errors.
 
         Attributes:
-          STATUS_UNSPECIFIED (int)
+          STATUS_UNSPECIFIED (int): Unused.
           HEALTHY (int): Trigger is healthy.
           PAUSED (int): Trigger is temporarily paused.
           CANCELLED (int): Trigger is cancelled and can not be resumed.
@@ -378,7 +384,7 @@ class OutputStorageConfig(object):
         Predefined schemas for storing findings.
 
         Attributes:
-          OUTPUT_SCHEMA_UNSPECIFIED (int)
+          OUTPUT_SCHEMA_UNSPECIFIED (int): Unused.
           BASIC_COLUMNS (int): Basic schema including only ``info_type``, ``quote``, ``certainty``, and
           ``timestamp``.
           GCS_COLUMNS (int): Schema tailored to findings from scanning Google Cloud Storage.
@@ -399,9 +405,11 @@ class RecordCondition(object):
     class Expressions(object):
         class LogicalOperator(enum.IntEnum):
             """
+            Logical operators for conditional checks.
+
             Attributes:
-              LOGICAL_OPERATOR_UNSPECIFIED (int)
-              AND (int)
+              LOGICAL_OPERATOR_UNSPECIFIED (int): Unused
+              AND (int): Conditional AND
             """
 
             LOGICAL_OPERATOR_UNSPECIFIED = 0
@@ -411,8 +419,10 @@ class RecordCondition(object):
 class TimePartConfig(object):
     class TimePart(enum.IntEnum):
         """
+        Components that make up time.
+
         Attributes:
-          TIME_PART_UNSPECIFIED (int)
+          TIME_PART_UNSPECIFIED (int): Unused
           YEAR (int): [0-9999]
           MONTH (int): [1-12]
           DAY_OF_MONTH (int): [1-31]
@@ -436,9 +446,9 @@ class TransformationSummary(object):
         Possible outcomes of transformations.
 
         Attributes:
-          TRANSFORMATION_RESULT_CODE_UNSPECIFIED (int)
-          SUCCESS (int)
-          ERROR (int)
+          TRANSFORMATION_RESULT_CODE_UNSPECIFIED (int): Unused
+          SUCCESS (int): Transformation completed without an error.
+          ERROR (int): Transformation had an error.
         """
 
         TRANSFORMATION_RESULT_CODE_UNSPECIFIED = 0

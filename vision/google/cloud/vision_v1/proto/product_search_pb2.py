@@ -594,8 +594,8 @@ ProductSearchResults = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_PRODUCTSEARCHRESULTS_GROUPEDRESULT,
                 __module__="google.cloud.vision_v1.proto.product_search_pb2",
-                __doc__="""Information about the products similar to a single product in a query
-    image.
+                __doc__="""Information about the products similar to a single product
+    in a query image.
     
     
     Attributes:

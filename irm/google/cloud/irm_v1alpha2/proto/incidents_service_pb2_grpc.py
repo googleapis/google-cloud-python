@@ -271,6 +271,9 @@ class IncidentServiceServicer(object):
     def SearchSignals(self, request, context):
         """Lists signals that are part of an incident.
     Signals are returned in reverse chronological order.
+    Note that search should not be relied on for critical functionality.  It
+    has lower availability guarantees and might fail to return valid results.
+    Returned results might include stale or extraneous entries.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -400,6 +403,8 @@ class IncidentServiceServicer(object):
         """Starts a role handover. The proposed assignee will receive an email
     notifying them of the assignment. This will fail if a role handover is
     already pending.
+    Handover to an oncall ladder is not permitted. Use
+    CreateIncidentRoleAssignment instead.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

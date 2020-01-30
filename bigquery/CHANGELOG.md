@@ -4,6 +4,44 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.23.1
+
+12-16-2019 09:39 PST
+
+
+### Implementation Changes
+
+- Add `iamMember` entity type to allowed access classes. ([#9973](https://github.com/googleapis/google-cloud-python/pull/9973))
+- Fix typo in import error message (pandas -> pyarrow). ([#9955](https://github.com/googleapis/google-cloud-python/pull/9955))
+
+### Dependencies
+
+- Add `six` as an explicit dependency. ([#9979](https://github.com/googleapis/google-cloud-python/pull/9979))
+
+### Documentation
+
+- Add sample to read from query destination table. ([#9964](https://github.com/googleapis/google-cloud-python/pull/9964))
+
+## 1.23.0
+
+12-11-2019 13:31 PST
+
+### New Features
+
+- Add `close()` method to client for releasing open sockets. ([#9894](https://github.com/googleapis/google-cloud-python/pull/9894))
+- Add support of `use_avro_logical_types` for extract jobs. ([#9642](https://github.com/googleapis/google-cloud-python/pull/9642))
+- Add support for hive partitioning options configuration. ([#9626](https://github.com/googleapis/google-cloud-python/pull/9626))
+- Add description for routine entities. ([#9785](https://github.com/googleapis/google-cloud-python/pull/9785))
+
+### Documentation
+
+- Update code samples to use strings for table and dataset IDs. ([#9495](https://github.com/googleapis/google-cloud-python/pull/9495))
+
+### Internal / Testing Changes
+
+- Run unit tests with Python 3.8. ([#9880](https://github.com/googleapis/google-cloud-python/pull/9880))
+- Import `Mapping` from `collections.abc` not from `collections`. ([#9826](https://github.com/googleapis/google-cloud-python/pull/9826))
+
 ## 1.22.0
 
 11-13-2019 12:23 PST

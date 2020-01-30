@@ -389,24 +389,24 @@ class DataLabelingServiceServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def GetEvaluation(self, request, context):
-        """Gets an evaluation by resource name.
+        """Gets an evaluation by resource name (to search, use
+    [projects.evaluations.search][google.cloud.datalabeling.v1beta1.DataLabelingService.SearchEvaluations]).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def SearchEvaluations(self, request, context):
-        """Searchs evaluations within a project. Supported filter: evaluation_job,
-    evaluation_time.
+        """Searches [evaluations][google.cloud.datalabeling.v1beta1.Evaluation] within a project.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def SearchExampleComparisons(self, request, context):
-        """Searchs example comparisons in evaluation, in format of examples
-    of both ground truth and prediction(s). It is represented as a search with
-    evaluation id.
+        """Searches example comparisons from an evaluation. The return format is a
+    list of example comparisons that show ground truth and prediction(s) for
+    a single input. Search by providing an evaluation ID.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -420,7 +420,12 @@ class DataLabelingServiceServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def UpdateEvaluationJob(self, request, context):
-        """Updates an evaluation job.
+        """Updates an evaluation job. You can only update certain fields of the job's
+    [EvaluationJobConfig][google.cloud.datalabeling.v1beta1.EvaluationJobConfig]: `humanAnnotationConfig.instruction`,
+    `exampleCount`, and `exampleSamplePercentage`.
+
+    If you want to change any other aspect of the evaluation job, you must
+    delete the job and create a new one.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -434,16 +439,16 @@ class DataLabelingServiceServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def PauseEvaluationJob(self, request, context):
-        """Pauses an evaluation job. Pausing a evaluation job that is already in
-    PAUSED state will be a no-op.
+        """Pauses an evaluation job. Pausing an evaluation job that is already in a
+    `PAUSED` state is a no-op.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def ResumeEvaluationJob(self, request, context):
-        """Resumes a paused evaluation job. Deleted evaluation job can't be resumed.
-    Resuming a running evaluation job will be a no-op.
+        """Resumes a paused evaluation job. A deleted evaluation job can't be resumed.
+    Resuming a running or scheduled evaluation job is a no-op.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

@@ -86,7 +86,7 @@ def default(session):
     )
 
 
-@nox.session(python=["3.5", "3.6", "3.7"])
+@nox.session(python=["3.5", "3.6", "3.7", "3.8"])
 def unit(session):
     """Run the unit test suite."""
     default(session)
@@ -133,7 +133,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=100")
+    session.run("coverage", "report", "--show-missing", "--fail-under=92")
 
     session.run("coverage", "erase")
 

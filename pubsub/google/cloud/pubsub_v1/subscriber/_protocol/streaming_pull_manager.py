@@ -285,7 +285,7 @@ class StreamingPullManager(object):
         would allow. Each released message is added to the lease management,
         and the user callback is scheduled for it.
 
-        If there are currently no messageges on hold, or if the leaser is
+        If there are currently no messages on hold, or if the leaser is
         already overloaded, this method is effectively a no-op.
 
         The method assumes the caller has acquired the ``_pause_resume_lock``.
@@ -542,6 +542,13 @@ class StreamingPullManager(object):
         After the messages have all had their ack deadline updated, execute
         the callback for each message using the executor.
         """
+        if response is None:
+            _LOGGER.debug(
+                "Response callback invoked with None, likely due to a "
+                "transport shutdown."
+            )
+            return
+
         _LOGGER.debug(
             "Processing %s received message(s), currenty on hold %s (bytes %s).",
             len(response.received_messages),

@@ -24,6 +24,7 @@ import operator
 import unittest
 import warnings
 
+import freezegun
 import mock
 import requests
 import six
@@ -49,6 +50,11 @@ from google.api_core.gapic_v1 import client_info
 import google.cloud._helpers
 from google.cloud import bigquery_v2
 from google.cloud.bigquery.dataset import DatasetReference
+
+try:
+    from google.cloud import bigquery_storage_v1beta1
+except (ImportError, AttributeError):  # pragma: NO COVER
+    bigquery_storage_v1beta1 = None
 from tests.unit.helpers import make_connection
 
 
@@ -207,6 +213,28 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(client._default_query_job_config, QueryJobConfig)
         self.assertTrue(client._default_query_job_config.dry_run)
 
+    def test__call_api_applying_custom_retry_on_timeout(self):
+        from concurrent.futures import TimeoutError
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+
+        client = self._make_one()
+
+        api_request_patcher = mock.patch.object(
+            client._connection, "api_request", side_effect=[TimeoutError, "result"],
+        )
+        retry = DEFAULT_RETRY.with_deadline(1).with_predicate(
+            lambda exc: isinstance(exc, TimeoutError)
+        )
+
+        with api_request_patcher as fake_api_request:
+            result = client._call_api(retry, foo="bar")
+
+        self.assertEqual(result, "result")
+        self.assertEqual(
+            fake_api_request.call_args_list,
+            [mock.call(foo="bar"), mock.call(foo="bar")],  # was retried once
+        )
+
     def test__get_query_results_miss_w_explicit_project_and_timeout(self):
         from google.cloud.exceptions import NotFound
 
@@ -221,12 +249,14 @@ class TestClient(unittest.TestCase):
                 project="other-project",
                 location=self.LOCATION,
                 timeout_ms=500,
+                timeout=42,
             )
 
         conn.api_request.assert_called_once_with(
             method="GET",
             path="/projects/other-project/queries/nothere",
             query_params={"maxResults": 0, "timeoutMs": 500, "location": self.LOCATION},
+            timeout=42,
         )
 
     def test__get_query_results_miss_w_client_location(self):
@@ -243,6 +273,7 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/projects/PROJECT/queries/nothere",
             query_params={"maxResults": 0, "location": self.LOCATION},
+            timeout=None,
         )
 
     def test__get_query_results_hit(self):
@@ -280,9 +311,9 @@ class TestClient(unittest.TestCase):
         resource = {"kind": "bigquery#getServiceAccountResponse", "email": email}
         conn = client._connection = make_connection(resource)
 
-        service_account_email = client.get_service_account_email()
+        service_account_email = client.get_service_account_email(timeout=7.5)
 
-        conn.api_request.assert_called_once_with(method="GET", path=path)
+        conn.api_request.assert_called_once_with(method="GET", path=path, timeout=7.5)
         self.assertEqual(service_account_email, email)
 
     def test_get_service_account_email_w_alternate_project(self):
@@ -297,8 +328,44 @@ class TestClient(unittest.TestCase):
 
         service_account_email = client.get_service_account_email(project=project)
 
-        conn.api_request.assert_called_once_with(method="GET", path=path)
+        conn.api_request.assert_called_once_with(method="GET", path=path, timeout=None)
         self.assertEqual(service_account_email, email)
+
+    def test_get_service_account_email_w_custom_retry(self):
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+
+        api_path = "/projects/{}/serviceAccount".format(self.PROJECT)
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        resource = {
+            "kind": "bigquery#getServiceAccountResponse",
+            "email": "bq-123@bigquery-encryption.iam.gserviceaccount.com",
+        }
+        api_request_patcher = mock.patch.object(
+            client._connection, "api_request", side_effect=[ValueError, resource],
+        )
+
+        retry = DEFAULT_RETRY.with_deadline(1).with_predicate(
+            lambda exc: isinstance(exc, ValueError)
+        )
+
+        with api_request_patcher as fake_api_request:
+            service_account_email = client.get_service_account_email(
+                retry=retry, timeout=7.5
+            )
+
+        self.assertEqual(
+            service_account_email, "bq-123@bigquery-encryption.iam.gserviceaccount.com"
+        )
+        self.assertEqual(
+            fake_api_request.call_args_list,
+            [
+                mock.call(method="GET", path=api_path, timeout=7.5),
+                mock.call(method="GET", path=api_path, timeout=7.5),  # was retried once
+            ],
+        )
 
     def test_list_projects_defaults(self):
         from google.cloud.bigquery.client import Project
@@ -343,7 +410,25 @@ class TestClient(unittest.TestCase):
         self.assertEqual(token, TOKEN)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path="/projects", query_params={}
+            method="GET", path="/projects", query_params={}, timeout=None
+        )
+
+    def test_list_projects_w_timeout(self):
+        PROJECT_1 = "PROJECT_ONE"
+        TOKEN = "TOKEN"
+        DATA = {
+            "nextPageToken": TOKEN,
+            "projects": [],
+        }
+        creds = _make_credentials()
+        client = self._make_one(PROJECT_1, creds)
+        conn = client._connection = make_connection(DATA)
+
+        iterator = client.list_projects(timeout=7.5)
+        six.next(iterator.pages)
+
+        conn.api_request.assert_called_once_with(
+            method="GET", path="/projects", query_params={}, timeout=7.5
         )
 
     def test_list_projects_explicit_response_missing_projects_key(self):
@@ -365,6 +450,7 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/projects",
             query_params={"maxResults": 3, "pageToken": TOKEN},
+            timeout=None,
         )
 
     def test_list_datasets_defaults(self):
@@ -414,18 +500,21 @@ class TestClient(unittest.TestCase):
         self.assertEqual(token, TOKEN)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path="/%s" % PATH, query_params={}
+            method="GET", path="/%s" % PATH, query_params={}, timeout=None
         )
 
-    def test_list_datasets_w_project(self):
+    def test_list_datasets_w_project_and_timeout(self):
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
         conn = client._connection = make_connection({})
 
-        list(client.list_datasets(project="other-project"))
+        list(client.list_datasets(project="other-project", timeout=7.5))
 
         conn.api_request.assert_called_once_with(
-            method="GET", path="/projects/other-project/datasets", query_params={}
+            method="GET",
+            path="/projects/other-project/datasets",
+            query_params={},
+            timeout=7.5,
         )
 
     def test_list_datasets_explicit_response_missing_datasets_key(self):
@@ -456,6 +545,7 @@ class TestClient(unittest.TestCase):
                 "maxResults": 3,
                 "pageToken": TOKEN,
             },
+            timeout=None,
         )
 
     def test_dataset_with_specified_project(self):
@@ -464,7 +554,19 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        dataset = client.dataset(self.DS_ID, self.PROJECT)
+        catch_warnings = warnings.catch_warnings(record=True)
+
+        with catch_warnings as warned:
+            dataset = client.dataset(self.DS_ID, self.PROJECT)
+
+        matches = [
+            warning
+            for warning in warned
+            if warning.category in (DeprecationWarning, PendingDeprecationWarning)
+            and "Client.dataset" in str(warning)
+            and "my_project.my_dataset" in str(warning)
+        ]
+        assert matches, "A Client.dataset deprecation warning was not raised."
         self.assertIsInstance(dataset, DatasetReference)
         self.assertEqual(dataset.dataset_id, self.DS_ID)
         self.assertEqual(dataset.project, self.PROJECT)
@@ -475,7 +577,19 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        dataset = client.dataset(self.DS_ID)
+        catch_warnings = warnings.catch_warnings(record=True)
+
+        with catch_warnings as warned:
+            dataset = client.dataset(self.DS_ID)
+
+        matches = [
+            warning
+            for warning in warned
+            if warning.category in (DeprecationWarning, PendingDeprecationWarning)
+            and "Client.dataset" in str(warning)
+            and "my_project.my_dataset" in str(warning)
+        ]
+        assert matches, "A Client.dataset deprecation warning was not raised."
         self.assertIsInstance(dataset, DatasetReference)
         self.assertEqual(dataset.dataset_id, self.DS_ID)
         self.assertEqual(dataset.project, self.PROJECT)
@@ -492,11 +606,13 @@ class TestClient(unittest.TestCase):
             "datasetReference": {"projectId": self.PROJECT, "datasetId": self.DS_ID},
         }
         conn = client._connection = make_connection(resource)
-        dataset_ref = client.dataset(self.DS_ID)
+        dataset_ref = DatasetReference(self.PROJECT, self.DS_ID)
 
-        dataset = client.get_dataset(dataset_ref)
+        dataset = client.get_dataset(dataset_ref, timeout=7.5)
 
-        conn.api_request.assert_called_once_with(method="GET", path="/%s" % path)
+        conn.api_request.assert_called_once_with(
+            method="GET", path="/%s" % path, timeout=7.5
+        )
         self.assertEqual(dataset.dataset_id, self.DS_ID)
 
         # Test retry.
@@ -535,6 +651,26 @@ class TestClient(unittest.TestCase):
         )
         self.assertEqual(dataset.dataset_id, self.DS_ID)
 
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    def test_create_bqstorage_client(self):
+        mock_client = mock.create_autospec(
+            bigquery_storage_v1beta1.BigQueryStorageClient
+        )
+        mock_client_instance = object()
+        mock_client.return_value = mock_client_instance
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+
+        with mock.patch(
+            "google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient", mock_client
+        ):
+            bqstorage_client = client._create_bqstorage_client()
+
+        self.assertIs(bqstorage_client, mock_client_instance)
+        mock_client.assert_called_once_with(credentials=creds)
+
     def test_create_dataset_minimal(self):
         from google.cloud.bigquery.dataset import Dataset
 
@@ -548,10 +684,10 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = make_connection(RESOURCE)
 
-        ds_ref = client.dataset(self.DS_ID)
+        ds_ref = DatasetReference(self.PROJECT, self.DS_ID)
         before = Dataset(ds_ref)
 
-        after = client.create_dataset(before)
+        after = client.create_dataset(before, timeout=7.5)
 
         self.assertEqual(after.dataset_id, self.DS_ID)
         self.assertEqual(after.project, self.PROJECT)
@@ -568,6 +704,7 @@ class TestClient(unittest.TestCase):
                 },
                 "labels": {},
             },
+            timeout=7.5,
         )
 
     def test_create_dataset_w_attrs(self):
@@ -603,7 +740,7 @@ class TestClient(unittest.TestCase):
             AccessEntry(None, "view", VIEW),
         ]
 
-        ds_ref = client.dataset(self.DS_ID)
+        ds_ref = DatasetReference(self.PROJECT, self.DS_ID)
         before = Dataset(ds_ref)
         before.access_entries = entries
         before.description = DESCRIPTION
@@ -642,6 +779,7 @@ class TestClient(unittest.TestCase):
                 ],
                 "labels": LABELS,
             },
+            timeout=None,
         )
 
     def test_create_dataset_w_custom_property(self):
@@ -658,7 +796,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = make_connection(resource)
 
-        ds_ref = client.dataset(self.DS_ID)
+        ds_ref = DatasetReference(self.PROJECT, self.DS_ID)
         before = Dataset(ds_ref)
         before._properties["newAlphaProperty"] = "unreleased property"
 
@@ -679,6 +817,7 @@ class TestClient(unittest.TestCase):
                 "newAlphaProperty": "unreleased property",
                 "labels": {},
             },
+            timeout=None,
         )
 
     def test_create_dataset_w_client_location_wo_dataset_location(self):
@@ -697,7 +836,7 @@ class TestClient(unittest.TestCase):
         )
         conn = client._connection = make_connection(RESOURCE)
 
-        ds_ref = client.dataset(self.DS_ID)
+        ds_ref = DatasetReference(self.PROJECT, self.DS_ID)
         before = Dataset(ds_ref)
 
         after = client.create_dataset(before)
@@ -719,6 +858,7 @@ class TestClient(unittest.TestCase):
                 "labels": {},
                 "location": self.LOCATION,
             },
+            timeout=None,
         )
 
     def test_create_dataset_w_client_location_w_dataset_location(self):
@@ -738,7 +878,7 @@ class TestClient(unittest.TestCase):
         )
         conn = client._connection = make_connection(RESOURCE)
 
-        ds_ref = client.dataset(self.DS_ID)
+        ds_ref = DatasetReference(self.PROJECT, self.DS_ID)
         before = Dataset(ds_ref)
         before.location = OTHER_LOCATION
 
@@ -761,6 +901,7 @@ class TestClient(unittest.TestCase):
                 "labels": {},
                 "location": OTHER_LOCATION,
             },
+            timeout=None,
         )
 
     def test_create_dataset_w_reference(self):
@@ -777,7 +918,7 @@ class TestClient(unittest.TestCase):
         )
         conn = client._connection = make_connection(resource)
 
-        dataset = client.create_dataset(client.dataset(self.DS_ID))
+        dataset = client.create_dataset(DatasetReference(self.PROJECT, self.DS_ID))
 
         self.assertEqual(dataset.dataset_id, self.DS_ID)
         self.assertEqual(dataset.project, self.PROJECT)
@@ -796,6 +937,7 @@ class TestClient(unittest.TestCase):
                 "labels": {},
                 "location": self.LOCATION,
             },
+            timeout=None,
         )
 
     def test_create_dataset_w_fully_qualified_string(self):
@@ -831,6 +973,7 @@ class TestClient(unittest.TestCase):
                 "labels": {},
                 "location": self.LOCATION,
             },
+            timeout=None,
         )
 
     def test_create_dataset_w_string(self):
@@ -866,6 +1009,7 @@ class TestClient(unittest.TestCase):
                 "labels": {},
                 "location": self.LOCATION,
             },
+            timeout=None,
         )
 
     def test_create_dataset_alreadyexists_w_exists_ok_false(self):
@@ -918,8 +1062,9 @@ class TestClient(unittest.TestCase):
                         "labels": {},
                         "location": self.LOCATION,
                     },
+                    timeout=None,
                 ),
-                mock.call(method="GET", path=get_path),
+                mock.call(method="GET", path=get_path, timeout=None),
             ]
         )
 
@@ -940,12 +1085,13 @@ class TestClient(unittest.TestCase):
         full_routine_id = "test-routine-project.test_routines.minimal_routine"
         routine = Routine(full_routine_id)
 
-        actual_routine = client.create_routine(routine)
+        actual_routine = client.create_routine(routine, timeout=7.5)
 
         conn.api_request.assert_called_once_with(
             method="POST",
             path="/projects/test-routine-project/datasets/test_routines/routines",
             data=resource,
+            timeout=7.5,
         )
         self.assertEqual(
             actual_routine.reference, RoutineReference.from_string(full_routine_id)
@@ -976,6 +1122,7 @@ class TestClient(unittest.TestCase):
             method="POST",
             path="/projects/test-routine-project/datasets/test_routines/routines",
             data=resource,
+            timeout=None,
         )
 
     def test_create_routine_w_conflict_exists_ok(self):
@@ -1007,10 +1154,12 @@ class TestClient(unittest.TestCase):
                     method="POST",
                     path="/projects/test-routine-project/datasets/test_routines/routines",
                     data=resource,
+                    timeout=None,
                 ),
                 mock.call(
                     method="GET",
                     path="/projects/test-routine-project/datasets/test_routines/routines/minimal_routine",
+                    timeout=None,
                 ),
             ]
         )
@@ -1027,7 +1176,7 @@ class TestClient(unittest.TestCase):
         table = Table(self.TABLE_REF)
         table.time_partitioning = TimePartitioning()
 
-        got = client.create_table(table)
+        got = client.create_table(table, timeout=7.5)
 
         conn.api_request.assert_called_once_with(
             method="POST",
@@ -1041,6 +1190,7 @@ class TestClient(unittest.TestCase):
                 "timePartitioning": {"type": "DAY"},
                 "labels": {},
             },
+            timeout=7.5,
         )
         self.assertEqual(table.time_partitioning.type_, "DAY")
         self.assertEqual(got.table_id, self.TABLE_ID)
@@ -1073,6 +1223,7 @@ class TestClient(unittest.TestCase):
                 "newAlphaProperty": "unreleased property",
                 "labels": {},
             },
+            timeout=None,
         )
         self.assertEqual(got._properties["newAlphaProperty"], "unreleased property")
         self.assertEqual(got.table_id, self.TABLE_ID)
@@ -1107,6 +1258,7 @@ class TestClient(unittest.TestCase):
                 "labels": {},
                 "encryptionConfiguration": {"kmsKeyName": self.KMS_KEY_NAME},
             },
+            timeout=None,
         )
         self.assertEqual(got.table_id, self.TABLE_ID)
 
@@ -1136,6 +1288,7 @@ class TestClient(unittest.TestCase):
                 "timePartitioning": {"type": "DAY", "expirationMs": "100"},
                 "labels": {},
             },
+            timeout=None,
         )
         self.assertEqual(table.time_partitioning.type_, "DAY")
         self.assertEqual(table.time_partitioning.expiration_ms, 100)
@@ -1209,6 +1362,7 @@ class TestClient(unittest.TestCase):
                 "view": {"query": query, "useLegacySql": False},
                 "labels": {},
             },
+            timeout=None,
         )
         self.assertEqual(got.table_id, self.TABLE_ID)
         self.assertEqual(got.project, self.PROJECT)
@@ -1256,6 +1410,7 @@ class TestClient(unittest.TestCase):
                 },
                 "labels": {},
             },
+            timeout=None,
         )
         self.assertEqual(got.table_id, self.TABLE_ID)
         self.assertEqual(got.project, self.PROJECT)
@@ -1285,6 +1440,7 @@ class TestClient(unittest.TestCase):
                 },
                 "labels": {},
             },
+            timeout=None,
         )
         self.assertEqual(got.table_id, self.TABLE_ID)
 
@@ -1310,6 +1466,7 @@ class TestClient(unittest.TestCase):
                 },
                 "labels": {},
             },
+            timeout=None,
         )
         self.assertEqual(got.table_id, self.TABLE_ID)
 
@@ -1333,6 +1490,7 @@ class TestClient(unittest.TestCase):
                 },
                 "labels": {},
             },
+            timeout=None,
         )
         self.assertEqual(got.table_id, self.TABLE_ID)
 
@@ -1360,6 +1518,7 @@ class TestClient(unittest.TestCase):
                 },
                 "labels": {},
             },
+            timeout=None,
         )
 
     def test_create_table_alreadyexists_w_exists_ok_true(self):
@@ -1397,8 +1556,9 @@ class TestClient(unittest.TestCase):
                         },
                         "labels": {},
                     },
+                    timeout=None,
                 ),
-                mock.call(method="GET", path=get_path),
+                mock.call(method="GET", path=get_path, timeout=None),
             ]
         )
 
@@ -1431,10 +1591,12 @@ class TestClient(unittest.TestCase):
         }
         conn = client._connection = make_connection(resource)
 
-        model_ref = client.dataset(self.DS_ID).model(self.MODEL_ID)
-        got = client.get_model(model_ref)
+        model_ref = DatasetReference(self.PROJECT, self.DS_ID).model(self.MODEL_ID)
+        got = client.get_model(model_ref, timeout=7.5)
 
-        conn.api_request.assert_called_once_with(method="GET", path="/%s" % path)
+        conn.api_request.assert_called_once_with(
+            method="GET", path="/%s" % path, timeout=7.5
+        )
         self.assertEqual(got.model_id, self.MODEL_ID)
 
     def test_get_model_w_string(self):
@@ -1458,7 +1620,9 @@ class TestClient(unittest.TestCase):
         model_id = "{}.{}.{}".format(self.PROJECT, self.DS_ID, self.MODEL_ID)
         got = client.get_model(model_id)
 
-        conn.api_request.assert_called_once_with(method="GET", path="/%s" % path)
+        conn.api_request.assert_called_once_with(
+            method="GET", path="/%s" % path, timeout=None
+        )
         self.assertEqual(got.model_id, self.MODEL_ID)
 
     def test_get_routine(self):
@@ -1485,11 +1649,12 @@ class TestClient(unittest.TestCase):
             client = self._make_one(project=self.PROJECT, credentials=creds)
             conn = client._connection = make_connection(resource)
 
-            actual_routine = client.get_routine(routine)
+            actual_routine = client.get_routine(routine, timeout=7.5)
 
             conn.api_request.assert_called_once_with(
                 method="GET",
                 path="/projects/test-routine-project/datasets/test_routines/routines/minimal_routine",
+                timeout=7.5,
             )
             self.assertEqual(
                 actual_routine.reference,
@@ -1518,9 +1683,11 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         resource = self._make_table_resource()
         conn = client._connection = make_connection(resource)
-        table = client.get_table(self.TABLE_REF)
+        table = client.get_table(self.TABLE_REF, timeout=7.5)
 
-        conn.api_request.assert_called_once_with(method="GET", path="/%s" % path)
+        conn.api_request.assert_called_once_with(
+            method="GET", path="/%s" % path, timeout=7.5
+        )
         self.assertEqual(table.table_id, self.TABLE_ID)
 
     def test_get_table_sets_user_agent(self):
@@ -1552,6 +1719,7 @@ class TestClient(unittest.TestCase):
                 "User-Agent": expected_user_agent,
             },
             data=mock.ANY,
+            timeout=None,
         )
         self.assertIn("my-application/1.2.3", expected_user_agent)
 
@@ -1561,7 +1729,9 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         with self.assertRaises(ValueError):
-            client.update_dataset(Dataset(client.dataset(self.DS_ID)), ["foo"])
+            client.update_dataset(
+                Dataset("{}.{}".format(self.PROJECT, self.DS_ID)), ["foo"]
+            )
 
     def test_update_dataset(self):
         from google.cloud.bigquery.dataset import Dataset, AccessEntry
@@ -1586,7 +1756,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = make_connection(RESOURCE, RESOURCE)
-        ds = Dataset(client.dataset(self.DS_ID))
+        ds = Dataset(DatasetReference(self.PROJECT, self.DS_ID))
         ds.description = DESCRIPTION
         ds.friendly_name = FRIENDLY_NAME
         ds.location = LOCATION
@@ -1594,7 +1764,9 @@ class TestClient(unittest.TestCase):
         ds.labels = LABELS
         ds.access_entries = [AccessEntry("OWNER", "userByEmail", "phred@example.com")]
         ds2 = client.update_dataset(
-            ds, ["description", "friendly_name", "location", "labels", "access_entries"]
+            ds,
+            ["description", "friendly_name", "location", "labels", "access_entries"],
+            timeout=7.5,
         )
         conn.api_request.assert_called_once_with(
             method="PATCH",
@@ -1607,6 +1779,7 @@ class TestClient(unittest.TestCase):
             },
             path="/" + PATH,
             headers=None,
+            timeout=7.5,
         )
         self.assertEqual(ds2.description, ds.description)
         self.assertEqual(ds2.friendly_name, ds.friendly_name)
@@ -1633,7 +1806,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = make_connection(resource)
-        dataset = Dataset(client.dataset(self.DS_ID))
+        dataset = Dataset(DatasetReference(self.PROJECT, self.DS_ID))
         dataset._properties["newAlphaProperty"] = "unreleased property"
 
         dataset = client.update_dataset(dataset, ["newAlphaProperty"])
@@ -1642,6 +1815,7 @@ class TestClient(unittest.TestCase):
             data={"newAlphaProperty": "unreleased property"},
             path=path,
             headers=None,
+            timeout=None,
         )
 
         self.assertEqual(dataset.dataset_id, self.DS_ID)
@@ -1684,7 +1858,7 @@ class TestClient(unittest.TestCase):
         model.labels = {"x": "y"}
 
         updated_model = client.update_model(
-            model, ["description", "friendly_name", "labels", "expires"]
+            model, ["description", "friendly_name", "labels", "expires"], timeout=7.5
         )
 
         sent = {
@@ -1694,7 +1868,7 @@ class TestClient(unittest.TestCase):
             "labels": {"x": "y"},
         }
         conn.api_request.assert_called_once_with(
-            method="PATCH", data=sent, path="/" + path, headers=None
+            method="PATCH", data=sent, path="/" + path, headers=None, timeout=7.5
         )
         self.assertEqual(updated_model.model_id, model.model_id)
         self.assertEqual(updated_model.description, model.description)
@@ -1746,6 +1920,7 @@ class TestClient(unittest.TestCase):
         actual_routine = client.update_routine(
             routine,
             ["arguments", "language", "body", "type_", "return_type", "someNewField"],
+            timeout=7.5,
         )
 
         # TODO: routineReference isn't needed when the Routines API supports
@@ -1756,6 +1931,7 @@ class TestClient(unittest.TestCase):
             data=sent,
             path="/projects/routines-project/datasets/test_routines/routines/updated_routine",
             headers=None,
+            timeout=7.5,
         )
         self.assertEqual(actual_routine.arguments, routine.arguments)
         self.assertEqual(actual_routine.body, routine.body)
@@ -1817,7 +1993,7 @@ class TestClient(unittest.TestCase):
         table.labels = {"x": "y"}
 
         updated_table = client.update_table(
-            table, ["schema", "description", "friendly_name", "labels"]
+            table, ["schema", "description", "friendly_name", "labels"], timeout=7.5
         )
 
         sent = {
@@ -1842,7 +2018,7 @@ class TestClient(unittest.TestCase):
             "labels": {"x": "y"},
         }
         conn.api_request.assert_called_once_with(
-            method="PATCH", data=sent, path="/" + path, headers=None
+            method="PATCH", data=sent, path="/" + path, headers=None, timeout=7.5
         )
         self.assertEqual(updated_table.description, table.description)
         self.assertEqual(updated_table.friendly_name, table.friendly_name)
@@ -1878,6 +2054,7 @@ class TestClient(unittest.TestCase):
             path="/%s" % path,
             data={"newAlphaProperty": "unreleased property"},
             headers=None,
+            timeout=None,
         )
         self.assertEqual(
             updated_table._properties["newAlphaProperty"], "unreleased property"
@@ -1906,6 +2083,7 @@ class TestClient(unittest.TestCase):
             path="/%s" % path,
             data={"view": {"useLegacySql": True}},
             headers=None,
+            timeout=None,
         )
         self.assertEqual(updated_table.view_use_legacy_sql, table.view_use_legacy_sql)
 
@@ -1979,6 +2157,7 @@ class TestClient(unittest.TestCase):
                 "schema": schema_resource,
             },
             headers=None,
+            timeout=None,
         )
 
     def test_update_table_w_schema_None(self):
@@ -2057,14 +2236,14 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req[1]["data"], sent)
         self.assertIsNone(table3.description)
 
-    def test_list_tables_empty(self):
+    def test_list_tables_empty_w_timeout(self):
         path = "/projects/{}/datasets/{}/tables".format(self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = make_connection({})
 
-        dataset = client.dataset(self.DS_ID)
-        iterator = client.list_tables(dataset)
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        iterator = client.list_tables(dataset, timeout=7.5)
         self.assertIs(iterator.dataset, dataset)
         page = six.next(iterator.pages)
         tables = list(page)
@@ -2073,17 +2252,17 @@ class TestClient(unittest.TestCase):
         self.assertEqual(tables, [])
         self.assertIsNone(token)
         conn.api_request.assert_called_once_with(
-            method="GET", path=path, query_params={}
+            method="GET", path=path, query_params={}, timeout=7.5
         )
 
-    def test_list_models_empty(self):
+    def test_list_models_empty_w_timeout(self):
         path = "/projects/{}/datasets/{}/models".format(self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = make_connection({})
 
         dataset_id = "{}.{}".format(self.PROJECT, self.DS_ID)
-        iterator = client.list_models(dataset_id)
+        iterator = client.list_models(dataset_id, timeout=7.5)
         page = six.next(iterator.pages)
         models = list(page)
         token = iterator.next_page_token
@@ -2091,7 +2270,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(models, [])
         self.assertIsNone(token)
         conn.api_request.assert_called_once_with(
-            method="GET", path=path, query_params={}
+            method="GET", path=path, query_params={}, timeout=7.5
         )
 
     def test_list_models_defaults(self):
@@ -2124,7 +2303,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = make_connection(DATA)
-        dataset = client.dataset(self.DS_ID)
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
 
         iterator = client.list_models(dataset)
         self.assertIs(iterator.dataset, dataset)
@@ -2139,21 +2318,21 @@ class TestClient(unittest.TestCase):
         self.assertEqual(token, TOKEN)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path="/%s" % PATH, query_params={}
+            method="GET", path="/%s" % PATH, query_params={}, timeout=None
         )
 
     def test_list_models_wrong_type(self):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         with self.assertRaises(TypeError):
-            client.list_models(client.dataset(self.DS_ID).model("foo"))
+            client.list_models(DatasetReference(self.PROJECT, self.DS_ID).model("foo"))
 
-    def test_list_routines_empty(self):
+    def test_list_routines_empty_w_timeout(self):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = make_connection({})
 
-        iterator = client.list_routines("test-routines.test_routines")
+        iterator = client.list_routines("test-routines.test_routines", timeout=7.5)
         page = six.next(iterator.pages)
         routines = list(page)
         token = iterator.next_page_token
@@ -2164,6 +2343,7 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/projects/test-routines/datasets/test_routines/routines",
             query_params={},
+            timeout=7.5,
         )
 
     def test_list_routines_defaults(self):
@@ -2198,7 +2378,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=project_id, credentials=creds)
         conn = client._connection = make_connection(resource)
-        dataset = client.dataset(dataset_id)
+        dataset = DatasetReference(client.project, dataset_id)
 
         iterator = client.list_routines(dataset)
         self.assertIs(iterator.dataset, dataset)
@@ -2215,14 +2395,16 @@ class TestClient(unittest.TestCase):
         self.assertEqual(actual_token, token)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path=path, query_params={}
+            method="GET", path=path, query_params={}, timeout=None
         )
 
     def test_list_routines_wrong_type(self):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         with self.assertRaises(TypeError):
-            client.list_routines(client.dataset(self.DS_ID).table("foo"))
+            client.list_routines(
+                DatasetReference(self.PROJECT, self.DS_ID).table("foo")
+            )
 
     def test_list_tables_defaults(self):
         from google.cloud.bigquery.table import TableListItem
@@ -2260,7 +2442,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = make_connection(DATA)
-        dataset = client.dataset(self.DS_ID)
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
 
         iterator = client.list_tables(dataset)
         self.assertIs(iterator.dataset, dataset)
@@ -2276,7 +2458,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(token, TOKEN)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path="/%s" % PATH, query_params={}
+            method="GET", path="/%s" % PATH, query_params={}, timeout=None
         )
 
     def test_list_tables_explicit(self):
@@ -2314,7 +2496,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = make_connection(DATA)
-        dataset = client.dataset(self.DS_ID)
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
 
         iterator = client.list_tables(
             # Test with string for dataset ID.
@@ -2338,13 +2520,14 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/%s" % PATH,
             query_params={"maxResults": 3, "pageToken": TOKEN},
+            timeout=None,
         )
 
     def test_list_tables_wrong_type(self):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         with self.assertRaises(TypeError):
-            client.list_tables(client.dataset(self.DS_ID).table("foo"))
+            client.list_tables(DatasetReference(self.PROJECT, self.DS_ID).table("foo"))
 
     def test_delete_dataset(self):
         from google.cloud.bigquery.dataset import Dataset
@@ -2357,9 +2540,9 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = make_connection(*([{}] * len(datasets)))
         for arg in datasets:
-            client.delete_dataset(arg)
+            client.delete_dataset(arg, timeout=7.5)
             conn.api_request.assert_called_with(
-                method="DELETE", path="/%s" % PATH, query_params={}
+                method="DELETE", path="/%s" % PATH, query_params={}, timeout=7.5
             )
 
     def test_delete_dataset_delete_contents(self):
@@ -2369,20 +2552,23 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = make_connection({}, {})
-        ds_ref = client.dataset(self.DS_ID)
+        ds_ref = DatasetReference(self.PROJECT, self.DS_ID)
         for arg in (ds_ref, Dataset(ds_ref)):
             client.delete_dataset(arg, delete_contents=True)
             conn.api_request.assert_called_with(
                 method="DELETE",
                 path="/%s" % PATH,
                 query_params={"deleteContents": "true"},
+                timeout=None,
             )
 
     def test_delete_dataset_wrong_type(self):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         with self.assertRaises(TypeError):
-            client.delete_dataset(client.dataset(self.DS_ID).table("foo"))
+            client.delete_dataset(
+                DatasetReference(self.PROJECT, self.DS_ID).table("foo")
+            )
 
     def test_delete_dataset_w_not_found_ok_false(self):
         path = "/projects/{}/datasets/{}".format(self.PROJECT, self.DS_ID)
@@ -2396,7 +2582,9 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(google.api_core.exceptions.NotFound):
             client.delete_dataset(self.DS_ID)
 
-        conn.api_request.assert_called_with(method="DELETE", path=path, query_params={})
+        conn.api_request.assert_called_with(
+            method="DELETE", path=path, query_params={}, timeout=None
+        )
 
     def test_delete_dataset_w_not_found_ok_true(self):
         path = "/projects/{}/datasets/{}".format(self.PROJECT, self.DS_ID)
@@ -2409,7 +2597,9 @@ class TestClient(unittest.TestCase):
 
         client.delete_dataset(self.DS_ID, not_found_ok=True)
 
-        conn.api_request.assert_called_with(method="DELETE", path=path, query_params={})
+        conn.api_request.assert_called_with(
+            method="DELETE", path=path, query_params={}, timeout=None
+        )
 
     def test_delete_model(self):
         from google.cloud.bigquery.model import Model
@@ -2425,20 +2615,22 @@ class TestClient(unittest.TestCase):
         model_id = "{}.{}.{}".format(self.PROJECT, self.DS_ID, self.MODEL_ID)
         models = (
             model_id,
-            client.dataset(self.DS_ID).model(self.MODEL_ID),
+            DatasetReference(self.PROJECT, self.DS_ID).model(self.MODEL_ID),
             Model(model_id),
         )
         conn = client._connection = make_connection(*([{}] * len(models)))
 
         for arg in models:
-            client.delete_model(arg)
-            conn.api_request.assert_called_with(method="DELETE", path="/%s" % path)
+            client.delete_model(arg, timeout=7.5)
+            conn.api_request.assert_called_with(
+                method="DELETE", path="/%s" % path, timeout=7.5
+            )
 
     def test_delete_model_w_wrong_type(self):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         with self.assertRaises(TypeError):
-            client.delete_model(client.dataset(self.DS_ID))
+            client.delete_model(DatasetReference(self.PROJECT, self.DS_ID))
 
     def test_delete_model_w_not_found_ok_false(self):
         path = "/projects/{}/datasets/{}/models/{}".format(
@@ -2454,7 +2646,7 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(google.api_core.exceptions.NotFound):
             client.delete_model("{}.{}".format(self.DS_ID, self.MODEL_ID))
 
-        conn.api_request.assert_called_with(method="DELETE", path=path)
+        conn.api_request.assert_called_with(method="DELETE", path=path, timeout=None)
 
     def test_delete_model_w_not_found_ok_true(self):
         path = "/projects/{}/datasets/{}/models/{}".format(
@@ -2471,7 +2663,7 @@ class TestClient(unittest.TestCase):
             "{}.{}".format(self.DS_ID, self.MODEL_ID), not_found_ok=True
         )
 
-        conn.api_request.assert_called_with(method="DELETE", path=path)
+        conn.api_request.assert_called_with(method="DELETE", path=path, timeout=None)
 
     def test_delete_routine(self):
         from google.cloud.bigquery.routine import Routine
@@ -2489,17 +2681,18 @@ class TestClient(unittest.TestCase):
         conn = client._connection = make_connection(*([{}] * len(routines)))
 
         for routine in routines:
-            client.delete_routine(routine)
+            client.delete_routine(routine, timeout=7.5)
             conn.api_request.assert_called_with(
                 method="DELETE",
                 path="/projects/test-routine-project/datasets/test_routines/routines/minimal_routine",
+                timeout=7.5,
             )
 
     def test_delete_routine_w_wrong_type(self):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         with self.assertRaises(TypeError):
-            client.delete_routine(client.dataset(self.DS_ID))
+            client.delete_routine(DatasetReference(self.PROJECT, self.DS_ID))
 
     def test_delete_routine_w_not_found_ok_false(self):
         creds = _make_credentials()
@@ -2515,6 +2708,7 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_with(
             method="DELETE",
             path="/projects/routines-project/datasets/test_routines/routines/test_routine",
+            timeout=None,
         )
 
     def test_delete_routine_w_not_found_ok_true(self):
@@ -2532,6 +2726,7 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_with(
             method="DELETE",
             path="/projects/routines-project/datasets/test_routines/routines/test_routine",
+            timeout=None,
         )
 
     def test_delete_table(self):
@@ -2557,14 +2752,16 @@ class TestClient(unittest.TestCase):
         conn = client._connection = make_connection(*([{}] * len(tables)))
 
         for arg in tables:
-            client.delete_table(arg)
-            conn.api_request.assert_called_with(method="DELETE", path="/%s" % path)
+            client.delete_table(arg, timeout=7.5)
+            conn.api_request.assert_called_with(
+                method="DELETE", path="/%s" % path, timeout=7.5
+            )
 
     def test_delete_table_w_wrong_type(self):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         with self.assertRaises(TypeError):
-            client.delete_table(client.dataset(self.DS_ID))
+            client.delete_table(DatasetReference(self.PROJECT, self.DS_ID))
 
     def test_delete_table_w_not_found_ok_false(self):
         path = "/projects/{}/datasets/{}/tables/{}".format(
@@ -2580,7 +2777,7 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(google.api_core.exceptions.NotFound):
             client.delete_table("{}.{}".format(self.DS_ID, self.TABLE_ID))
 
-        conn.api_request.assert_called_with(method="DELETE", path=path)
+        conn.api_request.assert_called_with(method="DELETE", path=path, timeout=None)
 
     def test_delete_table_w_not_found_ok_true(self):
         path = "/projects/{}/datasets/{}/tables/{}".format(
@@ -2597,7 +2794,7 @@ class TestClient(unittest.TestCase):
             "{}.{}".format(self.DS_ID, self.TABLE_ID), not_found_ok=True
         )
 
-        conn.api_request.assert_called_with(method="DELETE", path=path)
+        conn.api_request.assert_called_with(method="DELETE", path=path, timeout=None)
 
     def test_job_from_resource_unknown_type(self):
         from google.cloud.bigquery.job import UnknownJob
@@ -2624,6 +2821,7 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/projects/OTHER_PROJECT/jobs/NONESUCH",
             query_params={"projection": "full", "location": self.LOCATION},
+            timeout=None,
         )
 
     def test_get_job_miss_w_client_location(self):
@@ -2642,9 +2840,10 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/projects/OTHER_PROJECT/jobs/NONESUCH",
             query_params={"projection": "full", "location": self.LOCATION},
+            timeout=None,
         )
 
-    def test_get_job_hit(self):
+    def test_get_job_hit_w_timeout(self):
         from google.cloud.bigquery.job import CreateDisposition
         from google.cloud.bigquery.job import QueryJob
         from google.cloud.bigquery.job import WriteDisposition
@@ -2673,7 +2872,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(self.PROJECT, creds)
         conn = client._connection = make_connection(ASYNC_QUERY_DATA)
 
-        job = client.get_job(JOB_ID)
+        job = client.get_job(JOB_ID, timeout=7.5)
 
         self.assertIsInstance(job, QueryJob)
         self.assertEqual(job.job_id, JOB_ID)
@@ -2684,6 +2883,7 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/projects/PROJECT/jobs/query_job",
             query_params={"projection": "full"},
+            timeout=7.5,
         )
 
     def test_cancel_job_miss_w_explict_project(self):
@@ -2702,6 +2902,7 @@ class TestClient(unittest.TestCase):
             method="POST",
             path="/projects/OTHER_PROJECT/jobs/NONESUCH/cancel",
             query_params={"projection": "full", "location": self.LOCATION},
+            timeout=None,
         )
 
     def test_cancel_job_miss_w_client_location(self):
@@ -2720,6 +2921,7 @@ class TestClient(unittest.TestCase):
             method="POST",
             path="/projects/OTHER_PROJECT/jobs/NONESUCH/cancel",
             query_params={"projection": "full", "location": self.LOCATION},
+            timeout=None,
         )
 
     def test_cancel_job_hit(self):
@@ -2748,6 +2950,31 @@ class TestClient(unittest.TestCase):
             method="POST",
             path="/projects/PROJECT/jobs/query_job/cancel",
             query_params={"projection": "full"},
+            timeout=None,
+        )
+
+    def test_cancel_job_w_timeout(self):
+        JOB_ID = "query_job"
+        QUERY = "SELECT * from test_dataset:test_table"
+        QUERY_JOB_RESOURCE = {
+            "id": "{}:{}".format(self.PROJECT, JOB_ID),
+            "jobReference": {"projectId": self.PROJECT, "jobId": "query_job"},
+            "state": "RUNNING",
+            "configuration": {"query": {"query": QUERY}},
+        }
+        RESOURCE = {"job": QUERY_JOB_RESOURCE}
+
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds)
+        conn = client._connection = make_connection(RESOURCE)
+
+        client.cancel_job(JOB_ID, timeout=7.5)
+
+        conn.api_request.assert_called_once_with(
+            method="POST",
+            path="/projects/{}/jobs/query_job/cancel".format(self.PROJECT),
+            query_params={"projection": "full"},
+            timeout=7.5,
         )
 
     def test_list_jobs_defaults(self):
@@ -2861,7 +3088,10 @@ class TestClient(unittest.TestCase):
         self.assertEqual(token, TOKEN)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path="/%s" % PATH, query_params={"projection": "full"}
+            method="GET",
+            path="/%s" % PATH,
+            query_params={"projection": "full"},
+            timeout=None,
         )
 
     def test_list_jobs_load_job_wo_sourceUris(self):
@@ -2903,7 +3133,10 @@ class TestClient(unittest.TestCase):
         self.assertEqual(token, TOKEN)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path="/%s" % PATH, query_params={"projection": "full"}
+            method="GET",
+            path="/%s" % PATH,
+            query_params={"projection": "full"},
+            timeout=None,
         )
 
     def test_list_jobs_explicit_missing(self):
@@ -2934,6 +3167,7 @@ class TestClient(unittest.TestCase):
                 "allUsers": True,
                 "stateFilter": "done",
             },
+            timeout=None,
         )
 
     def test_list_jobs_w_project(self):
@@ -2947,6 +3181,21 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/projects/other-project/jobs",
             query_params={"projection": "full"},
+            timeout=None,
+        )
+
+    def test_list_jobs_w_timeout(self):
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds)
+        conn = client._connection = make_connection({})
+
+        list(client.list_jobs(timeout=7.5))
+
+        conn.api_request.assert_called_once_with(
+            method="GET",
+            path="/projects/{}/jobs".format(self.PROJECT),
+            query_params={"projection": "full"},
+            timeout=7.5,
         )
 
     def test_list_jobs_w_time_filter(self):
@@ -2970,6 +3219,7 @@ class TestClient(unittest.TestCase):
                 "minCreationTime": "1",
                 "maxCreationTime": str(end_time_millis),
             },
+            timeout=None,
         )
 
     def test_list_jobs_w_parent_job_filter(self):
@@ -2987,6 +3237,7 @@ class TestClient(unittest.TestCase):
                 method="GET",
                 path="/projects/%s/jobs" % self.PROJECT,
                 query_params={"projection": "full", "parentJobId": "parent-job-123"},
+                timeout=None,
             )
             conn.api_request.reset_mock()
 
@@ -3016,15 +3267,18 @@ class TestClient(unittest.TestCase):
 
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         conn = client._connection = make_connection(RESOURCE)
-        destination = client.dataset(self.DS_ID).table(DESTINATION)
+        destination = DatasetReference(self.PROJECT, self.DS_ID).table(DESTINATION)
 
         job = client.load_table_from_uri(
-            SOURCE_URI, destination, job_id=JOB, job_config=job_config
+            SOURCE_URI, destination, job_id=JOB, job_config=job_config, timeout=7.5
         )
 
         # Check that load_table_from_uri actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/%s/jobs" % self.PROJECT, data=RESOURCE
+            method="POST",
+            path="/projects/%s/jobs" % self.PROJECT,
+            data=RESOURCE,
+            timeout=7.5,
         )
 
         # the original config object should not have been modified
@@ -3071,7 +3325,7 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         conn = client._connection = make_connection(resource)
-        destination = client.dataset(self.DS_ID).table(destination_id)
+        destination = DatasetReference(self.PROJECT, self.DS_ID).table(destination_id)
 
         client.load_table_from_uri(
             source_uri,
@@ -3083,7 +3337,10 @@ class TestClient(unittest.TestCase):
 
         # Check that load_table_from_uri actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/other-project/jobs", data=resource
+            method="POST",
+            path="/projects/other-project/jobs",
+            data=resource,
+            timeout=None,
         )
 
     def test_load_table_from_uri_w_client_location(self):
@@ -3124,7 +3381,10 @@ class TestClient(unittest.TestCase):
 
         # Check that load_table_from_uri actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/other-project/jobs", data=resource
+            method="POST",
+            path="/projects/other-project/jobs",
+            data=resource,
+            timeout=None,
         )
 
     def test_load_table_from_uri_w_invalid_job_config(self):
@@ -3138,7 +3398,7 @@ class TestClient(unittest.TestCase):
         http = object()
         job_config = job.CopyJobConfig()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        destination = client.dataset(self.DS_ID).table(DESTINATION)
+        destination = DatasetReference(self.PROJECT, self.DS_ID).table(DESTINATION)
 
         with self.assertRaises(TypeError) as exc:
             client.load_table_from_uri(
@@ -3321,15 +3581,18 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         conn = client._connection = make_connection(RESOURCE)
-        dataset = client.dataset(self.DS_ID)
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = dataset.table(SOURCE)
         destination = dataset.table(DESTINATION)
 
-        job = client.copy_table(source, destination, job_id=JOB)
+        job = client.copy_table(source, destination, job_id=JOB, timeout=7.5)
 
         # Check that copy_table actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/%s/jobs" % self.PROJECT, data=RESOURCE
+            method="POST",
+            path="/projects/%s/jobs" % self.PROJECT,
+            data=RESOURCE,
+            timeout=7.5,
         )
 
         self.assertIsInstance(job, CopyJob)
@@ -3378,7 +3641,7 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         conn = client._connection = make_connection(resource)
-        dataset = client.dataset(self.DS_ID)
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = dataset.table(source_id)
         destination = dataset.table(destination_id)
 
@@ -3392,7 +3655,10 @@ class TestClient(unittest.TestCase):
 
         # Check that copy_table actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/other-project/jobs", data=resource
+            method="POST",
+            path="/projects/other-project/jobs",
+            data=resource,
+            timeout=None,
         )
 
     def test_copy_table_w_client_location(self):
@@ -3439,7 +3705,10 @@ class TestClient(unittest.TestCase):
 
         # Check that copy_table actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/other-project/jobs", data=resource
+            method="POST",
+            path="/projects/other-project/jobs",
+            data=resource,
+            timeout=None,
         )
 
     def test_copy_table_w_source_strings(self):
@@ -3450,23 +3719,25 @@ class TestClient(unittest.TestCase):
         sources = [
             "dataset_wo_proj.some_table",
             "other_project.other_dataset.other_table",
-            client.dataset("dataset_from_ref").table("table_from_ref"),
+            DatasetReference(client.project, "dataset_from_ref").table(
+                "table_from_ref"
+            ),
         ]
         destination = "some_project.some_dataset.destination_table"
 
         job = client.copy_table(sources, destination)
 
         expected_sources = [
-            client.dataset("dataset_wo_proj").table("some_table"),
-            client.dataset("other_dataset", project="other_project").table(
-                "other_table"
+            DatasetReference(client.project, "dataset_wo_proj").table("some_table"),
+            DatasetReference("other_project", "other_dataset").table("other_table"),
+            DatasetReference(client.project, "dataset_from_ref").table(
+                "table_from_ref"
             ),
-            client.dataset("dataset_from_ref").table("table_from_ref"),
         ]
         self.assertEqual(list(job.sources), expected_sources)
-        expected_destination = client.dataset(
-            "some_dataset", project="some_project"
-        ).table("destination_table")
+        expected_destination = DatasetReference("some_project", "some_dataset").table(
+            "destination_table"
+        )
         self.assertEqual(job.destination, expected_destination)
 
     def test_copy_table_w_invalid_job_config(self):
@@ -3480,7 +3751,7 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         job_config = job.ExtractJobConfig()
-        dataset = client.dataset(self.DS_ID)
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = dataset.table(SOURCE)
         destination = dataset.table(DESTINATION)
         with self.assertRaises(TypeError) as exc:
@@ -3517,7 +3788,7 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         conn = client._connection = make_connection(RESOURCE)
-        dataset = client.dataset(self.DS_ID)
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = dataset.table(SOURCE)
         destination = dataset.table(DESTINATION)
 
@@ -3527,7 +3798,10 @@ class TestClient(unittest.TestCase):
 
         # Check that copy_table actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/%s/jobs" % self.PROJECT, data=RESOURCE
+            method="POST",
+            path="/projects/%s/jobs" % self.PROJECT,
+            data=RESOURCE,
+            timeout=None,
         )
         self.assertIsInstance(job._configuration, CopyJobConfig)
 
@@ -3557,14 +3831,14 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         conn = client._connection = make_connection(RESOURCE)
-        dataset = client.dataset(self.DS_ID)
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = dataset.table(SOURCE)
 
-        job = client.extract_table(source, DESTINATION, job_id=JOB)
+        job = client.extract_table(source, DESTINATION, job_id=JOB, timeout=7.5)
 
         # Check that extract_table actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/PROJECT/jobs", data=RESOURCE
+            method="POST", path="/projects/PROJECT/jobs", data=RESOURCE, timeout=7.5,
         )
 
         # Check the job resource.
@@ -3584,7 +3858,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
-        dataset = client.dataset(self.DS_ID)
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = dataset.table(SOURCE)
         job_config = job.LoadJobConfig()
         with self.assertRaises(TypeError) as exc:
@@ -3617,7 +3891,7 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         conn = client._connection = make_connection(resource)
-        dataset = client.dataset(self.DS_ID)
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = dataset.table(source_id)
 
         client.extract_table(
@@ -3630,7 +3904,10 @@ class TestClient(unittest.TestCase):
 
         # Check that extract_table actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/other-project/jobs", data=resource
+            method="POST",
+            path="/projects/other-project/jobs",
+            data=resource,
+            timeout=None,
         )
 
     def test_extract_table_w_client_location(self):
@@ -3671,7 +3948,10 @@ class TestClient(unittest.TestCase):
 
         # Check that extract_table actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/other-project/jobs", data=resource
+            method="POST",
+            path="/projects/other-project/jobs",
+            data=resource,
+            timeout=None,
         )
 
     def test_extract_table_generated_job_id(self):
@@ -3700,7 +3980,7 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         conn = client._connection = make_connection(RESOURCE)
-        dataset = client.dataset(self.DS_ID)
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = dataset.table(SOURCE)
         job_config = ExtractJobConfig()
         job_config.destination_format = DestinationFormat.NEWLINE_DELIMITED_JSON
@@ -3714,6 +3994,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req["method"], "POST")
         self.assertEqual(req["path"], "/projects/PROJECT/jobs")
         self.assertIsInstance(req["data"]["jobReference"]["jobId"], six.string_types)
+        self.assertIsNone(req["timeout"])
 
         # Check the job resource.
         self.assertIsInstance(job, ExtractJob)
@@ -3748,7 +4029,7 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
         conn = client._connection = make_connection(RESOURCE)
-        dataset = client.dataset(self.DS_ID)
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = dataset.table(SOURCE)
 
         job = client.extract_table(source, [DESTINATION1, DESTINATION2], job_id=JOB)
@@ -3758,6 +4039,7 @@ class TestClient(unittest.TestCase):
         _, req = conn.api_request.call_args
         self.assertEqual(req["method"], "POST")
         self.assertEqual(req["path"], "/projects/PROJECT/jobs")
+        self.assertIsNone(req["timeout"])
 
         # Check the job resource.
         self.assertIsInstance(job, ExtractJob)
@@ -3793,11 +4075,33 @@ class TestClient(unittest.TestCase):
         _, req = conn.api_request.call_args
         self.assertEqual(req["method"], "POST")
         self.assertEqual(req["path"], "/projects/PROJECT/jobs")
+        self.assertIsNone(req["timeout"])
         sent = req["data"]
         self.assertIsInstance(sent["jobReference"]["jobId"], six.string_types)
         sent_config = sent["configuration"]["query"]
         self.assertEqual(sent_config["query"], QUERY)
         self.assertFalse(sent_config["useLegacySql"])
+
+    def test_query_w_explicit_timeout(self):
+        query = "select count(*) from persons"
+        resource = {
+            "jobReference": {"projectId": self.PROJECT, "jobId": mock.ANY},
+            "configuration": {"query": {"query": query, "useLegacySql": False}},
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection(resource)
+
+        client.query(query, timeout=7.5)
+
+        # Check that query actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method="POST",
+            path="/projects/{}/jobs".format(self.PROJECT),
+            data=resource,
+            timeout=7.5,
+        )
 
     def test_query_w_explicit_project(self):
         job_id = "some-job-id"
@@ -3821,7 +4125,10 @@ class TestClient(unittest.TestCase):
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/other-project/jobs", data=resource
+            method="POST",
+            path="/projects/other-project/jobs",
+            data=resource,
+            timeout=None,
         )
 
     def test_query_w_explicit_job_config(self):
@@ -3877,7 +4184,7 @@ class TestClient(unittest.TestCase):
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/PROJECT/jobs", data=resource
+            method="POST", path="/projects/PROJECT/jobs", data=resource, timeout=None
         )
 
         # the original config object should not have been modified
@@ -3921,7 +4228,7 @@ class TestClient(unittest.TestCase):
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/PROJECT/jobs", data=resource
+            method="POST", path="/projects/PROJECT/jobs", data=resource, timeout=None
         )
 
         # the original config object should not have been modified
@@ -3973,7 +4280,7 @@ class TestClient(unittest.TestCase):
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/PROJECT/jobs", data=resource
+            method="POST", path="/projects/PROJECT/jobs", data=resource, timeout=None
         )
 
         # the original default config object should not have been modified
@@ -4058,7 +4365,7 @@ class TestClient(unittest.TestCase):
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/PROJECT/jobs", data=resource
+            method="POST", path="/projects/PROJECT/jobs", data=resource, timeout=None
         )
 
     def test_query_w_client_default_config_no_incoming(self):
@@ -4099,7 +4406,7 @@ class TestClient(unittest.TestCase):
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/PROJECT/jobs", data=resource
+            method="POST", path="/projects/PROJECT/jobs", data=resource, timeout=None
         )
 
     def test_query_w_invalid_default_job_config(self):
@@ -4141,7 +4448,10 @@ class TestClient(unittest.TestCase):
 
         # Check that query actually starts the job.
         conn.api_request.assert_called_once_with(
-            method="POST", path="/projects/other-project/jobs", data=resource
+            method="POST",
+            path="/projects/other-project/jobs",
+            data=resource,
+            timeout=None,
         )
 
     def test_query_detect_location(self):
@@ -4212,6 +4522,7 @@ class TestClient(unittest.TestCase):
         _, req = conn.api_request.call_args
         self.assertEqual(req["method"], "POST")
         self.assertEqual(req["path"], "/projects/PROJECT/jobs")
+        self.assertIsNone(req["timeout"])
         sent = req["data"]
         self.assertIsInstance(sent["jobReference"]["jobId"], six.string_types)
         sent_config = sent["configuration"]["query"]
@@ -4267,6 +4578,7 @@ class TestClient(unittest.TestCase):
         _, req = conn.api_request.call_args
         self.assertEqual(req["method"], "POST")
         self.assertEqual(req["path"], "/projects/PROJECT/jobs")
+        self.assertIsNone(req["timeout"])
         sent = req["data"]
         self.assertEqual(sent["jobReference"]["jobId"], JOB)
         sent_config = sent["configuration"]["query"]
@@ -4280,6 +4592,31 @@ class TestClient(unittest.TestCase):
                 "parameterValue": {"value": "123"},
             },
         )
+
+    def test_insert_rows_w_timeout(self):
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection({})
+        table = Table(self.TABLE_REF)
+
+        ROWS = [
+            ("Phred Phlyntstone", 32),
+            ("Bharney Rhubble", 33),
+        ]
+        schema = [
+            SchemaField("full_name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+
+        client.insert_rows(table, ROWS, selected_fields=schema, timeout=7.5)
+
+        conn.api_request.assert_called_once()
+        _, req = conn.api_request.call_args
+        self.assertEqual(req.get("timeout"), 7.5)
 
     def test_insert_rows_wo_schema(self):
         from google.cloud.bigquery.table import Table
@@ -4355,6 +4692,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req["method"], "POST")
         self.assertEqual(req["path"], "/%s" % PATH)
         self.assertEqual(req["data"], SENT)
+        self.assertIsNone(req["timeout"])
 
     def test_insert_rows_w_list_of_dictionaries(self):
         import datetime
@@ -4419,7 +4757,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(errors), 0)
         conn.api_request.assert_called_once_with(
-            method="POST", path="/%s" % PATH, data=SENT
+            method="POST", path="/%s" % PATH, data=SENT, timeout=None
         )
 
     def test_insert_rows_w_list_of_Rows(self):
@@ -4464,7 +4802,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(errors), 0)
         conn.api_request.assert_called_once_with(
-            method="POST", path="/%s" % PATH, data=SENT
+            method="POST", path="/%s" % PATH, data=SENT, timeout=None
         )
 
     def test_insert_rows_w_skip_invalid_and_ignore_unknown(self):
@@ -4541,7 +4879,7 @@ class TestClient(unittest.TestCase):
             errors[0]["errors"][0], RESPONSE["insertErrors"][0]["errors"][0]
         )
         conn.api_request.assert_called_once_with(
-            method="POST", path="/%s" % PATH, data=SENT
+            method="POST", path="/%s" % PATH, data=SENT, timeout=None
         )
 
     def test_insert_rows_w_repeated_fields(self):
@@ -4635,7 +4973,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(errors), 0)
         conn.api_request.assert_called_once_with(
-            method="POST", path="/%s" % PATH, data=SENT
+            method="POST", path="/%s" % PATH, data=SENT, timeout=None,
         )
 
     def test_insert_rows_w_record_schema(self):
@@ -4704,7 +5042,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(errors), 0)
         conn.api_request.assert_called_once_with(
-            method="POST", path="/%s" % PATH, data=SENT
+            method="POST", path="/%s" % PATH, data=SENT, timeout=None
         )
 
     def test_insert_rows_w_explicit_none_insert_ids(self):
@@ -4738,10 +5076,11 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(errors), 0)
         conn.api_request.assert_called_once_with(
-            method="POST", path="/{}".format(PATH), data=SENT
+            method="POST", path="/{}".format(PATH), data=SENT, timeout=None,
         )
 
     def test_insert_rows_errors(self):
+        from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.table import Table
 
         ROWS = [
@@ -4752,6 +5091,7 @@ class TestClient(unittest.TestCase):
         ]
         creds = _make_credentials()
         http = object()
+
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
 
         # table ref with no selected fields
@@ -4762,9 +5102,18 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(ValueError):
             client.insert_rows(Table(self.TABLE_REF), ROWS)
 
-        # neither Table nor tableReference
+        # neither Table nor TableReference
         with self.assertRaises(TypeError):
             client.insert_rows(1, ROWS)
+
+        schema = [
+            SchemaField("full_name", "STRING", mode="REQUIRED"),
+        ]
+        table = Table(self.TABLE_REF, schema=schema)
+
+        # rows is just a dict
+        with self.assertRaises(TypeError):
+            client.insert_rows(table, {"full_name": "value"})
 
     def test_insert_rows_w_numeric(self):
         from google.cloud.bigquery import table
@@ -4806,6 +5155,7 @@ class TestClient(unittest.TestCase):
                 project, ds_id, table_id
             ),
             data=sent,
+            timeout=None,
         )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
@@ -4842,7 +5192,7 @@ class TestClient(unittest.TestCase):
 
         with mock.patch("uuid.uuid4", side_effect=map(str, range(len(dataframe)))):
             error_info = client.insert_rows_from_dataframe(
-                table, dataframe, chunk_size=3
+                table, dataframe, chunk_size=3, timeout=7.5
             )
 
         self.assertEqual(len(error_info), 2)
@@ -4881,7 +5231,9 @@ class TestClient(unittest.TestCase):
         for call, expected_data in six.moves.zip_longest(
             actual_calls, EXPECTED_SENT_DATA
         ):
-            expected_call = mock.call(method="POST", path=API_PATH, data=expected_data)
+            expected_call = mock.call(
+                method="POST", path=API_PATH, data=expected_data, timeout=7.5
+            )
             assert call == expected_call
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
@@ -4926,7 +5278,9 @@ class TestClient(unittest.TestCase):
                 }
             ]
         }
-        expected_call = mock.call(method="POST", path=API_PATH, data=EXPECTED_SENT_DATA)
+        expected_call = mock.call(
+            method="POST", path=API_PATH, data=EXPECTED_SENT_DATA, timeout=None
+        )
 
         actual_calls = conn.api_request.call_args_list
         assert len(actual_calls) == 1
@@ -4978,7 +5332,7 @@ class TestClient(unittest.TestCase):
         actual_calls = conn.api_request.call_args_list
         assert len(actual_calls) == 1
         assert actual_calls[0] == mock.call(
-            method="POST", path=API_PATH, data=EXPECTED_SENT_DATA
+            method="POST", path=API_PATH, data=EXPECTED_SENT_DATA, timeout=None
         )
 
     def test_insert_rows_json(self):
@@ -5021,11 +5375,11 @@ class TestClient(unittest.TestCase):
         }
 
         with mock.patch("uuid.uuid4", side_effect=map(str, range(len(ROWS)))):
-            errors = client.insert_rows_json(table, ROWS)
+            errors = client.insert_rows_json(table, ROWS, timeout=7.5)
 
         self.assertEqual(len(errors), 0)
         conn.api_request.assert_called_once_with(
-            method="POST", path="/%s" % PATH, data=SENT
+            method="POST", path="/%s" % PATH, data=SENT, timeout=7.5,
         )
 
     def test_insert_rows_json_with_string_id(self):
@@ -5048,6 +5402,7 @@ class TestClient(unittest.TestCase):
             method="POST",
             path="/projects/proj/datasets/dset/tables/tbl/insertAll",
             data=expected,
+            timeout=None,
         )
 
     def test_insert_rows_json_w_explicit_none_insert_ids(self):
@@ -5069,7 +5424,33 @@ class TestClient(unittest.TestCase):
             method="POST",
             path="/projects/proj/datasets/dset/tables/tbl/insertAll",
             data=expected,
+            timeout=None,
         )
+
+    def test_insert_rows_w_wrong_arg(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
+
+        PROJECT = "PROJECT"
+        DS_ID = "DS_ID"
+        TABLE_ID = "TABLE_ID"
+        ROW = {"full_name": "Bhettye Rhubble", "age": "27", "joined": None}
+
+        creds = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=object())
+        client._connection = make_connection({})
+
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        schema = [
+            SchemaField("full_name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+            SchemaField("joined", "TIMESTAMP", mode="NULLABLE"),
+        ]
+        table = Table(table_ref, schema=schema)
+
+        with self.assertRaises(TypeError):
+            client.insert_rows_json(table, ROW)
 
     def test_list_partitions(self):
         from google.cloud.bigquery.table import Table
@@ -5112,6 +5493,43 @@ class TestClient(unittest.TestCase):
         )
 
         self.assertEqual(len(partition_list), 0)
+
+    def test_list_partitions_splitting_timout_between_requests(self):
+        from google.cloud.bigquery.table import Table
+
+        row_count = 2
+        meta_info = _make_list_partitons_meta_info(
+            self.PROJECT, self.DS_ID, self.TABLE_ID, row_count
+        )
+
+        data = {
+            "totalRows": str(row_count),
+            "rows": [{"f": [{"v": "20180101"}]}, {"f": [{"v": "20180102"}]}],
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        client._connection = make_connection(meta_info, data)
+        table = Table(self.TABLE_REF)
+
+        with freezegun.freeze_time("2019-01-01 00:00:00", tick=False) as frozen_time:
+
+            def delayed_get_table(*args, **kwargs):
+                frozen_time.tick(delta=1.4)
+                return orig_get_table(*args, **kwargs)
+
+            orig_get_table = client.get_table
+            client.get_table = mock.Mock(side_effect=delayed_get_table)
+
+            client.list_partitions(table, timeout=5.0)
+
+        client.get_table.assert_called_once()
+        _, kwargs = client.get_table.call_args
+        self.assertEqual(kwargs.get("timeout"), 5.0)
+
+        client._connection.api_request.assert_called()
+        _, kwargs = client._connection.api_request.call_args
+        self.assertAlmostEqual(kwargs.get("timeout"), 3.6, places=5)
 
     def test_list_rows(self):
         import datetime
@@ -5173,7 +5591,7 @@ class TestClient(unittest.TestCase):
         joined = SchemaField("joined", "TIMESTAMP", mode="NULLABLE")
         table = Table(self.TABLE_REF, schema=[full_name, age, joined])
 
-        iterator = client.list_rows(table)
+        iterator = client.list_rows(table, timeout=7.5)
         page = six.next(iterator.pages)
         rows = list(page)
         total_rows = iterator.total_rows
@@ -5189,7 +5607,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(page_token, TOKEN)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path="/%s" % PATH, query_params={}
+            method="GET", path="/%s" % PATH, query_params={}, timeout=7.5
         )
 
     def test_list_rows_empty_table(self):
@@ -5297,6 +5715,7 @@ class TestClient(unittest.TestCase):
             method="GET",
             path="/%s" % PATH,
             query_params={"selectedFields": "color,struct"},
+            timeout=None,
         )
 
     def test_list_rows_w_record_schema(self):
@@ -5363,7 +5782,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(page_token, TOKEN)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path="/%s" % PATH, query_params={}
+            method="GET", path="/%s" % PATH, query_params={}, timeout=None
         )
 
     def test_list_rows_with_missing_schema(self):
@@ -5417,25 +5836,67 @@ class TestClient(unittest.TestCase):
 
             row_iter = client.list_rows(table)
 
-            conn.api_request.assert_called_once_with(method="GET", path=table_path)
+            conn.api_request.assert_called_once_with(
+                method="GET", path=table_path, timeout=None
+            )
             conn.api_request.reset_mock()
             self.assertEqual(row_iter.total_rows, 2, msg=repr(table))
 
             rows = list(row_iter)
             conn.api_request.assert_called_once_with(
-                method="GET", path=tabledata_path, query_params={}
+                method="GET", path=tabledata_path, query_params={}, timeout=None
             )
             self.assertEqual(row_iter.total_rows, 3, msg=repr(table))
             self.assertEqual(rows[0].name, "Phred Phlyntstone", msg=repr(table))
             self.assertEqual(rows[1].age, 31, msg=repr(table))
             self.assertIsNone(rows[2].age, msg=repr(table))
 
+    def test_list_rows_splitting_timout_between_requests(self):
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
+
+        response = {"totalRows": "0", "rows": []}
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        client._connection = make_connection(response, response)
+
+        table = Table(
+            self.TABLE_REF, schema=[SchemaField("field_x", "INTEGER", mode="NULLABLE")]
+        )
+
+        with freezegun.freeze_time("1970-01-01 00:00:00", tick=False) as frozen_time:
+
+            def delayed_get_table(*args, **kwargs):
+                frozen_time.tick(delta=1.4)
+                return table
+
+            client.get_table = mock.Mock(side_effect=delayed_get_table)
+
+            rows_iter = client.list_rows(
+                "{}.{}.{}".format(
+                    self.TABLE_REF.project,
+                    self.TABLE_REF.dataset_id,
+                    self.TABLE_REF.table_id,
+                ),
+                timeout=5.0,
+            )
+            six.next(rows_iter.pages)
+
+        client.get_table.assert_called_once()
+        _, kwargs = client.get_table.call_args
+        self.assertEqual(kwargs.get("timeout"), 5.0)
+
+        client._connection.api_request.assert_called_once()
+        _, kwargs = client._connection.api_request.call_args
+        self.assertAlmostEqual(kwargs.get("timeout"), 3.6)
+
     def test_list_rows_error(self):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
 
-        # neither Table nor tableReference
+        # neither Table nor TableReference
         with self.assertRaises(TypeError):
             client.list_rows(1)
 
@@ -6032,7 +6493,7 @@ class TestClientUpload(object):
             SchemaField("int_col", "INTEGER"),
             SchemaField("float_col", "FLOAT"),
             SchemaField("bool_col", "BOOLEAN"),
-            SchemaField("dt_col", "DATETIME"),
+            SchemaField("dt_col", "TIMESTAMP"),
             SchemaField("ts_col", "TIMESTAMP"),
         )
 
@@ -6278,7 +6739,7 @@ class TestClientUpload(object):
             SchemaField("int_as_float_col", "INTEGER"),
             SchemaField("float_col", "FLOAT"),
             SchemaField("bool_col", "BOOLEAN"),
-            SchemaField("dt_col", "DATETIME"),
+            SchemaField("dt_col", "TIMESTAMP"),
             SchemaField("ts_col", "TIMESTAMP"),
             SchemaField("string_col", "STRING"),
             SchemaField("bytes_col", "BYTES"),

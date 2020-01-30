@@ -15,9 +15,10 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -25,15 +26,16 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.talent.v4beta1",
     syntax="proto3",
     serialized_options=_b(
-        "\n\037com.google.cloud.talent.v4beta1B\023TenantResourceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
+        "\n\037com.google.cloud.talent.v4beta1B\023TenantResourceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS\352A^\n#jobs.googleapis.com/TenantOrProject\022#projects/{project}/tenants/{tenant}\022\022projects/{project}"
     ),
     serialized_pb=_b(
-        '\n.google/cloud/talent_v4beta1/proto/tenant.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xfd\x01\n\x06Tenant\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x18\n\x0b\x65xternal_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x45\n\nusage_type\x18\x03 \x01(\x0e\x32\x31.google.cloud.talent.v4beta1.Tenant.DataUsageType\x12\x34\n,keyword_searchable_profile_custom_attributes\x18\x04 \x03(\t"N\n\rDataUsageType\x12\x1f\n\x1b\x44\x41TA_USAGE_TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nAGGREGATED\x10\x01\x12\x0c\n\x08ISOLATED\x10\x02\x42\x81\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x13TenantResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n.google/cloud/talent_v4beta1/proto/tenant.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\xc3\x02\n\x06Tenant\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x18\n\x0b\x65xternal_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x45\n\nusage_type\x18\x03 \x01(\x0e\x32\x31.google.cloud.talent.v4beta1.Tenant.DataUsageType\x12\x34\n,keyword_searchable_profile_custom_attributes\x18\x04 \x03(\t"N\n\rDataUsageType\x12\x1f\n\x1b\x44\x41TA_USAGE_TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nAGGREGATED\x10\x01\x12\x0c\n\x08ISOLATED\x10\x02:D\xea\x41\x41\n\x1ajobs.googleapis.com/Tenant\x12#projects/{project}/tenants/{tenant}B\xe2\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x13TenantResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TS\xea\x41^\n#jobs.googleapis.com/TenantOrProject\x12#projects/{project}/tenants/{tenant}\x12\x12projects/{project}b\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -60,8 +62,8 @@ _TENANT_DATAUSAGETYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=351,
-    serialized_end=429,
+    serialized_start=378,
+    serialized_end=456,
 )
 _sym_db.RegisterEnumDescriptor(_TENANT_DATAUSAGETYPE)
 
@@ -149,13 +151,15 @@ _TENANT = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[_TENANT_DATAUSAGETYPE],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352AA\n\032jobs.googleapis.com/Tenant\022#projects/{project}/tenants/{tenant}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=176,
-    serialized_end=429,
+    serialized_start=203,
+    serialized_end=526,
 )
 
 _TENANT.fields_by_name["usage_type"].enum_type = _TENANT_DATAUSAGETYPE
@@ -169,10 +173,10 @@ Tenant = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TENANT,
         __module__="google.cloud.talent_v4beta1.proto.tenant_pb2",
-        __doc__="""A Tenant resource represents a tenant in the service. A tenant is a
-  group or entity that shares common access with specific privileges for
-  resources like profiles. Customer may create multiple tenants to provide
-  data isolation for different groups.
+        __doc__="""A Tenant resource represents a tenant in the service. A
+  tenant is a group or entity that shares common access with specific
+  privileges for resources like profiles. Customer may create multiple
+  tenants to provide data isolation for different groups.
   
   
   Attributes:
@@ -209,4 +213,5 @@ _sym_db.RegisterMessage(Tenant)
 
 DESCRIPTOR._options = None
 _TENANT.fields_by_name["external_id"]._options = None
+_TENANT._options = None
 # @@protoc_insertion_point(module_scope)

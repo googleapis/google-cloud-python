@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -90,12 +90,7 @@ class DataLabelingServiceClient(object):
 
     @classmethod
     def annotated_dataset_path(cls, project, dataset, annotated_dataset):
-        """DEPRECATED. Return a fully-qualified annotated_dataset string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified annotated_dataset string."""
         return google.api_core.path_template.expand(
             "projects/{project}/datasets/{dataset}/annotatedDatasets/{annotated_dataset}",
             project=project,
@@ -105,12 +100,7 @@ class DataLabelingServiceClient(object):
 
     @classmethod
     def annotation_spec_set_path(cls, project, annotation_spec_set):
-        """DEPRECATED. Return a fully-qualified annotation_spec_set string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified annotation_spec_set string."""
         return google.api_core.path_template.expand(
             "projects/{project}/annotationSpecSets/{annotation_spec_set}",
             project=project,
@@ -119,12 +109,7 @@ class DataLabelingServiceClient(object):
 
     @classmethod
     def data_item_path(cls, project, dataset, data_item):
-        """DEPRECATED. Return a fully-qualified data_item string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified data_item string."""
         return google.api_core.path_template.expand(
             "projects/{project}/datasets/{dataset}/dataItems/{data_item}",
             project=project,
@@ -134,24 +119,14 @@ class DataLabelingServiceClient(object):
 
     @classmethod
     def dataset_path(cls, project, dataset):
-        """DEPRECATED. Return a fully-qualified dataset string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified dataset string."""
         return google.api_core.path_template.expand(
             "projects/{project}/datasets/{dataset}", project=project, dataset=dataset
         )
 
     @classmethod
     def evaluation_path(cls, project, dataset, evaluation):
-        """DEPRECATED. Return a fully-qualified evaluation string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified evaluation string."""
         return google.api_core.path_template.expand(
             "projects/{project}/datasets/{dataset}/evaluations/{evaluation}",
             project=project,
@@ -161,12 +136,7 @@ class DataLabelingServiceClient(object):
 
     @classmethod
     def evaluation_job_path(cls, project, evaluation_job):
-        """DEPRECATED. Return a fully-qualified evaluation_job string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified evaluation_job string."""
         return google.api_core.path_template.expand(
             "projects/{project}/evaluationJobs/{evaluation_job}",
             project=project,
@@ -175,12 +145,7 @@ class DataLabelingServiceClient(object):
 
     @classmethod
     def example_path(cls, project, dataset, annotated_dataset, example):
-        """DEPRECATED. Return a fully-qualified example string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified example string."""
         return google.api_core.path_template.expand(
             "projects/{project}/datasets/{dataset}/annotatedDatasets/{annotated_dataset}/examples/{example}",
             project=project,
@@ -191,12 +156,7 @@ class DataLabelingServiceClient(object):
 
     @classmethod
     def instruction_path(cls, project, instruction):
-        """DEPRECATED. Return a fully-qualified instruction string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified instruction string."""
         return google.api_core.path_template.expand(
             "projects/{project}/instructions/{instruction}",
             project=project,
@@ -205,12 +165,7 @@ class DataLabelingServiceClient(object):
 
     @classmethod
     def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project
         )
@@ -771,9 +726,7 @@ class DataLabelingServiceClient(object):
             >>> client = datalabeling_v1beta1.DataLabelingServiceClient()
             >>>
             >>> name = client.dataset_path('[PROJECT]', '[DATASET]')
-            >>>
-            >>> # TODO: Initialize `annotated_dataset`:
-            >>> annotated_dataset = ''
+            >>> annotated_dataset = client.annotated_dataset_path('[PROJECT]', '[DATASET]', '[ANNOTATED_DATASET]')
             >>>
             >>> # TODO: Initialize `output_config`:
             >>> output_config = {}
@@ -1218,6 +1171,74 @@ class DataLabelingServiceClient(object):
             response_token_field="next_page_token",
         )
         return iterator
+
+    def delete_annotated_dataset(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes an annotated dataset by resource name.
+
+        Example:
+            >>> from google.cloud import datalabeling_v1beta1
+            >>>
+            >>> client = datalabeling_v1beta1.DataLabelingServiceClient()
+            >>>
+            >>> name = client.annotated_dataset_path('[PROJECT]', '[DATASET]', '[ANNOTATED_DATASET]')
+            >>>
+            >>> client.delete_annotated_dataset(name)
+
+        Args:
+            name (str): Required. Name of the annotated dataset to delete, format:
+                projects/{project\_id}/datasets/{dataset\_id}/annotatedDatasets/
+                {annotated\_dataset\_id}
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_annotated_dataset" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_annotated_dataset"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_annotated_dataset,
+                default_retry=self._method_configs["DeleteAnnotatedDataset"].retry,
+                default_timeout=self._method_configs["DeleteAnnotatedDataset"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = data_labeling_service_pb2.DeleteAnnotatedDatasetRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["delete_annotated_dataset"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def label_image(
         self,
@@ -2487,7 +2508,8 @@ class DataLabelingServiceClient(object):
         metadata=None,
     ):
         """
-        Gets an evaluation by resource name.
+        Gets an evaluation by resource name (to search, use
+        ``projects.evaluations.search``).
 
         Example:
             >>> from google.cloud import datalabeling_v1beta1
@@ -2500,7 +2522,8 @@ class DataLabelingServiceClient(object):
 
         Args:
             name (str): Required. Name of the evaluation. Format:
-                'projects/{project\_id}/datasets/{dataset\_id}/evaluations/{evaluation\_id}'
+
+                "projects/{project\_id}/datasets/{dataset\_id}/evaluations/{evaluation\_id}'
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -2552,28 +2575,24 @@ class DataLabelingServiceClient(object):
     def search_evaluations(
         self,
         parent,
-        filter_,
+        filter_=None,
         page_size=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """
-        Searchs evaluations within a project. Supported filter: evaluation\_job,
-        evaluation\_time.
+        Searches ``evaluations`` within a project.
 
         Example:
             >>> from google.cloud import datalabeling_v1beta1
             >>>
             >>> client = datalabeling_v1beta1.DataLabelingServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
-            >>>
-            >>> # TODO: Initialize `filter_`:
-            >>> filter_ = ''
+            >>> parent = client.evaluation_path('[PROJECT]', '[DATASET]', '[EVALUATION]')
             >>>
             >>> # Iterate over all results
-            >>> for element in client.search_evaluations(parent, filter_):
+            >>> for element in client.search_evaluations(parent):
             ...     # process element
             ...     pass
             >>>
@@ -2581,17 +2600,36 @@ class DataLabelingServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.search_evaluations(parent, filter_).pages:
+            >>> for page in client.search_evaluations(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
-            parent (str): Required. Evaluation search parent. Format: projects/{project\_id}
-            filter_ (str): Optional. Support filtering by model id, job state, start and end time.
-                Format: "evaluation\_job.evaluation\_job\_id = {evaluation\_job\_id} AND
-                evaluation\_job.evaluation\_job\_run\_time\_start = {timestamp} AND
-                evaluation\_job.evaluation\_job\_run\_time\_end = {timestamp} AND
+            parent (str): Required. Evaluation search parent (project ID). Format:
+                "projects/{project\_id}"
+            filter_ (str): Optional. To search evaluations, you can filter by the following:
+
+                -  evaluation\_job.evaluation\_job\_id (the last part of
+                   ``EvaluationJob.name``)
+                -  evaluation\_job.model\_id (the {model\_name} portion of
+                   ``EvaluationJob.modelVersion``)
+                -  evaluation\_job.evaluation\_job\_run\_time\_start (Minimum threshold
+                   for the ``evaluationJobRunTime`` that created the evaluation)
+                -  evaluation\_job.evaluation\_job\_run\_time\_end (Maximum threshold
+                   for the ``evaluationJobRunTime`` that created the evaluation)
+                -  evaluation\_job.job\_state (``EvaluationJob.state``)
+                -  annotation\_spec.display\_name (the Evaluation contains a metric for
+                   the annotation spec with this ``displayName``)
+
+                To filter by multiple critiera, use the ``AND`` operator or the ``OR``
+                operator. The following examples shows a string that filters by several
+                critiera:
+
+                "evaluation\ *job.evaluation\_job\_id = {evaluation\_job\_id} AND
+                evaluation*\ job.model\_id = {model\_name} AND
+                evaluation\ *job.evaluation\_job\_run\_time\_start = {timestamp\_1} AND
+                evaluation*\ job.evaluation\_job\_run\_time\_end = {timestamp\_2} AND
                 annotation\_spec.display\_name = {display\_name}"
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -2671,9 +2709,9 @@ class DataLabelingServiceClient(object):
         metadata=None,
     ):
         """
-        Searchs example comparisons in evaluation, in format of examples
-        of both ground truth and prediction(s). It is represented as a search with
-        evaluation id.
+        Searches example comparisons from an evaluation. The return format is a
+        list of example comparisons that show ground truth and prediction(s) for
+        a single input. Search by providing an evaluation ID.
 
         Example:
             >>> from google.cloud import datalabeling_v1beta1
@@ -2697,9 +2735,10 @@ class DataLabelingServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Required. Name of the Evaluation resource to search example comparison
-                from. Format:
-                projects/{project\_id}/datasets/{dataset\_id}/evaluations/{evaluation\_id}
+            parent (str): Required. Name of the ``Evaluation`` resource to search for example
+                comparisons from. Format:
+
+                "projects/{project\_id}/datasets/{dataset\_id}/evaluations/{evaluation\_id}"
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -2795,8 +2834,8 @@ class DataLabelingServiceClient(object):
             >>> response = client.create_evaluation_job(parent, job)
 
         Args:
-            parent (str): Required. Evaluation job resource parent, format:
-                projects/{project\_id}.
+            parent (str): Required. Evaluation job resource parent. Format:
+                "projects/{project\_id}"
             job (Union[dict, ~google.cloud.datalabeling_v1beta1.types.EvaluationJob]): Required. The evaluation job to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -2854,13 +2893,18 @@ class DataLabelingServiceClient(object):
     def update_evaluation_job(
         self,
         evaluation_job,
-        update_mask,
+        update_mask=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """
-        Updates an evaluation job.
+        Updates an evaluation job. You can only update certain fields of the
+        job's ``EvaluationJobConfig``: ``humanAnnotationConfig.instruction``,
+        ``exampleCount``, and ``exampleSamplePercentage``.
+
+        If you want to change any other aspect of the evaluation job, you must
+        delete the job and create a new one.
 
         Example:
             >>> from google.cloud import datalabeling_v1beta1
@@ -2870,17 +2914,22 @@ class DataLabelingServiceClient(object):
             >>> # TODO: Initialize `evaluation_job`:
             >>> evaluation_job = {}
             >>>
-            >>> # TODO: Initialize `update_mask`:
-            >>> update_mask = {}
-            >>>
-            >>> response = client.update_evaluation_job(evaluation_job, update_mask)
+            >>> response = client.update_evaluation_job(evaluation_job)
 
         Args:
             evaluation_job (Union[dict, ~google.cloud.datalabeling_v1beta1.types.EvaluationJob]): Required. Evaluation job that is going to be updated.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.EvaluationJob`
-            update_mask (Union[dict, ~google.cloud.datalabeling_v1beta1.types.FieldMask]): Optional. Mask for which field in evaluation\_job should be updated.
+            update_mask (Union[dict, ~google.cloud.datalabeling_v1beta1.types.FieldMask]): Optional. Mask for which fields to update. You can only provide the
+                following fields:
+
+                -  ``evaluationJobConfig.humanAnnotationConfig.instruction``
+                -  ``evaluationJobConfig.exampleCount``
+                -  ``evaluationJobConfig.exampleSamplePercentage``
+
+                You can provide more than one of these fields by separating them with
+                commas.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.FieldMask`
@@ -2955,7 +3004,8 @@ class DataLabelingServiceClient(object):
 
         Args:
             name (str): Required. Name of the evaluation job. Format:
-                'projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}'
+
+                "projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}"
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -3012,8 +3062,8 @@ class DataLabelingServiceClient(object):
         metadata=None,
     ):
         """
-        Pauses an evaluation job. Pausing a evaluation job that is already in
-        PAUSED state will be a no-op.
+        Pauses an evaluation job. Pausing an evaluation job that is already in a
+        ``PAUSED`` state is a no-op.
 
         Example:
             >>> from google.cloud import datalabeling_v1beta1
@@ -3026,7 +3076,8 @@ class DataLabelingServiceClient(object):
 
         Args:
             name (str): Required. Name of the evaluation job that is going to be paused. Format:
-                'projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}'
+
+                "projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}"
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -3080,8 +3131,8 @@ class DataLabelingServiceClient(object):
         metadata=None,
     ):
         """
-        Resumes a paused evaluation job. Deleted evaluation job can't be resumed.
-        Resuming a running evaluation job will be a no-op.
+        Resumes a paused evaluation job. A deleted evaluation job can't be resumed.
+        Resuming a running or scheduled evaluation job is a no-op.
 
         Example:
             >>> from google.cloud import datalabeling_v1beta1
@@ -3094,7 +3145,9 @@ class DataLabelingServiceClient(object):
 
         Args:
             name (str): Required. Name of the evaluation job that is going to be resumed.
-                Format: 'projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}'
+                Format:
+
+                "projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}"
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -3161,7 +3214,9 @@ class DataLabelingServiceClient(object):
 
         Args:
             name (str): Required. Name of the evaluation job that is going to be deleted.
-                Format: 'projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}'
+                Format:
+
+                "projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}"
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -3210,7 +3265,7 @@ class DataLabelingServiceClient(object):
     def list_evaluation_jobs(
         self,
         parent,
-        filter_,
+        filter_=None,
         page_size=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -3227,11 +3282,8 @@ class DataLabelingServiceClient(object):
             >>>
             >>> parent = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize `filter_`:
-            >>> filter_ = ''
-            >>>
             >>> # Iterate over all results
-            >>> for element in client.list_evaluation_jobs(parent, filter_):
+            >>> for element in client.list_evaluation_jobs(parent):
             ...     # process element
             ...     pass
             >>>
@@ -3239,16 +3291,21 @@ class DataLabelingServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_evaluation_jobs(parent, filter_).pages:
+            >>> for page in client.list_evaluation_jobs(parent).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
-            parent (str): Required. Evaluation resource parent. Format: "projects/{project\_id}"
-            filter_ (str): Optional. Only support filter by model id and job state. Format:
-                "evaluation\_job.model\_id = {model\_id} AND evaluation\_job.state =
-                {EvaluationJob::State}"
+            parent (str): Required. Evaluation job resource parent. Format:
+                "projects/{project\_id}"
+            filter_ (str): Optional. You can filter the jobs to list by model\_id (also known as
+                model\_name, as described in ``EvaluationJob.modelVersion``) or by
+                evaluation job state (as described in ``EvaluationJob.state``). To
+                filter by both criteria, use the ``AND`` operator or the ``OR``
+                operator. For example, you can use the following string for your filter:
+                "evaluation\ *job.model\_id = {model\_name} AND evaluation*\ job.state =
+                {evaluation\_job\_state}"
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -3317,69 +3374,3 @@ class DataLabelingServiceClient(object):
             response_token_field="next_page_token",
         )
         return iterator
-
-    def delete_annotated_dataset(
-        self,
-        name=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Deletes an annotated dataset by resource name.
-
-        Example:
-            >>> from google.cloud import datalabeling_v1beta1
-            >>>
-            >>> client = datalabeling_v1beta1.DataLabelingServiceClient()
-            >>>
-            >>> client.delete_annotated_dataset()
-
-        Args:
-            name (str): Required. Name of the annotated dataset to delete, format:
-                projects/{project\_id}/datasets/{dataset\_id}/annotatedDatasets/
-                {annotated\_dataset\_id}
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "delete_annotated_dataset" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "delete_annotated_dataset"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_annotated_dataset,
-                default_retry=self._method_configs["DeleteAnnotatedDataset"].retry,
-                default_timeout=self._method_configs["DeleteAnnotatedDataset"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = data_labeling_service_pb2.DeleteAnnotatedDatasetRequest(name=name)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        self._inner_api_calls["delete_annotated_dataset"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )

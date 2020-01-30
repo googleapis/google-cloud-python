@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -108,6 +108,68 @@ class IncidentServiceGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return self._channel
+
+    @property
+    def delete_artifact(self):
+        """Return the gRPC stub for :meth:`IncidentServiceClient.delete_artifact`.
+
+        Deletes an existing artifact.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["incident_service_stub"].DeleteArtifact
+
+    @property
+    def request_incident_role_handover(self):
+        """Return the gRPC stub for :meth:`IncidentServiceClient.request_incident_role_handover`.
+
+        Starts a role handover. The proposed assignee will receive an email
+        notifying them of the assignment. This will fail if a role handover is
+        already pending.
+        Handover to an oncall ladder is not permitted. Use
+        CreateIncidentRoleAssignment instead.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["incident_service_stub"].RequestIncidentRoleHandover
+
+    @property
+    def confirm_incident_role_handover(self):
+        """Return the gRPC stub for :meth:`IncidentServiceClient.confirm_incident_role_handover`.
+
+        Confirms a role handover. This will fail if the 'proposed_assignee'
+        field of the IncidentRoleAssignment is not equal to the 'new_assignee'
+        field of the request. If the caller is not the new_assignee,
+        ForceIncidentRoleHandover should be used instead.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["incident_service_stub"].ConfirmIncidentRoleHandover
+
+    @property
+    def force_incident_role_handover(self):
+        """Return the gRPC stub for :meth:`IncidentServiceClient.force_incident_role_handover`.
+
+        Forces a role handover. This will fail if the 'proposed_assignee' field
+        of the IncidentRoleAssignment is not equal to the 'new_assignee' field
+        of the request. If the caller is the new_assignee,
+        ConfirmIncidentRoleHandover should be used instead.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["incident_service_stub"].ForceIncidentRoleHandover
 
     @property
     def create_incident(self):
@@ -263,6 +325,9 @@ class IncidentServiceGrpcTransport(object):
 
         Lists signals that are part of an incident.
         Signals are returned in reverse chronological order.
+        Note that search should not be relied on for critical functionality.  It
+        has lower availability guarantees and might fail to return valid results.
+        Returned results might include stale or extraneous entries.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -270,19 +335,6 @@ class IncidentServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["incident_service_stub"].SearchSignals
-
-    @property
-    def get_signal(self):
-        """Return the gRPC stub for :meth:`IncidentServiceClient.get_signal`.
-
-        Returns a signal by name.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["incident_service_stub"].GetSignal
 
     @property
     def lookup_signal(self):
@@ -296,6 +348,19 @@ class IncidentServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["incident_service_stub"].LookupSignal
+
+    @property
+    def get_signal(self):
+        """Return the gRPC stub for :meth:`IncidentServiceClient.get_signal`.
+
+        Returns a signal by name.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["incident_service_stub"].GetSignal
 
     @property
     def update_signal(self):
@@ -362,19 +427,6 @@ class IncidentServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["incident_service_stub"].UpdateArtifact
-
-    @property
-    def delete_artifact(self):
-        """Return the gRPC stub for :meth:`IncidentServiceClient.delete_artifact`.
-
-        Deletes an existing artifact.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["incident_service_stub"].DeleteArtifact
 
     @property
     def send_shift_handoff(self):
@@ -486,53 +538,6 @@ class IncidentServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["incident_service_stub"].ListIncidentRoleAssignments
-
-    @property
-    def request_incident_role_handover(self):
-        """Return the gRPC stub for :meth:`IncidentServiceClient.request_incident_role_handover`.
-
-        Starts a role handover. The proposed assignee will receive an email
-        notifying them of the assignment. This will fail if a role handover is
-        already pending.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["incident_service_stub"].RequestIncidentRoleHandover
-
-    @property
-    def confirm_incident_role_handover(self):
-        """Return the gRPC stub for :meth:`IncidentServiceClient.confirm_incident_role_handover`.
-
-        Confirms a role handover. This will fail if the 'proposed_assignee'
-        field of the IncidentRoleAssignment is not equal to the 'new_assignee'
-        field of the request. If the caller is not the new_assignee,
-        ForceIncidentRoleHandover should be used instead.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["incident_service_stub"].ConfirmIncidentRoleHandover
-
-    @property
-    def force_incident_role_handover(self):
-        """Return the gRPC stub for :meth:`IncidentServiceClient.force_incident_role_handover`.
-
-        Forces a role handover. This will fail if the 'proposed_assignee' field
-        of the IncidentRoleAssignment is not equal to the 'new_assignee' field
-        of the request. If the caller is the new_assignee,
-        ConfirmIncidentRoleHandover should be used instead.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["incident_service_stub"].ForceIncidentRoleHandover
 
     @property
     def cancel_incident_role_handover(self):

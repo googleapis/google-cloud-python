@@ -182,19 +182,54 @@ class TestRetry(object):
         assert retry_._on_error is _some_function
 
     def test_with_deadline(self):
-        retry_ = retry.Retry()
+        retry_ = retry.Retry(
+            predicate=mock.sentinel.predicate,
+            initial=1,
+            maximum=2,
+            multiplier=3,
+            deadline=4,
+            on_error=mock.sentinel.on_error,
+        )
         new_retry = retry_.with_deadline(42)
         assert retry_ is not new_retry
         assert new_retry._deadline == 42
 
+        # the rest of the attributes should remain the same
+        assert new_retry._predicate is retry_._predicate
+        assert new_retry._initial == retry_._initial
+        assert new_retry._maximum == retry_._maximum
+        assert new_retry._multiplier == retry_._multiplier
+        assert new_retry._on_error is retry_._on_error
+
     def test_with_predicate(self):
-        retry_ = retry.Retry()
+        retry_ = retry.Retry(
+            predicate=mock.sentinel.predicate,
+            initial=1,
+            maximum=2,
+            multiplier=3,
+            deadline=4,
+            on_error=mock.sentinel.on_error,
+        )
         new_retry = retry_.with_predicate(mock.sentinel.predicate)
         assert retry_ is not new_retry
         assert new_retry._predicate == mock.sentinel.predicate
 
+        # the rest of the attributes should remain the same
+        assert new_retry._deadline == retry_._deadline
+        assert new_retry._initial == retry_._initial
+        assert new_retry._maximum == retry_._maximum
+        assert new_retry._multiplier == retry_._multiplier
+        assert new_retry._on_error is retry_._on_error
+
     def test_with_delay_noop(self):
-        retry_ = retry.Retry()
+        retry_ = retry.Retry(
+            predicate=mock.sentinel.predicate,
+            initial=1,
+            maximum=2,
+            multiplier=3,
+            deadline=4,
+            on_error=mock.sentinel.on_error,
+        )
         new_retry = retry_.with_delay()
         assert retry_ is not new_retry
         assert new_retry._initial == retry_._initial
@@ -202,15 +237,39 @@ class TestRetry(object):
         assert new_retry._multiplier == retry_._multiplier
 
     def test_with_delay(self):
-        retry_ = retry.Retry()
+        retry_ = retry.Retry(
+            predicate=mock.sentinel.predicate,
+            initial=1,
+            maximum=2,
+            multiplier=3,
+            deadline=4,
+            on_error=mock.sentinel.on_error,
+        )
         new_retry = retry_.with_delay(initial=1, maximum=2, multiplier=3)
         assert retry_ is not new_retry
         assert new_retry._initial == 1
         assert new_retry._maximum == 2
         assert new_retry._multiplier == 3
 
+        # the rest of the attributes should remain the same
+        assert new_retry._deadline == retry_._deadline
+        assert new_retry._predicate is retry_._predicate
+        assert new_retry._on_error is retry_._on_error
+
     def test___str__(self):
-        retry_ = retry.Retry()
+        def if_exception_type(exc):
+            return bool(exc)  # pragma: NO COVER
+
+        # Explicitly set all attributes as changed Retry defaults should not
+        # cause this test to start failing.
+        retry_ = retry.Retry(
+            predicate=if_exception_type,
+            initial=1.0,
+            maximum=60.0,
+            multiplier=2.0,
+            deadline=120.0,
+            on_error=None,
+        )
         assert re.match(
             (
                 r"<Retry predicate=<function.*?if_exception_type.*?>, "
@@ -258,6 +317,54 @@ class TestRetry(object):
         target.assert_has_calls([mock.call("meep"), mock.call("meep")])
         sleep.assert_called_once_with(retry_._initial)
         assert on_error.call_count == 1
+
+    # Make uniform return half of its maximum, which is the calculated sleep time.
+    @mock.patch("random.uniform", autospec=True, side_effect=lambda m, n: n / 2.0)
+    @mock.patch("time.sleep", autospec=True)
+    def test___call___and_execute_retry_hitting_deadline(self, sleep, uniform):
+
+        on_error = mock.Mock(spec=["__call__"], side_effect=[None] * 10)
+        retry_ = retry.Retry(
+            predicate=retry.if_exception_type(ValueError),
+            initial=1.0,
+            maximum=1024.0,
+            multiplier=2.0,
+            deadline=9.9,
+        )
+
+        utcnow = datetime.datetime.utcnow()
+        utcnow_patcher = mock.patch(
+            "google.api_core.datetime_helpers.utcnow", return_value=utcnow
+        )
+
+        target = mock.Mock(spec=["__call__"], side_effect=[ValueError()] * 10)
+        # __name__ is needed by functools.partial.
+        target.__name__ = "target"
+
+        decorated = retry_(target, on_error=on_error)
+        target.assert_not_called()
+
+        with utcnow_patcher as patched_utcnow:
+            # Make sure that calls to fake time.sleep() also advance the mocked
+            # time clock.
+            def increase_time(sleep_delay):
+                patched_utcnow.return_value += datetime.timedelta(seconds=sleep_delay)
+            sleep.side_effect = increase_time
+
+            with pytest.raises(exceptions.RetryError):
+                decorated("meep")
+
+        assert target.call_count == 5
+        target.assert_has_calls([mock.call("meep")] * 5)
+        assert on_error.call_count == 5
+
+        # check the delays
+        assert sleep.call_count == 4  # once between each successive target calls
+        last_wait = sleep.call_args.args[0]
+        total_wait = sum(call_args.args[0] for call_args in sleep.call_args_list)
+
+        assert last_wait == 2.9   # and not 8.0, because the last delay was shortened
+        assert total_wait == 9.9  # the same as the deadline
 
     @mock.patch("time.sleep", autospec=True)
     def test___init___without_retry_executed(self, sleep):

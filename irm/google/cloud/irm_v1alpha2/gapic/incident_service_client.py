@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -77,12 +77,7 @@ class IncidentServiceClient(object):
 
     @classmethod
     def annotation_path(cls, project, incident, annotation):
-        """DEPRECATED. Return a fully-qualified annotation string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified annotation string."""
         return google.api_core.path_template.expand(
             "projects/{project}/incidents/{incident}/annotations/{annotation}",
             project=project,
@@ -92,12 +87,7 @@ class IncidentServiceClient(object):
 
     @classmethod
     def artifact_path(cls, project, incident, artifact):
-        """DEPRECATED. Return a fully-qualified artifact string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified artifact string."""
         return google.api_core.path_template.expand(
             "projects/{project}/incidents/{incident}/artifacts/{artifact}",
             project=project,
@@ -107,12 +97,7 @@ class IncidentServiceClient(object):
 
     @classmethod
     def incident_path(cls, project, incident):
-        """DEPRECATED. Return a fully-qualified incident string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified incident string."""
         return google.api_core.path_template.expand(
             "projects/{project}/incidents/{incident}",
             project=project,
@@ -120,52 +105,32 @@ class IncidentServiceClient(object):
         )
 
     @classmethod
-    def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
+    def incident_role_assignment_path(cls, project_id_or_number, incident_id, role_id):
+        """Return a fully-qualified incident_role_assignment string."""
+        return google.api_core.path_template.expand(
+            "projects/{project_id_or_number}/incidents/{incident_id}/role_assignments/{role_id}",
+            project_id_or_number=project_id_or_number,
+            incident_id=incident_id,
+            role_id=role_id,
         )
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project
         )
 
     @classmethod
-    def role_assignment_path(cls, project, incident, role_assignment):
-        """DEPRECATED. Return a fully-qualified role_assignment string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
-        return google.api_core.path_template.expand(
-            "projects/{project}/incidents/{incident}/roleAssignments/{role_assignment}",
-            project=project,
-            incident=incident,
-            role_assignment=role_assignment,
-        )
-
-    @classmethod
     def signal_path(cls, project, signal):
-        """DEPRECATED. Return a fully-qualified signal string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified signal string."""
         return google.api_core.path_template.expand(
             "projects/{project}/signals/{signal}", project=project, signal=signal
         )
 
     @classmethod
     def subscription_path(cls, project, incident, subscription):
-        """DEPRECATED. Return a fully-qualified subscription string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified subscription string."""
         return google.api_core.path_template.expand(
             "projects/{project}/incidents/{incident}/subscriptions/{subscription}",
             project=project,
@@ -175,12 +140,7 @@ class IncidentServiceClient(object):
 
     @classmethod
     def tag_path(cls, project, incident, tag):
-        """DEPRECATED. Return a fully-qualified tag string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified tag string."""
         return google.api_core.path_template.expand(
             "projects/{project}/incidents/{incident}/tags/{tag}",
             project=project,
@@ -301,6 +261,328 @@ class IncidentServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
+    def delete_artifact(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes an existing artifact.
+
+        Example:
+            >>> from google.cloud import irm_v1alpha2
+            >>>
+            >>> client = irm_v1alpha2.IncidentServiceClient()
+            >>>
+            >>> name = client.artifact_path('[PROJECT]', '[INCIDENT]', '[ARTIFACT]')
+            >>>
+            >>> client.delete_artifact(name)
+
+        Args:
+            name (str): Required. Resource name of the artifact.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_artifact" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_artifact"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_artifact,
+                default_retry=self._method_configs["DeleteArtifact"].retry,
+                default_timeout=self._method_configs["DeleteArtifact"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = incidents_service_pb2.DeleteArtifactRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["delete_artifact"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def request_incident_role_handover(
+        self,
+        name,
+        new_assignee,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Starts a role handover. The proposed assignee will receive an email
+        notifying them of the assignment. This will fail if a role handover is
+        already pending.
+        Handover to an oncall ladder is not permitted. Use
+        CreateIncidentRoleAssignment instead.
+
+        Example:
+            >>> from google.cloud import irm_v1alpha2
+            >>>
+            >>> client = irm_v1alpha2.IncidentServiceClient()
+            >>>
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
+            >>>
+            >>> # TODO: Initialize `new_assignee`:
+            >>> new_assignee = {}
+            >>>
+            >>> response = client.request_incident_role_handover(name, new_assignee)
+
+        Args:
+            name (str): Required. Resource name of the role assignment.
+            new_assignee (Union[dict, ~google.cloud.irm_v1alpha2.types.User]): Required. The proposed assignee.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.irm_v1alpha2.types.User`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.irm_v1alpha2.types.IncidentRoleAssignment` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "request_incident_role_handover" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "request_incident_role_handover"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.request_incident_role_handover,
+                default_retry=self._method_configs["RequestIncidentRoleHandover"].retry,
+                default_timeout=self._method_configs[
+                    "RequestIncidentRoleHandover"
+                ].timeout,
+                client_info=self._client_info,
+            )
+
+        request = incidents_service_pb2.RequestIncidentRoleHandoverRequest(
+            name=name, new_assignee=new_assignee
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["request_incident_role_handover"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def confirm_incident_role_handover(
+        self,
+        name,
+        new_assignee,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Confirms a role handover. This will fail if the 'proposed_assignee'
+        field of the IncidentRoleAssignment is not equal to the 'new_assignee'
+        field of the request. If the caller is not the new_assignee,
+        ForceIncidentRoleHandover should be used instead.
+
+        Example:
+            >>> from google.cloud import irm_v1alpha2
+            >>>
+            >>> client = irm_v1alpha2.IncidentServiceClient()
+            >>>
+            >>> name = client.incident_role_assignment_path('[PROJECT_ID_OR_NUMBER]', '[INCIDENT_ID]', '[ROLE_ID]')
+            >>>
+            >>> # TODO: Initialize `new_assignee`:
+            >>> new_assignee = {}
+            >>>
+            >>> response = client.confirm_incident_role_handover(name, new_assignee)
+
+        Args:
+            name (str): Required. Resource name of the role assignment.
+            new_assignee (Union[dict, ~google.cloud.irm_v1alpha2.types.User]): Required. The proposed assignee, who will now be the assignee. This should be the
+                current user; otherwise ForceRoleHandover should be called.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.irm_v1alpha2.types.User`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.irm_v1alpha2.types.IncidentRoleAssignment` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "confirm_incident_role_handover" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "confirm_incident_role_handover"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.confirm_incident_role_handover,
+                default_retry=self._method_configs["ConfirmIncidentRoleHandover"].retry,
+                default_timeout=self._method_configs[
+                    "ConfirmIncidentRoleHandover"
+                ].timeout,
+                client_info=self._client_info,
+            )
+
+        request = incidents_service_pb2.ConfirmIncidentRoleHandoverRequest(
+            name=name, new_assignee=new_assignee
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["confirm_incident_role_handover"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def force_incident_role_handover(
+        self,
+        name,
+        new_assignee,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Forces a role handover. This will fail if the 'proposed_assignee' field
+        of the IncidentRoleAssignment is not equal to the 'new_assignee' field
+        of the request. If the caller is the new_assignee,
+        ConfirmIncidentRoleHandover should be used instead.
+
+        Example:
+            >>> from google.cloud import irm_v1alpha2
+            >>>
+            >>> client = irm_v1alpha2.IncidentServiceClient()
+            >>>
+            >>> name = client.incident_role_assignment_path('[PROJECT_ID_OR_NUMBER]', '[INCIDENT_ID]', '[ROLE_ID]')
+            >>>
+            >>> # TODO: Initialize `new_assignee`:
+            >>> new_assignee = {}
+            >>>
+            >>> response = client.force_incident_role_handover(name, new_assignee)
+
+        Args:
+            name (str): Required. Resource name of the role assignment.
+            new_assignee (Union[dict, ~google.cloud.irm_v1alpha2.types.User]): Required. The proposed assignee, who will now be the assignee. This should not be
+                the current user; otherwise ConfirmRoleHandover should be called.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.irm_v1alpha2.types.User`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.irm_v1alpha2.types.IncidentRoleAssignment` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "force_incident_role_handover" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "force_incident_role_handover"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.force_incident_role_handover,
+                default_retry=self._method_configs["ForceIncidentRoleHandover"].retry,
+                default_timeout=self._method_configs[
+                    "ForceIncidentRoleHandover"
+                ].timeout,
+                client_info=self._client_info,
+            )
+
+        request = incidents_service_pb2.ForceIncidentRoleHandoverRequest(
+            name=name, new_assignee=new_assignee
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["force_incident_role_handover"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def create_incident(
         self,
         incident,
@@ -324,13 +606,13 @@ class IncidentServiceClient(object):
             >>> response = client.create_incident(incident, parent)
 
         Args:
-            incident (Union[dict, ~google.cloud.irm_v1alpha2.types.Incident]): The incident to create.
+            incident (Union[dict, ~google.cloud.irm_v1alpha2.types.Incident]): Required. The incident to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.irm_v1alpha2.types.Incident`
-            parent (str): The resource name of the hosting Stackdriver project which the incident
-                belongs to. The name is of the form ``projects/{project_id_or_number}``
-                .
+            parent (str): Required. The resource name of the hosting Stackdriver project which the
+                incident belongs to. The name is of the form
+                ``projects/{project_id_or_number}`` .
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -401,8 +683,8 @@ class IncidentServiceClient(object):
             >>> response = client.get_incident(name)
 
         Args:
-            name (str): Resource name of the incident, for example,
-                "projects/{project_id}/incidents/{incident_id}".
+            name (str): Required. Resource name of the incident, for example,
+                "projects/{project_id_or_number}/incidents/{incident_id}".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -487,7 +769,7 @@ class IncidentServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): The resource name of the hosting Stackdriver project which requested
+            parent (str): Required. The resource name of the hosting Stackdriver project which requested
                 incidents belong to.
             query (str): An expression that defines which incidents to return.
 
@@ -646,7 +928,7 @@ class IncidentServiceClient(object):
             >>> response = client.update_incident(incident)
 
         Args:
-            incident (Union[dict, ~google.cloud.irm_v1alpha2.types.Incident]): The incident to update with the new values.
+            incident (Union[dict, ~google.cloud.irm_v1alpha2.types.Incident]): Required. The incident to update with the new values.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.irm_v1alpha2.types.Incident`
@@ -739,8 +1021,8 @@ class IncidentServiceClient(object):
             ...         pass
 
         Args:
-            name (str): Resource name of the incident or signal, for example,
-                "projects/{project_id}/incidents/{incident_id}".
+            name (str): Required. Resource name of the incident or signal, for example,
+                "projects/{project_id_or_number}/incidents/{incident_id}".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -835,9 +1117,9 @@ class IncidentServiceClient(object):
             >>> response = client.create_annotation(parent, annotation)
 
         Args:
-            parent (str): Resource name of the incident, for example,
-                "projects/{project_id}/incidents/{incident_id}".
-            annotation (Union[dict, ~google.cloud.irm_v1alpha2.types.Annotation]): Only annotation.content is an input argument.
+            parent (str): Required. Resource name of the incident, for example,
+                "projects/{project_id_or_number}/incidents/{incident_id}".
+            annotation (Union[dict, ~google.cloud.irm_v1alpha2.types.Annotation]): Required. Only annotation.content is an input argument.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.irm_v1alpha2.types.Annotation`
@@ -925,8 +1207,8 @@ class IncidentServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Resource name of the incident, for example,
-                "projects/{project_id}/incidents/{incident_id}".
+            parent (str): Required. Resource name of the incident, for example,
+                "projects/{project_id_or_number}/incidents/{incident_id}".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -1020,9 +1302,9 @@ class IncidentServiceClient(object):
             >>> response = client.create_tag(parent, tag)
 
         Args:
-            parent (str): Resource name of the incident, for example,
-                "projects/{project_id}/incidents/{incident_id}".
-            tag (Union[dict, ~google.cloud.irm_v1alpha2.types.Tag]): Tag to create. Only tag.display_name is an input argument.
+            parent (str): Required. Resource name of the incident, for example,
+                "projects/{project_id_or_number}/incidents/{incident_id}".
+            tag (Union[dict, ~google.cloud.irm_v1alpha2.types.Tag]): Required. Tag to create. Only tag.display_name is an input argument.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.irm_v1alpha2.types.Tag`
@@ -1094,7 +1376,7 @@ class IncidentServiceClient(object):
             >>> client.delete_tag(name)
 
         Args:
-            name (str): Resource name of the tag.
+            name (str): Required. Resource name of the tag.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1173,8 +1455,8 @@ class IncidentServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Resource name of the incident, for example,
-                "projects/{project_id}/incidents/{incident_id}".
+            parent (str): Required. Resource name of the incident, for example,
+                "projects/{project_id_or_number}/incidents/{incident_id}".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -1268,9 +1550,9 @@ class IncidentServiceClient(object):
             >>> response = client.create_signal(parent, signal)
 
         Args:
-            parent (str): The resource name of the hosting Stackdriver project which requested
+            parent (str): Required. The resource name of the hosting Stackdriver project which requested
                 signal belongs to.
-            signal (Union[dict, ~google.cloud.irm_v1alpha2.types.Signal]): The signal to create.
+            signal (Union[dict, ~google.cloud.irm_v1alpha2.types.Signal]): Required. The signal to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.irm_v1alpha2.types.Signal`
@@ -1336,6 +1618,9 @@ class IncidentServiceClient(object):
         """
         Lists signals that are part of an incident.
         Signals are returned in reverse chronological order.
+        Note that search should not be relied on for critical functionality.  It
+        has lower availability guarantees and might fail to return valid results.
+        Returned results might include stale or extraneous entries.
 
         Example:
             >>> from google.cloud import irm_v1alpha2
@@ -1359,7 +1644,7 @@ class IncidentServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): The resource name of the hosting Stackdriver project which requested
+            parent (str): Required. The resource name of the hosting Stackdriver project which requested
                 incidents belong to.
             query (str): An expression that defines which signals to return.
 
@@ -1492,6 +1777,73 @@ class IncidentServiceClient(object):
         )
         return iterator
 
+    def lookup_signal(
+        self,
+        cscc_finding=None,
+        stackdriver_notification_id=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Finds a signal by other unique IDs.
+
+        Example:
+            >>> from google.cloud import irm_v1alpha2
+            >>>
+            >>> client = irm_v1alpha2.IncidentServiceClient()
+            >>>
+            >>> response = client.lookup_signal()
+
+        Args:
+            cscc_finding (str): Required. Full resource name of the CSCC finding id this signal refers to (e.g.
+                "organizations/abc/sources/123/findings/xyz")
+            stackdriver_notification_id (str): The ID from the Stackdriver Alerting notification.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.irm_v1alpha2.types.Signal` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "lookup_signal" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "lookup_signal"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.lookup_signal,
+                default_retry=self._method_configs["LookupSignal"].retry,
+                default_timeout=self._method_configs["LookupSignal"].timeout,
+                client_info=self._client_info,
+            )
+
+        # Sanity check: We have some fields which are mutually exclusive;
+        # raise ValueError if more than one is sent.
+        google.api_core.protobuf_helpers.check_oneof(
+            cscc_finding=cscc_finding,
+            stackdriver_notification_id=stackdriver_notification_id,
+        )
+
+        request = incidents_service_pb2.LookupSignalRequest(
+            cscc_finding=cscc_finding,
+            stackdriver_notification_id=stackdriver_notification_id,
+        )
+        return self._inner_api_calls["lookup_signal"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def get_signal(
         self,
         name,
@@ -1512,8 +1864,8 @@ class IncidentServiceClient(object):
             >>> response = client.get_signal(name)
 
         Args:
-            name (str): Resource name of the Signal resource, for example,
-                "projects/{project_id}/signals/{signal_id}".
+            name (str): Required. Resource name of the Signal resource, for example,
+                "projects/{project_id_or_number}/signals/{signal_id}".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1562,73 +1914,6 @@ class IncidentServiceClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
-    def lookup_signal(
-        self,
-        cscc_finding=None,
-        stackdriver_notification_id=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Finds a signal by other unique IDs.
-
-        Example:
-            >>> from google.cloud import irm_v1alpha2
-            >>>
-            >>> client = irm_v1alpha2.IncidentServiceClient()
-            >>>
-            >>> response = client.lookup_signal()
-
-        Args:
-            cscc_finding (str): Full resource name of the CSCC finding id this signal refers to (e.g.
-                "organizations/abc/sources/123/findings/xyz")
-            stackdriver_notification_id (str): The ID from the Stackdriver Alerting notification.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.irm_v1alpha2.types.Signal` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "lookup_signal" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "lookup_signal"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.lookup_signal,
-                default_retry=self._method_configs["LookupSignal"].retry,
-                default_timeout=self._method_configs["LookupSignal"].timeout,
-                client_info=self._client_info,
-            )
-
-        # Sanity check: We have some fields which are mutually exclusive;
-        # raise ValueError if more than one is sent.
-        google.api_core.protobuf_helpers.check_oneof(
-            cscc_finding=cscc_finding,
-            stackdriver_notification_id=stackdriver_notification_id,
-        )
-
-        request = incidents_service_pb2.LookupSignalRequest(
-            cscc_finding=cscc_finding,
-            stackdriver_notification_id=stackdriver_notification_id,
-        )
-        return self._inner_api_calls["lookup_signal"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
     def update_signal(
         self,
         signal,
@@ -1652,7 +1937,7 @@ class IncidentServiceClient(object):
             >>> response = client.update_signal(signal)
 
         Args:
-            signal (Union[dict, ~google.cloud.irm_v1alpha2.types.Signal]): The signal to update with the new values.
+            signal (Union[dict, ~google.cloud.irm_v1alpha2.types.Signal]): Required. The signal to update with the new values.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.irm_v1alpha2.types.Signal`
@@ -1736,7 +2021,7 @@ class IncidentServiceClient(object):
             >>> response = client.escalate_incident(incident)
 
         Args:
-            incident (Union[dict, ~google.cloud.irm_v1alpha2.types.Incident]): The incident to escalate with the new values.
+            incident (Union[dict, ~google.cloud.irm_v1alpha2.types.Incident]): Required. The incident to escalate with the new values.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.irm_v1alpha2.types.Incident`
@@ -1841,9 +2126,9 @@ class IncidentServiceClient(object):
             >>> response = client.create_artifact(parent, artifact)
 
         Args:
-            parent (str): Resource name of the incident, for example,
-                "projects/{project_id}/incidents/{incident_id}".
-            artifact (Union[dict, ~google.cloud.irm_v1alpha2.types.Artifact]): The artifact to create.
+            parent (str): Required. Resource name of the incident, for example,
+                "projects/{project_id_or_number}/incidents/{incident_id}".
+            artifact (Union[dict, ~google.cloud.irm_v1alpha2.types.Artifact]): Required. The artifact to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.irm_v1alpha2.types.Artifact`
@@ -1930,8 +2215,8 @@ class IncidentServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Resource name of the incident, for example,
-                "projects/{project_id}/incidents/{incident_id}".
+            parent (str): Required. Resource name of the incident, for example,
+                "projects/{project_id_or_number}/incidents/{incident_id}".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -2023,7 +2308,7 @@ class IncidentServiceClient(object):
             >>> response = client.update_artifact(artifact)
 
         Args:
-            artifact (Union[dict, ~google.cloud.irm_v1alpha2.types.Artifact]): The artifact to update with the new values.
+            artifact (Union[dict, ~google.cloud.irm_v1alpha2.types.Artifact]): Required. The artifact to update with the new values.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.irm_v1alpha2.types.Artifact`
@@ -2081,72 +2366,6 @@ class IncidentServiceClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
-    def delete_artifact(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Deletes an existing artifact.
-
-        Example:
-            >>> from google.cloud import irm_v1alpha2
-            >>>
-            >>> client = irm_v1alpha2.IncidentServiceClient()
-            >>>
-            >>> name = client.artifact_path('[PROJECT]', '[INCIDENT]', '[ARTIFACT]')
-            >>>
-            >>> client.delete_artifact(name)
-
-        Args:
-            name (str): Resource name of the artifact.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "delete_artifact" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "delete_artifact"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_artifact,
-                default_retry=self._method_configs["DeleteArtifact"].retry,
-                default_timeout=self._method_configs["DeleteArtifact"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = incidents_service_pb2.DeleteArtifactRequest(name=name)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        self._inner_api_calls["delete_artifact"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
     def send_shift_handoff(
         self,
         parent,
@@ -2180,15 +2399,15 @@ class IncidentServiceClient(object):
             >>> response = client.send_shift_handoff(parent, recipients, subject)
 
         Args:
-            parent (str): The resource name of the Stackdriver project that the handoff is being
-                sent from. for example, ``projects/{project_id}``
-            recipients (list[str]): Email addresses of the recipients of the handoff, for example,
+            parent (str): Required. The resource name of the Stackdriver project that the handoff
+                is being sent from. for example, ``projects/{project_id_or_number}``
+            recipients (list[str]): Required. Email addresses of the recipients of the handoff, for example,
                 "user@example.com". Must contain at least one entry.
-            subject (str): The subject of the email. Required.
-            cc (list[str]): Email addresses that should be CC'd on the handoff. Optional.
+            subject (str): Required. The subject of the email.
+            cc (list[str]): Optional. Email addresses that should be CC'd on the handoff.
             notes_content_type (str): Content type string, for example, 'text/plain' or 'text/html'.
-            notes_content (str): Additional notes to be included in the handoff. Optional.
-            incidents (list[Union[dict, ~google.cloud.irm_v1alpha2.types.Incident]]): The set of incidents that should be included in the handoff. Optional.
+            notes_content (str): Optional. Additional notes to be included in the handoff.
+            incidents (list[Union[dict, ~google.cloud.irm_v1alpha2.types.Incident]]): Optional. The set of incidents that should be included in the handoff.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.irm_v1alpha2.types.Incident`
@@ -2278,9 +2497,9 @@ class IncidentServiceClient(object):
             >>> response = client.create_subscription(parent, subscription)
 
         Args:
-            parent (str): Resource name of the incident, for example,
-                "projects/{project_id}/incidents/{incident_id}".
-            subscription (Union[dict, ~google.cloud.irm_v1alpha2.types.Subscription]): The subscription to create.
+            parent (str): Required. Resource name of the incident, for example,
+                "projects/{project_id_or_number}/incidents/{incident_id}".
+            subscription (Union[dict, ~google.cloud.irm_v1alpha2.types.Subscription]): Required. The subscription to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.irm_v1alpha2.types.Subscription`
@@ -2356,7 +2575,7 @@ class IncidentServiceClient(object):
             >>> response = client.update_subscription(subscription)
 
         Args:
-            subscription (Union[dict, ~google.cloud.irm_v1alpha2.types.Subscription]): The subscription to update, with new values.
+            subscription (Union[dict, ~google.cloud.irm_v1alpha2.types.Subscription]): Required. The subscription to update, with new values.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.irm_v1alpha2.types.Subscription`
@@ -2447,8 +2666,8 @@ class IncidentServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Resource name of the incident, for example,
-                "projects/{project_id}/incidents/{incident_id}".
+            parent (str): Required. Resource name of the incident, for example,
+                "projects/{project_id_or_number}/incidents/{incident_id}".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -2538,7 +2757,7 @@ class IncidentServiceClient(object):
             >>> client.delete_subscription(name)
 
         Args:
-            name (str): Resource name of the subscription.
+            name (str): Required. Resource name of the subscription.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -2612,9 +2831,9 @@ class IncidentServiceClient(object):
             >>> response = client.create_incident_role_assignment(parent, incident_role_assignment)
 
         Args:
-            parent (str): Resource name of the incident, for example,
-                "projects/{project_id}/incidents/{incident_id}".
-            incident_role_assignment (Union[dict, ~google.cloud.irm_v1alpha2.types.IncidentRoleAssignment]): Role assignment to create.
+            parent (str): Required. Resource name of the incident, for example,
+                "projects/{project_id_or_number}/incidents/{incident_id}".
+            incident_role_assignment (Union[dict, ~google.cloud.irm_v1alpha2.types.IncidentRoleAssignment]): Required. Role assignment to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.irm_v1alpha2.types.IncidentRoleAssignment`
@@ -2687,12 +2906,12 @@ class IncidentServiceClient(object):
             >>>
             >>> client = irm_v1alpha2.IncidentServiceClient()
             >>>
-            >>> name = client.role_assignment_path('[PROJECT]', '[INCIDENT]', '[ROLE_ASSIGNMENT]')
+            >>> name = client.incident_path('[PROJECT]', '[INCIDENT]')
             >>>
             >>> client.delete_incident_role_assignment(name)
 
         Args:
-            name (str): Resource name of the role assignment.
+            name (str): Required. Resource name of the role assignment.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -2775,8 +2994,8 @@ class IncidentServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Resource name of the incident, for example,
-                "projects/{project_id}/incidents/{incident_id}".
+            parent (str): Required. Resource name of the incident, for example,
+                "projects/{project_id_or_number}/incidents/{incident_id}".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -2848,259 +3067,6 @@ class IncidentServiceClient(object):
         )
         return iterator
 
-    def request_incident_role_handover(
-        self,
-        name,
-        new_assignee,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Starts a role handover. The proposed assignee will receive an email
-        notifying them of the assignment. This will fail if a role handover is
-        already pending.
-
-        Example:
-            >>> from google.cloud import irm_v1alpha2
-            >>>
-            >>> client = irm_v1alpha2.IncidentServiceClient()
-            >>>
-            >>> name = client.role_assignment_path('[PROJECT]', '[INCIDENT]', '[ROLE_ASSIGNMENT]')
-            >>>
-            >>> # TODO: Initialize `new_assignee`:
-            >>> new_assignee = {}
-            >>>
-            >>> response = client.request_incident_role_handover(name, new_assignee)
-
-        Args:
-            name (str): Resource name of the role assignment.
-            new_assignee (Union[dict, ~google.cloud.irm_v1alpha2.types.User]): The proposed assignee.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.irm_v1alpha2.types.User`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.irm_v1alpha2.types.IncidentRoleAssignment` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "request_incident_role_handover" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "request_incident_role_handover"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.request_incident_role_handover,
-                default_retry=self._method_configs["RequestIncidentRoleHandover"].retry,
-                default_timeout=self._method_configs[
-                    "RequestIncidentRoleHandover"
-                ].timeout,
-                client_info=self._client_info,
-            )
-
-        request = incidents_service_pb2.RequestIncidentRoleHandoverRequest(
-            name=name, new_assignee=new_assignee
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["request_incident_role_handover"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def confirm_incident_role_handover(
-        self,
-        name,
-        new_assignee,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Confirms a role handover. This will fail if the 'proposed_assignee'
-        field of the IncidentRoleAssignment is not equal to the 'new_assignee'
-        field of the request. If the caller is not the new_assignee,
-        ForceIncidentRoleHandover should be used instead.
-
-        Example:
-            >>> from google.cloud import irm_v1alpha2
-            >>>
-            >>> client = irm_v1alpha2.IncidentServiceClient()
-            >>>
-            >>> name = client.role_assignment_path('[PROJECT]', '[INCIDENT]', '[ROLE_ASSIGNMENT]')
-            >>>
-            >>> # TODO: Initialize `new_assignee`:
-            >>> new_assignee = {}
-            >>>
-            >>> response = client.confirm_incident_role_handover(name, new_assignee)
-
-        Args:
-            name (str): Resource name of the role assignment.
-            new_assignee (Union[dict, ~google.cloud.irm_v1alpha2.types.User]): The proposed assignee, who will now be the assignee. This should be the
-                current user; otherwise ForceRoleHandover should be called.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.irm_v1alpha2.types.User`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.irm_v1alpha2.types.IncidentRoleAssignment` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "confirm_incident_role_handover" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "confirm_incident_role_handover"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.confirm_incident_role_handover,
-                default_retry=self._method_configs["ConfirmIncidentRoleHandover"].retry,
-                default_timeout=self._method_configs[
-                    "ConfirmIncidentRoleHandover"
-                ].timeout,
-                client_info=self._client_info,
-            )
-
-        request = incidents_service_pb2.ConfirmIncidentRoleHandoverRequest(
-            name=name, new_assignee=new_assignee
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["confirm_incident_role_handover"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def force_incident_role_handover(
-        self,
-        name,
-        new_assignee,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Forces a role handover. This will fail if the 'proposed_assignee' field
-        of the IncidentRoleAssignment is not equal to the 'new_assignee' field
-        of the request. If the caller is the new_assignee,
-        ConfirmIncidentRoleHandover should be used instead.
-
-        Example:
-            >>> from google.cloud import irm_v1alpha2
-            >>>
-            >>> client = irm_v1alpha2.IncidentServiceClient()
-            >>>
-            >>> name = client.role_assignment_path('[PROJECT]', '[INCIDENT]', '[ROLE_ASSIGNMENT]')
-            >>>
-            >>> # TODO: Initialize `new_assignee`:
-            >>> new_assignee = {}
-            >>>
-            >>> response = client.force_incident_role_handover(name, new_assignee)
-
-        Args:
-            name (str): Resource name of the role assignment.
-            new_assignee (Union[dict, ~google.cloud.irm_v1alpha2.types.User]): The proposed assignee, who will now be the assignee. This should not be
-                the current user; otherwise ConfirmRoleHandover should be called.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.irm_v1alpha2.types.User`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.irm_v1alpha2.types.IncidentRoleAssignment` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "force_incident_role_handover" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "force_incident_role_handover"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.force_incident_role_handover,
-                default_retry=self._method_configs["ForceIncidentRoleHandover"].retry,
-                default_timeout=self._method_configs[
-                    "ForceIncidentRoleHandover"
-                ].timeout,
-                client_info=self._client_info,
-            )
-
-        request = incidents_service_pb2.ForceIncidentRoleHandoverRequest(
-            name=name, new_assignee=new_assignee
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["force_incident_role_handover"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
     def cancel_incident_role_handover(
         self,
         name,
@@ -3119,7 +3085,7 @@ class IncidentServiceClient(object):
             >>>
             >>> client = irm_v1alpha2.IncidentServiceClient()
             >>>
-            >>> name = client.role_assignment_path('[PROJECT]', '[INCIDENT]', '[ROLE_ASSIGNMENT]')
+            >>> name = client.incident_role_assignment_path('[PROJECT_ID_OR_NUMBER]', '[INCIDENT_ID]', '[ROLE_ID]')
             >>>
             >>> # TODO: Initialize `new_assignee`:
             >>> new_assignee = {}
@@ -3127,8 +3093,8 @@ class IncidentServiceClient(object):
             >>> response = client.cancel_incident_role_handover(name, new_assignee)
 
         Args:
-            name (str): Resource name of the role assignment.
-            new_assignee (Union[dict, ~google.cloud.irm_v1alpha2.types.User]): Person who was proposed as the next assignee (i.e.
+            name (str): Required. Resource name of the role assignment.
+            new_assignee (Union[dict, ~google.cloud.irm_v1alpha2.types.User]): Required. Person who was proposed as the next assignee (i.e.
                 IncidentRoleAssignment.proposed_assignee) and whose proposal is being
                 cancelled.
 

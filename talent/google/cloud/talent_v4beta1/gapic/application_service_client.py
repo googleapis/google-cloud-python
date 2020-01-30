@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -81,12 +81,7 @@ class ApplicationServiceClient(object):
 
     @classmethod
     def application_path(cls, project, tenant, profile, application):
-        """DEPRECATED. Return a fully-qualified application string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified application string."""
         return google.api_core.path_template.expand(
             "projects/{project}/tenants/{tenant}/profiles/{profile}/applications/{application}",
             project=project,
@@ -97,12 +92,7 @@ class ApplicationServiceClient(object):
 
     @classmethod
     def profile_path(cls, project, tenant, profile):
-        """DEPRECATED. Return a fully-qualified profile string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified profile string."""
         return google.api_core.path_template.expand(
             "projects/{project}/tenants/{tenant}/profiles/{profile}",
             project=project,
@@ -402,8 +392,7 @@ class ApplicationServiceClient(object):
             >>> response = client.update_application(application)
 
         Args:
-            application (Union[dict, ~google.cloud.talent_v4beta1.types.Application]): Required. The application resource to replace the current resource in the
-                system.
+            application (Union[dict, ~google.cloud.talent_v4beta1.types.Application]): Required. The application resource to replace the current resource in the system.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.Application`

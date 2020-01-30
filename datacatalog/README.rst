@@ -1,4 +1,4 @@
-Python Client for Google Cloud Data Catalog API (`Alpha`_)
+Python Client for Google Cloud Data Catalog API (`Beta`_)
 ==========================================================
 
 
@@ -10,7 +10,7 @@ include: Entries (Data Catalog representation of a cloud resource).
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _Beta: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. _Google Cloud Data Catalog API: https://cloud.google.com/data-catalog
 .. _Client Library Documentation: https://googleapis.dev/python/datacatalog/latest
 .. _Product Documentation:  https://cloud.google.com/data-catalog

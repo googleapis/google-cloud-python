@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -156,7 +156,7 @@ class LanguageServiceGrpcTransport(object):
         """Return the gRPC stub for :meth:`LanguageServiceClient.analyze_syntax`.
 
         Analyzes the syntax of the text and provides sentence boundaries and
-        tokenization along with part of speech tags, dependency trees, and other
+        tokenization along with part-of-speech tags, dependency trees, and other
         properties.
 
         Returns:

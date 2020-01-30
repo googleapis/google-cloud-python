@@ -52,7 +52,7 @@ The following client libraries have **GA** support:
 
 .. _Google Cloud Datastore: https://pypi.org/project/google-cloud-datastore/
 .. _Datastore README: https://github.com/googleapis/google-cloud-python/tree/master/datastore
-.. _Datastore Documentation: https://googleapis.dev/python/datastore/latest 
+.. _Datastore Documentation: https://googleapis.dev/python/datastore/latest
 
 .. _Google Cloud KMS: https://pypi.org/project/google-cloud-kms/
 .. _KMS README: https://github.com/googleapis/google-cloud-python/tree/master/kms
@@ -103,9 +103,24 @@ against beta libraries are addressed with a higher priority.
 
 The following client libraries have **beta** support:
 
+-  `Google Cloud Asset`_ (`Asset README`_, `Asset Documentation`_)
+-  `Google Cloud Billing Budgets`_ (`Billing Budgets README`_, `Billing Budgets Documentation`_)
+-  `Google Cloud Data Catalog`_ (`Data Catalog README`_, `Data Catalog Documentation`_)
 -  `Google Cloud Firestore`_ (`Firestore README`_, `Firestore Documentation`_)
 -  `Google Cloud Video Intelligence`_ (`Video Intelligence README`_, `Video Intelligence Documentation`_)
 -  `Google Cloud Vision`_ (`Vision README`_, `Vision Documentation`_)
+
+.. _Google Cloud Asset: https://pypi.org/project/google-cloud-asset/
+.. _Asset README: https://github.com/googleapis/google-cloud-python/blob/master/asset
+.. _Asset Documentation: https://googleapis.dev/python/cloudasset/latest
+
+.. _Google Cloud Billing Budgets: https://pypi.org/project/google-cloud-billing-budgets/
+.. _Billing Budgets README: https://github.com/googleapis/google-cloud-python/tree/master/billingbudgets
+.. _Billing Budgets Documentation: https://googleapis.dev/python/billingbudgets/latest
+
+.. _Google Cloud Data Catalog: https://pypi.org/project/google-cloud-datacatalog/
+.. _Data Catalog README: https://github.com/googleapis/google-cloud-python/tree/master/datacatalog
+.. _Data Catalog Documentation: https://googleapis.dev/python/datacatalog/latest
 
 .. _Google Cloud Firestore: https://pypi.org/project/google-cloud-firestore/
 .. _Firestore README: https://github.com/googleapis/google-cloud-python/tree/master/firestore
@@ -129,7 +144,6 @@ updates. See `versioning`_ for more details.
 
 The following client libraries have **alpha** support:
 
--  `Google Cloud Asset`_ (`Asset README`_, `Asset Documentation`_)
 -  `Google Cloud AutoML`_ (`AutoML README`_, `AutoML Documentation`_)
 -  `Google BigQuery Data Transfer`_ (`BigQuery Data Transfer README`_, `BigQuery Documentation`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_, `HappyBase Documentation`_)
@@ -150,10 +164,6 @@ The following client libraries have **alpha** support:
 -  `Grafeas`_ (`Grafeas README`_, `Grafeas Documentation`_)
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_, `Error Reporting Documentation`_)
 -  `Stackdriver Monitoring`_ (`Monitoring README`_, `Monitoring Documentation`_)
-
-.. _Google Cloud Asset: https://pypi.org/project/google-cloud-asset/
-.. _Asset README: https://github.com/googleapis/google-cloud-python/blob/master/asset
-.. _Asset Documentation: https://googleapis.dev/python/cloudasset/latest
 
 .. _Google Cloud AutoML: https://pypi.org/project/google-cloud-automl/
 .. _AutoML README: https://github.com/googleapis/google-cloud-python/blob/master/automl

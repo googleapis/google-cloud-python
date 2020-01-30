@@ -1,19 +1,19 @@
 {
-  "updateTime": "2019-11-19T13:28:35.257420Z",
+  "updateTime": "2020-01-30T01:35:38.419686Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "0.42.1",
-        "dockerImage": "googleapis/artman@sha256:c773192618c608a7a0415dd95282f841f8e6bcdef7dd760a988c93b77a64bd57"
+        "version": "0.44.4",
+        "dockerImage": "googleapis/artman@sha256:19e945954fc960a4bdfee6cb34695898ab21a8cf0bac063ee39b91f00a1faec8"
       }
     },
     {
       "git": {
         "name": "googleapis",
-        "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "d8dd7fe8d5304f7bd1c52207703d7f27d5328c5a",
-        "internalRef": "281088257"
+        "remote": "git@github.com:googleapis/googleapis.git",
+        "sha": "b491d07cadaae7cde5608321f913e5ca1459b32d",
+        "internalRef": "292245373"
       }
     },
     {
@@ -34,6 +34,290 @@
         "generator": "gapic",
         "config": "google/monitoring/artman_monitoring.yaml"
       }
+    }
+  ],
+  "newFiles": [
+    {
+      "path": "MANIFEST.in"
+    },
+    {
+      "path": ".flake8"
+    },
+    {
+      "path": "noxfile.py"
+    },
+    {
+      "path": "setup.py"
+    },
+    {
+      "path": ".coveragerc"
+    },
+    {
+      "path": "setup.cfg"
+    },
+    {
+      "path": "LICENSE"
+    },
+    {
+      "path": "docs/conf.py"
+    },
+    {
+      "path": "docs/_static/custom.css"
+    },
+    {
+      "path": "docs/gapic/v3/api.rst"
+    },
+    {
+      "path": "docs/gapic/v3/types.rst"
+    },
+    {
+      "path": "docs/_templates/layout.html"
+    },
+    {
+      "path": "google/__init__.py"
+    },
+    {
+      "path": "google/cloud/__init__.py"
+    },
+    {
+      "path": "google/cloud/monitoring.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/types.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/__init__.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/__init__.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/notification_channel_service_client_config.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/enums.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/metric_service_client_config.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/group_service_client_config.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/service_monitoring_service_client_config.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/service_monitoring_service_client.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/notification_channel_service_client.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/alert_policy_service_client.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/uptime_check_service_client_config.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/uptime_check_service_client.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/group_service_client.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/metric_service_client.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/alert_policy_service_client_config.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/transports/notification_channel_service_grpc_transport.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/transports/__init__.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/transports/metric_service_grpc_transport.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/transports/alert_policy_service_grpc_transport.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/transports/uptime_check_service_grpc_transport.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/transports/group_service_grpc_transport.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/gapic/transports/service_monitoring_service_grpc_transport.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/common.proto"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/uptime_service_pb2.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/uptime_service_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/uptime_pb2.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/metric_service_pb2.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/group_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/alert_service_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/__init__.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/uptime_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/group_service_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/notification_pb2.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/group_pb2.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/dropped_labels.proto"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/metric_service.proto"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/notification_service_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/dropped_labels_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/alert_service_pb2.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/span_context_pb2.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/mutation_record.proto"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/alert_pb2.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/alert.proto"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/dropped_labels_pb2.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/mutation_record_pb2.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/alert_service.proto"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/notification.proto"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/metric_service_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/mutation_record_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/metric_pb2.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/alert_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/metric.proto"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/span_context.proto"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/metric_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/service.proto"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/uptime.proto"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/notification_service.proto"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/common_pb2.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/group_service_pb2.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/service_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/common_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/service_pb2.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/service_service_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/uptime_service.proto"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/service_service.proto"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/span_context_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/service_service_pb2.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/notification_service_pb2.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/notification_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/group.proto"
+    },
+    {
+      "path": "google/cloud/monitoring_v3/proto/group_service.proto"
+    },
+    {
+      "path": "tests/unit/gapic/v3/test_metric_service_client_v3.py"
+    },
+    {
+      "path": "tests/unit/gapic/v3/test_uptime_check_service_client_v3.py"
+    },
+    {
+      "path": "tests/unit/gapic/v3/test_notification_channel_service_client_v3.py"
+    },
+    {
+      "path": "tests/unit/gapic/v3/test_alert_policy_service_client_v3.py"
+    },
+    {
+      "path": "tests/unit/gapic/v3/test_service_monitoring_service_client_v3.py"
+    },
+    {
+      "path": "tests/unit/gapic/v3/test_group_service_client_v3.py"
+    },
+    {
+      "path": "tests/system/gapic/v3/test_system_metric_service_v3.py"
     }
   ]
 }

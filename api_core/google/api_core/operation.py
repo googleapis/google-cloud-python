@@ -145,21 +145,28 @@ class Operation(polling.PollingFuture):
                 )
                 self.set_exception(exception)
 
-    def _refresh_and_update(self):
-        """Refresh the operation and update the result if needed."""
+    def _refresh_and_update(self, retry=polling.DEFAULT_RETRY):
+        """Refresh the operation and update the result if needed.
+
+        Args:
+            retry (google.api_core.retry.Retry): (Optional) How to retry the RPC.
+        """
         # If the currently cached operation is done, no need to make another
         # RPC as it will not change once done.
         if not self._operation.done:
-            self._operation = self._refresh()
+            self._operation = self._refresh(retry=retry)
             self._set_result_from_operation()
 
-    def done(self):
+    def done(self, retry=polling.DEFAULT_RETRY):
         """Checks to see if the operation is complete.
+
+        Args:
+            retry (google.api_core.retry.Retry): (Optional) How to retry the RPC.
 
         Returns:
             bool: True if the operation is complete, False otherwise.
         """
-        self._refresh_and_update()
+        self._refresh_and_update(retry)
         return self._operation.done
 
     def cancel(self):

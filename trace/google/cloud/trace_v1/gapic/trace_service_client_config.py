@@ -8,16 +8,16 @@ config = {
             "retry_params": {
                 "default": {
                     "initial_retry_delay_millis": 100,
-                    "retry_delay_multiplier": 1.2,
-                    "max_retry_delay_millis": 1000,
+                    "retry_delay_multiplier": 1.3,
+                    "max_retry_delay_millis": 60000,
                     "initial_rpc_timeout_millis": 20000,
-                    "rpc_timeout_multiplier": 1.5,
-                    "max_rpc_timeout_millis": 30000,
-                    "total_timeout_millis": 45000,
+                    "rpc_timeout_multiplier": 1.0,
+                    "max_rpc_timeout_millis": 20000,
+                    "total_timeout_millis": 600000,
                 }
             },
             "methods": {
-                "PatchTraces": {
+                "ListTraces": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
@@ -27,9 +27,9 @@ config = {
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
-                "ListTraces": {
+                "PatchTraces": {
                     "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
             },

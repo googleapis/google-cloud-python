@@ -66,8 +66,11 @@ class PollingFuture(base.Future):
         self._done_callbacks = []
 
     @abc.abstractmethod
-    def done(self):
+    def done(self, retry=DEFAULT_RETRY):
         """Checks to see if the operation is complete.
+
+        Args:
+            retry (google.api_core.retry.Retry): (Optional) How to retry the RPC.
 
         Returns:
             bool: True if the operation is complete, False otherwise.

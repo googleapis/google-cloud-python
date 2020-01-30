@@ -933,7 +933,8 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_TEXTANNOTATION_TEXTPROPERTY,
                 __module__="google.cloud.vision_v1p4beta1.proto.text_annotation_pb2",
-                __doc__="""Additional information detected on the structural component.
+                __doc__="""Additional information detected on the structural
+    component.
     
     
     Attributes:
@@ -947,12 +948,12 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_TEXTANNOTATION,
         __module__="google.cloud.vision_v1p4beta1.proto.text_annotation_pb2",
-        __doc__="""TextAnnotation contains a structured representation of OCR extracted
-  text. The hierarchy of an OCR extracted text structure is like this:
-  TextAnnotation -> Page -> Block -> Paragraph -> Word -> Symbol Each
-  structural component, starting from Page, may further have their own
-  properties. Properties describe detected languages, breaks etc.. Please
-  refer to the
+        __doc__="""TextAnnotation contains a structured representation of OCR
+  extracted text. The hierarchy of an OCR extracted text structure is like
+  this: TextAnnotation -> Page -> Block -> Paragraph -> Word -> Symbol
+  Each structural component, starting from Page, may further have their
+  own properties. Properties describe detected languages, breaks etc..
+  Please refer to the
   [TextAnnotation.TextProperty][google.cloud.vision.v1p4beta1.TextAnnotation.TextProperty]
   message definition below for more detail.
   
@@ -1041,7 +1042,8 @@ Paragraph = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PARAGRAPH,
         __module__="google.cloud.vision_v1p4beta1.proto.text_annotation_pb2",
-        __doc__="""Structural unit of text representing a number of words in certain order.
+        __doc__="""Structural unit of text representing a number of words in
+  certain order.
   
   
   Attributes:

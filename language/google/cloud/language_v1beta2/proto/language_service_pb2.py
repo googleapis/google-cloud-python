@@ -2946,9 +2946,9 @@ Entity = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_ENTITY,
         __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
-        __doc__="""Represents a phrase in the text that is a known entity, such as a
-  person, an organization, or location. The API associates information,
-  such as salience and mentions, with entities.
+        __doc__="""Represents a phrase in the text that is a known entity,
+  such as a person, an organization, or location. The API associates
+  information, such as salience and mentions, with entities.
   
   
   Attributes:
@@ -2990,7 +2990,8 @@ Token = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TOKEN,
         __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
-        __doc__="""Represents the smallest syntactic building block of the text.
+        __doc__="""Represents the smallest syntactic building block of the
+  text.
   
   
   Attributes:
@@ -3001,7 +3002,7 @@ Token = _reflection.GeneratedProtocolMessageType(
       dependency_edge:
           Dependency tree parse for this token.
       lemma:
-          `Lemma
+          \ `Lemma
           <https://en.wikipedia.org/wiki/Lemma_%28morphology%29>`__ of
           the token.
   """,
@@ -3016,8 +3017,8 @@ Sentiment = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SENTIMENT,
         __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
-        __doc__="""Represents the feeling associated with the entire text or entities in
-  the text. Next ID: 6
+        __doc__="""Represents the feeling associated with the entire text or
+  entities in the text. Next ID: 6
   
   
   Attributes:
@@ -3104,8 +3105,8 @@ EntityMention = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ENTITYMENTION,
         __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
-        __doc__="""Represents a mention for an entity in the text. Currently, proper noun
-  mentions are supported.
+        __doc__="""Represents a mention for an entity in the text. Currently,
+  proper noun mentions are supported.
   
   
   Attributes:
@@ -3401,9 +3402,9 @@ AnnotateTextRequest = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_ANNOTATETEXTREQUEST_FEATURES,
                 __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
-                __doc__="""All available features for sentiment, syntax, and semantic analysis.
-    Setting each one to true will enable that specific analysis for the
-    input. Next ID: 10
+                __doc__="""All available features for sentiment, syntax, and semantic
+    analysis. Setting each one to true will enable that specific analysis
+    for the input. Next ID: 10
     
     
     Attributes:
@@ -3425,8 +3426,9 @@ AnnotateTextRequest = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_ANNOTATETEXTREQUEST,
         __module__="google.cloud.language_v1beta2.proto.language_service_pb2",
-        __doc__="""The request message for the text annotation API, which can perform
-  multiple analysis types (sentiment, entities, and syntax) in one call.
+        __doc__="""The request message for the text annotation API, which can
+  perform multiple analysis types (sentiment, entities, and syntax) in one
+  call.
   
   
   Attributes:

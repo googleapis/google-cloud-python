@@ -354,8 +354,8 @@ ScanRun = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SCANRUN,
         __module__="google.cloud.websecurityscanner_v1beta.proto.scan_run_pb2",
-        __doc__="""A ScanRun is a output-only resource representing an actual run of the
-  scan. Next id: 12
+        __doc__="""A ScanRun is a output-only resource representing an actual
+  run of the scan. Next id: 12
   
   
   Attributes:

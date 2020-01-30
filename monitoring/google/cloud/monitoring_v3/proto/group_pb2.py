@@ -147,12 +147,12 @@ Group = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GROUP,
         __module__="google.cloud.monitoring_v3.proto.group_pb2",
-        __doc__="""The description of a dynamic collection of monitored resources. Each
-  group has a filter that is matched against monitored resources and their
-  associated metadata. If a group's filter matches an available monitored
-  resource, then that resource is a member of that group. Groups can
-  contain any number of monitored resources, and each monitored resource
-  can be a member of any number of groups.
+        __doc__="""The description of a dynamic collection of monitored
+  resources. Each group has a filter that is matched against monitored
+  resources and their associated metadata. If a group's filter matches an
+  available monitored resource, then that resource is a member of that
+  group. Groups can contain any number of monitored resources, and each
+  monitored resource can be a member of any number of groups.
   
   Groups can be nested in parent-child hierarchies. The ``parentName``
   field identifies an optional parent for each group. If a group has a
