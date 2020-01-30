@@ -1018,7 +1018,8 @@ TagTemplateField = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TAGTEMPLATEFIELD,
         __module__="google.cloud.datacatalog_v1beta1.proto.tags_pb2",
-        __doc__="""The template for an individual field within a tag template.
+        __doc__="""The template for an individual field within a tag
+  template.
   
   
   Attributes:
