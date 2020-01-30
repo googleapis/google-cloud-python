@@ -470,8 +470,8 @@ PlanNode = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_PLANNODE_CHILDLINK,
                 __module__="google.cloud.spanner_v1.proto.query_plan_pb2",
-                __doc__="""Metadata associated with a parent-child relationship appearing in a
-    [PlanNode][google.spanner.v1.PlanNode].
+                __doc__="""Metadata associated with a parent-child relationship
+    appearing in a [PlanNode][google.spanner.v1.PlanNode].
     
     
     Attributes:
@@ -580,7 +580,8 @@ QueryPlan = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_QUERYPLAN,
         __module__="google.cloud.spanner_v1.proto.query_plan_pb2",
-        __doc__="""Contains an ordered list of nodes appearing in the query plan.
+        __doc__="""Contains an ordered list of nodes appearing in the query
+  plan.
   
   
   Attributes:

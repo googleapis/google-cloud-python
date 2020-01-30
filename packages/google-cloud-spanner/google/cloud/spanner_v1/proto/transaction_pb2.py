@@ -548,8 +548,9 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_TRANSACTIONOPTIONS_READWRITE,
                 __module__="google.cloud.spanner_v1.proto.transaction_pb2",
-                __doc__="""Message type to initiate a read-write transaction. Currently this
-    transaction type has no options.
+                __doc__="""Message type to initiate a read-write transaction.
+    Currently this transaction type has no options.
+    
     """,
                 # @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions.ReadWrite)
             ),
@@ -561,6 +562,7 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType(
                 DESCRIPTOR=_TRANSACTIONOPTIONS_PARTITIONEDDML,
                 __module__="google.cloud.spanner_v1.proto.transaction_pb2",
                 __doc__="""Message type to initiate a Partitioned DML transaction.
+    
     """,
                 # @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions.PartitionedDml)
             ),
@@ -630,8 +632,7 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_TRANSACTIONOPTIONS,
         __module__="google.cloud.spanner_v1.proto.transaction_pb2",
-        __doc__="""Transactions
-  
+        __doc__="""# Transactions
   
   Each session can have at most one active transaction at a time. After
   the active transaction is completed, the session can immediately be
@@ -956,7 +957,7 @@ Transaction = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       id:
-          ``id`` may be used to identify the transaction in subsequent
+          \ ``id`` may be used to identify the transaction in subsequent
           [Read][google.spanner.v1.Spanner.Read],
           [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql],
           [Commit][google.spanner.v1.Spanner.Commit], or

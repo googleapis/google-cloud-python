@@ -790,9 +790,9 @@ ListDatabasesResponse = _reflection.GeneratedProtocolMessageType(
       databases:
           Databases that matched the request.
       next_page_token:
-          ``next_page_token`` can be sent in a subsequent [ListDatabases
-          ][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases
-          ] call to fetch more of the matching databases.
+          \ ``next_page_token`` can be sent in a subsequent [ListDatabas
+          es][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabas
+          es] call to fetch more of the matching databases.
   """,
         # @@protoc_insertion_point(class_scope:google.spanner.admin.database.v1.ListDatabasesResponse)
     ),
@@ -879,9 +879,9 @@ UpdateDatabaseDdlRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_UPDATEDATABASEDDLREQUEST,
         __module__="google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2",
-        __doc__="""Enqueues the given DDL statements to be applied, in order but not
-  necessarily all at once, to the database schema at some point (or
-  points) in the future. The server checks that the statements are
+        __doc__="""Enqueues the given DDL statements to be applied, in order
+  but not necessarily all at once, to the database schema at some point
+  (or points) in the future. The server checks that the statements are
   executable (syntactically valid, name tables that exist, etc.) before
   enqueueing them, but they may still fail upon later execution (e.g., if
   a statement from another batch of statements is applied first and it
