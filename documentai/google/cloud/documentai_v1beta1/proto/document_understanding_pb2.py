@@ -1248,7 +1248,8 @@ OcrParams = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OCRPARAMS,
         __module__="google.cloud.documentai_v1beta1.proto.document_understanding_pb2",
-        __doc__="""Parameters to control Optical Character Recognition (OCR) behavior.
+        __doc__="""Parameters to control Optical Character Recognition (OCR)
+  behavior.
   
   
   Attributes:
