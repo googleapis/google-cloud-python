@@ -24,7 +24,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\rio.grafeas.v1P\001Z8google.golang.org/genproto/googleapis/grafeas/v1;grafeas\242\002\003GRA"
     ),
     serialized_pb=_b(
-        '\n\x1dgrafeas_v1/proto/common.proto\x12\ngrafeas.v1"(\n\nRelatedUrl\x12\x0b\n\x03url\x18\x01 \x01(\t\x12\r\n\x05label\x18\x02 \x01(\t"5\n\tSignature\x12\x11\n\tsignature\x18\x01 \x01(\x0c\x12\x15\n\rpublic_key_id\x18\x02 \x01(\t*\x8b\x01\n\x08NoteKind\x12\x19\n\x15NOTE_KIND_UNSPECIFIED\x10\x00\x12\x11\n\rVULNERABILITY\x10\x01\x12\t\n\x05\x42UILD\x10\x02\x12\t\n\x05IMAGE\x10\x03\x12\x0b\n\x07PACKAGE\x10\x04\x12\x0e\n\nDEPLOYMENT\x10\x05\x12\r\n\tDISCOVERY\x10\x06\x12\x0f\n\x0b\x41TTESTATION\x10\x07\x42Q\n\rio.grafeas.v1P\x01Z8google.golang.org/genproto/googleapis/grafeas/v1;grafeas\xa2\x02\x03GRAb\x06proto3'
+        '\n\x1dgrafeas_v1/proto/common.proto\x12\ngrafeas.v1"(\n\nRelatedUrl\x12\x0b\n\x03url\x18\x01 \x01(\t\x12\r\n\x05label\x18\x02 \x01(\t"5\n\tSignature\x12\x11\n\tsignature\x18\x01 \x01(\x0c\x12\x15\n\rpublic_key_id\x18\x02 \x01(\t*\x98\x01\n\x08NoteKind\x12\x19\n\x15NOTE_KIND_UNSPECIFIED\x10\x00\x12\x11\n\rVULNERABILITY\x10\x01\x12\t\n\x05\x42UILD\x10\x02\x12\t\n\x05IMAGE\x10\x03\x12\x0b\n\x07PACKAGE\x10\x04\x12\x0e\n\nDEPLOYMENT\x10\x05\x12\r\n\tDISCOVERY\x10\x06\x12\x0f\n\x0b\x41TTESTATION\x10\x07\x12\x0b\n\x07UPGRADE\x10\x08\x42Q\n\rio.grafeas.v1P\x01Z8google.golang.org/genproto/googleapis/grafeas/v1;grafeas\xa2\x02\x03GRAb\x06proto3'
     ),
 )
 
@@ -62,11 +62,14 @@ _NOTEKIND = _descriptor.EnumDescriptor(
         _descriptor.EnumValueDescriptor(
             name="ATTESTATION", index=7, number=7, serialized_options=None, type=None
         ),
+        _descriptor.EnumValueDescriptor(
+            name="UPGRADE", index=8, number=8, serialized_options=None, type=None
+        ),
     ],
     containing_type=None,
     serialized_options=None,
     serialized_start=143,
-    serialized_end=282,
+    serialized_end=295,
 )
 _sym_db.RegisterEnumDescriptor(_NOTEKIND)
 
@@ -79,6 +82,7 @@ PACKAGE = 4
 DEPLOYMENT = 5
 DISCOVERY = 6
 ATTESTATION = 7
+UPGRADE = 8
 
 
 _RELATEDURL = _descriptor.Descriptor(
