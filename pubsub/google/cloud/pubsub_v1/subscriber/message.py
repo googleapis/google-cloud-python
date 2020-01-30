@@ -82,8 +82,9 @@ class Message(object):
             message (~.pubsub_v1.types.PubsubMessage): The message received
                 from Pub/Sub.
             ack_id (str): The ack_id received from Pub/Sub.
-            delivery_attempt (int): The delivery_attempt received
-                from Pub/Sub. May be zero.
+            delivery_attempt (int): The delivery attempt counter received
+                from Pub/Sub if a DeadLetterPolicy is set on the subscription,
+                and zero otherwise.
             request_queue (queue.Queue): A queue provided by the policy that
                 can accept requests; the policy is responsible for handling
                 those requests.
