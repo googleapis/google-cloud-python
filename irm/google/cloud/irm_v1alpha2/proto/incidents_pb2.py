@@ -2295,7 +2295,8 @@ CommunicationChannel = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_COMMUNICATIONCHANNEL_EMAIL,
                 __module__="google.cloud.irm_v1alpha2.proto.incidents_pb2",
-                __doc__="""A communication channel that delivers messages to an email address.
+                __doc__="""A communication channel that delivers messages to an email
+    address.
     
     
     Attributes:
