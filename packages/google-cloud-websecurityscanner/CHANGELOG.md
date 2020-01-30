@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [0.4.0](https://www.github.com/googleapis/python-websecurityscanner/compare/v0.3.0...v0.4.0) (2020-01-30)
+
+
+### Features
+
+* **websecurityscanner:** add finding types; add vulnerable headers; update docstrings (via synth) ([#9380](https://www.github.com/googleapis/python-websecurityscanner/issues/9380)) ([34f192e](https://www.github.com/googleapis/python-websecurityscanner/commit/34f192eb890945636cab82e1a0fef9c33d7c8eb3))
+
 ## 0.3.0
 
 07-24-2019 17:56 PDT
