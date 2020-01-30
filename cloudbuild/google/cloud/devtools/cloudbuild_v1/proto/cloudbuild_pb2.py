@@ -4813,7 +4813,8 @@ StorageSource = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_STORAGESOURCE,
         __module__="google.devtools.cloudbuild_v1.proto.cloudbuild_pb2",
-        __doc__="""Location of the source in an archive file in Google Cloud Storage.
+        __doc__="""Location of the source in an archive file in Google Cloud
+  Storage.
   
   
   Attributes:
@@ -4841,7 +4842,8 @@ RepoSource = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_REPOSOURCE,
         __module__="google.devtools.cloudbuild_v1.proto.cloudbuild_pb2",
-        __doc__="""Location of the source in a Google Cloud Source Repository.
+        __doc__="""Location of the source in a Google Cloud Source
+  Repository.
   
   
   Attributes:
@@ -5019,8 +5021,9 @@ Volume = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_VOLUME,
         __module__="google.devtools.cloudbuild_v1.proto.cloudbuild_pb2",
-        __doc__="""Volume describes a Docker container volume which is mounted into build
-  steps in order to persist files across build step execution.
+        __doc__="""Volume describes a Docker container volume which is
+  mounted into build steps in order to persist files across build step
+  execution.
   
   
   Attributes:
@@ -5080,8 +5083,8 @@ ArtifactResult = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ARTIFACTRESULT,
         __module__="google.devtools.cloudbuild_v1.proto.cloudbuild_pb2",
-        __doc__="""An artifact that was uploaded during a build. This is a single record in
-  the artifact manifest JSON file.
+        __doc__="""An artifact that was uploaded during a build. This is a
+  single record in the artifact manifest JSON file.
   
   
   Attributes:
@@ -5226,8 +5229,8 @@ Artifacts = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_ARTIFACTS_ARTIFACTOBJECTS,
                 __module__="google.devtools.cloudbuild_v1.proto.cloudbuild_pb2",
-                __doc__="""Files in the workspace to upload to Cloud Storage upon successful
-    completion of all build steps.
+                __doc__="""Files in the workspace to upload to Cloud Storage upon
+    successful completion of all build steps.
     
     
     Attributes:
@@ -5249,8 +5252,8 @@ Artifacts = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_ARTIFACTS,
         __module__="google.devtools.cloudbuild_v1.proto.cloudbuild_pb2",
-        __doc__="""Artifacts produced by a build that should be uploaded upon successful
-  completion of all build steps.
+        __doc__="""Artifacts produced by a build that should be uploaded upon
+  successful completion of all build steps.
   
   
   Attributes:
@@ -5330,8 +5333,8 @@ SourceProvenance = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SOURCEPROVENANCE,
         __module__="google.devtools.cloudbuild_v1.proto.cloudbuild_pb2",
-        __doc__="""Provenance of the source. Ways to find the original source, or verify
-  that some source was used for this build.
+        __doc__="""Provenance of the source. Ways to find the original
+  source, or verify that some source was used for this build.
   
   
   Attributes:
@@ -5364,9 +5367,9 @@ FileHashes = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_FILEHASHES,
         __module__="google.devtools.cloudbuild_v1.proto.cloudbuild_pb2",
-        __doc__="""Container message for hashes of byte content of files, used in
-  SourceProvenance messages to verify integrity of source input to the
-  build.
+        __doc__="""Container message for hashes of byte content of files,
+  used in SourceProvenance messages to verify integrity of source input to
+  the build.
   
   
   Attributes:
@@ -5413,8 +5416,8 @@ Secret = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SECRET,
         __module__="google.devtools.cloudbuild_v1.proto.cloudbuild_pb2",
-        __doc__="""Pairs a set of secret environment variables containing encrypted values
-  with the Cloud KMS key to use to decrypt the value.
+        __doc__="""Pairs a set of secret environment variables containing
+  encrypted values with the Cloud KMS key to use to decrypt the value.
   
   
   Attributes:
@@ -5552,8 +5555,8 @@ BuildTrigger = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_BUILDTRIGGER,
         __module__="google.devtools.cloudbuild_v1.proto.cloudbuild_pb2",
-        __doc__="""Configuration for an automated build in response to source repository
-  changes.
+        __doc__="""Configuration for an automated build in response to source
+  repository changes.
   
   
   Attributes:
@@ -5620,8 +5623,8 @@ GitHubEventsConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GITHUBEVENTSCONFIG,
         __module__="google.devtools.cloudbuild_v1.proto.cloudbuild_pb2",
-        __doc__="""GitHubEventsConfig describes the configuration of a trigger that creates
-  a build whenever a GitHub event is received.
+        __doc__="""GitHubEventsConfig describes the configuration of a
+  trigger that creates a build whenever a GitHub event is received.
   
   This message is experimental.
   
@@ -5656,8 +5659,8 @@ PullRequestFilter = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PULLREQUESTFILTER,
         __module__="google.devtools.cloudbuild_v1.proto.cloudbuild_pb2",
-        __doc__="""PullRequestFilter contains filter properties for matching GitHub Pull
-  Requests.
+        __doc__="""PullRequestFilter contains filter properties for matching
+  GitHub Pull Requests.
   
   
   Attributes:
@@ -5683,7 +5686,8 @@ PushFilter = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PUSHFILTER,
         __module__="google.devtools.cloudbuild_v1.proto.cloudbuild_pb2",
-        __doc__="""Push contains filter properties for matching GitHub git pushes.
+        __doc__="""Push contains filter properties for matching GitHub git
+  pushes.
   
   
   Attributes:
@@ -5778,7 +5782,7 @@ ListBuildTriggersResponse = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       triggers:
-          ``BuildTriggers`` for the project, sorted by ``create_time``
+          \ ``BuildTriggers`` for the project, sorted by ``create_time``
           descending.
       next_page_token:
           Token to receive the next page of results.
@@ -5956,8 +5960,8 @@ WorkerConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_WORKERCONFIG,
         __module__="google.devtools.cloudbuild_v1.proto.cloudbuild_pb2",
-        __doc__="""WorkerConfig defines the configuration to be used for a creating workers
-  in the pool.
+        __doc__="""WorkerConfig defines the configuration to be used for a
+  creating workers in the pool.
   
   
   Attributes:
@@ -6001,7 +6005,8 @@ Network = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NETWORK,
         __module__="google.devtools.cloudbuild_v1.proto.cloudbuild_pb2",
-        __doc__="""Network describes the GCP network used to create workers in.
+        __doc__="""Network describes the GCP network used to create workers
+  in.
   
   
   Attributes:
@@ -6037,7 +6042,7 @@ CreateWorkerPoolRequest = _reflection.GeneratedProtocolMessageType(
       parent:
           ID of the parent project.
       worker_pool:
-          ``WorkerPool`` resource to create.
+          \ ``WorkerPool`` resource to create.
   """,
         # @@protoc_insertion_point(class_scope:google.devtools.cloudbuild.v1.CreateWorkerPoolRequest)
     ),
@@ -6096,7 +6101,7 @@ UpdateWorkerPoolRequest = _reflection.GeneratedProtocolMessageType(
           The field will contain name of the resource requested, for
           example: "projects/project-1/workerPools/workerpool-name"
       worker_pool:
-          ``WorkerPool`` resource to update.
+          \ ``WorkerPool`` resource to update.
   """,
         # @@protoc_insertion_point(class_scope:google.devtools.cloudbuild.v1.UpdateWorkerPoolRequest)
     ),
@@ -6132,7 +6137,7 @@ ListWorkerPoolsResponse = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       worker_pools:
-          ``WorkerPools`` for the project.
+          \ ``WorkerPools`` for the project.
   """,
         # @@protoc_insertion_point(class_scope:google.devtools.cloudbuild.v1.ListWorkerPoolsResponse)
     ),
