@@ -478,6 +478,7 @@ PullTarget = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_PULLTARGET,
         __module__="google.cloud.tasks_v2beta2.proto.target_pb2",
         __doc__="""Pull target.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.PullTarget)
     ),
@@ -490,9 +491,9 @@ PullMessage = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PULLMESSAGE,
         __module__="google.cloud.tasks_v2beta2.proto.target_pb2",
-        __doc__="""The pull message contains data that can be used by the caller of
-  [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks] to
-  process the task.
+        __doc__="""The pull message contains data that can be used by the
+  caller of [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks]
+  to process the task.
   
   This proto can only be used for tasks in a queue which has
   [pull\_target][google.cloud.tasks.v2beta2.Queue.pull\_target] set.
