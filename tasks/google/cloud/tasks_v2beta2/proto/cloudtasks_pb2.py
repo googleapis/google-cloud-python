@@ -1397,7 +1397,7 @@ ListQueuesRequest = _reflection.GeneratedProtocolMessageType(
           Required. The location name. For example:
           ``projects/PROJECT_ID/locations/LOCATION_ID``
       filter:
-          ``filter`` can be used to specify a subset of queues. Any
+          \ ``filter`` can be used to specify a subset of queues. Any
           [Queue][google.cloud.tasks.v2beta2.Queue] field can be used as
           a filter and several operators as supported. For example:
           ``<=, <, >=, >, !=, =, :``. The filter syntax is the same as
@@ -1859,8 +1859,8 @@ LeaseTasksRequest = _reflection.GeneratedProtocolMessageType(
           <https://cloud.google.com/iam/>`_ permission on the
           [Task][google.cloud.tasks.v2beta2.Task] resource.
       filter:
-          ``filter`` can be used to specify a subset of tasks to lease.
-          When ``filter`` is set to ``tag=<my-tag>`` then the
+          \ ``filter`` can be used to specify a subset of tasks to
+          lease.  When ``filter`` is set to ``tag=<my-tag>`` then the
           [response][google.cloud.tasks.v2beta2.LeaseTasksResponse] will
           contain only tasks whose
           [tag][google.cloud.tasks.v2beta2.PullMessage.tag] is equal to

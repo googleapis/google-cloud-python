@@ -1064,7 +1064,7 @@ OAuthToken = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       service_account_email:
-          `Service account email
+          \ `Service account email
           <https://cloud.google.com/iam/docs/service-accounts>`_ to be
           used for generating OAuth token. The service account must be
           within the same project as the queue. The caller must have
@@ -1085,7 +1085,8 @@ OidcToken = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OIDCTOKEN,
         __module__="google.cloud.tasks_v2.proto.target_pb2",
-        __doc__="""Contains information needed for generating an `OpenID Connect
+        __doc__="""Contains information needed for generating an `OpenID
+  Connect
   token <https://developers.google.com/identity/protocols/OpenIDConnect>`_.
   This type of authorization can be used for many scenarios, including
   calling Cloud Run, or endpoints where you intend to validate the token
@@ -1094,7 +1095,7 @@ OidcToken = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       service_account_email:
-          `Service account email
+          \ `Service account email
           <https://cloud.google.com/iam/docs/service-accounts>`_ to be
           used for generating OIDC token. The service account must be
           within the same project as the queue. The caller must have
