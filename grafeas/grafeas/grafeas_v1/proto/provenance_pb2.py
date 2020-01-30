@@ -1510,8 +1510,8 @@ BuildProvenance = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_BUILDPROVENANCE,
         __module__="grafeas_v1.proto.provenance_pb2",
-        __doc__="""Provenance of a build. Contains all information needed to verify the
-  full details about the build from source to completion.
+        __doc__="""Provenance of a build. Contains all information needed to
+  verify the full details about the build from source to completion.
   
   
   Attributes:
@@ -1570,7 +1570,8 @@ Source = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SOURCE,
         __module__="grafeas_v1.proto.provenance_pb2",
-        __doc__="""Source describes the location of the source used for the build.
+        __doc__="""Source describes the location of the source used for the
+  build.
   
   
   Attributes:
@@ -1606,8 +1607,9 @@ FileHashes = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_FILEHASHES,
         __module__="grafeas_v1.proto.provenance_pb2",
-        __doc__="""Container message for hashes of byte content of files, used in source
-  messages to verify integrity of source input to the build.
+        __doc__="""Container message for hashes of byte content of files,
+  used in source messages to verify integrity of source input to the
+  build.
   
   
   Attributes:
@@ -1645,7 +1647,8 @@ Command = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_COMMAND,
         __module__="grafeas_v1.proto.provenance_pb2",
-        __doc__="""Command describes a step performed as part of the build pipeline.
+        __doc__="""Command describes a step performed as part of the build
+  pipeline.
   
   
   Attributes:
@@ -1715,9 +1718,9 @@ SourceContext = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SOURCECONTEXT,
         __module__="grafeas_v1.proto.provenance_pb2",
-        __doc__="""A SourceContext is a reference to a tree of files. A SourceContext
-  together with a path point to a unique revision of a single file or
-  directory.
+        __doc__="""A SourceContext is a reference to a tree of files. A
+  SourceContext together with a path point to a unique revision of a
+  single file or directory.
   
   
   Attributes:
@@ -1767,8 +1770,8 @@ CloudRepoSourceContext = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CLOUDREPOSOURCECONTEXT,
         __module__="grafeas_v1.proto.provenance_pb2",
-        __doc__="""A CloudRepoSourceContext denotes a particular revision in a Google Cloud
-  Source Repo.
+        __doc__="""A CloudRepoSourceContext denotes a particular revision in
+  a Google Cloud Source Repo.
   
   
   Attributes:
@@ -1822,8 +1825,8 @@ GitSourceContext = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GITSOURCECONTEXT,
         __module__="grafeas_v1.proto.provenance_pb2",
-        __doc__="""A GitSourceContext denotes a particular revision in a third party Git
-  repository (e.g., GitHub).
+        __doc__="""A GitSourceContext denotes a particular revision in a
+  third party Git repository (e.g., GitHub).
   
   
   Attributes:
@@ -1867,8 +1870,8 @@ ProjectRepoId = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PROJECTREPOID,
         __module__="grafeas_v1.proto.provenance_pb2",
-        __doc__="""Selects a repo using a Google Cloud Platform project ID (e.g.,
-  winged-cargo-31) and a repo name within that project.
+        __doc__="""Selects a repo using a Google Cloud Platform project ID
+  (e.g., winged-cargo-31) and a repo name within that project.
   
   
   Attributes:
