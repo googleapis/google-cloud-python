@@ -2638,7 +2638,8 @@ ClusterSelector = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_CLUSTERSELECTOR,
         __module__="google.cloud.dataproc_v1beta2.proto.workflow_templates_pb2",
-        __doc__="""A selector that chooses target cluster for jobs based on metadata.
+        __doc__="""A selector that chooses target cluster for jobs based on
+  metadata.
   
   
   Attributes:
@@ -2723,10 +2724,10 @@ TemplateParameter = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TEMPLATEPARAMETER,
         __module__="google.cloud.dataproc_v1beta2.proto.workflow_templates_pb2",
-        __doc__="""A configurable parameter that replaces one or more fields in the
-  template. Parameterizable fields: - Labels - File uris - Job properties
-  - Job arguments - Script variables - Main class (in HadoopJob and
-  SparkJob) - Zone (in ClusterSelector)
+        __doc__="""A configurable parameter that replaces one or more fields
+  in the template. Parameterizable fields: - Labels - File uris - Job
+  properties - Job arguments - Script variables - Main class (in HadoopJob
+  and SparkJob) - Zone (in ClusterSelector)
   
   
   Attributes:
@@ -3183,7 +3184,8 @@ ListWorkflowTemplatesResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTWORKFLOWTEMPLATESRESPONSE,
         __module__="google.cloud.dataproc_v1beta2.proto.workflow_templates_pb2",
-        __doc__="""A response to a request to list workflow templates in a project.
+        __doc__="""A response to a request to list workflow templates in a
+  project.
   
   
   Attributes:

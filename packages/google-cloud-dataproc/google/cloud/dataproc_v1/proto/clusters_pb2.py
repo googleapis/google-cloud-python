@@ -2795,8 +2795,8 @@ Cluster = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_CLUSTER,
         __module__="google.cloud.dataproc_v1.proto.clusters_pb2",
-        __doc__="""Describes the identifying information, config, and status of a cluster
-  of Compute Engine instances.
+        __doc__="""Describes the identifying information, config, and status
+  of a cluster of Compute Engine instances.
   
   
   Attributes:
@@ -2952,8 +2952,8 @@ GceClusterConfig = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_GCECLUSTERCONFIG,
         __module__="google.cloud.dataproc_v1.proto.clusters_pb2",
-        __doc__="""Common config settings for resources of Compute Engine cluster
-  instances, applicable to all instances in the cluster.
+        __doc__="""Common config settings for resources of Compute Engine
+  cluster instances, applicable to all instances in the cluster.
   
   
   Attributes:
@@ -3038,8 +3038,8 @@ InstanceGroupConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_INSTANCEGROUPCONFIG,
         __module__="google.cloud.dataproc_v1.proto.clusters_pb2",
-        __doc__="""Optional. The config settings for Compute Engine resources in an
-  instance group, such as a master or worker group.
+        __doc__="""Optional. The config settings for Compute Engine resources
+  in an instance group, such as a master or worker group.
   
   
   Attributes:
@@ -3094,7 +3094,8 @@ ManagedGroupConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_MANAGEDGROUPCONFIG,
         __module__="google.cloud.dataproc_v1.proto.clusters_pb2",
-        __doc__="""Specifies the resources used to actively manage an instance group.
+        __doc__="""Specifies the resources used to actively manage an
+  instance group.
   
   
   Attributes:
@@ -3116,8 +3117,8 @@ AcceleratorConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ACCELERATORCONFIG,
         __module__="google.cloud.dataproc_v1.proto.clusters_pb2",
-        __doc__="""Specifies the type and number of accelerator cards attached to the
-  instances of an instance. See `GPUs on Compute
+        __doc__="""Specifies the type and number of accelerator cards
+  attached to the instances of an instance. See `GPUs on Compute
   Engine </compute/docs/gpus/>`__.
   
   
@@ -3152,7 +3153,8 @@ DiskConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DISKCONFIG,
         __module__="google.cloud.dataproc_v1.proto.clusters_pb2",
-        __doc__="""Specifies the config of disk options for a group of VM instances.
+        __doc__="""Specifies the config of disk options for a group of VM
+  instances.
   
   
   Attributes:
@@ -3182,8 +3184,8 @@ NodeInitializationAction = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NODEINITIALIZATIONACTION,
         __module__="google.cloud.dataproc_v1.proto.clusters_pb2",
-        __doc__="""Specifies an executable to run on a fully configured node and a timeout
-  period for executable completion.
+        __doc__="""Specifies an executable to run on a fully configured node
+  and a timeout period for executable completion.
   
   
   Attributes:
@@ -3331,7 +3333,8 @@ SoftwareConfig = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SOFTWARECONFIG,
         __module__="google.cloud.dataproc_v1.proto.clusters_pb2",
-        __doc__="""Specifies the selection and config of software inside the cluster.
+        __doc__="""Specifies the selection and config of software inside the
+  cluster.
   
   
   Attributes:
@@ -3389,7 +3392,8 @@ ClusterMetrics = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_CLUSTERMETRICS,
         __module__="google.cloud.dataproc_v1.proto.clusters_pb2",
-        __doc__="""Contains cluster daemon metrics, such as HDFS and YARN stats.
+        __doc__="""Contains cluster daemon metrics, such as HDFS and YARN
+  stats.
   
   **Beta Feature**: This report is available for testing purposes only. It
   may be changed before final release.
@@ -3568,7 +3572,8 @@ GetClusterRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GETCLUSTERREQUEST,
         __module__="google.cloud.dataproc_v1.proto.clusters_pb2",
-        __doc__="""Request to get the resource representation for a cluster in a project.
+        __doc__="""Request to get the resource representation for a cluster
+  in a project.
   
   
   Attributes:
