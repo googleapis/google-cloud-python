@@ -61,7 +61,11 @@ class Generator:
 
         self._sample_configs = opts.sample_configs
 
-    def get_response(self, api_schema: api.API) -> CodeGeneratorResponse:
+    def get_response(
+        self,
+        api_schema: api.API,
+        opts: options.Options
+    ) -> CodeGeneratorResponse:
         """Return a :class:`~.CodeGeneratorResponse` for this library.
 
         This is a complete response to be written to (usually) stdout, and
@@ -69,6 +73,7 @@ class Generator:
 
         Args:
             api_schema (~api.API): An API schema object.
+            opts (~.options.Options): An options instance.
 
         Returns:
             ~.CodeGeneratorResponse: A response describing appropriate
@@ -93,9 +98,13 @@ class Generator:
                 continue
 
             # Append to the output files dictionary.
-            output_files.update(self._render_template(template_name,
-                                                      api_schema=api_schema,
-                                                      ))
+            output_files.update(
+                self._render_template(
+                    template_name,
+                    api_schema=api_schema,
+                    opts=opts
+                )
+            )
 
         output_files.update(self._generate_samples_and_manifest(
             api_schema,
@@ -208,6 +217,7 @@ class Generator:
             self,
             template_name: str, *,
             api_schema: api.API,
+            opts: options.Options,
     ) -> Dict[str, CodeGeneratorResponse.File]:
         """Render the requested templates.
 
@@ -240,6 +250,7 @@ class Generator:
             for subpackage in api_schema.subpackages.values():
                 answer.update(self._render_template(template_name,
                                                     api_schema=subpackage,
+                                                    opts=opts
                                                     ))
             skip_subpackages = True
 
@@ -252,7 +263,8 @@ class Generator:
                     continue
                 answer.update(self._get_file(template_name,
                                              api_schema=api_schema,
-                                             proto=proto
+                                             proto=proto,
+                                             opts=opts
                                              ))
             return answer
 
@@ -266,15 +278,19 @@ class Generator:
                 answer.update(self._get_file(template_name,
                                              api_schema=api_schema,
                                              service=service,
+                                             opts=opts,
                                              ))
             return answer
 
         # This file is not iterating over anything else; return back
         # the one applicable file.
-        answer.update(self._get_file(template_name, api_schema=api_schema))
+        answer.update(
+            self._get_file(template_name, api_schema=api_schema, opts=opts)
+        )
         return answer
 
     def _get_file(self, template_name: str, *,
+                  opts: options.Options,
                   api_schema=api.API,
                   **context: Mapping):
         """Render a template to a protobuf plugin File object."""
@@ -289,6 +305,7 @@ class Generator:
             content=formatter.fix_whitespace(
                 self._env.get_template(template_name).render(
                     api=api_schema,
+                    opts=opts,
                     **context
                 ),
             ),

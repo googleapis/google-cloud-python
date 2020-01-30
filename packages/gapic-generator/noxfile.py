@@ -73,6 +73,7 @@ def showcase(session):
         session.run('protoc',
                     f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
                     f'--python_gapic_out={tmp_dir}',
+                    '--python_gapic_opt=lazy-import,',
                     'google/showcase/v1beta1/echo.proto',
                     'google/showcase/v1beta1/identity.proto',
                     external=True,

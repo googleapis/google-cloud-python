@@ -679,6 +679,14 @@ class Service:
         return self.name + "Client"
 
     @property
+    def transport_name(self):
+        return self.name + "Transport"
+
+    @property
+    def grpc_transport_name(self):
+        return self.name + "GrpcTransport"
+
+    @property
     def has_lro(self) -> bool:
         """Return whether the service has a long-running method."""
         return any([m.lro for m in self.methods.values()])

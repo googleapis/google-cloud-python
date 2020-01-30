@@ -30,6 +30,8 @@ def test_service_properties():
     service = make_service(name='ThingDoer')
     assert service.name == 'ThingDoer'
     assert service.client_name == 'ThingDoerClient'
+    assert service.transport_name == 'ThingDoerTransport'
+    assert service.grpc_transport_name == 'ThingDoerGrpcTransport'
 
 
 def test_service_host():

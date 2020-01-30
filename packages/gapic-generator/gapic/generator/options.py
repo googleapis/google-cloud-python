@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from collections import defaultdict
-from typing import Any, DefaultDict, Dict, List, Optional, Tuple
+from typing import Any, DefaultDict, Dict, FrozenSet, List, Optional, Tuple
 
 import dataclasses
 import json
@@ -36,11 +36,15 @@ class Options:
     retry: Optional[Dict[str, Any]] = None
     sample_configs: Tuple[str, ...] = dataclasses.field(default=())
     templates: Tuple[str, ...] = dataclasses.field(default=('DEFAULT',))
+    lazy_import: bool = False
 
     # Class constants
     PYTHON_GAPIC_PREFIX: str = 'python-gapic-'
-    RETRY_OPT: str = 'retry-config'
-    SAMPLES_OPT: str = 'samples'
+    OPT_FLAGS: FrozenSet[str] = frozenset((
+        'retry-config',         # takes a path
+        'samples',              # output dir
+        'lazy-import',          # requires >= 3.7
+    ))
 
     @classmethod
     def build(cls, opt_string: str) -> 'Options':
@@ -70,7 +74,7 @@ class Options:
                 opt, value = opt.split('=')
 
             # Save known, expected keys.
-            if opt in (cls.RETRY_OPT, cls.SAMPLES_OPT):
+            if opt in cls.OPT_FLAGS:
                 opts[opt].append(value)
 
             # Throw away other options not meant for us.
@@ -93,14 +97,14 @@ class Options:
             )
 
         retry_cfg = None
-        retry_paths = opts.pop(cls.RETRY_OPT, None)
+        retry_paths = opts.pop('retry-config', None)
         if retry_paths:
             # Just use the last config specified.
             with open(retry_paths[-1]) as f:
                 retry_cfg = json.load(f)
 
         # Build the options instance.
-        sample_paths = opts.pop(cls.SAMPLES_OPT, [])
+        sample_paths = opts.pop('samples', [])
         answer = Options(
             name=opts.pop('name', ['']).pop(),
             namespace=tuple(opts.pop('namespace', [])),
@@ -111,6 +115,7 @@ class Options:
                 for cfg_path in samplegen_utils.generate_all_sample_fpaths(s)
             ),
             templates=tuple(os.path.expanduser(i) for i in templates),
+            lazy_import=bool(opts.pop('lazy-import', False))
         )
 
         # Note: if we ever need to recursively check directories for sample

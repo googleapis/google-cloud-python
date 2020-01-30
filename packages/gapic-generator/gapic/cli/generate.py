@@ -61,7 +61,7 @@ def generate(
     # Translate into a protobuf CodeGeneratorResponse; this reads the
     # individual templates and renders them.
     # If there are issues, error out appropriately.
-    res = generator.Generator(opts).get_response(api_schema)
+    res = generator.Generator(opts).get_response(api_schema, opts)
 
     # Output the serialized response.
     output.write(res.SerializeToString())

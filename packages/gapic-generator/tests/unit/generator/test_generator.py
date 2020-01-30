@@ -45,7 +45,10 @@ def test_get_response():
         lt.return_value = ['foo/bar/baz.py.j2', 'molluscs/squid/sample.py.j2']
         with mock.patch.object(jinja2.Environment, 'get_template') as gt:
             gt.return_value = jinja2.Template('I am a template result.')
-            cgr = g.get_response(api_schema=make_api())
+            cgr = g.get_response(
+                api_schema=make_api(),
+                opts=options.Options.build('')
+            )
     lt.assert_called_once()
     gt.assert_has_calls([
         mock.call('foo/bar/baz.py.j2'),
@@ -62,7 +65,10 @@ def test_get_response_ignores_empty_files():
         lt.return_value = ['foo/bar/baz.py.j2', 'molluscs/squid/sample.py.j2']
         with mock.patch.object(jinja2.Environment, 'get_template') as gt:
             gt.return_value = jinja2.Template('# Meaningless comment')
-            cgr = g.get_response(api_schema=make_api())
+            cgr = g.get_response(
+                api_schema=make_api(),
+                opts=options.Options.build('')
+            )
     lt.assert_called_once()
     gt.assert_has_calls([
         mock.call('foo/bar/baz.py.j2'),
@@ -81,7 +87,10 @@ def test_get_response_ignores_private_files():
         ]
         with mock.patch.object(jinja2.Environment, 'get_template') as gt:
             gt.return_value = jinja2.Template('I am a template result.')
-            cgr = g.get_response(api_schema=make_api())
+            cgr = g.get_response(
+                api_schema=make_api(),
+                opts=options.Options.build('')
+            )
     lt.assert_called_once()
     gt.assert_has_calls([
         mock.call('foo/bar/baz.py.j2'),
@@ -100,7 +109,10 @@ def test_get_response_fails_invalid_file_paths():
             'molluscs/squid/sample.py.j2',
         ]
         with pytest.raises(ValueError) as ex:
-            g.get_response(api_schema=make_api())
+            g.get_response(
+                api_schema=make_api(),
+                opts=options.Options.build('')
+            )
 
         ex_str = str(ex.value)
         assert '%proto' in ex_str and '%service' in ex_str
@@ -115,12 +127,15 @@ def test_get_response_enumerates_services():
         ]
         with mock.patch.object(jinja2.Environment, 'get_template') as gt:
             gt.return_value = jinja2.Template('Service: {{ service.name }}')
-            cgr = g.get_response(api_schema=make_api(make_proto(
-                descriptor_pb2.FileDescriptorProto(service=[
-                    descriptor_pb2.ServiceDescriptorProto(name='Spam'),
-                    descriptor_pb2.ServiceDescriptorProto(name='EggsService'),
-                ]),
-            )))
+            cgr = g.get_response(
+                api_schema=make_api(make_proto(
+                    descriptor_pb2.FileDescriptorProto(service=[
+                        descriptor_pb2.ServiceDescriptorProto(name='Spam'),
+                        descriptor_pb2.ServiceDescriptorProto(
+                            name='EggsService'
+                        ),
+                    ]),
+                )), opts=options.Options.build(''))
     assert len(cgr.file) == 2
     assert {i.name for i in cgr.file} == {
         'foo/spam/baz.py',
@@ -140,7 +155,7 @@ def test_get_response_enumerates_proto():
             cgr = g.get_response(api_schema=make_api(
                 make_proto(descriptor_pb2.FileDescriptorProto(name='a.proto')),
                 make_proto(descriptor_pb2.FileDescriptorProto(name='b.proto')),
-            ))
+            ), opts=options.Options.build(''))
     assert len(cgr.file) == 2
     assert {i.name for i in cgr.file} == {'foo/a.py', 'foo/b.py'}
 
@@ -174,7 +189,10 @@ def test_get_response_divides_subpackages():
             gt.return_value = jinja2.Template("""
                 {{- '' }}Subpackage: {{ '.'.join(api.subpackage_view) }}
             """.strip())
-            cgr = g.get_response(api_schema=api_schema)
+            cgr = g.get_response(
+                api_schema=api_schema,
+                opts=options.Options.build('')
+            )
     assert len(cgr.file) == 6
     assert {i.name for i in cgr.file} == {
         'foo/types/top.py',
@@ -339,7 +357,10 @@ def test_samplegen_config_to_output_files(
     g._env.loader = jinja2.DictLoader({'sample.py.j2': ''})
 
     api_schema = make_api(naming=naming.Naming(name='Mollusc', version='v6'))
-    actual_response = g.get_response(api_schema)
+    actual_response = g.get_response(
+        api_schema,
+        opts=options.Options.build('')
+    )
     expected_response = CodeGeneratorResponse(
         file=[
             CodeGeneratorResponse.File(
@@ -425,7 +446,10 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
     g._env.loader = jinja2.DictLoader({'sample.py.j2': ''})
 
     api_schema = make_api(naming=naming.Naming(name='Mollusc', version='v6'))
-    actual_response = g.get_response(api_schema)
+    actual_response = g.get_response(
+        api_schema,
+        opts=options.Options.build('')
+    )
     expected_response = CodeGeneratorResponse(
         file=[
             CodeGeneratorResponse.File(
@@ -496,7 +520,10 @@ def test_generator_duplicate_samples(fs):
     api_schema = make_api(naming=naming.Naming(name='Mollusc', version='v6'))
 
     with pytest.raises(types.DuplicateSample):
-        generator.get_response(api_schema=api_schema)
+        generator.get_response(
+            api_schema=api_schema,
+            opts=options.Options.build('')
+        )
 
 
 @mock.patch(
@@ -611,7 +638,10 @@ def test_dont_generate_in_code_samples(
             )
         ]
     )
-    actual = generator.get_response(api_schema=api_schema)
+    actual = generator.get_response(
+        api_schema=api_schema,
+        opts=options.Options.build('')
+    )
     assert actual == expected
 
 
