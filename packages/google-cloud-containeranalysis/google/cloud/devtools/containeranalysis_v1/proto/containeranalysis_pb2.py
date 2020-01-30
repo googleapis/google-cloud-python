@@ -16,6 +16,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
 from google.iam.v1 import iam_policy_pb2 as google_dot_iam_dot_v1_dot_iam__policy__pb2
 from google.iam.v1 import policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
@@ -29,10 +30,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.containeranalysis.v1P\001ZUgoogle.golang.org/genproto/googleapis/devtools/containeranalysis/v1;containeranalysis\242\002\003GCA\252\002*Google.Cloud.DevTools.ContainerAnalysis.V1\352\002$Google::Cloud::ContainerAnalysis::V1"
     ),
     serialized_pb=_b(
-        '\nHgoogle/cloud/devtools/containeranalysis_v1/proto/containeranalysis.proto\x12$google.devtools.containeranalysis.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a\x1fgoogle/protobuf/timestamp.proto2\x86\x05\n\x11\x43ontainerAnalysis\x12\xbf\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"t\x82\xd3\xe4\x93\x02n"./v1/{resource=projects/*/notes/*}:setIamPolicy:\x01*Z9"4/v1/{resource=projects/*/occurrences/*}:setIamPolicy:\x01*\x12\xbf\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"t\x82\xd3\xe4\x93\x02n"./v1/{resource=projects/*/notes/*}:getIamPolicy:\x01*Z9"4/v1/{resource=projects/*/occurrences/*}:getIamPolicy:\x01*\x12\xec\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"\x80\x01\x82\xd3\xe4\x93\x02z"4/v1/{resource=projects/*/notes/*}:testIamPermissions:\x01*Z?":/v1/{resource=projects/*/occurrences/*}:testIamPermissions:\x01*B\xd4\x01\n\x1f\x63om.google.containeranalysis.v1P\x01ZUgoogle.golang.org/genproto/googleapis/devtools/containeranalysis/v1;containeranalysis\xa2\x02\x03GCA\xaa\x02*Google.Cloud.DevTools.ContainerAnalysis.V1\xea\x02$Google::Cloud::ContainerAnalysis::V1b\x06proto3'
+        '\nHgoogle/cloud/devtools/containeranalysis_v1/proto/containeranalysis.proto\x12$google.devtools.containeranalysis.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a\x1fgoogle/protobuf/timestamp.proto2\x91\x06\n\x11\x43ontainerAnalysis\x12\xd2\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"\x86\x01\x82\xd3\xe4\x93\x02n"./v1/{resource=projects/*/notes/*}:setIamPolicy:\x01*Z9"4/v1/{resource=projects/*/occurrences/*}:setIamPolicy:\x01*\xda\x41\x0fresource,policy\x12\xca\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"\x7f\x82\xd3\xe4\x93\x02n"./v1/{resource=projects/*/notes/*}:getIamPolicy:\x01*Z9"4/v1/{resource=projects/*/occurrences/*}:getIamPolicy:\x01*\xda\x41\x08resource\x12\x83\x02\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"\x97\x01\x82\xd3\xe4\x93\x02z"4/v1/{resource=projects/*/notes/*}:testIamPermissions:\x01*Z?":/v1/{resource=projects/*/occurrences/*}:testIamPermissions:\x01*\xda\x41\x14resource,permissions\x1aT\xca\x41 containeranalysis.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xd4\x01\n\x1f\x63om.google.containeranalysis.v1P\x01ZUgoogle.golang.org/genproto/googleapis/devtools/containeranalysis/v1;containeranalysis\xa2\x02\x03GCA\xaa\x02*Google.Cloud.DevTools.ContainerAnalysis.V1\xea\x02$Google::Cloud::ContainerAnalysis::V1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
         google_dot_iam_dot_v1_dot_iam__policy__pb2.DESCRIPTOR,
         google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
@@ -50,9 +52,11 @@ _CONTAINERANALYSIS = _descriptor.ServiceDescriptor(
     full_name="google.devtools.containeranalysis.v1.ContainerAnalysis",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=238,
-    serialized_end=884,
+    serialized_options=_b(
+        "\312A containeranalysis.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform"
+    ),
+    serialized_start=263,
+    serialized_end=1048,
     methods=[
         _descriptor.MethodDescriptor(
             name="SetIamPolicy",
@@ -62,7 +66,7 @@ _CONTAINERANALYSIS = _descriptor.ServiceDescriptor(
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._SETIAMPOLICYREQUEST,
             output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
             serialized_options=_b(
-                '\202\323\344\223\002n"./v1/{resource=projects/*/notes/*}:setIamPolicy:\001*Z9"4/v1/{resource=projects/*/occurrences/*}:setIamPolicy:\001*'
+                '\202\323\344\223\002n"./v1/{resource=projects/*/notes/*}:setIamPolicy:\001*Z9"4/v1/{resource=projects/*/occurrences/*}:setIamPolicy:\001*\332A\017resource,policy'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -73,7 +77,7 @@ _CONTAINERANALYSIS = _descriptor.ServiceDescriptor(
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._GETIAMPOLICYREQUEST,
             output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
             serialized_options=_b(
-                '\202\323\344\223\002n"./v1/{resource=projects/*/notes/*}:getIamPolicy:\001*Z9"4/v1/{resource=projects/*/occurrences/*}:getIamPolicy:\001*'
+                '\202\323\344\223\002n"./v1/{resource=projects/*/notes/*}:getIamPolicy:\001*Z9"4/v1/{resource=projects/*/occurrences/*}:getIamPolicy:\001*\332A\010resource'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -84,7 +88,7 @@ _CONTAINERANALYSIS = _descriptor.ServiceDescriptor(
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSREQUEST,
             output_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002z"4/v1/{resource=projects/*/notes/*}:testIamPermissions:\001*Z?":/v1/{resource=projects/*/occurrences/*}:testIamPermissions:\001*'
+                '\202\323\344\223\002z"4/v1/{resource=projects/*/notes/*}:testIamPermissions:\001*Z?":/v1/{resource=projects/*/occurrences/*}:testIamPermissions:\001*\332A\024resource,permissions'
             ),
         ),
     ],
