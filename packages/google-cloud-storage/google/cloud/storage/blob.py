@@ -358,6 +358,8 @@ class Blob(_PropertyMixin):
         client=None,
         credentials=None,
         version=None,
+        service_account_email=None,
+        access_token=None,
     ):
         """Generates a signed URL for this blob.
 
@@ -445,6 +447,12 @@ class Blob(_PropertyMixin):
         :param version: (Optional) The version of signed credential to create.
                         Must be one of 'v2' | 'v4'.
 
+        :type service_account_email: str
+        :param service_account_email: (Optional) E-mail address of the service account.
+
+        :type access_token: str
+        :param access_token: (Optional) Access token for a service account.
+
         :raises: :exc:`ValueError` when version is invalid.
         :raises: :exc:`TypeError` when expiration is not a valid type.
         :raises: :exc:`AttributeError` if credentials is not an instance
@@ -497,6 +505,8 @@ class Blob(_PropertyMixin):
             generation=generation,
             headers=headers,
             query_parameters=query_parameters,
+            service_account_email=service_account_email,
+            access_token=access_token,
         )
 
     def exists(self, client=None):

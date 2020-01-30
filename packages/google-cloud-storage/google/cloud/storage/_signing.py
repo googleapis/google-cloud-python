@@ -19,10 +19,14 @@ import collections
 import datetime
 import hashlib
 import re
+import json
 
 import six
 
 import google.auth.credentials
+
+from google.auth import exceptions
+from google.auth.transport import requests
 from google.cloud import _helpers
 
 
@@ -265,6 +269,8 @@ def generate_signed_url_v2(
     generation=None,
     headers=None,
     query_parameters=None,
+    service_account_email=None,
+    access_token=None,
 ):
     """Generate a V2 signed URL to provide query-string auth'n to a resource.
 
@@ -340,6 +346,12 @@ def generate_signed_url_v2(
         Requests using the signed URL *must* pass the specified header
         (name and value) with each request for the URL.
 
+    :type service_account_email: str
+    :param service_account_email: (Optional) E-mail address of the service account.
+
+    :type access_token: str
+    :param access_token: (Optional) Access token for a service account.
+
     :type query_parameters: dict
     :param query_parameters:
         (Optional) Additional query paramtersto be included as part of the
@@ -370,9 +382,17 @@ def generate_signed_url_v2(
     string_to_sign = "\n".join(elements_to_sign)
 
     # Set the right query parameters.
-    signed_query_params = get_signed_query_params_v2(
-        credentials, expiration_stamp, string_to_sign
-    )
+    if access_token and service_account_email:
+        signature = _sign_message(string_to_sign, access_token, service_account_email)
+        signed_query_params = {
+            "GoogleAccessId": service_account_email,
+            "Expires": str(expiration),
+            "Signature": signature,
+        }
+    else:
+        signed_query_params = get_signed_query_params_v2(
+            credentials, expiration_stamp, string_to_sign
+        )
 
     if response_type is not None:
         signed_query_params["response-content-type"] = response_type
@@ -409,6 +429,8 @@ def generate_signed_url_v4(
     generation=None,
     headers=None,
     query_parameters=None,
+    service_account_email=None,
+    access_token=None,
     _request_timestamp=None,  # for testing only
 ):
     """Generate a V4 signed URL to provide query-string auth'n to a resource.
@@ -491,6 +513,12 @@ def generate_signed_url_v4(
         (Optional) Additional query paramtersto be included as part of the
         signed URLs.  See:
         https://cloud.google.com/storage/docs/xml-api/reference-headers#query
+
+    :type service_account_email: str
+    :param service_account_email: (Optional) E-mail address of the service account.
+
+    :type access_token: str
+    :param access_token: (Optional) Access token for a service account.
 
     :raises: :exc:`TypeError` when expiration is not a valid type.
     :raises: :exc:`AttributeError` if credentials is not an instance
@@ -583,9 +611,58 @@ def generate_signed_url_v4(
     ]
     string_to_sign = "\n".join(string_elements)
 
-    signature_bytes = credentials.sign_bytes(string_to_sign.encode("ascii"))
-    signature = binascii.hexlify(signature_bytes).decode("ascii")
+    if access_token and service_account_email:
+        signature = _sign_message(string_to_sign, access_token, service_account_email)
+        signature_bytes = base64.b64decode(signature)
+        signature = binascii.hexlify(signature_bytes).decode("ascii")
+    else:
+        signature_bytes = credentials.sign_bytes(string_to_sign.encode("ascii"))
+        signature = binascii.hexlify(signature_bytes).decode("ascii")
 
     return "{}{}?{}&X-Goog-Signature={}".format(
         api_access_endpoint, resource, canonical_query_string, signature
     )
+
+
+def _sign_message(message, access_token, service_account_email):
+
+    """Signs a message.
+
+    :type message: str
+    :param message: The message to be signed.
+
+    :type access_token: str
+    :param access_token: Access token for a service account.
+
+
+    :type service_account_email: str
+    :param service_account_email: E-mail address of the service account.
+
+    :raises: :exc:`TransportError` if an `access_token` is unauthorized.
+
+    :rtype: str
+    :returns: The signature of the message.
+
+    """
+    message = _helpers._to_bytes(message)
+
+    method = "POST"
+    url = "https://iam.googleapis.com/v1/projects/-/serviceAccounts/{}:signBlob?alt=json".format(
+        service_account_email
+    )
+    headers = {
+        "Authorization": "Bearer " + access_token,
+        "Content-type": "application/json",
+    }
+    body = json.dumps({"bytesToSign": base64.b64encode(message).decode("utf-8")})
+
+    request = requests.Request()
+    response = request(url=url, method=method, body=body, headers=headers)
+
+    if response.status != six.moves.http_client.OK:
+        raise exceptions.TransportError(
+            "Error calling the IAM signBytes API: {}".format(response.data)
+        )
+
+    data = json.loads(response.data.decode("utf-8"))
+    return data["signature"]

@@ -112,7 +112,7 @@ def system(session):
     session.install("mock", "pytest")
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
-    systest_deps = ["../test_utils/", "../pubsub", "../kms"]
+    systest_deps = ["../test_utils/", "../pubsub", "../kms", "../iam"]
     for systest_dep in systest_deps:
         session.install("-e", systest_dep)
     session.install("-e", ".")
