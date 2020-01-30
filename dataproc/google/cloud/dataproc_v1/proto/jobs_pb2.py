@@ -3429,8 +3429,8 @@ SparkJob = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SPARKJOB,
         __module__="google.cloud.dataproc_v1.proto.jobs_pb2",
-        __doc__="""A Dataproc job for running `Apache Spark <http://spark.apache.org/>`__
-  applications on YARN.
+        __doc__="""A Dataproc job for running `Apache
+  Spark <http://spark.apache.org/>`__ applications on YARN.
   
   
   Attributes:
@@ -3583,8 +3583,8 @@ HiveJob = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_HIVEJOB,
         __module__="google.cloud.dataproc_v1.proto.jobs_pb2",
-        __doc__="""A Dataproc job for running `Apache Hive <https://hive.apache.org/>`__
-  queries on YARN.
+        __doc__="""A Dataproc job for running `Apache
+  Hive <https://hive.apache.org/>`__ queries on YARN.
   
   
   Attributes:
@@ -3700,8 +3700,8 @@ PigJob = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_PIGJOB,
         __module__="google.cloud.dataproc_v1.proto.jobs_pb2",
-        __doc__="""A Dataproc job for running `Apache Pig <https://pig.apache.org/>`__
-  queries on YARN.
+        __doc__="""A Dataproc job for running `Apache
+  Pig <https://pig.apache.org/>`__ queries on YARN.
   
   
   Attributes:
@@ -3818,8 +3818,9 @@ YarnApplication = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_YARNAPPLICATION,
         __module__="google.cloud.dataproc_v1.proto.jobs_pb2",
-        __doc__="""A YARN application created by a job. Application information is a subset
-  of org.apache.hadoop.yarn.proto.YarnProtos.ApplicationReportProto.
+        __doc__="""A YARN application created by a job. Application
+  information is a subset of
+  org.apache.hadoop.yarn.proto.YarnProtos.ApplicationReportProto.
   
   **Beta Feature**: This report is available for testing purposes only. It
   may be changed before final release.
@@ -3988,7 +3989,8 @@ GetJobRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GETJOBREQUEST,
         __module__="google.cloud.dataproc_v1.proto.jobs_pb2",
-        __doc__="""A request to get the resource representation for a job in a project.
+        __doc__="""A request to get the resource representation for a job in
+  a project.
   
   
   Attributes:
