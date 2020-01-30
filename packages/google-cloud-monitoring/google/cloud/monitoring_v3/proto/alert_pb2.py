@@ -195,7 +195,7 @@ _ALERTPOLICY_CONDITION_TRIGGER = _descriptor.Descriptor(
             index=0,
             containing_type=None,
             fields=[],
-        ),
+        )
     ],
     serialized_start=1120,
     serialized_end=1173,
@@ -555,7 +555,7 @@ _ALERTPOLICY_CONDITION = _descriptor.Descriptor(
             index=0,
             containing_type=None,
             fields=[],
-        ),
+        )
     ],
     serialized_start=892,
     serialized_end=1780,
@@ -829,7 +829,7 @@ _ALERTPOLICY = _descriptor.Descriptor(
         _ALERTPOLICY_CONDITION,
         _ALERTPOLICY_USERLABELSENTRY,
     ],
-    enum_types=[_ALERTPOLICY_CONDITIONCOMBINERTYPE,],
+    enum_types=[_ALERTPOLICY_CONDITIONCOMBINERTYPE],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
@@ -941,8 +941,8 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_ALERTPOLICY_DOCUMENTATION,
                 __module__="google.cloud.monitoring_v3.proto.alert_pb2",
-                __doc__="""A content string and a MIME type that describes the content string's
-    format.
+                __doc__="""A content string and a MIME type that describes the
+    content string's format.
     
     
     Attributes:
@@ -970,8 +970,9 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
                     dict(
                         DESCRIPTOR=_ALERTPOLICY_CONDITION_TRIGGER,
                         __module__="google.cloud.monitoring_v3.proto.alert_pb2",
-                        __doc__="""Specifies how many time series must fail a predicate to trigger a
-      condition. If not specified, then a ``{count: 1}`` trigger is used.
+                        __doc__="""Specifies how many time series must fail a predicate to
+      trigger a condition. If not specified, then a ``{count: 1}`` trigger is
+      used.
       
       
       Attributes:
@@ -993,8 +994,8 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
                     dict(
                         DESCRIPTOR=_ALERTPOLICY_CONDITION_METRICTHRESHOLD,
                         __module__="google.cloud.monitoring_v3.proto.alert_pb2",
-                        __doc__="""A condition type that compares a collection of time series against a
-      threshold.
+                        __doc__="""A condition type that compares a collection of time series
+      against a threshold.
       
       
       Attributes:
@@ -1080,11 +1081,11 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
                     dict(
                         DESCRIPTOR=_ALERTPOLICY_CONDITION_METRICABSENCE,
                         __module__="google.cloud.monitoring_v3.proto.alert_pb2",
-                        __doc__="""A condition type that checks that monitored resources are reporting
-      data. The configuration defines a metric and a set of monitored
-      resources. The predicate is considered in violation when a time series
-      for the specified metric of a monitored resource does not include any
-      data in the specified ``duration``.
+                        __doc__="""A condition type that checks that monitored resources are
+      reporting data. The configuration defines a metric and a set of
+      monitored resources. The predicate is considered in violation when a
+      time series for the specified metric of a monitored resource does not
+      include any data in the specified ``duration``.
       
       
       Attributes:
@@ -1129,9 +1130,9 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
                 ),
                 DESCRIPTOR=_ALERTPOLICY_CONDITION,
                 __module__="google.cloud.monitoring_v3.proto.alert_pb2",
-                __doc__="""A condition is a true/false test that determines when an alerting policy
-    should open an incident. If a condition evaluates to true, it signifies
-    that something is wrong.
+                __doc__="""A condition is a true/false test that determines when an
+    alerting policy should open an incident. If a condition evaluates to
+    true, it signifies that something is wrong.
     
     
     Attributes:
@@ -1183,10 +1184,10 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_ALERTPOLICY,
         __module__="google.cloud.monitoring_v3.proto.alert_pb2",
-        __doc__="""A description of the conditions under which some aspect of your system
-  is considered to be "unhealthy" and the ways to notify people or
-  services about this state. For an overview of alert policies, see
-  `Introduction to Alerting </monitoring/alerts/>`__.
+        __doc__="""A description of the conditions under which some aspect of
+  your system is considered to be "unhealthy" and the ways to notify
+  people or services about this state. For an overview of alert policies,
+  see `Introduction to Alerting </monitoring/alerts/>`__.
   
   
   Attributes:

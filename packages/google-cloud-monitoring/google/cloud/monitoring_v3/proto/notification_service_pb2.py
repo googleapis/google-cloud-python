@@ -204,7 +204,7 @@ _GETNOTIFICATIONCHANNELDESCRIPTORREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        ),
+        )
     ],
     extensions=[],
     nested_types=[],
@@ -468,7 +468,7 @@ _GETNOTIFICATIONCHANNELREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        ),
+        )
     ],
     extensions=[],
     nested_types=[],
@@ -621,7 +621,7 @@ _SENDNOTIFICATIONCHANNELVERIFICATIONCODEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        ),
+        )
     ],
     extensions=[],
     nested_types=[],

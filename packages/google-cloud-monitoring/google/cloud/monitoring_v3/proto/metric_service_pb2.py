@@ -255,7 +255,7 @@ _GETMONITOREDRESOURCEDESCRIPTORREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        ),
+        )
     ],
     extensions=[],
     nested_types=[],
@@ -444,7 +444,7 @@ _GETMETRICDESCRIPTORREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        ),
+        )
     ],
     extensions=[],
     nested_types=[],
@@ -540,7 +540,7 @@ _DELETEMETRICDESCRIPTORREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        ),
+        )
     ],
     extensions=[],
     nested_types=[],
@@ -709,7 +709,7 @@ _LISTTIMESERIESREQUEST = _descriptor.Descriptor(
     ],
     extensions=[],
     nested_types=[],
-    enum_types=[_LISTTIMESERIESREQUEST_TIMESERIESVIEW,],
+    enum_types=[_LISTTIMESERIESREQUEST_TIMESERIESVIEW],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
@@ -1028,7 +1028,7 @@ _CREATETIMESERIESSUMMARY = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_CREATETIMESERIESSUMMARY_ERROR,],
+    nested_types=[_CREATETIMESERIESSUMMARY_ERROR],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -1481,8 +1481,8 @@ CreateTimeSeriesSummary = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_CREATETIMESERIESSUMMARY,
         __module__="google.cloud.monitoring_v3.proto.metric_service_pb2",
-        __doc__="""Summary of the result of a failed request to write data to a time
-  series.
+        __doc__="""Summary of the result of a failed request to write data to
+  a time series.
   
   
   Attributes:

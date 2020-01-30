@@ -28,7 +28,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     serialized_pb=_b(
         '\n6google/cloud/monitoring_v3/proto/mutation_record.proto\x12\x14google.monitoring.v3\x1a\x1fgoogle/protobuf/timestamp.proto"U\n\x0eMutationRecord\x12/\n\x0bmutate_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x12\n\nmutated_by\x18\x02 \x01(\tB\xab\x01\n\x18\x63om.google.monitoring.v3B\x13MutationRecordProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
     ),
-    dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,],
+    dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR],
 )
 
 
