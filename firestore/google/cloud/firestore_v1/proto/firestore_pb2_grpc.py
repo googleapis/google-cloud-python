@@ -15,20 +15,12 @@ class FirestoreStub(object):
 
   The Cloud Firestore service.
 
-  This service exposes several types of comparable timestamps:
-
-  *    `create_time` - The time at which a document was created. Changes only
-  when a document is deleted, then re-created. Increases in a strict
-  monotonic fashion.
-  *    `update_time` - The time at which a document was last updated. Changes
-  every time a document is modified. Does not change when a write results
-  in no modifications. Increases in a strict monotonic fashion.
-  *    `read_time` - The time at which a particular state was observed. Used
-  to denote a consistent snapshot of the database or the time at which a
-  Document was observed to not exist.
-  *    `commit_time` - The time at which the writes in a transaction were
-  committed. Any read with an equal or greater `read_time` is guaranteed
-  to see the effects of the transaction.
+  Cloud Firestore is a fast, fully managed, serverless, cloud-native NoSQL
+  document database that simplifies storing, syncing, and querying data for
+  your mobile, web, and IoT apps at global scale. Its client libraries provide
+  live synchronization and offline support, while its security features and
+  integrations with Firebase and Google Cloud Platform (GCP) accelerate
+  building truly serverless apps.
   """
 
     def __init__(self, channel):
@@ -109,20 +101,12 @@ class FirestoreServicer(object):
 
   The Cloud Firestore service.
 
-  This service exposes several types of comparable timestamps:
-
-  *    `create_time` - The time at which a document was created. Changes only
-  when a document is deleted, then re-created. Increases in a strict
-  monotonic fashion.
-  *    `update_time` - The time at which a document was last updated. Changes
-  every time a document is modified. Does not change when a write results
-  in no modifications. Increases in a strict monotonic fashion.
-  *    `read_time` - The time at which a particular state was observed. Used
-  to denote a consistent snapshot of the database or the time at which a
-  Document was observed to not exist.
-  *    `commit_time` - The time at which the writes in a transaction were
-  committed. Any read with an equal or greater `read_time` is guaranteed
-  to see the effects of the transaction.
+  Cloud Firestore is a fast, fully managed, serverless, cloud-native NoSQL
+  document database that simplifies storing, syncing, and querying data for
+  your mobile, web, and IoT apps at global scale. Its client libraries provide
+  live synchronization and offline support, while its security features and
+  integrations with Firebase and Google Cloud Platform (GCP) accelerate
+  building truly serverless apps.
   """
 
     def GetDocument(self, request, context):

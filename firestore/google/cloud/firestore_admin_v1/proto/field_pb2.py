@@ -15,6 +15,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.firestore_admin_v1.proto import (
     index_pb2 as google_dot_cloud_dot_firestore_dot_admin__v1_dot_proto_dot_index__pb2,
 )
@@ -29,9 +30,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\035com.google.firestore.admin.v1B\nFieldProtoP\001Z>google.golang.org/genproto/googleapis/firestore/admin/v1;admin\242\002\004GCFS\252\002\037Google.Cloud.Firestore.Admin.V1\312\002\037Google\\Cloud\\Firestore\\Admin\\V1"
     ),
     serialized_pb=_b(
-        '\n1google/cloud/firestore/admin_v1/proto/field.proto\x12\x19google.firestore.admin.v1\x1a\x31google/cloud/firestore/admin_v1/proto/index.proto\x1a\x1cgoogle/api/annotations.proto"\xe5\x01\n\x05\x46ield\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x42\n\x0cindex_config\x18\x02 \x01(\x0b\x32,.google.firestore.admin.v1.Field.IndexConfig\x1a\x89\x01\n\x0bIndexConfig\x12\x31\n\x07indexes\x18\x01 \x03(\x0b\x32 .google.firestore.admin.v1.Index\x12\x1c\n\x14uses_ancestor_config\x18\x02 \x01(\x08\x12\x16\n\x0e\x61ncestor_field\x18\x03 \x01(\t\x12\x11\n\treverting\x18\x04 \x01(\x08\x42\xb8\x01\n\x1d\x63om.google.firestore.admin.v1B\nFieldProtoP\x01Z>google.golang.org/genproto/googleapis/firestore/admin/v1;admin\xa2\x02\x04GCFS\xaa\x02\x1fGoogle.Cloud.Firestore.Admin.V1\xca\x02\x1fGoogle\\Cloud\\Firestore\\Admin\\V1b\x06proto3'
+        '\n1google/cloud/firestore/admin_v1/proto/field.proto\x12\x19google.firestore.admin.v1\x1a\x19google/api/resource.proto\x1a\x31google/cloud/firestore/admin_v1/proto/index.proto\x1a\x1cgoogle/api/annotations.proto"\xe0\x02\n\x05\x46ield\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x42\n\x0cindex_config\x18\x02 \x01(\x0b\x32,.google.firestore.admin.v1.Field.IndexConfig\x1a\x89\x01\n\x0bIndexConfig\x12\x31\n\x07indexes\x18\x01 \x03(\x0b\x32 .google.firestore.admin.v1.Index\x12\x1c\n\x14uses_ancestor_config\x18\x02 \x01(\x08\x12\x16\n\x0e\x61ncestor_field\x18\x03 \x01(\t\x12\x11\n\treverting\x18\x04 \x01(\x08:y\xea\x41v\n\x1e\x66irestore.googleapis.com/Field\x12Tprojects/{project}/databases/{database}/collectionGroups/{collection}/fields/{field}B\xb8\x01\n\x1d\x63om.google.firestore.admin.v1B\nFieldProtoP\x01Z>google.golang.org/genproto/googleapis/firestore/admin/v1;admin\xa2\x02\x04GCFS\xaa\x02\x1fGoogle.Cloud.Firestore.Admin.V1\xca\x02\x1fGoogle\\Cloud\\Firestore\\Admin\\V1b\x06proto3'
     ),
     dependencies=[
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_firestore_dot_admin__v1_dot_proto_dot_index__pb2.DESCRIPTOR,
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
@@ -126,8 +128,8 @@ _FIELD_INDEXCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=254,
-    serialized_end=391,
+    serialized_start=281,
+    serialized_end=418,
 )
 
 _FIELD = _descriptor.Descriptor(
@@ -177,13 +179,15 @@ _FIELD = _descriptor.Descriptor(
     extensions=[],
     nested_types=[_FIELD_INDEXCONFIG],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352Av\n\036firestore.googleapis.com/Field\022Tprojects/{project}/databases/{database}/collectionGroups/{collection}/fields/{field}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=162,
-    serialized_end=391,
+    serialized_start=189,
+    serialized_end=541,
 )
 
 _FIELD_INDEXCONFIG.fields_by_name[
@@ -280,4 +284,5 @@ _sym_db.RegisterMessage(Field.IndexConfig)
 
 
 DESCRIPTOR._options = None
+_FIELD._options = None
 # @@protoc_insertion_point(module_scope)
