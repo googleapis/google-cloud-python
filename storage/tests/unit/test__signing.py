@@ -390,6 +390,8 @@ class Test_generate_signed_url_v2(unittest.TestCase):
             generation=generation,
             headers=headers,
             query_parameters=query_parameters,
+            service_account_email=None,
+            access_token=None,
         )
 
         # Check the mock was called.
@@ -503,6 +505,22 @@ class Test_generate_signed_url_v2(unittest.TestCase):
         expiration = int(time.time() + 5)
         with self.assertRaises(AttributeError):
             self._call_fut(credentials, resource=resource, expiration=expiration)
+
+    def test_with_access_token(self):
+        resource = "/name/path"
+        credentials = _make_credentials()
+        expiration = int(time.time() + 5)
+        email = mock.sentinel.service_account_email
+        with mock.patch(
+            "google.cloud.storage._signing._sign_message", return_value=b"DEADBEEF"
+        ):
+            self._call_fut(
+                credentials,
+                resource=resource,
+                expiration=expiration,
+                service_account_email=email,
+                access_token="token",
+            )
 
 
 class Test_generate_signed_url_v4(unittest.TestCase):
@@ -638,6 +656,51 @@ class Test_generate_signed_url_v4(unittest.TestCase):
     def test_w_custom_query_parameters_w_none_value(self):
         self._generate_helper(query_parameters={"qux": None})
 
+    def test_with_access_token(self):
+        resource = "/name/path"
+        signer_email = "service@example.com"
+        credentials = _make_credentials(signer_email=signer_email)
+        with mock.patch(
+            "google.cloud.storage._signing._sign_message", return_value=b"DEADBEEF"
+        ):
+            self._call_fut(
+                credentials,
+                resource=resource,
+                expiration=datetime.timedelta(days=5),
+                service_account_email=signer_email,
+                access_token="token",
+            )
+
+
+class Test_sign_message(unittest.TestCase):
+    @staticmethod
+    def _call_fut(*args, **kwargs):
+        from google.cloud.storage._signing import _sign_message
+
+        return _sign_message(*args, **kwargs)
+
+    def test_sign_bytes(self):
+        signature = "DEADBEEF"
+        data = {"signature": signature}
+        request = make_request(200, data)
+        with mock.patch("google.auth.transport.requests.Request", return_value=request):
+            returned_signature = self._call_fut(
+                "123", service_account_email="service@example.com", access_token="token"
+            )
+            assert returned_signature == signature
+
+    def test_sign_bytes_failure(self):
+        from google.auth import exceptions
+
+        request = make_request(401)
+        with mock.patch("google.auth.transport.requests.Request", return_value=request):
+            with pytest.raises(exceptions.TransportError):
+                self._call_fut(
+                    "123",
+                    service_account_email="service@example.com",
+                    access_token="token",
+                )
+
 
 _DUMMY_SERVICE_ACCOUNT = None
 
@@ -697,3 +760,16 @@ def _make_credentials(signer_email=None):
         return credentials
     else:
         return mock.Mock(spec=google.auth.credentials.Credentials)
+
+
+def make_request(status, data=None):
+    from google.auth import transport
+
+    response = mock.create_autospec(transport.Response, instance=True)
+    response.status = status
+    if data is not None:
+        response.data = json.dumps(data).encode("utf-8")
+
+    request = mock.create_autospec(transport.Request)
+    request.return_value = response
+    return request

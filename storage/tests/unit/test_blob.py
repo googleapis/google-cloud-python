@@ -391,6 +391,8 @@ class Test_Blob(unittest.TestCase):
         credentials=None,
         expiration=None,
         encryption_key=None,
+        access_token=None,
+        service_account_email=None,
     ):
         from six.moves.urllib import parse
         from google.cloud._helpers import UTC
@@ -432,6 +434,8 @@ class Test_Blob(unittest.TestCase):
                 headers=headers,
                 query_parameters=query_parameters,
                 version=version,
+                access_token=access_token,
+                service_account_email=service_account_email,
             )
 
         self.assertEqual(signed_uri, signer.return_value)
@@ -464,6 +468,8 @@ class Test_Blob(unittest.TestCase):
             "generation": generation,
             "headers": expected_headers,
             "query_parameters": query_parameters,
+            "access_token": access_token,
+            "service_account_email": service_account_email,
         }
         signer.assert_called_once_with(expected_creds, **expected_kwargs)
 
