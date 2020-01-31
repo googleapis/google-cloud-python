@@ -779,7 +779,7 @@ class TestWatch(unittest.TestCase):
     def test_resume_token_sent_on_recovery(self):
         inst = self._makeOne()
         inst.resume_token = b"ABCD0123"
-        request = inst._get_initial_request()
+        request = inst._get_rpc_request()
         self.assertEqual(request.add_target.resume_token, b"ABCD0123")
 
 
