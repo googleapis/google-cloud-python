@@ -114,7 +114,7 @@ def system(session):
     session.install("mock", "pytest")
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
-    session.install("-e", "../test_utils/")
+    session.install("-e", "test_utils/")
     session.install("-e", ".")
 
     # Run py.test against the system tests.
@@ -169,7 +169,7 @@ def snippets(session):
     session.install('mock', 'pytest')
     for local_dep in LOCAL_DEPS:
         session.install('-e', local_dep)
-    session.install('-e', '../test_utils/')
+    session.install('-e', 'test_utils/')
     session.install('-e', '.')
     session.run(
         'py.test',
