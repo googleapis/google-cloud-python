@@ -57,6 +57,7 @@ class TestClient(unittest.TestCase):
         user_agent=None,
         client_options=None,
     ):
+        import google.api_core.client_options
         from google.cloud.spanner_v1 import client as MUT
 
         kwargs = {}
@@ -65,6 +66,14 @@ class TestClient(unittest.TestCase):
             kwargs["client_info"] = expected_client_info = client_info
         else:
             expected_client_info = MUT._CLIENT_INFO
+
+        kwargs["client_options"] = client_options
+        if type(client_options) == dict:
+            expected_client_options = google.api_core.client_options.from_dict(
+                client_options
+            )
+        else:
+            expected_client_options = client_options
 
         client = self._make_one(
             project=self.PROJECT, credentials=creds, user_agent=user_agent, **kwargs
@@ -80,7 +89,14 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project, self.PROJECT)
         self.assertIs(client._client_info, expected_client_info)
         self.assertEqual(client.user_agent, user_agent)
-        self.assertEqual(client._client_options, client_options)
+        if expected_client_options is not None:
+            self.assertIsInstance(
+                client._client_options, google.api_core.client_options.ClientOptions
+            )
+            self.assertEqual(
+                client._client_options.api_endpoint,
+                expected_client_options.api_endpoint,
+            )
 
     def test_constructor_default_scopes(self):
         from google.cloud.spanner_v1 import client as MUT
@@ -126,6 +142,27 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         expected_scopes = None
         self._constructor_test_helper(expected_scopes, creds)
+
+    def test_constructor_custom_client_options_obj(self):
+        from google.api_core.client_options import ClientOptions
+        from google.cloud.spanner_v1 import client as MUT
+
+        expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
+        creds = _make_credentials()
+        self._constructor_test_helper(
+            expected_scopes,
+            creds,
+            client_options=ClientOptions(api_endpoint="endpoint"),
+        )
+
+    def test_constructor_custom_client_options_dict(self):
+        from google.cloud.spanner_v1 import client as MUT
+
+        expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
+        creds = _make_credentials()
+        self._constructor_test_helper(
+            expected_scopes, creds, client_options={"api_endpoint": "endpoint"}
+        )
 
     def test_instance_admin_api(self):
         from google.cloud.spanner_v1.client import SPANNER_ADMIN_SCOPE

@@ -56,6 +56,9 @@ from tests._fixtures import DDL_STATEMENTS
 
 
 CREATE_INSTANCE = os.getenv("GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE") is not None
+USE_RESOURCE_ROUTING = (
+    os.getenv("GOOGLE_CLOUD_SPANNER_ENABLE_RESOURCE_BASED_ROUTING") == "true"
+)
 
 if CREATE_INSTANCE:
     INSTANCE_ID = "google-cloud" + unique_resource_id("-")
@@ -281,6 +284,61 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
     def tearDown(self):
         for doomed in self.to_delete:
             doomed.drop()
+
+    @unittest.skipUnless(USE_RESOURCE_ROUTING, "requires enabling resource routing")
+    def test_spanner_api_use_user_specified_endpoint(self):
+        # Clear cache.
+        Client._endpoint_cache = {}
+        api = Config.CLIENT.instance_admin_api
+        resp = api.get_instance(
+            Config.INSTANCE.name, field_mask={"paths": ["endpoint_uris"]}
+        )
+        if not resp or not resp.endpoint_uris:
+            return  # no resolved endpoint.
+        resolved_endpoint = resp.endpoint_uris[0]
+
+        client = Client(client_options={"api_endpoint": resolved_endpoint})
+
+        instance = client.instance(Config.INSTANCE.instance_id)
+        temp_db_id = "temp_db" + unique_resource_id("_")
+        temp_db = instance.database(temp_db_id)
+        temp_db.spanner_api
+
+        # No endpoint cache - Default endpoint used.
+        self.assertEqual(client._endpoint_cache, {})
+
+    @unittest.skipUnless(USE_RESOURCE_ROUTING, "requires enabling resource routing")
+    def test_spanner_api_use_resolved_endpoint(self):
+        # Clear cache.
+        Client._endpoint_cache = {}
+        api = Config.CLIENT.instance_admin_api
+        resp = api.get_instance(
+            Config.INSTANCE.name, field_mask={"paths": ["endpoint_uris"]}
+        )
+        if not resp or not resp.endpoint_uris:
+            return  # no resolved endpoint.
+        resolved_endpoint = resp.endpoint_uris[0]
+
+        client = Client(
+            client_options=Config.CLIENT._client_options
+        )  # Use same endpoint as main client.
+
+        instance = client.instance(Config.INSTANCE.instance_id)
+        temp_db_id = "temp_db" + unique_resource_id("_")
+        temp_db = instance.database(temp_db_id)
+        temp_db.spanner_api
+
+        # Endpoint is cached - resolved endpoint used.
+        self.assertIn(Config.INSTANCE.name, client._endpoint_cache)
+        self.assertEqual(
+            client._endpoint_cache[Config.INSTANCE.name], resolved_endpoint
+        )
+
+        # Endpoint is cached at a class level.
+        self.assertIn(Config.INSTANCE.name, Config.CLIENT._endpoint_cache)
+        self.assertEqual(
+            Config.CLIENT._endpoint_cache[Config.INSTANCE.name], resolved_endpoint
+        )
 
     def test_list_databases(self):
         # Since `Config.INSTANCE` is newly created in `setUpModule`, the
