@@ -1482,9 +1482,10 @@ RawHashes = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_RAWHASHES,
         __module__="google.cloud.webrisk_v1beta1.proto.webrisk_pb2",
-        __doc__="""The uncompressed threat entries in hash format. Hashes can be anywhere
-  from 4 to 32 bytes in size. A large majority are 4 bytes, but some
-  hashes are lengthened if they collide with the hash of a popular URI.
+        __doc__="""The uncompressed threat entries in hash format. Hashes can
+  be anywhere from 4 to 32 bytes in size. A large majority are 4 bytes,
+  but some hashes are lengthened if they collide with the hash of a
+  popular URI.
   
   Used for sending ThreatEntryAdditons to clients that do not support
   compression, or when sending non-4-byte hashes to clients that do
