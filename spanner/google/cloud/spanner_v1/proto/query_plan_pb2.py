@@ -511,8 +511,8 @@ PlanNode = _reflection.GeneratedProtocolMessageType(
                 ),
                 DESCRIPTOR=_PLANNODE_SHORTREPRESENTATION,
                 __module__="google.cloud.spanner_v1.proto.query_plan_pb2",
-                __doc__="""Condensed representation of a node and its subtree. Only present for
-    ``SCALAR`` [PlanNode(s)][google.spanner.v1.PlanNode].
+                __doc__="""Condensed representation of a node and its subtree. Only
+    present for ``SCALAR`` [PlanNode(s)][google.spanner.v1.PlanNode].
     
     
     Attributes:

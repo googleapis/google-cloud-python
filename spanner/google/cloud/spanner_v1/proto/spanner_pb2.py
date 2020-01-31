@@ -2723,8 +2723,7 @@ PartitionOptions = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PARTITIONOPTIONS,
         __module__="google.cloud.spanner_v1.proto.spanner_pb2",
-        __doc__="""Options for a PartitionQueryRequest and
-  PartitionReadRequest.
+        __doc__="""Options for a PartitionQueryRequest and PartitionReadRequest.
   
   
   Attributes:

@@ -879,9 +879,9 @@ UpdateDatabaseDdlRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_UPDATEDATABASEDDLREQUEST,
         __module__="google.cloud.spanner.admin.database_v1.proto.spanner_database_admin_pb2",
-        __doc__="""Enqueues the given DDL statements to be applied, in order
-  but not necessarily all at once, to the database schema at some point
-  (or points) in the future. The server checks that the statements are
+        __doc__="""Enqueues the given DDL statements to be applied, in order but not
+  necessarily all at once, to the database schema at some point (or
+  points) in the future. The server checks that the statements are
   executable (syntactically valid, name tables that exist, etc.) before
   enqueueing them, but they may still fail upon later execution (e.g., if
   a statement from another batch of statements is applied first and it
