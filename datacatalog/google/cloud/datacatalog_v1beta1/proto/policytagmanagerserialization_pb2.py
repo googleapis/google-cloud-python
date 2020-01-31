@@ -507,8 +507,8 @@ SerializedTaxonomy = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SERIALIZEDTAXONOMY,
         __module__="google.cloud.datacatalog_v1beta1.proto.policytagmanagerserialization_pb2",
-        __doc__="""Message capturing a taxonomy and its policy tag hierarchy
-  as a nested proto. Used for taxonomy import/export and mutation.
+        __doc__="""Message capturing a taxonomy and its policy tag hierarchy as a nested
+  proto. Used for taxonomy import/export and mutation.
   
   
   Attributes:
