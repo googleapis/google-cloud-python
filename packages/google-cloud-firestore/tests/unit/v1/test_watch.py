@@ -776,6 +776,12 @@ class TestWatch(unittest.TestCase):
         self.assertEqual(inst.resume_token, None)
         self.assertFalse(inst.current)
 
+    def test_resume_token_sent_on_recovery(self):
+        inst = self._makeOne()
+        inst.resume_token = b"ABCD0123"
+        request = inst._get_rpc_request()
+        self.assertEqual(request.add_target.resume_token, b"ABCD0123")
+
 
 class DummyFirestoreStub(object):
     def Listen(self):  # pragma: NO COVER
@@ -922,7 +928,7 @@ class DummyRpc(object):
         self.start_rpc = start_rpc
         self.should_recover = should_recover
         self.should_terminate = should_terminate
-        self.initial_request = initial_request
+        self.initial_request = initial_request()
         self.metadata = metadata
         self.closed = False
         self.callbacks = []
