@@ -1,5 +1,5 @@
 {
-  "updateTime": "2020-01-30T02:35:03.193416Z",
+  "updateTime": "2020-01-31T13:29:42.881587Z",
   "sources": [
     {
       "generator": {
@@ -11,9 +11,10 @@
     {
       "git": {
         "name": "googleapis",
-        "remote": "git@github.com:googleapis/googleapis.git",
-        "sha": "b491d07cadaae7cde5608321f913e5ca1459b32d",
-        "internalRef": "292245373"
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "7ac66d9be8a7d7de4f13566d8663978c9ee9dcd7",
+        "internalRef": "292450564",
+        "log": "7ac66d9be8a7d7de4f13566d8663978c9ee9dcd7\nAdd Dataproc Autoscaling API to V1.\n\nPiperOrigin-RevId: 292450564\n\n5d932b2c1be3a6ef487d094e3cf5c0673d0241dd\n- Improve documentation\n- Add a client_id field to StreamingPullRequest\n\nPiperOrigin-RevId: 292434036\n\neaff9fa8edec3e914995ce832b087039c5417ea7\nmonitoring: v3 publish annotations and client retry config\n\nPiperOrigin-RevId: 292425288\n\n70958bab8c5353870d31a23fb2c40305b050d3fe\nBigQuery Storage Read API v1 clients.\n\nPiperOrigin-RevId: 292407644\n\n7a15e7fe78ff4b6d5c9606a3264559e5bde341d1\nUpdate backend proto for Google Cloud Endpoints\n\nPiperOrigin-RevId: 292391607\n\n3ca2c014e24eb5111c8e7248b1e1eb833977c83d\nbazel: Add --flaky_test_attempts=3 argument to prevent CI failures caused by flaky tests\n\nPiperOrigin-RevId: 292382559\n\n9933347c1f677e81e19a844c2ef95bfceaf694fe\nbazel:Integrate latest protoc-java-resource-names-plugin changes (fix for PyYAML dependency in bazel rules)\n\nPiperOrigin-RevId: 292376626\n\nb835ab9d2f62c88561392aa26074c0b849fb0bd3\nasset: v1p2beta1 add client config annotations\n\n* remove unintentionally exposed RPCs\n* remove messages relevant to removed RPCs\n\nPiperOrigin-RevId: 292369593\n\nc1246a29e22b0f98e800a536b5b0da2d933a55f2\nUpdating v1 protos with the latest inline documentation (in comments) and config options. Also adding a per-service .yaml file.\n\nPiperOrigin-RevId: 292310790\n\n"
       }
     },
     {
@@ -34,95 +35,6 @@
         "generator": "gapic",
         "config": "google/cloud/oslogin/artman_oslogin_v1.yaml"
       }
-    }
-  ],
-  "newFiles": [
-    {
-      "path": "MANIFEST.in"
-    },
-    {
-      "path": ".flake8"
-    },
-    {
-      "path": "noxfile.py"
-    },
-    {
-      "path": ".coveragerc"
-    },
-    {
-      "path": "setup.cfg"
-    },
-    {
-      "path": "LICENSE"
-    },
-    {
-      "path": "docs/conf.py"
-    },
-    {
-      "path": "docs/_static/custom.css"
-    },
-    {
-      "path": "docs/gapic/v1/api.rst"
-    },
-    {
-      "path": "docs/gapic/v1/types.rst"
-    },
-    {
-      "path": "docs/_templates/layout.html"
-    },
-    {
-      "path": "google/__init__.py"
-    },
-    {
-      "path": "google/cloud/__init__.py"
-    },
-    {
-      "path": "google/cloud/oslogin.py"
-    },
-    {
-      "path": "google/cloud/oslogin_v1/types.py"
-    },
-    {
-      "path": "google/cloud/oslogin_v1/__init__.py"
-    },
-    {
-      "path": "google/cloud/oslogin_v1/gapic/__init__.py"
-    },
-    {
-      "path": "google/cloud/oslogin_v1/gapic/os_login_service_client.py"
-    },
-    {
-      "path": "google/cloud/oslogin_v1/gapic/os_login_service_client_config.py"
-    },
-    {
-      "path": "google/cloud/oslogin_v1/gapic/enums.py"
-    },
-    {
-      "path": "google/cloud/oslogin_v1/gapic/transports/__init__.py"
-    },
-    {
-      "path": "google/cloud/oslogin_v1/gapic/transports/os_login_service_grpc_transport.py"
-    },
-    {
-      "path": "google/cloud/oslogin_v1/proto/oslogin.proto"
-    },
-    {
-      "path": "google/cloud/oslogin_v1/proto/oslogin_pb2_grpc.py"
-    },
-    {
-      "path": "google/cloud/oslogin_v1/proto/__init__.py"
-    },
-    {
-      "path": "google/cloud/oslogin_v1/proto/common_pb2.py"
-    },
-    {
-      "path": "google/cloud/oslogin_v1/proto/common_pb2_grpc.py"
-    },
-    {
-      "path": "google/cloud/oslogin_v1/proto/oslogin_pb2.py"
-    },
-    {
-      "path": "tests/unit/gapic/v1/test_os_login_service_client_v1.py"
     }
   ]
 }
