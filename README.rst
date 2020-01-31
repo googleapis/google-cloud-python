@@ -226,7 +226,7 @@ The following client libraries have **alpha** support:
 .. _Security Scanner Documentation: https://googleapis.dev/python/websecurityscanner/latest
 
 .. _Google Cloud Text-to-Speech: https://pypi.org/project/google-cloud-texttospeech/
-.. _Text-to-Speech README: https://github.com/googleapis/google-cloud-python/tree/master/texttospeech
+.. _Text-to-Speech README: https://github.com/googleapis/python-texttospeech/blob/master/README.rst#python-client-for-cloud-text-to-speech-api
 .. _Text-to-Speech Documentation: https://googleapis.dev/python/texttospeech/latest
 
 .. _Google Cloud Trace: https://pypi.org/project/google-cloud-trace/
