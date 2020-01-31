@@ -2456,8 +2456,7 @@ FaceAnnotation = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_FACEANNOTATION,
         __module__="google.cloud.vision_v1p1beta1.proto.image_annotator_pb2",
-        __doc__="""A face annotation object contains the results of face
-  detection.
+        __doc__="""A face annotation object contains the results of face detection.
   
   
   Attributes:
