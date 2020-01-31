@@ -384,8 +384,8 @@ Index = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_INDEX,
         __module__="google.cloud.firestore.admin_v1.proto.index_pb2",
-        __doc__="""Cloud Firestore indexes enable simple and complex queries
-  against documents in a database.
+        __doc__="""Cloud Firestore indexes enable simple and complex queries against
+  documents in a database.
   
   
   Attributes:
