@@ -1,1 +1,1 @@
-../../dns/CHANGELOG.md
+../CHANGELOG.md
