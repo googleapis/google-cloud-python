@@ -1230,8 +1230,7 @@ TransferMessage = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TRANSFERMESSAGE,
         __module__="google.cloud.bigquery.datatransfer_v1.proto.transfer_pb2",
-        __doc__="""Represents a user facing message for a particular data
-  transfer run.
+        __doc__="""Represents a user facing message for a particular data transfer run.
   
   
   Attributes:
