@@ -231,7 +231,14 @@ class TestDatabase(_BaseTest):
         self.assertEqual(database.name, expected_name)
 
     def test_spanner_api_property_w_scopeless_creds(self):
+        from google.cloud.spanner_admin_instance_v1.proto import (
+            spanner_instance_admin_pb2 as admin_v1_pb2,
+        )
+
         client = _Client()
+        client.instance_admin_api.get_instance.return_value = admin_v1_pb2.Instance(
+            endpoint_uris=[]
+        )
         client_info = client._client_info = mock.Mock()
         client_options = client._client_options = mock.Mock()
         credentials = client.credentials = object()
@@ -241,8 +248,10 @@ class TestDatabase(_BaseTest):
 
         patch = mock.patch("google.cloud.spanner_v1.database.SpannerClient")
 
-        with patch as spanner_client:
-            api = database.spanner_api
+        with mock.patch("os.getenv") as getenv:
+            getenv.return_value = "true"
+            with patch as spanner_client:
+                api = database.spanner_api
 
         self.assertIs(api, spanner_client.return_value)
 
@@ -250,6 +259,7 @@ class TestDatabase(_BaseTest):
         again = database.spanner_api
         self.assertIs(again, api)
 
+        client.instance_admin_api.get_instance.assert_called_once()
         spanner_client.assert_called_once_with(
             credentials=credentials,
             client_info=client_info,
@@ -258,6 +268,9 @@ class TestDatabase(_BaseTest):
 
     def test_spanner_api_w_scoped_creds(self):
         import google.auth.credentials
+        from google.cloud.spanner_admin_instance_v1.proto import (
+            spanner_instance_admin_pb2 as admin_v1_pb2,
+        )
         from google.cloud.spanner_v1.database import SPANNER_DATA_SCOPE
 
         class _CredentialsWithScopes(google.auth.credentials.Scoped):
@@ -281,9 +294,213 @@ class TestDatabase(_BaseTest):
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         patch = mock.patch("google.cloud.spanner_v1.database.SpannerClient")
+        client.instance_admin_api.get_instance.return_value = admin_v1_pb2.Instance(
+            endpoint_uris=[]
+        )
 
-        with patch as spanner_client:
-            api = database.spanner_api
+        with mock.patch("os.getenv") as getenv:
+            getenv.return_value = "true"
+            with patch as spanner_client:
+                api = database.spanner_api
+
+        self.assertNotIn(instance.name, client._endpoint_cache)
+
+        # API instance is cached
+        again = database.spanner_api
+        self.assertIs(again, api)
+
+        client.instance_admin_api.get_instance.assert_called_once()
+        self.assertEqual(len(spanner_client.call_args_list), 1)
+        called_args, called_kw = spanner_client.call_args
+        self.assertEqual(called_args, ())
+        self.assertEqual(called_kw["client_info"], client_info)
+        self.assertEqual(called_kw["client_options"], client_options)
+        scoped = called_kw["credentials"]
+        self.assertEqual(scoped._scopes, expected_scopes)
+        self.assertIs(scoped._source, credentials)
+
+    def test_spanner_api_property_w_scopeless_creds_and_new_endpoint(self):
+        from google.cloud.spanner_admin_instance_v1.proto import (
+            spanner_instance_admin_pb2 as admin_v1_pb2,
+        )
+
+        client = _Client()
+        client.instance_admin_api.get_instance.return_value = admin_v1_pb2.Instance(
+            endpoint_uris=["test1", "test2"]
+        )
+        client_info = client._client_info = mock.Mock()
+        client._client_options = mock.Mock()
+        credentials = client.credentials = object()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        client_patch = mock.patch("google.cloud.spanner_v1.database.SpannerClient")
+        options_patch = mock.patch("google.cloud.spanner_v1.database.ClientOptions")
+
+        with mock.patch("os.getenv") as getenv:
+            getenv.return_value = "true"
+            with options_patch as options:
+                with client_patch as spanner_client:
+                    api = database.spanner_api
+
+        self.assertIs(api, spanner_client.return_value)
+        self.assertIn(instance.name, client._endpoint_cache)
+
+        # API instance is cached
+        again = database.spanner_api
+        self.assertIs(again, api)
+
+        self.assertEqual(len(spanner_client.call_args_list), 1)
+        called_args, called_kw = spanner_client.call_args
+        self.assertEqual(called_args, ())
+        self.assertEqual(called_kw["client_info"], client_info)
+        self.assertEqual(called_kw["credentials"], credentials)
+        options.assert_called_with(api_endpoint="test1")
+
+    def test_spanner_api_w_scoped_creds_and_new_endpoint(self):
+        import google.auth.credentials
+        from google.cloud.spanner_admin_instance_v1.proto import (
+            spanner_instance_admin_pb2 as admin_v1_pb2,
+        )
+        from google.cloud.spanner_v1.database import SPANNER_DATA_SCOPE
+
+        class _CredentialsWithScopes(google.auth.credentials.Scoped):
+            def __init__(self, scopes=(), source=None):
+                self._scopes = scopes
+                self._source = source
+
+            def requires_scopes(self):  # pragma: NO COVER
+                return True
+
+            def with_scopes(self, scopes):
+                return self.__class__(scopes, self)
+
+        expected_scopes = (SPANNER_DATA_SCOPE,)
+        client = _Client()
+        client_info = client._client_info = mock.Mock()
+        client._client_options = mock.Mock()
+        credentials = client.credentials = _CredentialsWithScopes()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        client_patch = mock.patch("google.cloud.spanner_v1.database.SpannerClient")
+        options_patch = mock.patch("google.cloud.spanner_v1.database.ClientOptions")
+        client.instance_admin_api.get_instance.return_value = admin_v1_pb2.Instance(
+            endpoint_uris=["test1", "test2"]
+        )
+
+        with mock.patch("os.getenv") as getenv:
+            getenv.return_value = "true"
+            with options_patch as options:
+                with client_patch as spanner_client:
+                    api = database.spanner_api
+
+        self.assertIs(api, spanner_client.return_value)
+        self.assertIn(instance.name, client._endpoint_cache)
+
+        # API instance is cached
+        again = database.spanner_api
+        self.assertIs(again, api)
+
+        self.assertEqual(len(spanner_client.call_args_list), 1)
+        called_args, called_kw = spanner_client.call_args
+        self.assertEqual(called_args, ())
+        self.assertEqual(called_kw["client_info"], client_info)
+        scoped = called_kw["credentials"]
+        self.assertEqual(scoped._scopes, expected_scopes)
+        self.assertIs(scoped._source, credentials)
+        options.assert_called_with(api_endpoint="test1")
+
+    def test_spanner_api_resource_routing_permissions_error(self):
+        from google.api_core.exceptions import PermissionDenied
+
+        client = _Client()
+        client_info = client._client_info = mock.Mock()
+        client_options = client._client_options = mock.Mock()
+        client._endpoint_cache = {}
+        credentials = client.credentials = mock.Mock()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        patch = mock.patch("google.cloud.spanner_v1.database.SpannerClient")
+        client.instance_admin_api.get_instance.side_effect = PermissionDenied("test")
+
+        with mock.patch("os.getenv") as getenv:
+            getenv.return_value = "true"
+            with patch as spanner_client:
+                api = database.spanner_api
+
+        self.assertIs(api, spanner_client.return_value)
+
+        # API instance is cached
+        again = database.spanner_api
+        self.assertIs(again, api)
+
+        client.instance_admin_api.get_instance.assert_called_once()
+        spanner_client.assert_called_once_with(
+            credentials=credentials,
+            client_info=client_info,
+            client_options=client_options,
+        )
+
+    def test_spanner_api_disable_resource_routing(self):
+        client = _Client()
+        client_info = client._client_info = mock.Mock()
+        client_options = client._client_options = mock.Mock()
+        client._endpoint_cache = {}
+        credentials = client.credentials = mock.Mock()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        patch = mock.patch("google.cloud.spanner_v1.database.SpannerClient")
+
+        with mock.patch("os.getenv") as getenv:
+            getenv.return_value = "false"
+            with patch as spanner_client:
+                api = database.spanner_api
+
+        self.assertIs(api, spanner_client.return_value)
+
+        # API instance is cached
+        again = database.spanner_api
+        self.assertIs(again, api)
+
+        client.instance_admin_api.get_instance.assert_not_called()
+        spanner_client.assert_called_once_with(
+            credentials=credentials,
+            client_info=client_info,
+            client_options=client_options,
+        )
+
+    def test_spanner_api_cached_endpoint(self):
+        from google.cloud.spanner_admin_instance_v1.proto import (
+            spanner_instance_admin_pb2 as admin_v1_pb2,
+        )
+
+        client = _Client()
+        client_info = client._client_info = mock.Mock()
+        client._client_options = mock.Mock()
+        client._endpoint_cache = {self.INSTANCE_NAME: "cached"}
+        credentials = client.credentials = mock.Mock()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        client_patch = mock.patch("google.cloud.spanner_v1.database.SpannerClient")
+        options_patch = mock.patch("google.cloud.spanner_v1.database.ClientOptions")
+        client.instance_admin_api.get_instance.return_value = admin_v1_pb2.Instance(
+            endpoint_uris=["test1", "test2"]
+        )
+
+        with mock.patch("os.getenv") as getenv:
+            getenv.return_value = "true"
+            with options_patch as options:
+                with client_patch as spanner_client:
+                    api = database.spanner_api
 
         self.assertIs(api, spanner_client.return_value)
 
@@ -295,10 +512,28 @@ class TestDatabase(_BaseTest):
         called_args, called_kw = spanner_client.call_args
         self.assertEqual(called_args, ())
         self.assertEqual(called_kw["client_info"], client_info)
-        self.assertEqual(called_kw["client_options"], client_options)
-        scoped = called_kw["credentials"]
-        self.assertEqual(scoped._scopes, expected_scopes)
-        self.assertIs(scoped._source, credentials)
+        self.assertEqual(called_kw["credentials"], credentials)
+        options.assert_called_with(api_endpoint="cached")
+
+    def test_spanner_api_resource_routing_error(self):
+        from google.api_core.exceptions import GoogleAPIError
+
+        client = _Client()
+        client._client_info = mock.Mock()
+        client._client_options = mock.Mock()
+        client.credentials = mock.Mock()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        client.instance_admin_api.get_instance.side_effect = GoogleAPIError("test")
+
+        with mock.patch("os.getenv") as getenv:
+            getenv.return_value = "true"
+            with self.assertRaises(GoogleAPIError):
+                database.spanner_api
+
+        client.instance_admin_api.get_instance.assert_called_once()
 
     def test___eq__(self):
         instance = _Instance(self.INSTANCE_NAME)
@@ -1516,10 +1751,20 @@ class TestBatchSnapshot(_BaseTest):
         )
 
 
+def _make_instance_api():
+    from google.cloud.spanner_admin_instance_v1.gapic.instance_admin_client import (
+        InstanceAdminClient,
+    )
+
+    return mock.create_autospec(InstanceAdminClient)
+
+
 class _Client(object):
     def __init__(self, project=TestDatabase.PROJECT_ID):
         self.project = project
         self.project_name = "projects/" + self.project
+        self._endpoint_cache = {}
+        self.instance_admin_api = _make_instance_api()
 
 
 class _Instance(object):
