@@ -132,7 +132,7 @@ rows do not cause errors.
 
 .. code:: python
 
-    from google.cloud.spanner.keyset import KeySet
+    from google.cloud.spanner import KeySet
 
     to_delete = KeySet(keys=[
         ('bharney@example.com',)
@@ -165,7 +165,7 @@ if the ``with`` block exits without raising an exception.
 
 .. code:: python
 
-    from google.cloud.spanner.keyset import KeySet
+    from google.cloud.spanner import KeySet
 
     client = spanner.Client()
     instance = client.instance(INSTANCE_NAME)

@@ -10,7 +10,7 @@ contract laid out in
 
 .. code-block:: python
 
-   from google.cloud.spanner.pool import AbstractSessionPool
+   from google.cloud.spanner import AbstractSessionPool
 
    class MyCustomPool(AbstractSessionPool):
 
@@ -43,8 +43,7 @@ Create an instance of :class:`~google.cloud.spanner.pool.PingingPool`:
 
 .. code-block:: python
 
-   from google.cloud.spanner import Client
-   from google.cloud.spanner.pool import PingingPool
+   from google.cloud.spanner import Client, PingingPool
 
    client = Client()
    instance = client.instance(INSTANCE_NAME)
@@ -77,8 +76,7 @@ Create an instance of
 
 .. code-block:: python
 
-   from google.cloud.spanner import Client
-   from google.cloud.spanner.pool import TransactionPingingPool
+   from google.cloud.spanner import Client, TransactionPingingPool
 
    client = Client()
    instance = client.instance(INSTANCE_NAME)
