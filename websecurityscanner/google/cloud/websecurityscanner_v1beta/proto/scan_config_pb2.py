@@ -709,7 +709,8 @@ ScanConfig = _reflection.GeneratedProtocolMessageType(
                     dict(
                         DESCRIPTOR=_SCANCONFIG_AUTHENTICATION_GOOGLEACCOUNT,
                         __module__="google.cloud.websecurityscanner_v1beta.proto.scan_config_pb2",
-                        __doc__="""Describes authentication configuration that uses a Google account.
+                        __doc__="""Describes authentication configuration that uses a Google
+      account.
       
       
       Attributes:
