@@ -31,8 +31,6 @@ class TestConnection(unittest.TestCase):
         import requests
         from google.cloud import _http as base_http
 
-        _DEFAULT_TIMEOUT = 60
-
         http = mock.create_autospec(requests.Session, instance=True)
         response = requests.Response()
         response.status_code = 200
@@ -57,7 +55,7 @@ class TestConnection(unittest.TestCase):
             headers=expected_headers,
             method="GET",
             url=expected_uri,
-            timeout=_DEFAULT_TIMEOUT,
+            timeout=base_http._DEFAULT_TIMEOUT,
         )
 
     def test_build_api_url_no_extra_query_params(self):
