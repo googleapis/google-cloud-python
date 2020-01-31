@@ -142,9 +142,9 @@ DroppedLabels = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_DROPPEDLABELS,
         __module__="google.cloud.monitoring_v3.proto.dropped_labels_pb2",
-        __doc__="""A set of (label, value) pairs which were dropped during
-  aggregation, attached to google.api.Distribution.Exemplars in
-  google.api.Distribution values during aggregation.
+        __doc__="""A set of (label, value) pairs which were dropped during aggregation,
+  attached to google.api.Distribution.Exemplars in google.api.Distribution
+  values during aggregation.
   
   These values are used in combination with the label values that remain
   on the aggregated Distribution timeseries to construct the full label

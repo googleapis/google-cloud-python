@@ -18,6 +18,7 @@ _sym_db = _symbol_database.Default()
 from google.api import (
     monitored_resource_pb2 as google_dot_api_dot_monitored__resource__pb2,
 )
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.type import calendar_period_pb2 as google_dot_type_dot_calendar__period__pb2
@@ -31,10 +32,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\030com.google.monitoring.v3B\026ServiceMonitoringProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
     ),
     serialized_pb=_b(
-        '\n.google/cloud/monitoring_v3/proto/service.proto\x12\x14google.monitoring.v3\x1a#google/api/monitored_resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!google/type/calendar_period.proto"\xd6\x04\n\x07Service\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x36\n\x06\x63ustom\x18\x06 \x01(\x0b\x32$.google.monitoring.v3.Service.CustomH\x00\x12=\n\napp_engine\x18\x07 \x01(\x0b\x32\'.google.monitoring.v3.Service.AppEngineH\x00\x12G\n\x0f\x63loud_endpoints\x18\x08 \x01(\x0b\x32,.google.monitoring.v3.Service.CloudEndpointsH\x00\x12\x43\n\rcluster_istio\x18\t \x01(\x0b\x32*.google.monitoring.v3.Service.ClusterIstioH\x00\x12:\n\ttelemetry\x18\r \x01(\x0b\x32\'.google.monitoring.v3.Service.Telemetry\x1a\x08\n\x06\x43ustom\x1a\x1e\n\tAppEngine\x12\x11\n\tmodule_id\x18\x01 \x01(\t\x1a!\n\x0e\x43loudEndpoints\x12\x0f\n\x07service\x18\x01 \x01(\t\x1ag\n\x0c\x43lusterIstio\x12\x10\n\x08location\x18\x01 \x01(\t\x12\x14\n\x0c\x63luster_name\x18\x02 \x01(\t\x12\x19\n\x11service_namespace\x18\x03 \x01(\t\x12\x14\n\x0cservice_name\x18\x04 \x01(\t\x1a"\n\tTelemetry\x12\x15\n\rresource_name\x18\x01 \x01(\tB\x0c\n\nidentifier"\xc4\x02\n\x15ServiceLevelObjective\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x0b \x01(\t\x12L\n\x17service_level_indicator\x18\x03 \x01(\x0b\x32+.google.monitoring.v3.ServiceLevelIndicator\x12\x0c\n\x04goal\x18\x04 \x01(\x01\x12\x33\n\x0erolling_period\x18\x05 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12\x36\n\x0f\x63\x61lendar_period\x18\x06 \x01(\x0e\x32\x1b.google.type.CalendarPeriodH\x00"4\n\x04View\x12\x14\n\x10VIEW_UNSPECIFIED\x10\x00\x12\x08\n\x04\x46ULL\x10\x02\x12\x0c\n\x08\x45XPLICIT\x10\x01\x42\x08\n\x06period"\xd4\x01\n\x15ServiceLevelIndicator\x12\x33\n\tbasic_sli\x18\x04 \x01(\x0b\x32\x1e.google.monitoring.v3.BasicSliH\x00\x12>\n\rrequest_based\x18\x01 \x01(\x0b\x32%.google.monitoring.v3.RequestBasedSliH\x00\x12>\n\rwindows_based\x18\x02 \x01(\x0b\x32%.google.monitoring.v3.WindowsBasedSliH\x00\x42\x06\n\x04type"\xb6\x02\n\x08\x42\x61sicSli\x12\x0e\n\x06method\x18\x07 \x03(\t\x12\x10\n\x08location\x18\x08 \x03(\t\x12\x0f\n\x07version\x18\t \x03(\t\x12K\n\x0c\x61vailability\x18\x02 \x01(\x0b\x32\x33.google.monitoring.v3.BasicSli.AvailabilityCriteriaH\x00\x12\x41\n\x07latency\x18\x03 \x01(\x0b\x32..google.monitoring.v3.BasicSli.LatencyCriteriaH\x00\x1a\x16\n\x14\x41vailabilityCriteria\x1a?\n\x0fLatencyCriteria\x12,\n\tthreshold\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationB\x0e\n\x0csli_criteria"!\n\x05Range\x12\x0b\n\x03min\x18\x01 \x01(\x01\x12\x0b\n\x03max\x18\x02 \x01(\x01"\xa1\x01\n\x0fRequestBasedSli\x12\x41\n\x10good_total_ratio\x18\x01 \x01(\x0b\x32%.google.monitoring.v3.TimeSeriesRatioH\x00\x12\x41\n\x10\x64istribution_cut\x18\x03 \x01(\x0b\x32%.google.monitoring.v3.DistributionCutH\x00\x42\x08\n\x06method"h\n\x0fTimeSeriesRatio\x12\x1b\n\x13good_service_filter\x18\x04 \x01(\t\x12\x1a\n\x12\x62\x61\x64_service_filter\x18\x05 \x01(\t\x12\x1c\n\x14total_service_filter\x18\x06 \x01(\t"Z\n\x0f\x44istributionCut\x12\x1b\n\x13\x64istribution_filter\x18\x04 \x01(\t\x12*\n\x05range\x18\x05 \x01(\x0b\x32\x1b.google.monitoring.v3.Range"\x83\x05\n\x0fWindowsBasedSli\x12 \n\x16good_bad_metric_filter\x18\x05 \x01(\tH\x00\x12`\n\x1agood_total_ratio_threshold\x18\x02 \x01(\x0b\x32:.google.monitoring.v3.WindowsBasedSli.PerformanceThresholdH\x00\x12Q\n\x14metric_mean_in_range\x18\x06 \x01(\x0b\x32\x31.google.monitoring.v3.WindowsBasedSli.MetricRangeH\x00\x12P\n\x13metric_sum_in_range\x18\x07 \x01(\x0b\x32\x31.google.monitoring.v3.WindowsBasedSli.MetricRangeH\x00\x12\x30\n\rwindow_period\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x1a\xb0\x01\n\x14PerformanceThreshold\x12<\n\x0bperformance\x18\x01 \x01(\x0b\x32%.google.monitoring.v3.RequestBasedSliH\x00\x12?\n\x15\x62\x61sic_sli_performance\x18\x03 \x01(\x0b\x32\x1e.google.monitoring.v3.BasicSliH\x00\x12\x11\n\tthreshold\x18\x02 \x01(\x01\x42\x06\n\x04type\x1aN\n\x0bMetricRange\x12\x13\n\x0btime_series\x18\x01 \x01(\t\x12*\n\x05range\x18\x04 \x01(\x0b\x32\x1b.google.monitoring.v3.RangeB\x12\n\x10window_criterionB\xae\x01\n\x18\x63om.google.monitoring.v3B\x16ServiceMonitoringProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
+        '\n.google/cloud/monitoring_v3/proto/service.proto\x12\x14google.monitoring.v3\x1a#google/api/monitored_resource.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!google/type/calendar_period.proto"\x80\x06\n\x07Service\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x36\n\x06\x63ustom\x18\x06 \x01(\x0b\x32$.google.monitoring.v3.Service.CustomH\x00\x12=\n\napp_engine\x18\x07 \x01(\x0b\x32\'.google.monitoring.v3.Service.AppEngineH\x00\x12G\n\x0f\x63loud_endpoints\x18\x08 \x01(\x0b\x32,.google.monitoring.v3.Service.CloudEndpointsH\x00\x12\x43\n\rcluster_istio\x18\t \x01(\x0b\x32*.google.monitoring.v3.Service.ClusterIstioH\x00\x12:\n\ttelemetry\x18\r \x01(\x0b\x32\'.google.monitoring.v3.Service.Telemetry\x1a\x08\n\x06\x43ustom\x1a\x1e\n\tAppEngine\x12\x11\n\tmodule_id\x18\x01 \x01(\t\x1a!\n\x0e\x43loudEndpoints\x12\x0f\n\x07service\x18\x01 \x01(\t\x1ag\n\x0c\x43lusterIstio\x12\x10\n\x08location\x18\x01 \x01(\t\x12\x14\n\x0c\x63luster_name\x18\x02 \x01(\t\x12\x19\n\x11service_namespace\x18\x03 \x01(\t\x12\x14\n\x0cservice_name\x18\x04 \x01(\t\x1a"\n\tTelemetry\x12\x15\n\rresource_name\x18\x01 \x01(\t:\xa7\x01\xea\x41\xa3\x01\n!monitoring.googleapis.com/Service\x12%projects/{project}/services/{service}\x12/organizations/{organization}/services/{service}\x12#folders/{folder}/services/{service}\x12\x01*B\x0c\n\nidentifier"\x91\x05\n\x15ServiceLevelObjective\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x0b \x01(\t\x12L\n\x17service_level_indicator\x18\x03 \x01(\x0b\x32+.google.monitoring.v3.ServiceLevelIndicator\x12\x0c\n\x04goal\x18\x04 \x01(\x01\x12\x33\n\x0erolling_period\x18\x05 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12\x36\n\x0f\x63\x61lendar_period\x18\x06 \x01(\x0e\x32\x1b.google.type.CalendarPeriodH\x00"4\n\x04View\x12\x14\n\x10VIEW_UNSPECIFIED\x10\x00\x12\x08\n\x04\x46ULL\x10\x02\x12\x0c\n\x08\x45XPLICIT\x10\x01:\xca\x02\xea\x41\xc6\x02\n/monitoring.googleapis.com/ServiceLevelObjective\x12Vprojects/{project}/services/{service}/serviceLevelObjectives/{service_level_objective}\x12`organizations/{organization}/services/{service}/serviceLevelObjectives/{service_level_objective}\x12Tfolders/{folder}/services/{service}/serviceLevelObjectives/{service_level_objective}\x12\x01* \x01\x42\x08\n\x06period"\xd4\x01\n\x15ServiceLevelIndicator\x12\x33\n\tbasic_sli\x18\x04 \x01(\x0b\x32\x1e.google.monitoring.v3.BasicSliH\x00\x12>\n\rrequest_based\x18\x01 \x01(\x0b\x32%.google.monitoring.v3.RequestBasedSliH\x00\x12>\n\rwindows_based\x18\x02 \x01(\x0b\x32%.google.monitoring.v3.WindowsBasedSliH\x00\x42\x06\n\x04type"\xb6\x02\n\x08\x42\x61sicSli\x12\x0e\n\x06method\x18\x07 \x03(\t\x12\x10\n\x08location\x18\x08 \x03(\t\x12\x0f\n\x07version\x18\t \x03(\t\x12K\n\x0c\x61vailability\x18\x02 \x01(\x0b\x32\x33.google.monitoring.v3.BasicSli.AvailabilityCriteriaH\x00\x12\x41\n\x07latency\x18\x03 \x01(\x0b\x32..google.monitoring.v3.BasicSli.LatencyCriteriaH\x00\x1a\x16\n\x14\x41vailabilityCriteria\x1a?\n\x0fLatencyCriteria\x12,\n\tthreshold\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationB\x0e\n\x0csli_criteria"!\n\x05Range\x12\x0b\n\x03min\x18\x01 \x01(\x01\x12\x0b\n\x03max\x18\x02 \x01(\x01"\xa1\x01\n\x0fRequestBasedSli\x12\x41\n\x10good_total_ratio\x18\x01 \x01(\x0b\x32%.google.monitoring.v3.TimeSeriesRatioH\x00\x12\x41\n\x10\x64istribution_cut\x18\x03 \x01(\x0b\x32%.google.monitoring.v3.DistributionCutH\x00\x42\x08\n\x06method"h\n\x0fTimeSeriesRatio\x12\x1b\n\x13good_service_filter\x18\x04 \x01(\t\x12\x1a\n\x12\x62\x61\x64_service_filter\x18\x05 \x01(\t\x12\x1c\n\x14total_service_filter\x18\x06 \x01(\t"Z\n\x0f\x44istributionCut\x12\x1b\n\x13\x64istribution_filter\x18\x04 \x01(\t\x12*\n\x05range\x18\x05 \x01(\x0b\x32\x1b.google.monitoring.v3.Range"\x83\x05\n\x0fWindowsBasedSli\x12 \n\x16good_bad_metric_filter\x18\x05 \x01(\tH\x00\x12`\n\x1agood_total_ratio_threshold\x18\x02 \x01(\x0b\x32:.google.monitoring.v3.WindowsBasedSli.PerformanceThresholdH\x00\x12Q\n\x14metric_mean_in_range\x18\x06 \x01(\x0b\x32\x31.google.monitoring.v3.WindowsBasedSli.MetricRangeH\x00\x12P\n\x13metric_sum_in_range\x18\x07 \x01(\x0b\x32\x31.google.monitoring.v3.WindowsBasedSli.MetricRangeH\x00\x12\x30\n\rwindow_period\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x1a\xb0\x01\n\x14PerformanceThreshold\x12<\n\x0bperformance\x18\x01 \x01(\x0b\x32%.google.monitoring.v3.RequestBasedSliH\x00\x12?\n\x15\x62\x61sic_sli_performance\x18\x03 \x01(\x0b\x32\x1e.google.monitoring.v3.BasicSliH\x00\x12\x11\n\tthreshold\x18\x02 \x01(\x01\x42\x06\n\x04type\x1aN\n\x0bMetricRange\x12\x13\n\x0btime_series\x18\x01 \x01(\t\x12*\n\x05range\x18\x04 \x01(\x0b\x32\x1b.google.monitoring.v3.RangeB\x12\n\x10window_criterionB\xae\x01\n\x18\x63om.google.monitoring.v3B\x16ServiceMonitoringProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_monitored__resource__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
         google_dot_type_dot_calendar__period__pb2.DESCRIPTOR,
@@ -64,8 +66,8 @@ _SERVICELEVELOBJECTIVE_VIEW = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1073,
-    serialized_end=1125,
+    serialized_start=1270,
+    serialized_end=1322,
 )
 _sym_db.RegisterEnumDescriptor(_SERVICELEVELOBJECTIVE_VIEW)
 
@@ -85,8 +87,8 @@ _SERVICE_CUSTOM = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=578,
-    serialized_end=586,
+    serialized_start=605,
+    serialized_end=613,
 )
 
 _SERVICE_APPENGINE = _descriptor.Descriptor(
@@ -123,8 +125,8 @@ _SERVICE_APPENGINE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=588,
-    serialized_end=618,
+    serialized_start=615,
+    serialized_end=645,
 )
 
 _SERVICE_CLOUDENDPOINTS = _descriptor.Descriptor(
@@ -161,8 +163,8 @@ _SERVICE_CLOUDENDPOINTS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=620,
-    serialized_end=653,
+    serialized_start=647,
+    serialized_end=680,
 )
 
 _SERVICE_CLUSTERISTIO = _descriptor.Descriptor(
@@ -253,8 +255,8 @@ _SERVICE_CLUSTERISTIO = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=655,
-    serialized_end=758,
+    serialized_start=682,
+    serialized_end=785,
 )
 
 _SERVICE_TELEMETRY = _descriptor.Descriptor(
@@ -291,8 +293,8 @@ _SERVICE_TELEMETRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=760,
-    serialized_end=794,
+    serialized_start=787,
+    serialized_end=821,
 )
 
 _SERVICE = _descriptor.Descriptor(
@@ -438,7 +440,9 @@ _SERVICE = _descriptor.Descriptor(
         _SERVICE_TELEMETRY,
     ],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A\243\001\n!monitoring.googleapis.com/Service\022%projects/{project}/services/{service}\022/organizations/{organization}/services/{service}\022#folders/{folder}/services/{service}\022\001*"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -451,8 +455,8 @@ _SERVICE = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=210,
-    serialized_end=808,
+    serialized_start=237,
+    serialized_end=1005,
 )
 
 
@@ -575,7 +579,9 @@ _SERVICELEVELOBJECTIVE = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[_SERVICELEVELOBJECTIVE_VIEW],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A\306\002\n/monitoring.googleapis.com/ServiceLevelObjective\022Vprojects/{project}/services/{service}/serviceLevelObjectives/{service_level_objective}\022`organizations/{organization}/services/{service}/serviceLevelObjectives/{service_level_objective}\022Tfolders/{folder}/services/{service}/serviceLevelObjectives/{service_level_objective}\022\001* \001"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -588,8 +594,8 @@ _SERVICELEVELOBJECTIVE = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=811,
-    serialized_end=1135,
+    serialized_start=1008,
+    serialized_end=1665,
 )
 
 
@@ -671,8 +677,8 @@ _SERVICELEVELINDICATOR = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1138,
-    serialized_end=1350,
+    serialized_start=1668,
+    serialized_end=1880,
 )
 
 
@@ -691,8 +697,8 @@ _BASICSLI_AVAILABILITYCRITERIA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1560,
-    serialized_end=1582,
+    serialized_start=2090,
+    serialized_end=2112,
 )
 
 _BASICSLI_LATENCYCRITERIA = _descriptor.Descriptor(
@@ -729,8 +735,8 @@ _BASICSLI_LATENCYCRITERIA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1584,
-    serialized_end=1647,
+    serialized_start=2114,
+    serialized_end=2177,
 )
 
 _BASICSLI = _descriptor.Descriptor(
@@ -847,8 +853,8 @@ _BASICSLI = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1353,
-    serialized_end=1663,
+    serialized_start=1883,
+    serialized_end=2193,
 )
 
 
@@ -904,8 +910,8 @@ _RANGE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1665,
-    serialized_end=1698,
+    serialized_start=2195,
+    serialized_end=2228,
 )
 
 
@@ -969,8 +975,8 @@ _REQUESTBASEDSLI = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1701,
-    serialized_end=1862,
+    serialized_start=2231,
+    serialized_end=2392,
 )
 
 
@@ -1044,8 +1050,8 @@ _TIMESERIESRATIO = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1864,
-    serialized_end=1968,
+    serialized_start=2394,
+    serialized_end=2498,
 )
 
 
@@ -1101,8 +1107,8 @@ _DISTRIBUTIONCUT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1970,
-    serialized_end=2060,
+    serialized_start=2500,
+    serialized_end=2590,
 )
 
 
@@ -1184,8 +1190,8 @@ _WINDOWSBASEDSLI_PERFORMANCETHRESHOLD = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=2430,
-    serialized_end=2606,
+    serialized_start=2960,
+    serialized_end=3136,
 )
 
 _WINDOWSBASEDSLI_METRICRANGE = _descriptor.Descriptor(
@@ -1240,8 +1246,8 @@ _WINDOWSBASEDSLI_METRICRANGE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2608,
-    serialized_end=2686,
+    serialized_start=3138,
+    serialized_end=3216,
 )
 
 _WINDOWSBASEDSLI = _descriptor.Descriptor(
@@ -1358,8 +1364,8 @@ _WINDOWSBASEDSLI = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=2063,
-    serialized_end=2706,
+    serialized_start=2593,
+    serialized_end=3236,
 )
 
 _SERVICE_CUSTOM.containing_type = _SERVICE
@@ -2069,4 +2075,6 @@ _sym_db.RegisterMessage(WindowsBasedSli.MetricRange)
 
 
 DESCRIPTOR._options = None
+_SERVICE._options = None
+_SERVICELEVELOBJECTIVE._options = None
 # @@protoc_insertion_point(module_scope)

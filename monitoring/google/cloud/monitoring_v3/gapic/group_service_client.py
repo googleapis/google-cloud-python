@@ -256,7 +256,7 @@ class GroupServiceClient(object):
             ...         pass
 
         Args:
-            name (str): The project whose groups are to be listed. The format is
+            name (str): Required. The project whose groups are to be listed. The format is
                 ``"projects/{project_id_or_number}"``.
             children_of_group (str): A group name: ``"projects/{project_id_or_number}/groups/{group_id}"``.
                 Returns groups whose ``parentName`` field contains the group name. If no
@@ -374,7 +374,7 @@ class GroupServiceClient(object):
             >>> response = client.get_group(name)
 
         Args:
-            name (str): The group to retrieve. The format is
+            name (str): Required. The group to retrieve. The format is
                 ``"projects/{project_id_or_number}/groups/{group_id}"``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -452,10 +452,10 @@ class GroupServiceClient(object):
             >>> response = client.create_group(name, group)
 
         Args:
-            name (str): The project in which to create the group. The format is
+            name (str): Required. The project in which to create the group. The format is
                 ``"projects/{project_id_or_number}"``.
-            group (Union[dict, ~google.cloud.monitoring_v3.types.Group]): A group definition. It is an error to define the ``name`` field because
-                the system assigns the name.
+            group (Union[dict, ~google.cloud.monitoring_v3.types.Group]): Required. A group definition. It is an error to define the ``name``
+                field because the system assigns the name.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.Group`
@@ -536,9 +536,9 @@ class GroupServiceClient(object):
             >>> response = client.update_group(group)
 
         Args:
-            group (Union[dict, ~google.cloud.monitoring_v3.types.Group]): The new definition of the group. All fields of the existing group,
-                excepting ``name``, are replaced with the corresponding fields of this
-                group.
+            group (Union[dict, ~google.cloud.monitoring_v3.types.Group]): Required. The new definition of the group. All fields of the existing
+                group, excepting ``name``, are replaced with the corresponding fields of
+                this group.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.Group`
@@ -617,7 +617,7 @@ class GroupServiceClient(object):
             >>> client.delete_group(name)
 
         Args:
-            name (str): The group to delete. The format is
+            name (str): Required. The group to delete. The format is
                 ``"projects/{project_id_or_number}/groups/{group_id}"``.
             recursive (bool): If this field is true, then the request means to delete a group with all
                 its descendants. Otherwise, the request means to delete a group only when
@@ -705,7 +705,7 @@ class GroupServiceClient(object):
             ...         pass
 
         Args:
-            name (str): The group whose members are listed. The format is
+            name (str): Required. The group whose members are listed. The format is
                 ``"projects/{project_id_or_number}/groups/{group_id}"``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
