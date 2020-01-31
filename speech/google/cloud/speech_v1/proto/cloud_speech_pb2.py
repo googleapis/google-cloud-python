@@ -1933,11 +1933,12 @@ StreamingRecognizeRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_STREAMINGRECOGNIZEREQUEST,
         __module__="google.cloud.speech_v1.proto.cloud_speech_pb2",
-        __doc__="""The top-level message sent by the client for the ``StreamingRecognize``
-  method. Multiple ``StreamingRecognizeRequest`` messages are sent. The
-  first message must contain a ``streaming_config`` message and must not
-  contain ``audio_content``. All subsequent messages must contain
-  ``audio_content`` and must not contain a ``streaming_config`` message.
+        __doc__="""The top-level message sent by the client for the
+  ``StreamingRecognize`` method. Multiple ``StreamingRecognizeRequest``
+  messages are sent. The first message must contain a ``streaming_config``
+  message and must not contain ``audio_content``. All subsequent messages
+  must contain ``audio_content`` and must not contain a
+  ``streaming_config`` message.
   
   
   Attributes:
@@ -2290,8 +2291,8 @@ RecognizeResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_RECOGNIZERESPONSE,
         __module__="google.cloud.speech_v1.proto.cloud_speech_pb2",
-        __doc__="""The only message returned to the client by the
-  ``Recognize`` method. It contains the result as zero or more sequential
+        __doc__="""The only message returned to the client by the ``Recognize`` method. It
+  contains the result as zero or more sequential
   ``SpeechRecognitionResult`` messages.
   
   

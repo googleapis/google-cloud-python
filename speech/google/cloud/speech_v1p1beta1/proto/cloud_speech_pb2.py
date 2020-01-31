@@ -2657,7 +2657,8 @@ SpeechRecognitionResult = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SPEECHRECOGNITIONRESULT,
         __module__="google.cloud.speech_v1p1beta1.proto.cloud_speech_pb2",
-        __doc__="""A speech recognition result corresponding to a portion of the audio.
+        __doc__="""A speech recognition result corresponding to a portion of
+  the audio.
   
   
   Attributes:
