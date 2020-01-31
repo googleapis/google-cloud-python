@@ -215,7 +215,7 @@ class Watch(object):
 
         self.resume_token = None
 
-        initial_request = self._get_initial_request
+        rpc_request = self._get_rpc_request
 
         if ResumableBidiRpc is None:
             ResumableBidiRpc = self.ResumableBidiRpc  # FBO unit tests
@@ -224,7 +224,7 @@ class Watch(object):
             self._api.transport.listen,
             should_recover=_should_recover,
             should_terminate=_should_terminate,
-            initial_request=initial_request,
+            initial_request=rpc_request,
             metadata=self._firestore._rpc_metadata,
         )
 
@@ -258,7 +258,7 @@ class Watch(object):
         self._consumer = BackgroundConsumer(self._rpc, self.on_snapshot)
         self._consumer.start()
 
-    def _get_initial_request(self):
+    def _get_rpc_request(self):
         if self.resume_token is not None:
             self._targets["resume_token"] = self.resume_token
         return firestore_pb2.ListenRequest(
