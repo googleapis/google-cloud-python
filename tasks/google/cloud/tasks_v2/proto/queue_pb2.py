@@ -423,9 +423,9 @@ Queue = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_QUEUE,
         __module__="google.cloud.tasks_v2.proto.queue_pb2",
-        __doc__="""A queue is a container of related tasks. Queues are
-  configured to manage how those tasks are dispatched. Configurable
-  properties include rate limits, retry options, queue types, and others.
+        __doc__="""A queue is a container of related tasks. Queues are configured to manage
+  how those tasks are dispatched. Configurable properties include rate
+  limits, retry options, queue types, and others.
   
   
   Attributes:
