@@ -13,8 +13,8 @@ and creating other objects:
 
 .. code:: python
 
-    from google.cloud import spanner_v1
-    client = spanner_v1.Client()
+    from google.cloud import spanner
+    client = spanner.Client()
 
 Long-lived Defaults
 -------------------
@@ -47,15 +47,15 @@ Configuration
 
   .. code::
 
-     >>> from google.cloud import spanner_v1
-     >>> client = spanner_v1.Client()
+     >>> from google.cloud import spanner
+     >>> client = spanner.Client()
 
   or pass in ``credentials`` and ``project`` explicitly
 
   .. code::
 
-     >>> from google.cloud import spanner_v1
-     >>> client = spanner_v1.Client(project='my-project', credentials=creds)
+     >>> from google.cloud import spanner
+     >>> client = spanner.Client(project='my-project', credentials=creds)
 
 .. tip::
 
