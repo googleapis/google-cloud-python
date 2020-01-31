@@ -5083,8 +5083,8 @@ ArtifactResult = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ARTIFACTRESULT,
         __module__="google.devtools.cloudbuild_v1.proto.cloudbuild_pb2",
-        __doc__="""An artifact that was uploaded during a build. This is a
-  single record in the artifact manifest JSON file.
+        __doc__="""An artifact that was uploaded during a build. This is a single record in
+  the artifact manifest JSON file.
   
   
   Attributes:
