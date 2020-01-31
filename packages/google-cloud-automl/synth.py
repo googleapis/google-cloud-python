@@ -49,7 +49,7 @@ s.replace(
     f"class TablesClient(tables_client.TablesClient):"
     f"    __doc__ = tables_client.TablesClient.__doc__"
     f"\n\nclass GcsClient(gcs_client.GcsClient):"
-    f"    __doc__ = gcs_client.GcsClient.__doc__"
+    f"    __doc__ = gcs_client.GcsClient.__doc__",
 )
 
 s.replace(
@@ -111,25 +111,26 @@ s.replace(
 s.replace("google/cloud/**/io_pb2.py", r":raw-latex:`\\t `", r"\\\\t")
 
 # Remove html bits that can't be rendered correctly
-s.replace("google/cloud/automl_v1/**/io_pb2.py", 
-r""".. raw:: html.+?
+s.replace(
+    "google/cloud/automl_v1/**/io_pb2.py",
+    r""".. raw:: html.+?
      \</.+?\>""",
-r"", flags=re.DOTALL)
+    r"",
+    flags=re.DOTALL,
+)
 
 # Remove raw-latex wrapping newline
-s.replace("google/cloud/automl_v1/**/io_pb2.py",
-r""":raw-latex:`\\n`""",
-r"``\\\\n``")
+s.replace("google/cloud/automl_v1/**/io_pb2.py", r""":raw-latex:`\\n`""", r"``\\\\n``")
 
 # Make \n visible in JSONL samples
-s.replace("google/cloud/**/io_pb2.py",
-r"\}\\n",
-r"}\\\\n")
+s.replace("google/cloud/**/io_pb2.py", r"\}\\n", r"}\\\\n")
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=82, cov_level=83)
+templated_files = common.py_library(
+    unit_cov_level=82, cov_level=83, system_test_dependencies=["test_utils"]
+)
 
 s.move(templated_files)
 
@@ -137,7 +138,7 @@ s.move(templated_files)
 s.replace(
     "noxfile.py",
     """session\.install\(['"]-e['"], ['"]\.['"]\)""",
-    """session.install("-e", ".[pandas,storage]")"""
+    """session.install("-e", ".[pandas,storage]")""",
 )
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
