@@ -399,8 +399,8 @@ ImageOccurrence = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_IMAGEOCCURRENCE,
         __module__="grafeas_v1.proto.image_pb2",
-        __doc__="""Details of the derived image portion of the DockerImage
-  relationship. This image would be produced from a Dockerfile with FROM .
+        __doc__="""Details of the derived image portion of the DockerImage relationship.
+  This image would be produced from a Dockerfile with FROM .
   
   
   Attributes:
