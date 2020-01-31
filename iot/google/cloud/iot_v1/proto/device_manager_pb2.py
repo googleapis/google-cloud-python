@@ -1858,8 +1858,7 @@ GatewayListOptions = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GATEWAYLISTOPTIONS,
         __module__="google.cloud.iot_v1.proto.device_manager_pb2",
-        __doc__="""Options for limiting the list based on gateway type and
-  associations.
+        __doc__="""Options for limiting the list based on gateway type and associations.
   
   
   Attributes:
