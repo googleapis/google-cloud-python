@@ -21,7 +21,7 @@ import shutil
 import nox
 
 
-LOCAL_DEPS = (os.path.join("..", "api_core"), os.path.join("..", "core"))
+LOCAL_DEPS = ()
 
 @nox.session(python="3.7")
 def lint(session):
