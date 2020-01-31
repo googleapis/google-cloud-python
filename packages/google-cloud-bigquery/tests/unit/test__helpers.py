@@ -856,14 +856,39 @@ class Test_record_field_to_json(unittest.TestCase):
         converted = self._call_fut(fields, original)
         self.assertEqual(converted, {"one": "42", "two": "two"})
 
-    def test_w_missing_nullable(self):
+    def test_w_some_missing_nullables(self):
         fields = [
             _make_field("INT64", name="one", mode="NULLABLE"),
             _make_field("STRING", name="two", mode="NULLABLE"),
         ]
         original = {"one": 42}
         converted = self._call_fut(fields, original)
-        self.assertEqual(converted, {"one": "42", "two": None})
+
+        # missing fields should not be converted to an explicit None
+        self.assertEqual(converted, {"one": "42"})
+
+    def test_w_all_missing_nullables(self):
+        fields = [
+            _make_field("INT64", name="one", mode="NULLABLE"),
+            _make_field("STRING", name="two", mode="NULLABLE"),
+        ]
+        original = {}
+        converted = self._call_fut(fields, original)
+
+        # we should get an empty dict, not None
+        self.assertEqual(converted, {})
+
+    def test_w_explicit_none_value(self):
+        fields = [
+            _make_field("INT64", name="one", mode="NULLABLE"),
+            _make_field("STRING", name="two", mode="NULLABLE"),
+            _make_field("BOOL", name="three", mode="REPEATED"),
+        ]
+        original = {"three": None, "one": 42, "two": None}
+        converted = self._call_fut(fields, original)
+
+        # None values should be dropped regardless of the field type
+        self.assertEqual(converted, {"one": "42"})
 
 
 class Test_field_to_json(unittest.TestCase):
