@@ -20,7 +20,7 @@ import shlex
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath(".."))
 
-__version__ = "0.1.0"
+__version__ = ""
 
 # -- General configuration ------------------------------------------------
 
@@ -45,6 +45,7 @@ autoclass_content = "both"
 autodoc_default_flags = ["members"]
 autosummary_generate = True
 
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
@@ -65,7 +66,7 @@ master_doc = "index"
 
 # General information about the project.
 project = u"google-cloud-datacatalog"
-copyright = u"2017, Google"
+copyright = u"2019, Google"
 author = u"Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
@@ -121,6 +122,7 @@ pygments_style = "sphinx"
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
 
+
 # -- Options for HTML output ----------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -131,9 +133,9 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for Python",
+    "description": "Google Cloud Client Libraries for google-cloud-datacatalog",
     "github_user": "googleapis",
-    "github_repo": "google-cloud-python",
+    "github_repo": "python-datacatalog",
     "github_banner": True,
     "font_family": "'Roboto', Georgia, sans",
     "head_font_family": "'Roboto', Georgia, serif",
@@ -229,6 +231,7 @@ htmlhelp_basename = "google-cloud-datacatalog-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
+
 suppress_warnings = [
     # Temporarily suppress this to avoid "more than one target found for
     # cross-reference" warning, which are intractable for us to avoid while in
@@ -284,6 +287,7 @@ latex_documents = [
 # If false, no module index is generated.
 # latex_domain_indices = True
 
+
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
@@ -301,6 +305,7 @@ man_pages = [
 # If true, show URL addresses after external links.
 # man_show_urls = False
 
+
 # -- Options for Texinfo output -------------------------------------------
 
 # Grouping the document tree into Texinfo files. List of tuples
@@ -313,7 +318,7 @@ texinfo_documents = [
         u"google-cloud-datacatalog Documentation",
         author,
         "google-cloud-datacatalog",
-        "GAPIC library for the {metadata.shortName} v1beta1 service",
+        "google-cloud-datacatalog Library",
         "APIs",
     )
 ]
@@ -330,18 +335,15 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 # texinfo_no_detailmenu = False
 
+
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     "python": ("http://python.readthedocs.org/en/latest/", None),
-    "gax": ("https://gax-python.readthedocs.org/en/latest/", None),
     "google-auth": ("https://google-auth.readthedocs.io/en/stable", None),
-    "google-gax": ("https://gax-python.readthedocs.io/en/latest/", None),
-    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest", None),
+    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest/", None),
     "grpc": ("https://grpc.io/grpc/python/", None),
-    "requests": ("https://requests.kennethreitz.org/en/stable/", None),
-    "fastavro": ("https://fastavro.readthedocs.io/en/stable/", None),
-    "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
 }
+
 
 # Napoleon settings
 napoleon_google_docstring = True

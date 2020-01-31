@@ -6,7 +6,7 @@
   "issue_tracker": "",
   "release_level": "beta",
   "language": "python",
-  "repo": "googleapis/google-cloud-python",
+  "repo": "googleapis/python-datacatalog",
   "distribution_name": "google-cloud-datacatalog",
   "api_id": "datacatalog.googleapis.com",
   "requires_billing": true
