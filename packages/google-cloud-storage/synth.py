@@ -24,7 +24,7 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=100)
-s.move(templated_files)
+templated_files = common.py_library(cov_level=99)
+s.move(templated_files, excludes=["noxfile.py"])
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
