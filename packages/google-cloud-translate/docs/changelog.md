@@ -1,1 +1,1 @@
-../../translate/CHANGELOG.md
+../CHANGELOG.md

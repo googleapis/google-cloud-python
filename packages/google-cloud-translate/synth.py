@@ -79,7 +79,12 @@ s.replace(
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = gcp.CommonTemplates().py_library(unit_cov_level=100, cov_level=100)
+# templated_files = gcp.CommonTemplates().py_library(unit_cov_level=100, cov_level=100)
+# Pass dependencies to system tests
+templated_files = common.py_library(
+    unit_cov_level=95, cov_level=95,
+    system_test_dependencies=['test_utils']
+)
 s.move(templated_files)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

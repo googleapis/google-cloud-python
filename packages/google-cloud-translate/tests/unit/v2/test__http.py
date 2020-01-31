@@ -90,5 +90,5 @@ class TestConnection(unittest.TestCase):
             headers=expected_headers,
             method="GET",
             url=expected_uri,
-            timeout=60,
+            timeout=None,
         )
