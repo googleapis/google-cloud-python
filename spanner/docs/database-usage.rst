@@ -230,7 +230,7 @@ contract laid out in :class:`~google.cloud.spanner.pool.AbstractSessionPool`:
 
 .. code-block:: python
 
-   from google.cloud import AbstractSessionPool
+   from google.cloud.spanner import AbstractSessionPool
 
    class MyCustomPool(AbstractSessionPool):
 
