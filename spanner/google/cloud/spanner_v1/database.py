@@ -60,7 +60,7 @@ _DATABASE_NAME_RE = re.compile(
 
 _RESOURCE_ROUTING_PERMISSIONS_WARNING = (
     "The client library attempted to connect to an endpoint closer to your Cloud Spanner data "
-    "but was unable to do so. The client library will fallback and route requests to the endpoint "
+    "but was unable to do so. The client library will fall back and route requests to the endpoint "
     "given in the client options which may result in increased latency. "
     "We recommend including the scope https://www.googleapis.com/auth/spanner.admin so that the "
     "client library can get an instance-specific endpoint and efficiently route requests."
