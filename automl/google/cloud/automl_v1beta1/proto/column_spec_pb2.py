@@ -274,9 +274,9 @@ ColumnSpec = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_COLUMNSPEC,
         __module__="google.cloud.automl_v1beta1.proto.column_spec_pb2",
-        __doc__="""A representation of a column in a relational table. When
-  listing them, column specs are returned in the same order in which they
-  were given on import . Used by: \* Tables
+        __doc__="""A representation of a column in a relational table. When listing them,
+  column specs are returned in the same order in which they were given on
+  import . Used by: \* Tables
   
   
   Attributes:
