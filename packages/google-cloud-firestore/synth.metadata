@@ -1,5 +1,5 @@
 {
-  "updateTime": "2020-01-31T20:39:19.357914Z",
+  "updateTime": "2020-01-31T21:03:52.358036Z",
   "sources": [
     {
       "generator": {
@@ -13,8 +13,7 @@
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
         "sha": "2717b8a1c762b26911b45ecc2e4ee01d98401b28",
-        "internalRef": "292555664",
-        "log": "2717b8a1c762b26911b45ecc2e4ee01d98401b28\nFix dataproc artman client library generation.\n\nPiperOrigin-RevId: 292555664\n\n7ac66d9be8a7d7de4f13566d8663978c9ee9dcd7\nAdd Dataproc Autoscaling API to V1.\n\nPiperOrigin-RevId: 292450564\n\n5d932b2c1be3a6ef487d094e3cf5c0673d0241dd\n- Improve documentation\n- Add a client_id field to StreamingPullRequest\n\nPiperOrigin-RevId: 292434036\n\neaff9fa8edec3e914995ce832b087039c5417ea7\nmonitoring: v3 publish annotations and client retry config\n\nPiperOrigin-RevId: 292425288\n\n70958bab8c5353870d31a23fb2c40305b050d3fe\nBigQuery Storage Read API v1 clients.\n\nPiperOrigin-RevId: 292407644\n\n7a15e7fe78ff4b6d5c9606a3264559e5bde341d1\nUpdate backend proto for Google Cloud Endpoints\n\nPiperOrigin-RevId: 292391607\n\n3ca2c014e24eb5111c8e7248b1e1eb833977c83d\nbazel: Add --flaky_test_attempts=3 argument to prevent CI failures caused by flaky tests\n\nPiperOrigin-RevId: 292382559\n\n9933347c1f677e81e19a844c2ef95bfceaf694fe\nbazel:Integrate latest protoc-java-resource-names-plugin changes (fix for PyYAML dependency in bazel rules)\n\nPiperOrigin-RevId: 292376626\n\nb835ab9d2f62c88561392aa26074c0b849fb0bd3\nasset: v1p2beta1 add client config annotations\n\n* remove unintentionally exposed RPCs\n* remove messages relevant to removed RPCs\n\nPiperOrigin-RevId: 292369593\n\n"
+        "internalRef": "292555664"
       }
     },
     {
