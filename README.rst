@@ -83,7 +83,7 @@ The following client libraries have **GA** support:
 .. _Tasks Documentation: https://googleapis.dev/python/cloudtasks/latest
 
 .. _Google Cloud Translation: https://pypi.org/project/google-cloud-translate/
-.. _Translation README: https://github.com/googleapis/google-cloud-python/tree/master/translate
+.. _Translation README: https://github.com/googleapis/python-translate/blob/master/README.rst#python-client-for-google-cloud-translation
 .. _Translation Documentation: https://googleapis.dev/python/translation/latest
 
 .. _Google Cloud Scheduler: https://pypi.org/project/google-cloud-scheduler/
