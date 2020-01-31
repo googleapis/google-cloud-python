@@ -103,7 +103,6 @@ def system(session):
     # Sanity check: only run tests if found.
     if not system_test_exists and not system_test_folder_exists:
         session.skip("System tests were not found")
-
     session.install("google-cloud-iam")
     session.install("google-cloud-pubsub")
     session.install("google-cloud-kms")
@@ -116,6 +115,7 @@ def system(session):
     session.install("mock", "pytest")
 
     session.install("-e", ".")
+    session.install("-e", "test_utils")
 
     # Run py.test against the system tests.
     if system_test_exists:
