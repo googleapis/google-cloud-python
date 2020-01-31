@@ -1,6 +1,8 @@
-# Copyright (c) 2020 Google LLC. All rights reserved.
+# Copyright 2020 Google LLC
+#
 # Use of this source code is governed by a BSD-style
-# license that can be found in the LICENSE file.
+# license that can be found in the LICENSE file or at
+# https://developers.google.com/open-source/licenses/bsd
 
 # Implements the types requested by the Python Database API in:
 #   https://www.python.org/dev/peps/pep-0249/#type-objects-and-constructors
