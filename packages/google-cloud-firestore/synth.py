@@ -85,7 +85,7 @@ for version, artman_config in admin_versions:
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=97, cov_level=100)
+templated_files = common.py_library(unit_cov_level=97, cov_level=99)
 s.move(templated_files)
 
 s.replace(

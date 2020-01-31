@@ -6,7 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/5337669",
   "release_level": "beta",
   "language": "python",
-  "repo": "googleapis/google-cloud-python",
+  "repo": "googleapis/python-firestore",
   "distribution_name": "google-cloud-firestore",
   "api_id": "firestore.googleapis.com",
   "requires_billing": true
