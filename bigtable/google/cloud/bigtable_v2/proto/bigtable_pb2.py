@@ -1288,8 +1288,8 @@ ReadRowsResponse = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_READROWSRESPONSE_CELLCHUNK,
                 __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
-                __doc__="""Specifies a piece of a row's contents returned as part of the read
-    response stream.
+                __doc__="""Specifies a piece of a row's contents returned as part of
+    the read response stream.
     
     
     Attributes:

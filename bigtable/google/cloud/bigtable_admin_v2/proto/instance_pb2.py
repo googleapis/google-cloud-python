@@ -772,8 +772,8 @@ AppProfile = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_APPPROFILE,
         __module__="google.cloud.bigtable.admin_v2.proto.instance_pb2",
-        __doc__="""A configuration object describing how Cloud Bigtable
-  should treat traffic from a particular end user application.
+        __doc__="""A configuration object describing how Cloud Bigtable should treat
+  traffic from a particular end user application.
   
   
   Attributes:
