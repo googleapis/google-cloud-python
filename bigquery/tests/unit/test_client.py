@@ -4638,9 +4638,9 @@ class TestClient(unittest.TestCase):
         def _row_data(row):
             result = {"full_name": row[0], "age": str(row[1])}
             joined = row[2]
+            if isinstance(joined, datetime.datetime):
+                joined = _microseconds_from_datetime(joined) * 1e-6
             if joined is not None:
-                if isinstance(joined, datetime.datetime):
-                    joined = _microseconds_from_datetime(joined) * 1e-6
                 result["joined"] = joined
             return result
 
