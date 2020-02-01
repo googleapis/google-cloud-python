@@ -1,8 +1,0 @@
-v2
-===
-
-.. toctree::
-  :maxdepth: 2
-
-  client
-  usage
