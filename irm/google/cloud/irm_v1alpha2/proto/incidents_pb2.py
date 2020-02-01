@@ -2090,8 +2090,8 @@ Synopsis = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SYNOPSIS,
         __module__="google.cloud.irm_v1alpha2.proto.incidents_pb2",
-        __doc__="""Synopsis is a summary of an incident and it contains a
-  textual content, an author and a last updated timestamp.
+        __doc__="""Synopsis is a summary of an incident and it contains a textual content,
+  an author and a last updated timestamp.
   
   
   Attributes:
