@@ -47,7 +47,7 @@ The following client libraries have **GA** support:
 .. _BigQuery Documentation: https://googleapis.dev/python/bigquery/latest
 
 .. _Google Cloud Bigtable: https://pypi.org/project/google-cloud-bigtable/
-.. _Bigtable README: https://github.com/googleapis/google-cloud-python/tree/master/bigtable
+.. _Bigtable README: https://github.com/googleapis/python-bigtable
 .. _Bigtable Documentation: https://googleapis.dev/python/bigtable/latest
 
 .. _Google Cloud Datastore: https://pypi.org/project/google-cloud-datastore/
@@ -67,7 +67,7 @@ The following client libraries have **GA** support:
 .. _Pub/Sub Documentation: https://googleapis.dev/python/pubsub/latest
 
 .. _Google Cloud Spanner: https://pypi.org/project/google-cloud-spanner
-.. _Spanner README: https://github.com/googleapis/google-cloud-python/tree/master/spanner
+.. _Spanner README: https://github.com/googleapis/python-spanner
 .. _Spanner Documentation: https://googleapis.dev/python/spanner/latest
 
 .. _Google Cloud Speech to Text: https://pypi.org/project/google-cloud-speech/
@@ -75,7 +75,7 @@ The following client libraries have **GA** support:
 .. _Speech to Text Documentation: https://googleapis.dev/python/speech/latest
 
 .. _Google Cloud Storage: https://pypi.org/project/google-cloud-storage/
-.. _Storage README: https://github.com/googleapis/google-cloud-python/tree/master/storage
+.. _Storage README: https://github.com/googleapis/python-storage
 .. _Storage Documentation: https://googleapis.dev/python/storage/latest
 
 .. _Google Cloud Tasks: https://pypi.org/project/google-cloud-tasks/
@@ -123,7 +123,7 @@ The following client libraries have **beta** support:
 .. _Data Catalog Documentation: https://googleapis.dev/python/datacatalog/latest
 
 .. _Google Cloud Firestore: https://pypi.org/project/google-cloud-firestore/
-.. _Firestore README: https://github.com/googleapis/google-cloud-python/tree/master/firestore
+.. _Firestore README: https://github.com/googleapis/python-firestore
 .. _Firestore Documentation: https://googleapis.dev/python/firestore/latest
 
 .. _Google Cloud Video Intelligence: https://pypi.org/project/google-cloud-videointelligence
