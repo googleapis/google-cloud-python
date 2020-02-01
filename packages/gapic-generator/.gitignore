@@ -59,3 +59,6 @@ pylintrc.test
 
 # Mypy
 .mypy_cache
+
+# pyenv
+.python-version

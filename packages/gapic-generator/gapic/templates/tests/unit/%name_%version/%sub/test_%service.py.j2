@@ -79,6 +79,9 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = {{ method.input.ident }}()
+    {% if method.client_streaming %}
+    requests = [request]
+    {% endif %}
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -98,12 +101,20 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
             {%- endfor %}
         )
         {% endif -%}
+        {% if method.client_streaming %}
+        response = client.{{ method.name|snake_case }}(iter(requests))
+        {% else %}
         response = client.{{ method.name|snake_case }}(request)
-        
+        {% endif %}
+
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
+        {% if method.client_streaming %}
+        assert next(args[0]) == request
+        {% else %}
         assert args[0] == request
+        {% endif %}
 
     # Establish that the response is the type that we expect.
     {% if method.void -%}

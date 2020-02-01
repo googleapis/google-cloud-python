@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google import showcase
+
 
 def test_unary_stream(echo):
     content = 'The hail in Wales falls mainly on the snails.'
@@ -24,3 +26,51 @@ def test_unary_stream(echo):
     for ground_truth, response in zip(content.split(' '), responses):
         assert response.content == ground_truth
     assert ground_truth == 'snails.'
+
+    # TODO. Check responses.trailing_metadata() content once gapic-showcase
+    # server returns non-empty trailing metadata.
+    assert len(responses.trailing_metadata()) == 0
+
+
+def test_stream_unary(echo):
+    requests = []
+    requests.append(showcase.EchoRequest(content="hello"))
+    requests.append(showcase.EchoRequest(content="world!"))
+    response = echo.collect(iter(requests))
+    assert response.content == 'hello world!'
+
+
+def test_stream_unary_passing_dict(echo):
+    requests = [{'content': 'hello'}, {'content': 'world!'}]
+    response = echo.collect(iter(requests))
+    assert response.content == 'hello world!'
+
+
+def test_stream_stream(echo):
+    requests = []
+    requests.append(showcase.EchoRequest(content="hello"))
+    requests.append(showcase.EchoRequest(content="world!"))
+    responses = echo.chat(iter(requests))
+
+    contents = []
+    for response in responses:
+        contents.append(response.content)
+    assert contents == ['hello', 'world!']
+
+    # TODO. Check responses.trailing_metadata() content once gapic-showcase
+    # server returns non-empty trailing metadata.
+    assert len(responses.trailing_metadata()) == 0
+
+
+def test_stream_stream_passing_dict(echo):
+    requests = [{'content': 'hello'}, {'content': 'world!'}]
+    responses = echo.chat(iter(requests))
+
+    contents = []
+    for response in responses:
+        contents.append(response.content)
+    assert contents == ['hello', 'world!']
+
+    # TODO. Check responses.trailing_metadata() content once gapic-showcase
+    # server returns non-empty trailing metadata.
+    assert len(responses.trailing_metadata()) == 0
