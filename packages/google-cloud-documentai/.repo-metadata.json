@@ -6,7 +6,7 @@
   "issue_tracker": "",
   "release_level": "alpha",
   "language": "python",
-  "repo": "googleapis/google-cloud-python",
+  "repo": "googleapis/python-documentai",
   "distribution_name": "google-cloud-documentai",
   "api_id": "documentai.googleapis.com",
   "requires_billing": true
