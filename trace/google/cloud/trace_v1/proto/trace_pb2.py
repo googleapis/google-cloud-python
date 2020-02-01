@@ -908,8 +908,8 @@ ListTracesRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTTRACESREQUEST,
         __module__="google.devtools.cloudtrace_v1.proto.trace_pb2",
-        __doc__="""The request message for the ``ListTraces`` method. All
-  fields are required unless specified.
+        __doc__="""The request message for the ``ListTraces`` method. All fields are
+  required unless specified.
   
   
   Attributes:
