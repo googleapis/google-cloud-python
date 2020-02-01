@@ -20,6 +20,7 @@ import sys
 import warnings
 
 from google.cloud.dataproc_v1 import types
+from google.cloud.dataproc_v1.gapic import autoscaling_policy_service_client
 from google.cloud.dataproc_v1.gapic import cluster_controller_client
 from google.cloud.dataproc_v1.gapic import enums
 from google.cloud.dataproc_v1.gapic import job_controller_client
@@ -52,10 +53,18 @@ class WorkflowTemplateServiceClient(
     enums = enums
 
 
+class AutoscalingPolicyServiceClient(
+    autoscaling_policy_service_client.AutoscalingPolicyServiceClient
+):
+    __doc__ = autoscaling_policy_service_client.AutoscalingPolicyServiceClient.__doc__
+    enums = enums
+
+
 __all__ = (
     "enums",
     "types",
     "ClusterControllerClient",
     "JobControllerClient",
     "WorkflowTemplateServiceClient",
+    "AutoscalingPolicyServiceClient",
 )
