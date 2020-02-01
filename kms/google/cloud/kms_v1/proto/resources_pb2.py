@@ -1788,8 +1788,8 @@ ImportJob = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_IMPORTJOB,
         __module__="google.cloud.kms_v1.proto.resources_pb2",
-        __doc__="""An [ImportJob][google.cloud.kms.v1.ImportJob] can be used
-  to create [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
+        __doc__="""An [ImportJob][google.cloud.kms.v1.ImportJob] can be used to create
+  [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
   [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] using
   pre-existing key material, generated outside of Cloud KMS.
   
