@@ -3117,8 +3117,8 @@ SupportedLanguage = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SUPPORTEDLANGUAGE,
         __module__="google.cloud.translation_v3.proto.translation_service_pb2",
-        __doc__="""A single supported language response corresponds to
-  information related to one supported language.
+        __doc__="""A single supported language response corresponds to information related
+  to one supported language.
   
   
   Attributes:
