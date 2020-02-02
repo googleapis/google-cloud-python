@@ -2158,7 +2158,6 @@ ZoneMetadata = _reflection.GeneratedProtocolMessageType(
         __module__="google.cloud.redis_v1.proto.cloud_redis_pb2",
         __doc__="""Defines specific information for a particular zone.
   Currently empty and reserved for future use only.
-  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.redis.v1.ZoneMetadata)
     ),
