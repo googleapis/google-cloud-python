@@ -19,11 +19,10 @@ _UNSET_COUNT = -1
 
 
 class Cursor(object):
-    def __init__(self, txn, db_handle=None):
+    def __init__(self, db_handle):
         self.__itr = None
         self.__res = None
         self.__row_count = _UNSET_COUNT
-        self.__txn = txn
         self.__db_handle = db_handle
         self.__last_op = None
         self.__closed = False
@@ -59,6 +58,9 @@ class Cursor(object):
         self.__clear()
         self.__closed = True
 
+    def __get_txn(self):
+        return self.__db_handle.get_txn()
+
     def execute(self, sql, args=None):
         """
         Abstracts and implements execute SQL statements on Cloud Spanner.
@@ -92,9 +94,9 @@ class Cursor(object):
             if classification == STMT_NON_UPDATING:
                 self.__handle_DQL(self.__get_txn(), sql, args or None)
             elif classification == STMT_INSERT:
-                self.__handle_insert(sql, args or None)
+                self.__handle_insert(self.__get_txn(), sql, args or None)
             else:
-                self.__handle_update(sql, args or None)
+                self.__handle_update(self.__get_txn(), sql, args or None)
         except (grpc_exceptions.AlreadyExists, grpc_exceptions.FailedPrecondition) as e:
             raise IntegrityError(e.details if hasattr(e, 'details') else e)
         except grpc_exceptions.InvalidArgument as e:
@@ -102,18 +104,18 @@ class Cursor(object):
         except grpc_exceptions.InternalServerError as e:
             raise OperationalError(e.details if hasattr(e, 'details') else e)
 
-    def __handle_update(self, sql, params):
+    def __handle_update(self, txn, sql, params, param_types=None):
         sql = ensure_where_clause(sql)
         sql, params = sql_pyformat_args_to_spanner(sql, params)
 
-        res = self.__txn.execute_update(sql, params=params, param_types=get_param_types(params))
+        res = txn.execute_update(sql, params=params, param_types=get_param_types(params))
         self.__itr = None
         if type(res) == int:
             self.__row_count = res
 
         return res
 
-    def __handle_insert(self, sql, params):
+    def __handle_insert(self, txn, sql, params):
         parts = parse_insert(sql, params)
 
         # The split between the two styles exists because:
@@ -174,7 +176,7 @@ class Cursor(object):
         return self
 
     def __exit__(self, etype, value, traceback):
-        self.__txn.commit()
+        self.__db_handle.commit()
         self.__clear()
 
     def __clear(self):
@@ -250,6 +252,14 @@ class Cursor(object):
         raise ProgrammingError('Unimplemented')
 
     def __run_prior_DDL_statements(self):
+        # DDL and Transactions in Cloud Spanner don't mix thus before any DDL is executed,
+        # any prior transaction MUST have been committed. This behavior is also present
+        # on MySQL. Please see:
+        # * https://gist.github.com/odeke-em/8e02576d8523e07eb27b43a772aecc92
+        # * https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html
+        # * https://wiki.postgresql.org/wiki/Transactional_DDL_in_PostgreSQL:_A_Competitive_Analysis
+        self.__db_handle.commit()
+
         return self.__db_handle.run_prior_DDL_statements()
 
     def list_tables(self):

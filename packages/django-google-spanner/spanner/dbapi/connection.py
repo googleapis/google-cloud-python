@@ -5,7 +5,7 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 from .cursor import Cursor
-from .exceptions import Error, ProgrammingError
+from .exceptions import Error
 
 
 class Connection(object):
@@ -14,6 +14,7 @@ class Connection(object):
         if not sess.exists():
             sess.create()
         self.__sess = sess
+        self.__txn = None
         self.__dbhandle = db_handle
         self.__closed = False
         self.__ddl_statements = []
@@ -47,7 +48,10 @@ class Connection(object):
         self.run_prior_DDL_statements()
 
         if not self.__txn:
-            raise ProgrammingError('attempting to invoke commit on a non-existent transaction')
+            # DDL and Transactions in Cloud Spanner don't mix thus before
+            # any DDL is executed, any prior transaction MUST have been committed.
+            # So we'll do nothing if there is no transaction.
+            return
 
         if not self.__txn.committed:
             self.__txn.commit()
@@ -61,9 +65,13 @@ class Connection(object):
     def cursor(self):
         self.__raise_if_already_closed()
 
-        self.__txn = self.__sess.transaction()
-        self.__txn.begin()
-        return Cursor(self.__txn, self)
+        return Cursor(self)
+
+    def get_txn(self):
+        if not self.__txn:
+            self.__txn = self.__sess.transaction()
+            self.__txn.begin()
+        return self.__txn
 
     def __handle_update_ddl(self, ddl_statements):
         """
