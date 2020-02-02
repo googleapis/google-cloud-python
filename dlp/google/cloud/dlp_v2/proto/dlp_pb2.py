@@ -14309,8 +14309,8 @@ RedactImageRequest = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_REDACTIMAGEREQUEST,
         __module__="google.cloud.dlp_v2.proto.dlp_pb2",
-        __doc__="""Request to search for potentially sensitive info in an
-  image and redact it by covering it with a colored rectangle.
+        __doc__="""Request to search for potentially sensitive info in an image and redact
+  it by covering it with a colored rectangle.
   
   
   Attributes:
