@@ -21,7 +21,7 @@ import shutil
 import nox
 
 
-LOCAL_DEPS = (os.path.join("..", "api_core"), os.path.join("..", "core"))
+LOCAL_DEPS = ()
 
 @nox.session(python="3.7")
 def lint(session):
@@ -118,7 +118,7 @@ def system(session):
     session.install("mock", "pytest")
     for local_dep in LOCAL_DEPS:
         session.install("-e", local_dep)
-    session.install("-e", "../test_utils/")
+    session.install("-e", "test_utils")
     session.install("-e", ".")
 
     # Run py.test against the system tests.
@@ -136,7 +136,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=100")
+    session.run("coverage", "report", "--show-missing", "--fail-under=98")
 
     session.run("coverage", "erase")
 

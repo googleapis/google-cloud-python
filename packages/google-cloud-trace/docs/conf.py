@@ -20,7 +20,7 @@ import shlex
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath(".."))
 
-__version__ = "0.1.0"
+__version__ = ""
 
 # -- General configuration ------------------------------------------------
 
@@ -66,7 +66,7 @@ master_doc = "index"
 
 # General information about the project.
 project = u"google-cloud-trace"
-copyright = u"2017, Google"
+copyright = u"2019, Google"
 author = u"Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
@@ -133,9 +133,9 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for Python",
+    "description": "Google Cloud Client Libraries for google-cloud-trace",
     "github_user": "googleapis",
-    "github_repo": "google-cloud-python",
+    "github_repo": "python-trace",
     "github_banner": True,
     "font_family": "'Roboto', Georgia, sans",
     "head_font_family": "'Roboto', Georgia, serif",
@@ -264,7 +264,7 @@ latex_documents = [
         u"google-cloud-trace Documentation",
         author,
         "manual",
-    ),
+    )
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -293,7 +293,13 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, "google-cloud-trace", u"google-cloud-trace Documentation", [author], 1)
+    (
+        master_doc,
+        "google-cloud-trace",
+        u"google-cloud-trace Documentation",
+        [author],
+        1,
+    )
 ]
 
 # If true, show URL addresses after external links.
@@ -312,9 +318,9 @@ texinfo_documents = [
         u"google-cloud-trace Documentation",
         author,
         "google-cloud-trace",
-        "GAPIC library for the {metadata.shortName} v2 service",
+        "google-cloud-trace Library",
         "APIs",
-    ),
+    )
 ]
 
 # Documents to append as an appendix to all manuals.
@@ -333,14 +339,9 @@ texinfo_documents = [
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     "python": ("http://python.readthedocs.org/en/latest/", None),
-    "gax": ("https://gax-python.readthedocs.org/en/latest/", None),
     "google-auth": ("https://google-auth.readthedocs.io/en/stable", None),
-    "google-gax": ("https://gax-python.readthedocs.io/en/latest/", None),
-    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest", None),
+    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest/", None,),
     "grpc": ("https://grpc.io/grpc/python/", None),
-    "requests": ("https://requests.kennethreitz.org/en/master/", None),
-    "fastavro": ("https://fastavro.readthedocs.io/en/stable/", None),
-    "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
 }
 
 
