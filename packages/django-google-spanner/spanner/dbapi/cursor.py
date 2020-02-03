@@ -14,12 +14,6 @@ from .parse_utils import (
 )
 
 _UNSET_COUNT = -1
-OP_INSERT = 'insert'
-OP_UPDATE = 'update'
-OP_DELETE = 'delete'
-OP_DQL = 'dql'
-OP_DDL = 'ddl'
-OP_CONN_CLOSE = 'conn_close'
 
 
 class Cursor(object):
@@ -54,7 +48,6 @@ class Cursor(object):
         if self.__db_handle is None:
             return
 
-        self.__commit_preceding_batch(self.__last_op)
         self.__db_handle = None
 
     def execute(self, sql, args=None):
@@ -78,8 +71,14 @@ class Cursor(object):
         try:
             classification = classify_stmt(sql)
             if classification == STMT_DDL:
-                self.__handle_update_ddl(sql)
-            elif classification == STMT_NON_UPDATING:
+                self.__db_handle.append_ddl_statement(sql)
+                return
+
+            # For every other operation, we've got to ensure that
+            # any prior DDL statements were run.
+            self.__run_prior_DDL_statements()
+
+            if classification == STMT_NON_UPDATING:
                 self.__handle_DQL(sql, args or None)
             elif classification == STMT_INSERT:
                 self.__handle_insert(sql, args or None)
@@ -93,7 +92,6 @@ class Cursor(object):
             raise OperationalError(e.details if hasattr(e, 'details') else e)
 
     def __handle_update(self, sql, params):
-        self.__commit_preceding_batch(OP_UPDATE)
         self.__db_handle.in_transaction(
             self.__do_execute_update,
             sql, params,
@@ -111,8 +109,6 @@ class Cursor(object):
         return res
 
     def __handle_insert(self, sql, params):
-        self.__commit_preceding_batch(OP_DDL)
-
         parts = parse_insert(sql, params)
 
         # The split between the two styles exists because:
@@ -160,21 +156,7 @@ class Cursor(object):
         values = parts.get('values')
         return transaction.insert(table, columns, values)
 
-    def __commit_preceding_batch(self, op=None):
-        last_op = self.__last_op
-        self.__last_op = op
-        if op is OP_DQL:
-            # Unconditionally flush all operations
-            # before any DQL runs to ensure that
-            # any stale batched data that hasn't yet been uploaded
-            # to Cloud Spanner doesn't linger. See issue #213.
-            return self.__db_handle.commit(OP_DQL)
-        else:
-            return self.__db_handle.commit(last_op)
-
     def __handle_DQL(self, sql, params):
-        self.__commit_preceding_batch(OP_DQL)
-
         with self.__db_handle.read_snapshot() as snapshot:
             # Reference
             #  https://googleapis.dev/python/spanner/latest/session-api.html#google.cloud.spanner_v1.session.Session.execute_sql
@@ -218,8 +200,6 @@ class Cursor(object):
         return next(self.__itr)
 
     def __iter__(self):
-        self.__commit_preceding_batch(OP_DQL)
-
         if self.__itr is None:
             raise ProgrammingError('no results to return')
         return self.__itr
@@ -268,13 +248,8 @@ class Cursor(object):
     def setoutputsize(size, column=None):
         raise ProgrammingError('Unimplemented')
 
-    def __handle_update_ddl(self, ddl_statement):
-        self.__commit_preceding_batch(OP_DDL)
-
-        if not self.__db_handle:
-            raise ProgrammingError('Trying to run an DDL update but no database handle')
-
-        return self.__db_handle.handle_update_ddl(ddl_statement, self.__last_op)
+    def __run_prior_DDL_statements(self):
+        return self.__db_handle.run_prior_DDL_statements()
 
 
 class Column:
