@@ -23,7 +23,7 @@ class Cursor(object):
         self.__itr = None
         self.__res = None
         self.__row_count = _UNSET_COUNT
-        self.__db_handle = db_handle
+        self.__connection = db_handle
         self.__last_op = None
         self.__closed = False
 
@@ -59,7 +59,7 @@ class Cursor(object):
         self.__closed = True
 
     def __get_txn(self):
-        return self.__db_handle.get_txn()
+        return self.__connection.get_txn()
 
     def execute(self, sql, args=None):
         """
@@ -75,7 +75,7 @@ class Cursor(object):
         """
         self.__raise_if_already_closed()
 
-        if not self.__db_handle:
+        if not self.__connection:
             raise ProgrammingError('Cursor is not connected to the database')
 
         self.__res = None
@@ -84,7 +84,7 @@ class Cursor(object):
         try:
             classification = classify_stmt(sql)
             if classification == STMT_DDL:
-                self.__db_handle.append_ddl_statement(sql)
+                self.__connection.append_ddl_statement(sql)
                 return
 
             # For every other operation, we've got to ensure that
@@ -138,7 +138,10 @@ class Cursor(object):
             res = txn.execute_update(sql, params=params, param_types=param_types)
             # TODO: File a bug with Cloud Spanner and the Python client maintainers
             # about a lost commit when res isn't read from.
-            _ = list(res)
+            if hasattr(res, '__iter__'):
+                _ = list(res)
+            elif isinstance(res, int):
+                self.__row_count = res
 
     def __do_execute_insert_homogenous(self, transaction, parts):
         # Perform an insert in one shot.
@@ -176,17 +179,19 @@ class Cursor(object):
         return self
 
     def __exit__(self, etype, value, traceback):
-        self.__db_handle.commit()
+        if not etype:  # Not an exception thus we should commit.
+            self.__connection.commit()
+        else:  # An exception occured within the context so rollback.
+            self.__connection.rollback()
+
         self.__clear()
 
     def __clear(self):
-        self.__db_handle = None
+        self.__connection = None
         self.__txn = None
 
     def executemany(self, operation, seq_of_params):
-        self.__raise_if_already_closed()
-
-        if not self.__db_handle:
+        if not self.__connection:
             raise ProgrammingError('Cursor is not connected to the database')
 
         raise ProgrammingError('Unimplemented')
@@ -252,15 +257,7 @@ class Cursor(object):
         raise ProgrammingError('Unimplemented')
 
     def __run_prior_DDL_statements(self):
-        # DDL and Transactions in Cloud Spanner don't mix thus before any DDL is executed,
-        # any prior transaction MUST have been committed. This behavior is also present
-        # on MySQL. Please see:
-        # * https://gist.github.com/odeke-em/8e02576d8523e07eb27b43a772aecc92
-        # * https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html
-        # * https://wiki.postgresql.org/wiki/Transactional_DDL_in_PostgreSQL:_A_Competitive_Analysis
-        self.__db_handle.commit()
-
-        return self.__db_handle.run_prior_DDL_statements()
+        return self.__connection.run_prior_DDL_statements()
 
     def list_tables(self):
         # We CANNOT list tables with
@@ -273,7 +270,7 @@ class Cursor(object):
         # with a transaction otherwise we get back:
         #   400 Unsupported concurrency mode in query using INFORMATION_SCHEMA.
         # hence this specialized method.
-        return self.__db_handle.list_tables()
+        return self.__connection.list_tables()
 
 
 class Column:

@@ -39,14 +39,18 @@ class Connection(object):
         self.__sess.delete()
 
     def __exit__(self, etype, value, traceback):
-        self.commit()
-        self.close()
-
-    def commit(self):
         self.__raise_if_already_closed()
 
         self.run_prior_DDL_statements()
 
+        if not etype:  # Not an exception thus we should commit.
+            self.commit()
+        else:  # An exception occured within the context so rollback.
+            self.rollback()
+
+        self.__clear()
+
+    def commit(self):
         if not self.__txn:
             # DDL and Transactions in Cloud Spanner don't mix thus before
             # any DDL is executed, any prior transaction MUST have been committed.
@@ -70,14 +74,19 @@ class Connection(object):
         return Cursor(self)
 
     def get_txn(self):
+        self.run_prior_DDL_statements()
+
         if not self.__txn:
             self.__txn = self.__sess.transaction()
             self.__txn.begin()
         return self.__txn
 
-    def __handle_update_ddl(self, ddl_statements):
+    def append_ddl_statement(self, ddl_statement):
+        self.__ddl_statements.append(ddl_statement)
+
+    def run_prior_DDL_statements(self):
         """
-        Runs the list of Data Definition Language (DDL) statements on the underlying
+        Runs the list of saved Data Definition Language (DDL) statements on the underlying
         database. Note that each DDL statement MUST NOT contain a semicolon.
 
         Args:
@@ -88,24 +97,21 @@ class Connection(object):
         """
         self.__raise_if_already_closed()
 
-        # Synchronously wait on the operation's completion.
-        return self.__dbhandle.update_ddl(ddl_statements).result()
-
-    def append_ddl_statement(self, ddl_statement):
-        self.__raise_if_already_closed()
-
-        self.__ddl_statements.append(ddl_statement)
-
-    def run_prior_DDL_statements(self):
-        self.__raise_if_already_closed()
-
         if not self.__ddl_statements:
             return
 
+        # DDL and Transactions in Cloud Spanner don't mix thus before any DDL is executed,
+        # any prior transaction MUST have been committed. This behavior is also present
+        # on MySQL. Please see:
+        # * https://gist.github.com/odeke-em/8e02576d8523e07eb27b43a772aecc92
+        # * https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html
+        # * https://wiki.postgresql.org/wiki/Transactional_DDL_in_PostgreSQL:_A_Competitive_Analysis
+        self.commit()
+
         ddl_statements = self.__ddl_statements
         self.__ddl_statements = []
-        return self.__handle_update_ddl(ddl_statements)
-        
+        return self.__dbhandle.update_ddl(ddl_statements).result()
+
     def __update_ddl(self, ddl_statements):
         """
         Runs the list of Data Definition Language (DDL) statements on the specified
