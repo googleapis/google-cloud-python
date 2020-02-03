@@ -51,4 +51,4 @@ script:
     - tox
     - flake8
     - isort --recursive --check-only --diff
-    - bash django_test_suite.sh
+    - travis_wait 40 bash django_test_suite.sh

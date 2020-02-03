@@ -58,9 +58,11 @@ class Connection(object):
             self.__txn = None
 
     def rollback(self):
-        self.__raise_if_already_closed()
-
-        return self.__txn.rollback()
+        res = None
+        if self.__txn:
+            res = self.__txn.rollback()
+            self.__txn = None
+        return res
         
     def cursor(self):
         self.__raise_if_already_closed()

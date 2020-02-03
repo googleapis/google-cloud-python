@@ -161,8 +161,8 @@ def parse_insert(insert_sql, params):
         # Case c)
 
         columns = [
-             strip_backticks(mi.strip())
-             for mi in match.group('columns').split(',')
+            strip_backticks(mi.strip())
+            for mi in match.group('columns').split(',')
         ]
         sql_params_list = []
         insert_sql_preamble = 'INSERT INTO %s (%s) VALUES %s' % (
