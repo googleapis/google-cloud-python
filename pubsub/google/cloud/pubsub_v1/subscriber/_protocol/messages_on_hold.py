@@ -1,4 +1,4 @@
-# Copyright 2019, Google LLC
+# Copyright 2020, Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -118,8 +118,9 @@ class MessagesOnHold(object):
             ), "A message queue should exist for every ordered message in flight."
             next_msg = self._get_next_for_ordering_key(key)
             if next_msg:
-                # Enough capacity exists to schedule this message since
-                # the previous message was dropped.
+                # Schedule the next message because the previous was dropped.
+                # Note that this may overload the user's `max_bytes` limit, but
+                # not their `max_messages` limit.
                 schedule_message_callback(next_msg)
             else:
                 # No more messages for this ordering key, so do clean-up.
