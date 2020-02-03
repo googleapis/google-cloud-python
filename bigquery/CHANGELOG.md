@@ -4,6 +4,46 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 1.24.0
+
+02-03-2020 01:38 PST
+
+### Implementation Changes
+
+- Fix inserting missing repeated fields. ([#10196](https://github.com/googleapis/google-cloud-python/pull/10196))
+- Deprecate `client.dataset()` in favor of `DatasetReference`. ([#7753](https://github.com/googleapis/google-cloud-python/pull/7753))
+- Use faster `to_arrow` + `to_pandas` in `to_dataframe()` when `pyarrow` is available. ([#10027](https://github.com/googleapis/google-cloud-python/pull/10027))
+- Write pandas `datetime[ns]` columns to BigQuery TIMESTAMP columns. ([#10028](https://github.com/googleapis/google-cloud-python/pull/10028))
+
+### New Features
+
+- Check `rows` argument type in `insert_rows()`. ([#10174](https://github.com/googleapis/google-cloud-python/pull/10174))
+- Check `json_rows` arg type in `insert_rows_json()`. ([#10162](https://github.com/googleapis/google-cloud-python/pull/10162))
+- Make `RowIterator.to_dataframe_iterable()` method public. ([#10017](https://github.com/googleapis/google-cloud-python/pull/10017))
+- Add retry parameter to public methods where missing. ([#10026](https://github.com/googleapis/google-cloud-python/pull/10026))
+- Add timeout parameter to Client and Job public methods. ([#10002](https://github.com/googleapis/google-cloud-python/pull/10002))
+- Add timeout parameter to `QueryJob.done()` method. ([#9875](https://github.com/googleapis/google-cloud-python/pull/9875))
+- Add `create_bqstorage_client` parameter to `to_dataframe()` and `to_arrow()` methods. ([#9573](https://github.com/googleapis/google-cloud-python/pull/9573))
+
+### Dependencies
+
+- Fix minimum versions of `google-cloud-core` and `google-resumable-media` dependencies. ([#10016](https://github.com/googleapis/google-cloud-python/pull/10016))
+
+### Documentation
+
+- Fix a comment typo in `job.py`. ([#10209](https://github.com/googleapis/google-cloud-python/pull/10209))
+- Update code samples of load table file and load table URI. ([#10175](https://github.com/googleapis/google-cloud-python/pull/10175))
+- Uncomment `Client` constructor and imports in samples. ([#10058](https://github.com/googleapis/google-cloud-python/pull/10058))
+- Remove unused query code sample. ([#10024](https://github.com/googleapis/google-cloud-python/pull/10024))
+- Update code samples to use strings for table and dataset IDs. ([#9974](https://github.com/googleapis/google-cloud-python/pull/9974))
+
+### Internal / Testing Changes
+
+- Bump copyright year to 2020, tweak docstring formatting (via synth). [#10225](https://github.com/googleapis/google-cloud-python/pull/10225)
+- Add tests for concatenating categorical columns. ([#10180](https://github.com/googleapis/google-cloud-python/pull/10180))
+- Adjust test assertions to the new default timeout. ([#10222](https://github.com/googleapis/google-cloud-python/pull/10222))
+- Use Python 3.6 for the nox blacken session (via synth). ([#10012](https://github.com/googleapis/google-cloud-python/pull/10012))
+
 ## 1.23.1
 
 12-16-2019 09:39 PST
