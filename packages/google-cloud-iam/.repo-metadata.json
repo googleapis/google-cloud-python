@@ -6,7 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559761",
   "release_level": "alpha",
   "language": "python",
-  "repo": "googleapis/google-cloud-python",
+  "repo": "googleapis/python-iam",
   "distribution_name": "google-cloud-iam",
   "api_id": "iamcredentials.googleapis.com"
 }
