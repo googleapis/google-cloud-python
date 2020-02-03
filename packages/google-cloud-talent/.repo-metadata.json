@@ -6,7 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559664",
   "release_level": "alpha",
   "language": "python",
-  "repo": "googleapis/google-cloud-python",
+  "repo": "googleapis/python-talent",
   "distribution_name": "google-cloud-talent",
   "api_id": "jobs.googleapis.com",
   "requires_billing": true
