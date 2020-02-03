@@ -2588,7 +2588,7 @@ GetProductSetRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       name:
           Required. Resource name of the ProductSet to get.  Format is: 
-          ``projects/PROJECT_ID/locations/LOG_ID/productSets/PRODUCT_SET
+          ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET
           _ID``
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.vision.v1p4beta1.GetProductSetRequest)
@@ -3030,7 +3030,8 @@ ProductSetPurgeConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PRODUCTSETPURGECONFIG,
         __module__="google.cloud.vision_v1p4beta1.proto.product_search_service_pb2",
-        __doc__="""Config to control which ProductSet contains the Products to be deleted.
+        __doc__="""Config to control which ProductSet contains the Products
+  to be deleted.
   
   
   Attributes:

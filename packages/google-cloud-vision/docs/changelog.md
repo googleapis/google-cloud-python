@@ -1,1 +1,1 @@
-../../vision/CHANGELOG.md
+../CHANGELOG.md

@@ -476,7 +476,7 @@ class ProductSearchClient(object):
             name (str): Required. Resource name of the ProductSet to get.
 
                 Format is:
-                ``projects/PROJECT_ID/locations/LOG_ID/productSets/PRODUCT_SET_ID``
+                ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.

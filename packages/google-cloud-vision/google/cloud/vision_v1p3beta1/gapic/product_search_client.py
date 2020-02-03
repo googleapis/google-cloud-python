@@ -277,10 +277,10 @@ class ProductSearchClient(object):
             >>> response = client.create_product_set(parent, product_set, product_set_id)
 
         Args:
-            parent (str): The project in which the ProductSet should be created.
+            parent (str): Required. The project in which the ProductSet should be created.
 
                 Format is ``projects/PROJECT_ID/locations/LOC_ID``.
-            product_set (Union[dict, ~google.cloud.vision_v1p3beta1.types.ProductSet]): The ProductSet to create.
+            product_set (Union[dict, ~google.cloud.vision_v1p3beta1.types.ProductSet]): Required. The ProductSet to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.vision_v1p3beta1.types.ProductSet`
@@ -376,7 +376,7 @@ class ProductSearchClient(object):
             ...         pass
 
         Args:
-            parent (str): The project from which ProductSets should be listed.
+            parent (str): Required. The project from which ProductSets should be listed.
 
                 Format is ``projects/PROJECT_ID/locations/LOC_ID``.
             page_size (int): The maximum number of resources contained in the
@@ -472,10 +472,10 @@ class ProductSearchClient(object):
             >>> response = client.get_product_set(name)
 
         Args:
-            name (str): Resource name of the ProductSet to get.
+            name (str): Required. Resource name of the ProductSet to get.
 
                 Format is:
-                ``projects/PROJECT_ID/locations/LOG_ID/productSets/PRODUCT_SET_ID``
+                ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -556,7 +556,7 @@ class ProductSearchClient(object):
             >>> response = client.update_product_set(product_set, update_mask)
 
         Args:
-            product_set (Union[dict, ~google.cloud.vision_v1p3beta1.types.ProductSet]): The ProductSet resource which replaces the one on the server.
+            product_set (Union[dict, ~google.cloud.vision_v1p3beta1.types.ProductSet]): Required. The ProductSet resource which replaces the one on the server.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.vision_v1p3beta1.types.ProductSet`
@@ -643,7 +643,7 @@ class ProductSearchClient(object):
             >>> client.delete_product_set(name)
 
         Args:
-            name (str): Resource name of the ProductSet to delete.
+            name (str): Required. Resource name of the ProductSet to delete.
 
                 Format is:
                 ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
@@ -728,10 +728,10 @@ class ProductSearchClient(object):
             >>> response = client.create_product(parent, product, product_id)
 
         Args:
-            parent (str): The project in which the Product should be created.
+            parent (str): Required. The project in which the Product should be created.
 
                 Format is ``projects/PROJECT_ID/locations/LOC_ID``.
-            product (Union[dict, ~google.cloud.vision_v1p3beta1.types.Product]): The product to create.
+            product (Union[dict, ~google.cloud.vision_v1p3beta1.types.Product]): Required. The product to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.vision_v1p3beta1.types.Product`
@@ -827,7 +827,8 @@ class ProductSearchClient(object):
             ...         pass
 
         Args:
-            parent (str): The project OR ProductSet from which Products should be listed.
+            parent (str): Required. The project OR ProductSet from which Products should be
+                listed.
 
                 Format: ``projects/PROJECT_ID/locations/LOC_ID``
             page_size (int): The maximum number of resources contained in the
@@ -923,7 +924,7 @@ class ProductSearchClient(object):
             >>> response = client.get_product(name)
 
         Args:
-            name (str): Resource name of the Product to get.
+            name (str): Required. Resource name of the Product to get.
 
                 Format is: ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1013,14 +1014,14 @@ class ProductSearchClient(object):
             >>> response = client.update_product(product, update_mask)
 
         Args:
-            product (Union[dict, ~google.cloud.vision_v1p3beta1.types.Product]): The Product resource which replaces the one on the server.
+            product (Union[dict, ~google.cloud.vision_v1p3beta1.types.Product]): Required. The Product resource which replaces the one on the server.
                 product.name is immutable.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.vision_v1p3beta1.types.Product`
             update_mask (Union[dict, ~google.cloud.vision_v1p3beta1.types.FieldMask]): The ``FieldMask`` that specifies which fields to update. If update\_mask
                 isn't specified, all mutable fields are to be updated. Valid mask paths
-                include ``product_labels``, ``display_name`` and ``description``.
+                include ``product_labels``, ``display_name``, and ``description``.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.vision_v1p3beta1.types.FieldMask`
@@ -1102,7 +1103,7 @@ class ProductSearchClient(object):
             >>> client.delete_product(name)
 
         Args:
-            name (str): Resource name of product to delete.
+            name (str): Required. Resource name of product to delete.
 
                 Format is: ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1198,10 +1199,11 @@ class ProductSearchClient(object):
             >>> response = client.create_reference_image(parent, reference_image, reference_image_id)
 
         Args:
-            parent (str): Resource name of the product in which to create the reference image.
+            parent (str): Required. Resource name of the product in which to create the reference
+                image.
 
                 Format is ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
-            reference_image (Union[dict, ~google.cloud.vision_v1p3beta1.types.ReferenceImage]): The reference image to create.
+            reference_image (Union[dict, ~google.cloud.vision_v1p3beta1.types.ReferenceImage]): Required. The reference image to create.
                 If an image ID is specified, it is ignored.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -1292,7 +1294,7 @@ class ProductSearchClient(object):
             >>> client.delete_reference_image(name)
 
         Args:
-            name (str): The resource name of the reference image to delete.
+            name (str): Required. The resource name of the reference image to delete.
 
                 Format is:
 
@@ -1381,7 +1383,7 @@ class ProductSearchClient(object):
             ...         pass
 
         Args:
-            parent (str): Resource name of the product containing the reference images.
+            parent (str): Required. Resource name of the product containing the reference images.
 
                 Format is ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
             page_size (int): The maximum number of resources contained in the
@@ -1477,7 +1479,7 @@ class ProductSearchClient(object):
             >>> response = client.get_reference_image(name)
 
         Args:
-            name (str): The resource name of the ReferenceImage to get.
+            name (str): Required. The resource name of the ReferenceImage to get.
 
                 Format is:
 
@@ -1561,11 +1563,12 @@ class ProductSearchClient(object):
             >>> client.add_product_to_product_set(name, product)
 
         Args:
-            name (str): The resource name for the ProductSet to modify.
+            name (str): Required. The resource name for the ProductSet to modify.
 
                 Format is:
                 ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
-            product (str): The resource name for the Product to be added to this ProductSet.
+            product (str): Required. The resource name for the Product to be added to this
+                ProductSet.
 
                 Format is: ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1643,11 +1646,12 @@ class ProductSearchClient(object):
             >>> client.remove_product_from_product_set(name, product)
 
         Args:
-            name (str): The resource name for the ProductSet to modify.
+            name (str): Required. The resource name for the ProductSet to modify.
 
                 Format is:
                 ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
-            product (str): The resource name for the Product to be removed from this ProductSet.
+            product (str): Required. The resource name for the Product to be removed from this
+                ProductSet.
 
                 Format is: ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1739,7 +1743,7 @@ class ProductSearchClient(object):
             ...         pass
 
         Args:
-            name (str): The ProductSet resource for which to retrieve Products.
+            name (str): Required. The ProductSet resource for which to retrieve Products.
 
                 Format is:
                 ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
@@ -1857,10 +1861,10 @@ class ProductSearchClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            parent (str): The project in which the ProductSets should be imported.
+            parent (str): Required. The project in which the ProductSets should be imported.
 
                 Format is ``projects/PROJECT_ID/locations/LOC_ID``.
-            input_config (Union[dict, ~google.cloud.vision_v1p3beta1.types.ImportProductSetsInputConfig]): The input content for the list of requests.
+            input_config (Union[dict, ~google.cloud.vision_v1p3beta1.types.ImportProductSetsInputConfig]): Required. The input content for the list of requests.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.vision_v1p3beta1.types.ImportProductSetsInputConfig`

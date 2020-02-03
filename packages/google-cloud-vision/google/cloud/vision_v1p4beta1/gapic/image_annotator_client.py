@@ -214,7 +214,7 @@ class ImageAnnotatorClient(object):
             >>> response = client.batch_annotate_images(requests)
 
         Args:
-            requests (list[Union[dict, ~google.cloud.vision_v1p4beta1.types.AnnotateImageRequest]]): Individual image annotation requests for this batch.
+            requests (list[Union[dict, ~google.cloud.vision_v1p4beta1.types.AnnotateImageRequest]]): Required. Individual image annotation requests for this batch.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.vision_v1p4beta1.types.AnnotateImageRequest`
