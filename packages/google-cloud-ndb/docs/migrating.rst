@@ -33,7 +33,7 @@ we can no longer assume it's running in the context of a GAE request.
 
 The `ndb` client uses ``google.auth`` for authentication, consistent with other
 Google Cloud Platform client libraries. The client can take a `credentials`
-parameter or get the credentials using the `GOOGLE_APPLCATION_CREDENTIALS`
+parameter or get the credentials using the `GOOGLE_APPLICATION_CREDENTIALS`
 environment variable, which is the recommended option. For more information
 about authentication, consult the `Cloud Storage Client Libraries
 <https://cloud.google.com/storage/docs/reference/libraries>`_ documentation.
@@ -275,5 +275,5 @@ would need to initialize the client and context on each request, or find
 another way to initialize and get the initial client.
 
 Note that the above code, like other `ndb` code, assumes the presence of the
-`GOOGLE_APPLCATION_CREDENTIALS` environment variable when the client is
+`GOOGLE_APPLICATION_CREDENTIALS` environment variable when the client is
 created. See Django documentation for details on setting up the environment.
