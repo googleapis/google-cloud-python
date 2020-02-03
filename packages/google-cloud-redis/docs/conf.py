@@ -20,12 +20,12 @@ import shlex
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath(".."))
 
-__version__ = "0.1.0"
+__version__ = ""
 
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-# needs_sphinx = '1.0'
+needs_sphinx = "1.6.3"
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -36,6 +36,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.coverage",
     "sphinx.ext.napoleon",
+    "sphinx.ext.todo",
     "sphinx.ext.viewcode",
 ]
 
@@ -55,7 +56,7 @@ source_parsers = {".md": "recommonmark.parser.CommonMarkParser"}
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 # source_suffix = ['.rst', '.md']
-source_suffix = [".rst", "md"]
+source_suffix = [".rst", ".md"]
 
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
@@ -65,7 +66,7 @@ master_doc = "index"
 
 # General information about the project.
 project = u"google-cloud-redis"
-copyright = u"2017, Google"
+copyright = u"2019, Google"
 author = u"Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
@@ -132,9 +133,9 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for Python",
+    "description": "Google Cloud Client Libraries for google-cloud-redis",
     "github_user": "googleapis",
-    "github_repo": "google-cloud-python",
+    "github_repo": "python-redis",
     "github_banner": True,
     "font_family": "'Roboto', Georgia, sans",
     "head_font_family": "'Roboto', Georgia, serif",
@@ -286,22 +287,18 @@ latex_documents = [
 # If false, no module index is generated.
 # latex_domain_indices = True
 
+
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (
-        master_doc,
-        "google-cloud-automl",
-        u"google-cloud-automl Documentation",
-        [author],
-        1,
-    )
+    (master_doc, "google-cloud-redis", u"google-cloud-redis Documentation", [author], 1)
 ]
 
 # If true, show URL addresses after external links.
 # man_show_urls = False
+
 
 # -- Options for Texinfo output -------------------------------------------
 
@@ -315,7 +312,7 @@ texinfo_documents = [
         u"google-cloud-redis Documentation",
         author,
         "google-cloud-redis",
-        "GAPIC library for the {metadata.shortName} v1beta1 service",
+        "google-cloud-redis Library",
         "APIs",
     )
 ]
@@ -336,15 +333,11 @@ texinfo_documents = [
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     "python": ("http://python.readthedocs.org/en/latest/", None),
-    "gax": ("https://gax-python.readthedocs.org/en/latest/", None),
     "google-auth": ("https://google-auth.readthedocs.io/en/stable", None),
-    "google-gax": ("https://gax-python.readthedocs.io/en/latest/", None),
-    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest", None),
+    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest/", None),
     "grpc": ("https://grpc.io/grpc/python/", None),
-    "requests": ("https://requests.kennethreitz.org/en/stable/", None),
-    "fastavro": ("https://fastavro.readthedocs.io/en/stable/", None),
-    "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
 }
+
 
 # Napoleon settings
 napoleon_google_docstring = True
