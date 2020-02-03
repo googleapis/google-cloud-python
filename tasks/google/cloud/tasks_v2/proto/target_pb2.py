@@ -707,8 +707,8 @@ HttpRequest = _reflection.GeneratedProtocolMessageType(
   
   The task will be pushed to the worker as an HTTP request. If the worker
   or the redirected worker acknowledges the task by returning a successful
-  HTTP response code ([``200`` - ``299``]), the task will removed from the
-  queue. If any other HTTP response code is returned or no response is
+  HTTP response code ([``200`` - ``299``]), the task will be removed from
+  the queue. If any other HTTP response code is returned or no response is
   received, the task will be retried according to the following:
   
   -  User-specified throttling: [retry
@@ -729,7 +729,7 @@ HttpRequest = _reflection.GeneratedProtocolMessageType(
      will use a higher backoff rate. The retry specified in the
      ``Retry-After`` HTTP response header is considered.
   
-  -  To prevent traffic spikes and to smooth sudden large traffic spikes,
+  -  To prevent traffic spikes and to smooth sudden increases in traffic,
      dispatches ramp up slowly when the queue is newly created or idle and
      if large numbers of tasks suddenly become available to dispatch (due
      to spikes in create task rates, the queue being unpaused, or many
@@ -929,8 +929,8 @@ AppEngineHttpRequest = _reflection.GeneratedProtocolMessageType(
           overridden:  -  ``Host`` -  ``X-Google-*`` -
           ``X-AppEngine-*``  In addition, Cloud Tasks sets some headers
           when the task is dispatched, such as headers containing
-          information about the task; see `request headers <https://clou
-          d.google.com/appengine/docs/python/taskqueue/push/creating-
+          information about the task; see `request headers
+          <https://cloud.google.com/tasks/docs/creating-appengine-
           handlers#reading_request_headers>`_. These headers are set
           only when the task is dispatched, so they are not visible when
           the task is returned in a Cloud Tasks response.  Although
@@ -1064,7 +1064,7 @@ OAuthToken = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       service_account_email:
-          `Service account email
+          \ `Service account email
           <https://cloud.google.com/iam/docs/service-accounts>`_ to be
           used for generating OAuth token. The service account must be
           within the same project as the queue. The caller must have
@@ -1085,7 +1085,8 @@ OidcToken = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OIDCTOKEN,
         __module__="google.cloud.tasks_v2.proto.target_pb2",
-        __doc__="""Contains information needed for generating an `OpenID Connect
+        __doc__="""Contains information needed for generating an `OpenID
+  Connect
   token <https://developers.google.com/identity/protocols/OpenIDConnect>`_.
   This type of authorization can be used for many scenarios, including
   calling Cloud Run, or endpoints where you intend to validate the token
@@ -1094,7 +1095,7 @@ OidcToken = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       service_account_email:
-          `Service account email
+          \ `Service account email
           <https://cloud.google.com/iam/docs/service-accounts>`_ to be
           used for generating OIDC token. The service account must be
           within the same project as the queue. The caller must have

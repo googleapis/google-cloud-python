@@ -3654,9 +3654,9 @@ Feature = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_FEATURE,
         __module__="google.cloud.vision_v1p4beta1.proto.image_annotator_pb2",
-        __doc__="""The type of Google Cloud Vision API detection to perform, and the
-  maximum number of results to return for that type. Multiple ``Feature``
-  objects can be specified in the ``features`` list.
+        __doc__="""The type of Google Cloud Vision API detection to perform,
+  and the maximum number of results to return for that type. Multiple
+  ``Feature`` objects can be specified in the ``features`` list.
   
   
   Attributes:
@@ -3681,12 +3681,13 @@ ImageSource = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_IMAGESOURCE,
         __module__="google.cloud.vision_v1p4beta1.proto.image_annotator_pb2",
-        __doc__="""External image source (Google Cloud Storage or web URL image location).
+        __doc__="""External image source (Google Cloud Storage or web URL
+  image location).
   
   
   Attributes:
       gcs_image_uri:
-          **Use ``image_uri`` instead.**  The Google Cloud Storage URI
+          \ **Use ``image_uri`` instead.**  The Google Cloud Storage URI
           of the form ``gs://bucket_name/object_name``. Object
           versioning is not supported. See `Google Cloud Storage Request
           URIs <https://cloud.google.com/storage/docs/reference-uris>`__
@@ -3718,7 +3719,8 @@ Image = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_IMAGE,
         __module__="google.cloud.vision_v1p4beta1.proto.image_annotator_pb2",
-        __doc__="""Client image to perform Google Cloud Vision API tasks over.
+        __doc__="""Client image to perform Google Cloud Vision API tasks
+  over.
   
   
   Attributes:
@@ -3761,7 +3763,8 @@ FaceAnnotation = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_FACEANNOTATION,
         __module__="google.cloud.vision_v1p4beta1.proto.image_annotator_pb2",
-        __doc__="""A face annotation object contains the results of face detection.
+        __doc__="""A face annotation object contains the results of face
+  detection.
   
   
   Attributes:
@@ -3851,7 +3854,8 @@ Property = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PROPERTY,
         __module__="google.cloud.vision_v1p4beta1.proto.image_annotator_pb2",
-        __doc__="""A ``Property`` consists of a user-supplied name/value pair.
+        __doc__="""A ``Property`` consists of a user-supplied name/value
+  pair.
   
   
   Attributes:
@@ -3890,7 +3894,7 @@ EntityAnnotation = _reflection.GeneratedProtocolMessageType(
       score:
           Overall score of the result. Range [0, 1].
       confidence:
-          **Deprecated. Use ``score`` instead.** The accuracy of the
+          \ **Deprecated. Use ``score`` instead.** The accuracy of the
           entity detection in an image. For example, for an image in
           which the "Eiffel Tower" entity is detected, this field
           represents the confidence that there is a tower in the query
@@ -3957,9 +3961,9 @@ SafeSearchAnnotation = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SAFESEARCHANNOTATION,
         __module__="google.cloud.vision_v1p4beta1.proto.image_annotator_pb2",
-        __doc__="""Set of features pertaining to the image, computed by computer vision
-  methods over safe-search verticals (for example, adult, spoof, medical,
-  violence).
+        __doc__="""Set of features pertaining to the image, computed by
+  computer vision methods over safe-search verticals (for example, adult,
+  spoof, medical, violence).
   
   
   Attributes:
@@ -4012,8 +4016,8 @@ ColorInfo = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_COLORINFO,
         __module__="google.cloud.vision_v1p4beta1.proto.image_annotator_pb2",
-        __doc__="""Color information consists of RGB channels, score, and the fraction of
-  the image that the color occupies in the image.
+        __doc__="""Color information consists of RGB channels, score, and the
+  fraction of the image that the color occupies in the image.
   
   
   Attributes:
@@ -4072,8 +4076,8 @@ CropHint = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CROPHINT,
         __module__="google.cloud.vision_v1p4beta1.proto.image_annotator_pb2",
-        __doc__="""Single crop hint that is used to generate a new crop when serving an
-  image.
+        __doc__="""Single crop hint that is used to generate a new crop when
+  serving an image.
   
   
   Attributes:
@@ -4097,8 +4101,8 @@ CropHintsAnnotation = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CROPHINTSANNOTATION,
         __module__="google.cloud.vision_v1p4beta1.proto.image_annotator_pb2",
-        __doc__="""Set of crop hints that are used to generate new crops when serving
-  images.
+        __doc__="""Set of crop hints that are used to generate new crops when
+  serving images.
   
   
   Attributes:
@@ -4195,8 +4199,8 @@ AnnotateImageRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ANNOTATEIMAGEREQUEST,
         __module__="google.cloud.vision_v1p4beta1.proto.image_annotator_pb2",
-        __doc__="""Request for performing Google Cloud Vision API tasks over a
-  user-provided image, with user-requested features, and with context
+        __doc__="""Request for performing Google Cloud Vision API tasks over
+  a user-provided image, with user-requested features, and with context
   information.
   
   
@@ -4219,8 +4223,8 @@ ImageAnnotationContext = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_IMAGEANNOTATIONCONTEXT,
         __module__="google.cloud.vision_v1p4beta1.proto.image_annotator_pb2",
-        __doc__="""If an image was produced from a file (e.g. a PDF), this message gives
-  information about the source of that image.
+        __doc__="""If an image was produced from a file (e.g. a PDF), this
+  message gives information about the source of that image.
   
   
   Attributes:
@@ -4292,8 +4296,8 @@ BatchAnnotateImagesRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_BATCHANNOTATEIMAGESREQUEST,
         __module__="google.cloud.vision_v1p4beta1.proto.image_annotator_pb2",
-        __doc__="""Multiple image annotation requests are batched into a single service
-  call.
+        __doc__="""Multiple image annotation requests are batched into a
+  single service call.
   
   
   Attributes:
@@ -4330,7 +4334,8 @@ AnnotateFileRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ANNOTATEFILEREQUEST,
         __module__="google.cloud.vision_v1p4beta1.proto.image_annotator_pb2",
-        __doc__="""A request to annotate one single file, e.g. a PDF, TIFF or GIF file.
+        __doc__="""A request to annotate one single file, e.g. a PDF, TIFF or
+  GIF file.
   
   
   Attributes:
@@ -4363,8 +4368,8 @@ AnnotateFileResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ANNOTATEFILERESPONSE,
         __module__="google.cloud.vision_v1p4beta1.proto.image_annotator_pb2",
-        __doc__="""Response to a single file annotation request. A file may contain one or
-  more images, which individually have their own responses.
+        __doc__="""Response to a single file annotation request. A file may
+  contain one or more images, which individually have their own responses.
   
   
   Attributes:
@@ -4391,7 +4396,8 @@ BatchAnnotateFilesRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_BATCHANNOTATEFILESREQUEST,
         __module__="google.cloud.vision_v1p4beta1.proto.image_annotator_pb2",
-        __doc__="""A list of requests to annotate files using the BatchAnnotateFiles API.
+        __doc__="""A list of requests to annotate files using the
+  BatchAnnotateFiles API.
   
   
   Attributes:
@@ -4516,8 +4522,8 @@ AsyncBatchAnnotateFilesRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ASYNCBATCHANNOTATEFILESREQUEST,
         __module__="google.cloud.vision_v1p4beta1.proto.image_annotator_pb2",
-        __doc__="""Multiple async file annotation requests are batched into a single
-  service call.
+        __doc__="""Multiple async file annotation requests are batched into a
+  single service call.
   
   
   Attributes:
@@ -4612,7 +4618,8 @@ GcsSource = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GCSSOURCE,
         __module__="google.cloud.vision_v1p4beta1.proto.image_annotator_pb2",
-        __doc__="""The Google Cloud Storage location where the input will be read from.
+        __doc__="""The Google Cloud Storage location where the input will be
+  read from.
   
   
   Attributes:
@@ -4632,7 +4639,8 @@ GcsDestination = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GCSDESTINATION,
         __module__="google.cloud.vision_v1p4beta1.proto.image_annotator_pb2",
-        __doc__="""The Google Cloud Storage location where the output will be written to.
+        __doc__="""The Google Cloud Storage location where the output will be
+  written to.
   
   
   Attributes:

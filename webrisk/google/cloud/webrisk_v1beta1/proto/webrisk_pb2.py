@@ -281,7 +281,7 @@ _COMPUTETHREATLISTDIFFREQUEST = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_COMPUTETHREATLISTDIFFREQUEST_CONSTRAINTS,],
+    nested_types=[_COMPUTETHREATLISTDIFFREQUEST_CONSTRAINTS],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -317,7 +317,7 @@ _COMPUTETHREATLISTDIFFRESPONSE_CHECKSUM = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        ),
+        )
     ],
     extensions=[],
     nested_types=[],
@@ -448,8 +448,8 @@ _COMPUTETHREATLISTDIFFRESPONSE = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_COMPUTETHREATLISTDIFFRESPONSE_CHECKSUM,],
-    enum_types=[_COMPUTETHREATLISTDIFFRESPONSE_RESPONSETYPE,],
+    nested_types=[_COMPUTETHREATLISTDIFFRESPONSE_CHECKSUM],
+    enum_types=[_COMPUTETHREATLISTDIFFRESPONSE_RESPONSETYPE],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
@@ -597,10 +597,10 @@ _SEARCHURISRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        ),
+        )
     ],
     extensions=[],
-    nested_types=[_SEARCHURISRESPONSE_THREATURI,],
+    nested_types=[_SEARCHURISRESPONSE_THREATURI],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -788,7 +788,7 @@ _SEARCHHASHESRESPONSE = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_SEARCHHASHESRESPONSE_THREATHASH,],
+    nested_types=[_SEARCHHASHESRESPONSE_THREATHASH],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -938,7 +938,7 @@ _RAWINDICES = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        ),
+        )
     ],
     extensions=[],
     nested_types=[],
@@ -1344,7 +1344,8 @@ SearchHashesRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SEARCHHASHESREQUEST,
         __module__="google.cloud.webrisk_v1beta1.proto.webrisk_pb2",
-        __doc__="""Request to return full hashes matched by the provided hash prefixes.
+        __doc__="""Request to return full hashes matched by the provided hash
+  prefixes.
   
   
   Attributes:
@@ -1411,8 +1412,9 @@ ThreatEntryAdditions = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_THREATENTRYADDITIONS,
         __module__="google.cloud.webrisk_v1beta1.proto.webrisk_pb2",
-        __doc__="""Contains the set of entries to add to a local database. May contain a
-  combination of compressed and raw data in a single response.
+        __doc__="""Contains the set of entries to add to a local database.
+  May contain a combination of compressed and raw data in a single
+  response.
   
   
   Attributes:
@@ -1436,7 +1438,8 @@ ThreatEntryRemovals = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_THREATENTRYREMOVALS,
         __module__="google.cloud.webrisk_v1beta1.proto.webrisk_pb2",
-        __doc__="""Contains the set of entries to remove from a local database.
+        __doc__="""Contains the set of entries to remove from a local
+  database.
   
   
   Attributes:
@@ -1509,8 +1512,8 @@ RiceDeltaEncoding = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_RICEDELTAENCODING,
         __module__="google.cloud.webrisk_v1beta1.proto.webrisk_pb2",
-        __doc__="""The Rice-Golomb encoded data. Used for sending compressed 4-byte hashes
-  or compressed removal indices.
+        __doc__="""The Rice-Golomb encoded data. Used for sending compressed
+  4-byte hashes or compressed removal indices.
   
   
   Attributes:

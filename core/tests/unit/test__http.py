@@ -147,6 +147,12 @@ class TestJSONConnection(unittest.TestCase):
     EMPTY_JSON_RESPONSE = make_response(content=b"{}", headers=JSON_HEADERS)
 
     @staticmethod
+    def _get_default_timeout():
+        from google.cloud._http import _DEFAULT_TIMEOUT
+
+        return _DEFAULT_TIMEOUT
+
+    @staticmethod
     def _get_target_class():
         from google.cloud._http import JSONConnection
 
@@ -217,7 +223,11 @@ class TestJSONConnection(unittest.TestCase):
             CLIENT_INFO_HEADER: conn.user_agent,
         }
         http.request.assert_called_once_with(
-            method="GET", url=url, headers=expected_headers, data=None, timeout=None
+            method="GET",
+            url=url,
+            headers=expected_headers,
+            data=None,
+            timeout=self._get_default_timeout(),
         )
 
     def test__make_request_w_data_no_extra_headers(self):
@@ -238,7 +248,11 @@ class TestJSONConnection(unittest.TestCase):
             CLIENT_INFO_HEADER: conn.user_agent,
         }
         http.request.assert_called_once_with(
-            method="GET", url=url, headers=expected_headers, data=data, timeout=None
+            method="GET",
+            url=url,
+            headers=expected_headers,
+            data=data,
+            timeout=self._get_default_timeout(),
         )
 
     def test__make_request_w_extra_headers(self):
@@ -258,7 +272,11 @@ class TestJSONConnection(unittest.TestCase):
             CLIENT_INFO_HEADER: conn.user_agent,
         }
         http.request.assert_called_once_with(
-            method="GET", url=url, headers=expected_headers, data=None, timeout=None
+            method="GET",
+            url=url,
+            headers=expected_headers,
+            data=None,
+            timeout=self._get_default_timeout(),
         )
 
     def test__make_request_w_timeout(self):
@@ -309,7 +327,7 @@ class TestJSONConnection(unittest.TestCase):
             url=expected_url,
             headers=expected_headers,
             data=None,
-            timeout=None,
+            timeout=self._get_default_timeout(),
         )
 
     def test_api_request_w_non_json_response(self):
@@ -352,7 +370,7 @@ class TestJSONConnection(unittest.TestCase):
             url=mock.ANY,
             headers=expected_headers,
             data=None,
-            timeout=None,
+            timeout=self._get_default_timeout(),
         )
 
         url = http.request.call_args[1]["url"]
@@ -386,7 +404,7 @@ class TestJSONConnection(unittest.TestCase):
             url=mock.ANY,
             headers=expected_headers,
             data=None,
-            timeout=None,
+            timeout=self._get_default_timeout(),
         )
 
     def test_api_request_w_extra_headers(self):
@@ -416,7 +434,7 @@ class TestJSONConnection(unittest.TestCase):
             url=mock.ANY,
             headers=expected_headers,
             data=None,
-            timeout=None,
+            timeout=self._get_default_timeout(),
         )
 
     def test_api_request_w_data(self):
@@ -443,7 +461,7 @@ class TestJSONConnection(unittest.TestCase):
             url=mock.ANY,
             headers=expected_headers,
             data=expected_data,
-            timeout=None,
+            timeout=self._get_default_timeout(),
         )
 
     def test_api_request_w_timeout(self):

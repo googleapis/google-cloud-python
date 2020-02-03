@@ -153,6 +153,7 @@ from google.api_core import client_info
 from google.api_core.exceptions import NotFound
 import google.auth
 from google.cloud import bigquery
+import google.cloud.bigquery.dataset
 from google.cloud.bigquery.dbapi import _helpers
 import six
 
@@ -534,7 +535,7 @@ def _cell_magic(line, query):
                 )
             dataset_id, table_id = split
             job_config.allow_large_results = True
-            dataset_ref = client.dataset(dataset_id)
+            dataset_ref = bigquery.dataset.DatasetReference(client.project, dataset_id)
             destination_table_ref = dataset_ref.table(table_id)
             job_config.destination = destination_table_ref
             job_config.create_disposition = "CREATE_IF_NEEDED"

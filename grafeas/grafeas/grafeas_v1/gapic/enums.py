@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,6 +47,7 @@ class NoteKind(enum.IntEnum):
       DEPLOYMENT (int): The note and occurrence track deployment events.
       DISCOVERY (int): The note and occurrence track the initial discovery status of a resource.
       ATTESTATION (int): This represents a logical "role" that can attest to artifacts.
+      UPGRADE (int): This represents an available package upgrade.
     """
 
     NOTE_KIND_UNSPECIFIED = 0
@@ -57,6 +58,7 @@ class NoteKind(enum.IntEnum):
     DEPLOYMENT = 5
     DISCOVERY = 6
     ATTESTATION = 7
+    UPGRADE = 8
 
 
 class Severity(enum.IntEnum):

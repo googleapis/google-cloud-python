@@ -59,7 +59,7 @@ config = {
                 },
                 "GetIamPolicy": {
                     "timeout_millis": 10000,
-                    "retry_codes_name": "idempotent",
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "SetIamPolicy": {
@@ -69,7 +69,7 @@ config = {
                 },
                 "TestIamPermissions": {
                     "timeout_millis": 10000,
-                    "retry_codes_name": "idempotent",
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "ListTasks": {
@@ -89,7 +89,7 @@ config = {
                 },
                 "DeleteTask": {
                     "timeout_millis": 10000,
-                    "retry_codes_name": "idempotent",
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "LeaseTasks": {

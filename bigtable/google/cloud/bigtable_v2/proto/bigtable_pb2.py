@@ -16,6 +16,9 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.bigtable_v2.proto import (
     data_pb2 as google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2,
 )
@@ -28,13 +31,16 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.bigtable.v2",
     syntax="proto3",
     serialized_options=_b(
-        "\n\026com.google.bigtable.v2B\rBigtableProtoP\001Z:google.golang.org/genproto/googleapis/bigtable/v2;bigtable\252\002\030Google.Cloud.Bigtable.V2\312\002\030Google\\Cloud\\Bigtable\\V2"
+        "\n\026com.google.bigtable.v2B\rBigtableProtoP\001Z:google.golang.org/genproto/googleapis/bigtable/v2;bigtable\252\002\030Google.Cloud.Bigtable.V2\312\002\030Google\\Cloud\\Bigtable\\V2\352AW\n\035bigtable.googleapis.com/Table\0226projects/{project}/instances/{instance}/tables/{table}"
     ),
     serialized_pb=_b(
-        '\n-google/cloud/bigtable_v2/proto/bigtable.proto\x12\x12google.bigtable.v2\x1a\x1cgoogle/api/annotations.proto\x1a)google/cloud/bigtable_v2/proto/data.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x17google/rpc/status.proto"\xaa\x01\n\x0fReadRowsRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x05 \x01(\t\x12(\n\x04rows\x18\x02 \x01(\x0b\x32\x1a.google.bigtable.v2.RowSet\x12-\n\x06\x66ilter\x18\x03 \x01(\x0b\x32\x1d.google.bigtable.v2.RowFilter\x12\x12\n\nrows_limit\x18\x04 \x01(\x03"\xf8\x02\n\x10ReadRowsResponse\x12>\n\x06\x63hunks\x18\x01 \x03(\x0b\x32..google.bigtable.v2.ReadRowsResponse.CellChunk\x12\x1c\n\x14last_scanned_row_key\x18\x02 \x01(\x0c\x1a\x85\x02\n\tCellChunk\x12\x0f\n\x07row_key\x18\x01 \x01(\x0c\x12\x31\n\x0b\x66\x61mily_name\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12.\n\tqualifier\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.BytesValue\x12\x18\n\x10timestamp_micros\x18\x04 \x01(\x03\x12\x0e\n\x06labels\x18\x05 \x03(\t\x12\r\n\x05value\x18\x06 \x01(\x0c\x12\x12\n\nvalue_size\x18\x07 \x01(\x05\x12\x13\n\treset_row\x18\x08 \x01(\x08H\x00\x12\x14\n\ncommit_row\x18\t \x01(\x08H\x00\x42\x0c\n\nrow_status"B\n\x14SampleRowKeysRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x02 \x01(\t">\n\x15SampleRowKeysResponse\x12\x0f\n\x07row_key\x18\x01 \x01(\x0c\x12\x14\n\x0coffset_bytes\x18\x02 \x01(\x03"\x80\x01\n\x10MutateRowRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x04 \x01(\t\x12\x0f\n\x07row_key\x18\x02 \x01(\x0c\x12/\n\tmutations\x18\x03 \x03(\x0b\x32\x1c.google.bigtable.v2.Mutation"\x13\n\x11MutateRowResponse"\xc8\x01\n\x11MutateRowsRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x03 \x01(\t\x12<\n\x07\x65ntries\x18\x02 \x03(\x0b\x32+.google.bigtable.v2.MutateRowsRequest.Entry\x1aI\n\x05\x45ntry\x12\x0f\n\x07row_key\x18\x01 \x01(\x0c\x12/\n\tmutations\x18\x02 \x03(\x0b\x32\x1c.google.bigtable.v2.Mutation"\x8f\x01\n\x12MutateRowsResponse\x12=\n\x07\x65ntries\x18\x01 \x03(\x0b\x32,.google.bigtable.v2.MutateRowsResponse.Entry\x1a:\n\x05\x45ntry\x12\r\n\x05index\x18\x01 \x01(\x03\x12"\n\x06status\x18\x02 \x01(\x0b\x32\x12.google.rpc.Status"\xfd\x01\n\x18\x43heckAndMutateRowRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x07 \x01(\t\x12\x0f\n\x07row_key\x18\x02 \x01(\x0c\x12\x37\n\x10predicate_filter\x18\x06 \x01(\x0b\x32\x1d.google.bigtable.v2.RowFilter\x12\x34\n\x0etrue_mutations\x18\x04 \x03(\x0b\x32\x1c.google.bigtable.v2.Mutation\x12\x35\n\x0f\x66\x61lse_mutations\x18\x05 \x03(\x0b\x32\x1c.google.bigtable.v2.Mutation"6\n\x19\x43heckAndMutateRowResponse\x12\x19\n\x11predicate_matched\x18\x01 \x01(\x08"\x90\x01\n\x19ReadModifyWriteRowRequest\x12\x12\n\ntable_name\x18\x01 \x01(\t\x12\x16\n\x0e\x61pp_profile_id\x18\x04 \x01(\t\x12\x0f\n\x07row_key\x18\x02 \x01(\x0c\x12\x36\n\x05rules\x18\x03 \x03(\x0b\x32\'.google.bigtable.v2.ReadModifyWriteRule"B\n\x1aReadModifyWriteRowResponse\x12$\n\x03row\x18\x01 \x01(\x0b\x32\x17.google.bigtable.v2.Row2\xad\x08\n\x08\x42igtable\x12\x9d\x01\n\x08ReadRows\x12#.google.bigtable.v2.ReadRowsRequest\x1a$.google.bigtable.v2.ReadRowsResponse"D\x82\xd3\xe4\x93\x02>"9/v2/{table_name=projects/*/instances/*/tables/*}:readRows:\x01*0\x01\x12\xae\x01\n\rSampleRowKeys\x12(.google.bigtable.v2.SampleRowKeysRequest\x1a).google.bigtable.v2.SampleRowKeysResponse"F\x82\xd3\xe4\x93\x02@\x12>/v2/{table_name=projects/*/instances/*/tables/*}:sampleRowKeys0\x01\x12\x9f\x01\n\tMutateRow\x12$.google.bigtable.v2.MutateRowRequest\x1a%.google.bigtable.v2.MutateRowResponse"E\x82\xd3\xe4\x93\x02?":/v2/{table_name=projects/*/instances/*/tables/*}:mutateRow:\x01*\x12\xa5\x01\n\nMutateRows\x12%.google.bigtable.v2.MutateRowsRequest\x1a&.google.bigtable.v2.MutateRowsResponse"F\x82\xd3\xe4\x93\x02@";/v2/{table_name=projects/*/instances/*/tables/*}:mutateRows:\x01*0\x01\x12\xbf\x01\n\x11\x43heckAndMutateRow\x12,.google.bigtable.v2.CheckAndMutateRowRequest\x1a-.google.bigtable.v2.CheckAndMutateRowResponse"M\x82\xd3\xe4\x93\x02G"B/v2/{table_name=projects/*/instances/*/tables/*}:checkAndMutateRow:\x01*\x12\xc3\x01\n\x12ReadModifyWriteRow\x12-.google.bigtable.v2.ReadModifyWriteRowRequest\x1a..google.bigtable.v2.ReadModifyWriteRowResponse"N\x82\xd3\xe4\x93\x02H"C/v2/{table_name=projects/*/instances/*/tables/*}:readModifyWriteRow:\x01*B\x9b\x01\n\x16\x63om.google.bigtable.v2B\rBigtableProtoP\x01Z:google.golang.org/genproto/googleapis/bigtable/v2;bigtable\xaa\x02\x18Google.Cloud.Bigtable.V2\xca\x02\x18Google\\Cloud\\Bigtable\\V2b\x06proto3'
+        '\n-google/cloud/bigtable_v2/proto/bigtable.proto\x12\x12google.bigtable.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a)google/cloud/bigtable_v2/proto/data.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x17google/rpc/status.proto"\xd1\x01\n\x0fReadRowsRequest\x12\x39\n\ntable_name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table\x12\x16\n\x0e\x61pp_profile_id\x18\x05 \x01(\t\x12(\n\x04rows\x18\x02 \x01(\x0b\x32\x1a.google.bigtable.v2.RowSet\x12-\n\x06\x66ilter\x18\x03 \x01(\x0b\x32\x1d.google.bigtable.v2.RowFilter\x12\x12\n\nrows_limit\x18\x04 \x01(\x03"\xf8\x02\n\x10ReadRowsResponse\x12>\n\x06\x63hunks\x18\x01 \x03(\x0b\x32..google.bigtable.v2.ReadRowsResponse.CellChunk\x12\x1c\n\x14last_scanned_row_key\x18\x02 \x01(\x0c\x1a\x85\x02\n\tCellChunk\x12\x0f\n\x07row_key\x18\x01 \x01(\x0c\x12\x31\n\x0b\x66\x61mily_name\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12.\n\tqualifier\x18\x03 \x01(\x0b\x32\x1b.google.protobuf.BytesValue\x12\x18\n\x10timestamp_micros\x18\x04 \x01(\x03\x12\x0e\n\x06labels\x18\x05 \x03(\t\x12\r\n\x05value\x18\x06 \x01(\x0c\x12\x12\n\nvalue_size\x18\x07 \x01(\x05\x12\x13\n\treset_row\x18\x08 \x01(\x08H\x00\x12\x14\n\ncommit_row\x18\t \x01(\x08H\x00\x42\x0c\n\nrow_status"i\n\x14SampleRowKeysRequest\x12\x39\n\ntable_name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table\x12\x16\n\x0e\x61pp_profile_id\x18\x02 \x01(\t">\n\x15SampleRowKeysResponse\x12\x0f\n\x07row_key\x18\x01 \x01(\x0c\x12\x14\n\x0coffset_bytes\x18\x02 \x01(\x03"\xb1\x01\n\x10MutateRowRequest\x12\x39\n\ntable_name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table\x12\x16\n\x0e\x61pp_profile_id\x18\x04 \x01(\t\x12\x14\n\x07row_key\x18\x02 \x01(\x0c\x42\x03\xe0\x41\x02\x12\x34\n\tmutations\x18\x03 \x03(\x0b\x32\x1c.google.bigtable.v2.MutationB\x03\xe0\x41\x02"\x13\n\x11MutateRowResponse"\xf9\x01\n\x11MutateRowsRequest\x12\x39\n\ntable_name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table\x12\x16\n\x0e\x61pp_profile_id\x18\x03 \x01(\t\x12\x41\n\x07\x65ntries\x18\x02 \x03(\x0b\x32+.google.bigtable.v2.MutateRowsRequest.EntryB\x03\xe0\x41\x02\x1aN\n\x05\x45ntry\x12\x0f\n\x07row_key\x18\x01 \x01(\x0c\x12\x34\n\tmutations\x18\x02 \x03(\x0b\x32\x1c.google.bigtable.v2.MutationB\x03\xe0\x41\x02"\x8f\x01\n\x12MutateRowsResponse\x12=\n\x07\x65ntries\x18\x01 \x03(\x0b\x32,.google.bigtable.v2.MutateRowsResponse.Entry\x1a:\n\x05\x45ntry\x12\r\n\x05index\x18\x01 \x01(\x03\x12"\n\x06status\x18\x02 \x01(\x0b\x32\x12.google.rpc.Status"\xa9\x02\n\x18\x43heckAndMutateRowRequest\x12\x39\n\ntable_name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table\x12\x16\n\x0e\x61pp_profile_id\x18\x07 \x01(\t\x12\x14\n\x07row_key\x18\x02 \x01(\x0c\x42\x03\xe0\x41\x02\x12\x37\n\x10predicate_filter\x18\x06 \x01(\x0b\x32\x1d.google.bigtable.v2.RowFilter\x12\x34\n\x0etrue_mutations\x18\x04 \x03(\x0b\x32\x1c.google.bigtable.v2.Mutation\x12\x35\n\x0f\x66\x61lse_mutations\x18\x05 \x03(\x0b\x32\x1c.google.bigtable.v2.Mutation"6\n\x19\x43heckAndMutateRowResponse\x12\x19\n\x11predicate_matched\x18\x01 \x01(\x08"\xc1\x01\n\x19ReadModifyWriteRowRequest\x12\x39\n\ntable_name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table\x12\x16\n\x0e\x61pp_profile_id\x18\x04 \x01(\t\x12\x14\n\x07row_key\x18\x02 \x01(\x0c\x42\x03\xe0\x41\x02\x12;\n\x05rules\x18\x03 \x03(\x0b\x32\'.google.bigtable.v2.ReadModifyWriteRuleB\x03\xe0\x41\x02"B\n\x1aReadModifyWriteRowResponse\x12$\n\x03row\x18\x01 \x01(\x0b\x32\x17.google.bigtable.v2.Row2\xc4\x0e\n\x08\x42igtable\x12\xc6\x01\n\x08ReadRows\x12#.google.bigtable.v2.ReadRowsRequest\x1a$.google.bigtable.v2.ReadRowsResponse"m\x82\xd3\xe4\x93\x02>"9/v2/{table_name=projects/*/instances/*/tables/*}:readRows:\x01*\xda\x41\ntable_name\xda\x41\x19table_name,app_profile_id0\x01\x12\xd7\x01\n\rSampleRowKeys\x12(.google.bigtable.v2.SampleRowKeysRequest\x1a).google.bigtable.v2.SampleRowKeysResponse"o\x82\xd3\xe4\x93\x02@\x12>/v2/{table_name=projects/*/instances/*/tables/*}:sampleRowKeys\xda\x41\ntable_name\xda\x41\x19table_name,app_profile_id0\x01\x12\xed\x01\n\tMutateRow\x12$.google.bigtable.v2.MutateRowRequest\x1a%.google.bigtable.v2.MutateRowResponse"\x92\x01\x82\xd3\xe4\x93\x02?":/v2/{table_name=projects/*/instances/*/tables/*}:mutateRow:\x01*\xda\x41\x1ctable_name,row_key,mutations\xda\x41+table_name,row_key,mutations,app_profile_id\x12\xde\x01\n\nMutateRows\x12%.google.bigtable.v2.MutateRowsRequest\x1a&.google.bigtable.v2.MutateRowsResponse"\x7f\x82\xd3\xe4\x93\x02@";/v2/{table_name=projects/*/instances/*/tables/*}:mutateRows:\x01*\xda\x41\x12table_name,entries\xda\x41!table_name,entries,app_profile_id0\x01\x12\xd9\x02\n\x11\x43heckAndMutateRow\x12,.google.bigtable.v2.CheckAndMutateRowRequest\x1a-.google.bigtable.v2.CheckAndMutateRowResponse"\xe6\x01\x82\xd3\xe4\x93\x02G"B/v2/{table_name=projects/*/instances/*/tables/*}:checkAndMutateRow:\x01*\xda\x41\x42table_name,row_key,predicate_filter,true_mutations,false_mutations\xda\x41Qtable_name,row_key,predicate_filter,true_mutations,false_mutations,app_profile_id\x12\x89\x02\n\x12ReadModifyWriteRow\x12-.google.bigtable.v2.ReadModifyWriteRowRequest\x1a..google.bigtable.v2.ReadModifyWriteRowResponse"\x93\x01\x82\xd3\xe4\x93\x02H"C/v2/{table_name=projects/*/instances/*/tables/*}:readModifyWriteRow:\x01*\xda\x41\x18table_name,row_key,rules\xda\x41\'table_name,row_key,rules,app_profile_id\x1a\xdb\x02\xca\x41\x17\x62igtable.googleapis.com\xd2\x41\xbd\x02https://www.googleapis.com/auth/bigtable.data,https://www.googleapis.com/auth/bigtable.data.readonly,https://www.googleapis.com/auth/cloud-bigtable.data,https://www.googleapis.com/auth/cloud-bigtable.data.readonly,https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/cloud-platform.read-onlyB\xf5\x01\n\x16\x63om.google.bigtable.v2B\rBigtableProtoP\x01Z:google.golang.org/genproto/googleapis/bigtable/v2;bigtable\xaa\x02\x18Google.Cloud.Bigtable.V2\xca\x02\x18Google\\Cloud\\Bigtable\\V2\xea\x41W\n\x1d\x62igtable.googleapis.com/Table\x12\x36projects/{project}/instances/{instance}/tables/{table}b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_bigtable__v2_dot_proto_dot_data__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,
         google_dot_rpc_dot_status__pb2.DESCRIPTOR,
@@ -64,7 +70,9 @@ _READROWSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A\037\n\035bigtable.googleapis.com/Table"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -148,8 +156,8 @@ _READROWSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=200,
-    serialized_end=370,
+    serialized_start=285,
+    serialized_end=494,
 )
 
 
@@ -339,8 +347,8 @@ _READROWSRESPONSE_CELLCHUNK = _descriptor.Descriptor(
             fields=[],
         ),
     ],
-    serialized_start=488,
-    serialized_end=749,
+    serialized_start=612,
+    serialized_end=873,
 )
 
 _READROWSRESPONSE = _descriptor.Descriptor(
@@ -395,8 +403,8 @@ _READROWSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=373,
-    serialized_end=749,
+    serialized_start=497,
+    serialized_end=873,
 )
 
 
@@ -422,7 +430,9 @@ _SAMPLEROWKEYSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A\037\n\035bigtable.googleapis.com/Table"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -452,8 +462,8 @@ _SAMPLEROWKEYSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=751,
-    serialized_end=817,
+    serialized_start=875,
+    serialized_end=980,
 )
 
 
@@ -509,8 +519,8 @@ _SAMPLEROWKEYSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=819,
-    serialized_end=881,
+    serialized_start=982,
+    serialized_end=1044,
 )
 
 
@@ -536,7 +546,9 @@ _MUTATEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A\037\n\035bigtable.googleapis.com/Table"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -572,7 +584,7 @@ _MUTATEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -590,7 +602,7 @@ _MUTATEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -602,8 +614,8 @@ _MUTATEROWREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=884,
-    serialized_end=1012,
+    serialized_start=1047,
+    serialized_end=1224,
 )
 
 
@@ -622,8 +634,8 @@ _MUTATEROWRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1014,
-    serialized_end=1033,
+    serialized_start=1226,
+    serialized_end=1245,
 )
 
 
@@ -667,7 +679,7 @@ _MUTATEROWSREQUEST_ENTRY = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -679,8 +691,8 @@ _MUTATEROWSREQUEST_ENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1163,
-    serialized_end=1236,
+    serialized_start=1419,
+    serialized_end=1497,
 )
 
 _MUTATEROWSREQUEST = _descriptor.Descriptor(
@@ -705,7 +717,9 @@ _MUTATEROWSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A\037\n\035bigtable.googleapis.com/Table"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -741,7 +755,7 @@ _MUTATEROWSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -753,8 +767,8 @@ _MUTATEROWSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1036,
-    serialized_end=1236,
+    serialized_start=1248,
+    serialized_end=1497,
 )
 
 
@@ -810,8 +824,8 @@ _MUTATEROWSRESPONSE_ENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1324,
-    serialized_end=1382,
+    serialized_start=1585,
+    serialized_end=1643,
 )
 
 _MUTATEROWSRESPONSE = _descriptor.Descriptor(
@@ -848,8 +862,8 @@ _MUTATEROWSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1239,
-    serialized_end=1382,
+    serialized_start=1500,
+    serialized_end=1643,
 )
 
 
@@ -875,7 +889,9 @@ _CHECKANDMUTATEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A\037\n\035bigtable.googleapis.com/Table"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -911,7 +927,7 @@ _CHECKANDMUTATEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -977,8 +993,8 @@ _CHECKANDMUTATEROWREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1385,
-    serialized_end=1638,
+    serialized_start=1646,
+    serialized_end=1943,
 )
 
 
@@ -1016,8 +1032,8 @@ _CHECKANDMUTATEROWRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1640,
-    serialized_end=1694,
+    serialized_start=1945,
+    serialized_end=1999,
 )
 
 
@@ -1043,7 +1059,9 @@ _READMODIFYWRITEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A\037\n\035bigtable.googleapis.com/Table"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1079,7 +1097,7 @@ _READMODIFYWRITEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1097,7 +1115,7 @@ _READMODIFYWRITEROWREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1109,8 +1127,8 @@ _READMODIFYWRITEROWREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1697,
-    serialized_end=1841,
+    serialized_start=2002,
+    serialized_end=2195,
 )
 
 
@@ -1148,8 +1166,8 @@ _READMODIFYWRITEROWRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1843,
-    serialized_end=1909,
+    serialized_start=2197,
+    serialized_end=2263,
 )
 
 _READROWSREQUEST.fields_by_name[
@@ -1239,8 +1257,8 @@ ReadRowsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       table_name:
-          The unique name of the table from which to read. Values are of
-          the form
+          Required. The unique name of the table from which to read.
+          Values are of the form
           ``projects/<project>/instances/<instance>/tables/<table>``.
       app_profile_id:
           This value specifies routing for replication. If not
@@ -1317,6 +1335,8 @@ ReadRowsResponse = _reflection.GeneratedProtocolMessageType(
             not the final chunk of that cell, value\_size will be set to
             the total length of the cell value. The client can use this
             size to pre-allocate memory to hold the full cell value.
+        row_status:
+            Signals to the client concerning previous CellChunks received.
         reset_row:
             Indicates that the client should drop all previous chunks for
             ``row_key``, as it will be re-read from the beginning.
@@ -1333,6 +1353,8 @@ ReadRowsResponse = _reflection.GeneratedProtocolMessageType(
   
   
   Attributes:
+      chunks:
+          A collection of a row's contents as part of the read request.
       last_scanned_row_key:
           Optionally the server might return the row key of the last row
           it has scanned. The client can use this to construct a more
@@ -1359,8 +1381,8 @@ SampleRowKeysRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       table_name:
-          The unique name of the table from which to sample row keys.
-          Values are of the form
+          Required. The unique name of the table from which to sample
+          row keys. Values are of the form
           ``projects/<project>/instances/<instance>/tables/<table>``.
       app_profile_id:
           This value specifies routing for replication. If not
@@ -1412,19 +1434,20 @@ MutateRowRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       table_name:
-          The unique name of the table to which the mutation should be
-          applied. Values are of the form
+          Required. The unique name of the table to which the mutation
+          should be applied. Values are of the form
           ``projects/<project>/instances/<instance>/tables/<table>``.
       app_profile_id:
           This value specifies routing for replication. If not
           specified, the "default" application profile will be used.
       row_key:
-          The key of the row to which the mutation should be applied.
+          Required. The key of the row to which the mutation should be
+          applied.
       mutations:
-          Changes to be atomically applied to the specified row. Entries
-          are applied in order, meaning that earlier mutations can be
-          masked by later ones. Must contain at least one entry and at
-          most 100000.
+          Required. Changes to be atomically applied to the specified
+          row. Entries are applied in order, meaning that earlier
+          mutations can be masked by later ones. Must contain at least
+          one entry and at most 100000.
   """,
         # @@protoc_insertion_point(class_scope:google.bigtable.v2.MutateRowRequest)
     ),
@@ -1438,6 +1461,7 @@ MutateRowResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_MUTATEROWRESPONSE,
         __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
         __doc__="""Response message for Bigtable.MutateRow.
+  
   """,
         # @@protoc_insertion_point(class_scope:google.bigtable.v2.MutateRowResponse)
     ),
@@ -1454,15 +1478,18 @@ MutateRowsRequest = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_MUTATEROWSREQUEST_ENTRY,
                 __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
-                __doc__="""Attributes:
+                __doc__="""A mutation for a given row.
+    
+    
+    Attributes:
         row_key:
             The key of the row to which the ``mutations`` should be
             applied.
         mutations:
-            Changes to be atomically applied to the specified row.
-            Mutations are applied in order, meaning that earlier mutations
-            can be masked by later ones. You must specify at least one
-            mutation.
+            Required. Changes to be atomically applied to the specified
+            row. Mutations are applied in order, meaning that earlier
+            mutations can be masked by later ones. You must specify at
+            least one mutation.
     """,
                 # @@protoc_insertion_point(class_scope:google.bigtable.v2.MutateRowsRequest.Entry)
             ),
@@ -1474,16 +1501,16 @@ MutateRowsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       table_name:
-          The unique name of the table to which the mutations should be
-          applied.
+          Required. The unique name of the table to which the mutations
+          should be applied.
       app_profile_id:
           This value specifies routing for replication. If not
           specified, the "default" application profile will be used.
       entries:
-          The row keys and corresponding mutations to be applied in
-          bulk. Each entry is applied as an atomic mutation, but the
-          entries may be applied in arbitrary order (even between
-          entries for the same row). At least one entry must be
+          Required. The row keys and corresponding mutations to be
+          applied in bulk. Each entry is applied as an atomic mutation,
+          but the entries may be applied in arbitrary order (even
+          between entries for the same row). At least one entry must be
           specified, and in total the entries can contain at most 100000
           mutations.
   """,
@@ -1503,7 +1530,11 @@ MutateRowsResponse = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_MUTATEROWSRESPONSE_ENTRY,
                 __module__="google.cloud.bigtable_v2.proto.bigtable_pb2",
-                __doc__="""Attributes:
+                __doc__="""The result of applying a passed mutation in the original
+    request.
+    
+    
+    Attributes:
         index:
             The index into the original request's ``entries`` list of the
             Entry for which a result is being reported.
@@ -1543,15 +1574,15 @@ CheckAndMutateRowRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       table_name:
-          The unique name of the table to which the conditional mutation
-          should be applied. Values are of the form
+          Required. The unique name of the table to which the
+          conditional mutation should be applied. Values are of the form
           ``projects/<project>/instances/<instance>/tables/<table>``.
       app_profile_id:
           This value specifies routing for replication. If not
           specified, the "default" application profile will be used.
       row_key:
-          The key of the row to which the conditional mutation should be
-          applied.
+          Required. The key of the row to which the conditional mutation
+          should be applied.
       predicate_filter:
           The filter to be applied to the contents of the specified row.
           Depending on whether or not any results are yielded, either
@@ -1607,19 +1638,21 @@ ReadModifyWriteRowRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       table_name:
-          The unique name of the table to which the read/modify/write
-          rules should be applied. Values are of the form
+          Required. The unique name of the table to which the
+          read/modify/write rules should be applied. Values are of the
+          form
           ``projects/<project>/instances/<instance>/tables/<table>``.
       app_profile_id:
           This value specifies routing for replication. If not
           specified, the "default" application profile will be used.
       row_key:
-          The key of the row to which the read/modify/write rules should
-          be applied.
+          Required. The key of the row to which the read/modify/write
+          rules should be applied.
       rules:
-          Rules specifying how the specified row's contents are to be
-          transformed into writes. Entries are applied in order, meaning
-          that earlier rules will affect the results of later ones.
+          Required. Rules specifying how the specified row's contents
+          are to be transformed into writes. Entries are applied in
+          order, meaning that earlier rules will affect the results of
+          later ones.
   """,
         # @@protoc_insertion_point(class_scope:google.bigtable.v2.ReadModifyWriteRowRequest)
     ),
@@ -1647,15 +1680,30 @@ _sym_db.RegisterMessage(ReadModifyWriteRowResponse)
 
 
 DESCRIPTOR._options = None
+_READROWSREQUEST.fields_by_name["table_name"]._options = None
+_SAMPLEROWKEYSREQUEST.fields_by_name["table_name"]._options = None
+_MUTATEROWREQUEST.fields_by_name["table_name"]._options = None
+_MUTATEROWREQUEST.fields_by_name["row_key"]._options = None
+_MUTATEROWREQUEST.fields_by_name["mutations"]._options = None
+_MUTATEROWSREQUEST_ENTRY.fields_by_name["mutations"]._options = None
+_MUTATEROWSREQUEST.fields_by_name["table_name"]._options = None
+_MUTATEROWSREQUEST.fields_by_name["entries"]._options = None
+_CHECKANDMUTATEROWREQUEST.fields_by_name["table_name"]._options = None
+_CHECKANDMUTATEROWREQUEST.fields_by_name["row_key"]._options = None
+_READMODIFYWRITEROWREQUEST.fields_by_name["table_name"]._options = None
+_READMODIFYWRITEROWREQUEST.fields_by_name["row_key"]._options = None
+_READMODIFYWRITEROWREQUEST.fields_by_name["rules"]._options = None
 
 _BIGTABLE = _descriptor.ServiceDescriptor(
     name="Bigtable",
     full_name="google.bigtable.v2.Bigtable",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=1912,
-    serialized_end=2981,
+    serialized_options=_b(
+        "\312A\027bigtable.googleapis.com\322A\275\002https://www.googleapis.com/auth/bigtable.data,https://www.googleapis.com/auth/bigtable.data.readonly,https://www.googleapis.com/auth/cloud-bigtable.data,https://www.googleapis.com/auth/cloud-bigtable.data.readonly,https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/cloud-platform.read-only"
+    ),
+    serialized_start=2266,
+    serialized_end=4126,
     methods=[
         _descriptor.MethodDescriptor(
             name="ReadRows",
@@ -1665,7 +1713,7 @@ _BIGTABLE = _descriptor.ServiceDescriptor(
             input_type=_READROWSREQUEST,
             output_type=_READROWSRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002>"9/v2/{table_name=projects/*/instances/*/tables/*}:readRows:\001*'
+                '\202\323\344\223\002>"9/v2/{table_name=projects/*/instances/*/tables/*}:readRows:\001*\332A\ntable_name\332A\031table_name,app_profile_id'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1676,7 +1724,7 @@ _BIGTABLE = _descriptor.ServiceDescriptor(
             input_type=_SAMPLEROWKEYSREQUEST,
             output_type=_SAMPLEROWKEYSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002@\022>/v2/{table_name=projects/*/instances/*/tables/*}:sampleRowKeys"
+                "\202\323\344\223\002@\022>/v2/{table_name=projects/*/instances/*/tables/*}:sampleRowKeys\332A\ntable_name\332A\031table_name,app_profile_id"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1687,7 +1735,7 @@ _BIGTABLE = _descriptor.ServiceDescriptor(
             input_type=_MUTATEROWREQUEST,
             output_type=_MUTATEROWRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002?":/v2/{table_name=projects/*/instances/*/tables/*}:mutateRow:\001*'
+                '\202\323\344\223\002?":/v2/{table_name=projects/*/instances/*/tables/*}:mutateRow:\001*\332A\034table_name,row_key,mutations\332A+table_name,row_key,mutations,app_profile_id'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1698,7 +1746,7 @@ _BIGTABLE = _descriptor.ServiceDescriptor(
             input_type=_MUTATEROWSREQUEST,
             output_type=_MUTATEROWSRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002@";/v2/{table_name=projects/*/instances/*/tables/*}:mutateRows:\001*'
+                '\202\323\344\223\002@";/v2/{table_name=projects/*/instances/*/tables/*}:mutateRows:\001*\332A\022table_name,entries\332A!table_name,entries,app_profile_id'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1709,7 +1757,7 @@ _BIGTABLE = _descriptor.ServiceDescriptor(
             input_type=_CHECKANDMUTATEROWREQUEST,
             output_type=_CHECKANDMUTATEROWRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002G"B/v2/{table_name=projects/*/instances/*/tables/*}:checkAndMutateRow:\001*'
+                '\202\323\344\223\002G"B/v2/{table_name=projects/*/instances/*/tables/*}:checkAndMutateRow:\001*\332ABtable_name,row_key,predicate_filter,true_mutations,false_mutations\332AQtable_name,row_key,predicate_filter,true_mutations,false_mutations,app_profile_id'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1720,7 +1768,7 @@ _BIGTABLE = _descriptor.ServiceDescriptor(
             input_type=_READMODIFYWRITEROWREQUEST,
             output_type=_READMODIFYWRITEROWRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002H"C/v2/{table_name=projects/*/instances/*/tables/*}:readModifyWriteRow:\001*'
+                "\202\323\344\223\002H\"C/v2/{table_name=projects/*/instances/*/tables/*}:readModifyWriteRow:\001*\332A\030table_name,row_key,rules\332A'table_name,row_key,rules,app_profile_id"
             ),
         ),
     ],

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -242,8 +242,8 @@ class EventServiceClient(object):
                 The format is "projects/{project\_id}/tenants/{tenant\_id}", for
                 example, "projects/foo/tenant/bar". If tenant id is unspecified, a
                 default tenant is created, for example, "projects/foo".
-            client_event (Union[dict, ~google.cloud.talent_v4beta1.types.ClientEvent]): Required. Events issued when end user interacts with customer's application
-                that uses Cloud Talent Solution.
+            client_event (Union[dict, ~google.cloud.talent_v4beta1.types.ClientEvent]): Required. Events issued when end user interacts with customer's application that
+                uses Cloud Talent Solution.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.ClientEvent`

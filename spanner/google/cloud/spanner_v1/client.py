@@ -26,6 +26,7 @@ In the hierarchy of API concepts
 import warnings
 
 from google.api_core.gapic_v1 import client_info
+import google.api_core.client_options
 
 # pylint: disable=line-too-long
 from google.cloud.spanner_admin_database_v1.gapic.database_admin_client import (  # noqa
@@ -122,6 +123,7 @@ class Client(ClientWithProject):
 
     _instance_admin_api = None
     _database_admin_api = None
+    _endpoint_cache = {}
     user_agent = None
     _SET_PROJECT = True  # Used by from_service_account_json()
 
@@ -143,7 +145,12 @@ class Client(ClientWithProject):
             project=project, credentials=credentials, _http=None
         )
         self._client_info = client_info
-        self._client_options = client_options
+        if client_options and type(client_options) == dict:
+            self._client_options = google.api_core.client_options.from_dict(
+                client_options
+            )
+        else:
+            self._client_options = client_options
 
         if user_agent is not None:
             warnings.warn(_USER_AGENT_DEPRECATED, DeprecationWarning, stacklevel=2)

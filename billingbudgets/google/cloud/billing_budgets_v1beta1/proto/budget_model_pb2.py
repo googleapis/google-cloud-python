@@ -567,11 +567,11 @@ Budget = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_BUDGET,
         __module__="google.cloud.billing.budgets_v1beta1.proto.budget_model_pb2",
-        __doc__="""A budget is a plan that describes what you expect to spend on Cloud
-  projects, plus the rules to execute as spend is tracked against that
-  plan, (for example, send an alert when 90% of the target spend is met).
-  Currently all plans are monthly budgets so the usage period(s) tracked
-  are implied (calendar months of usage back-to-back).
+        __doc__="""A budget is a plan that describes what you expect to spend
+  on Cloud projects, plus the rules to execute as spend is tracked against
+  that plan, (for example, send an alert when 90% of the target spend is
+  met). Currently all plans are monthly budgets so the usage period(s)
+  tracked are implied (calendar months of usage back-to-back).
   
   
   Attributes:
@@ -634,10 +634,12 @@ LastPeriodAmount = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LASTPERIODAMOUNT,
         __module__="google.cloud.billing.budgets_v1beta1.proto.budget_model_pb2",
-        __doc__="""Describes a budget amount targeted to last period's spend. At this time,
-  the amount is automatically 100% of last period's spend; that is, there
-  are no other options yet. Future configuration will be described here
-  (for example, configuring a percentage of last period's spend).
+        __doc__="""Describes a budget amount targeted to last period's spend.
+  At this time, the amount is automatically 100% of last period's spend;
+  that is, there are no other options yet. Future configuration will be
+  described here (for example, configuring a percentage of last period's
+  spend).
+  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.billing.budgets.v1beta1.LastPeriodAmount)
     ),
@@ -650,12 +652,13 @@ ThresholdRule = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_THRESHOLDRULE,
         __module__="google.cloud.billing.budgets_v1beta1.proto.budget_model_pb2",
-        __doc__="""ThresholdRule contains a definition of a threshold which triggers an
-  alert (a notification of a threshold being crossed) to be sent when
-  spend goes above the specified amount. Alerts are automatically e-mailed
-  to users with the Billing Account Administrator role or the Billing
-  Account User role. The thresholds here have no effect on notifications
-  sent to anything configured under ``Budget.all_updates_rule``.
+        __doc__="""ThresholdRule contains a definition of a threshold which
+  triggers an alert (a notification of a threshold being crossed) to be
+  sent when spend goes above the specified amount. Alerts are
+  automatically e-mailed to users with the Billing Account Administrator
+  role or the Billing Account User role. The thresholds here have no
+  effect on notifications sent to anything configured under
+  ``Budget.all_updates_rule``.
   
   
   Attributes:
@@ -715,7 +718,8 @@ Filter = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_FILTER,
         __module__="google.cloud.billing.budgets_v1beta1.proto.budget_model_pb2",
-        __doc__="""A filter for a budget, limiting the scope of the cost to calculate.
+        __doc__="""A filter for a budget, limiting the scope of the cost to
+  calculate.
   
   
   Attributes:

@@ -1608,9 +1608,9 @@ Span = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_SPAN_TIMEEVENTS,
                 __module__="google.devtools.cloudtrace_v2.proto.trace_pb2",
-                __doc__="""A collection of ``TimeEvent``\ s. A ``TimeEvent`` is a time-stamped
-    annotation on the span, consisting of either user-supplied key:value
-    pairs, or details of a message sent/received between Spans.
+                __doc__="""A collection of ``TimeEvent``\ s. A ``TimeEvent`` is a
+    time-stamped annotation on the span, consisting of either user-supplied
+    key:value pairs, or details of a message sent/received between Spans.
     
     
     Attributes:
@@ -1633,10 +1633,11 @@ Span = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_SPAN_LINK,
                 __module__="google.devtools.cloudtrace_v2.proto.trace_pb2",
-                __doc__="""A pointer from the current span to another span in the same trace or in
-    a different trace. For example, this can be used in batching operations,
-    where a single batch handler processes multiple requests from different
-    traces or when the handler receives a request from a different project.
+                __doc__="""A pointer from the current span to another span in the
+    same trace or in a different trace. For example, this can be used in
+    batching operations, where a single batch handler processes multiple
+    requests from different traces or when the handler receives a request
+    from a different project.
     
     
     Attributes:
@@ -1660,8 +1661,8 @@ Span = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_SPAN_LINKS,
                 __module__="google.devtools.cloudtrace_v2.proto.trace_pb2",
-                __doc__="""A collection of links, which are references from this span to a span in
-    the same or different trace.
+                __doc__="""A collection of links, which are references from this span
+    to a span in the same or different trace.
     
     
     Attributes:
@@ -1676,12 +1677,12 @@ Span = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SPAN,
         __module__="google.devtools.cloudtrace_v2.proto.trace_pb2",
-        __doc__="""A span represents a single operation within a trace. Spans can be nested
-  to form a trace tree. Often, a trace contains a root span that describes
-  the end-to-end latency, and one or more subspans for its sub-operations.
-  A trace can also contain multiple root spans, or none at all. Spans do
-  not need to be contiguous—there may be gaps or overlaps between spans in
-  a trace.
+        __doc__="""A span represents a single operation within a trace. Spans
+  can be nested to form a trace tree. Often, a trace contains a root span
+  that describes the end-to-end latency, and one or more subspans for its
+  sub-operations. A trace can also contain multiple root spans, or none at
+  all. Spans do not need to be contiguous—there may be gaps or overlaps
+  between spans in a trace.
   
   
   Attributes:
@@ -1758,7 +1759,8 @@ AttributeValue = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ATTRIBUTEVALUE,
         __module__="google.devtools.cloudtrace_v2.proto.trace_pb2",
-        __doc__="""The allowed types for [VALUE] in a ``[KEY]:[VALUE]`` attribute.
+        __doc__="""The allowed types for [VALUE] in a ``[KEY]:[VALUE]``
+  attribute.
   
   
   Attributes:
@@ -1888,7 +1890,8 @@ TruncatableString = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TRUNCATABLESTRING,
         __module__="google.devtools.cloudtrace_v2.proto.trace_pb2",
-        __doc__="""Represents a string that might be shortened to a specified length.
+        __doc__="""Represents a string that might be shortened to a specified
+  length.
   
   
   Attributes:

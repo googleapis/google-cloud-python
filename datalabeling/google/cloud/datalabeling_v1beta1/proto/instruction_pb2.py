@@ -16,6 +16,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.datalabeling_v1beta1.proto import (
     dataset_pb2 as google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_dataset__pb2,
 )
@@ -30,10 +31,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n%com.google.cloud.datalabeling.v1beta1P\001ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabeling"
     ),
     serialized_pb=_b(
-        '\n9google/cloud/datalabeling_v1beta1/proto/instruction.proto\x12!google.cloud.datalabeling.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x35google/cloud/datalabeling_v1beta1/proto/dataset.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x9c\x03\n\x0bInstruction\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12>\n\tdata_type\x18\x06 \x01(\x0e\x32+.google.cloud.datalabeling.v1beta1.DataType\x12J\n\x0f\x63sv_instruction\x18\x07 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.CsvInstruction\x12J\n\x0fpdf_instruction\x18\t \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.PdfInstruction\x12\x1a\n\x12\x62locking_resources\x18\n \x03(\t"&\n\x0e\x43svInstruction\x12\x14\n\x0cgcs_file_uri\x18\x01 \x01(\t"&\n\x0ePdfInstruction\x12\x14\n\x0cgcs_file_uri\x18\x01 \x01(\tBx\n%com.google.cloud.datalabeling.v1beta1P\x01ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabelingb\x06proto3'
+        '\n9google/cloud/datalabeling_v1beta1/proto/instruction.proto\x12!google.cloud.datalabeling.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a\x35google/cloud/datalabeling_v1beta1/proto/dataset.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xfd\x03\n\x0bInstruction\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12>\n\tdata_type\x18\x06 \x01(\x0e\x32+.google.cloud.datalabeling.v1beta1.DataType\x12N\n\x0f\x63sv_instruction\x18\x07 \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.CsvInstructionB\x02\x18\x01\x12J\n\x0fpdf_instruction\x18\t \x01(\x0b\x32\x31.google.cloud.datalabeling.v1beta1.PdfInstruction\x12\x1a\n\x12\x62locking_resources\x18\n \x03(\t:[\xea\x41X\n\'datalabeling.googleapis.com/Instruction\x12-projects/{project}/instructions/{instruction}"&\n\x0e\x43svInstruction\x12\x14\n\x0cgcs_file_uri\x18\x01 \x01(\t"&\n\x0ePdfInstruction\x12\x14\n\x0cgcs_file_uri\x18\x01 \x01(\tBx\n%com.google.cloud.datalabeling.v1beta1P\x01ZMgoogle.golang.org/genproto/googleapis/cloud/datalabeling/v1beta1;datalabelingb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_datalabeling__v1beta1_dot_proto_dot_dataset__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
     ],
@@ -170,7 +172,7 @@ _INSTRUCTION = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\030\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -213,13 +215,15 @@ _INSTRUCTION = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352AX\n'datalabeling.googleapis.com/Instruction\022-projects/{project}/instructions/{instruction}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=215,
-    serialized_end=627,
+    serialized_start=242,
+    serialized_end=751,
 )
 
 
@@ -257,8 +261,8 @@ _CSVINSTRUCTION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=629,
-    serialized_end=667,
+    serialized_start=753,
+    serialized_end=791,
 )
 
 
@@ -296,8 +300,8 @@ _PDFINSTRUCTION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=669,
-    serialized_end=707,
+    serialized_start=793,
+    serialized_end=831,
 )
 
 _INSTRUCTION.fields_by_name[
@@ -324,12 +328,8 @@ Instruction = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_INSTRUCTION,
         __module__="google.cloud.datalabeling_v1beta1.proto.instruction_pb2",
-        __doc__="""Instruction of how to perform the labeling task for human operators.
-  Currently two types of instruction are supported - CSV file and PDF. One
-  of the two types instruction must be provided. CSV file is only
-  supported for image classification task. Instructions for other task
-  should be provided as PDF. For image classification, CSV and PDF can be
-  provided at the same time.
+        __doc__="""Instruction of how to perform the labeling task for human
+  operators. Currently only PDF instruction is supported.
   
   
   Attributes:
@@ -349,15 +349,15 @@ Instruction = _reflection.GeneratedProtocolMessageType(
       data_type:
           Required. The data type of this instruction.
       csv_instruction:
-          One of CSV or PDF instruction is required. Instruction from a
-          CSV file, such as for classification task. The CSV file should
-          have exact two columns, in the following format:  -  The first
-          column is labeled data, such as an image reference, text. -
-          The second column is comma separated labels associated with
-          data.
+          Deprecated: this instruction format is not supported any more.
+          Instruction from a CSV file, such as for classification task.
+          The CSV file should have exact two columns, in the following
+          format:  -  The first column is labeled data, such as an image
+          reference, text. -  The second column is comma separated
+          labels associated with data.
       pdf_instruction:
-          One of CSV or PDF instruction is required. Instruction from a
-          PDF document. The PDF should be in a Cloud Storage bucket.
+          Instruction from a PDF document. The PDF should be in a Cloud
+          Storage bucket.
       blocking_resources:
           Output only. The names of any related resources that are
           blocking changes to the instruction.
@@ -373,7 +373,8 @@ CsvInstruction = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CSVINSTRUCTION,
         __module__="google.cloud.datalabeling_v1beta1.proto.instruction_pb2",
-        __doc__="""Instruction from a CSV file.
+        __doc__="""Deprecated: this instruction format is not supported any
+  more. Instruction from a CSV file.
   
   
   Attributes:
@@ -405,4 +406,6 @@ _sym_db.RegisterMessage(PdfInstruction)
 
 
 DESCRIPTOR._options = None
+_INSTRUCTION.fields_by_name["csv_instruction"]._options = None
+_INSTRUCTION._options = None
 # @@protoc_insertion_point(module_scope)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -254,6 +254,19 @@ class DataLabelingServiceGrpcTransport(object):
         return self._stubs["data_labeling_service_stub"].ListAnnotatedDatasets
 
     @property
+    def delete_annotated_dataset(self):
+        """Return the gRPC stub for :meth:`DataLabelingServiceClient.delete_annotated_dataset`.
+
+        Deletes an annotated dataset by resource name.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_labeling_service_stub"].DeleteAnnotatedDataset
+
+    @property
     def label_image(self):
         """Return the gRPC stub for :meth:`DataLabelingServiceClient.label_image`.
 
@@ -429,7 +442,8 @@ class DataLabelingServiceGrpcTransport(object):
     def get_evaluation(self):
         """Return the gRPC stub for :meth:`DataLabelingServiceClient.get_evaluation`.
 
-        Gets an evaluation by resource name.
+        Gets an evaluation by resource name (to search, use
+        ``projects.evaluations.search``).
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -442,8 +456,7 @@ class DataLabelingServiceGrpcTransport(object):
     def search_evaluations(self):
         """Return the gRPC stub for :meth:`DataLabelingServiceClient.search_evaluations`.
 
-        Searchs evaluations within a project. Supported filter: evaluation\_job,
-        evaluation\_time.
+        Searches ``evaluations`` within a project.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -456,9 +469,9 @@ class DataLabelingServiceGrpcTransport(object):
     def search_example_comparisons(self):
         """Return the gRPC stub for :meth:`DataLabelingServiceClient.search_example_comparisons`.
 
-        Searchs example comparisons in evaluation, in format of examples
-        of both ground truth and prediction(s). It is represented as a search with
-        evaluation id.
+        Searches example comparisons from an evaluation. The return format is a
+        list of example comparisons that show ground truth and prediction(s) for
+        a single input. Search by providing an evaluation ID.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -484,7 +497,12 @@ class DataLabelingServiceGrpcTransport(object):
     def update_evaluation_job(self):
         """Return the gRPC stub for :meth:`DataLabelingServiceClient.update_evaluation_job`.
 
-        Updates an evaluation job.
+        Updates an evaluation job. You can only update certain fields of the
+        job's ``EvaluationJobConfig``: ``humanAnnotationConfig.instruction``,
+        ``exampleCount``, and ``exampleSamplePercentage``.
+
+        If you want to change any other aspect of the evaluation job, you must
+        delete the job and create a new one.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -510,8 +528,8 @@ class DataLabelingServiceGrpcTransport(object):
     def pause_evaluation_job(self):
         """Return the gRPC stub for :meth:`DataLabelingServiceClient.pause_evaluation_job`.
 
-        Pauses an evaluation job. Pausing a evaluation job that is already in
-        PAUSED state will be a no-op.
+        Pauses an evaluation job. Pausing an evaluation job that is already in a
+        ``PAUSED`` state is a no-op.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -524,8 +542,8 @@ class DataLabelingServiceGrpcTransport(object):
     def resume_evaluation_job(self):
         """Return the gRPC stub for :meth:`DataLabelingServiceClient.resume_evaluation_job`.
 
-        Resumes a paused evaluation job. Deleted evaluation job can't be resumed.
-        Resuming a running evaluation job will be a no-op.
+        Resumes a paused evaluation job. A deleted evaluation job can't be resumed.
+        Resuming a running or scheduled evaluation job is a no-op.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -560,16 +578,3 @@ class DataLabelingServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["data_labeling_service_stub"].ListEvaluationJobs
-
-    @property
-    def delete_annotated_dataset(self):
-        """Return the gRPC stub for :meth:`DataLabelingServiceClient.delete_annotated_dataset`.
-
-        Deletes an annotated dataset by resource name.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["data_labeling_service_stub"].DeleteAnnotatedDataset

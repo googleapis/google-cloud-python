@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -457,6 +457,9 @@ class KeyManagementServiceGrpcTransport(object):
 
         Sets the access control policy on the specified resource. Replaces
         any existing policy.
+
+        Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and
+        PERMISSION_DENIED
 
         Returns:
             Callable: A callable which accepts the appropriate

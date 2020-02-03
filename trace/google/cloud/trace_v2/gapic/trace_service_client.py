@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -85,6 +85,16 @@ class TraceServiceClient(object):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project,
+        )
+
+    @classmethod
+    def span_path(cls, project, trace, span):
+        """Return a fully-qualified span string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/traces/{trace}/spans/{span}",
+            project=project,
+            trace=trace,
+            span=span,
         )
 
     def __init__(
@@ -304,8 +314,7 @@ class TraceServiceClient(object):
             >>>
             >>> client = trace_v2.TraceServiceClient()
             >>>
-            >>> # TODO: Initialize `name`:
-            >>> name = ''
+            >>> name = client.span_path('[PROJECT]', '[TRACE]', '[SPAN]')
             >>>
             >>> # TODO: Initialize `span_id`:
             >>> span_id = ''

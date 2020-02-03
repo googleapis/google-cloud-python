@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-dataproc")
 class WorkflowTemplateServiceClient(object):
     """
     The API interface for managing Workflow Templates in the
-    Cloud Dataproc API.
+    Dataproc API.
     """
 
     SERVICE_ADDRESS = "dataproc.googleapis.com:443"

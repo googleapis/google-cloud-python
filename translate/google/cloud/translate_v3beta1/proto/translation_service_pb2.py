@@ -2796,8 +2796,8 @@ TranslateTextGlossaryConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TRANSLATETEXTGLOSSARYCONFIG,
         __module__="google.cloud.translation_v3beta1.proto.translation_service_pb2",
-        __doc__="""Configures which glossary should be used for a specific target language,
-  and defines options for applying that glossary.
+        __doc__="""Configures which glossary should be used for a specific
+  target language, and defines options for applying that glossary.
   
   
   Attributes:
@@ -3109,8 +3109,8 @@ SupportedLanguage = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SUPPORTEDLANGUAGE,
         __module__="google.cloud.translation_v3beta1.proto.translation_service_pb2",
-        __doc__="""A single supported language response corresponds to information related
-  to one supported language.
+        __doc__="""A single supported language response corresponds to
+  information related to one supported language.
   
   
   Attributes:

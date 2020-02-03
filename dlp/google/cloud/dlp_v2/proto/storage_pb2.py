@@ -2528,7 +2528,8 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType(
                     dict(
                         DESCRIPTOR=_CUSTOMINFOTYPE_DICTIONARY_WORDLIST,
                         __module__="google.cloud.dlp_v2.proto.storage_pb2",
-                        __doc__="""Message defining a list of words or phrases to search for in the data.
+                        __doc__="""Message defining a list of words or phrases to search for
+      in the data.
       
       
       Attributes:
@@ -2542,9 +2543,9 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType(
                 ),
                 DESCRIPTOR=_CUSTOMINFOTYPE_DICTIONARY,
                 __module__="google.cloud.dlp_v2.proto.storage_pb2",
-                __doc__="""Custom information type based on a dictionary of words or phrases. This
-    can be used to match sensitive information specific to the data, such as
-    a list of employee IDs or job titles.
+                __doc__="""Custom information type based on a dictionary of words or
+    phrases. This can be used to match sensitive information specific to the
+    data, such as a list of employee IDs or job titles.
     
     Dictionary words are case-insensitive and all characters other than
     letters and digits in the unicode `Basic Multilingual
@@ -2605,14 +2606,15 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_CUSTOMINFOTYPE_SURROGATETYPE,
                 __module__="google.cloud.dlp_v2.proto.storage_pb2",
-                __doc__="""Message for detecting output from deidentification transformations such
-    as
+                __doc__="""Message for detecting output from deidentification
+    transformations such as
     ```CryptoReplaceFfxFpeConfig`` </dlp/docs/reference/rest/v2/organizations.deidentifyTemplates#cryptoreplaceffxfpeconfig>`__.
     These types of transformations are those that perform pseudonymization,
     thereby producing a "surrogate" as output. This should be used in
     conjunction with a field on the transformation such as
     ``surrogate_info_type``. This CustomInfoType does not support the use of
     ``detection_rules``.
+    
     """,
                 # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.CustomInfoType.SurrogateType)
             ),
@@ -2627,8 +2629,8 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType(
                     dict(
                         DESCRIPTOR=_CUSTOMINFOTYPE_DETECTIONRULE_PROXIMITY,
                         __module__="google.cloud.dlp_v2.proto.storage_pb2",
-                        __doc__="""Message for specifying a window around a finding to apply a detection
-      rule.
+                        __doc__="""Message for specifying a window around a finding to apply
+      a detection rule.
       
       
       Attributes:
@@ -2646,8 +2648,8 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType(
                     dict(
                         DESCRIPTOR=_CUSTOMINFOTYPE_DETECTIONRULE_LIKELIHOODADJUSTMENT,
                         __module__="google.cloud.dlp_v2.proto.storage_pb2",
-                        __doc__="""Message for specifying an adjustment to the likelihood of a finding as
-      part of a detection rule.
+                        __doc__="""Message for specifying an adjustment to the likelihood of
+      a finding as part of a detection rule.
       
       
       Attributes:
@@ -2673,8 +2675,8 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType(
                     dict(
                         DESCRIPTOR=_CUSTOMINFOTYPE_DETECTIONRULE_HOTWORDRULE,
                         __module__="google.cloud.dlp_v2.proto.storage_pb2",
-                        __doc__="""The rule that adjusts the likelihood of findings within a certain
-      proximity of hotwords.
+                        __doc__="""The rule that adjusts the likelihood of findings within a
+      certain proximity of hotwords.
       
       
       Attributes:
@@ -2700,10 +2702,10 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType(
                 ),
                 DESCRIPTOR=_CUSTOMINFOTYPE_DETECTIONRULE,
                 __module__="google.cloud.dlp_v2.proto.storage_pb2",
-                __doc__="""Deprecated; use ``InspectionRuleSet`` instead. Rule for modifying a
-    ``CustomInfoType`` to alter behavior under certain circumstances,
-    depending on the specific details of the rule. Not supported for the
-    ``surrogate_type`` custom infoType.
+                __doc__="""Deprecated; use ``InspectionRuleSet`` instead. Rule for
+    modifying a ``CustomInfoType`` to alter behavior under certain
+    circumstances, depending on the specific details of the rule. Not
+    supported for the ``surrogate_type`` custom infoType.
     
     
     Attributes:
@@ -2792,9 +2794,9 @@ PartitionId = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PARTITIONID,
         __module__="google.cloud.dlp_v2.proto.storage_pb2",
-        __doc__="""Datastore partition ID. A partition ID identifies a grouping of
-  entities. The grouping is always by project and namespace, however the
-  namespace ID may be empty.
+        __doc__="""Datastore partition ID. A partition ID identifies a
+  grouping of entities. The grouping is always by project and namespace,
+  however the namespace ID may be empty.
   
   A partition ID contains several dimensions: project ID and namespace ID.
   
@@ -2857,9 +2859,9 @@ CloudStorageRegexFileSet = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CLOUDSTORAGEREGEXFILESET,
         __module__="google.cloud.dlp_v2.proto.storage_pb2",
-        __doc__="""Message representing a set of files in a Cloud Storage bucket. Regular
-  expressions are used to allow fine-grained control over which files in
-  the bucket to include.
+        __doc__="""Message representing a set of files in a Cloud Storage
+  bucket. Regular expressions are used to allow fine-grained control over
+  which files in the bucket to include.
   
   Included files are those that match at least one item in
   ``include_regex`` and do not match any items in ``exclude_regex``. Note
@@ -2949,8 +2951,8 @@ CloudStorageOptions = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_CLOUDSTORAGEOPTIONS,
         __module__="google.cloud.dlp_v2.proto.storage_pb2",
-        __doc__="""Options defining a file or a set of files within a Google Cloud Storage
-  bucket.
+        __doc__="""Options defining a file or a set of files within a Google
+  Cloud Storage bucket.
   
   
   Attributes:
@@ -3009,7 +3011,8 @@ CloudStoragePath = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CLOUDSTORAGEPATH,
         __module__="google.cloud.dlp_v2.proto.storage_pb2",
-        __doc__="""Message representing a single file or path in Cloud Storage.
+        __doc__="""Message representing a single file or path in Cloud
+  Storage.
   
   
   Attributes:
@@ -3070,9 +3073,9 @@ StorageConfig = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_STORAGECONFIG_TIMESPANCONFIG,
                 __module__="google.cloud.dlp_v2.proto.storage_pb2",
-                __doc__="""Configuration of the timespan of the items to include in scanning.
-    Currently only supported when inspecting Google Cloud Storage and
-    BigQuery.
+                __doc__="""Configuration of the timespan of the items to include in
+    scanning. Currently only supported when inspecting Google Cloud Storage
+    and BigQuery.
     
     
     Attributes:
@@ -3198,10 +3201,10 @@ Key = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_KEY,
         __module__="google.cloud.dlp_v2.proto.storage_pb2",
-        __doc__="""A unique identifier for a Datastore entity. If a key's partition ID or
-  any of its path kinds or names are reserved/read-only, the key is
-  reserved/read-only. A reserved/read-only key is forbidden in certain
-  documented contexts.
+        __doc__="""A unique identifier for a Datastore entity. If a key's
+  partition ID or any of its path kinds or names are reserved/read-only,
+  the key is reserved/read-only. A reserved/read-only key is forbidden in
+  certain documented contexts.
   
   
   Attributes:
@@ -3232,7 +3235,8 @@ RecordKey = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_RECORDKEY,
         __module__="google.cloud.dlp_v2.proto.storage_pb2",
-        __doc__="""Message for a unique key indicating a record that contains a finding.
+        __doc__="""Message for a unique key indicating a record that contains
+  a finding.
   
   
   Attributes:
@@ -3252,10 +3256,10 @@ BigQueryTable = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_BIGQUERYTABLE,
         __module__="google.cloud.dlp_v2.proto.storage_pb2",
-        __doc__="""Message defining the location of a BigQuery table. A table is uniquely
-  identified by its project\_id, dataset\_id, and table\_name. Within a
-  query a table is often referenced with a string in the format of:
-  ``<project_id>:<dataset_id>.<table_id>`` or
+        __doc__="""Message defining the location of a BigQuery table. A table
+  is uniquely identified by its project\_id, dataset\_id, and table\_name.
+  Within a query a table is often referenced with a string in the format
+  of: ``<project_id>:<dataset_id>.<table_id>`` or
   ``<project_id>.<dataset_id>.<table_id>``.
   
   
@@ -3300,11 +3304,12 @@ EntityId = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ENTITYID,
         __module__="google.cloud.dlp_v2.proto.storage_pb2",
-        __doc__="""An entity in a dataset is a field or set of fields that correspond to a
-  single person. For example, in medical records the ``EntityId`` might be
-  a patient identifier, or for financial records it might be an account
-  identifier. This message is used when generalizations or analysis must
-  take into account that multiple rows correspond to the same entity.
+        __doc__="""An entity in a dataset is a field or set of fields that
+  correspond to a single person. For example, in medical records the
+  ``EntityId`` might be a patient identifier, or for financial records it
+  might be an account identifier. This message is used when
+  generalizations or analysis must take into account that multiple rows
+  correspond to the same entity.
   
   
   Attributes:

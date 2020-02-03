@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -174,8 +174,7 @@ class WorkerPool(object):
           STATUS_UNSPECIFIED (int): Status of the ``WorkerPool`` is unknown.
           CREATING (int): ``WorkerPool`` is being created.
           RUNNING (int): ``WorkerPool`` is running.
-          DELETING (int): ``WorkerPool`` is being deleting: cancelling builds and draining
-          workers.
+          DELETING (int): ``WorkerPool`` is being deleted: cancelling builds and draining workers.
           DELETED (int): ``WorkerPool`` is deleted.
         """
 

@@ -1889,7 +1889,8 @@ RecognizeRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_RECOGNIZEREQUEST,
         __module__="google.cloud.speech_v1.proto.cloud_speech_pb2",
-        __doc__="""The top-level message sent by the client for the ``Recognize`` method.
+        __doc__="""The top-level message sent by the client for the
+  ``Recognize`` method.
   
   
   Attributes:
@@ -1970,8 +1971,8 @@ StreamingRecognitionConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_STREAMINGRECOGNITIONCONFIG,
         __module__="google.cloud.speech_v1.proto.cloud_speech_pb2",
-        __doc__="""Provides information to the recognizer that specifies how to process the
-  request.
+        __doc__="""Provides information to the recognizer that specifies how
+  to process the request.
   
   
   Attributes:
@@ -2008,8 +2009,8 @@ RecognitionConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_RECOGNITIONCONFIG,
         __module__="google.cloud.speech_v1.proto.cloud_speech_pb2",
-        __doc__="""Provides information to the recognizer that specifies how to process the
-  request.
+        __doc__="""Provides information to the recognizer that specifies how
+  to process the request.
   
   
   Attributes:
@@ -2220,8 +2221,8 @@ SpeechContext = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SPEECHCONTEXT,
         __module__="google.cloud.speech_v1.proto.cloud_speech_pb2",
-        __doc__="""Provides "hints" to the speech recognizer to favor specific words and
-  phrases in the results.
+        __doc__="""Provides "hints" to the speech recognizer to favor
+  specific words and phrases in the results.
   
   
   Attributes:
@@ -2289,8 +2290,8 @@ RecognizeResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_RECOGNIZERESPONSE,
         __module__="google.cloud.speech_v1.proto.cloud_speech_pb2",
-        __doc__="""The only message returned to the client by the ``Recognize`` method. It
-  contains the result as zero or more sequential
+        __doc__="""The only message returned to the client by the
+  ``Recognize`` method. It contains the result as zero or more sequential
   ``SpeechRecognitionResult`` messages.
   
   
@@ -2310,9 +2311,9 @@ LongRunningRecognizeResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LONGRUNNINGRECOGNIZERESPONSE,
         __module__="google.cloud.speech_v1.proto.cloud_speech_pb2",
-        __doc__="""The only message returned to the client by the ``LongRunningRecognize``
-  method. It contains the result as zero or more sequential
-  ``SpeechRecognitionResult`` messages. It is included in the
+        __doc__="""The only message returned to the client by the
+  ``LongRunningRecognize`` method. It contains the result as zero or more
+  sequential ``SpeechRecognitionResult`` messages. It is included in the
   ``result.response`` field of the ``Operation`` returned by the
   ``GetOperation`` call of the ``google::longrunning::Operations``
   service.
@@ -2334,10 +2335,10 @@ LongRunningRecognizeMetadata = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LONGRUNNINGRECOGNIZEMETADATA,
         __module__="google.cloud.speech_v1.proto.cloud_speech_pb2",
-        __doc__="""Describes the progress of a long-running ``LongRunningRecognize`` call.
-  It is included in the ``metadata`` field of the ``Operation`` returned
-  by the ``GetOperation`` call of the ``google::longrunning::Operations``
-  service.
+        __doc__="""Describes the progress of a long-running
+  ``LongRunningRecognize`` call. It is included in the ``metadata`` field
+  of the ``Operation`` returned by the ``GetOperation`` call of the
+  ``google::longrunning::Operations`` service.
   
   
   Attributes:
@@ -2361,11 +2362,11 @@ StreamingRecognizeResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_STREAMINGRECOGNIZERESPONSE,
         __module__="google.cloud.speech_v1.proto.cloud_speech_pb2",
-        __doc__="""``StreamingRecognizeResponse`` is the only message returned to the
-  client by ``StreamingRecognize``. A series of zero or more
-  ``StreamingRecognizeResponse`` messages are streamed back to the client.
-  If there is no recognizable audio, and ``single_utterance`` is set to
-  false, then no messages are streamed back to the client.
+        __doc__="""\ ``StreamingRecognizeResponse`` is the only message
+  returned to the client by ``StreamingRecognize``. A series of zero or
+  more ``StreamingRecognizeResponse`` messages are streamed back to the
+  client. If there is no recognizable audio, and ``single_utterance`` is
+  set to false, then no messages are streamed back to the client.
   
   Here's an example of a series of ten ``StreamingRecognizeResponse``\ s
   that might be returned while processing audio:
@@ -2436,8 +2437,8 @@ StreamingRecognitionResult = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_STREAMINGRECOGNITIONRESULT,
         __module__="google.cloud.speech_v1.proto.cloud_speech_pb2",
-        __doc__="""A streaming speech recognition result corresponding to a portion of the
-  audio that is currently being processed.
+        __doc__="""A streaming speech recognition result corresponding to a
+  portion of the audio that is currently being processed.
   
   
   Attributes:
@@ -2486,7 +2487,8 @@ SpeechRecognitionResult = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SPEECHRECOGNITIONRESULT,
         __module__="google.cloud.speech_v1.proto.cloud_speech_pb2",
-        __doc__="""A speech recognition result corresponding to a portion of the audio.
+        __doc__="""A speech recognition result corresponding to a portion of
+  the audio.
   
   
   Attributes:

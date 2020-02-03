@@ -1354,12 +1354,11 @@ OutputConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OUTPUTCONFIG,
         __module__="google.cloud.automl_v1beta1.proto.io_pb2",
-        __doc__="""
--  For Translation: CSV file ``translation.csv``, with each line in
-     format: ML\_USE,GCS\_FILE\_PATH GCS\_FILE\_PATH leads to a .TSV file
-     which describes examples that have given ML\_USE, using the following
-     row format per line: TEXT\_SNIPPET (in source language)
-     \\tTEXT\_SNIPPET (in target language)
+        __doc__="""\* For Translation: CSV file ``translation.csv``, with
+  each line in format: ML\_USE,GCS\_FILE\_PATH GCS\_FILE\_PATH leads to a
+  .TSV file which describes examples that have given ML\_USE, using the
+  following row format per line: TEXT\_SNIPPET (in source language)
+  \\tTEXT\_SNIPPET (in target language)
   
   -  For Tables: Output depends on whether the dataset was imported from
      GCS or BigQuery. GCS case:
@@ -1769,10 +1768,10 @@ ExportEvaluatedExamplesOutputConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_EXPORTEVALUATEDEXAMPLESOUTPUTCONFIG,
         __module__="google.cloud.automl_v1beta1.proto.io_pb2",
-        __doc__="""Output configuration for ExportEvaluatedExamples Action. Note that this
-  call is available only for 30 days since the moment the model was
-  evaluated. The output depends on the domain, as follows (note that only
-  examples from the TEST set are exported):
+        __doc__="""Output configuration for ExportEvaluatedExamples Action.
+  Note that this call is available only for 30 days since the moment the
+  model was evaluated. The output depends on the domain, as follows (note
+  that only examples from the TEST set are exported):
   
   -  For Tables:
   
@@ -1855,7 +1854,8 @@ GcsDestination = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_GCSDESTINATION,
         __module__="google.cloud.automl_v1beta1.proto.io_pb2",
-        __doc__="""The Google Cloud Storage location where the output is to be written to.
+        __doc__="""The Google Cloud Storage location where the output is to
+  be written to.
   
   
   Attributes:

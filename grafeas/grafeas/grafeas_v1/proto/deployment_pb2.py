@@ -286,7 +286,8 @@ DeploymentOccurrence = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DEPLOYMENTOCCURRENCE,
         __module__="grafeas_v1.proto.deployment_pb2",
-        __doc__="""The period during which some deployable was active in a runtime.
+        __doc__="""The period during which some deployable was active in a
+  runtime.
   
   
   Attributes:

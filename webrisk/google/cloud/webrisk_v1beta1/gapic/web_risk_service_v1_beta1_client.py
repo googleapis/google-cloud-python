@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ from google.cloud.webrisk_v1beta1.proto import webrisk_pb2
 from google.cloud.webrisk_v1beta1.proto import webrisk_pb2_grpc
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-webrisk",).version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-webrisk").version
 
 
 class WebRiskServiceV1Beta1Client(object):
@@ -159,12 +159,12 @@ class WebRiskServiceV1Beta1Client(object):
                 self.transport = transport
         else:
             self.transport = web_risk_service_v1_beta1_grpc_transport.WebRiskServiceV1Beta1GrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials,
+                address=api_endpoint, channel=channel, credentials=credentials
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION,
+                gapic_version=_GAPIC_LIBRARY_VERSION
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -175,7 +175,7 @@ class WebRiskServiceV1Beta1Client(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME],
+            client_config["interfaces"][self._INTERFACE_NAME]
         )
 
         # Save a dictionary of cached API call functions.
@@ -316,7 +316,7 @@ class WebRiskServiceV1Beta1Client(object):
                 client_info=self._client_info,
             )
 
-        request = webrisk_pb2.SearchUrisRequest(uri=uri, threat_types=threat_types,)
+        request = webrisk_pb2.SearchUrisRequest(uri=uri, threat_types=threat_types)
         return self._inner_api_calls["search_uris"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -382,7 +382,7 @@ class WebRiskServiceV1Beta1Client(object):
             )
 
         request = webrisk_pb2.SearchHashesRequest(
-            threat_types=threat_types, hash_prefix=hash_prefix,
+            threat_types=threat_types, hash_prefix=hash_prefix
         )
         return self._inner_api_calls["search_hashes"](
             request, retry=retry, timeout=timeout, metadata=metadata

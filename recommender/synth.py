@@ -17,9 +17,10 @@ import re
 
 import synthtool as s
 from synthtool import gcp
+from synthtool.languages import python
 
-gapic = gcp.GAPICGenerator()
-versions = ["v1beta1"]
+gapic = gcp.GAPICBazel()
+versions = ["v1beta1", "v1"]
 common = gcp.CommonTemplates()
 
 
@@ -27,17 +28,35 @@ common = gcp.CommonTemplates()
 # Generate Cloud Recommender
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library(
-        "recommender", version,
-        include_protos=True,
-        config_path="/google/cloud/recommender/v1beta1/artman_recommender_v1beta1.yaml"
-    )
-    s.move(library, excludes=['nox.py', 'docs/index.rst', 'README.rst', 'setup.py'])
+    library = gapic.py_library("recommender", version)
+    s.move(library, excludes=["nox.py", "docs/index.rst", "README.rst", "setup.py"])
+
+# Fix docstring with regex pattern that breaks docgen
+s.replace("google/**/recommender_client.py", "(/\^.*\$/)", "``\g<1>``")
+
+# Fix more regex in docstrings
+s.replace("google/**/*_pb2.py", ":math:`(/)", "\g<1>")
+s.replace("google/**/*_pb2.py", "`/\.", "/.")
+s.replace("google/**/*_pb2.py", "(regex\s+)(/.*?/)\.", "\g<1>``\g<2>``.", flags=re.MULTILINE | re.DOTALL,)
+
+# Fix docstring with JSON example by wrapping with backticks
+s.replace(
+    "google/**/recommendation_pb2.py",
+    "( -  Example: )(\{.*?\})",
+    "\g<1>``\g<2>``",
+    flags=re.MULTILINE | re.DOTALL,
+)
+
+python.fix_pb2_headers()
+python.fix_pb2_grpc_headers()
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=97, cov_level=100)
-s.move(templated_files, excludes=['noxfile.py'])
+templated_files = common.py_library(cov_level=92)
+s.move(templated_files)
 
-s.shell.run(["nox", "-s", "blacken"], hide_output=False) 
+# don't run 2.7 tests
+s.replace("noxfile.py", """\["2\.7", """, "[")
+
+s.shell.run(["nox", "-s", "blacken"], hide_output=False)

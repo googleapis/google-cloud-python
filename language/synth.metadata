@@ -1,19 +1,19 @@
 {
-  "updateTime": "2019-12-10T13:18:39.049538Z",
+  "updateTime": "2020-01-30T00:27:56.902647Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "0.42.1",
-        "dockerImage": "googleapis/artman@sha256:c773192618c608a7a0415dd95282f841f8e6bcdef7dd760a988c93b77a64bd57"
+        "version": "0.44.4",
+        "dockerImage": "googleapis/artman@sha256:19e945954fc960a4bdfee6cb34695898ab21a8cf0bac063ee39b91f00a1faec8"
       }
     },
     {
       "git": {
         "name": "googleapis",
-        "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "6cc9499e225a4f6a5e34fe07e390f67055d7991c",
-        "internalRef": "284643689"
+        "remote": "git@github.com:googleapis/googleapis.git",
+        "sha": "341fd5690fae36f36cf626ef048fbcf4bbe7cee6",
+        "internalRef": "292221998"
       }
     },
     {
@@ -44,6 +44,140 @@
         "generator": "gapic",
         "config": "google/cloud/language/artman_language_v1.yaml"
       }
+    }
+  ],
+  "newFiles": [
+    {
+      "path": "MANIFEST.in"
+    },
+    {
+      "path": ".flake8"
+    },
+    {
+      "path": ".coveragerc"
+    },
+    {
+      "path": "setup.cfg"
+    },
+    {
+      "path": "docs/_static/custom.css"
+    },
+    {
+      "path": "docs/_templates/layout.html"
+    },
+    {
+      "path": "samples/v1/language_sentiment_text.py"
+    },
+    {
+      "path": "samples/v1/language_entities_text.py"
+    },
+    {
+      "path": "samples/v1/language_entity_sentiment_gcs.py"
+    },
+    {
+      "path": "samples/v1/language_syntax_text.py"
+    },
+    {
+      "path": "samples/v1/language_entity_sentiment_text.py"
+    },
+    {
+      "path": "samples/v1/language_sentiment_gcs.py"
+    },
+    {
+      "path": "samples/v1/language_classify_gcs.py"
+    },
+    {
+      "path": "samples/v1/language_entities_gcs.py"
+    },
+    {
+      "path": "samples/v1/language_classify_text.py"
+    },
+    {
+      "path": "samples/v1/language_syntax_gcs.py"
+    },
+    {
+      "path": "samples/v1/test/analyzing_sentiment.test.yaml"
+    },
+    {
+      "path": "samples/v1/test/classifying_content.test.yaml"
+    },
+    {
+      "path": "samples/v1/test/analyzing_entities.test.yaml"
+    },
+    {
+      "path": "samples/v1/test/analyzing_syntax.test.yaml"
+    },
+    {
+      "path": "samples/v1/test/analyzing_entity_sentiment.test.yaml"
+    },
+    {
+      "path": "google/cloud/language_v1/gapic/__init__.py"
+    },
+    {
+      "path": "google/cloud/language_v1/gapic/enums.py"
+    },
+    {
+      "path": "google/cloud/language_v1/gapic/language_service_client.py"
+    },
+    {
+      "path": "google/cloud/language_v1/gapic/language_service_client_config.py"
+    },
+    {
+      "path": "google/cloud/language_v1/gapic/transports/__init__.py"
+    },
+    {
+      "path": "google/cloud/language_v1/gapic/transports/language_service_grpc_transport.py"
+    },
+    {
+      "path": "google/cloud/language_v1/proto/__init__.py"
+    },
+    {
+      "path": "google/cloud/language_v1/proto/language_service.proto"
+    },
+    {
+      "path": "google/cloud/language_v1/proto/language_service_pb2.py"
+    },
+    {
+      "path": "google/cloud/language_v1/proto/language_service_pb2_grpc.py"
+    },
+    {
+      "path": "google/cloud/language_v1beta2/gapic/__init__.py"
+    },
+    {
+      "path": "google/cloud/language_v1beta2/gapic/enums.py"
+    },
+    {
+      "path": "google/cloud/language_v1beta2/gapic/language_service_client.py"
+    },
+    {
+      "path": "google/cloud/language_v1beta2/gapic/language_service_client_config.py"
+    },
+    {
+      "path": "google/cloud/language_v1beta2/gapic/transports/__init__.py"
+    },
+    {
+      "path": "google/cloud/language_v1beta2/gapic/transports/language_service_grpc_transport.py"
+    },
+    {
+      "path": "google/cloud/language_v1beta2/proto/__init__.py"
+    },
+    {
+      "path": "google/cloud/language_v1beta2/proto/language_service.proto"
+    },
+    {
+      "path": "google/cloud/language_v1beta2/proto/language_service_pb2.py"
+    },
+    {
+      "path": "google/cloud/language_v1beta2/proto/language_service_pb2_grpc.py"
+    },
+    {
+      "path": "tests/unit/gapic/v1/test_language_service_client_v1.py"
+    },
+    {
+      "path": "tests/unit/gapic/v1beta2/test_language_service_client_v1beta2.py"
+    },
+    {
+      "path": "tests/system/gapic/v1beta2/test_system_language_service_v1beta2.py"
     }
   ]
 }

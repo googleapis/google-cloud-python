@@ -978,7 +978,7 @@ ListQueuesRequest = _reflection.GeneratedProtocolMessageType(
           Required. The location name. For example:
           ``projects/PROJECT_ID/locations/LOCATION_ID``
       filter:
-          ``filter`` can be used to specify a subset of queues. Any
+          \ ``filter`` can be used to specify a subset of queues. Any
           [Queue][google.cloud.tasks.v2beta3.Queue] field can be used as
           a filter and several operators as supported. For example:
           ``<=, <, >=, >, !=, =, :``. The filter syntax is the same as

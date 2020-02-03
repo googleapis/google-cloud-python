@@ -27,13 +27,13 @@ import requests
 import six
 
 from google.cloud import exceptions
+from google.cloud import iam_credentials_v1
 from google.cloud import storage
 from google.cloud.storage._helpers import _base64_md5hash
 from google.cloud.storage.bucket import LifecycleRuleDelete
 from google.cloud.storage.bucket import LifecycleRuleSetStorageClass
 from google.cloud import kms
 import google.oauth2
-
 from test_utils.retry import RetryErrors
 from test_utils.system import unique_resource_id
 from test_utils.vpcsc_config import vpcsc_config
@@ -109,7 +109,6 @@ class TestClient(unittest.TestCase):
 
     def test_get_service_account_email(self):
         domain = "gs-project-accounts.iam.gserviceaccount.com"
-
         email = Config.CLIENT.get_service_account_email()
 
         new_style = re.compile(r"service-(?P<projnum>[^@]+)@" + domain)
@@ -962,6 +961,8 @@ class TestStorageSignURLs(unittest.TestCase):
         payload=None,
         expiration=None,
         encryption_key=None,
+        service_account_email=None,
+        access_token=None,
     ):
         expiration = self._morph_expiration(version, expiration)
 
@@ -972,7 +973,12 @@ class TestStorageSignURLs(unittest.TestCase):
             blob = self.blob
 
         signed_url = blob.generate_signed_url(
-            expiration=expiration, method=method, client=Config.CLIENT, version=version
+            expiration=expiration,
+            method=method,
+            client=Config.CLIENT,
+            version=version,
+            service_account_email=None,
+            access_token=None,
         )
 
         headers = {}
@@ -1043,6 +1049,29 @@ class TestStorageSignURLs(unittest.TestCase):
             payload=b"Test signed URL for blob w/ CSEK",
             encryption_key=encryption_key,
             version="v4",
+        )
+
+    def test_create_signed_read_url_v2_w_access_token(self):
+        client = iam_credentials_v1.IAMCredentialsClient()
+        service_account_email = Config.CLIENT._credentials.service_account_email
+        name = client.service_account_path("-", service_account_email)
+        scope = ["https://www.googleapis.com/auth/devstorage.read_write"]
+        response = client.generate_access_token(name, scope)
+        self._create_signed_read_url_helper(
+            service_account_email=service_account_email,
+            access_token=response.access_token,
+        )
+
+    def test_create_signed_read_url_v4_w_access_token(self):
+        client = iam_credentials_v1.IAMCredentialsClient()
+        service_account_email = Config.CLIENT._credentials.service_account_email
+        name = client.service_account_path("-", service_account_email)
+        scope = ["https://www.googleapis.com/auth/devstorage.read_write"]
+        response = client.generate_access_token(name, scope)
+        self._create_signed_read_url_helper(
+            version="v4",
+            service_account_email=service_account_email,
+            access_token=response.access_token,
         )
 
     def _create_signed_delete_url_helper(self, version="v2", expiration=None):

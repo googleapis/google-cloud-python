@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## 1.3.0
+
+01-31-2020 13:30 PST
+
+### New Features
+- Change default api_request() timeout to non-None ([#10219](https://github.com/googleapis/google-cloud-python/pull/10219))
+
 ## 1.2.0
 
 01-14-2020 13:22 PST

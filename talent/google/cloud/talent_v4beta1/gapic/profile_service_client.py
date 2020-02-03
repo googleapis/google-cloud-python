@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -773,9 +773,9 @@ class ProfileServiceClient(object):
 
                 The format is "projects/{project\_id}/tenants/{tenant\_id}". For
                 example, "projects/foo/tenants/bar".
-            request_metadata (Union[dict, ~google.cloud.talent_v4beta1.types.RequestMetadata]): Required. The meta information collected about the profile search user.
-                This is used to improve the search quality of the service. These values are
-                provided by users, and must be precise and consistent.
+            request_metadata (Union[dict, ~google.cloud.talent_v4beta1.types.RequestMetadata]): Required. The meta information collected about the profile search user. This is used
+                to improve the search quality of the service. These values are provided by
+                users, and must be precise and consistent.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.talent_v4beta1.types.RequestMetadata`

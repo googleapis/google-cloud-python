@@ -318,7 +318,7 @@ texinfo_documents = [
         u"google-cloud-recommender Documentation",
         author,
         "google-cloud-recommender",
-        "GAPIC library for the {metadata.shortName} v1beta1 service",
+        "GAPIC library for the {metadata.shortName} v1 service",
         "APIs",
     )
 ]

@@ -27,7 +27,7 @@ Change the key used to encrypt a table.
 Load a file from Cloud Storage, using a customer-managed encryption key from
 Cloud KMS for the destination table.
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/load_table_uri_cmek.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_load_table_gcs_json_cmek]

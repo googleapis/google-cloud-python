@@ -20,6 +20,12 @@ import requests
 
 class TestConnection(unittest.TestCase):
     @staticmethod
+    def _get_default_timeout():
+        from google.cloud.bigquery._http import _http
+
+        return _http._DEFAULT_TIMEOUT
+
+    @staticmethod
     def _get_target_class():
         from google.cloud.bigquery._http import Connection
 
@@ -79,7 +85,7 @@ class TestConnection(unittest.TestCase):
             headers=expected_headers,
             method="GET",
             url=expected_uri,
-            timeout=None,
+            timeout=self._get_default_timeout(),
         )
         self.assertIn("my-application/1.2.3", conn.user_agent)
 
@@ -112,5 +118,5 @@ class TestConnection(unittest.TestCase):
             headers=expected_headers,
             method="GET",
             url=expected_uri,
-            timeout=None,
+            timeout=self._get_default_timeout(),
         )

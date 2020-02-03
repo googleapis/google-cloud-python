@@ -308,8 +308,8 @@ StandardSqlDataType = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_STANDARDSQLDATATYPE,
         __module__="google.cloud.bigquery_v2.proto.standard_sql_pb2",
-        __doc__="""The type of a variable, e.g., a function argument. Examples: INT64:
-  {type\_kind="INT64"} ARRAY: {type\_kind="ARRAY",
+        __doc__="""The type of a variable, e.g., a function argument.
+  Examples: INT64: {type\_kind="INT64"} ARRAY: {type\_kind="ARRAY",
   array\_element\_type="STRING"} STRUCT<x STRING, y ARRAY>:
   {type\_kind="STRUCT", struct\_type={fields=[ {name="x",
   type={type\_kind="STRING"}}, {name="y", type={type\_kind="ARRAY",

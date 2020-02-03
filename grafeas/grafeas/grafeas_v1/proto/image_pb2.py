@@ -324,7 +324,8 @@ Layer = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LAYER,
         __module__="grafeas_v1.proto.image_pb2",
-        __doc__="""Layer holds metadata specific to a layer of a Docker image.
+        __doc__="""Layer holds metadata specific to a layer of a Docker
+  image.
   
   
   Attributes:
@@ -347,7 +348,8 @@ Fingerprint = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_FINGERPRINT,
         __module__="grafeas_v1.proto.image_pb2",
-        __doc__="""A set of properties that uniquely identify a given Docker image.
+        __doc__="""A set of properties that uniquely identify a given Docker
+  image.
   
   
   Attributes:
@@ -373,10 +375,10 @@ ImageNote = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_IMAGENOTE,
         __module__="grafeas_v1.proto.image_pb2",
-        __doc__="""Basis describes the base image portion (Note) of the DockerImage
-  relationship. Linked occurrences are derived from this or an equivalent
-  image via: FROM Or an equivalent reference, e.g., a tag of the
-  resource\_url.
+        __doc__="""Basis describes the base image portion (Note) of the
+  DockerImage relationship. Linked occurrences are derived from this or an
+  equivalent image via: FROM Or an equivalent reference, e.g., a tag of
+  the resource\_url.
   
   
   Attributes:
@@ -397,8 +399,8 @@ ImageOccurrence = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_IMAGEOCCURRENCE,
         __module__="grafeas_v1.proto.image_pb2",
-        __doc__="""Details of the derived image portion of the DockerImage relationship.
-  This image would be produced from a Dockerfile with FROM .
+        __doc__="""Details of the derived image portion of the DockerImage
+  relationship. This image would be produced from a Dockerfile with FROM .
   
   
   Attributes:

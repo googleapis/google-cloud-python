@@ -651,8 +651,9 @@ BoundingBoxMetricsEntry = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_BOUNDINGBOXMETRICSENTRY,
         __module__="google.cloud.automl_v1beta1.proto.detection_pb2",
-        __doc__="""Bounding box matching model metrics for a single intersection-over-union
-  threshold and multiple label match confidence thresholds.
+        __doc__="""Bounding box matching model metrics for a single
+  intersection-over-union threshold and multiple label match confidence
+  thresholds.
   
   
   Attributes:
@@ -680,8 +681,8 @@ ImageObjectDetectionEvaluationMetrics = _reflection.GeneratedProtocolMessageType
     dict(
         DESCRIPTOR=_IMAGEOBJECTDETECTIONEVALUATIONMETRICS,
         __module__="google.cloud.automl_v1beta1.proto.detection_pb2",
-        __doc__="""Model evaluation metrics for image object detection problems. Evaluates
-  prediction quality of labeled bounding boxes.
+        __doc__="""Model evaluation metrics for image object detection
+  problems. Evaluates prediction quality of labeled bounding boxes.
   
   
   Attributes:
@@ -711,9 +712,10 @@ VideoObjectTrackingEvaluationMetrics = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_VIDEOOBJECTTRACKINGEVALUATIONMETRICS,
         __module__="google.cloud.automl_v1beta1.proto.detection_pb2",
-        __doc__="""Model evaluation metrics for video object tracking problems. Evaluates
-  prediction quality of both labeled bounding boxes and labeled tracks
-  (i.e. series of bounding boxes sharing same label and instance ID).
+        __doc__="""Model evaluation metrics for video object tracking
+  problems. Evaluates prediction quality of both labeled bounding boxes
+  and labeled tracks (i.e. series of bounding boxes sharing same label and
+  instance ID).
   
   
   Attributes:

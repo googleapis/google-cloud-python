@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -267,7 +267,7 @@ class BigtableTableAdminGrpcTransport(object):
     def get_iam_policy(self):
         """Return the gRPC stub for :meth:`BigtableTableAdminClient.get_iam_policy`.
 
-        Gets the access control policy for an instance resource. Returns an empty
+        Gets the access control policy for a table resource. Returns an empty
         policy if an table exists but does not have a policy set.
 
         Returns:

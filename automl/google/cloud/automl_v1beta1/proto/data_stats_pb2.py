@@ -1029,7 +1029,8 @@ DataStats = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DATASTATS,
         __module__="google.cloud.automl_v1beta1.proto.data_stats_pb2",
-        __doc__="""The data statistics of a series of values that share the same DataType.
+        __doc__="""The data statistics of a series of values that share the
+  same DataType.
   
   
   Attributes:
@@ -1307,9 +1308,9 @@ CorrelationStats = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CORRELATIONSTATS,
         __module__="google.cloud.automl_v1beta1.proto.data_stats_pb2",
-        __doc__="""A correlation statistics between two series of DataType values. The
-  series may have differing DataType-s, but within a single series the
-  DataType must be the same.
+        __doc__="""A correlation statistics between two series of DataType
+  values. The series may have differing DataType-s, but within a single
+  series the DataType must be the same.
   
   
   Attributes:
