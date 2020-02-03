@@ -186,10 +186,20 @@ s.replace(
     "from google.iam.v1 import iam_policy_pb2_grpc as iam_policy_pb2",
 )
 
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = gcp.CommonTemplates().py_library(unit_cov_level=97, cov_level=100)
+templated_files = gcp.CommonTemplates().py_library(
+    unit_cov_level=97, cov_level=99, system_test_dependencies=["test_utils"]
+)
 s.move(templated_files)
+
+# Temporary fix for the generated synth file (the test_utils path)
+s.replace(
+    "noxfile.py",
+    r'session\.install\("-e", "\.\./test_utils/"\)',
+    '# \g<0>',
+)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
