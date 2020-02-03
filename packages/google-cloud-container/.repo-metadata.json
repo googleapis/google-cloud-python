@@ -6,7 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559777",
   "release_level": "alpha",
   "language": "python",
-  "repo": "googleapis/google-cloud-python",
+  "repo": "googleapis/python-container",
   "distribution_name": "google-cloud-container",
   "api_id": "container.googleapis.com",
   "requires_billing": true
