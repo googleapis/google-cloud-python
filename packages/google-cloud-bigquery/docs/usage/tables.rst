@@ -70,7 +70,7 @@ Create an integer range partitioned table with the
 Load table data from a file with the
 :func:`~google.cloud.bigquery.client.Client.load_table_from_file` method:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/load_table_file.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_load_from_file]
@@ -79,7 +79,7 @@ Load table data from a file with the
 Load a CSV file from Cloud Storage with the
 :func:`~google.cloud.bigquery.client.Client.load_table_from_uri` method:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/load_table_uri_csv.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_load_table_gcs_csv]
@@ -90,7 +90,7 @@ See also: `Loading CSV data from Cloud Storage
 
 Load a JSON file from Cloud Storage:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/load_table_uri_json.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_load_table_gcs_json]
@@ -101,7 +101,7 @@ See also: `Loading JSON data from Cloud Storage
 
 Load a Parquet file from Cloud Storage:
 
-.. literalinclude:: ../snippets.py
+.. literalinclude:: ../samples/load_table_uri_parquet.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_load_table_gcs_parquet]
@@ -109,6 +109,28 @@ Load a Parquet file from Cloud Storage:
 
 See also: `Loading Parquet data from Cloud Storage
 <https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-parquet>`_.
+
+Load an Avro file from Cloud Storage:
+
+.. literalinclude:: ../samples/load_table_uri_avro.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_load_table_gcs_avro]
+   :end-before: [END bigquery_load_table_gcs_avro]
+
+See also: `Loading Avro data from Cloud Storage
+<https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-avro>`_.
+
+Load an ORC file from Cloud Storage:
+
+.. literalinclude:: ../samples/load_table_uri_orc.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_load_table_gcs_orc]
+   :end-before: [END bigquery_load_table_gcs_orc]
+
+See also: `Loading ORC data from Cloud Storage
+<https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-orc>`_.
 
 Updating a Table
 ^^^^^^^^^^^^^^^^
