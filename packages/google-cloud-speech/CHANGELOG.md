@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+### [1.3.2](https://www.github.com/googleapis/python-speech/compare/v1.3.1...v1.3.2) (2020-02-03)
+
+
+### Bug Fixes
+
+* **speech:** increase default timeout for v1p1beta1 (via synth) ([#9999](https://www.github.com/googleapis/python-speech/issues/9999)) ([e9b4919](https://www.github.com/googleapis/python-speech/commit/e9b4919f493a9206406944093fc1c3408b5f0265))
+* **speech:** increase timeout values in client config (via synth) ([#9922](https://www.github.com/googleapis/python-speech/issues/9922)) ([8d34bea](https://www.github.com/googleapis/python-speech/commit/8d34beab73273e1b0965fe622af5434fdbac01ca))
+* **speech:** mark `Recognize` idempotent (via synth) ([#9874](https://www.github.com/googleapis/python-speech/issues/9874)) ([a69e08c](https://www.github.com/googleapis/python-speech/commit/a69e08ce0bafcd9c4f1bafe51dce6e6b4716994f))
+* **speech:** move 'speaker_tag' field from 'SpeakerDiarizationConfig' to 'WordInfo' (via synth) ([#9576](https://www.github.com/googleapis/python-speech/issues/9576)) ([2ba5ab9](https://www.github.com/googleapis/python-speech/commit/2ba5ab969e09df5cafcf67861c9d7d6cc91bd0ca))
+* **speech:** re-add unused speaker_tag; update spacing in docs templates (via synth) ([#9765](https://www.github.com/googleapis/python-speech/issues/9765)) ([e1c5a54](https://www.github.com/googleapis/python-speech/commit/e1c5a54a321f5e76f074f8be1f5b6d5aedd612c7))
+
 ## 1.3.1
 
 12-06-2019 13:05 PST
