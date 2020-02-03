@@ -6,7 +6,7 @@
   "issue_tracker": "",
   "release_level": "alpha",
   "language": "python",
-  "repo": "googleapis/google-cloud-python",
+  "repo": "googleapis/python-dlp",
   "distribution_name": "google-cloud-dlp",
   "api_id": "dlp.googleapis.com",
   "requires_billing": true

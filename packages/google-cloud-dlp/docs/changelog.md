@@ -1,1 +1,1 @@
-../../dlp/CHANGELOG.md
+../CHANGELOG.md

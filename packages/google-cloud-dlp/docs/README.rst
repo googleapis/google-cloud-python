@@ -1,1 +1,1 @@
-../../dlp/README.rst
+../README.rst
