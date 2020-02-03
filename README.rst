@@ -106,6 +106,7 @@ The following client libraries have **beta** support:
 -  `Google Cloud Asset`_ (`Asset README`_, `Asset Documentation`_)
 -  `Google Cloud Billing Budgets`_ (`Billing Budgets README`_, `Billing Budgets Documentation`_)
 -  `Google Cloud Data Catalog`_ (`Data Catalog README`_, `Data Catalog Documentation`_)
+-  `Google Cloud Data Labeling`_ (`Data Labeling README`_, `Data Labeling Documentation`_)
 -  `Google Cloud Firestore`_ (`Firestore README`_, `Firestore Documentation`_)
 -  `Google Cloud Video Intelligence`_ (`Video Intelligence README`_, `Video Intelligence Documentation`_)
 -  `Google Cloud Vision`_ (`Vision README`_, `Vision Documentation`_)
@@ -119,8 +120,12 @@ The following client libraries have **beta** support:
 .. _Billing Budgets Documentation: https://googleapis.dev/python/billingbudgets/latest
 
 .. _Google Cloud Data Catalog: https://pypi.org/project/google-cloud-datacatalog/
-.. _Data Catalog README: https://github.com/googleapis/google-cloud-python/tree/master/datacatalog
+.. _Data Catalog README: https://github.com/googleapis/python-datacatalog
 .. _Data Catalog Documentation: https://googleapis.dev/python/datacatalog/latest
+
+.. _Google Cloud Data Labeling: https://pypi.org/project/google-cloud-datalabeling/
+.. _Data Labeling README: https://github.com/googleapis/python-datalabeling#python-client-for-data-labeling-api-beta
+.. _Data Labeling Documentation: https://googleapis.dev/python/datalabeling/latest
 
 .. _Google Cloud Firestore: https://pypi.org/project/google-cloud-firestore/
 .. _Firestore README: https://github.com/googleapis/python-firestore
@@ -164,9 +169,10 @@ The following client libraries have **alpha** support:
 -  `Grafeas`_ (`Grafeas README`_, `Grafeas Documentation`_)
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_, `Error Reporting Documentation`_)
 -  `Stackdriver Monitoring`_ (`Monitoring README`_, `Monitoring Documentation`_)
+-  `Webrisk`_ (`Webrisk README`_, `Webrisk Documentation`_)
 
 .. _Google Cloud AutoML: https://pypi.org/project/google-cloud-automl/
-.. _AutoML README: https://github.com/googleapis/google-cloud-python/blob/master/automl
+.. _AutoML README: https://github.com/googleapis/python-automl
 .. _AutoML Documentation: https://googleapis.dev/python/automl/latest
 
 .. _Google BigQuery Data Transfer: https://pypi.org/project/google-cloud-bigquery-datatransfer/
@@ -178,15 +184,15 @@ The following client libraries have **alpha** support:
 .. _HappyBase Documentation: https://google-cloud-python-happybase.readthedocs.io/en/latest/
 
 .. _Google Cloud Build: https://pypi.org/project/google-cloud-build/
-.. _Cloud Build README: https://github.com/googleapis/google-cloud-python/cloudbuild
+.. _Cloud Build README: https://github.com/googleapis/python-cloudbuild
 .. _Cloud Build Documentation: https://googleapis.dev/python/cloudbuild/latest
 
 .. _Google Cloud Container: https://pypi.org/project/google-cloud-container/
-.. _Container README: https://github.com/googleapis/google-cloud-python/tree/master/container
+.. _Container README: https://github.com/googleapis/python-container
 .. _Container Documentation: https://googleapis.dev/python/container/latest
 
 .. _Google Cloud Container Analysis: https://pypi.org/project/google-cloud-containeranalysis/
-.. _Container Analysis README: https://github.com/googleapis/google-cloud-python/tree/master/containeranalysis
+.. _Container Analysis README: https://github.com/googleapis/python-containeranalysis
 .. _Container Analysis Documentation: https://googleapis.dev/python/containeranalysis/latest
 
 .. _Google Cloud Dataproc: https://pypi.org/project/google-cloud-dataproc/
@@ -194,11 +200,11 @@ The following client libraries have **alpha** support:
 .. _Dataproc Documentation: https://googleapis.dev/python/dataproc/latest
 
 .. _Google Cloud DLP: https://pypi.org/project/google-cloud-dlp/
-.. _DLP README: https://github.com/googleapis/google-cloud-python/tree/master/dlp
+.. _DLP README: https://github.com/googleapis/python-dlp#python-client-for-cloud-data-loss-prevention-dlp-api
 .. _DLP Documentation: https://googleapis.dev/python/dlp/latest
 
 .. _Google Cloud DNS: https://pypi.org/project/google-cloud-dns/
-.. _DNS README: https://github.com/googleapis/google-cloud-python/tree/master/dns
+.. _DNS README: https://github.com/googleapis/python-dns#python-client-for-google-cloud-dns
 .. _DNS Documentation: https://googleapis.dev/python/dns/latest
 
 .. _Google Cloud IoT: https://pypi.org/project/google-cloud-iot/
@@ -226,7 +232,7 @@ The following client libraries have **alpha** support:
 .. _Security Scanner Documentation: https://googleapis.dev/python/websecurityscanner/latest
 
 .. _Google Cloud Text-to-Speech: https://pypi.org/project/google-cloud-texttospeech/
-.. _Text-to-Speech README: https://github.com/googleapis/google-cloud-python/tree/master/texttospeech
+.. _Text-to-Speech README: https://github.com/googleapis/python-texttospeech#python-client-for-cloud-text-to-speech-api
 .. _Text-to-Speech Documentation: https://googleapis.dev/python/texttospeech/latest
 
 .. _Google Cloud Trace: https://pypi.org/project/google-cloud-trace/
@@ -244,6 +250,10 @@ The following client libraries have **alpha** support:
 .. _Stackdriver Monitoring: https://pypi.org/project/google-cloud-monitoring/
 .. _Monitoring README: https://github.com/googleapis/google-cloud-python/tree/master/monitoring
 .. _Monitoring Documentation: https://googleapis.dev/python/monitoring/latest
+
+.. _Webrisk: https://pypi.org/project/google-cloud-webrisk
+.. _Webrisk README: https://github.com/googleapis/python-webrisk#python-client-for-web-risk-api-alpha
+.. _Webrisk Documentation: https://googleapis.dev/python/webrisk/latest
 
 .. _versioning: https://github.com/googleapis/google-cloud-python/blob/master/CONTRIBUTING.rst#versioning
 
