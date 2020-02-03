@@ -3560,7 +3560,8 @@ Model = _reflection.GeneratedProtocolMessageType(
                                 ),
                                 DESCRIPTOR=_MODEL_CLUSTERINGMETRICS_CLUSTER_FEATUREVALUE,
                                 __module__="google.cloud.bigquery_v2.proto.model_pb2",
-                                __doc__="""Representative value of a single feature within the cluster.
+                                __doc__="""Representative value of a single feature within the
+        cluster.
         
         
         Attributes:
