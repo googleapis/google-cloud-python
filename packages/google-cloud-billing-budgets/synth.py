@@ -65,7 +65,7 @@ s.replace(
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=72, cov_level=72)
+templated_files = common.py_library(cov_level=70)
 s.move(templated_files)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

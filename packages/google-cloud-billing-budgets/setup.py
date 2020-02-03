@@ -53,7 +53,7 @@ setuptools.setup(
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
-    url="https://github.com/googleapis/google-cloud-python",
+    url="https://github.com/googleapis/python-bilingbudgets",
     classifiers=[
         release_status,
         "Intended Audience :: Developers",
