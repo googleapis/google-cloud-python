@@ -1,1 +1,1 @@
-../../texttospeech/CHANGELOG.md
+../CHANGELOG.md
