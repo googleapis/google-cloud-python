@@ -100,7 +100,7 @@ class Connection(object):
         if not self.__ddl_statements:
             return
 
-        # DDL and Transactions in Cloud Spanner don't mix thus before any DDL is executed,
+       # DDL and Transactions in Cloud Spanner don't mix thus before any DDL is executed,
         # any prior transaction MUST have been committed. This behavior is also present
         # on MySQL. Please see:
         # * https://gist.github.com/odeke-em/8e02576d8523e07eb27b43a772aecc92
