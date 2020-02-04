@@ -4,6 +4,8 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
+import threading
+
 from google.cloud import spanner_v1 as spanner
 
 from .connection import Connection
@@ -66,7 +68,13 @@ def connect(project=None, instance=None, database=None, credentials_uri=None):
     if not client_instance.exists():
         raise ProgrammingError("instance '%s' does not exist." % instance)
 
-    db = client_instance.database(database)
+    # Create a session pool that'll periodically refresh every 3 minutes (arbitrary choice value).
+    pool = spanner.PingingPool(size=10, default_timeout=5, ping_interval=180)
+    background_thread = threading.Thread(target=pool.ping, name='ping-pool')
+    background_thread.daemon = True
+    background_thread.start()
+
+    db = client_instance.database(database, pool=pool)
     if not db.exists():
         raise ProgrammingError("database '%s' does not exist." % database)
 
