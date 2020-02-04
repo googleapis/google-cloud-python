@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [0.42.0](https://www.github.com/googleapis/python-vision/compare/v0.41.0...v0.42.0) (2020-02-03)
+
+
+### Features
+
+* **vision:** undeprecate resource name helpers, add 2.7 sunset warning (via synth) ([#10052](https://www.github.com/googleapis/python-vision/issues/10052)) ([2c86705](https://www.github.com/googleapis/python-vision/commit/2c86705154ce219f8fb6bbbcc80832ec2b63baeb))
+
 ## 0.41.0
 
 12-05-2019 14:49 PST
