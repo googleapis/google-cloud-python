@@ -2813,8 +2813,7 @@ ListTransferConfigsRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTTRANSFERCONFIGSREQUEST,
         __module__="google.cloud.bigquery.datatransfer_v1.proto.datatransfer_pb2",
-        __doc__="""A request to list data transfers configured for a BigQuery
-  project.
+        __doc__="""A request to list data transfers configured for a BigQuery project.
   
   
   Attributes:
