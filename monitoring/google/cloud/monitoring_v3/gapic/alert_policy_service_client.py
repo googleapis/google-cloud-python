@@ -262,7 +262,8 @@ class AlertPolicyServiceClient(object):
             ...         pass
 
         Args:
-            name (str): The project whose alert policies are to be listed. The format is
+            name (str): Required. The project whose alert policies are to be listed. The format
+                is
 
                      projects/[PROJECT_ID]
 
@@ -372,7 +373,7 @@ class AlertPolicyServiceClient(object):
             >>> response = client.get_alert_policy(name)
 
         Args:
-            name (str): The alerting policy to retrieve. The format is
+            name (str): Required. The alerting policy to retrieve. The format is
 
                      projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -450,17 +451,17 @@ class AlertPolicyServiceClient(object):
             >>> response = client.create_alert_policy(name, alert_policy)
 
         Args:
-            name (str): The project in which to create the alerting policy. The format is
-                ``projects/[PROJECT_ID]``.
+            name (str): Required. The project in which to create the alerting policy. The format
+                is ``projects/[PROJECT_ID]``.
 
                 Note that this field names the parent container in which the alerting
                 policy will be written, not the name of the created policy. The alerting
                 policy that is returned will have a name that contains a normalized
                 representation of this name as a prefix but adds a suffix of the form
                 ``/alertPolicies/[POLICY_ID]``, identifying the policy in the container.
-            alert_policy (Union[dict, ~google.cloud.monitoring_v3.types.AlertPolicy]): The requested alerting policy. You should omit the ``name`` field in
-                this policy. The name will be returned in the new policy, including a
-                new [ALERT\_POLICY\_ID] value.
+            alert_policy (Union[dict, ~google.cloud.monitoring_v3.types.AlertPolicy]): Required. The requested alerting policy. You should omit the ``name``
+                field in this policy. The name will be returned in the new policy,
+                including a new [ALERT\_POLICY\_ID] value.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.AlertPolicy`
@@ -537,7 +538,7 @@ class AlertPolicyServiceClient(object):
             >>> client.delete_alert_policy(name)
 
         Args:
-            name (str): The alerting policy to delete. The format is:
+            name (str): Required. The alerting policy to delete. The format is:
 
                      projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]
 

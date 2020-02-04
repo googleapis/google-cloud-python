@@ -269,8 +269,8 @@ class UptimeCheckServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): The project whose Uptime check configurations are listed. The format is
-                ``projects/[PROJECT_ID]``.
+            parent (str): Required. The project whose Uptime check configurations are listed. The
+                format is ``projects/[PROJECT_ID]``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -363,7 +363,7 @@ class UptimeCheckServiceClient(object):
             >>> response = client.get_uptime_check_config(name)
 
         Args:
-            name (str): The Uptime check configuration to retrieve. The format is
+            name (str): Required. The Uptime check configuration to retrieve. The format is
                 ``projects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -440,9 +440,9 @@ class UptimeCheckServiceClient(object):
             >>> response = client.create_uptime_check_config(parent, uptime_check_config)
 
         Args:
-            parent (str): The project in which to create the Uptime check. The format is
+            parent (str): Required. The project in which to create the Uptime check. The format is
                 ``projects/[PROJECT_ID]``.
-            uptime_check_config (Union[dict, ~google.cloud.monitoring_v3.types.UptimeCheckConfig]): The new Uptime check configuration.
+            uptime_check_config (Union[dict, ~google.cloud.monitoring_v3.types.UptimeCheckConfig]): Required. The new Uptime check configuration.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.UptimeCheckConfig`
@@ -620,7 +620,7 @@ class UptimeCheckServiceClient(object):
             >>> client.delete_uptime_check_config(name)
 
         Args:
-            name (str): The Uptime check configuration to delete. The format is
+            name (str): Required. The Uptime check configuration to delete. The format is
                 ``projects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
