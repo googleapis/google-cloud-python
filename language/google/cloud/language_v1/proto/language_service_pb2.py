@@ -2918,11 +2918,11 @@ Sentence = _reflection.GeneratedProtocolMessageType(
       text:
           The sentence text.
       sentiment:
-          For calls to [AnalyzeSentiment][] or if [AnnotateTextRequest.F
-          eatures.extract\_document\_sentiment][google.cloud.language.v1
-          .AnnotateTextRequest.Features.extract\_document\_sentiment] is
-          set to true, this field will contain the sentiment for the
-          sentence.
+          For calls to [AnalyzeSentiment]` <#section>`__ or if [Annotate
+          TextRequest.Features.extract\_document\_sentiment][google.clou
+          d.language.v1.AnnotateTextRequest.Features.extract\_document\_
+          sentiment] is set to true, this field will contain the
+          sentiment for the sentence.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.language.v1.Sentence)
     ),
@@ -2970,11 +2970,12 @@ Entity = _reflection.GeneratedProtocolMessageType(
           The mentions of this entity in the input document. The API
           currently supports proper noun mentions.
       sentiment:
-          For calls to [AnalyzeEntitySentiment][] or if [AnnotateTextReq
-          uest.Features.extract\_entity\_sentiment][google.cloud.languag
-          e.v1.AnnotateTextRequest.Features.extract\_entity\_sentiment]
-          is set to true, this field will contain the aggregate
-          sentiment expressed for this entity in the provided document.
+          For calls to [AnalyzeEntitySentiment]` <#section>`__ or if [An
+          notateTextRequest.Features.extract\_entity\_sentiment][google.
+          cloud.language.v1.AnnotateTextRequest.Features.extract\_entity
+          \_sentiment] is set to true, this field will contain the
+          aggregate sentiment expressed for this entity in the provided
+          document.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.language.v1.Entity)
     ),
@@ -3117,12 +3118,12 @@ EntityMention = _reflection.GeneratedProtocolMessageType(
       type:
           The type of the entity mention.
       sentiment:
-          For calls to [AnalyzeEntitySentiment][] or if [AnnotateTextReq
-          uest.Features.extract\_entity\_sentiment][google.cloud.languag
-          e.v1.AnnotateTextRequest.Features.extract\_entity\_sentiment]
-          is set to true, this field will contain the sentiment
-          expressed for this mention of the entity in the provided
-          document.
+          For calls to [AnalyzeEntitySentiment]` <#section>`__ or if [An
+          notateTextRequest.Features.extract\_entity\_sentiment][google.
+          cloud.language.v1.AnnotateTextRequest.Features.extract\_entity
+          \_sentiment] is set to true, this field will contain the
+          sentiment expressed for this mention of the entity in the
+          provided document.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.language.v1.EntityMention)
     ),
