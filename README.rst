@@ -158,12 +158,14 @@ The following client libraries have **alpha** support:
 -  `Google Cloud Dataproc`_ (`Dataproc README`_, `Dataproc Documentation`_)
 -  `Google Cloud DLP`_ (`DLP README`_, `DLP Documentation`_)
 -  `Google Cloud DNS`_ (`DNS README`_, `DNS Documentation`_)
+-  `Google Cloud IAM`_ (`IAM README`_, `IAM Documentation`_)
 -  `Google Cloud IoT`_ (`IoT README`_, `IoT Documentation`_)
 -  `Google Cloud Memorystore for Redis`_ (`Redis README`_, `Redis Documentation`_)
 -  `Google Cloud Recommender`_ (`Recommender README`_, `Recommender Documentation`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_, `Resource Manager Documentation`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_, `Runtime Config Documentation`_)
 -  `Google Cloud Security Scanner`_ (`Security Scanner README`_ , `Security Scanner Documentation`_)
+-  `Google Cloud Talent`_ (`Talent README`_, `Talent Documentation`_)
 -  `Google Cloud Trace`_ (`Trace README`_, `Trace Documentation`_)
 -  `Google Cloud Text-to-Speech`_ (`Text-to-Speech README`_, `Text-to-Speech Documentation`_)
 -  `Grafeas`_ (`Grafeas README`_, `Grafeas Documentation`_)
@@ -207,6 +209,10 @@ The following client libraries have **alpha** support:
 .. _DNS README: https://github.com/googleapis/python-dns#python-client-for-google-cloud-dns
 .. _DNS Documentation: https://googleapis.dev/python/dns/latest
 
+.. _Google Cloud IAM: https://pypi.org/project/google-cloud-IAM/
+.. _IAM README: https://github.com/googleapis/python-iam
+.. _IAM Documentation: https://googleapis.dev/python/iamcredentials/latest
+
 .. _Google Cloud IoT: https://pypi.org/project/google-cloud-iot/
 .. _IoT README: https://github.com/googleapis/google-cloud-python/tree/master/iot
 .. _IoT Documentation: https://googleapis.dev/python/cloudiot/latest
@@ -230,6 +236,10 @@ The following client libraries have **alpha** support:
 .. _Google Cloud Security Scanner: https://pypi.org/project/google-cloud-websecurityscanner/
 .. _Security Scanner README: https://github.com/googleapis/google-cloud-python/blob/master/websecurityscanner
 .. _Security Scanner Documentation: https://googleapis.dev/python/websecurityscanner/latest
+
+.. _Google Cloud Talent: https://pypi.org/project/google-cloud-talent/
+.. _Talent README: https://github.com/googleapis/python-talent
+.. _Talent Documentation: https://googleapis.dev/python/talent/latest
 
 .. _Google Cloud Text-to-Speech: https://pypi.org/project/google-cloud-texttospeech/
 .. _Text-to-Speech README: https://github.com/googleapis/python-texttospeech#python-client-for-cloud-text-to-speech-api
