@@ -63,7 +63,7 @@ The following client libraries have **GA** support:
 .. _Natural Language Documentation: https://googleapis.dev/python/language/latest
 
 .. _Google Cloud Pub/Sub: https://pypi.org/project/google-cloud-pubsub/
-.. _Pub/Sub README: https://github.com/googleapis/google-cloud-python/tree/master/pubsub
+.. _Pub/Sub README: https://github.com/googleapis/python-pubsub
 .. _Pub/Sub Documentation: https://googleapis.dev/python/pubsub/latest
 
 .. _Google Cloud Spanner: https://pypi.org/project/google-cloud-spanner
@@ -71,7 +71,7 @@ The following client libraries have **GA** support:
 .. _Spanner Documentation: https://googleapis.dev/python/spanner/latest
 
 .. _Google Cloud Speech to Text: https://pypi.org/project/google-cloud-speech/
-.. _Speech to Text README: https://github.com/googleapis/google-cloud-python/tree/master/speech
+.. _Speech to Text README: https://github.com/googleapis/python-speech
 .. _Speech to Text Documentation: https://googleapis.dev/python/speech/latest
 
 .. _Google Cloud Storage: https://pypi.org/project/google-cloud-storage/
@@ -116,7 +116,7 @@ The following client libraries have **beta** support:
 .. _Asset Documentation: https://googleapis.dev/python/cloudasset/latest
 
 .. _Google Cloud Billing Budgets: https://pypi.org/project/google-cloud-billing-budgets/
-.. _Billing Budgets README: https://github.com/googleapis/google-cloud-python/tree/master/billingbudgets
+.. _Billing Budgets README: https://github.com/googleapis/python-billingbudgets
 .. _Billing Budgets Documentation: https://googleapis.dev/python/billingbudgets/latest
 
 .. _Google Cloud Data Catalog: https://pypi.org/project/google-cloud-datacatalog/
@@ -132,11 +132,11 @@ The following client libraries have **beta** support:
 .. _Firestore Documentation: https://googleapis.dev/python/firestore/latest
 
 .. _Google Cloud Video Intelligence: https://pypi.org/project/google-cloud-videointelligence
-.. _Video Intelligence README: https://github.com/googleapis/google-cloud-python/tree/master/videointelligence
+.. _Video Intelligence README: https://github.com/googleapis/python-videointelligence
 .. _Video Intelligence Documentation: https://googleapis.dev/python/videointelligence/latest
 
 .. _Google Cloud Vision: https://pypi.org/project/google-cloud-vision/
-.. _Vision README: https://github.com/googleapis/google-cloud-python/tree/master/vision
+.. _Vision README: https://github.com/googleapis/python-vision
 .. _Vision Documentation: https://googleapis.dev/python/vision/latest
 
 
@@ -158,12 +158,14 @@ The following client libraries have **alpha** support:
 -  `Google Cloud Dataproc`_ (`Dataproc README`_, `Dataproc Documentation`_)
 -  `Google Cloud DLP`_ (`DLP README`_, `DLP Documentation`_)
 -  `Google Cloud DNS`_ (`DNS README`_, `DNS Documentation`_)
+-  `Google Cloud IAM`_ (`IAM README`_, `IAM Documentation`_)
 -  `Google Cloud IoT`_ (`IoT README`_, `IoT Documentation`_)
 -  `Google Cloud Memorystore for Redis`_ (`Redis README`_, `Redis Documentation`_)
 -  `Google Cloud Recommender`_ (`Recommender README`_, `Recommender Documentation`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_, `Resource Manager Documentation`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_, `Runtime Config Documentation`_)
 -  `Google Cloud Security Scanner`_ (`Security Scanner README`_ , `Security Scanner Documentation`_)
+-  `Google Cloud Talent`_ (`Talent README`_, `Talent Documentation`_)
 -  `Google Cloud Trace`_ (`Trace README`_, `Trace Documentation`_)
 -  `Google Cloud Text-to-Speech`_ (`Text-to-Speech README`_, `Text-to-Speech Documentation`_)
 -  `Grafeas`_ (`Grafeas README`_, `Grafeas Documentation`_)
@@ -207,12 +209,16 @@ The following client libraries have **alpha** support:
 .. _DNS README: https://github.com/googleapis/python-dns#python-client-for-google-cloud-dns
 .. _DNS Documentation: https://googleapis.dev/python/dns/latest
 
+.. _Google Cloud IAM: https://pypi.org/project/google-cloud-IAM/
+.. _IAM README: https://github.com/googleapis/python-iam
+.. _IAM Documentation: https://googleapis.dev/python/iamcredentials/latest
+
 .. _Google Cloud IoT: https://pypi.org/project/google-cloud-iot/
 .. _IoT README: https://github.com/googleapis/google-cloud-python/tree/master/iot
 .. _IoT Documentation: https://googleapis.dev/python/cloudiot/latest
 
 .. _Google Cloud Memorystore for Redis: https://pypi.org/project/google-cloud-redis/
-.. _Redis README: https://github.com/googleapis/google-cloud-python/tree/master/redis
+.. _Redis README: https://github.com/googleapis/python-redis
 .. _Redis Documentation: https://googleapis.dev/python/redis/latest
 
 .. _Google Cloud Recommender: https://pypi.org/project/google-cloud-recommender/
@@ -231,12 +237,16 @@ The following client libraries have **alpha** support:
 .. _Security Scanner README: https://github.com/googleapis/google-cloud-python/blob/master/websecurityscanner
 .. _Security Scanner Documentation: https://googleapis.dev/python/websecurityscanner/latest
 
+.. _Google Cloud Talent: https://pypi.org/project/google-cloud-talent/
+.. _Talent README: https://github.com/googleapis/python-talent
+.. _Talent Documentation: https://googleapis.dev/python/talent/latest
+
 .. _Google Cloud Text-to-Speech: https://pypi.org/project/google-cloud-texttospeech/
 .. _Text-to-Speech README: https://github.com/googleapis/python-texttospeech#python-client-for-cloud-text-to-speech-api
 .. _Text-to-Speech Documentation: https://googleapis.dev/python/texttospeech/latest
 
 .. _Google Cloud Trace: https://pypi.org/project/google-cloud-trace/
-.. _Trace README: https://github.com/googleapis/google-cloud-python/tree/master/trace
+.. _Trace README: https://github.com/googleapis/python-trace
 .. _Trace Documentation: https://googleapis.dev/python/cloudtrace/latest
 
 .. _Grafeas: https://pypi.org/project/grafeas/
