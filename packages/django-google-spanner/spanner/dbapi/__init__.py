@@ -28,7 +28,10 @@ apilevel = "2.0"  # Implements the Python Database API specification 2.0 version
 # in any of the options  https://www.python.org/dev/peps/pep-0249/#paramstyle
 # so we are going with a custom named paramstyle.
 paramstyle = 'at-named'
-threadsafety = 2  # Threads may share the module and connections but not cursors.
+# Threads may not share the module. This is a paranoid threadsafety level, but it is
+# necessary for starters to use when debugging failures. Eventually once transactions
+# are working properly, we'll update the threadsafety level.
+threadsafety = 0
 
 
 def connect(project=None, instance=None, database=None, credentials_uri=None):

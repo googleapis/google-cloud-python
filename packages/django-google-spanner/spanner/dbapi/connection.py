@@ -57,15 +57,18 @@ class Connection(object):
             # So we'll do nothing if there is no transaction.
             return
 
+        res = None
         if not self.__txn.committed:
-            self.__txn.commit()
-            self.__txn = None
+            res = self.__txn.commit()
+
+        self.__txn = None
+        return res
 
     def rollback(self):
         res = None
         if self.__txn:
             res = self.__txn.rollback()
-            self.__txn = None
+        self.__txn = None
         return res
         
     def cursor(self):
@@ -100,7 +103,7 @@ class Connection(object):
         if not self.__ddl_statements:
             return
 
-       # DDL and Transactions in Cloud Spanner don't mix thus before any DDL is executed,
+        # DDL and Transactions in Cloud Spanner don't mix thus before any DDL is executed,
         # any prior transaction MUST have been committed. This behavior is also present
         # on MySQL. Please see:
         # * https://gist.github.com/odeke-em/8e02576d8523e07eb27b43a772aecc92
