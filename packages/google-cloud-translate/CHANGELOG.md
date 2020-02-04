@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+### [2.0.1](https://www.github.com/googleapis/python-translate/compare/v2.0.0...v2.0.1) (2020-01-31)
+
+
+### Bug Fixes
+
+* **translate:**  add py2 deprecation warning; bump copyright year to 2020; add 3.8 unit tests (via synth) ([#9943](https://www.github.com/googleapis/python-translate/issues/9943)) ([b57f09a](https://www.github.com/googleapis/python-translate/commit/b57f09a5f804daca1a96918a29746f24ae7bc4a5))
+* **translate:** update test assertion and core version pins ([#10098](https://www.github.com/googleapis/python-translate/issues/10098)) ([74b7757](https://www.github.com/googleapis/python-translate/commit/74b77579a1770c743353bdafde3e1744cbbe7842))
+
 ## 2.0.0
 
 10-23-2019 11:13 PDT
