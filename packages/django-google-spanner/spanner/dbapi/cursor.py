@@ -6,7 +6,9 @@
 
 import google.api_core.exceptions as grpc_exceptions
 
-from .exceptions import IntegrityError, OperationalError, ProgrammingError
+from .exceptions import (
+    Error, IntegrityError, OperationalError, ProgrammingError,
+)
 from .parse_utils import (
     STMT_DDL, STMT_INSERT, STMT_NON_UPDATING, classify_stmt,
     ensure_where_clause, get_param_types, parse_insert,
@@ -23,6 +25,7 @@ class Cursor(object):
         self.__row_count = _UNSET_COUNT
         self.__db_handle = db_handle
         self.__last_op = None
+        self.__closed = False
 
         # arraysize is a readable and writable property mandated
         # by PEP-0249 https://www.python.org/dev/peps/pep-0249/#arraysize
@@ -44,11 +47,16 @@ class Cursor(object):
     def rowcount(self):
         return self.__row_count
 
-    def close(self):
-        if self.__db_handle is None:
-            return
+    def __raise_if_already_closed(self):
+        """
+        Raises an exception if attempting to use an already closed connection.
+        """
+        if self.__closed:
+            raise Error('attempting to use an already closed connection')
 
-        self.__db_handle = None
+    def close(self):
+        self.__clear()
+        self.__closed = True
 
     def execute(self, sql, args=None):
         """
@@ -62,6 +70,8 @@ class Cursor(object):
         Returns:
             None
         """
+        self.__raise_if_already_closed()
+
         if not self.__db_handle:
             raise ProgrammingError('Cursor is not connected to the database')
 
@@ -186,9 +196,14 @@ class Cursor(object):
         return self
 
     def __exit__(self, etype, value, traceback):
-        self.close()
+        self.__clear()
+
+    def __clear(self):
+        self.__db_handle = None
 
     def executemany(self, operation, seq_of_params):
+        self.__raise_if_already_closed()
+
         if not self.__db_handle:
             raise ProgrammingError('Cursor is not connected to the database')
 
@@ -205,12 +220,16 @@ class Cursor(object):
         return self.__itr
 
     def fetchone(self):
+        self.__raise_if_already_closed()
+
         try:
             return next(self)
         except StopIteration:
             return None
 
     def fetchall(self):
+        self.__raise_if_already_closed()
+
         return list(self.__iter__())
 
     def fetchmany(self, size=None):
@@ -226,6 +245,8 @@ class Cursor(object):
             Error if the previous call to .execute*() did not produce any result set
             or if no call was issued yet.
         """
+        self.__raise_if_already_closed()
+
         if size is None:
             size = self.arraysize
 

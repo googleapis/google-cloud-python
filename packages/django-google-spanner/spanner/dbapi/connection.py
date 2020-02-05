@@ -22,8 +22,7 @@ class Connection(object):
             raise Error('attempting to use an already closed connection')
 
     def close(self):
-        self.commit()
-        self.__raise_if_already_closed()
+        self.rollback()
         self.__dbhandle = None
         self.__closed = True
 
@@ -31,16 +30,22 @@ class Connection(object):
         return self
 
     def __exit__(self, etype, value, traceback):
-        return self.close()
+        self.commit()
+        self.close()
 
     def commit(self):
+        self.__raise_if_already_closed()
+
         self.run_prior_DDL_statements()
 
     def rollback(self):
-        # We don't manage transactions.
-        pass
+        self.__raise_if_already_closed()
+
+        # TODO: to be added.
 
     def cursor(self):
+        self.__raise_if_already_closed()
+
         return Cursor(self)
 
     def __handle_update_ddl(self, ddl_statements):
@@ -54,19 +59,29 @@ class Connection(object):
         Returns:
             google.api_core.operation.Operation.result()
         """
+        self.__raise_if_already_closed()
+
         # Synchronously wait on the operation's completion.
         return self.__dbhandle.update_ddl(ddl_statements).result()
 
     def read_snapshot(self):
+        self.__raise_if_already_closed()
+
         return self.__dbhandle.snapshot()
 
     def in_transaction(self, fn, *args, **kwargs):
+        self.__raise_if_already_closed()
+
         return self.__dbhandle.run_in_transaction(fn, *args, **kwargs)
 
     def append_ddl_statement(self, ddl_statement):
+        self.__raise_if_already_closed()
+
         self.__ddl_statements.append(ddl_statement)
 
     def run_prior_DDL_statements(self):
+        self.__raise_if_already_closed()
+
         if not self.__ddl_statements:
             return
 
