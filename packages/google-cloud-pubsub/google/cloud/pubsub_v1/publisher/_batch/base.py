@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 
 import abc
+import enum
 
 import six
 
@@ -134,6 +135,18 @@ class Batch(object):
         # Okay, everything is good.
         return True
 
+    def cancel(self, cancellation_reason):
+        """Complete pending futures with an exception.
+
+        This method must be called before publishing starts (ie: while the
+        batch is still accepting messages.)
+
+        Args:
+            cancellation_reason (BatchCancellationReason): The reason why this
+                batch has been cancelled.
+        """
+        raise NotImplementedError
+
     @abc.abstractmethod
     def publish(self, message):
         """Publish a single message.
@@ -154,16 +167,21 @@ class Batch(object):
         raise NotImplementedError
 
 
-class BatchStatus(object):
-    """An enum-like class representing valid statuses for a batch.
-
-    It is acceptable for a class to use a status that is not on this
-    class; this represents the list of statuses where the existing
-    library hooks in functionality.
-    """
+class BatchStatus(str, enum.Enum):
+    """An enum-like class representing valid statuses for a batch."""
 
     ACCEPTING_MESSAGES = "accepting messages"
     STARTING = "starting"
     IN_PROGRESS = "in progress"
     ERROR = "error"
     SUCCESS = "success"
+
+
+class BatchCancellationReason(str, enum.Enum):
+    """An enum-like class representing reasons why a batch was cancelled."""
+
+    PRIOR_ORDERED_MESSAGE_FAILED = (
+        "Batch cancelled because prior ordered message for the same key has "
+        "failed. This batch has been cancelled to avoid out-of-order publish."
+    )
+    CLIENT_STOPPED = "Batch cancelled because the publisher client has been stopped."

@@ -30,7 +30,9 @@ _LOGGER = logging.getLogger(__name__)
 _LEASE_WORKER_NAME = "Thread-LeaseMaintainer"
 
 
-_LeasedMessage = collections.namedtuple("_LeasedMessage", ["added_time", "size"])
+_LeasedMessage = collections.namedtuple(
+    "_LeasedMessage", ["sent_time", "size", "ordering_key"]
+)
 
 
 class Leaser(object):
@@ -45,6 +47,7 @@ class Leaser(object):
         # intertwined. Protects the _leased_messages and _bytes attributes.
         self._add_remove_lock = threading.Lock()
 
+        # Dict of ack_id -> _LeasedMessage
         self._leased_messages = {}
         """dict[str, float]: A mapping of ack IDs to the local time when the
             ack ID was initially leased in seconds since the epoch."""
@@ -76,11 +79,30 @@ class Leaser(object):
                 # the size counter.
                 if item.ack_id not in self._leased_messages:
                     self._leased_messages[item.ack_id] = _LeasedMessage(
-                        added_time=time.time(), size=item.byte_size
+                        sent_time=float("inf"),
+                        size=item.byte_size,
+                        ordering_key=item.ordering_key,
                     )
                     self._bytes += item.byte_size
                 else:
                     _LOGGER.debug("Message %s is already lease managed", item.ack_id)
+
+    def start_lease_expiry_timer(self, ack_ids):
+        """Start the lease expiry timer for `items`.
+
+        Args:
+            items (Sequence[str]): Sequence of ack-ids for which to start
+                lease expiry timers.
+        """
+        with self._add_remove_lock:
+            for ack_id in ack_ids:
+                lease_info = self._leased_messages.get(ack_id)
+                # Lease info might not exist for this ack_id because it has already
+                # been removed by remove().
+                if lease_info:
+                    self._leased_messages[ack_id] = lease_info._replace(
+                        sent_time=time.time()
+                    )
 
     def remove(self, items):
         """Remove messages from lease management."""
@@ -116,14 +138,14 @@ class Leaser(object):
             # we're iterating over it.
             leased_messages = copy.copy(self._leased_messages)
 
-            # Drop any leases that are well beyond max lease time. This
-            # ensures that in the event of a badly behaving actor, we can
-            # drop messages and allow Pub/Sub to resend them.
+            # Drop any leases that are beyond the max lease time. This ensures
+            # that in the event of a badly behaving actor, we can drop messages
+            # and allow the Pub/Sub server to resend them.
             cutoff = time.time() - self._manager.flow_control.max_lease_duration
             to_drop = [
-                requests.DropRequest(ack_id, item.size)
+                requests.DropRequest(ack_id, item.size, item.ordering_key)
                 for ack_id, item in six.iteritems(leased_messages)
-                if item.added_time < cutoff
+                if item.sent_time < cutoff
             ]
 
             if to_drop:
