@@ -29,6 +29,12 @@ class TestConnection(unittest.TestCase):
     FILTER = "logName:syslog AND severity>=ERROR"
 
     @staticmethod
+    def _get_default_timeout():
+        from google.cloud.logging._http import _http
+
+        return _http._DEFAULT_TIMEOUT
+
+    @staticmethod
     def _get_target_class():
         from google.cloud.logging._http import Connection
 
@@ -76,7 +82,7 @@ class TestConnection(unittest.TestCase):
             headers=expected_headers,
             method="GET",
             url=expected_uri,
-            timeout=None,
+            timeout=self._get_default_timeout(),
         )
 
 

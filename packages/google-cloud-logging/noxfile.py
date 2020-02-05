@@ -21,10 +21,6 @@ import sys
 import nox
 
 
-LOCAL_DEPS = (
-    os.path.join('..', 'api_core'),
-    os.path.join('..', 'core'),
-)
 UNIT_TEST_DEPS = (
     'mock',
     'pytest',
@@ -42,7 +38,7 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", "black", *LOCAL_DEPS)
+    session.install("flake8", "black")
     session.run(
         "black",
         "--check",
@@ -84,8 +80,6 @@ def default(session, django_dep=('django',)):
     deps += django_dep
 
     session.install(*deps)
-    for local_dep in LOCAL_DEPS:
-        session.install('-e', local_dep)
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
@@ -134,16 +128,15 @@ def system(session):
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install('mock', 'pytest')
-    for local_dep in LOCAL_DEPS:
-        session.install('-e', local_dep)
     systest_deps = [
-        '../bigquery/',
-        '../pubsub/',
-        '../storage/',
-        '../test_utils/',
+        'google-cloud-bigquery',
+        'google-cloud-pubsub',
+        'google-cloud-storage',
     ]
     for systest_dep in systest_deps:
-        session.install('-e', systest_dep)
+        session.install(systest_dep)
+
+    session.install('-e', 'test_utils/')
     session.install('-e', '.')
 
     # Run py.test against the system tests.
