@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1307,11 +1307,11 @@ class SubscriberClient(object):
             >>> response = client.create_snapshot(name, subscription)
 
         Args:
-            name (str): Optional user-provided name for this snapshot. If the name is not
-                provided in the request, the server will assign a random name for this
-                snapshot on the same project as the subscription. Note that for REST API
-                requests, you must specify a name. See the resource name rules. Format
-                is ``projects/{project}/snapshots/{snap}``.
+            name (str): User-provided name for this snapshot. If the name is not provided in the
+                request, the server will assign a random name for this snapshot on the
+                same project as the subscription. Note that for REST API requests, you
+                must specify a name. See the resource name rules. Format is
+                ``projects/{project}/snapshots/{snap}``.
             subscription (str): The subscription whose backlog the snapshot retains. Specifically, the
                 created snapshot is guaranteed to retain: (a) The existing backlog on
                 the subscription. More precisely, this is defined as the messages in the

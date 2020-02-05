@@ -1,5 +1,5 @@
 {
-  "updateTime": "2020-01-31T14:49:10.048857Z",
+  "updateTime": "2020-02-04T13:19:45.479344Z",
   "sources": [
     {
       "generator": {
@@ -12,8 +12,9 @@
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "7ac66d9be8a7d7de4f13566d8663978c9ee9dcd7",
-        "internalRef": "292450564"
+        "sha": "69d9945330a5721cd679f17331a78850e2618226",
+        "internalRef": "293080182",
+        "log": "69d9945330a5721cd679f17331a78850e2618226\nAdd file-level `Session` resource definition\n\nPiperOrigin-RevId: 293080182\n\nf6a1a6b417f39694275ca286110bc3c1ca4db0dc\nAdd file-level `Session` resource definition\n\nPiperOrigin-RevId: 293080178\n\n29d40b78e3dc1579b0b209463fbcb76e5767f72a\nExpose managedidentities/v1beta1/ API for client library usage.\n\nPiperOrigin-RevId: 292979741\n\na22129a1fb6e18056d576dfb7717aef74b63734a\nExpose managedidentities/v1/ API for client library usage.\n\nPiperOrigin-RevId: 292968186\n\nb5cbe4a4ba64ab19e6627573ff52057a1657773d\nSecurityCenter v1p1beta1: move file-level option on top to workaround protobuf.js bug.\n\nPiperOrigin-RevId: 292647187\n\nb224b317bf20c6a4fbc5030b4a969c3147f27ad3\nAdds API definitions for bigqueryreservation v1beta1.\n\nPiperOrigin-RevId: 292634722\n\nc1468702f9b17e20dd59007c0804a089b83197d2\nSynchronize new proto/yaml changes.\n\nPiperOrigin-RevId: 292626173\n\nffdfa4f55ab2f0afc11d0eb68f125ccbd5e404bd\nvision: v1p3beta1 publish annotations and retry config\n\nPiperOrigin-RevId: 292605599\n\n78f61482cd028fc1d9892aa5d89d768666a954cd\nvision: v1p1beta1 publish annotations and retry config\n\nPiperOrigin-RevId: 292605125\n\n60bb5a294a604fd1778c7ec87b265d13a7106171\nvision: v1p2beta1 publish annotations and retry config\n\nPiperOrigin-RevId: 292604980\n\n3bcf7aa79d45eb9ec29ab9036e9359ea325a7fc3\nvision: v1p4beta1 publish annotations and retry config\n\nPiperOrigin-RevId: 292604656\n\n2717b8a1c762b26911b45ecc2e4ee01d98401b28\nFix dataproc artman client library generation.\n\nPiperOrigin-RevId: 292555664\n\n"
       }
     },
     {
