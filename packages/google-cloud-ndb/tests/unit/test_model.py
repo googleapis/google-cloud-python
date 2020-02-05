@@ -3320,7 +3320,7 @@ class TestStructuredProperty:
         ds_bar = MineToo.bar._to_base_type(minetoo.bar)
         assert isinstance(ds_bar, entity_module.Entity)
         assert ds_bar["foo"] == "bar"
-        assert ds_bar.kind == "Mine"
+        assert ds_bar.key is None
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

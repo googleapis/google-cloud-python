@@ -4026,7 +4026,7 @@ class StructuredProperty(Property):
                 "Cannot convert to protocol buffer. Expected {} value; "
                 "received {}".format(self._model_class.__name__, value)
             )
-        return _entity_to_ds_entity(value)
+        return _entity_to_ds_entity(value, set_key=False)
 
     def _from_base_type(self, value):
         """Convert a value from the "base" value type for this property.
