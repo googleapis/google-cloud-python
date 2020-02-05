@@ -2213,8 +2213,7 @@ IncidentRoleAssignment = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_INCIDENTROLEASSIGNMENT,
         __module__="google.cloud.irm_v1alpha2.proto.incidents_pb2",
-        __doc__="""Stores the assignee of a role as well as the proposed next
-  assignee.
+        __doc__="""Stores the assignee of a role as well as the proposed next assignee.
   
   
   Attributes:
