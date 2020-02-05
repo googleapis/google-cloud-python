@@ -2157,7 +2157,6 @@ UnbindDeviceFromGatewayResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_UNBINDDEVICEFROMGATEWAYRESPONSE,
         __module__="google.cloud.iot_v1.proto.device_manager_pb2",
         __doc__="""Response for ``UnbindDeviceFromGateway``.
-  
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.iot.v1.UnbindDeviceFromGatewayResponse)
     ),

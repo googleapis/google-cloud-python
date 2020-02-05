@@ -2057,8 +2057,7 @@ X509CertificateDetails = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_X509CERTIFICATEDETAILS,
         __module__="google.cloud.iot_v1.proto.resources_pb2",
-        __doc__="""Details of an X.509 certificate. For informational
-  purposes only.
+        __doc__="""Details of an X.509 certificate. For informational purposes only.
   
   
   Attributes:
