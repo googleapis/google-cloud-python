@@ -1502,8 +1502,8 @@ CryptoKey = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_CRYPTOKEY,
         __module__="google.cloud.kms_v1.proto.resources_pb2",
-        __doc__="""A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents a
-  logical key that can be used for cryptographic operations.
+        __doc__="""A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents a logical key
+  that can be used for cryptographic operations.
   
   A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made up of one or more
   [versions][google.cloud.kms.v1.CryptoKeyVersion], which represent the
