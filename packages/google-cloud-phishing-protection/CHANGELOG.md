@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
 
+## [0.3.0](https://www.github.com/googleapis/python-phishingprotection/compare/v0.2.0...v0.3.0) (2020-02-05)
+
+
+### Features
+
+* **phishingprotection:** undeprecate resource name helper methods, add 2.7 deprecation warning (via synth) ([#10048](https://www.github.com/googleapis/python-phishingprotection/issues/10048)) ([f96c1ed](https://www.github.com/googleapis/python-phishingprotection/commit/f96c1edfa57269b3e1ccbf3d8035e42fecb78987))
+
+
+### Bug Fixes
+
+* **phishingprotection:** deprecate resource name helper methods (via synth)  ([#9862](https://www.github.com/googleapis/python-phishingprotection/issues/9862)) ([83a9356](https://www.github.com/googleapis/python-phishingprotection/commit/83a93561695e799c8ff4a7d511fb7b6fe76d0d60))
+
 ## 0.2.0
 
 10-10-2019 15:30 PDT
@@ -38,4 +50,3 @@
 
 ### New Features
 - Initial release of Phishing Protection. ([#7801](https://github.com/googleapis/google-cloud-python/pull/7801))
-
