@@ -1,1 +1,1 @@
--e ../bigquery
+google-cloud-bigquery
