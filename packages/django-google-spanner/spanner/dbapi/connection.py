@@ -50,27 +50,27 @@ class Connection(object):
 
         self.__clear()
 
-    def commit(self):
+    def __can_commit_or_rollback(self):
         if not self.__txn:
-            # DDL and Transactions in Cloud Spanner don't mix thus before
-            # any DDL is executed, any prior transaction MUST have been committed.
-            # So we'll do nothing if there is no transaction.
-            return
+            return False
 
-        res = None
-        if not self.__txn.committed:
+        # For now it is alright to access Transaction._rolled_back
+        # even though it is unexported. We've filed a follow-up issue:
+        #   https://github.com/googleapis/python-spanner/issues/13
+        return not (self.__txn.committed or self.__txn._rolled_back)
+
+    def commit(self):
+        if self.__can_commit_or_rollback():
             res = self.__txn.commit()
-
-        self.__txn = None
-        return res
+            self.__txn = None
+            return res
 
     def rollback(self):
-        res = None
-        if self.__txn:
+        if self.__can_commit_or_rollback():
             res = self.__txn.rollback()
-        self.__txn = None
-        return res
-        
+            self.__txn = None
+            return res
+
     def cursor(self):
         self.__raise_if_already_closed()
 
@@ -82,6 +82,12 @@ class Connection(object):
         if not self.__txn:
             self.__txn = self.__sess.transaction()
             self.__txn.begin()
+
+        if self.__txn._rolled_back or self.__txn.committed:
+            # Try again.
+            self.__txn = None
+            self.__txn = self.get_txn()
+
         return self.__txn
 
     def append_ddl_statement(self, ddl_statement):
