@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# google-cloud-bigquerystorage documentation build configuration file
+# google-cloud-bigquery-storage documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -20,12 +20,12 @@ import shlex
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath(".."))
 
-__version__ = "0.1.0"
+__version__ = ""
 
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-# needs_sphinx = '1.0'
+needs_sphinx = "1.6.3"
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -36,6 +36,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.coverage",
     "sphinx.ext.napoleon",
+    "sphinx.ext.todo",
     "sphinx.ext.viewcode",
 ]
 
@@ -44,13 +45,18 @@ autoclass_content = "both"
 autodoc_default_flags = ["members"]
 autosummary_generate = True
 
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
+
+# Allow markdown includes (so releases.md can include CHANGLEOG.md)
+# http://www.sphinx-doc.org/en/master/markdown.html
+source_parsers = {".md": "recommonmark.parser.CommonMarkParser"}
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 # source_suffix = ['.rst', '.md']
-source_suffix = ".rst"
+source_suffix = [".rst", ".md"]
 
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
@@ -59,8 +65,8 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-bigquerystorage"
-copyright = u"2017, Google"
+project = u"google-cloud-bigquery-storage"
+copyright = u"2019, Google"
 author = u"Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
@@ -116,6 +122,7 @@ pygments_style = "sphinx"
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
 
+
 # -- Options for HTML output ----------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -125,7 +132,15 @@ html_theme = "alabaster"
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-# html_theme_options = {}
+html_theme_options = {
+    "description": "Google Cloud Client Libraries for google-cloud-bigquery-storage",
+    "github_user": "googleapis",
+    "github_repo": "python-bigquery-storage",
+    "github_banner": True,
+    "font_family": "'Roboto', Georgia, sans",
+    "head_font_family": "'Roboto', Georgia, serif",
+    "code_font_family": "'Roboto Mono', 'Consolas', monospace",
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
@@ -212,7 +227,19 @@ html_static_path = ["_static"]
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-cloud-bigquerystorage-doc"
+htmlhelp_basename = "google-cloud-bigquery-storage-doc"
+
+# -- Options for warnings ------------------------------------------------------
+
+
+suppress_warnings = [
+    # Temporarily suppress this to avoid "more than one target found for
+    # cross-reference" warning, which are intractable for us to avoid while in
+    # a mono-repo.
+    # See https://github.com/sphinx-doc/sphinx/blob
+    # /2a65ffeef5c107c19084fabdd706cdff3f52d93c/sphinx/domains/python.py#L843
+    "ref.python"
+]
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -233,8 +260,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "google-cloud-bigquerystorage.tex",
-        u"google-cloud-bigquerystorage Documentation",
+        "google-cloud-bigquery-storage.tex",
+        u"google-cloud-bigquery-storage Documentation",
         author,
         "manual",
     )
@@ -260,6 +287,7 @@ latex_documents = [
 # If false, no module index is generated.
 # latex_domain_indices = True
 
+
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
@@ -267,8 +295,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "google-cloud-bigquerystorage",
-        u"google-cloud-bigquerystorage Documentation",
+        "google-cloud-bigquery-storage",
+        u"google-cloud-bigquery-storage Documentation",
         [author],
         1,
     )
@@ -276,6 +304,7 @@ man_pages = [
 
 # If true, show URL addresses after external links.
 # man_show_urls = False
+
 
 # -- Options for Texinfo output -------------------------------------------
 
@@ -285,11 +314,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "google-cloud-bigquerystorage",
-        u"google-cloud-bigquerystorage Documentation",
+        "google-cloud-bigquery-storage",
+        u"google-cloud-bigquery-storage Documentation",
         author,
-        "google-cloud-bigquerystorage",
-        "GAPIC library for the {metadata.shortName} v1beta1 service",
+        "google-cloud-bigquery-storage",
+        "google-cloud-bigquery-storage Library",
         "APIs",
     )
 ]
@@ -306,13 +335,15 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 # texinfo_no_detailmenu = False
 
+
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     "python": ("http://python.readthedocs.org/en/latest/", None),
-    "gax": ("https://gax-python.readthedocs.org/en/latest/", None),
-    "fastavro": ("https://fastavro.readthedocs.io/en/stable/", None),
-    "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
+    "google-auth": ("https://google-auth.readthedocs.io/en/stable", None),
+    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest/", None),
+    "grpc": ("https://grpc.io/grpc/python/", None),
 }
+
 
 # Napoleon settings
 napoleon_google_docstring = True

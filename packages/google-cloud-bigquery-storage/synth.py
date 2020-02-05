@@ -130,7 +130,7 @@ s.replace(
 # Add templated files
 # ----------------------------------------------------------------------------
 optional_deps = [".[fastavro,pandas,pyarrow]"]
-system_test_deps = optional_deps + ["../bigquery/"]
+system_test_deps = optional_deps
 templated_files = common.py_library(
     unit_cov_level=79,
     cov_level=79,
@@ -139,5 +139,15 @@ templated_files = common.py_library(
     unit_test_dependencies=optional_deps,
 )
 s.move(templated_files)
+
+# install bigquery as a (non-editable) package
+s.replace(
+    "noxfile.py",
+    r'session\.install\("--pre", "grpcio"\)',
+    '\g<0>\n\n    session.install("google-cloud-bigquery")',
+)
+
+# Do not run unit tests with Python 3.8 yet
+s.replace("noxfile.py", r'("3\.6", "3\.7"), "3\.8"', "\g<1>")
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

@@ -6,7 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559654",
   "release_level": "beta",
   "language": "python",
-  "repo": "googleapis/google-cloud-python",
+  "repo": "googleapis/python-bigquery-storage",
   "distribution_name": "google-cloud-bigquery-storage",
   "api_id": "bigquerystorage.googleapis.com",
   "requires_billing": true
