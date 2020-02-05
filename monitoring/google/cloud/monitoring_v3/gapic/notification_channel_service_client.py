@@ -266,8 +266,8 @@ class NotificationChannelServiceClient(object):
             ...         pass
 
         Args:
-            name (str): The REST resource name of the parent from which to retrieve the
-                notification channel descriptors. The expected syntax is:
+            name (str): Required. The REST resource name of the parent from which to retrieve
+                the notification channel descriptors. The expected syntax is:
 
                 ::
 
@@ -373,7 +373,8 @@ class NotificationChannelServiceClient(object):
             >>> response = client.get_notification_channel_descriptor(name)
 
         Args:
-            name (str): The channel type for which to execute the request. The format is
+            name (str): Required. The channel type for which to execute the request. The format
+                is
                 ``projects/[PROJECT_ID]/notificationChannelDescriptors/{channel_type}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -467,7 +468,7 @@ class NotificationChannelServiceClient(object):
             ...         pass
 
         Args:
-            name (str): The project on which to execute the request. The format is
+            name (str): Required. The project on which to execute the request. The format is
                 ``projects/[PROJECT_ID]``. That is, this names the container in which to
                 look for the notification channels; it does not name a specific channel.
                 To query a specific channel by REST resource name, use the
@@ -581,7 +582,7 @@ class NotificationChannelServiceClient(object):
             >>> response = client.get_notification_channel(name)
 
         Args:
-            name (str): The channel for which to execute the request. The format is
+            name (str): Required. The channel for which to execute the request. The format is
                 ``projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -659,7 +660,7 @@ class NotificationChannelServiceClient(object):
             >>> response = client.create_notification_channel(name, notification_channel)
 
         Args:
-            name (str): The project on which to execute the request. The format is:
+            name (str): Required. The project on which to execute the request. The format is:
 
                 ::
 
@@ -670,7 +671,7 @@ class NotificationChannelServiceClient(object):
                 channel's name will have a normalized version of this field as a prefix,
                 but will add ``/notificationChannels/[CHANNEL_ID]`` to identify the
                 channel.
-            notification_channel (Union[dict, ~google.cloud.monitoring_v3.types.NotificationChannel]): The definition of the ``NotificationChannel`` to create.
+            notification_channel (Union[dict, ~google.cloud.monitoring_v3.types.NotificationChannel]): Required. The definition of the ``NotificationChannel`` to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.NotificationChannel`
@@ -752,10 +753,10 @@ class NotificationChannelServiceClient(object):
             >>> response = client.update_notification_channel(notification_channel)
 
         Args:
-            notification_channel (Union[dict, ~google.cloud.monitoring_v3.types.NotificationChannel]): A description of the changes to be applied to the specified notification
-                channel. The description must provide a definition for fields to be
-                updated; the names of these fields should also be included in the
-                ``update_mask``.
+            notification_channel (Union[dict, ~google.cloud.monitoring_v3.types.NotificationChannel]): Required. A description of the changes to be applied to the specified
+                notification channel. The description must provide a definition for
+                fields to be updated; the names of these fields should also be included
+                in the ``update_mask``.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.NotificationChannel`
@@ -839,7 +840,7 @@ class NotificationChannelServiceClient(object):
             >>> client.delete_notification_channel(name)
 
         Args:
-            name (str): The channel for which to execute the request. The format is
+            name (str): Required. The channel for which to execute the request. The format is
                 ``projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]``.
             force (bool): If true, the notification channel will be deleted regardless of its
                 use in alert policies (the policies will be updated to remove the
@@ -918,7 +919,7 @@ class NotificationChannelServiceClient(object):
             >>> client.send_notification_channel_verification_code(name)
 
         Args:
-            name (str): The notification channel to which to send a verification code.
+            name (str): Required. The notification channel to which to send a verification code.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1014,7 +1015,7 @@ class NotificationChannelServiceClient(object):
             >>> response = client.get_notification_channel_verification_code(name)
 
         Args:
-            name (str): The notification channel for which a verification code is to be generated
+            name (str): Required. The notification channel for which a verification code is to be generated
                 and retrieved. This must name a channel that is already verified; if
                 the specified channel is not verified, the request will fail.
             expire_time (Union[dict, ~google.cloud.monitoring_v3.types.Timestamp]): The desired expiration time. If specified, the API will guarantee that
@@ -1112,10 +1113,10 @@ class NotificationChannelServiceClient(object):
             >>> response = client.verify_notification_channel(name, code)
 
         Args:
-            name (str): The notification channel to verify.
-            code (str): The verification code that was delivered to the channel as a result of
-                invoking the ``SendNotificationChannelVerificationCode`` API method or
-                that was retrieved from a verified channel via
+            name (str): Required. The notification channel to verify.
+            code (str): Required. The verification code that was delivered to the channel as a
+                result of invoking the ``SendNotificationChannelVerificationCode`` API
+                method or that was retrieved from a verified channel via
                 ``GetNotificationChannelVerificationCode``. For example, one might have
                 "G-123456" or "TKNZGhhd2EyN3I1MnRnMjRv" (in general, one is only
                 guaranteed that the code is valid UTF-8; one should not make any
