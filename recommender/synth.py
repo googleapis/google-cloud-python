@@ -28,7 +28,11 @@ common = gcp.CommonTemplates()
 # Generate Cloud Recommender
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library("recommender", version, config_path=f"/google/cloud/recommender/{version}/artman_recommender_{version}.yaml")
+    library = gapic.py_library(
+        "recommender",
+        version,
+        config_path=f"/google/cloud/recommender/{version}/artman_recommender_{version}.yaml",
+    )
     s.move(library, excludes=["nox.py", "docs/index.rst", "README.rst", "setup.py"])
 
 # Fix docstring with regex pattern that breaks docgen
@@ -37,7 +41,12 @@ s.replace("google/**/recommender_client.py", "(/\^.*\$/)", "``\g<1>``")
 # Fix more regex in docstrings
 s.replace("google/**/*_pb2.py", ":math:`(/)", "\g<1>")
 s.replace("google/**/*_pb2.py", "`/\.", "/.")
-s.replace("google/**/*_pb2.py", "(regex\s+)(/.*?/)\.", "\g<1>``\g<2>``.", flags=re.MULTILINE | re.DOTALL,)
+s.replace(
+    "google/**/*_pb2.py",
+    "(regex\s+)(/.*?/)\.",
+    "\g<1>``\g<2>``.",
+    flags=re.MULTILINE | re.DOTALL,
+)
 
 # Fix docstring with JSON example by wrapping with backticks
 s.replace(
