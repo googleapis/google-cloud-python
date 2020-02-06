@@ -14,8 +14,6 @@
 
 """This script is used to synthesize generated parts of this library."""
 
-import os
-
 import synthtool as s
 from synthtool import gcp
 
@@ -63,8 +61,6 @@ s.replace("google/cloud/bigquery_v2/proto/*.py", "[“”]", '``')
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(cov_level=100)
-# we do not want to override the custom noxfile with the generated one
-os.remove(os.path.join(templated_files, "noxfile.py"))
-s.move(templated_files)
+s.move(templated_files, excludes=["noxfile.py"])
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
