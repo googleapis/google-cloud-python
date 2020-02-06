@@ -29,15 +29,13 @@ excludes = ["setup.py", "nox*.py", "README.rst", "docs/conf.py", "docs/index.rst
 for version in versions:
     if version == "v1p1beta1":
         config_path = "/google/cloud/asset/v1p1beta1/artman_cloudasset_v1p1beta1.yaml"
-        artman_output_name = f"cloudasset-{version}"
     else:
         config_path = f"/google/cloud/asset/artman_cloudasset_{version}.yaml"
-        artman_output_name=f"asset-{version}"
     library = gapic.py_library(
         "asset",
         version,
         config_path=config_path,
-        artman_output_name=artman_output_name,
+        artman_output_name=f"asset-{version}",
         include_protos=True,
     )
 
