@@ -1764,9 +1764,16 @@ class TestQuery:
         assert query.fetch_async(options=options) is response
         _datastore_query.fetch.assert_called_once_with(
             query_module.QueryOptions(
-                project="testing", projection=["foo", "bar"]
+                project="testing", projection=("foo", "bar")
             )
         )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_fetch_async_with_bad_projection():
+        query = query_module.Query()
+        with pytest.raises(TypeError):
+            query.fetch_async(projection=[45])
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -1965,6 +1972,18 @@ class TestQuery:
         iterator = query.iter()
         assert isinstance(iterator, _datastore_query.QueryIterator)
         assert iterator._query == query_module.QueryOptions(project="testing")
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_iter_with_projection():
+        query = query_module.Query()
+        foo = model.IntegerProperty()
+        foo._name = "foo"
+        iterator = query.iter(projection=(foo,))
+        assert isinstance(iterator, _datastore_query.QueryIterator)
+        assert iterator._query == query_module.QueryOptions(
+            project="testing", projection=["foo"]
+        )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

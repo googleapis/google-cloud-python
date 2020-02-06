@@ -134,6 +134,7 @@ tasklet, properly yielding when appropriate::
 
 import functools
 import logging
+import six
 
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import _options
@@ -1172,6 +1173,7 @@ def _query_options(wrapped):
         # Avoid circular import in Python 2.7
         from google.cloud.ndb import context as context_module
         from google.cloud.ndb import _datastore_api
+        from google.cloud.ndb import model
 
         # Maybe we already did this (in the case of X calling X_async)
         if "_options" in kwargs:
@@ -1202,6 +1204,22 @@ def _query_options(wrapped):
                 )
             kwargs["projection"] = ["__key__"]
             del kwargs["keys_only"]
+
+        # When projection fields are passed as property objects, we need to
+        # convert them into property names. Fixes #295.
+        if kwargs.get("projection"):
+            property_names = []
+            for prop in kwargs["projection"]:
+                if isinstance(prop, six.string_types):
+                    property_names.append(prop)
+                elif isinstance(prop, model.Property):
+                    property_names.append(prop._name)
+                else:
+                    raise TypeError(
+                        "Unexpected projection value {}; "
+                        "should be string or Property".format(prop)
+                    )
+            kwargs["projection"] = property_names
 
         if kwargs.get("transaction"):
             read_consistency = kwargs.pop(
@@ -1822,12 +1840,6 @@ class Query(object):
         # Avoid circular import in Python 2.7
         from google.cloud.ndb import _datastore_query
 
-        # When projection fields are passed as property objects, fetch needs to
-        # convert them into property names. Fixes #295.
-        if getattr(kwargs["_options"], "projection", None) is not None:
-            kwargs["_options"].projection = self._to_property_names(
-                kwargs["_options"].projection
-            )
         return _datastore_query.fetch(kwargs["_options"])
 
     def _option(self, name, given, options=None):
