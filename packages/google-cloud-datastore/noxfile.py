@@ -113,6 +113,7 @@ def system(session):
     session.install("mock", "pytest")
 
     session.install("-e", ".")
+    session.install("-e", "test_utils")
 
     # Run py.test against the system tests.
     if system_test_exists:
