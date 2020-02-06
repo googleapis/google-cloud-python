@@ -91,7 +91,7 @@ The following client libraries have **GA** support:
 .. _Scheduler Documentation: https://googleapis.dev/python/cloudscheduler/latest
 
 .. _Stackdriver Logging: https://pypi.org/project/google-cloud-logging/
-.. _Logging README: https://github.com/googleapis/google-cloud-python/tree/master/logging
+.. _Logging README: https://github.com/googleapis/python-logging
 .. _Logging Documentation: https://googleapis.dev/python/logging/latest
 
 Beta Support
@@ -150,7 +150,8 @@ updates. See `versioning`_ for more details.
 The following client libraries have **alpha** support:
 
 -  `Google Cloud AutoML`_ (`AutoML README`_, `AutoML Documentation`_)
--  `Google BigQuery Data Transfer`_ (`BigQuery Data Transfer README`_, `BigQuery Documentation`_)
+-  `Google BigQuery Data Transfer`_ (`BigQuery Data Transfer README`_, `BigQuery Data Transfer Documentation`_)
+-  `Google BigQuery Storage`_ (`BigQuery Storage README`_, `BigQuery Storage Documentation`)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_, `HappyBase Documentation`_)
 -  `Google Cloud Build`_ (`Cloud Build README`_, `Cloud Build Documentation`_)
 -  `Google Cloud Container`_ (`Container README`_, `Container Documentation`_)
@@ -161,6 +162,7 @@ The following client libraries have **alpha** support:
 -  `Google Cloud IAM`_ (`IAM README`_, `IAM Documentation`_)
 -  `Google Cloud IoT`_ (`IoT README`_, `IoT Documentation`_)
 -  `Google Cloud Memorystore for Redis`_ (`Redis README`_, `Redis Documentation`_)
+-  `Google Phishing Protection`_ (`Phishing Protection README`_, `Phishing Protection Documentation`_)
 -  `Google Cloud Recommender`_ (`Recommender README`_, `Recommender Documentation`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_, `Resource Manager Documentation`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_, `Runtime Config Documentation`_)
@@ -178,8 +180,12 @@ The following client libraries have **alpha** support:
 .. _AutoML Documentation: https://googleapis.dev/python/automl/latest
 
 .. _Google BigQuery Data Transfer: https://pypi.org/project/google-cloud-bigquery-datatransfer/
-.. _BigQuery Data Transfer README: https://github.com/googleapis/google-cloud-python/tree/master/bigquery_datatransfer
-.. _BigQuery Documentation: https://googleapis.dev/python/bigquery/latest
+.. _BigQuery Data Transfer README: https://github.com/googleapis/python-bigquery-datatransfer
+.. _BigQuery Data Transfer Documentation: https://googleapis.dev/python/bigquerydatatransfer/latest/index.html
+
+.. _Google BigQuery Storage: https://pypi.org/project/google-cloud-bigquery-storage/
+.. _BigQuery Storage README: https://github.com/googleapis/python-bigquery-storage/
+.. _BigQuery Storage Documentation: https://googleapis.dev/python/bigquerystorage/latest/index.html
 
 .. _Google Cloud Bigtable - HappyBase: https://pypi.org/project/google-cloud-happybase/
 .. _HappyBase README: https://github.com/googleapis/google-cloud-python-happybase
@@ -198,7 +204,7 @@ The following client libraries have **alpha** support:
 .. _Container Analysis Documentation: https://googleapis.dev/python/containeranalysis/latest
 
 .. _Google Cloud Dataproc: https://pypi.org/project/google-cloud-dataproc/
-.. _Dataproc README: https://github.com/googleapis/google-cloud-python/tree/master/dataproc
+.. _Dataproc README: https://github.com/googleapis/python-dataproc
 .. _Dataproc Documentation: https://googleapis.dev/python/dataproc/latest
 
 .. _Google Cloud DLP: https://pypi.org/project/google-cloud-dlp/
@@ -220,6 +226,10 @@ The following client libraries have **alpha** support:
 .. _Google Cloud Memorystore for Redis: https://pypi.org/project/google-cloud-redis/
 .. _Redis README: https://github.com/googleapis/python-redis
 .. _Redis Documentation: https://googleapis.dev/python/redis/latest
+
+.. _Google Phishing Protection: https://pypi.org/project/google-cloud-phishing-protection/
+.. _Phishing Protection README: https://github.com/googleapis/python-phishingprotection
+.. _Phishing Protection Documentation: https://googleapis.dev/python/phishingprotection/latest
 
 .. _Google Cloud Recommender: https://pypi.org/project/google-cloud-recommender/
 .. _Recommender README: https://github.com/googleapis/google-cloud-python/tree/master/recommender
@@ -258,7 +268,7 @@ The following client libraries have **alpha** support:
 .. _Error Reporting Documentation: https://googleapis.dev/python/clouderrorreporting/latest
 
 .. _Stackdriver Monitoring: https://pypi.org/project/google-cloud-monitoring/
-.. _Monitoring README: https://github.com/googleapis/google-cloud-python/tree/master/monitoring
+.. _Monitoring README: https://github.com/googleapis/python-monitoring
 .. _Monitoring Documentation: https://googleapis.dev/python/monitoring/latest
 
 .. _Webrisk: https://pypi.org/project/google-cloud-webrisk
