@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [1.4.0](https://www.github.com/googleapis/python-tasks/compare/v1.3.0...v1.4.0) (2020-02-06)
+
+
+### Features
+
+* **tasks:** undeprecate resource helper methods; add py2 deprecation warning; change default timeouts; add 3.8 tests; edit docstrings (via synth)([#10074](https://www.github.com/googleapis/python-tasks/issues/10074)) ([5577817](https://www.github.com/googleapis/python-tasks/commit/5577817fbe6435af03d862761fa08288b02cc69a))
+
+
+### Bug Fixes
+
+* **tasks:** change default timeout values; bump copyright year to 2020; change line breaks in docstrings (via synth) ([#10271](https://www.github.com/googleapis/python-tasks/issues/10271)) ([f68536d](https://www.github.com/googleapis/python-tasks/commit/f68536d95b6e320e4140d6720cc0c47c184dd694))
+* **tasks:** deprecate resource name helper methods (via synth) ([#9864](https://www.github.com/googleapis/python-tasks/issues/9864)) ([ccf2cab](https://www.github.com/googleapis/python-tasks/commit/ccf2cabbe32d91988bd9456dc777622182beb658))
+
 ## 1.3.0
 
 11-04-2019 10:06 PST
@@ -198,4 +211,3 @@
 
 ### New Features
 - Add v2beta2 endpoint for Tasks
-
