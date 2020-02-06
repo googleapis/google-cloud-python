@@ -15,11 +15,14 @@
 from google import showcase
 
 
+metadata = (("showcase-trailer", "hello world"),)
+
+
 def test_unary_stream(echo):
     content = 'The hail in Wales falls mainly on the snails.'
     responses = echo.expand({
         'content': content,
-    })
+    }, metadata=metadata)
 
     # Consume the response and ensure it matches what we expect.
     # with pytest.raises(exceptions.NotFound) as exc:
@@ -27,9 +30,7 @@ def test_unary_stream(echo):
         assert response.content == ground_truth
     assert ground_truth == 'snails.'
 
-    # TODO. Check responses.trailing_metadata() content once gapic-showcase
-    # server returns non-empty trailing metadata.
-    assert len(responses.trailing_metadata()) == 0
+    assert responses.trailing_metadata() == metadata
 
 
 def test_stream_unary(echo):
@@ -50,27 +51,23 @@ def test_stream_stream(echo):
     requests = []
     requests.append(showcase.EchoRequest(content="hello"))
     requests.append(showcase.EchoRequest(content="world!"))
-    responses = echo.chat(iter(requests))
+    responses = echo.chat(iter(requests), metadata=metadata)
 
     contents = []
     for response in responses:
         contents.append(response.content)
     assert contents == ['hello', 'world!']
 
-    # TODO. Check responses.trailing_metadata() content once gapic-showcase
-    # server returns non-empty trailing metadata.
-    assert len(responses.trailing_metadata()) == 0
+    assert responses.trailing_metadata() == metadata
 
 
 def test_stream_stream_passing_dict(echo):
     requests = [{'content': 'hello'}, {'content': 'world!'}]
-    responses = echo.chat(iter(requests))
+    responses = echo.chat(iter(requests), metadata=metadata)
 
     contents = []
     for response in responses:
         contents.append(response.content)
     assert contents == ['hello', 'world!']
 
-    # TODO. Check responses.trailing_metadata() content once gapic-showcase
-    # server returns non-empty trailing metadata.
-    assert len(responses.trailing_metadata()) == 0
+    assert responses.trailing_metadata() == metadata
