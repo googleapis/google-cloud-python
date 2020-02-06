@@ -753,9 +753,7 @@ def test_load_table_add_column(client, to_delete):
     to_delete.append(dataset)
 
     snippets_dir = os.path.abspath(os.path.dirname(__file__))
-    filepath = os.path.join(
-        snippets_dir, "..", "..", "bigquery", "tests", "data", "people.csv"
-    )
+    filepath = os.path.join(snippets_dir, "..", "tests", "data", "people.csv")
     table_ref = dataset_ref.table("my_table")
     old_schema = [bigquery.SchemaField("full_name", "STRING", mode="REQUIRED")]
     table = client.create_table(bigquery.Table(table_ref, schema=old_schema))
@@ -821,9 +819,7 @@ def test_load_table_relax_column(client, to_delete):
     to_delete.append(dataset)
 
     snippets_dir = os.path.abspath(os.path.dirname(__file__))
-    filepath = os.path.join(
-        snippets_dir, "..", "..", "bigquery", "tests", "data", "people.csv"
-    )
+    filepath = os.path.join(snippets_dir, "..", "tests", "data", "people.csv")
     table_ref = dataset_ref.table("my_table")
     old_schema = [
         bigquery.SchemaField("full_name", "STRING", mode="REQUIRED"),

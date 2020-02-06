@@ -20,8 +20,6 @@ import shutil
 import nox
 
 
-LOCAL_DEPS = (os.path.join("..", "api_core[grpc]"), os.path.join("..", "core"))
-
 BLACK_PATHS = ("docs", "google", "samples", "tests", "noxfile.py", "setup.py")
 
 
@@ -35,10 +33,8 @@ def default(session):
     """
     # Install all test dependencies, then install local packages in-place.
     session.install("mock", "pytest", "pytest-cov", "freezegun")
-    for local_dep in LOCAL_DEPS:
-        session.install("-e", local_dep)
-
-    session.install("-e", os.path.join("..", "test_utils"))
+    session.install("grpcio")
+    session.install("-e", "test_utils")
 
     coverage_fail_under = "--cov-fail-under=97"
 
@@ -97,10 +93,8 @@ def system(session):
 
     # Install all test dependencies, then install local packages in place.
     session.install("mock", "pytest", "psutil")
-    for local_dep in LOCAL_DEPS:
-        session.install("-e", local_dep)
-    session.install("-e", os.path.join("..", "storage"))
-    session.install("-e", os.path.join("..", "test_utils"))
+    session.install("google-cloud-storage")
+    session.install("-e", "test_utils")
     session.install("-e", ".[all]")
 
     # IPython does not support Python 2 after version 5.x
@@ -125,10 +119,9 @@ def snippets(session):
 
     # Install all test dependencies, then install local packages in place.
     session.install("mock", "pytest")
-    for local_dep in LOCAL_DEPS:
-        session.install("-e", local_dep)
-    session.install("-e", os.path.join("..", "storage"))
-    session.install("-e", os.path.join("..", "test_utils"))
+    session.install("google-cloud-storage")
+    session.install("grpcio")
+    session.install("-e", "test_utils")
     session.install("-e", ".[all]")
 
     # Run py.test against the snippets tests.
@@ -157,8 +150,6 @@ def lint(session):
     """
 
     session.install("black", "flake8")
-    for local_dep in LOCAL_DEPS:
-        session.install("-e", local_dep)
     session.install("-e", ".")
     session.run("flake8", os.path.join("google", "cloud", "bigquery"))
     session.run("flake8", "tests")
@@ -193,9 +184,7 @@ def docs(session):
     """Build the docs."""
 
     session.install("ipython", "recommonmark", "sphinx", "sphinx_rtd_theme")
-    for local_dep in LOCAL_DEPS:
-        session.install("-e", local_dep)
-    session.install("-e", os.path.join("..", "storage"))
+    session.install("google-cloud-storage")
     session.install("-e", ".[all]")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
