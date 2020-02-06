@@ -142,8 +142,8 @@ BuildNote = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_BUILDNOTE,
         __module__="grafeas_v1.proto.build_pb2",
-        __doc__="""Note holding the version of the provider's builder and the
-  signature of the provenance message in the build details occurrence.
+        __doc__="""Note holding the version of the provider's builder and the signature of
+  the provenance message in the build details occurrence.
   
   
   Attributes:
