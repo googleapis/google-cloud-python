@@ -51,6 +51,20 @@ class TestKey:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_unicode():
+        """Regression test for #322.
+
+        https://github.com/googleapis/python-ndb/issues/322
+        """
+        key = key_module.Key(u"Kind", 42)
+
+        assert key._key == google.cloud.datastore.Key(
+            u"Kind", 42, project="testing"
+        )
+        assert key._reference is None
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_with_different_namespace(context):
         context.client.namespace = "DiffNamespace"
         key = key_module.Key("Kind", 42)

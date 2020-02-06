@@ -1,4 +1,5 @@
 import re
+import six
 
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import query as query_module
@@ -659,7 +660,7 @@ class GQL(object):
         """
         vals = []
         for arg in args:
-            if isinstance(arg, (int, str)):
+            if isinstance(arg, six.string_types + six.integer_types):
                 val = query_module.Parameter(arg)
             else:
                 val = arg.Get()

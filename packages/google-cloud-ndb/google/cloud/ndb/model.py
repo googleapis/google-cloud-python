@@ -1061,7 +1061,7 @@ class Property(ModelAttribute):
             TypeError: If the ``name`` is not a string.
             ValueError: If the name contains a ``.``.
         """
-        if not isinstance(name, str):
+        if not isinstance(name, six.string_types):
             raise TypeError("Name {!r} is not a string".format(name))
 
         if "." in name:
@@ -2334,7 +2334,7 @@ class FloatProperty(Property):
             .BadValueError: If ``value`` is not a :class:`float` or convertible
                 to one.
         """
-        if not isinstance(value, (float, int)):
+        if not isinstance(value, six.integer_types + (float,)):
             raise exceptions.BadValueError(
                 "Expected float, got {!r}".format(value)
             )
@@ -4871,7 +4871,7 @@ class Model(_NotEqualMixin):
                 an underscore.
         """
         kind = cls._get_kind()
-        if not isinstance(kind, str):
+        if not isinstance(kind, six.string_types):
             raise KindError(
                 "Class {} defines a ``_get_kind()`` method that returns "
                 "a non-string ({!r})".format(cls.__name__, kind)
@@ -5653,7 +5653,7 @@ class Model(_NotEqualMixin):
             tasklets.Future: Model: The entity that was either just retrieved
                 or created.
         """
-        if not isinstance(name, str):
+        if not isinstance(name, six.string_types):
             raise TypeError(
                 "'name' must be a string; received {!r}".format(name)
             )

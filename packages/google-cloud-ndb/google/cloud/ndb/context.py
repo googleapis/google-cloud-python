@@ -17,6 +17,7 @@
 
 import collections
 import contextlib
+import six
 import threading
 
 from google.cloud.ndb import _eventloop
@@ -459,7 +460,7 @@ class Context(_Context):
         if policy is None:
             policy = _default_global_cache_timeout_policy
 
-        elif isinstance(policy, int):
+        elif isinstance(policy, six.integer_types):
             timeout = policy
 
             def policy(key):

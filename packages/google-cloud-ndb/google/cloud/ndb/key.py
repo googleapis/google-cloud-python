@@ -1421,7 +1421,7 @@ def _clean_flat_path(flat):
         if isinstance(kind, type):
             kind = kind._get_kind()
             flat[i] = kind
-        if not isinstance(kind, str):
+        if not isinstance(kind, six.string_types):
             raise TypeError(
                 "Key kind must be a string or Model class; "
                 "received {!r}".format(kind)
