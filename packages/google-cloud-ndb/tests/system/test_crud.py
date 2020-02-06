@@ -1131,3 +1131,39 @@ def test_multi_get_weirdness_with_redis(dispose_of):
     assert len(keys_upd) == len(keys)
     assert len(set(keys_upd)) == len(set(keys))
     assert set(keys_upd) == set(keys)
+
+
+@pytest.mark.usefixtures("client_context")
+def test_multi_with_lots_of_keys(dispose_of):
+    """Regression test for issue #318.
+
+    https://github.com/googleapis/python-ndb/issues/318
+    """
+    N = 1001
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    foos = list(range(N))
+    entities = [SomeKind(foo=foo) for foo in foos]
+    keys = ndb.put_multi(entities)
+    dispose_of(*(key._key for key in keys))
+    assert len(keys) == N
+
+    entities = ndb.get_multi(keys)
+    assert [entity.foo for entity in entities] == foos
+
+    ndb.delete_multi(keys)
+    entities = ndb.get_multi(keys)
+    assert entities == [None] * N
+
+
+@pytest.mark.usefixtures("client_context")
+def test_allocate_a_lot_of_keys():
+    N = 1001
+
+    class SomeKind(ndb.Model):
+        pass
+
+    keys = SomeKind.allocate_ids(N)
+    assert len(keys) == N

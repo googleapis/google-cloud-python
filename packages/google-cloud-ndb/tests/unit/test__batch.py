@@ -33,14 +33,25 @@ class Test_get_batch:
 
         assert _batch.get_batch(MockBatch, options) is batch
 
+        batch._full = True
+        batch2 = _batch.get_batch(MockBatch, options)
+        assert batch2 is not batch
+        assert not batch2.idle_called
+
         _eventloop.run()
         assert batch.idle_called
+        assert batch2.idle_called
 
 
 class MockBatch:
+    _full = False
+
     def __init__(self, options):
         self.options = options
         self.idle_called = False
 
     def idle_callback(self):
         self.idle_called = True
+
+    def full(self):
+        return self._full

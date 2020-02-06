@@ -1207,9 +1207,9 @@ class Test_AllocateIdsBatch:
     def test_add():
         options = _options.Options()
         batch = _api._AllocateIdsBatch(options)
-        future = batch.add(["key1", "key2"])
+        futures = batch.add(["key1", "key2"])
         assert batch.keys == ["key1", "key2"]
-        assert batch.futures == future._dependencies
+        assert batch.futures == futures
 
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_api._datastore_allocate_ids")

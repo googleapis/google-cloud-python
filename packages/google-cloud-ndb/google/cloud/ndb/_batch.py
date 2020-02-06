@@ -56,13 +56,17 @@ def get_batch(batch_cls, options=None):
         options_key = ()
 
     batch = batches.get(options_key)
-    if batch is not None:
+    if batch is not None and not batch.full():
         return batch
 
-    def idle():
-        batch = batches.pop(options_key)
-        batch.idle_callback()
+    def idler(batch):
+        def idle():
+            if batches.get(options_key) is batch:
+                del batches[options_key]
+            batch.idle_callback()
+
+        return idle
 
     batches[options_key] = batch = batch_cls(options)
-    _eventloop.add_idle(idle)
+    _eventloop.add_idle(idler(batch))
     return batch

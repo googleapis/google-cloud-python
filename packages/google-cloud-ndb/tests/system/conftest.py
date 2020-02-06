@@ -66,9 +66,11 @@ def with_ds_client(ds_client, to_delete, deleted_keys):
 
     yield ds_client
 
-    if to_delete:
-        ds_client.delete_multi(to_delete)
-        deleted_keys.update(to_delete)
+    while to_delete:
+        batch = to_delete[:500]
+        ds_client.delete_multi(batch)
+        deleted_keys.update(batch)
+        to_delete = to_delete[500:]
 
     not_deleted = [
         entity

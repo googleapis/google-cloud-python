@@ -143,6 +143,11 @@ class Test_GlobalCacheGetBatch:
         assert future1.exception() is error
         assert future2.exception() is error
 
+    @staticmethod
+    def test_full():
+        batch = _cache._GlobalCacheGetBatch(None)
+        assert batch.full() is False
+
 
 class Test_global_set:
     @staticmethod

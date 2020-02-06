@@ -65,6 +65,14 @@ class _GlobalCacheBatch(object):
     """Abstract base for classes used to batch operations for the global cache.
     """
 
+    def full(self):
+        """Indicates whether more work can be added to this batch.
+
+        Returns:
+            boolean: `False`, always.
+        """
+        return False
+
     def idle_callback(self):
         """Call the cache operation.
 

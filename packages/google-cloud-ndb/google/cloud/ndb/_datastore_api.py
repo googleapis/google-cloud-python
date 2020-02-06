@@ -196,6 +196,16 @@ class _LookupBatch(object):
         self.options = options
         self.todo = {}
 
+    def full(self):
+
+        """Indicates whether more work can be added to this batch.
+
+        Returns:
+            boolean: `True` if number of keys to be looked up has reached 1000,
+                else `False`.
+        """
+        return len(self.todo) >= 1000
+
     def add(self, key):
         """Add a key to the batch to look up.
 
@@ -476,6 +486,15 @@ class _NonTransactionalCommitBatch(object):
         self.options = options
         self.mutations = []
         self.futures = []
+
+    def full(self):
+        """Indicates whether more work can be added to this batch.
+
+        Returns:
+            boolean: `True` if number of mutations has reached 500, else
+                `False`.
+        """
+        return len(self.mutations) >= 500
 
     def put(self, entity_pb):
         """Add an entity to batch to be stored.
@@ -854,8 +873,15 @@ def allocate(keys, options):
     Returns:
         tasklets.Future: A future for the key completed with the allocated id.
     """
-    batch = _batch.get_batch(_AllocateIdsBatch, options)
-    return batch.add(keys)
+    futures = []
+    while keys:
+        batch = _batch.get_batch(_AllocateIdsBatch, options)
+        room_left = batch.room_left()
+        batch_keys = keys[:room_left]
+        futures.extend(batch.add(batch_keys))
+        keys = keys[room_left:]
+
+    return tasklets._MultiFuture(futures)
 
 
 class _AllocateIdsBatch(object):
@@ -875,6 +901,22 @@ class _AllocateIdsBatch(object):
         self.keys = []
         self.futures = []
 
+    def full(self):
+        """Indicates whether more work can be added to this batch.
+
+        Returns:
+            boolean: `True` if number of keys has reached 500, else `False`.
+        """
+        return len(self.keys) >= 500
+
+    def room_left(self):
+        """Get how many more keys can be added to this batch.
+
+        Returns:
+            int: 500 - number of keys already in batch
+        """
+        return 500 - len(self.keys)
+
     def add(self, keys):
         """Add incomplete keys to batch to allocate.
 
@@ -892,7 +934,7 @@ class _AllocateIdsBatch(object):
             self.keys.append(key)
 
         self.futures.extend(futures)
-        return tasklets._MultiFuture(futures)
+        return futures
 
     def idle_callback(self):
         """Perform a Datastore AllocateIds request on all batched keys."""
