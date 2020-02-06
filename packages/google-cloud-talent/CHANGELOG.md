@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [0.5.0](https://www.github.com/googleapis/python-talent/compare/v0.4.0...v0.5.0) (2020-02-03)
+
+
+### Features
+
+* **talent:** add `query_language_code` to `talent.v4beta1.JobQuery` (via synth) ([#9571](https://www.github.com/googleapis/python-talent/issues/9571)) ([fdcc4ce](https://www.github.com/googleapis/python-talent/commit/fdcc4ce17b1ba3a784984e70ec4bcd04ed5554d2))
+* **talent:** undeprecate resource name helpers, add 2.7 sunset warning (via synth)  ([#10050](https://www.github.com/googleapis/python-talent/issues/10050)) ([1c6e3ee](https://www.github.com/googleapis/python-talent/commit/1c6e3eee6b4d4d0004ffb38d4fde69f147bbd969))
+
+
+### Bug Fixes
+
+* **speech:** re-add unused speaker_tag; update spacing in docs templates (via synth) ([#9766](https://www.github.com/googleapis/python-talent/issues/9766)) ([27e23ca](https://www.github.com/googleapis/python-talent/commit/27e23ca47d753983732d5a20e6fe2052c14c2a92))
+* **talent:** change default timeout values; edit docstrings; bump copyright year to 2020 (via synth) ([#10239](https://www.github.com/googleapis/python-talent/issues/10239)) ([d7daa22](https://www.github.com/googleapis/python-talent/commit/d7daa2283d83ce959f010998ab2c44402f573293))
+* **talent:** deprecate resource name helper methods (via synth) ([#9844](https://www.github.com/googleapis/python-talent/issues/9844)) ([56c7a87](https://www.github.com/googleapis/python-talent/commit/56c7a8796510b75242e4d5863be907b484e75578))
+
 ## 0.4.0
 
 10-04-2019 14:29 PDT
@@ -82,4 +97,3 @@
 03-05-2019 12:50 PST
 
 - Initial release of google-cloud-talent
-
