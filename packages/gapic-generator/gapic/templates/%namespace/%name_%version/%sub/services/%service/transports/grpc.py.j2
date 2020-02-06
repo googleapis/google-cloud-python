@@ -63,6 +63,31 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         if channel:
             self._grpc_channel = channel
 
+    @classmethod
+    def create_channel(cls,
+                       host: str{% if service.host %} = '{{ service.host }}'{% endif %},
+                       credentials: credentials.Credentials = None,
+                       **kwargs) -> grpc.Channel:
+        """Create and return a gRPC channel object.
+        Args:
+            address (Optionsl[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return grpc_helpers.create_channel(
+            host,
+            credentials=credentials,
+            scopes=cls.AUTH_SCOPES,
+            **kwargs
+        )
+
     @property
     def grpc_channel(self) -> grpc.Channel:
         """Create the channel designed to connect to this service.
@@ -73,10 +98,9 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         # Sanity check: Only create a new channel if we do not already
         # have one.
         if not hasattr(self, '_grpc_channel'):
-            self._grpc_channel = grpc_helpers.create_channel(
+            self._grpc_channel = self.create_channel(
                 self._host,
                 credentials=self._credentials,
-                scopes=self.AUTH_SCOPES,
             )
 
         # Return the channel from cache.
