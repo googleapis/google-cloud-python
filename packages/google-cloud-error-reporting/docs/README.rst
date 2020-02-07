@@ -1,1 +1,1 @@
-../../error_reporting/README.rst
+../README.rst
