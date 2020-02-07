@@ -112,8 +112,8 @@ def system(session):
     # virtualenv's dist-packages.
     session.install("mock", "pytest")
 
-    session.install("-e", ".")
     session.install("-e", "test_utils")
+    session.install("-e", ".")
 
     # Run py.test against the system tests.
     if system_test_exists:

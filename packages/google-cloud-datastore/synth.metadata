@@ -1,5 +1,5 @@
 {
-  "updateTime": "2020-02-06T23:50:52.082564Z",
+  "updateTime": "2020-02-07T00:36:36.462894Z",
   "sources": [
     {
       "generator": {
@@ -12,9 +12,8 @@
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "052b274138fce2be80f97b6dcb83ab343c7c8812",
-        "internalRef": "293693115",
-        "log": "052b274138fce2be80f97b6dcb83ab343c7c8812\nAdd source field for user event and add field behavior annotations\n\nPiperOrigin-RevId: 293693115\n\n"
+        "sha": "68477017c4173c98addac0373950c6aa9d7b375f",
+        "internalRef": "293703548"
       }
     },
     {
