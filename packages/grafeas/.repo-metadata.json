@@ -6,7 +6,7 @@
   "issue_tracker": "",
   "release_level": "alpha",
   "language": "python",
-  "repo": "googleapis/google-cloud-python",
+  "repo": "googleapis/python-grafeas",
   "distribution_name": "grafeas",
   "api_id": "",
   "requires_billing": false

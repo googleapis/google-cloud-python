@@ -21,8 +21,6 @@ import shutil
 import nox
 
 
-LOCAL_DEPS = (os.path.join("..", "api_core"), os.path.join("..", "core"))
-
 @nox.session(python="3.7")
 def lint(session):
     """Run linters.
@@ -30,7 +28,7 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", "black", *LOCAL_DEPS)
+    session.install("flake8", "black")
     session.run(
         "black",
         "--check",
@@ -70,8 +68,6 @@ def lint_setup_py(session):
 def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install("mock", "pytest", "pytest-cov")
-    for local_dep in LOCAL_DEPS:
-        session.install("-e", local_dep)
     session.install("-e", ".")
 
     # Run py.test against the unit tests.
@@ -116,9 +112,7 @@ def system(session):
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install("mock", "pytest")
-    for local_dep in LOCAL_DEPS:
-        session.install("-e", local_dep)
-    session.install("-e", "../test_utils/")
+    session.install("-e", "test_utils/")
     session.install("-e", ".")
 
     # Run py.test against the system tests.
