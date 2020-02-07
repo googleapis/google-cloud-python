@@ -143,13 +143,6 @@ class Cursor(object):
             elif isinstance(res, int):
                 self.__row_count = res
 
-    def __do_execute_insert_homogenous(self, transaction, parts):
-        # Perform an insert in one shot.
-        table = parts.get('table')
-        columns = parts.get('columns')
-        values = parts.get('values')
-        return transaction.insert(table, columns, values)
-
     def __handle_DQL(self, txn, sql, params):
         # Reference
         #  https://googleapis.dev/python/spanner/latest/session-api.html#google.cloud.spanner_v1.session.Session.execute_sql

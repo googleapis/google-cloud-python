@@ -6,6 +6,7 @@
 
 from .cursor import Cursor
 from .exceptions import Error
+from .periodic_auto_refresh import PeriodicAutoRefreshingTransaction
 
 
 class Connection(object):
@@ -51,13 +52,7 @@ class Connection(object):
         self.__clear()
 
     def __can_commit_or_rollback(self):
-        if not self.__txn:
-            return False
-
-        # For now it is alright to access Transaction._rolled_back
-        # even though it is unexported. We've filed a follow-up issue:
-        #   https://github.com/googleapis/python-spanner/issues/13
-        return not (self.__txn.committed or self.__txn._rolled_back)
+        return self.__txn and not self.__txn.was_committed_or_rolledback()
 
     def commit(self):
         if self.__can_commit_or_rollback():
@@ -80,10 +75,10 @@ class Connection(object):
         self.run_prior_DDL_statements()
 
         if not self.__txn:
-            self.__txn = self.__sess.transaction()
+            self.__txn = PeriodicAutoRefreshingTransaction(self.__sess.transaction())
             self.__txn.begin()
 
-        if self.__txn._rolled_back or self.__txn.committed:
+        if self.__txn.was_committed_or_rolledback():
             # Try again.
             self.__txn = None
             self.__txn = self.get_txn()
