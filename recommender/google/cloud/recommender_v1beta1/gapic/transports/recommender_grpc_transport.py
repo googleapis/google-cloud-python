@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -112,7 +112,7 @@ class RecommenderGrpcTransport(object):
         """Return the gRPC stub for :meth:`RecommenderClient.list_recommendations`.
 
         Lists recommendations for a Cloud project. Requires the
-        recommender.*.list IAM permission for the specified recommender.
+        recommender.\*.list IAM permission for the specified recommender.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -125,8 +125,8 @@ class RecommenderGrpcTransport(object):
     def get_recommendation(self):
         """Return the gRPC stub for :meth:`RecommenderClient.get_recommendation`.
 
-        Gets the requested recommendation. Requires the recommender.*.get
-        IAM permission for the specified recommender.
+        Gets the requested recommendation. Requires the recommender.\*.get IAM
+        permission for the specified recommender.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -139,8 +139,8 @@ class RecommenderGrpcTransport(object):
     def mark_recommendation_claimed(self):
         """Return the gRPC stub for :meth:`RecommenderClient.mark_recommendation_claimed`.
 
-        Marks the Recommendation State as Claimed. Users can use this method
-        to indicate to the Recommender API that they are starting to apply the
+        Marks the Recommendation State as Claimed. Users can use this method to
+        indicate to the Recommender API that they are starting to apply the
         recommendation themselves. This stops the recommendation content from
         being updated. Associated insights are frozen and placed in the ACCEPTED
         state.
@@ -148,7 +148,7 @@ class RecommenderGrpcTransport(object):
         MarkRecommendationClaimed can be applied to recommendations in CLAIMED
         or ACTIVE state.
 
-        Requires the recommender.*.update IAM permission for the specified
+        Requires the recommender.\*.update IAM permission for the specified
         recommender.
 
         Returns:
@@ -162,8 +162,8 @@ class RecommenderGrpcTransport(object):
     def mark_recommendation_succeeded(self):
         """Return the gRPC stub for :meth:`RecommenderClient.mark_recommendation_succeeded`.
 
-        Marks the Recommendation State as Succeeded. Users can use this
-        method to indicate to the Recommender API that they have applied the
+        Marks the Recommendation State as Succeeded. Users can use this method
+        to indicate to the Recommender API that they have applied the
         recommendation themselves, and the operation was successful. This stops
         the recommendation content from being updated. Associated insights are
         frozen and placed in the ACCEPTED state.
@@ -171,7 +171,7 @@ class RecommenderGrpcTransport(object):
         MarkRecommendationSucceeded can be applied to recommendations in ACTIVE,
         CLAIMED, SUCCEEDED, or FAILED state.
 
-        Requires the recommender.*.update IAM permission for the specified
+        Requires the recommender.\*.update IAM permission for the specified
         recommender.
 
         Returns:
@@ -185,8 +185,8 @@ class RecommenderGrpcTransport(object):
     def mark_recommendation_failed(self):
         """Return the gRPC stub for :meth:`RecommenderClient.mark_recommendation_failed`.
 
-        Marks the Recommendation State as Failed. Users can use this method
-        to indicate to the Recommender API that they have applied the
+        Marks the Recommendation State as Failed. Users can use this method to
+        indicate to the Recommender API that they have applied the
         recommendation themselves, and the operation failed. This stops the
         recommendation content from being updated. Associated insights are
         frozen and placed in the ACCEPTED state.
@@ -194,7 +194,7 @@ class RecommenderGrpcTransport(object):
         MarkRecommendationFailed can be applied to recommendations in ACTIVE,
         CLAIMED, SUCCEEDED, or FAILED state.
 
-        Requires the recommender.*.update IAM permission for the specified
+        Requires the recommender.\*.update IAM permission for the specified
         recommender.
 
         Returns:

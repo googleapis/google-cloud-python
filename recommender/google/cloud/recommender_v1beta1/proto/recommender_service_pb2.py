@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -693,17 +694,17 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 ListRecommendationsRequest = _reflection.GeneratedProtocolMessageType(
     "ListRecommendationsRequest",
     (_message.Message,),
-    {
-        "DESCRIPTOR": _LISTRECOMMENDATIONSREQUEST,
-        "__module__": "google.cloud.recommender_v1beta1.proto.recommender_service_pb2",
-        "__doc__": """Request for the ``ListRecommendations`` method.
+    dict(
+        DESCRIPTOR=_LISTRECOMMENDATIONSREQUEST,
+        __module__="google.cloud.recommender_v1beta1.proto.recommender_service_pb2",
+        __doc__="""Request for the ``ListRecommendations`` method.
   
   
   Attributes:
       parent:
           Required. The container resource on which to execute the
-          request. Acceptable formats:  1. “projects/[PROJECT_NUMBER]/lo
-          cations/[LOCATION]/recommenders/[RECOMMENDER_ID]”,  LOCATION
+          request. Acceptable formats:  1. "projects/[PROJECT\_NUMBER]/l
+          ocations/[LOCATION]/recommenders/[RECOMMENDER\_ID]",  LOCATION
           here refers to GCP Locations:
           https://cloud.google.com/about/locations/
       page_size:
@@ -718,21 +719,21 @@ ListRecommendationsRequest = _reflection.GeneratedProtocolMessageType(
           in the previous call.
       filter:
           Filter expression to restrict the recommendations returned.
-          Supported filter fields: state_info.state Eg:
-          \`state_info.state:“DISMISSED” or state_info.state:“FAILED”
+          Supported filter fields: state\_info.state Eg:
+          \`state\_info.state:"DISMISSED" or state\_info.state:"FAILED"
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.ListRecommendationsRequest)
-    },
+    ),
 )
 _sym_db.RegisterMessage(ListRecommendationsRequest)
 
 ListRecommendationsResponse = _reflection.GeneratedProtocolMessageType(
     "ListRecommendationsResponse",
     (_message.Message,),
-    {
-        "DESCRIPTOR": _LISTRECOMMENDATIONSRESPONSE,
-        "__module__": "google.cloud.recommender_v1beta1.proto.recommender_service_pb2",
-        "__doc__": """Response to the ``ListRecommendations`` method.
+    dict(
+        DESCRIPTOR=_LISTRECOMMENDATIONSRESPONSE,
+        __module__="google.cloud.recommender_v1beta1.proto.recommender_service_pb2",
+        __doc__="""Response to the ``ListRecommendations`` method.
   
   
   Attributes:
@@ -743,17 +744,17 @@ ListRecommendationsResponse = _reflection.GeneratedProtocolMessageType(
           This field is empty if there are no additional results.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.ListRecommendationsResponse)
-    },
+    ),
 )
 _sym_db.RegisterMessage(ListRecommendationsResponse)
 
 GetRecommendationRequest = _reflection.GeneratedProtocolMessageType(
     "GetRecommendationRequest",
     (_message.Message,),
-    {
-        "DESCRIPTOR": _GETRECOMMENDATIONREQUEST,
-        "__module__": "google.cloud.recommender_v1beta1.proto.recommender_service_pb2",
-        "__doc__": """Request to the ``GetRecommendation`` method.
+    dict(
+        DESCRIPTOR=_GETRECOMMENDATIONREQUEST,
+        __module__="google.cloud.recommender_v1beta1.proto.recommender_service_pb2",
+        __doc__="""Request to the ``GetRecommendation`` method.
   
   
   Attributes:
@@ -761,26 +762,26 @@ GetRecommendationRequest = _reflection.GeneratedProtocolMessageType(
           Required. Name of the recommendation.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.GetRecommendationRequest)
-    },
+    ),
 )
 _sym_db.RegisterMessage(GetRecommendationRequest)
 
 MarkRecommendationClaimedRequest = _reflection.GeneratedProtocolMessageType(
     "MarkRecommendationClaimedRequest",
     (_message.Message,),
-    {
-        "StateMetadataEntry": _reflection.GeneratedProtocolMessageType(
+    dict(
+        StateMetadataEntry=_reflection.GeneratedProtocolMessageType(
             "StateMetadataEntry",
             (_message.Message,),
-            {
-                "DESCRIPTOR": _MARKRECOMMENDATIONCLAIMEDREQUEST_STATEMETADATAENTRY,
-                "__module__": "google.cloud.recommender_v1beta1.proto.recommender_service_pb2"
+            dict(
+                DESCRIPTOR=_MARKRECOMMENDATIONCLAIMEDREQUEST_STATEMETADATAENTRY,
+                __module__="google.cloud.recommender_v1beta1.proto.recommender_service_pb2"
                 # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.MarkRecommendationClaimedRequest.StateMetadataEntry)
-            },
+            ),
         ),
-        "DESCRIPTOR": _MARKRECOMMENDATIONCLAIMEDREQUEST,
-        "__module__": "google.cloud.recommender_v1beta1.proto.recommender_service_pb2",
-        "__doc__": """Request for the ``MarkRecommendationClaimed`` Method.
+        DESCRIPTOR=_MARKRECOMMENDATIONCLAIMEDREQUEST,
+        __module__="google.cloud.recommender_v1beta1.proto.recommender_service_pb2",
+        __doc__="""Request for the ``MarkRecommendationClaimed`` Method.
   
   
   Attributes:
@@ -789,14 +790,14 @@ MarkRecommendationClaimedRequest = _reflection.GeneratedProtocolMessageType(
       state_metadata:
           State properties to include with this state. Overwrites any
           existing ``state_metadata``. Keys must match the regex ``/
-          [2]_[a-z0-9_.-]{0,62}/``. Values must match the regex
+          [2]_[a-z0-9\_.-]{0,62}/``. Values must match the regex
           ``/^[a-zA-Z0-9_./-]{0,255}/``.
       etag:
           Required. Fingerprint of the Recommendation. Provides
           optimistic locking.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.MarkRecommendationClaimedRequest)
-    },
+    ),
 )
 _sym_db.RegisterMessage(MarkRecommendationClaimedRequest)
 _sym_db.RegisterMessage(MarkRecommendationClaimedRequest.StateMetadataEntry)
@@ -804,19 +805,19 @@ _sym_db.RegisterMessage(MarkRecommendationClaimedRequest.StateMetadataEntry)
 MarkRecommendationSucceededRequest = _reflection.GeneratedProtocolMessageType(
     "MarkRecommendationSucceededRequest",
     (_message.Message,),
-    {
-        "StateMetadataEntry": _reflection.GeneratedProtocolMessageType(
+    dict(
+        StateMetadataEntry=_reflection.GeneratedProtocolMessageType(
             "StateMetadataEntry",
             (_message.Message,),
-            {
-                "DESCRIPTOR": _MARKRECOMMENDATIONSUCCEEDEDREQUEST_STATEMETADATAENTRY,
-                "__module__": "google.cloud.recommender_v1beta1.proto.recommender_service_pb2"
+            dict(
+                DESCRIPTOR=_MARKRECOMMENDATIONSUCCEEDEDREQUEST_STATEMETADATAENTRY,
+                __module__="google.cloud.recommender_v1beta1.proto.recommender_service_pb2"
                 # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.MarkRecommendationSucceededRequest.StateMetadataEntry)
-            },
+            ),
         ),
-        "DESCRIPTOR": _MARKRECOMMENDATIONSUCCEEDEDREQUEST,
-        "__module__": "google.cloud.recommender_v1beta1.proto.recommender_service_pb2",
-        "__doc__": """Request for the ``MarkRecommendationSucceeded`` Method.
+        DESCRIPTOR=_MARKRECOMMENDATIONSUCCEEDEDREQUEST,
+        __module__="google.cloud.recommender_v1beta1.proto.recommender_service_pb2",
+        __doc__="""Request for the ``MarkRecommendationSucceeded`` Method.
   
   
   Attributes:
@@ -825,15 +826,14 @@ MarkRecommendationSucceededRequest = _reflection.GeneratedProtocolMessageType(
       state_metadata:
           State properties to include with this state. Overwrites any
           existing ``state_metadata``. Keys must match the regex ``/
-          [3]_[a-z0-9_.-]{0,62}/``. Values must match the regex
+          [1]_[a-z0-9\_.-]{0,62}/``. Values must match the regex
           ``/^[a-zA-Z0-9_./-]{0,255}/``.
       etag:
           Required. Fingerprint of the Recommendation. Provides
-          optimistic locking.  .. [1]    a-z0-9  .. [2]    a-z0-9  ..
-          [3]    a-z0-9
+          optimistic locking.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.MarkRecommendationSucceededRequest)
-    },
+    ),
 )
 _sym_db.RegisterMessage(MarkRecommendationSucceededRequest)
 _sym_db.RegisterMessage(MarkRecommendationSucceededRequest.StateMetadataEntry)
@@ -841,19 +841,19 @@ _sym_db.RegisterMessage(MarkRecommendationSucceededRequest.StateMetadataEntry)
 MarkRecommendationFailedRequest = _reflection.GeneratedProtocolMessageType(
     "MarkRecommendationFailedRequest",
     (_message.Message,),
-    {
-        "StateMetadataEntry": _reflection.GeneratedProtocolMessageType(
+    dict(
+        StateMetadataEntry=_reflection.GeneratedProtocolMessageType(
             "StateMetadataEntry",
             (_message.Message,),
-            {
-                "DESCRIPTOR": _MARKRECOMMENDATIONFAILEDREQUEST_STATEMETADATAENTRY,
-                "__module__": "google.cloud.recommender_v1beta1.proto.recommender_service_pb2"
+            dict(
+                DESCRIPTOR=_MARKRECOMMENDATIONFAILEDREQUEST_STATEMETADATAENTRY,
+                __module__="google.cloud.recommender_v1beta1.proto.recommender_service_pb2"
                 # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.MarkRecommendationFailedRequest.StateMetadataEntry)
-            },
+            ),
         ),
-        "DESCRIPTOR": _MARKRECOMMENDATIONFAILEDREQUEST,
-        "__module__": "google.cloud.recommender_v1beta1.proto.recommender_service_pb2",
-        "__doc__": """Request for the ``MarkRecommendationFailed`` Method.
+        DESCRIPTOR=_MARKRECOMMENDATIONFAILEDREQUEST,
+        __module__="google.cloud.recommender_v1beta1.proto.recommender_service_pb2",
+        __doc__="""Request for the ``MarkRecommendationFailed`` Method.
   
   
   Attributes:
@@ -862,14 +862,14 @@ MarkRecommendationFailedRequest = _reflection.GeneratedProtocolMessageType(
       state_metadata:
           State properties to include with this state. Overwrites any
           existing ``state_metadata``. Keys must match the regex ``/
-          [1]_[a-z0-9_.-]{0,62}/``. Values must match the regex
+          [3]_[a-z0-9\_.-]{0,62}/``. Values must match the regex
           ``/^[a-zA-Z0-9_./-]{0,255}/``.
       etag:
           Required. Fingerprint of the Recommendation. Provides
           optimistic locking.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.MarkRecommendationFailedRequest)
-    },
+    ),
 )
 _sym_db.RegisterMessage(MarkRecommendationFailedRequest)
 _sym_db.RegisterMessage(MarkRecommendationFailedRequest.StateMetadataEntry)

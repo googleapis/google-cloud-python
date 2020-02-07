@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1068,11 +1069,12 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 Recommendation = _reflection.GeneratedProtocolMessageType(
     "Recommendation",
     (_message.Message,),
-    {
-        "DESCRIPTOR": _RECOMMENDATION,
-        "__module__": "google.cloud.recommender_v1beta1.proto.recommendation_pb2",
-        "__doc__": """A recommendation along with a suggested action. E.g., a rightsizing
-  recommendation for an underutilized VM, IAM role recommendations, etc
+    dict(
+        DESCRIPTOR=_RECOMMENDATION,
+        __module__="google.cloud.recommender_v1beta1.proto.recommendation_pb2",
+        __doc__="""A recommendation along with a suggested action. E.g., a
+  rightsizing recommendation for an underutilized VM, IAM role
+  recommendations, etc
   
   
   Attributes:
@@ -1089,8 +1091,8 @@ Recommendation = _reflection.GeneratedProtocolMessageType(
           ``primary_impact.category`` are introduced. See the
           Recommenders section to see a list of subtypes for a given
           Recommender.  Examples: For recommender =
-          “google.iam.policy.Recommender”, recommender_subtype can be
-          one of “REMOVE_ROLE”/“REPLACE_ROLE”
+          "google.iam.policy.Recommender", recommender\_subtype can be
+          one of "REMOVE\_ROLE"/"REPLACE\_ROLE"
       last_refresh_time:
           Last time this recommendation was refreshed by the system that
           created it in the first place.
@@ -1108,20 +1110,21 @@ Recommendation = _reflection.GeneratedProtocolMessageType(
           Information for state. Contains state and metadata.
       etag:
           Fingerprint of the Recommendation. Provides optimistic locking
-          when updating states.
+          when updating states.  .. [1]    a-z0-9  .. [2]    a-z0-9  ..
+          [3]    a-z0-9
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.Recommendation)
-    },
+    ),
 )
 _sym_db.RegisterMessage(Recommendation)
 
 RecommendationContent = _reflection.GeneratedProtocolMessageType(
     "RecommendationContent",
     (_message.Message,),
-    {
-        "DESCRIPTOR": _RECOMMENDATIONCONTENT,
-        "__module__": "google.cloud.recommender_v1beta1.proto.recommendation_pb2",
-        "__doc__": """Contains what resources are changing and how they are
+    dict(
+        DESCRIPTOR=_RECOMMENDATIONCONTENT,
+        __module__="google.cloud.recommender_v1beta1.proto.recommendation_pb2",
+        __doc__="""Contains what resources are changing and how they are
   changing.
   
   
@@ -1132,17 +1135,17 @@ RecommendationContent = _reflection.GeneratedProtocolMessageType(
           to be performed atomically and in an order.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.RecommendationContent)
-    },
+    ),
 )
 _sym_db.RegisterMessage(RecommendationContent)
 
 OperationGroup = _reflection.GeneratedProtocolMessageType(
     "OperationGroup",
     (_message.Message,),
-    {
-        "DESCRIPTOR": _OPERATIONGROUP,
-        "__module__": "google.cloud.recommender_v1beta1.proto.recommendation_pb2",
-        "__doc__": """Group of operations that need to be performed atomically.
+    dict(
+        DESCRIPTOR=_OPERATIONGROUP,
+        __module__="google.cloud.recommender_v1beta1.proto.recommendation_pb2",
+        __doc__="""Group of operations that need to be performed atomically.
   
   
   Attributes:
@@ -1152,35 +1155,35 @@ OperationGroup = _reflection.GeneratedProtocolMessageType(
           in the order they appear.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.OperationGroup)
-    },
+    ),
 )
 _sym_db.RegisterMessage(OperationGroup)
 
 Operation = _reflection.GeneratedProtocolMessageType(
     "Operation",
     (_message.Message,),
-    {
-        "PathFiltersEntry": _reflection.GeneratedProtocolMessageType(
+    dict(
+        PathFiltersEntry=_reflection.GeneratedProtocolMessageType(
             "PathFiltersEntry",
             (_message.Message,),
-            {
-                "DESCRIPTOR": _OPERATION_PATHFILTERSENTRY,
-                "__module__": "google.cloud.recommender_v1beta1.proto.recommendation_pb2"
+            dict(
+                DESCRIPTOR=_OPERATION_PATHFILTERSENTRY,
+                __module__="google.cloud.recommender_v1beta1.proto.recommendation_pb2"
                 # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.Operation.PathFiltersEntry)
-            },
+            ),
         ),
-        "PathValueMatchersEntry": _reflection.GeneratedProtocolMessageType(
+        PathValueMatchersEntry=_reflection.GeneratedProtocolMessageType(
             "PathValueMatchersEntry",
             (_message.Message,),
-            {
-                "DESCRIPTOR": _OPERATION_PATHVALUEMATCHERSENTRY,
-                "__module__": "google.cloud.recommender_v1beta1.proto.recommendation_pb2"
+            dict(
+                DESCRIPTOR=_OPERATION_PATHVALUEMATCHERSENTRY,
+                __module__="google.cloud.recommender_v1beta1.proto.recommendation_pb2"
                 # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.Operation.PathValueMatchersEntry)
-            },
+            ),
         ),
-        "DESCRIPTOR": _OPERATION,
-        "__module__": "google.cloud.recommender_v1beta1.proto.recommendation_pb2",
-        "__doc__": """Contains an operation for a resource loosely based on the
+        DESCRIPTOR=_OPERATION,
+        __module__="google.cloud.recommender_v1beta1.proto.recommendation_pb2",
+        __doc__="""Contains an operation for a resource loosely based on the
   JSON-PATCH format with support for:
   
   -  Custom filters for describing partial array patch.
@@ -1194,8 +1197,8 @@ Operation = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       action:
-          Type of this operation. Contains one of ‘and’, ‘remove’,
-          ‘replace’, ‘move’, ‘copy’, ‘test’ and ‘custom’ operations.
+          Type of this operation. Contains one of 'and', 'remove',
+          'replace', 'move', 'copy', 'test' and 'custom' operations.
           This field is case-insensitive and always populated.
       resource_type:
           Type of GCP resource being modified/tested. This field is
@@ -1208,52 +1211,52 @@ Operation = _reflection.GeneratedProtocolMessageType(
           //cloudresourcemanager.googleapis.com/projects/foo.
       path:
           Path to the target field being operated on. If the operation
-          is at the resource level, then path should be “/”. This field
+          is at the resource level, then path should be "/". This field
           is always populated.
       source_resource:
-          Can be set with action ‘copy’ to copy resource configuration
+          Can be set with action 'copy' to copy resource configuration
           across different resources of the same type. Example: A
-          resource clone can be done via action = ‘copy’, path = “/”,
-          from = “/”, source_resource = and resource_name = . This field
-          is empty for all other values of ``action``.
+          resource clone can be done via action = 'copy', path = "/",
+          from = "/", source\_resource = and resource\_name = . This
+          field is empty for all other values of ``action``.
       source_path:
-          Can be set with action ‘copy’ or ‘move’ to indicate the source
-          field within resource or source_resource, ignored if provided
+          Can be set with action 'copy' or 'move' to indicate the source
+          field within resource or source\_resource, ignored if provided
           for other operation types.
       path_value:
           One of the fields in the following block will be set and
-          intend to describe a value for ‘path’ field.
+          intend to describe a value for 'path' field.
       value:
           Value for the ``path`` field. Will be set for
-          actions:‘add’/‘replace’. Maybe set for action: ‘test’. Either
-          this or ``value_matcher`` will be set for ‘test’ operation. An
+          actions:'add'/'replace'. Maybe set for action: 'test'. Either
+          this or ``value_matcher`` will be set for 'test' operation. An
           exact match must be performed.
       value_matcher:
-          Can be set for action ‘test’ for advanced matching for the
-          value of ‘path’ field. Either this or ``value`` will be set
-          for ‘test’ operation.
+          Can be set for action 'test' for advanced matching for the
+          value of 'path' field. Either this or ``value`` will be set
+          for 'test' operation.
       path_filters:
           Set of filters to apply if ``path`` refers to array elements
           or nested array elements in order to narrow down to a single
           unique element that is being tested/modified. This is intended
           to be an exact match per filter. To perform advanced matching,
-          use path_value_matchers.  -  Example: ``{ “/versions/*/name" :
-          "it-123"    "/versions/*/targetSize/percent”: 20 }`` -  Example:
-          { “/bindings/*/role": "roles/admin" "/bindings/*/condition”
-          : null } -  Example: ``{ "/bindings/*/role“:”roles/admin"
-          “/bindings/*/members/*” :    [“x@google.com”, “y@google.com”]
-          }`` When both path_filters and    path_value_matchers are set,
-          an implicit AND must be performed.
+          use path\_value\_matchers.  -  Example: ``{ "/versions/*/name" :
+          "it-123"    "/versions/*/targetSize/percent": 20 }`` -  Example:
+          { "/bindings/*/role": "roles/admin" "/bindings/*/condition"
+          : null } -  Example: ``{ "/bindings/*/role": "roles/admin"
+          "/bindings/*/members/\*"    : ["x@google.com", "y@google.com"]
+          }`` When both path\_filters and    path\_value\_matchers are
+          set, an implicit AND must be performed.
       path_value_matchers:
-          Similar to path_filters, this contains set of filters to apply
-          if ``path`` field referes to array elements. This is meant to
-          support value matching beyond exact match. To perform exact
-          match, use path_filters. When both path_filters and
-          path_value_matchers are set, an implicit AND must be
+          Similar to path\_filters, this contains set of filters to
+          apply if ``path`` field referes to array elements. This is
+          meant to support value matching beyond exact match. To perform
+          exact match, use path\_filters. When both path\_filters and
+          path\_value\_matchers are set, an implicit AND must be
           performed.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.Operation)
-    },
+    ),
 )
 _sym_db.RegisterMessage(Operation)
 _sym_db.RegisterMessage(Operation.PathFiltersEntry)
@@ -1262,10 +1265,10 @@ _sym_db.RegisterMessage(Operation.PathValueMatchersEntry)
 ValueMatcher = _reflection.GeneratedProtocolMessageType(
     "ValueMatcher",
     (_message.Message,),
-    {
-        "DESCRIPTOR": _VALUEMATCHER,
-        "__module__": "google.cloud.recommender_v1beta1.proto.recommendation_pb2",
-        "__doc__": """Contains various matching options for values for a GCP
+    dict(
+        DESCRIPTOR=_VALUEMATCHER,
+        __module__="google.cloud.recommender_v1beta1.proto.recommendation_pb2",
+        __doc__="""Contains various matching options for values for a GCP
   resource field.
   
   
@@ -1277,17 +1280,17 @@ ValueMatcher = _reflection.GeneratedProtocolMessageType(
           with RE2::FullMatch
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.ValueMatcher)
-    },
+    ),
 )
 _sym_db.RegisterMessage(ValueMatcher)
 
 CostProjection = _reflection.GeneratedProtocolMessageType(
     "CostProjection",
     (_message.Message,),
-    {
-        "DESCRIPTOR": _COSTPROJECTION,
-        "__module__": "google.cloud.recommender_v1beta1.proto.recommendation_pb2",
-        "__doc__": """Contains metadata about how much money a recommendation
+    dict(
+        DESCRIPTOR=_COSTPROJECTION,
+        __module__="google.cloud.recommender_v1beta1.proto.recommendation_pb2",
+        __doc__="""Contains metadata about how much money a recommendation
   can save or incur.
   
   
@@ -1301,17 +1304,17 @@ CostProjection = _reflection.GeneratedProtocolMessageType(
           Duration for which this cost applies.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.CostProjection)
-    },
+    ),
 )
 _sym_db.RegisterMessage(CostProjection)
 
 Impact = _reflection.GeneratedProtocolMessageType(
     "Impact",
     (_message.Message,),
-    {
-        "DESCRIPTOR": _IMPACT,
-        "__module__": "google.cloud.recommender_v1beta1.proto.recommendation_pb2",
-        "__doc__": """Contains the impact a recommendation can have for a given
+    dict(
+        DESCRIPTOR=_IMPACT,
+        __module__="google.cloud.recommender_v1beta1.proto.recommendation_pb2",
+        __doc__="""Contains the impact a recommendation can have for a given
   category.
   
   
@@ -1324,26 +1327,26 @@ Impact = _reflection.GeneratedProtocolMessageType(
           Use with CategoryType.COST
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.Impact)
-    },
+    ),
 )
 _sym_db.RegisterMessage(Impact)
 
 RecommendationStateInfo = _reflection.GeneratedProtocolMessageType(
     "RecommendationStateInfo",
     (_message.Message,),
-    {
-        "StateMetadataEntry": _reflection.GeneratedProtocolMessageType(
+    dict(
+        StateMetadataEntry=_reflection.GeneratedProtocolMessageType(
             "StateMetadataEntry",
             (_message.Message,),
-            {
-                "DESCRIPTOR": _RECOMMENDATIONSTATEINFO_STATEMETADATAENTRY,
-                "__module__": "google.cloud.recommender_v1beta1.proto.recommendation_pb2"
+            dict(
+                DESCRIPTOR=_RECOMMENDATIONSTATEINFO_STATEMETADATAENTRY,
+                __module__="google.cloud.recommender_v1beta1.proto.recommendation_pb2"
                 # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.RecommendationStateInfo.StateMetadataEntry)
-            },
+            ),
         ),
-        "DESCRIPTOR": _RECOMMENDATIONSTATEINFO,
-        "__module__": "google.cloud.recommender_v1beta1.proto.recommendation_pb2",
-        "__doc__": """Information for state. Contains state and metadata.
+        DESCRIPTOR=_RECOMMENDATIONSTATEINFO,
+        __module__="google.cloud.recommender_v1beta1.proto.recommendation_pb2",
+        __doc__="""Information for state. Contains state and metadata.
   
   
   Attributes:
@@ -1354,7 +1357,7 @@ RecommendationStateInfo = _reflection.GeneratedProtocolMessageType(
           automations systems.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1beta1.RecommendationStateInfo)
-    },
+    ),
 )
 _sym_db.RegisterMessage(RecommendationStateInfo)
 _sym_db.RegisterMessage(RecommendationStateInfo.StateMetadataEntry)
