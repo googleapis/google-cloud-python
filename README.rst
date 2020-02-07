@@ -260,7 +260,7 @@ The following client libraries have **alpha** support:
 .. _Trace Documentation: https://googleapis.dev/python/cloudtrace/latest
 
 .. _Grafeas: https://pypi.org/project/grafeas/
-.. _Grafeas README: https://github.com/googleapis/google-cloud-python/tree/master/grafeas
+.. _Grafeas README: https://github.com/googleapis/python-grafeas#python-client-for-grafeas-api-alpha
 .. _Grafeas Documentation: https://googleapis.dev/python/grafeas/latest
 
 .. _Stackdriver Error Reporting: https://pypi.org/project/google-cloud-error-reporting/
