@@ -264,7 +264,7 @@ The following client libraries have **alpha** support:
 .. _Grafeas Documentation: https://googleapis.dev/python/grafeas/latest
 
 .. _Stackdriver Error Reporting: https://pypi.org/project/google-cloud-error-reporting/
-.. _Error Reporting README: https://github.com/googleapis/google-cloud-python/tree/master/error_reporting
+.. _Error Reporting README: https://github.com/googleapis/python-error-reporting#python-client-for-stackdriver-error-reporting
 .. _Error Reporting Documentation: https://googleapis.dev/python/clouderrorreporting/latest
 
 .. _Stackdriver Monitoring: https://pypi.org/project/google-cloud-monitoring/
