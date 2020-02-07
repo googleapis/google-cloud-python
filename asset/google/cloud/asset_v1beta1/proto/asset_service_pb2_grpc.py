@@ -52,6 +52,8 @@ class AssetServiceServicer(object):
     non-delete or deleted status.
     For IAM_POLICY content, this API outputs history when the asset and its
     attached IAM POLICY both exist. This can create gaps in the output history.
+    If a specified asset does not exist, this API returns an INVALID_ARGUMENT
+    error.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

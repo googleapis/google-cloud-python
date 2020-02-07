@@ -16,11 +16,11 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
 from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.cloud.asset_v1p1beta1.proto import (
     assets_pb2 as google_dot_cloud_dot_asset__v1p1beta1_dot_proto_dot_assets__pb2,
 )
-from google.api import client_pb2 as google_dot_api_dot_client__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -31,13 +31,13 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n com.google.cloud.asset.v1p1beta1B\021AssetServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/asset/v1p1beta1;asset\252\002\034Google.Cloud.Asset.V1P1Beta1\312\002\034Google\\Cloud\\Asset\\V1p1beta1"
     ),
     serialized_pb=_b(
-        '\n6google/cloud/asset_v1p1beta1/proto/asset_service.proto\x12\x1cgoogle.cloud.asset.v1p1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a/google/cloud/asset_v1p1beta1/proto/assets.proto\x1a\x17google/api/client.proto"\x8b\x01\n\x16SearchResourcesRequest\x12\x12\n\x05scope\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x12\n\x05query\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x18\n\x0b\x61sset_types\x18\x03 \x03(\tB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x04 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x05 \x01(\tB\x03\xe0\x41\x01"{\n\x17SearchResourcesResponse\x12G\n\x07results\x18\x01 \x03(\x0b\x32\x36.google.cloud.asset.v1p1beta1.StandardResourceMetadata\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"s\n\x18SearchIamPoliciesRequest\x12\x12\n\x05scope\x18\x04 \x01(\tB\x03\xe0\x41\x02\x12\x12\n\x05query\x18\x01 \x01(\tB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x02 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x03 \x01(\tB\x03\xe0\x41\x01"z\n\x19SearchIamPoliciesResponse\x12\x44\n\x07results\x18\x01 \x03(\x0b\x32\x33.google.cloud.asset.v1p1beta1.IamPolicySearchResult\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x8e\x01\n\x19SearchAllResourcesRequest\x12\x12\n\x05scope\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x12\n\x05query\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x18\n\x0b\x61sset_types\x18\x03 \x03(\tB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x04 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x05 \x01(\tB\x03\xe0\x41\x01"~\n\x1aSearchAllResourcesResponse\x12G\n\x07results\x18\x01 \x03(\x0b\x32\x36.google.cloud.asset.v1p1beta1.StandardResourceMetadata\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"v\n\x1bSearchAllIamPoliciesRequest\x12\x12\n\x05scope\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x12\n\x05query\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x03 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x04 \x01(\tB\x03\xe0\x41\x01"}\n\x1cSearchAllIamPoliciesResponse\x12\x44\n\x07results\x18\x01 \x03(\x0b\x32\x33.google.cloud.asset.v1p1beta1.IamPolicySearchResult\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t2\xb5\x06\n\x0c\x41ssetService\x12\xa3\x01\n\x0fSearchResources\x12\x34.google.cloud.asset.v1p1beta1.SearchResourcesRequest\x1a\x35.google.cloud.asset.v1p1beta1.SearchResourcesResponse"#\x82\xd3\xe4\x93\x02\x1d\x12\x1b/v1p1beta1/resources:search\x12\xab\x01\n\x11SearchIamPolicies\x12\x36.google.cloud.asset.v1p1beta1.SearchIamPoliciesRequest\x1a\x37.google.cloud.asset.v1p1beta1.SearchIamPoliciesResponse"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1p1beta1/iamPolicies:search\x12\xbb\x01\n\x12SearchAllResources\x12\x37.google.cloud.asset.v1p1beta1.SearchAllResourcesRequest\x1a\x38.google.cloud.asset.v1p1beta1.SearchAllResourcesResponse"2\x82\xd3\xe4\x93\x02,\x12*/v1p1beta1/{scope=*/*}/resources:searchAll\x12\xc3\x01\n\x14SearchAllIamPolicies\x12\x39.google.cloud.asset.v1p1beta1.SearchAllIamPoliciesRequest\x1a:.google.cloud.asset.v1p1beta1.SearchAllIamPoliciesResponse"4\x82\xd3\xe4\x93\x02.\x12,/v1p1beta1/{scope=*/*}/iamPolicies:searchAll\x1aM\xca\x41\x19\x63loudasset.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xb8\x01\n com.google.cloud.asset.v1p1beta1B\x11\x41ssetServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/asset/v1p1beta1;asset\xaa\x02\x1cGoogle.Cloud.Asset.V1P1Beta1\xca\x02\x1cGoogle\\Cloud\\Asset\\V1p1beta1b\x06proto3'
+        '\n6google/cloud/asset_v1p1beta1/proto/asset_service.proto\x12\x1cgoogle.cloud.asset.v1p1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a/google/cloud/asset_v1p1beta1/proto/assets.proto"\x8b\x01\n\x16SearchResourcesRequest\x12\x12\n\x05scope\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x12\n\x05query\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x18\n\x0b\x61sset_types\x18\x03 \x03(\tB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x04 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x05 \x01(\tB\x03\xe0\x41\x01"{\n\x17SearchResourcesResponse\x12G\n\x07results\x18\x01 \x03(\x0b\x32\x36.google.cloud.asset.v1p1beta1.StandardResourceMetadata\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"s\n\x18SearchIamPoliciesRequest\x12\x12\n\x05scope\x18\x04 \x01(\tB\x03\xe0\x41\x02\x12\x12\n\x05query\x18\x01 \x01(\tB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x02 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x03 \x01(\tB\x03\xe0\x41\x01"z\n\x19SearchIamPoliciesResponse\x12\x44\n\x07results\x18\x01 \x03(\x0b\x32\x33.google.cloud.asset.v1p1beta1.IamPolicySearchResult\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x8e\x01\n\x19SearchAllResourcesRequest\x12\x12\n\x05scope\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x12\n\x05query\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x18\n\x0b\x61sset_types\x18\x03 \x03(\tB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x04 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x05 \x01(\tB\x03\xe0\x41\x01"~\n\x1aSearchAllResourcesResponse\x12G\n\x07results\x18\x01 \x03(\x0b\x32\x36.google.cloud.asset.v1p1beta1.StandardResourceMetadata\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"v\n\x1bSearchAllIamPoliciesRequest\x12\x12\n\x05scope\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x12\n\x05query\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x03 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x04 \x01(\tB\x03\xe0\x41\x01"}\n\x1cSearchAllIamPoliciesResponse\x12\x44\n\x07results\x18\x01 \x03(\x0b\x32\x33.google.cloud.asset.v1p1beta1.IamPolicySearchResult\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t2\x85\x07\n\x0c\x41ssetService\x12\xbd\x01\n\x0fSearchResources\x12\x34.google.cloud.asset.v1p1beta1.SearchResourcesRequest\x1a\x35.google.cloud.asset.v1p1beta1.SearchResourcesResponse"=\x82\xd3\xe4\x93\x02\x1d\x12\x1b/v1p1beta1/resources:search\xda\x41\x17scope,query,asset_types\x12\xb9\x01\n\x11SearchIamPolicies\x12\x36.google.cloud.asset.v1p1beta1.SearchIamPoliciesRequest\x1a\x37.google.cloud.asset.v1p1beta1.SearchIamPoliciesResponse"3\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1p1beta1/iamPolicies:search\xda\x41\x0bscope,query\x12\xd5\x01\n\x12SearchAllResources\x12\x37.google.cloud.asset.v1p1beta1.SearchAllResourcesRequest\x1a\x38.google.cloud.asset.v1p1beta1.SearchAllResourcesResponse"L\x82\xd3\xe4\x93\x02,\x12*/v1p1beta1/{scope=*/*}/resources:searchAll\xda\x41\x17scope,query,asset_types\x12\xd1\x01\n\x14SearchAllIamPolicies\x12\x39.google.cloud.asset.v1p1beta1.SearchAllIamPoliciesRequest\x1a:.google.cloud.asset.v1p1beta1.SearchAllIamPoliciesResponse"B\x82\xd3\xe4\x93\x02.\x12,/v1p1beta1/{scope=*/*}/iamPolicies:searchAll\xda\x41\x0bscope,query\x1aM\xca\x41\x19\x63loudasset.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xb8\x01\n com.google.cloud.asset.v1p1beta1B\x11\x41ssetServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/asset/v1p1beta1;asset\xaa\x02\x1cGoogle.Cloud.Asset.V1P1Beta1\xca\x02\x1cGoogle\\Cloud\\Asset\\V1p1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
         google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_cloud_dot_asset__v1p1beta1_dot_proto_dot_assets__pb2.DESCRIPTOR,
-        google_dot_api_dot_client__pb2.DESCRIPTOR,
     ],
 )
 
@@ -739,10 +739,12 @@ SearchResourcesRequest = _reflection.GeneratedProtocolMessageType(
           Optional. A list of asset types that this request searches
           for. If empty, it will search all the supported asset types.
       page_size:
-          Optional. The page size for search result pagination. Returned
-          results may be fewer than requested. The value of this field
-          is capped at 2000. If set to the zero value, server will pick
-          an appropriate default.
+          Optional. The page size for search result pagination. Page
+          size is capped at 500 even if a larger value is given. If set
+          to zero, server will pick an appropriate default. Returned
+          results may be fewer than requested. When this happens, there
+          could be more results as long as ``next_page_token`` is
+          returned.
       page_token:
           Optional. If present, then retrieve the next batch of results
           from the preceding call to this method. ``page_token`` must be
@@ -799,10 +801,12 @@ SearchIamPoliciesRequest = _reflection.GeneratedProtocolMessageType(
           "policy:myuser@mydomain.com" \* "policy:(myuser@mydomain.com
           viewer)"
       page_size:
-          Optional. The page size for search result pagination. Returned
-          results may be fewer than requested. The maximum is 2000. If
-          set to the zero value, the server will pick an appropriate
-          default.
+          Optional. The page size for search result pagination. Page
+          size is capped at 500 even if a larger value is given. If set
+          to zero, server will pick an appropriate default. Returned
+          results may be fewer than requested. When this happens, there
+          could be more results as long as ``next_page_token`` is
+          returned.
       page_token:
           Optional. If present, retrieve the next batch of results from
           the preceding call to this method. ``page_token`` must be the
@@ -861,10 +865,12 @@ SearchAllResourcesRequest = _reflection.GeneratedProtocolMessageType(
           Optional. A list of asset types that this request searches
           for. If empty, it will search all the supported asset types.
       page_size:
-          Optional. The page size for search result pagination. Returned
-          results may be fewer than requested. The value of this field
-          is capped at 2000. If set to the zero value, server will pick
-          an appropriate default.
+          Optional. The page size for search result pagination. Page
+          size is capped at 500 even if a larger value is given. If set
+          to zero, server will pick an appropriate default. Returned
+          results may be fewer than requested. When this happens, there
+          could be more results as long as ``next_page_token`` is
+          returned.
       page_token:
           Optional. If present, then retrieve the next batch of results
           from the preceding call to this method. ``page_token`` must be
@@ -921,10 +927,12 @@ SearchAllIamPoliciesRequest = _reflection.GeneratedProtocolMessageType(
           "policy:myuser@mydomain.com" \* "policy:(myuser@mydomain.com
           viewer)"
       page_size:
-          Optional. The page size for search result pagination. Returned
-          results may be fewer than requested. The maximum is 2000. If
-          set to the zero value, the server will pick an appropriate
-          default.
+          Optional. The page size for search result pagination. Page
+          size is capped at 500 even if a larger value is given. If set
+          to zero, server will pick an appropriate default. Returned
+          results may be fewer than requested. When this happens, there
+          could be more results as long as ``next_page_token`` is
+          returned.
       page_token:
           Optional. If present, retrieve the next batch of results from
           the preceding call to this method. ``page_token`` must be the
@@ -991,7 +999,7 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
         "\312A\031cloudasset.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform"
     ),
     serialized_start=1254,
-    serialized_end=2075,
+    serialized_end=2155,
     methods=[
         _descriptor.MethodDescriptor(
             name="SearchResources",
@@ -1001,7 +1009,7 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
             input_type=_SEARCHRESOURCESREQUEST,
             output_type=_SEARCHRESOURCESRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002\035\022\033/v1p1beta1/resources:search"
+                "\202\323\344\223\002\035\022\033/v1p1beta1/resources:search\332A\027scope,query,asset_types"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1012,7 +1020,7 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
             input_type=_SEARCHIAMPOLICIESREQUEST,
             output_type=_SEARCHIAMPOLICIESRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002\037\022\035/v1p1beta1/iamPolicies:search"
+                "\202\323\344\223\002\037\022\035/v1p1beta1/iamPolicies:search\332A\013scope,query"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1023,7 +1031,7 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
             input_type=_SEARCHALLRESOURCESREQUEST,
             output_type=_SEARCHALLRESOURCESRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002,\022*/v1p1beta1/{scope=*/*}/resources:searchAll"
+                "\202\323\344\223\002,\022*/v1p1beta1/{scope=*/*}/resources:searchAll\332A\027scope,query,asset_types"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1034,7 +1042,7 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
             input_type=_SEARCHALLIAMPOLICIESREQUEST,
             output_type=_SEARCHALLIAMPOLICIESRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002.\022,/v1p1beta1/{scope=*/*}/iamPolicies:searchAll"
+                "\202\323\344\223\002.\022,/v1p1beta1/{scope=*/*}/iamPolicies:searchAll\332A\013scope,query"
             ),
         ),
     ],

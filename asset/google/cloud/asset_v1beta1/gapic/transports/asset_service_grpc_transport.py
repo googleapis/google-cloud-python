@@ -139,7 +139,8 @@ class AssetServiceGrpcTransport(object):
         RESOURCE content, this API outputs history with asset in both non-delete
         or deleted status. For IAM\_POLICY content, this API outputs history
         when the asset and its attached IAM POLICY both exist. This can create
-        gaps in the output history.
+        gaps in the output history. If a specified asset does not exist, this
+        API returns an INVALID\_ARGUMENT error.
 
         Returns:
             Callable: A callable which accepts the appropriate

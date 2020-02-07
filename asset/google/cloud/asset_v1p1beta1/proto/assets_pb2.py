@@ -27,7 +27,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n com.google.cloud.asset.v1p1beta1B\nAssetProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/asset/v1p1beta1;asset\370\001\001\252\002\034Google.Cloud.Asset.V1P1Beta1\312\002\034Google\\Cloud\\Asset\\V1p1beta1"
     ),
     serialized_pb=_b(
-        '\n/google/cloud/asset_v1p1beta1/proto/assets.proto\x12\x1cgoogle.cloud.asset.v1p1beta1\x1a\x1agoogle/iam/v1/policy.proto\x1a\x1cgoogle/api/annotations.proto"x\n\x18StandardResourceMetadata\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nasset_type\x18\x02 \x01(\t\x12\x0f\n\x07project\x18\x03 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x04 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t"a\n\x15IamPolicySearchResult\x12\x10\n\x08resource\x18\x01 \x01(\t\x12\x0f\n\x07project\x18\x03 \x01(\t\x12%\n\x06policy\x18\x04 \x01(\x0b\x32\x15.google.iam.v1.PolicyB\xb4\x01\n com.google.cloud.asset.v1p1beta1B\nAssetProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/asset/v1p1beta1;asset\xf8\x01\x01\xaa\x02\x1cGoogle.Cloud.Asset.V1P1Beta1\xca\x02\x1cGoogle\\Cloud\\Asset\\V1p1beta1b\x06proto3'
+        '\n/google/cloud/asset_v1p1beta1/proto/assets.proto\x12\x1cgoogle.cloud.asset.v1p1beta1\x1a\x1agoogle/iam/v1/policy.proto\x1a\x1cgoogle/api/annotations.proto"\x97\x01\n\x18StandardResourceMetadata\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nasset_type\x18\x02 \x01(\t\x12\x0f\n\x07project\x18\x03 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x04 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t\x12\x1d\n\x15\x61\x64\x64itional_attributes\x18\n \x03(\t"a\n\x15IamPolicySearchResult\x12\x10\n\x08resource\x18\x01 \x01(\t\x12\x0f\n\x07project\x18\x03 \x01(\t\x12%\n\x06policy\x18\x04 \x01(\x0b\x32\x15.google.iam.v1.PolicyB\xb4\x01\n com.google.cloud.asset.v1p1beta1B\nAssetProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/asset/v1p1beta1;asset\xf8\x01\x01\xaa\x02\x1cGoogle.Cloud.Asset.V1P1Beta1\xca\x02\x1cGoogle\\Cloud\\Asset\\V1p1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,
@@ -133,6 +133,24 @@ _STANDARDRESOURCEMETADATA = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="additional_attributes",
+            full_name="google.cloud.asset.v1p1beta1.StandardResourceMetadata.additional_attributes",
+            index=5,
+            number=10,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -142,8 +160,8 @@ _STANDARDRESOURCEMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=139,
-    serialized_end=259,
+    serialized_start=140,
+    serialized_end=291,
 )
 
 
@@ -217,8 +235,8 @@ _IAMPOLICYSEARCHRESULT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=261,
-    serialized_end=358,
+    serialized_start=293,
+    serialized_end=390,
 )
 
 _IAMPOLICYSEARCHRESULT.fields_by_name[
@@ -256,6 +274,10 @@ StandardResourceMetadata = _reflection.GeneratedProtocolMessageType(
       description:
           One or more paragraphs of text description of this resource.
           Maximum length could be up to 1M bytes.
+      additional_attributes:
+          Additional searchable attributes of this resource.
+          Informational only. The exact set of attributes is subject to
+          change. For example: project id, DNS name etc.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.asset.v1p1beta1.StandardResourceMetadata)
     ),

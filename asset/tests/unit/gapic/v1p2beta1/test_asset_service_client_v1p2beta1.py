@@ -19,12 +19,8 @@
 import mock
 import pytest
 
-from google.rpc import status_pb2
-
 from google.cloud import asset_v1p2beta1
-from google.cloud.asset_v1p2beta1 import enums
 from google.cloud.asset_v1p2beta1.proto import asset_service_pb2
-from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
@@ -66,105 +62,6 @@ class CustomException(Exception):
 
 
 class TestAssetServiceClient(object):
-    def test_export_assets(self):
-        # Setup Expected Response
-        expected_response = {}
-        expected_response = asset_service_pb2.ExportAssetsResponse(**expected_response)
-        operation = operations_pb2.Operation(
-            name="operations/test_export_assets", done=True
-        )
-        operation.response.Pack(expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[operation])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = asset_v1p2beta1.AssetServiceClient()
-
-        # Setup Request
-        parent = "parent-995424086"
-        output_config = {}
-
-        response = client.export_assets(parent, output_config)
-        result = response.result()
-        assert expected_response == result
-
-        assert len(channel.requests) == 1
-        expected_request = asset_service_pb2.ExportAssetsRequest(
-            parent=parent, output_config=output_config
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_export_assets_exception(self):
-        # Setup Response
-        error = status_pb2.Status()
-        operation = operations_pb2.Operation(
-            name="operations/test_export_assets_exception", done=True
-        )
-        operation.error.CopyFrom(error)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[operation])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = asset_v1p2beta1.AssetServiceClient()
-
-        # Setup Request
-        parent = "parent-995424086"
-        output_config = {}
-
-        response = client.export_assets(parent, output_config)
-        exception = response.exception()
-        assert exception.errors[0] == error
-
-    def test_batch_get_assets_history(self):
-        # Setup Expected Response
-        expected_response = {}
-        expected_response = asset_service_pb2.BatchGetAssetsHistoryResponse(
-            **expected_response
-        )
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = asset_v1p2beta1.AssetServiceClient()
-
-        # Setup Request
-        parent = "parent-995424086"
-        asset_names = []
-        content_type = enums.ContentType.CONTENT_TYPE_UNSPECIFIED
-
-        response = client.batch_get_assets_history(parent, asset_names, content_type)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = asset_service_pb2.BatchGetAssetsHistoryRequest(
-            parent=parent, asset_names=asset_names, content_type=content_type
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_batch_get_assets_history_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = asset_v1p2beta1.AssetServiceClient()
-
-        # Setup request
-        parent = "parent-995424086"
-        asset_names = []
-        content_type = enums.ContentType.CONTENT_TYPE_UNSPECIFIED
-
-        with pytest.raises(CustomException):
-            client.batch_get_assets_history(parent, asset_names, content_type)
-
     def test_create_feed(self):
         # Setup Expected Response
         name = "name3373707"

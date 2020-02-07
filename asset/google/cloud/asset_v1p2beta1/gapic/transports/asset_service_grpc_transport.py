@@ -16,7 +16,6 @@
 
 
 import google.api_core.grpc_helpers
-import google.api_core.operations_v1
 
 from google.cloud.asset_v1p2beta1.proto import asset_service_pb2_grpc
 
@@ -76,13 +75,6 @@ class AssetServiceGrpcTransport(object):
             "asset_service_stub": asset_service_pb2_grpc.AssetServiceStub(channel)
         }
 
-        # Because this API includes a method that returns a
-        # long-running operation (proto: google.longrunning.Operation),
-        # instantiate an LRO client.
-        self._operations_client = google.api_core.operations_v1.OperationsClient(
-            channel
-        )
-
     @classmethod
     def create_channel(
         cls, address="cloudasset.googleapis.com:443", credentials=None, **kwargs
@@ -114,39 +106,6 @@ class AssetServiceGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return self._channel
-
-    @property
-    def export_assets(self):
-        """Return the gRPC stub for :meth:`AssetServiceClient.export_assets`.
-
-        Exports assets with time and resource types to a given Cloud Storage
-        location. The output format is newline-delimited JSON. This API
-        implements the ``google.longrunning.Operation`` API allowing you to keep
-        track of the export.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["asset_service_stub"].ExportAssets
-
-    @property
-    def batch_get_assets_history(self):
-        """Return the gRPC stub for :meth:`AssetServiceClient.batch_get_assets_history`.
-
-        Batch gets the update history of assets that overlap a time window. For
-        RESOURCE content, this API outputs history with asset in both non-delete
-        or deleted status. For IAM\_POLICY content, this API outputs history
-        when the asset and its attached IAM POLICY both exist. This can create
-        gaps in the output history.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["asset_service_stub"].BatchGetAssetsHistory
 
     @property
     def create_feed(self):
