@@ -51,15 +51,15 @@ The following client libraries have **GA** support:
 .. _Bigtable Documentation: https://googleapis.dev/python/bigtable/latest
 
 .. _Google Cloud Datastore: https://pypi.org/project/google-cloud-datastore/
-.. _Datastore README: https://github.com/googleapis/google-cloud-python/tree/master/datastore
+.. _Datastore README: https://github.com/googleapis/python-datastore
 .. _Datastore Documentation: https://googleapis.dev/python/datastore/latest
 
 .. _Google Cloud KMS: https://pypi.org/project/google-cloud-kms/
-.. _KMS README: https://github.com/googleapis/google-cloud-python/tree/master/kms
+.. _KMS README: https://github.com/googleapis/python-kms
 .. _KMS Documentation: https://googleapis.dev/python/cloudkms/latest
 
 .. _Google Cloud Natural Language: https://pypi.org/project/google-cloud-language/
-.. _Natural Language README: https://github.com/googleapis/google-cloud-python/tree/master/language
+.. _Natural Language README: https://github.com/googleapis/python-language
 .. _Natural Language Documentation: https://googleapis.dev/python/language/latest
 
 .. _Google Cloud Pub/Sub: https://pypi.org/project/google-cloud-pubsub/
@@ -79,7 +79,7 @@ The following client libraries have **GA** support:
 .. _Storage Documentation: https://googleapis.dev/python/storage/latest
 
 .. _Google Cloud Tasks: https://pypi.org/project/google-cloud-tasks/
-.. _Tasks README: https://github.com/googleapis/google-cloud-python/tree/master/tasks
+.. _Tasks README: https://github.com/googleapis/python-tasks
 .. _Tasks Documentation: https://googleapis.dev/python/cloudtasks/latest
 
 .. _Google Cloud Translation: https://pypi.org/project/google-cloud-translate/
@@ -87,7 +87,7 @@ The following client libraries have **GA** support:
 .. _Translation Documentation: https://googleapis.dev/python/translation/latest
 
 .. _Google Cloud Scheduler: https://pypi.org/project/google-cloud-scheduler/
-.. _Scheduler README: https://github.com/googleapis/google-cloud-python/tree/master/scheduler
+.. _Scheduler README: https://github.com/googleapis/python-scheduler
 .. _Scheduler Documentation: https://googleapis.dev/python/cloudscheduler/latest
 
 .. _Stackdriver Logging: https://pypi.org/project/google-cloud-logging/
@@ -112,7 +112,7 @@ The following client libraries have **beta** support:
 -  `Google Cloud Vision`_ (`Vision README`_, `Vision Documentation`_)
 
 .. _Google Cloud Asset: https://pypi.org/project/google-cloud-asset/
-.. _Asset README: https://github.com/googleapis/google-cloud-python/blob/master/asset
+.. _Asset README: https://github.com/googleapis/python-asset
 .. _Asset Documentation: https://googleapis.dev/python/cloudasset/latest
 
 .. _Google Cloud Billing Budgets: https://pypi.org/project/google-cloud-billing-budgets/
@@ -163,9 +163,11 @@ The following client libraries have **alpha** support:
 -  `Google Cloud IoT`_ (`IoT README`_, `IoT Documentation`_)
 -  `Google Cloud Memorystore for Redis`_ (`Redis README`_, `Redis Documentation`_)
 -  `Google Phishing Protection`_ (`Phishing Protection README`_, `Phishing Protection Documentation`_)
+-  `Google Cloud OS Login`_ (`OS Login README`_, `OS Login Documentation`_)
 -  `Google Cloud Recommender`_ (`Recommender README`_, `Recommender Documentation`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_, `Resource Manager Documentation`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_, `Runtime Config Documentation`_)
+-  `Google Cloud Security Command Center`_ (`Security Center README`_, `Security Center Documentation`_)
 -  `Google Cloud Security Scanner`_ (`Security Scanner README`_ , `Security Scanner Documentation`_)
 -  `Google Cloud Talent`_ (`Talent README`_, `Talent Documentation`_)
 -  `Google Cloud Trace`_ (`Trace README`_, `Trace Documentation`_)
@@ -220,7 +222,7 @@ The following client libraries have **alpha** support:
 .. _IAM Documentation: https://googleapis.dev/python/iamcredentials/latest
 
 .. _Google Cloud IoT: https://pypi.org/project/google-cloud-iot/
-.. _IoT README: https://github.com/googleapis/google-cloud-python/tree/master/iot
+.. _IoT README: https://github.com/googleapis/python-iot/
 .. _IoT Documentation: https://googleapis.dev/python/cloudiot/latest
 
 .. _Google Cloud Memorystore for Redis: https://pypi.org/project/google-cloud-redis/
@@ -231,17 +233,25 @@ The following client libraries have **alpha** support:
 .. _Phishing Protection README: https://github.com/googleapis/python-phishingprotection
 .. _Phishing Protection Documentation: https://googleapis.dev/python/phishingprotection/latest
 
+.. _Google Cloud OS Login: https://pypi.org/project/google-cloud-oslogin/
+.. _OS Login README: https://github.com/googleapis/python-oslogin
+.. _OS Login Documentation: https://googleapis.dev/python/oslogin/latest
+
 .. _Google Cloud Recommender: https://pypi.org/project/google-cloud-recommender/
-.. _Recommender README: https://github.com/googleapis/google-cloud-python/tree/master/recommender
+.. _Recommender README: https://github.com/googleapis/python-recommender
 .. _Recommender Documentation: https://googleapis.dev/python/recommender/latest
 
 .. _Google Cloud Resource Manager: https://pypi.org/project/google-cloud-resource-manager/
-.. _Resource Manager README: https://github.com/googleapis/google-cloud-python/tree/master/resource_manager
+.. _Resource Manager README: https://github.com/googleapis/python-resource-manager
 .. _Resource Manager Documentation: https://googleapis.dev/python/cloudresourcemanager/latest
 
 .. _Google Cloud Runtime Configuration: https://pypi.org/project/google-cloud-runtimeconfig/
-.. _Runtime Config README: https://github.com/googleapis/google-cloud-python/tree/master/runtimeconfig
+.. _Runtime Config README: https://github.com/googleapis/python-runtimeconfig
 .. _Runtime Config Documentation: https://googleapis.dev/python/runtimeconfig/latest
+
+.. _Google Cloud Security Command Center: https://pypi.org/project/google-cloud-securitycenter/
+.. _Security Center README: https://github.com/googleapis/python-securitycenter
+.. _Security Center Documentation: https://googleapis.dev/python/securitycenter/latest/index.html
 
 .. _Google Cloud Security Scanner: https://pypi.org/project/google-cloud-websecurityscanner/
 .. _Security Scanner README: https://github.com/googleapis/google-cloud-python/blob/master/websecurityscanner
