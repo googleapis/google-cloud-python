@@ -39,15 +39,12 @@ class RemoteCall(object):
     def __init__(self, future, info):
         self.future = future
         self.info = info
-        self._callbacks = []
-
-        future.add_done_callback(self._finish)
 
     def __repr__(self):
         return self.info
 
     def exception(self):
-        """Calls :meth:`grpc.Future.exception` on attr:`future`."""
+        """Calls :meth:`grpc.Future.exception` on :attr:`future`."""
         # GRPC will actually raise FutureCancelledError.
         # We'll translate that to our own Cancelled exception and *return* it,
         # which is far more polite for a method that *returns exceptions*.
@@ -57,7 +54,7 @@ class RemoteCall(object):
             return exceptions.Cancelled()
 
     def result(self):
-        """Calls :meth:`grpc.Future.result` on attr:`future`."""
+        """Calls :meth:`grpc.Future.result` on :attr:`future`."""
         return self.future.result()
 
     def add_done_callback(self, callback):
@@ -67,19 +64,13 @@ class RemoteCall(object):
         Args:
             callback (Callable): The function to execute.
         """
-        if self.future.done():
-            callback(self)
-        else:
-            self._callbacks.append(callback)
+        remote = self
+
+        def wrapper(rpc):
+            return callback(remote)
+
+        self.future.add_done_callback(wrapper)
 
     def cancel(self):
         """Calls :meth:`grpc.Future.cancel` on attr:`cancel`."""
         return self.future.cancel()
-
-    def _finish(self, rpc):
-        """Called when remote future is finished.
-
-        Used to call our own done callbacks.
-        """
-        for callback in self._callbacks:
-            callback(self)
