@@ -43,7 +43,7 @@ The following client libraries have **GA** support:
 -  `Stackdriver Logging`_ (`Logging README`_, `Logging Documentation`_)
 
 .. _Google BigQuery: https://pypi.org/project/google-cloud-bigquery/
-.. _BigQuery README: https://github.com/googleapis/google-cloud-python/tree/master/bigquery
+.. _BigQuery README: https://github.com/googleapis/python-bigquery#python-client-for-google-bigquery
 .. _BigQuery Documentation: https://googleapis.dev/python/bigquery/latest
 
 .. _Google Cloud Bigtable: https://pypi.org/project/google-cloud-bigtable/
@@ -260,11 +260,11 @@ The following client libraries have **alpha** support:
 .. _Trace Documentation: https://googleapis.dev/python/cloudtrace/latest
 
 .. _Grafeas: https://pypi.org/project/grafeas/
-.. _Grafeas README: https://github.com/googleapis/google-cloud-python/tree/master/grafeas
+.. _Grafeas README: https://github.com/googleapis/python-grafeas#python-client-for-grafeas-api-alpha
 .. _Grafeas Documentation: https://googleapis.dev/python/grafeas/latest
 
 .. _Stackdriver Error Reporting: https://pypi.org/project/google-cloud-error-reporting/
-.. _Error Reporting README: https://github.com/googleapis/google-cloud-python/tree/master/error_reporting
+.. _Error Reporting README: https://github.com/googleapis/python-error-reporting#python-client-for-stackdriver-error-reporting
 .. _Error Reporting Documentation: https://googleapis.dev/python/clouderrorreporting/latest
 
 .. _Stackdriver Monitoring: https://pypi.org/project/google-cloud-monitoring/
