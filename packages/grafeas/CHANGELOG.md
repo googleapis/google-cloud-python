@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [0.4.0](https://www.github.com/googleapis/python-grafeas/compare/v0.3.0...v0.4.0) (2020-02-07)
+
+
+### Features
+
+* **grafeas:** add support for upgrade notes; add `cpe` and `last_scan_time` to `DiscoveryOccurrence`; add `source_update_time` to `VulnerabilityNote` (via synth) ([#10084](https://www.github.com/googleapis/python-grafeas/issues/10084)) ([2ee967b](https://www.github.com/googleapis/python-grafeas/commit/2ee967b916e663bacbda8c391528cdca3a1117fd))
+
+
+### Bug Fixes
+
+* **grafeas:** deprecate resource name helper methods (via synth) ([#9835](https://www.github.com/googleapis/python-grafeas/issues/9835)) ([a2c26d9](https://www.github.com/googleapis/python-grafeas/commit/a2c26d9b60194d305f8cb2b8ec4a4a33d7bf3686))
+
 ## 0.3.0
 
 10-10-2019 11:28 PDT
