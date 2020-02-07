@@ -3015,8 +3015,8 @@ Sentiment = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SENTIMENT,
         __module__="google.cloud.language_v1.proto.language_service_pb2",
-        __doc__="""Represents the feeling associated with the entire text or
-  entities in the text.
+        __doc__="""Represents the feeling associated with the entire text or entities in
+  the text.
   
   
   Attributes:
