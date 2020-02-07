@@ -1,0 +1,31 @@
+{
+  "updateTime": "2020-02-07T23:51:37.341539Z",
+  "sources": [
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "git@github.com:googleapis/googleapis.git",
+        "sha": "e7d8a694f4559201e6913f6610069cb08b39274e",
+        "internalRef": "293903652"
+      }
+    },
+    {
+      "template": {
+        "name": "python_split_library",
+        "origin": "synthtool.gcp",
+        "version": "2020.2.4"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "accessapproval",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "bazel"
+      }
+    }
+  ]
+}
