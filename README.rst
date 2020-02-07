@@ -43,7 +43,7 @@ The following client libraries have **GA** support:
 -  `Stackdriver Logging`_ (`Logging README`_, `Logging Documentation`_)
 
 .. _Google BigQuery: https://pypi.org/project/google-cloud-bigquery/
-.. _BigQuery README: https://github.com/googleapis/google-cloud-python/tree/master/bigquery
+.. _BigQuery README: https://github.com/googleapis/python-bigquery#python-client-for-google-bigquery
 .. _BigQuery Documentation: https://googleapis.dev/python/bigquery/latest
 
 .. _Google Cloud Bigtable: https://pypi.org/project/google-cloud-bigtable/
