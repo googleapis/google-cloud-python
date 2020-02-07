@@ -16,10 +16,9 @@ import time
 
 KIND = "SomeKind"
 OTHER_KIND = "OtherKind"
-OTHER_NAMESPACE = "other-namespace"
 
 
-def eventually(f, predicate, timeout=60, interval=2):
+def eventually(f, predicate, timeout=120, interval=2):
     """Runs `f` in a loop, hoping for eventual success.
 
     Some things we're trying to test in Datastore are eventually

@@ -28,7 +28,7 @@ import test_utils.system
 
 from google.cloud import ndb
 
-from tests.system import KIND, OTHER_NAMESPACE, eventually
+from tests.system import KIND, eventually
 
 
 def _length_equals(n):
@@ -278,12 +278,12 @@ def test_distinct_on(ds_entity):
 
 
 @pytest.mark.usefixtures("client_context")
-def test_namespace(dispose_of):
+def test_namespace(dispose_of, other_namespace):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
 
-    entity1 = SomeKind(foo=1, bar="a", namespace=OTHER_NAMESPACE)
+    entity1 = SomeKind(foo=1, bar="a", namespace=other_namespace)
     entity1.put()
     dispose_of(entity1.key._key)
 
@@ -293,12 +293,12 @@ def test_namespace(dispose_of):
 
     eventually(SomeKind.query().fetch, _length_equals(1))
 
-    query = SomeKind.query(namespace=OTHER_NAMESPACE)
+    query = SomeKind.query(namespace=other_namespace)
     results = eventually(query.fetch, _length_equals(1))
 
     assert results[0].foo == 1
     assert results[0].bar == "a"
-    assert results[0].key.namespace() == OTHER_NAMESPACE
+    assert results[0].key.namespace() == other_namespace
 
 
 @pytest.mark.usefixtures("client_context")

@@ -1,4 +1,5 @@
 import itertools
+import logging
 import os
 import uuid
 
@@ -10,7 +11,9 @@ from google.cloud import ndb
 
 from google.cloud.ndb import global_cache as global_cache_module
 
-from . import KIND, OTHER_KIND, OTHER_NAMESPACE
+from . import KIND, OTHER_KIND
+
+log = logging.getLogger(__name__)
 
 
 def _make_ds_client(namespace):
@@ -23,20 +26,12 @@ def _make_ds_client(namespace):
     return client
 
 
-def all_entities(client):
+def all_entities(client, other_namespace):
     return itertools.chain(
         client.query(kind=KIND).fetch(),
         client.query(kind=OTHER_KIND).fetch(),
-        client.query(namespace=OTHER_NAMESPACE).fetch(),
+        client.query(namespace=other_namespace).fetch(),
     )
-
-
-@pytest.fixture(scope="module", autouse=True)
-def initial_clean():
-    # Make sure database is in clean state at beginning of test run
-    client = _make_ds_client(None)
-    for entity in all_entities(client):
-        client.delete(entity.key)
 
 
 @pytest.fixture(scope="session")
@@ -55,17 +50,10 @@ def ds_client(namespace):
 
 
 @pytest.fixture
-def with_ds_client(ds_client, to_delete, deleted_keys):
-    # Make sure we're leaving database as clean as we found it after each test
-    results = [
-        entity
-        for entity in all_entities(ds_client)
-        if entity.key not in deleted_keys
-    ]
-    assert not results
-
+def with_ds_client(ds_client, to_delete, deleted_keys, other_namespace):
     yield ds_client
 
+    # Clean up after ourselves
     while to_delete:
         batch = to_delete[:500]
         ds_client.delete_multi(batch)
@@ -74,10 +62,13 @@ def with_ds_client(ds_client, to_delete, deleted_keys):
 
     not_deleted = [
         entity
-        for entity in all_entities(ds_client)
+        for entity in all_entities(ds_client, other_namespace)
         if entity.key not in deleted_keys
     ]
-    assert not not_deleted
+    if not_deleted:
+        log.warning(
+            "CLEAN UP: Entities not deleted from test: {}".format(not_deleted)
+        )
 
 
 @pytest.fixture
@@ -122,6 +113,11 @@ def dispose_of(with_ds_client, to_delete):
 
 @pytest.fixture
 def namespace():
+    return str(uuid.uuid4())
+
+
+@pytest.fixture
+def other_namespace():
     return str(uuid.uuid4())
 
 
