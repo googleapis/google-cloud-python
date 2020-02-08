@@ -6,7 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559757",
   "release_level": "beta",
   "language": "python",
-  "repo": "googleapis/google-cloud-python",
+  "repo": "googleapis/python-asset",
   "distribution_name": "google-cloud-asset",
   "api_id": "cloudasset.googleapis.com",
   "requires_billing": true
