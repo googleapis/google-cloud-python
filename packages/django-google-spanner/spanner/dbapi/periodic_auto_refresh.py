@@ -22,6 +22,8 @@ import time
 
 
 class PeriodicAutoRefresher:
+    TICK = 'tick'
+
     def __init__(self, period_secs=10, ping_fn=None):
         self.__period_secs = period_secs
         self.__done = threading.Event()
@@ -33,24 +35,6 @@ class PeriodicAutoRefresher:
         pth.start()
         self.__pth = pth
 
-    def __event_loop(self):
-        while True:
-            if not self.__still_running():
-                return
-
-            try:
-                callback, fn, args, kwargs = self.__Q.get(block=True, timeout=self.__period_secs)
-                res, exc = None, None
-
-                try:
-                    res = fn(*args, **kwargs)
-                except Exception as e:
-                    exc = e
-                finally:
-                    callback(res, exc)
-            except queue.Empty:
-                self.__ping_fn()
-
     def __still_running(self):
         return not self.__done.is_set()
 
@@ -58,8 +42,8 @@ class PeriodicAutoRefresher:
         self.__done.set()
         self.__pth.join()
 
-    def run_op(self, callback, fn, *args, **kwargs):
-        self.__Q.put_nowait((callback, fn, args, kwargs))
+    def record_tick(self):
+        self.__Q.put_nowait(self.TICK)
 
 
 class PeriodicAutoRefreshingTransaction:
@@ -73,58 +57,76 @@ class PeriodicAutoRefreshingTransaction:
 
     def __init__(self, txn):
         self.__txn = txn
+        self.__running = False
+        self.__lock = threading.Lock()
+        self.__period_secs = 8.5
 
     def begin(self):
         res = self.__txn.begin()
-        self.__par = PeriodicAutoRefresher(period_secs=8.5, ping_fn=self.__ping)
+        self.__running = True
+        self.__start_time = time.time()
+        self.__last_active_time = 0
+
+        pth = threading.Thread(target=self.__event_loop, name='periodic-auto-refresh')
+        pth.start()
+        self.__pth = pth
+
         return res
 
-    def __ping(self):
-        print('Pinging Cloud Spanner at %s' % time.time())
+    def __event_loop(self):
+        while True:
+            time.sleep(self.__period_secs)
+
+            self.__lock.acquire()
+            running = self.__running
+            diff_secs = time.time() - self.__last_active_time
+            if not running:
+                self.__lock.release()
+                return
+
+            if diff_secs >= self.__period_secs:
+                self.__ping_locked()
+            self.__lock.release()
+
+    def __ping_locked(self):
+        print('Pinging Cloud Spanner at %s' % time.time() - self.__start_time)
         res = self.__txn.execute_sql('SELECT 1')
         if res:
             for it in res:
                 _ = it
 
     def execute_sql(self, *args, **kwargs):
-        return self.__on_event_queue(self.__txn.execute_sql, *args, **kwargs)
+        self.__record_last_active_time()
+        return self.__txn.execute_sql(*args, **kwargs)
 
     def execute_update(self, *args, **kwargs):
-        return self.__on_event_queue(self.__txn.execute_update, *args, **kwargs)
+        self.__record_last_active_time()
+        return self.__txn.execute_update(*args, **kwargs)
 
     def commit(self):
-        res = self.__on_event_queue(self.__txn.commit)
-        self.__par.stop()
-        return res
+        self.__stop()
+        return self.__txn.commit()
 
     def rollback(self):
-        res = self.__on_event_queue(self.__txn.rollback)
-        self.__par.stop()
-        return res
+        self.__stop()
+        return self.__txn.rollback()
+
+    def __stop(self):
+        self.__lock.acquire()
+        self.__running = False
+        self.__lock.release()
+        self.__pth.join()
+
+    def __record_last_active_time(self):
+        self.__lock.acquire()
+        self.__last_active_time = time.time()
+        self.__lock.release()
 
     def was_committed_or_rolledback(self):
         # For now it is alright to access Transaction._rolled_back
         # even though it is unexported. We've filed a follow-up issue:
         #   https://github.com/googleapis/python-spanner/issues/13
-        return self.__on_event_queue(lambda txn: txn.committed or txn._rolled_back, self.__txn)
-
-    def __on_event_queue(self, fn, *args, **kwargs):
-        ready = threading.Event()
-        res_exc = {}
-
-        # Using a lambda here because a defined closure would have scope/visibility
-        # problems trying to set res_exc, even if we used 'global res_exc'. A lambda solves
-        # the issue due to different scoping.
-        # We have to propagate the underlying results and exceptions from
-        # the asynchronously running callback, converting it to a synchronous call.
-        callback = lambda in_res, in_exc: (res_exc.setdefault('res', in_res), res_exc.setdefault('exc', in_exc), ready.set())  # noqa
-
-        self.__par.run_op(callback, fn, *args, **kwargs)
-        ready.wait()
-
-        res, exc = res_exc['res'], res_exc['exc']
-
-        if exc:
-            raise exc
-
-        return res
+        self.__lock.acquire()
+        ok = self.__txn.committed or self.__txn._rolled_back
+        self.__lock.release()
+        return ok
