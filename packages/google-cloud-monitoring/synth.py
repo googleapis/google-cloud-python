@@ -93,7 +93,7 @@ s.replace(
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=97)
+templated_files = common.py_library(cov_level=92, system_test_dependencies=["test_utils"])
 s.move(templated_files)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
