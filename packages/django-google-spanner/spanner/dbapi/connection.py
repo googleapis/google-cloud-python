@@ -52,7 +52,10 @@ class Connection(object):
         self.__clear()
 
     def __can_commit_or_rollback(self):
-        return self.__txn and not self.__txn.was_committed_or_rolledback()
+        # For now it is alright to access Transaction._rolled_back
+        # even though it is unexported. We've filed a follow-up issue:
+        #   https://github.com/googleapis/python-spanner/issues/13
+        return self.__txn and not (self.__txn.committed or self.__txn._rolled_back)
 
     def commit(self):
         if self.__can_commit_or_rollback():
@@ -75,10 +78,21 @@ class Connection(object):
         self.run_prior_DDL_statements()
 
         if not self.__txn:
-            self.__txn = PeriodicAutoRefreshingTransaction(self.__sess.transaction())
+            if True:
+                self.__txn = self.__sess.transaction()
+            else:
+                # For now disabling the PeriodicAutoRefreshingTransaction as
+                # accesses are painfully slow. We'd rather have 10second idle
+                # timeouts than >=6X the overhead.
+                # TODO: investigate this idea more.
+                self.__txn = PeriodicAutoRefreshingTransaction(self.__sess.transaction())
+
             self.__txn.begin()
 
-        if self.__txn.was_committed_or_rolledback():
+        # For now it is alright to access Transaction._rolled_back
+        # even though it is unexported. We've filed a follow-up issue:
+        #   https://github.com/googleapis/python-spanner/issues/13
+        if self.__txn.committed or self.__txn._rolled_back:
             # Try again.
             self.__txn = None
             self.__txn = self.get_txn()
