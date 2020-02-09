@@ -13,7 +13,7 @@ install_requires = [
 ]
 
 setup(
-        name='spanner',
+        name='django-spanner',
         version='0.0.1',
         author='Google LLC',
         author_email='cloud-spanner-developers@googlegroups.com',

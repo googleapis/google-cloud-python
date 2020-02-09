@@ -1,18 +1,84 @@
-# spanner-orm
-Spanner Object Relation Mappers
+# django-spanner
+ORM plugin for using Cloud Spanner as a database for Django.
 
-![](./assets/spanner-django.png)
+## Table of contents
+- [Installing it](#installing-it)
+- [Using it](#using-it)
+    - [Format](#format)
+    - [Example](#example)
+- [Running tests](#running-tests)
+    - [Functional tests](#functional-tests)
+    - [Django integration tests](#django-integration-tests)
+- [Overall design](#overall-design)
+- [How it works](#how-it-works)
+- [dbapi](#dbapi)
 
 ## Installing it
 ```shell
-pip install .
+pip3 install --user .
 ```
+
+## Using it
+After [installing it](#installing-it), you'll need to edit your Django `settings.py` file
+and particularly the `DATABASES` section to point to an EXISTING database, of the format:
+
+### Format
+
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'spanner.django',
+        'PROJECT': '<project_id>',
+        'INSTANCE': '<instance_id>',
+        'NAME': '<database_name>',
+        # Only include this if you need to specify where to retrieve the
+        # service account JSON for the credentials to connect to Cloud Spanner.
+        'OPTIONS': {
+            'credentials_uri': '<credentials_uri>',
+        },
+    },
+}
+```
+
+### Example
+For example:
+
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'spanner.django',
+        'PROJECT': 'appdev-soda-spanner-staging', # Or the GCP project-id
+        'INSTANCE': 'django-dev1', # Or the Cloud Spanner instance
+        'DATABASE': 'db1', # Or the Cloud Spanner database to use
+    }
+}
+```
+
+## Running tests
+
+### Functional tests
+We have functional tests for individual components that can be run by
+```shell
+tox
+```
+
+### Django integration tests
+We run full integration tests with Django's test suite, on Travis Continuous Integration before every
+pull request is merged. Please see the file [.travis.yml](./.travis.yml)
+
+## How it works
+
+### Overall design
+![](./assets/spanner-django.png)
+
+### Internals
+![](./assets/spanner-django-internals.png)
 
 ## dbapi
 
-This package implements the Python Database Connectivity API https://www.python.org/dev/peps/pep-0249/
+The [spanner.dbapi](./spanner/django) package implements the [Python Database Connectivity v2 API](https://www.python.org/dev/peps/pep-0249/)
 
-with the following program:
+and can be used with the code snippet:
 
 ```python
 import time
@@ -85,24 +151,4 @@ description (Column(name='date', type_code=5), Column(name='isoyear', type_code=
 description (Column(name='date', type_code=5), Column(name='isoyear', type_code=2), Column(name='isoweek', type_code=2), Column(name='year', type_code=2), Column(name='week', type_code=2))
 [datetime.date(2016, 1, 9), 2016, 1, 2016, 1]
 Time spent  1.6195518970489502
-```
-
-### Django connection params
-
-Django's `DATABASES` setting should point to an existing database:
-
-```python
-DATABASES = {
-    'default': {
-        'ENGINE': 'spanner.django',
-        'PROJECT': '<project_id>',
-        'INSTANCE': '<instance_id>',
-        'NAME': '<database_name>',
-        # Only include this if you need to specify where to retrieve the
-        # service account JSON for the credentials to connect to Cloud Spanner.
-        'OPTIONS': {
-            'credentials_uri': '<credentials_uri>',
-        },
-    },
-}
 ```
