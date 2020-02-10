@@ -1712,6 +1712,14 @@ class Client(ClientWithProject):
         Similar to :meth:`load_table_from_uri`, this method creates, starts and
         returns a :class:`~google.cloud.bigquery.job.LoadJob`.
 
+        .. note::
+
+            Due to the way REPEATED fields are encoded in the ``parquet`` file
+            format, a mismatch with the existing table schema can occur, and
+            100% compatibility cannot be guaranteed for REPEATED fields.
+
+            https://github.com/googleapis/python-bigquery/issues/17
+
         Arguments:
             dataframe (pandas.DataFrame):
                 A :class:`~pandas.DataFrame` containing the data to load.
