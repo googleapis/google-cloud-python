@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+### [1.0.1](https://www.github.com/googleapis/python-ndb/compare/v1.0.0...v1.0.1) (2020-02-11)
+
+
+### Bug Fixes
+
+* attempt to have fewer transient errors in continuous integration ([#328](https://www.github.com/googleapis/python-ndb/issues/328)) ([0484c7a](https://www.github.com/googleapis/python-ndb/commit/0484c7abf5a1529db5fecf17ebdf0252eab8449e))
+* correct migration doc ([#313](https://www.github.com/googleapis/python-ndb/issues/313)) ([#317](https://www.github.com/googleapis/python-ndb/issues/317)) ([efce24f](https://www.github.com/googleapis/python-ndb/commit/efce24f16a877aecf78264946c22a2c9e3e97f53))
+* disuse `__slots__` in most places ([#330](https://www.github.com/googleapis/python-ndb/issues/330)) ([a8b723b](https://www.github.com/googleapis/python-ndb/commit/a8b723b992e7a91860f6a73c0ee0fd7071e574d3)), closes [#311](https://www.github.com/googleapis/python-ndb/issues/311)
+* don't set key on structured property entities ([#312](https://www.github.com/googleapis/python-ndb/issues/312)) ([63f3d94](https://www.github.com/googleapis/python-ndb/commit/63f3d943001d77c1ea0eb9b719e71ecff4eb5dd6)), closes [#281](https://www.github.com/googleapis/python-ndb/issues/281)
+* fix race condition in remote calls ([#329](https://www.github.com/googleapis/python-ndb/issues/329)) ([f550510](https://www.github.com/googleapis/python-ndb/commit/f5505100f065e71a14714369d8aef1f7b06ee838)), closes [#302](https://www.github.com/googleapis/python-ndb/issues/302)
+* make query options convert projection properties to strings ([#325](https://www.github.com/googleapis/python-ndb/issues/325)) ([d1a4800](https://www.github.com/googleapis/python-ndb/commit/d1a4800c5f53490e6956c11797bd3472ea404b5b))
+* use multiple batches of limited size for large operations ([#321](https://www.github.com/googleapis/python-ndb/issues/321)) ([8e69453](https://www.github.com/googleapis/python-ndb/commit/8e6945377a4635632d0c35b7a41daebe501d4f0f)), closes [#318](https://www.github.com/googleapis/python-ndb/issues/318)
+* use six string_types and integer_types for all isinstance() checks ([#323](https://www.github.com/googleapis/python-ndb/issues/323)) ([133acf8](https://www.github.com/googleapis/python-ndb/commit/133acf87b2a2efbfeae23ac9f629132cfb368a55))
+
 ## [1.0.0](https://www.github.com/googleapis/python-ndb/compare/v0.2.2...v1.0.0) (2020-01-30)
 
 
