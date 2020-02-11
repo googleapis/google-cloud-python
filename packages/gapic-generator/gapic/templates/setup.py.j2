@@ -25,11 +25,7 @@ setuptools.setup(
         'libcst >= 0.2.5',
     ],
     scripts=[
-        {% for proto in api.all_protos.values() -%}
-        {% for service in proto.services.values() -%}
-        'scripts/fixup_{{ service.module_name }}_keywords.py',
-        {% endfor -%}
-        {% endfor -%}
+        'scripts/fixup_keywords.py',
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
