@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dns/#history
 
+## [0.32.0](https://www.github.com/googleapis/python-dns/compare/v0.31.0...v0.32.0) (2020-02-11)
+
+
+### Features
+
+* **dns:** add 'client_options' argument to client ctor ([#9516](https://www.github.com/googleapis/python-dns/issues/9516)) ([ab31add](https://www.github.com/googleapis/python-dns/commit/ab31add5be9c49d441e0b5cdf48c5fb3cfc6fc19)), closes [#8475](https://www.github.com/googleapis/python-dns/issues/8475)
+
+
+### Bug Fixes
+
+* **dns:** update test assertion and core version pins ([#10096](https://www.github.com/googleapis/python-dns/issues/10096)) ([b6e7b49](https://www.github.com/googleapis/python-dns/commit/b6e7b49d1a5d30362eddec48b7e5f800c26bc59c))
+
 ## 0.31.0
 
 10-15-2019 06:42 PDT
