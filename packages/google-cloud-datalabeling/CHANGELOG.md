@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+## [0.4.0](https://www.github.com/googleapis/python-datalabeling/compare/v0.3.0...v0.4.0) (2020-01-31)
+
+
+### Features
+
+* **datalabeling:** undeprecate resource name helper methods (via synth) ([#10039](https://www.github.com/googleapis/python-datalabeling/issues/10039)) ([88f8090](https://www.github.com/googleapis/python-datalabeling/commit/88f809008ee6a709c02c78b1d93af779fab19adb))
+
+
+### Bug Fixes
+
+* **datalabeling:** deprecate resource name helper methods (via synth) ([#9832](https://www.github.com/googleapis/python-datalabeling/issues/9832)) ([e5f9021](https://www.github.com/googleapis/python-datalabeling/commit/e5f902154ebe7fcb139aa405babfe9993fd51319))
+
 ## 0.3.0
 
 10-10-2019 11:08 PDT
