@@ -18,7 +18,6 @@ Difficult to classify regression tests.
 import pickle
 
 import pytest
-import six
 
 from google.cloud import ndb
 
@@ -40,9 +39,6 @@ class PickleSomeKind(ndb.Model):
         return "SomeKind"
 
 
-@pytest.mark.skipif(
-    six.PY2, reason="Pickling doesn't work in Python 2. See: Issue #311"
-)
 @pytest.mark.usefixtures("client_context")
 def test_pickle_roundtrip_structured_property(dispose_of):
     """Regression test for Issue #281.

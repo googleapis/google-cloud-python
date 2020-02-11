@@ -388,8 +388,6 @@ class _NotEqualMixin(object):
 class IndexProperty(_NotEqualMixin):
     """Immutable object representing a single property in an index."""
 
-    __slots__ = ("_name", "_direction")
-
     @utils.positional(1)
     def __new__(cls, name, direction):
         instance = super(IndexProperty, cls).__new__(cls)
@@ -425,8 +423,6 @@ class IndexProperty(_NotEqualMixin):
 
 class Index(_NotEqualMixin):
     """Immutable object representing an index."""
-
-    __slots__ = ("_kind", "_properties", "_ancestor")
 
     @utils.positional(1)
     def __new__(cls, kind, properties, ancestor):
@@ -474,8 +470,6 @@ class Index(_NotEqualMixin):
 
 class IndexState(_NotEqualMixin):
     """Immutable object representing an index and its state."""
-
-    __slots__ = ("_definition", "_state", "_id")
 
     @utils.positional(1)
     def __new__(cls, definition, state, id):
@@ -526,8 +520,6 @@ class IndexState(_NotEqualMixin):
 
 
 class ModelAdapter(object):
-    __slots__ = ()
-
     def __new__(self, *args, **kwargs):
         raise exceptions.NoLongerImplementedError()
 
@@ -796,8 +788,6 @@ def make_connection(*args, **kwargs):
 class ModelAttribute(object):
     """Base for classes that implement a ``_fix_up()`` method."""
 
-    __slots__ = ()
-
     def _fix_up(self, cls, code_name):
         """Fix-up property name. To be implemented by subclasses.
 
@@ -823,8 +813,6 @@ class _BaseValue(_NotEqualMixin):
         TypeError: If ``b_val`` is :data:`None`.
         TypeError: If ``b_val`` is a list.
     """
-
-    __slots__ = ("b_val",)
 
     def __init__(self, b_val):
         if b_val is None:
@@ -2169,8 +2157,6 @@ class ModelKey(Property):
     .. automethod:: _validate
     """
 
-    __slots__ = ()
-
     def __init__(self):
         super(ModelKey, self).__init__()
         self._name = "__key__"
@@ -2253,8 +2239,6 @@ class BooleanProperty(Property):
     .. automethod:: _validate
     """
 
-    __slots__ = ()
-
     def _validate(self, value):
         """Validate a ``value`` before setting it.
 
@@ -2284,8 +2268,6 @@ class IntegerProperty(Property):
 
     .. automethod:: _validate
     """
-
-    __slots__ = ()
 
     def _validate(self, value):
         """Validate a ``value`` before setting it.
@@ -2317,8 +2299,6 @@ class FloatProperty(Property):
 
     .. automethod:: _validate
     """
-
-    __slots__ = ()
 
     def _validate(self, value):
         """Validate a ``value`` before setting it.
@@ -2602,8 +2582,6 @@ class TextProperty(Property):
         NotImplementedError: If ``indexed=True`` is provided.
     """
 
-    __slots__ = ()
-
     def __init__(self, *args, **kwargs):
         indexed = kwargs.pop("indexed", False)
         if indexed:
@@ -2732,8 +2710,6 @@ class StringProperty(TextProperty):
         NotImplementedError: If ``indexed=False`` is provided.
     """
 
-    __slots__ = ()
-
     def __init__(self, *args, **kwargs):
         indexed = kwargs.pop("indexed", True)
         if not indexed:
@@ -2756,8 +2732,6 @@ class GeoPtProperty(Property):
 
     .. automethod:: _validate
     """
-
-    __slots__ = ()
 
     def _validate(self, value):
         """Validate a ``value`` before setting it.
@@ -2966,8 +2940,6 @@ class User(object):
         ValueError: If the ``_auth_domain`` is not passed in.
         UserNotFoundError: If ``email`` is empty.
     """
-
-    __slots__ = ("_auth_domain", "_email", "_user_id")
 
     def __init__(self, email=None, _auth_domain=None, _user_id=None):
         if _auth_domain is None:
@@ -3465,8 +3437,6 @@ class BlobKeyProperty(Property):
     .. automethod:: _validate
     """
 
-    __slots__ = ()
-
     def _validate(self, value):
         """Validate a ``value`` before setting it.
 
@@ -3685,8 +3655,6 @@ class DateProperty(DateTimeProperty):
     .. automethod:: _validate
     """
 
-    __slots__ = ()
-
     def _validate(self, value):
         """Validate a ``value`` before setting it.
 
@@ -3746,8 +3714,6 @@ class TimeProperty(DateTimeProperty):
     .. automethod:: _from_base_type
     .. automethod:: _validate
     """
-
-    __slots__ = ()
 
     def _validate(self, value):
         """Validate a ``value`` before setting it.

@@ -58,8 +58,6 @@ class BaseStatistic(model.Model):
             written to Cloud Datastore.
     """
 
-    __slots__ = ()
-
     # This is necessary for the _get_kind() classmethod override.
     STORED_KIND_NAME = "__BaseStatistic__"
 
@@ -85,8 +83,6 @@ class BaseKindStatistic(BaseStatistic):
             in Cloud Datastore minus the cost of storing indices.
     """
 
-    __slots__ = ()
-
     STORED_KIND_NAME = "__BaseKindStatistic__"
 
     kind_name = model.StringProperty()
@@ -111,8 +107,6 @@ class GlobalStat(BaseStatistic):
             composite index entries.
         composite_index_count (int): the number of composite index entries.
     """
-
-    __slots__ = ()
 
     STORED_KIND_NAME = "__Stat_Total__"
 
@@ -148,8 +142,6 @@ class NamespaceStat(BaseStatistic):
         composite_index_count (int): the number of composite index entries.
     """
 
-    __slots__ = ()
-
     STORED_KIND_NAME = "__Stat_Namespace__"
 
     subject_namespace = model.StringProperty()
@@ -180,8 +172,6 @@ class KindStat(BaseKindStatistic):
         composite_index_count (int): the number of composite index entries.
     """
 
-    __slots__ = ()
-
     STORED_KIND_NAME = "__Stat_Kind__"
 
     builtin_index_bytes = model.IntegerProperty(default=0)
@@ -201,8 +191,6 @@ class KindRootEntityStat(BaseKindStatistic):
     stat contains statistics regarding these root entity instances.
     """
 
-    __slots__ = ()
-
     STORED_KIND_NAME = "__Stat_Kind_IsRootEntity__"
 
 
@@ -213,8 +201,6 @@ class KindNonRootEntityStat(BaseKindStatistic):
     the application's datastore that is a not a root entity.  This stat
     contains statistics regarding these non root entity instances.
     """
-
-    __slots__ = ()
 
     STORED_KIND_NAME = "__Stat_Kind_NotRootEntity__"
 
@@ -235,8 +221,6 @@ class PropertyTypeStat(BaseStatistic):
         built-in index entries.
         builtin_index_count (int): the number of built-in index entries.
     """
-
-    __slots__ = ()
 
     STORED_KIND_NAME = "__Stat_PropertyType__"
 
@@ -263,8 +247,6 @@ class KindPropertyTypeStat(BaseKindStatistic):
         builtin_index_count (int): the number of built-in index entries.
     """
 
-    __slots__ = ()
-
     STORED_KIND_NAME = "__Stat_PropertyType_Kind__"
 
     property_type = model.StringProperty()
@@ -287,8 +269,6 @@ class KindPropertyNameStat(BaseKindStatistic):
             built-in index entries.
         builtin_index_count (int): the number of built-in index entries.
     """
-
-    __slots__ = ()
 
     STORED_KIND_NAME = "__Stat_PropertyName_Kind__"
 
@@ -316,8 +296,6 @@ class KindPropertyNamePropertyTypeStat(BaseKindStatistic):
       builtin_index_count (int): the number of built-in index entries.
     """
 
-    __slots__ = ()
-
     STORED_KIND_NAME = "__Stat_PropertyType_PropertyName_Kind__"
 
     property_type = model.StringProperty()
@@ -342,8 +320,6 @@ class KindCompositeIndexStat(BaseStatistic):
             instance.
     """
 
-    __slots__ = ()
-
     STORED_KIND_NAME = "__Stat_Kind_CompositeIndex__"
 
     index_id = model.IntegerProperty()
@@ -364,8 +340,6 @@ class NamespaceGlobalStat(GlobalStat):
     particular namespace.
     """
 
-    __slots__ = ()
-
     STORED_KIND_NAME = "__Stat_Ns_Total__"
 
 
@@ -375,8 +349,6 @@ class NamespaceKindStat(KindStat):
     These may be found in each specific namespace and represent stats for that
     particular namespace.
     """
-
-    __slots__ = ()
 
     STORED_KIND_NAME = "__Stat_Ns_Kind__"
 
@@ -388,8 +360,6 @@ class NamespaceKindRootEntityStat(KindRootEntityStat):
     particular namespace.
     """
 
-    __slots__ = ()
-
     STORED_KIND_NAME = "__Stat_Ns_Kind_IsRootEntity__"
 
 
@@ -399,8 +369,6 @@ class NamespaceKindNonRootEntityStat(KindNonRootEntityStat):
     These may be found in each specific namespace and represent stats for that
     particular namespace.
     """
-
-    __slots__ = ()
 
     STORED_KIND_NAME = "__Stat_Ns_Kind_NotRootEntity__"
 
@@ -412,8 +380,6 @@ class NamespacePropertyTypeStat(PropertyTypeStat):
     particular namespace.
     """
 
-    __slots__ = ()
-
     STORED_KIND_NAME = "__Stat_Ns_PropertyType__"
 
 
@@ -424,8 +390,6 @@ class NamespaceKindPropertyTypeStat(KindPropertyTypeStat):
     particular namespace.
     """
 
-    __slots__ = ()
-
     STORED_KIND_NAME = "__Stat_Ns_PropertyType_Kind__"
 
 
@@ -435,8 +399,6 @@ class NamespaceKindPropertyNameStat(KindPropertyNameStat):
     These may be found in each specific namespace and represent stats for that
     particular namespace.
     """
-
-    __slots__ = ()
 
     STORED_KIND_NAME = "__Stat_Ns_PropertyName_Kind__"
 
@@ -450,8 +412,6 @@ class NamespaceKindPropertyNamePropertyTypeStat(
     particular namespace.
     """
 
-    __slots__ = ()
-
     STORED_KIND_NAME = "__Stat_Ns_PropertyType_PropertyName_Kind__"
 
 
@@ -461,8 +421,6 @@ class NamespaceKindCompositeIndexStat(KindCompositeIndexStat):
     These may be found in each specific namespace and represent stats for that
     particular namespace.
     """
-
-    __slots__ = ()
 
     STORED_KIND_NAME = "__Stat_Ns_Kind_CompositeIndex__"
 

@@ -183,8 +183,6 @@ class PropertyOrder(object):
                or not (ascending). Default is False.
     """
 
-    __slots__ = ["name", "reverse"]
-
     def __init__(self, name, reverse=False):
         self.name = name
         self.reverse = reverse
@@ -226,8 +224,6 @@ class RepeatedStructuredPropertyPredicate(object):
             match in a subentity of the repeated structured property. Should
             contain a value for each key in ``match_keys``.
     """
-
-    __slots__ = ["name", "match_keys", "match_values"]
 
     def __init__(self, name, match_keys, entity_pb):
         self.name = name
@@ -304,8 +300,6 @@ class Parameter(ParameterizedThing):
     Raises:
         TypeError: If the ``key`` is not a string or integer.
     """
-
-    __slots__ = ("_key",)
 
     def __init__(self, key):
         if not isinstance(key, six.integer_types + six.string_types):
@@ -411,8 +405,6 @@ class Node(object):
 
     _multiquery = False
 
-    __slots__ = ()
-
     def __new__(cls):
         if cls is Node:
             raise TypeError("Cannot instantiate Node, only a subclass.")
@@ -479,8 +471,6 @@ class Node(object):
 class FalseNode(Node):
     """Tree node for an always-failing filter."""
 
-    __slots__ = ()
-
     def __eq__(self, other):
         """Equality check.
 
@@ -523,8 +513,6 @@ class ParameterNode(Node):
         TypeError: If ``param`` is not a :class:`.Parameter` or
             :class:`.ParameterizedFunction`.
     """
-
-    __slots__ = ("_prop", "_op", "_param")
 
     def __new__(cls, prop, op, param):
         # Avoid circular import in Python 2.7
@@ -643,7 +631,9 @@ class FilterNode(Node):
             :class:`frozenset`)
     """
 
-    __slots__ = ("_name", "_opsymbol", "_value")
+    _name = None
+    _opsymbol = None
+    _value = None
 
     def __new__(cls, name, opsymbol, value):
         # Avoid circular import in Python 2.7
@@ -754,8 +744,6 @@ class PostFilterNode(Node):
             the given filter.
     """
 
-    __slots__ = ("predicate",)
-
     def __new__(cls, predicate):
         instance = super(PostFilterNode, cls).__new__(cls)
         instance.predicate = predicate
@@ -825,8 +813,6 @@ class _BooleanClauses(object):
         combine_or (bool): Indicates if new nodes will be combined
             with the current boolean expression via ``AND`` or ``OR``.
     """
-
-    __slots__ = ("name", "combine_or", "or_parts")
 
     def __init__(self, name, combine_or):
         self.name = name
@@ -918,8 +904,6 @@ class ConjunctionNode(Node):
         RuntimeError: If the ``nodes`` combine to an "empty" boolean
             expression.
     """
-
-    __slots__ = ("_nodes",)
 
     def __new__(cls, *nodes):
         if not nodes:
@@ -1075,7 +1059,6 @@ class DisjunctionNode(Node):
     """
 
     _multiquery = True
-    __slots__ = ("_nodes",)
 
     def __new__(cls, *nodes):
         if not nodes:

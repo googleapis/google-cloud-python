@@ -579,22 +579,16 @@ def make_default_context(*args, **kwargs):
 
 
 class QueueFuture(object):
-    __slots__ = ()
-
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class ReducingFuture(object):
-    __slots__ = ()
-
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class SerialQueueFuture(object):
-    __slots__ = ()
-
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 

@@ -59,8 +59,6 @@ __all__ = [
 class _BaseMetadata(model.Model):
     """Base class for all metadata models."""
 
-    __slots__ = ()
-
     _use_cache = False
     _use_global_cache = False
 
@@ -80,8 +78,6 @@ class _BaseMetadata(model.Model):
 
 class Namespace(_BaseMetadata):
     """Model for __namespace__ metadata query results."""
-
-    __slots__ = ()
 
     KIND_NAME = "__namespace__"
     EMPTY_NAMESPACE_ID = 1
@@ -127,8 +123,6 @@ class Namespace(_BaseMetadata):
 class Kind(_BaseMetadata):
     """Model for __kind__ metadata query results."""
 
-    __slots__ = ()
-
     KIND_NAME = "__kind__"
 
     @property
@@ -167,8 +161,6 @@ class Kind(_BaseMetadata):
 
 class Property(_BaseMetadata):
     """Model for __property__ metadata query results."""
-
-    __slots__ = ()
 
     KIND_NAME = "__property__"
 

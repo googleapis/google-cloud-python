@@ -546,21 +546,15 @@ class Context(_Context):
 
 
 class ContextOptions(object):
-    __slots__ = ()
-
     def __init__(self, *args, **kwargs):
         raise exceptions.NoLongerImplementedError()
 
 
 class TransactionOptions(object):
-    __slots__ = ()
-
     def __init__(self, *args, **kwargs):
         raise exceptions.NoLongerImplementedError()
 
 
 class AutoBatcher(object):
-    __slots__ = ()
-
     def __init__(self, *args, **kwargs):
         raise exceptions.NoLongerImplementedError()

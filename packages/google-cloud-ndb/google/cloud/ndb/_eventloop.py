@@ -135,15 +135,6 @@ class EventLoop(object):
             get added to this queue and then processed by the event loop.
     """
 
-    __slots__ = (
-        "current",
-        "idlers",
-        "inactive",
-        "queue",
-        "rpcs",
-        "rpc_results",
-    )
-
     def __init__(self):
         self.current = collections.deque()
         self.idlers = collections.deque()

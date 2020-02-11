@@ -51,8 +51,6 @@ class BlobKey(object):
             :class:`bytes` instance.
     """
 
-    __slots__ = ("_blob_key",)
-
     def __init__(self, blob_key):
         if isinstance(blob_key, bytes):
             if len(blob_key) > _MAX_STRING_LENGTH:

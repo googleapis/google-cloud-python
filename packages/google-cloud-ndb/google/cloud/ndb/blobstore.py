@@ -78,8 +78,6 @@ class BlobFetchSizeTooLargeError(object):
 
 
 class BlobInfo(object):
-    __slots__ = ()
-
     def __init__(self, *args, **kwargs):
         raise exceptions.NoLongerImplementedError()
 
@@ -111,8 +109,6 @@ class BlobNotFoundError(object):
 
 
 class BlobReader(object):
-    __slots__ = ()
-
     def __init__(self, *args, **kwargs):
         raise exceptions.NoLongerImplementedError()
 

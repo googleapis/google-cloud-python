@@ -19,14 +19,10 @@ __all__ = ["EnumProperty", "MessageProperty"]
 
 
 class EnumProperty(object):
-    __slots__ = ()
-
     def __init__(self, *args, **kwargs):
         raise NotImplementedError
 
 
 class MessageProperty(object):
-    __slots__ = ()
-
     def __init__(self, *args, **kwargs):
         raise NotImplementedError

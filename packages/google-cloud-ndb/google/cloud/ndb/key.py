@@ -272,8 +272,6 @@ class Key(object):
             arguments were given with the path.
     """
 
-    __slots__ = ("_key", "_reference")
-
     def __new__(cls, *path_args, **kwargs):
         # Avoid circular import in Python 2.7
         from google.cloud.ndb import context as context_module
