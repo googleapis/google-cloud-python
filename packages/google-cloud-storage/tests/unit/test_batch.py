@@ -91,6 +91,12 @@ class TestMIMEApplicationHTTP(unittest.TestCase):
 
 class TestBatch(unittest.TestCase):
     @staticmethod
+    def _get_default_timeout():
+        from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+
+        return _DEFAULT_TIMEOUT
+
+    @staticmethod
     def _get_target_class():
         from google.cloud.storage.batch import Batch
 
@@ -344,7 +350,7 @@ class TestBatch(unittest.TestCase):
             url=expected_url,
             headers=mock.ANY,
             data=mock.ANY,
-            timeout=mock.ANY,
+            timeout=self._get_default_timeout(),
         )
 
         request_info = self._get_mutlipart_request(http)
@@ -393,8 +399,8 @@ class TestBatch(unittest.TestCase):
         target1 = _MockObject()
         target2 = _MockObject()
 
-        batch._do_request("GET", url, {}, None, target1)
-        batch._do_request("GET", url, {}, None, target2)
+        batch._do_request("GET", url, {}, None, target1, timeout=42)
+        batch._do_request("GET", url, {}, None, target2, timeout=420)
 
         # Make sure futures are not populated.
         self.assertEqual(
@@ -414,7 +420,7 @@ class TestBatch(unittest.TestCase):
             url=expected_url,
             headers=mock.ANY,
             data=mock.ANY,
-            timeout=mock.ANY,
+            timeout=420,  # the last request timeout prevails
         )
 
         _, request_body, _, boundary = self._get_mutlipart_request(http)

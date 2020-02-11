@@ -125,12 +125,30 @@ class Test_ACLEntity(unittest.TestCase):
         self.assertEqual(entity.get_roles(), set())
 
 
+class FakeReload(object):
+    """A callable used for faking the reload() method of an ACL instance."""
+
+    def __init__(self, acl):
+        self.acl = acl
+        self.timeouts_used = []
+
+    def __call__(self, timeout=None):
+        self.acl.loaded = True
+        self.timeouts_used.append(timeout)
+
+
 class Test_ACL(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.storage.acl import ACL
 
         return ACL
+
+    @staticmethod
+    def _get_default_timeout():
+        from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+
+        return _DEFAULT_TIMEOUT
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
@@ -150,13 +168,14 @@ class Test_ACL(unittest.TestCase):
 
     def test__ensure_loaded(self):
         acl = self._make_one()
-
-        def _reload():
-            acl._really_loaded = True
-
+        _reload = FakeReload(acl)
         acl.reload = _reload
-        acl._ensure_loaded()
-        self.assertTrue(acl._really_loaded)
+        acl.loaded = False
+
+        acl._ensure_loaded(timeout=42)
+
+        self.assertTrue(acl.loaded)
+        self.assertEqual(_reload.timeouts_used[0], 42)
 
     def test_client_is_abstract(self):
         acl = self._make_one()
@@ -179,13 +198,13 @@ class Test_ACL(unittest.TestCase):
 
     def test___iter___empty_lazy(self):
         acl = self._make_one()
-
-        def _reload():
-            acl.loaded = True
+        _reload = FakeReload(acl)
+        acl.loaded = False
 
         acl.reload = _reload
         self.assertEqual(list(acl), [])
         self.assertTrue(acl.loaded)
+        self.assertEqual(_reload.timeouts_used[0], self._get_default_timeout())
 
     def test___iter___non_empty_no_roles(self):
         TYPE = "type"
@@ -263,13 +282,13 @@ class Test_ACL(unittest.TestCase):
 
     def test_has_entity_miss_str_lazy(self):
         acl = self._make_one()
-
-        def _reload():
-            acl.loaded = True
-
+        _reload = FakeReload(acl)
         acl.reload = _reload
+        acl.loaded = False
+
         self.assertFalse(acl.has_entity("nonesuch"))
         self.assertTrue(acl.loaded)
+        self.assertEqual(_reload.timeouts_used[0], self._get_default_timeout())
 
     def test_has_entity_miss_entity(self):
         from google.cloud.storage.acl import _ACLEntity
@@ -304,13 +323,13 @@ class Test_ACL(unittest.TestCase):
 
     def test_get_entity_miss_str_no_default_lazy(self):
         acl = self._make_one()
-
-        def _reload():
-            acl.loaded = True
-
+        _reload = FakeReload(acl)
         acl.reload = _reload
+        acl.loaded = False
+
         self.assertIsNone(acl.get_entity("nonesuch"))
         self.assertTrue(acl.loaded)
+        self.assertEqual(_reload.timeouts_used[0], self._get_default_timeout())
 
     def test_get_entity_miss_entity_no_default(self):
         from google.cloud.storage.acl import _ACLEntity
@@ -380,15 +399,16 @@ class Test_ACL(unittest.TestCase):
         entity.grant(ROLE)
         acl = self._make_one()
 
-        def _reload():
-            acl.loaded = True
-
+        _reload = FakeReload(acl)
         acl.reload = _reload
+        acl.loaded = False
+
         acl.add_entity(entity)
         self.assertTrue(acl.loaded)
         self.assertEqual(list(acl), [{"entity": "type-id", "role": ROLE}])
         self.assertEqual(list(acl.get_entities()), [entity])
         self.assertTrue(acl.loaded)
+        self.assertEqual(_reload.timeouts_used[0], self._get_default_timeout())
 
     def test_add_entity_hit(self):
         from google.cloud.storage.acl import _ACLEntity
@@ -494,13 +514,13 @@ class Test_ACL(unittest.TestCase):
 
     def test_get_entities_empty_lazy(self):
         acl = self._make_one()
-
-        def _reload():
-            acl.loaded = True
-
+        _reload = FakeReload(acl)
         acl.reload = _reload
+        acl.loaded = False
+
         self.assertEqual(acl.get_entities(), [])
         self.assertTrue(acl.loaded)
+        self.assertEqual(_reload.timeouts_used[0], self._get_default_timeout())
 
     def test_get_entities_nonempty(self):
         TYPE = "type"
@@ -519,12 +539,18 @@ class Test_ACL(unittest.TestCase):
         acl.reload_path = "/testing/acl"
         acl.loaded = True
         acl.entity("allUsers", ROLE)
-        acl.reload(client=client)
+        acl.reload(client=client, timeout=42)
         self.assertEqual(list(acl), [])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(
-            kw[0], {"method": "GET", "path": "/testing/acl", "query_params": {}}
+            kw[0],
+            {
+                "method": "GET",
+                "path": "/testing/acl",
+                "query_params": {},
+                "timeout": 42,
+            },
         )
 
     def test_reload_empty_result_clears_local(self):
@@ -543,7 +569,13 @@ class Test_ACL(unittest.TestCase):
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(
-            kw[0], {"method": "GET", "path": "/testing/acl", "query_params": {}}
+            kw[0],
+            {
+                "method": "GET",
+                "path": "/testing/acl",
+                "query_params": {},
+                "timeout": self._get_default_timeout(),
+            },
         )
 
     def test_reload_nonempty_result_w_user_project(self):
@@ -568,6 +600,7 @@ class Test_ACL(unittest.TestCase):
                 "method": "GET",
                 "path": "/testing/acl",
                 "query_params": {"userProject": USER_PROJECT},
+                "timeout": self._get_default_timeout(),
             },
         )
 
@@ -586,7 +619,7 @@ class Test_ACL(unittest.TestCase):
         acl = self._make_one()
         acl.save_path = "/testing"
         acl.loaded = True
-        acl.save(client=client)
+        acl.save(client=client, timeout=42)
         self.assertEqual(list(acl), [])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -594,6 +627,7 @@ class Test_ACL(unittest.TestCase):
         self.assertEqual(kw[0]["path"], "/testing")
         self.assertEqual(kw[0]["data"], {"acl": []})
         self.assertEqual(kw[0]["query_params"], {"projection": "full"})
+        self.assertEqual(kw[0]["timeout"], 42)
 
     def test_save_no_acl(self):
         ROLE = "role"
@@ -617,6 +651,7 @@ class Test_ACL(unittest.TestCase):
                 "path": "/testing",
                 "query_params": {"projection": "full"},
                 "data": {"acl": AFTER},
+                "timeout": self._get_default_timeout(),
             },
         )
 
@@ -648,6 +683,7 @@ class Test_ACL(unittest.TestCase):
                 "path": "/testing",
                 "query_params": {"projection": "full", "userProject": USER_PROJECT},
                 "data": {"acl": new_acl},
+                "timeout": self._get_default_timeout(),
             },
         )
 
@@ -667,7 +703,7 @@ class Test_ACL(unittest.TestCase):
         acl = self._make_one()
         acl.save_path = "/testing"
         acl.loaded = True
-        acl.save_predefined(PREDEFINED, client=client)
+        acl.save_predefined(PREDEFINED, client=client, timeout=42)
         entries = list(acl)
         self.assertEqual(len(entries), 0)
         kw = connection._requested
@@ -679,6 +715,7 @@ class Test_ACL(unittest.TestCase):
                 "path": "/testing",
                 "query_params": {"projection": "full", "predefinedAcl": PREDEFINED},
                 "data": {"acl": []},
+                "timeout": 42,
             },
         )
 
@@ -705,6 +742,7 @@ class Test_ACL(unittest.TestCase):
                     "predefinedAcl": PREDEFINED_JSON,
                 },
                 "data": {"acl": []},
+                "timeout": self._get_default_timeout(),
             },
         )
 
@@ -729,6 +767,7 @@ class Test_ACL(unittest.TestCase):
                 "path": "/testing",
                 "query_params": {"projection": "full", "alternate": PREDEFINED},
                 "data": {"acl": []},
+                "timeout": self._get_default_timeout(),
             },
         )
 
@@ -742,7 +781,7 @@ class Test_ACL(unittest.TestCase):
         acl.save_path = "/testing"
         acl.loaded = True
         acl.entity("allUsers", ROLE1)
-        acl.clear(client=client)
+        acl.clear(client=client, timeout=42)
         self.assertEqual(list(acl), [STICKY])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -753,6 +792,7 @@ class Test_ACL(unittest.TestCase):
                 "path": "/testing",
                 "query_params": {"projection": "full"},
                 "data": {"acl": []},
+                "timeout": 42,
             },
         )
 

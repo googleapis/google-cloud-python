@@ -19,6 +19,12 @@ import mock
 
 class TestHMACKeyMetadata(unittest.TestCase):
     @staticmethod
+    def _get_default_timeout():
+        from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+
+        return _DEFAULT_TIMEOUT
+
+    @staticmethod
     def _get_target_class():
         from google.cloud.storage.hmac_key import HMACKeyMetadata
 
@@ -219,12 +225,17 @@ class TestHMACKeyMetadata(unittest.TestCase):
         metadata = self._make_one(client)
         metadata._properties["accessId"] = access_id
 
-        self.assertFalse(metadata.exists())
+        self.assertFalse(metadata.exists(timeout=42))
 
         expected_path = "/projects/{}/hmacKeys/{}".format(
             client.DEFAULT_PROJECT, access_id
         )
-        expected_kwargs = {"method": "GET", "path": expected_path, "query_params": {}}
+        expected_kwargs = {
+            "method": "GET",
+            "path": expected_path,
+            "query_params": {},
+            "timeout": 42,
+        }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
     def test_exists_hit_w_project_set(self):
@@ -251,6 +262,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
             "method": "GET",
             "path": expected_path,
             "query_params": {"userProject": user_project},
+            "timeout": self._get_default_timeout(),
         }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
@@ -265,12 +277,17 @@ class TestHMACKeyMetadata(unittest.TestCase):
         metadata._properties["accessId"] = access_id
 
         with self.assertRaises(NotFound):
-            metadata.reload()
+            metadata.reload(timeout=42)
 
         expected_path = "/projects/{}/hmacKeys/{}".format(
             client.DEFAULT_PROJECT, access_id
         )
-        expected_kwargs = {"method": "GET", "path": expected_path, "query_params": {}}
+        expected_kwargs = {
+            "method": "GET",
+            "path": expected_path,
+            "query_params": {},
+            "timeout": 42,
+        }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
     def test_reload_hit_w_project_set(self):
@@ -299,6 +316,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
             "method": "GET",
             "path": expected_path,
             "query_params": {"userProject": user_project},
+            "timeout": self._get_default_timeout(),
         }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
@@ -314,7 +332,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
         metadata.state = "INACTIVE"
 
         with self.assertRaises(NotFound):
-            metadata.update()
+            metadata.update(timeout=42)
 
         expected_path = "/projects/{}/hmacKeys/{}".format(
             client.DEFAULT_PROJECT, access_id
@@ -324,6 +342,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
             "path": expected_path,
             "data": {"state": "INACTIVE"},
             "query_params": {},
+            "timeout": 42,
         }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
@@ -356,6 +375,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
             "path": expected_path,
             "data": {"state": "ACTIVE"},
             "query_params": {"userProject": user_project},
+            "timeout": self._get_default_timeout(),
         }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
@@ -379,7 +399,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
         metadata.state = "INACTIVE"
 
         with self.assertRaises(NotFound):
-            metadata.delete()
+            metadata.delete(timeout=42)
 
         expected_path = "/projects/{}/hmacKeys/{}".format(
             client.DEFAULT_PROJECT, access_id
@@ -388,6 +408,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
             "method": "DELETE",
             "path": expected_path,
             "query_params": {},
+            "timeout": 42,
         }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
@@ -410,6 +431,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
             "method": "DELETE",
             "path": expected_path,
             "query_params": {"userProject": user_project},
+            "timeout": self._get_default_timeout(),
         }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 

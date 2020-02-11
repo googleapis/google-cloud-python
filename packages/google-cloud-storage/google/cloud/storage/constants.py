@@ -89,3 +89,10 @@ DUAL_REGION_LOCATION_TYPE = "dual-region"
 
 Provides high availability and low latency across two regions.
 """
+
+
+# Internal constants
+
+_DEFAULT_TIMEOUT = 60  # in seconds
+"""The default request timeout in seconds if a timeout is not explicitly given.
+"""

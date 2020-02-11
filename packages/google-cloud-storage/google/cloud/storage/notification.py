@@ -18,6 +18,8 @@ import re
 
 from google.api_core.exceptions import NotFound
 
+from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+
 
 OBJECT_FINALIZE_EVENT_TYPE = "OBJECT_FINALIZE"
 OBJECT_METADATA_UPDATE_EVENT_TYPE = "OBJECT_METADATA_UPDATE"
@@ -221,7 +223,7 @@ class BucketNotification(object):
         self._properties.clear()
         self._properties.update(response)
 
-    def create(self, client=None):
+    def create(self, client=None, timeout=_DEFAULT_TIMEOUT):
         """API wrapper: create the notification.
 
         See:
@@ -233,6 +235,12 @@ class BucketNotification(object):
         :type client: :class:`~google.cloud.storage.client.Client`
         :param client: (Optional) the client to use.  If not passed, falls back
                        to the ``client`` stored on the notification's bucket.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
         """
         if self.notification_id is not None:
             raise ValueError(
@@ -249,10 +257,14 @@ class BucketNotification(object):
         properties = self._properties.copy()
         properties["topic"] = _TOPIC_REF_FMT.format(self.topic_project, self.topic_name)
         self._properties = client._connection.api_request(
-            method="POST", path=path, query_params=query_params, data=properties
+            method="POST",
+            path=path,
+            query_params=query_params,
+            data=properties,
+            timeout=timeout,
         )
 
-    def exists(self, client=None):
+    def exists(self, client=None, timeout=_DEFAULT_TIMEOUT):
         """Test whether this notification exists.
 
         See:
@@ -265,6 +277,12 @@ class BucketNotification(object):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
 
         :rtype: bool
         :returns: True, if the notification exists, else False.
@@ -281,14 +299,14 @@ class BucketNotification(object):
 
         try:
             client._connection.api_request(
-                method="GET", path=self.path, query_params=query_params
+                method="GET", path=self.path, query_params=query_params, timeout=timeout
             )
         except NotFound:
             return False
         else:
             return True
 
-    def reload(self, client=None):
+    def reload(self, client=None, timeout=_DEFAULT_TIMEOUT):
         """Update this notification from the server configuration.
 
         See:
@@ -301,6 +319,12 @@ class BucketNotification(object):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
 
         :rtype: bool
         :returns: True, if the notification exists, else False.
@@ -316,11 +340,11 @@ class BucketNotification(object):
             query_params["userProject"] = self.bucket.user_project
 
         response = client._connection.api_request(
-            method="GET", path=self.path, query_params=query_params
+            method="GET", path=self.path, query_params=query_params, timeout=timeout
         )
         self._set_properties(response)
 
-    def delete(self, client=None):
+    def delete(self, client=None, timeout=_DEFAULT_TIMEOUT):
         """Delete this notification.
 
         See:
@@ -333,6 +357,12 @@ class BucketNotification(object):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
 
         :raises: :class:`google.api_core.exceptions.NotFound`:
             if the notification does not exist.
@@ -348,7 +378,7 @@ class BucketNotification(object):
             query_params["userProject"] = self.bucket.user_project
 
         client._connection.api_request(
-            method="DELETE", path=self.path, query_params=query_params
+            method="DELETE", path=self.path, query_params=query_params, timeout=timeout
         )
 
 

@@ -29,6 +29,7 @@ import six
 from google.cloud import _helpers
 from google.cloud import exceptions
 from google.cloud.storage._http import Connection
+from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 
 
 class MIMEApplicationHTTP(MIMEApplication):
@@ -150,7 +151,9 @@ class Batch(Connection):
         self._requests = []
         self._target_objects = []
 
-    def _do_request(self, method, url, headers, data, target_object, timeout=None):
+    def _do_request(
+        self, method, url, headers, data, target_object, timeout=_DEFAULT_TIMEOUT
+    ):
         """Override Connection:  defer actual HTTP request.
 
         Only allow up to ``_MAX_BATCH_SIZE`` requests to be deferred.
@@ -175,7 +178,8 @@ class Batch(Connection):
 
         :type timeout: float or tuple
         :param timeout: (optional) The amount of time, in seconds, to wait
-            for the server response. By default, the method waits indefinitely.
+            for the server response.
+
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
 
@@ -206,8 +210,8 @@ class Batch(Connection):
 
         multi = MIMEMultipart()
 
-        # Use timeout of last request, default to None (indefinite)
-        timeout = None
+        # Use timeout of last request, default to _DEFAULT_TIMEOUT
+        timeout = _DEFAULT_TIMEOUT
         for method, uri, headers, body, _timeout in self._requests:
             subrequest = MIMEApplicationHTTP(method, uri, headers, body)
             multi.attach(subrequest)

@@ -361,6 +361,12 @@ class Test_Bucket(unittest.TestCase):
 
         return Bucket
 
+    @staticmethod
+    def _get_default_timeout():
+        from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+
+        return _DEFAULT_TIMEOUT
+
     def _make_one(self, client=None, name=None, properties=None, user_project=None):
         if client is None:
             connection = _Connection()
@@ -571,12 +577,13 @@ class Test_Bucket(unittest.TestCase):
         BUCKET_NAME = "bucket-name"
         bucket = self._make_one(name=BUCKET_NAME)
         client = _Client(_FakeConnection)
-        self.assertFalse(bucket.exists(client=client))
+        self.assertFalse(bucket.exists(client=client, timeout=42))
         expected_called_kwargs = {
             "method": "GET",
             "path": bucket.path,
             "query_params": {"fields": "name"},
             "_target_object": None,
+            "timeout": 42,
         }
         expected_cw = [((), expected_called_kwargs)]
         self.assertEqual(_FakeConnection._called_with, expected_cw)
@@ -603,6 +610,7 @@ class Test_Bucket(unittest.TestCase):
             "path": bucket.path,
             "query_params": {"fields": "name", "userProject": USER_PROJECT},
             "_target_object": None,
+            "timeout": self._get_default_timeout(),
         }
         expected_cw = [((), expected_called_kwargs)]
         self.assertEqual(_FakeConnection._called_with, expected_cw)
@@ -653,6 +661,7 @@ class Test_Bucket(unittest.TestCase):
             query_params={"project": OTHER_PROJECT},
             data=DATA,
             _target_object=bucket,
+            timeout=self._get_default_timeout(),
         )
 
     def test_create_w_explicit_location(self):
@@ -679,6 +688,7 @@ class Test_Bucket(unittest.TestCase):
             data=DATA,
             _target_object=bucket,
             query_params={"project": "PROJECT"},
+            timeout=self._get_default_timeout(),
         )
         self.assertEqual(bucket.location, LOCATION)
 
@@ -693,7 +703,7 @@ class Test_Bucket(unittest.TestCase):
         client._base_connection = connection
 
         bucket = self._make_one(client=client, name=BUCKET_NAME)
-        bucket.create()
+        bucket.create(timeout=42)
 
         connection.api_request.assert_called_once_with(
             method="POST",
@@ -701,6 +711,7 @@ class Test_Bucket(unittest.TestCase):
             query_params={"project": PROJECT},
             data=DATA,
             _target_object=bucket,
+            timeout=42,
         )
 
     def test_create_w_extra_properties(self):
@@ -750,6 +761,7 @@ class Test_Bucket(unittest.TestCase):
             query_params={"project": PROJECT},
             data=DATA,
             _target_object=bucket,
+            timeout=self._get_default_timeout(),
         )
 
     def test_create_w_predefined_acl_invalid(self):
@@ -784,6 +796,7 @@ class Test_Bucket(unittest.TestCase):
         expected_qp = {"project": PROJECT, "predefinedAcl": "publicRead"}
         self.assertEqual(kw["query_params"], expected_qp)
         self.assertEqual(kw["data"], DATA)
+        self.assertEqual(kw["timeout"], self._get_default_timeout())
 
     def test_create_w_predefined_default_object_acl_invalid(self):
         from google.cloud.storage.client import Client
@@ -817,6 +830,7 @@ class Test_Bucket(unittest.TestCase):
         expected_qp = {"project": PROJECT, "predefinedDefaultObjectAcl": "publicRead"}
         self.assertEqual(kw["query_params"], expected_qp)
         self.assertEqual(kw["data"], DATA)
+        self.assertEqual(kw["timeout"], self._get_default_timeout())
 
     def test_acl_property(self):
         from google.cloud.storage.acl import BucketACL
@@ -849,11 +863,12 @@ class Test_Bucket(unittest.TestCase):
         connection = _Connection()
         client = _Client(connection)
         bucket = self._make_one(name=NAME)
-        result = bucket.get_blob(NONESUCH, client=client)
+        result = bucket.get_blob(NONESUCH, client=client, timeout=42)
         self.assertIsNone(result)
         kw, = connection._requested
         self.assertEqual(kw["method"], "GET")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, NONESUCH))
+        self.assertEqual(kw["timeout"], 42)
 
     def test_get_blob_hit_w_user_project(self):
         NAME = "name"
@@ -870,6 +885,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["method"], "GET")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
         self.assertEqual(kw["query_params"], expected_qp)
+        self.assertEqual(kw["timeout"], self._get_default_timeout())
 
     def test_get_blob_hit_w_generation(self):
         NAME = "name"
@@ -887,6 +903,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["method"], "GET")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
         self.assertEqual(kw["query_params"], expected_qp)
+        self.assertEqual(kw["timeout"], self._get_default_timeout())
 
     def test_get_blob_hit_with_kwargs(self):
         from google.cloud.storage.blob import _get_encryption_headers
@@ -908,6 +925,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["method"], "GET")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
         self.assertEqual(kw["headers"], _get_encryption_headers(KEY))
+        self.assertEqual(kw["timeout"], self._get_default_timeout())
         self.assertEqual(blob.chunk_size, CHUNK_SIZE)
         self.assertEqual(blob._encryption_key, KEY)
 
@@ -923,6 +941,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["method"], "GET")
         self.assertEqual(kw["path"], "/b/%s/o" % NAME)
         self.assertEqual(kw["query_params"], {"projection": "noAcl"})
+        self.assertEqual(kw["timeout"], self._get_default_timeout())
 
     def test_list_blobs_w_all_arguments_and_user_project(self):
         NAME = "name"
@@ -956,6 +975,7 @@ class Test_Bucket(unittest.TestCase):
             projection=PROJECTION,
             fields=FIELDS,
             client=client,
+            timeout=42,
         )
         blobs = list(iterator)
         self.assertEqual(blobs, [])
@@ -963,6 +983,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["method"], "GET")
         self.assertEqual(kw["path"], "/b/%s/o" % NAME)
         self.assertEqual(kw["query_params"], EXPECTED)
+        self.assertEqual(kw["timeout"], 42)
 
     def test_list_notifications(self):
         from google.cloud.storage.notification import BucketNotification
@@ -996,7 +1017,10 @@ class Test_Bucket(unittest.TestCase):
         client = _Client(connection)
         bucket = self._make_one(client=client, name=NAME)
 
-        notifications = list(bucket.list_notifications())
+        notifications = list(bucket.list_notifications(timeout=42))
+
+        req_args = client._connection._requested[0]
+        self.assertEqual(req_args.get("timeout"), 42)
 
         self.assertEqual(len(notifications), len(resources))
         for notification, resource, topic_ref in zip(
@@ -1033,6 +1057,7 @@ class Test_Bucket(unittest.TestCase):
                 "path": bucket.path,
                 "query_params": {},
                 "_target_object": None,
+                "timeout": self._get_default_timeout(),
             }
         ]
         self.assertEqual(connection._deleted_buckets, expected_cw)
@@ -1045,7 +1070,7 @@ class Test_Bucket(unittest.TestCase):
         connection._delete_bucket = True
         client = _Client(connection)
         bucket = self._make_one(client=client, name=NAME, user_project=USER_PROJECT)
-        result = bucket.delete(force=True)
+        result = bucket.delete(force=True, timeout=42)
         self.assertIsNone(result)
         expected_cw = [
             {
@@ -1053,6 +1078,7 @@ class Test_Bucket(unittest.TestCase):
                 "path": bucket.path,
                 "_target_object": None,
                 "query_params": {"userProject": USER_PROJECT},
+                "timeout": 42,
             }
         ]
         self.assertEqual(connection._deleted_buckets, expected_cw)
@@ -1075,6 +1101,7 @@ class Test_Bucket(unittest.TestCase):
                 "path": bucket.path,
                 "query_params": {},
                 "_target_object": None,
+                "timeout": self._get_default_timeout(),
             }
         ]
         self.assertEqual(connection._deleted_buckets, expected_cw)
@@ -1096,6 +1123,7 @@ class Test_Bucket(unittest.TestCase):
                 "path": bucket.path,
                 "query_params": {},
                 "_target_object": None,
+                "timeout": self._get_default_timeout(),
             }
         ]
         self.assertEqual(connection._deleted_buckets, expected_cw)
@@ -1128,6 +1156,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["method"], "DELETE")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, NONESUCH))
         self.assertEqual(kw["query_params"], {})
+        self.assertEqual(kw["timeout"], self._get_default_timeout())
 
     def test_delete_blob_hit_with_user_project(self):
         NAME = "name"
@@ -1136,12 +1165,13 @@ class Test_Bucket(unittest.TestCase):
         connection = _Connection({})
         client = _Client(connection)
         bucket = self._make_one(client=client, name=NAME, user_project=USER_PROJECT)
-        result = bucket.delete_blob(BLOB_NAME)
+        result = bucket.delete_blob(BLOB_NAME, timeout=42)
         self.assertIsNone(result)
         kw, = connection._requested
         self.assertEqual(kw["method"], "DELETE")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
         self.assertEqual(kw["query_params"], {"userProject": USER_PROJECT})
+        self.assertEqual(kw["timeout"], 42)
 
     def test_delete_blob_hit_with_generation(self):
         NAME = "name"
@@ -1156,6 +1186,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["method"], "DELETE")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
         self.assertEqual(kw["query_params"], {"generation": GENERATION})
+        self.assertEqual(kw["timeout"], self._get_default_timeout())
 
     def test_delete_blobs_empty(self):
         NAME = "name"
@@ -1172,12 +1203,13 @@ class Test_Bucket(unittest.TestCase):
         connection = _Connection({})
         client = _Client(connection)
         bucket = self._make_one(client=client, name=NAME, user_project=USER_PROJECT)
-        bucket.delete_blobs([BLOB_NAME])
+        bucket.delete_blobs([BLOB_NAME], timeout=42)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]["method"], "DELETE")
         self.assertEqual(kw[0]["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
         self.assertEqual(kw[0]["query_params"], {"userProject": USER_PROJECT})
+        self.assertEqual(kw[0]["timeout"], 42)
 
     def test_delete_blobs_miss_no_on_error(self):
         from google.cloud.exceptions import NotFound
@@ -1193,8 +1225,10 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]["method"], "DELETE")
         self.assertEqual(kw[0]["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
+        self.assertEqual(kw[0]["timeout"], self._get_default_timeout())
         self.assertEqual(kw[1]["method"], "DELETE")
         self.assertEqual(kw[1]["path"], "/b/%s/o/%s" % (NAME, NONESUCH))
+        self.assertEqual(kw[1]["timeout"], self._get_default_timeout())
 
     def test_delete_blobs_miss_w_on_error(self):
         NAME = "name"
@@ -1210,8 +1244,10 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]["method"], "DELETE")
         self.assertEqual(kw[0]["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
+        self.assertEqual(kw[0]["timeout"], self._get_default_timeout())
         self.assertEqual(kw[1]["method"], "DELETE")
         self.assertEqual(kw[1]["path"], "/b/%s/o/%s" % (NAME, NONESUCH))
+        self.assertEqual(kw[1]["timeout"], self._get_default_timeout())
 
     @staticmethod
     def _make_blob(bucket_name, blob_name):
@@ -1232,7 +1268,7 @@ class Test_Bucket(unittest.TestCase):
         dest = self._make_one(client=client, name=DEST)
         blob = self._make_blob(SOURCE, BLOB_NAME)
 
-        new_blob = source.copy_blob(blob, dest)
+        new_blob = source.copy_blob(blob, dest, timeout=42)
 
         self.assertIs(new_blob.bucket, dest)
         self.assertEqual(new_blob.name, BLOB_NAME)
@@ -1244,6 +1280,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["method"], "POST")
         self.assertEqual(kw["path"], COPY_PATH)
         self.assertEqual(kw["query_params"], {})
+        self.assertEqual(kw["timeout"], 42)
 
     def test_copy_blobs_source_generation(self):
         SOURCE = "source"
@@ -1269,6 +1306,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["method"], "POST")
         self.assertEqual(kw["path"], COPY_PATH)
         self.assertEqual(kw["query_params"], {"sourceGeneration": GENERATION})
+        self.assertEqual(kw["timeout"], self._get_default_timeout())
 
     def test_copy_blobs_preserve_acl(self):
         from google.cloud.storage.acl import ObjectACL
@@ -1301,10 +1339,12 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw1["method"], "POST")
         self.assertEqual(kw1["path"], COPY_PATH)
         self.assertEqual(kw1["query_params"], {})
+        self.assertEqual(kw1["timeout"], self._get_default_timeout())
 
         self.assertEqual(kw2["method"], "PATCH")
         self.assertEqual(kw2["path"], NEW_BLOB_PATH)
         self.assertEqual(kw2["query_params"], {"projection": "full"})
+        self.assertEqual(kw2["timeout"], self._get_default_timeout())
 
     def test_copy_blobs_w_name_and_user_project(self):
         SOURCE = "source"
@@ -1330,6 +1370,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["method"], "POST")
         self.assertEqual(kw["path"], COPY_PATH)
         self.assertEqual(kw["query_params"], {"userProject": USER_PROJECT})
+        self.assertEqual(kw["timeout"], self._get_default_timeout())
 
     def test_rename_blob(self):
         BUCKET_NAME = "BUCKET_NAME"
@@ -1341,7 +1382,9 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._make_one(client=client, name=BUCKET_NAME)
         blob = self._make_blob(BUCKET_NAME, BLOB_NAME)
 
-        renamed_blob = bucket.rename_blob(blob, NEW_BLOB_NAME, client=client)
+        renamed_blob = bucket.rename_blob(
+            blob, NEW_BLOB_NAME, client=client, timeout=42
+        )
 
         self.assertIs(renamed_blob.bucket, bucket)
         self.assertEqual(renamed_blob.name, NEW_BLOB_NAME)
@@ -1353,8 +1396,9 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["method"], "POST")
         self.assertEqual(kw["path"], COPY_PATH)
         self.assertEqual(kw["query_params"], {})
+        self.assertEqual(kw["timeout"], 42)
 
-        blob.delete.assert_called_once_with(client)
+        blob.delete.assert_called_once_with(client=client, timeout=42)
 
     def test_rename_blob_to_itself(self):
         BUCKET_NAME = "BUCKET_NAME"
@@ -1377,6 +1421,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["method"], "POST")
         self.assertEqual(kw["path"], COPY_PATH)
         self.assertEqual(kw["query_params"], {})
+        self.assertEqual(kw["timeout"], self._get_default_timeout())
 
         blob.delete.assert_not_called()
 
@@ -1680,13 +1725,15 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(len(kwargs["data"]["labels"]), 2)
         self.assertEqual(kwargs["data"]["labels"]["color"], "red")
         self.assertIsNone(kwargs["data"]["labels"]["flavor"])
+        self.assertEqual(kwargs["timeout"], self._get_default_timeout())
 
         # A second patch call should be a no-op for labels.
         client._connection.api_request.reset_mock()
-        bucket.patch(client=client)
+        bucket.patch(client=client, timeout=42)
         client._connection.api_request.assert_called()
         _, _, kwargs = client._connection.api_request.mock_calls[0]
         self.assertNotIn("labels", kwargs["data"])
+        self.assertEqual(kwargs["timeout"], 42)
 
     def test_location_type_getter_unset(self):
         bucket = self._make_one()
@@ -2047,7 +2094,7 @@ class Test_Bucket(unittest.TestCase):
         client = _Client(connection, None)
         bucket = self._make_one(client=client, name=NAME)
 
-        policy = bucket.get_iam_policy()
+        policy = bucket.get_iam_policy(timeout=42)
 
         self.assertIsInstance(policy, Policy)
         self.assertEqual(policy.etag, RETURNED["etag"])
@@ -2059,6 +2106,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]["method"], "GET")
         self.assertEqual(kw[0]["path"], "%s/iam" % (PATH,))
         self.assertEqual(kw[0]["query_params"], {})
+        self.assertEqual(kw[0]["timeout"], 42)
 
     def test_get_iam_policy_w_user_project(self):
         from google.api_core.iam import Policy
@@ -2091,6 +2139,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]["method"], "GET")
         self.assertEqual(kw[0]["path"], "%s/iam" % (PATH,))
         self.assertEqual(kw[0]["query_params"], {"userProject": USER_PROJECT})
+        self.assertEqual(kw[0]["timeout"], self._get_default_timeout())
 
     def test_get_iam_policy_w_requested_policy_version(self):
         from google.cloud.storage.iam import STORAGE_OWNER_ROLE
@@ -2120,6 +2169,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]["method"], "GET")
         self.assertEqual(kw[0]["path"], "%s/iam" % (PATH,))
         self.assertEqual(kw[0]["query_params"], {"optionsRequestedPolicyVersion": 3})
+        self.assertEqual(kw[0]["timeout"], self._get_default_timeout())
 
     def test_set_iam_policy(self):
         import operator
@@ -2152,7 +2202,7 @@ class Test_Bucket(unittest.TestCase):
         client = _Client(connection, None)
         bucket = self._make_one(client=client, name=NAME)
 
-        returned = bucket.set_iam_policy(policy)
+        returned = bucket.set_iam_policy(policy, timeout=42)
 
         self.assertEqual(returned.etag, ETAG)
         self.assertEqual(returned.version, VERSION)
@@ -2163,6 +2213,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]["method"], "PUT")
         self.assertEqual(kw[0]["path"], "%s/iam" % (PATH,))
         self.assertEqual(kw[0]["query_params"], {})
+        self.assertEqual(kw[0]["timeout"], 42)
         sent = kw[0]["data"]
         self.assertEqual(sent["resourceId"], PATH)
         self.assertEqual(len(sent["bindings"]), len(BINDINGS))
@@ -2216,6 +2267,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]["method"], "PUT")
         self.assertEqual(kw[0]["path"], "%s/iam" % (PATH,))
         self.assertEqual(kw[0]["query_params"], {"userProject": USER_PROJECT})
+        self.assertEqual(kw[0]["timeout"], self._get_default_timeout())
         sent = kw[0]["data"]
         self.assertEqual(sent["resourceId"], PATH)
         self.assertEqual(len(sent["bindings"]), len(BINDINGS))
@@ -2244,7 +2296,7 @@ class Test_Bucket(unittest.TestCase):
         client = _Client(connection, None)
         bucket = self._make_one(client=client, name=NAME)
 
-        allowed = bucket.test_iam_permissions(PERMISSIONS)
+        allowed = bucket.test_iam_permissions(PERMISSIONS, timeout=42)
 
         self.assertEqual(allowed, ALLOWED)
 
@@ -2253,6 +2305,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]["method"], "GET")
         self.assertEqual(kw[0]["path"], "%s/iam/testPermissions" % (PATH,))
         self.assertEqual(kw[0]["query_params"], {"permissions": PERMISSIONS})
+        self.assertEqual(kw[0]["timeout"], 42)
 
     def test_test_iam_permissions_w_user_project(self):
         from google.cloud.storage.iam import STORAGE_OBJECTS_LIST
@@ -2285,6 +2338,7 @@ class Test_Bucket(unittest.TestCase):
             kw[0]["query_params"],
             {"permissions": PERMISSIONS, "userProject": USER_PROJECT},
         )
+        self.assertEqual(kw[0]["timeout"], self._get_default_timeout())
 
     def test_make_public_defaults(self):
         from google.cloud.storage.acl import _ACLEntity
@@ -2306,6 +2360,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]["path"], "/b/%s" % NAME)
         self.assertEqual(kw[0]["data"], {"acl": after["acl"]})
         self.assertEqual(kw[0]["query_params"], {"projection": "full"})
+        self.assertEqual(kw[0]["timeout"], self._get_default_timeout())
 
     def _make_public_w_future_helper(self, default_object_acl_loaded=True):
         from google.cloud.storage.acl import _ACLEntity
@@ -2335,6 +2390,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]["path"], "/b/%s" % NAME)
         self.assertEqual(kw[0]["data"], {"acl": permissive})
         self.assertEqual(kw[0]["query_params"], {"projection": "full"})
+        self.assertEqual(kw[0]["timeout"], self._get_default_timeout())
         if not default_object_acl_loaded:
             self.assertEqual(kw[1]["method"], "GET")
             self.assertEqual(kw[1]["path"], "/b/%s/defaultObjectAcl" % NAME)
@@ -2343,6 +2399,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[-1]["path"], "/b/%s" % NAME)
         self.assertEqual(kw[-1]["data"], {"defaultObjectAcl": permissive})
         self.assertEqual(kw[-1]["query_params"], {"projection": "full"})
+        self.assertEqual(kw[-1]["timeout"], self._get_default_timeout())
 
     def test_make_public_w_future(self):
         self._make_public_w_future_helper(default_object_acl_loaded=True)
@@ -2373,8 +2430,10 @@ class Test_Bucket(unittest.TestCase):
             def grant_read(self):
                 self._granted = True
 
-            def save(self, client=None):
-                _saved.append((self._bucket, self._name, self._granted, client))
+            def save(self, client=None, timeout=None):
+                _saved.append(
+                    (self._bucket, self._name, self._granted, client, timeout)
+                )
 
         def item_to_blob(self, item):
             return _Blob(self.bucket, item["name"])
@@ -2390,22 +2449,24 @@ class Test_Bucket(unittest.TestCase):
         bucket.default_object_acl.loaded = True
 
         with mock.patch("google.cloud.storage.bucket._item_to_blob", new=item_to_blob):
-            bucket.make_public(recursive=True)
+            bucket.make_public(recursive=True, timeout=42)
         self.assertEqual(list(bucket.acl), permissive)
         self.assertEqual(list(bucket.default_object_acl), [])
-        self.assertEqual(_saved, [(bucket, BLOB_NAME, True, None)])
+        self.assertEqual(_saved, [(bucket, BLOB_NAME, True, None, 42)])
         kw = connection._requested
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]["method"], "PATCH")
         self.assertEqual(kw[0]["path"], "/b/%s" % NAME)
         self.assertEqual(kw[0]["data"], {"acl": permissive})
         self.assertEqual(kw[0]["query_params"], {"projection": "full"})
+        self.assertEqual(kw[0]["timeout"], 42)
         self.assertEqual(kw[1]["method"], "GET")
         self.assertEqual(kw[1]["path"], "/b/%s/o" % NAME)
         max_results = bucket._MAX_OBJECTS_FOR_ITERATION + 1
         self.assertEqual(
             kw[1]["query_params"], {"maxResults": max_results, "projection": "full"}
         )
+        self.assertEqual(kw[1]["timeout"], 42)
 
     def test_make_public_recursive_too_many(self):
         from google.cloud.storage.acl import _ACLEntity
@@ -2445,6 +2506,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]["path"], "/b/%s" % NAME)
         self.assertEqual(kw[0]["data"], {"acl": after["acl"]})
         self.assertEqual(kw[0]["query_params"], {"projection": "full"})
+        self.assertEqual(kw[0]["timeout"], self._get_default_timeout())
 
     def _make_private_w_future_helper(self, default_object_acl_loaded=True):
         NAME = "name"
@@ -2472,6 +2534,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]["path"], "/b/%s" % NAME)
         self.assertEqual(kw[0]["data"], {"acl": no_permissions})
         self.assertEqual(kw[0]["query_params"], {"projection": "full"})
+        self.assertEqual(kw[0]["timeout"], self._get_default_timeout())
         if not default_object_acl_loaded:
             self.assertEqual(kw[1]["method"], "GET")
             self.assertEqual(kw[1]["path"], "/b/%s/defaultObjectAcl" % NAME)
@@ -2480,6 +2543,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[-1]["path"], "/b/%s" % NAME)
         self.assertEqual(kw[-1]["data"], {"defaultObjectAcl": no_permissions})
         self.assertEqual(kw[-1]["query_params"], {"projection": "full"})
+        self.assertEqual(kw[-1]["timeout"], self._get_default_timeout())
 
     def test_make_private_w_future(self):
         self._make_private_w_future_helper(default_object_acl_loaded=True)
@@ -2508,8 +2572,10 @@ class Test_Bucket(unittest.TestCase):
             def revoke_read(self):
                 self._granted = False
 
-            def save(self, client=None):
-                _saved.append((self._bucket, self._name, self._granted, client))
+            def save(self, client=None, timeout=None):
+                _saved.append(
+                    (self._bucket, self._name, self._granted, client, timeout)
+                )
 
         def item_to_blob(self, item):
             return _Blob(self.bucket, item["name"])
@@ -2525,22 +2591,24 @@ class Test_Bucket(unittest.TestCase):
         bucket.default_object_acl.loaded = True
 
         with mock.patch("google.cloud.storage.bucket._item_to_blob", new=item_to_blob):
-            bucket.make_private(recursive=True)
+            bucket.make_private(recursive=True, timeout=42)
         self.assertEqual(list(bucket.acl), no_permissions)
         self.assertEqual(list(bucket.default_object_acl), [])
-        self.assertEqual(_saved, [(bucket, BLOB_NAME, False, None)])
+        self.assertEqual(_saved, [(bucket, BLOB_NAME, False, None, 42)])
         kw = connection._requested
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]["method"], "PATCH")
         self.assertEqual(kw[0]["path"], "/b/%s" % NAME)
         self.assertEqual(kw[0]["data"], {"acl": no_permissions})
         self.assertEqual(kw[0]["query_params"], {"projection": "full"})
+        self.assertEqual(kw[0]["timeout"], 42)
         self.assertEqual(kw[1]["method"], "GET")
         self.assertEqual(kw[1]["path"], "/b/%s/o" % NAME)
         max_results = bucket._MAX_OBJECTS_FOR_ITERATION + 1
         self.assertEqual(
             kw[1]["query_params"], {"maxResults": max_results, "projection": "full"}
         )
+        self.assertEqual(kw[1]["timeout"], 42)
 
     def test_make_private_recursive_too_many(self):
         NO_PERMISSIONS = []
@@ -2778,12 +2846,13 @@ class Test_Bucket(unittest.TestCase):
             "retentionPeriod": 86400 * 100,  # 100 days
         }
 
-        bucket.lock_retention_policy()
+        bucket.lock_retention_policy(timeout=42)
 
         kw, = connection._requested
         self.assertEqual(kw["method"], "POST")
         self.assertEqual(kw["path"], "/b/{}/lockRetentionPolicy".format(name))
         self.assertEqual(kw["query_params"], {"ifMetagenerationMatch": 1234})
+        self.assertEqual(kw["timeout"], 42)
 
     def test_lock_retention_policy_w_user_project(self):
         name = "name"
@@ -2817,6 +2886,7 @@ class Test_Bucket(unittest.TestCase):
             kw["query_params"],
             {"ifMetagenerationMatch": 1234, "userProject": user_project},
         )
+        self.assertEqual(kw["timeout"], self._get_default_timeout())
 
     def test_generate_signed_url_w_invalid_version(self):
         expiration = "2014-10-16T20:34:37.000Z"
