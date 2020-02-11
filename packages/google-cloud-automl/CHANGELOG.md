@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [0.10.0](https://www.github.com/googleapis/python-automl/compare/v0.9.0...v0.10.0) (2020-01-31)
+
+
+### Features
+
+* **automl:** undeprecate resource name helper methods, add 2.7 deprecation warning (via synth) ([#10037](https://www.github.com/googleapis/python-automl/issues/10037)) ([763a961](https://www.github.com/googleapis/python-automl/commit/763a9611d45d86b6024bcd74dfb8e93099a3f9e0))
+
+
+### Bug Fixes
+
+* **automl:** fix TablesClient.predict for array and struct ([#9991](https://www.github.com/googleapis/python-automl/issues/9991)) ([39f6f2a](https://www.github.com/googleapis/python-automl/commit/39f6f2a5f59b7f61096fb3f43c05501ebc19f676)), closes [#9887](https://www.github.com/googleapis/python-automl/issues/9887)
+* **automl:** fix TypeError when passing a client_info to automl TablesClient ([#9949](https://www.github.com/googleapis/python-automl/issues/9949)) ([75783ec](https://www.github.com/googleapis/python-automl/commit/75783ec359871957253797cdbaa25042c8c02284))
+
 ## 0.9.0
 
 11-18-2019 09:49 PST
@@ -205,4 +218,3 @@
 
 ### New Features
 - Initial Release of AutoML v1beta1
-
