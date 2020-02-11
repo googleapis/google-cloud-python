@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [0.4.0](https://www.github.com/googleapis/python-container/compare/v0.3.0...v0.4.0) (2020-02-03)
+
+
+### Features
+
+* **container:** add 'list_usable_subnetworks' method; apply proto annotations (via synth) ([#9741](https://www.github.com/googleapis/python-container/issues/9741)) ([541a9e3](https://www.github.com/googleapis/python-container/commit/541a9e3974c38e2601c17c569099ce8602a1c4be))
+
 ## 0.3.0
 
 07-30-2019 10:28 PDT
