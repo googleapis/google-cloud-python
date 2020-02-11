@@ -508,9 +508,7 @@ class Client(ClientWithProject):
                 The bucket resource to pass or name to create.
 
             max_results (int):
-                (Optional) The maximum number of blobs in each page of results
-                from this request. Non-positive values are ignored. Defaults to
-                a sensible value set by the API.
+                (Optional) The maximum number of blobs to return.
 
             page_token (str):
                 (Optional) If present, return the next batch of blobs, using the
