@@ -19,8 +19,6 @@ import shutil
 import nox
 
 
-LOCAL_DEPS = (os.path.join("..", "api_core"),)
-
 
 def default(session):
     """Default unit test session.
@@ -32,8 +30,6 @@ def default(session):
 
     # Install all test dependencies, then install local packages in-place.
     session.install("mock", "pytest", "pytest-cov", "grpcio >= 1.0.2")
-    for local_dep in LOCAL_DEPS:
-        session.install("-e", local_dep)
     session.install("-e", ".")
 
     # Run py.test against the unit tests.
