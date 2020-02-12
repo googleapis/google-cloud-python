@@ -23,7 +23,6 @@ import time
 class PeriodicAutoRefresher:
     def __init__(self, period_secs=10, ping_fn=None):
         self.__period_secs = period_secs
-        self.__done = threading.Event()
         self.__Q = queue.Queue()
         self.__ping_fn = ping_fn
         self.__start_time = time.time()
@@ -34,11 +33,12 @@ class PeriodicAutoRefresher:
 
     def __event_loop(self):
         while True:
-            if not self.__still_running():
-                return
-
             try:
-                callback, fn, args, kwargs = self.__Q.get(block=True, timeout=self.__period_secs)
+                head = self.__Q.get(block=True, timeout=self.__period_secs)
+                if not head:
+                    return
+
+                callback, fn, args, kwargs = head
                 res, exc = None, None
 
                 try:
@@ -48,14 +48,10 @@ class PeriodicAutoRefresher:
                 finally:
                     callback(res, exc)
             except queue.Empty:
-                if self.__still_running():
-                    self.__ping_fn()
-
-    def __still_running(self):
-        return not self.__done.is_set()
+                self.__ping_fn()
 
     def stop(self):
-        self.__done.set()
+        self.__Q.put_nowait(None)
         self.__pth.join()
 
     def run_op(self, callback, fn, *args, **kwargs):
@@ -79,6 +75,10 @@ class PeriodicAutoRefreshingTransaction:
         return res
 
     def __ping(self):
+        if self.__txn.committed or self.__txn._rolled_back:
+            print('Already committed or rolledback so cannot ping Cloud Spanner')
+            return
+
         print('Pinging Cloud Spanner at %s' % time.time())
         res = self.__txn.execute_sql('SELECT 1')
         if res:
@@ -101,11 +101,19 @@ class PeriodicAutoRefreshingTransaction:
         self.__par.stop()
         return res
 
-    def was_committed_or_rolledback(self):
+    @property
+    def committed(self):
         # For now it is alright to access Transaction._rolled_back
         # even though it is unexported. We've filed a follow-up issue:
         #   https://github.com/googleapis/python-spanner/issues/13
-        return self.__on_event_queue(lambda txn: txn.committed or txn._rolled_back, self.__txn)
+        return self.__txn and self.__txn.committed
+
+    @property
+    def _rolled_back(self):
+        # For now it is alright to access Transaction._rolled_back
+        # even though it is unexported. We've filed a follow-up issue:
+        #   https://github.com/googleapis/python-spanner/issues/13
+        return self.__txn and self.__txn._rolled_back
 
     def __on_event_queue(self, fn, *args, **kwargs):
         ready = threading.Event()

@@ -78,13 +78,9 @@ class Connection(object):
         self.run_prior_DDL_statements()
 
         if not self.__txn:
-            if True:
+            if False:  # An easy toggle for if we need to switch to plain Transactions.
                 self.__txn = self.__sess.transaction()
             else:
-                # For now disabling the PeriodicAutoRefreshingTransaction as
-                # accesses are painfully slow. We'd rather have 10second idle
-                # timeouts than >=6X the overhead.
-                # TODO: investigate this idea more.
                 self.__txn = PeriodicAutoRefreshingTransaction(self.__sess.transaction())
 
             self.__txn.begin()
