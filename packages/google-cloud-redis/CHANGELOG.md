@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [0.4.0](https://www.github.com/googleapis/python-redis/compare/v0.3.0...v0.4.0) (2020-02-12)
+
+
+### Features
+
+* **redis:** undeprecate resource name helper methods, add 2.7 deprecation warning (via synth) ([#10049](https://www.github.com/googleapis/python-redis/issues/10049)) ([b8a8c24](https://www.github.com/googleapis/python-redis/commit/b8a8c242c3f8f91b4615190006f5a2da720c8f40))
+* add ConnectMode and upgrade_instance ([#5](https://www.github.com/googleapis/python-redis/issues/5)) ([e55220b](https://www.github.com/googleapis/python-redis/commit/e55220b5c189bc96589abac492a490d1d99b53ff))
+
+
+### Bug Fixes
+
+* **redis:** deprecate resource name helper methods (via synth) ([#9840](https://www.github.com/googleapis/python-redis/issues/9840)) ([75342ef](https://www.github.com/googleapis/python-redis/commit/75342ef43750ec5709694ac39306e5747e01fcdc))
+
 ## 0.3.0
 
 07-24-2019 17:15 PDT
@@ -101,4 +114,3 @@
 
 ### New Features
 Initial version of Redis client library v1beta1.
-
