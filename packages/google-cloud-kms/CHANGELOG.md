@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [1.3.0](https://www.github.com/googleapis/python-kms/compare/v1.2.1...v1.3.0) (2020-02-12)
+
+
+### Features
+
+* **kms:** add `ProtectionLevel.External` enum; standardize use of 'optional' and 'required' in docstrings (via synth) ([#10070](https://www.github.com/googleapis/python-kms/issues/10070)) ([add232f](https://www.github.com/googleapis/python-kms/commit/add232fb657505264300ff37b07dc47fcdbbeede))
+* **kms:** undeprecate resource name helper methods, add 2.7 deprecation warning (via synth) ([#10045](https://www.github.com/googleapis/python-kms/issues/10045)) ([23dca59](https://www.github.com/googleapis/python-kms/commit/23dca598dbfef86460d1a16e5a4386ab2714cfd3))
+
+
+### Bug Fixes
+
+* **kms:** deprecate resource name helper methods (via synth) ([#9836](https://www.github.com/googleapis/python-kms/issues/9836)) ([a3eca00](https://www.github.com/googleapis/python-kms/commit/a3eca000de2518080e4a960be731fb2be08c90da))
+
 ## 1.2.1
 
 08-12-2019 13:44 PDT
@@ -128,4 +141,3 @@
 
 ### New Features
 - KMS v1
-
