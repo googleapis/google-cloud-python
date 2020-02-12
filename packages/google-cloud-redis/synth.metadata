@@ -1,27 +1,41 @@
 {
-  "updateTime": "2020-02-01T01:57:30.600185Z",
+  "updateTime": "2020-02-12T21:01:23.468961Z",
   "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "git@github.com:googleapis/python-redis.git",
+        "sha": "53d302baa0e1357d1f3dc9fc9ca74db145ecf78e"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "git@github.com:GoogleCloudPlatform/synthtool.git",
+        "sha": "e7660b704f319e2c1ea45d421b86b008d48ae37e"
+      }
+    },
     {
       "generator": {
         "name": "artman",
-        "version": "0.44.4",
-        "dockerImage": "googleapis/artman@sha256:19e945954fc960a4bdfee6cb34695898ab21a8cf0bac063ee39b91f00a1faec8"
+        "version": "0.45.0",
+        "dockerImage": "googleapis/artman@sha256:6aec9c34db0e4be221cdaf6faba27bdc07cfea846808b3d3b964dfce3a9a0f9b"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "b5cbe4a4ba64ab19e6627573ff52057a1657773d",
-        "internalRef": "292647187",
-        "log": "b5cbe4a4ba64ab19e6627573ff52057a1657773d\nSecurityCenter v1p1beta1: move file-level option on top to workaround protobuf.js bug.\n\nPiperOrigin-RevId: 292647187\n\nb224b317bf20c6a4fbc5030b4a969c3147f27ad3\nAdds API definitions for bigqueryreservation v1beta1.\n\nPiperOrigin-RevId: 292634722\n\nc1468702f9b17e20dd59007c0804a089b83197d2\nSynchronize new proto/yaml changes.\n\nPiperOrigin-RevId: 292626173\n\nffdfa4f55ab2f0afc11d0eb68f125ccbd5e404bd\nvision: v1p3beta1 publish annotations and retry config\n\nPiperOrigin-RevId: 292605599\n\n78f61482cd028fc1d9892aa5d89d768666a954cd\nvision: v1p1beta1 publish annotations and retry config\n\nPiperOrigin-RevId: 292605125\n\n60bb5a294a604fd1778c7ec87b265d13a7106171\nvision: v1p2beta1 publish annotations and retry config\n\nPiperOrigin-RevId: 292604980\n\n3bcf7aa79d45eb9ec29ab9036e9359ea325a7fc3\nvision: v1p4beta1 publish annotations and retry config\n\nPiperOrigin-RevId: 292604656\n\n2717b8a1c762b26911b45ecc2e4ee01d98401b28\nFix dataproc artman client library generation.\n\nPiperOrigin-RevId: 292555664\n\n7ac66d9be8a7d7de4f13566d8663978c9ee9dcd7\nAdd Dataproc Autoscaling API to V1.\n\nPiperOrigin-RevId: 292450564\n\n5d932b2c1be3a6ef487d094e3cf5c0673d0241dd\n- Improve documentation\n- Add a client_id field to StreamingPullRequest\n\nPiperOrigin-RevId: 292434036\n\neaff9fa8edec3e914995ce832b087039c5417ea7\nmonitoring: v3 publish annotations and client retry config\n\nPiperOrigin-RevId: 292425288\n\n70958bab8c5353870d31a23fb2c40305b050d3fe\nBigQuery Storage Read API v1 clients.\n\nPiperOrigin-RevId: 292407644\n\n7a15e7fe78ff4b6d5c9606a3264559e5bde341d1\nUpdate backend proto for Google Cloud Endpoints\n\nPiperOrigin-RevId: 292391607\n\n3ca2c014e24eb5111c8e7248b1e1eb833977c83d\nbazel: Add --flaky_test_attempts=3 argument to prevent CI failures caused by flaky tests\n\nPiperOrigin-RevId: 292382559\n\n9933347c1f677e81e19a844c2ef95bfceaf694fe\nbazel:Integrate latest protoc-java-resource-names-plugin changes (fix for PyYAML dependency in bazel rules)\n\nPiperOrigin-RevId: 292376626\n\nb835ab9d2f62c88561392aa26074c0b849fb0bd3\nasset: v1p2beta1 add client config annotations\n\n* remove unintentionally exposed RPCs\n* remove messages relevant to removed RPCs\n\nPiperOrigin-RevId: 292369593\n\nc1246a29e22b0f98e800a536b5b0da2d933a55f2\nUpdating v1 protos with the latest inline documentation (in comments) and config options. Also adding a per-service .yaml file.\n\nPiperOrigin-RevId: 292310790\n\nb491d07cadaae7cde5608321f913e5ca1459b32d\nRevert accidental local_repository change\n\nPiperOrigin-RevId: 292245373\n\naf3400a8cb6110025198b59a0f7d018ae3cda700\nUpdate gapic-generator dependency (prebuilt PHP binary support).\n\nPiperOrigin-RevId: 292243997\n\n341fd5690fae36f36cf626ef048fbcf4bbe7cee6\ngrafeas: v1 add resource_definition for the grafeas.io/Project and change references for Project.\n\nPiperOrigin-RevId: 292221998\n\n42e915ec2ece1cd37a590fbcd10aa2c0fb0e5b06\nUpdate the gapic-generator, protoc-java-resource-name-plugin and protoc-docs-plugin to the latest commit.\n\nPiperOrigin-RevId: 292182368\n\nf035f47250675d31492a09f4a7586cfa395520a7\nFix grafeas build and update build.sh script to include gerafeas.\n\nPiperOrigin-RevId: 292168753\n\n26ccb214b7bc4a716032a6266bcb0a9ca55d6dbb\nasset: v1p1beta1 add client config annotations and retry config\n\nPiperOrigin-RevId: 292154210\n\n974ee5c0b5d03e81a50dafcedf41e0efebb5b749\nasset: v1beta1 add client config annotations\n\nPiperOrigin-RevId: 292152573\n\n"
+        "sha": "2c17ac33b226194041155bb5340c3f34733f1b3a",
+        "internalRef": "294734008",
+        "log": "2c17ac33b226194041155bb5340c3f34733f1b3a\nAdd parameter to sample generated for UpdateInstance. Related to https://github.com/googleapis/python-redis/issues/4\n\nPiperOrigin-RevId: 294734008\n\n"
       }
     },
     {
       "template": {
         "name": "python_split_library",
         "origin": "synthtool.gcp",
-        "version": "2019.10.17"
+        "version": "2020.2.4"
       }
     }
   ],

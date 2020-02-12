@@ -98,6 +98,7 @@ class CloudRedisServicer(object):
     location (region) or all locations.
 
     The location should have the following format:
+
     * `projects/{project_id}/locations/{location_id}`
 
     If `location_id` is specified as `-` (wildcard), then all regions

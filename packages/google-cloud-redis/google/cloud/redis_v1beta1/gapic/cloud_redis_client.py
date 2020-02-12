@@ -559,8 +559,9 @@ class CloudRedisClient(object):
             >>> paths = [paths_element, paths_element_2]
             >>> update_mask = {'paths': paths}
             >>> display_name = 'UpdatedDisplayName'
+            >>> name = 'projects/<project-name>/locations/<location>/instances/<instance>'
             >>> memory_size_gb = 4
-            >>> instance = {'display_name': display_name, 'memory_size_gb': memory_size_gb}
+            >>> instance = {'display_name': display_name, 'name': name, 'memory_size_gb': memory_size_gb}
             >>>
             >>> response = client.update_instance(update_mask, instance)
             >>>
@@ -1029,5 +1030,99 @@ class CloudRedisClient(object):
             operation,
             self.transport._operations_client,
             empty_pb2.Empty,
+            metadata_type=any_pb2.Any,
+        )
+
+    def upgrade_instance(
+        self,
+        name,
+        redis_version,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Upgrades Redis instance to the newer Redis version specified in the
+        request.
+
+        Example:
+            >>> from google.cloud import redis_v1beta1
+            >>>
+            >>> client = redis_v1beta1.CloudRedisClient()
+            >>>
+            >>> name = client.instance_path('[PROJECT]', '[LOCATION]', '[INSTANCE]')
+            >>>
+            >>> # TODO: Initialize `redis_version`:
+            >>> redis_version = ''
+            >>>
+            >>> response = client.upgrade_instance(name, redis_version)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+            >>>
+            >>> # Handle metadata.
+            >>> metadata = response.metadata()
+
+        Args:
+            name (str): Required. Redis instance resource name using the form:
+                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
+                where ``location_id`` refers to a GCP region.
+            redis_version (str): Required. Specifies the target version of Redis software to upgrade to.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.redis_v1beta1.types._OperationFuture` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "upgrade_instance" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "upgrade_instance"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.upgrade_instance,
+                default_retry=self._method_configs["UpgradeInstance"].retry,
+                default_timeout=self._method_configs["UpgradeInstance"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = cloud_redis_pb2.UpgradeInstanceRequest(
+            name=name, redis_version=redis_version
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        operation = self._inner_api_calls["upgrade_instance"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.transport._operations_client,
+            cloud_redis_pb2.Instance,
             metadata_type=any_pb2.Any,
         )

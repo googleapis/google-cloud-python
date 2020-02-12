@@ -262,7 +262,7 @@ class TestCloudRedisClient(object):
 
     def test_update_instance(self):
         # Setup Expected Response
-        name = "name3373707"
+        name_2 = "name2-1052831874"
         display_name_2 = "displayName21615000987"
         location_id = "locationId552319461"
         alternative_location_id = "alternativeLocationId-718920621"
@@ -272,11 +272,11 @@ class TestCloudRedisClient(object):
         port = 3446913
         current_location_id = "currentLocationId1312712735"
         status_message = "statusMessage-239442758"
-        memory_size_gb = 34199707
+        memory_size_gb_2 = 1493816946
         authorized_network = "authorizedNetwork-1733809270"
         persistence_iam_identity = "persistenceIamIdentity1061944584"
         expected_response = {
-            "name": name,
+            "name": name_2,
             "display_name": display_name_2,
             "location_id": location_id,
             "alternative_location_id": alternative_location_id,
@@ -286,7 +286,7 @@ class TestCloudRedisClient(object):
             "port": port,
             "current_location_id": current_location_id,
             "status_message": status_message,
-            "memory_size_gb": memory_size_gb,
+            "memory_size_gb": memory_size_gb_2,
             "authorized_network": authorized_network,
             "persistence_iam_identity": persistence_iam_identity,
         }
@@ -308,8 +308,14 @@ class TestCloudRedisClient(object):
         paths_element_2 = "memory_size_gb"
         paths = [paths_element, paths_element_2]
         update_mask = {"paths": paths}
-        display_name = "￼ instance.memory_size_gb=4"
-        instance = {"display_name": display_name}
+        display_name = "UpdatedDisplayName"
+        name = "projects/<project-name>/locations/<location>/instances/<instance>"
+        memory_size_gb = 4
+        instance = {
+            "display_name": display_name,
+            "name": name,
+            "memory_size_gb": memory_size_gb,
+        }
 
         response = client.update_instance(update_mask, instance)
         result = response.result()
@@ -342,8 +348,14 @@ class TestCloudRedisClient(object):
         paths_element_2 = "memory_size_gb"
         paths = [paths_element, paths_element_2]
         update_mask = {"paths": paths}
-        display_name = "￼ instance.memory_size_gb=4"
-        instance = {"display_name": display_name}
+        display_name = "UpdatedDisplayName"
+        name = "projects/<project-name>/locations/<location>/instances/<instance>"
+        memory_size_gb = 4
+        instance = {
+            "display_name": display_name,
+            "name": name,
+            "memory_size_gb": memory_size_gb,
+        }
 
         response = client.update_instance(update_mask, instance)
         exception = response.exception()

@@ -254,3 +254,17 @@ class CloudRedisGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["cloud_redis_stub"].DeleteInstance
+
+    @property
+    def upgrade_instance(self):
+        """Return the gRPC stub for :meth:`CloudRedisClient.upgrade_instance`.
+
+        Upgrades Redis instance to the newer Redis version specified in the
+        request.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["cloud_redis_stub"].UpgradeInstance

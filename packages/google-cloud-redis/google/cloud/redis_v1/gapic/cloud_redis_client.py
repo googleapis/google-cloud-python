@@ -557,8 +557,10 @@ class CloudRedisClient(object):
             >>> paths_element_2 = 'memory_size_gb'
             >>> paths = [paths_element, paths_element_2]
             >>> update_mask = {'paths': paths}
-            >>> display_name = '￼ instance.memory_size_gb=4'
-            >>> instance = {'display_name': display_name}
+            >>> display_name = 'UpdatedDisplayName'
+            >>> name = 'projects/<project-name>/locations/<location>/instances/<instance>'
+            >>> memory_size_gb = 4
+            >>> instance = {'display_name': display_name, 'name': name, 'memory_size_gb': memory_size_gb}
             >>>
             >>> response = client.update_instance(update_mask, instance)
             >>>

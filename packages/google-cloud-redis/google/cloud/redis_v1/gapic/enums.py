@@ -22,6 +22,8 @@ import enum
 class FailoverInstanceRequest(object):
     class DataProtectionMode(enum.IntEnum):
         """
+        Specifies different modes of operation in relation to the data retention.
+
         Attributes:
           DATA_PROTECTION_MODE_UNSPECIFIED (int): Defaults to LIMITED\_DATA\_LOSS if a data protection mode is not
           specified.
@@ -38,6 +40,21 @@ class FailoverInstanceRequest(object):
 
 
 class Instance(object):
+    class ConnectMode(enum.IntEnum):
+        """
+        Available connection modes.
+
+        Attributes:
+          CONNECT_MODE_UNSPECIFIED (int): Not set.
+          DIRECT_PEERING (int): Connect via directly peering with memorystore redis hosted service.
+          PRIVATE_SERVICE_ACCESS (int): Connect with google via private service access and share connection
+          across google managed services.
+        """
+
+        CONNECT_MODE_UNSPECIFIED = 0
+        DIRECT_PEERING = 1
+        PRIVATE_SERVICE_ACCESS = 2
+
     class State(enum.IntEnum):
         """
         Represents the different states of a Redis instance.
