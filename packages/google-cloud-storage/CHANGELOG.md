@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [1.26.0](https://www.github.com/googleapis/python-storage/compare/v1.25.0...v1.26.0) (2020-02-12)
+
+
+### Features
+
+* **storage:** add support for signing URLs using token ([#9889](https://www.github.com/googleapis/python-storage/issues/9889)) ([ad280bf](https://www.github.com/googleapis/python-storage/commit/ad280bf506d3d7a37c402d06eac07422a5fe80af))
+* add timeout parameter to public methods ([#44](https://www.github.com/googleapis/python-storage/issues/44)) ([63abf07](https://www.github.com/googleapis/python-storage/commit/63abf0778686df1caa001270dd22f9df0daf0c78))
+
+
+### Bug Fixes
+
+* **storage:** fix documentation of max_result parameter in list_blob ([#43](https://www.github.com/googleapis/python-storage/issues/43)) ([ff15f19](https://www.github.com/googleapis/python-storage/commit/ff15f19d3a5830acdd540181dc6e9d07ca7d88ee))
+* **storage:** fix system test and change scope for iam access token ([#47](https://www.github.com/googleapis/python-storage/issues/47)) ([bc5375f](https://www.github.com/googleapis/python-storage/commit/bc5375f4c88f7e6ad1afbe7667c49d9a846e9757))
+* **tests:** remove low version error assertion from iam conditions system tests ([#53](https://www.github.com/googleapis/python-storage/issues/53)) ([8904aee](https://www.github.com/googleapis/python-storage/commit/8904aee9ad5dc01ab83e1460b6f186a739668eb7))
+
 ## 1.25.0
 
 01-16-2020 11:00 PST
