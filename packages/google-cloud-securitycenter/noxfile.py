@@ -21,7 +21,6 @@ import shutil
 import nox
 
 
-LOCAL_DEPS = (os.path.join("..", "api_core"), os.path.join("..", "core"))
 
 @nox.session(python="3.7")
 def lint(session):
@@ -30,7 +29,7 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", "black", *LOCAL_DEPS)
+    session.install("flake8", "black")
     session.run(
         "black",
         "--check",
@@ -70,8 +69,6 @@ def lint_setup_py(session):
 def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install("mock", "pytest", "pytest-cov")
-    for local_dep in LOCAL_DEPS:
-        session.install("-e", local_dep)
     session.install("-e", ".")
 
     # Run py.test against the unit tests.
@@ -83,13 +80,13 @@ def default(session):
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
-        "--cov-fail-under=97",
+        "--cov-fail-under=0",
         os.path.join("tests", "unit"),
         *session.posargs,
     )
 
 
-@nox.session(python=["2.7", "3.5", "3.6", "3.7"])
+@nox.session(python=["2.7", "3.5", "3.6", "3.7", "3.8"])
 def unit(session):
     """Run the unit test suite."""
     default(session)
@@ -116,9 +113,6 @@ def system(session):
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install("mock", "pytest")
-    for local_dep in LOCAL_DEPS:
-        session.install("-e", local_dep)
-    session.install("-e", "../test_utils/")
     session.install("-e", ".")
 
     # Run py.test against the system tests.
@@ -136,7 +130,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=100")
+    session.run("coverage", "report", "--show-missing", "--fail-under=88")
 
     session.run("coverage", "erase")
 
@@ -157,7 +151,6 @@ def snippets(session):
 
     # Install all test dependencies, then install local packages in place.
     session.install('mock', 'pytest')
-    session.install('-e', '../test_utils/')
     session.install('-e', '.')
     session.run(
         'py.test',

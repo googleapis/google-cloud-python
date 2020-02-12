@@ -66,7 +66,7 @@ def source_name(organization_id):
 
 @pytest.fixture(scope="module")
 def finding_name(source_name):
-    """Creates a new finding a returns it name."""
+    """Creates a new finding and returns it name."""
     from google.cloud import securitycenter
     from google.cloud.securitycenter_v1.proto.finding_pb2 import Finding
     from google.protobuf.timestamp_pb2 import Timestamp
@@ -83,7 +83,7 @@ def finding_name(source_name):
             "state": Finding.ACTIVE,
             "category": "C1",
             "event_time": now_proto,
-            "resource_name": "//cloudresourcemanager.googleapis.com/organizations/11232",
+            "resource_name": "//cloudresourcemanager.googleapis.com/organizations/1234",
         },
     )
     client.create_finding(
@@ -93,6 +93,7 @@ def finding_name(source_name):
             "state": Finding.ACTIVE,
             "category": "MEDIUM_RISK_ONE",
             "event_time": now_proto,
+            "resource_name": "//cloudresourcemanager.googleapis.com/organizations/1234",
         },
     )
 

@@ -35,7 +35,7 @@ s.move(library / "google/cloud/securitycenter.py")
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=97, cov_level=100)
+templated_files = common.py_library(cov_level=88)
 s.move(templated_files, excludes=['noxfile.py'])
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
