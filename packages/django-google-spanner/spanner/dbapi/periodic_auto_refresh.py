@@ -51,7 +51,8 @@ class PeriodicAutoRefresher:
                 self.__ping_fn()
 
     def stop(self):
-        self.__Q.put_nowait(None)
+        # Block until put returns.
+        self.__Q.put(None)
         self.__pth.join()
 
     def run_op(self, callback, fn, *args, **kwargs):
