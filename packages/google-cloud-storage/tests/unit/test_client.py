@@ -579,6 +579,44 @@ class TestClient(unittest.TestCase):
             timeout=self._get_default_timeout(),
         )
 
+    @mock.patch("warnings.warn")
+    def test_create_requester_pays_deprecated(self, mock_warn):
+        from google.cloud.storage.bucket import Bucket
+
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        bucket_name = "bucket-name"
+        json_expected = {"name": bucket_name, "billing": {"requesterPays": True}}
+        http = _make_requests_session([_make_json_response(json_expected)])
+        client._http_internal = http
+
+        URI = "/".join(
+            [
+                client._connection.API_BASE_URL,
+                "storage",
+                client._connection.API_VERSION,
+                "b?project=%s" % (project,),
+            ]
+        )
+
+        bucket = client.create_bucket(bucket_name, requester_pays=True)
+
+        self.assertIsInstance(bucket, Bucket)
+        self.assertEqual(bucket.name, bucket_name)
+        self.assertTrue(bucket.requester_pays)
+        http.request.assert_called_once_with(
+            method="POST", url=URI, data=mock.ANY, headers=mock.ANY, timeout=mock.ANY
+        )
+        json_sent = http.request.call_args_list[0][1]["data"]
+        self.assertEqual(json_expected, json.loads(json_sent))
+
+        mock_warn.assert_called_with(
+            "requester_pays arg is deprecated. Use Bucket().requester_pays instead.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
+
     def test_create_bucket_w_predefined_acl_invalid(self):
         project = "PROJECT"
         bucket_name = "bucket-name"
@@ -671,6 +709,100 @@ class TestClient(unittest.TestCase):
         )
         self.assertEqual(bucket.location, location)
 
+    def test_create_bucket_w_explicit_project(self):
+        from google.cloud.storage.client import Client
+
+        PROJECT = "PROJECT"
+        OTHER_PROJECT = "other-project-123"
+        BUCKET_NAME = "bucket-name"
+        DATA = {"name": BUCKET_NAME}
+        connection = _make_connection(DATA)
+
+        client = Client(project=PROJECT)
+        client._base_connection = connection
+
+        bucket = client.create_bucket(BUCKET_NAME, project=OTHER_PROJECT)
+        connection.api_request.assert_called_once_with(
+            method="POST",
+            path="/b",
+            query_params={"project": OTHER_PROJECT},
+            data=DATA,
+            _target_object=bucket,
+            timeout=self._get_default_timeout(),
+        )
+
+    def test_create_w_extra_properties(self):
+        from google.cloud.storage.client import Client
+        from google.cloud.storage.bucket import Bucket
+
+        BUCKET_NAME = "bucket-name"
+        PROJECT = "PROJECT"
+        CORS = [
+            {
+                "maxAgeSeconds": 60,
+                "methods": ["*"],
+                "origin": ["https://example.com/frontend"],
+                "responseHeader": ["X-Custom-Header"],
+            }
+        ]
+        LIFECYCLE_RULES = [{"action": {"type": "Delete"}, "condition": {"age": 365}}]
+        LOCATION = "eu"
+        LABELS = {"color": "red", "flavor": "cherry"}
+        STORAGE_CLASS = "NEARLINE"
+        DATA = {
+            "name": BUCKET_NAME,
+            "cors": CORS,
+            "lifecycle": {"rule": LIFECYCLE_RULES},
+            "location": LOCATION,
+            "storageClass": STORAGE_CLASS,
+            "versioning": {"enabled": True},
+            "billing": {"requesterPays": True},
+            "labels": LABELS,
+        }
+
+        connection = _make_connection(DATA)
+        client = Client(project=PROJECT)
+        client._base_connection = connection
+
+        bucket = Bucket(client=client, name=BUCKET_NAME)
+        bucket.cors = CORS
+        bucket.lifecycle_rules = LIFECYCLE_RULES
+        bucket.storage_class = STORAGE_CLASS
+        bucket.versioning_enabled = True
+        bucket.requester_pays = True
+        bucket.labels = LABELS
+        client.create_bucket(bucket, location=LOCATION)
+
+        connection.api_request.assert_called_once_with(
+            method="POST",
+            path="/b",
+            query_params={"project": PROJECT},
+            data=DATA,
+            _target_object=bucket,
+            timeout=self._get_default_timeout(),
+        )
+
+    def test_create_hit(self):
+        from google.cloud.storage.client import Client
+
+        PROJECT = "PROJECT"
+        BUCKET_NAME = "bucket-name"
+        DATA = {"name": BUCKET_NAME}
+        connection = _make_connection(DATA)
+        client = Client(project=PROJECT)
+        client._base_connection = connection
+
+        bucket = client.create_bucket(BUCKET_NAME)
+
+        connection.api_request.assert_called_once_with(
+            method="POST",
+            path="/b",
+            query_params={"project": PROJECT},
+            data=DATA,
+            _target_object=bucket,
+            timeout=self._get_default_timeout(),
+        )
+
     def test_create_bucket_w_string_success(self):
         from google.cloud.storage.bucket import Bucket
 
@@ -687,16 +819,15 @@ class TestClient(unittest.TestCase):
                 "b?project=%s" % (project,),
             ]
         )
-        json_expected = {"name": bucket_name, "billing": {"requesterPays": True}}
+        json_expected = {"name": bucket_name}
         data = json_expected
         http = _make_requests_session([_make_json_response(data)])
         client._http_internal = http
 
-        bucket = client.create_bucket(bucket_name, requester_pays=True)
+        bucket = client.create_bucket(bucket_name)
 
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, bucket_name)
-        self.assertTrue(bucket.requester_pays)
         http.request.assert_called_once_with(
             method="POST", url=URI, data=mock.ANY, headers=mock.ANY, timeout=mock.ANY
         )
