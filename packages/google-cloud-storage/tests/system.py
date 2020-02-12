@@ -309,15 +309,6 @@ class TestStorageBuckets(unittest.TestCase):
         self.assertEqual(returned_policy.version, 3)
         self.assertEqual(returned_policy.bindings, policy.bindings)
 
-        with pytest.raises(
-            BadRequest, match="cannot be less than the existing policy version"
-        ):
-            bucket.get_iam_policy()
-        with pytest.raises(
-            BadRequest, match="cannot be less than the existing policy version"
-        ):
-            bucket.get_iam_policy(requested_policy_version=2)
-
         fetched_policy = bucket.get_iam_policy(requested_policy_version=3)
         self.assertEqual(fetched_policy.bindings, returned_policy.bindings)
 
