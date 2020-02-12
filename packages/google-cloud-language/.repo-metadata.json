@@ -6,7 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559753",
   "release_level": "ga",
   "language": "python",
-  "repo": "googleapis/google-cloud-python",
+  "repo": "googleapis/python-language",
   "distribution_name": "google-cloud-language",
   "api_id": "language.googleapis.com",
   "requires_billing": true
