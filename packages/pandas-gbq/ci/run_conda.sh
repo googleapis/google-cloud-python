@@ -11,6 +11,9 @@ conda update -q conda
 conda info -a
 conda create -q -n test-environment python=$PYTHON
 source activate test-environment
+REQ="ci/requirements-${PYTHON}-${PANDAS}"
+conda install -q --file "$REQ.conda";
+
 if [[ "$PANDAS" == "NIGHTLY" ]]; then
   conda install -q numpy pytz python-dateutil;
   PRE_WHEELS="https://7933911d6844c6c53a7d-47bd50c35cd79bd838daf386af554a83.ssl.cf2.rackcdn.com";
@@ -19,8 +22,6 @@ else
   conda install -q pandas=$PANDAS;
 fi
 
-REQ="ci/requirements-${PYTHON}-${PANDAS}"
-conda install -q --file "$REQ.conda";
 python setup.py develop --no-deps
 
 # Run the tests

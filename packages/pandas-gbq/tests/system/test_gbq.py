@@ -211,7 +211,10 @@ class TestReadGBQIntegration(object):
             credentials=self.credentials,
             dialect="legacy",
         )
-        tm.assert_frame_equal(df, DataFrame({"null_integer": [None]}))
+        tm.assert_frame_equal(
+            df,
+            DataFrame({"null_integer": pandas.Series([None], dtype="object")}),
+        )
 
     def test_should_properly_handle_valid_floats(self, project_id):
         from math import pi
@@ -772,17 +775,33 @@ class TestReadGBQIntegration(object):
             )
 
     def test_timeout_configuration(self, project_id):
-        sql_statement = "SELECT 1"
-        config = {"query": {"timeoutMs": 1}}
-        # Test that QueryTimeout error raises
-        with pytest.raises(gbq.QueryTimeout):
-            gbq.read_gbq(
-                sql_statement,
-                project_id=project_id,
-                credentials=self.credentials,
-                configuration=config,
-                dialect="legacy",
-            )
+        sql_statement = """
+        SELECT
+          SUM(bottles_sold) total_bottles,
+          UPPER(category_name) category_name,
+          magnitude,
+          liquor.zip_code zip_code
+        FROM `bigquery-public-data.iowa_liquor_sales.sales` liquor
+        JOIN `bigquery-public-data.geo_us_boundaries.zip_codes` zip_codes
+        ON liquor.zip_code = zip_codes.zip_code
+        JOIN `bigquery-public-data.noaa_historic_severe_storms.tornado_paths` tornados
+        ON liquor.date = tornados.storm_date
+        WHERE ST_INTERSECTS(tornado_path_geom, zip_code_geom)
+        GROUP BY category_name, magnitude, zip_code
+        ORDER BY magnitude ASC, total_bottles DESC
+        """
+        configs = [
+            {"query": {"useQueryCache": False, "timeoutMs": 1}},
+            {"query": {"useQueryCache": False}, "jobTimeoutMs": 1},
+        ]
+        for config in configs:
+            with pytest.raises(gbq.QueryTimeout):
+                gbq.read_gbq(
+                    sql_statement,
+                    project_id=project_id,
+                    credentials=self.credentials,
+                    configuration=config,
+                )
 
     def test_query_response_bytes(self):
         assert self.gbq_connector.sizeof_fmt(999) == "999.0 B"
