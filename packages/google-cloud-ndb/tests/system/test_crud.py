@@ -1167,3 +1167,31 @@ def test_allocate_a_lot_of_keys():
 
     keys = SomeKind.allocate_ids(N)
     assert len(keys) == N
+
+
+@pytest.mark.usefixtures("client_context")
+def test_delete_multi_with_transactional(dispose_of):
+    """Regression test for issue #271
+
+    https://github.com/googleapis/python-ndb/issues/271
+    """
+    N = 10
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    @ndb.transactional()
+    def delete_them(entities):
+        ndb.delete_multi([entity.key for entity in entities])
+
+    foos = list(range(N))
+    entities = [SomeKind(foo=foo) for foo in foos]
+    keys = ndb.put_multi(entities)
+    dispose_of(*(key._key for key in keys))
+
+    entities = ndb.get_multi(keys)
+    assert [entity.foo for entity in entities] == foos
+
+    assert delete_them(entities) is None
+    entities = ndb.get_multi(keys)
+    assert entities == [None] * N

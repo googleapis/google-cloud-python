@@ -647,7 +647,8 @@ class _TransactionalCommitBatch(_NonTransactionalCommitBatch):
         self.mutations.append(mutation)
 
         # If we have an incomplete key, add the incomplete key to a batch for a
-        # call to AllocateIds
+        # call to AllocateIds, since the call to actually store the entity
+        # won't happen until the end of the transaction.
         if not _complete(entity_pb.key):
             # If this is the first key in the batch, we also need to
             # schedule our idle handler to get called
@@ -657,10 +658,26 @@ class _TransactionalCommitBatch(_NonTransactionalCommitBatch):
             self.incomplete_mutations.append(mutation)
             self.incomplete_futures.append(future)
 
-        # Complete keys get passed back None
+        # Can't wait for result, since batch won't be sent until transaction
+        # has ended. Complete keys get passed back None.
         else:
             future.set_result(None)
 
+        return future
+
+    def delete(self, key):
+        """Add a key to batch to be deleted.
+
+        Args:
+            entity_pb (datastore.Key): The entity's key to be deleted.
+
+        Returns:
+            tasklets.Future: Result will be :data:`None`, always.
+        """
+        # Can't wait for result, since batch won't be sent until transaction
+        # has ended.
+        future = super(_TransactionalCommitBatch, self).delete(key)
+        future.set_result(None)
         return future
 
     def idle_callback(self):

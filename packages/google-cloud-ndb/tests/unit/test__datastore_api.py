@@ -777,18 +777,15 @@ class Test_delete:
             def __eq__(self, other):
                 return self.delete == other.delete
 
-        eventloop = mock.Mock(spec=("add_idle", "run"))
-        with in_context.new(
-            eventloop=eventloop, transaction=b"tx123"
-        ).use() as context:
+        with in_context.new(transaction=b"tx123").use() as context:
             datastore_pb2.Mutation = Mutation
 
             key1 = key_module.Key("SomeKind", 1)._key
             key2 = key_module.Key("SomeKind", 2)._key
             key3 = key_module.Key("SomeKind", 3)._key
-            _api.delete(key1, _options.Options())
-            _api.delete(key2, _options.Options())
-            _api.delete(key3, _options.Options())
+            assert _api.delete(key1, _options.Options()).result() is None
+            assert _api.delete(key2, _options.Options()).result() is None
+            assert _api.delete(key3, _options.Options()).result() is None
 
             batch = context.commit_batches[b"tx123"]
             assert batch.mutations == [
