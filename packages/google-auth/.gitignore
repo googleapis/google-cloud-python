@@ -31,8 +31,11 @@ tests/data/user-key.json
 
 # PyCharm configuration:
 .idea
+venv/
 
 # Generated files
 pylintrc
 pylintrc.test
 pytype_output/
+
+.python-version

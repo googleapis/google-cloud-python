@@ -25,6 +25,7 @@ TEST_DEPENDENCIES = [
     "requests",
     "urllib3",
     "cryptography",
+    "responses",
     "grpcio",
 ]
 BLACK_VERSION = "black==19.3b0"
