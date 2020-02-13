@@ -1258,7 +1258,8 @@ Stream = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_STREAM,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
-        __doc__="""Information about a single data stream within a read session.
+        __doc__="""Information about a single data stream within a read
+  session.
   
   
   Attributes:
@@ -1277,7 +1278,8 @@ StreamPosition = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_STREAMPOSITION,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
-        __doc__="""Expresses a point within a given stream using an offset position.
+        __doc__="""Expresses a point within a given stream using an offset
+  position.
   
   
   Attributes:
@@ -1336,8 +1338,9 @@ CreateReadSessionRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CREATEREADSESSIONREQUEST,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
-        __doc__="""Creates a new read session, which may include additional options such as
-  requested parallelism, projection filters and constraints.
+        __doc__="""Creates a new read session, which may include additional
+  options such as requested parallelism, projection filters and
+  constraints.
   
   
   Attributes:
@@ -1377,8 +1380,8 @@ ReadRowsRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_READROWSREQUEST,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
-        __doc__="""Requesting row data via ``ReadRows`` must provide Stream position
-  information.
+        __doc__="""Requesting row data via ``ReadRows`` must provide Stream
+  position information.
   
   
   Attributes:
@@ -1468,7 +1471,8 @@ ThrottleStatus = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_THROTTLESTATUS,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
-        __doc__="""Information on if the current connection is being throttled.
+        __doc__="""Information on if the current connection is being
+  throttled.
   
   
   Attributes:
@@ -1487,8 +1491,8 @@ ReadRowsResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_READROWSRESPONSE,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
-        __doc__="""Response from calling ``ReadRows`` may include row data, progress and
-  throttling information.
+        __doc__="""Response from calling ``ReadRows`` may include row data,
+  progress and throttling information.
   
   
   Attributes:
@@ -1522,8 +1526,8 @@ BatchCreateReadSessionStreamsRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_BATCHCREATEREADSESSIONSTREAMSREQUEST,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
-        __doc__="""Information needed to request additional streams for an established read
-  session.
+        __doc__="""Information needed to request additional streams for an
+  established read session.
   
   
   Attributes:
@@ -1546,8 +1550,8 @@ BatchCreateReadSessionStreamsResponse = _reflection.GeneratedProtocolMessageType
     dict(
         DESCRIPTOR=_BATCHCREATEREADSESSIONSTREAMSRESPONSE,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
-        __doc__="""The response from ``BatchCreateReadSessionStreams`` returns the stream
-  identifiers for the newly created streams.
+        __doc__="""The response from ``BatchCreateReadSessionStreams``
+  returns the stream identifiers for the newly created streams.
   
   
   Attributes:
