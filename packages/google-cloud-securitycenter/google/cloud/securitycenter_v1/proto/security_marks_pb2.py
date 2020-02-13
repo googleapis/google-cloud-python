@@ -15,6 +15,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
@@ -26,9 +27,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         '\n"com.google.cloud.securitycenter.v1P\001ZLgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1;securitycenter\252\002\036Google.Cloud.SecurityCenter.V1\312\002\036Google\\Cloud\\SecurityCenter\\V1\352\002!Google::Cloud::SecurityCenter::V1'
     ),
     serialized_pb=_b(
-        '\n9google/cloud/securitycenter_v1/proto/security_marks.proto\x12\x1egoogle.cloud.securitycenter.v1\x1a\x1cgoogle/api/annotations.proto"\x94\x01\n\rSecurityMarks\x12\x0c\n\x04name\x18\x01 \x01(\t\x12G\n\x05marks\x18\x02 \x03(\x0b\x32\x38.google.cloud.securitycenter.v1.SecurityMarks.MarksEntry\x1a,\n\nMarksEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\xda\x01\n"com.google.cloud.securitycenter.v1P\x01ZLgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1;securitycenter\xaa\x02\x1eGoogle.Cloud.SecurityCenter.V1\xca\x02\x1eGoogle\\Cloud\\SecurityCenter\\V1\xea\x02!Google::Cloud::SecurityCenter::V1b\x06proto3'
+        '\n9google/cloud/securitycenter_v1/proto/security_marks.proto\x12\x1egoogle.cloud.securitycenter.v1\x1a\x19google/api/resource.proto\x1a\x1cgoogle/api/annotations.proto"\xd3\x02\n\rSecurityMarks\x12\x0c\n\x04name\x18\x01 \x01(\t\x12G\n\x05marks\x18\x02 \x03(\x0b\x32\x38.google.cloud.securitycenter.v1.SecurityMarks.MarksEntry\x1a,\n\nMarksEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01:\xbc\x01\xea\x41\xb8\x01\n+securitycenter.googleapis.com/SecurityMarks\x12\x39organizations/{organization}/assets/{asset}/securityMarks\x12Norganizations/{organization}/sources/{source}/findings/{finding}/securityMarksB\xda\x01\n"com.google.cloud.securitycenter.v1P\x01ZLgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1;securitycenter\xaa\x02\x1eGoogle.Cloud.SecurityCenter.V1\xca\x02\x1eGoogle\\Cloud\\SecurityCenter\\V1\xea\x02!Google::Cloud::SecurityCenter::V1b\x06proto3'
     ),
-    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,],
+    dependencies=[
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+    ],
 )
 
 
@@ -84,8 +88,8 @@ _SECURITYMARKS_MARKSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=228,
-    serialized_end=272,
+    serialized_start=255,
+    serialized_end=299,
 )
 
 _SECURITYMARKS = _descriptor.Descriptor(
@@ -135,13 +139,15 @@ _SECURITYMARKS = _descriptor.Descriptor(
     extensions=[],
     nested_types=[_SECURITYMARKS_MARKSENTRY,],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A\270\001\n+securitycenter.googleapis.com/SecurityMarks\0229organizations/{organization}/assets/{asset}/securityMarks\022Norganizations/{organization}/sources/{source}/findings/{finding}/securityMarks"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=124,
-    serialized_end=272,
+    serialized_start=151,
+    serialized_end=490,
 )
 
 _SECURITYMARKS_MARKSENTRY.containing_type = _SECURITYMARKS
@@ -164,26 +170,27 @@ SecurityMarks = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SECURITYMARKS,
         __module__="google.cloud.securitycenter_v1.proto.security_marks_pb2",
-        __doc__="""User specified security marks that are attached to the parent Cloud
-  Security Command Center (Cloud SCC) resource. Security marks are scoped
-  within a Cloud SCC organization -- they can be modified and viewed by
-  all users who have proper permissions on the organization.
+        __doc__="""User specified security marks that are attached to the
+  parent Cloud Security Command Center (Cloud SCC) resource. Security
+  marks are scoped within a Cloud SCC organization -- they can be modified
+  and viewed by all users who have proper permissions on the organization.
   
   
   Attributes:
       name:
           The relative resource name of the SecurityMarks. See: https://
           cloud.google.com/apis/design/resource\_names#relative\_resourc
-          e\_name Examples: "organizations/123/assets/456/securityMarks"
-          "organizations/123/sources/456/findings/789/securityMarks".
+          e\_name Examples: "organizations/{organization\_id}/assets/{as
+          set\_id}/securityMarks" "organizations/{organization\_id}/sour
+          ces/{source\_id}/findings/{finding\_id}/securityMarks".
       marks:
           Mutable user specified security marks belonging to the parent
-          resource. Constraints are as follows: - Keys and values are
-          treated as case insensitive - Keys must be between 1 - 256
-          characters (inclusive) - Keys must be letters, numbers,
-          underscores, or dashes - Values have leading and trailing
-          whitespace trimmed, remaining characters must be between 1 -
-          4096 characters (inclusive)
+          resource. Constraints are as follows:  -  Keys and values are
+          treated as case insensitive -  Keys must be between 1 - 256
+          characters (inclusive) -  Keys must be letters, numbers,
+          underscores, or dashes -  Values have leading and trailing
+          whitespace trimmed, remaining    characters must be between 1
+          - 4096 characters (inclusive)
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.securitycenter.v1.SecurityMarks)
     ),
@@ -194,4 +201,5 @@ _sym_db.RegisterMessage(SecurityMarks.MarksEntry)
 
 DESCRIPTOR._options = None
 _SECURITYMARKS_MARKSENTRY._options = None
+_SECURITYMARKS._options = None
 # @@protoc_insertion_point(module_scope)

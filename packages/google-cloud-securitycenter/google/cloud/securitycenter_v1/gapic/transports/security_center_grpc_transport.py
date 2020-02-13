@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -208,7 +208,7 @@ class SecurityCenterGrpcTransport(object):
         specified properties.
 
         To group across all sources provide a ``-`` as the source id. Example:
-        /v1/organizations/123/sources/-/findings
+        /v1/organizations/{organization\_id}/sources/-/findings
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -237,7 +237,7 @@ class SecurityCenterGrpcTransport(object):
         Lists an organization or source's findings.
 
         To list across all sources provide a ``-`` as the source id. Example:
-        /v1/organizations/123/sources/-/findings
+        /v1/organizations/{organization\_id}/sources/-/findings
 
         Returns:
             Callable: A callable which accepts the appropriate

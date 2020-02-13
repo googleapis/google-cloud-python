@@ -15,12 +15,13 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.securitycenter_v1.proto import (
     security_marks_pb2 as google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_security__marks__pb2,
 )
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -31,13 +32,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         '\n"com.google.cloud.securitycenter.v1P\001ZLgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1;securitycenter\252\002\036Google.Cloud.SecurityCenter.V1\312\002\036Google\\Cloud\\SecurityCenter\\V1\352\002!Google::Cloud::SecurityCenter::V1'
     ),
     serialized_pb=_b(
-        '\n0google/cloud/securitycenter_v1/proto/asset.proto\x12\x1egoogle.cloud.securitycenter.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x39google/cloud/securitycenter_v1/proto/security_marks.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xcf\x05\n\x05\x41sset\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x62\n\x1asecurity_center_properties\x18\x02 \x01(\x0b\x32>.google.cloud.securitycenter.v1.Asset.SecurityCenterProperties\x12Z\n\x13resource_properties\x18\x07 \x03(\x0b\x32=.google.cloud.securitycenter.v1.Asset.ResourcePropertiesEntry\x12\x45\n\x0esecurity_marks\x18\x08 \x01(\x0b\x32-.google.cloud.securitycenter.v1.SecurityMarks\x12/\n\x0b\x63reate_time\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x43\n\niam_policy\x18\x0b \x01(\x0b\x32/.google.cloud.securitycenter.v1.Asset.IamPolicy\x1a\x94\x01\n\x18SecurityCenterProperties\x12\x15\n\rresource_name\x18\x01 \x01(\t\x12\x15\n\rresource_type\x18\x02 \x01(\t\x12\x17\n\x0fresource_parent\x18\x03 \x01(\t\x12\x18\n\x10resource_project\x18\x04 \x01(\t\x12\x17\n\x0fresource_owners\x18\x05 \x03(\t\x1a \n\tIamPolicy\x12\x13\n\x0bpolicy_blob\x18\x01 \x01(\t\x1aQ\n\x17ResourcePropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12%\n\x05value\x18\x02 \x01(\x0b\x32\x16.google.protobuf.Value:\x02\x38\x01\x42\xda\x01\n"com.google.cloud.securitycenter.v1P\x01ZLgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1;securitycenter\xaa\x02\x1eGoogle.Cloud.SecurityCenter.V1\xca\x02\x1eGoogle\\Cloud\\SecurityCenter\\V1\xea\x02!Google::Cloud::SecurityCenter::V1b\x06proto3'
+        '\n0google/cloud/securitycenter_v1/proto/asset.proto\x12\x1egoogle.cloud.securitycenter.v1\x1a\x19google/api/resource.proto\x1a\x39google/cloud/securitycenter_v1/proto/security_marks.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\x92\x07\n\x05\x41sset\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x62\n\x1asecurity_center_properties\x18\x02 \x01(\x0b\x32>.google.cloud.securitycenter.v1.Asset.SecurityCenterProperties\x12Z\n\x13resource_properties\x18\x07 \x03(\x0b\x32=.google.cloud.securitycenter.v1.Asset.ResourcePropertiesEntry\x12\x45\n\x0esecurity_marks\x18\x08 \x01(\x0b\x32-.google.cloud.securitycenter.v1.SecurityMarks\x12/\n\x0b\x63reate_time\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x43\n\niam_policy\x18\x0b \x01(\x0b\x32/.google.cloud.securitycenter.v1.Asset.IamPolicy\x1a\x80\x02\n\x18SecurityCenterProperties\x12\x15\n\rresource_name\x18\x01 \x01(\t\x12\x15\n\rresource_type\x18\x02 \x01(\t\x12\x17\n\x0fresource_parent\x18\x03 \x01(\t\x12\x18\n\x10resource_project\x18\x04 \x01(\t\x12\x17\n\x0fresource_owners\x18\x05 \x03(\t\x12\x1d\n\x15resource_display_name\x18\x06 \x01(\t\x12$\n\x1cresource_parent_display_name\x18\x07 \x01(\t\x12%\n\x1dresource_project_display_name\x18\x08 \x01(\t\x1a \n\tIamPolicy\x12\x13\n\x0bpolicy_blob\x18\x01 \x01(\t\x1aQ\n\x17ResourcePropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12%\n\x05value\x18\x02 \x01(\x0b\x32\x16.google.protobuf.Value:\x02\x38\x01:U\xea\x41R\n#securitycenter.googleapis.com/Asset\x12+organizations/{organization}/assets/{asset}B\xda\x01\n"com.google.cloud.securitycenter.v1P\x01ZLgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1;securitycenter\xaa\x02\x1eGoogle.Cloud.SecurityCenter.V1\xca\x02\x1eGoogle\\Cloud\\SecurityCenter\\V1\xea\x02!Google::Cloud::SecurityCenter::V1b\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_security__marks__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -139,6 +141,60 @@ _ASSET_SECURITYCENTERPROPERTIES = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="resource_display_name",
+            full_name="google.cloud.securitycenter.v1.Asset.SecurityCenterProperties.resource_display_name",
+            index=5,
+            number=6,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="resource_parent_display_name",
+            full_name="google.cloud.securitycenter.v1.Asset.SecurityCenterProperties.resource_parent_display_name",
+            index=6,
+            number=7,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="resource_project_display_name",
+            full_name="google.cloud.securitycenter.v1.Asset.SecurityCenterProperties.resource_project_display_name",
+            index=7,
+            number=8,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -148,8 +204,8 @@ _ASSET_SECURITYCENTERPROPERTIES = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=691,
-    serialized_end=839,
+    serialized_start=718,
+    serialized_end=974,
 )
 
 _ASSET_IAMPOLICY = _descriptor.Descriptor(
@@ -186,8 +242,8 @@ _ASSET_IAMPOLICY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=841,
-    serialized_end=873,
+    serialized_start=976,
+    serialized_end=1008,
 )
 
 _ASSET_RESOURCEPROPERTIESENTRY = _descriptor.Descriptor(
@@ -242,8 +298,8 @@ _ASSET_RESOURCEPROPERTIESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=875,
-    serialized_end=956,
+    serialized_start=1010,
+    serialized_end=1091,
 )
 
 _ASSET = _descriptor.Descriptor(
@@ -387,13 +443,15 @@ _ASSET = _descriptor.Descriptor(
         _ASSET_RESOURCEPROPERTIESENTRY,
     ],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352AR\n#securitycenter.googleapis.com/Asset\022+organizations/{organization}/assets/{asset}"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=237,
-    serialized_end=956,
+    serialized_start=264,
+    serialized_end=1178,
 )
 
 _ASSET_SECURITYCENTERPROPERTIES.containing_type = _ASSET
@@ -433,8 +491,8 @@ Asset = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_ASSET_SECURITYCENTERPROPERTIES,
                 __module__="google.cloud.securitycenter_v1.proto.asset_pb2",
-                __doc__="""Cloud SCC managed properties. These properties are managed by Cloud SCC
-    and cannot be modified by the user.
+                __doc__="""Cloud SCC managed properties. These properties are managed
+    by Cloud SCC and cannot be modified by the user.
     
     
     Attributes:
@@ -458,6 +516,13 @@ Asset = _reflection.GeneratedProtocolMessageType(
             \_resource\_name
         resource_owners:
             Owners of the Google Cloud resource.
+        resource_display_name:
+            The user defined display name for this resource.
+        resource_parent_display_name:
+            The user defined display name for the parent of this resource.
+        resource_project_display_name:
+            The user defined display name for the project of this
+            resource.
     """,
                 # @@protoc_insertion_point(class_scope:google.cloud.securitycenter.v1.Asset.SecurityCenterProperties)
             ),
@@ -468,9 +533,9 @@ Asset = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_ASSET_IAMPOLICY,
                 __module__="google.cloud.securitycenter_v1.proto.asset_pb2",
-                __doc__="""IAM Policy information associated with the GCP resource described by the
-    Cloud SCC asset. This information is managed and defined by the GCP
-    resource and cannot be modified by the user.
+                __doc__="""IAM Policy information associated with the GCP resource
+    described by the Cloud SCC asset. This information is managed and
+    defined by the GCP resource and cannot be modified by the user.
     
     
     Attributes:
@@ -494,8 +559,8 @@ Asset = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_ASSET,
         __module__="google.cloud.securitycenter_v1.proto.asset_pb2",
-        __doc__="""Cloud Security Command Center's (Cloud SCC) representation of a Google
-  Cloud Platform (GCP) resource.
+        __doc__="""Cloud Security Command Center's (Cloud SCC) representation
+  of a Google Cloud Platform (GCP) resource.
   
   The Asset is a Cloud SCC resource that captures information about a
   single GCP resource. All modifications to an Asset are only within the
@@ -506,7 +571,8 @@ Asset = _reflection.GeneratedProtocolMessageType(
       name:
           The relative resource name of this asset. See: https://cloud.g
           oogle.com/apis/design/resource\_names#relative\_resource\_name
-          Example: "organizations/123/assets/456".
+          Example:
+          "organizations/{organization\_id}/assets/{asset\_id}".
       security_center_properties:
           Cloud SCC managed properties. These properties are managed by
           Cloud SCC and cannot be modified by the user.
@@ -540,4 +606,5 @@ _sym_db.RegisterMessage(Asset.ResourcePropertiesEntry)
 
 DESCRIPTOR._options = None
 _ASSET_RESOURCEPROPERTIESENTRY._options = None
+_ASSET._options = None
 # @@protoc_insertion_point(module_scope)

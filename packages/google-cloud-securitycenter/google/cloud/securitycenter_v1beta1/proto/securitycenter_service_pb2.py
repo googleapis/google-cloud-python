@@ -16,6 +16,9 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.securitycenter_v1beta1.proto import (
     asset_pb2 as google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_asset__pb2,
 )
@@ -51,10 +54,13 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n'com.google.cloud.securitycenter.v1beta1P\001ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenter"
     ),
     serialized_pb=_b(
-        '\nFgoogle/cloud/securitycenter_v1beta1/proto/securitycenter_service.proto\x12#google.cloud.securitycenter.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x35google/cloud/securitycenter_v1beta1/proto/asset.proto\x1a\x37google/cloud/securitycenter_v1beta1/proto/finding.proto\x1a\x45google/cloud/securitycenter_v1beta1/proto/organization_settings.proto\x1a>google/cloud/securitycenter_v1beta1/proto/security_marks.proto\x1a\x36google/cloud/securitycenter_v1beta1/proto/source.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto"y\n\x14\x43reateFindingRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\nfinding_id\x18\x02 \x01(\t\x12=\n\x07\x66inding\x18\x03 \x01(\x0b\x32,.google.cloud.securitycenter.v1beta1.Finding"b\n\x13\x43reateSourceRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12;\n\x06source\x18\x02 \x01(\x0b\x32+.google.cloud.securitycenter.v1beta1.Source".\n\x1eGetOrganizationSettingsRequest\x12\x0c\n\x04name\x18\x01 \x01(\t" \n\x10GetSourceRequest\x12\x0c\n\x04name\x18\x01 \x01(\t"\xd1\x01\n\x12GroupAssetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x10\n\x08group_by\x18\x03 \x01(\t\x12\x33\n\x10\x63ompare_duration\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x12-\n\tread_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x12\n\npage_token\x18\x07 \x01(\t\x12\x11\n\tpage_size\x18\x08 \x01(\x05"\xa9\x01\n\x13GroupAssetsResponse\x12J\n\x10group_by_results\x18\x01 \x03(\x0b\x32\x30.google.cloud.securitycenter.v1beta1.GroupResult\x12-\n\tread_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t"\x9e\x01\n\x14GroupFindingsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x10\n\x08group_by\x18\x03 \x01(\t\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x12\n\npage_token\x18\x05 \x01(\t\x12\x11\n\tpage_size\x18\x06 \x01(\x05"\xab\x01\n\x15GroupFindingsResponse\x12J\n\x10group_by_results\x18\x01 \x03(\x0b\x32\x30.google.cloud.securitycenter.v1beta1.GroupResult\x12-\n\tread_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t"\xbd\x01\n\x0bGroupResult\x12T\n\nproperties\x18\x01 \x03(\x0b\x32@.google.cloud.securitycenter.v1beta1.GroupResult.PropertiesEntry\x12\r\n\x05\x63ount\x18\x02 \x01(\x03\x1aI\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12%\n\x05value\x18\x02 \x01(\x0b\x32\x16.google.protobuf.Value:\x02\x38\x01"K\n\x12ListSourcesRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x07 \x01(\x05"l\n\x13ListSourcesResponse\x12<\n\x07sources\x18\x01 \x03(\x0b\x32+.google.cloud.securitycenter.v1beta1.Source\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x80\x02\n\x11ListAssetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x10\n\x08order_by\x18\x03 \x01(\t\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x33\n\x10\x63ompare_duration\x18\x05 \x01(\x0b\x32\x19.google.protobuf.Duration\x12.\n\nfield_mask\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x12\n\npage_token\x18\x08 \x01(\t\x12\x11\n\tpage_size\x18\t \x01(\x05"\xd6\x03\n\x12ListAssetsResponse\x12\x65\n\x13list_assets_results\x18\x01 \x03(\x0b\x32H.google.cloud.securitycenter.v1beta1.ListAssetsResponse.ListAssetsResult\x12-\n\tread_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t\x12\x12\n\ntotal_size\x18\x04 \x01(\x05\x1a\xfc\x01\n\x10ListAssetsResult\x12\x39\n\x05\x61sset\x18\x01 \x01(\x0b\x32*.google.cloud.securitycenter.v1beta1.Asset\x12]\n\x05state\x18\x02 \x01(\x0e\x32N.google.cloud.securitycenter.v1beta1.ListAssetsResponse.ListAssetsResult.State"N\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\n\n\x06UNUSED\x10\x01\x12\t\n\x05\x41\x44\x44\x45\x44\x10\x02\x12\x0b\n\x07REMOVED\x10\x03\x12\n\n\x06\x41\x43TIVE\x10\x04"\xcd\x01\n\x13ListFindingsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x10\n\x08order_by\x18\x03 \x01(\t\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12.\n\nfield_mask\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12\x12\n\npage_token\x18\x06 \x01(\t\x12\x11\n\tpage_size\x18\x07 \x01(\x05"\xb2\x01\n\x14ListFindingsResponse\x12>\n\x08\x66indings\x18\x01 \x03(\x0b\x32,.google.cloud.securitycenter.v1beta1.Finding\x12-\n\tread_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t\x12\x12\n\ntotal_size\x18\x04 \x01(\x05"\x99\x01\n\x16SetFindingStateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x41\n\x05state\x18\x02 \x01(\x0e\x32\x32.google.cloud.securitycenter.v1beta1.Finding.State\x12.\n\nstart_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"*\n\x18RunAssetDiscoveryRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t"\x86\x01\n\x14UpdateFindingRequest\x12=\n\x07\x66inding\x18\x01 \x01(\x0b\x32,.google.cloud.securitycenter.v1beta1.Finding\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"\xae\x01\n!UpdateOrganizationSettingsRequest\x12X\n\x15organization_settings\x18\x01 \x01(\x0b\x32\x39.google.cloud.securitycenter.v1beta1.OrganizationSettings\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"\x83\x01\n\x13UpdateSourceRequest\x12;\n\x06source\x18\x01 \x01(\x0b\x32+.google.cloud.securitycenter.v1beta1.Source\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"\xc9\x01\n\x1aUpdateSecurityMarksRequest\x12J\n\x0esecurity_marks\x18\x01 \x01(\x0b\x32\x32.google.cloud.securitycenter.v1beta1.SecurityMarks\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12.\n\nstart_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp2\x80\x1c\n\x0eSecurityCenter\x12\xb0\x01\n\x0c\x43reateSource\x12\x38.google.cloud.securitycenter.v1beta1.CreateSourceRequest\x1a+.google.cloud.securitycenter.v1beta1.Source"9\x82\xd3\xe4\x93\x02\x33")/v1beta1/{parent=organizations/*}/sources:\x06source\x12\xbf\x01\n\rCreateFinding\x12\x39.google.cloud.securitycenter.v1beta1.CreateFindingRequest\x1a,.google.cloud.securitycenter.v1beta1.Finding"E\x82\xd3\xe4\x93\x02?"4/v1beta1/{parent=organizations/*/sources/*}/findings:\x07\x66inding\x12\x90\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"E\x82\xd3\xe4\x93\x02?":/v1beta1/{resource=organizations/*/sources/*}:getIamPolicy:\x01*\x12\xd7\x01\n\x17GetOrganizationSettings\x12\x43.google.cloud.securitycenter.v1beta1.GetOrganizationSettingsRequest\x1a\x39.google.cloud.securitycenter.v1beta1.OrganizationSettings"<\x82\xd3\xe4\x93\x02\x36\x12\x34/v1beta1/{name=organizations/*/organizationSettings}\x12\xa2\x01\n\tGetSource\x12\x35.google.cloud.securitycenter.v1beta1.GetSourceRequest\x1a+.google.cloud.securitycenter.v1beta1.Source"1\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{name=organizations/*/sources/*}\x12\xbb\x01\n\x0bGroupAssets\x12\x37.google.cloud.securitycenter.v1beta1.GroupAssetsRequest\x1a\x38.google.cloud.securitycenter.v1beta1.GroupAssetsResponse"9\x82\xd3\xe4\x93\x02\x33"./v1beta1/{parent=organizations/*}/assets:group:\x01*\x12\xcd\x01\n\rGroupFindings\x12\x39.google.cloud.securitycenter.v1beta1.GroupFindingsRequest\x1a:.google.cloud.securitycenter.v1beta1.GroupFindingsResponse"E\x82\xd3\xe4\x93\x02?":/v1beta1/{parent=organizations/*/sources/*}/findings:group:\x01*\x12\xaf\x01\n\nListAssets\x12\x36.google.cloud.securitycenter.v1beta1.ListAssetsRequest\x1a\x37.google.cloud.securitycenter.v1beta1.ListAssetsResponse"0\x82\xd3\xe4\x93\x02*\x12(/v1beta1/{parent=organizations/*}/assets\x12\xc1\x01\n\x0cListFindings\x12\x38.google.cloud.securitycenter.v1beta1.ListFindingsRequest\x1a\x39.google.cloud.securitycenter.v1beta1.ListFindingsResponse"<\x82\xd3\xe4\x93\x02\x36\x12\x34/v1beta1/{parent=organizations/*/sources/*}/findings\x12\xb3\x01\n\x0bListSources\x12\x37.google.cloud.securitycenter.v1beta1.ListSourcesRequest\x1a\x38.google.cloud.securitycenter.v1beta1.ListSourcesResponse"1\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{parent=organizations/*}/sources\x12\xb3\x01\n\x11RunAssetDiscovery\x12=.google.cloud.securitycenter.v1beta1.RunAssetDiscoveryRequest\x1a\x1d.google.longrunning.Operation"@\x82\xd3\xe4\x93\x02:"5/v1beta1/{parent=organizations/*}/assets:runDiscovery:\x01*\x12\xc6\x01\n\x0fSetFindingState\x12;.google.cloud.securitycenter.v1beta1.SetFindingStateRequest\x1a,.google.cloud.securitycenter.v1beta1.Finding"H\x82\xd3\xe4\x93\x02\x42"=/v1beta1/{name=organizations/*/sources/*/findings/*}:setState:\x01*\x12\x90\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"E\x82\xd3\xe4\x93\x02?":/v1beta1/{resource=organizations/*/sources/*}:setIamPolicy:\x01*\x12\xb6\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"K\x82\xd3\xe4\x93\x02\x45"@/v1beta1/{resource=organizations/*/sources/*}:testIamPermissions:\x01*\x12\xc7\x01\n\rUpdateFinding\x12\x39.google.cloud.securitycenter.v1beta1.UpdateFindingRequest\x1a,.google.cloud.securitycenter.v1beta1.Finding"M\x82\xd3\xe4\x93\x02G2</v1beta1/{finding.name=organizations/*/sources/*/findings/*}:\x07\x66inding\x12\x8a\x02\n\x1aUpdateOrganizationSettings\x12\x46.google.cloud.securitycenter.v1beta1.UpdateOrganizationSettingsRequest\x1a\x39.google.cloud.securitycenter.v1beta1.OrganizationSettings"i\x82\xd3\xe4\x93\x02\x63\x32J/v1beta1/{organization_settings.name=organizations/*/organizationSettings}:\x15organization_settings\x12\xb7\x01\n\x0cUpdateSource\x12\x38.google.cloud.securitycenter.v1beta1.UpdateSourceRequest\x1a+.google.cloud.securitycenter.v1beta1.Source"@\x82\xd3\xe4\x93\x02:20/v1beta1/{source.name=organizations/*/sources/*}:\x06source\x12\xd0\x02\n\x13UpdateSecurityMarks\x12?.google.cloud.securitycenter.v1beta1.UpdateSecurityMarksRequest\x1a\x32.google.cloud.securitycenter.v1beta1.SecurityMarks"\xc3\x01\x82\xd3\xe4\x93\x02\xbc\x01\x32\x45/v1beta1/{security_marks.name=organizations/*/assets/*/securityMarks}:\x0esecurity_marksZc2Q/v1beta1/{security_marks.name=organizations/*/sources/*/findings/*/securityMarks}:\x0esecurity_marksB~\n\'com.google.cloud.securitycenter.v1beta1P\x01ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenterb\x06proto3'
+        '\nFgoogle/cloud/securitycenter_v1beta1/proto/securitycenter_service.proto\x12#google.cloud.securitycenter.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x35google/cloud/securitycenter_v1beta1/proto/asset.proto\x1a\x37google/cloud/securitycenter_v1beta1/proto/finding.proto\x1a\x45google/cloud/securitycenter_v1beta1/proto/organization_settings.proto\x1a>google/cloud/securitycenter_v1beta1/proto/security_marks.proto\x1a\x36google/cloud/securitycenter_v1beta1/proto/source.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xb1\x01\n\x14\x43reateFindingRequest\x12<\n\x06parent\x18\x01 \x01(\tB,\xe0\x41\x02\xfa\x41&\n$securitycenter.googleapis.com/Source\x12\x17\n\nfinding_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x42\n\x07\x66inding\x18\x03 \x01(\x0b\x32,.google.cloud.securitycenter.v1beta1.FindingB\x03\xe0\x41\x02"\xa1\x01\n\x13\x43reateSourceRequest\x12H\n\x06parent\x18\x01 \x01(\tB8\xe0\x41\x02\xfa\x41\x32\n0cloudresourcemanager.googleapis.com/Organization\x12@\n\x06source\x18\x02 \x01(\x0b\x32+.google.cloud.securitycenter.v1beta1.SourceB\x03\xe0\x41\x02"j\n\x1eGetOrganizationSettingsRequest\x12H\n\x04name\x18\x01 \x01(\tB:\xe0\x41\x02\xfa\x41\x34\n2securitycenter.googleapis.com/OrganizationSettings"N\n\x10GetSourceRequest\x12:\n\x04name\x18\x01 \x01(\tB,\xe0\x41\x02\xfa\x41&\n$securitycenter.googleapis.com/Source"\x90\x02\n\x12GroupAssetsRequest\x12H\n\x06parent\x18\x01 \x01(\tB8\xe0\x41\x02\xfa\x41\x32\n0cloudresourcemanager.googleapis.com/Organization\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x15\n\x08group_by\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\x33\n\x10\x63ompare_duration\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x12-\n\tread_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x12\n\npage_token\x18\x07 \x01(\t\x12\x11\n\tpage_size\x18\x08 \x01(\x05"\xa9\x01\n\x13GroupAssetsResponse\x12J\n\x10group_by_results\x18\x01 \x03(\x0b\x32\x30.google.cloud.securitycenter.v1beta1.GroupResult\x12-\n\tread_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t"\xd1\x01\n\x14GroupFindingsRequest\x12<\n\x06parent\x18\x01 \x01(\tB,\xe0\x41\x02\xfa\x41&\n$securitycenter.googleapis.com/Source\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x15\n\x08group_by\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x12\n\npage_token\x18\x05 \x01(\t\x12\x11\n\tpage_size\x18\x06 \x01(\x05"\xab\x01\n\x15GroupFindingsResponse\x12J\n\x10group_by_results\x18\x01 \x03(\x0b\x32\x30.google.cloud.securitycenter.v1beta1.GroupResult\x12-\n\tread_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t"\xbd\x01\n\x0bGroupResult\x12T\n\nproperties\x18\x01 \x03(\x0b\x32@.google.cloud.securitycenter.v1beta1.GroupResult.PropertiesEntry\x12\r\n\x05\x63ount\x18\x02 \x01(\x03\x1aI\n\x0fPropertiesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12%\n\x05value\x18\x02 \x01(\x0b\x32\x16.google.protobuf.Value:\x02\x38\x01"\x85\x01\n\x12ListSourcesRequest\x12H\n\x06parent\x18\x01 \x01(\tB8\xe0\x41\x02\xfa\x41\x32\n0cloudresourcemanager.googleapis.com/Organization\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x07 \x01(\x05"l\n\x13ListSourcesResponse\x12<\n\x07sources\x18\x01 \x03(\x0b\x32+.google.cloud.securitycenter.v1beta1.Source\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\xbf\x02\n\x11ListAssetsRequest\x12H\n\x06parent\x18\x01 \x01(\tB8\xe0\x41\x02\xfa\x41\x32\n0cloudresourcemanager.googleapis.com/Organization\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x10\n\x08order_by\x18\x03 \x01(\t\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x33\n\x10\x63ompare_duration\x18\x05 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x33\n\nfield_mask\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x01\x12\x12\n\npage_token\x18\x08 \x01(\t\x12\x11\n\tpage_size\x18\t \x01(\x05"\xd6\x03\n\x12ListAssetsResponse\x12\x65\n\x13list_assets_results\x18\x01 \x03(\x0b\x32H.google.cloud.securitycenter.v1beta1.ListAssetsResponse.ListAssetsResult\x12-\n\tread_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t\x12\x12\n\ntotal_size\x18\x04 \x01(\x05\x1a\xfc\x01\n\x10ListAssetsResult\x12\x39\n\x05\x61sset\x18\x01 \x01(\x0b\x32*.google.cloud.securitycenter.v1beta1.Asset\x12]\n\x05state\x18\x02 \x01(\x0e\x32N.google.cloud.securitycenter.v1beta1.ListAssetsResponse.ListAssetsResult.State"N\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\n\n\x06UNUSED\x10\x01\x12\t\n\x05\x41\x44\x44\x45\x44\x10\x02\x12\x0b\n\x07REMOVED\x10\x03\x12\n\n\x06\x41\x43TIVE\x10\x04"\x80\x02\n\x13ListFindingsRequest\x12<\n\x06parent\x18\x01 \x01(\tB,\xe0\x41\x02\xfa\x41&\n$securitycenter.googleapis.com/Source\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x10\n\x08order_by\x18\x03 \x01(\t\x12-\n\tread_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x33\n\nfield_mask\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x01\x12\x12\n\npage_token\x18\x06 \x01(\t\x12\x11\n\tpage_size\x18\x07 \x01(\x05"\xb2\x01\n\x14ListFindingsResponse\x12>\n\x08\x66indings\x18\x01 \x03(\x0b\x32,.google.cloud.securitycenter.v1beta1.Finding\x12-\n\tread_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x17\n\x0fnext_page_token\x18\x03 \x01(\t\x12\x12\n\ntotal_size\x18\x04 \x01(\x05"\xd2\x01\n\x16SetFindingStateRequest\x12;\n\x04name\x18\x01 \x01(\tB-\xe0\x41\x02\xfa\x41\'\n%securitycenter.googleapis.com/Finding\x12\x46\n\x05state\x18\x02 \x01(\x0e\x32\x32.google.cloud.securitycenter.v1beta1.Finding.StateB\x03\xe0\x41\x02\x12\x33\n\nstart_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x02"d\n\x18RunAssetDiscoveryRequest\x12H\n\x06parent\x18\x01 \x01(\tB8\xe0\x41\x02\xfa\x41\x32\n0cloudresourcemanager.googleapis.com/Organization"\x8b\x01\n\x14UpdateFindingRequest\x12\x42\n\x07\x66inding\x18\x01 \x01(\x0b\x32,.google.cloud.securitycenter.v1beta1.FindingB\x03\xe0\x41\x02\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"\xb3\x01\n!UpdateOrganizationSettingsRequest\x12]\n\x15organization_settings\x18\x01 \x01(\x0b\x32\x39.google.cloud.securitycenter.v1beta1.OrganizationSettingsB\x03\xe0\x41\x02\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"\x88\x01\n\x13UpdateSourceRequest\x12@\n\x06source\x18\x01 \x01(\x0b\x32+.google.cloud.securitycenter.v1beta1.SourceB\x03\xe0\x41\x02\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"\xce\x01\n\x1aUpdateSecurityMarksRequest\x12O\n\x0esecurity_marks\x18\x01 \x01(\x0b\x32\x32.google.cloud.securitycenter.v1beta1.SecurityMarksB\x03\xe0\x41\x02\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask\x12.\n\nstart_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp2\xeb\x1e\n\x0eSecurityCenter\x12\xc0\x01\n\x0c\x43reateSource\x12\x38.google.cloud.securitycenter.v1beta1.CreateSourceRequest\x1a+.google.cloud.securitycenter.v1beta1.Source"I\x82\xd3\xe4\x93\x02\x33")/v1beta1/{parent=organizations/*}/sources:\x06source\xda\x41\rparent,source\x12\xdb\x01\n\rCreateFinding\x12\x39.google.cloud.securitycenter.v1beta1.CreateFindingRequest\x1a,.google.cloud.securitycenter.v1beta1.Finding"a\x82\xd3\xe4\x93\x02?"4/v1beta1/{parent=organizations/*/sources/*}/findings:\x07\x66inding\xda\x41\x19parent,finding_id,finding\x12\x9b\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"P\x82\xd3\xe4\x93\x02?":/v1beta1/{resource=organizations/*/sources/*}:getIamPolicy:\x01*\xda\x41\x08resource\x12\xde\x01\n\x17GetOrganizationSettings\x12\x43.google.cloud.securitycenter.v1beta1.GetOrganizationSettingsRequest\x1a\x39.google.cloud.securitycenter.v1beta1.OrganizationSettings"C\x82\xd3\xe4\x93\x02\x36\x12\x34/v1beta1/{name=organizations/*/organizationSettings}\xda\x41\x04name\x12\xa9\x01\n\tGetSource\x12\x35.google.cloud.securitycenter.v1beta1.GetSourceRequest\x1a+.google.cloud.securitycenter.v1beta1.Source"8\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{name=organizations/*/sources/*}\xda\x41\x04name\x12\xbb\x01\n\x0bGroupAssets\x12\x37.google.cloud.securitycenter.v1beta1.GroupAssetsRequest\x1a\x38.google.cloud.securitycenter.v1beta1.GroupAssetsResponse"9\x82\xd3\xe4\x93\x02\x33"./v1beta1/{parent=organizations/*}/assets:group:\x01*\x12\xdf\x01\n\rGroupFindings\x12\x39.google.cloud.securitycenter.v1beta1.GroupFindingsRequest\x1a:.google.cloud.securitycenter.v1beta1.GroupFindingsResponse"W\x82\xd3\xe4\x93\x02?":/v1beta1/{parent=organizations/*/sources/*}/findings:group:\x01*\xda\x41\x0fparent,group_by\x12\xaf\x01\n\nListAssets\x12\x36.google.cloud.securitycenter.v1beta1.ListAssetsRequest\x1a\x37.google.cloud.securitycenter.v1beta1.ListAssetsResponse"0\x82\xd3\xe4\x93\x02*\x12(/v1beta1/{parent=organizations/*}/assets\x12\xc1\x01\n\x0cListFindings\x12\x38.google.cloud.securitycenter.v1beta1.ListFindingsRequest\x1a\x39.google.cloud.securitycenter.v1beta1.ListFindingsResponse"<\x82\xd3\xe4\x93\x02\x36\x12\x34/v1beta1/{parent=organizations/*/sources/*}/findings\x12\xbc\x01\n\x0bListSources\x12\x37.google.cloud.securitycenter.v1beta1.ListSourcesRequest\x1a\x38.google.cloud.securitycenter.v1beta1.ListSourcesResponse":\x82\xd3\xe4\x93\x02+\x12)/v1beta1/{parent=organizations/*}/sources\xda\x41\x06parent\x12\xed\x01\n\x11RunAssetDiscovery\x12=.google.cloud.securitycenter.v1beta1.RunAssetDiscoveryRequest\x1a\x1d.google.longrunning.Operation"z\x82\xd3\xe4\x93\x02:"5/v1beta1/{parent=organizations/*}/assets:runDiscovery:\x01*\xda\x41\x06parent\xca\x41.\n\x15google.protobuf.Empty\x12\x15google.protobuf.Empty\x12\xde\x01\n\x0fSetFindingState\x12;.google.cloud.securitycenter.v1beta1.SetFindingStateRequest\x1a,.google.cloud.securitycenter.v1beta1.Finding"`\x82\xd3\xe4\x93\x02\x42"=/v1beta1/{name=organizations/*/sources/*/findings/*}:setState:\x01*\xda\x41\x15name,state,start_time\x12\xa2\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"W\x82\xd3\xe4\x93\x02?":/v1beta1/{resource=organizations/*/sources/*}:setIamPolicy:\x01*\xda\x41\x0fresource,policy\x12\xcd\x01\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"b\x82\xd3\xe4\x93\x02\x45"@/v1beta1/{resource=organizations/*/sources/*}:testIamPermissions:\x01*\xda\x41\x14resource,permissions\x12\xd1\x01\n\rUpdateFinding\x12\x39.google.cloud.securitycenter.v1beta1.UpdateFindingRequest\x1a,.google.cloud.securitycenter.v1beta1.Finding"W\x82\xd3\xe4\x93\x02G2</v1beta1/{finding.name=organizations/*/sources/*/findings/*}:\x07\x66inding\xda\x41\x07\x66inding\x12\xa3\x02\n\x1aUpdateOrganizationSettings\x12\x46.google.cloud.securitycenter.v1beta1.UpdateOrganizationSettingsRequest\x1a\x39.google.cloud.securitycenter.v1beta1.OrganizationSettings"\x81\x01\x82\xd3\xe4\x93\x02\x63\x32J/v1beta1/{organization_settings.name=organizations/*/organizationSettings}:\x15organization_settings\xda\x41\x15organization_settings\x12\xc0\x01\n\x0cUpdateSource\x12\x38.google.cloud.securitycenter.v1beta1.UpdateSourceRequest\x1a+.google.cloud.securitycenter.v1beta1.Source"I\x82\xd3\xe4\x93\x02:20/v1beta1/{source.name=organizations/*/sources/*}:\x06source\xda\x41\x06source\x12\xe1\x02\n\x13UpdateSecurityMarks\x12?.google.cloud.securitycenter.v1beta1.UpdateSecurityMarksRequest\x1a\x32.google.cloud.securitycenter.v1beta1.SecurityMarks"\xd4\x01\x82\xd3\xe4\x93\x02\xbc\x01\x32\x45/v1beta1/{security_marks.name=organizations/*/assets/*/securityMarks}:\x0esecurity_marksZc2Q/v1beta1/{security_marks.name=organizations/*/sources/*/findings/*/securityMarks}:\x0esecurity_marks\xda\x41\x0esecurity_marks\x1aQ\xca\x41\x1dsecuritycenter.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB~\n\'com.google.cloud.securitycenter.v1beta1P\x01ZQgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1beta1;securitycenterb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_asset__pb2.DESCRIPTOR,
         google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_finding__pb2.DESCRIPTOR,
         google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_organization__settings__pb2.DESCRIPTOR,
@@ -100,8 +106,8 @@ _LISTASSETSRESPONSE_LISTASSETSRESULT_STATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2754,
-    serialized_end=2832,
+    serialized_start=3302,
+    serialized_end=3380,
 )
 _sym_db.RegisterEnumDescriptor(_LISTASSETSRESPONSE_LISTASSETSRESULT_STATE)
 
@@ -128,7 +134,9 @@ _CREATEFINDINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A&\n$securitycenter.googleapis.com/Source"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -146,7 +154,7 @@ _CREATEFINDINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -164,7 +172,7 @@ _CREATEFINDINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -176,8 +184,8 @@ _CREATEFINDINGREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=699,
-    serialized_end=820,
+    serialized_start=785,
+    serialized_end=962,
 )
 
 
@@ -203,7 +211,9 @@ _CREATESOURCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A2\n0cloudresourcemanager.googleapis.com/Organization"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -221,7 +231,7 @@ _CREATESOURCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -233,8 +243,8 @@ _CREATESOURCEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=822,
-    serialized_end=920,
+    serialized_start=965,
+    serialized_end=1126,
 )
 
 
@@ -260,7 +270,9 @@ _GETORGANIZATIONSETTINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A4\n2securitycenter.googleapis.com/OrganizationSettings"
+            ),
             file=DESCRIPTOR,
         ),
     ],
@@ -272,8 +284,8 @@ _GETORGANIZATIONSETTINGSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=922,
-    serialized_end=968,
+    serialized_start=1128,
+    serialized_end=1234,
 )
 
 
@@ -299,7 +311,9 @@ _GETSOURCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A&\n$securitycenter.googleapis.com/Source"
+            ),
             file=DESCRIPTOR,
         ),
     ],
@@ -311,8 +325,8 @@ _GETSOURCEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=970,
-    serialized_end=1002,
+    serialized_start=1236,
+    serialized_end=1314,
 )
 
 
@@ -338,7 +352,9 @@ _GROUPASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A2\n0cloudresourcemanager.googleapis.com/Organization"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -374,7 +390,7 @@ _GROUPASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -458,8 +474,8 @@ _GROUPASSETSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1005,
-    serialized_end=1214,
+    serialized_start=1317,
+    serialized_end=1589,
 )
 
 
@@ -533,8 +549,8 @@ _GROUPASSETSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1217,
-    serialized_end=1386,
+    serialized_start=1592,
+    serialized_end=1761,
 )
 
 
@@ -560,7 +576,9 @@ _GROUPFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A&\n$securitycenter.googleapis.com/Source"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -596,7 +614,7 @@ _GROUPFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -662,8 +680,8 @@ _GROUPFINDINGSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1389,
-    serialized_end=1547,
+    serialized_start=1764,
+    serialized_end=1973,
 )
 
 
@@ -737,8 +755,8 @@ _GROUPFINDINGSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1550,
-    serialized_end=1721,
+    serialized_start=1976,
+    serialized_end=2147,
 )
 
 
@@ -794,8 +812,8 @@ _GROUPRESULT_PROPERTIESENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1840,
-    serialized_end=1913,
+    serialized_start=2266,
+    serialized_end=2339,
 )
 
 _GROUPRESULT = _descriptor.Descriptor(
@@ -850,8 +868,8 @@ _GROUPRESULT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1724,
-    serialized_end=1913,
+    serialized_start=2150,
+    serialized_end=2339,
 )
 
 
@@ -877,7 +895,9 @@ _LISTSOURCESREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A2\n0cloudresourcemanager.googleapis.com/Organization"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -925,8 +945,8 @@ _LISTSOURCESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1915,
-    serialized_end=1990,
+    serialized_start=2342,
+    serialized_end=2475,
 )
 
 
@@ -982,8 +1002,8 @@ _LISTSOURCESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1992,
-    serialized_end=2100,
+    serialized_start=2477,
+    serialized_end=2585,
 )
 
 
@@ -1009,7 +1029,9 @@ _LISTASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A2\n0cloudresourcemanager.googleapis.com/Organization"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1099,7 +1121,7 @@ _LISTASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1147,8 +1169,8 @@ _LISTASSETSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2103,
-    serialized_end=2359,
+    serialized_start=2588,
+    serialized_end=2907,
 )
 
 
@@ -1204,8 +1226,8 @@ _LISTASSETSRESPONSE_LISTASSETSRESULT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2580,
-    serialized_end=2832,
+    serialized_start=3128,
+    serialized_end=3380,
 )
 
 _LISTASSETSRESPONSE = _descriptor.Descriptor(
@@ -1296,8 +1318,8 @@ _LISTASSETSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2362,
-    serialized_end=2832,
+    serialized_start=2910,
+    serialized_end=3380,
 )
 
 
@@ -1323,7 +1345,9 @@ _LISTFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A&\n$securitycenter.googleapis.com/Source"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1395,7 +1419,7 @@ _LISTFINDINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1443,8 +1467,8 @@ _LISTFINDINGSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2835,
-    serialized_end=3040,
+    serialized_start=3383,
+    serialized_end=3639,
 )
 
 
@@ -1536,8 +1560,8 @@ _LISTFINDINGSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3043,
-    serialized_end=3221,
+    serialized_start=3642,
+    serialized_end=3820,
 )
 
 
@@ -1563,7 +1587,9 @@ _SETFINDINGSTATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A'\n%securitycenter.googleapis.com/Finding"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1581,7 +1607,7 @@ _SETFINDINGSTATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1599,7 +1625,7 @@ _SETFINDINGSTATEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -1611,8 +1637,8 @@ _SETFINDINGSTATEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3224,
-    serialized_end=3377,
+    serialized_start=3823,
+    serialized_end=4033,
 )
 
 
@@ -1638,7 +1664,9 @@ _RUNASSETDISCOVERYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A2\n0cloudresourcemanager.googleapis.com/Organization"
+            ),
             file=DESCRIPTOR,
         ),
     ],
@@ -1650,8 +1678,8 @@ _RUNASSETDISCOVERYREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3379,
-    serialized_end=3421,
+    serialized_start=4035,
+    serialized_end=4135,
 )
 
 
@@ -1677,7 +1705,7 @@ _UPDATEFINDINGREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1707,8 +1735,8 @@ _UPDATEFINDINGREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3424,
-    serialized_end=3558,
+    serialized_start=4138,
+    serialized_end=4277,
 )
 
 
@@ -1734,7 +1762,7 @@ _UPDATEORGANIZATIONSETTINGSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1764,8 +1792,8 @@ _UPDATEORGANIZATIONSETTINGSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3561,
-    serialized_end=3735,
+    serialized_start=4280,
+    serialized_end=4459,
 )
 
 
@@ -1791,7 +1819,7 @@ _UPDATESOURCEREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1821,8 +1849,8 @@ _UPDATESOURCEREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3738,
-    serialized_end=3869,
+    serialized_start=4462,
+    serialized_end=4598,
 )
 
 
@@ -1848,7 +1876,7 @@ _UPDATESECURITYMARKSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -1896,8 +1924,8 @@ _UPDATESECURITYMARKSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3872,
-    serialized_end=4073,
+    serialized_start=4601,
+    serialized_end=4807,
 )
 
 _CREATEFINDINGREQUEST.fields_by_name[
@@ -2061,16 +2089,17 @@ CreateFindingRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Resource name of the new finding's parent. Its format should
-          be "organizations/[organization\_id]/sources/[source\_id]".
+          Required. Resource name of the new finding's parent. Its
+          format should be
+          "organizations/[organization\_id]/sources/[source\_id]".
       finding_id:
-          Unique identifier provided by the client within the parent
-          scope. It must be alphanumeric and less than or equal to 32
-          characters and greater than 0 characters in length.
+          Required. Unique identifier provided by the client within the
+          parent scope. It must be alphanumeric and less than or equal
+          to 32 characters and greater than 0 characters in length.
       finding:
-          The Finding being created. The name and security\_marks will
-          be ignored as they are both output only fields on this
-          resource.
+          Required. The Finding being created. The name and
+          security\_marks will be ignored as they are both output only
+          fields on this resource.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.securitycenter.v1beta1.CreateFindingRequest)
     ),
@@ -2088,10 +2117,10 @@ CreateSourceRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Resource name of the new source's parent. Its format should be
-          "organizations/[organization\_id]".
+          Required. Resource name of the new source's parent. Its format
+          should be "organizations/[organization\_id]".
       source:
-          The Source being created, only the display\_name and
+          Required. The Source being created, only the display\_name and
           description will be used. All other fields will be ignored.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.securitycenter.v1beta1.CreateSourceRequest)
@@ -2110,8 +2139,8 @@ GetOrganizationSettingsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Name of the organization to get organization settings for. Its
-          format is
+          Required. Name of the organization to get organization
+          settings for. Its format is
           "organizations/[organization\_id]/organizationSettings".
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.securitycenter.v1beta1.GetOrganizationSettingsRequest)
@@ -2130,7 +2159,7 @@ GetSourceRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Relative resource name of the source. Its format is
+          Required. Relative resource name of the source. Its format is
           "organizations/[organization\_id]/source/[source\_id]".
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.securitycenter.v1beta1.GetSourceRequest)
@@ -2149,7 +2178,7 @@ GroupAssetsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Name of the organization to groupBy. Its format is
+          Required. Name of the organization to groupBy. Its format is
           "organizations/[organization\_id]".
       filter:
           Expression that defines the filter to apply across assets. The
@@ -2170,8 +2199,8 @@ GroupAssetsRequest = _reflection.GeneratedProtocolMessageType(
           literals ``true`` and ``false`` without quotes.  For example,
           ``resource_properties.size = 100`` is a valid filter string.
       group_by:
-          Expression that defines what assets fields to use for
-          grouping. The string value should follow SQL syntax: comma
+          Required. Expression that defines what assets fields to use
+          for grouping. The string value should follow SQL syntax: comma
           separated list of fields. For example: "security\_center\_prop
           erties.resource\_project,security\_center\_properties.project"
           .  The following fields are supported when compare\_duration
@@ -2255,10 +2284,10 @@ GroupFindingsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Name of the source to groupBy. Its format is
+          Required. Name of the source to groupBy. Its format is
           "organizations/[organization\_id]/sources/[source\_id]". To
           groupBy across all sources provide a source\_id of ``-``. For
-          example: organizations/123/sources/-
+          example: organizations/{organization\_id}/sources/-
       filter:
           Expression that defines the filter to apply across findings.
           The expression is a list of one or more restrictions combined
@@ -2276,11 +2305,11 @@ GroupFindingsRequest = _reflection.GeneratedProtocolMessageType(
           without quotes.  For example, ``source_properties.size = 100``
           is a valid filter string.
       group_by:
-          Expression that defines what assets fields to use for grouping
-          (including ``state``). The string value should follow SQL
-          syntax: comma separated list of fields. For example:
-          "parent,resource\_name".  The following fields are supported:
-          -  resource\_name -  category -  state -  parent
+          Required. Expression that defines what assets fields to use
+          for grouping (including ``state``). The string value should
+          follow SQL syntax: comma separated list of fields. For
+          example: "parent,resource\_name".  The following fields are
+          supported:  -  resource\_name -  category -  state -  parent
       read_time:
           Time used as a reference point when filtering findings. The
           filter is limited to findings existing at the supplied time
@@ -2341,7 +2370,8 @@ GroupResult = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_GROUPRESULT,
         __module__="google.cloud.securitycenter_v1beta1.proto.securitycenter_service_pb2",
-        __doc__="""Result containing the properties and count of a groupBy request.
+        __doc__="""Result containing the properties and count of a groupBy
+  request.
   
   
   Attributes:
@@ -2367,8 +2397,8 @@ ListSourcesRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Resource name of the parent of sources to list. Its format
-          should be "organizations/[organization\_id]".
+          Required. Resource name of the parent of sources to list. Its
+          format should be "organizations/[organization\_id]".
       page_token:
           The value returned by the last ``ListSourcesResponse``;
           indicates that this is a continuation of a prior
@@ -2415,8 +2445,8 @@ ListAssetsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Name of the organization assets should belong to. Its format
-          is "organizations/[organization\_id]".
+          Required. Name of the organization assets should belong to.
+          Its format is "organizations/[organization\_id]".
       filter:
           Expression that defines the filter to apply across assets. The
           expression is a list of zero or more restrictions combined via
@@ -2472,7 +2502,7 @@ ListAssetsRequest = _reflection.GeneratedProtocolMessageType(
           only possible state is "UNUSED", which indicates that the
           asset is present at read\_time.
       field_mask:
-          Optional.  A field mask to specify the ListAssetsResult fields
+          Optional. A field mask to specify the ListAssetsResult fields
           to be listed in the response. An empty field mask will list
           all fields.
       page_token:
@@ -2544,10 +2574,11 @@ ListFindingsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       parent:
-          Name of the source the findings belong to. Its format is
+          Required. Name of the source the findings belong to. Its
+          format is
           "organizations/[organization\_id]/sources/[source\_id]". To
           list across all sources provide a source\_id of ``-``. For
-          example: organizations/123/sources/-
+          example: organizations/{organization\_id}/sources/-
       filter:
           Expression that defines the filter to apply across findings.
           The expression is a list of one or more restrictions combined
@@ -2581,7 +2612,7 @@ ListFindingsRequest = _reflection.GeneratedProtocolMessageType(
           and their values are those at that specific time. Absence of
           this field will default to the API's version of NOW.
       field_mask:
-          Optional.  A field mask to specify the Finding fields to be
+          Optional. A field mask to specify the Finding fields to be
           listed in the response. An empty field mask will list all
           fields.
       page_token:
@@ -2634,13 +2665,14 @@ SetFindingStateRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          The relative resource name of the finding. See: https://cloud.
-          google.com/apis/design/resource\_names#relative\_resource\_nam
-          e Example: "organizations/123/sources/456/finding/789".
+          Required. The relative resource name of the finding. See: http
+          s://cloud.google.com/apis/design/resource\_names#relative\_res
+          ource\_name Example: "organizations/{organization\_id}/sources
+          /{source\_id}/finding/{finding\_id}".
       state:
-          The desired State of the finding.
+          Required. The desired State of the finding.
       start_time:
-          The time at which the updated state takes effect.
+          Required. The time at which the updated state takes effect.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.securitycenter.v1beta1.SetFindingStateRequest)
     ),
@@ -2653,13 +2685,14 @@ RunAssetDiscoveryRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_RUNASSETDISCOVERYREQUEST,
         __module__="google.cloud.securitycenter_v1beta1.proto.securitycenter_service_pb2",
-        __doc__="""Request message for running asset discovery for an organization.
+        __doc__="""Request message for running asset discovery for an
+  organization.
   
   
   Attributes:
       parent:
-          Name of the organization to run asset discovery for. Its
-          format is "organizations/[organization\_id]".
+          Required. Name of the organization to run asset discovery for.
+          Its format is "organizations/[organization\_id]".
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.securitycenter.v1beta1.RunAssetDiscoveryRequest)
     ),
@@ -2677,11 +2710,11 @@ UpdateFindingRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       finding:
-          The finding resource to update or create if it does not
-          already exist. parent, security\_marks, and update\_time will
-          be ignored.  In the case of creation, the finding id portion
-          of the name must alphanumeric and less than or equal to 32
-          characters and greater than 0 characters in length.
+          Required. The finding resource to update or create if it does
+          not already exist. parent, security\_marks, and update\_time
+          will be ignored.  In the case of creation, the finding id
+          portion of the name must alphanumeric and less than or equal
+          to 32 characters and greater than 0 characters in length.
       update_mask:
           The FieldMask to use when updating the finding resource. This
           field should not be specified when creating a finding.
@@ -2702,7 +2735,7 @@ UpdateOrganizationSettingsRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       organization_settings:
-          The organization settings resource to update.
+          Required. The organization settings resource to update.
       update_mask:
           The FieldMask to use when updating the settings resource.
   """,
@@ -2722,7 +2755,7 @@ UpdateSourceRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       source:
-          The source resource to update.
+          Required. The source resource to update.
       update_mask:
           The FieldMask to use when updating the source resource.
   """,
@@ -2742,7 +2775,7 @@ UpdateSecurityMarksRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       security_marks:
-          The security marks resource to update.
+          Required. The security marks resource to update.
       update_mask:
           The FieldMask to use when updating the security marks
           resource.
@@ -2756,16 +2789,44 @@ _sym_db.RegisterMessage(UpdateSecurityMarksRequest)
 
 
 DESCRIPTOR._options = None
+_CREATEFINDINGREQUEST.fields_by_name["parent"]._options = None
+_CREATEFINDINGREQUEST.fields_by_name["finding_id"]._options = None
+_CREATEFINDINGREQUEST.fields_by_name["finding"]._options = None
+_CREATESOURCEREQUEST.fields_by_name["parent"]._options = None
+_CREATESOURCEREQUEST.fields_by_name["source"]._options = None
+_GETORGANIZATIONSETTINGSREQUEST.fields_by_name["name"]._options = None
+_GETSOURCEREQUEST.fields_by_name["name"]._options = None
+_GROUPASSETSREQUEST.fields_by_name["parent"]._options = None
+_GROUPASSETSREQUEST.fields_by_name["group_by"]._options = None
+_GROUPFINDINGSREQUEST.fields_by_name["parent"]._options = None
+_GROUPFINDINGSREQUEST.fields_by_name["group_by"]._options = None
 _GROUPRESULT_PROPERTIESENTRY._options = None
+_LISTSOURCESREQUEST.fields_by_name["parent"]._options = None
+_LISTASSETSREQUEST.fields_by_name["parent"]._options = None
+_LISTASSETSREQUEST.fields_by_name["field_mask"]._options = None
+_LISTFINDINGSREQUEST.fields_by_name["parent"]._options = None
+_LISTFINDINGSREQUEST.fields_by_name["field_mask"]._options = None
+_SETFINDINGSTATEREQUEST.fields_by_name["name"]._options = None
+_SETFINDINGSTATEREQUEST.fields_by_name["state"]._options = None
+_SETFINDINGSTATEREQUEST.fields_by_name["start_time"]._options = None
+_RUNASSETDISCOVERYREQUEST.fields_by_name["parent"]._options = None
+_UPDATEFINDINGREQUEST.fields_by_name["finding"]._options = None
+_UPDATEORGANIZATIONSETTINGSREQUEST.fields_by_name[
+    "organization_settings"
+]._options = None
+_UPDATESOURCEREQUEST.fields_by_name["source"]._options = None
+_UPDATESECURITYMARKSREQUEST.fields_by_name["security_marks"]._options = None
 
 _SECURITYCENTER = _descriptor.ServiceDescriptor(
     name="SecurityCenter",
     full_name="google.cloud.securitycenter.v1beta1.SecurityCenter",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=4076,
-    serialized_end=7660,
+    serialized_options=_b(
+        "\312A\035securitycenter.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform"
+    ),
+    serialized_start=4810,
+    serialized_end=8757,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateSource",
@@ -2775,7 +2836,7 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             input_type=_CREATESOURCEREQUEST,
             output_type=google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_source__pb2._SOURCE,
             serialized_options=_b(
-                '\202\323\344\223\0023")/v1beta1/{parent=organizations/*}/sources:\006source'
+                '\202\323\344\223\0023")/v1beta1/{parent=organizations/*}/sources:\006source\332A\rparent,source'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2786,7 +2847,7 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             input_type=_CREATEFINDINGREQUEST,
             output_type=google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_finding__pb2._FINDING,
             serialized_options=_b(
-                '\202\323\344\223\002?"4/v1beta1/{parent=organizations/*/sources/*}/findings:\007finding'
+                '\202\323\344\223\002?"4/v1beta1/{parent=organizations/*/sources/*}/findings:\007finding\332A\031parent,finding_id,finding'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2797,7 +2858,7 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._GETIAMPOLICYREQUEST,
             output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
             serialized_options=_b(
-                '\202\323\344\223\002?":/v1beta1/{resource=organizations/*/sources/*}:getIamPolicy:\001*'
+                '\202\323\344\223\002?":/v1beta1/{resource=organizations/*/sources/*}:getIamPolicy:\001*\332A\010resource'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2808,7 +2869,7 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             input_type=_GETORGANIZATIONSETTINGSREQUEST,
             output_type=google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_organization__settings__pb2._ORGANIZATIONSETTINGS,
             serialized_options=_b(
-                "\202\323\344\223\0026\0224/v1beta1/{name=organizations/*/organizationSettings}"
+                "\202\323\344\223\0026\0224/v1beta1/{name=organizations/*/organizationSettings}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2819,7 +2880,7 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             input_type=_GETSOURCEREQUEST,
             output_type=google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_source__pb2._SOURCE,
             serialized_options=_b(
-                "\202\323\344\223\002+\022)/v1beta1/{name=organizations/*/sources/*}"
+                "\202\323\344\223\002+\022)/v1beta1/{name=organizations/*/sources/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2841,7 +2902,7 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             input_type=_GROUPFINDINGSREQUEST,
             output_type=_GROUPFINDINGSRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002?":/v1beta1/{parent=organizations/*/sources/*}/findings:group:\001*'
+                '\202\323\344\223\002?":/v1beta1/{parent=organizations/*/sources/*}/findings:group:\001*\332A\017parent,group_by'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2874,7 +2935,7 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             input_type=_LISTSOURCESREQUEST,
             output_type=_LISTSOURCESRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002+\022)/v1beta1/{parent=organizations/*}/sources"
+                "\202\323\344\223\002+\022)/v1beta1/{parent=organizations/*}/sources\332A\006parent"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2885,7 +2946,7 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             input_type=_RUNASSETDISCOVERYREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                '\202\323\344\223\002:"5/v1beta1/{parent=organizations/*}/assets:runDiscovery:\001*'
+                '\202\323\344\223\002:"5/v1beta1/{parent=organizations/*}/assets:runDiscovery:\001*\332A\006parent\312A.\n\025google.protobuf.Empty\022\025google.protobuf.Empty'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2896,7 +2957,7 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             input_type=_SETFINDINGSTATEREQUEST,
             output_type=google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_finding__pb2._FINDING,
             serialized_options=_b(
-                '\202\323\344\223\002B"=/v1beta1/{name=organizations/*/sources/*/findings/*}:setState:\001*'
+                '\202\323\344\223\002B"=/v1beta1/{name=organizations/*/sources/*/findings/*}:setState:\001*\332A\025name,state,start_time'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2907,7 +2968,7 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._SETIAMPOLICYREQUEST,
             output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
             serialized_options=_b(
-                '\202\323\344\223\002?":/v1beta1/{resource=organizations/*/sources/*}:setIamPolicy:\001*'
+                '\202\323\344\223\002?":/v1beta1/{resource=organizations/*/sources/*}:setIamPolicy:\001*\332A\017resource,policy'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2918,7 +2979,7 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSREQUEST,
             output_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSRESPONSE,
             serialized_options=_b(
-                '\202\323\344\223\002E"@/v1beta1/{resource=organizations/*/sources/*}:testIamPermissions:\001*'
+                '\202\323\344\223\002E"@/v1beta1/{resource=organizations/*/sources/*}:testIamPermissions:\001*\332A\024resource,permissions'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2929,7 +2990,7 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             input_type=_UPDATEFINDINGREQUEST,
             output_type=google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_finding__pb2._FINDING,
             serialized_options=_b(
-                "\202\323\344\223\002G2</v1beta1/{finding.name=organizations/*/sources/*/findings/*}:\007finding"
+                "\202\323\344\223\002G2</v1beta1/{finding.name=organizations/*/sources/*/findings/*}:\007finding\332A\007finding"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2940,7 +3001,7 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             input_type=_UPDATEORGANIZATIONSETTINGSREQUEST,
             output_type=google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_organization__settings__pb2._ORGANIZATIONSETTINGS,
             serialized_options=_b(
-                "\202\323\344\223\002c2J/v1beta1/{organization_settings.name=organizations/*/organizationSettings}:\025organization_settings"
+                "\202\323\344\223\002c2J/v1beta1/{organization_settings.name=organizations/*/organizationSettings}:\025organization_settings\332A\025organization_settings"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2951,7 +3012,7 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             input_type=_UPDATESOURCEREQUEST,
             output_type=google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_source__pb2._SOURCE,
             serialized_options=_b(
-                "\202\323\344\223\002:20/v1beta1/{source.name=organizations/*/sources/*}:\006source"
+                "\202\323\344\223\002:20/v1beta1/{source.name=organizations/*/sources/*}:\006source\332A\006source"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -2962,7 +3023,7 @@ _SECURITYCENTER = _descriptor.ServiceDescriptor(
             input_type=_UPDATESECURITYMARKSREQUEST,
             output_type=google_dot_cloud_dot_securitycenter__v1beta1_dot_proto_dot_security__marks__pb2._SECURITYMARKS,
             serialized_options=_b(
-                "\202\323\344\223\002\274\0012E/v1beta1/{security_marks.name=organizations/*/assets/*/securityMarks}:\016security_marksZc2Q/v1beta1/{security_marks.name=organizations/*/sources/*/findings/*/securityMarks}:\016security_marks"
+                "\202\323\344\223\002\274\0012E/v1beta1/{security_marks.name=organizations/*/assets/*/securityMarks}:\016security_marksZc2Q/v1beta1/{security_marks.name=organizations/*/sources/*/findings/*/securityMarks}:\016security_marks\332A\016security_marks"
             ),
         ),
     ],

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -296,10 +296,10 @@ class SecurityCenterClient(object):
             >>> response = client.create_source(parent, source)
 
         Args:
-            parent (str): Resource name of the new source's parent. Its format should be
+            parent (str): Required. Resource name of the new source's parent. Its format should be
                 "organizations/[organization\_id]".
-            source (Union[dict, ~google.cloud.securitycenter_v1.types.Source]): The Source being created, only the display\_name and description will be
-                used. All other fields will be ignored.
+            source (Union[dict, ~google.cloud.securitycenter_v1.types.Source]): Required. The Source being created, only the display\_name and
+                description will be used. All other fields will be ignored.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.Source`
@@ -382,13 +382,13 @@ class SecurityCenterClient(object):
             >>> response = client.create_finding(parent, finding_id, finding)
 
         Args:
-            parent (str): Resource name of the new finding's parent. Its format should be
-                "organizations/[organization\_id]/sources/[source\_id]".
-            finding_id (str): Unique identifier provided by the client within the parent scope.
+            parent (str): Required. Resource name of the new finding's parent. Its format should
+                be "organizations/[organization\_id]/sources/[source\_id]".
+            finding_id (str): Required. Unique identifier provided by the client within the parent scope.
                 It must be alphanumeric and less than or equal to 32 characters and
                 greater than 0 characters in length.
-            finding (Union[dict, ~google.cloud.securitycenter_v1.types.Finding]): The Finding being created. The name and security\_marks will be ignored
-                as they are both output only fields on this resource.
+            finding (Union[dict, ~google.cloud.securitycenter_v1.types.Finding]): Required. The Finding being created. The name and security\_marks will
+                be ignored as they are both output only fields on this resource.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.Finding`
@@ -540,8 +540,8 @@ class SecurityCenterClient(object):
             >>> response = client.get_organization_settings(name)
 
         Args:
-            name (str): Name of the organization to get organization settings for. Its format is
-                "organizations/[organization\_id]/organizationSettings".
+            name (str): Required. Name of the organization to get organization settings for. Its
+                format is "organizations/[organization\_id]/organizationSettings".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -610,7 +610,7 @@ class SecurityCenterClient(object):
             >>> response = client.get_source(name)
 
         Args:
-            name (str): Relative resource name of the source. Its format is
+            name (str): Required. Relative resource name of the source. Its format is
                 "organizations/[organization\_id]/source/[source\_id]".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -701,22 +701,26 @@ class SecurityCenterClient(object):
             ...         pass
 
         Args:
-            parent (str): Name of the organization to groupBy. Its format is
+            parent (str): Required. Name of the organization to groupBy. Its format is
                 "organizations/[organization\_id]".
-            group_by (str): Expression that defines what assets fields to use for grouping. The
-                string value should follow SQL syntax: comma separated list of fields.
-                For example:
+            group_by (str): Required. Expression that defines what assets fields to use for
+                grouping. The string value should follow SQL syntax: comma separated
+                list of fields. For example:
                 "security\_center\_properties.resource\_project,security\_center\_properties.project".
 
                 The following fields are supported when compare\_duration is not set:
 
                 -  security\_center\_properties.resource\_project
+                -  security\_center\_properties.resource\_project\_display\_name
                 -  security\_center\_properties.resource\_type
                 -  security\_center\_properties.resource\_parent
+                -  security\_center\_properties.resource\_parent\_display\_name
 
                 The following fields are supported when compare\_duration is set:
 
                 -  security\_center\_properties.resource\_type
+                -  security\_center\_properties.resource\_project\_display\_name
+                -  security\_center\_properties.resource\_parent\_display\_name
             filter_ (str): Expression that defines the filter to apply across assets. The
                 expression is a list of zero or more restrictions combined via logical
                 operators ``AND`` and ``OR``. Parentheses are supported, and ``OR`` has
@@ -743,26 +747,45 @@ class SecurityCenterClient(object):
                 -  integer literals without quotes.
                 -  boolean literals ``true`` and ``false`` without quotes.
 
-                The following field and operator combinations are supported: name \| '='
-                update\_time \| '=', '>', '<', '>=', '<='
+                The following field and operator combinations are supported:
 
-                Usage: This should be milliseconds since epoch or an RFC3339 string.
-                Examples: "update\_time = "2019-06-10T16:07:18-07:00"" "update\_time =
-                1560208038000"
+                -  name: ``=``
 
-                create\_time \| '=', '>', '<', '>=', '<='
+                -  update\_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
 
-                Usage: This should be milliseconds since epoch or an RFC3339 string.
-                Examples: "create\_time = "2019-06-10T16:07:18-07:00"" "create\_time =
-                1560208038000"
+                   Usage: This should be milliseconds since epoch or an RFC3339 string.
+                   Examples: "update\_time = "2019-06-10T16:07:18-07:00"" "update\_time
+                   = 1560208038000"
 
-                iam\_policy.policy\_blob \| '=', ':' resource\_properties \| '=', ':',
-                '>', '<', '>=', '<=' security\_marks \| '=', ':'
-                security\_center\_properties.resource\_name \| '=', ':'
-                security\_center\_properties.resource\_type \| '=', ':'
-                security\_center\_properties.resource\_parent \| '=', ':'
-                security\_center\_properties.resource\_project \| '=', ':'
-                security\_center\_properties.resource\_owners \| '=', ':'
+                -  create\_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
+
+                   Usage: This should be milliseconds since epoch or an RFC3339 string.
+                   Examples: "create\_time = "2019-06-10T16:07:18-07:00"" "create\_time
+                   = 1560208038000"
+
+                -  iam\_policy.policy\_blob: ``=``, ``:``
+
+                -  resource\_properties: ``=``, ``:``, ``>``, ``<``, ``>=``, ``<=``
+
+                -  security\_marks.marks: ``=``, ``:``
+
+                -  security\_center\_properties.resource\_name: ``=``, ``:``
+
+                -  security\_center\_properties.resource\_display\_name: ``=``, ``:``
+
+                -  security\_center\_properties.resource\_type: ``=``, ``:``
+
+                -  security\_center\_properties.resource\_parent: ``=``, ``:``
+
+                -  security\_center\_properties.resource\_parent\_display\_name: ``=``,
+                   ``:``
+
+                -  security\_center\_properties.resource\_project: ``=``, ``:``
+
+                -  security\_center\_properties.resource\_project\_display\_name: ``=``,
+                   ``:``
+
+                -  security\_center\_properties.resource\_owners: ``=``, ``:``
 
                 For example, ``resource_properties.size = 100`` is a valid filter
                 string.
@@ -894,7 +917,7 @@ class SecurityCenterClient(object):
         specified properties.
 
         To group across all sources provide a ``-`` as the source id. Example:
-        /v1/organizations/123/sources/-/findings
+        /v1/organizations/{organization\_id}/sources/-/findings
 
         Example:
             >>> from google.cloud import securitycenter_v1
@@ -921,11 +944,11 @@ class SecurityCenterClient(object):
             ...         pass
 
         Args:
-            parent (str): Name of the source to groupBy. Its format is
+            parent (str): Required. Name of the source to groupBy. Its format is
                 "organizations/[organization\_id]/sources/[source\_id]". To groupBy
                 across all sources provide a source\_id of ``-``. For example:
-                organizations/123/sources/-
-            group_by (str): Expression that defines what assets fields to use for grouping
+                organizations/{organization\_id}/sources/-
+            group_by (str): Required. Expression that defines what assets fields to use for grouping
                 (including ``state_change``). The string value should follow SQL syntax:
                 comma separated list of fields. For example: "parent,resource\_name".
 
@@ -963,17 +986,29 @@ class SecurityCenterClient(object):
                 -  integer literals without quotes.
                 -  boolean literals ``true`` and ``false`` without quotes.
 
-                The following field and operator combinations are supported: name \|
-                ``=`` parent \| '=', ':' resource\_name \| '=', ':' state \| '=', ':'
-                category \| '=', ':' external\_uri \| '=', ':' event\_time \| ``=``,
-                ``>``, ``<``, ``>=``, ``<=``
+                The following field and operator combinations are supported:
 
-                Usage: This should be milliseconds since epoch or an RFC3339 string.
-                Examples: "event\_time = "2019-06-10T16:07:18-07:00"" "event\_time =
-                1560208038000"
+                -  name: ``=``
 
-                security\_marks \| '=', ':' source\_properties \| '=', ':', ``>``,
-                ``<``, ``>=``, ``<=``
+                -  parent: ``=``, ``:``
+
+                -  resource\_name: ``=``, ``:``
+
+                -  state: ``=``, ``:``
+
+                -  category: ``=``, ``:``
+
+                -  external\_uri: ``=``, ``:``
+
+                -  event\_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
+
+                   Usage: This should be milliseconds since epoch or an RFC3339 string.
+                   Examples: "event\_time = "2019-06-10T16:07:18-07:00"" "event\_time =
+                   1560208038000"
+
+                -  security\_marks.marks: ``=``, ``:``
+
+                -  source\_properties: ``=``, ``:``, ``>``, ``<``, ``>=``, ``<=``
 
                 For example, ``source_properties.size = 100`` is a valid filter string.
             read_time (Union[dict, ~google.cloud.securitycenter_v1.types.Timestamp]): Time used as a reference point when filtering findings. The filter is
@@ -1125,8 +1160,8 @@ class SecurityCenterClient(object):
             ...         pass
 
         Args:
-            parent (str): Name of the organization assets should belong to. Its format is
-                "organizations/[organization\_id]".
+            parent (str): Required. Name of the organization assets should belong to. Its format
+                is "organizations/[organization\_id]".
             filter_ (str): Expression that defines the filter to apply across assets. The
                 expression is a list of zero or more restrictions combined via logical
                 operators ``AND`` and ``OR``. Parentheses are supported, and ``OR`` has
@@ -1153,26 +1188,45 @@ class SecurityCenterClient(object):
                 -  integer literals without quotes.
                 -  boolean literals ``true`` and ``false`` without quotes.
 
-                The following are the allowed field and operator combinations: name \|
-                ``=`` update\_time \| ``=``, ``>``, ``<``, ``>=``, ``<=``
+                The following are the allowed field and operator combinations:
 
-                Usage: This should be milliseconds since epoch or an RFC3339 string.
-                Examples: "update\_time = "2019-06-10T16:07:18-07:00"" "update\_time =
-                1560208038000"
+                -  name: ``=``
 
-                create\_time \| ``=``, ``>``, ``<``, ``>=``, ``<=``
+                -  update\_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
 
-                Usage: This should be milliseconds since epoch or an RFC3339 string.
-                Examples: "create\_time = "2019-06-10T16:07:18-07:00"" "create\_time =
-                1560208038000"
+                   Usage: This should be milliseconds since epoch or an RFC3339 string.
+                   Examples: "update\_time = "2019-06-10T16:07:18-07:00"" "update\_time
+                   = 1560208038000"
 
-                iam\_policy.policy\_blob \| '=', ':' resource\_properties \| '=', ':',
-                ``>``, ``<``, ``>=``, ``<=`` security\_marks \| '=', ':'
-                security\_center\_properties.resource\_name \| '=', ':'
-                security\_center\_properties.resource\_type \| '=', ':'
-                security\_center\_properties.resource\_parent \| '=', ':'
-                security\_center\_properties.resource\_project \| '=', ':'
-                security\_center\_properties.resource\_owners \| '=', ':'
+                -  create\_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
+
+                   Usage: This should be milliseconds since epoch or an RFC3339 string.
+                   Examples: "create\_time = "2019-06-10T16:07:18-07:00"" "create\_time
+                   = 1560208038000"
+
+                -  iam\_policy.policy\_blob: ``=``, ``:``
+
+                -  resource\_properties: ``=``, ``:``, ``>``, ``<``, ``>=``, ``<=``
+
+                -  security\_marks.marks: ``=``, ``:``
+
+                -  security\_center\_properties.resource\_name: ``=``, ``:``
+
+                -  security\_center\_properties.resource\_display\_name: ``=``, ``:``
+
+                -  security\_center\_properties.resource\_type: ``=``, ``:``
+
+                -  security\_center\_properties.resource\_parent: ``=``, ``:``
+
+                -  security\_center\_properties.resource\_parent\_display\_name: ``=``,
+                   ``:``
+
+                -  security\_center\_properties.resource\_project: ``=``, ``:``
+
+                -  security\_center\_properties.resource\_project\_display\_name: ``=``,
+                   ``:``
+
+                -  security\_center\_properties.resource\_owners: ``=``, ``:``
 
                 For example, ``resource_properties.size = 100`` is a valid filter
                 string.
@@ -1187,10 +1241,13 @@ class SecurityCenterClient(object):
                 resource\_properties.a\_property " are equivalent.
 
                 The following fields are supported: name update\_time
-                resource\_properties security\_marks
+                resource\_properties security\_marks.marks
                 security\_center\_properties.resource\_name
+                security\_center\_properties.resource\_display\_name
                 security\_center\_properties.resource\_parent
+                security\_center\_properties.resource\_parent\_display\_name
                 security\_center\_properties.resource\_project
+                security\_center\_properties.resource\_project\_display\_name
                 security\_center\_properties.resource\_type
             read_time (Union[dict, ~google.cloud.securitycenter_v1.types.Timestamp]): Time used as a reference point when filtering assets. The filter is limited
                 to assets existing at the supplied time and their values are those at that
@@ -1226,9 +1283,7 @@ class SecurityCenterClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.Duration`
-            field_mask (Union[dict, ~google.cloud.securitycenter_v1.types.FieldMask]): Optional.
-
-                A field mask to specify the ListAssetsResult fields to be listed in the
+            field_mask (Union[dict, ~google.cloud.securitycenter_v1.types.FieldMask]): Optional. A field mask to specify the ListAssetsResult fields to be listed in the
                 response.
                 An empty field mask will list all fields.
 
@@ -1326,7 +1381,7 @@ class SecurityCenterClient(object):
         Lists an organization or source's findings.
 
         To list across all sources provide a ``-`` as the source id. Example:
-        /v1/organizations/123/sources/-/findings
+        /v1/organizations/{organization\_id}/sources/-/findings
 
         Example:
             >>> from google.cloud import securitycenter_v1
@@ -1350,10 +1405,10 @@ class SecurityCenterClient(object):
             ...         pass
 
         Args:
-            parent (str): Name of the source the findings belong to. Its format is
+            parent (str): Required. Name of the source the findings belong to. Its format is
                 "organizations/[organization\_id]/sources/[source\_id]". To list across
                 all sources provide a source\_id of ``-``. For example:
-                organizations/123/sources/-
+                organizations/{organization\_id}/sources/-
             filter_ (str): Expression that defines the filter to apply across findings. The
                 expression is a list of one or more restrictions combined via logical
                 operators ``AND`` and ``OR``. Parentheses are supported, and ``OR`` has
@@ -1378,17 +1433,18 @@ class SecurityCenterClient(object):
                 -  integer literals without quotes.
                 -  boolean literals ``true`` and ``false`` without quotes.
 
-                The following field and operator combinations are supported: name \|
-                ``=`` parent \| '=', ':' resource\_name \| '=', ':' state \| '=', ':'
-                category \| '=', ':' external\_uri \| '=', ':' event\_time \| ``=``,
-                ``>``, ``<``, ``>=``, ``<=``
+                The following field and operator combinations are supported:
+
+                name: ``=`` parent: ``=``, ``:`` resource\_name: ``=``, ``:`` state:
+                ``=``, ``:`` category: ``=``, ``:`` external\_uri: ``=``, ``:``
+                event\_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
 
                 Usage: This should be milliseconds since epoch or an RFC3339 string.
                 Examples: "event\_time = "2019-06-10T16:07:18-07:00"" "event\_time =
                 1560208038000"
 
-                security\_marks \| '=', ':' source\_properties \| '=', ':', ``>``,
-                ``<``, ``>=``, ``<=``
+                security\_marks.marks: ``=``, ``:`` source\_properties: ``=``, ``:``,
+                ``>``, ``<``, ``>=``, ``<=``
 
                 For example, ``source_properties.size = 100`` is a valid filter string.
             order_by (str): Expression that defines what fields and order to use for sorting. The
@@ -1401,7 +1457,7 @@ class SecurityCenterClient(object):
                 " name desc , source\_properties.a\_property " are equivalent.
 
                 The following fields are supported: name parent state category
-                resource\_name event\_time source\_properties security\_marks
+                resource\_name event\_time source\_properties security\_marks.marks
             read_time (Union[dict, ~google.cloud.securitycenter_v1.types.Timestamp]): Time used as a reference point when filtering findings. The filter is
                 limited to findings existing at the supplied time and their values are
                 those at that specific time. Absence of this field will default to the
@@ -1436,9 +1492,7 @@ class SecurityCenterClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.Duration`
-            field_mask (Union[dict, ~google.cloud.securitycenter_v1.types.FieldMask]): Optional.
-
-                A field mask to specify the Finding fields to be listed in the response.
+            field_mask (Union[dict, ~google.cloud.securitycenter_v1.types.FieldMask]): Optional. A field mask to specify the Finding fields to be listed in the response.
                 An empty field mask will list all fields.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -1551,8 +1605,8 @@ class SecurityCenterClient(object):
             ...         pass
 
         Args:
-            parent (str): Resource name of the parent of sources to list. Its format should be
-                "organizations/[organization\_id]".
+            parent (str): Required. Resource name of the parent of sources to list. Its format
+                should be "organizations/[organization\_id]".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -1656,8 +1710,8 @@ class SecurityCenterClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            parent (str): Name of the organization to run asset discovery for. Its format is
-                "organizations/[organization\_id]".
+            parent (str): Required. Name of the organization to run asset discovery for. Its
+                format is "organizations/[organization\_id]".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1741,11 +1795,12 @@ class SecurityCenterClient(object):
             >>> response = client.set_finding_state(name, state, start_time)
 
         Args:
-            name (str): The relative resource name of the finding. See:
+            name (str): Required. The relative resource name of the finding. See:
                 https://cloud.google.com/apis/design/resource\_names#relative\_resource\_name
-                Example: "organizations/123/sources/456/finding/789".
-            state (~google.cloud.securitycenter_v1.types.State): The desired State of the finding.
-            start_time (Union[dict, ~google.cloud.securitycenter_v1.types.Timestamp]): The time at which the updated state takes effect.
+                Example:
+                "organizations/{organization\_id}/sources/{source\_id}/finding/{finding\_id}".
+            state (~google.cloud.securitycenter_v1.types.State): Required. The desired State of the finding.
+            start_time (Union[dict, ~google.cloud.securitycenter_v1.types.Timestamp]): Required. The time at which the updated state takes effect.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.Timestamp`
@@ -1983,8 +2038,9 @@ class SecurityCenterClient(object):
             >>> response = client.update_finding(finding)
 
         Args:
-            finding (Union[dict, ~google.cloud.securitycenter_v1.types.Finding]): The finding resource to update or create if it does not already exist.
-                parent, security\_marks, and update\_time will be ignored.
+            finding (Union[dict, ~google.cloud.securitycenter_v1.types.Finding]): Required. The finding resource to update or create if it does not
+                already exist. parent, security\_marks, and update\_time will be
+                ignored.
 
                 In the case of creation, the finding id portion of the name must be
                 alphanumeric and less than or equal to 32 characters and greater than 0
@@ -2074,7 +2130,7 @@ class SecurityCenterClient(object):
             >>> response = client.update_organization_settings(organization_settings)
 
         Args:
-            organization_settings (Union[dict, ~google.cloud.securitycenter_v1.types.OrganizationSettings]): The organization settings resource to update.
+            organization_settings (Union[dict, ~google.cloud.securitycenter_v1.types.OrganizationSettings]): Required. The organization settings resource to update.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.OrganizationSettings`
@@ -2160,7 +2216,7 @@ class SecurityCenterClient(object):
             >>> response = client.update_source(source)
 
         Args:
-            source (Union[dict, ~google.cloud.securitycenter_v1.types.Source]): The source resource to update.
+            source (Union[dict, ~google.cloud.securitycenter_v1.types.Source]): Required. The source resource to update.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.Source`
@@ -2243,7 +2299,7 @@ class SecurityCenterClient(object):
             >>> response = client.update_security_marks(security_marks)
 
         Args:
-            security_marks (Union[dict, ~google.cloud.securitycenter_v1.types.SecurityMarks]): The security marks resource to update.
+            security_marks (Union[dict, ~google.cloud.securitycenter_v1.types.SecurityMarks]): Required. The security marks resource to update.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1.types.SecurityMarks`

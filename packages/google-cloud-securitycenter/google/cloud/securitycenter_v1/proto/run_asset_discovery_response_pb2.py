@@ -16,7 +16,6 @@ _sym_db = _symbol_database.Default()
 
 
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
-from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
@@ -28,11 +27,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         '\n"com.google.cloud.securitycenter.v1P\001ZLgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1;securitycenter\252\002\036Google.Cloud.SecurityCenter.V1\312\002\036Google\\Cloud\\SecurityCenter\\V1\352\002!Google::Cloud::SecurityCenter::V1'
     ),
     serialized_pb=_b(
-        '\nGgoogle/cloud/securitycenter_v1/proto/run_asset_discovery_response.proto\x12\x1egoogle.cloud.securitycenter.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\xe7\x01\n\x19RunAssetDiscoveryResponse\x12N\n\x05state\x18\x01 \x01(\x0e\x32?.google.cloud.securitycenter.v1.RunAssetDiscoveryResponse.State\x12+\n\x08\x64uration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration"M\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\r\n\tCOMPLETED\x10\x01\x12\x0e\n\nSUPERSEDED\x10\x02\x12\x0e\n\nTERMINATED\x10\x03\x42\xda\x01\n"com.google.cloud.securitycenter.v1P\x01ZLgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1;securitycenter\xaa\x02\x1eGoogle.Cloud.SecurityCenter.V1\xca\x02\x1eGoogle\\Cloud\\SecurityCenter\\V1\xea\x02!Google::Cloud::SecurityCenter::V1b\x06proto3'
+        '\nGgoogle/cloud/securitycenter_v1/proto/run_asset_discovery_response.proto\x12\x1egoogle.cloud.securitycenter.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1cgoogle/api/annotations.proto"\xe7\x01\n\x19RunAssetDiscoveryResponse\x12N\n\x05state\x18\x01 \x01(\x0e\x32?.google.cloud.securitycenter.v1.RunAssetDiscoveryResponse.State\x12+\n\x08\x64uration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration"M\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\r\n\tCOMPLETED\x10\x01\x12\x0e\n\nSUPERSEDED\x10\x02\x12\x0e\n\nTERMINATED\x10\x03\x42\xda\x01\n"com.google.cloud.securitycenter.v1P\x01ZLgoogle.golang.org/genproto/googleapis/cloud/securitycenter/v1;securitycenter\xaa\x02\x1eGoogle.Cloud.SecurityCenter.V1\xca\x02\x1eGoogle\\Cloud\\SecurityCenter\\V1\xea\x02!Google::Cloud::SecurityCenter::V1b\x06proto3'
     ),
     dependencies=[
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
-        google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
@@ -63,8 +61,8 @@ _RUNASSETDISCOVERYRESPONSE_STATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=357,
-    serialized_end=434,
+    serialized_start=324,
+    serialized_end=401,
 )
 _sym_db.RegisterEnumDescriptor(_RUNASSETDISCOVERYRESPONSE_STATE)
 
@@ -121,8 +119,8 @@ _RUNASSETDISCOVERYRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=203,
-    serialized_end=434,
+    serialized_start=170,
+    serialized_end=401,
 )
 
 _RUNASSETDISCOVERYRESPONSE.fields_by_name[
