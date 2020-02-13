@@ -309,12 +309,12 @@ class Test_get_canonical_headers(unittest.TestCase):
         self.assertEqual(ordered, expected_ordered)
 
 
-class Test_canonicalize(unittest.TestCase):
+class Test_canonicalize_v2(unittest.TestCase):
     @staticmethod
     def _call_fut(*args, **kwargs):
-        from google.cloud.storage._signing import canonicalize
+        from google.cloud.storage._signing import canonicalize_v2
 
-        return canonicalize(*args, **kwargs)
+        return canonicalize_v2(*args, **kwargs)
 
     def test_wo_headers_or_query_parameters(self):
         method = "GET"
@@ -649,6 +649,9 @@ class Test_generate_signed_url_v4(unittest.TestCase):
 
     def test_w_custom_headers(self):
         self._generate_helper(headers={"x-goog-foo": "bar"})
+
+    def test_w_custom_payload_hash_goog(self):
+        self._generate_helper(headers={"x-goog-content-sha256": "DEADBEEF"})
 
     def test_w_custom_query_parameters_w_string_value(self):
         self._generate_helper(query_parameters={"bar": "/"})

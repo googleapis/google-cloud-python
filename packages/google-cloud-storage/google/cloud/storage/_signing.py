@@ -18,7 +18,6 @@ import binascii
 import collections
 import datetime
 import hashlib
-import re
 import json
 
 import six
@@ -31,8 +30,6 @@ from google.cloud import _helpers
 
 
 NOW = datetime.datetime.utcnow  # To be replaced by tests.
-MULTIPLE_SPACES_RE = r"\s+"
-MULTIPLE_SPACES = re.compile(MULTIPLE_SPACES_RE)
 
 SERVICE_ACCOUNT_URL = (
     "https://googleapis.dev/python/google-api-core/latest/"
@@ -192,7 +189,7 @@ def get_canonical_headers(headers):
     normalized = collections.defaultdict(list)
     for key, val in headers:
         key = key.lower().strip()
-        val = MULTIPLE_SPACES.sub(" ", val.strip())
+        val = " ".join(val.split())
         normalized[key].append(val)
 
     ordered_headers = sorted((key, ",".join(val)) for key, val in normalized.items())
@@ -206,8 +203,8 @@ _Canonical = collections.namedtuple(
 )
 
 
-def canonicalize(method, resource, query_parameters, headers):
-    """Canonicalize method, resource
+def canonicalize_v2(method, resource, query_parameters, headers):
+    """Canonicalize method, resource per the V2 spec.
 
     :type method: str
     :param method: The HTTP verb that will be used when requesting the URL.
@@ -301,6 +298,7 @@ def generate_signed_url_v2(
     :type resource: str
     :param resource: A pointer to a specific resource
                      (typically, ``/bucket-name/path/to/blob.txt``).
+                     Caller should have already URL-encoded the value.
 
     :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
     :param expiration: Point in time when the signed URL should expire.
@@ -368,7 +366,7 @@ def generate_signed_url_v2(
     """
     expiration_stamp = get_expiration_seconds_v2(expiration)
 
-    canonical = canonicalize(method, resource, query_parameters, headers)
+    canonical = canonicalize_v2(method, resource, query_parameters, headers)
 
     # Generate the string to sign.
     elements_to_sign = [
@@ -462,6 +460,7 @@ def generate_signed_url_v4(
     :type resource: str
     :param resource: A pointer to a specific resource
                      (typically, ``/bucket-name/path/to/blob.txt``).
+                     Caller should have already URL-encoded the value.
 
     :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
     :param expiration: Point in time when the signed URL should expire.
@@ -589,13 +588,20 @@ def generate_signed_url_v4(
     ordered_query_parameters = sorted(query_parameters.items())
     canonical_query_string = six.moves.urllib.parse.urlencode(ordered_query_parameters)
 
+    lowercased_headers = dict(ordered_headers)
+
+    if "x-goog-content-sha256" in lowercased_headers:
+        payload = lowercased_headers["x-goog-content-sha256"]
+    else:
+        payload = "UNSIGNED-PAYLOAD"
+
     canonical_elements = [
         method,
         resource,
         canonical_query_string,
         canonical_header_string,
         signed_headers,
-        "UNSIGNED-PAYLOAD",
+        payload,
     ]
     canonical_request = "\n".join(canonical_elements)
 
