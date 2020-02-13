@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [1.13.0](https://www.github.com/googleapis/python-videointelligence/compare/v1.12.1...v1.13.0) (2020-02-13)
+
+
+### Features
+
+* **videointelligence:** add person detection and face detection ([#5](https://www.github.com/googleapis/python-videointelligence/issues/5)) ([6464f30](https://www.github.com/googleapis/python-videointelligence/commit/6464f30d8ca8a090bf26b099a9734391010ce162))
+
 ## 1.12.1
 
 11-14-2019 16:12 PST
