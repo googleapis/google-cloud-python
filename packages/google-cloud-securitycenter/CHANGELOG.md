@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [0.4.0](https://www.github.com/googleapis/python-securitycenter/compare/v0.3.0...v0.4.0) (2020-02-13)
+
+
+### Features
+
+* add v1p1beta1; add `resource_display_name, `resource_parent_display_name`, `resource_project_display_name` to `v1.Asset.SecurityCenterProperties`; add output only field `resource` to `v1.ListFindingsResponse.ListFindingsResult`; increase `initial_rpc_timeout_millis` in default config for v1; standardize use of 'required' and 'optional' in docstrings; add 2.7 deprecation warning; bump copyright year to 2020 ([#7](https://www.github.com/googleapis/python-securitycenter/issues/7)) ([03e172b](https://www.github.com/googleapis/python-securitycenter/commit/03e172b34c7cf9a92de10085f4f040cd0e5e85eb))
+
 ## 0.3.0
 
 07-24-2019 17:29 PDT
@@ -102,4 +109,3 @@
 
 ### New Features
 - Generate Security Center Client Library ([#6356](https://github.com/googleapis/google-cloud-python/pull/6356))
-
