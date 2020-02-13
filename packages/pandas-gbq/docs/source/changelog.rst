@@ -1,6 +1,15 @@
 Changelog
 =========
 
+.. _changelog-0.13.1:
+
+0.13.1 / 2020-02-13
+-------------------
+
+- Fix ``AttributeError`` with BQ Storage API to download empty results.
+  (:issue:`299`)
+
+
 .. _changelog-0.13.0:
 
 0.13.0 / 2019-12-12

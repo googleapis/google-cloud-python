@@ -8,12 +8,14 @@ import numpy as np
 try:
     # The BigQuery Storage API client is an optional dependency. It is only
     # required when use_bqstorage_api=True.
-    from google.cloud import bigquery_storage
+    from google.cloud import bigquery_storage_v1beta1
 except ImportError:  # pragma: NO COVER
-    bigquery_storage = None
+    bigquery_storage_v1beta1 = None
 
 from pandas_gbq.exceptions import AccessDenied
 import pandas_gbq.schema
+import pandas_gbq.timestamp
+
 
 logger = logging.getLogger(__name__)
 
@@ -564,7 +566,7 @@ class GbqConnector(object):
             df = _cast_empty_df_dtypes(schema_fields, df)
 
         # Ensure any TIMESTAMP columns are tz-aware.
-        df = _localize_df(schema_fields, df)
+        df = pandas_gbq.timestamp.localize_df(df, schema_fields)
 
         logger.debug("Got {} rows.\n".format(rows_iter.total_rows))
         return df
@@ -784,29 +786,11 @@ def _cast_empty_df_dtypes(schema_fields, df):
     return df
 
 
-def _localize_df(schema_fields, df):
-    """Localize any TIMESTAMP columns to tz-aware type.
-
-    In pandas versions before 0.24.0, DatetimeTZDtype cannot be used as the
-    dtype in Series/DataFrame construction, so localize those columns after
-    the DataFrame is constructed.
-    """
-    for field in schema_fields:
-        column = str(field["name"])
-        if field["mode"].upper() == "REPEATED":
-            continue
-
-        if field["type"].upper() == "TIMESTAMP" and df[column].dt.tz is None:
-            df[column] = df[column].dt.tz_localize("UTC")
-
-    return df
-
-
 def _make_bqstorage_client(use_bqstorage_api, credentials):
     if not use_bqstorage_api:
         return None
 
-    if bigquery_storage is None:
+    if bigquery_storage_v1beta1 is None:
         raise ImportError(
             "Install the google-cloud-bigquery-storage and fastavro/pyarrow "
             "packages to use the BigQuery Storage API."
@@ -818,7 +802,7 @@ def _make_bqstorage_client(use_bqstorage_api, credentials):
     client_info = google.api_core.gapic_v1.client_info.ClientInfo(
         user_agent="pandas-{}".format(pandas.__version__)
     )
-    return bigquery_storage.BigQueryStorageClient(
+    return bigquery_storage_v1beta1.BigQueryStorageClient(
         credentials=credentials, client_info=client_info
     )
 

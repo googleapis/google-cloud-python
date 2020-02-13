@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import uuid
 from datetime import datetime
 
-import google.oauth2.service_account
 import numpy as np
 import pandas
 import pandas.api.types
@@ -26,76 +24,6 @@ def test_imports():
         raise ImportError("Could not import pkg_resources (setuptools).")
 
     gbq._test_google_api_imports()
-
-
-@pytest.fixture(params=["env"])
-def project(request, project_id):
-    if request.param == "env":
-        return project_id
-    elif request.param == "none":
-        return None
-
-
-@pytest.fixture()
-def credentials(private_key_path):
-    return google.oauth2.service_account.Credentials.from_service_account_file(
-        private_key_path
-    )
-
-
-@pytest.fixture()
-def gbq_connector(project, credentials):
-    return gbq.GbqConnector(project, credentials=credentials)
-
-
-@pytest.fixture()
-def random_dataset(bigquery_client, random_dataset_id):
-    from google.cloud import bigquery
-
-    dataset_ref = bigquery_client.dataset(random_dataset_id)
-    dataset = bigquery.Dataset(dataset_ref)
-    bigquery_client.create_dataset(dataset)
-    return dataset
-
-
-@pytest.fixture()
-def tokyo_dataset(bigquery_client, random_dataset_id):
-    from google.cloud import bigquery
-
-    dataset_ref = bigquery_client.dataset(random_dataset_id)
-    dataset = bigquery.Dataset(dataset_ref)
-    dataset.location = "asia-northeast1"
-    bigquery_client.create_dataset(dataset)
-    return random_dataset_id
-
-
-@pytest.fixture()
-def tokyo_table(bigquery_client, tokyo_dataset):
-    table_id = "tokyo_table"
-    # Create a random table using DDL.
-    # https://github.com/GoogleCloudPlatform/golang-samples/blob/2ab2c6b79a1ea3d71d8f91609b57a8fbde07ae5d/bigquery/snippets/snippet.go#L739
-    bigquery_client.query(
-        """CREATE TABLE {}.{}
-        AS SELECT
-          2000 + CAST(18 * RAND() as INT64) as year,
-          IF(RAND() > 0.5,"foo","bar") as token
-        FROM UNNEST(GENERATE_ARRAY(0,5,1)) as r
-        """.format(
-            tokyo_dataset, table_id
-        ),
-        location="asia-northeast1",
-    ).result()
-    return table_id
-
-
-@pytest.fixture()
-def gbq_dataset(project, credentials):
-    return gbq._Dataset(project, credentials=credentials)
-
-
-@pytest.fixture()
-def gbq_table(project, credentials, random_dataset_id):
-    return gbq._Table(project, random_dataset_id, credentials=credentials)
 
 
 def make_mixed_dataframe_v2(test_size):
@@ -600,9 +528,6 @@ class TestReadGBQIntegration(object):
             empty_columns,
             columns=["name", "number", "is_hurricane", "iso_time"],
         )
-        expected_result["iso_time"] = expected_result[
-            "iso_time"
-        ].dt.tz_localize("UTC")
         tm.assert_frame_equal(df, expected_result, check_index_type=False)
 
     def test_one_row_one_column(self, project_id):
@@ -915,43 +840,6 @@ class TestReadGBQIntegration(object):
             credentials=self.credentials,
         )
         assert df["max_year"][0] >= 2000
-
-
-@pytest.mark.slow(reason="Large query for BQ Storage API tests.")
-def test_read_gbq_w_bqstorage_api(credentials, random_dataset):
-    pytest.importorskip("google.cloud.bigquery_storage")
-    df = gbq.read_gbq(
-        """
-        SELECT
-          total_amount,
-          passenger_count,
-          trip_distance
-        FROM `bigquery-public-data.new_york_taxi_trips.tlc_green_trips_2014`
-        -- Select non-null rows for no-copy conversion from Arrow to pandas.
-        WHERE total_amount IS NOT NULL
-          AND passenger_count IS NOT NULL
-          AND trip_distance IS NOT NULL
-        LIMIT 10000000
-        """,
-        use_bqstorage_api=True,
-        credentials=credentials,
-        configuration={
-            "query": {
-                "destinationTable": {
-                    "projectId": random_dataset.project,
-                    "datasetId": random_dataset.dataset_id,
-                    "tableId": "".join(
-                        [
-                            "test_read_gbq_w_bqstorage_api_",
-                            str(uuid.uuid4()).replace("-", "_"),
-                        ]
-                    ),
-                },
-                "writeDisposition": "WRITE_TRUNCATE",
-            }
-        },
-    )
-    assert len(df) == 10000000
 
 
 class TestToGBQIntegration(object):
