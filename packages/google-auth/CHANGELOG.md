@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.11.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.11.0...v1.11.1) (2020-02-13)
+
+
+### Bug Fixes
+
+* compute engine id token credentials "with_target_audience" method ([#438](https://www.github.com/googleapis/google-auth-library-python/issues/438)) ([bc0ec93](https://www.github.com/googleapis/google-auth-library-python/commit/bc0ec93dc66fdcaa6a82222386623fa44f24ddfe))
+* update `_GOOGLE_OAUTH2_CERTS_URL` ([#365](https://www.github.com/googleapis/google-auth-library-python/issues/365)) ([054db75](https://www.github.com/googleapis/google-auth-library-python/commit/054db75734756b0e82e7984ca07fa80025edc908))
+
 ## [1.11.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.10.2...v1.11.0) (2020-01-23)
 
 
