@@ -1,0 +1,13 @@
+{
+    "name": "cloudbilling",
+    "name_pretty": "Cloud Billing",
+    "product_documentation": "https://cloud.google.com/billing",
+    "client_documentation": "https://googleapis.dev/python/cloudbilling/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-billing",
+    "distribution_name": "google-cloud-billing",
+    "api_id": "cloudbilling.googleapis.com"
+  }
+  
