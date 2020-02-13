@@ -3513,9 +3513,9 @@ ExplicitContentAnnotation = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_EXPLICITCONTENTANNOTATION,
         __module__="google.cloud.videointelligence_v1.proto.video_intelligence_pb2",
-        __doc__="""Explicit content annotation (based on per-frame visual signals only). If
-  no explicit content has been detected in a frame, no annotations are
-  present for that frame.
+        __doc__="""Explicit content annotation (based on per-frame visual
+  signals only). If no explicit content has been detected in a frame, no
+  annotations are present for that frame.
   
   
   Attributes:
@@ -3533,8 +3533,8 @@ NormalizedBoundingBox = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NORMALIZEDBOUNDINGBOX,
         __module__="google.cloud.videointelligence_v1.proto.video_intelligence_pb2",
-        __doc__="""Normalized bounding box. The normalized vertex coordinates are relative
-  to the original image. Range: [0, 1].
+        __doc__="""Normalized bounding box. The normalized vertex coordinates
+  are relative to the original image. Range: [0, 1].
   
   
   Attributes:
@@ -3688,8 +3688,8 @@ AnnotateVideoResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ANNOTATEVIDEORESPONSE,
         __module__="google.cloud.videointelligence_v1.proto.video_intelligence_pb2",
-        __doc__="""Video annotation response. Included in the ``response`` field of the
-  ``Operation`` returned by the ``GetOperation`` call of the
+        __doc__="""Video annotation response. Included in the ``response``
+  field of the ``Operation`` returned by the ``GetOperation`` call of the
   ``google::longrunning::Operations`` service.
   
   
@@ -3741,8 +3741,8 @@ AnnotateVideoProgress = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ANNOTATEVIDEOPROGRESS,
         __module__="google.cloud.videointelligence_v1.proto.video_intelligence_pb2",
-        __doc__="""Video annotation progress. Included in the ``metadata`` field of the
-  ``Operation`` returned by the ``GetOperation`` call of the
+        __doc__="""Video annotation progress. Included in the ``metadata``
+  field of the ``Operation`` returned by the ``GetOperation`` call of the
   ``google::longrunning::Operations`` service.
   
   
@@ -3832,8 +3832,8 @@ SpeechContext = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SPEECHCONTEXT,
         __module__="google.cloud.videointelligence_v1.proto.video_intelligence_pb2",
-        __doc__="""Provides "hints" to the speech recognizer to favor specific words and
-  phrases in the results.
+        __doc__="""Provides "hints" to the speech recognizer to favor
+  specific words and phrases in the results.
   
   
   Attributes:
@@ -3858,7 +3858,8 @@ SpeechTranscription = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SPEECHTRANSCRIPTION,
         __module__="google.cloud.videointelligence_v1.proto.video_intelligence_pb2",
-        __doc__="""A speech recognition result corresponding to a portion of the audio.
+        __doc__="""A speech recognition result corresponding to a portion of
+  the audio.
   
   
   Attributes:
@@ -3916,9 +3917,9 @@ WordInfo = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_WORDINFO,
         __module__="google.cloud.videointelligence_v1.proto.video_intelligence_pb2",
-        __doc__="""Word-specific information for recognized words. Word information is only
-  included in the response when certain request parameters are set, such
-  as ``enable_word_time_offsets``.
+        __doc__="""Word-specific information for recognized words. Word
+  information is only included in the response when certain request
+  parameters are set, such as ``enable_word_time_offsets``.
   
   
   Attributes:
@@ -3980,10 +3981,11 @@ NormalizedBoundingPoly = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NORMALIZEDBOUNDINGPOLY,
         __module__="google.cloud.videointelligence_v1.proto.video_intelligence_pb2",
-        __doc__="""Normalized bounding polygon for text (that might not be aligned with
-  axis). Contains list of the corner points in clockwise order starting
-  from top-left corner. For example, for a rectangular bounding box: When
-  the text is horizontal it might look like: 0----1 \| \| 3----2
+        __doc__="""Normalized bounding polygon for text (that might not be
+  aligned with axis). Contains list of the corner points in clockwise
+  order starting from top-left corner. For example, for a rectangular
+  bounding box: When the text is horizontal it might look like: 0----1 \|
+  \| 3----2
   
   When it's clockwise rotated 180 degrees around the top-left corner it
   becomes: 2----3 \| \| 1----0
@@ -4032,9 +4034,9 @@ TextFrame = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TEXTFRAME,
         __module__="google.cloud.videointelligence_v1.proto.video_intelligence_pb2",
-        __doc__="""Video frame level annotation results for text annotation (OCR). Contains
-  information regarding timestamp and bounding box locations for the
-  frames containing detected OCR text snippets.
+        __doc__="""Video frame level annotation results for text annotation
+  (OCR). Contains information regarding timestamp and bounding box
+  locations for the frames containing detected OCR text snippets.
   
   
   Attributes:
@@ -4054,9 +4056,9 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TEXTANNOTATION,
         __module__="google.cloud.videointelligence_v1.proto.video_intelligence_pb2",
-        __doc__="""Annotations related to one detected OCR text snippet. This will contain
-  the corresponding text, confidence value, and frame level information
-  for each detection.
+        __doc__="""Annotations related to one detected OCR text snippet. This
+  will contain the corresponding text, confidence value, and frame level
+  information for each detection.
   
   
   Attributes:
@@ -4076,8 +4078,9 @@ ObjectTrackingFrame = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OBJECTTRACKINGFRAME,
         __module__="google.cloud.videointelligence_v1.proto.video_intelligence_pb2",
-        __doc__="""Video frame level annotations for object detection and tracking. This
-  field stores per frame location, time offset, and confidence.
+        __doc__="""Video frame level annotations for object detection and
+  tracking. This field stores per frame location, time offset, and
+  confidence.
   
   
   Attributes:

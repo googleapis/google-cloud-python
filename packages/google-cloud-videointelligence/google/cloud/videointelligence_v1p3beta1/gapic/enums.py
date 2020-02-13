@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,22 +28,26 @@ class Feature(enum.IntEnum):
       LABEL_DETECTION (int): Label detection. Detect objects, such as dog or flower.
       SHOT_CHANGE_DETECTION (int): Shot change detection.
       EXPLICIT_CONTENT_DETECTION (int): Explicit content detection.
+      FACE_DETECTION (int): Human face detection.
       SPEECH_TRANSCRIPTION (int): Speech transcription.
       TEXT_DETECTION (int): OCR text detection and tracking.
       OBJECT_TRACKING (int): Object detection and tracking.
       LOGO_RECOGNITION (int): Logo detection, tracking, and recognition.
       CELEBRITY_RECOGNITION (int): Celebrity recognition.
+      PERSON_DETECTION (int): Person detection.
     """
 
     FEATURE_UNSPECIFIED = 0
     LABEL_DETECTION = 1
     SHOT_CHANGE_DETECTION = 2
     EXPLICIT_CONTENT_DETECTION = 3
+    FACE_DETECTION = 4
     SPEECH_TRANSCRIPTION = 6
     TEXT_DETECTION = 7
     OBJECT_TRACKING = 9
     LOGO_RECOGNITION = 12
     CELEBRITY_RECOGNITION = 13
+    PERSON_DETECTION = 14
 
 
 class LabelDetectionMode(enum.IntEnum):

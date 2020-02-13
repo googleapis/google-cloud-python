@@ -17,6 +17,8 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.longrunning import (
     operations_pb2 as google_dot_longrunning_dot_operations__pb2,
 )
@@ -33,10 +35,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n,com.google.cloud.videointelligence.v1p2beta1B\035VideoIntelligenceServiceProtoP\001ZYgoogle.golang.org/genproto/googleapis/cloud/videointelligence/v1p2beta1;videointelligence\252\002(Google.Cloud.VideoIntelligence.V1P2Beta1\312\002(Google\\Cloud\\VideoIntelligence\\V1p2beta1\352\002+Google::Cloud::VideoIntelligence::V1p2beta1"
     ),
     serialized_pb=_b(
-        '\nGgoogle/cloud/videointelligence_v1p2beta1/proto/video_intelligence.proto\x12(google.cloud.videointelligence.v1p2beta1\x1a\x1cgoogle/api/annotations.proto\x1a#google/longrunning/operations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\xfd\x01\n\x14\x41nnotateVideoRequest\x12\x11\n\tinput_uri\x18\x01 \x01(\t\x12\x15\n\rinput_content\x18\x06 \x01(\x0c\x12\x43\n\x08\x66\x65\x61tures\x18\x02 \x03(\x0e\x32\x31.google.cloud.videointelligence.v1p2beta1.Feature\x12M\n\rvideo_context\x18\x03 \x01(\x0b\x32\x36.google.cloud.videointelligence.v1p2beta1.VideoContext\x12\x12\n\noutput_uri\x18\x04 \x01(\t\x12\x13\n\x0blocation_id\x18\x05 \x01(\t"\xf6\x03\n\x0cVideoContext\x12H\n\x08segments\x18\x01 \x03(\x0b\x32\x36.google.cloud.videointelligence.v1p2beta1.VideoSegment\x12^\n\x16label_detection_config\x18\x02 \x01(\x0b\x32>.google.cloud.videointelligence.v1p2beta1.LabelDetectionConfig\x12i\n\x1cshot_change_detection_config\x18\x03 \x01(\x0b\x32\x43.google.cloud.videointelligence.v1p2beta1.ShotChangeDetectionConfig\x12s\n!explicit_content_detection_config\x18\x04 \x01(\x0b\x32H.google.cloud.videointelligence.v1p2beta1.ExplicitContentDetectionConfig\x12\\\n\x15text_detection_config\x18\x08 \x01(\x0b\x32=.google.cloud.videointelligence.v1p2beta1.TextDetectionConfig"\x9c\x01\n\x14LabelDetectionConfig\x12Z\n\x14label_detection_mode\x18\x01 \x01(\x0e\x32<.google.cloud.videointelligence.v1p2beta1.LabelDetectionMode\x12\x19\n\x11stationary_camera\x18\x02 \x01(\x08\x12\r\n\x05model\x18\x03 \x01(\t"*\n\x19ShotChangeDetectionConfig\x12\r\n\x05model\x18\x01 \x01(\t"/\n\x1e\x45xplicitContentDetectionConfig\x12\r\n\x05model\x18\x01 \x01(\t"-\n\x13TextDetectionConfig\x12\x16\n\x0elanguage_hints\x18\x01 \x03(\t"x\n\x0cVideoSegment\x12\x34\n\x11start_time_offset\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x32\n\x0f\x65nd_time_offset\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration"k\n\x0cLabelSegment\x12G\n\x07segment\x18\x01 \x01(\x0b\x32\x36.google.cloud.videointelligence.v1p2beta1.VideoSegment\x12\x12\n\nconfidence\x18\x02 \x01(\x02"P\n\nLabelFrame\x12.\n\x0btime_offset\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x12\n\nconfidence\x18\x02 \x01(\x02"G\n\x06\x45ntity\x12\x11\n\tentity_id\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x15\n\rlanguage_code\x18\x03 \x01(\t"\xb0\x02\n\x0fLabelAnnotation\x12@\n\x06\x65ntity\x18\x01 \x01(\x0b\x32\x30.google.cloud.videointelligence.v1p2beta1.Entity\x12K\n\x11\x63\x61tegory_entities\x18\x02 \x03(\x0b\x32\x30.google.cloud.videointelligence.v1p2beta1.Entity\x12H\n\x08segments\x18\x03 \x03(\x0b\x32\x36.google.cloud.videointelligence.v1p2beta1.LabelSegment\x12\x44\n\x06\x66rames\x18\x04 \x03(\x0b\x32\x34.google.cloud.videointelligence.v1p2beta1.LabelFrame"\x9c\x01\n\x14\x45xplicitContentFrame\x12.\n\x0btime_offset\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12T\n\x16pornography_likelihood\x18\x02 \x01(\x0e\x32\x34.google.cloud.videointelligence.v1p2beta1.Likelihood"k\n\x19\x45xplicitContentAnnotation\x12N\n\x06\x66rames\x18\x01 \x03(\x0b\x32>.google.cloud.videointelligence.v1p2beta1.ExplicitContentFrame"Q\n\x15NormalizedBoundingBox\x12\x0c\n\x04left\x18\x01 \x01(\x02\x12\x0b\n\x03top\x18\x02 \x01(\x02\x12\r\n\x05right\x18\x03 \x01(\x02\x12\x0e\n\x06\x62ottom\x18\x04 \x01(\x02"\xcb\x05\n\x16VideoAnnotationResults\x12\x11\n\tinput_uri\x18\x01 \x01(\t\x12\\\n\x19segment_label_annotations\x18\x02 \x03(\x0b\x32\x39.google.cloud.videointelligence.v1p2beta1.LabelAnnotation\x12Y\n\x16shot_label_annotations\x18\x03 \x03(\x0b\x32\x39.google.cloud.videointelligence.v1p2beta1.LabelAnnotation\x12Z\n\x17\x66rame_label_annotations\x18\x04 \x03(\x0b\x32\x39.google.cloud.videointelligence.v1p2beta1.LabelAnnotation\x12P\n\x10shot_annotations\x18\x06 \x03(\x0b\x32\x36.google.cloud.videointelligence.v1p2beta1.VideoSegment\x12`\n\x13\x65xplicit_annotation\x18\x07 \x01(\x0b\x32\x43.google.cloud.videointelligence.v1p2beta1.ExplicitContentAnnotation\x12R\n\x10text_annotations\x18\x0c \x03(\x0b\x32\x38.google.cloud.videointelligence.v1p2beta1.TextAnnotation\x12^\n\x12object_annotations\x18\x0e \x03(\x0b\x32\x42.google.cloud.videointelligence.v1p2beta1.ObjectTrackingAnnotation\x12!\n\x05\x65rror\x18\t \x01(\x0b\x32\x12.google.rpc.Status"u\n\x15\x41nnotateVideoResponse\x12\\\n\x12\x61nnotation_results\x18\x01 \x03(\x0b\x32@.google.cloud.videointelligence.v1p2beta1.VideoAnnotationResults"\xa7\x01\n\x17VideoAnnotationProgress\x12\x11\n\tinput_uri\x18\x01 \x01(\t\x12\x18\n\x10progress_percent\x18\x02 \x01(\x05\x12.\n\nstart_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"w\n\x15\x41nnotateVideoProgress\x12^\n\x13\x61nnotation_progress\x18\x01 \x03(\x0b\x32\x41.google.cloud.videointelligence.v1p2beta1.VideoAnnotationProgress"(\n\x10NormalizedVertex\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02"f\n\x16NormalizedBoundingPoly\x12L\n\x08vertices\x18\x01 \x03(\x0b\x32:.google.cloud.videointelligence.v1p2beta1.NormalizedVertex"\xaf\x01\n\x0bTextSegment\x12G\n\x07segment\x18\x01 \x01(\x0b\x32\x36.google.cloud.videointelligence.v1p2beta1.VideoSegment\x12\x12\n\nconfidence\x18\x02 \x01(\x02\x12\x43\n\x06\x66rames\x18\x03 \x03(\x0b\x32\x33.google.cloud.videointelligence.v1p2beta1.TextFrame"\x9b\x01\n\tTextFrame\x12^\n\x14rotated_bounding_box\x18\x01 \x01(\x0b\x32@.google.cloud.videointelligence.v1p2beta1.NormalizedBoundingPoly\x12.\n\x0btime_offset\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration"g\n\x0eTextAnnotation\x12\x0c\n\x04text\x18\x01 \x01(\t\x12G\n\x08segments\x18\x02 \x03(\x0b\x32\x35.google.cloud.videointelligence.v1p2beta1.TextSegment"\xa7\x01\n\x13ObjectTrackingFrame\x12`\n\x17normalized_bounding_box\x18\x01 \x01(\x0b\x32?.google.cloud.videointelligence.v1p2beta1.NormalizedBoundingBox\x12.\n\x0btime_offset\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration"\x88\x02\n\x18ObjectTrackingAnnotation\x12@\n\x06\x65ntity\x18\x01 \x01(\x0b\x32\x30.google.cloud.videointelligence.v1p2beta1.Entity\x12\x12\n\nconfidence\x18\x04 \x01(\x02\x12M\n\x06\x66rames\x18\x02 \x03(\x0b\x32=.google.cloud.videointelligence.v1p2beta1.ObjectTrackingFrame\x12G\n\x07segment\x18\x03 \x01(\x0b\x32\x36.google.cloud.videointelligence.v1p2beta1.VideoSegment*\x9b\x01\n\x07\x46\x65\x61ture\x12\x17\n\x13\x46\x45\x41TURE_UNSPECIFIED\x10\x00\x12\x13\n\x0fLABEL_DETECTION\x10\x01\x12\x19\n\x15SHOT_CHANGE_DETECTION\x10\x02\x12\x1e\n\x1a\x45XPLICIT_CONTENT_DETECTION\x10\x03\x12\x12\n\x0eTEXT_DETECTION\x10\x07\x12\x13\n\x0fOBJECT_TRACKING\x10\t*r\n\x12LabelDetectionMode\x12$\n LABEL_DETECTION_MODE_UNSPECIFIED\x10\x00\x12\r\n\tSHOT_MODE\x10\x01\x12\x0e\n\nFRAME_MODE\x10\x02\x12\x17\n\x13SHOT_AND_FRAME_MODE\x10\x03*t\n\nLikelihood\x12\x1a\n\x16LIKELIHOOD_UNSPECIFIED\x10\x00\x12\x11\n\rVERY_UNLIKELY\x10\x01\x12\x0c\n\x08UNLIKELY\x10\x02\x12\x0c\n\x08POSSIBLE\x10\x03\x12\n\n\x06LIKELY\x10\x04\x12\x0f\n\x0bVERY_LIKELY\x10\x05\x32\xb2\x01\n\x18VideoIntelligenceService\x12\x95\x01\n\rAnnotateVideo\x12>.google.cloud.videointelligence.v1p2beta1.AnnotateVideoRequest\x1a\x1d.google.longrunning.Operation"%\x82\xd3\xe4\x93\x02\x1f"\x1a/v1p2beta1/videos:annotate:\x01*B\xae\x02\n,com.google.cloud.videointelligence.v1p2beta1B\x1dVideoIntelligenceServiceProtoP\x01ZYgoogle.golang.org/genproto/googleapis/cloud/videointelligence/v1p2beta1;videointelligence\xaa\x02(Google.Cloud.VideoIntelligence.V1P2Beta1\xca\x02(Google\\Cloud\\VideoIntelligence\\V1p2beta1\xea\x02+Google::Cloud::VideoIntelligence::V1p2beta1b\x06proto3'
+        '\nGgoogle/cloud/videointelligence_v1p2beta1/proto/video_intelligence.proto\x12(google.cloud.videointelligence.v1p2beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a#google/longrunning/operations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17google/rpc/status.proto"\x8c\x02\n\x14\x41nnotateVideoRequest\x12\x11\n\tinput_uri\x18\x01 \x01(\t\x12\x15\n\rinput_content\x18\x06 \x01(\x0c\x12H\n\x08\x66\x65\x61tures\x18\x02 \x03(\x0e\x32\x31.google.cloud.videointelligence.v1p2beta1.FeatureB\x03\xe0\x41\x02\x12M\n\rvideo_context\x18\x03 \x01(\x0b\x32\x36.google.cloud.videointelligence.v1p2beta1.VideoContext\x12\x17\n\noutput_uri\x18\x04 \x01(\tB\x03\xe0\x41\x01\x12\x18\n\x0blocation_id\x18\x05 \x01(\tB\x03\xe0\x41\x01"\xf6\x03\n\x0cVideoContext\x12H\n\x08segments\x18\x01 \x03(\x0b\x32\x36.google.cloud.videointelligence.v1p2beta1.VideoSegment\x12^\n\x16label_detection_config\x18\x02 \x01(\x0b\x32>.google.cloud.videointelligence.v1p2beta1.LabelDetectionConfig\x12i\n\x1cshot_change_detection_config\x18\x03 \x01(\x0b\x32\x43.google.cloud.videointelligence.v1p2beta1.ShotChangeDetectionConfig\x12s\n!explicit_content_detection_config\x18\x04 \x01(\x0b\x32H.google.cloud.videointelligence.v1p2beta1.ExplicitContentDetectionConfig\x12\\\n\x15text_detection_config\x18\x08 \x01(\x0b\x32=.google.cloud.videointelligence.v1p2beta1.TextDetectionConfig"\x9c\x01\n\x14LabelDetectionConfig\x12Z\n\x14label_detection_mode\x18\x01 \x01(\x0e\x32<.google.cloud.videointelligence.v1p2beta1.LabelDetectionMode\x12\x19\n\x11stationary_camera\x18\x02 \x01(\x08\x12\r\n\x05model\x18\x03 \x01(\t"*\n\x19ShotChangeDetectionConfig\x12\r\n\x05model\x18\x01 \x01(\t"/\n\x1e\x45xplicitContentDetectionConfig\x12\r\n\x05model\x18\x01 \x01(\t"-\n\x13TextDetectionConfig\x12\x16\n\x0elanguage_hints\x18\x01 \x03(\t"x\n\x0cVideoSegment\x12\x34\n\x11start_time_offset\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x32\n\x0f\x65nd_time_offset\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration"k\n\x0cLabelSegment\x12G\n\x07segment\x18\x01 \x01(\x0b\x32\x36.google.cloud.videointelligence.v1p2beta1.VideoSegment\x12\x12\n\nconfidence\x18\x02 \x01(\x02"P\n\nLabelFrame\x12.\n\x0btime_offset\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x12\n\nconfidence\x18\x02 \x01(\x02"G\n\x06\x45ntity\x12\x11\n\tentity_id\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x15\n\rlanguage_code\x18\x03 \x01(\t"\xb0\x02\n\x0fLabelAnnotation\x12@\n\x06\x65ntity\x18\x01 \x01(\x0b\x32\x30.google.cloud.videointelligence.v1p2beta1.Entity\x12K\n\x11\x63\x61tegory_entities\x18\x02 \x03(\x0b\x32\x30.google.cloud.videointelligence.v1p2beta1.Entity\x12H\n\x08segments\x18\x03 \x03(\x0b\x32\x36.google.cloud.videointelligence.v1p2beta1.LabelSegment\x12\x44\n\x06\x66rames\x18\x04 \x03(\x0b\x32\x34.google.cloud.videointelligence.v1p2beta1.LabelFrame"\x9c\x01\n\x14\x45xplicitContentFrame\x12.\n\x0btime_offset\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12T\n\x16pornography_likelihood\x18\x02 \x01(\x0e\x32\x34.google.cloud.videointelligence.v1p2beta1.Likelihood"k\n\x19\x45xplicitContentAnnotation\x12N\n\x06\x66rames\x18\x01 \x03(\x0b\x32>.google.cloud.videointelligence.v1p2beta1.ExplicitContentFrame"Q\n\x15NormalizedBoundingBox\x12\x0c\n\x04left\x18\x01 \x01(\x02\x12\x0b\n\x03top\x18\x02 \x01(\x02\x12\r\n\x05right\x18\x03 \x01(\x02\x12\x0e\n\x06\x62ottom\x18\x04 \x01(\x02"\xcb\x05\n\x16VideoAnnotationResults\x12\x11\n\tinput_uri\x18\x01 \x01(\t\x12\\\n\x19segment_label_annotations\x18\x02 \x03(\x0b\x32\x39.google.cloud.videointelligence.v1p2beta1.LabelAnnotation\x12Y\n\x16shot_label_annotations\x18\x03 \x03(\x0b\x32\x39.google.cloud.videointelligence.v1p2beta1.LabelAnnotation\x12Z\n\x17\x66rame_label_annotations\x18\x04 \x03(\x0b\x32\x39.google.cloud.videointelligence.v1p2beta1.LabelAnnotation\x12P\n\x10shot_annotations\x18\x06 \x03(\x0b\x32\x36.google.cloud.videointelligence.v1p2beta1.VideoSegment\x12`\n\x13\x65xplicit_annotation\x18\x07 \x01(\x0b\x32\x43.google.cloud.videointelligence.v1p2beta1.ExplicitContentAnnotation\x12R\n\x10text_annotations\x18\x0c \x03(\x0b\x32\x38.google.cloud.videointelligence.v1p2beta1.TextAnnotation\x12^\n\x12object_annotations\x18\x0e \x03(\x0b\x32\x42.google.cloud.videointelligence.v1p2beta1.ObjectTrackingAnnotation\x12!\n\x05\x65rror\x18\t \x01(\x0b\x32\x12.google.rpc.Status"u\n\x15\x41nnotateVideoResponse\x12\\\n\x12\x61nnotation_results\x18\x01 \x03(\x0b\x32@.google.cloud.videointelligence.v1p2beta1.VideoAnnotationResults"\xa7\x01\n\x17VideoAnnotationProgress\x12\x11\n\tinput_uri\x18\x01 \x01(\t\x12\x18\n\x10progress_percent\x18\x02 \x01(\x05\x12.\n\nstart_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0bupdate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"w\n\x15\x41nnotateVideoProgress\x12^\n\x13\x61nnotation_progress\x18\x01 \x03(\x0b\x32\x41.google.cloud.videointelligence.v1p2beta1.VideoAnnotationProgress"(\n\x10NormalizedVertex\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02"f\n\x16NormalizedBoundingPoly\x12L\n\x08vertices\x18\x01 \x03(\x0b\x32:.google.cloud.videointelligence.v1p2beta1.NormalizedVertex"\xaf\x01\n\x0bTextSegment\x12G\n\x07segment\x18\x01 \x01(\x0b\x32\x36.google.cloud.videointelligence.v1p2beta1.VideoSegment\x12\x12\n\nconfidence\x18\x02 \x01(\x02\x12\x43\n\x06\x66rames\x18\x03 \x03(\x0b\x32\x33.google.cloud.videointelligence.v1p2beta1.TextFrame"\x9b\x01\n\tTextFrame\x12^\n\x14rotated_bounding_box\x18\x01 \x01(\x0b\x32@.google.cloud.videointelligence.v1p2beta1.NormalizedBoundingPoly\x12.\n\x0btime_offset\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration"g\n\x0eTextAnnotation\x12\x0c\n\x04text\x18\x01 \x01(\t\x12G\n\x08segments\x18\x02 \x03(\x0b\x32\x35.google.cloud.videointelligence.v1p2beta1.TextSegment"\xa7\x01\n\x13ObjectTrackingFrame\x12`\n\x17normalized_bounding_box\x18\x01 \x01(\x0b\x32?.google.cloud.videointelligence.v1p2beta1.NormalizedBoundingBox\x12.\n\x0btime_offset\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration"\x88\x02\n\x18ObjectTrackingAnnotation\x12@\n\x06\x65ntity\x18\x01 \x01(\x0b\x32\x30.google.cloud.videointelligence.v1p2beta1.Entity\x12\x12\n\nconfidence\x18\x04 \x01(\x02\x12M\n\x06\x66rames\x18\x02 \x03(\x0b\x32=.google.cloud.videointelligence.v1p2beta1.ObjectTrackingFrame\x12G\n\x07segment\x18\x03 \x01(\x0b\x32\x36.google.cloud.videointelligence.v1p2beta1.VideoSegment*\x9b\x01\n\x07\x46\x65\x61ture\x12\x17\n\x13\x46\x45\x41TURE_UNSPECIFIED\x10\x00\x12\x13\n\x0fLABEL_DETECTION\x10\x01\x12\x19\n\x15SHOT_CHANGE_DETECTION\x10\x02\x12\x1e\n\x1a\x45XPLICIT_CONTENT_DETECTION\x10\x03\x12\x12\n\x0eTEXT_DETECTION\x10\x07\x12\x13\n\x0fOBJECT_TRACKING\x10\t*r\n\x12LabelDetectionMode\x12$\n LABEL_DETECTION_MODE_UNSPECIFIED\x10\x00\x12\r\n\tSHOT_MODE\x10\x01\x12\x0e\n\nFRAME_MODE\x10\x02\x12\x17\n\x13SHOT_AND_FRAME_MODE\x10\x03*t\n\nLikelihood\x12\x1a\n\x16LIKELIHOOD_UNSPECIFIED\x10\x00\x12\x11\n\rVERY_UNLIKELY\x10\x01\x12\x0c\n\x08UNLIKELY\x10\x02\x12\x0c\n\x08POSSIBLE\x10\x03\x12\n\n\x06LIKELY\x10\x04\x12\x0f\n\x0bVERY_LIKELY\x10\x05\x32\xce\x02\n\x18VideoIntelligenceService\x12\xdb\x01\n\rAnnotateVideo\x12>.google.cloud.videointelligence.v1p2beta1.AnnotateVideoRequest\x1a\x1d.google.longrunning.Operation"k\x82\xd3\xe4\x93\x02\x1f"\x1a/v1p2beta1/videos:annotate:\x01*\xda\x41\x12input_uri,features\xca\x41.\n\x15\x41nnotateVideoResponse\x12\x15\x41nnotateVideoProgress\x1aT\xca\x41 videointelligence.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xae\x02\n,com.google.cloud.videointelligence.v1p2beta1B\x1dVideoIntelligenceServiceProtoP\x01ZYgoogle.golang.org/genproto/googleapis/cloud/videointelligence/v1p2beta1;videointelligence\xaa\x02(Google.Cloud.VideoIntelligence.V1P2Beta1\xca\x02(Google\\Cloud\\VideoIntelligence\\V1p2beta1\xea\x02+Google::Cloud::VideoIntelligence::V1p2beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
@@ -91,8 +95,8 @@ _FEATURE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=4531,
-    serialized_end=4686,
+    serialized_start=4604,
+    serialized_end=4759,
 )
 _sym_db.RegisterEnumDescriptor(_FEATURE)
 
@@ -126,8 +130,8 @@ _LABELDETECTIONMODE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=4688,
-    serialized_end=4802,
+    serialized_start=4761,
+    serialized_end=4875,
 )
 _sym_db.RegisterEnumDescriptor(_LABELDETECTIONMODE)
 
@@ -163,8 +167,8 @@ _LIKELIHOOD = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=4804,
-    serialized_end=4920,
+    serialized_start=4877,
+    serialized_end=4993,
 )
 _sym_db.RegisterEnumDescriptor(_LIKELIHOOD)
 
@@ -245,7 +249,7 @@ _ANNOTATEVIDEOREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -281,7 +285,7 @@ _ANNOTATEVIDEOREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -299,7 +303,7 @@ _ANNOTATEVIDEOREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -311,8 +315,8 @@ _ANNOTATEVIDEOREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=275,
-    serialized_end=528,
+    serialized_start=333,
+    serialized_end=601,
 )
 
 
@@ -422,8 +426,8 @@ _VIDEOCONTEXT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=531,
-    serialized_end=1033,
+    serialized_start=604,
+    serialized_end=1106,
 )
 
 
@@ -497,8 +501,8 @@ _LABELDETECTIONCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1036,
-    serialized_end=1192,
+    serialized_start=1109,
+    serialized_end=1265,
 )
 
 
@@ -536,8 +540,8 @@ _SHOTCHANGEDETECTIONCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1194,
-    serialized_end=1236,
+    serialized_start=1267,
+    serialized_end=1309,
 )
 
 
@@ -575,8 +579,8 @@ _EXPLICITCONTENTDETECTIONCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1238,
-    serialized_end=1285,
+    serialized_start=1311,
+    serialized_end=1358,
 )
 
 
@@ -614,8 +618,8 @@ _TEXTDETECTIONCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1287,
-    serialized_end=1332,
+    serialized_start=1360,
+    serialized_end=1405,
 )
 
 
@@ -671,8 +675,8 @@ _VIDEOSEGMENT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1334,
-    serialized_end=1454,
+    serialized_start=1407,
+    serialized_end=1527,
 )
 
 
@@ -728,8 +732,8 @@ _LABELSEGMENT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1456,
-    serialized_end=1563,
+    serialized_start=1529,
+    serialized_end=1636,
 )
 
 
@@ -785,8 +789,8 @@ _LABELFRAME = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1565,
-    serialized_end=1645,
+    serialized_start=1638,
+    serialized_end=1718,
 )
 
 
@@ -860,8 +864,8 @@ _ENTITY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1647,
-    serialized_end=1718,
+    serialized_start=1720,
+    serialized_end=1791,
 )
 
 
@@ -953,8 +957,8 @@ _LABELANNOTATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1721,
-    serialized_end=2025,
+    serialized_start=1794,
+    serialized_end=2098,
 )
 
 
@@ -1010,8 +1014,8 @@ _EXPLICITCONTENTFRAME = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2028,
-    serialized_end=2184,
+    serialized_start=2101,
+    serialized_end=2257,
 )
 
 
@@ -1049,8 +1053,8 @@ _EXPLICITCONTENTANNOTATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2186,
-    serialized_end=2293,
+    serialized_start=2259,
+    serialized_end=2366,
 )
 
 
@@ -1142,8 +1146,8 @@ _NORMALIZEDBOUNDINGBOX = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2295,
-    serialized_end=2376,
+    serialized_start=2368,
+    serialized_end=2449,
 )
 
 
@@ -1325,8 +1329,8 @@ _VIDEOANNOTATIONRESULTS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2379,
-    serialized_end=3094,
+    serialized_start=2452,
+    serialized_end=3167,
 )
 
 
@@ -1364,8 +1368,8 @@ _ANNOTATEVIDEORESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3096,
-    serialized_end=3213,
+    serialized_start=3169,
+    serialized_end=3286,
 )
 
 
@@ -1457,8 +1461,8 @@ _VIDEOANNOTATIONPROGRESS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3216,
-    serialized_end=3383,
+    serialized_start=3289,
+    serialized_end=3456,
 )
 
 
@@ -1496,8 +1500,8 @@ _ANNOTATEVIDEOPROGRESS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3385,
-    serialized_end=3504,
+    serialized_start=3458,
+    serialized_end=3577,
 )
 
 
@@ -1553,8 +1557,8 @@ _NORMALIZEDVERTEX = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3506,
-    serialized_end=3546,
+    serialized_start=3579,
+    serialized_end=3619,
 )
 
 
@@ -1592,8 +1596,8 @@ _NORMALIZEDBOUNDINGPOLY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3548,
-    serialized_end=3650,
+    serialized_start=3621,
+    serialized_end=3723,
 )
 
 
@@ -1667,8 +1671,8 @@ _TEXTSEGMENT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3653,
-    serialized_end=3828,
+    serialized_start=3726,
+    serialized_end=3901,
 )
 
 
@@ -1724,8 +1728,8 @@ _TEXTFRAME = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3831,
-    serialized_end=3986,
+    serialized_start=3904,
+    serialized_end=4059,
 )
 
 
@@ -1781,8 +1785,8 @@ _TEXTANNOTATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3988,
-    serialized_end=4091,
+    serialized_start=4061,
+    serialized_end=4164,
 )
 
 
@@ -1838,8 +1842,8 @@ _OBJECTTRACKINGFRAME = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4094,
-    serialized_end=4261,
+    serialized_start=4167,
+    serialized_end=4334,
 )
 
 
@@ -1931,8 +1935,8 @@ _OBJECTTRACKINGANNOTATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4264,
-    serialized_end=4528,
+    serialized_start=4337,
+    serialized_end=4601,
 )
 
 _ANNOTATEVIDEOREQUEST.fields_by_name["features"].enum_type = _FEATURE
@@ -2087,11 +2091,11 @@ AnnotateVideoRequest = _reflection.GeneratedProtocolMessageType(
           specified via ``input_uri``. If set, ``input_uri`` should be
           unset.
       features:
-          Requested video annotation features.
+          Required. Requested video annotation features.
       video_context:
           Additional video context and/or feature-specific parameters.
       output_uri:
-          Optional location where the output (in JSON format) should be
+          Optional. Location where the output (in JSON format) should be
           stored. Currently, only `Google Cloud Storage
           <https://cloud.google.com/storage/>`__ URIs are supported,
           which must be specified in the following format:
@@ -2100,7 +2104,7 @@ AnnotateVideoRequest = _reflection.GeneratedProtocolMessageType(
           ]). For more information, see `Request URIs
           </storage/docs/reference-uris>`__.
       location_id:
-          Optional cloud region where annotation should take place.
+          Optional. Cloud region where annotation should take place.
           Supported cloud regions: ``us-east1``, ``us-west1``, ``europe-
           west1``, ``asia-east1``. If no region is specified, a region
           will be determined based on video file location.
@@ -2254,7 +2258,8 @@ LabelSegment = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LABELSEGMENT,
         __module__="google.cloud.videointelligence_v1p2beta1.proto.video_intelligence_pb2",
-        __doc__="""Video segment level annotation results for label detection.
+        __doc__="""Video segment level annotation results for label
+  detection.
   
   
   Attributes:
@@ -2367,9 +2372,9 @@ ExplicitContentAnnotation = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_EXPLICITCONTENTANNOTATION,
         __module__="google.cloud.videointelligence_v1p2beta1.proto.video_intelligence_pb2",
-        __doc__="""Explicit content annotation (based on per-frame visual signals only). If
-  no explicit content has been detected in a frame, no annotations are
-  present for that frame.
+        __doc__="""Explicit content annotation (based on per-frame visual
+  signals only). If no explicit content has been detected in a frame, no
+  annotations are present for that frame.
   
   
   Attributes:
@@ -2387,8 +2392,8 @@ NormalizedBoundingBox = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NORMALIZEDBOUNDINGBOX,
         __module__="google.cloud.videointelligence_v1p2beta1.proto.video_intelligence_pb2",
-        __doc__="""Normalized bounding box. The normalized vertex coordinates are relative
-  to the original image. Range: [0, 1].
+        __doc__="""Normalized bounding box. The normalized vertex coordinates
+  are relative to the original image. Range: [0, 1].
   
   
   Attributes:
@@ -2454,8 +2459,8 @@ AnnotateVideoResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ANNOTATEVIDEORESPONSE,
         __module__="google.cloud.videointelligence_v1p2beta1.proto.video_intelligence_pb2",
-        __doc__="""Video annotation response. Included in the ``response`` field of the
-  ``Operation`` returned by the ``GetOperation`` call of the
+        __doc__="""Video annotation response. Included in the ``response``
+  field of the ``Operation`` returned by the ``GetOperation`` call of the
   ``google::longrunning::Operations`` service.
   
   
@@ -2501,8 +2506,8 @@ AnnotateVideoProgress = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ANNOTATEVIDEOPROGRESS,
         __module__="google.cloud.videointelligence_v1p2beta1.proto.video_intelligence_pb2",
-        __doc__="""Video annotation progress. Included in the ``metadata`` field of the
-  ``Operation`` returned by the ``GetOperation`` call of the
+        __doc__="""Video annotation progress. Included in the ``metadata``
+  field of the ``Operation`` returned by the ``GetOperation`` call of the
   ``google::longrunning::Operations`` service.
   
   
@@ -2540,10 +2545,11 @@ NormalizedBoundingPoly = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NORMALIZEDBOUNDINGPOLY,
         __module__="google.cloud.videointelligence_v1p2beta1.proto.video_intelligence_pb2",
-        __doc__="""Normalized bounding polygon for text (that might not be aligned with
-  axis). Contains list of the corner points in clockwise order starting
-  from top-left corner. For example, for a rectangular bounding box: When
-  the text is horizontal it might look like: 0----1 \| \| 3----2
+        __doc__="""Normalized bounding polygon for text (that might not be
+  aligned with axis). Contains list of the corner points in clockwise
+  order starting from top-left corner. For example, for a rectangular
+  bounding box: When the text is horizontal it might look like: 0----1 \|
+  \| 3----2
   
   When it's clockwise rotated 180 degrees around the top-left corner it
   becomes: 2----3 \| \| 1----0
@@ -2592,9 +2598,9 @@ TextFrame = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TEXTFRAME,
         __module__="google.cloud.videointelligence_v1p2beta1.proto.video_intelligence_pb2",
-        __doc__="""Video frame level annotation results for text annotation (OCR). Contains
-  information regarding timestamp and bounding box locations for the
-  frames containing detected OCR text snippets.
+        __doc__="""Video frame level annotation results for text annotation
+  (OCR). Contains information regarding timestamp and bounding box
+  locations for the frames containing detected OCR text snippets.
   
   
   Attributes:
@@ -2636,8 +2642,9 @@ ObjectTrackingFrame = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OBJECTTRACKINGFRAME,
         __module__="google.cloud.videointelligence_v1p2beta1.proto.video_intelligence_pb2",
-        __doc__="""Video frame level annotations for object detection and tracking. This
-  field stores per frame location, time offset, and confidence.
+        __doc__="""Video frame level annotations for object detection and
+  tracking. This field stores per frame location, time offset, and
+  confidence.
   
   
   Attributes:
@@ -2681,15 +2688,20 @@ _sym_db.RegisterMessage(ObjectTrackingAnnotation)
 
 
 DESCRIPTOR._options = None
+_ANNOTATEVIDEOREQUEST.fields_by_name["features"]._options = None
+_ANNOTATEVIDEOREQUEST.fields_by_name["output_uri"]._options = None
+_ANNOTATEVIDEOREQUEST.fields_by_name["location_id"]._options = None
 
 _VIDEOINTELLIGENCESERVICE = _descriptor.ServiceDescriptor(
     name="VideoIntelligenceService",
     full_name="google.cloud.videointelligence.v1p2beta1.VideoIntelligenceService",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=4923,
-    serialized_end=5101,
+    serialized_options=_b(
+        "\312A videointelligence.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform"
+    ),
+    serialized_start=4996,
+    serialized_end=5330,
     methods=[
         _descriptor.MethodDescriptor(
             name="AnnotateVideo",
@@ -2699,7 +2711,7 @@ _VIDEOINTELLIGENCESERVICE = _descriptor.ServiceDescriptor(
             input_type=_ANNOTATEVIDEOREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                '\202\323\344\223\002\037"\032/v1p2beta1/videos:annotate:\001*'
+                '\202\323\344\223\002\037"\032/v1p2beta1/videos:annotate:\001*\332A\022input_uri,features\312A.\n\025AnnotateVideoResponse\022\025AnnotateVideoProgress'
             ),
         )
     ],

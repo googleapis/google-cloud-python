@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -83,9 +83,9 @@ class TestVideoIntelligenceServiceClient(object):
             client = videointelligence_v1.VideoIntelligenceServiceClient()
 
         # Setup Request
-        input_uri = "gs://cloud-samples-data/video/cat.mp4"
         features_element = enums.Feature.LABEL_DETECTION
         features = [features_element]
+        input_uri = "gs://cloud-samples-data/video/cat.mp4"
 
         response = client.annotate_video(input_uri=input_uri, features=features)
         result = response.result()
@@ -93,7 +93,7 @@ class TestVideoIntelligenceServiceClient(object):
 
         assert len(channel.requests) == 1
         expected_request = video_intelligence_pb2.AnnotateVideoRequest(
-            input_uri=input_uri, features=features
+            features=features, input_uri=input_uri
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -114,9 +114,9 @@ class TestVideoIntelligenceServiceClient(object):
             client = videointelligence_v1.VideoIntelligenceServiceClient()
 
         # Setup Request
-        input_uri = "gs://cloud-samples-data/video/cat.mp4"
         features_element = enums.Feature.LABEL_DETECTION
         features = [features_element]
+        input_uri = "gs://cloud-samples-data/video/cat.mp4"
 
         response = client.annotate_video(input_uri=input_uri, features=features)
         exception = response.exception()

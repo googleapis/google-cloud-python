@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -213,9 +213,9 @@ class VideoIntelligenceServiceClient(object):
             >>>
             >>> client = videointelligence_v1.VideoIntelligenceServiceClient()
             >>>
-            >>> input_uri = 'gs://cloud-samples-data/video/cat.mp4'
             >>> features_element = enums.Feature.LABEL_DETECTION
             >>> features = [features_element]
+            >>> input_uri = 'gs://cloud-samples-data/video/cat.mp4'
             >>>
             >>> response = client.annotate_video(input_uri=input_uri, features=features)
             >>>
@@ -288,9 +288,9 @@ class VideoIntelligenceServiceClient(object):
             )
 
         request = video_intelligence_pb2.AnnotateVideoRequest(
+            features=features,
             input_uri=input_uri,
             input_content=input_content,
-            features=features,
             video_context=video_context,
             output_uri=output_uri,
             location_id=location_id,
