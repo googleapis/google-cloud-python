@@ -399,6 +399,7 @@ class Test_Blob(unittest.TestCase):
         encryption_key=None,
         access_token=None,
         service_account_email=None,
+        virtual_hosted_style=False,
     ):
         from six.moves.urllib import parse
         from google.cloud._helpers import UTC
@@ -442,6 +443,7 @@ class Test_Blob(unittest.TestCase):
                 version=version,
                 access_token=access_token,
                 service_account_email=service_account_email,
+                virtual_hosted_style=virtual_hosted_style,
             )
 
         self.assertEqual(signed_uri, signer.return_value)
@@ -452,7 +454,17 @@ class Test_Blob(unittest.TestCase):
             expected_creds = credentials
 
         encoded_name = blob_name.encode("utf-8")
-        expected_resource = "/name/{}".format(parse.quote(encoded_name, safe=b"/~"))
+        quoted_name = parse.quote(encoded_name, safe=b"/~")
+
+        if virtual_hosted_style:
+            expected_api_access_endpoint = "https://{}.storage.googleapis.com".format(
+                bucket.name
+            )
+            expected_resource = "/{}".format(quoted_name)
+        else:
+            expected_api_access_endpoint = api_access_endpoint
+            expected_resource = "/{}/{}".format(bucket.name, quoted_name)
+
         if encryption_key is not None:
             expected_headers = headers or {}
             if effective_version == "v2":
@@ -465,7 +477,7 @@ class Test_Blob(unittest.TestCase):
         expected_kwargs = {
             "resource": expected_resource,
             "expiration": expiration,
-            "api_access_endpoint": api_access_endpoint,
+            "api_access_endpoint": expected_api_access_endpoint,
             "method": method.upper(),
             "content_md5": content_md5,
             "content_type": content_type,
@@ -603,6 +615,9 @@ class Test_Blob(unittest.TestCase):
         self._generate_signed_url_v4_helper(
             encryption_key=os.urandom(32), headers={"x-goog-foo": "bar"}
         )
+
+    def test_generate_signed_url_v4_w_virtual_hostname(self):
+        self._generate_signed_url_v4_helper(virtual_hosted_style=True)
 
     def test_generate_signed_url_v4_w_credentials(self):
         credentials = object()

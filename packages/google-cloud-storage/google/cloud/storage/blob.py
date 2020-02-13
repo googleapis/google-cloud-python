@@ -361,6 +361,7 @@ class Blob(_PropertyMixin):
         version=None,
         service_account_email=None,
         access_token=None,
+        virtual_hosted_style=False,
     ):
         """Generates a signed URL for this blob.
 
@@ -454,6 +455,11 @@ class Blob(_PropertyMixin):
         :type access_token: str
         :param access_token: (Optional) Access token for a service account.
 
+        :type virtual_hosted_style: bool
+        :param virtual_hosted_style:
+            (Optional) If true, then construct the URL relative the bucket's
+            virtual hostname, e.g., '<bucket-name>.storage.googleapis.com'.
+
         :raises: :exc:`ValueError` when version is invalid.
         :raises: :exc:`TypeError` when expiration is not a valid type.
         :raises: :exc:`AttributeError` if credentials is not an instance
@@ -469,9 +475,16 @@ class Blob(_PropertyMixin):
             raise ValueError("'version' must be either 'v2' or 'v4'")
 
         quoted_name = _quote(self.name, safe=b"/~")
-        resource = "/{bucket_name}/{quoted_name}".format(
-            bucket_name=self.bucket.name, quoted_name=quoted_name
-        )
+
+        if virtual_hosted_style:
+            api_access_endpoint = "https://{bucket_name}.storage.googleapis.com".format(
+                bucket_name=self.bucket.name
+            )
+            resource = "/{quoted_name}".format(quoted_name=quoted_name)
+        else:
+            resource = "/{bucket_name}/{quoted_name}".format(
+                bucket_name=self.bucket.name, quoted_name=quoted_name
+            )
 
         if credentials is None:
             client = self._require_client(client)

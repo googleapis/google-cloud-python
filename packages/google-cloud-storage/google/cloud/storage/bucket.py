@@ -2354,6 +2354,7 @@ class Bucket(_PropertyMixin):
         client=None,
         credentials=None,
         version=None,
+        virtual_hosted_style=False,
     ):
         """Generates a signed URL for this bucket.
 
@@ -2416,6 +2417,11 @@ class Bucket(_PropertyMixin):
         :param version: (Optional) The version of signed credential to create.
                         Must be one of 'v2' | 'v4'.
 
+        :type virtual_hosted_style: bool
+        :param virtual_hosted_style:
+            (Optional) If true, then construct the URL relative the bucket's
+            virtual hostname, e.g., '<bucket-name>.storage.googleapis.com'.
+
         :raises: :exc:`ValueError` when version is invalid.
         :raises: :exc:`TypeError` when expiration is not a valid type.
         :raises: :exc:`AttributeError` if credentials is not an instance
@@ -2430,7 +2436,13 @@ class Bucket(_PropertyMixin):
         elif version not in ("v2", "v4"):
             raise ValueError("'version' must be either 'v2' or 'v4'")
 
-        resource = "/{bucket_name}".format(bucket_name=self.name)
+        if virtual_hosted_style:
+            api_access_endpoint = "https://{bucket_name}.storage.googleapis.com".format(
+                bucket_name=self.name
+            )
+            resource = "/"
+        else:
+            resource = "/{bucket_name}".format(bucket_name=self.name)
 
         if credentials is None:
             client = self._require_client(client)
