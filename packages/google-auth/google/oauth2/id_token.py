@@ -67,7 +67,7 @@ from google.auth import jwt
 
 # The URL that provides public certificates for verifying ID tokens issued
 # by Google's OAuth 2.0 authorization server.
-_GOOGLE_OAUTH2_CERTS_URL = "https://www.googleapis.com/oauth2/v3/certs"
+_GOOGLE_OAUTH2_CERTS_URL = "https://www.googleapis.com/oauth2/v1/certs"
 
 # The URL that provides public certificates for verifying ID tokens issued
 # by Firebase and the Google APIs infrastructure
