@@ -33,7 +33,6 @@ if sys.version_info < (3, 7):
 
 _lazy_name_to_package_map = {
     'types': '{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.types',
-    'enums': '{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.enums',
   {%- for service in api.services.values()|sort(attribute='name')|unique(attribute='name') if service.meta.address.subpackage == api.subpackage_view %}
     '{{ service.client_name|snake_case }}': '{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.services.{{ service.name|snake_case }}.client',
     '{{ service.transport_name|snake_case }}': '{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.services.transports.base',
@@ -46,7 +45,7 @@ _lazy_type_to_package_map = {
     '{{ message.name }}':'{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.types.{{ proto.module_name }}',
 {%- endfor %}
 {%- for enum in proto.enums.values() %}
-    '{{ enum.name }}': '{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.enums',
+    '{{ enum.name }}': '{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.types.{{ proto.module_name }}',
 {%- endfor %}{%- endfor %}
 }
 
@@ -70,11 +69,10 @@ def __getattr__(name):  # Requires Python >= 3.7
     elif name.endswith('Client'):
         module = __getattr__(to_snake_case(name))
         sub_mod_class = getattr(module, name)
-        enums = __getattr__('enums')
         klass = type(
             name,
             (sub_mod_class,),
-            {'__doc__': sub_mod_class.__doc__, 'enums': enums}
+            {'__doc__': sub_mod_class.__doc__}
         )
         globals()[name] = klass
         return klass
