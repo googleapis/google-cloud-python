@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -541,7 +541,7 @@ class IntentsClient(object):
     def update_intent(
         self,
         intent,
-        language_code,
+        language_code=None,
         update_mask=None,
         intent_view=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
@@ -559,10 +559,7 @@ class IntentsClient(object):
             >>> # TODO: Initialize `intent`:
             >>> intent = {}
             >>>
-            >>> # TODO: Initialize `language_code`:
-            >>> language_code = ''
-            >>>
-            >>> response = client.update_intent(intent, language_code)
+            >>> response = client.update_intent(intent)
 
         Args:
             intent (Union[dict, ~google.cloud.dialogflow_v2.types.Intent]): Required. The intent to update.
@@ -704,9 +701,9 @@ class IntentsClient(object):
     def batch_update_intents(
         self,
         parent,
-        language_code,
         intent_batch_uri=None,
         intent_batch_inline=None,
+        language_code=None,
         update_mask=None,
         intent_view=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
@@ -725,10 +722,7 @@ class IntentsClient(object):
             >>>
             >>> parent = client.project_agent_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize `language_code`:
-            >>> language_code = ''
-            >>>
-            >>> response = client.batch_update_intents(parent, language_code)
+            >>> response = client.batch_update_intents(parent)
             >>>
             >>> def callback(operation_future):
             ...     # Handle result.
@@ -742,12 +736,6 @@ class IntentsClient(object):
         Args:
             parent (str): Required. The name of the agent to update or create intents in. Format:
                 ``projects/<Project ID>/agent``.
-            language_code (str): Optional. The language of training phrases, parameters and rich messages
-                defined in ``intents``. If not specified, the agent's default language
-                is used. `Many
-                languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
-                are supported. Note: languages must be enabled in the agent before they
-                can be used.
             intent_batch_uri (str): The URI to a Google Cloud Storage file containing intents to update or
                 create. The file format can either be a serialized proto (of IntentBatch
                 type) or JSON object. Note: The URI must start with "gs://".
@@ -755,6 +743,12 @@ class IntentsClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2.types.IntentBatch`
+            language_code (str): Optional. The language of training phrases, parameters and rich messages
+                defined in ``intents``. If not specified, the agent's default language
+                is used. `Many
+                languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
+                are supported. Note: languages must be enabled in the agent before they
+                can be used.
             update_mask (Union[dict, ~google.cloud.dialogflow_v2.types.FieldMask]): Optional. The mask to control which fields get updated.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -798,9 +792,9 @@ class IntentsClient(object):
 
         request = intent_pb2.BatchUpdateIntentsRequest(
             parent=parent,
-            language_code=language_code,
             intent_batch_uri=intent_batch_uri,
             intent_batch_inline=intent_batch_inline,
+            language_code=language_code,
             update_mask=update_mask,
             intent_view=intent_view,
         )

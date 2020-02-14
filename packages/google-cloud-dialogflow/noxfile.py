@@ -74,12 +74,13 @@ def default(session):
         "--cov=dialogflow_v2" "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
+        "--cov-fail-under=0",
         os.path.join("tests", "unit"),
         *session.posargs,
     )
 
 
-@nox.session(python=["2.7", "3.5", "3.6", "3.7"])
+@nox.session(python=["2.7", "3.5", "3.6", "3.7", "3.8"])
 def unit(session):
     """Run the unit test suite."""
     default(session)
@@ -92,7 +93,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=80")
+    session.run("coverage", "report", "--show-missing", "--fail-under=96")
 
     session.run("coverage", "erase")
 

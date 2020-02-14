@@ -490,6 +490,19 @@ WebhookResponse = _reflection.GeneratedProtocolMessageType(
         __module__="google.cloud.dialogflow_v2beta1.proto.webhook_pb2",
         __doc__="""The response message for a webhook call.
   
+  This response is validated by the Dialogflow server. If validation
+  fails, an error will be returned in the
+  [QueryResult.diagnostic\_info][google.cloud.dialogflow.v2beta1.QueryResult.diagnostic\_info]
+  field. Setting JSON fields to an empty value with the wrong type is a
+  common error. To avoid this error:
+  
+  -  Use ``""`` for empty strings
+  -  Use ``{}`` or ``null`` for empty objects
+  -  Use ``[]`` or ``null`` for empty arrays
+  
+  For more information, see the `Protocol Buffers Language
+  Guide <https://developers.google.com/protocol-buffers/docs/proto3#json>`__.
+  
   
   Attributes:
       fulfillment_text:
@@ -549,8 +562,8 @@ OriginalDetectIntentRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ORIGINALDETECTINTENTREQUEST,
         __module__="google.cloud.dialogflow_v2beta1.proto.webhook_pb2",
-        __doc__="""Represents the contents of the original request that was passed to the
-  ``[Streaming]DetectIntent`` call.
+        __doc__="""Represents the contents of the original request that was
+  passed to the ``[Streaming]DetectIntent`` call.
   
   
   Attributes:

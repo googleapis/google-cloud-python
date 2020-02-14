@@ -1271,7 +1271,7 @@ EntityType = _reflection.GeneratedProtocolMessageType(
             Required. The primary value associated with this entity entry.
             For example, if the entity type is *vegetable*, the value
             could be *scallions*.  For ``KIND_MAP`` entity types:  -  A
-            canonical value to be used in place of synonyms.  For
+            reference value to be used in place of synonyms.  For
             ``KIND_LIST`` entity types:  -  A string that can contain
             references to other entity types (with or    without aliases).
         synonyms:
@@ -1286,8 +1286,8 @@ EntityType = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_ENTITYTYPE,
         __module__="google.cloud.dialogflow_v2beta1.proto.entity_type_pb2",
-        __doc__="""Represents an entity type. Entity types serve as a tool for extracting
-  parameter values from natural language queries.
+        __doc__="""Represents an entity type. Entity types serve as a tool
+  for extracting parameter values from natural language queries.
   
   
   Attributes:
@@ -1636,7 +1636,7 @@ BatchDeleteEntitiesRequest = _reflection.GeneratedProtocolMessageType(
           Format: ``projects/<Project ID>/agent/entityTypes/<Entity Type
           ID>``.
       entity_values:
-          Required. The canonical ``values`` of the entities to delete.
+          Required. The reference ``values`` of the entities to delete.
           Note that these are not fully-qualified names, i.e. they don't
           start with ``projects/<Project ID>``.
       language_code:
@@ -1657,7 +1657,8 @@ EntityTypeBatch = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ENTITYTYPEBATCH,
         __module__="google.cloud.dialogflow_v2beta1.proto.entity_type_pb2",
-        __doc__="""This message is a wrapper around a collection of entity types.
+        __doc__="""This message is a wrapper around a collection of entity
+  types.
   
   
   Attributes:

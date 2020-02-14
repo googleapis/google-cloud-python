@@ -1,19 +1,26 @@
 {
-  "updateTime": "2019-10-15T18:30:20.394737Z",
+  "updateTime": "2020-01-28T00:20:53.799892Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "0.39.0",
-        "dockerImage": "googleapis/artman@sha256:72554d0b3bdc0b4ac7d6726a6a606c00c14b454339037ed86be94574fb05d9f3"
+        "version": "0.43.0",
+        "dockerImage": "googleapis/artman@sha256:264654a37596a44b0668b8ce6ac41082d713f6ee150b3fc6425fa78cc64e4f20"
       }
     },
     {
       "git": {
         "name": "googleapis",
-        "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "c6e62c7e5e61e6dae7fdc3bc3de81f60e6a9445c",
-        "internalRef": "274798600"
+        "remote": "git@github.com:googleapis/googleapis.git",
+        "sha": "8e981acfd9b97ea2f312f11bbaa7b6c16e412dea",
+        "internalRef": "291821782"
+      }
+    },
+    {
+      "template": {
+        "name": "python_library",
+        "origin": "synthtool.gcp",
+        "version": "2019.10.17"
       }
     }
   ],
@@ -37,6 +44,365 @@
         "generator": "gapic",
         "config": "google/cloud/dialogflow/v2/artman_dialogflow_v2.yaml"
       }
+    }
+  ],
+  "newFiles": [
+    {
+      "path": "MANIFEST.in"
+    },
+    {
+      "path": ".flake8"
+    },
+    {
+      "path": ".coveragerc"
+    },
+    {
+      "path": "setup.cfg"
+    },
+    {
+      "path": "LICENSE"
+    },
+    {
+      "path": "dialogflow_v2/types.py"
+    },
+    {
+      "path": "dialogflow_v2/__init__.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/entity_types_client_config.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/session_entity_types_client_config.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/__init__.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/session_entity_types_client.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/agents_client_config.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/agents_client.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/enums.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/contexts_client_config.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/sessions_client_config.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/intents_client_config.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/contexts_client.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/intents_client.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/sessions_client.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/entity_types_client.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/transports/intents_grpc_transport.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/transports/__init__.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/transports/sessions_grpc_transport.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/transports/contexts_grpc_transport.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/transports/agents_grpc_transport.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/transports/entity_types_grpc_transport.py"
+    },
+    {
+      "path": "dialogflow_v2/gapic/transports/session_entity_types_grpc_transport.py"
+    },
+    {
+      "path": "dialogflow_v2/proto/intent_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2/proto/entity_type_pb2.py"
+    },
+    {
+      "path": "dialogflow_v2/proto/__init__.py"
+    },
+    {
+      "path": "dialogflow_v2/proto/audio_config_pb2.py"
+    },
+    {
+      "path": "dialogflow_v2/proto/session_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2/proto/session_entity_type_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2/proto/agent_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2/proto/context_pb2.py"
+    },
+    {
+      "path": "dialogflow_v2/proto/audio_config_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2/proto/webhook_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2/proto/intent_pb2.py"
+    },
+    {
+      "path": "dialogflow_v2/proto/entity_type_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2/proto/webhook_pb2.py"
+    },
+    {
+      "path": "dialogflow_v2/proto/session_entity_type_pb2.py"
+    },
+    {
+      "path": "dialogflow_v2/proto/agent_pb2.py"
+    },
+    {
+      "path": "dialogflow_v2/proto/context_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2/proto/session_pb2.py"
+    },
+    {
+      "path": "docs/_static/custom.css"
+    },
+    {
+      "path": "docs/gapic/v2/api.rst"
+    },
+    {
+      "path": "docs/gapic/v2/types.rst"
+    },
+    {
+      "path": "docs/gapic/v2beta1/api.rst"
+    },
+    {
+      "path": "docs/gapic/v2beta1/types.rst"
+    },
+    {
+      "path": "docs/_templates/layout.html"
+    },
+    {
+      "path": "tests/unit/gapic/v2/test_sessions_client_v2.py"
+    },
+    {
+      "path": "tests/unit/gapic/v2/test_intents_client_v2.py"
+    },
+    {
+      "path": "tests/unit/gapic/v2/test_contexts_client_v2.py"
+    },
+    {
+      "path": "tests/unit/gapic/v2/test_session_entity_types_client_v2.py"
+    },
+    {
+      "path": "tests/unit/gapic/v2/test_entity_types_client_v2.py"
+    },
+    {
+      "path": "tests/unit/gapic/v2/test_agents_client_v2.py"
+    },
+    {
+      "path": "tests/unit/gapic/v2beta1/test_contexts_client_v2beta1.py"
+    },
+    {
+      "path": "tests/unit/gapic/v2beta1/test_session_entity_types_client_v2beta1.py"
+    },
+    {
+      "path": "tests/unit/gapic/v2beta1/test_agents_client_v2beta1.py"
+    },
+    {
+      "path": "tests/unit/gapic/v2beta1/test_intents_client_v2beta1.py"
+    },
+    {
+      "path": "tests/unit/gapic/v2beta1/test_sessions_client_v2beta1.py"
+    },
+    {
+      "path": "tests/unit/gapic/v2beta1/test_entity_types_client_v2beta1.py"
+    },
+    {
+      "path": "tests/unit/gapic/v2beta1/test_documents_client_v2beta1.py"
+    },
+    {
+      "path": "tests/unit/gapic/v2beta1/test_knowledge_bases_client_v2beta1.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/types.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/__init__.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/entity_types_client_config.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/session_entity_types_client_config.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/__init__.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/session_entity_types_client.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/knowledge_bases_client.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/agents_client_config.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/documents_client_config.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/agents_client.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/enums.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/contexts_client_config.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/sessions_client_config.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/intents_client_config.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/contexts_client.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/documents_client.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/knowledge_bases_client_config.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/intents_client.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/sessions_client.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/entity_types_client.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/transports/intents_grpc_transport.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/transports/__init__.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/transports/sessions_grpc_transport.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/transports/contexts_grpc_transport.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/transports/documents_grpc_transport.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/transports/knowledge_bases_grpc_transport.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/transports/agents_grpc_transport.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/transports/entity_types_grpc_transport.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/gapic/transports/session_entity_types_grpc_transport.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/intent_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/gcs_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/knowledge_base_pb2.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/entity_type_pb2.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/__init__.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/audio_config_pb2.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/session_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/knowledge_base_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/session_entity_type_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/agent_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/document_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/context_pb2.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/audio_config_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/webhook_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/intent_pb2.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/entity_type_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/document_pb2.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/webhook_pb2.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/validation_result_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/session_entity_type_pb2.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/gcs_pb2.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/validation_result_pb2.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/agent_pb2.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/context_pb2_grpc.py"
+    },
+    {
+      "path": "dialogflow_v2beta1/proto/session_pb2.py"
     }
   ]
 }

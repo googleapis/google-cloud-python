@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -72,12 +72,12 @@ class EntityTypesClient(object):
        common data types such as date, time, currency, and so on. A system
        entity is represented by the ``EntityType`` type.
 
-    -  **Developer** - entities that are defined by you that represent
+    -  **Custom** - entities that are defined by you that represent
        actionable data that is meaningful to your application. For example,
        you could define a ``pizza.sauce`` entity for red or white pizza
        sauce, a ``pizza.cheese`` entity for the different types of cheese on
        a pizza, a ``pizza.topping`` entity for different toppings, and so
-       on. A developer entity is represented by the ``EntityType`` type.
+       on. A custom entity is represented by the ``EntityType`` type.
 
     -  **User** - entities that are built for an individual user such as
        favorites, preferences, playlists, and so on. A user entity is
@@ -1142,7 +1142,7 @@ class EntityTypesClient(object):
         Args:
             parent (str): Required. The name of the entity type to delete entries for. Format:
                 ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``.
-            entity_values (list[str]): Required. The canonical ``values`` of the entities to delete. Note that
+            entity_values (list[str]): Required. The reference ``values`` of the entities to delete. Note that
                 these are not fully-qualified names, i.e. they don't start with
                 ``projects/<Project ID>``.
             language_code (str): Optional. The language of entity synonyms defined in ``entities``. If

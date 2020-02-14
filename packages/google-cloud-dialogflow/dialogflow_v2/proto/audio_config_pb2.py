@@ -16,6 +16,8 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
@@ -28,9 +30,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\036com.google.cloud.dialogflow.v2B\020AudioConfigProtoP\001ZDgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2;dialogflow\370\001\001\242\002\002DF\252\002\032Google.Cloud.Dialogflow.V2"
     ),
     serialized_pb=_b(
-        '\n3google/cloud/dialogflow_v2/proto/audio_config.proto\x12\x1agoogle.cloud.dialogflow.v2\x1a\x1egoogle/protobuf/duration.proto\x1a\x1cgoogle/api/annotations.proto"\xfe\x01\n\x10InputAudioConfig\x12\x41\n\x0e\x61udio_encoding\x18\x01 \x01(\x0e\x32).google.cloud.dialogflow.v2.AudioEncoding\x12\x19\n\x11sample_rate_hertz\x18\x02 \x01(\x05\x12\x15\n\rlanguage_code\x18\x03 \x01(\t\x12\x14\n\x0cphrase_hints\x18\x04 \x03(\t\x12\x45\n\rmodel_variant\x18\n \x01(\x0e\x32..google.cloud.dialogflow.v2.SpeechModelVariant\x12\x18\n\x10single_utterance\x18\x08 \x01(\x08"f\n\x14VoiceSelectionParams\x12\x0c\n\x04name\x18\x01 \x01(\t\x12@\n\x0bssml_gender\x18\x02 \x01(\x0e\x32+.google.cloud.dialogflow.v2.SsmlVoiceGender"\xb3\x01\n\x16SynthesizeSpeechConfig\x12\x15\n\rspeaking_rate\x18\x01 \x01(\x01\x12\r\n\x05pitch\x18\x02 \x01(\x01\x12\x16\n\x0evolume_gain_db\x18\x03 \x01(\x01\x12\x1a\n\x12\x65\x66\x66\x65\x63ts_profile_id\x18\x05 \x03(\t\x12?\n\x05voice\x18\x04 \x01(\x0b\x32\x30.google.cloud.dialogflow.v2.VoiceSelectionParams"\xcd\x01\n\x11OutputAudioConfig\x12G\n\x0e\x61udio_encoding\x18\x01 \x01(\x0e\x32/.google.cloud.dialogflow.v2.OutputAudioEncoding\x12\x19\n\x11sample_rate_hertz\x18\x02 \x01(\x05\x12T\n\x18synthesize_speech_config\x18\x03 \x01(\x0b\x32\x32.google.cloud.dialogflow.v2.SynthesizeSpeechConfig*\xfb\x01\n\rAudioEncoding\x12\x1e\n\x1a\x41UDIO_ENCODING_UNSPECIFIED\x10\x00\x12\x1c\n\x18\x41UDIO_ENCODING_LINEAR_16\x10\x01\x12\x17\n\x13\x41UDIO_ENCODING_FLAC\x10\x02\x12\x18\n\x14\x41UDIO_ENCODING_MULAW\x10\x03\x12\x16\n\x12\x41UDIO_ENCODING_AMR\x10\x04\x12\x19\n\x15\x41UDIO_ENCODING_AMR_WB\x10\x05\x12\x1b\n\x17\x41UDIO_ENCODING_OGG_OPUS\x10\x06\x12)\n%AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE\x10\x07*v\n\x12SpeechModelVariant\x12$\n SPEECH_MODEL_VARIANT_UNSPECIFIED\x10\x00\x12\x16\n\x12USE_BEST_AVAILABLE\x10\x01\x12\x10\n\x0cUSE_STANDARD\x10\x02\x12\x10\n\x0cUSE_ENHANCED\x10\x03*\x8d\x01\n\x0fSsmlVoiceGender\x12!\n\x1dSSML_VOICE_GENDER_UNSPECIFIED\x10\x00\x12\x1a\n\x16SSML_VOICE_GENDER_MALE\x10\x01\x12\x1c\n\x18SSML_VOICE_GENDER_FEMALE\x10\x02\x12\x1d\n\x19SSML_VOICE_GENDER_NEUTRAL\x10\x03*\xa4\x01\n\x13OutputAudioEncoding\x12%\n!OUTPUT_AUDIO_ENCODING_UNSPECIFIED\x10\x00\x12#\n\x1fOUTPUT_AUDIO_ENCODING_LINEAR_16\x10\x01\x12\x1d\n\x19OUTPUT_AUDIO_ENCODING_MP3\x10\x02\x12"\n\x1eOUTPUT_AUDIO_ENCODING_OGG_OPUS\x10\x03\x42\x9f\x01\n\x1e\x63om.google.cloud.dialogflow.v2B\x10\x41udioConfigProtoP\x01ZDgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2;dialogflow\xf8\x01\x01\xa2\x02\x02\x44\x46\xaa\x02\x1aGoogle.Cloud.Dialogflow.V2b\x06proto3'
+        '\n3google/cloud/dialogflow_v2/proto/audio_config.proto\x12\x1agoogle.cloud.dialogflow.v2\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1cgoogle/api/annotations.proto"/\n\rSpeechContext\x12\x0f\n\x07phrases\x18\x01 \x03(\t\x12\r\n\x05\x62oost\x18\x02 \x01(\x02"\x92\x01\n\x0eSpeechWordInfo\x12\x0c\n\x04word\x18\x03 \x01(\t\x12/\n\x0cstart_offset\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12-\n\nend_offset\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x12\n\nconfidence\x18\x04 \x01(\x02"\x81\x03\n\x10InputAudioConfig\x12\x41\n\x0e\x61udio_encoding\x18\x01 \x01(\x0e\x32).google.cloud.dialogflow.v2.AudioEncoding\x12\x19\n\x11sample_rate_hertz\x18\x02 \x01(\x05\x12\x15\n\rlanguage_code\x18\x03 \x01(\t\x12\x1d\n\x10\x65nable_word_info\x18\r \x01(\x08\x42\x03\xe0\x41\x01\x12\x1b\n\x0cphrase_hints\x18\x04 \x03(\tB\x05\x18\x01\xe0\x41\x01\x12G\n\x0fspeech_contexts\x18\x0b \x03(\x0b\x32).google.cloud.dialogflow.v2.SpeechContextB\x03\xe0\x41\x01\x12\x12\n\x05model\x18\x07 \x01(\tB\x03\xe0\x41\x01\x12\x45\n\rmodel_variant\x18\n \x01(\x0e\x32..google.cloud.dialogflow.v2.SpeechModelVariant\x12\x18\n\x10single_utterance\x18\x08 \x01(\x08"f\n\x14VoiceSelectionParams\x12\x0c\n\x04name\x18\x01 \x01(\t\x12@\n\x0bssml_gender\x18\x02 \x01(\x0e\x32+.google.cloud.dialogflow.v2.SsmlVoiceGender"\xb3\x01\n\x16SynthesizeSpeechConfig\x12\x15\n\rspeaking_rate\x18\x01 \x01(\x01\x12\r\n\x05pitch\x18\x02 \x01(\x01\x12\x16\n\x0evolume_gain_db\x18\x03 \x01(\x01\x12\x1a\n\x12\x65\x66\x66\x65\x63ts_profile_id\x18\x05 \x03(\t\x12?\n\x05voice\x18\x04 \x01(\x0b\x32\x30.google.cloud.dialogflow.v2.VoiceSelectionParams"\xcd\x01\n\x11OutputAudioConfig\x12G\n\x0e\x61udio_encoding\x18\x01 \x01(\x0e\x32/.google.cloud.dialogflow.v2.OutputAudioEncoding\x12\x19\n\x11sample_rate_hertz\x18\x02 \x01(\x05\x12T\n\x18synthesize_speech_config\x18\x03 \x01(\x0b\x32\x32.google.cloud.dialogflow.v2.SynthesizeSpeechConfig*\xfb\x01\n\rAudioEncoding\x12\x1e\n\x1a\x41UDIO_ENCODING_UNSPECIFIED\x10\x00\x12\x1c\n\x18\x41UDIO_ENCODING_LINEAR_16\x10\x01\x12\x17\n\x13\x41UDIO_ENCODING_FLAC\x10\x02\x12\x18\n\x14\x41UDIO_ENCODING_MULAW\x10\x03\x12\x16\n\x12\x41UDIO_ENCODING_AMR\x10\x04\x12\x19\n\x15\x41UDIO_ENCODING_AMR_WB\x10\x05\x12\x1b\n\x17\x41UDIO_ENCODING_OGG_OPUS\x10\x06\x12)\n%AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE\x10\x07*v\n\x12SpeechModelVariant\x12$\n SPEECH_MODEL_VARIANT_UNSPECIFIED\x10\x00\x12\x16\n\x12USE_BEST_AVAILABLE\x10\x01\x12\x10\n\x0cUSE_STANDARD\x10\x02\x12\x10\n\x0cUSE_ENHANCED\x10\x03*\x8d\x01\n\x0fSsmlVoiceGender\x12!\n\x1dSSML_VOICE_GENDER_UNSPECIFIED\x10\x00\x12\x1a\n\x16SSML_VOICE_GENDER_MALE\x10\x01\x12\x1c\n\x18SSML_VOICE_GENDER_FEMALE\x10\x02\x12\x1d\n\x19SSML_VOICE_GENDER_NEUTRAL\x10\x03*\xa4\x01\n\x13OutputAudioEncoding\x12%\n!OUTPUT_AUDIO_ENCODING_UNSPECIFIED\x10\x00\x12#\n\x1fOUTPUT_AUDIO_ENCODING_LINEAR_16\x10\x01\x12\x1d\n\x19OUTPUT_AUDIO_ENCODING_MP3\x10\x02\x12"\n\x1eOUTPUT_AUDIO_ENCODING_OGG_OPUS\x10\x03\x42\x9f\x01\n\x1e\x63om.google.cloud.dialogflow.v2B\x10\x41udioConfigProtoP\x01ZDgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2;dialogflow\xf8\x01\x01\xa2\x02\x02\x44\x46\xaa\x02\x1aGoogle.Cloud.Dialogflow.V2b\x06proto3'
     ),
     dependencies=[
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
@@ -101,8 +105,8 @@ _AUDIOENCODING = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=897,
-    serialized_end=1148,
+    serialized_start=1286,
+    serialized_end=1537,
 )
 _sym_db.RegisterEnumDescriptor(_AUDIOENCODING)
 
@@ -136,8 +140,8 @@ _SPEECHMODELVARIANT = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1150,
-    serialized_end=1268,
+    serialized_start=1539,
+    serialized_end=1657,
 )
 _sym_db.RegisterEnumDescriptor(_SPEECHMODELVARIANT)
 
@@ -179,8 +183,8 @@ _SSMLVOICEGENDER = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1271,
-    serialized_end=1412,
+    serialized_start=1660,
+    serialized_end=1801,
 )
 _sym_db.RegisterEnumDescriptor(_SSMLVOICEGENDER)
 
@@ -222,8 +226,8 @@ _OUTPUTAUDIOENCODING = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1415,
-    serialized_end=1579,
+    serialized_start=1804,
+    serialized_end=1968,
 )
 _sym_db.RegisterEnumDescriptor(_OUTPUTAUDIOENCODING)
 
@@ -248,6 +252,156 @@ OUTPUT_AUDIO_ENCODING_UNSPECIFIED = 0
 OUTPUT_AUDIO_ENCODING_LINEAR_16 = 1
 OUTPUT_AUDIO_ENCODING_MP3 = 2
 OUTPUT_AUDIO_ENCODING_OGG_OPUS = 3
+
+
+_SPEECHCONTEXT = _descriptor.Descriptor(
+    name="SpeechContext",
+    full_name="google.cloud.dialogflow.v2.SpeechContext",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="phrases",
+            full_name="google.cloud.dialogflow.v2.SpeechContext.phrases",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="boost",
+            full_name="google.cloud.dialogflow.v2.SpeechContext.boost",
+            index=1,
+            number=2,
+            type=2,
+            cpp_type=6,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=205,
+    serialized_end=252,
+)
+
+
+_SPEECHWORDINFO = _descriptor.Descriptor(
+    name="SpeechWordInfo",
+    full_name="google.cloud.dialogflow.v2.SpeechWordInfo",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="word",
+            full_name="google.cloud.dialogflow.v2.SpeechWordInfo.word",
+            index=0,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="start_offset",
+            full_name="google.cloud.dialogflow.v2.SpeechWordInfo.start_offset",
+            index=1,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="end_offset",
+            full_name="google.cloud.dialogflow.v2.SpeechWordInfo.end_offset",
+            index=2,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="confidence",
+            full_name="google.cloud.dialogflow.v2.SpeechWordInfo.confidence",
+            index=3,
+            number=4,
+            type=2,
+            cpp_type=6,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=255,
+    serialized_end=401,
+)
 
 
 _INPUTAUDIOCONFIG = _descriptor.Descriptor(
@@ -312,9 +466,27 @@ _INPUTAUDIOCONFIG = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
+            name="enable_word_info",
+            full_name="google.cloud.dialogflow.v2.InputAudioConfig.enable_word_info",
+            index=3,
+            number=13,
+            type=8,
+            cpp_type=7,
+            label=1,
+            has_default_value=False,
+            default_value=False,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\001"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
             name="phrase_hints",
             full_name="google.cloud.dialogflow.v2.InputAudioConfig.phrase_hints",
-            index=3,
+            index=4,
             number=4,
             type=9,
             cpp_type=9,
@@ -326,13 +498,49 @@ _INPUTAUDIOCONFIG = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\030\001\340A\001"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="speech_contexts",
+            full_name="google.cloud.dialogflow.v2.InputAudioConfig.speech_contexts",
+            index=5,
+            number=11,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\001"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="model",
+            full_name="google.cloud.dialogflow.v2.InputAudioConfig.model",
+            index=6,
+            number=7,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
             name="model_variant",
             full_name="google.cloud.dialogflow.v2.InputAudioConfig.model_variant",
-            index=4,
+            index=7,
             number=10,
             type=14,
             cpp_type=8,
@@ -350,7 +558,7 @@ _INPUTAUDIOCONFIG = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="single_utterance",
             full_name="google.cloud.dialogflow.v2.InputAudioConfig.single_utterance",
-            index=5,
+            index=8,
             number=8,
             type=8,
             cpp_type=7,
@@ -374,8 +582,8 @@ _INPUTAUDIOCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=146,
-    serialized_end=400,
+    serialized_start=404,
+    serialized_end=789,
 )
 
 
@@ -431,8 +639,8 @@ _VOICESELECTIONPARAMS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=402,
-    serialized_end=504,
+    serialized_start=791,
+    serialized_end=893,
 )
 
 
@@ -542,8 +750,8 @@ _SYNTHESIZESPEECHCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=507,
-    serialized_end=686,
+    serialized_start=896,
+    serialized_end=1075,
 )
 
 
@@ -617,11 +825,18 @@ _OUTPUTAUDIOCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=689,
-    serialized_end=894,
+    serialized_start=1078,
+    serialized_end=1283,
 )
 
+_SPEECHWORDINFO.fields_by_name[
+    "start_offset"
+].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
+_SPEECHWORDINFO.fields_by_name[
+    "end_offset"
+].message_type = google_dot_protobuf_dot_duration__pb2._DURATION
 _INPUTAUDIOCONFIG.fields_by_name["audio_encoding"].enum_type = _AUDIOENCODING
+_INPUTAUDIOCONFIG.fields_by_name["speech_contexts"].message_type = _SPEECHCONTEXT
 _INPUTAUDIOCONFIG.fields_by_name["model_variant"].enum_type = _SPEECHMODELVARIANT
 _VOICESELECTIONPARAMS.fields_by_name["ssml_gender"].enum_type = _SSMLVOICEGENDER
 _SYNTHESIZESPEECHCONFIG.fields_by_name["voice"].message_type = _VOICESELECTIONPARAMS
@@ -629,6 +844,8 @@ _OUTPUTAUDIOCONFIG.fields_by_name["audio_encoding"].enum_type = _OUTPUTAUDIOENCO
 _OUTPUTAUDIOCONFIG.fields_by_name[
     "synthesize_speech_config"
 ].message_type = _SYNTHESIZESPEECHCONFIG
+DESCRIPTOR.message_types_by_name["SpeechContext"] = _SPEECHCONTEXT
+DESCRIPTOR.message_types_by_name["SpeechWordInfo"] = _SPEECHWORDINFO
 DESCRIPTOR.message_types_by_name["InputAudioConfig"] = _INPUTAUDIOCONFIG
 DESCRIPTOR.message_types_by_name["VoiceSelectionParams"] = _VOICESELECTIONPARAMS
 DESCRIPTOR.message_types_by_name["SynthesizeSpeechConfig"] = _SYNTHESIZESPEECHCONFIG
@@ -639,13 +856,86 @@ DESCRIPTOR.enum_types_by_name["SsmlVoiceGender"] = _SSMLVOICEGENDER
 DESCRIPTOR.enum_types_by_name["OutputAudioEncoding"] = _OUTPUTAUDIOENCODING
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
+SpeechContext = _reflection.GeneratedProtocolMessageType(
+    "SpeechContext",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_SPEECHCONTEXT,
+        __module__="google.cloud.dialogflow_v2.proto.audio_config_pb2",
+        __doc__="""Hints for the speech recognizer to help with recognition
+  in a specific conversation state.
+  
+  
+  Attributes:
+      phrases:
+          Optional. A list of strings containing words and phrases that
+          the speech recognizer should recognize with higher likelihood.
+          This list can be used to: \* improve accuracy for words and
+          phrases you expect the user to say, e.g. typical commands for
+          your Dialogflow agent \* add additional words to the speech
+          recognizer vocabulary \* ...  See the `Cloud Speech
+          documentation <https://cloud.google.com/speech-to-
+          text/quotas>`__ for usage limits.
+      boost:
+          Optional. Boost for this context compared to other contexts:
+          \* If the boost is positive, Dialogflow will increase the
+          probability that the phrases in this context are recognized
+          over similar sounding phrases. \* If the boost is unspecified
+          or non-positive, Dialogflow will not apply any boost.
+          Dialogflow recommends that you use boosts in the range (0, 20]
+          and that you find a value that fits your use case with binary
+          search.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.SpeechContext)
+    ),
+)
+_sym_db.RegisterMessage(SpeechContext)
+
+SpeechWordInfo = _reflection.GeneratedProtocolMessageType(
+    "SpeechWordInfo",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_SPEECHWORDINFO,
+        __module__="google.cloud.dialogflow_v2.proto.audio_config_pb2",
+        __doc__="""Information for a word recognized by the speech
+  recognizer.
+  
+  
+  Attributes:
+      word:
+          The word this info is for.
+      start_offset:
+          Time offset relative to the beginning of the audio that
+          corresponds to the start of the spoken word. This is an
+          experimental feature and the accuracy of the time offset can
+          vary.
+      end_offset:
+          Time offset relative to the beginning of the audio that
+          corresponds to the end of the spoken word. This is an
+          experimental feature and the accuracy of the time offset can
+          vary.
+      confidence:
+          The Speech confidence between 0.0 and 1.0 for this word. A
+          higher number indicates an estimated greater likelihood that
+          the recognized word is correct. The default of 0.0 is a
+          sentinel value indicating that confidence was not set.  This
+          field is not guaranteed to be fully stable over time for the
+          same audio input. Users should also not rely on it to always
+          be provided.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.SpeechWordInfo)
+    ),
+)
+_sym_db.RegisterMessage(SpeechWordInfo)
+
 InputAudioConfig = _reflection.GeneratedProtocolMessageType(
     "InputAudioConfig",
     (_message.Message,),
     dict(
         DESCRIPTOR=_INPUTAUDIOCONFIG,
         __module__="google.cloud.dialogflow_v2.proto.audio_config_pb2",
-        __doc__="""Instructs the speech recognizer how to process the audio content.
+        __doc__="""Instructs the speech recognizer how to process the audio
+  content.
   
   
   Attributes:
@@ -663,12 +953,39 @@ InputAudioConfig = _reflection.GeneratedProtocolMessageType(
           the currently supported language codes. Note that queries in
           the same session do not necessarily need to specify the same
           language.
+      enable_word_info:
+          Optional. If ``true``, Dialogflow returns
+          [SpeechWordInfo][google.cloud.dialogflow.v2.SpeechWordInfo] in
+          [StreamingRecognitionResult][google.cloud.dialogflow.v2.Stream
+          ingRecognitionResult] with information about the recognized
+          speech words, e.g. start and end time offsets. If false or
+          unspecified, Speech doesn't return any word-level information.
       phrase_hints:
           Optional. A list of strings containing words and phrases that
           the speech recognizer should recognize with higher likelihood.
           See `the Cloud Speech documentation
           <https://cloud.google.com/speech-to-text/docs/basics#phrase-
+          hints>`__ for more details.  This field is deprecated. Please
+          use speech\_contexts instead. If you specify both
+          phrase\_hints and speech\_contexts, Dialogflow
+          will treat the phrase\_hints as a single additional
+          SpeechContext.
+      speech_contexts:
+          Optional. Context information to assist speech recognition.
+          See `the Cloud Speech documentation
+          <https://cloud.google.com/speech-to-text/docs/basics#phrase-
           hints>`__ for more details.
+      model:
+          Optional. Which Speech model to select for the given request.
+          Select the model best suited to your domain to get best
+          results. If a model is not explicitly specified, then we auto-
+          select a model based on the parameters in the
+          InputAudioConfig. If enhanced speech model is enabled for the
+          agent and an enhanced version of the specified model for the
+          language does not exist, then the speech is recognized using
+          the standard version of the specified model. Refer to `Cloud
+          Speech API documentation <https://cloud.google.com/speech-to-
+          text/docs/basics#select-model>`__ for more details.
       model_variant:
           Optional. Which variant of the [Speech
           model][google.cloud.dialogflow.v2.InputAudioConfig.model] to
@@ -703,14 +1020,17 @@ VoiceSelectionParams = _reflection.GeneratedProtocolMessageType(
       name:
           Optional. The name of the voice. If not set, the service will
           choose a voice based on the other parameters such as
-          language\_code and gender.
+          language\_code and [ssml\_gender][google.cloud.dialogflow.v2.V
+          oiceSelectionParams.ssml\_gender].
       ssml_gender:
           Optional. The preferred gender of the voice. If not set, the
           service will choose a voice based on the other parameters such
-          as language\_code and name. Note that this is only a
-          preference, not requirement. If a voice of the appropriate
-          gender is not available, the synthesizer should substitute a
-          voice with a different gender rather than failing the request.
+          as language\_code and
+          [name][google.cloud.dialogflow.v2.VoiceSelectionParams.name].
+          Note that this is only a preference, not requirement. If a
+          voice of the appropriate gender is not available, the
+          synthesizer should substitute a voice with a different gender
+          rather than failing the request.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.VoiceSelectionParams)
     ),
@@ -766,8 +1086,9 @@ OutputAudioConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OUTPUTAUDIOCONFIG,
         __module__="google.cloud.dialogflow_v2.proto.audio_config_pb2",
-        __doc__="""Instructs the speech synthesizer on how to generate the output audio
-  content.
+        __doc__="""Instructs the speech synthesizer on how to generate the
+  output audio content. If this audio config is supplied in a request, it
+  overrides all existing text-to-speech settings applied to the agent.
   
   
   Attributes:
@@ -790,4 +1111,8 @@ _sym_db.RegisterMessage(OutputAudioConfig)
 
 
 DESCRIPTOR._options = None
+_INPUTAUDIOCONFIG.fields_by_name["enable_word_info"]._options = None
+_INPUTAUDIOCONFIG.fields_by_name["phrase_hints"]._options = None
+_INPUTAUDIOCONFIG.fields_by_name["speech_contexts"]._options = None
+_INPUTAUDIOCONFIG.fields_by_name["model"]._options = None
 # @@protoc_insertion_point(module_scope)

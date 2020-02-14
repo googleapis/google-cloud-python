@@ -528,9 +528,9 @@ SessionEntityType = _reflection.GeneratedProtocolMessageType(
         __module__="google.cloud.dialogflow_v2beta1.proto.session_entity_type_pb2",
         __doc__="""Represents a session entity type.
   
-  Extends or replaces a developer entity type at the user session level
-  (we refer to the entity types defined at the agent level as "developer
-  entity types").
+  Extends or replaces a custom entity type at the user session level (we
+  refer to the entity types defined at the agent level as "custom entity
+  types").
   
   Note: session entity types apply to all queries, regardless of the
   language.
@@ -550,7 +550,7 @@ SessionEntityType = _reflection.GeneratedProtocolMessageType(
           the same agent that will be overridden or supplemented.
       entity_override_mode:
           Required. Indicates whether the additional data should
-          override or supplement the developer entity type definition.
+          override or supplement the custom entity type definition.
       entities:
           Required. The collection of entities associated with this
           session entity type.

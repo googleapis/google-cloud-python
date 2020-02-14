@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -103,7 +103,7 @@ class OutputAudioEncoding(enum.IntEnum):
       OUTPUT_AUDIO_ENCODING_UNSPECIFIED (int): Not specified.
       OUTPUT_AUDIO_ENCODING_LINEAR_16 (int): Uncompressed 16-bit signed little-endian samples (Linear PCM).
       Audio content returned as LINEAR16 also contains a WAV header.
-      OUTPUT_AUDIO_ENCODING_MP3 (int): MP3 audio.
+      OUTPUT_AUDIO_ENCODING_MP3 (int): MP3 audio at 32kbps.
       OUTPUT_AUDIO_ENCODING_OGG_OPUS (int): Opus encoded audio wrapped in an ogg container. The result will be a
       file which can be played natively on Android, and in browsers (at least
       Chrome and Firefox). The quality of the encoding is considerably higher
@@ -206,7 +206,7 @@ class Agent(object):
           MATCH_MODE_HYBRID (int): Best for agents with a small number of examples in intents and/or wide
           use of templates syntax and composite entities.
           MATCH_MODE_ML_ONLY (int): Can be used for agents with a large number of examples in intents,
-          especially the ones using @sys.any or very large developer entities.
+          especially the ones using @sys.any or very large custom entities.
         """
 
         MATCH_MODE_UNSPECIFIED = 0
@@ -252,9 +252,9 @@ class EntityType(object):
 
         Attributes:
           KIND_UNSPECIFIED (int): Not specified. This value should be never used.
-          KIND_MAP (int): Map entity types allow mapping of a group of synonyms to a canonical
+          KIND_MAP (int): Map entity types allow mapping of a group of synonyms to a reference
           value.
-          KIND_LIST (int): List entity types contain a set of entries that do not map to canonical
+          KIND_LIST (int): List entity types contain a set of entries that do not map to reference
           values. However, list entity types can contain references to other entity
           types (with or without aliases).
           KIND_REGEXP (int): Regexp entity types allow to specify regular expressions in entries
@@ -393,6 +393,83 @@ class Intent(object):
             ACTIONS_ON_GOOGLE = 8
             GOOGLE_HANGOUTS = 11
 
+        class MediaContent(object):
+            class ResponseMediaType(enum.IntEnum):
+                """
+                Format of response media type.
+
+                Attributes:
+                  RESPONSE_MEDIA_TYPE_UNSPECIFIED (int): Unspecified.
+                  AUDIO (int): Response media type is audio.
+                """
+
+                RESPONSE_MEDIA_TYPE_UNSPECIFIED = 0
+                AUDIO = 1
+
+        class BrowseCarouselCard(object):
+            class ImageDisplayOptions(enum.IntEnum):
+                """
+                Image display options for Actions on Google. This should be used for
+                when the image's aspect ratio does not match the image container's
+                aspect ratio.
+
+                Attributes:
+                  IMAGE_DISPLAY_OPTIONS_UNSPECIFIED (int): Fill the gaps between the image and the image container with gray
+                  bars.
+                  GRAY (int): Fill the gaps between the image and the image container with gray
+                  bars.
+                  WHITE (int): Fill the gaps between the image and the image container with white
+                  bars.
+                  CROPPED (int): Image is scaled such that the image width and height match or exceed
+                  the container dimensions. This may crop the top and bottom of the
+                  image if the scaled image height is greater than the container
+                  height, or crop the left and right of the image if the scaled image
+                  width is greater than the container width. This is similar to "Zoom
+                  Mode" on a widescreen TV when playing a 4:3 video.
+                  BLURRED_BACKGROUND (int): Pad the gaps between image and image frame with a blurred copy of the
+                  same image.
+                """
+
+                IMAGE_DISPLAY_OPTIONS_UNSPECIFIED = 0
+                GRAY = 1
+                WHITE = 2
+                CROPPED = 3
+                BLURRED_BACKGROUND = 4
+
+            class BrowseCarouselCardItem(object):
+                class OpenUrlAction(object):
+                    class UrlTypeHint(enum.IntEnum):
+                        """
+                        Type of the URI.
+
+                        Attributes:
+                          URL_TYPE_HINT_UNSPECIFIED (int): Unspecified
+                          AMP_ACTION (int): Url would be an amp action
+                          AMP_CONTENT (int): URL that points directly to AMP content, or to a canonical URL
+                          which refers to AMP content via <link rel="amphtml">.
+                        """
+
+                        URL_TYPE_HINT_UNSPECIFIED = 0
+                        AMP_ACTION = 1
+                        AMP_CONTENT = 2
+
+        class ColumnProperties(object):
+            class HorizontalAlignment(enum.IntEnum):
+                """
+                Text alignments within a cell.
+
+                Attributes:
+                  HORIZONTAL_ALIGNMENT_UNSPECIFIED (int): Text is aligned to the leading edge of the column.
+                  LEADING (int): Text is aligned to the leading edge of the column.
+                  CENTER (int): Text is centered in the column.
+                  TRAILING (int): Text is aligned to the trailing edge of the column.
+                """
+
+                HORIZONTAL_ALIGNMENT_UNSPECIFIED = 0
+                LEADING = 1
+                CENTER = 2
+                TRAILING = 3
+
 
 class SessionEntityType(object):
     class EntityOverrideMode(enum.IntEnum):
@@ -402,16 +479,16 @@ class SessionEntityType(object):
         Attributes:
           ENTITY_OVERRIDE_MODE_UNSPECIFIED (int): Not specified. This value should be never used.
           ENTITY_OVERRIDE_MODE_OVERRIDE (int): The collection of session entities overrides the collection of entities
-          in the corresponding developer entity type.
+          in the corresponding custom entity type.
           ENTITY_OVERRIDE_MODE_SUPPLEMENT (int): The collection of session entities extends the collection of entities in
-          the corresponding developer entity type.
+          the corresponding custom entity type.
 
           Note: Even in this override mode calls to ``ListSessionEntityTypes``,
           ``GetSessionEntityType``, ``CreateSessionEntityType`` and
           ``UpdateSessionEntityType`` only return the additional entities added in
           this session entity type. If you want to get the supplemented list,
-          please call ``EntityTypes.GetEntityType`` on the developer entity type
-          and merge.
+          please call ``EntityTypes.GetEntityType`` on the custom entity type and
+          merge.
         """
 
         ENTITY_OVERRIDE_MODE_UNSPECIFIED = 0

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -254,15 +254,12 @@ class TestIntentsClient(object):
 
         # Setup Request
         intent = {}
-        language_code = "languageCode-412800396"
 
-        response = client.update_intent(intent, language_code)
+        response = client.update_intent(intent)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = intent_pb2.UpdateIntentRequest(
-            intent=intent, language_code=language_code
-        )
+        expected_request = intent_pb2.UpdateIntentRequest(intent=intent)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -276,10 +273,9 @@ class TestIntentsClient(object):
 
         # Setup request
         intent = {}
-        language_code = "languageCode-412800396"
 
         with pytest.raises(CustomException):
-            client.update_intent(intent, language_code)
+            client.update_intent(intent)
 
     def test_delete_intent(self):
         channel = ChannelStub()
@@ -330,16 +326,13 @@ class TestIntentsClient(object):
 
         # Setup Request
         parent = client.project_agent_path("[PROJECT]")
-        language_code = "languageCode-412800396"
 
-        response = client.batch_update_intents(parent, language_code)
+        response = client.batch_update_intents(parent)
         result = response.result()
         assert expected_response == result
 
         assert len(channel.requests) == 1
-        expected_request = intent_pb2.BatchUpdateIntentsRequest(
-            parent=parent, language_code=language_code
-        )
+        expected_request = intent_pb2.BatchUpdateIntentsRequest(parent=parent)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -360,9 +353,8 @@ class TestIntentsClient(object):
 
         # Setup Request
         parent = client.project_agent_path("[PROJECT]")
-        language_code = "languageCode-412800396"
 
-        response = client.batch_update_intents(parent, language_code)
+        response = client.batch_update_intents(parent)
         exception = response.exception()
         assert exception.errors[0] == error
 

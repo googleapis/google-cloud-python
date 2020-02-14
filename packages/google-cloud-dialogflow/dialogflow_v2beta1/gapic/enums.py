@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -103,7 +103,7 @@ class OutputAudioEncoding(enum.IntEnum):
       OUTPUT_AUDIO_ENCODING_UNSPECIFIED (int): Not specified.
       OUTPUT_AUDIO_ENCODING_LINEAR_16 (int): Uncompressed 16-bit signed little-endian samples (Linear PCM).
       Audio content returned as LINEAR16 also contains a WAV header.
-      OUTPUT_AUDIO_ENCODING_MP3 (int): MP3 audio.
+      OUTPUT_AUDIO_ENCODING_MP3 (int): MP3 audio at 32kbps.
       OUTPUT_AUDIO_ENCODING_OGG_OPUS (int): Opus encoded audio wrapped in an ogg container. The result will be a
       file which can be played natively on Android, and in browsers (at least
       Chrome and Firefox). The quality of the encoding is considerably higher
@@ -206,7 +206,7 @@ class Agent(object):
           MATCH_MODE_HYBRID (int): Best for agents with a small number of examples in intents and/or wide
           use of templates syntax and composite entities.
           MATCH_MODE_ML_ONLY (int): Can be used for agents with a large number of examples in intents,
-          especially the ones using @sys.any or very large developer entities.
+          especially the ones using @sys.any or very large custom entities.
         """
 
         MATCH_MODE_UNSPECIFIED = 0
@@ -275,9 +275,9 @@ class EntityType(object):
 
         Attributes:
           KIND_UNSPECIFIED (int): Not specified. This value should be never used.
-          KIND_MAP (int): Map entity types allow mapping of a group of synonyms to a canonical
+          KIND_MAP (int): Map entity types allow mapping of a group of synonyms to a reference
           value.
-          KIND_LIST (int): List entity types contain a set of entries that do not map to canonical
+          KIND_LIST (int): List entity types contain a set of entries that do not map to reference
           values. However, list entity types can contain references to other entity
           types (with or without aliases).
           KIND_REGEXP (int): Regexp entity types allow to specify regular expressions in entries
@@ -606,16 +606,16 @@ class SessionEntityType(object):
         Attributes:
           ENTITY_OVERRIDE_MODE_UNSPECIFIED (int): Not specified. This value should be never used.
           ENTITY_OVERRIDE_MODE_OVERRIDE (int): The collection of session entities overrides the collection of entities
-          in the corresponding developer entity type.
+          in the corresponding custom entity type.
           ENTITY_OVERRIDE_MODE_SUPPLEMENT (int): The collection of session entities extends the collection of entities in
-          the corresponding developer entity type.
+          the corresponding custom entity type.
 
           Note: Even in this override mode calls to ``ListSessionEntityTypes``,
           ``GetSessionEntityType``, ``CreateSessionEntityType`` and
           ``UpdateSessionEntityType`` only return the additional entities added in
           this session entity type. If you want to get the supplemented list,
-          please call ``EntityTypes.GetEntityType`` on the developer entity type
-          and merge.
+          please call ``EntityTypes.GetEntityType`` on the custom entity type and
+          merge.
         """
 
         ENTITY_OVERRIDE_MODE_UNSPECIFIED = 0
