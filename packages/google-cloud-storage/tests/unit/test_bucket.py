@@ -648,7 +648,7 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._make_one(name=NAME)
         result = bucket.get_blob(NONESUCH, client=client, timeout=42)
         self.assertIsNone(result)
-        kw, = connection._requested
+        (kw,) = connection._requested
         self.assertEqual(kw["method"], "GET")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, NONESUCH))
         self.assertEqual(kw["timeout"], 42)
@@ -663,7 +663,7 @@ class Test_Bucket(unittest.TestCase):
         blob = bucket.get_blob(BLOB_NAME, client=client)
         self.assertIs(blob.bucket, bucket)
         self.assertEqual(blob.name, BLOB_NAME)
-        kw, = connection._requested
+        (kw,) = connection._requested
         expected_qp = {"userProject": USER_PROJECT, "projection": "noAcl"}
         self.assertEqual(kw["method"], "GET")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
@@ -681,7 +681,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertIs(blob.bucket, bucket)
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(blob.generation, GENERATION)
-        kw, = connection._requested
+        (kw,) = connection._requested
         expected_qp = {"generation": GENERATION, "projection": "noAcl"}
         self.assertEqual(kw["method"], "GET")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
@@ -704,7 +704,7 @@ class Test_Bucket(unittest.TestCase):
         )
         self.assertIs(blob.bucket, bucket)
         self.assertEqual(blob.name, BLOB_NAME)
-        kw, = connection._requested
+        (kw,) = connection._requested
         self.assertEqual(kw["method"], "GET")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
         self.assertEqual(kw["headers"], _get_encryption_headers(KEY))
@@ -720,7 +720,7 @@ class Test_Bucket(unittest.TestCase):
         iterator = bucket.list_blobs()
         blobs = list(iterator)
         self.assertEqual(blobs, [])
-        kw, = connection._requested
+        (kw,) = connection._requested
         self.assertEqual(kw["method"], "GET")
         self.assertEqual(kw["path"], "/b/%s/o" % NAME)
         self.assertEqual(kw["query_params"], {"projection": "noAcl"})
@@ -762,7 +762,7 @@ class Test_Bucket(unittest.TestCase):
         )
         blobs = list(iterator)
         self.assertEqual(blobs, [])
-        kw, = connection._requested
+        (kw,) = connection._requested
         self.assertEqual(kw["method"], "GET")
         self.assertEqual(kw["path"], "/b/%s/o" % NAME)
         self.assertEqual(kw["query_params"], EXPECTED)
@@ -935,7 +935,7 @@ class Test_Bucket(unittest.TestCase):
         client = _Client(connection)
         bucket = self._make_one(client=client, name=NAME)
         self.assertRaises(NotFound, bucket.delete_blob, NONESUCH)
-        kw, = connection._requested
+        (kw,) = connection._requested
         self.assertEqual(kw["method"], "DELETE")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, NONESUCH))
         self.assertEqual(kw["query_params"], {})
@@ -950,7 +950,7 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._make_one(client=client, name=NAME, user_project=USER_PROJECT)
         result = bucket.delete_blob(BLOB_NAME, timeout=42)
         self.assertIsNone(result)
-        kw, = connection._requested
+        (kw,) = connection._requested
         self.assertEqual(kw["method"], "DELETE")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
         self.assertEqual(kw["query_params"], {"userProject": USER_PROJECT})
@@ -965,7 +965,7 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._make_one(client=client, name=NAME)
         result = bucket.delete_blob(BLOB_NAME, generation=GENERATION)
         self.assertIsNone(result)
-        kw, = connection._requested
+        (kw,) = connection._requested
         self.assertEqual(kw["method"], "DELETE")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
         self.assertEqual(kw["query_params"], {"generation": GENERATION})
@@ -1056,7 +1056,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertIs(new_blob.bucket, dest)
         self.assertEqual(new_blob.name, BLOB_NAME)
 
-        kw, = connection._requested
+        (kw,) = connection._requested
         COPY_PATH = "/b/{}/o/{}/copyTo/b/{}/o/{}".format(
             SOURCE, BLOB_NAME, DEST, BLOB_NAME
         )
@@ -1082,7 +1082,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertIs(new_blob.bucket, dest)
         self.assertEqual(new_blob.name, BLOB_NAME)
 
-        kw, = connection._requested
+        (kw,) = connection._requested
         COPY_PATH = "/b/{}/o/{}/copyTo/b/{}/o/{}".format(
             SOURCE, BLOB_NAME, DEST, BLOB_NAME
         )
@@ -1149,7 +1149,7 @@ class Test_Bucket(unittest.TestCase):
         COPY_PATH = "/b/{}/o/{}/copyTo/b/{}/o/{}".format(
             SOURCE, BLOB_NAME, DEST, NEW_NAME
         )
-        kw, = connection._requested
+        (kw,) = connection._requested
         self.assertEqual(kw["method"], "POST")
         self.assertEqual(kw["path"], COPY_PATH)
         self.assertEqual(kw["query_params"], {"userProject": USER_PROJECT})
@@ -1175,7 +1175,7 @@ class Test_Bucket(unittest.TestCase):
         COPY_PATH = "/b/{}/o/{}/copyTo/b/{}/o/{}".format(
             BUCKET_NAME, BLOB_NAME, BUCKET_NAME, NEW_BLOB_NAME
         )
-        kw, = connection._requested
+        (kw,) = connection._requested
         self.assertEqual(kw["method"], "POST")
         self.assertEqual(kw["path"], COPY_PATH)
         self.assertEqual(kw["query_params"], {})
@@ -1200,7 +1200,7 @@ class Test_Bucket(unittest.TestCase):
         COPY_PATH = "/b/{}/o/{}/copyTo/b/{}/o/{}".format(
             BUCKET_NAME, BLOB_NAME, BUCKET_NAME, BLOB_NAME
         )
-        kw, = connection._requested
+        (kw,) = connection._requested
         self.assertEqual(kw["method"], "POST")
         self.assertEqual(kw["path"], COPY_PATH)
         self.assertEqual(kw["query_params"], {})
@@ -2676,7 +2676,7 @@ class Test_Bucket(unittest.TestCase):
 
         bucket.lock_retention_policy(timeout=42)
 
-        kw, = connection._requested
+        (kw,) = connection._requested
         self.assertEqual(kw["method"], "POST")
         self.assertEqual(kw["path"], "/b/{}/lockRetentionPolicy".format(name))
         self.assertEqual(kw["query_params"], {"ifMetagenerationMatch": 1234})
@@ -2707,7 +2707,7 @@ class Test_Bucket(unittest.TestCase):
 
         bucket.lock_retention_policy()
 
-        kw, = connection._requested
+        (kw,) = connection._requested
         self.assertEqual(kw["method"], "POST")
         self.assertEqual(kw["path"], "/b/{}/lockRetentionPolicy".format(name))
         self.assertEqual(

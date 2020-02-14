@@ -2451,7 +2451,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(rewritten, 33)
         self.assertEqual(size, 42)
 
-        kw, = connection._requested
+        (kw,) = connection._requested
         self.assertEqual(kw["method"], "POST")
         self.assertEqual(
             kw["path"],

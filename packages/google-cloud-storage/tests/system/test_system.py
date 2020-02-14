@@ -1495,7 +1495,7 @@ class TestAnonymousClient(unittest.TestCase):
     def test_access_to_public_bucket(self):
         anonymous = storage.Client.create_anonymous_client()
         bucket = anonymous.bucket(self.PUBLIC_BUCKET)
-        blob, = retry_429_503(bucket.list_blobs)(max_results=1)
+        (blob,) = retry_429_503(bucket.list_blobs)(max_results=1)
         with tempfile.TemporaryFile() as stream:
             retry_429_503(blob.download_to_file)(stream)
 
@@ -1582,7 +1582,7 @@ class TestKMSIntegration(TestStorageFiles):
         # We don't know the current version of the key.
         self.assertTrue(blob.kms_key_name.startswith(kms_key_name))
 
-        listed, = list(self.bucket.list_blobs())
+        (listed,) = list(self.bucket.list_blobs())
         self.assertTrue(listed.kms_key_name.startswith(kms_key_name))
 
     def test_bucket_w_default_kms_key_name(self):
