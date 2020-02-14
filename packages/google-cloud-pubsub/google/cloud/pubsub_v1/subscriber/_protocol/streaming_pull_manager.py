@@ -582,7 +582,7 @@ class StreamingPullManager(object):
             return
 
         _LOGGER.debug(
-            "Processing %s received message(s), currenty on hold %s (bytes %s).",
+            "Processing %s received message(s), currently on hold %s (bytes %s).",
             len(response.received_messages),
             self._messages_on_hold.size,
             self._on_hold_bytes,
