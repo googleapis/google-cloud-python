@@ -30,7 +30,7 @@ DEPENDENCIES = (
 with io.open("README.rst", "r") as fh:
     long_description = fh.read()
 
-version = "1.11.1"
+version = "1.11.2"
 
 setup(
     name="google-auth",

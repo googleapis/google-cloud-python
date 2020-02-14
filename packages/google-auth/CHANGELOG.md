@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.11.2](https://www.github.com/googleapis/google-auth-library-python/compare/v1.11.1...v1.11.2) (2020-02-14)
+
+
+### Reverts
+
+* Revert "fix: update `_GOOGLE_OAUTH2_CERTS_URL` (#365)" (#444) ([901c259](https://www.github.com/googleapis/google-auth-library-python/commit/901c259b1764f5a305a542cbae14d926ba7a57db)), closes [#365](https://www.github.com/googleapis/google-auth-library-python/issues/365) [#444](https://www.github.com/googleapis/google-auth-library-python/issues/444)
+
 ### [1.11.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.11.0...v1.11.1) (2020-02-13)
 
 
