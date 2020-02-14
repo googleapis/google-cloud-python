@@ -3,7 +3,7 @@
   "name_pretty": "NDB Client Library for Google Cloud Datastore",
   "client_documentation": "https://googleapis.dev/python/python-ndb/latest",
   "issue_tracker": "https://github.com/googleapis/python-ndb/issues",
-  "release_level": "alpha",
+  "release_level": "ga",
   "language": "python",
   "repo": "googleapis/python-ndb",
   "distribution_name": "google-cloud-ndb"
