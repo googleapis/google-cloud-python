@@ -4526,7 +4526,7 @@ class Model(_NotEqualMixin):
         id_ = self._get_arg(kwargs, "id")
         project = self._get_arg(kwargs, "project")
         app = self._get_arg(kwargs, "app")
-        namespace = self._get_arg(kwargs, "namespace")
+        namespace = self._get_arg(kwargs, "namespace", key_module.UNDEFINED)
         parent = self._get_arg(kwargs, "parent")
         projection = self._get_arg(kwargs, "projection")
 
@@ -4542,7 +4542,7 @@ class Model(_NotEqualMixin):
             id_ is None
             and parent is None
             and project is None
-            and namespace is None
+            and namespace is key_module.UNDEFINED
         )
         if key is not None:
             if not key_parts_unspecified:
@@ -4567,7 +4567,7 @@ class Model(_NotEqualMixin):
             self._set_projection(projection)
 
     @classmethod
-    def _get_arg(cls, kwargs, keyword):
+    def _get_arg(cls, kwargs, keyword, default=None):
         """Parse keywords for fields that aren't user-defined properties.
 
         This is used to re-map special keyword arguments in the presence
@@ -4581,9 +4581,11 @@ class Model(_NotEqualMixin):
         Args:
             kwargs (Dict[str, Any]): A keyword arguments dictionary.
             keyword (str): A keyword to be converted.
+            default (Any): Returned if argument isn't found.
 
         Returns:
-            Optional[Any]: The ``keyword`` argument, if found.
+            Optional[Any]: The ``keyword`` argument, if found, otherwise
+                ``default``.
         """
         alt_keyword = "_" + keyword
         if alt_keyword in kwargs:
@@ -4594,7 +4596,7 @@ class Model(_NotEqualMixin):
             if not isinstance(obj, Property) or isinstance(obj, ModelKey):
                 return kwargs.pop(keyword)
 
-        return None
+        return default
 
     def _set_attributes(self, kwargs):
         """Set attributes from keyword arguments.

@@ -100,7 +100,7 @@ from google.cloud.ndb import tasklets
 from google.cloud.ndb import utils
 
 
-__all__ = ["Key"]
+__all__ = ["Key", "UNDEFINED"]
 _APP_ID_ENVIRONMENT = "APPLICATION_ID"
 _APP_ID_DEFAULT = "_"
 _WRONG_TYPE = "Cannot construct Key reference on non-Key class; received {!r}"
@@ -125,6 +125,14 @@ _BAD_INTEGER_ID = (
 _BAD_STRING_ID = (
     "Key name strings must be non-empty strings up to {:d} bytes; received {}"
 )
+
+UNDEFINED = object()
+"""Sentinel value.
+
+Used to indicate a namespace hasn't been explicitly set in key construction.
+Used to distinguish between not passing a value and passing `None`, which
+indicates the default namespace.
+"""
 
 
 class Key(object):
@@ -278,11 +286,15 @@ class Key(object):
 
         _constructor_handle_positional(path_args, kwargs)
         instance = super(Key, cls).__new__(cls)
+
         # Make sure to pass in the namespace if it's not explicitly set.
-        if "namespace" not in kwargs:
+        if kwargs.get("namespace", UNDEFINED) is UNDEFINED:
             client = context_module.get_context().client
             if client.namespace:
                 kwargs["namespace"] = client.namespace
+            else:
+                kwargs["namespace"] = None  # default namespace
+
         if (
             "reference" in kwargs
             or "serialized" in kwargs

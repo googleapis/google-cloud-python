@@ -301,6 +301,31 @@ def test_namespace(dispose_of, other_namespace):
     assert results[0].key.namespace() == other_namespace
 
 
+def test_namespace_set_on_client_with_id(dispose_of, other_namespace):
+    """Regression test for #337
+
+    https://github.com/googleapis/python-ndb/issues/337
+    """
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    client = ndb.Client(namespace=other_namespace)
+    with client.context(cache_policy=False):
+        id = test_utils.system.unique_resource_id()
+        entity1 = SomeKind(id=id, foo=1, bar="a")
+        key = entity1.put()
+        dispose_of(key._key)
+        assert key.namespace() == other_namespace
+
+        results = eventually(SomeKind.query().fetch, _length_equals(1))
+
+        assert results[0].foo == 1
+        assert results[0].bar == "a"
+        assert results[0].key.namespace() == other_namespace
+
+
 @pytest.mark.usefixtures("client_context")
 def test_filter_equal(ds_entity):
     for i in range(5):
