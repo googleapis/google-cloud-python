@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """This script is used to synthesize generated parts of this library."""
+import re
 
 import synthtool as s
 from synthtool import gcp
@@ -61,6 +62,54 @@ s.replace(
     "\g<1>expected_request = video_intelligence_pb2.AnnotateVideoRequest(\n"
     "\g<1>    input_uri=input_uri, features=features)",
 )
+
+# Keep features a keyword param until the microgenerator migration
+# https://github.com/googleapis/python-videointelligence/issues/7
+# -------------------------------------------------------------------------------
+s.replace(
+    "google/cloud/videointelligence_v1/gapic/video_intelligence_service_client.py",
+    ">>> response = client\.annotate_video\(features, input_uri=input_uri\)",
+    ">>> response = client.annotate_video(input_uri=input_uri, features=features)",
+)
+s.replace(
+    "google/cloud/videointelligence_v1/gapic/video_intelligence_service_client.py",
+    """(?P<features>\s+features \(list.+?)\n"""
+    """(?P<input_uri>\s+input_uri \(str\).+?should be unset\.\n)"""
+    """(?P<input_content>\s+input_content \(bytes\).+?should be unset\.)""",
+    """\n\g<input_uri>\g<input_content>\g<features>""",
+    re.DOTALL|re.MULTILINE,
+)
+
+s.replace(
+    "google/cloud/videointelligence_v1/gapic/video_intelligence_service_client.py",
+    """            self,
+            features,
+            input_uri=None,
+            input_content=None,
+            video_context=None,
+            output_uri=None,
+            location_id=None,
+            retry=google\.api_core\.gapic_v1\.method\.DEFAULT,
+            timeout=google\.api_core\.gapic_v1\.method\.DEFAULT,
+            metadata=None""",
+    """            self,
+            input_uri=None,
+            input_content=None,
+            # NOTE: Keep features a keyword param that comes after `input_uri` until
+            # the microgenerator migration to avoid breaking users.
+            # See https://github.com/googleapis/python-videointelligence/issues/7.
+            features=None,
+            video_context=None,
+            output_uri=None,
+            location_id=None,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None""",
+)
+
+s.replace("tests/**/test_video_intelligence_service_client_v1.py",
+"response = client\.annotate_video\(features, input_uri=input_uri\)",
+"response = client.annotate_video(input_uri=input_uri, features=features)")
 
 # ----------------------------------------------------------------------------
 # Add templated files

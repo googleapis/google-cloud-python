@@ -2620,9 +2620,9 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TEXTANNOTATION,
         __module__="google.cloud.videointelligence_v1p2beta1.proto.video_intelligence_pb2",
-        __doc__="""Annotations related to one detected OCR text snippet. This will contain
-  the corresponding text, confidence value, and frame level information
-  for each detection.
+        __doc__="""Annotations related to one detected OCR text snippet. This
+  will contain the corresponding text, confidence value, and frame level
+  information for each detection.
   
   
   Attributes:

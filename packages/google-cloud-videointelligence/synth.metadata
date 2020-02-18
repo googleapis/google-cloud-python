@@ -1,27 +1,33 @@
 {
-  "updateTime": "2020-02-05T13:22:43.739935Z",
+  "updateTime": "2020-02-14T23:28:20.105798Z",
   "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "git@github.com:googleapis/python-videointelligence.git",
+        "sha": "4eeaab856387d71afc921a41270f067f069fa190"
+      }
+    },
     {
       "generator": {
         "name": "artman",
-        "version": "0.44.4",
-        "dockerImage": "googleapis/artman@sha256:19e945954fc960a4bdfee6cb34695898ab21a8cf0bac063ee39b91f00a1faec8"
+        "version": "0.45.0",
+        "dockerImage": "googleapis/artman@sha256:6aec9c34db0e4be221cdaf6faba27bdc07cfea846808b3d3b964dfce3a9a0f9b"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "a8ed9d921fdddc61d8467bfd7c1668f0ad90435c",
-        "internalRef": "293257997",
-        "log": "a8ed9d921fdddc61d8467bfd7c1668f0ad90435c\nfix: set Ruby module name for OrgPolicy\n\nPiperOrigin-RevId: 293257997\n\n6c7d28509bd8315de8af0889688ee20099594269\nredis: v1beta1 add UpgradeInstance and connect_mode field to Instance\n\nPiperOrigin-RevId: 293242878\n\nae0abed4fcb4c21f5cb67a82349a049524c4ef68\nredis: v1 add connect_mode field to Instance\n\nPiperOrigin-RevId: 293241914\n\n3f7a0d29b28ee9365771da2b66edf7fa2b4e9c56\nAdds service config definition for bigqueryreservation v1beta1\n\nPiperOrigin-RevId: 293234418\n\n0c88168d5ed6fe353a8cf8cbdc6bf084f6bb66a5\naddition of BUILD & configuration for accessapproval v1\n\nPiperOrigin-RevId: 293219198\n\n39bedc2e30f4778ce81193f6ba1fec56107bcfc4\naccessapproval: v1 publish protos\n\nPiperOrigin-RevId: 293167048\n\n69d9945330a5721cd679f17331a78850e2618226\nAdd file-level `Session` resource definition\n\nPiperOrigin-RevId: 293080182\n\nf6a1a6b417f39694275ca286110bc3c1ca4db0dc\nAdd file-level `Session` resource definition\n\nPiperOrigin-RevId: 293080178\n\n"
+        "sha": "ee4dddf805072004ab19ac94df2ce669046eec26",
+        "internalRef": "295238095"
       }
     },
     {
       "template": {
         "name": "python_split_library",
         "origin": "synthtool.gcp",
-        "version": "2019.10.17"
+        "version": "2020.2.4"
       }
     }
   ],

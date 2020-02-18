@@ -193,6 +193,9 @@ class VideoIntelligenceServiceClient(object):
         self,
         input_uri=None,
         input_content=None,
+        # NOTE: Keep features a keyword param that comes after `input_uri` until
+        # the microgenerator migration to avoid breaking users.
+        # See https://github.com/googleapis/python-videointelligence/issues/7.
         features=None,
         video_context=None,
         output_uri=None,
