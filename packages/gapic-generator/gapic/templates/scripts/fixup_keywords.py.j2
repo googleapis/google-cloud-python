@@ -136,13 +136,17 @@ Note: This tool operates at a best-effort level at converting positional
 """)
     parser.add_argument(
         '-d',
+        '--input-directory',
+        required=True,
         dest='input_dir',
         help='the input directory to walk for python files to fix up',
     )
     parser.add_argument(
         '-o',
+        '--output-directory',
+        required=True,
         dest='output_dir',
-        help='a file to fix up via un-flattening',
+        help='the directory to output files fixed via un-flattening',
     )
     args = parser.parse_args()
     input_dir = pathlib.Path(args.input_dir)
