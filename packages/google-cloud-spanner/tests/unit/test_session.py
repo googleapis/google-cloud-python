@@ -463,7 +463,7 @@ class TestSession(unittest.TestCase):
         another = session.transaction()  # invalidates existing txn
 
         self.assertIs(session._transaction, another)
-        self.assertTrue(existing._rolled_back)
+        self.assertTrue(existing.rolled_back)
 
     def test_run_in_transaction_callback_raises_non_gax_error(self):
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
@@ -506,7 +506,7 @@ class TestSession(unittest.TestCase):
         txn, args, kw = called_with[0]
         self.assertIsInstance(txn, Transaction)
         self.assertIsNone(txn.committed)
-        self.assertTrue(txn._rolled_back)
+        self.assertTrue(txn.rolled_back)
         self.assertEqual(args, ())
         self.assertEqual(kw, {})
 
@@ -561,7 +561,7 @@ class TestSession(unittest.TestCase):
         txn, args, kw = called_with[0]
         self.assertIsInstance(txn, Transaction)
         self.assertIsNone(txn.committed)
-        self.assertFalse(txn._rolled_back)
+        self.assertFalse(txn.rolled_back)
         self.assertEqual(args, ())
         self.assertEqual(kw, {})
 

@@ -255,7 +255,7 @@ class Session(object):
             raise ValueError("Session has not been created.")
 
         if self._transaction is not None:
-            self._transaction._rolled_back = True
+            self._transaction.rolled_back = True
             del self._transaction
 
         txn = self._transaction = Transaction(self)

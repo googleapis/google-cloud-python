@@ -36,7 +36,7 @@ class Transaction(_SnapshotBase, _BatchBase):
 
     committed = None
     """Timestamp at which the transaction was successfully committed."""
-    _rolled_back = False
+    rolled_back = False
     _multi_use = True
     _execute_sql_count = 0
 
@@ -58,7 +58,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         if self.committed is not None:
             raise ValueError("Transaction is already committed")
 
-        if self._rolled_back:
+        if self.rolled_back:
             raise ValueError("Transaction is already rolled back")
 
     def _make_txn_selector(self):
@@ -85,7 +85,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         if self.committed is not None:
             raise ValueError("Transaction already committed")
 
-        if self._rolled_back:
+        if self.rolled_back:
             raise ValueError("Transaction is already rolled back")
 
         database = self._session._database
@@ -105,7 +105,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         api = database.spanner_api
         metadata = _metadata_with_prefix(database.name)
         api.rollback(self._session.name, self._transaction_id, metadata=metadata)
-        self._rolled_back = True
+        self.rolled_back = True
         del self._session._transaction
 
     def commit(self):

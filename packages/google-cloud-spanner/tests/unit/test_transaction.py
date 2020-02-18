@@ -76,7 +76,7 @@ class TestTransaction(unittest.TestCase):
         self.assertIs(transaction._session, session)
         self.assertIsNone(transaction._transaction_id)
         self.assertIsNone(transaction.committed)
-        self.assertFalse(transaction._rolled_back)
+        self.assertFalse(transaction.rolled_back)
         self.assertTrue(transaction._multi_use)
         self.assertEqual(transaction._execute_sql_count, 0)
 
@@ -98,7 +98,7 @@ class TestTransaction(unittest.TestCase):
         session = _Session()
         transaction = self._make_one(session)
         transaction._transaction_id = self.TRANSACTION_ID
-        transaction._rolled_back = True
+        transaction.rolled_back = True
         with self.assertRaises(ValueError):
             transaction._check_state()
 
@@ -125,7 +125,7 @@ class TestTransaction(unittest.TestCase):
     def test_begin_already_rolled_back(self):
         session = _Session()
         transaction = self._make_one(session)
-        transaction._rolled_back = True
+        transaction.rolled_back = True
         with self.assertRaises(ValueError):
             transaction.begin()
 
@@ -187,7 +187,7 @@ class TestTransaction(unittest.TestCase):
         session = _Session()
         transaction = self._make_one(session)
         transaction._transaction_id = self.TRANSACTION_ID
-        transaction._rolled_back = True
+        transaction.rolled_back = True
         with self.assertRaises(ValueError):
             transaction.rollback()
 
@@ -203,7 +203,7 @@ class TestTransaction(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             transaction.rollback()
 
-        self.assertFalse(transaction._rolled_back)
+        self.assertFalse(transaction.rolled_back)
 
     def test_rollback_ok(self):
         from google.protobuf.empty_pb2 import Empty
@@ -218,7 +218,7 @@ class TestTransaction(unittest.TestCase):
 
         transaction.rollback()
 
-        self.assertTrue(transaction._rolled_back)
+        self.assertTrue(transaction.rolled_back)
         self.assertIsNone(session._transaction)
 
         session_id, txn_id, metadata = api._rolled_back
@@ -244,7 +244,7 @@ class TestTransaction(unittest.TestCase):
         session = _Session()
         transaction = self._make_one(session)
         transaction._transaction_id = self.TRANSACTION_ID
-        transaction._rolled_back = True
+        transaction.rolled_back = True
         with self.assertRaises(ValueError):
             transaction.commit()
 
@@ -546,7 +546,7 @@ class TestTransaction(unittest.TestCase):
                 raise Exception("bail out")
 
         self.assertEqual(transaction.committed, None)
-        self.assertTrue(transaction._rolled_back)
+        self.assertTrue(transaction.rolled_back)
         self.assertEqual(len(transaction._mutations), 1)
 
         self.assertEqual(api._committed, None)

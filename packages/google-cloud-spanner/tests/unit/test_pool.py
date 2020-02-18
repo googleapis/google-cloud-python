@@ -837,7 +837,7 @@ def _make_transaction(*args, **kw):
 
     txn = mock.create_autospec(Transaction)(*args, **kw)
     txn.committed = None
-    txn._rolled_back = False
+    txn.rolled_back = False
     return txn
 
 
