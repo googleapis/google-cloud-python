@@ -1,20 +1,6 @@
 {
-  "updateTime": "2020-02-12T21:01:23.468961Z",
+  "updateTime": "2020-02-19T02:26:54.748836Z",
   "sources": [
-    {
-      "git": {
-        "name": ".",
-        "remote": "git@github.com:googleapis/python-redis.git",
-        "sha": "53d302baa0e1357d1f3dc9fc9ca74db145ecf78e"
-      }
-    },
-    {
-      "git": {
-        "name": "synthtool",
-        "remote": "git@github.com:GoogleCloudPlatform/synthtool.git",
-        "sha": "e7660b704f319e2c1ea45d421b86b008d48ae37e"
-      }
-    },
     {
       "generator": {
         "name": "artman",
@@ -24,11 +10,25 @@
     },
     {
       "git": {
+        "name": ".",
+        "remote": "https://github.com/googleapis/python-redis.git",
+        "sha": "bcefc59d9c2bc9e1d7f88fb5d8043d6e4aa3769b"
+      }
+    },
+    {
+      "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "2c17ac33b226194041155bb5340c3f34733f1b3a",
-        "internalRef": "294734008",
-        "log": "2c17ac33b226194041155bb5340c3f34733f1b3a\nAdd parameter to sample generated for UpdateInstance. Related to https://github.com/googleapis/python-redis/issues/4\n\nPiperOrigin-RevId: 294734008\n\n"
+        "sha": "ce4f4c21d9dd2bfab18873a80449b9d9851efde8",
+        "internalRef": "295861722",
+        "log": "ce4f4c21d9dd2bfab18873a80449b9d9851efde8\nasset: v1p1beta1 remove SearchResources and SearchIamPolicies\n\nPiperOrigin-RevId: 295861722\n\ncb61d6c2d070b589980c779b68ffca617f789116\nasset: v1p1beta1 remove SearchResources and SearchIamPolicies\n\nPiperOrigin-RevId: 295855449\n\nab2685d8d3a0e191dc8aef83df36773c07cb3d06\nfix: Dataproc v1 - AutoscalingPolicy annotation\n\nThis adds the second resource name pattern to the\nAutoscalingPolicy resource.\n\nCommitter: @lukesneeringer\nPiperOrigin-RevId: 295738415\n\n8a1020bf6828f6e3c84c3014f2c51cb62b739140\nUpdate cloud asset api v1p4beta1.\n\nPiperOrigin-RevId: 295286165\n\n5cfa105206e77670369e4b2225597386aba32985\nAdd service control related proto build rule.\n\nPiperOrigin-RevId: 295262088\n\nee4dddf805072004ab19ac94df2ce669046eec26\nmonitoring v3: Add prefix \"https://cloud.google.com/\" into the link for global access\ncl 295167522, get ride of synth.py hacks\n\nPiperOrigin-RevId: 295238095\n\nd9835e922ea79eed8497db270d2f9f85099a519c\nUpdate some minor docs changes about user event proto\n\nPiperOrigin-RevId: 295185610\n\n5f311e416e69c170243de722023b22f3df89ec1c\nfix: use correct PHP package name in gapic configuration\n\nPiperOrigin-RevId: 295161330\n\n6cdd74dcdb071694da6a6b5a206e3a320b62dd11\npubsub: v1 add client config annotations and retry config\n\nPiperOrigin-RevId: 295158776\n\n5169f46d9f792e2934d9fa25c36d0515b4fd0024\nAdded cloud asset api v1p4beta1.\n\nPiperOrigin-RevId: 295026522\n\n56b55aa8818cd0a532a7d779f6ef337ba809ccbd\nFix: Resource annotations for CreateTimeSeriesRequest and ListTimeSeriesRequest should refer to valid resources. TimeSeries is not a named resource.\n\nPiperOrigin-RevId: 294931650\n\n0646bc775203077226c2c34d3e4d50cc4ec53660\nRemove unnecessary languages from bigquery-related artman configuration files.\n\nPiperOrigin-RevId: 294809380\n\n8b78aa04382e3d4147112ad6d344666771bb1909\nUpdate backend.proto for schemes and protocol\n\nPiperOrigin-RevId: 294788800\n\n80b8f8b3de2359831295e24e5238641a38d8488f\nAdds artman config files for bigquerystorage endpoints v1beta2, v1alpha2, v1\n\nPiperOrigin-RevId: 294763931\n\n"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "rpc://devrel/cloud/libraries/tools/autosynth",
+        "sha": "b4b7af4a16a07b40bfd8dcdda89f9f193ff4e2ed"
       }
     },
     {
