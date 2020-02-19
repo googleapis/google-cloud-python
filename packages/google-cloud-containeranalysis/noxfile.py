@@ -72,6 +72,7 @@ def default(session):
     session.run(
         "py.test",
         "--quiet",
+        "--cov=google.cloud.containeranalysis",
         "--cov=google.cloud",
         "--cov=tests.unit",
         "--cov-append",
