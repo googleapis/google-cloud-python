@@ -241,11 +241,15 @@ class TestDataCatalogClient(object):
         # Setup Expected Response
         name = "name3373707"
         linked_resource = "linkedResource1544625012"
+        user_specified_type = "userSpecifiedType-940364963"
+        user_specified_system = "userSpecifiedSystem-1776119406"
         display_name = "displayName1615086568"
         description = "description-1724546052"
         expected_response = {
             "name": name,
             "linked_resource": linked_resource,
+            "user_specified_type": user_specified_type,
+            "user_specified_system": user_specified_system,
             "display_name": display_name,
             "description": description,
         }
@@ -293,11 +297,15 @@ class TestDataCatalogClient(object):
         # Setup Expected Response
         name = "name3373707"
         linked_resource = "linkedResource1544625012"
+        user_specified_type = "userSpecifiedType-940364963"
+        user_specified_system = "userSpecifiedSystem-1776119406"
         display_name = "displayName1615086568"
         description = "description-1724546052"
         expected_response = {
             "name": name,
             "linked_resource": linked_resource,
+            "user_specified_type": user_specified_type,
+            "user_specified_system": user_specified_system,
             "display_name": display_name,
             "description": description,
         }
@@ -370,11 +378,15 @@ class TestDataCatalogClient(object):
         # Setup Expected Response
         name_2 = "name2-1052831874"
         linked_resource = "linkedResource1544625012"
+        user_specified_type = "userSpecifiedType-940364963"
+        user_specified_system = "userSpecifiedSystem-1776119406"
         display_name = "displayName1615086568"
         description = "description-1724546052"
         expected_response = {
             "name": name_2,
             "linked_resource": linked_resource,
+            "user_specified_type": user_specified_type,
+            "user_specified_system": user_specified_system,
             "display_name": display_name,
             "description": description,
         }
@@ -416,11 +428,15 @@ class TestDataCatalogClient(object):
         # Setup Expected Response
         name = "name3373707"
         linked_resource = "linkedResource1544625012"
+        user_specified_type = "userSpecifiedType-940364963"
+        user_specified_system = "userSpecifiedSystem-1776119406"
         display_name = "displayName1615086568"
         description = "description-1724546052"
         expected_response = {
             "name": name,
             "linked_resource": linked_resource,
+            "user_specified_type": user_specified_type,
+            "user_specified_system": user_specified_system,
             "display_name": display_name,
             "description": description,
         }
@@ -451,6 +467,128 @@ class TestDataCatalogClient(object):
 
         with pytest.raises(CustomException):
             client.lookup_entry()
+
+    def test_list_entry_groups(self):
+        # Setup Expected Response
+        next_page_token = "nextPageToken-1530815211"
+        expected_response = {"next_page_token": next_page_token}
+        expected_response = datacatalog_pb2.ListEntryGroupsResponse(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datacatalog_v1beta1.DataCatalogClient()
+
+        # Setup Request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+
+        response = client.list_entry_groups(parent)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = datacatalog_pb2.ListEntryGroupsRequest(parent=parent)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_list_entry_groups_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datacatalog_v1beta1.DataCatalogClient()
+
+        # Setup request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+
+        with pytest.raises(CustomException):
+            client.list_entry_groups(parent)
+
+    def test_list_entries(self):
+        # Setup Expected Response
+        next_page_token = "nextPageToken-1530815211"
+        expected_response = {"next_page_token": next_page_token}
+        expected_response = datacatalog_pb2.ListEntriesResponse(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datacatalog_v1beta1.DataCatalogClient()
+
+        # Setup Request
+        parent = client.entry_group_path("[PROJECT]", "[LOCATION]", "[ENTRY_GROUP]")
+
+        response = client.list_entries(parent)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = datacatalog_pb2.ListEntriesRequest(parent=parent)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_list_entries_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datacatalog_v1beta1.DataCatalogClient()
+
+        # Setup request
+        parent = client.entry_group_path("[PROJECT]", "[LOCATION]", "[ENTRY_GROUP]")
+
+        with pytest.raises(CustomException):
+            client.list_entries(parent)
+
+    def test_update_entry_group(self):
+        # Setup Expected Response
+        name = "name3373707"
+        display_name = "displayName1615086568"
+        description = "description-1724546052"
+        expected_response = {
+            "name": name,
+            "display_name": display_name,
+            "description": description,
+        }
+        expected_response = datacatalog_pb2.EntryGroup(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datacatalog_v1beta1.DataCatalogClient()
+
+        # Setup Request
+        entry_group = {}
+
+        response = client.update_entry_group(entry_group)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = datacatalog_pb2.UpdateEntryGroupRequest(
+            entry_group=entry_group
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_update_entry_group_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datacatalog_v1beta1.DataCatalogClient()
+
+        # Setup request
+        entry_group = {}
+
+        with pytest.raises(CustomException):
+            client.update_entry_group(entry_group)
 
     def test_create_tag_template(self):
         # Setup Expected Response

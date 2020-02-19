@@ -29,16 +29,34 @@ class EntryType(enum.IntEnum):
       ENTRY_TYPE_UNSPECIFIED (int): Default unknown type
       TABLE (int): Output only. The type of entry that has a GoogleSQL schema, including
       logical views.
+      MODEL (int): Output only. The type of models.
       DATA_STREAM (int): Output only. An entry type which is used for streaming entries. Example:
       Cloud Pub/Sub topic.
-      FILESET (int): Alpha feature. An entry type which is a set of files or objects. Example:
+      FILESET (int): An entry type which is a set of files or objects. Example:
       Cloud Storage fileset.
     """
 
     ENTRY_TYPE_UNSPECIFIED = 0
     TABLE = 2
+    MODEL = 5
     DATA_STREAM = 3
     FILESET = 4
+
+
+class IntegratedSystem(enum.IntEnum):
+    """
+    This enum describes all the possible systems that Data Catalog integrates
+    with.
+
+    Attributes:
+      INTEGRATED_SYSTEM_UNSPECIFIED (int): Default unknown system.
+      BIGQUERY (int): BigQuery.
+      CLOUD_PUBSUB (int): Cloud Pub/Sub.
+    """
+
+    INTEGRATED_SYSTEM_UNSPECIFIED = 0
+    BIGQUERY = 1
+    CLOUD_PUBSUB = 2
 
 
 class SearchResultType(enum.IntEnum):

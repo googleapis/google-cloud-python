@@ -280,10 +280,10 @@ class DataCatalogClient(object):
         return the complete resource, only the resource identifier and high
         level fields. Clients can subsequentally call ``Get`` methods.
 
-        Note that searches do not have full recall. There may be results that
-        match your query but are not returned, even in subsequent pages of
-        results. These missing results may vary across repeated calls to search.
-        Do not rely on this method if you need to guarantee full recall.
+        Note that Data Catalog search queries do not guarantee full recall.
+        Query results that match your query may not be returned, even in
+        subsequent result pages. Also note that results returned (and not
+        returned) can vary across repeated search queries.
 
         See `Data Catalog Search
         Syntax <https://cloud.google.com/data-catalog/docs/how-to/search-reference>`__
@@ -340,9 +340,7 @@ class DataCatalogClient(object):
             order_by (str): Specifies the ordering of results, currently supported case-sensitive
                 choices are:
 
-                -  ``relevance``, only supports desecending
-                -  ``last_access_timestamp [asc|desc]``, defaults to descending if not
-                   specified
+                -  ``relevance``, only supports descending
                 -  ``last_modified_timestamp [asc|desc]``, defaults to descending if not
                    specified
 
@@ -408,9 +406,23 @@ class DataCatalogClient(object):
         metadata=None,
     ):
         """
-        Alpha feature. Creates an EntryGroup. The user should enable the Data
-        Catalog API in the project identified by the ``parent`` parameter (see
-        [Data Catalog Resource Project]
+        Creates an EntryGroup.
+
+        An entry group contains logically related entries together with Cloud
+        Identity and Access Management policies that specify the users who can
+        create, edit, and view entries within the entry group.
+
+        Data Catalog automatically creates an entry group for BigQuery entries
+        ("@bigquery") and Pub/Sub topics ("@pubsub"). Users create their own
+        entry group to contain Cloud Storage fileset entries or custom type
+        entries, and the IAM policies associated with those entries. Entry
+        groups, like entries, can be searched.
+
+        A maximum of 10,000 entry groups may be created per organization across
+        all locations.
+
+        Users should enable the Data Catalog API in the project identified by
+        the ``parent`` parameter (see [Data Catalog Resource Project]
         (/data-catalog/docs/concepts/resource-project) for more information).
 
         Example:
@@ -501,7 +513,6 @@ class DataCatalogClient(object):
         metadata=None,
     ):
         """
-        Alpha feature.
         Gets an EntryGroup.
 
         Example:
@@ -571,16 +582,17 @@ class DataCatalogClient(object):
     def delete_entry_group(
         self,
         name,
+        force=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """
-        Alpha feature. Deletes an EntryGroup. Only entry groups that do not
-        contain entries can be deleted. The user should enable the Data Catalog
-        API in the project identified by the ``name`` parameter (see [Data
-        Catalog Resource Project] (/data-catalog/docs/concepts/resource-project)
-        for more information).
+        Deletes an EntryGroup. Only entry groups that do not contain entries can
+        be deleted. Users should enable the Data Catalog API in the project
+        identified by the ``name`` parameter (see [Data Catalog Resource
+        Project] (/data-catalog/docs/concepts/resource-project) for more
+        information).
 
         Example:
             >>> from google.cloud import datacatalog_v1beta1
@@ -594,6 +606,7 @@ class DataCatalogClient(object):
         Args:
             name (str): Required. The name of the entry group. For example,
                 ``projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}``.
+            force (bool): Optional. If true, deletes all entries in the entry group.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -621,7 +634,7 @@ class DataCatalogClient(object):
                 client_info=self._client_info,
             )
 
-        request = datacatalog_pb2.DeleteEntryGroupRequest(name=name)
+        request = datacatalog_pb2.DeleteEntryGroupRequest(name=name, force=force)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -649,11 +662,14 @@ class DataCatalogClient(object):
         metadata=None,
     ):
         """
-        Alpha feature. Creates an entry. Currently only entries of 'FILESET'
-        type can be created. The user should enable the Data Catalog API in the
-        project identified by the ``parent`` parameter (see [Data Catalog
-        Resource Project] (/data-catalog/docs/concepts/resource-project) for
-        more information).
+        Creates an entry. Only entries of 'FILESET' type or user-specified type
+        can be created.
+
+        Users should enable the Data Catalog API in the project identified by
+        the ``parent`` parameter (see [Data Catalog Resource Project]
+        (/data-catalog/docs/concepts/resource-project) for more information).
+
+        A maximum of 100,000 entries may be created per entry group.
 
         Example:
             >>> from google.cloud import datacatalog_v1beta1
@@ -741,8 +757,8 @@ class DataCatalogClient(object):
         metadata=None,
     ):
         """
-        Updates an existing entry. The user should enable the Data Catalog API
-        in the project identified by the ``entry.name`` parameter (see [Data
+        Updates an existing entry. Users should enable the Data Catalog API in
+        the project identified by the ``entry.name`` parameter (see [Data
         Catalog Resource Project] (/data-catalog/docs/concepts/resource-project)
         for more information).
 
@@ -777,6 +793,16 @@ class DataCatalogClient(object):
                    -  ``description``
                    -  ``gcs_fileset_spec``
                    -  ``gcs_fileset_spec.file_patterns``
+
+                -  For entries with ``user_specified_type``
+
+                   -  ``schema``
+                   -  ``display_name``
+                   -  ``description``
+                   -  user\_specified\_type
+                   -  user\_specified\_system
+                   -  linked\_resource
+                   -  source\_system\_timestamps
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.FieldMask`
@@ -838,11 +864,11 @@ class DataCatalogClient(object):
         metadata=None,
     ):
         """
-        Alpha feature. Deletes an existing entry. Only entries created through
-        ``CreateEntry`` method can be deleted. The user should enable the Data
-        Catalog API in the project identified by the ``name`` parameter (see
-        [Data Catalog Resource Project]
-        (/data-catalog/docs/concepts/resource-project) for more information).
+        Deletes an existing entry. Only entries created through ``CreateEntry``
+        method can be deleted. Users should enable the Data Catalog API in the
+        project identified by the ``name`` parameter (see [Data Catalog Resource
+        Project] (/data-catalog/docs/concepts/resource-project) for more
+        information).
 
         Example:
             >>> from google.cloud import datacatalog_v1beta1
@@ -925,11 +951,6 @@ class DataCatalogClient(object):
             name (str): Required. The name of the entry. Example:
 
                 -  projects/{project\_id}/locations/{location}/entryGroups/{entry\_group\_id}/entries/{entry\_id}
-
-                Entry groups are logical groupings of entries. Currently, users cannot
-                create/modify entry groups. They are created by Data Catalog; they
-                include ``@bigquery`` for all BigQuery entries, and ``@pubsub`` for all
-                Cloud Pub/Sub entries.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1016,7 +1037,7 @@ class DataCatalogClient(object):
                 -  ``pubsub.project_id.`topic.id.with.dots```
                 -  ``bigquery.table.project_id.dataset_id.table_id``
                 -  ``bigquery.dataset.project_id.dataset_id``
-                -  ``datacatalog.project_id.location_id.entry_group_id.entry_id``
+                -  ``datacatalog.entry.project_id.location_id.entry_group_id.entry_id``
 
                 ``*_id``\ s shoud satisfy the standard SQL rules for identifiers.
                 https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical.
@@ -1063,6 +1084,261 @@ class DataCatalogClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
+    def list_entry_groups(
+        self,
+        parent,
+        page_size=None,
+        page_token=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Lists entry groups.
+
+        Example:
+            >>> from google.cloud import datacatalog_v1beta1
+            >>>
+            >>> client = datacatalog_v1beta1.DataCatalogClient()
+            >>>
+            >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
+            >>>
+            >>> response = client.list_entry_groups(parent)
+
+        Args:
+            parent (str): Required. The name of the location that contains the entry groups, which
+                can be provided in URL format. Example:
+
+                -  projects/{project\_id}/locations/{location}
+            page_size (int): Optional. The maximum number of items to return. Default is 10. Max
+                limit is 1000. Throws an invalid argument for ``page_size > 1000``.
+            page_token (str): Optional. Token that specifies which page is requested. If empty, the first
+                page is returned.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.datacatalog_v1beta1.types.ListEntryGroupsResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "list_entry_groups" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "list_entry_groups"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_entry_groups,
+                default_retry=self._method_configs["ListEntryGroups"].retry,
+                default_timeout=self._method_configs["ListEntryGroups"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = datacatalog_pb2.ListEntryGroupsRequest(
+            parent=parent, page_size=page_size, page_token=page_token
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["list_entry_groups"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def list_entries(
+        self,
+        parent,
+        page_size=None,
+        page_token=None,
+        read_mask=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Lists entries.
+
+        Example:
+            >>> from google.cloud import datacatalog_v1beta1
+            >>>
+            >>> client = datacatalog_v1beta1.DataCatalogClient()
+            >>>
+            >>> parent = client.entry_group_path('[PROJECT]', '[LOCATION]', '[ENTRY_GROUP]')
+            >>>
+            >>> response = client.list_entries(parent)
+
+        Args:
+            parent (str): Required. The name of the entry group that contains the entries, which
+                can be provided in URL format. Example:
+
+                -  projects/{project\_id}/locations/{location}/entryGroups/{entry\_group\_id}
+            page_size (int): The maximum number of items to return. Default is 10. Max limit is 1000.
+                Throws an invalid argument for ``page_size > 1000``.
+            page_token (str): Token that specifies which page is requested. If empty, the first page is
+                returned.
+            read_mask (Union[dict, ~google.cloud.datacatalog_v1beta1.types.FieldMask]): The fields to return for each Entry. If not set or empty, all fields are
+                returned. For example, setting read\_mask to contain only one path
+                "name" will cause ListEntries to return a list of Entries with only
+                "name" field.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.datacatalog_v1beta1.types.FieldMask`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.datacatalog_v1beta1.types.ListEntriesResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "list_entries" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "list_entries"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_entries,
+                default_retry=self._method_configs["ListEntries"].retry,
+                default_timeout=self._method_configs["ListEntries"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = datacatalog_pb2.ListEntriesRequest(
+            parent=parent,
+            page_size=page_size,
+            page_token=page_token,
+            read_mask=read_mask,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["list_entries"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def update_entry_group(
+        self,
+        entry_group,
+        update_mask=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Updates an EntryGroup. The user should enable the Data Catalog API in
+        the project identified by the ``entry_group.name`` parameter (see [Data
+        Catalog Resource Project] (/data-catalog/docs/concepts/resource-project)
+        for more information).
+
+        Example:
+            >>> from google.cloud import datacatalog_v1beta1
+            >>>
+            >>> client = datacatalog_v1beta1.DataCatalogClient()
+            >>>
+            >>> # TODO: Initialize `entry_group`:
+            >>> entry_group = {}
+            >>>
+            >>> response = client.update_entry_group(entry_group)
+
+        Args:
+            entry_group (Union[dict, ~google.cloud.datacatalog_v1beta1.types.EntryGroup]): Required. The updated entry group. "name" field must be set.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.datacatalog_v1beta1.types.EntryGroup`
+            update_mask (Union[dict, ~google.cloud.datacatalog_v1beta1.types.FieldMask]): The fields to update on the entry group. If absent or empty, all modifiable
+                fields are updated.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.datacatalog_v1beta1.types.FieldMask`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.datacatalog_v1beta1.types.EntryGroup` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "update_entry_group" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "update_entry_group"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_entry_group,
+                default_retry=self._method_configs["UpdateEntryGroup"].retry,
+                default_timeout=self._method_configs["UpdateEntryGroup"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = datacatalog_pb2.UpdateEntryGroupRequest(
+            entry_group=entry_group, update_mask=update_mask
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("entry_group.name", entry_group.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["update_entry_group"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def create_tag_template(
         self,
         parent,
@@ -1095,13 +1371,13 @@ class DataCatalogClient(object):
             >>> response = client.create_tag_template(parent, tag_template_id, tag_template)
 
         Args:
-            parent (str): Required. The name of the project and the location this template is in.
+            parent (str): Required. The name of the project and the template location
+                `region <https://cloud.google.com/compute/docs/regions-zones/#available>`__.
+                NOTE: Currently, only the ``us-central1 region`` is supported.
+
                 Example:
 
-                -  projects/{project\_id}/locations/{location}
-
-                TagTemplate and its child resources may not actually be stored in the
-                location in this name.
+                -  projects/{project\_id}/locations/us-central1
             tag_template_id (str): Required. The id of the tag template to create.
             tag_template (Union[dict, ~google.cloud.datacatalog_v1beta1.types.TagTemplate]): Required. The tag template to create.
 
@@ -1240,7 +1516,7 @@ class DataCatalogClient(object):
         Updates a tag template. This method cannot be used to update the fields
         of a template. The tag template fields are represented as separate
         resources and should be updated using their own create/update/delete
-        methods. The user should enable the Data Catalog API in the project
+        methods. Users should enable the Data Catalog API in the project
         identified by the ``tag_template.name`` parameter (see [Data Catalog
         Resource Project] (/data-catalog/docs/concepts/resource-project) for
         more information).
@@ -1329,7 +1605,7 @@ class DataCatalogClient(object):
         metadata=None,
     ):
         """
-        Deletes a tag template and all tags using the template. The user should
+        Deletes a tag template and all tags using the template. Users should
         enable the Data Catalog API in the project identified by the ``name``
         parameter (see [Data Catalog Resource Project]
         (/data-catalog/docs/concepts/resource-project) for more information).
@@ -1430,12 +1706,13 @@ class DataCatalogClient(object):
             >>> response = client.create_tag_template_field(parent, tag_template_field_id, tag_template_field)
 
         Args:
-            parent (str): Required. The name of the project this template is in. Example:
+            parent (str): Required. The name of the project and the template location
+                `region <https://cloud.google.com/compute/docs/regions-zones/#available>`__.
+                NOTE: Currently, only the ``us-central1 region`` is supported.
 
-                -  projects/{project\_id}/locations/{location}/tagTemplates/{tag\_template\_id}
+                Example:
 
-                Note that this TagTemplateField may not actually be stored in the
-                location in this name.
+                -  projects/{project\_id}/locations/us-central1/tagTemplates/{tag\_template\_id}
             tag_template_field_id (str): Required. The ID of the tag template field to create. Field ids can
                 contain letters (both uppercase and lowercase), numbers (0-9),
                 underscores (\_) and dashes (-). Field IDs must be at least 1 character
@@ -1508,8 +1785,8 @@ class DataCatalogClient(object):
     ):
         """
         Updates a field in a tag template. This method cannot be used to update
-        the field type. The user should enable the Data Catalog API in the
-        project identified by the ``name`` parameter (see [Data Catalog Resource
+        the field type. Users should enable the Data Catalog API in the project
+        identified by the ``name`` parameter (see [Data Catalog Resource
         Project] (/data-catalog/docs/concepts/resource-project) for more
         information).
 
@@ -1692,7 +1969,7 @@ class DataCatalogClient(object):
         metadata=None,
     ):
         """
-        Deletes a field in a tag template and all uses of that field. The user
+        Deletes a field in a tag template and all uses of that field. Users
         should enable the Data Catalog API in the project identified by the
         ``name`` parameter (see [Data Catalog Resource Project]
         (/data-catalog/docs/concepts/resource-project) for more information).
@@ -2031,7 +2308,12 @@ class DataCatalogClient(object):
 
         Args:
             parent (str): Required. The name of the Data Catalog resource to list the tags of. The
-                resource could be an ``Entry``.
+                resource could be an ``Entry`` or an ``EntryGroup``.
+
+                Examples:
+
+                -  projects/{project\_id}/locations/{location}/entryGroups/{entry\_group\_id}
+                -  projects/{project\_id}/locations/{location}/entryGroups/{entry\_group\_id}/entries/{entry\_id}
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page

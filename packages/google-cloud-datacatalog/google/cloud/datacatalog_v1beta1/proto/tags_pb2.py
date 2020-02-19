@@ -980,10 +980,13 @@ TagTemplate = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_TAGTEMPLATE,
         __module__="google.cloud.datacatalog_v1beta1.proto.tags_pb2",
-        __doc__="""A tag template defines the schema of the tags used to
-  attach to Data Catalog resources. It defines the mapping of accepted
-  field names and types that can be used within the tag. The tag template
-  also controls the access to the tag.
+        __doc__="""A tag template defines a tag, which can have one or more
+  typed fields. The template is used to create and attach the tag to GCP
+  resources. `Tag template
+  roles </iam/docs/understanding-roles#data-catalog-roles>`__ provide
+  permissions to create, edit, and use the template (see, for example, the
+  `TagTemplate User </data-catalog/docs/how-to/template-user>`__ role,
+  which includes permission to use the tag template to tag resources.
   
   
   Attributes:

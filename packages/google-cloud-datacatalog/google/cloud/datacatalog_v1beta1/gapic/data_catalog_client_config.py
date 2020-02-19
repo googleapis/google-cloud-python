@@ -62,6 +62,21 @@ config = {
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
+                "ListEntryGroups": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "ListEntries": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "UpdateEntryGroup": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
                 "CreateTagTemplate": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",

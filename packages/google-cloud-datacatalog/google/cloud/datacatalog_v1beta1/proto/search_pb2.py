@@ -17,6 +17,9 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.cloud.datacatalog_v1beta1.proto import (
+    common_pb2 as google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_common__pb2,
+)
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
@@ -28,10 +31,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n$com.google.cloud.datacatalog.v1beta1P\001ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\370\001\001"
     ),
     serialized_pb=_b(
-        '\n3google/cloud/datacatalog_v1beta1/proto/search.proto\x12 google.cloud.datacatalog.v1beta1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xbd\x01\n\x13SearchCatalogResult\x12N\n\x12search_result_type\x18\x01 \x01(\x0e\x32\x32.google.cloud.datacatalog.v1beta1.SearchResultType\x12\x1d\n\x15search_result_subtype\x18\x02 \x01(\t\x12\x1e\n\x16relative_resource_name\x18\x03 \x01(\t\x12\x17\n\x0flinked_resource\x18\x04 \x01(\t*d\n\x10SearchResultType\x12"\n\x1eSEARCH_RESULT_TYPE_UNSPECIFIED\x10\x00\x12\t\n\x05\x45NTRY\x10\x01\x12\x10\n\x0cTAG_TEMPLATE\x10\x02\x12\x0f\n\x0b\x45NTRY_GROUP\x10\x03\x42x\n$com.google.cloud.datacatalog.v1beta1P\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\x62\x06proto3'
+        '\n3google/cloud/datacatalog_v1beta1/proto/search.proto\x12 google.cloud.datacatalog.v1beta1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x33google/cloud/datacatalog_v1beta1/proto/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xbd\x01\n\x13SearchCatalogResult\x12N\n\x12search_result_type\x18\x01 \x01(\x0e\x32\x32.google.cloud.datacatalog.v1beta1.SearchResultType\x12\x1d\n\x15search_result_subtype\x18\x02 \x01(\t\x12\x1e\n\x16relative_resource_name\x18\x03 \x01(\t\x12\x17\n\x0flinked_resource\x18\x04 \x01(\t*d\n\x10SearchResultType\x12"\n\x1eSEARCH_RESULT_TYPE_UNSPECIFIED\x10\x00\x12\t\n\x05\x45NTRY\x10\x01\x12\x10\n\x0cTAG_TEMPLATE\x10\x02\x12\x0f\n\x0b\x45NTRY_GROUP\x10\x03\x42x\n$com.google.cloud.datacatalog.v1beta1P\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\x62\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
     ],
 )
@@ -61,8 +65,8 @@ _SEARCHRESULTTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=347,
-    serialized_end=447,
+    serialized_start=400,
+    serialized_end=500,
 )
 _sym_db.RegisterEnumDescriptor(_SEARCHRESULTTYPE)
 
@@ -161,8 +165,8 @@ _SEARCHCATALOGRESULT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=156,
-    serialized_end=345,
+    serialized_start=209,
+    serialized_end=398,
 )
 
 _SEARCHCATALOGRESULT.fields_by_name["search_result_type"].enum_type = _SEARCHRESULTTYPE

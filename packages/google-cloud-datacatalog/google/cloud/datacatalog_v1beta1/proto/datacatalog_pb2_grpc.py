@@ -33,6 +33,11 @@ class DataCatalogStub(object):
             request_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.CreateEntryGroupRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.EntryGroup.FromString,
         )
+        self.UpdateEntryGroup = channel.unary_unary(
+            "/google.cloud.datacatalog.v1beta1.DataCatalog/UpdateEntryGroup",
+            request_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.UpdateEntryGroupRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.EntryGroup.FromString,
+        )
         self.GetEntryGroup = channel.unary_unary(
             "/google.cloud.datacatalog.v1beta1.DataCatalog/GetEntryGroup",
             request_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.GetEntryGroupRequest.SerializeToString,
@@ -42,6 +47,11 @@ class DataCatalogStub(object):
             "/google.cloud.datacatalog.v1beta1.DataCatalog/DeleteEntryGroup",
             request_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.DeleteEntryGroupRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+        )
+        self.ListEntryGroups = channel.unary_unary(
+            "/google.cloud.datacatalog.v1beta1.DataCatalog/ListEntryGroups",
+            request_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.ListEntryGroupsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.ListEntryGroupsResponse.FromString,
         )
         self.CreateEntry = channel.unary_unary(
             "/google.cloud.datacatalog.v1beta1.DataCatalog/CreateEntry",
@@ -67,6 +77,11 @@ class DataCatalogStub(object):
             "/google.cloud.datacatalog.v1beta1.DataCatalog/LookupEntry",
             request_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.LookupEntryRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.Entry.FromString,
+        )
+        self.ListEntries = channel.unary_unary(
+            "/google.cloud.datacatalog.v1beta1.DataCatalog/ListEntries",
+            request_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.ListEntriesRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.ListEntriesResponse.FromString,
         )
         self.CreateTagTemplate = channel.unary_unary(
             "/google.cloud.datacatalog.v1beta1.DataCatalog/CreateTagTemplate",
@@ -159,10 +174,10 @@ class DataCatalogServicer(object):
     the complete resource, only the resource identifier and high level
     fields. Clients can subsequentally call `Get` methods.
 
-    Note that searches do not have full recall. There may be results that match
-    your query but are not returned, even in subsequent pages of results. These
-    missing results may vary across repeated calls to search. Do not rely on
-    this method if you need to guarantee full recall.
+    Note that Data Catalog search queries do not guarantee full recall. Query
+    results that match your query may not be returned, even in subsequent
+    result pages. Also note that results returned (and not returned) can vary
+    across repeated search queries.
 
     See [Data Catalog Search
     Syntax](/data-catalog/docs/how-to/search-reference) for more information.
@@ -172,9 +187,22 @@ class DataCatalogServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def CreateEntryGroup(self, request, context):
-        """Alpha feature.
-    Creates an EntryGroup.
-    The user should enable the Data Catalog API in the project identified by
+        """Creates an EntryGroup.
+
+    An entry group contains logically related entries together with Cloud
+    Identity and Access Management policies that specify the users who can
+    create, edit, and view entries within the entry group.
+
+    Data Catalog automatically creates an entry group for BigQuery entries
+    ("@bigquery") and Pub/Sub topics ("@pubsub"). Users create their own entry
+    group to contain Cloud Storage fileset entries or custom type entries,
+    and the IAM policies associated with those entries. Entry groups, like
+    entries, can be searched.
+
+    A maximum of 10,000 entry groups may be created per organization across all
+    locations.
+
+    Users should enable the Data Catalog API in the project identified by
     the `parent` parameter (see [Data Catalog Resource Project]
     (/data-catalog/docs/concepts/resource-project) for more information).
     """
@@ -182,18 +210,26 @@ class DataCatalogServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def UpdateEntryGroup(self, request, context):
+        """Updates an EntryGroup. The user should enable the Data Catalog API in the
+    project identified by the `entry_group.name` parameter (see [Data Catalog
+    Resource Project] (/data-catalog/docs/concepts/resource-project) for more
+    information).
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
     def GetEntryGroup(self, request, context):
-        """Alpha feature.
-    Gets an EntryGroup.
+        """Gets an EntryGroup.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def DeleteEntryGroup(self, request, context):
-        """Alpha feature.
-    Deletes an EntryGroup. Only entry groups that do not contain entries can be
-    deleted. The user should enable the Data Catalog API in the project
+        """Deletes an EntryGroup. Only entry groups that do not contain entries can be
+    deleted. Users should enable the Data Catalog API in the project
     identified by the `name` parameter (see [Data Catalog Resource Project]
     (/data-catalog/docs/concepts/resource-project) for more information).
     """
@@ -201,12 +237,22 @@ class DataCatalogServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def ListEntryGroups(self, request, context):
+        """Lists entry groups.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
     def CreateEntry(self, request, context):
-        """Alpha feature.
-    Creates an entry. Currently only entries of 'FILESET' type can be created.
-    The user should enable the Data Catalog API in the project identified by
+        """Creates an entry. Only entries of 'FILESET' type or user-specified type can
+    be created.
+
+    Users should enable the Data Catalog API in the project identified by
     the `parent` parameter (see [Data Catalog Resource Project]
     (/data-catalog/docs/concepts/resource-project) for more information).
+
+    A maximum of 100,000 entries may be created per entry group.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -214,7 +260,7 @@ class DataCatalogServicer(object):
 
     def UpdateEntry(self, request, context):
         """Updates an existing entry.
-    The user should enable the Data Catalog API in the project identified by
+    Users should enable the Data Catalog API in the project identified by
     the `entry.name` parameter (see [Data Catalog Resource Project]
     (/data-catalog/docs/concepts/resource-project) for more information).
     """
@@ -223,11 +269,10 @@ class DataCatalogServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def DeleteEntry(self, request, context):
-        """Alpha feature.
-    Deletes an existing entry. Only entries created through
+        """Deletes an existing entry. Only entries created through
     [CreateEntry][google.cloud.datacatalog.v1beta1.DataCatalog.CreateEntry]
     method can be deleted.
-    The user should enable the Data Catalog API in the project identified by
+    Users should enable the Data Catalog API in the project identified by
     the `name` parameter (see [Data Catalog Resource Project]
     (/data-catalog/docs/concepts/resource-project) for more information).
     """
@@ -246,6 +291,13 @@ class DataCatalogServicer(object):
         """Get an entry by target resource name. This method allows clients to use
     the resource name from the source Google Cloud Platform service to get the
     Data Catalog Entry.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def ListEntries(self, request, context):
+        """Lists entries.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -272,7 +324,7 @@ class DataCatalogServicer(object):
         """Updates a tag template. This method cannot be used to update the fields of
     a template. The tag template fields are represented as separate resources
     and should be updated using their own create/update/delete methods.
-    The user should enable the Data Catalog API in the project identified by
+    Users should enable the Data Catalog API in the project identified by
     the `tag_template.name` parameter (see [Data Catalog Resource Project]
     (/data-catalog/docs/concepts/resource-project) for more information).
     """
@@ -282,7 +334,7 @@ class DataCatalogServicer(object):
 
     def DeleteTagTemplate(self, request, context):
         """Deletes a tag template and all tags using the template.
-    The user should enable the Data Catalog API in the project identified by
+    Users should enable the Data Catalog API in the project identified by
     the `name` parameter (see [Data Catalog Resource Project]
     (/data-catalog/docs/concepts/resource-project) for more information).
     """
@@ -303,7 +355,7 @@ class DataCatalogServicer(object):
 
     def UpdateTagTemplateField(self, request, context):
         """Updates a field in a tag template. This method cannot be used to update the
-    field type. The user should enable the Data Catalog API in the project
+    field type. Users should enable the Data Catalog API in the project
     identified by the `name` parameter (see [Data Catalog Resource Project]
     (/data-catalog/docs/concepts/resource-project) for more information).
     """
@@ -323,7 +375,7 @@ class DataCatalogServicer(object):
 
     def DeleteTagTemplateField(self, request, context):
         """Deletes a field in a tag template and all uses of that field.
-    The user should enable the Data Catalog API in the project identified by
+    Users should enable the Data Catalog API in the project identified by
     the `name` parameter (see [Data Catalog Resource Project]
     (/data-catalog/docs/concepts/resource-project) for more information).
     """
@@ -442,6 +494,11 @@ def add_DataCatalogServicer_to_server(servicer, server):
             request_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.CreateEntryGroupRequest.FromString,
             response_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.EntryGroup.SerializeToString,
         ),
+        "UpdateEntryGroup": grpc.unary_unary_rpc_method_handler(
+            servicer.UpdateEntryGroup,
+            request_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.UpdateEntryGroupRequest.FromString,
+            response_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.EntryGroup.SerializeToString,
+        ),
         "GetEntryGroup": grpc.unary_unary_rpc_method_handler(
             servicer.GetEntryGroup,
             request_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.GetEntryGroupRequest.FromString,
@@ -451,6 +508,11 @@ def add_DataCatalogServicer_to_server(servicer, server):
             servicer.DeleteEntryGroup,
             request_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.DeleteEntryGroupRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        ),
+        "ListEntryGroups": grpc.unary_unary_rpc_method_handler(
+            servicer.ListEntryGroups,
+            request_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.ListEntryGroupsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.ListEntryGroupsResponse.SerializeToString,
         ),
         "CreateEntry": grpc.unary_unary_rpc_method_handler(
             servicer.CreateEntry,
@@ -476,6 +538,11 @@ def add_DataCatalogServicer_to_server(servicer, server):
             servicer.LookupEntry,
             request_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.LookupEntryRequest.FromString,
             response_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.Entry.SerializeToString,
+        ),
+        "ListEntries": grpc.unary_unary_rpc_method_handler(
+            servicer.ListEntries,
+            request_deserializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.ListEntriesRequest.FromString,
+            response_serializer=google_dot_cloud_dot_datacatalog__v1beta1_dot_proto_dot_datacatalog__pb2.ListEntriesResponse.SerializeToString,
         ),
         "CreateTagTemplate": grpc.unary_unary_rpc_method_handler(
             servicer.CreateTagTemplate,

@@ -119,10 +119,10 @@ class DataCatalogGrpcTransport(object):
         return the complete resource, only the resource identifier and high
         level fields. Clients can subsequentally call ``Get`` methods.
 
-        Note that searches do not have full recall. There may be results that
-        match your query but are not returned, even in subsequent pages of
-        results. These missing results may vary across repeated calls to search.
-        Do not rely on this method if you need to guarantee full recall.
+        Note that Data Catalog search queries do not guarantee full recall.
+        Query results that match your query may not be returned, even in
+        subsequent result pages. Also note that results returned (and not
+        returned) can vary across repeated search queries.
 
         See `Data Catalog Search
         Syntax <https://cloud.google.com/data-catalog/docs/how-to/search-reference>`__
@@ -139,9 +139,23 @@ class DataCatalogGrpcTransport(object):
     def create_entry_group(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.create_entry_group`.
 
-        Alpha feature. Creates an EntryGroup. The user should enable the Data
-        Catalog API in the project identified by the ``parent`` parameter (see
-        [Data Catalog Resource Project]
+        Creates an EntryGroup.
+
+        An entry group contains logically related entries together with Cloud
+        Identity and Access Management policies that specify the users who can
+        create, edit, and view entries within the entry group.
+
+        Data Catalog automatically creates an entry group for BigQuery entries
+        ("@bigquery") and Pub/Sub topics ("@pubsub"). Users create their own
+        entry group to contain Cloud Storage fileset entries or custom type
+        entries, and the IAM policies associated with those entries. Entry
+        groups, like entries, can be searched.
+
+        A maximum of 10,000 entry groups may be created per organization across
+        all locations.
+
+        Users should enable the Data Catalog API in the project identified by
+        the ``parent`` parameter (see [Data Catalog Resource Project]
         (/data-catalog/docs/concepts/resource-project) for more information).
 
         Returns:
@@ -155,7 +169,6 @@ class DataCatalogGrpcTransport(object):
     def get_entry_group(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.get_entry_group`.
 
-        Alpha feature.
         Gets an EntryGroup.
 
         Returns:
@@ -169,11 +182,11 @@ class DataCatalogGrpcTransport(object):
     def delete_entry_group(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.delete_entry_group`.
 
-        Alpha feature. Deletes an EntryGroup. Only entry groups that do not
-        contain entries can be deleted. The user should enable the Data Catalog
-        API in the project identified by the ``name`` parameter (see [Data
-        Catalog Resource Project] (/data-catalog/docs/concepts/resource-project)
-        for more information).
+        Deletes an EntryGroup. Only entry groups that do not contain entries can
+        be deleted. Users should enable the Data Catalog API in the project
+        identified by the ``name`` parameter (see [Data Catalog Resource
+        Project] (/data-catalog/docs/concepts/resource-project) for more
+        information).
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -186,11 +199,14 @@ class DataCatalogGrpcTransport(object):
     def create_entry(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.create_entry`.
 
-        Alpha feature. Creates an entry. Currently only entries of 'FILESET'
-        type can be created. The user should enable the Data Catalog API in the
-        project identified by the ``parent`` parameter (see [Data Catalog
-        Resource Project] (/data-catalog/docs/concepts/resource-project) for
-        more information).
+        Creates an entry. Only entries of 'FILESET' type or user-specified type
+        can be created.
+
+        Users should enable the Data Catalog API in the project identified by
+        the ``parent`` parameter (see [Data Catalog Resource Project]
+        (/data-catalog/docs/concepts/resource-project) for more information).
+
+        A maximum of 100,000 entries may be created per entry group.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -203,8 +219,8 @@ class DataCatalogGrpcTransport(object):
     def update_entry(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.update_entry`.
 
-        Updates an existing entry. The user should enable the Data Catalog API
-        in the project identified by the ``entry.name`` parameter (see [Data
+        Updates an existing entry. Users should enable the Data Catalog API in
+        the project identified by the ``entry.name`` parameter (see [Data
         Catalog Resource Project] (/data-catalog/docs/concepts/resource-project)
         for more information).
 
@@ -219,11 +235,11 @@ class DataCatalogGrpcTransport(object):
     def delete_entry(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.delete_entry`.
 
-        Alpha feature. Deletes an existing entry. Only entries created through
-        ``CreateEntry`` method can be deleted. The user should enable the Data
-        Catalog API in the project identified by the ``name`` parameter (see
-        [Data Catalog Resource Project]
-        (/data-catalog/docs/concepts/resource-project) for more information).
+        Deletes an existing entry. Only entries created through ``CreateEntry``
+        method can be deleted. Users should enable the Data Catalog API in the
+        project identified by the ``name`` parameter (see [Data Catalog Resource
+        Project] (/data-catalog/docs/concepts/resource-project) for more
+        information).
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -259,6 +275,48 @@ class DataCatalogGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["data_catalog_stub"].LookupEntry
+
+    @property
+    def list_entry_groups(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.list_entry_groups`.
+
+        Lists entry groups.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].ListEntryGroups
+
+    @property
+    def list_entries(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.list_entries`.
+
+        Lists entries.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].ListEntries
+
+    @property
+    def update_entry_group(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.update_entry_group`.
+
+        Updates an EntryGroup. The user should enable the Data Catalog API in
+        the project identified by the ``entry_group.name`` parameter (see [Data
+        Catalog Resource Project] (/data-catalog/docs/concepts/resource-project)
+        for more information).
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].UpdateEntryGroup
 
     @property
     def create_tag_template(self):
@@ -297,7 +355,7 @@ class DataCatalogGrpcTransport(object):
         Updates a tag template. This method cannot be used to update the fields
         of a template. The tag template fields are represented as separate
         resources and should be updated using their own create/update/delete
-        methods. The user should enable the Data Catalog API in the project
+        methods. Users should enable the Data Catalog API in the project
         identified by the ``tag_template.name`` parameter (see [Data Catalog
         Resource Project] (/data-catalog/docs/concepts/resource-project) for
         more information).
@@ -313,7 +371,7 @@ class DataCatalogGrpcTransport(object):
     def delete_tag_template(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.delete_tag_template`.
 
-        Deletes a tag template and all tags using the template. The user should
+        Deletes a tag template and all tags using the template. Users should
         enable the Data Catalog API in the project identified by the ``name``
         parameter (see [Data Catalog Resource Project]
         (/data-catalog/docs/concepts/resource-project) for more information).
@@ -347,8 +405,8 @@ class DataCatalogGrpcTransport(object):
         """Return the gRPC stub for :meth:`DataCatalogClient.update_tag_template_field`.
 
         Updates a field in a tag template. This method cannot be used to update
-        the field type. The user should enable the Data Catalog API in the
-        project identified by the ``name`` parameter (see [Data Catalog Resource
+        the field type. Users should enable the Data Catalog API in the project
+        identified by the ``name`` parameter (see [Data Catalog Resource
         Project] (/data-catalog/docs/concepts/resource-project) for more
         information).
 
@@ -380,7 +438,7 @@ class DataCatalogGrpcTransport(object):
     def delete_tag_template_field(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.delete_tag_template_field`.
 
-        Deletes a field in a tag template and all uses of that field. The user
+        Deletes a field in a tag template and all uses of that field. Users
         should enable the Data Catalog API in the project identified by the
         ``name`` parameter (see [Data Catalog Resource Project]
         (/data-catalog/docs/concepts/resource-project) for more information).
