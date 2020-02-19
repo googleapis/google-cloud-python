@@ -1233,8 +1233,8 @@ ConfusionMatrix = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_CONFUSIONMATRIX,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
-        __doc__="""Confusion matrix of the model running the classification.
-  Only applicable when the metrics entry aggregates multiple labels. Not
+        __doc__="""Confusion matrix of the model running the classification. Only
+  applicable when the metrics entry aggregates multiple labels. Not
   applicable when the entry is for a single label.
   
   """,
