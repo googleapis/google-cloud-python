@@ -28,10 +28,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.dataproc.v1",
     syntax="proto3",
     serialized_options=_b(
-        "\n\034com.google.cloud.dataproc.v1B\030AutoscalingPoliciesProtoP\001Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataproc"
+        "\n\034com.google.cloud.dataproc.v1B\030AutoscalingPoliciesProtoP\001Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataproc\352AE\n\036dataproc.googleapis.com/Region\022#projects/{project}/regions/{region}"
     ),
     serialized_pb=_b(
-        '\n9google/cloud/dataproc_v1/proto/autoscaling_policies.proto\x12\x18google.cloud.dataproc.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x17google/api/client.proto"\xd4\x03\n\x11\x41utoscalingPolicy\x12\n\n\x02id\x18\x01 \x01(\t\x12\x11\n\x04name\x18\x02 \x01(\tB\x03\xe0\x41\x03\x12S\n\x0f\x62\x61sic_algorithm\x18\x03 \x01(\x0b\x32\x33.google.cloud.dataproc.v1.BasicAutoscalingAlgorithmB\x03\xe0\x41\x02H\x00\x12Z\n\rworker_config\x18\x04 \x01(\x0b\x32>.google.cloud.dataproc.v1.InstanceGroupAutoscalingPolicyConfigB\x03\xe0\x41\x02\x12\x64\n\x17secondary_worker_config\x18\x05 \x01(\x0b\x32>.google.cloud.dataproc.v1.InstanceGroupAutoscalingPolicyConfigB\x03\xe0\x41\x01:|\xea\x41y\n)dataproc.googleapis.com/AutoscalingPolicy\x12Lprojects/{project}/regions/{region}/autoscalingPolicies/{autoscaling_policy}B\x0b\n\talgorithm"\xa4\x01\n\x19\x42\x61sicAutoscalingAlgorithm\x12N\n\x0byarn_config\x18\x01 \x01(\x0b\x32\x34.google.cloud.dataproc.v1.BasicYarnAutoscalingConfigB\x03\xe0\x41\x02\x12\x37\n\x0f\x63ooldown_period\x18\x02 \x01(\x0b\x32\x19.google.protobuf.DurationB\x03\xe0\x41\x01"\xf9\x01\n\x1a\x42\x61sicYarnAutoscalingConfig\x12\x45\n\x1dgraceful_decommission_timeout\x18\x05 \x01(\x0b\x32\x19.google.protobuf.DurationB\x03\xe0\x41\x02\x12\x1c\n\x0fscale_up_factor\x18\x01 \x01(\x01\x42\x03\xe0\x41\x02\x12\x1e\n\x11scale_down_factor\x18\x02 \x01(\x01\x42\x03\xe0\x41\x02\x12)\n\x1cscale_up_min_worker_fraction\x18\x03 \x01(\x01\x42\x03\xe0\x41\x01\x12+\n\x1escale_down_min_worker_fraction\x18\x04 \x01(\x01\x42\x03\xe0\x41\x01"s\n$InstanceGroupAutoscalingPolicyConfig\x12\x1a\n\rmin_instances\x18\x01 \x01(\x05\x42\x03\xe0\x41\x01\x12\x1a\n\rmax_instances\x18\x02 \x01(\x05\x42\x03\xe0\x41\x02\x12\x13\n\x06weight\x18\x03 \x01(\x05\x42\x03\xe0\x41\x01"\xa0\x01\n\x1e\x43reateAutoscalingPolicyRequest\x12\x41\n\x06parent\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\x12)dataproc.googleapis.com/AutoscalingPolicy\x12;\n\x06policy\x18\x02 \x01(\x0b\x32+.google.cloud.dataproc.v1.AutoscalingPolicy"^\n\x1bGetAutoscalingPolicyRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)dataproc.googleapis.com/AutoscalingPolicy"b\n\x1eUpdateAutoscalingPolicyRequest\x12@\n\x06policy\x18\x01 \x01(\x0b\x32+.google.cloud.dataproc.v1.AutoscalingPolicyB\x03\xe0\x41\x02"a\n\x1e\x44\x65leteAutoscalingPolicyRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)dataproc.googleapis.com/AutoscalingPolicy"\x94\x01\n\x1eListAutoscalingPoliciesRequest\x12\x41\n\x06parent\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\x12)dataproc.googleapis.com/AutoscalingPolicy\x12\x16\n\tpage_size\x18\x02 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x03 \x01(\tB\x03\xe0\x41\x01"\x83\x01\n\x1fListAutoscalingPoliciesResponse\x12\x42\n\x08policies\x18\x01 \x03(\x0b\x32+.google.cloud.dataproc.v1.AutoscalingPolicyB\x03\xe0\x41\x03\x12\x1c\n\x0fnext_page_token\x18\x02 \x01(\tB\x03\xe0\x41\x03\x32\xfd\n\n\x18\x41utoscalingPolicyService\x12\x8c\x02\n\x17\x43reateAutoscalingPolicy\x12\x38.google.cloud.dataproc.v1.CreateAutoscalingPolicyRequest\x1a+.google.cloud.dataproc.v1.AutoscalingPolicy"\x89\x01\x82\xd3\xe4\x93\x02\x82\x01"7/v1/{parent=projects/*/locations/*}/autoscalingPolicies:\x06policyZ?"5/v1/{parent=projects/*/regions/*}/autoscalingPolicies:\x06policy\x12\x9a\x02\n\x17UpdateAutoscalingPolicy\x12\x38.google.cloud.dataproc.v1.UpdateAutoscalingPolicyRequest\x1a+.google.cloud.dataproc.v1.AutoscalingPolicy"\x97\x01\x82\xd3\xe4\x93\x02\x90\x01\x1a>/v1/{policy.name=projects/*/locations/*/autoscalingPolicies/*}:\x06policyZF\x1a</v1/{policy.name=projects/*/regions/*/autoscalingPolicies/*}:\x06policy\x12\xf4\x01\n\x14GetAutoscalingPolicy\x12\x35.google.cloud.dataproc.v1.GetAutoscalingPolicyRequest\x1a+.google.cloud.dataproc.v1.AutoscalingPolicy"x\x82\xd3\xe4\x93\x02r\x12\x37/v1/{name=projects/*/locations/*/autoscalingPolicies/*}Z7\x12\x35/v1/{name=projects/*/regions/*/autoscalingPolicies/*}\x12\x88\x02\n\x17ListAutoscalingPolicies\x12\x38.google.cloud.dataproc.v1.ListAutoscalingPoliciesRequest\x1a\x39.google.cloud.dataproc.v1.ListAutoscalingPoliciesResponse"x\x82\xd3\xe4\x93\x02r\x12\x37/v1/{parent=projects/*/locations/*}/autoscalingPoliciesZ7\x12\x35/v1/{parent=projects/*/regions/*}/autoscalingPolicies\x12\xe5\x01\n\x17\x44\x65leteAutoscalingPolicy\x12\x38.google.cloud.dataproc.v1.DeleteAutoscalingPolicyRequest\x1a\x16.google.protobuf.Empty"x\x82\xd3\xe4\x93\x02r*7/v1/{name=projects/*/locations/*/autoscalingPolicies/*}Z7*5/v1/{name=projects/*/regions/*/autoscalingPolicies/*}\x1aK\xca\x41\x17\x64\x61taproc.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB|\n\x1c\x63om.google.cloud.dataproc.v1B\x18\x41utoscalingPoliciesProtoP\x01Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataprocb\x06proto3'
+        '\n9google/cloud/dataproc_v1/proto/autoscaling_policies.proto\x12\x18google.cloud.dataproc.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x17google/api/client.proto"\xa8\x04\n\x11\x41utoscalingPolicy\x12\n\n\x02id\x18\x01 \x01(\t\x12\x11\n\x04name\x18\x02 \x01(\tB\x03\xe0\x41\x03\x12S\n\x0f\x62\x61sic_algorithm\x18\x03 \x01(\x0b\x32\x33.google.cloud.dataproc.v1.BasicAutoscalingAlgorithmB\x03\xe0\x41\x02H\x00\x12Z\n\rworker_config\x18\x04 \x01(\x0b\x32>.google.cloud.dataproc.v1.InstanceGroupAutoscalingPolicyConfigB\x03\xe0\x41\x02\x12\x64\n\x17secondary_worker_config\x18\x05 \x01(\x0b\x32>.google.cloud.dataproc.v1.InstanceGroupAutoscalingPolicyConfigB\x03\xe0\x41\x01:\xcf\x01\xea\x41\xcb\x01\n)dataproc.googleapis.com/AutoscalingPolicy\x12Pprojects/{project}/locations/{location}/autoscalingPolicies/{autoscaling_policy}\x12Lprojects/{project}/regions/{region}/autoscalingPolicies/{autoscaling_policy}B\x0b\n\talgorithm"\xa4\x01\n\x19\x42\x61sicAutoscalingAlgorithm\x12N\n\x0byarn_config\x18\x01 \x01(\x0b\x32\x34.google.cloud.dataproc.v1.BasicYarnAutoscalingConfigB\x03\xe0\x41\x02\x12\x37\n\x0f\x63ooldown_period\x18\x02 \x01(\x0b\x32\x19.google.protobuf.DurationB\x03\xe0\x41\x01"\xf9\x01\n\x1a\x42\x61sicYarnAutoscalingConfig\x12\x45\n\x1dgraceful_decommission_timeout\x18\x05 \x01(\x0b\x32\x19.google.protobuf.DurationB\x03\xe0\x41\x02\x12\x1c\n\x0fscale_up_factor\x18\x01 \x01(\x01\x42\x03\xe0\x41\x02\x12\x1e\n\x11scale_down_factor\x18\x02 \x01(\x01\x42\x03\xe0\x41\x02\x12)\n\x1cscale_up_min_worker_fraction\x18\x03 \x01(\x01\x42\x03\xe0\x41\x01\x12+\n\x1escale_down_min_worker_fraction\x18\x04 \x01(\x01\x42\x03\xe0\x41\x01"s\n$InstanceGroupAutoscalingPolicyConfig\x12\x1a\n\rmin_instances\x18\x01 \x01(\x05\x42\x03\xe0\x41\x01\x12\x1a\n\rmax_instances\x18\x02 \x01(\x05\x42\x03\xe0\x41\x02\x12\x13\n\x06weight\x18\x03 \x01(\x05\x42\x03\xe0\x41\x01"\xa0\x01\n\x1e\x43reateAutoscalingPolicyRequest\x12\x41\n\x06parent\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\x12)dataproc.googleapis.com/AutoscalingPolicy\x12;\n\x06policy\x18\x02 \x01(\x0b\x32+.google.cloud.dataproc.v1.AutoscalingPolicy"^\n\x1bGetAutoscalingPolicyRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)dataproc.googleapis.com/AutoscalingPolicy"b\n\x1eUpdateAutoscalingPolicyRequest\x12@\n\x06policy\x18\x01 \x01(\x0b\x32+.google.cloud.dataproc.v1.AutoscalingPolicyB\x03\xe0\x41\x02"a\n\x1e\x44\x65leteAutoscalingPolicyRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)dataproc.googleapis.com/AutoscalingPolicy"\x94\x01\n\x1eListAutoscalingPoliciesRequest\x12\x41\n\x06parent\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\x12)dataproc.googleapis.com/AutoscalingPolicy\x12\x16\n\tpage_size\x18\x02 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x03 \x01(\tB\x03\xe0\x41\x01"\x83\x01\n\x1fListAutoscalingPoliciesResponse\x12\x42\n\x08policies\x18\x01 \x03(\x0b\x32+.google.cloud.dataproc.v1.AutoscalingPolicyB\x03\xe0\x41\x03\x12\x1c\n\x0fnext_page_token\x18\x02 \x01(\tB\x03\xe0\x41\x03\x32\xfd\n\n\x18\x41utoscalingPolicyService\x12\x8c\x02\n\x17\x43reateAutoscalingPolicy\x12\x38.google.cloud.dataproc.v1.CreateAutoscalingPolicyRequest\x1a+.google.cloud.dataproc.v1.AutoscalingPolicy"\x89\x01\x82\xd3\xe4\x93\x02\x82\x01"7/v1/{parent=projects/*/locations/*}/autoscalingPolicies:\x06policyZ?"5/v1/{parent=projects/*/regions/*}/autoscalingPolicies:\x06policy\x12\x9a\x02\n\x17UpdateAutoscalingPolicy\x12\x38.google.cloud.dataproc.v1.UpdateAutoscalingPolicyRequest\x1a+.google.cloud.dataproc.v1.AutoscalingPolicy"\x97\x01\x82\xd3\xe4\x93\x02\x90\x01\x1a>/v1/{policy.name=projects/*/locations/*/autoscalingPolicies/*}:\x06policyZF\x1a</v1/{policy.name=projects/*/regions/*/autoscalingPolicies/*}:\x06policy\x12\xf4\x01\n\x14GetAutoscalingPolicy\x12\x35.google.cloud.dataproc.v1.GetAutoscalingPolicyRequest\x1a+.google.cloud.dataproc.v1.AutoscalingPolicy"x\x82\xd3\xe4\x93\x02r\x12\x37/v1/{name=projects/*/locations/*/autoscalingPolicies/*}Z7\x12\x35/v1/{name=projects/*/regions/*/autoscalingPolicies/*}\x12\x88\x02\n\x17ListAutoscalingPolicies\x12\x38.google.cloud.dataproc.v1.ListAutoscalingPoliciesRequest\x1a\x39.google.cloud.dataproc.v1.ListAutoscalingPoliciesResponse"x\x82\xd3\xe4\x93\x02r\x12\x37/v1/{parent=projects/*/locations/*}/autoscalingPoliciesZ7\x12\x35/v1/{parent=projects/*/regions/*}/autoscalingPolicies\x12\xe5\x01\n\x17\x44\x65leteAutoscalingPolicy\x12\x38.google.cloud.dataproc.v1.DeleteAutoscalingPolicyRequest\x1a\x16.google.protobuf.Empty"x\x82\xd3\xe4\x93\x02r*7/v1/{name=projects/*/locations/*/autoscalingPolicies/*}Z7*5/v1/{name=projects/*/regions/*/autoscalingPolicies/*}\x1aK\xca\x41\x17\x64\x61taproc.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xc4\x01\n\x1c\x63om.google.cloud.dataproc.v1B\x18\x41utoscalingPoliciesProtoP\x01Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataproc\xea\x41\x45\n\x1e\x64\x61taproc.googleapis.com/Region\x12#projects/{project}/regions/{region}b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -146,7 +146,7 @@ _AUTOSCALINGPOLICY = _descriptor.Descriptor(
     nested_types=[],
     enum_types=[],
     serialized_options=_b(
-        "\352Ay\n)dataproc.googleapis.com/AutoscalingPolicy\022Lprojects/{project}/regions/{region}/autoscalingPolicies/{autoscaling_policy}"
+        "\352A\313\001\n)dataproc.googleapis.com/AutoscalingPolicy\022Pprojects/{project}/locations/{location}/autoscalingPolicies/{autoscaling_policy}\022Lprojects/{project}/regions/{region}/autoscalingPolicies/{autoscaling_policy}"
     ),
     is_extendable=False,
     syntax="proto3",
@@ -161,7 +161,7 @@ _AUTOSCALINGPOLICY = _descriptor.Descriptor(
         )
     ],
     serialized_start=264,
-    serialized_end=732,
+    serialized_end=816,
 )
 
 
@@ -217,8 +217,8 @@ _BASICAUTOSCALINGALGORITHM = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=735,
-    serialized_end=899,
+    serialized_start=819,
+    serialized_end=983,
 )
 
 
@@ -328,8 +328,8 @@ _BASICYARNAUTOSCALINGCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=902,
-    serialized_end=1151,
+    serialized_start=986,
+    serialized_end=1235,
 )
 
 
@@ -403,8 +403,8 @@ _INSTANCEGROUPAUTOSCALINGPOLICYCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1153,
-    serialized_end=1268,
+    serialized_start=1237,
+    serialized_end=1352,
 )
 
 
@@ -462,8 +462,8 @@ _CREATEAUTOSCALINGPOLICYREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1271,
-    serialized_end=1431,
+    serialized_start=1355,
+    serialized_end=1515,
 )
 
 
@@ -503,8 +503,8 @@ _GETAUTOSCALINGPOLICYREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1433,
-    serialized_end=1527,
+    serialized_start=1517,
+    serialized_end=1611,
 )
 
 
@@ -542,8 +542,8 @@ _UPDATEAUTOSCALINGPOLICYREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1529,
-    serialized_end=1627,
+    serialized_start=1613,
+    serialized_end=1711,
 )
 
 
@@ -583,8 +583,8 @@ _DELETEAUTOSCALINGPOLICYREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1629,
-    serialized_end=1726,
+    serialized_start=1713,
+    serialized_end=1810,
 )
 
 
@@ -660,8 +660,8 @@ _LISTAUTOSCALINGPOLICIESREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1729,
-    serialized_end=1877,
+    serialized_start=1813,
+    serialized_end=1961,
 )
 
 
@@ -717,8 +717,8 @@ _LISTAUTOSCALINGPOLICIESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1880,
-    serialized_end=2011,
+    serialized_start=1964,
+    serialized_end=2095,
 )
 
 _AUTOSCALINGPOLICY.fields_by_name[
@@ -1142,8 +1142,8 @@ _AUTOSCALINGPOLICYSERVICE = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\027dataproc.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform"
     ),
-    serialized_start=2014,
-    serialized_end=3419,
+    serialized_start=2098,
+    serialized_end=3503,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateAutoscalingPolicy",

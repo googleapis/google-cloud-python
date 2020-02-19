@@ -17,6 +17,7 @@
 
 from __future__ import absolute_import
 
+from google.cloud.dataproc_v1 import AutoscalingPolicyServiceClient
 from google.cloud.dataproc_v1 import ClusterControllerClient
 from google.cloud.dataproc_v1 import JobControllerClient
 from google.cloud.dataproc_v1 import WorkflowTemplateServiceClient
@@ -30,4 +31,5 @@ __all__ = (
     "ClusterControllerClient",
     "JobControllerClient",
     "WorkflowTemplateServiceClient",
+    "AutoscalingPolicyServiceClient",
 )
