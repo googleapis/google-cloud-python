@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -79,24 +79,14 @@ class LoggingServiceV2Client(object):
 
     @classmethod
     def billing_path(cls, billing_account):
-        """DEPRECATED. Return a fully-qualified billing string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified billing string."""
         return google.api_core.path_template.expand(
             "billingAccounts/{billing_account}", billing_account=billing_account,
         )
 
     @classmethod
     def billing_log_path(cls, billing_account, log):
-        """DEPRECATED. Return a fully-qualified billing_log string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified billing_log string."""
         return google.api_core.path_template.expand(
             "billingAccounts/{billing_account}/logs/{log}",
             billing_account=billing_account,
@@ -105,58 +95,33 @@ class LoggingServiceV2Client(object):
 
     @classmethod
     def folder_path(cls, folder):
-        """DEPRECATED. Return a fully-qualified folder string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified folder string."""
         return google.api_core.path_template.expand("folders/{folder}", folder=folder,)
 
     @classmethod
     def folder_log_path(cls, folder, log):
-        """DEPRECATED. Return a fully-qualified folder_log string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified folder_log string."""
         return google.api_core.path_template.expand(
             "folders/{folder}/logs/{log}", folder=folder, log=log,
         )
 
     @classmethod
     def log_path(cls, project, log):
-        """DEPRECATED. Return a fully-qualified log string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified log string."""
         return google.api_core.path_template.expand(
             "projects/{project}/logs/{log}", project=project, log=log,
         )
 
     @classmethod
     def organization_path(cls, organization):
-        """DEPRECATED. Return a fully-qualified organization string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified organization string."""
         return google.api_core.path_template.expand(
             "organizations/{organization}", organization=organization,
         )
 
     @classmethod
     def organization_log_path(cls, organization, log):
-        """DEPRECATED. Return a fully-qualified organization_log string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified organization_log string."""
         return google.api_core.path_template.expand(
             "organizations/{organization}/logs/{log}",
             organization=organization,
@@ -165,12 +130,7 @@ class LoggingServiceV2Client(object):
 
     @classmethod
     def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project,
         )
@@ -296,10 +256,10 @@ class LoggingServiceV2Client(object):
         metadata=None,
     ):
         """
-        Deletes all the log entries in a log.
-        The log reappears if it receives new entries.
-        Log entries written shortly before the delete operation might not be
-        deleted.
+        Deletes all the log entries in a log. The log reappears if it receives new
+        entries. Log entries written shortly before the delete operation might not
+        be deleted. Entries received after the delete operation with a timestamp
+        before the operation will be deleted.
 
         Example:
             >>> from google.cloud import logging_v2
@@ -573,7 +533,7 @@ class LoggingServiceV2Client(object):
                 Example: ``"my-project-1A"``.
             filter_ (str): Optional. A filter that chooses which log entries to return. See
                 `Advanced Logs
-                Filters <https://cloud.google.com/logging/docs/view/advanced_filters>`__.
+                Queries <https://cloud.google.com/logging/docs/view/advanced-queries>`__.
                 Only log entries that match the filter are returned. An empty filter
                 matches all log entries in the resources listed in ``resource_names``.
                 Referencing a parent resource that is not listed in ``resource_names``

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -110,12 +110,16 @@ class TestConfigServiceV2Client(object):
         name = "name3373707"
         destination = "destination-1429847026"
         filter_ = "filter-1274492040"
+        description = "description-1724546052"
+        disabled = True
         writer_identity = "writerIdentity775638794"
         include_children = True
         expected_response = {
             "name": name,
             "destination": destination,
             "filter": filter_,
+            "description": description,
+            "disabled": disabled,
             "writer_identity": writer_identity,
             "include_children": include_children,
         }
@@ -158,12 +162,16 @@ class TestConfigServiceV2Client(object):
         name = "name3373707"
         destination = "destination-1429847026"
         filter_ = "filter-1274492040"
+        description = "description-1724546052"
+        disabled = True
         writer_identity = "writerIdentity775638794"
         include_children = True
         expected_response = {
             "name": name,
             "destination": destination,
             "filter": filter_,
+            "description": description,
+            "disabled": disabled,
             "writer_identity": writer_identity,
             "include_children": include_children,
         }
@@ -210,12 +218,16 @@ class TestConfigServiceV2Client(object):
         name = "name3373707"
         destination = "destination-1429847026"
         filter_ = "filter-1274492040"
+        description = "description-1724546052"
+        disabled = True
         writer_identity = "writerIdentity775638794"
         include_children = True
         expected_response = {
             "name": name,
             "destination": destination,
             "filter": filter_,
+            "description": description,
+            "disabled": disabled,
             "writer_identity": writer_identity,
             "include_children": include_children,
         }
@@ -514,3 +526,79 @@ class TestConfigServiceV2Client(object):
 
         with pytest.raises(CustomException):
             client.delete_exclusion(name)
+
+    def test_get_cmek_settings(self):
+        # Setup Expected Response
+        name = "name3373707"
+        kms_key_name = "kmsKeyName2094986649"
+        service_account_id = "serviceAccountId-111486921"
+        expected_response = {
+            "name": name,
+            "kms_key_name": kms_key_name,
+            "service_account_id": service_account_id,
+        }
+        expected_response = logging_config_pb2.CmekSettings(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
+
+        response = client.get_cmek_settings()
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = logging_config_pb2.GetCmekSettingsRequest()
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_get_cmek_settings_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
+
+        with pytest.raises(CustomException):
+            client.get_cmek_settings()
+
+    def test_update_cmek_settings(self):
+        # Setup Expected Response
+        name = "name3373707"
+        kms_key_name = "kmsKeyName2094986649"
+        service_account_id = "serviceAccountId-111486921"
+        expected_response = {
+            "name": name,
+            "kms_key_name": kms_key_name,
+            "service_account_id": service_account_id,
+        }
+        expected_response = logging_config_pb2.CmekSettings(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
+
+        response = client.update_cmek_settings()
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = logging_config_pb2.UpdateCmekSettingsRequest()
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_update_cmek_settings_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = logging_v2.ConfigServiceV2Client()
+
+        with pytest.raises(CustomException):
+            client.update_cmek_settings()

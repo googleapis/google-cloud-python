@@ -4,6 +4,7 @@ config = {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "INTERNAL", "UNAVAILABLE"],
                 "non_idempotent": [],
+                "idempotent2": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
             },
             "retry_params": {
                 "default": {
@@ -74,6 +75,16 @@ config = {
                 "DeleteExclusion": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "GetCmekSettings": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent2",
+                    "retry_params_name": "default",
+                },
+                "UpdateCmekSettings": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
             },

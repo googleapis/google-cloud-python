@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -117,10 +117,10 @@ class LoggingServiceV2GrpcTransport(object):
     def delete_log(self):
         """Return the gRPC stub for :meth:`LoggingServiceV2Client.delete_log`.
 
-        Deletes all the log entries in a log.
-        The log reappears if it receives new entries.
-        Log entries written shortly before the delete operation might not be
-        deleted.
+        Deletes all the log entries in a log. The log reappears if it receives new
+        entries. Log entries written shortly before the delete operation might not
+        be deleted. Entries received after the delete operation with a timestamp
+        before the operation will be deleted.
 
         Returns:
             Callable: A callable which accepts the appropriate

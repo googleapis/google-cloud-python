@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -75,24 +75,14 @@ class ConfigServiceV2Client(object):
 
     @classmethod
     def billing_path(cls, billing_account):
-        """DEPRECATED. Return a fully-qualified billing string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified billing string."""
         return google.api_core.path_template.expand(
             "billingAccounts/{billing_account}", billing_account=billing_account,
         )
 
     @classmethod
     def billing_exclusion_path(cls, billing_account, exclusion):
-        """DEPRECATED. Return a fully-qualified billing_exclusion string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified billing_exclusion string."""
         return google.api_core.path_template.expand(
             "billingAccounts/{billing_account}/exclusions/{exclusion}",
             billing_account=billing_account,
@@ -101,12 +91,7 @@ class ConfigServiceV2Client(object):
 
     @classmethod
     def billing_sink_path(cls, billing_account, sink):
-        """DEPRECATED. Return a fully-qualified billing_sink string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified billing_sink string."""
         return google.api_core.path_template.expand(
             "billingAccounts/{billing_account}/sinks/{sink}",
             billing_account=billing_account,
@@ -115,12 +100,7 @@ class ConfigServiceV2Client(object):
 
     @classmethod
     def exclusion_path(cls, project, exclusion):
-        """DEPRECATED. Return a fully-qualified exclusion string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified exclusion string."""
         return google.api_core.path_template.expand(
             "projects/{project}/exclusions/{exclusion}",
             project=project,
@@ -129,22 +109,12 @@ class ConfigServiceV2Client(object):
 
     @classmethod
     def folder_path(cls, folder):
-        """DEPRECATED. Return a fully-qualified folder string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified folder string."""
         return google.api_core.path_template.expand("folders/{folder}", folder=folder,)
 
     @classmethod
     def folder_exclusion_path(cls, folder, exclusion):
-        """DEPRECATED. Return a fully-qualified folder_exclusion string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified folder_exclusion string."""
         return google.api_core.path_template.expand(
             "folders/{folder}/exclusions/{exclusion}",
             folder=folder,
@@ -153,36 +123,21 @@ class ConfigServiceV2Client(object):
 
     @classmethod
     def folder_sink_path(cls, folder, sink):
-        """DEPRECATED. Return a fully-qualified folder_sink string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified folder_sink string."""
         return google.api_core.path_template.expand(
             "folders/{folder}/sinks/{sink}", folder=folder, sink=sink,
         )
 
     @classmethod
     def organization_path(cls, organization):
-        """DEPRECATED. Return a fully-qualified organization string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified organization string."""
         return google.api_core.path_template.expand(
             "organizations/{organization}", organization=organization,
         )
 
     @classmethod
     def organization_exclusion_path(cls, organization, exclusion):
-        """DEPRECATED. Return a fully-qualified organization_exclusion string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified organization_exclusion string."""
         return google.api_core.path_template.expand(
             "organizations/{organization}/exclusions/{exclusion}",
             organization=organization,
@@ -191,12 +146,7 @@ class ConfigServiceV2Client(object):
 
     @classmethod
     def organization_sink_path(cls, organization, sink):
-        """DEPRECATED. Return a fully-qualified organization_sink string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified organization_sink string."""
         return google.api_core.path_template.expand(
             "organizations/{organization}/sinks/{sink}",
             organization=organization,
@@ -205,24 +155,14 @@ class ConfigServiceV2Client(object):
 
     @classmethod
     def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project,
         )
 
     @classmethod
     def sink_path(cls, project, sink):
-        """DEPRECATED. Return a fully-qualified sink string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified sink string."""
         return google.api_core.path_template.expand(
             "projects/{project}/sinks/{sink}", project=project, sink=sink,
         )
@@ -1293,5 +1233,210 @@ class ConfigServiceV2Client(object):
             metadata.append(routing_metadata)
 
         self._inner_api_calls["delete_exclusion"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def get_cmek_settings(
+        self,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Gets the Logs Router CMEK settings for the given resource.
+
+        Note: CMEK for the Logs Router can currently only be configured for GCP
+        organizations. Once configured, it applies to all projects and folders
+        in the GCP organization.
+
+        See `Enabling CMEK for Logs
+        Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+        for more information.
+
+        Example:
+            >>> from google.cloud import logging_v2
+            >>>
+            >>> client = logging_v2.ConfigServiceV2Client()
+            >>>
+            >>> response = client.get_cmek_settings()
+
+        Args:
+            name (str): Required. The resource for which to retrieve CMEK settings.
+
+                ::
+
+                     "projects/[PROJECT_ID]/cmekSettings"
+                     "organizations/[ORGANIZATION_ID]/cmekSettings"
+                     "billingAccounts/[BILLING_ACCOUNT_ID]/cmekSettings"
+                     "folders/[FOLDER_ID]/cmekSettings"
+
+                Example: ``"organizations/12345/cmekSettings"``.
+
+                Note: CMEK for the Logs Router can currently only be configured for GCP
+                organizations. Once configured, it applies to all projects and folders
+                in the GCP organization.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.logging_v2.types.CmekSettings` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_cmek_settings" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_cmek_settings"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_cmek_settings,
+                default_retry=self._method_configs["GetCmekSettings"].retry,
+                default_timeout=self._method_configs["GetCmekSettings"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = logging_config_pb2.GetCmekSettingsRequest(name=name,)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["get_cmek_settings"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def update_cmek_settings(
+        self,
+        name=None,
+        cmek_settings=None,
+        update_mask=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Updates the Logs Router CMEK settings for the given resource.
+
+        Note: CMEK for the Logs Router can currently only be configured for GCP
+        organizations. Once configured, it applies to all projects and folders
+        in the GCP organization.
+
+        ``UpdateCmekSettings`` will fail if 1) ``kms_key_name`` is invalid, or
+        2) the associated service account does not have the required
+        ``roles/cloudkms.cryptoKeyEncrypterDecrypter`` role assigned for the
+        key, or
+
+        3) access to the key is disabled.
+
+        See `Enabling CMEK for Logs
+        Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+        for more information.
+
+        Example:
+            >>> from google.cloud import logging_v2
+            >>>
+            >>> client = logging_v2.ConfigServiceV2Client()
+            >>>
+            >>> response = client.update_cmek_settings()
+
+        Args:
+            name (str): Required. The resource name for the CMEK settings to update.
+
+                ::
+
+                     "projects/[PROJECT_ID]/cmekSettings"
+                     "organizations/[ORGANIZATION_ID]/cmekSettings"
+                     "billingAccounts/[BILLING_ACCOUNT_ID]/cmekSettings"
+                     "folders/[FOLDER_ID]/cmekSettings"
+
+                Example: ``"organizations/12345/cmekSettings"``.
+
+                Note: CMEK for the Logs Router can currently only be configured for GCP
+                organizations. Once configured, it applies to all projects and folders
+                in the GCP organization.
+            cmek_settings (Union[dict, ~google.cloud.logging_v2.types.CmekSettings]): Required. The CMEK settings to update.
+
+                See `Enabling CMEK for Logs
+                Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+                for more information.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.logging_v2.types.CmekSettings`
+            update_mask (Union[dict, ~google.cloud.logging_v2.types.FieldMask]): Optional. Field mask identifying which fields from ``cmek_settings``
+                should be updated. A field will be overwritten if and only if it is in
+                the update mask. Output only fields cannot be updated.
+
+                See ``FieldMask`` for more information.
+
+                Example: ``"updateMask=kmsKeyName"``
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.logging_v2.types.FieldMask`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.logging_v2.types.CmekSettings` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "update_cmek_settings" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "update_cmek_settings"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_cmek_settings,
+                default_retry=self._method_configs["UpdateCmekSettings"].retry,
+                default_timeout=self._method_configs["UpdateCmekSettings"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = logging_config_pb2.UpdateCmekSettingsRequest(
+            name=name, cmek_settings=cmek_settings, update_mask=update_mask,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["update_cmek_settings"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

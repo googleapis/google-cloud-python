@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -255,3 +255,52 @@ class ConfigServiceV2GrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["config_service_v2_stub"].DeleteExclusion
+
+    @property
+    def get_cmek_settings(self):
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.get_cmek_settings`.
+
+        Gets the Logs Router CMEK settings for the given resource.
+
+        Note: CMEK for the Logs Router can currently only be configured for GCP
+        organizations. Once configured, it applies to all projects and folders
+        in the GCP organization.
+
+        See `Enabling CMEK for Logs
+        Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+        for more information.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["config_service_v2_stub"].GetCmekSettings
+
+    @property
+    def update_cmek_settings(self):
+        """Return the gRPC stub for :meth:`ConfigServiceV2Client.update_cmek_settings`.
+
+        Updates the Logs Router CMEK settings for the given resource.
+
+        Note: CMEK for the Logs Router can currently only be configured for GCP
+        organizations. Once configured, it applies to all projects and folders
+        in the GCP organization.
+
+        ``UpdateCmekSettings`` will fail if 1) ``kms_key_name`` is invalid, or
+        2) the associated service account does not have the required
+        ``roles/cloudkms.cryptoKeyEncrypterDecrypter`` role assigned for the
+        key, or
+
+        3) access to the key is disabled.
+
+        See `Enabling CMEK for Logs
+        Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+        for more information.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["config_service_v2_stub"].UpdateCmekSettings

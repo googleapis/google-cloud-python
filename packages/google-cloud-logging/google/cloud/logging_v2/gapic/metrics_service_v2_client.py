@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -81,58 +81,33 @@ class MetricsServiceV2Client(object):
 
     @classmethod
     def billing_path(cls, billing_account):
-        """DEPRECATED. Return a fully-qualified billing string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified billing string."""
         return google.api_core.path_template.expand(
             "billingAccounts/{billing_account}", billing_account=billing_account,
         )
 
     @classmethod
     def folder_path(cls, folder):
-        """DEPRECATED. Return a fully-qualified folder string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified folder string."""
         return google.api_core.path_template.expand("folders/{folder}", folder=folder,)
 
     @classmethod
     def metric_path(cls, project, metric):
-        """DEPRECATED. Return a fully-qualified metric string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified metric string."""
         return google.api_core.path_template.expand(
             "projects/{project}/metrics/{metric}", project=project, metric=metric,
         )
 
     @classmethod
     def organization_path(cls, organization):
-        """DEPRECATED. Return a fully-qualified organization string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified organization string."""
         return google.api_core.path_template.expand(
             "organizations/{organization}", organization=organization,
         )
 
     @classmethod
     def project_path(cls, project):
-        """DEPRECATED. Return a fully-qualified project string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             "projects/{project}", project=project,
         )
@@ -377,7 +352,7 @@ class MetricsServiceV2Client(object):
             >>> response = client.get_log_metric(metric_name)
 
         Args:
-            metric_name (str): The resource name of the desired metric:
+            metric_name (str): Required. The resource name of the desired metric:
 
                 ::
 
@@ -454,14 +429,15 @@ class MetricsServiceV2Client(object):
             >>> response = client.create_log_metric(parent, metric)
 
         Args:
-            parent (str): The resource name of the project in which to create the metric:
+            parent (str): Required. The resource name of the project in which to create the
+                metric:
 
                 ::
 
                      "projects/[PROJECT_ID]"
 
                 The new metric must be provided in the request.
-            metric (Union[dict, ~google.cloud.logging_v2.types.LogMetric]): The new logs-based metric, which must not have an identifier that
+            metric (Union[dict, ~google.cloud.logging_v2.types.LogMetric]): Required. The new logs-based metric, which must not have an identifier that
                 already exists.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -540,7 +516,7 @@ class MetricsServiceV2Client(object):
             >>> response = client.update_log_metric(metric_name, metric)
 
         Args:
-            metric_name (str): The resource name of the metric to update:
+            metric_name (str): Required. The resource name of the metric to update:
 
                 ::
 
@@ -549,7 +525,7 @@ class MetricsServiceV2Client(object):
                 The updated metric must be provided in the request and it's ``name``
                 field must be the same as ``[METRIC_ID]`` If the metric does not exist
                 in ``[PROJECT_ID]``, then a new metric is created.
-            metric (Union[dict, ~google.cloud.logging_v2.types.LogMetric]): The updated metric.
+            metric (Union[dict, ~google.cloud.logging_v2.types.LogMetric]): Required. The updated metric.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.logging_v2.types.LogMetric`
@@ -623,7 +599,7 @@ class MetricsServiceV2Client(object):
             >>> client.delete_log_metric(metric_name)
 
         Args:
-            metric_name (str): The resource name of the metric to delete:
+            metric_name (str): Required. The resource name of the metric to delete:
 
                 ::
 

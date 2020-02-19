@@ -67,6 +67,16 @@ class ConfigServiceV2Stub(object):
             request_serializer=google_dot_cloud_dot_logging__v2_dot_proto_dot_logging__config__pb2.DeleteExclusionRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
+        self.GetCmekSettings = channel.unary_unary(
+            "/google.logging.v2.ConfigServiceV2/GetCmekSettings",
+            request_serializer=google_dot_cloud_dot_logging__v2_dot_proto_dot_logging__config__pb2.GetCmekSettingsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_logging__v2_dot_proto_dot_logging__config__pb2.CmekSettings.FromString,
+        )
+        self.UpdateCmekSettings = channel.unary_unary(
+            "/google.logging.v2.ConfigServiceV2/UpdateCmekSettings",
+            request_serializer=google_dot_cloud_dot_logging__v2_dot_proto_dot_logging__config__pb2.UpdateCmekSettingsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_logging__v2_dot_proto_dot_logging__config__pb2.CmekSettings.FromString,
+        )
 
 
 class ConfigServiceV2Servicer(object):
@@ -153,6 +163,40 @@ class ConfigServiceV2Servicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def GetCmekSettings(self, request, context):
+        """Gets the Logs Router CMEK settings for the given resource.
+
+    Note: CMEK for the Logs Router can currently only be configured for GCP
+    organizations. Once configured, it applies to all projects and folders in
+    the GCP organization.
+
+    See [Enabling CMEK for Logs
+    Router](/logging/docs/routing/managed-encryption) for more information.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def UpdateCmekSettings(self, request, context):
+        """Updates the Logs Router CMEK settings for the given resource.
+
+    Note: CMEK for the Logs Router can currently only be configured for GCP
+    organizations. Once configured, it applies to all projects and folders in
+    the GCP organization.
+
+    [UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings]
+    will fail if 1) `kms_key_name` is invalid, or 2) the associated service
+    account does not have the required
+    `roles/cloudkms.cryptoKeyEncrypterDecrypter` role assigned for the key, or
+    3) access to the key is disabled.
+
+    See [Enabling CMEK for Logs
+    Router](/logging/docs/routing/managed-encryption) for more information.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_ConfigServiceV2Servicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -205,6 +249,16 @@ def add_ConfigServiceV2Servicer_to_server(servicer, server):
             servicer.DeleteExclusion,
             request_deserializer=google_dot_cloud_dot_logging__v2_dot_proto_dot_logging__config__pb2.DeleteExclusionRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        ),
+        "GetCmekSettings": grpc.unary_unary_rpc_method_handler(
+            servicer.GetCmekSettings,
+            request_deserializer=google_dot_cloud_dot_logging__v2_dot_proto_dot_logging__config__pb2.GetCmekSettingsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_logging__v2_dot_proto_dot_logging__config__pb2.CmekSettings.SerializeToString,
+        ),
+        "UpdateCmekSettings": grpc.unary_unary_rpc_method_handler(
+            servicer.UpdateCmekSettings,
+            request_deserializer=google_dot_cloud_dot_logging__v2_dot_proto_dot_logging__config__pb2.UpdateCmekSettingsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_logging__v2_dot_proto_dot_logging__config__pb2.CmekSettings.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
