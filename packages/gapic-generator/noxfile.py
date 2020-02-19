@@ -109,15 +109,22 @@ def showcase_unit(session):
         )
 
         # Write out a client library for Showcase.
-        session.run('protoc',
-                    f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
-                    f'--python_gapic_out={tmp_dir}',
-                    'google/showcase/v1beta1/echo.proto',
-                    'google/showcase/v1beta1/identity.proto',
-                    'google/showcase/v1beta1/messaging.proto',
-                    'google/showcase/v1beta1/testing.proto',
-                    external=True,
-                    )
+        args = [
+            'protoc',
+            f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
+            f'--python_gapic_out={tmp_dir}',
+            'google/showcase/v1beta1/echo.proto',
+            'google/showcase/v1beta1/identity.proto',
+            'google/showcase/v1beta1/messaging.proto',
+            'google/showcase/v1beta1/testing.proto',
+        ]
+        if session.python == '3.8':
+            args.append('--python_gapic_opt=lazy-import')
+
+        session.run(
+            *args,
+            external=True,
+        )
 
         # Install the library.
         session.chdir(tmp_dir)

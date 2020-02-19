@@ -312,6 +312,75 @@ def test_{{ method.name|snake_case }}_raw_page_lro():
 
 {% endfor -%} {#- method in methods #}
 
+{% if opts.lazy_import -%} {# lazy import #}
+def test_module_level_imports():
+    # Use the other transport import path so that code gets tested.
+    from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }} import {{ service.name }}GrpcTransport
+    transport = {{ service.name }}GrpcTransport(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }} import {{ service.client_name }}
+    client = {{ service.client_name }}(transport=transport)
+    assert client._transport is transport
+
+    from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }} import {{ service.name|snake_case }}_grpc_transport
+    transport2 = {{ service.name|snake_case }}_grpc_transport.{{ service.name }}GrpcTransport(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    client2 = {{ service.client_name }}(transport=transport2)
+    assert client2._transport is transport2
+
+    {% with type_name = cycler(*service.methods.values()).next().input.name -%}
+    from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }} import {{ type_name }}
+    type_ = {{ type_name }}()
+
+    try:
+        from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }} import {{ type_name|lower }}_squidification
+    except (AttributeError, ImportError) as e:
+        pass
+    else:
+        assert False
+    {% endwith -%}
+
+    import {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }} as mod
+    all_names = dir(mod)
+    expected_names = sorted([
+        'types',
+        {%- for service in api.services.values()|sort(attribute='name')|unique(attribute='name') if service.meta.address.subpackage == api.subpackage_view %}
+        '{{ service.client_name }}',
+        '{{ service.transport_name }}',
+        '{{ service.grpc_transport_name }}',
+        {%- endfor %}
+        {%- for proto in api.protos.values() if proto.meta.address.subpackage == api.subpackage_view %}{%- for message in proto.messages.values() %}
+        '{{ message.name }}',
+        {%- endfor %}
+        {%- for enum in proto.enums.values() %}
+        '{{ enum.name }}'
+        {% endfor %}{%- endfor %}
+    ])
+    assert all_names == expected_names
+
+    {% with type_name = cycler(*service.methods.values()).next().input.name -%}
+    from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.types import {{ type_name }}
+    type_ = {{ type_name }}()
+    {% endwith -%}
+
+    import {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.types as types
+    all_types = dir(types)
+    expected_types = sorted([
+    {%- for proto in api.protos.values() if proto.meta.address.subpackage == api.subpackage_view %}{%- for message in proto.messages.values() %}
+        '{{ message.name }}',
+        {%- endfor %}
+        {%- for enum in proto.enums.values() %}
+        '{{ enum.name }}',
+        {% endfor %}{%- endfor %}
+    ])
+    assert all_types == expected_types
+
+{% endif -%} {# lazy import #}
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.{{ service.name }}GrpcTransport(

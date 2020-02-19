@@ -30,14 +30,14 @@ def from_snake_case(s):
 
 
 if sys.version_info < (3, 7):
-    raise ImportError('This module requires Python 3.7 or later.')
+    raise ImportError('This module requires Python 3.7 or later.')  # pragma: NO COVER
 
 _lazy_name_to_package_map = {
     'types': '{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.types',
   {%- for service in api.services.values()|sort(attribute='name')|unique(attribute='name') if service.meta.address.subpackage == api.subpackage_view %}
     '{{ service.client_name|snake_case }}': '{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.services.{{ service.name|snake_case }}.client',
-    '{{ service.transport_name|snake_case }}': '{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.services.transports.base',
-    '{{ service.grpc_transport_name|snake_case }}': '{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.services.transports.grpc',
+    '{{ service.transport_name|snake_case }}': '{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.services.{{ service.name|snake_case }}.transports.base',
+    '{{ service.grpc_transport_name|snake_case }}': '{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.services.{{ service.name|snake_case }}.transports.grpc',
   {%- endfor %}
 }
 
@@ -56,8 +56,9 @@ def __getattr__(name):  # Requires Python >= 3.7
     if name == '__all__':
         all_names = globals()['__all__'] = sorted(
             chain(
-                (from_snake_case(k) for k in _lazy_name_to_package_map),
+                (from_snake_case(k) for k in _lazy_name_to_package_map if k != 'types'),
                 _lazy_type_to_package_map,
+                ['types'],
             )
         )
         return all_names
