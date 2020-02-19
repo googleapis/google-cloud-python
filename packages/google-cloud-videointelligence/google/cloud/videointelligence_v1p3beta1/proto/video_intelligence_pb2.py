@@ -5522,8 +5522,8 @@ AnnotateVideoResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ANNOTATEVIDEORESPONSE,
         __module__="google.cloud.videointelligence_v1p3beta1.proto.video_intelligence_pb2",
-        __doc__="""Video annotation response. Included in the ``response``
-  field of the ``Operation`` returned by the ``GetOperation`` call of the
+        __doc__="""Video annotation response. Included in the ``response`` field of the
+  ``Operation`` returned by the ``GetOperation`` call of the
   ``google::longrunning::Operations`` service.
   
   

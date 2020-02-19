@@ -1,13 +1,6 @@
 {
-  "updateTime": "2020-02-14T23:28:20.105798Z",
+  "updateTime": "2020-02-19T02:30:18.397349Z",
   "sources": [
-    {
-      "git": {
-        "name": ".",
-        "remote": "git@github.com:googleapis/python-videointelligence.git",
-        "sha": "4eeaab856387d71afc921a41270f067f069fa190"
-      }
-    },
     {
       "generator": {
         "name": "artman",
@@ -17,10 +10,25 @@
     },
     {
       "git": {
+        "name": ".",
+        "remote": "https://github.com/googleapis/python-videointelligence.git",
+        "sha": "f2c3cba8983f5bc29c147a66f8d97a1aa5abcb3f"
+      }
+    },
+    {
+      "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "ee4dddf805072004ab19ac94df2ce669046eec26",
-        "internalRef": "295238095"
+        "sha": "ce4f4c21d9dd2bfab18873a80449b9d9851efde8",
+        "internalRef": "295861722",
+        "log": "ce4f4c21d9dd2bfab18873a80449b9d9851efde8\nasset: v1p1beta1 remove SearchResources and SearchIamPolicies\n\nPiperOrigin-RevId: 295861722\n\ncb61d6c2d070b589980c779b68ffca617f789116\nasset: v1p1beta1 remove SearchResources and SearchIamPolicies\n\nPiperOrigin-RevId: 295855449\n\nab2685d8d3a0e191dc8aef83df36773c07cb3d06\nfix: Dataproc v1 - AutoscalingPolicy annotation\n\nThis adds the second resource name pattern to the\nAutoscalingPolicy resource.\n\nCommitter: @lukesneeringer\nPiperOrigin-RevId: 295738415\n\n8a1020bf6828f6e3c84c3014f2c51cb62b739140\nUpdate cloud asset api v1p4beta1.\n\nPiperOrigin-RevId: 295286165\n\n5cfa105206e77670369e4b2225597386aba32985\nAdd service control related proto build rule.\n\nPiperOrigin-RevId: 295262088\n\n"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "rpc://devrel/cloud/libraries/tools/autosynth",
+        "sha": "b4b7af4a16a07b40bfd8dcdda89f9f193ff4e2ed"
       }
     },
     {
