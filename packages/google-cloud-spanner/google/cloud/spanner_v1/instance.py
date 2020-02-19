@@ -76,12 +76,14 @@ class Instance(object):
         configuration_name=None,
         node_count=DEFAULT_NODE_COUNT,
         display_name=None,
+        emulator_host=None,
     ):
         self.instance_id = instance_id
         self._client = client
         self.configuration_name = configuration_name
         self.node_count = node_count
         self.display_name = display_name or instance_id
+        self.emulator_host = emulator_host
 
     def _update_from_pb(self, instance_pb):
         """Refresh self from the server-provided protobuf.

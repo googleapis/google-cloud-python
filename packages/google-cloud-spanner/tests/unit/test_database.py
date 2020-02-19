@@ -535,6 +535,27 @@ class TestDatabase(_BaseTest):
 
         client.instance_admin_api.get_instance.assert_called_once()
 
+    def test_spanner_api_w_emulator_host(self):
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client, emulator_host="host")
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        patch = mock.patch("google.cloud.spanner_v1.database.SpannerClient")
+        with patch as spanner_client:
+            api = database.spanner_api
+
+        self.assertIs(api, spanner_client.return_value)
+
+        # API instance is cached
+        again = database.spanner_api
+        self.assertIs(again, api)
+
+        self.assertEqual(len(spanner_client.call_args_list), 1)
+        called_args, called_kw = spanner_client.call_args
+        self.assertEqual(called_args, ())
+        self.assertIsNotNone(called_kw["transport"])
+
     def test___eq__(self):
         instance = _Instance(self.INSTANCE_NAME)
         pool1, pool2 = _Pool(), _Pool()
@@ -1765,13 +1786,16 @@ class _Client(object):
         self.project_name = "projects/" + self.project
         self._endpoint_cache = {}
         self.instance_admin_api = _make_instance_api()
+        self._client_info = mock.Mock()
+        self._client_options = mock.Mock()
 
 
 class _Instance(object):
-    def __init__(self, name, client=None):
+    def __init__(self, name, client=None, emulator_host=None):
         self.name = name
         self.instance_id = name.rsplit("/", 1)[1]
         self._client = client
+        self.emulator_host = emulator_host
 
 
 class _Database(object):

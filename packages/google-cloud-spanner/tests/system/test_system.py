@@ -56,6 +56,7 @@ from tests._fixtures import DDL_STATEMENTS
 
 
 CREATE_INSTANCE = os.getenv("GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE") is not None
+USE_EMULATOR = os.getenv("SPANNER_EMULATOR_HOST") is not None
 USE_RESOURCE_ROUTING = (
     os.getenv("GOOGLE_CLOUD_SPANNER_ENABLE_RESOURCE_BASED_ROUTING") == "true"
 )
@@ -105,10 +106,10 @@ def setUpModule():
     EXISTING_INSTANCES[:] = instances
 
     if CREATE_INSTANCE:
-
-        # Defend against back-end returning configs for regions we aren't
-        # actually allowed to use.
-        configs = [config for config in configs if "-us-" in config.name]
+        if not USE_EMULATOR:
+            # Defend against back-end returning configs for regions we aren't
+            # actually allowed to use.
+            configs = [config for config in configs if "-us-" in config.name]
 
         if not configs:
             raise ValueError("List instance configs failed in module set up.")
@@ -185,6 +186,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.assertEqual(instance, instance_alt)
         self.assertEqual(instance.display_name, instance_alt.display_name)
 
+    @unittest.skipIf(USE_EMULATOR, "Skipping updating instance")
     def test_update_instance(self):
         OLD_DISPLAY_NAME = Config.INSTANCE.display_name
         NEW_DISPLAY_NAME = "Foo Bar Baz"
@@ -382,11 +384,8 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
             temp_db_id, ddl_statements=[create_table, index]
         )
         self.to_delete.append(temp_db)
-        with self.assertRaises(exceptions.NotFound) as exc_info:
+        with self.assertRaises(exceptions.NotFound):
             temp_db.create()
-
-        expected = "Table not found: {0}".format(incorrect_table)
-        self.assertEqual(exc_info.exception.args, (expected,))
 
     @pytest.mark.skip(
         reason=(
@@ -993,6 +992,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             with self.assertRaises(InvalidArgument):
                 transaction.batch_update([])
 
+    @unittest.skipIf(USE_EMULATOR, "Skipping partitioned DML")
     def test_execute_partitioned_dml(self):
         # [START spanner_test_dml_partioned_dml_update]
         retry = RetryInstanceState(_has_all_ddl)
@@ -1625,6 +1625,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             expected = [data[keyrow]] + data[start + 1 : end]
             self.assertEqual(rows, expected)
 
+    @unittest.skipIf(USE_EMULATOR, "Skipping partitioned reads")
     def test_partition_read_w_index(self):
         row_count = 10
         columns = self.COLUMNS[1], self.COLUMNS[2]
@@ -1724,15 +1725,10 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             batch.insert(table, columns, valid_input)
 
         invalid_input = ((0, ""),)
-        with self.assertRaises(exceptions.FailedPrecondition) as exc_info:
+        with self.assertRaises(exceptions.FailedPrecondition):
             with self._db.batch() as batch:
                 batch.delete(table, self.ALL)
                 batch.insert(table, columns, invalid_input)
-
-        error_msg = (
-            "Invalid value for column value in table " "counters: Expected INT64."
-        )
-        self.assertIn(error_msg, str(exc_info.exception))
 
     def test_execute_sql_select_1(self):
 
@@ -2111,6 +2107,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             # NaNs cannot be searched for by equality.
             self.assertTrue(math.isnan(float_array[2]))
 
+    @unittest.skipIf(USE_EMULATOR, "Skipping partitioned queries")
     def test_partition_query(self):
         row_count = 40
         sql = "SELECT * FROM {}".format(self.TABLE)

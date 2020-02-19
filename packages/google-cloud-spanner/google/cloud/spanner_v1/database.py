@@ -16,6 +16,7 @@
 
 import copy
 import functools
+import grpc
 import os
 import re
 import threading
@@ -33,6 +34,7 @@ from google.cloud.spanner_v1._helpers import _make_value_pb
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.gapic.spanner_client import SpannerClient
+from google.cloud.spanner_v1.gapic.transports import spanner_grpc_transport
 from google.cloud.spanner_v1.keyset import KeySet
 from google.cloud.spanner_v1.pool import BurstyPool
 from google.cloud.spanner_v1.pool import SessionCheckout
@@ -190,11 +192,21 @@ class Database(object):
     def spanner_api(self):
         """Helper for session-related API calls."""
         if self._spanner_api is None:
+            client_info = self._instance._client._client_info
+            client_options = self._instance._client._client_options
+            if self._instance.emulator_host is not None:
+                transport = spanner_grpc_transport.SpannerGrpcTransport(
+                    channel=grpc.insecure_channel(self._instance.emulator_host)
+                )
+                self._spanner_api = SpannerClient(
+                    client_info=client_info,
+                    client_options=client_options,
+                    transport=transport,
+                )
+                return self._spanner_api
             credentials = self._instance._client.credentials
             if isinstance(credentials, google.auth.credentials.Scoped):
                 credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))
-            client_info = self._instance._client._client_info
-            client_options = self._instance._client._client_options
             if (
                 os.getenv("GOOGLE_CLOUD_SPANNER_ENABLE_RESOURCE_BASED_ROUTING")
                 == "true"
