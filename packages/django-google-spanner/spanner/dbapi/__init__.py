@@ -31,7 +31,7 @@ paramstyle = 'format'
 threadsafety = 0
 
 
-def connect(project=None, instance=None, database=None, credentials_uri=None):
+def connect(project=None, instance=None, database=None, credentials_uri=None, user_agent=None):
     """
     Connect to Cloud Spanner.
 
@@ -57,7 +57,7 @@ def connect(project=None, instance=None, database=None, credentials_uri=None):
 
     client_kwargs = {
         'project': project,
-        'client_info': google_client_info(),
+        'client_info': google_client_info(user_agent),
     }
     if credentials_uri:
         client = spanner.Client.from_service_account_json(credentials_uri, **client_kwargs)
@@ -78,7 +78,7 @@ def connect(project=None, instance=None, database=None, credentials_uri=None):
 __all__ = [
     'DatabaseError', 'DataError', 'Error', 'IntegrityError', 'InterfaceError',
     'InternalError', 'NotSupportedError', 'OperationalError', 'ProgrammingError',
-    'Warning', 'USER_AGENT', 'apilevel', 'connect', 'paramstyle', 'threadsafety',
+    'Warning', 'DEFAULT_USER_AGENT', 'apilevel', 'connect', 'paramstyle', 'threadsafety',
     'get_param_types',
     'Binary', 'Date', 'DateFromTicks', 'Time', 'TimeFromTicks', 'Timestamp',
     'TimestampFromTicks',
