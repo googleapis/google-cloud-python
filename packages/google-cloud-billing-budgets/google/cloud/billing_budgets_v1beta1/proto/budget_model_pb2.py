@@ -682,9 +682,9 @@ AllUpdatesRule = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ALLUPDATESRULE,
         __module__="google.cloud.billing.budgets_v1beta1.proto.budget_model_pb2",
-        __doc__="""AllUpdatesRule defines notifications that are sent on every update to
-  the billing account's spend, regardless of the thresholds defined using
-  threshold rules.
+        __doc__="""AllUpdatesRule defines notifications that are sent on
+  every update to the billing account's spend, regardless of the
+  thresholds defined using threshold rules.
   
   
   Attributes:
