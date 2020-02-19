@@ -16470,11 +16470,11 @@ RecordCondition = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_RECORDCONDITION,
         __module__="google.cloud.dlp_v2.proto.dlp_pb2",
-        __doc__="""The field type of ``value`` and ``field`` do not need to
-  match to be considered equal, but not all comparisons are possible.
-  EQUAL\_TO and NOT\_EQUAL\_TO attempt to compare even with incompatible
-  types, but all other comparisons are invalid with incompatible types. A
-  ``value`` of type:
+        __doc__="""The field type of ``value`` and ``field`` do not need to match to be
+  considered equal, but not all comparisons are possible. EQUAL\_TO and
+  NOT\_EQUAL\_TO attempt to compare even with incompatible types, but all
+  other comparisons are invalid with incompatible types. A ``value`` of
+  type:
   
   -  ``string`` can be compared against all other types
   -  ``boolean`` can only be compared against other booleans
