@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -145,11 +145,11 @@ class ClusterManagerGrpcTransport(object):
         network <https://cloud.google.com/compute/docs/networks-and-firewalls#networks>`__.
 
         One firewall is added for the cluster. After cluster creation, the
-        cluster creates routes for each node to allow the containers on that
+        Kubelet creates routes for each node to allow the containers on that
         node to communicate with all other instances in the cluster.
 
         Finally, an entry is added to the project's global metadata indicating
-        which CIDR range is being used by the cluster.
+        which CIDR range the cluster is using.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -266,10 +266,9 @@ class ClusterManagerGrpcTransport(object):
     def set_master_auth(self):
         """Return the gRPC stub for :meth:`ClusterManagerClient.set_master_auth`.
 
-        Used to set master auth materials. Currently supports :- Changing the
-        admin password for a specific cluster. This can be either via password
-        generation or explicitly set. Modify basic\_auth.csv and reset the K8S
-        API server.
+        Sets master auth materials. Currently supports changing the admin password
+        or a specific cluster, either via password generation or explicitly setting
+        the password.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -288,9 +287,9 @@ class ClusterManagerGrpcTransport(object):
         Firewalls and routes that were configured during cluster creation
         are also deleted.
 
-        Other Google Compute Engine resources that might be in use by the cluster
-        (e.g. load balancer resources) will not be deleted if they weren't present
-        at the initial create time.
+        Other Google Compute Engine resources that might be in use by the cluster,
+        such as load balancer resources, are not deleted if they weren't present
+        when the cluster was initially created.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -303,7 +302,7 @@ class ClusterManagerGrpcTransport(object):
     def list_operations(self):
         """Return the gRPC stub for :meth:`ClusterManagerClient.list_operations`.
 
-        Lists all operations in a project in a specific zone or all zones.
+        Lists all operations in a project in the specified zone or all zones.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -342,7 +341,7 @@ class ClusterManagerGrpcTransport(object):
     def get_server_config(self):
         """Return the gRPC stub for :meth:`ClusterManagerClient.get_server_config`.
 
-        Returns configuration info about the Kubernetes Engine service.
+        Returns configuration info about the Google Kubernetes Engine service.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -368,7 +367,7 @@ class ClusterManagerGrpcTransport(object):
     def get_node_pool(self):
         """Return the gRPC stub for :meth:`ClusterManagerClient.get_node_pool`.
 
-        Retrieves the node pool requested.
+        Retrieves the requested node pool.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -407,8 +406,8 @@ class ClusterManagerGrpcTransport(object):
     def rollback_node_pool_upgrade(self):
         """Return the gRPC stub for :meth:`ClusterManagerClient.rollback_node_pool_upgrade`.
 
-        Roll back the previously Aborted or Failed NodePool upgrade.
-        This will be an no-op if the last upgrade successfully completed.
+        Rolls back a previously Aborted or Failed NodePool upgrade.
+        This makes no changes if the last upgrade successfully completed.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -460,7 +459,7 @@ class ClusterManagerGrpcTransport(object):
     def start_i_p_rotation(self):
         """Return the gRPC stub for :meth:`ClusterManagerClient.start_i_p_rotation`.
 
-        Start master IP rotation.
+        Starts master IP rotation.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -499,7 +498,7 @@ class ClusterManagerGrpcTransport(object):
     def set_network_policy(self):
         """Return the gRPC stub for :meth:`ClusterManagerClient.set_network_policy`.
 
-        Enables/Disables Network Policy for a cluster.
+        Enables or disables Network Policy for a cluster.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -525,7 +524,7 @@ class ClusterManagerGrpcTransport(object):
     def list_usable_subnetworks(self):
         """Return the gRPC stub for :meth:`ClusterManagerClient.list_usable_subnetworks`.
 
-        Lists subnetworks that are usable for creating clusters in a project.
+        Lists subnetworks that can be used for creating clusters in a project.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -538,7 +537,7 @@ class ClusterManagerGrpcTransport(object):
     def list_locations(self):
         """Return the gRPC stub for :meth:`ClusterManagerClient.list_locations`.
 
-        Used to fetch locations that offer GKE.
+        Fetches locations that offer Google Kubernetes Engine.
 
         Returns:
             Callable: A callable which accepts the appropriate

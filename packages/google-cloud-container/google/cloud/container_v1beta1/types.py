@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,9 +22,10 @@ from google.api_core.protobuf_helpers import get_messages
 
 from google.cloud.container_v1beta1.proto import cluster_service_pb2
 from google.protobuf import empty_pb2
+from google.protobuf import timestamp_pb2
 
 
-_shared_modules = [empty_pb2]
+_shared_modules = [empty_pb2, timestamp_pb2]
 
 _local_modules = [cluster_service_pb2]
 

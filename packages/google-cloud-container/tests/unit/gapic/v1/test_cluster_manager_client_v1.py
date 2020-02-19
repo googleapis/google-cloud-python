@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -76,17 +76,11 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-
-        response = client.list_clusters(project_id, zone)
+        response = client.list_clusters()
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = cluster_service_pb2.ListClustersRequest(
-            project_id=project_id, zone=zone
-        )
+        expected_request = cluster_service_pb2.ListClustersRequest()
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -98,12 +92,8 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-
         with pytest.raises(CustomException):
-            client.list_clusters(project_id, zone)
+            client.list_clusters()
 
     def test_get_cluster(self):
         # Setup Expected Response
@@ -118,7 +108,7 @@ class TestClusterManagerClient(object):
         enable_kubernetes_alpha = False
         label_fingerprint = "labelFingerprint714995737"
         self_link = "selfLink-1691268851"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         endpoint = "endpoint1741102485"
         initial_cluster_version = "initialClusterVersion-276373352"
         current_master_version = "currentMasterVersion-920953983"
@@ -144,7 +134,7 @@ class TestClusterManagerClient(object):
             "enable_kubernetes_alpha": enable_kubernetes_alpha,
             "label_fingerprint": label_fingerprint,
             "self_link": self_link,
-            "zone": zone_2,
+            "zone": zone,
             "endpoint": endpoint,
             "initial_cluster_version": initial_cluster_version,
             "current_master_version": current_master_version,
@@ -168,18 +158,11 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-
-        response = client.get_cluster(project_id, zone, cluster_id)
+        response = client.get_cluster()
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = cluster_service_pb2.GetClusterRequest(
-            project_id=project_id, zone=zone, cluster_id=cluster_id
-        )
+        expected_request = cluster_service_pb2.GetClusterRequest()
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -191,18 +174,13 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-
         with pytest.raises(CustomException):
-            client.get_cluster(project_id, zone, cluster_id)
+            client.get_cluster()
 
     def test_create_cluster(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -212,7 +190,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -231,17 +209,13 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
         cluster = {}
 
-        response = client.create_cluster(project_id, zone, cluster)
+        response = client.create_cluster(cluster)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = cluster_service_pb2.CreateClusterRequest(
-            project_id=project_id, zone=zone, cluster=cluster
-        )
+        expected_request = cluster_service_pb2.CreateClusterRequest(cluster=cluster)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -254,17 +228,15 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
         cluster = {}
 
         with pytest.raises(CustomException):
-            client.create_cluster(project_id, zone, cluster)
+            client.create_cluster(cluster)
 
     def test_update_cluster(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -274,7 +246,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -293,18 +265,13 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         update = {}
 
-        response = client.update_cluster(project_id, zone, cluster_id, update)
+        response = client.update_cluster(update)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = cluster_service_pb2.UpdateClusterRequest(
-            project_id=project_id, zone=zone, cluster_id=cluster_id, update=update
-        )
+        expected_request = cluster_service_pb2.UpdateClusterRequest(update=update)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -317,18 +284,15 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         update = {}
 
         with pytest.raises(CustomException):
-            client.update_cluster(project_id, zone, cluster_id, update)
+            client.update_cluster(update)
 
     def test_update_node_pool(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -338,7 +302,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -357,26 +321,15 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-        node_pool_id = "nodePoolId1043384033"
         node_version = "nodeVersion1790136219"
         image_type = "imageType-1442758754"
 
-        response = client.update_node_pool(
-            project_id, zone, cluster_id, node_pool_id, node_version, image_type
-        )
+        response = client.update_node_pool(node_version, image_type)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = cluster_service_pb2.UpdateNodePoolRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster_id=cluster_id,
-            node_pool_id=node_pool_id,
-            node_version=node_version,
-            image_type=image_type,
+            node_version=node_version, image_type=image_type
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -390,22 +343,16 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-        node_pool_id = "nodePoolId1043384033"
         node_version = "nodeVersion1790136219"
         image_type = "imageType-1442758754"
 
         with pytest.raises(CustomException):
-            client.update_node_pool(
-                project_id, zone, cluster_id, node_pool_id, node_version, image_type
-            )
+            client.update_node_pool(node_version, image_type)
 
     def test_set_node_pool_autoscaling(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -415,7 +362,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -434,24 +381,14 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-        node_pool_id = "nodePoolId1043384033"
         autoscaling = {}
 
-        response = client.set_node_pool_autoscaling(
-            project_id, zone, cluster_id, node_pool_id, autoscaling
-        )
+        response = client.set_node_pool_autoscaling(autoscaling)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = cluster_service_pb2.SetNodePoolAutoscalingRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster_id=cluster_id,
-            node_pool_id=node_pool_id,
-            autoscaling=autoscaling,
+            autoscaling=autoscaling
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -465,21 +402,15 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-        node_pool_id = "nodePoolId1043384033"
         autoscaling = {}
 
         with pytest.raises(CustomException):
-            client.set_node_pool_autoscaling(
-                project_id, zone, cluster_id, node_pool_id, autoscaling
-            )
+            client.set_node_pool_autoscaling(autoscaling)
 
     def test_set_logging_service(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -489,7 +420,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -508,22 +439,14 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         logging_service = "loggingService-1700501035"
 
-        response = client.set_logging_service(
-            project_id, zone, cluster_id, logging_service
-        )
+        response = client.set_logging_service(logging_service)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = cluster_service_pb2.SetLoggingServiceRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster_id=cluster_id,
-            logging_service=logging_service,
+            logging_service=logging_service
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -537,18 +460,15 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         logging_service = "loggingService-1700501035"
 
         with pytest.raises(CustomException):
-            client.set_logging_service(project_id, zone, cluster_id, logging_service)
+            client.set_logging_service(logging_service)
 
     def test_set_monitoring_service(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -558,7 +478,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -577,22 +497,14 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         monitoring_service = "monitoringService1469270462"
 
-        response = client.set_monitoring_service(
-            project_id, zone, cluster_id, monitoring_service
-        )
+        response = client.set_monitoring_service(monitoring_service)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = cluster_service_pb2.SetMonitoringServiceRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster_id=cluster_id,
-            monitoring_service=monitoring_service,
+            monitoring_service=monitoring_service
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -606,20 +518,15 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         monitoring_service = "monitoringService1469270462"
 
         with pytest.raises(CustomException):
-            client.set_monitoring_service(
-                project_id, zone, cluster_id, monitoring_service
-            )
+            client.set_monitoring_service(monitoring_service)
 
     def test_set_addons_config(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -629,7 +536,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -648,20 +555,14 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         addons_config = {}
 
-        response = client.set_addons_config(project_id, zone, cluster_id, addons_config)
+        response = client.set_addons_config(addons_config)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = cluster_service_pb2.SetAddonsConfigRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster_id=cluster_id,
-            addons_config=addons_config,
+            addons_config=addons_config
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -675,18 +576,15 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         addons_config = {}
 
         with pytest.raises(CustomException):
-            client.set_addons_config(project_id, zone, cluster_id, addons_config)
+            client.set_addons_config(addons_config)
 
     def test_set_locations(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -696,7 +594,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -715,18 +613,13 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         locations = []
 
-        response = client.set_locations(project_id, zone, cluster_id, locations)
+        response = client.set_locations(locations)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = cluster_service_pb2.SetLocationsRequest(
-            project_id=project_id, zone=zone, cluster_id=cluster_id, locations=locations
-        )
+        expected_request = cluster_service_pb2.SetLocationsRequest(locations=locations)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -739,18 +632,15 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         locations = []
 
         with pytest.raises(CustomException):
-            client.set_locations(project_id, zone, cluster_id, locations)
+            client.set_locations(locations)
 
     def test_update_master(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -760,7 +650,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -779,20 +669,14 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         master_version = "masterVersion-2139460613"
 
-        response = client.update_master(project_id, zone, cluster_id, master_version)
+        response = client.update_master(master_version)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = cluster_service_pb2.UpdateMasterRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster_id=cluster_id,
-            master_version=master_version,
+            master_version=master_version
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -806,18 +690,15 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         master_version = "masterVersion-2139460613"
 
         with pytest.raises(CustomException):
-            client.update_master(project_id, zone, cluster_id, master_version)
+            client.update_master(master_version)
 
     def test_set_master_auth(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -827,7 +708,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -846,22 +727,15 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         action = enums.SetMasterAuthRequest.Action.UNKNOWN
         update = {}
 
-        response = client.set_master_auth(project_id, zone, cluster_id, action, update)
+        response = client.set_master_auth(action, update)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = cluster_service_pb2.SetMasterAuthRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster_id=cluster_id,
-            action=action,
-            update=update,
+            action=action, update=update
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -875,19 +749,16 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         action = enums.SetMasterAuthRequest.Action.UNKNOWN
         update = {}
 
         with pytest.raises(CustomException):
-            client.set_master_auth(project_id, zone, cluster_id, action, update)
+            client.set_master_auth(action, update)
 
     def test_delete_cluster(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -897,7 +768,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -915,18 +786,11 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-
-        response = client.delete_cluster(project_id, zone, cluster_id)
+        response = client.delete_cluster()
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = cluster_service_pb2.DeleteClusterRequest(
-            project_id=project_id, zone=zone, cluster_id=cluster_id
-        )
+        expected_request = cluster_service_pb2.DeleteClusterRequest()
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -938,13 +802,8 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-
         with pytest.raises(CustomException):
-            client.delete_cluster(project_id, zone, cluster_id)
+            client.delete_cluster()
 
     def test_list_operations(self):
         # Setup Expected Response
@@ -960,17 +819,11 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-
-        response = client.list_operations(project_id, zone)
+        response = client.list_operations()
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = cluster_service_pb2.ListOperationsRequest(
-            project_id=project_id, zone=zone
-        )
+        expected_request = cluster_service_pb2.ListOperationsRequest()
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -982,17 +835,13 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-
         with pytest.raises(CustomException):
-            client.list_operations(project_id, zone)
+            client.list_operations()
 
     def test_get_operation(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -1002,7 +851,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -1020,18 +869,11 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        operation_id = "operationId-274116877"
-
-        response = client.get_operation(project_id, zone, operation_id)
+        response = client.get_operation()
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = cluster_service_pb2.GetOperationRequest(
-            project_id=project_id, zone=zone, operation_id=operation_id
-        )
+        expected_request = cluster_service_pb2.GetOperationRequest()
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -1043,13 +885,8 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        operation_id = "operationId-274116877"
-
         with pytest.raises(CustomException):
-            client.get_operation(project_id, zone, operation_id)
+            client.get_operation()
 
     def test_cancel_operation(self):
         channel = ChannelStub()
@@ -1058,17 +895,10 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        operation_id = "operationId-274116877"
-
-        client.cancel_operation(project_id, zone, operation_id)
+        client.cancel_operation()
 
         assert len(channel.requests) == 1
-        expected_request = cluster_service_pb2.CancelOperationRequest(
-            project_id=project_id, zone=zone, operation_id=operation_id
-        )
+        expected_request = cluster_service_pb2.CancelOperationRequest()
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -1080,13 +910,8 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        operation_id = "operationId-274116877"
-
         with pytest.raises(CustomException):
-            client.cancel_operation(project_id, zone, operation_id)
+            client.cancel_operation()
 
     def test_get_server_config(self):
         # Setup Expected Response
@@ -1105,17 +930,11 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-
-        response = client.get_server_config(project_id, zone)
+        response = client.get_server_config()
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = cluster_service_pb2.GetServerConfigRequest(
-            project_id=project_id, zone=zone
-        )
+        expected_request = cluster_service_pb2.GetServerConfigRequest()
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -1127,12 +946,8 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-
         with pytest.raises(CustomException):
-            client.get_server_config(project_id, zone)
+            client.get_server_config()
 
     def test_list_node_pools(self):
         # Setup Expected Response
@@ -1148,18 +963,11 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-
-        response = client.list_node_pools(project_id, zone, cluster_id)
+        response = client.list_node_pools()
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = cluster_service_pb2.ListNodePoolsRequest(
-            project_id=project_id, zone=zone, cluster_id=cluster_id
-        )
+        expected_request = cluster_service_pb2.ListNodePoolsRequest()
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -1171,13 +979,8 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-
         with pytest.raises(CustomException):
-            client.list_node_pools(project_id, zone, cluster_id)
+            client.list_node_pools()
 
     def test_get_node_pool(self):
         # Setup Expected Response
@@ -1204,22 +1007,11 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-        node_pool_id = "nodePoolId1043384033"
-
-        response = client.get_node_pool(project_id, zone, cluster_id, node_pool_id)
+        response = client.get_node_pool()
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = cluster_service_pb2.GetNodePoolRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster_id=cluster_id,
-            node_pool_id=node_pool_id,
-        )
+        expected_request = cluster_service_pb2.GetNodePoolRequest()
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -1231,19 +1023,13 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-        node_pool_id = "nodePoolId1043384033"
-
         with pytest.raises(CustomException):
-            client.get_node_pool(project_id, zone, cluster_id, node_pool_id)
+            client.get_node_pool()
 
     def test_create_node_pool(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -1253,7 +1039,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -1272,17 +1058,14 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         node_pool = {}
 
-        response = client.create_node_pool(project_id, zone, cluster_id, node_pool)
+        response = client.create_node_pool(node_pool)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = cluster_service_pb2.CreateNodePoolRequest(
-            project_id=project_id, zone=zone, cluster_id=cluster_id, node_pool=node_pool
+            node_pool=node_pool
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -1296,18 +1079,15 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         node_pool = {}
 
         with pytest.raises(CustomException):
-            client.create_node_pool(project_id, zone, cluster_id, node_pool)
+            client.create_node_pool(node_pool)
 
     def test_delete_node_pool(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -1317,7 +1097,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -1335,22 +1115,11 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-        node_pool_id = "nodePoolId1043384033"
-
-        response = client.delete_node_pool(project_id, zone, cluster_id, node_pool_id)
+        response = client.delete_node_pool()
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = cluster_service_pb2.DeleteNodePoolRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster_id=cluster_id,
-            node_pool_id=node_pool_id,
-        )
+        expected_request = cluster_service_pb2.DeleteNodePoolRequest()
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -1362,19 +1131,13 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-        node_pool_id = "nodePoolId1043384033"
-
         with pytest.raises(CustomException):
-            client.delete_node_pool(project_id, zone, cluster_id, node_pool_id)
+            client.delete_node_pool()
 
     def test_rollback_node_pool_upgrade(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -1384,7 +1147,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -1402,24 +1165,11 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-        node_pool_id = "nodePoolId1043384033"
-
-        response = client.rollback_node_pool_upgrade(
-            project_id, zone, cluster_id, node_pool_id
-        )
+        response = client.rollback_node_pool_upgrade()
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = cluster_service_pb2.RollbackNodePoolUpgradeRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster_id=cluster_id,
-            node_pool_id=node_pool_id,
-        )
+        expected_request = cluster_service_pb2.RollbackNodePoolUpgradeRequest()
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -1431,21 +1181,13 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-        node_pool_id = "nodePoolId1043384033"
-
         with pytest.raises(CustomException):
-            client.rollback_node_pool_upgrade(
-                project_id, zone, cluster_id, node_pool_id
-            )
+            client.rollback_node_pool_upgrade()
 
     def test_set_node_pool_management(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -1455,7 +1197,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -1474,24 +1216,14 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-        node_pool_id = "nodePoolId1043384033"
         management = {}
 
-        response = client.set_node_pool_management(
-            project_id, zone, cluster_id, node_pool_id, management
-        )
+        response = client.set_node_pool_management(management)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = cluster_service_pb2.SetNodePoolManagementRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster_id=cluster_id,
-            node_pool_id=node_pool_id,
-            management=management,
+            management=management
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -1505,21 +1237,15 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-        node_pool_id = "nodePoolId1043384033"
         management = {}
 
         with pytest.raises(CustomException):
-            client.set_node_pool_management(
-                project_id, zone, cluster_id, node_pool_id, management
-            )
+            client.set_node_pool_management(management)
 
     def test_set_labels(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -1529,7 +1255,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -1548,24 +1274,15 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         resource_labels = {}
         label_fingerprint = "labelFingerprint714995737"
 
-        response = client.set_labels(
-            project_id, zone, cluster_id, resource_labels, label_fingerprint
-        )
+        response = client.set_labels(resource_labels, label_fingerprint)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = cluster_service_pb2.SetLabelsRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster_id=cluster_id,
-            resource_labels=resource_labels,
-            label_fingerprint=label_fingerprint,
+            resource_labels=resource_labels, label_fingerprint=label_fingerprint
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -1579,21 +1296,16 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         resource_labels = {}
         label_fingerprint = "labelFingerprint714995737"
 
         with pytest.raises(CustomException):
-            client.set_labels(
-                project_id, zone, cluster_id, resource_labels, label_fingerprint
-            )
+            client.set_labels(resource_labels, label_fingerprint)
 
     def test_set_legacy_abac(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -1603,7 +1315,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -1622,18 +1334,13 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         enabled = False
 
-        response = client.set_legacy_abac(project_id, zone, cluster_id, enabled)
+        response = client.set_legacy_abac(enabled)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = cluster_service_pb2.SetLegacyAbacRequest(
-            project_id=project_id, zone=zone, cluster_id=cluster_id, enabled=enabled
-        )
+        expected_request = cluster_service_pb2.SetLegacyAbacRequest(enabled=enabled)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -1646,18 +1353,15 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         enabled = False
 
         with pytest.raises(CustomException):
-            client.set_legacy_abac(project_id, zone, cluster_id, enabled)
+            client.set_legacy_abac(enabled)
 
     def test_start_i_p_rotation(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -1667,7 +1371,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -1685,18 +1389,11 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-
-        response = client.start_i_p_rotation(project_id, zone, cluster_id)
+        response = client.start_i_p_rotation()
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = cluster_service_pb2.StartIPRotationRequest(
-            project_id=project_id, zone=zone, cluster_id=cluster_id
-        )
+        expected_request = cluster_service_pb2.StartIPRotationRequest()
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -1708,18 +1405,13 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-
         with pytest.raises(CustomException):
-            client.start_i_p_rotation(project_id, zone, cluster_id)
+            client.start_i_p_rotation()
 
     def test_complete_i_p_rotation(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -1729,7 +1421,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -1747,18 +1439,11 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-
-        response = client.complete_i_p_rotation(project_id, zone, cluster_id)
+        response = client.complete_i_p_rotation()
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = cluster_service_pb2.CompleteIPRotationRequest(
-            project_id=project_id, zone=zone, cluster_id=cluster_id
-        )
+        expected_request = cluster_service_pb2.CompleteIPRotationRequest()
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -1770,18 +1455,13 @@ class TestClusterManagerClient(object):
             create_channel.return_value = channel
             client = container_v1.ClusterManagerClient()
 
-        # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-
         with pytest.raises(CustomException):
-            client.complete_i_p_rotation(project_id, zone, cluster_id)
+            client.complete_i_p_rotation()
 
     def test_set_node_pool_size(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -1791,7 +1471,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -1810,24 +1490,14 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-        node_pool_id = "nodePoolId1043384033"
         node_count = 1539922066
 
-        response = client.set_node_pool_size(
-            project_id, zone, cluster_id, node_pool_id, node_count
-        )
+        response = client.set_node_pool_size(node_count)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = cluster_service_pb2.SetNodePoolSizeRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster_id=cluster_id,
-            node_pool_id=node_pool_id,
-            node_count=node_count,
+            node_count=node_count
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -1841,21 +1511,15 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
-        node_pool_id = "nodePoolId1043384033"
         node_count = 1539922066
 
         with pytest.raises(CustomException):
-            client.set_node_pool_size(
-                project_id, zone, cluster_id, node_pool_id, node_count
-            )
+            client.set_node_pool_size(node_count)
 
     def test_set_network_policy(self):
         # Setup Expected Response
         name = "name3373707"
-        zone_2 = "zone2-696322977"
+        zone = "zone3744684"
         detail = "detail-1335224239"
         status_message = "statusMessage-239442758"
         self_link = "selfLink-1691268851"
@@ -1865,7 +1529,7 @@ class TestClusterManagerClient(object):
         end_time = "endTime1725551537"
         expected_response = {
             "name": name,
-            "zone": zone_2,
+            "zone": zone,
             "detail": detail,
             "status_message": status_message,
             "self_link": self_link,
@@ -1884,22 +1548,14 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup Request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         network_policy = {}
 
-        response = client.set_network_policy(
-            project_id, zone, cluster_id, network_policy
-        )
+        response = client.set_network_policy(network_policy)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = cluster_service_pb2.SetNetworkPolicyRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster_id=cluster_id,
-            network_policy=network_policy,
+            network_policy=network_policy
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -1913,13 +1569,10 @@ class TestClusterManagerClient(object):
             client = container_v1.ClusterManagerClient()
 
         # Setup request
-        project_id = "projectId-1969970175"
-        zone = "zone3744684"
-        cluster_id = "clusterId240280960"
         network_policy = {}
 
         with pytest.raises(CustomException):
-            client.set_network_policy(project_id, zone, cluster_id, network_policy)
+            client.set_network_policy(network_policy)
 
     def test_set_maintenance_policy(self):
         # Setup Expected Response
