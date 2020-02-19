@@ -87,10 +87,10 @@ class Proto:
     @cached_property
     def messages(self) -> Mapping[str, wrappers.MessageType]:
         """Return top-level messages on the proto."""
-        return collections.OrderedDict([
+        return collections.OrderedDict(
             (k, v) for k, v in self.all_messages.items()
             if not v.meta.address.parent
-        ])
+        )
 
     @property
     def module_name(self) -> str:
@@ -140,17 +140,18 @@ class Proto:
             for use in a ``from package import module`` type
             of statement.
         """
-        answer = set()
         self_reference = self.meta.address.python_import
-        for t in chain(*[m.field_types for m in self.messages.values()]):
-            # Add the appropriate Python import for the field.
+
+        answer = {
+            t.ident.python_import
+            for m in self.all_messages.values()
             # Sanity check: We do make sure that we are not trying to have
             # a module import itself.
-            if t.ident.python_import != self_reference:
-                answer.add(t.ident.python_import)
+            for t in m.field_types if t.ident.python_import != self_reference
+        }
 
         # Done; return the sorted sequence.
-        return tuple(sorted(list(answer)))
+        return tuple(sorted(answer))
 
     def disambiguate(self, string: str) -> str:
         """Return a disambiguated string for the context of this proto.

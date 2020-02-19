@@ -36,7 +36,7 @@ def unit(session):
         '--cov-config=.coveragerc',
         '--cov-report=term',
         '--cov-report=html',
-        os.path.join('tests', 'unit'),
+        *(session.posargs or [os.path.join('tests', 'unit')]),
     )
 
 
@@ -82,7 +82,9 @@ def showcase(session):
         # Install the library.
         session.install(tmp_dir)
 
-    session.run('py.test', '--quiet', os.path.join('tests', 'system'))
+    session.run(
+        'py.test', '--quiet', *(session.posargs or [os.path.join('tests', 'system')])
+    )
 
 
 @nox.session(python=['3.6', '3.7', '3.8'])
@@ -127,7 +129,7 @@ def showcase_unit(session):
             '--quiet',
             '--cov=google',
             '--cov-report=term',
-            os.path.join('tests', 'unit'),
+            *(session.posargs or [os.path.join('tests', 'unit')]),
         )
 
 

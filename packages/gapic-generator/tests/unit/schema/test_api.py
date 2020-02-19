@@ -196,8 +196,8 @@ def test_proto_builder_constructor():
     # Test the load function.
     with mock.patch.object(api._ProtoBuilder, '_load_children') as lc:
         pb = api._ProtoBuilder(fdp,
-            file_to_generate=True,
-            naming=make_naming(),
+                               file_to_generate=True,
+                               naming=make_naming(),
                                )
 
         # There should be three total calls to load the different types
@@ -222,8 +222,8 @@ def test_proto_builder_constructor():
 
 def test_not_target_file():
     """Establish that services are not ignored for untargeted protos."""
-    message_pb = make_message_pb2(name='Foo',
-        fields=(make_field_pb2(name='bar', type=3, number=1),)
+    message_pb = make_message_pb2(
+        name='Foo', fields=(make_field_pb2(name='bar', type=3, number=1),)
     )
     service_pb = descriptor_pb2.ServiceDescriptorProto()
     fdp = make_file_pb2(messages=(message_pb,), services=(service_pb,))
@@ -239,8 +239,8 @@ def test_not_target_file():
 def test_messages():
     L = descriptor_pb2.SourceCodeInfo.Location
 
-    message_pb = make_message_pb2(name='Foo',
-        fields=(make_field_pb2(name='bar', type=3, number=1),)
+    message_pb = make_message_pb2(
+        name='Foo', fields=(make_field_pb2(name='bar', type=3, number=1),)
     )
     locations = (
         L(path=(4, 0), leading_comments='This is the Foo message.'),
@@ -271,7 +271,7 @@ def test_messages_reverse_declaration_order():
         make_message_pb2(name='Foo', fields=(
             make_field_pb2(name='bar', number=1,
                            type_name='.google.example.v3.Bar'),
-            ),
+        ),
         ),
         make_message_pb2(name='Bar'),
     )
@@ -296,7 +296,7 @@ def test_messages_recursive():
         make_message_pb2(name='Foo', fields=(
             make_field_pb2(name='foo', number=1,
                            type_name='.google.example.v3.Foo'),
-            ),
+        ),
         ),
     )
     fdp = make_file_pb2(
@@ -343,6 +343,76 @@ def test_messages_nested():
     assert bar not in proto.messages
 
 
+def test_python_modules_nested():
+    fd = (
+        make_file_pb2(
+            name='dep.proto',
+            package='google.dep',
+            messages=(make_message_pb2(name='ImportedMessage', fields=()),),
+        ),
+        make_file_pb2(
+            name='common.proto',
+            package='google.example.v1.common',
+            messages=(make_message_pb2(name='Bar'),),
+        ),
+        make_file_pb2(
+            name='foo.proto',
+            package='google.example.v1',
+            messages=(
+                make_message_pb2(
+                    name='GetFooRequest',
+                    fields=(
+                        make_field_pb2(name='primitive', number=2, type=1),
+                        make_field_pb2(
+                            name='foo',
+                            number=3,
+                            type=1,
+                            type_name='.google.example.v1.GetFooRequest.Foo',
+                        ),
+                    ),
+                    nested_type=(
+                        make_message_pb2(
+                            name='Foo',
+                            fields=(
+                                make_field_pb2(
+                                    name='imported_message',
+                                    number=1,
+                                    type_name='.google.dep.ImportedMessage'),
+                            ),
+                        ),
+                    ),
+                ),
+                make_message_pb2(
+                    name='GetFooResponse',
+                    fields=(
+                        make_field_pb2(
+                            name='foo',
+                            number=1,
+                            type_name='.google.example.v1.GetFooRequest.Foo',
+                        ),
+                    ),
+                ),
+            ),
+            services=(descriptor_pb2.ServiceDescriptorProto(
+                name='FooService',
+                method=(
+                    descriptor_pb2.MethodDescriptorProto(
+                        name='GetFoo',
+                        input_type='google.example.v1.GetFooRequest',
+                        output_type='google.example.v1.GetFooResponse',
+                    ),
+                ),
+            ),),
+        ),
+    )
+
+    api_schema = api.API.build(fd, package='google.example.v1')
+
+    assert api_schema.protos['foo.proto'].python_modules == (
+        imp.Import(package=('google', 'dep'), module='dep_pb2'),
+    )
+
+
 def test_services():
     L = descriptor_pb2.SourceCodeInfo.Location
 
@@ -366,8 +436,8 @@ def test_services():
     ]})
 
     # Set up messages for our RPC.
-    request_message_pb = make_message_pb2(name='GetFooRequest',
-        fields=(make_field_pb2(name='name', type=9, number=1),)
+    request_message_pb = make_message_pb2(
+        name='GetFooRequest', fields=(make_field_pb2(name='name', type=9, number=1),)
     )
     response_message_pb = make_message_pb2(name='GetFooResponse', fields=())
 
@@ -623,10 +693,10 @@ def test_enums():
 
 
 def make_file_pb2(name: str = 'my_proto.proto', package: str = 'example.v1', *,
-        messages: Sequence[descriptor_pb2.DescriptorProto] = (),
-        enums: Sequence[descriptor_pb2.EnumDescriptorProto] = (),
-        services: Sequence[descriptor_pb2.ServiceDescriptorProto] = (),
-        locations: Sequence[descriptor_pb2.SourceCodeInfo.Location] = (),
+                  messages: Sequence[descriptor_pb2.DescriptorProto] = (),
+                  enums: Sequence[descriptor_pb2.EnumDescriptorProto] = (),
+                  services: Sequence[descriptor_pb2.ServiceDescriptorProto] = (),
+                  locations: Sequence[descriptor_pb2.SourceCodeInfo.Location] = (),
                   ) -> descriptor_pb2.FileDescriptorProto:
     return descriptor_pb2.FileDescriptorProto(
         name=name,
@@ -642,13 +712,13 @@ def make_message_pb2(
         name: str,
         fields: tuple = (),
         **kwargs
-        ) -> descriptor_pb2.DescriptorProto:
+) -> descriptor_pb2.DescriptorProto:
     return descriptor_pb2.DescriptorProto(name=name, field=fields, **kwargs)
 
 
 def make_field_pb2(name: str, number: int,
-        type: int = 11,  # 11 == message
-        type_name: str = None,
+                   type: int = 11,  # 11 == message
+                   type_name: str = None,
                    ) -> descriptor_pb2.FieldDescriptorProto:
     return descriptor_pb2.FieldDescriptorProto(
         name=name,

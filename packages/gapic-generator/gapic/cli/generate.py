@@ -65,3 +65,7 @@ def generate(
 
     # Output the serialized response.
     output.write(res.SerializeToString())
+
+
+if __name__ == "__main__":
+    generate()
