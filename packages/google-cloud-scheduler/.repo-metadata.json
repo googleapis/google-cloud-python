@@ -6,7 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/5411429",
   "release_level": "alpha",
   "language": "python",
-  "repo": "googleapis/google-cloud-python",
+  "repo": "googleapis/python-scheduler",
   "distribution_name": "google-cloud-scheduler",
   "api_id": "cloudscheduler.googleapis.com",
   "requires_billing": true
