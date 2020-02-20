@@ -1,1 +1,1 @@
-../../oslogin/CHANGELOG.md
+../CHANGELOG.md

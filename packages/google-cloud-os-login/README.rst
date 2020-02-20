@@ -1,4 +1,4 @@
-Python Client for Google Cloud OS Login API (unreleased)
+Python Client for Google Cloud OS Login API (`Alpha`_)
 ========================================================
 
 |pypi| |versions| 
@@ -10,9 +10,9 @@ Python Client for Google Cloud OS Login API (unreleased)
 
 .. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-oslogin.svg
-   :target: https://pypi.org/project/google-cloud-oslogin/
+   :target: https://pypi.org/project/google-cloud-os-login/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-oslogin.svg
-   :target: https://pypi.org/project/google-cloud-oslogin/
+   :target: https://pypi.org/project/google-cloud-os-login/
 .. _Google Cloud OS Login API: https://cloud.google.com/os-login
 .. _Client Library Documentation: https://googleapis.dev/python/oslogin/latest
 .. _Product Documentation:  https://cloud.google.com/os-login
