@@ -1,11 +1,25 @@
 {
-  "updateTime": "2020-02-07T01:44:59.025974Z",
+  "updateTime": "2020-02-20T13:10:00.940057Z",
   "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "https://github.com/googleapis/python-api-core.git",
+        "sha": "e72202efcad6bce18ef252e57d35e97d622ab5e0"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "rpc://devrel/cloud/libraries/tools/autosynth",
+        "sha": "43dc756ddb00adbf32e9a07a6f2059ebea1fd3fa"
+      }
+    },
     {
       "template": {
         "name": "python_split_library",
         "origin": "synthtool.gcp",
-        "version": "2019.10.17"
+        "version": "2020.2.4"
       }
     }
   ]
