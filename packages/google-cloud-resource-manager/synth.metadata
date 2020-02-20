@@ -1,0 +1,12 @@
+{
+  "updateTime": "2020-02-04T22:26:28.122324Z",
+  "sources": [
+    {
+      "template": {
+        "name": "python_split_library",
+        "origin": "synthtool.gcp",
+        "version": "2019.10.17"
+      }
+    }
+  ]
+}
