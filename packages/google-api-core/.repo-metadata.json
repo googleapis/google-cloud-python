@@ -4,6 +4,6 @@
   "client_documentation": "https://googleapis.dev/python/google-api-core/latest",
   "release_level": "ga",
   "language": "python",
-  "repo": "googleapis/google-cloud-python",
+  "repo": "googleapis/python-api-core",
   "distribution_name": "google-api-core"
 }

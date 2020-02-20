@@ -73,7 +73,7 @@ setuptools.setup(
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
-    url="https://github.com/GoogleCloudPlatform/google-cloud-python",
+    url="https://github.com/googleapis/python-api-core",
     classifiers=[
         release_status,
         "Intended Audience :: Developers",
@@ -93,7 +93,7 @@ setuptools.setup(
     namespace_packages=namespaces,
     install_requires=dependencies,
     extras_require=extras,
-    python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*',
+    python_requires=">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*",
     include_package_data=True,
     zip_safe=False,
 )
