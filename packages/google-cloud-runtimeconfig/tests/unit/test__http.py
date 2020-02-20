@@ -66,5 +66,5 @@ class TestConnection(unittest.TestCase):
             headers=expected_headers,
             method="GET",
             url=expected_uri,
-            timeout=None,
+            timeout=60,
         )

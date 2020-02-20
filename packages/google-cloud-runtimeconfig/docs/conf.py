@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# google-cloud-automl documentation build configuration file
+# google-cloud-runtimeconfig documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -20,7 +20,7 @@ import shlex
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath(".."))
 
-__version__ = "0.1.0"
+__version__ = ""
 
 # -- General configuration ------------------------------------------------
 
@@ -65,8 +65,8 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-automl"
-copyright = u"2017, Google"
+project = u"google-cloud-runtimeconfig"
+copyright = u"2019, Google"
 author = u"Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
@@ -133,9 +133,9 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for Python",
+    "description": "Google Cloud Client Libraries for google-cloud-runtimeconfig",
     "github_user": "googleapis",
-    "github_repo": "google-cloud-python",
+    "github_repo": "python-runtimeconfig",
     "github_banner": True,
     "font_family": "'Roboto', Georgia, sans",
     "head_font_family": "'Roboto', Georgia, serif",
@@ -227,7 +227,7 @@ html_static_path = ["_static"]
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-cloud-automl-doc"
+htmlhelp_basename = "google-cloud-runtimeconfig-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
@@ -260,8 +260,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "google-cloud-automl.tex",
-        u"google-cloud-automl Documentation",
+        "google-cloud-runtimeconfig.tex",
+        u"google-cloud-runtimeconfig Documentation",
         author,
         "manual",
     )
@@ -295,8 +295,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "google-cloud-automl",
-        u"google-cloud-automl Documentation",
+        "google-cloud-runtimeconfig",
+        u"google-cloud-runtimeconfig Documentation",
         [author],
         1,
     )
@@ -314,11 +314,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "google-cloud-automl",
-        u"google-cloud-automl Documentation",
+        "google-cloud-runtimeconfig",
+        u"google-cloud-runtimeconfig Documentation",
         author,
-        "google-cloud-automl",
-        "GAPIC library for the RuntimeConfig API",
+        "google-cloud-runtimeconfig",
+        "google-cloud-runtimeconfig Library",
         "APIs",
     )
 ]
@@ -340,9 +340,8 @@ texinfo_documents = [
 intersphinx_mapping = {
     "python": ("http://python.readthedocs.org/en/latest/", None),
     "google-auth": ("https://google-auth.readthedocs.io/en/stable", None),
-    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest", None),
+    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest/", None),
     "grpc": ("https://grpc.io/grpc/python/", None),
-    "requests": ("https://requests.kennethreitz.org/en/stable/", None),
 }
 
 
