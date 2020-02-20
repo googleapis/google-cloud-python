@@ -516,8 +516,7 @@ class Method:
             return PythonType(meta=metadata.Metadata(
                 address=metadata.Address(
                     name=f'{self.name}Pager',
-                    package=self.ident.api_naming.module_namespace + (
-                        self.ident.api_naming.versioned_module_name,
+                    package=self.ident.api_naming.module_namespace + (self.ident.api_naming.versioned_module_name,) + self.ident.subpackage + (
                         'services',
                         utils.to_snake_case(self.ident.parent[-1]),
                     ),
