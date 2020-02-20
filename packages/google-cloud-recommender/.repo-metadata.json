@@ -6,7 +6,7 @@
   "issue_tracker": "",
   "release_level": "beta",
   "language": "python",
-  "repo": "googleapis/google-cloud-python",
+  "repo": "googleapis/python-recommender",
   "distribution_name": "google-cloud-recommender",
   "api_id": "recommender.googleapis.com",
   "requires_billing": true
