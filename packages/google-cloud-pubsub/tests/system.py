@@ -18,6 +18,7 @@ import datetime
 import itertools
 import operator as op
 import os
+import psutil
 import threading
 import time
 
@@ -46,7 +47,7 @@ def publisher():
     yield pubsub_v1.PublisherClient()
 
 
-@pytest.fixture(scope=u"module")
+@pytest.fixture(scope="module")
 def subscriber():
     yield pubsub_v1.SubscriberClient()
 
@@ -381,6 +382,54 @@ def test_managing_subscription_iam_policy(
 
     assert bindings[1].role == "roles/pubsub.viewer"
     assert bindings[1].members == ["group:cloud-logs@google.com"]
+
+
+def test_subscriber_not_leaking_open_sockets(
+    publisher, topic_path, subscription_path, cleanup
+):
+    # Make sure the topic and the supscription get deleted.
+    # NOTE: Since subscriber client will be closed in the test, we should not
+    # use the shared `subscriber` fixture, but instead construct a new client
+    # in this test.
+    # Also, since the client will get closed, we need another subscriber client
+    # to clean up the subscription. We also need to make sure that auxiliary
+    # subscriber releases the sockets, too.
+    subscriber = pubsub_v1.SubscriberClient()
+    subscriber_2 = pubsub_v1.SubscriberClient()
+    cleanup.append((subscriber_2.delete_subscription, subscription_path))
+
+    def one_arg_close(subscriber):  # the cleanup helper expects exactly one argument
+        subscriber.close()
+
+    cleanup.append((one_arg_close, subscriber_2))
+    cleanup.append((publisher.delete_topic, topic_path))
+
+    # Create topic before starting to track connection count (any sockets opened
+    # by the publisher client are not counted by this test).
+    publisher.create_topic(topic_path)
+
+    current_process = psutil.Process()
+    conn_count_start = len(current_process.connections())
+
+    # Publish a few messages, then synchronously pull them and check that
+    # no sockets are leaked.
+    with subscriber:
+        subscriber.create_subscription(name=subscription_path, topic=topic_path)
+
+        # Publish a few messages, wait for the publish to succeed.
+        publish_futures = [
+            publisher.publish(topic_path, u"message {}".format(i).encode())
+            for i in range(1, 4)
+        ]
+        for future in publish_futures:
+            future.result()
+
+        # Synchronously pull messages.
+        response = subscriber.pull(subscription_path, max_messages=3)
+        assert len(response.received_messages) == 3
+
+    conn_count_end = len(current_process.connections())
+    assert conn_count_end == conn_count_start
 
 
 class TestStreamingPull(object):

@@ -106,3 +106,22 @@ def test_subscribe_options(manager_open):
         callback=mock.sentinel.callback,
         on_callback_error=future.set_exception,
     )
+
+
+def test_close():
+    mock_transport = mock.NonCallableMock()
+    client = subscriber.Client(transport=mock_transport)
+
+    client.close()
+
+    mock_transport.channel.close.assert_called()
+
+
+def test_closes_channel_as_context_manager():
+    mock_transport = mock.NonCallableMock()
+    client = subscriber.Client(transport=mock_transport)
+
+    with client:
+        pass
+
+    mock_transport.channel.close.assert_called()

@@ -228,3 +228,19 @@ class Client(object):
         manager.open(callback=callback, on_callback_error=future.set_exception)
 
         return future
+
+    def close(self):
+        """Close the underlying channel to release socket resources.
+
+        After a channel has been closed, the client instance cannot be used
+        anymore.
+
+        This method is idempotent.
+        """
+        self.api.transport.channel.close()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
