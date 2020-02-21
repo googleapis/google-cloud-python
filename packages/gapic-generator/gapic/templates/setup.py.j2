@@ -21,7 +21,7 @@ setuptools.setup(
         'grpcio >= 1.10.0',
         'proto-plus >= 0.4.0',
     ),
-    python_requires='>={% if opts.lazy_import %}3.7{% else %}3.5{% endif %}',{# Lazy import requires module-level getattr #}
+    python_requires='>={% if opts.lazy_import %}3.7{% else %}3.6{% endif %}',{# Lazy import requires module-level getattr #}
     setup_requires=[
         'libcst >= 0.2.5',
     ],
