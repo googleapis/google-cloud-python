@@ -14,7 +14,7 @@ help:
 generate:
 	# Ensure we have a virtualenv w/ up-to-date grpcio/grpcio-tools
 	[ -d $(GRPCIO_VIRTUALENV) ] || python2.7 -m virtualenv $(GRPCIO_VIRTUALENV)
-	$(GRPCIO_VIRTUALENV)/bin/pip install --upgrade grpcio grpcio-tools
+	$(GRPCIO_VIRTUALENV)/bin/pip install grpcio==1.27.2 grpcio-tools==1.27.2
 	# Retrieve git repos that have our *.proto files.
 	[ -d googleapis-pb ] || git clone https://github.com/googleapis/googleapis googleapis-pb --depth=1
 	cd googleapis-pb && git pull origin master
