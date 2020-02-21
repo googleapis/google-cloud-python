@@ -32,7 +32,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\031com.google.cloud.tasks.v2B\nQueueProtoP\001Z:google.golang.org/genproto/googleapis/cloud/tasks/v2;tasks"
     ),
     serialized_pb=_b(
-        '\n\'google/cloud/tasks_v2/proto/queue.proto\x12\x15google.cloud.tasks.v2\x1a\x19google/api/resource.proto\x1a(google/cloud/tasks_v2/proto/target.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\xdd\x03\n\x05Queue\x12\x0c\n\x04name\x18\x01 \x01(\t\x12L\n\x1b\x61pp_engine_routing_override\x18\x02 \x01(\x0b\x32\'.google.cloud.tasks.v2.AppEngineRouting\x12\x36\n\x0brate_limits\x18\x03 \x01(\x0b\x32!.google.cloud.tasks.v2.RateLimits\x12\x38\n\x0cretry_config\x18\x04 \x01(\x0b\x32".google.cloud.tasks.v2.RetryConfig\x12\x31\n\x05state\x18\x05 \x01(\x0e\x32".google.cloud.tasks.v2.Queue.State\x12.\n\npurge_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"E\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07RUNNING\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0c\n\x08\x44ISABLED\x10\x03:\\\xea\x41Y\n\x1f\x63loudtasks.googleapis.com/Queue\x12\x36projects/{project}/locations/{location}/queues/{queue}"j\n\nRateLimits\x12!\n\x19max_dispatches_per_second\x18\x01 \x01(\x01\x12\x16\n\x0emax_burst_size\x18\x02 \x01(\x05\x12!\n\x19max_concurrent_dispatches\x18\x03 \x01(\x05"\xd1\x01\n\x0bRetryConfig\x12\x14\n\x0cmax_attempts\x18\x01 \x01(\x05\x12\x35\n\x12max_retry_duration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12.\n\x0bmin_backoff\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration\x12.\n\x0bmax_backoff\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x15\n\rmax_doublings\x18\x05 \x01(\x05\x42\x65\n\x19\x63om.google.cloud.tasks.v2B\nQueueProtoP\x01Z:google.golang.org/genproto/googleapis/cloud/tasks/v2;tasksb\x06proto3'
+        '\n\'google/cloud/tasks_v2/proto/queue.proto\x12\x15google.cloud.tasks.v2\x1a\x19google/api/resource.proto\x1a(google/cloud/tasks_v2/proto/target.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\xb2\x04\n\x05Queue\x12\x0c\n\x04name\x18\x01 \x01(\t\x12L\n\x1b\x61pp_engine_routing_override\x18\x02 \x01(\x0b\x32\'.google.cloud.tasks.v2.AppEngineRouting\x12\x36\n\x0brate_limits\x18\x03 \x01(\x0b\x32!.google.cloud.tasks.v2.RateLimits\x12\x38\n\x0cretry_config\x18\x04 \x01(\x0b\x32".google.cloud.tasks.v2.RetryConfig\x12\x31\n\x05state\x18\x05 \x01(\x0e\x32".google.cloud.tasks.v2.Queue.State\x12.\n\npurge_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12S\n\x1astackdriver_logging_config\x18\t \x01(\x0b\x32/.google.cloud.tasks.v2.StackdriverLoggingConfig"E\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07RUNNING\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0c\n\x08\x44ISABLED\x10\x03:\\\xea\x41Y\n\x1f\x63loudtasks.googleapis.com/Queue\x12\x36projects/{project}/locations/{location}/queues/{queue}"j\n\nRateLimits\x12!\n\x19max_dispatches_per_second\x18\x01 \x01(\x01\x12\x16\n\x0emax_burst_size\x18\x02 \x01(\x05\x12!\n\x19max_concurrent_dispatches\x18\x03 \x01(\x05"\xd1\x01\n\x0bRetryConfig\x12\x14\n\x0cmax_attempts\x18\x01 \x01(\x05\x12\x35\n\x12max_retry_duration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12.\n\x0bmin_backoff\x18\x03 \x01(\x0b\x32\x19.google.protobuf.Duration\x12.\n\x0bmax_backoff\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x15\n\rmax_doublings\x18\x05 \x01(\x05"2\n\x18StackdriverLoggingConfig\x12\x16\n\x0esampling_ratio\x18\x01 \x01(\x01\x42\x65\n\x19\x63om.google.cloud.tasks.v2B\nQueueProtoP\x01Z:google.golang.org/genproto/googleapis/cloud/tasks/v2;tasksb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_resource__pb2.DESCRIPTOR,
@@ -69,8 +69,8 @@ _QUEUE_STATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=545,
-    serialized_end=614,
+    serialized_start=630,
+    serialized_end=699,
 )
 _sym_db.RegisterEnumDescriptor(_QUEUE_STATE)
 
@@ -190,6 +190,24 @@ _QUEUE = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="stackdriver_logging_config",
+            full_name="google.cloud.tasks.v2.Queue.stackdriver_logging_config",
+            index=6,
+            number=9,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -202,7 +220,7 @@ _QUEUE = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=231,
-    serialized_end=708,
+    serialized_end=793,
 )
 
 
@@ -276,8 +294,8 @@ _RATELIMITS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=710,
-    serialized_end=816,
+    serialized_start=795,
+    serialized_end=901,
 )
 
 
@@ -387,8 +405,47 @@ _RETRYCONFIG = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=819,
-    serialized_end=1028,
+    serialized_start=904,
+    serialized_end=1113,
+)
+
+
+_STACKDRIVERLOGGINGCONFIG = _descriptor.Descriptor(
+    name="StackdriverLoggingConfig",
+    full_name="google.cloud.tasks.v2.StackdriverLoggingConfig",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="sampling_ratio",
+            full_name="google.cloud.tasks.v2.StackdriverLoggingConfig.sampling_ratio",
+            index=0,
+            number=1,
+            type=1,
+            cpp_type=5,
+            label=1,
+            has_default_value=False,
+            default_value=float(0),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1115,
+    serialized_end=1165,
 )
 
 _QUEUE.fields_by_name[
@@ -402,6 +459,9 @@ _QUEUE.fields_by_name["state"].enum_type = _QUEUE_STATE
 _QUEUE.fields_by_name[
     "purge_time"
 ].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_QUEUE.fields_by_name[
+    "stackdriver_logging_config"
+].message_type = _STACKDRIVERLOGGINGCONFIG
 _QUEUE_STATE.containing_type = _QUEUE
 _RETRYCONFIG.fields_by_name[
     "max_retry_duration"
@@ -415,6 +475,7 @@ _RETRYCONFIG.fields_by_name[
 DESCRIPTOR.message_types_by_name["Queue"] = _QUEUE
 DESCRIPTOR.message_types_by_name["RateLimits"] = _RATELIMITS
 DESCRIPTOR.message_types_by_name["RetryConfig"] = _RETRYCONFIG
+DESCRIPTOR.message_types_by_name["StackdriverLoggingConfig"] = _STACKDRIVERLOGGINGCONFIG
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Queue = _reflection.GeneratedProtocolMessageType(
@@ -512,6 +573,10 @@ Queue = _reflection.GeneratedProtocolMessageType(
           eting-tasks-and-queues#purging_all_tasks_from_a_queue>`_.
           Purge time will be truncated to the nearest microsecond. Purge
           time will be unset if the queue has never been purged.
+      stackdriver_logging_config:
+          Configuration options for writing logs to `Stackdriver Logging
+          <https://cloud.google.com/logging/docs/>`_. If this field is
+          unset, then no logs are written.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2.Queue)
     ),
@@ -683,6 +748,28 @@ RetryConfig = _reflection.GeneratedProtocolMessageType(
     ),
 )
 _sym_db.RegisterMessage(RetryConfig)
+
+StackdriverLoggingConfig = _reflection.GeneratedProtocolMessageType(
+    "StackdriverLoggingConfig",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_STACKDRIVERLOGGINGCONFIG,
+        __module__="google.cloud.tasks_v2.proto.queue_pb2",
+        __doc__="""Configuration options for writing logs to `Stackdriver
+  Logging <https://cloud.google.com/logging/docs/>`_.
+  
+  
+  Attributes:
+      sampling_ratio:
+          Specifies the fraction of operations to write to `Stackdriver
+          Logging <https://cloud.google.com/logging/docs/>`_. This
+          field may contain any value between 0.0 and 1.0, inclusive.
+          0.0 is the default and means that no operations are logged.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2.StackdriverLoggingConfig)
+    ),
+)
+_sym_db.RegisterMessage(StackdriverLoggingConfig)
 
 
 DESCRIPTOR._options = None
