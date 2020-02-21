@@ -213,7 +213,7 @@ class Transaction(batch.WriteBatch):
             .DocumentSnapshot: The next document snapshot that fulfills the
             query, or :data:`None` if the document does not exist.
         """
-        return self._client.get_all(references, transaction=self._id)
+        return self._client.get_all(references, transaction=self)
 
     def get(self, ref_or_query):
         """
@@ -225,9 +225,9 @@ class Transaction(batch.WriteBatch):
             query, or :data:`None` if the document does not exist.
         """
         if isinstance(ref_or_query, DocumentReference):
-            return self._client.get_all([ref_or_query], transaction=self._id)
+            return self._client.get_all([ref_or_query], transaction=self)
         elif isinstance(ref_or_query, Query):
-            return ref_or_query.stream(transaction=self._id)
+            return ref_or_query.stream(transaction=self)
         else:
             raise ValueError(
                 'Value for argument "ref_or_query" must be a DocumentReference or a Query.'

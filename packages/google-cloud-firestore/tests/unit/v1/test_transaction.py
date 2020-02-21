@@ -333,7 +333,7 @@ class TestTransaction(unittest.TestCase):
         transaction = self._make_one(client)
         ref1, ref2 = mock.Mock(), mock.Mock()
         result = transaction.get_all([ref1, ref2])
-        client.get_all.assert_called_once_with([ref1, ref2], transaction=transaction.id)
+        client.get_all.assert_called_once_with([ref1, ref2], transaction=transaction)
         self.assertIs(result, client.get_all.return_value)
 
     def test_get_document_ref(self):
@@ -343,7 +343,7 @@ class TestTransaction(unittest.TestCase):
         transaction = self._make_one(client)
         ref = DocumentReference("documents", "doc-id")
         result = transaction.get(ref)
-        client.get_all.assert_called_once_with([ref], transaction=transaction.id)
+        client.get_all.assert_called_once_with([ref], transaction=transaction)
         self.assertIs(result, client.get_all.return_value)
 
     def test_get_w_query(self):
@@ -354,7 +354,7 @@ class TestTransaction(unittest.TestCase):
         query = Query(parent=mock.Mock(spec=[]))
         query.stream = mock.MagicMock()
         result = transaction.get(query)
-        query.stream.assert_called_once_with(transaction=transaction.id)
+        query.stream.assert_called_once_with(transaction=transaction)
         self.assertIs(result, query.stream.return_value)
 
     def test_get_failure(self):
