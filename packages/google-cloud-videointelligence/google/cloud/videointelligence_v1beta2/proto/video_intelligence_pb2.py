@@ -1971,8 +1971,7 @@ LabelSegment = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LABELSEGMENT,
         __module__="google.cloud.videointelligence_v1beta2.proto.video_intelligence_pb2",
-        __doc__="""Video segment level annotation results for label
-  detection.
+        __doc__="""Video segment level annotation results for label detection.
   
   
   Attributes:
