@@ -19,8 +19,7 @@ from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
 common = gcp.CommonTemplates()
-versions = ["v1beta1"]
-
+versions = ["v1beta1", "v1beta2", "v1"]
 
 for version in versions:
 
@@ -45,55 +44,88 @@ for version in versions:
         ],
     )
 
+    # We need to parameterize aspects of the client as it varies in different versions.
+    #
+    # In the future once the read and write client are colocated in the same version,
+    # we'll need to loop through through multiple clients.  Perhaps by the time that
+    # happens we'll be on a generator that needs less post-generation modifications.
+    
+    clientinfo = {
+        "file": "big_query_storage_client.py",
+        "type": "storage",
+        "name": "BigQueryStorageClient",
+        "badpkg": "google-cloud-bigquerystorage",
+        "goodpkg": "google-cloud-bigquery-storage",
+    }
+    if version in ["v1beta2","v1"]:
+        clientinfo = {
+            "file": "big_query_read_client.py",
+            "type": "read",
+            "name": "BigQueryReadClient",
+            "badpkg": "google-cloud-bigquerystorage",
+            "goodpkg": "google-cloud-bigquery-storage",
+        }
+    if version in ["v1alpha2"]:
+        clientinfo = {
+            "file": "big_query_write_client.py",
+            "type": "write",
+            "name": "BigQueryWriteClient",
+            "badpkg": "google-cloud-bigquerystorage",
+            "goodpkg": "google-cloud-bigquery-storage",
+        }
+
     s.replace(
         [
             f"google/cloud/bigquery_storage_{version}/proto/storage_pb2.py",
             f"google/cloud/bigquery_storage_{version}/proto/storage_pb2_grpc.py",
+            f"google/cloud/bigquery_storage_{version}/proto/stream_pb2.py",
+            f"google/cloud/bigquery_storage_{version}/proto/stream_pb2_grpc.py",
         ],
         f"from google.cloud.bigquery.storage_{version}.proto",
         f"from google.cloud.bigquery_storage_{version}.proto",
     )
 
+    # This is used to populate _GAPIC_LIBRARY_VERSION in the client.
     s.replace(
-        f"google/cloud/bigquery_storage_{version}/gapic/" "big_query_storage_client.py",
-        "google-cloud-bigquerystorage",
-        "google-cloud-bigquery-storage",
+        f"google/cloud/bigquery_storage_{version}/gapic/{clientinfo['file']}",
+        clientinfo['badpkg'],
+        clientinfo['goodpkg']
     )
 
     s.replace(
-        f"google/cloud/bigquery_storage_{version}/gapic/" "big_query_storage_client.py",
+        f"google/cloud/bigquery_storage_{version}/gapic/{clientinfo['file']}",
         "import google.api_core.gapic_v1.method\n",
         "\g<0>import google.api_core.path_template\n",
     )
 
     s.replace(
-        [f"tests/unit/gapic/{version}/test_big_query_storage_client_{version}.py"],
+        [f"tests/unit/gapic/{version}/test_big_query_{clientinfo['type']}_client_{version}.py"],
         f"from google.cloud import bigquery_storage_{version}",
-        f"from google.cloud.bigquery_storage_{version}.gapic import big_query_storage_client  # noqa",
+        f"from google.cloud.bigquery_storage_{version}.gapic import big_query_{clientinfo['type']}_client  # noqa",
     )
 
     s.replace(
-        [f"tests/unit/gapic/{version}/test_big_query_storage_client_{version}.py"],
-        "bigquery_storage_v1beta1.BigQueryStorageClient",
-        "big_query_storage_client.BigQueryStorageClient",
+        [f"tests/unit/gapic/{version}/test_big_query_{clientinfo['type']}_client_{version}.py"],
+        f"bigquery_storage_{version}.{clientinfo['name']}",
+        f"big_query_{clientinfo['type']}_client.{clientinfo['name']}",
     )
 
     # START: Ignore lint and coverage
     s.replace(
-        [f"google/cloud/bigquery_storage_{version}/gapic/big_query_storage_client.py"],
+        [f"google/cloud/bigquery_storage_{version}/gapic/big_query_{clientinfo['type']}_client.py"],
         "if transport:",
         "if transport:  # pragma: no cover",
     )
 
     s.replace(
-        [f"google/cloud/bigquery_storage_{version}/gapic/big_query_storage_client.py"],
+        [f"google/cloud/bigquery_storage_{version}/gapic/big_query_{clientinfo['type']}_client.py"],
         r"metadata.append\(routing_metadata\)",
         "metadata.append(routing_metadata)  # pragma: no cover",
     )
 
     s.replace(
         [
-            f"google/cloud/bigquery_storage_{version}/gapic/transports/big_query_storage_grpc_transport.py"
+            f"google/cloud/bigquery_storage_{version}/gapic/transports/big_query_{clientinfo['type']}_grpc_transport.py"
         ],
         "if channel is not None and credentials is not None:",
         "if channel is not None and credentials is not None:  # pragma: no cover",
@@ -101,7 +133,7 @@ for version in versions:
 
     s.replace(
         [
-            f"google/cloud/bigquery_storage_{version}/gapic/transports/big_query_storage_grpc_transport.py"
+            f"google/cloud/bigquery_storage_{version}/gapic/transports/big_query_{clientinfo['type']}_grpc_transport.py"
         ],
         "if channel is None:",
         "if channel is None:  # pragma: no cover",
@@ -109,7 +141,7 @@ for version in versions:
 
     s.replace(
         [
-            f"google/cloud/bigquery_storage_{version}/gapic/transports/big_query_storage_grpc_transport.py"
+            f"google/cloud/bigquery_storage_{version}/gapic/transports/big_query_{clientinfo['type']}_grpc_transport.py"
         ],
         r"google.api_core.grpc_helpers.create_channel\(",
         "google.api_core.grpc_helpers.create_channel(  # pragma: no cover",

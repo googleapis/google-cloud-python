@@ -1,5 +1,5 @@
 {
-  "updateTime": "2020-02-12T18:06:09.446329Z",
+  "updateTime": "2020-02-20T23:57:11.494163Z",
   "sources": [
     {
       "generator": {
@@ -12,8 +12,9 @@
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "efd36705972cfcd7d00ab4c6dfa1135bafacd4ae",
-        "internalRef": "294664231"
+        "sha": "3eaaaf8626ce5b0c0bc7eee05e143beffa373b01",
+        "internalRef": "296274723",
+        "log": "3eaaaf8626ce5b0c0bc7eee05e143beffa373b01\nAdd BUILD.bazel for v1 secretmanager.googleapis.com\n\nPiperOrigin-RevId: 296274723\n\ne76149c3d992337f85eeb45643106aacae7ede82\nMove securitycenter v1 to use generate from annotations.\n\nPiperOrigin-RevId: 296266862\n\n203740c78ac69ee07c3bf6be7408048751f618f8\nAdd StackdriverLoggingConfig field to Cloud Tasks v2 API.\n\nPiperOrigin-RevId: 296256388\n\n"
       }
     },
     {
@@ -33,6 +34,26 @@
         "language": "python",
         "generator": "gapic",
         "config": "google/cloud/bigquery/storage/artman_bigquerystorage_v1beta1.yaml"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "bigquery_storage",
+        "apiVersion": "v1beta2",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/bigquery/storage/artman_bigquerystorage_v1beta2.yaml"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "bigquery_storage",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "gapic",
+        "config": "google/cloud/bigquery/storage/artman_bigquerystorage_v1.yaml"
       }
     }
   ]

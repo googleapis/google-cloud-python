@@ -9,6 +9,12 @@ API Reference
     gapic/v1beta1/reader
     gapic/v1beta1/types
 
+    gapic/v1beta2/api
+    gapic/v1beta2/types
+
+    gapic/v1/api
+    gapic/v1/types
+
 Example Usage
 -------------
 

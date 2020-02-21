@@ -14,12 +14,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Wrappers for protocol buffer enum types."""
 
-from __future__ import absolute_import
-
-from google.cloud.bigquery_storage_v1 import BigQueryReadClient
-from google.cloud.bigquery_storage_v1 import enums
-from google.cloud.bigquery_storage_v1 import types
+import enum
 
 
-__all__ = ("enums", "types", "BigQueryReadClient")
+class DataFormat(enum.IntEnum):
+    """
+    Data format for input or output data.
+
+    Attributes:
+      DATA_FORMAT_UNSPECIFIED (int)
+      AVRO (int): Avro is a standard open source row based file format.
+      See https://avro.apache.org/ for more details.
+      ARROW (int): Arrow is a standard open source column-based message format.
+      See https://arrow.apache.org/ for more details.
+    """
+
+    DATA_FORMAT_UNSPECIFIED = 0
+    AVRO = 1
+    ARROW = 2
