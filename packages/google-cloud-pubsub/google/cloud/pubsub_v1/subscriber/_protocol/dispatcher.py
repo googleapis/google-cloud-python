@@ -114,7 +114,7 @@ class Dispatcher(object):
         if batched_commands[requests.ModAckRequest]:
             self.modify_ack_deadline(batched_commands.pop(requests.ModAckRequest))
         # Note: Drop and ack *must* be after lease. It's possible to get both
-        # the lease the and ack/drop request in the same batch.
+        # the lease and the ack/drop request in the same batch.
         if batched_commands[requests.AckRequest]:
             self.ack(batched_commands.pop(requests.AckRequest))
         if batched_commands[requests.NackRequest]:
