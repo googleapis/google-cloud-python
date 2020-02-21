@@ -91,15 +91,6 @@ class SecurityCenterClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def asset_path(cls, organization, asset):
-        """Return a fully-qualified asset string."""
-        return google.api_core.path_template.expand(
-            "organizations/{organization}/assets/{asset}",
-            organization=organization,
-            asset=asset,
-        )
-
-    @classmethod
     def asset_security_marks_path(cls, organization, asset):
         """Return a fully-qualified asset_security_marks string."""
         return google.api_core.path_template.expand(
@@ -141,13 +132,6 @@ class SecurityCenterClient(object):
         return google.api_core.path_template.expand(
             "organizations/{organization}/organizationSettings",
             organization=organization,
-        )
-
-    @classmethod
-    def organization_sources_path(cls, organization):
-        """Return a fully-qualified organization_sources string."""
-        return google.api_core.path_template.expand(
-            "organizations/{organization}/sources/-", organization=organization,
         )
 
     @classmethod
@@ -458,7 +442,8 @@ class SecurityCenterClient(object):
             >>>
             >>> client = securitycenter_v1.SecurityCenterClient()
             >>>
-            >>> resource = client.source_path('[ORGANIZATION]', '[SOURCE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> response = client.get_iam_policy(resource)
 
@@ -1870,7 +1855,8 @@ class SecurityCenterClient(object):
             >>>
             >>> client = securitycenter_v1.SecurityCenterClient()
             >>>
-            >>> resource = client.source_path('[ORGANIZATION]', '[SOURCE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> # TODO: Initialize `policy`:
             >>> policy = {}
@@ -1951,7 +1937,8 @@ class SecurityCenterClient(object):
             >>>
             >>> client = securitycenter_v1.SecurityCenterClient()
             >>>
-            >>> resource = client.source_path('[ORGANIZATION]', '[SOURCE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> # TODO: Initialize `permissions`:
             >>> permissions = []
