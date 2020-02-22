@@ -219,11 +219,13 @@ class MessageType:
     @utils.cached_property
     def field_types(self) -> Sequence[Union['MessageType', 'EnumType']]:
         """Return all composite fields used in this proto's messages."""
-        answer = []
-        for field in self.fields.values():
-            if field.message or field.enum:
-                answer.append(field.type)
-        return tuple(answer)
+        answer = tuple(
+            field.type
+            for field in self.fields.values()
+            if field.message or field.enum
+        )
+
+        return answer
 
     @property
     def map(self) -> bool:
@@ -410,6 +412,10 @@ class PythonType:
     @property
     def name(self) -> str:
         return self.ident.name
+
+    @property
+    def field_types(self) -> Sequence[Union['MessageType', 'EnumType']]:
+        return tuple()
 
 
 @dataclasses.dataclass(frozen=True)
@@ -612,6 +618,7 @@ class Method:
         answer = [self.input]
         if not self.void:
             answer.append(self.client_output)
+            answer.extend(self.client_output.field_types)
 
         # If this method has flattening that is honored, add its
         # composite types.
@@ -619,9 +626,11 @@ class Method:
         # This entails adding the module for any field on the signature
         # unless the field is a primitive.
         flattening = self.legacy_flattened_fields if use_legacy else self.flattened_fields
-        for field in flattening.values():
-            if field.message or field.enum:
-                answer.append(field.type)
+        answer.extend(
+            field.type
+            for field in flattening.values()
+            if field.message or field.enum
+        )
 
         # If this method has LRO, it is possible (albeit unlikely) that
         # the LRO messages reside in a different module.
@@ -739,13 +748,16 @@ class Service:
 
         # Identify any import module names where the same module name is used
         # from distinct packages.
-        modules: Dict[str, Set[str]] = {}
-        for t in chain(*[m.ref_types for m in self.methods.values()]):
-            modules.setdefault(t.ident.module, set())
-            modules[t.ident.module].add(t.ident.package)
-        for module_name, packages in modules.items():
-            if len(packages) > 1:
-                answer.add(module_name)
+        modules: Dict[str, Set[str]] = collections.defaultdict(set)
+        for m in self.methods.values():
+            for t in m.ref_types:
+                modules[t.ident.module].add(t.ident.package)
+
+        answer.update(
+            module_name
+            for module_name, packages in modules.items()
+            if len(packages) > 1
+        )
 
         # Done; return the answer.
         return frozenset(answer)

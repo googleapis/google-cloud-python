@@ -40,7 +40,7 @@ def test_{{ service.client_name|snake_case }}_from_service_account_file():
         client = {{ service.client_name }}.from_service_account_json("dummy/file/path.json")
         assert client._transport._credentials == creds
 
-        {% if service.host %}assert client._transport._host == '{{ service.host }}'{% endif %}
+        {% if service.host %}assert client._transport._host == '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'{% endif %}
 
 
 def test_{{ service.client_name|snake_case }}_client_options():
