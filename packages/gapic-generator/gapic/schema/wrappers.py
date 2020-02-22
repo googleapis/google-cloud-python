@@ -555,7 +555,8 @@ class Method:
         answer: Dict[str, Field] = collections.OrderedDict(
             (f.strip(), self.input.get_field(*f.strip().split('.')))
             for sig in signatures
-            for f in sig.split(',')
+            # Special case for an empty signature check
+            for f in sig.split(',') if f
         )
 
         return answer
