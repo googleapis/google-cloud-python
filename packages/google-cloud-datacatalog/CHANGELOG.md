@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [0.6.0](https://www.github.com/googleapis/python-datacatalog/compare/v0.5.0...v0.6.0) (2020-02-24)
+
+
+### Features
+
+* **datacatalog:** add sample for create a fileset entry quickstart ([#9977](https://www.github.com/googleapis/python-datacatalog/issues/9977)) ([16eaf4b](https://www.github.com/googleapis/python-datacatalog/commit/16eaf4b16cdc0ce7361afb1d8dac666cea2a9db0))
+* **datacatalog:** undeprecate resource name helper methods, bump copyright year to 2020, tweak docstring formatting (via synth) ([#10228](https://www.github.com/googleapis/python-datacatalog/issues/10228)) ([84e5e7c](https://www.github.com/googleapis/python-datacatalog/commit/84e5e7c340fa189ce4cffca4fdee82cc7ded9f70))
+* add `list_entry_groups`, `list_entries`, `update_entry_group` methods to v1beta1 (via synth) ([#6](https://www.github.com/googleapis/python-datacatalog/issues/6)) ([b51902e](https://www.github.com/googleapis/python-datacatalog/commit/b51902e26d590f52c9412756a178265850b7d516))
+
+
+### Bug Fixes
+
+* **datacatalog:** deprecate resource name helper methods (via synth) ([#9831](https://www.github.com/googleapis/python-datacatalog/issues/9831)) ([22db3f0](https://www.github.com/googleapis/python-datacatalog/commit/22db3f0683b8aca544cd96c0063dcc8157ad7335))
+
 ## 0.5.0
 
 11-14-2019 12:54 PST
@@ -98,4 +112,3 @@
 ### New Features
 
 - Initial release of Cloud Data Catalog client. ([#7708](https://github.com/googleapis/google-cloud-python/pull/7708))
-
