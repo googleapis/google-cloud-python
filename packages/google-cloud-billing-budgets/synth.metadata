@@ -1,27 +1,27 @@
 {
-  "updateTime": "2020-02-21T13:13:45.283183Z",
+  "updateTime": "2020-02-24T13:12:54.102459Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "0.45.0",
-        "dockerImage": "googleapis/artman@sha256:6aec9c34db0e4be221cdaf6faba27bdc07cfea846808b3d3b964dfce3a9a0f9b"
+        "version": "0.45.1",
+        "dockerImage": "googleapis/artman@sha256:36956ca6a4dc70a59de5d5d0fd35061b050bb56884516f0898f46d8220f25738"
       }
     },
     {
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-billingbudgets.git",
-        "sha": "79279561f446c8e3469e8937142d0d28ca683099"
+        "sha": "dfd5c6a625a3402fba0bb26b871d3f440c181d98"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "e5bc9566ae057fb4c92f8b7e047f1c8958235b53",
-        "internalRef": "296357191",
-        "log": "e5bc9566ae057fb4c92f8b7e047f1c8958235b53\nDeprecate the endpoint_uris field, as it is unused.\n\nPiperOrigin-RevId: 296357191\n\n8c12e2b4dca94e12bff9f538bdac29524ff7ef7a\nUpdate Dataproc v1 client.\n\nPiperOrigin-RevId: 296336662\n\n17567c4a1ef0a9b50faa87024d66f8acbb561089\nRemoving erroneous comment, a la https://github.com/googleapis/java-speech/pull/103\n\nPiperOrigin-RevId: 296332968\n\n"
+        "sha": "7f910bcc4fc4704947ccfd3ceed015d16b9e00c2",
+        "internalRef": "296451205",
+        "log": "7f910bcc4fc4704947ccfd3ceed015d16b9e00c2\nUpdate Dataproc v1beta2 client.\n\nPiperOrigin-RevId: 296451205\n\nde287524405a3dce124d301634731584fc0432d7\nFix: Reinstate method signatures that had been missed off some RPCs\nFix: Correct resource types for two fields\n\nPiperOrigin-RevId: 296435091\n\n"
       }
     },
     {
@@ -33,7 +33,7 @@
     },
     {
       "template": {
-        "name": "python_split_library",
+        "name": "python_library",
         "origin": "synthtool.gcp",
         "version": "2020.2.4"
       }
