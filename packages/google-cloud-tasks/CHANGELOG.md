@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [1.5.0](https://www.github.com/googleapis/python-tasks/compare/v1.4.0...v1.5.0) (2020-02-24)
+
+
+### Features
+
+* **tasks:** add support for stackdriver logging config; update retry config (via synth) ([#8](https://www.github.com/googleapis/python-tasks/issues/8)) ([70b597a](https://www.github.com/googleapis/python-tasks/commit/70b597a615c75976a4993ab223328d7cba3bd139))
+
 ## [1.4.0](https://www.github.com/googleapis/python-tasks/compare/v1.3.0...v1.4.0) (2020-02-06)
 
 
