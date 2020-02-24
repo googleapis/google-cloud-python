@@ -1960,6 +1960,83 @@ class TestBlobProperty:
         assert ds_entity["foo"] == [compressed_value_one, compressed_value_two]
 
 
+class TestCompressedTextProperty:
+    @staticmethod
+    def test_constructor_defaults():
+        prop = model.CompressedTextProperty()
+        assert not prop._indexed
+        assert prop._compressed
+
+    @staticmethod
+    def test_constructor_explicit():
+        prop = model.CompressedTextProperty(name="text", indexed=False)
+        assert prop._name == "text"
+        assert not prop._indexed
+
+    @staticmethod
+    def test_constructor_not_allowed():
+        with pytest.raises(NotImplementedError):
+            model.CompressedTextProperty(indexed=True)
+
+    @staticmethod
+    def test_repr():
+        prop = model.CompressedTextProperty(name="text")
+        expected = "CompressedTextProperty('text')"
+        assert repr(prop) == expected
+
+    @staticmethod
+    def test__validate():
+        prop = model.CompressedTextProperty(name="text")
+        assert prop._validate(u"abc") is None
+
+    @staticmethod
+    def test__validate_bad_bytes():
+        prop = model.CompressedTextProperty(name="text")
+        value = b"\x80abc"
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(value)
+
+    @staticmethod
+    def test__validate_bad_type():
+        prop = model.CompressedTextProperty(name="text")
+        with pytest.raises(exceptions.BadValueError):
+            prop._validate(None)
+
+    @staticmethod
+    def test__to_base_type():
+        prop = model.CompressedTextProperty(name="text")
+        assert prop._to_base_type(b"abc") is None
+
+    @staticmethod
+    def test__to_base_type_converted():
+        prop = model.CompressedTextProperty(name="text")
+        value = b"\xe2\x98\x83"
+        assert prop._to_base_type(u"\N{snowman}") == value
+
+    @staticmethod
+    def test__from_base_type():
+        prop = model.CompressedTextProperty(name="text")
+        assert prop._from_base_type(u"abc") is None
+
+    @staticmethod
+    def test__from_base_type_converted():
+        prop = model.CompressedTextProperty(name="text")
+        value = b"\xe2\x98\x83"
+        assert prop._from_base_type(value) == u"\N{snowman}"
+
+    @staticmethod
+    def test__from_base_type_cannot_convert():
+        prop = model.CompressedTextProperty(name="text")
+        value = b"\x80abc"
+        assert prop._from_base_type(value) is None
+
+    @staticmethod
+    def test__db_set_uncompressed_meaning():
+        prop = model.CompressedTextProperty(name="text")
+        with pytest.raises(NotImplementedError):
+            prop._db_set_uncompressed_meaning(None)
+
+
 class TestTextProperty:
     @staticmethod
     def test_constructor_defaults():
@@ -1976,6 +2053,11 @@ class TestTextProperty:
     def test_constructor_not_allowed():
         with pytest.raises(NotImplementedError):
             model.TextProperty(indexed=True)
+
+    @staticmethod
+    def test_constructor_compressed():
+        prop = model.TextProperty(compressed=True)
+        assert isinstance(prop, model.CompressedTextProperty)
 
     @staticmethod
     def test_repr():

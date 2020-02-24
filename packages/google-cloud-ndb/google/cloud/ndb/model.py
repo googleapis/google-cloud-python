@@ -294,6 +294,7 @@ __all__ = [
     "IntegerProperty",
     "FloatProperty",
     "BlobProperty",
+    "CompressedTextProperty",
     "TextProperty",
     "StringProperty",
     "GeoPtProperty",
@@ -2558,6 +2559,129 @@ class BlobProperty(Property):
         raise exceptions.NoLongerImplementedError()
 
 
+class CompressedTextProperty(BlobProperty):
+    """A version of :class:`TextProperty` which compresses values.
+
+    Values are stored as ``zlib`` compressed UTF-8 byte sequences rather than
+    as strings as in a regular :class:`TextProperty`. This class allows NDB to
+    support passing `compressed=True` to :class:`TextProperty`. It is not
+    necessary to instantiate this class directly.
+    """
+
+    __slots__ = ()
+
+    def __init__(self, *args, **kwargs):
+        indexed = kwargs.pop("indexed", False)
+        if indexed:
+            raise NotImplementedError(
+                "A TextProperty cannot be indexed. Previously this was "
+                "allowed, but this usage is no longer supported."
+            )
+
+        kwargs["compressed"] = True
+        super(CompressedTextProperty, self).__init__(*args, **kwargs)
+
+    def _constructor_info(self):
+        """Helper for :meth:`__repr__`.
+
+        Yields:
+            Tuple[str, bool]: Pairs of argument name and a boolean indicating
+            if that argument is a keyword.
+        """
+        parent_init = super(CompressedTextProperty, self).__init__
+        # inspect.signature not available in Python 2.7, so we use positional
+        # decorator combined with argspec instead.
+        argspec = getattr(
+            parent_init, "_argspec", inspect.getargspec(parent_init)
+        )
+        positional = getattr(parent_init, "_positional_args", 1)
+        for index, name in enumerate(argspec.args):
+            if name in ("self", "indexed", "compressed"):
+                continue
+            yield name, index >= positional
+
+    @property
+    def _indexed(self):
+        """bool: Indicates that the property is not indexed."""
+        return False
+
+    def _validate(self, value):
+        """Validate a ``value`` before setting it.
+
+        Args:
+            value (Union[bytes, str]): The value to check.
+
+        Raises:
+            .BadValueError: If ``value`` is :class:`bytes`, but is not a valid
+                UTF-8 encoded string.
+            .BadValueError: If ``value`` is neither :class:`bytes` nor
+                :class:`str`.
+            .BadValueError: If the current property is indexed but the UTF-8
+                encoded value exceeds the maximum length (1500 bytes).
+        """
+        if not isinstance(value, six.text_type):
+            # In Python 2.7, bytes is a synonym for str
+            if isinstance(value, bytes):
+                try:
+                    value = value.decode("utf-8")
+                except UnicodeError:
+                    raise exceptions.BadValueError(
+                        "Expected valid UTF-8, got {!r}".format(value)
+                    )
+            else:
+                raise exceptions.BadValueError(
+                    "Expected string, got {!r}".format(value)
+                )
+
+    def _to_base_type(self, value):
+        """Convert a value to the "base" value type for this property.
+
+        Args:
+            value (Union[bytes, str]): The value to be converted.
+
+        Returns:
+            Optional[bytes]: The converted value. If ``value`` is a
+            :class:`str`, this will return the UTF-8 encoded bytes for it.
+            Otherwise, it will return :data:`None`.
+        """
+        if isinstance(value, six.text_type):
+            return value.encode("utf-8")
+
+    def _from_base_type(self, value):
+        """Convert a value from the "base" value type for this property.
+
+        .. note::
+
+            Older versions of ``ndb`` could write non-UTF-8 ``TEXT``
+            properties. This means that if ``value`` is :class:`bytes`, but is
+            not a valid UTF-8 encoded string, it can't (necessarily) be
+            rejected. But, :meth:`_validate` now rejects such values, so it's
+            not possible to write new non-UTF-8 ``TEXT`` properties.
+
+        Args:
+            value (Union[bytes, str]): The value to be converted.
+
+        Returns:
+            Optional[str]: The converted value. If ``value`` is a valid UTF-8
+                encoded :class:`bytes` string, this will return the decoded
+                :class:`str` corresponding to it. Otherwise, it will return
+                :data:`None`.
+        """
+        if isinstance(value, bytes):
+            try:
+                return value.decode("utf-8")
+            except UnicodeError:
+                pass
+
+    def _db_set_uncompressed_meaning(self, p):
+        """Helper for :meth:`_db_set_value`.
+
+        Raises:
+            NotImplementedError: Always. This method is virtual.
+        """
+        raise NotImplementedError
+
+
 class TextProperty(Property):
     """An unindexed property that contains UTF-8 encoded text values.
 
@@ -2578,9 +2702,36 @@ class TextProperty(Property):
     .. automethod:: _from_base_type
     .. automethod:: _validate
 
+    Args:
+        name (str): The name of the property.
+        compressed (bool): Indicates if the value should be compressed (via
+            ``zlib``). An instance of :class:`CompressedTextProperty` will be
+            substituted if `True`.
+        indexed (bool): Indicates if the value should be indexed.
+        repeated (bool): Indicates if this property is repeated, i.e. contains
+            multiple values.
+        required (bool): Indicates if this property is required on the given
+            model type.
+        default (Any): The default value for this property.
+        choices (Iterable[Any]): A container of allowed values for this
+            property.
+        validator (Callable[[~google.cloud.ndb.model.Property, Any], bool]): A
+            validator to be used to check values.
+        verbose_name (str): A longer, user-friendly name for this property.
+        write_empty_list (bool): Indicates if an empty list should be written
+            to the datastore.
+
     Raises:
         NotImplementedError: If ``indexed=True`` is provided.
     """
+
+    def __new__(cls, *args, **kwargs):
+        # If "compressed" is True, substitute CompressedTextProperty
+        compressed = kwargs.get("compressed", False)
+        if compressed:
+            return CompressedTextProperty(*args, **kwargs)
+
+        return super(TextProperty, cls).__new__(cls)
 
     def __init__(self, *args, **kwargs):
         indexed = kwargs.pop("indexed", False)

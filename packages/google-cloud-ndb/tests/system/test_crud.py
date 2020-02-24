@@ -1195,3 +1195,24 @@ def test_delete_multi_with_transactional(dispose_of):
     assert delete_them(entities) is None
     entities = ndb.get_multi(keys)
     assert entities == [None] * N
+
+
+@pytest.mark.usefixtures("client_context")
+def test_compressed_text_property(dispose_of, ds_client):
+    """Regression test for #277
+
+    https://github.com/googleapis/python-ndb/issues/277
+    """
+
+    class SomeKind(ndb.Model):
+        foo = ndb.TextProperty(compressed=True)
+
+    entity = SomeKind(foo="Compress this!")
+    key = entity.put()
+    dispose_of(key._key)
+
+    retrieved = key.get()
+    assert retrieved.foo == "Compress this!"
+
+    ds_entity = ds_client.get(key._key)
+    assert zlib.decompress(ds_entity["foo"]) == b"Compress this!"
