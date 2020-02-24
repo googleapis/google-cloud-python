@@ -1216,3 +1216,41 @@ def test_compressed_text_property(dispose_of, ds_client):
 
     ds_entity = ds_client.get(key._key)
     assert zlib.decompress(ds_entity["foo"]) == b"Compress this!"
+
+
+def test_insert_entity_with_repeated_local_structured_property_legacy_data(
+    client_context, dispose_of, ds_client
+):
+    """Regression test for #326
+
+    https://github.com/googleapis/python-ndb/issues/326
+    """
+
+    class OtherKind(ndb.Model):
+        one = ndb.StringProperty()
+        two = ndb.StringProperty()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.LocalStructuredProperty(OtherKind, repeated=True)
+
+    with client_context.new(legacy_data=True).use():
+        entity = SomeKind(
+            foo=42,
+            bar=[
+                OtherKind(one="hi", two="mom"),
+                OtherKind(one="and", two="dad"),
+            ],
+        )
+        key = entity.put()
+        dispose_of(key._key)
+
+        retrieved = key.get()
+        assert retrieved.foo == 42
+        assert retrieved.bar[0].one == "hi"
+        assert retrieved.bar[0].two == "mom"
+        assert retrieved.bar[1].one == "and"
+        assert retrieved.bar[1].two == "dad"
+
+        assert isinstance(retrieved.bar[0], OtherKind)
+        assert isinstance(retrieved.bar[1], OtherKind)

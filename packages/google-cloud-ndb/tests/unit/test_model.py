@@ -3670,6 +3670,62 @@ class TestLocalStructuredProperty:
         entity = SomeKind()
         SomeKind.foo._prepare_for_put(entity)  # noop
 
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_repeated_local_structured_property():
+        class SubKind(model.Model):
+            bar = model.Property()
+
+        class SomeKind(model.Model):
+            foo = model.LocalStructuredProperty(
+                SubKind, repeated=True, indexed=False
+            )
+
+        entity = SomeKind(foo=[SubKind(bar="baz")])
+        data = {}
+        protobuf = model._entity_to_protobuf(entity.foo[0], set_key=False)
+        protobuf = protobuf.SerializePartialToString()
+        assert SomeKind.foo._to_datastore(entity, data, repeated=True) == (
+            "foo",
+        )
+        assert data == {"foo": [[protobuf]]}
+
+    @staticmethod
+    def test_legacy_repeated_local_structured_property(in_context):
+        class SubKind(model.Model):
+            bar = model.Property()
+
+        class SomeKind(model.Model):
+            foo = model.LocalStructuredProperty(
+                SubKind, repeated=True, indexed=False
+            )
+
+        with in_context.new(legacy_data=True).use():
+            entity = SomeKind(foo=[SubKind(bar="baz")])
+            data = {}
+            ds_entity = model._entity_to_ds_entity(
+                entity.foo[0], set_key=False
+            )
+            assert SomeKind.foo._to_datastore(entity, data, repeated=True) == (
+                "foo",
+            )
+            assert data == {"foo": [ds_entity]}
+
+    @staticmethod
+    def test_legacy_non_repeated_local_structured_property(in_context):
+        class SubKind(model.Model):
+            bar = model.Property()
+
+        class SomeKind(model.Model):
+            foo = model.LocalStructuredProperty(SubKind)
+
+        with in_context.new(legacy_data=True).use():
+            entity = SomeKind(foo=SubKind(bar="baz"))
+            data = {}
+            assert SomeKind.foo._to_datastore(entity, data) == ("foo",)
+            ds_entity = model._entity_to_ds_entity(entity.foo, set_key=False)
+            assert data == {"foo": ds_entity}
+
 
 class TestGenericProperty:
     @staticmethod

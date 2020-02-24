@@ -4174,7 +4174,7 @@ class StructuredProperty(Property):
         behavior to store everything in a single Datastore entity that uses
         dotted attribute names, rather than nesting entities.
         """
-        # Avoid Python 2.7 circularf import
+        # Avoid Python 2.7 circular import
         from google.cloud.ndb import context as context_module
 
         context = context_module.get_context()
@@ -4322,6 +4322,40 @@ class LocalStructuredProperty(BlobProperty):
         for value in values:
             if value is not None:
                 value._prepare_for_put()
+
+    def _to_datastore(self, entity, data, prefix="", repeated=False):
+        """Override of :method:`Property._to_datastore`.
+
+        Although this property's entities should be stored as serialized
+        strings, when stored using old NDB they appear as unserialized
+        entities in the datastore. When serialized as strings in this class,
+        they can't be read by old NDB either. To avoid these incompatibilities,
+        we store them as entities when legacy_data is set to True, which is the
+        default behavior.
+        """
+        # Avoid Python 2.7 circular import
+        from google.cloud.ndb import context as context_module
+
+        context = context_module.get_context()
+
+        keys = super(LocalStructuredProperty, self)._to_datastore(
+            entity, data, prefix=prefix, repeated=repeated
+        )
+
+        if context.legacy_data:
+            values = self._get_user_value(entity)
+            if not self._repeated:
+                values = [values]
+            legacy_values = []
+            for value in values:
+                legacy_values.append(
+                    _entity_to_ds_entity(value, set_key=False)
+                )
+            if not self._repeated:
+                legacy_values = legacy_values[0]
+            data[self._name] = legacy_values
+
+        return keys
 
 
 class GenericProperty(Property):
@@ -5161,7 +5195,7 @@ class Model(_NotEqualMixin):
             tasklets.Future: The eventual result will be the key for the
                 entity. This is always a complete key.
         """
-        # Avoid Python 2.7 circularf import
+        # Avoid Python 2.7 circular import
         from google.cloud.ndb import context as context_module
         from google.cloud.ndb import _datastore_api
 
@@ -5378,7 +5412,7 @@ class Model(_NotEqualMixin):
             tasklets.Future: Eventual result is ``tuple(key.Key)``: Keys for
                 the newly allocated IDs.
         """
-        # Avoid Python 2.7 circularf import
+        # Avoid Python 2.7 circular import
         from google.cloud.ndb import _datastore_api
 
         if max:
