@@ -52,6 +52,7 @@ setup(
     keywords="data",
     install_requires=INSTALL_REQUIRES,
     extras_require=extras,
+    python_requires=">=3.5",
     packages=find_packages(exclude=["contrib", "docs", "tests*"]),
     test_suite="tests",
 )
