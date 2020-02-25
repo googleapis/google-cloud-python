@@ -590,12 +590,13 @@ Aggregation = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _AGGREGATION,
         "__module__": "google.cloud.monitoring.dashboard_v1.proto.common_pb2",
-        "__doc__": """Describes how to combine multiple time series to provide different views
-  of the data. Aggregation consists of an alignment step on individual
-  time series (``alignment_period`` and ``per_series_aligner``) followed
-  by an optional reduction step of the data across the aligned time series
-  (``cross_series_reducer`` and ``group_by_fields``). For more details,
-  see `Aggregation </monitoring/api/learn_more#aggregation>`__.
+        "__doc__": """Describes how to combine multiple time series to provide
+  different views of the data. Aggregation consists of an alignment step
+  on individual time series (``alignment_period`` and
+  ``per_series_aligner``) followed by an optional reduction step of the
+  data across the aligned time series (``cross_series_reducer`` and
+  ``group_by_fields``). For more details, see
+  `Aggregation </monitoring/api/learn_more#aggregation>`__.
   
   
   Attributes:

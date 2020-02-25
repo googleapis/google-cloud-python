@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -201,11 +201,22 @@ class DashboardsServiceClient(object):
         metadata=None,
     ):
         """
-        Creates a new custom dashboard.
+        Identifies which part of the FileDescriptorProto was defined at this
+        location.
 
-        This method requires the ``monitoring.dashboards.create`` permission on
-        the specified project. For more information, see `Google Cloud
-        IAM <https://cloud.google.com/iam>`__.
+        Each element is a field number or an index. They form a path from the
+        root FileDescriptorProto to the place where the definition. For example,
+        this path: [ 4, 3, 2, 7, 1 ] refers to: file.message_type(3) // 4, 3
+        .field(7) // 2, 7 .name() // 1 This is because
+        FileDescriptorProto.message_type has field number 4: repeated
+        DescriptorProto message_type = 4; and DescriptorProto.field has field
+        number 2: repeated FieldDescriptorProto field = 2; and
+        FieldDescriptorProto.name has field number 1: optional string name = 1;
+
+        Thus, the above path gives the location of a field name. If we removed
+        the last element: [ 4, 3, 2, 7 ] this path refers to the whole field
+        declaration (from the beginning of the label to the terminating
+        semicolon).
 
         Example:
             >>> from google.cloud.monitoring_dashboard import v1
@@ -221,9 +232,8 @@ class DashboardsServiceClient(object):
             >>> response = client.create_dashboard(parent, dashboard)
 
         Args:
-            parent (str): Required. The project on which to execute the request. The format is
-                ``"projects/{project_id_or_number}"``. The {project_id_or_number} must
-                match the dashboard resource name.
+            parent (str): Input and output type names. These are resolved in the same way as
+                FieldDescriptorProto.type_name, but must refer to a message type.
             dashboard (Union[dict, ~google.cloud.monitoring_dashboard.v1.types.Dashboard]): Required. The initial dashboard specification.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -287,11 +297,8 @@ class DashboardsServiceClient(object):
         metadata=None,
     ):
         """
-        Lists the existing dashboards.
-
-        This method requires the ``monitoring.dashboards.list`` permission on
-        the specified project. For more information, see `Google Cloud
-        IAM <https://cloud.google.com/iam>`__.
+        An annotation that describes a resource definition without a
+        corresponding message; see ``ResourceDescriptor``.
 
         Example:
             >>> from google.cloud.monitoring_dashboard import v1
@@ -316,8 +323,10 @@ class DashboardsServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Required. The scope of the dashboards to list. A project scope must
-                be specified in the form of ``"projects/{project_id_or_number}"``.
+            parent (str): Reduce by computing the count of True-valued data points across time
+                series for each alignment period. This reducer is valid for delta and
+                gauge metrics of Boolean value type. The value type of the output is
+                ``INT64``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -395,11 +404,19 @@ class DashboardsServiceClient(object):
         metadata=None,
     ):
         """
-        Fetches a specific dashboard.
-
-        This method requires the ``monitoring.dashboards.get`` permission on the
-        specified dashboard. For more information, see `Google Cloud
-        IAM <https://cloud.google.com/iam>`__.
+        Align and convert to a percentage change. This alignment is valid
+        for gauge and delta metrics with numeric values. This alignment
+        conceptually computes the equivalent of "((current -
+        previous)/previous)*100" where previous value is determined based on the
+        alignmentPeriod. In the event that previous is 0 the calculated value is
+        infinity with the exception that if both (current - previous) and
+        previous are 0 the calculated value is 0. A 10 minute moving mean is
+        computed at each point of the time window prior to the above calculation
+        to smooth the metric and prevent false positives from very short lived
+        spikes. Only applicable for data that is >= 0. Any values < 0 are
+        treated as no data. While delta metrics are accepted by this alignment
+        special care should be taken that the values for the metric will always
+        be positive. The output is a gauge metric with value type ``DOUBLE``.
 
         Example:
             >>> from google.cloud.monitoring_dashboard import v1
@@ -412,10 +429,34 @@ class DashboardsServiceClient(object):
             >>> response = client.get_dashboard(name)
 
         Args:
-            name (str): Required. The resource name of the Dashboard. The format is one of
-                ``"dashboards/{dashboard_id}"`` (for system dashboards) or
-                ``"projects/{project_id_or_number}/dashboards/{dashboard_id}"`` (for
-                custom dashboards).
+            name (str): Should this field be parsed lazily? Lazy applies only to
+                message-type fields. It means that when the outer message is initially
+                parsed, the inner message's contents will not be parsed but instead
+                stored in encoded form. The inner message will actually be parsed when
+                it is first accessed.
+
+                This is only a hint. Implementations are free to choose whether to use
+                eager or lazy parsing regardless of the value of this option. However,
+                setting this option true suggests that the protocol author believes that
+                using lazy parsing on this field is worth the additional bookkeeping
+                overhead typically needed to implement it.
+
+                This option does not affect the public interface of any generated code;
+                all method signatures remain the same. Furthermore, thread-safety of the
+                interface is not affected by this option; const methods remain safe to
+                call from multiple threads concurrently, while non-const methods
+                continue to require exclusive access.
+
+                Note that implementations may choose not to check required fields within
+                a lazy sub-message. That is, calling IsInitialized() on the outer
+                message may return true even if the inner message has missing required
+                fields. This is necessary because otherwise the inner message would have
+                to be parsed in order to perform the check, defeating the purpose of
+                lazy parsing. An implementation which chooses not to check required
+                fields must be consistent about it. That is, for any particular
+                sub-message, the implementation must either *always* check its required
+                fields, or *never* check its required fields, regardless of whether or
+                not the message has been parsed.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -472,11 +513,37 @@ class DashboardsServiceClient(object):
         metadata=None,
     ):
         """
-        Deletes an existing custom dashboard.
+        Protocol Buffers - Google's data interchange format Copyright 2008
+        Google Inc. All rights reserved.
+        https://developers.google.com/protocol-buffers/
 
-        This method requires the ``monitoring.dashboards.delete`` permission on
-        the specified dashboard. For more information, see `Google Cloud
-        IAM <https://cloud.google.com/iam>`__.
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are
+        met:
+
+        ::
+
+            * Redistributions of source code must retain the above copyright
+
+        notice, this list of conditions and the following disclaimer. \*
+        Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution. \*
+        Neither the name of Google Inc. nor the names of its contributors may be
+        used to endorse or promote products derived from this software without
+        specific prior written permission.
+
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+        IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+        TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+        PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+        OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+        EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+        PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+        PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+        LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+        NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+        SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
         Example:
             >>> from google.cloud.monitoring_dashboard import v1
@@ -489,8 +556,7 @@ class DashboardsServiceClient(object):
             >>> client.delete_dashboard(name)
 
         Args:
-            name (str): Required. The resource name of the Dashboard. The format is
-                ``"projects/{project_id_or_number}/dashboards/{dashboard_id}"``.
+            name (str): The ``CreateDashboard`` request.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -544,9 +610,9 @@ class DashboardsServiceClient(object):
         metadata=None,
     ):
         """
-        Replaces an existing custom dashboard with a new definition.
+        Deletes an existing custom dashboard.
 
-        This method requires the ``monitoring.dashboards.update`` permission on
+        This method requires the ``monitoring.dashboards.delete`` permission on
         the specified dashboard. For more information, see `Google Cloud
         IAM <https://cloud.google.com/iam>`__.
 
