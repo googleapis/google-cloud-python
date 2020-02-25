@@ -559,8 +559,8 @@ Asset = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_ASSET,
         __module__="google.cloud.securitycenter_v1.proto.asset_pb2",
-        __doc__="""Cloud Security Command Center's (Cloud SCC) representation
-  of a Google Cloud Platform (GCP) resource.
+        __doc__="""Cloud Security Command Center's (Cloud SCC) representation of a Google
+  Cloud Platform (GCP) resource.
   
   The Asset is a Cloud SCC resource that captures information about a
   single GCP resource. All modifications to an Asset are only within the

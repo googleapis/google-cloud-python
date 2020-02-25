@@ -1,27 +1,27 @@
 {
-  "updateTime": "2020-02-20T23:16:30.233924Z",
+  "updateTime": "2020-02-22T13:27:49.397385Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "0.45.0",
-        "dockerImage": "googleapis/artman@sha256:6aec9c34db0e4be221cdaf6faba27bdc07cfea846808b3d3b964dfce3a9a0f9b"
+        "version": "0.45.1",
+        "dockerImage": "googleapis/artman@sha256:36956ca6a4dc70a59de5d5d0fd35061b050bb56884516f0898f46d8220f25738"
       }
     },
     {
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-securitycenter.git",
-        "sha": "24816bddd900f25690169f0d97fc090b73620c9d"
+        "sha": "0663bba8574cf6f0c88951cbcea24dd55ffc1dde"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "3eaaaf8626ce5b0c0bc7eee05e143beffa373b01",
-        "internalRef": "296274723",
-        "log": "3eaaaf8626ce5b0c0bc7eee05e143beffa373b01\nAdd BUILD.bazel for v1 secretmanager.googleapis.com\n\nPiperOrigin-RevId: 296274723\n\ne76149c3d992337f85eeb45643106aacae7ede82\nMove securitycenter v1 to use generate from annotations.\n\nPiperOrigin-RevId: 296266862\n\n203740c78ac69ee07c3bf6be7408048751f618f8\nAdd StackdriverLoggingConfig field to Cloud Tasks v2 API.\n\nPiperOrigin-RevId: 296256388\n\ne4117d5e9ed8bbca28da4a60a94947ca51cb2083\nCreate a Bazel BUILD file for the google.actions.type export.\n\nPiperOrigin-RevId: 296212567\n\na9639a0a9854fd6e1be08bba1ac3897f4f16cb2f\nAdd secretmanager.googleapis.com v1 protos\n\nPiperOrigin-RevId: 295983266\n\nce4f4c21d9dd2bfab18873a80449b9d9851efde8\nasset: v1p1beta1 remove SearchResources and SearchIamPolicies\n\nPiperOrigin-RevId: 295861722\n\ncb61d6c2d070b589980c779b68ffca617f789116\nasset: v1p1beta1 remove SearchResources and SearchIamPolicies\n\nPiperOrigin-RevId: 295855449\n\nab2685d8d3a0e191dc8aef83df36773c07cb3d06\nfix: Dataproc v1 - AutoscalingPolicy annotation\n\nThis adds the second resource name pattern to the\nAutoscalingPolicy resource.\n\nCommitter: @lukesneeringer\nPiperOrigin-RevId: 295738415\n\n8a1020bf6828f6e3c84c3014f2c51cb62b739140\nUpdate cloud asset api v1p4beta1.\n\nPiperOrigin-RevId: 295286165\n\n5cfa105206e77670369e4b2225597386aba32985\nAdd service control related proto build rule.\n\nPiperOrigin-RevId: 295262088\n\nee4dddf805072004ab19ac94df2ce669046eec26\nmonitoring v3: Add prefix \"https://cloud.google.com/\" into the link for global access\ncl 295167522, get ride of synth.py hacks\n\nPiperOrigin-RevId: 295238095\n\nd9835e922ea79eed8497db270d2f9f85099a519c\nUpdate some minor docs changes about user event proto\n\nPiperOrigin-RevId: 295185610\n\n5f311e416e69c170243de722023b22f3df89ec1c\nfix: use correct PHP package name in gapic configuration\n\nPiperOrigin-RevId: 295161330\n\n6cdd74dcdb071694da6a6b5a206e3a320b62dd11\npubsub: v1 add client config annotations and retry config\n\nPiperOrigin-RevId: 295158776\n\n5169f46d9f792e2934d9fa25c36d0515b4fd0024\nAdded cloud asset api v1p4beta1.\n\nPiperOrigin-RevId: 295026522\n\n56b55aa8818cd0a532a7d779f6ef337ba809ccbd\nFix: Resource annotations for CreateTimeSeriesRequest and ListTimeSeriesRequest should refer to valid resources. TimeSeries is not a named resource.\n\nPiperOrigin-RevId: 294931650\n\n0646bc775203077226c2c34d3e4d50cc4ec53660\nRemove unnecessary languages from bigquery-related artman configuration files.\n\nPiperOrigin-RevId: 294809380\n\n8b78aa04382e3d4147112ad6d344666771bb1909\nUpdate backend.proto for schemes and protocol\n\nPiperOrigin-RevId: 294788800\n\n80b8f8b3de2359831295e24e5238641a38d8488f\nAdds artman config files for bigquerystorage endpoints v1beta2, v1alpha2, v1\n\nPiperOrigin-RevId: 294763931\n\n2c17ac33b226194041155bb5340c3f34733f1b3a\nAdd parameter to sample generated for UpdateInstance. Related to https://github.com/googleapis/python-redis/issues/4\n\nPiperOrigin-RevId: 294734008\n\nd5e8a8953f2acdfe96fb15e85eb2f33739623957\nMove bigquery datatransfer to gapic v2.\n\nPiperOrigin-RevId: 294703703\n\nefd36705972cfcd7d00ab4c6dfa1135bafacd4ae\nfix: Add two annotations that we missed.\n\nPiperOrigin-RevId: 294664231\n\n"
+        "sha": "7f910bcc4fc4704947ccfd3ceed015d16b9e00c2",
+        "internalRef": "296451205",
+        "log": "7f910bcc4fc4704947ccfd3ceed015d16b9e00c2\nUpdate Dataproc v1beta2 client.\n\nPiperOrigin-RevId: 296451205\n\nde287524405a3dce124d301634731584fc0432d7\nFix: Reinstate method signatures that had been missed off some RPCs\nFix: Correct resource types for two fields\n\nPiperOrigin-RevId: 296435091\n\ne5bc9566ae057fb4c92f8b7e047f1c8958235b53\nDeprecate the endpoint_uris field, as it is unused.\n\nPiperOrigin-RevId: 296357191\n\n8c12e2b4dca94e12bff9f538bdac29524ff7ef7a\nUpdate Dataproc v1 client.\n\nPiperOrigin-RevId: 296336662\n\n17567c4a1ef0a9b50faa87024d66f8acbb561089\nRemoving erroneous comment, a la https://github.com/googleapis/java-speech/pull/103\n\nPiperOrigin-RevId: 296332968\n\n"
       }
     },
     {
@@ -33,7 +33,7 @@
     },
     {
       "template": {
-        "name": "python_split_library",
+        "name": "python_library",
         "origin": "synthtool.gcp",
         "version": "2020.2.4"
       }
