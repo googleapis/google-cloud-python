@@ -24,6 +24,7 @@ import numbers
 import six
 
 from google.cloud import bigquery
+from google.cloud.bigquery import table
 from google.cloud.bigquery.dbapi import exceptions
 
 
@@ -218,3 +219,22 @@ def array_like(value):
     return isinstance(value, collections_abc.Sequence) and not isinstance(
         value, (six.text_type, six.binary_type, bytearray)
     )
+
+
+def to_bq_table_rows(rows_iterable):
+    """Convert table rows to BigQuery table Row instances.
+
+    Args:
+        rows_iterable (Iterable[Mapping]):
+            An iterable of row data items to convert to ``Row`` instances.
+
+    Returns:
+        Iterable[google.cloud.bigquery.table.Row]
+    """
+
+    def to_table_row(row):
+        values = tuple(row.values())
+        keys_to_index = {key: i for i, key in enumerate(row.keys())}
+        return table.Row(values, keys_to_index)
+
+    return (to_table_row(row_data) for row_data in rows_iterable)

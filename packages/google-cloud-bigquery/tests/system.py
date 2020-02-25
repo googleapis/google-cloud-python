@@ -36,6 +36,12 @@ try:
     from google.cloud import bigquery_storage_v1beta1
 except ImportError:  # pragma: NO COVER
     bigquery_storage_v1beta1 = None
+
+try:
+    import fastavro  # to parse BQ storage client results
+except ImportError:  # pragma: NO COVER
+    fastavro = None
+
 try:
     import pandas
 except ImportError:  # pragma: NO COVER
@@ -1542,6 +1548,100 @@ class TestBigQuery(unittest.TestCase):
             rows = Config.CURSOR.fetchall()
             row_tuples = [r.values() for r in rows]
             self.assertEqual(row_tuples, [(1, 2), (3, 4), (5, 6)])
+
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    def test_dbapi_fetch_w_bqstorage_client_small_result_set(self):
+        bqstorage_client = bigquery_storage_v1beta1.BigQueryStorageClient(
+            credentials=Config.CLIENT._credentials
+        )
+        cursor = dbapi.connect(Config.CLIENT, bqstorage_client).cursor()
+
+        # Reading small result sets causes an issue with BQ storage client,
+        # and the DB API should transparently fall back to the default client.
+        cursor.execute(
+            """
+            SELECT id, `by`, time_ts
+            FROM `bigquery-public-data.hacker_news.comments`
+            ORDER BY `id` ASC
+            LIMIT 10
+        """
+        )
+
+        result_rows = [cursor.fetchone(), cursor.fetchone(), cursor.fetchone()]
+
+        field_name = operator.itemgetter(0)
+        fetched_data = [sorted(row.items(), key=field_name) for row in result_rows]
+
+        expected_data = [
+            [
+                ("by", "sama"),
+                ("id", 15),
+                ("time_ts", datetime.datetime(2006, 10, 9, 19, 51, 1, tzinfo=UTC)),
+            ],
+            [
+                ("by", "pg"),
+                ("id", 17),
+                ("time_ts", datetime.datetime(2006, 10, 9, 19, 52, 45, tzinfo=UTC)),
+            ],
+            [
+                ("by", "pg"),
+                ("id", 22),
+                ("time_ts", datetime.datetime(2006, 10, 10, 2, 18, 22, tzinfo=UTC)),
+            ],
+        ]
+        self.assertEqual(fetched_data, expected_data)
+
+    @unittest.skipIf(
+        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    @unittest.skipIf(fastavro is None, "Requires `fastavro`")
+    def test_dbapi_fetch_w_bqstorage_client_large_result_set(self):
+        bqstorage_client = bigquery_storage_v1beta1.BigQueryStorageClient(
+            credentials=Config.CLIENT._credentials
+        )
+        cursor = dbapi.connect(Config.CLIENT, bqstorage_client).cursor()
+
+        # Pick a large enouhg LIMIT value to assure that the fallback to the
+        # default client is not needed due to the result set being too small
+        # (a known issue that causes problems when reding such result sets with
+        # BQ storage client).
+        cursor.execute(
+            """
+            SELECT id, `by`, time_ts
+            FROM `bigquery-public-data.hacker_news.comments`
+            ORDER BY `id` ASC
+            LIMIT 100000
+        """
+        )
+
+        result_rows = [cursor.fetchone(), cursor.fetchone(), cursor.fetchone()]
+
+        field_name = operator.itemgetter(0)
+        fetched_data = [sorted(row.items(), key=field_name) for row in result_rows]
+
+        # Since DB API is not thread safe, only a single result stream should be
+        # requested by the BQ storage client, meaning that results should arrive
+        # in the sorted order.
+        expected_data = [
+            [
+                ("by", "sama"),
+                ("id", 15),
+                ("time_ts", datetime.datetime(2006, 10, 9, 19, 51, 1, tzinfo=UTC)),
+            ],
+            [
+                ("by", "pg"),
+                ("id", 17),
+                ("time_ts", datetime.datetime(2006, 10, 9, 19, 52, 45, tzinfo=UTC)),
+            ],
+            [
+                ("by", "pg"),
+                ("id", 22),
+                ("time_ts", datetime.datetime(2006, 10, 10, 2, 18, 22, tzinfo=UTC)),
+            ],
+        ]
+        self.assertEqual(fetched_data, expected_data)
 
     def _load_table_for_dml(self, rows, dataset_id, table_id):
         from google.cloud._testing import _NamedTemporaryFile

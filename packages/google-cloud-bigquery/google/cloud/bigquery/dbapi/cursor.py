@@ -21,12 +21,17 @@ try:
 except ImportError:  # Python 2.7
     import collections as collections_abc
 
+import logging
+
 import six
 
 from google.cloud.bigquery import job
 from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.dbapi import exceptions
 import google.cloud.exceptions
+
+
+_LOGGER = logging.getLogger(__name__)
 
 # Per PEP 249: A 7-item sequence containing information describing one result
 # column. The first two items (name and type_code) are mandatory, the other
@@ -212,12 +217,75 @@ class Cursor(object):
 
         if self._query_data is None:
             client = self.connection._client
+            bqstorage_client = self.connection._bqstorage_client
+
+            if bqstorage_client is not None:
+                try:
+                    rows_iterable = self._bqstorage_fetch(bqstorage_client)
+                    self._query_data = _helpers.to_bq_table_rows(rows_iterable)
+                    return
+                except google.api_core.exceptions.GoogleAPICallError as exc:
+                    # NOTE: Forbidden is a subclass of GoogleAPICallError
+                    if isinstance(exc, google.api_core.exceptions.Forbidden):
+                        # Don't hide errors such as insufficient permissions to create
+                        # a read session, or the API is not enabled. Both of those are
+                        # clearly problems if the developer has explicitly asked for
+                        # BigQuery Storage API support.
+                        raise
+
+                    # There is an issue with reading from small anonymous
+                    # query results tables. If such an error occurs, we silence
+                    # it in order to try again with the tabledata.list API.
+                    _LOGGER.debug(
+                        "Error fetching data with BigQuery Storage API, "
+                        "falling back to tabledata.list API."
+                    )
+
             rows_iter = client.list_rows(
                 self._query_job.destination,
                 selected_fields=self._query_job._query_results.schema,
                 page_size=self.arraysize,
             )
             self._query_data = iter(rows_iter)
+
+    def _bqstorage_fetch(self, bqstorage_client):
+        """Start fetching data with the BigQuery Storage API.
+
+        The method assumes that the data about the relevant query job already
+        exists internally.
+
+        Args:
+            bqstorage_client(\
+                google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient \
+            ):
+                A client tha know how to talk to the BigQuery Storage API.
+
+        Returns:
+            Iterable[Mapping]:
+                A sequence of rows, represented as dictionaries.
+        """
+        # NOTE: Given that BQ storage client instance is passed in, it means
+        # that bigquery_storage_v1beta1 library is available (no ImportError).
+        from google.cloud import bigquery_storage_v1beta1
+
+        table_reference = self._query_job.destination
+
+        read_session = bqstorage_client.create_read_session(
+            table_reference.to_bqstorage(),
+            "projects/{}".format(table_reference.project),
+            # a single stream only, as DB API is not well-suited for multithreading
+            requested_streams=1,
+        )
+
+        if not read_session.streams:
+            return iter([])  # empty table, nothing to read
+
+        read_position = bigquery_storage_v1beta1.types.StreamPosition(
+            stream=read_session.streams[0],
+        )
+        read_rows_stream = bqstorage_client.read_rows(read_position)
+        rows_iterable = read_rows_stream.rows(read_session)
+        return rows_iterable
 
     def fetchone(self):
         """Fetch a single row from the results of the last ``execute*()`` call.

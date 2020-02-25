@@ -23,10 +23,24 @@ class Connection(object):
 
     Args:
         client (google.cloud.bigquery.Client): A client used to connect to BigQuery.
+        bqstorage_client(\
+            Optional[google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient] \
+        ):
+            [Beta] An alternative client that uses the faster BigQuery Storage
+            API to fetch rows from BigQuery. If both clients are given,
+            ``bqstorage_client`` is used first to fetch query results,
+            with a fallback on ``client``, if necessary.
+
+            .. note::
+                There is a known issue with the BigQuery Storage API with small
+                anonymous result sets, which results in such fallback.
+
+                https://github.com/googleapis/python-bigquery-storage/issues/2
     """
 
-    def __init__(self, client):
+    def __init__(self, client, bqstorage_client=None):
         self._client = client
+        self._bqstorage_client = bqstorage_client
 
     def close(self):
         """No-op."""
@@ -43,17 +57,30 @@ class Connection(object):
         return cursor.Cursor(self)
 
 
-def connect(client=None):
+def connect(client=None, bqstorage_client=None):
     """Construct a DB-API connection to Google BigQuery.
 
     Args:
-        client (google.cloud.bigquery.Client):
-            (Optional) A client used to connect to BigQuery. If not passed, a
-            client is created using default options inferred from the environment.
+        client (Optional[google.cloud.bigquery.Client]):
+            A client used to connect to BigQuery. If not passed, a client is
+            created using default options inferred from the environment.
+        bqstorage_client(\
+            Optional[google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient] \
+        ):
+            [Beta] An alternative client that uses the faster BigQuery Storage
+            API to fetch rows from BigQuery. If both clients are given,
+            ``bqstorage_client`` is used first to fetch query results,
+            with a fallback on ``client``, if necessary.
+
+            .. note::
+                There is a known issue with the BigQuery Storage API with small
+                anonymous result sets, which results in such fallback.
+
+                https://github.com/googleapis/python-bigquery-storage/issues/2
 
     Returns:
         google.cloud.bigquery.dbapi.Connection: A new DB-API connection to BigQuery.
     """
     if client is None:
         client = bigquery.Client()
-    return Connection(client)
+    return Connection(client, bqstorage_client)

@@ -48,7 +48,7 @@ def default(session):
         # Since many tests are skipped due to missing dependencies, test
         # coverage is much lower in Python 3.8. Remove once we can test with
         # pyarrow.
-        coverage_fail_under = "--cov-fail-under=92"
+        coverage_fail_under = "--cov-fail-under=91"
         dev_install = ".[pandas,tqdm]"
 
     session.install("-e", dev_install)
@@ -70,7 +70,7 @@ def default(session):
         "--cov-report=",
         coverage_fail_under,
         os.path.join("tests", "unit"),
-        *session.posargs
+        *session.posargs,
     )
 
 
@@ -94,6 +94,7 @@ def system(session):
     # Install all test dependencies, then install local packages in place.
     session.install("mock", "pytest", "psutil")
     session.install("google-cloud-storage")
+    session.install("fastavro")
     session.install("-e", "test_utils")
     session.install("-e", ".[all]")
 

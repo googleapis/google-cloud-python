@@ -15,9 +15,11 @@
 import datetime
 import decimal
 import math
+import operator as op
 import unittest
 
 import google.cloud._helpers
+from google.cloud.bigquery import table
 from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.dbapi import exceptions
 
@@ -185,3 +187,35 @@ class TestQueryParameters(unittest.TestCase):
     def test_to_query_parameters_none_argument(self):
         query_parameters = _helpers.to_query_parameters(None)
         self.assertEqual(query_parameters, [])
+
+
+class TestToBqTableRows(unittest.TestCase):
+    def test_empty_iterable(self):
+        rows_iterable = iter([])
+        result = _helpers.to_bq_table_rows(rows_iterable)
+        self.assertEqual(list(result), [])
+
+    def test_non_empty_iterable(self):
+        rows_iterable = [
+            dict(one=1.1, four=1.4, two=1.2, three=1.3),
+            dict(one=2.1, four=2.4, two=2.2, three=2.3),
+        ]
+
+        result = _helpers.to_bq_table_rows(rows_iterable)
+
+        rows = list(result)
+        self.assertEqual(len(rows), 2)
+
+        row_1, row_2 = rows
+        self.assertIsInstance(row_1, table.Row)
+        self.assertIsInstance(row_2, table.Row)
+
+        field_value = op.itemgetter(1)
+
+        items = sorted(row_1.items(), key=field_value)
+        expected_items = [("one", 1.1), ("two", 1.2), ("three", 1.3), ("four", 1.4)]
+        self.assertEqual(items, expected_items)
+
+        items = sorted(row_2.items(), key=field_value)
+        expected_items = [("one", 2.1), ("two", 2.2), ("three", 2.3), ("four", 2.4)]
+        self.assertEqual(items, expected_items)
