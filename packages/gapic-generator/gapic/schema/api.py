@@ -279,6 +279,13 @@ class API:
                                                       )
         return answer
 
+    def requires_package(self, pkg: Tuple[str, ...]) -> bool:
+        return any(
+            message.ident.package == pkg
+            for proto in self.all_protos.values()
+            for message in proto.all_messages.values()
+        )
+
 
 class _ProtoBuilder:
     """A "builder class" for Proto objects.

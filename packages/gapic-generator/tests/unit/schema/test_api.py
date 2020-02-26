@@ -87,6 +87,9 @@ def test_api_build():
         imp.Import(package=('google', 'dep'), module='dep_pb2'),
     )
 
+    assert api_schema.requires_package(('google', 'example', 'v1'))
+    assert not api_schema.requires_package(('elgoog', 'example', 'v1'))
+
     # Establish that the subpackages work.
     assert 'common' in api_schema.subpackages
     sub = api_schema.subpackages['common']

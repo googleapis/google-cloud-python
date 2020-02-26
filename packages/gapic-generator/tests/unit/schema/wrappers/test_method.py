@@ -179,9 +179,35 @@ def test_method_flattened_fields_empty_sig():
     assert len(method.flattened_fields) == 0
 
 
+def test_method_flattened_fields_different_package_non_primitive():
+    # This test verifies that method flattening handles a special case where:
+    # * the method's request message type lives in a different package and
+    # * a field in the method_signature is a non-primitive.
+    #
+    # If the message is defined in a different package it is not guaranteed to
+    # be a proto-plus wrapped type, which puts restrictions on assigning
+    # directly to its fields, which complicates request construction.
+    # The easiest solution in this case is to just prohibit these fields
+    # in the method flattening.
+    message = make_message('Mantle',
+                           package="mollusc.cephalopod.v1", module="squid")
+    mantle = make_field('mantle', type=11, type_name='Mantle',
+                        message=message, meta=message.meta)
+    arms_count = make_field('arms_count', type=5, meta=message.meta)
+    input_message = make_message(
+        'Squid', fields=(mantle, arms_count),
+        package=".".join(message.meta.address.package),
+        module=message.meta.address.module
+    )
+    method = make_method('PutSquid', input_message=input_message,
+                         package="remote.package.v1", module="module", signatures=("mantle,arms_count",))
+    assert set(method.flattened_fields) == {'arms_count'}
+
+
 def test_method_include_flattened_message_fields():
     a = make_field('a', type=5)
-    b = make_field('b', type=11, message=make_message('Eggs'))
+    b = make_field('b', type=11, type_name='Eggs',
+                   message=make_message('Eggs'))
     input_msg = make_message('Z', fields=(a, b))
     method = make_method('F', input_message=input_msg, signatures=('a,b',))
     assert len(method.flattened_fields) == 2
@@ -274,7 +300,7 @@ def make_method(
         output=output_message,
         meta=metadata.Metadata(address=metadata.Address(
             name=name,
-            package=package,
+            package=tuple(package.split('.')),
             module=module,
             parent=(f'{name}Service',),
         )),

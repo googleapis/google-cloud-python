@@ -280,6 +280,7 @@ def get_method(name: str,
         input=input_,
         output=output,
         lro=lro,
+        meta=input_.meta,
     )
 
 

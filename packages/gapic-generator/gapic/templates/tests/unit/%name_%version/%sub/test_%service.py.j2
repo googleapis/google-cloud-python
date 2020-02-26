@@ -165,6 +165,35 @@ def test_{{ method.name|snake_case }}_field_headers():
     ) in kw['metadata']
 {% endif %}
 
+{% if method.ident.package != method.input.ident.package %}
+def test_{{ method.name|snake_case }}_from_dict():
+    client = {{ service.client_name }}(
+        credentials=credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client._transport.{{ method.name|snake_case }}),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        {% if method.void -%}
+        call.return_value = None
+        {% elif method.lro -%}
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        {% elif method.server_streaming -%}
+        call.return_value = iter([{{ method.output.ident }}()])
+        {% else -%}
+        call.return_value = {{ method.output.ident }}()
+        {% endif %}
+        response = client.{{ method.name|snake_case }}(request={
+            {%- for field in method.input.fields.values() %}
+            '{{ field.name }}': {{ field.mock_value }},
+            {%- endfor %}
+            }
+        )
+        call.assert_called()
+
+{% endif %}
+
 {% if method.flattened_fields %} 
 def test_{{ method.name|snake_case }}_flattened(): 
     client = {{ service.client_name }}( 

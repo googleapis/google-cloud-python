@@ -551,12 +551,26 @@ class Method:
     def flattened_fields(self) -> Mapping[str, Field]:
         """Return the signature defined for this method."""
         signatures = self.options.Extensions[client_pb2.method_signature]
+        cross_pkg_request = self.input.ident.package != self.ident.package
+
+        def filter_fields(sig):
+            for f in sig.split(','):
+                if not f:
+                    # Special case for an empty signature
+                    continue
+                name = f.strip()
+                field = self.input.get_field(*name.split('.'))
+                if cross_pkg_request and not field.is_primitive:
+                    # This is not a proto-plus wrapped message type,
+                    # and setting a non-primitive field directly is verboten.
+                    continue
+
+                yield name, field
 
         answer: Dict[str, Field] = collections.OrderedDict(
-            (f.strip(), self.input.get_field(*f.strip().split('.')))
+            name_and_field
             for sig in signatures
-            # Special case for an empty signature check
-            for f in sig.split(',') if f
+            for name_and_field in filter_fields(sig)
         )
 
         return answer

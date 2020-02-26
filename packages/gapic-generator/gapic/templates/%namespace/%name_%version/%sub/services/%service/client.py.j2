@@ -188,13 +188,29 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
+        {% endif -%}
+        {% if method.input.ident.package != method.ident.package -%} {# request lives in a different package, so there is no proto wrapper #}
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = {{ method.input.ident }}(**request)
+        elif not request:
+            request = {{ method.input.ident }}()
+        {%- else %}
+        request = {{ method.input.ident }}(request)
+        {% endif %} {# different request package #}
+
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-        {% endif -%}
-        request = {{ method.input.ident }}(request)
-        {%- for key, field in method.flattened_fields.items() %}
+        {#- Vanilla python protobuf wrapper types cannot _set_ repeated fields #}
+        {%- for key, field in method.flattened_fields.items() if not(field.repeated and method.input.ident.package != method.ident.package) %}
         if {{ field.name }} is not None:
             request.{{ key }} = {{ field.name }}
+        {%- endfor %}
+        {# They can be _extended_, however -#}
+        {%- for key, field in method.flattened_fields.items() if (field.repeated and method.input.ident.package != method.ident.package) %}
+        if {{ field.name }}:
+            request.{{ key }}.extend({{ field.name }})
         {%- endfor %}
         {%- endif %}
 
