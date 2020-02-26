@@ -1254,3 +1254,26 @@ def test_insert_entity_with_repeated_local_structured_property_legacy_data(
 
         assert isinstance(retrieved.bar[0], OtherKind)
         assert isinstance(retrieved.bar[1], OtherKind)
+
+
+def test_insert_structured_property_with_unindexed_subproperty_legacy_data(
+    client_context, dispose_of, ds_client
+):
+    """Regression test for #341
+
+    https://github.com/googleapis/python-ndb/issues/341
+    """
+
+    class OtherKind(ndb.Model):
+        data = ndb.BlobProperty(indexed=False)
+
+    class SomeKind(ndb.Model):
+        entry = ndb.StructuredProperty(OtherKind)
+
+    with client_context.new(legacy_data=True).use():
+        entity = SomeKind(entry=OtherKind(data=b"01234567890" * 1000))
+        key = entity.put()
+        dispose_of(key._key)
+
+        retrieved = key.get()
+        assert isinstance(retrieved.entry, OtherKind)

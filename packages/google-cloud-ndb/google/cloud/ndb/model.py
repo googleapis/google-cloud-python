@@ -724,19 +724,14 @@ def _entity_to_ds_entity(entity, set_key=True):
     Raises:
         ndb.exceptions.BadValueError: If entity has uninitialized properties.
     """
-    data = {}
+    data = {"_exclude_from_indexes": []}
     uninitialized = []
-    exclude_from_indexes = []
 
     for prop in _properties_of(entity):
         if not prop._is_initialized(entity):
             uninitialized.append(prop._name)
 
-        names = prop._to_datastore(entity, data)
-
-        if not prop._indexed:
-            for name in names:
-                exclude_from_indexes.append(name)
+        prop._to_datastore(entity, data)
 
     if uninitialized:
         missing = ", ".join(uninitialized)
@@ -744,6 +739,7 @@ def _entity_to_ds_entity(entity, set_key=True):
             "Entity has uninitialized properties: {}".format(missing)
         )
 
+    exclude_from_indexes = data.pop("_exclude_from_indexes")
     ds_entity = None
     if set_key:
         key = entity._key
@@ -2094,6 +2090,9 @@ class Property(ModelAttribute):
             data.setdefault(key, []).append(value)
         else:
             data[key] = value
+
+        if not self._indexed:
+            data["_exclude_from_indexes"].append(key)
 
         return (key,)
 
