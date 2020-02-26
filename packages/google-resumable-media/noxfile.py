@@ -25,7 +25,7 @@ GOOGLE_AUTH = 'google-auth >= 0.10.0'
 
 
 @nox.session(python=['2.7', '3.5', '3.6', '3.7', '3.8'])
-def unit_tests(session):
+def unit(session):
     """Run the unit test suite."""
 
     # Install all test dependencies, then install this package in-place.
@@ -35,7 +35,7 @@ def unit_tests(session):
     # Run py.test against the unit tests.
     # NOTE: We don't require 100% line coverage for unit test runs since
     #       some have branches that are Py2/Py3 specific.
-    line_coverage = '--cov-fail-under=99'
+    line_coverage = '--cov-fail-under=0'
     session.run(
         'py.test',
         '--cov=google.resumable_media',
@@ -120,7 +120,7 @@ def blacken(session):
 
 
 @nox.session(python=['2.7', '3.8'])
-def system_tests(session):
+def system(session):
     """Run the system test suite."""
 
     # Sanity check: environment variables are set.
