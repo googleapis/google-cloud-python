@@ -5323,6 +5323,38 @@ class Test_entity_from_ds_entity:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test_legacy_repeated_structured_property_with_name():
+        class OtherKind(model.Model):
+            foo = model.IntegerProperty()
+            bar = model.StringProperty()
+
+        class ThisKind(model.Model):
+            baz = model.StructuredProperty(OtherKind, "b", repeated=True)
+            copacetic = model.BooleanProperty()
+
+        key = datastore.Key("ThisKind", 123, project="testing")
+        datastore_entity = datastore.Entity(key=key)
+        datastore_entity.items = mock.Mock(
+            return_value=(
+                # Order counts for coverage
+                ("b.foo", [42, 144]),
+                ("b.bar", ["himom", "hellodad", "iminjail"]),
+                ("copacetic", True),
+            )
+        )
+
+        entity = model._entity_from_ds_entity(datastore_entity)
+        assert isinstance(entity, ThisKind)
+        assert entity.baz[0].foo == 42
+        assert entity.baz[0].bar == "himom"
+        assert entity.baz[1].foo == 144
+        assert entity.baz[1].bar == "hellodad"
+        assert entity.baz[2].foo is None
+        assert entity.baz[2].bar == "iminjail"
+        assert entity.copacetic is True
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_polymodel():
         class Animal(polymodel.PolyModel):
             foo = model.IntegerProperty()

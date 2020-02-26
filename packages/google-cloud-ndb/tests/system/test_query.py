@@ -1445,6 +1445,38 @@ def test_query_legacy_repeated_structured_property(ds_entity):
 
 
 @pytest.mark.usefixtures("client_context")
+def test_query_legacy_repeated_structured_property_with_name(ds_entity):
+    class OtherKind(ndb.Model):
+        one = ndb.StringProperty()
+        two = ndb.StringProperty()
+        three = ndb.StringProperty()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StructuredProperty(OtherKind, "b", repeated=True)
+
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(
+        KIND,
+        entity_id,
+        **{
+            "foo": 1,
+            "b.one": [u"pish", u"bish"],
+            "b.two": [u"posh", u"bosh"],
+            "b.three": [u"pash", u"bash"],
+        }
+    )
+
+    eventually(SomeKind.query().fetch, _length_equals(1))
+
+    query = SomeKind.query()
+
+    results = query.fetch()
+    assert len(results) == 1
+    assert results[0].bar[0].one == u"pish"
+
+
+@pytest.mark.usefixtures("client_context")
 def test_fetch_page_with_repeated_structured_property(dispose_of):
     """Regression test for Issue #254.
 

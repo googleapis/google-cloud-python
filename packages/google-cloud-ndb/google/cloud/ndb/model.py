@@ -578,6 +578,9 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
 
         if prop is None and "." in name:
             supername, subname = name.split(".", 1)
+            # Code name for structured property could be different than stored
+            # name if ``name`` was set when defined.
+            supername = model_class._code_name_from_stored_name(supername)
             structprop = getattr(model_class, supername, None)
             if isinstance(structprop, StructuredProperty):
                 subvalue = value
