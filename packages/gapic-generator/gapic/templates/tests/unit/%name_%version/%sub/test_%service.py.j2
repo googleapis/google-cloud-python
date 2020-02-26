@@ -4,7 +4,7 @@
 from unittest import mock
 
 import grpc
-
+import math
 import pytest
 
 {# Import the service itself as well as every proto module that it imports. -#}
@@ -124,7 +124,11 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
     {% else -%}
     assert isinstance(response, {{ method.client_output.ident }})
     {% for field in method.output.fields.values() | rejectattr('message') -%}
+    {% if field.field_pb.type in [1, 2] -%} {# Use approx eq for floats -#}
+    assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
+    {% else -%}
     assert response.{{ field.name }} == {{ field.mock_value }}
+    {% endif -%}
     {% endfor %}
     {% endif %}
 
@@ -530,12 +534,12 @@ def test_{{ service.name|snake_case }}_grpc_lro_client():
 
 {% for message in service.resource_messages -%}
 {% with molluscs = cycler("squid", "clam", "whelk", "octopus", "oyster", "nudibranch", "cuttlefish", "mussel", "winkle") -%}
-def test_{{ message.name|snake_case }}_path():
+def test_{{ message.resource_type|snake_case }}_path():
   {% for arg in message.resource_path_args -%}
   {{ arg }} = "{{ molluscs.next() }}"
   {% endfor %}
   expected = "{{ message.resource_path }}".format({% for arg in message.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
-  actual = {{ service.client_name }}.{{ message.name|snake_case }}_path({{message.resource_path_args|join(", ") }})
+  actual = {{ service.client_name }}.{{ message.resource_type|snake_case }}_path({{message.resource_path_args|join(", ") }})
   assert expected == actual
 
 {% endwith -%}

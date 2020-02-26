@@ -86,6 +86,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     def {{ message.resource_type|snake_case }}_path({% for arg in message.resource_path_args %}{{ arg }}: str,{% endfor %}) -> str:
         """Return a fully-qualified {{ message.resource_type|snake_case }} string."""
         return "{{ message.resource_path }}".format({% for arg in message.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
+
     {% endfor %}
 
     def __init__(self, *,
