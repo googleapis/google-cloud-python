@@ -19,9 +19,11 @@ through an :class:`~.API` object.
 
 import collections
 import dataclasses
+import keyword
+import os
 import sys
 from itertools import chain
-from typing import Callable, Dict, FrozenSet, Mapping, Sequence, Set, Tuple
+from typing import Callable, Container, Dict, FrozenSet, Mapping, Sequence, Set, Tuple
 
 from google.api_core import exceptions  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
@@ -204,10 +206,24 @@ class API:
             file_descriptors,
         ), opts=opts)
 
+        def disambiguate_keyword_fname(
+                full_path: str,
+                visited_names: Container[str]) -> str:
+            path, fname = os.path.split(full_path)
+            name, ext = os.path.splitext(fname)
+            if name in keyword.kwlist or full_path in visited_names:
+                name += "_"
+                full_path = os.path.join(path, name + ext)
+                if full_path in visited_names:
+                    return disambiguate_keyword_fname(full_path, visited_names)
+
+            return full_path
+
         # Iterate over each FileDescriptorProto and fill out a Proto
         # object describing it, and save these to the instance.
         protos: Dict[str, Proto] = {}
         for fd in file_descriptors:
+            fd.name = disambiguate_keyword_fname(fd.name, protos)
             protos[fd.name] = _ProtoBuilder(
                 file_descriptor=fd,
                 file_to_generate=fd.package.startswith(package),
