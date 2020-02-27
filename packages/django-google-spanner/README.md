@@ -81,6 +81,7 @@ Optimistic transactions when running DDL and other statements|Cloud Spanner CANN
 Table names CANNOT have spaces within them whether back-ticked or not|Cloud Spanner DOEST NOT support tables with spaces in them for example `Entity ID`|Ensure that your table names don't have spaces within them
 Table names CANNOT have punctuation marks and MUST contain valid UTF-8|Cloud Spanner DOEST NOT support punctuation marks e.g. periods ".", question marks "?" in table names|Ensure that your table names don't have punctuation marks
 Lack of stored procedures and triggers|Cloud Spanner DOES NOT support stored procedures nor triggers so if your code relies on them, you might need to move the logic into your application|Not supported
+Lack of VARIANCE, STDDEV database functions|Cloud Spanned doesn't yet implement these functions|
 
 
 ## How it works
