@@ -87,7 +87,7 @@ class Connection(object):
         self.run_prior_DDL_statements()
 
         if not self.__txn:
-            if False:  # An easy toggle for if we need to switch to plain Transactions.
+            if True:  # An easy toggle for if we need to switch to plain Transactions.
                 self.__txn = self.__sess.transaction()
             else:
                 self.__txn = PeriodicAutoRefreshingTransaction(self.__sess.transaction())
