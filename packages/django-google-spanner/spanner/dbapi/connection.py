@@ -10,11 +10,9 @@ from .periodic_auto_refresh import PeriodicAutoRefreshingTransaction
 
 
 class Connection(object):
-    def __init__(self, db_handle):
-        sess = db_handle.session()
-        if not sess.exists():
-            sess.create()
-        self.__sess = sess
+    def __init__(self, db_handle, session, discard_session):
+        self.__sess = session
+        self.__discard_session = discard_session
         self.__txn = None
         self.__dbhandle = db_handle
         self.__closed = False
@@ -37,7 +35,8 @@ class Connection(object):
 
     def __clear(self):
         self.__dbhandle = None
-        self.__sess.delete()
+        self.__discard_session()
+        self.__sess = None
 
     def __exit__(self, etype, value, traceback):
         self.__raise_if_already_closed()

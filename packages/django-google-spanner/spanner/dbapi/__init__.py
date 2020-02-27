@@ -30,6 +30,8 @@ paramstyle = 'format'
 # are working properly, we'll update the threadsafety level.
 threadsafety = 0
 
+global_session_pool = spanner.pool.BurstyPool()
+
 
 def connect(project=None, instance=None, database=None, credentials_uri=None, user_agent=None):
     """
@@ -68,11 +70,31 @@ def connect(project=None, instance=None, database=None, credentials_uri=None, us
     if not client_instance.exists():
         raise ProgrammingError("instance '%s' does not exist." % instance)
 
-    db = client_instance.database(database)
+    db = client_instance.database(database, pool=global_session_pool)
     if not db.exists():
         raise ProgrammingError("database '%s' does not exist." % database)
 
-    return Connection(db)
+    # Correctly retrieve a session from the global session pool.
+    # See:
+    #   * https://github.com/orijtech/django-spanner/issues/291
+    #   * https://github.com/googleapis/python-spanner/issues/10#issuecomment-585056760
+    #
+    # Adapted from:
+    #   https://bit.ly/3c8MK6p: python-spanner, Git hash 997a03477b07ec39c7184
+    #   google/cloud/spanner_v1/pool.py#L514-L535
+    # TODO: File a bug to googleapis/python-spanner asking for a convenience
+    # method since invoke database.session() gives the wrong result
+    # yet requires a context manager wrapped with SessionCheckout
+    # and needs accessing private methods, which leaks the details of the
+    # implementation in order to try to use it correctly.
+    pool = db._pool
+    session_checkout = spanner.pool.SessionCheckout(pool)
+    session = session_checkout.__enter__()
+    if not session.exists():
+        session.create()
+    return_session = lambda: session_checkout.__exit__() # noqa
+
+    return Connection(db, session, return_session)
 
 
 __all__ = [
