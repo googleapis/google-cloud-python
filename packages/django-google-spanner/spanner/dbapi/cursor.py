@@ -7,7 +7,7 @@
 import google.api_core.exceptions as grpc_exceptions
 
 from .exceptions import (
-    Error, IntegrityError, OperationalError, ProgrammingError,
+    Error, IntegrityError, InternalError, OperationalError, ProgrammingError,
 )
 from .parse_utils import (
     STMT_DDL, STMT_INSERT, STMT_NON_UPDATING, classify_stmt,
@@ -58,12 +58,17 @@ class Cursor(object):
         self.__clear()
         self.__closed = True
 
+    def __discard_aborted_txn(self):
+        return self.__connection.discard_aborted_txn()
+
     def __get_txn(self):
         return self.__connection.get_txn()
 
-    def execute(self, sql, args=None):
+    def execute(self, sql, args=None, current_retry=0):
         """
         Abstracts and implements execute SQL statements on Cloud Spanner.
+        If it encounters grpc_exceptions.Aborted error, it optimistically retries
+        the execution a maximum of 2 times, thus a total of 3 times.
 
         Args:
             sql: A SQL statement
@@ -103,6 +108,15 @@ class Cursor(object):
             raise ProgrammingError(e.details if hasattr(e, 'details') else e)
         except grpc_exceptions.InternalServerError as e:
             raise OperationalError(e.details if hasattr(e, 'details') else e)
+        except grpc_exceptions.Aborted as e:
+            if current_retry > 2:  # Arbitrary limit that should probably be a setting.
+                raise InternalError(e.details if hasattr(e, 'details') else e)
+
+            self.__discard_aborted_txn()
+            # Otherwise retry it.
+            print('\033[31mRetrying execution #%d of:\nSQL: %s\nArgs: %s\033[00m' % (
+                current_retry, sql, args))
+            return self.execute(sql, args, current_retry=current_retry+1)
 
     def __handle_update(self, txn, sql, params, param_types=None):
         sql = ensure_where_clause(sql)

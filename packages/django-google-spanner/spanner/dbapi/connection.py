@@ -61,17 +61,27 @@ class Connection(object):
             res = self.__txn.commit()
             self.__txn = None
             return res
+        elif hasattr(self.__txn, 'stop'):
+            self.__txn.stop()
 
     def rollback(self):
         if self.__can_commit_or_rollback():
             res = self.__txn.rollback()
             self.__txn = None
             return res
+        elif hasattr(self.__txn, 'stop'):
+            self.__txn.stop()
 
     def cursor(self):
         self.__raise_if_already_closed()
 
         return Cursor(self)
+
+    def discard_aborted_txn(self):
+        # Discard the prior, now bad transaction.
+        if hasattr(self.__txn, 'stop'):
+            self.__txn.stop()
+        self.__txn = None
 
     def get_txn(self):
         self.run_prior_DDL_statements()
@@ -88,8 +98,8 @@ class Connection(object):
         # even though it is unexported. We've filed a follow-up issue:
         #   https://github.com/googleapis/python-spanner/issues/13
         if self.__txn.committed or self.__txn._rolled_back:
-            # Try again.
-            self.__txn = None
+            self.discard_aborted_txn()
+            # Retry getting that transaction afresh.
             self.__txn = self.get_txn()
 
         return self.__txn

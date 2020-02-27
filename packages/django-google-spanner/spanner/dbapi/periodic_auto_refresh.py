@@ -94,12 +94,12 @@ class PeriodicAutoRefreshingTransaction:
 
     def commit(self):
         res = self.__on_event_queue(self.__txn.commit)
-        self.__par.stop()
+        self.stop()
         return res
 
     def rollback(self):
         res = self.__on_event_queue(self.__txn.rollback)
-        self.__par.stop()
+        self.stop()
         return res
 
     @property
@@ -115,6 +115,11 @@ class PeriodicAutoRefreshingTransaction:
         # even though it is unexported. We've filed a follow-up issue:
         #   https://github.com/googleapis/python-spanner/issues/13
         return self.__txn and self.__txn._rolled_back
+
+    def stop(self):
+        if self.__par:
+            self.__par.stop()
+        self.__par = None
 
     def __on_event_queue(self, fn, *args, **kwargs):
         ready = threading.Event()
