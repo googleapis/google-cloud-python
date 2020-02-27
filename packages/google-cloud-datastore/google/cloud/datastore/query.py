@@ -220,8 +220,8 @@ class Query(object):
           >>> from google.cloud import datastore
           >>> client = datastore.Client()
           >>> query = client.query(kind='Person')
-          >>> query.add_filter('name', '=', 'James')
-          >>> query.add_filter('age', '>', 50)
+          >>> query = query.add_filter('name', '=', 'James')
+          >>> query = query.add_filter('age', '>', 50)
 
         :type property_name: str
         :param property_name: A property name.
@@ -234,6 +234,9 @@ class Query(object):
                      :class:`datetime.datetime`,
                      :class:`google.cloud.datastore.key.Key`
         :param value: The value to filter on.
+
+        :rtype: :class:`~google.cloud.datastore.query.Query`
+        :returns: A query object.
 
         :raises: :class:`ValueError` if ``operation`` is not one of the
                  specified values, or if a filter names ``'__key__'`` but
@@ -248,6 +251,7 @@ class Query(object):
             raise ValueError('Invalid key: "%s"' % value)
 
         self._filters.append((property_name, operator, value))
+        return self
 
     @property
     def projection(self):
@@ -348,8 +352,8 @@ class Query(object):
           >>> from google.cloud import datastore
           >>> client = datastore.Client()
           >>> query = client.query(kind='Person')
-          >>> query.add_filter('name', '=', 'Sally')
-          >>> list(query.fetch())
+          >>> result = query.add_filter('name', '=', 'Sally').fetch()
+          >>> list(result)
           [<Entity object>, <Entity object>, ...]
           >>> list(query.fetch(1))
           [<Entity object>]
