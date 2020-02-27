@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [1.11.0](https://www.github.com/googleapis/python-datastore/compare/v1.10.0...v1.11.0) (2020-02-27)
+
+
+### Features
+
+* **datastore:** add return query object in add filter method ([#12](https://www.github.com/googleapis/python-datastore/issues/12)) ([6a9efab](https://www.github.com/googleapis/python-datastore/commit/6a9efabe1560d5137986df70f1b4f79731deac02))
+
 ## 1.10.0
 
 10-10-2019 12:20 PDT
