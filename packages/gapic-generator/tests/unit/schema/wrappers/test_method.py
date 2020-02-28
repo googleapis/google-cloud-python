@@ -113,6 +113,40 @@ def test_method_paged_result_field_no_page_field():
     assert method.paged_result_field is None
 
 
+def test_method_paged_result_ref_types():
+    input_msg = make_message(
+        name='ListSquidsRequest',
+        fields=(
+            make_field(name='parent', type=9),      # str
+            make_field(name='page_size', type=5),   # int
+            make_field(name='page_token', type=9),  # str
+        ),
+        module='squid',
+    )
+    mollusc_msg = make_message('Mollusc', module='mollusc')
+    output_msg = make_message(
+        name='ListMolluscsResponse',
+        fields=(
+            make_field(name='molluscs', message=mollusc_msg, repeated=True),
+            make_field(name='next_page_token', type=9)
+        ),
+        module='mollusc'
+    )
+    method = make_method(
+        'ListSquids',
+        input_message=input_msg,
+        output_message=output_msg,
+        module='squid'
+    )
+
+    ref_type_names = {t.name for t in method.ref_types}
+    assert ref_type_names == {
+        'ListSquidsRequest',
+        'ListSquidsPager',
+        'Mollusc',
+    }
+
+
 def test_method_field_headers_none():
     method = make_method('DoSomething')
     assert isinstance(method.field_headers, collections.abc.Sequence)

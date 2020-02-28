@@ -653,6 +653,11 @@ class Method:
             answer.append(self.lro.response_type)
             answer.append(self.lro.metadata_type)
 
+        # If this message paginates its responses, it is possible
+        # that the individual result messages reside in a different module.
+        if self.paged_result_field:
+            answer.append(self.paged_result_field.message)
+
         # Done; return the answer.
         return tuple(answer)
 
