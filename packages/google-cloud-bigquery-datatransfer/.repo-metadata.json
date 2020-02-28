@@ -4,7 +4,7 @@
   "product_documentation": "https://cloud.google.com/bigquery/transfer/",
   "client_documentation": "https://googleapis.dev/python/bigquerydatatransfer/latest",
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559654",
-  "release_level": "alpha",
+  "release_level": "ga",
   "language": "python",
   "repo": "googleapis/python-bigquery-datatransfer",
   "distribution_name": "google-cloud-bigquery-datatransfer",
