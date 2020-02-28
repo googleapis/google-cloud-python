@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-texttospeech/compare/v0.5.0...v1.0.0) (2020-02-28)
+
+
+### Features
+
+* bump release status to GA ([#9](https://www.github.com/googleapis/python-texttospeech/issues/9)) ([03a639e](https://www.github.com/googleapis/python-texttospeech/commit/03a639e16256d9211c1fe88991440f2cc22eccd6))
+
 ## 0.5.0
 
 07-24-2019 17:48 PDT
@@ -106,4 +113,3 @@
 ### Interface additions
 
 - Added text-to-speech v1beta1. (#5049)
-
