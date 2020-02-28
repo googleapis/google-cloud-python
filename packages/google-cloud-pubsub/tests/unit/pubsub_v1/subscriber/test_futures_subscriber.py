@@ -57,6 +57,18 @@ class TestStreamingPullFuture(object):
 
         assert not future.running()
 
+    def test__on_close_callback_future_already_done(self):
+        future = self.make_future()
+
+        future.set_result("foo")
+        assert future.done()
+
+        # invoking on close callback should not result in an error
+        future._on_close_callback(mock.sentinel.manager, "bar")
+
+        result = future.result()
+        assert result == "foo"  # on close callback was a no-op
+
     def test_cancel(self):
         future = self.make_future()
 

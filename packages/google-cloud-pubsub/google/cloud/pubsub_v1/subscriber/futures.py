@@ -33,6 +33,11 @@ class StreamingPullFuture(futures.Future):
         self._cancelled = False
 
     def _on_close_callback(self, manager, result):
+        if self.done():
+            # The future has already been resolved in a different thread,
+            # nothing to do on the streaming pull manager shutdown.
+            return
+
         if result is None:
             self.set_result(True)
         else:
