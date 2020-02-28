@@ -4,7 +4,7 @@
   "product_documentation": "https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview",
   "client_documentation": "https://googleapis.dev/python/cloudasset/latest",
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559757",
-  "release_level": "beta",
+  "release_level": "ga",
   "language": "python",
   "repo": "googleapis/python-asset",
   "distribution_name": "google-cloud-asset",
