@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-vision/compare/v0.42.0...v1.0.0) (2020-02-28)
+
+
+### Features
+
+* bump release status to GA ([#11](https://www.github.com/googleapis/python-vision/issues/11)) ([2129bde](https://www.github.com/googleapis/python-vision/commit/2129bdedfa0dca85c5adc5350bff10d4a485df77))
+
 ## [0.42.0](https://www.github.com/googleapis/python-vision/compare/v0.41.0...v0.42.0) (2020-02-03)
 
 
