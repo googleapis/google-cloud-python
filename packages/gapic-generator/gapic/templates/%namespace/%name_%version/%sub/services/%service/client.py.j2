@@ -2,7 +2,7 @@
 
 {% block content %}
 from collections import OrderedDict
-from typing import Dict, Iterable, Iterator, Sequence, Tuple, Type, Union
+from typing import Dict, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions # type: ignore

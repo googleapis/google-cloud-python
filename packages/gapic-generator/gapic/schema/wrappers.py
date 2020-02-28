@@ -793,6 +793,14 @@ class Service:
             if field.message and field.message.resource_path
         )
 
+    @utils.cached_property
+    def any_client_streaming(self) -> bool:
+        return any(m.client_streaming for m in self.methods.values())
+
+    @utils.cached_property
+    def any_server_streaming(self) -> bool:
+        return any(m.server_streaming for m in self.methods.values())
+
     def with_context(self, *, collisions: FrozenSet[str]) -> 'Service':
         """Return a derivative of this service with the provided context.
 

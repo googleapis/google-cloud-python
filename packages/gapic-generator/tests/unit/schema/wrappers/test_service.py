@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import collections
+import itertools
 import typing
 
 from google.api import annotations_pb2
@@ -194,6 +195,31 @@ def test_resource_messages():
     expected = {squid_message, clam_message, whelk_message}
     actual = service.resource_messages
     assert expected == actual
+
+
+def test_service_any_streaming():
+    for client, server in itertools.product((True, False), (True, False)):
+        service = make_service(
+            f'ClientStream{client}:ServerStream{server}',
+            methods=(
+                (
+                    make_method(
+                        f"GetMollusc",
+                        input_message=make_message(
+                            "GetMolluscRequest",
+                        ),
+                        output_message=make_message(
+                            "GetMolluscResponse",
+                        ),
+                        client_streaming=client,
+                        server_streaming=server,
+                    ),
+                )
+            )
+        )
+
+        assert service.any_client_streaming == client
+        assert service.any_server_streaming == server
 
 
 def make_service(name: str = 'Placeholder', host: str = '',

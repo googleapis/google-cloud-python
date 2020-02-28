@@ -126,6 +126,8 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
     {% for field in method.output.fields.values() | rejectattr('message') -%}
     {% if field.field_pb.type in [1, 2] -%} {# Use approx eq for floats -#}
     assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
+    {% elif field.field_pb.type == 8 -%} {# Use 'is' for bools #}
+    assert response.{{ field.name }} is {{ field.mock_value }}
     {% else -%}
     assert response.{{ field.name }} == {{ field.mock_value }}
     {% endif -%}
@@ -151,7 +153,7 @@ def test_{{ method.name|snake_case }}_field_headers():
             type(client._transport.{{ method.name|snake_case }}),
             '__call__') as call:
         call.return_value = {{ method.output.ident }}()
-        response = client.{{ method.name|snake_case }}(request)
+        client.{{ method.name|snake_case }}(request)
         
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -475,7 +477,7 @@ def test_{{ service.name|snake_case }}_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(auth, 'default') as adc:
         adc.return_value = (credentials.AnonymousCredentials(), None)
-        client = {{ service.client_name }}()
+        {{ service.client_name }}()
         adc.assert_called_once_with(scopes=(
             {%- for scope in service.oauth_scopes %}
             '{{ scope }}',
