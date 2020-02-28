@@ -1,12 +1,21 @@
-Python Client for Cloud Build API (`Alpha`_)
+Python Client for Cloud Build API (`GA`_)
 ============================================
+
+|ga| |pypi| |versions| 
 
 `Cloud Build API`_: Creates and manages builds on Google Cloud Platform.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-build.svg
+   :target: https://pypi.org/project/google-cloud-build/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-build.svg
+   :target: https://pypi.org/project/google-cloud-build/
+
+.. _GA: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. _Cloud Build API: https://cloud.google.com/cloud-build
 .. _Client Library Documentation: https://googleapis.dev/python/cloudbuild/latest
 .. _Product Documentation:  https://cloud.google.com/cloud-build
