@@ -25,10 +25,10 @@ apilevel = "2.0"  # Implements the Python Database API specification 2.0 version
 # We accept arguments in the format '%s' aka ANSI C print codes.
 # as per https://www.python.org/dev/peps/pep-0249/#paramstyle
 paramstyle = 'format'
-# Threads may not share the module. This is a paranoid threadsafety level, but it is
-# necessary for starters to use when debugging failures. Eventually once transactions
+# Threads may share the module but not connections. This is a paranoid threadsafety level,
+# but it is necessary for starters to use when debugging failures. Eventually once transactions
 # are working properly, we'll update the threadsafety level.
-threadsafety = 0
+threadsafety = 1
 
 global_session_pool = spanner.pool.BurstyPool()
 
