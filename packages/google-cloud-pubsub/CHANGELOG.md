@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+### [1.3.1](https://www.github.com/googleapis/python-pubsub/compare/v1.3.0...v1.3.1) (2020-02-28)
+
+
+### Bug Fixes
+
+* shutdown error on streaming pull callback error ([#40](https://www.github.com/googleapis/python-pubsub/issues/40)) ([552539e](https://www.github.com/googleapis/python-pubsub/commit/552539e7beb30833c39dd29bfcb0183a07895f97))
+
 ## [1.3.0](https://www.github.com/googleapis/python-pubsub/compare/v1.2.0...v1.3.0) (2020-02-20)
 
 
