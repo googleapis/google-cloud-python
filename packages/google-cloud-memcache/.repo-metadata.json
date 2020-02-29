@@ -1,0 +1,12 @@
+{
+    "name": "memcache",
+    "name_pretty": "Cloud Memorystore for Memcached",
+    "product_documentation": "cloud.google.com/memorystore/docs/memcached/",
+    "client_documentation": "https://googleapis.dev/python/memcache/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-memcache",
+    "distribution_name": "google-cloud-memcache",
+    "api_id": "memcache.googleapis.com"
+  }  

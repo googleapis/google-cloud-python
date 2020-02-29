@@ -1,0 +1,31 @@
+{
+  "updateTime": "2020-02-29T01:42:08.452558Z",
+  "sources": [
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "83c6f84035ee0f80eaa44d8b688a010461cc4080",
+        "internalRef": "297918498"
+      }
+    },
+    {
+      "template": {
+        "name": "python_split_library",
+        "origin": "synthtool.gcp",
+        "version": "2020.2.4"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "memcache",
+        "apiVersion": "v1beta2",
+        "language": "python",
+        "generator": "gapic-generator-python"
+      }
+    }
+  ]
+}
