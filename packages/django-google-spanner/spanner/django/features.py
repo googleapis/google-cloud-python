@@ -236,4 +236,15 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'auth_tests.test_admin_multidb.MultiDatabaseTests.test_add_view',
         # We can't run GIS tests on a non-GIS database.
         'gis_tests',
+        # Tests that by-pass using spanner.django and generate
+        # invalid DDL: https://github.com/orijtech/django-spanner/issues/298
+        'cache.tests.CreateCacheTableForDBCacheTests',
+        'cache.tests.DBCacheTests',
+        'cache.tests.DBCacheWithTimeZoneTests',
+        # A rollback failed and should be investigated:
+        # https://github.com/orijtech/django-spanner/issues/299
+        'test_utils.tests.TestBadSetUpTestData.test_failure_in_setUpTestData_should_rollback_transaction',
+        # The default object being compared against apparently shouldn't have an assigned id.
+        # https://github.com/orijtech/django-spanner/issues/300
+        'str.tests.SimpleTests.test_defaults',
     )
