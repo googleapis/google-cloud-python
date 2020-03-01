@@ -4,6 +4,8 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
+import time
+
 import google.api_core.exceptions as grpc_exceptions
 
 from .exceptions import (
@@ -26,6 +28,7 @@ class Cursor(object):
         self.__connection = db_handle
         self.__last_op = None
         self.__closed = False
+        self.__sql_in_same_txn = []
 
         # arraysize is a readable and writable property mandated
         # by PEP-0249 https://www.python.org/dev/peps/pep-0249/#arraysize
@@ -64,7 +67,7 @@ class Cursor(object):
     def __get_txn(self):
         return self.__connection.get_txn()
 
-    def execute(self, sql, args=None, current_retry=0):
+    def execute(self, sql, args=None, already_in_retry=False):
         """
         Abstracts and implements execute SQL statements on Cloud Spanner.
         If it encounters grpc_exceptions.Aborted error, it optimistically retries
@@ -102,21 +105,79 @@ class Cursor(object):
                 self.__handle_insert(self.__get_txn(), sql, args or None)
             else:
                 self.__handle_update(self.__get_txn(), sql, args or None)
+
+        except grpc_exceptions.InvalidArgument as e:  # We can't retry a syntax issue, fail fast.
+            self.__discard_aborted_txn()
+            raise ProgrammingError(e.details if hasattr(e, 'details') else e)
+
         except (grpc_exceptions.AlreadyExists, grpc_exceptions.FailedPrecondition) as e:
+            # We can't retry an integrity error within the same transaction regardless.
+            self.__discard_aborted_txn()
             raise IntegrityError(e.details if hasattr(e, 'details') else e)
+
+        except Exception as e:
+            # Firstly discard the aborted transaction.
+            self.__discard_aborted_txn()
+
+            if already_in_retry:  # It is already being retried, so return immediately.
+                raise e
+
+            # Attempt to replay all the prior sql within the same transaction.
+            sql_args_tuples = self.__sql_in_same_txn[:]
+            sql_args_tuples.append((sql, args,))
+
+            return self.__replay_all_prior_statements_in_transaction(sql_args_tuples)
+        else:  # No error here
+            self.__sql_in_same_txn.append((sql, args,))
+
+    def _clear_transaction_state(self):
+        """
+        Invoked on every Connection.commit() or Connection.rollback()
+        """
+        if self.__sql_in_same_txn:
+            self.__sql_in_same_txn.clear()
+
+    def __replay_all_prior_statements_in_transaction(self, sql_args_tuples):
+        if not sql_args_tuples:
+            return
+
+        lastException = None
+
+        for i in range(5):
+            # Clean up before attempting the replay.
+            self.__sql_in_same_txn.clear()
+
+            print("\033[31mAttempting transaction replay #%d with elements:\n%s\033[00m" % (i, sql_args_tuples))
+
+            for sql, args in sql_args_tuples:
+                try:
+                    self.execute(sql, args, already_in_retry=True)
+                except grpc_exceptions.InvalidArgument as e:  # We can't retry a syntax issue, fail fast.
+                    raise ProgrammingError(e.details if hasattr(e, 'details') else e)
+                except (grpc_exceptions.AlreadyExists, grpc_exceptions.FailedPrecondition) as e:
+                    raise IntegrityError(e.details if hasattr(e, 'details') else e)
+                except Exception as e:
+                    lastException = e
+                    # TODO: Use exponential backoff with jitter, before retrying.
+                    time.sleep(0.57)
+                    break
+            else:
+                # All the elements in sql_args_tuples were executed,
+                # thus we can now break out of the retry loop.
+                # But first, reset all the executed (sql, args) for future replay.
+                self.__sql_in_same_txn = sql_args_tuples[:]
+                break
+
+        try:
+            if lastException:
+                self.__discard_aborted_txn()
+                raise lastException
         except grpc_exceptions.InvalidArgument as e:
             raise ProgrammingError(e.details if hasattr(e, 'details') else e)
         except grpc_exceptions.InternalServerError as e:
             raise OperationalError(e.details if hasattr(e, 'details') else e)
         except grpc_exceptions.Aborted as e:
-            if current_retry > 2:  # Arbitrary limit that should probably be a setting.
-                raise InternalError(e.details if hasattr(e, 'details') else e)
-
-            self.__discard_aborted_txn()
-            # Otherwise retry it.
-            print('\033[31mRetrying execution #%d of:\nSQL: %s\nArgs: %s\033[00m' % (
-                current_retry, sql, args))
-            return self.execute(sql, args, current_retry=current_retry+1)
+            raise InternalError(e.details if hasattr(e, 'details') else e)
 
     def __handle_update(self, txn, sql, params, param_types=None):
         sql = ensure_where_clause(sql)

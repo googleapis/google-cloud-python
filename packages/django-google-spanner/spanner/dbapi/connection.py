@@ -16,6 +16,7 @@ class Connection(object):
         self.__txn = None
         self.__dbhandle = db_handle
         self.__closed = False
+        self.__on_transaction_clean_up = None
         self.__ddl_statements = []
 
     def __raise_if_already_closed(self):
@@ -56,7 +57,13 @@ class Connection(object):
         #   https://github.com/googleapis/python-spanner/issues/13
         return self.__txn and not (self.__txn.committed or self.__txn._rolled_back)
 
+    def __clean_up_transaction_state(self):
+        if self.__on_transaction_clean_up:
+            self.__on_transaction_clean_up()
+
     def commit(self):
+        self.__clean_up_transaction_state()
+
         if self.__can_commit_or_rollback():
             res = self.__txn.commit()
             self.__txn = None
@@ -65,6 +72,8 @@ class Connection(object):
             self.__txn.stop()
 
     def rollback(self):
+        self.__clean_up_transaction_state()
+
         if self.__can_commit_or_rollback():
             res = self.__txn.rollback()
             self.__txn = None
@@ -75,7 +84,9 @@ class Connection(object):
     def cursor(self):
         self.__raise_if_already_closed()
 
-        return Cursor(self)
+        cur = Cursor(self)
+        self.__on_transaction_clean_up = cur._clear_transaction_state
+        return cur
 
     def discard_aborted_txn(self):
         # Discard the prior, now bad transaction.
