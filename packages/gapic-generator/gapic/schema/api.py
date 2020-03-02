@@ -23,7 +23,7 @@ import keyword
 import os
 import sys
 from itertools import chain
-from typing import Callable, Container, Dict, FrozenSet, Mapping, Sequence, Set, Tuple
+from typing import Callable, Container, Dict, FrozenSet, Mapping, Optional, Sequence, Set, Tuple
 
 from google.api_core import exceptions  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
@@ -56,10 +56,13 @@ class Proto:
         return getattr(self.file_pb2, name)
 
     @classmethod
-    def build(cls, file_descriptor: descriptor_pb2.FileDescriptorProto,
-              file_to_generate: bool, naming: api_naming.Naming,
-              prior_protos: Mapping[str, 'Proto'] = None,
-              ) -> 'Proto':
+    def build(
+        cls, file_descriptor: descriptor_pb2.FileDescriptorProto,
+        file_to_generate: bool, naming: api_naming.Naming,
+        opts: options.Options = options.Options(),
+        prior_protos: Mapping[str, 'Proto'] = None,
+        load_services: bool = True
+    ) -> 'Proto':
         """Build and return a Proto instance.
 
         Args:
@@ -71,12 +74,18 @@ class Proto:
                 with the API.
             prior_protos (~.Proto): Previous, already processed protos.
                 These are needed to look up messages in imported protos.
+            load_services (bool): Toggle whether the proto file should
+                load its services. Not doing so enables a two-pass fix for
+                LRO response and metadata types in certain situations.
         """
-        return _ProtoBuilder(file_descriptor,
-                             file_to_generate=file_to_generate,
-                             naming=naming,
-                             prior_protos=prior_protos or {},
-                             ).proto
+        return _ProtoBuilder(
+            file_descriptor,
+            file_to_generate=file_to_generate,
+            naming=naming,
+            opts=opts,
+            prior_protos=prior_protos or {},
+            load_services=load_services
+        ).proto
 
     @cached_property
     def enums(self) -> Mapping[str, wrappers.EnumType]:
@@ -184,10 +193,13 @@ class API:
     subpackage_view: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
 
     @classmethod
-    def build(cls,
-              file_descriptors: Sequence[descriptor_pb2.FileDescriptorProto],
-              package: str = '',
-              opts: options.Options = options.Options()) -> 'API':
+    def build(
+        cls,
+        file_descriptors: Sequence[descriptor_pb2.FileDescriptorProto],
+        package: str = '',
+        opts: options.Options = options.Options(),
+        prior_protos: Mapping[str, 'Proto'] = None,
+    ) -> 'API':
         """Build the internal API schema based on the request.
 
         Args:
@@ -199,6 +211,9 @@ class API:
                 Protos with packages outside this list are considered imports
                 rather than explicit targets.
             opts (~.options.Options): CLI options passed to the generator.
+            prior_protos (~.Proto): Previous, already processed protos.
+                These are needed to look up messages in imported protos.
+                Primarily used for testing.
         """
         # Save information about the overall naming for this API.
         naming = api_naming.Naming.build(*filter(
@@ -221,16 +236,43 @@ class API:
 
         # Iterate over each FileDescriptorProto and fill out a Proto
         # object describing it, and save these to the instance.
-        protos: Dict[str, Proto] = {}
+        #
+        # The first pass gathers messages and enums but NOT services or methods.
+        # This is a workaround for a limitation in protobuf annotations for
+        # long running operations: the annotations are strings that reference
+        # message types but do not require a proto import.
+        # This hack attempts to address a common case where API authors,
+        # not wishing to generate an 'unused import' warning,
+        # don't import the proto file defining the real response or metadata
+        # type into the proto file that defines an LRO.
+        # We just load all the APIs types first and then
+        # load the services and methods with the full scope of types.
+        pre_protos: Dict[str, Proto] = dict(prior_protos or {})
         for fd in file_descriptors:
-            fd.name = disambiguate_keyword_fname(fd.name, protos)
-            protos[fd.name] = _ProtoBuilder(
+            fd.name = disambiguate_keyword_fname(fd.name, pre_protos)
+            pre_protos[fd.name] = Proto.build(
                 file_descriptor=fd,
                 file_to_generate=fd.package.startswith(package),
                 naming=naming,
                 opts=opts,
-                prior_protos=protos,
-            ).proto
+                prior_protos=pre_protos,
+                # Ugly, ugly hack.
+                load_services=False,
+            )
+
+        # Second pass uses all the messages and enums defined in the entire API.
+        # This allows LRO returning methods to see all the types in the API,
+        # bypassing the above missing import problem.
+        protos: Dict[str, Proto] = {
+            name: Proto.build(
+                file_descriptor=proto.file_pb2,
+                file_to_generate=proto.file_to_generate,
+                naming=naming,
+                opts=opts,
+                prior_protos=pre_protos,
+            )
+            for name, proto in pre_protos.items()
+        }
 
         # Done; return the API.
         return cls(naming=naming, all_protos=protos)
@@ -319,11 +361,15 @@ class _ProtoBuilder:
     """
     EMPTY = descriptor_pb2.SourceCodeInfo.Location()
 
-    def __init__(self, file_descriptor: descriptor_pb2.FileDescriptorProto,
-                 file_to_generate: bool,
-                 naming: api_naming.Naming,
-                 opts: options.Options = options.Options(),
-                 prior_protos: Mapping[str, Proto] = None):
+    def __init__(
+        self,
+        file_descriptor: descriptor_pb2.FileDescriptorProto,
+        file_to_generate: bool,
+        naming: api_naming.Naming,
+        opts: options.Options = options.Options(),
+        prior_protos: Mapping[str, Proto] = None,
+        load_services: bool = True
+    ):
         self.proto_messages: Dict[str, wrappers.MessageType] = {}
         self.proto_enums: Dict[str, wrappers.EnumType] = {}
         self.proto_services: Dict[str, wrappers.Service] = {}
@@ -388,7 +434,7 @@ class _ProtoBuilder:
         # This prevents us from generating common services (e.g. LRO) when
         # they are being used as an import just to get types declared in the
         # same files.
-        if file_to_generate:
+        if file_to_generate and load_services:
             self._load_children(file_descriptor.service, self._load_service,
                                 address=self.address, path=(6,))
         # TODO(lukesneeringer): oneofs are on path 7.
@@ -522,6 +568,116 @@ class _ProtoBuilder:
         # Done; return the answer.
         return answer
 
+    def _get_retry_and_timeout(
+        self,
+        service_address: metadata.Address,
+        meth_pb: descriptor_pb2.MethodDescriptorProto
+    ) -> Tuple[Optional[wrappers.RetryInfo], Optional[float]]:
+        """Returns the retry and timeout configuration of a method if it exists.
+
+        Args:
+            service_address (~.metadata.Address): An address object for the
+                service, denoting the location of these methods.
+            meth_pb (~.descriptor_pb2.MethodDescriptorProto): A
+                protobuf method objects.
+
+        Returns:
+            Tuple[Optional[~.wrappers.RetryInfo], Optional[float]]: The retry
+                and timeout information for the method if it exists.
+        """
+
+        # If we got a gRPC service config, get the appropriate retry
+        # and timeout information from it.
+        retry = None
+        timeout = None
+
+        # This object should be a dictionary that conforms to the
+        # gRPC service config proto:
+        #   Repo: https://github.com/grpc/grpc-proto/
+        #   Filename: grpc/service_config/service_config.proto
+        #
+        # We only care about a small piece, so we are just leaving
+        # it as a dictionary and parsing accordingly.
+        if self.opts.retry:
+            # The gRPC service config uses a repeated `name` field
+            # with a particular format, which we match against.
+            # This defines the expected selector for *this* method.
+            selector = {
+                'service': '{package}.{service_name}'.format(
+                    package='.'.join(service_address.package),
+                    service_name=service_address.name,
+                ),
+                'method': meth_pb.name,
+            }
+
+            # Find the method config that applies to us, if any.
+            mc = next((c for c in self.opts.retry.get('methodConfig', [])
+                       if selector in c.get('name')), None)
+            if mc:
+                # Set the timeout according to this method config.
+                if mc.get('timeout'):
+                    timeout = self._to_float(mc['timeout'])
+
+                # Set the retry according to this method config.
+                if 'retryPolicy' in mc:
+                    r = mc['retryPolicy']
+                    retry = wrappers.RetryInfo(
+                        max_attempts=r.get('maxAttempts', 0),
+                        initial_backoff=self._to_float(
+                            r.get('initialBackoff', '0s'),
+                        ),
+                        max_backoff=self._to_float(r.get('maxBackoff', '0s')),
+                        backoff_multiplier=r.get('backoffMultiplier', 0.0),
+                        retryable_exceptions=frozenset(
+                            exceptions.exception_class_for_grpc_status(
+                                getattr(grpc.StatusCode, code),
+                            )
+                            for code in r.get('retryableStatusCodes', [])
+                        ),
+                    )
+
+        return retry, timeout
+
+    def _maybe_get_lro(
+        self,
+        service_address: metadata.Address,
+        meth_pb: descriptor_pb2.MethodDescriptorProto
+    ) -> Optional[wrappers.OperationInfo]:
+        """Determines whether a method is a Long Running Operation (aka LRO)
+               and, if it is, return an OperationInfo that includes the response
+               and metadata types.
+
+        Args:
+            service_address (~.metadata.Address): An address object for the
+                service, denoting the location of these methods.
+            meth_pb (~.descriptor_pb2.MethodDescriptorProto): A
+                protobuf method objects.
+
+        Returns:
+            Optional[~.wrappers.OperationInfo]: The info for the long-running
+                operation, if the passed method is an LRO.
+        """
+        lro = None
+
+        # If the output type is google.longrunning.Operation, we use
+        # a specialized object in its place.
+        if meth_pb.output_type.endswith('google.longrunning.Operation'):
+            op = meth_pb.options.Extensions[operations_pb2.operation_info]
+            if not op.response_type or not op.metadata_type:
+                raise TypeError(
+                    f'rpc {meth_pb.name} returns a google.longrunning.'
+                    'Operation, but is missing a response type or '
+                    'metadata type.',
+                )
+            response_key = service_address.resolve(op.response_type)
+            metadata_key = service_address.resolve(op.metadata_type)
+            lro = wrappers.OperationInfo(
+                response_type=self.api_messages[response_key],
+                metadata_type=self.api_messages[metadata_key],
+            )
+
+        return lro
+
     def _get_methods(self,
                      methods: Sequence[descriptor_pb2.MethodDescriptorProto],
                      service_address: metadata.Address, path: Tuple[int, ...],
@@ -542,84 +698,16 @@ class _ProtoBuilder:
         """
         # Iterate over the methods and collect them into a dictionary.
         answer: Dict[str, wrappers.Method] = collections.OrderedDict()
-        for meth_pb, i in zip(methods, range(0, sys.maxsize)):
-            lro = None
-
-            # If the output type is google.longrunning.Operation, we use
-            # a specialized object in its place.
-            if meth_pb.output_type.endswith('google.longrunning.Operation'):
-                op = meth_pb.options.Extensions[operations_pb2.operation_info]
-                if not op.response_type or not op.metadata_type:
-                    raise TypeError(
-                        f'rpc {meth_pb.name} returns a google.longrunning.'
-                        'Operation, but is missing a response type or '
-                        'metadata type.',
-                    )
-                lro = wrappers.OperationInfo(
-                    response_type=self.api_messages[service_address.resolve(
-                        op.response_type,
-                    )],
-                    metadata_type=self.api_messages[service_address.resolve(
-                        op.metadata_type,
-                    )],
-                )
-
-            # If we got a gRPC service config, get the appropriate retry
-            # and timeout information from it.
-            retry = None
-            timeout = None
-
-            # This object should be a dictionary that conforms to the
-            # gRPC service config proto:
-            #   Repo: https://github.com/grpc/grpc-proto/
-            #   Filename: grpc/service_config/service_config.proto
-            #
-            # We only care about a small piece, so we are just leaving
-            # it as a dictionary and parsing accordingly.
-            if self.opts.retry:
-                # The gRPC service config uses a repeated `name` field
-                # with a particular format, which we match against.
-                # This defines the expected selector for *this* method.
-                selector = {
-                    'service': '{package}.{service_name}'.format(
-                        package='.'.join(service_address.package),
-                        service_name=service_address.name,
-                    ),
-                    'method': meth_pb.name,
-                }
-
-                # Find the method config that applies to us, if any.
-                mc = next((i for i in self.opts.retry.get('methodConfig', [])
-                           if selector in i.get('name')), None)
-                if mc:
-                    # Set the timeout according to this method config.
-                    if mc.get('timeout'):
-                        timeout = self._to_float(mc['timeout'])
-
-                    # Set the retry according to this method config.
-                    if 'retryPolicy' in mc:
-                        r = mc['retryPolicy']
-                        retry = wrappers.RetryInfo(
-                            max_attempts=r.get('maxAttempts', 0),
-                            initial_backoff=self._to_float(
-                                r.get('initialBackoff', '0s'),
-                            ),
-                            max_backoff=self._to_float(
-                                r.get('maxBackoff', '0s'),
-                            ),
-                            backoff_multiplier=r.get('backoffMultiplier', 0.0),
-                            retryable_exceptions=frozenset(
-                                exceptions.exception_class_for_grpc_status(
-                                    getattr(grpc.StatusCode, code),
-                                )
-                                for code in r.get('retryableStatusCodes', [])
-                            ),
-                        )
+        for i, meth_pb in enumerate(methods):
+            retry, timeout = self._get_retry_and_timeout(
+                service_address,
+                meth_pb
+            )
 
             # Create the method wrapper object.
             answer[meth_pb.name] = wrappers.Method(
                 input=self.api_messages[meth_pb.input_type.lstrip('.')],
-                lro=lro,
+                lro=self._maybe_get_lro(service_address, meth_pb),
                 method_pb=meth_pb,
                 meta=metadata.Metadata(
                     address=service_address.child(meth_pb.name, path + (i,)),

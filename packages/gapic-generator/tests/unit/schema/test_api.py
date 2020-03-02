@@ -705,6 +705,82 @@ def test_lro_missing_annotation():
         }, naming=make_naming())
 
 
+def test_cross_file_lro():
+    # Protobuf annotations for longrunning operations use strings to name types.
+    # As far as the protobuf compiler is concerned they don't reference the
+    # _types_ at all, so the corresponding proto file that owns the types
+    # does not need to be imported.
+    # This creates a potential issue when building rich structures around
+    # LRO returning methods. This test is intended to verify that the issue
+    # is handled correctly.
+
+    # Set up a prior proto that mimics google/protobuf/empty.proto
+    lro_proto = api.Proto.build(make_file_pb2(
+        name='operations.proto', package='google.longrunning',
+        messages=(make_message_pb2(name='Operation'),),
+    ), file_to_generate=False, naming=make_naming())
+
+    # Set up a method with LRO annotations.
+    method_pb2 = descriptor_pb2.MethodDescriptorProto(
+        name='AsyncDoThing',
+        input_type='google.example.v3.AsyncDoThingRequest',
+        output_type='google.longrunning.Operation',
+    )
+    method_pb2.options.Extensions[operations_pb2.operation_info].MergeFrom(
+        operations_pb2.OperationInfo(
+            response_type='google.example.v3.AsyncDoThingResponse',
+            metadata_type='google.example.v3.AsyncDoThingMetadata',
+        ),
+    )
+
+    # Set up the service with an RPC.
+    service_file = make_file_pb2(
+        name='service_file.proto',
+        package='google.example.v3',
+        messages=(
+            make_message_pb2(name='AsyncDoThingRequest', fields=()),
+        ),
+        services=(
+            descriptor_pb2.ServiceDescriptorProto(
+                name='LongRunningService',
+                method=(method_pb2,),
+            ),
+        )
+    )
+
+    # Set up the messages, including the annotated ones.
+    # This file is distinct and is not explicitly imported
+    # into the file that defines the service.
+    messages_file = make_file_pb2(
+        name='messages_file.proto',
+        package='google.example.v3',
+        messages=(
+            make_message_pb2(name='AsyncDoThingResponse', fields=()),
+            make_message_pb2(name='AsyncDoThingMetadata', fields=()),
+        ),
+    )
+
+    api_schema = api.API.build(
+        file_descriptors=(
+            service_file,
+            messages_file,
+        ),
+        package='google.example.v3',
+        prior_protos={'google/longrunning/operations.proto': lro_proto, },
+    )
+
+    method = (
+        api_schema.
+        all_protos['service_file.proto'].
+        services['google.example.v3.LongRunningService'].
+        methods['AsyncDoThing']
+    )
+
+    assert method.lro
+    assert method.lro.response_type.name == 'AsyncDoThingResponse'
+    assert method.lro.metadata_type.name == 'AsyncDoThingMetadata'
+
+
 def test_enums():
     L = descriptor_pb2.SourceCodeInfo.Location
     enum_pb = descriptor_pb2.EnumDescriptorProto(name='Silly', value=(
