@@ -105,6 +105,18 @@ _type_map = {
     'NUMERIC': types.DECIMAL,
 }
 
+STRING = _type_map['STRING']
+BOOLEAN = _type_map['BOOLEAN']
+INTEGER = _type_map['INTEGER']
+FLOAT = _type_map['FLOAT']
+TIMESTAMP = _type_map['TIMESTAMP']
+DATETIME = _type_map['DATETIME']
+DATE = _type_map['DATE']
+BYTES = _type_map['BYTES']
+TIME = _type_map['TIME']
+RECORD = _type_map['RECORD']
+NUMERIC = _type_map['NUMERIC']
+
 
 class BigQueryExecutionContext(DefaultExecutionContext):
     def create_cursor(self):
