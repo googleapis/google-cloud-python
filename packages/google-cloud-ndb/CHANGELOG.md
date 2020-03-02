@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [1.1.0](https://www.github.com/googleapis/python-ndb/compare/v1.0.1...v1.1.0) (2020-03-02)
+
+
+### Features
+
+* `Key.to_legacy_urlsafe()` ([#348](https://www.github.com/googleapis/python-ndb/issues/348)) ([ab10e3c](https://www.github.com/googleapis/python-ndb/commit/ab10e3c4998b8995d5a057163ce8d9dc8992111a))
+
+
+### Bug Fixes
+
+* allow legacy ndb to read LocalStructuredProperty entities. ([#344](https://www.github.com/googleapis/python-ndb/issues/344)) ([7b07692](https://www.github.com/googleapis/python-ndb/commit/7b0769236841cea1e864ae1e928a7b7021d300dc))
+* fix delete in transaction ([#333](https://www.github.com/googleapis/python-ndb/issues/333)) ([5c162f4](https://www.github.com/googleapis/python-ndb/commit/5c162f4337b837f7125b1fb03f8cff5fb1b4a356)), closes [#271](https://www.github.com/googleapis/python-ndb/issues/271)
+* make sure ``key.Key`` uses namespace from client when not specified ([#339](https://www.github.com/googleapis/python-ndb/issues/339)) ([44f02e4](https://www.github.com/googleapis/python-ndb/commit/44f02e46deef245f4d1ae80f9d2e4edd46ecd265)), closes [#337](https://www.github.com/googleapis/python-ndb/issues/337)
+* properly exclude from indexes non-indexed subproperties of structured properties ([#346](https://www.github.com/googleapis/python-ndb/issues/346)) ([dde6b85](https://www.github.com/googleapis/python-ndb/commit/dde6b85897457cef7a1080690df5cfae9cb6c31e)), closes [#341](https://www.github.com/googleapis/python-ndb/issues/341)
+* resurrect support for compressed text property ([#342](https://www.github.com/googleapis/python-ndb/issues/342)) ([5a86456](https://www.github.com/googleapis/python-ndb/commit/5a864563dc6e155b73e2ac35af6519823c356e19)), closes [#277](https://www.github.com/googleapis/python-ndb/issues/277)
+* use correct name when reading legacy structured properties with names ([#347](https://www.github.com/googleapis/python-ndb/issues/347)) ([01d1256](https://www.github.com/googleapis/python-ndb/commit/01d1256e9d41c20bb5836067455c4be4abe1c516)), closes [#345](https://www.github.com/googleapis/python-ndb/issues/345)
+
 ### [1.0.1](https://www.github.com/googleapis/python-ndb/compare/v1.0.0...v1.0.1) (2020-02-11)
 
 
