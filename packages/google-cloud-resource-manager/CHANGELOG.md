@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+### [0.30.1](https://www.github.com/googleapis/python-resource-manager/compare/v0.30.0...v0.30.1) (2020-02-20)
+
+
+### Bug Fixes
+
+* **resourcemanager:** update test assertion and core version pin ([#10095](https://www.github.com/googleapis/python-resource-manager/issues/10095)) ([9269dbc](https://www.github.com/googleapis/python-resource-manager/commit/9269dbc963abb46a3031b93cb53abe5bb03fe0f8))
+
 ## 0.30.0
 
 10-10-2019 11:38 PDT
