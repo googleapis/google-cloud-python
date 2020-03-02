@@ -569,6 +569,15 @@ class TestKey:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test_to_legacy_urlsafe():
+        key = key_module.Key("d", 123, app="f")
+        assert (
+            key.to_legacy_urlsafe(location_prefix="s~")
+            == b"agNzfmZyBwsSAWQYeww"
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     @mock.patch("google.cloud.ndb._datastore_api")
     @mock.patch("google.cloud.ndb.model._entity_from_protobuf")
     def test_get_with_cache_miss(_entity_from_protobuf, _datastore_api):
