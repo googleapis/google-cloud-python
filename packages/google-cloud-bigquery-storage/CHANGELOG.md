@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [0.8.0](https://www.github.com/googleapis/python-bigquery-storage/compare/v0.7.0...v0.8.0) (2020-03-03)
+
+
+### Features
+
+* add manual layer for v1 endpoint ([#16](https://www.github.com/googleapis/python-bigquery-storage/issues/16)) ([a0fc0af](https://www.github.com/googleapis/python-bigquery-storage/commit/a0fc0af5b4447ce8b50c365d4d081b9443b8490e))
+* update synth to generate v1beta2, v1 endpoints for bigquerystorage ([#10](https://www.github.com/googleapis/python-bigquery-storage/issues/10)) ([2ea5ac4](https://www.github.com/googleapis/python-bigquery-storage/commit/2ea5ac46035f38bdacf2976541a0af2dc0880660))
+
+
+### Bug Fixes
+
+* **bigquerystorage:** resume reader connection on `EOS` internal error ([#9994](https://www.github.com/googleapis/python-bigquery-storage/issues/9994)) ([acbd57f](https://www.github.com/googleapis/python-bigquery-storage/commit/acbd57f01cc8b338d9264aeedba117f7f1e48369))
+* **bigquerystorage:** to_dataframe on an arrow stream uses 2x faster to_arrow + to_pandas, internally ([#9997](https://www.github.com/googleapis/python-bigquery-storage/issues/9997)) ([fdfb21e](https://www.github.com/googleapis/python-bigquery-storage/commit/fdfb21ec82278dbc5e6e9f7f16e4a22eb812b1be))
+* pass snapshot_millis to the main function ([#8](https://www.github.com/googleapis/python-bigquery-storage/issues/8)) ([e522bf8](https://www.github.com/googleapis/python-bigquery-storage/commit/e522bf8327420d852352180ebfc0f816f269f22e))
+
 ## 0.7.0
 
 07-31-2019 17:48 PDT
@@ -137,4 +152,3 @@
 11-29-2018 13:45 PST
 
 - Initial release of BigQuery Storage API client.
-
