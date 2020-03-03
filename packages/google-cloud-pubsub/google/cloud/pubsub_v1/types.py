@@ -87,12 +87,19 @@ if sys.version_info >= (3, 5):
 # these settings can be altered to tweak Pub/Sub behavior.
 # The defaults should be fine for most use cases.
 FlowControl = collections.namedtuple(
-    "FlowControl", ["max_bytes", "max_messages", "max_lease_duration"]
+    "FlowControl",
+    [
+        "max_bytes",
+        "max_messages",
+        "max_lease_duration",
+        "max_duration_per_lease_extension",
+    ],
 )
 FlowControl.__new__.__defaults__ = (
     100 * 1024 * 1024,  # max_bytes: 100mb
     1000,  # max_messages: 1000
     1 * 60 * 60,  # max_lease_duration: 1 hour.
+    0,  # max_duration_per_lease_extension: disabled
 )
 
 if sys.version_info >= (3, 5):
@@ -111,6 +118,11 @@ if sys.version_info >= (3, 5):
     FlowControl.max_lease_duration.__doc__ = (
         "The maximum amount of time in seconds to hold a lease on a message "
         "before dropping it from the lease management."
+    )
+    FlowControl.max_duration_per_lease_extension.__doc__ = (
+        "The max amount of time in seconds for a single lease extension attempt. "
+        "Bounds the delay before a message redelivery if the subscriber "
+        "fails to extend the deadline."
     )
 
 

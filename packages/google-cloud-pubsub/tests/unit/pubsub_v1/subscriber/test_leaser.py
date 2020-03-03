@@ -84,6 +84,7 @@ def create_manager(flow_control=types.FlowControl()):
     manager.is_active = True
     manager.flow_control = flow_control
     manager.ack_histogram = histogram.Histogram()
+    manager.ack_deadline = 10
     return manager
 
 

@@ -130,8 +130,8 @@ class Leaser(object):
             # Determine the appropriate duration for the lease. This is
             # based off of how long previous messages have taken to ack, with
             # a sensible default and within the ranges allowed by Pub/Sub.
-            p99 = self._manager.ack_histogram.percentile(99)
-            _LOGGER.debug("The current p99 value is %d seconds.", p99)
+            deadline = self._manager.ack_deadline
+            _LOGGER.debug("The current deadline value is %d seconds.", deadline)
 
             # Make a copy of the leased messages. This is needed because it's
             # possible for another thread to modify the dictionary while
@@ -173,7 +173,7 @@ class Leaser(object):
                 #       way for ``send_request`` to fail when the consumer
                 #       is inactive.
                 self._manager.dispatcher.modify_ack_deadline(
-                    [requests.ModAckRequest(ack_id, p99) for ack_id in ack_ids]
+                    [requests.ModAckRequest(ack_id, deadline) for ack_id in ack_ids]
                 )
 
             # Now wait an appropriate period of time and do this again.
@@ -182,7 +182,7 @@ class Leaser(object):
             # period between 0 seconds and 90% of the lease. This use of
             # jitter (http://bit.ly/2s2ekL7) helps decrease contention in cases
             # where there are many clients.
-            snooze = random.uniform(0.0, p99 * 0.9)
+            snooze = random.uniform(0.0, deadline * 0.9)
             _LOGGER.debug("Snoozing lease management for %f seconds.", snooze)
             self._stop_event.wait(timeout=snooze)
 
