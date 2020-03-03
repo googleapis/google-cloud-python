@@ -22,8 +22,7 @@ import pytest
 
 from google.cloud import bigquery_storage_v1beta1
 
-
-_ASSETS_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), "assets")
+_ASSETS_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), "../assets")
 
 
 @pytest.fixture(scope="session")
