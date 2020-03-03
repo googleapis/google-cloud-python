@@ -718,7 +718,8 @@ Filter = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_FILTER,
         __module__="google.cloud.billing.budgets_v1beta1.proto.budget_model_pb2",
-        __doc__="""A filter for a budget, limiting the scope of the cost to calculate.
+        __doc__="""A filter for a budget, limiting the scope of the cost to
+  calculate.
   
   
   Attributes:
