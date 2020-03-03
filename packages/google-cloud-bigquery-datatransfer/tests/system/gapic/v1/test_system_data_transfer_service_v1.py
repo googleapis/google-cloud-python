@@ -26,5 +26,5 @@ class TestSystemDataTransferService(object):
         project_id = os.environ["PROJECT_ID"]
 
         client = bigquery_datatransfer_v1.DataTransferServiceClient()
-        parent = client.location_path(project_id, "us-central1")
+        parent = client.project_path(project_id)
         response = client.list_data_sources(parent)

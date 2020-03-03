@@ -227,6 +227,22 @@ class DataTransferServiceGrpcTransport(object):
         return self._stubs["data_transfer_service_stub"].ScheduleTransferRuns
 
     @property
+    def start_manual_transfer_runs(self):
+        """Return the gRPC stub for :meth:`DataTransferServiceClient.start_manual_transfer_runs`.
+
+        Start manual transfer runs to be executed now with schedule\_time equal
+        to current time. The transfer runs can be created for a time range where
+        the run\_time is between start\_time (inclusive) and end\_time
+        (exclusive), or for a specific run\_time.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_transfer_service_stub"].StartManualTransferRuns
+
+    @property
     def get_transfer_run(self):
         """Return the gRPC stub for :meth:`DataTransferServiceClient.get_transfer_run`.
 
@@ -295,19 +311,3 @@ class DataTransferServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["data_transfer_service_stub"].CheckValidCreds
-
-    @property
-    def start_manual_transfer_runs(self):
-        """Return the gRPC stub for :meth:`DataTransferServiceClient.start_manual_transfer_runs`.
-
-        Start manual transfer runs to be executed now with schedule\_time equal
-        to current time. The transfer runs can be created for a time range where
-        the run\_time is between start\_time (inclusive) and end\_time
-        (exclusive), or for a specific run\_time.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["data_transfer_service_stub"].StartManualTransferRuns
