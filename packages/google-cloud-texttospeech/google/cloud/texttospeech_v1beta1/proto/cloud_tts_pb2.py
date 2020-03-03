@@ -772,8 +772,8 @@ SynthesizeSpeechRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SYNTHESIZESPEECHREQUEST,
         __module__="google.cloud.texttospeech_v1beta1.proto.cloud_tts_pb2",
-        __doc__="""The top-level message sent by the client for the ``SynthesizeSpeech``
-  method.
+        __doc__="""The top-level message sent by the client for the
+  ``SynthesizeSpeech`` method.
   
   
   Attributes:
