@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [0.3.0](https://www.github.com/googleapis/python-iam/compare/v0.2.1...v0.3.0) (2020-02-03)
+
+
+### Features
+
+* **iam:** undeprecate resource name helper methods, add 2.7 deprecation warning (via synth) ([#10043](https://www.github.com/googleapis/python-iam/issues/10043)) ([0a23a84](https://www.github.com/googleapis/python-iam/commit/0a23a84142c45922726c3a0718a5993c5ad01604))
+
+
+### Bug Fixes
+
+* **iam:** bump copyright year to 2020 (via synth) ([#10231](https://www.github.com/googleapis/python-iam/issues/10231)) ([872cc13](https://www.github.com/googleapis/python-iam/commit/872cc1335599384a8f354749dd3fb12d9a130ac5))
+* **iam:** deprecate resource name helper methods (via synth) ([#9858](https://www.github.com/googleapis/python-iam/issues/9858)) ([d546df1](https://www.github.com/googleapis/python-iam/commit/d546df13d876eb41ba88e4f4106409638e2a3768))
+
 ## 0.2.1
 
 08-23-2019 10:10 PDT
