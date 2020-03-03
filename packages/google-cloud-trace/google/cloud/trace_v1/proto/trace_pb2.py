@@ -845,11 +845,11 @@ TraceSpan = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_TRACESPAN,
         __module__="google.devtools.cloudtrace_v1.proto.trace_pb2",
-        __doc__="""A span represents a single timed event within a trace.
-  Spans can be nested and form a trace tree. Often, a trace contains a
-  root span that describes the end-to-end latency of an operation and,
-  optionally, one or more subspans for its suboperations. Spans do not
-  need to be contiguous. There may be gaps between spans in a trace.
+        __doc__="""A span represents a single timed event within a trace. Spans can be
+  nested and form a trace tree. Often, a trace contains a root span that
+  describes the end-to-end latency of an operation and, optionally, one or
+  more subspans for its suboperations. Spans do not need to be contiguous.
+  There may be gaps between spans in a trace.
   
   
   Attributes:
