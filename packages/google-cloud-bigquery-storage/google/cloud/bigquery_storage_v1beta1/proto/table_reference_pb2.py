@@ -162,8 +162,8 @@ TableReference = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TABLEREFERENCE,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.table_reference_pb2",
-        __doc__="""Table reference that includes just the 3 strings needed to
-  identify a table.
+        __doc__="""Table reference that includes just the 3 strings needed to identify a
+  table.
   
   
   Attributes:
