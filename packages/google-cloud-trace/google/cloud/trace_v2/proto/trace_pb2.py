@@ -1608,9 +1608,9 @@ Span = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_SPAN_TIMEEVENTS,
                 __module__="google.devtools.cloudtrace_v2.proto.trace_pb2",
-                __doc__="""A collection of ``TimeEvent``\ s. A ``TimeEvent`` is a time-stamped
-    annotation on the span, consisting of either user-supplied key:value
-    pairs, or details of a message sent/received between Spans.
+                __doc__="""A collection of ``TimeEvent``\ s. A ``TimeEvent`` is a
+    time-stamped annotation on the span, consisting of either user-supplied
+    key:value pairs, or details of a message sent/received between Spans.
     
     
     Attributes:
@@ -1677,12 +1677,12 @@ Span = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SPAN,
         __module__="google.devtools.cloudtrace_v2.proto.trace_pb2",
-        __doc__="""A span represents a single operation within a trace. Spans
-  can be nested to form a trace tree. Often, a trace contains a root span
-  that describes the end-to-end latency, and one or more subspans for its
-  sub-operations. A trace can also contain multiple root spans, or none at
-  all. Spans do not need to be contiguous—there may be gaps or overlaps
-  between spans in a trace.
+        __doc__="""A span represents a single operation within a trace. Spans can be nested
+  to form a trace tree. Often, a trace contains a root span that describes
+  the end-to-end latency, and one or more subspans for its sub-operations.
+  A trace can also contain multiple root spans, or none at all. Spans do
+  not need to be contiguous—there may be gaps or overlaps between spans in
+  a trace.
   
   
   Attributes:
