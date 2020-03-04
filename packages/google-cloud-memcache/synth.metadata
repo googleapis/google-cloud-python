@@ -1,17 +1,18 @@
 {
-  "updateTime": "2020-02-29T01:42:08.452558Z",
+  "updateTime": "2020-03-04T13:20:26.881671Z",
   "sources": [
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "83c6f84035ee0f80eaa44d8b688a010461cc4080",
-        "internalRef": "297918498"
+        "sha": "541b1ded4abadcc38e8178680b0677f65594ea6f",
+        "internalRef": "298686266",
+        "log": "541b1ded4abadcc38e8178680b0677f65594ea6f\nUpdate cloud asset api v1p4beta1.\n\nPiperOrigin-RevId: 298686266\n\nc0d171acecb4f5b0bfd2c4ca34fc54716574e300\n  Updated to include the Notification v1 API.\n\nPiperOrigin-RevId: 298652775\n\n2346a9186c0bff2c9cc439f2459d558068637e05\nAdd Service Directory v1beta1 protos and configs\n\nPiperOrigin-RevId: 298625638\n\na78ed801b82a5c6d9c5368e24b1412212e541bb7\nPublishing v3 protos and configs.\n\nPiperOrigin-RevId: 298607357\n\n4a180bfff8a21645b3a935c2756e8d6ab18a74e0\nautoml/v1beta1 publish proto updates\n\nPiperOrigin-RevId: 298484782\n\n6de6e938b7df1cd62396563a067334abeedb9676\nchore: use the latest gapic-generator and protoc-java-resource-name-plugin in Bazel workspace.\n\nPiperOrigin-RevId: 298474513\n\n244ab2b83a82076a1fa7be63b7e0671af73f5c02\nAdds service config definition for bigqueryreservation v1\n\nPiperOrigin-RevId: 298455048\n\n"
       }
     },
     {
       "template": {
-        "name": "python_split_library",
+        "name": "python_library",
         "origin": "synthtool.gcp",
         "version": "2020.2.4"
       }

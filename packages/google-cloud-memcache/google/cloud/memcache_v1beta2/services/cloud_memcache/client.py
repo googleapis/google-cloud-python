@@ -16,7 +16,7 @@
 #
 
 from collections import OrderedDict
-from typing import Dict, Iterable, Iterator, Sequence, Tuple, Type, Union
+from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
@@ -385,8 +385,12 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         # request, apply these.
         if parent is not None:
             request.parent = parent
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
         if instance_id is not None:
             request.instance_id = instance_id
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
         if resource is not None:
             request.resource = resource
 
@@ -473,6 +477,8 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         # request, apply these.
         if update_mask is not None:
             request.update_mask = update_mask
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
         if resource is not None:
             request.resource = resource
 
@@ -566,8 +572,12 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         # request, apply these.
         if name is not None:
             request.name = name
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
         if update_mask is not None:
             request.update_mask = update_mask
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
         if parameters is not None:
             request.parameters = parameters
 
@@ -752,8 +762,12 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         # request, apply these.
         if name is not None:
             request.name = name
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
         if node_ids is not None:
             request.node_ids = node_ids
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
         if apply_all is not None:
             request.apply_all = apply_all
 

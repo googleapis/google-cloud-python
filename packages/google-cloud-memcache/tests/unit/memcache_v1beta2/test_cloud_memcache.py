@@ -116,7 +116,7 @@ def test_list_instances_field_headers():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.list_instances), "__call__") as call:
         call.return_value = cloud_memcache.ListInstancesResponse()
-        response = client.list_instances(request)
+        client.list_instances(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -184,7 +184,7 @@ def test_list_instances_pager():
         )
         results = [i for i in client.list_instances(request={})]
         assert len(results) == 6
-        assert all([isinstance(i, cloud_memcache.Instance) for i in results])
+        assert all(isinstance(i, cloud_memcache.Instance) for i in results)
 
 
 def test_list_instances_pages():
@@ -271,7 +271,7 @@ def test_get_instance_field_headers():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.get_instance), "__call__") as call:
         call.return_value = cloud_memcache.Instance()
-        response = client.get_instance(request)
+        client.get_instance(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -687,7 +687,7 @@ def test_cloud_memcache_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(auth, "default") as adc:
         adc.return_value = (credentials.AnonymousCredentials(), None)
-        client = CloudMemcacheClient()
+        CloudMemcacheClient()
         adc.assert_called_once_with(
             scopes=("https://www.googleapis.com/auth/cloud-platform",)
         )
