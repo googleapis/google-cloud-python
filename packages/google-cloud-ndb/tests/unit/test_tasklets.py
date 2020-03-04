@@ -453,6 +453,11 @@ class Test_MultiFuture:
         with pytest.raises(exceptions.Cancelled):
             future.result()
 
+    @staticmethod
+    def test_no_dependencies():
+        future = tasklets._MultiFuture(())
+        assert future.result() == ()
+
 
 class Test__get_return_value:
     @staticmethod

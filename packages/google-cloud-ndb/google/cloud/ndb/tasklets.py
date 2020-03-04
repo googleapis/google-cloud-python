@@ -411,6 +411,9 @@ class _MultiFuture(Future):
         for dependency in dependencies:
             dependency.add_done_callback(self._dependency_done)
 
+        if not dependencies:
+            self.set_result(())
+
     def __repr__(self):
         return "{}({}) <{}>".format(
             type(self).__name__,

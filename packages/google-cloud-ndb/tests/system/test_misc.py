@@ -56,3 +56,19 @@ def test_pickle_roundtrip_structured_property(dispose_of):
     assert entity.other.key is None or entity.other.key.id() is None
     entity = pickle.loads(pickle.dumps(entity))
     assert entity.other.foo == 1
+
+
+@pytest.mark.usefixtures("client_context")
+def test_tasklet_yield_emtpy_list():
+    """
+    Regression test for Issue #353.
+
+    https://github.com/googleapis/python-ndb/issues/353
+    """
+
+    @ndb.tasklet
+    def test_it():
+        nothing = yield []
+        raise ndb.Return(nothing)
+
+    assert test_it().result() == ()
