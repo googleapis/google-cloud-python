@@ -834,8 +834,8 @@ EvaluationJobConfig = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_EVALUATIONJOBCONFIG,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_job_pb2",
-        __doc__="""Configures specific details of how a continuous evaluation job works.
-  Provide this configuration when you create an EvaluationJob.
+        __doc__="""Configures specific details of how a continuous evaluation
+  job works. Provide this configuration when you create an EvaluationJob.
   
   
   Attributes:
