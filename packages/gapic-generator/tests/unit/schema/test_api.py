@@ -488,6 +488,74 @@ def test_messages_nested():
     assert bar not in proto.messages
 
 
+def test_out_of_order_enums():
+    # Enums can be referenced as field types before they
+    # are defined in the proto file.
+    # This happens when they're a nested type within a message.
+    messages = (
+        make_message_pb2(
+            name='Squid',
+            fields=(
+                make_field_pb2(
+                    name='base_color',
+                    type_name='google.mollusca.Chromatophore.Color',
+                    number=1,
+                ),
+            ),
+        ),
+        make_message_pb2(
+            name='Chromatophore',
+            enum_type=(
+                descriptor_pb2.EnumDescriptorProto(name='Color', value=()),
+            ),
+        )
+    )
+    fd = (
+        make_file_pb2(
+            name='squid.proto',
+            package='google.mollusca',
+            messages=messages,
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name='SquidService',
+                ),
+            ),
+        ),
+    )
+    api_schema = api.API.build(fd, package='google.mollusca')
+    field_type = (
+        api_schema
+        .messages['google.mollusca.Squid']
+        .fields['base_color']
+        .type
+    )
+    enum_type = api_schema.enums['google.mollusca.Chromatophore.Color']
+    assert field_type == enum_type
+
+
+def test_undefined_type():
+    fd = (
+        make_file_pb2(
+            name='mollusc.proto',
+            package='google.mollusca',
+            messages=(
+                make_message_pb2(
+                    name='Mollusc',
+                    fields=(
+                        make_field_pb2(
+                            name='class',
+                            type_name='google.mollusca.Class',
+                            number=1,
+                        ),
+                    )
+                ),
+            ),
+        ),
+    )
+    with pytest.raises(TypeError):
+        api.API.build(fd, package='google.mollusca')
+
+
 def test_python_modules_nested():
     fd = (
         make_file_pb2(

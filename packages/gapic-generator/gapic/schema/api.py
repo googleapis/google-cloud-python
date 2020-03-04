@@ -425,13 +425,24 @@ class _ProtoBuilder:
         # In this situation, we would not have come across the message yet,
         # and the field would have its original textual reference to the
         # message (`type_name`) but not its resolved message wrapper.
-        for message in self.proto_messages.values():
-            for field in message.fields.values():
-                if field.type_name and not any((field.message, field.enum)):
-                    object.__setattr__(
-                        field, 'message',
-                        self.proto_messages[field.type_name.lstrip('.')],
-                    )
+        orphan_field_gen = (
+            (field.type_name.lstrip('.'), field)
+            for message in self.proto_messages.values()
+            for field in message.fields.values()
+            if field.type_name and not (field.message or field.enum)
+        )
+        for key, field in orphan_field_gen:
+            maybe_msg_type = self.proto_messages.get(key)
+            maybe_enum_type = self.proto_enums.get(key)
+            if maybe_msg_type:
+                object.__setattr__(field, 'message', maybe_msg_type)
+            elif maybe_enum_type:
+                object.__setattr__(field, 'enum', maybe_enum_type)
+            else:
+                raise TypeError(
+                    f"Unknown type referenced in "
+                    "{self.file_descriptor.name}: '{key}'"
+                )
 
         # Only generate the service if this is a target file to be generated.
         # This prevents us from generating common services (e.g. LRO) when
