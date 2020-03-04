@@ -123,18 +123,21 @@ class Proto:
         # Add names of all enums, messages, and fields.
         answer: Set[str] = {e.name for e in self.all_enums.values()}
         for message in self.all_messages.values():
-            answer = answer.union({f.name for f in message.fields.values()})
+            answer.update(f.name for f in message.fields.values())
             answer.add(message.name)
 
         # Identify any import module names where the same module name is used
         # from distinct packages.
-        modules: Dict[str, Set[str]] = {}
-        for t in chain(*[m.field_types for m in self.all_messages.values()]):
-            modules.setdefault(t.ident.module, set())
-            modules[t.ident.module].add(t.ident.package)
-        for module_name, packages in modules.items():
-            if len(packages) > 1:
-                answer.add(module_name)
+        modules: Dict[str, Set[str]] = collections.defaultdict(set)
+        for m in self.all_messages.values():
+            for t in m.field_types:
+                modules[t.ident.module].add(t.ident.package)
+
+        answer.update(
+            module_name
+            for module_name, packages in modules.items()
+            if len(packages) > 1
+        )
 
         # Return the set of collision names.
         return frozenset(answer)
@@ -462,24 +465,24 @@ class _ProtoBuilder:
             return naive
 
         # Return a context-aware proto object.
-        # Note: The services bind to themselves, because services get their
-        # own output files.
-        return dataclasses.replace(naive,
-                                   all_enums=collections.OrderedDict([
-                                       (k, v.with_context(collisions=naive.names))
-                                       for k, v in naive.all_enums.items()
-                                   ]),
-                                   all_messages=collections.OrderedDict([
-                                       (k, v.with_context(collisions=naive.names))
-                                       for k, v in naive.all_messages.items()
-                                   ]),
-                                   services=collections.OrderedDict([
-                                       (k, v.with_context(collisions=v.names))
-                                       for k, v in naive.services.items()
-                                   ]),
-                                   meta=naive.meta.with_context(
-                                       collisions=naive.names),
-                                   )
+        return dataclasses.replace(
+            naive,
+            all_enums=collections.OrderedDict(
+                (k, v.with_context(collisions=naive.names))
+                for k, v in naive.all_enums.items()
+            ),
+            all_messages=collections.OrderedDict(
+                (k, v.with_context(collisions=naive.names))
+                for k, v in naive.all_messages.items()
+            ),
+            services=collections.OrderedDict(
+                # Note: services bind to themselves because services get their
+                # own output files.
+                (k, v.with_context(collisions=v.names))
+                for k, v in naive.services.items()
+            ),
+            meta=naive.meta.with_context(collisions=naive.names),
+        )
 
     @cached_property
     def api_enums(self) -> Mapping[str, wrappers.EnumType]:

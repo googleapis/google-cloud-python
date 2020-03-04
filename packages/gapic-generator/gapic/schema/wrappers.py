@@ -330,18 +330,19 @@ class MessageType:
         """
         return dataclasses.replace(
             self,
-            fields=collections.OrderedDict([
+            fields=collections.OrderedDict(
                 (k, v.with_context(collisions=collisions))
                 for k, v in self.fields.items()
-            ]) if not skip_fields else self.fields,
-            nested_enums=collections.OrderedDict([
+            ) if not skip_fields else self.fields,
+            nested_enums=collections.OrderedDict(
                 (k, v.with_context(collisions=collisions))
                 for k, v in self.nested_enums.items()
-            ]),
-            nested_messages=collections.OrderedDict([(k, v.with_context(
-                collisions=collisions,
-                skip_fields=skip_fields,
-            )) for k, v in self.nested_messages.items()]),
+            ),
+            nested_messages=collections.OrderedDict(
+                (k, v.with_context(
+                    collisions=collisions,
+                    skip_fields=skip_fields,))
+                for k, v in self.nested_messages.items()),
             meta=self.meta.with_context(collisions=collisions),
         )
 
@@ -454,6 +455,23 @@ class OperationInfo:
     """Representation of long-running operation info."""
     response_type: MessageType
     metadata_type: MessageType
+
+    def with_context(self, *, collisions: FrozenSet[str]) -> 'OperationInfo':
+        """Return a derivative of this OperationInfo with the provided context.
+
+          This method is used to address naming collisions. The returned
+          ``OperationInfo`` object aliases module names to avoid naming collisions
+          in the file being written.
+          """
+        return dataclasses.replace(
+            self,
+            response_type=self.response_type.with_context(
+                collisions=collisions
+            ),
+            metadata_type=self.metadata_type.with_context(
+                collisions=collisions
+            ),
+        )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -681,8 +699,13 @@ class Method:
         ``Method`` object aliases module names to avoid naming collisions
         in the file being written.
         """
+        maybe_lro = self.lro.with_context(
+            collisions=collisions
+        ) if self.lro else None
+
         return dataclasses.replace(
             self,
+            lro=maybe_lro,
             input=self.input.with_context(collisions=collisions),
             output=self.output.with_context(collisions=collisions),
             meta=self.meta.with_context(collisions=collisions),
@@ -810,9 +833,13 @@ class Service:
         """
         return dataclasses.replace(
             self,
-            methods=collections.OrderedDict([
-                (k, v.with_context(collisions=collisions))
+            methods=collections.OrderedDict(
+                (k, v.with_context(
+                    # A methodd's flattened fields create additional names
+                    # that may conflict with module imports.
+                    collisions=collisions | frozenset(v.flattened_fields.keys()))
+                 )
                 for k, v in self.methods.items()
-            ]),
+            ),
             meta=self.meta.with_context(collisions=collisions),
         )

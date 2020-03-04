@@ -17,6 +17,7 @@ from unittest import mock
 
 import pytest
 
+from google.api import client_pb2
 from google.api_core import exceptions
 from google.longrunning import operations_pb2
 from google.protobuf import descriptor_pb2
@@ -217,6 +218,110 @@ def test_proto_names_import_collision():
     proto = api_schema.protos['foo.proto']
     assert proto.names == {'Foo', 'Bar', 'Baz', 'foo', 'imported_message',
                            'other_message', 'primitive', 'spam'}
+
+
+def test_proto_names_import_collision_flattening():
+    lro_proto = api.Proto.build(make_file_pb2(
+        name='operations.proto', package='google.longrunning',
+        messages=(make_message_pb2(name='Operation'),),
+    ), file_to_generate=False, naming=make_naming())
+
+    fd = (
+        make_file_pb2(
+            name='mollusc.proto',
+            package='google.animalia.mollusca',
+            messages=(
+                make_message_pb2(name='Mollusc',),
+                make_message_pb2(name='MolluscResponse',),
+                make_message_pb2(name='MolluscMetadata',),
+            ),
+        ),
+        make_file_pb2(
+            name='squid.proto',
+            package='google.animalia.mollusca',
+            messages=(
+                make_message_pb2(
+                    name='IdentifySquidRequest',
+                    fields=(
+                        make_field_pb2(
+                            name='mollusc',
+                            number=1,
+                            type_name='.google.animalia.mollusca.Mollusc'
+                        ),
+                    ),
+                ),
+                make_message_pb2(
+                    name='IdentifySquidResponse',
+                    fields=(),
+                ),
+            ),
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name='SquidIdentificationService',
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name='IdentifyMollusc',
+                            input_type='google.animalia.mollusca.IdentifySquidRequest',
+                            output_type='google.longrunning.Operation',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    )
+
+    method_options = fd[1].service[0].method[0].options
+    # Notice that a signature field collides with the name of an imported module
+    method_options.Extensions[client_pb2.method_signature].append('mollusc')
+    method_options.Extensions[operations_pb2.operation_info].MergeFrom(
+        operations_pb2.OperationInfo(
+            response_type='google.animalia.mollusca.MolluscResponse',
+            metadata_type='google.animalia.mollusca.MolluscMetadata',
+        )
+    )
+    api_schema = api.API.build(
+        fd,
+        package='google.animalia.mollusca',
+        prior_protos={
+            'google/longrunning/operations.proto': lro_proto,
+        }
+    )
+
+    actual_imports = {
+        ref_type.ident.python_import
+        for service in api_schema.services.values()
+        for method in service.methods.values()
+        for ref_type in method.ref_types
+    }
+
+    expected_imports = {
+        imp.Import(
+            package=('google', 'animalia', 'mollusca', 'types'),
+            module='mollusc',
+            alias='gam_mollusc',
+        ),
+        imp.Import(
+            package=('google', 'animalia', 'mollusca', 'types'),
+            module='squid',
+        ),
+        imp.Import(package=('google', 'api_core'), module='operation',),
+    }
+
+    assert expected_imports == actual_imports
+
+    method = (
+        api_schema
+        .services['google.animalia.mollusca.SquidIdentificationService']
+        .methods['IdentifyMollusc']
+    )
+
+    actual_response_import = method.lro.response_type.ident.python_import
+    expected_response_import = imp.Import(
+        package=('google', 'animalia', 'mollusca', 'types'),
+        module='mollusc',
+        alias='gam_mollusc',
+    )
+    assert actual_response_import == expected_response_import
 
 
 def test_proto_builder_constructor():

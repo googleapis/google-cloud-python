@@ -84,11 +84,16 @@ class Address:
         to users (albeit looking auto-generated).
         """
         if self.module in self.collisions:
-            return '_'.join((
-                ''.join([i[0] for i in self.package
-                         if i != self.api_naming.version]),
-                self.module,
-            ))
+            return '_'.join(
+                (
+                    ''.join(
+                        i[0]
+                        for i in self.package
+                        if i != self.api_naming.version
+                    ),
+                    self.module,
+                )
+            )
         return ''
 
     @property
@@ -161,7 +166,8 @@ class Address:
         Returns:
             ~.Address: The new address object.
         """
-        return dataclasses.replace(self,
+        return dataclasses.replace(
+            self,
             module_path=self.module_path + path,
             name=child_name,
             parent=self.parent + (self.name,) if self.name else self.parent,
@@ -278,9 +284,10 @@ class Metadata:
         ``Address`` object aliases module names to avoid naming collisions in
         the file being written.
         """
-        return dataclasses.replace(self,
+        return dataclasses.replace(
+            self,
             address=self.address.with_context(collisions=collisions),
-                                   )
+        )
 
 
 @dataclasses.dataclass(frozen=True)
