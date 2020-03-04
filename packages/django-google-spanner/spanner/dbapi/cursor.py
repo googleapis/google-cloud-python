@@ -7,6 +7,7 @@
 import time
 
 import google.api_core.exceptions as grpc_exceptions
+from google.cloud.spanner_v1 import param_types
 
 from .exceptions import (
     Error, IntegrityError, InternalError, OperationalError, ProgrammingError,
@@ -18,6 +19,24 @@ from .parse_utils import (
 )
 
 _UNSET_COUNT = -1
+
+
+# This table maps spanner_types to Spanner's data type sizes as per
+#   https://cloud.google.com/spanner/docs/data-types#allowable-types
+# It is used to map `display_size` to a known type for Cursor.description
+# after a row fetch.
+# Since ResultMetadata
+#   https://cloud.google.com/spanner/docs/reference/rest/v1/ResultSetMetadata
+# does not send back the actual size, so we have to lookup size statically.
+# Some field's sizes are dependent upon the dynamic data hence aren't sent back
+# by Cloud Spanner.
+code_to_display_size = {
+    param_types.BOOL.code: 1,
+    param_types.DATE.code: 4,
+    param_types.FLOAT64.code: 8,
+    param_types.INT64.code: 8,
+    param_types.TIMESTAMP.code: 12,
+}
 
 
 class Cursor(object):
@@ -43,7 +62,13 @@ class Cursor(object):
         row_type = self.__res.metadata.row_type
         columns = []
         for field in row_type.fields:
-            columns.append(Column(name=field.name, type_code=field.type.code))
+            columns.append(
+                Column(name=field.name,
+                       type_code=field.type.code,
+                       # Size of the SQL type of the column.
+                       display_size=code_to_display_size.get(field.type.code, None),
+                       # Client perceived size of the column.
+                       internal_size=field.ByteSize()))
         return tuple(columns)
 
     @property
@@ -375,8 +400,8 @@ class Column:
         rstr = ', '.join([field for field in [
             "name='%s'" % self.name,
             "type_code=%d" % self.type_code,
-            None if not self.display_size else "display_size='%s'" % self.display_size,
-            None if not self.internal_size else "internal_size='%s'" % self.internal_size,
+            None if not self.display_size else "display_size=%d" % self.display_size,
+            None if not self.internal_size else "internal_size=%d" % self.internal_size,
             None if not self.precision else "precision='%s'" % self.precision,
             None if not self.scale else "scale='%s'" % self.scale,
             None if not self.null_ok else "null_ok='%s'" % self.null_ok,
