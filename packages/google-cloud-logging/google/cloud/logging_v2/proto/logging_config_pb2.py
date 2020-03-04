@@ -1620,7 +1620,8 @@ BigQueryOptions = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_BIGQUERYOPTIONS,
         __module__="google.cloud.logging_v2.proto.logging_config_pb2",
-        __doc__="""Options that change functionality of a sink exporting data to BigQuery.
+        __doc__="""Options that change functionality of a sink exporting data
+  to BigQuery.
   
   
   Attributes:
