@@ -5612,6 +5612,71 @@ class TestClient(unittest.TestCase):
             method="GET", path="/%s" % PATH, query_params={}, timeout=7.5
         )
 
+    def test_list_rows_w_start_index_w_page_size(self):
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
+        from google.cloud.bigquery.table import Row
+
+        PATH = "projects/%s/datasets/%s/tables/%s/data" % (
+            self.PROJECT,
+            self.DS_ID,
+            self.TABLE_ID,
+        )
+
+        page_1 = {
+            "totalRows": 4,
+            "pageToken": "some-page-token",
+            "rows": [
+                {"f": [{"v": "Phred Phlyntstone"}]},
+                {"f": [{"v": "Bharney Rhubble"}]},
+            ],
+        }
+        page_2 = {
+            "totalRows": 4,
+            "rows": [
+                {"f": [{"v": "Wylma Phlyntstone"}]},
+                {"f": [{"v": "Bhettye Rhubble"}]},
+            ],
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection(page_1, page_2)
+        full_name = SchemaField("full_name", "STRING", mode="REQUIRED")
+        table = Table(self.TABLE_REF, schema=[full_name])
+        iterator = client.list_rows(table, max_results=4, page_size=2, start_index=1)
+        pages = iterator.pages
+        rows = list(six.next(pages))
+        extra_params = iterator.extra_params
+        f2i = {"full_name": 0}
+        self.assertEqual(len(rows), 2)
+        self.assertEqual(rows[0], Row(("Phred Phlyntstone",), f2i))
+        self.assertEqual(rows[1], Row(("Bharney Rhubble",), f2i))
+
+        rows = list(six.next(pages))
+
+        self.assertEqual(len(rows), 2)
+        self.assertEqual(rows[0], Row(("Wylma Phlyntstone",), f2i))
+        self.assertEqual(rows[1], Row(("Bhettye Rhubble",), f2i))
+        self.assertEqual(extra_params, {"startIndex": 1})
+
+        conn.api_request.assert_has_calls(
+            [
+                mock.call(
+                    method="GET",
+                    path="/%s" % PATH,
+                    query_params={"startIndex": 1, "maxResults": 2},
+                    timeout=None,
+                ),
+                mock.call(
+                    method="GET",
+                    path="/%s" % PATH,
+                    query_params={"pageToken": "some-page-token", "maxResults": 2},
+                    timeout=None,
+                ),
+            ]
+        )
+
     def test_list_rows_empty_table(self):
         response = {"totalRows": "0", "rows": []}
         creds = _make_credentials()
