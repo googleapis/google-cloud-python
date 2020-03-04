@@ -4351,7 +4351,7 @@ class LocalStructuredProperty(BlobProperty):
             legacy_values = []
             for value in values:
                 legacy_values.append(
-                    _entity_to_ds_entity(value, set_key=False)
+                    _entity_to_ds_entity(value, set_key=self._keep_keys)
                 )
             if not self._repeated:
                 legacy_values = legacy_values[0]
