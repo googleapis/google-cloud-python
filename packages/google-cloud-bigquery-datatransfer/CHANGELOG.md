@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v0.4.1...v1.0.0) (2020-03-04)
+
+
+### Features
+
+* **bigquerydatatransfer:** add `service_account_name` option to transfer configs ([#10013](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/10013)) ([9ca090a](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/9ca090af431092bc4286fa4443dd0dc0141f6de6))
+* **bigquerydatatransfer:** undeprecate resource name helper methods; add py2 deprecation warning; bump copyright year to 2020 (via synth) ([#10226](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/10226)) ([c0f9cc3](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/c0f9cc398e5558002c79a875809bb6cd1a98a8a4))
+* set release_status to production/stable ([#15](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/15)) ([a9c1160](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/a9c1160475dbc327e8cc5da3b5aee3ceaa618bd3))
+
+
+### Bug Fixes
+
+* **bigquery_datatransfer:** deprecate resource name helper methods (via synth) ([#9829](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/9829)) ([fc06995](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/fc0699549479cc3e34e217f9e588f5128107ba89))
+
 ## 0.4.1
 
 07-31-2019 17:50 PDT
