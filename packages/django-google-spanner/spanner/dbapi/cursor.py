@@ -27,8 +27,8 @@ _UNSET_COUNT = -1
 # after a row fetch.
 # Since ResultMetadata
 #   https://cloud.google.com/spanner/docs/reference/rest/v1/ResultSetMetadata
-# does not send back the actual size, so we have to lookup size statically.
-# Some field's sizes are dependent upon the dynamic data hence aren't sent back
+# does not send back the actual size, we have to lookup the respective size.
+# Some fields' sizes are dependent upon the dynamic data hence aren't sent back
 # by Cloud Spanner.
 code_to_display_size = {
     param_types.BOOL.code: 1,
@@ -63,12 +63,15 @@ class Cursor(object):
         columns = []
         for field in row_type.fields:
             columns.append(
-                Column(name=field.name,
-                       type_code=field.type.code,
-                       # Size of the SQL type of the column.
-                       display_size=code_to_display_size.get(field.type.code, None),
-                       # Client perceived size of the column.
-                       internal_size=field.ByteSize()))
+                Column(
+                    name=field.name,
+                    type_code=field.type.code,
+                    # Size of the SQL type of the column.
+                    display_size=code_to_display_size.get(field.type.code),
+                    # Client perceived size of the column.
+                    internal_size=field.ByteSize(),
+                )
+            )
         return tuple(columns)
 
     @property
