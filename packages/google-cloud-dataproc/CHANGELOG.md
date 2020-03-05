@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [0.7.0](https://www.github.com/googleapis/python-dataproc/compare/v0.6.1...v0.7.0) (2020-03-05)
+
+
+### Features
+
+* add lifecycle config and reservation affinity support to v1 (via synth) ([#10](https://www.github.com/googleapis/python-dataproc/issues/10)) ([bb36194](https://www.github.com/googleapis/python-dataproc/commit/bb36194d4b0cfb6f2c5a0358625a17c629f71b21))
+
 ## 0.6.1
 
 11-12-2019 08:24 PST
@@ -155,4 +162,3 @@
 
 - Re-enable lint for tests, remove usage of pylint (#4921)
 - Normalize all setup.py files (#4909)
-
