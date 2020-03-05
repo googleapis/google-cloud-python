@@ -2641,18 +2641,6 @@ OrderedJob = _reflection.GeneratedProtocolMessageType(
           hyphen. Must consist of between 3 and 50 characters.
       job_type:
           Required. The job definition.
-      hadoop_job:
-          Job is a Hadoop job.
-      spark_job:
-          Job is a Spark job.
-      pyspark_job:
-          Job is a Pyspark job.
-      hive_job:
-          Job is a Hive job.
-      pig_job:
-          Job is a Pig job.
-      spark_sql_job:
-          Job is a SparkSql job.
       labels:
           Optional. The labels to associate with this job.  Label keys
           must be between 1 and 63 characters long. Label values must be between

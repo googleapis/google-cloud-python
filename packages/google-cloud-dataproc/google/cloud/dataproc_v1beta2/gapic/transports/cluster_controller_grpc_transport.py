@@ -194,7 +194,7 @@ class ClusterControllerGrpcTransport(object):
         will be
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata>`__.
         After the operation completes, ``Operation.response`` contains
-        `Empty <google.protobuf.Empty>`__.
+        ``Empty``.
 
         Returns:
             Callable: A callable which accepts the appropriate

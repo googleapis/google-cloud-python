@@ -97,7 +97,7 @@ class ClusterStatus(object):
 
           Applies to RUNNING state.
           STALE_STATUS (int): The agent-reported status is out of date (may occur if
-          Cloud Dataproc loses communication with Agent).
+          Dataproc loses communication with Agent).
 
           Applies to RUNNING state.
         """
@@ -156,7 +156,7 @@ class JobStatus(object):
 
           Applies to RUNNING state.
           STALE_STATUS (int): The agent-reported status is out of date, which may be caused by a
-          loss of communication between the agent and Cloud Dataproc. If the
+          loss of communication between the agent and Dataproc. If the
           agent does not send a timely update, the job will fail.
 
           Applies to RUNNING state.

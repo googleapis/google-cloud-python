@@ -207,6 +207,25 @@ class LoggingConfig(object):
         OFF = 8
 
 
+class ReservationAffinity(object):
+    class Type(enum.IntEnum):
+        """
+        Indicates whether to consume capacity from an reservation or not.
+
+        Attributes:
+          TYPE_UNSPECIFIED (int)
+          NO_RESERVATION (int): Do not consume from any allocated capacity.
+          ANY_RESERVATION (int): Consume any reservation available.
+          SPECIFIC_RESERVATION (int): Must consume from a specific reservation. Must specify key value fields
+          for specifying the reservations.
+        """
+
+        TYPE_UNSPECIFIED = 0
+        NO_RESERVATION = 1
+        ANY_RESERVATION = 2
+        SPECIFIC_RESERVATION = 3
+
+
 class WorkflowMetadata(object):
     class State(enum.IntEnum):
         """

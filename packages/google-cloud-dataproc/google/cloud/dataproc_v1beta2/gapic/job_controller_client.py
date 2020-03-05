@@ -223,7 +223,7 @@ class JobControllerClient(object):
         Args:
             project_id (str): Required. The ID of the Google Cloud Platform project that the job
                 belongs to.
-            region (str): Required. The Cloud Dataproc region in which to handle the request.
+            region (str): Required. The Dataproc region in which to handle the request.
             job (Union[dict, ~google.cloud.dataproc_v1beta2.types.Job]): Required. The job resource.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -306,7 +306,7 @@ class JobControllerClient(object):
         Args:
             project_id (str): Required. The ID of the Google Cloud Platform project that the job
                 belongs to.
-            region (str): Required. The Cloud Dataproc region in which to handle the request.
+            region (str): Required. The Dataproc region in which to handle the request.
             job_id (str): Required. The job ID.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -388,7 +388,7 @@ class JobControllerClient(object):
         Args:
             project_id (str): Required. The ID of the Google Cloud Platform project that the job
                 belongs to.
-            region (str): Required. The Cloud Dataproc region in which to handle the request.
+            region (str): Required. The Dataproc region in which to handle the request.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -509,7 +509,7 @@ class JobControllerClient(object):
         Args:
             project_id (str): Required. The ID of the Google Cloud Platform project that the job
                 belongs to.
-            region (str): Required. The Cloud Dataproc region in which to handle the request.
+            region (str): Required. The Dataproc region in which to handle the request.
             job_id (str): Required. The job ID.
             job (Union[dict, ~google.cloud.dataproc_v1beta2.types.Job]): Required. The changes to the job.
 
@@ -599,7 +599,7 @@ class JobControllerClient(object):
         Args:
             project_id (str): Required. The ID of the Google Cloud Platform project that the job
                 belongs to.
-            region (str): Required. The Cloud Dataproc region in which to handle the request.
+            region (str): Required. The Dataproc region in which to handle the request.
             job_id (str): Required. The job ID.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -670,7 +670,7 @@ class JobControllerClient(object):
         Args:
             project_id (str): Required. The ID of the Google Cloud Platform project that the job
                 belongs to.
-            region (str): Required. The Cloud Dataproc region in which to handle the request.
+            region (str): Required. The Dataproc region in which to handle the request.
             job_id (str): Required. The job ID.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will

@@ -47,7 +47,7 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-dataproc")
 class AutoscalingPolicyServiceClient(object):
     """
     The API interface for managing autoscaling policies in the
-    Google Cloud Dataproc API.
+    Cloud Dataproc API.
     """
 
     SERVICE_ADDRESS = "dataproc.googleapis.com:443"

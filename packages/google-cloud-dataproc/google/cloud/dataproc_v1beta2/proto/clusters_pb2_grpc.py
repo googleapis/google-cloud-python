@@ -60,7 +60,7 @@ class ClusterControllerServicer(object):
     def CreateCluster(self, request, context):
         """Creates a cluster in a project. The returned
     [Operation.metadata][google.longrunning.Operation.metadata] will be
-    [ClusterOperationMetadata](/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata).
+    [ClusterOperationMetadata](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -69,7 +69,7 @@ class ClusterControllerServicer(object):
     def UpdateCluster(self, request, context):
         """Updates a cluster in a project. The returned
     [Operation.metadata][google.longrunning.Operation.metadata] will be
-    [ClusterOperationMetadata](/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata).
+    [ClusterOperationMetadata](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -78,7 +78,7 @@ class ClusterControllerServicer(object):
     def DeleteCluster(self, request, context):
         """Deletes a cluster in a project. The returned
     [Operation.metadata][google.longrunning.Operation.metadata] will be
-    [ClusterOperationMetadata](/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata).
+    [ClusterOperationMetadata](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -101,11 +101,11 @@ class ClusterControllerServicer(object):
     def DiagnoseCluster(self, request, context):
         """Gets cluster diagnostic information. The returned
     [Operation.metadata][google.longrunning.Operation.metadata] will be
-    [ClusterOperationMetadata](/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata).
+    [ClusterOperationMetadata](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata).
     After the operation completes,
     [Operation.response][google.longrunning.Operation.response]
     contains
-    [Empty](google.protobuf.Empty).
+    [Empty][google.protobuf.Empty].
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

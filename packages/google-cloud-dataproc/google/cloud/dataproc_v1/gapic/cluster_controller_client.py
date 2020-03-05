@@ -416,10 +416,12 @@ class ClusterControllerClient(object):
                 message :class:`~google.cloud.dataproc_v1.types.FieldMask`
             graceful_decommission_timeout (Union[dict, ~google.cloud.dataproc_v1.types.Duration]): Optional. Timeout for graceful YARN decomissioning. Graceful
                 decommissioning allows removing nodes from the cluster without
-                interrupting jobs in progress. Timeout specifies how long to wait for jobs
-                in progress to finish before forcefully removing nodes (and potentially
-                interrupting jobs). Default timeout is 0 (for forceful decommission), and
-                the maximum allowed timeout is 1 day.
+                interrupting jobs in progress. Timeout specifies how long to wait for
+                jobs in progress to finish before forcefully removing nodes (and
+                potentially interrupting jobs). Default timeout is 0 (for forceful
+                decommission), and the maximum allowed timeout is 1 day. (see JSON
+                representation of
+                `Duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
 
                 Only supported on Dataproc image versions 1.2 and higher.
 

@@ -239,7 +239,7 @@ class ClusterControllerClient(object):
         Args:
             project_id (str): Required. The ID of the Google Cloud Platform project that the cluster
                 belongs to.
-            region (str): Required. The Cloud Dataproc region in which to handle the request.
+            region (str): Required. The Dataproc region in which to handle the request.
             cluster (Union[dict, ~google.cloud.dataproc_v1beta2.types.Cluster]): Required. The cluster to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -350,7 +350,7 @@ class ClusterControllerClient(object):
         Args:
             project_id (str): Required. The ID of the Google Cloud Platform project the
                 cluster belongs to.
-            region (str): Required. The Cloud Dataproc region in which to handle the request.
+            region (str): Required. The Dataproc region in which to handle the request.
             cluster_name (str): Required. The cluster name.
             cluster (Union[dict, ~google.cloud.dataproc_v1beta2.types.Cluster]): Required. The changes to the cluster.
 
@@ -428,10 +428,12 @@ class ClusterControllerClient(object):
                 message :class:`~google.cloud.dataproc_v1beta2.types.FieldMask`
             graceful_decommission_timeout (Union[dict, ~google.cloud.dataproc_v1beta2.types.Duration]): Optional. Timeout for graceful YARN decomissioning. Graceful
                 decommissioning allows removing nodes from the cluster without
-                interrupting jobs in progress. Timeout specifies how long to wait for jobs
-                in progress to finish before forcefully removing nodes (and potentially
-                interrupting jobs). Default timeout is 0 (for forceful decommission), and
-                the maximum allowed timeout is 1 day.
+                interrupting jobs in progress. Timeout specifies how long to wait for
+                jobs in progress to finish before forcefully removing nodes (and
+                potentially interrupting jobs). Default timeout is 0 (for forceful
+                decommission), and the maximum allowed timeout is 1 day (see JSON
+                representation of
+                `Duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
 
                 Only supported on Dataproc image versions 1.2 and higher.
 
@@ -541,7 +543,7 @@ class ClusterControllerClient(object):
         Args:
             project_id (str): Required. The ID of the Google Cloud Platform project that the cluster
                 belongs to.
-            region (str): Required. The Cloud Dataproc region in which to handle the request.
+            region (str): Required. The Dataproc region in which to handle the request.
             cluster_name (str): Required. The cluster name.
             cluster_uuid (str): Optional. Specifying the ``cluster_uuid`` means the RPC should fail
                 (with error NOT\_FOUND) if cluster with specified UUID does not exist.
@@ -634,7 +636,7 @@ class ClusterControllerClient(object):
         Args:
             project_id (str): Required. The ID of the Google Cloud Platform project that the cluster
                 belongs to.
-            region (str): Required. The Cloud Dataproc region in which to handle the request.
+            region (str): Required. The Dataproc region in which to handle the request.
             cluster_name (str): Required. The cluster name.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -714,7 +716,7 @@ class ClusterControllerClient(object):
         Args:
             project_id (str): Required. The ID of the Google Cloud Platform project that the cluster
                 belongs to.
-            region (str): Required. The Cloud Dataproc region in which to handle the request.
+            region (str): Required. The Dataproc region in which to handle the request.
             filter_ (str): Optional. A filter constraining the clusters to list. Filters are
                 case-sensitive and have the following syntax:
 
@@ -805,7 +807,7 @@ class ClusterControllerClient(object):
         will be
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata>`__.
         After the operation completes, ``Operation.response`` contains
-        `Empty <google.protobuf.Empty>`__.
+        ``Empty``.
 
         Example:
             >>> from google.cloud import dataproc_v1beta2
@@ -835,7 +837,7 @@ class ClusterControllerClient(object):
         Args:
             project_id (str): Required. The ID of the Google Cloud Platform project that the cluster
                 belongs to.
-            region (str): Required. The Cloud Dataproc region in which to handle the request.
+            region (str): Required. The Dataproc region in which to handle the request.
             cluster_name (str): Required. The cluster name.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will

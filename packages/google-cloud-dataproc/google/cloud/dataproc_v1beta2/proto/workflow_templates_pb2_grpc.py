@@ -12,7 +12,7 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 class WorkflowTemplateServiceStub(object):
     """The API interface for managing Workflow Templates in the
-  Cloud Dataproc API.
+  Dataproc API.
   """
 
     def __init__(self, channel):
@@ -60,7 +60,7 @@ class WorkflowTemplateServiceStub(object):
 
 class WorkflowTemplateServiceServicer(object):
     """The API interface for managing Workflow Templates in the
-  Cloud Dataproc API.
+  Dataproc API.
   """
 
     def CreateWorkflowTemplate(self, request, context):
@@ -94,9 +94,9 @@ class WorkflowTemplateServiceServicer(object):
     clusters to be deleted.
 
     The [Operation.metadata][google.longrunning.Operation.metadata] will be
-    [WorkflowMetadata](/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#workflowmetadata).
+    [WorkflowMetadata](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#workflowmetadata).
     Also see [Using
-    WorkflowMetadata](/dataproc/docs/concepts/workflows/debugging#using_workflowmetadata).
+    WorkflowMetadata](https://cloud.google.com/dataproc/docs/concepts/workflows/debugging#using_workflowmetadata).
 
     On successful completion,
     [Operation.response][google.longrunning.Operation.response] will be
@@ -124,9 +124,9 @@ class WorkflowTemplateServiceServicer(object):
     clusters to be deleted.
 
     The [Operation.metadata][google.longrunning.Operation.metadata] will be
-    [WorkflowMetadata](/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#workflowmetadata).
+    [WorkflowMetadata](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#workflowmetadata).
     Also see [Using
-    WorkflowMetadata](/dataproc/docs/concepts/workflows/debugging#using_workflowmetadata).
+    WorkflowMetadata](https://cloud.google.com/dataproc/docs/concepts/workflows/debugging#using_workflowmetadata).
 
     On successful completion,
     [Operation.response][google.longrunning.Operation.response] will be

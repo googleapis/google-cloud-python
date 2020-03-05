@@ -9,7 +9,7 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 class AutoscalingPolicyServiceStub(object):
     """The API interface for managing autoscaling policies in the
-  Google Cloud Dataproc API.
+  Cloud Dataproc API.
   """
 
     def __init__(self, channel):
@@ -47,7 +47,7 @@ class AutoscalingPolicyServiceStub(object):
 
 class AutoscalingPolicyServiceServicer(object):
     """The API interface for managing autoscaling policies in the
-  Google Cloud Dataproc API.
+  Cloud Dataproc API.
   """
 
     def CreateAutoscalingPolicy(self, request, context):
