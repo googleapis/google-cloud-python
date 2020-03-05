@@ -173,6 +173,25 @@ def test_mock_value_repeated():
     assert field.mock_value == "['foo_bar_value']"
 
 
+def test_mock_value_map():
+    entry_msg = make_message(
+        name='SquidEntry',
+        fields=(
+            make_field(name='key', type='TYPE_STRING'),
+            make_field(name='value', type='TYPE_STRING'),
+        ),
+        options=descriptor_pb2.MessageOptions(map_entry=True),
+    )
+    field = make_field(
+        name='squids',
+        type_name='mollusc.SquidEntry',
+        message=entry_msg,
+        label=3,
+        type='TYPE_MESSAGE',
+    )
+    assert field.mock_value == "{'key_value': 'value_value'}"
+
+
 def test_mock_value_enum():
     values = [
         descriptor_pb2.EnumValueDescriptorProto(name='UNSPECIFIED', number=0),
@@ -227,4 +246,26 @@ def make_field(*, message=None, enum=None, **kwargs) -> wrappers.Field:
     if isinstance(kwargs['type'], str):
         kwargs['type'] = T.Value(kwargs['type'])
     field_pb = descriptor_pb2.FieldDescriptorProto(**kwargs)
-    return wrappers.Field(field_pb=field_pb, message=message, enum=enum)
+    field = wrappers.Field(field_pb=field_pb, message=message, enum=enum)
+    return field
+
+
+def make_message(
+    name, package='foo.bar.v1', module='baz', fields=(), meta=None, options=None
+) -> wrappers.MessageType:
+    message_pb = descriptor_pb2.DescriptorProto(
+        name=name,
+        field=[i.field_pb for i in fields],
+        options=options,
+    )
+    return wrappers.MessageType(
+        message_pb=message_pb,
+        fields=collections.OrderedDict((i.name, i) for i in fields),
+        nested_messages={},
+        nested_enums={},
+        meta=meta or metadata.Metadata(address=metadata.Address(
+            name=name,
+            package=tuple(package.split('.')),
+            module=module,
+        )),
+    )

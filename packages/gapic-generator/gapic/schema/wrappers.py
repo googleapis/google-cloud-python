@@ -110,9 +110,16 @@ class Field:
             sub = next(iter(self.type.fields.values()))
             answer = f'{self.type.ident}({sub.name}={sub.mock_value})'
 
-        # If this is a repeated field, then the mock answer should
-        # be a list.
-        if self.repeated:
+        if self.map:
+            # Maps are a special case beacuse they're represented internally as
+            # a list of a generated type with two fields: 'key' and 'value'.
+            answer = '{{{}: {}}}'.format(
+                self.type.fields["key"].mock_value,
+                self.type.fields["value"].mock_value,
+            )
+        elif self.repeated:
+            # If this is a repeated field, then the mock answer should
+            # be a list.
             answer = f'[{answer}]'
 
         # Done; return the mock value.
@@ -568,7 +575,6 @@ class Method:
     @utils.cached_property
     def flattened_fields(self) -> Mapping[str, Field]:
         """Return the signature defined for this method."""
-        signatures = self.options.Extensions[client_pb2.method_signature]
         cross_pkg_request = self.input.ident.package != self.ident.package
 
         def filter_fields(sig):
@@ -585,6 +591,7 @@ class Method:
 
                 yield name, field
 
+        signatures = self.options.Extensions[client_pb2.method_signature]
         answer: Dict[str, Field] = collections.OrderedDict(
             name_and_field
             for sig in signatures

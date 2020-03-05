@@ -204,9 +204,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         {% endif %} {# different request package #}
 
         {#- Vanilla python protobuf wrapper types cannot _set_ repeated fields #}
-        {%- for key, field in method.flattened_fields.items() if not(field.repeated and method.input.ident.package != method.ident.package) %}
+        {% if method.flattened_fields -%}
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
+        {% endif -%}
+        {%- for key, field in method.flattened_fields.items() if not(field.repeated and method.input.ident.package != method.ident.package) %}
         if {{ field.name }} is not None:
             request.{{ key }} = {{ field.name }}
         {%- endfor %}
