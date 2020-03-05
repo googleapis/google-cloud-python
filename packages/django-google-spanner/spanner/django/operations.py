@@ -35,6 +35,10 @@ class DatabaseOperations(BaseDatabaseOperations):
         'iso_year': 'isoyear',
     }
 
+    def max_name_length(self):
+        # https://cloud.google.com/spanner/quotas#tables
+        return 128
+
     def quote_name(self, name):
         # Spanner says "column name not valid" if spaces or hyphens are present
         # (although according the docs, any character should be allowed in
