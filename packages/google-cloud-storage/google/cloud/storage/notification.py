@@ -326,8 +326,6 @@ class BucketNotification(object):
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
 
-        :rtype: bool
-        :returns: True, if the notification exists, else False.
         :raises ValueError: if the notification has no ID.
         """
         if self.notification_id is None:
