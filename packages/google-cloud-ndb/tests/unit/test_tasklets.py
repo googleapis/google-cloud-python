@@ -458,6 +458,15 @@ class Test_MultiFuture:
         future = tasklets._MultiFuture(())
         assert future.result() == ()
 
+    @staticmethod
+    def test_nested():
+        dependencies = [tasklets.Future() for _ in range(3)]
+        future = tasklets._MultiFuture((dependencies[0], dependencies[1:]))
+        for i, dependency in enumerate(dependencies):
+            dependency.set_result(i)
+
+        assert future.result() == (0, (1, 2))
+
 
 class Test__get_return_value:
     @staticmethod

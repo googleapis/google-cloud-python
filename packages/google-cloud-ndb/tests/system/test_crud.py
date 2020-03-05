@@ -209,6 +209,50 @@ def test_retrieve_two_entities_in_parallel(ds_entity):
 
 
 @pytest.mark.usefixtures("client_context")
+def test_retrieve_entities_in_parallel_nested(ds_entity):
+    """Regression test for #357.
+
+    https://github.com/googleapis/python-ndb/issues/357
+    """
+    entity1_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity1_id, foo=42, bar="none")
+    entity2_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity2_id, foo=65, bar="naan")
+    entity3_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity3_id, foo=66, bar="route")
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    key1 = ndb.Key(KIND, entity1_id)
+    key2 = ndb.Key(KIND, entity2_id)
+    key3 = ndb.Key(KIND, entity3_id)
+
+    @ndb.tasklet
+    def get_two_entities():
+        entity1, (entity2, entity3) = yield (
+            key1.get_async(),
+            [key2.get_async(), key3.get_async()],
+        )
+        raise ndb.Return(entity1, entity2, entity3)
+
+    entity1, entity2, entity3 = get_two_entities().result()
+
+    assert isinstance(entity1, SomeKind)
+    assert entity1.foo == 42
+    assert entity1.bar == "none"
+
+    assert isinstance(entity2, SomeKind)
+    assert entity2.foo == 65
+    assert entity2.bar == "naan"
+
+    assert isinstance(entity3, SomeKind)
+    assert entity3.foo == 66
+    assert entity3.bar == "route"
+
+
+@pytest.mark.usefixtures("client_context")
 def test_insert_entity(dispose_of, ds_client):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()

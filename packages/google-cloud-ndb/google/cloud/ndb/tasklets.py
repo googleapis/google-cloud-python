@@ -406,9 +406,15 @@ class _MultiFuture(Future):
 
     def __init__(self, dependencies):
         super(_MultiFuture, self).__init__()
-        self._dependencies = dependencies
-
+        futures = []
         for dependency in dependencies:
+            if isinstance(dependency, (list, tuple)):
+                dependency = _MultiFuture(dependency)
+            futures.append(dependency)
+
+        self._dependencies = futures
+
+        for dependency in futures:
             dependency.add_done_callback(self._dependency_done)
 
         if not dependencies:
