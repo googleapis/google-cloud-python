@@ -101,19 +101,6 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             return None, None
         # Work out nullability
         null = field.null
-        # If we were told to include a default value, do so
-        include_default = include_default and not self.skip_default(field)
-        if include_default:
-            default_value = self.effective_default(field)
-            if default_value is not None:
-                if self.connection.features.requires_literal_defaults:
-                    # Some databases can't take defaults as a parameter (oracle)
-                    # If this is the case, the individual schema backend should
-                    # implement prepare_default
-                    sql += " DEFAULT %s" % self.prepare_default(default_value)
-                else:
-                    sql += " DEFAULT %s"
-                    params += [default_value]
         # Oracle treats the empty string ('') as null, so coerce the null
         # option whenever '' is a possible value.
         if (field.empty_strings_allowed and not field.primary_key and
@@ -143,3 +130,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         if sql:
             self.deferred_sql.append(sql)
         return None
+
+    def skip_default(self, field):
+        """Cloud Spanner doesn't support column defaults."""
+        return True
