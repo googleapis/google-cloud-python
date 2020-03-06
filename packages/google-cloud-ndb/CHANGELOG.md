@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+### [1.1.1](https://www.github.com/googleapis/python-ndb/compare/v1.1.0...v1.1.1) (2020-03-05)
+
+
+### Bug Fixes
+
+* fix bug with `yield` of empty list in tasklets ([#354](https://www.github.com/googleapis/python-ndb/issues/354)) ([2d60ebf](https://www.github.com/googleapis/python-ndb/commit/2d60ebfe656abd75f6b9303550b2e03c2cbd79b7)), closes [#353](https://www.github.com/googleapis/python-ndb/issues/353)
+* LocalStructuredProperty keep_keys ([#355](https://www.github.com/googleapis/python-ndb/issues/355)) ([9ff1b3d](https://www.github.com/googleapis/python-ndb/commit/9ff1b3de817da50b58a6aed574d7e2f2dcf92310))
+* support nested sequences in parallel `yield` for tasklets ([#358](https://www.github.com/googleapis/python-ndb/issues/358)) ([8c91e7a](https://www.github.com/googleapis/python-ndb/commit/8c91e7ae8262f355a9eafe9051b3c1ef19d4c7cd)), closes [#349](https://www.github.com/googleapis/python-ndb/issues/349)
+
 ## [1.1.0](https://www.github.com/googleapis/python-ndb/compare/v1.0.1...v1.1.0) (2020-03-02)
 
 
