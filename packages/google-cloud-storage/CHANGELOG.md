@@ -9,7 +9,7 @@
 
 ### Features
 
-* **storage:** add support for signing URLs using token ([#9889](https://www.github.com/googleapis/python-storage/issues/9889)) ([ad280bf](https://www.github.com/googleapis/python-storage/commit/ad280bf506d3d7a37c402d06eac07422a5fe80af))
+* **storage:** add support for signing URLs using token ([#9889](https://www.github.com/googleapis/google-cloud-python/issues/9889)) ([ad280bf](https://www.github.com/googleapis/python-storage/commit/ad280bf506d3d7a37c402d06eac07422a5fe80af))
 * add timeout parameter to public methods ([#44](https://www.github.com/googleapis/python-storage/issues/44)) ([63abf07](https://www.github.com/googleapis/python-storage/commit/63abf0778686df1caa001270dd22f9df0daf0c78))
 
 
