@@ -132,3 +132,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         # TODO: a real implementation:
         # https://github.com/orijtech/django-spanner/issues/227
         return str(value)
+
+    def _check_sql(self, name, check):
+        # Spanner doesn't support CHECK constraints.
+        return None
