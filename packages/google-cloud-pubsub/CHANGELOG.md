@@ -24,14 +24,14 @@
 
 ### Features
 
-* **pubsub:** add delivery attempt property to message object received by user code ([#10205](https://www.github.com/googleapis/python-pubsub/issues/10205)) ([a0937c1](https://www.github.com/googleapis/python-pubsub/commit/a0937c13107b92271913de579b60f24b2aaac177))
+* **pubsub:** add delivery attempt property to message object received by user code ([#10205](https://www.github.com/googleapis/google-cloud-python/issues/10205)) ([a0937c1](https://www.github.com/googleapis/python-pubsub/commit/a0937c13107b92271913de579b60f24b2aaac177))
 * add `StreamingPullRequest.client_id` field (via synth) ([199d56a](https://www.github.com/googleapis/python-pubsub/commit/199d56a939bb6244f67138f843dafdd80721f0d3))
 
 
 ### Bug Fixes
 
-* **pubsub:** handle None in on response callback ([#9982](https://www.github.com/googleapis/python-pubsub/issues/9982)) ([6596c4b](https://www.github.com/googleapis/python-pubsub/commit/6596c4bae5526d82f5c1b5e0c243b2883404d51f))
-* replace unsafe six.PY3 with PY2 for better future compatibility with Python 4 ([#10081](https://www.github.com/googleapis/python-pubsub/issues/10081)) ([975c1ac](https://www.github.com/googleapis/python-pubsub/commit/975c1ac2cfdac0ce4403c0b56ad19f2ee7241f1a))
+* **pubsub:** handle None in on response callback ([#9982](https://www.github.com/googleapis/google-cloud-python/issues/9982)) ([6596c4b](https://www.github.com/googleapis/python-pubsub/commit/6596c4bae5526d82f5c1b5e0c243b2883404d51f))
+* replace unsafe six.PY3 with PY2 for better future compatibility with Python 4 ([#10081](https://www.github.com/googleapis/google-cloud-python/issues/10081)) ([975c1ac](https://www.github.com/googleapis/python-pubsub/commit/975c1ac2cfdac0ce4403c0b56ad19f2ee7241f1a))
 
 ## 1.1.0
 
