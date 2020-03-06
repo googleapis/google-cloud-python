@@ -127,3 +127,8 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             sql += " %s" % self.connection.ops.tablespace_sql(tablespace, inline=True)
         # Return the sql
         return sql, params
+
+    def quote_value(self, value):
+        # TODO: a real implementation:
+        # https://github.com/orijtech/django-spanner/issues/227
+        return str(value)
