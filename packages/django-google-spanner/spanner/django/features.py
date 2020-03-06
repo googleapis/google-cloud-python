@@ -249,4 +249,27 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # The default object being compared against apparently shouldn't have an assigned id.
         # https://github.com/orijtech/django-spanner/issues/300
         'str.tests.SimpleTests.test_defaults',
+        # Spanner doesn't support views.
+        'inspectdb.tests.InspectDBTransactionalTests.test_include_views',
+        'introspection.tests.IntrospectionTests.test_table_names_with_views',
+        # No sequence for AutoField in Spanner.
+        'introspection.tests.IntrospectionTests.test_sequence_list',
+        # DatabaseIntrospection.get_key_columns() is only required if this
+        # backend needs it (which it currently doesn't).
+        'introspection.tests.IntrospectionTests.test_get_key_columns',
+        # DatabaseIntrospection.get_constraints() isn't implemented:
+        # https://github.com/orijtech/django-spanner/issues/294
+        'introspection.tests.IntrospectionTests.test_get_constraints',
+        'introspection.tests.IntrospectionTests.test_get_constraints_index_types',
+        'introspection.tests.IntrospectionTests.test_get_constraints_indexes_orders',
+        # DatabaseIntrospection.get_table_description() isn't fully implemented:
+        # https://github.com/orijtech/django-spanner/issues/248
+        'introspection.tests.IntrospectionTests.test_get_table_description_col_lengths',
+        'introspection.tests.IntrospectionTests.test_get_table_description_nullable',
+        # DatabaseIntrospection.get_primary_key_column() isn't implemented:
+        # https://github.com/orijtech/django-spanner/issues/312
+        'introspection.tests.IntrospectionTests.test_get_primary_key_column',
+        # DatabaseIntrospection.get_relations() isn't implemented:
+        # https://github.com/orijtech/django-spanner/issues/311
+        'introspection.tests.IntrospectionTests.test_get_relations',
     )

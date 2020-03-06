@@ -28,7 +28,7 @@ env:
         - DJANGO_TEST_APPS="fixtures fixtures_model_package"
         - DJANGO_TEST_APPS="get_earliest_or_latest get_object_or_404"
         - DJANGO_TEST_APPS="handlers httpwrappers humanize_tests i18n"
-        - DJANGO_TEST_APPS="indexes inline_formsets invalid_models_tests"
+        - DJANGO_TEST_APPS="indexes inline_formsets introspection invalid_models_tests"
         - DJANGO_TEST_APPS="known_related_objects lookup max_lengths m2m_and_m2o m2m_intermediary m2m_multiple"
         - DJANGO_TEST_APPS="m2m_recursive m2m_regress m2m_signals m2m_through"
         - DJANGO_TEST_APPS="m2m_through_regress m2o_recursive managers_regress many_to_many"
