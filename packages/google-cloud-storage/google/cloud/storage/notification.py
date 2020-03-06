@@ -50,7 +50,8 @@ class BucketNotification(object):
     :param bucket: Bucket to which the notification is bound.
 
     :type topic_name: str
-    :param topic_name: Topic name to which notifications are published.
+    :param topic_name:
+        (Optional) Topic name to which notifications are published.
 
     :type topic_project: str
     :param topic_project:
@@ -63,7 +64,7 @@ class BucketNotification(object):
 
     :type event_types: list(str)
     :param event_types:
-        (Optional) event types for which notificatin events are published.
+        (Optional) event types for which notification events are published.
 
     :type blob_name_prefix: str
     :param blob_name_prefix:
@@ -73,17 +74,22 @@ class BucketNotification(object):
     :type payload_format: str
     :param payload_format:
         (Optional) format of payload for notification events.
+
+    :type notification_id: str
+    :param notification_id:
+        (Optional) The ID of the notification.
     """
 
     def __init__(
         self,
         bucket,
-        topic_name,
+        topic_name=None,
         topic_project=None,
         custom_attributes=None,
         event_types=None,
         blob_name_prefix=None,
         payload_format=NONE_PAYLOAD_FORMAT,
+        notification_id=None,
     ):
         self._bucket = bucket
         self._topic_name = topic_name
@@ -106,6 +112,9 @@ class BucketNotification(object):
 
         if blob_name_prefix is not None:
             self._properties["object_name_prefix"] = blob_name_prefix
+
+        if notification_id is not None:
+            self._properties["id"] = notification_id
 
         self._properties["payload_format"] = payload_format
 

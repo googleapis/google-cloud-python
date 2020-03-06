@@ -617,12 +617,13 @@ class Bucket(_PropertyMixin):
 
     def notification(
         self,
-        topic_name,
+        topic_name=None,
         topic_project=None,
         custom_attributes=None,
         event_types=None,
         blob_name_prefix=None,
         payload_format=NONE_PAYLOAD_FORMAT,
+        notification_id=None,
     ):
         """Factory:  create a notification resource for the bucket.
 
@@ -632,12 +633,13 @@ class Bucket(_PropertyMixin):
         """
         return BucketNotification(
             self,
-            topic_name,
+            topic_name=topic_name,
             topic_project=topic_project,
             custom_attributes=custom_attributes,
             event_types=event_types,
             blob_name_prefix=blob_name_prefix,
             payload_format=payload_format,
+            notification_id=notification_id,
         )
 
     def exists(self, client=None, timeout=_DEFAULT_TIMEOUT):
@@ -1020,6 +1022,44 @@ class Bucket(_PropertyMixin):
         )
         iterator.bucket = self
         return iterator
+
+    def get_notification(self, notification_id, client=None, timeout=_DEFAULT_TIMEOUT):
+        """Get Pub / Sub notification for this bucket.
+
+        See:
+        https://cloud.google.com/storage/docs/json_api/v1/notifications/get
+
+        If :attr:`user_project` is set, bills the API request to that project.
+
+        :type notification_id: str
+        :param notification_id: The notification id to retrieve the notification configuration.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: (optional) The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current bucket.
+        :type timeout: float or tuple
+        :param timeout: (optional) The amount of time, in seconds, to wait
+            for the server response.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
+
+        :rtype: :class:`.BucketNotification`
+        :returns: notification instance.
+
+        Example:
+            Get notification using notification id.
+
+            >>> from google.cloud import storage
+            >>> client = storage.Client()
+            >>> bucket = client.get_bucket('my-bucket-name')  # API request.
+            >>> notification = bucket.get_notification(notification_id='id')  # API request.
+
+        """
+        notification = self.notification(notification_id=notification_id)
+        notification.reload(client=client, timeout=timeout)
+        return notification
 
     def delete(self, force=False, client=None, timeout=_DEFAULT_TIMEOUT):
         """Delete this bucket.

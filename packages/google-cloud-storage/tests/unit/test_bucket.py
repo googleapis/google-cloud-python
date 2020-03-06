@@ -826,6 +826,45 @@ class Test_Bucket(unittest.TestCase):
                 notification.payload_format, resource.get("payload_format")
             )
 
+    def test_get_notification(self):
+        from google.cloud.storage.notification import _TOPIC_REF_FMT
+        from google.cloud.storage.notification import JSON_API_V1_PAYLOAD_FORMAT
+
+        NAME = "name"
+        ETAG = "FACECABB"
+        NOTIFICATION_ID = "1"
+        SELF_LINK = "https://example.com/notification/1"
+        resources = {
+            "topic": _TOPIC_REF_FMT.format("my-project-123", "topic-1"),
+            "id": NOTIFICATION_ID,
+            "etag": ETAG,
+            "selfLink": SELF_LINK,
+            "payload_format": JSON_API_V1_PAYLOAD_FORMAT,
+        }
+
+        connection = _make_connection(resources)
+        client = _Client(connection, project="my-project-123")
+        bucket = self._make_one(client=client, name=NAME)
+        notification = bucket.get_notification(notification_id=NOTIFICATION_ID)
+
+        self.assertEqual(notification.notification_id, NOTIFICATION_ID)
+        self.assertEqual(notification.etag, ETAG)
+        self.assertEqual(notification.self_link, SELF_LINK)
+        self.assertIsNone(notification.custom_attributes)
+        self.assertIsNone(notification.event_types)
+        self.assertIsNone(notification.blob_name_prefix)
+        self.assertEqual(notification.payload_format, JSON_API_V1_PAYLOAD_FORMAT)
+
+    def test_get_notification_miss(self):
+        from google.cloud.exceptions import NotFound
+
+        response = NotFound("testing")
+        connection = _make_connection(response)
+        client = _Client(connection, project="my-project-123")
+        bucket = self._make_one(client=client, name="name")
+        with self.assertRaises(NotFound):
+            bucket.get_notification(notification_id="1")
+
     def test_delete_miss(self):
         from google.cloud.exceptions import NotFound
 

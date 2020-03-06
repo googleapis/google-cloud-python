@@ -1433,6 +1433,7 @@ class TestStorageNotificationCRUD(unittest.TestCase):
         bucket = retry_429_503(Config.CLIENT.create_bucket)(new_bucket_name)
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(list(bucket.list_notifications()), [])
+
         notification = bucket.notification(self.TOPIC_NAME)
         retry_429_503(notification.create)()
         try:
@@ -1449,7 +1450,7 @@ class TestStorageNotificationCRUD(unittest.TestCase):
         bucket = retry_429_503(Config.CLIENT.create_bucket)(new_bucket_name)
         self.case_buckets_to_delete.append(new_bucket_name)
         notification = bucket.notification(
-            self.TOPIC_NAME,
+            topic_name=self.TOPIC_NAME,
             custom_attributes=self.CUSTOM_ATTRIBUTES,
             event_types=self.event_types(),
             blob_name_prefix=self.BLOB_NAME_PREFIX,
@@ -1463,6 +1464,7 @@ class TestStorageNotificationCRUD(unittest.TestCase):
             self.assertEqual(notification.event_types, self.event_types())
             self.assertEqual(notification.blob_name_prefix, self.BLOB_NAME_PREFIX)
             self.assertEqual(notification.payload_format, self.payload_format())
+
         finally:
             notification.delete()
 
@@ -1483,6 +1485,28 @@ class TestStorageNotificationCRUD(unittest.TestCase):
             notifications = list(with_user_project.list_notifications())
             self.assertEqual(len(notifications), 1)
             self.assertEqual(notifications[0].topic_name, self.TOPIC_NAME)
+        finally:
+            notification.delete()
+
+    def test_get_notification(self):
+        new_bucket_name = "get-notification" + unique_resource_id("-")
+        bucket = retry_429_503(Config.CLIENT.create_bucket)(new_bucket_name)
+        self.case_buckets_to_delete.append(new_bucket_name)
+
+        notification = bucket.notification(
+            topic_name=self.TOPIC_NAME,
+            custom_attributes=self.CUSTOM_ATTRIBUTES,
+            payload_format=self.payload_format(),
+        )
+        retry_429_503(notification.create)()
+        try:
+            self.assertTrue(notification.exists())
+            self.assertIsNotNone(notification.notification_id)
+            notification_id = notification.notification_id
+            notification = bucket.get_notification(notification_id)
+            self.assertEqual(notification.notification_id, notification_id)
+            self.assertEqual(notification.custom_attributes, self.CUSTOM_ATTRIBUTES)
+            self.assertEqual(notification.payload_format, self.payload_format())
         finally:
             notification.delete()
 
