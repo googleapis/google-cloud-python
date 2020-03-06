@@ -7,10 +7,10 @@
 import datetime
 from unittest import TestCase
 
-from spanner.dbapi.cursor import PeekIterator
 from spanner.dbapi.types import (
     Date, DateFromTicks, Time, TimeFromTicks, Timestamp, TimestampFromTicks,
 )
+from spanner.dbapi.utils import PeekIterator
 
 tzUTC = 0  # 0 hours offset from UTC
 

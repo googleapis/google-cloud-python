@@ -33,7 +33,7 @@ threadsafety = 1
 global_session_pool = spanner.pool.BurstyPool()
 
 
-def connect(project=None, instance=None, database=None, credentials_uri=None, user_agent=None):
+def connect(project=None, instance=None, database=None, credentials_uri=None, user_agent=None, autocommit=True):
     """
     Connect to Cloud Spanner.
 
@@ -94,7 +94,7 @@ def connect(project=None, instance=None, database=None, credentials_uri=None, us
         session.create()
     return_session = lambda: session_checkout.__exit__() # noqa
 
-    return Connection(db, session, return_session)
+    return Connection(autocommit, db, session, return_session)
 
 
 __all__ = [
