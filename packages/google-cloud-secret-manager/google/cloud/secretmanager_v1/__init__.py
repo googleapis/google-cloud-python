@@ -19,9 +19,9 @@ from __future__ import absolute_import
 import sys
 import warnings
 
-from google.cloud.secretmanager_v1beta1 import types
-from google.cloud.secretmanager_v1beta1.gapic import enums
-from google.cloud.secretmanager_v1beta1.gapic import secret_manager_service_client
+from google.cloud.secretmanager_v1 import types
+from google.cloud.secretmanager_v1.gapic import enums
+from google.cloud.secretmanager_v1.gapic import secret_manager_service_client
 
 
 if sys.version_info[:2] == (2, 7):

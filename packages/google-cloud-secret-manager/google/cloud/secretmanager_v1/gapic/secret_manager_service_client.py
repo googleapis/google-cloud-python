@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Accesses the google.cloud.secrets.v1beta1 SecretManagerService API."""
+"""Accesses the google.cloud.secretmanager.v1 SecretManagerService API."""
 
 import functools
 import pkg_resources
@@ -31,16 +31,14 @@ import google.api_core.page_iterator
 import google.api_core.path_template
 import grpc
 
-from google.cloud.secretmanager_v1beta1.gapic import enums
-from google.cloud.secretmanager_v1beta1.gapic import (
-    secret_manager_service_client_config,
-)
-from google.cloud.secretmanager_v1beta1.gapic.transports import (
+from google.cloud.secretmanager_v1.gapic import enums
+from google.cloud.secretmanager_v1.gapic import secret_manager_service_client_config
+from google.cloud.secretmanager_v1.gapic.transports import (
     secret_manager_service_grpc_transport,
 )
-from google.cloud.secretmanager_v1beta1.proto import resources_pb2
-from google.cloud.secretmanager_v1beta1.proto import service_pb2
-from google.cloud.secretmanager_v1beta1.proto import service_pb2_grpc
+from google.cloud.secretmanager_v1.proto import resources_pb2
+from google.cloud.secretmanager_v1.proto import service_pb2
+from google.cloud.secretmanager_v1.proto import service_pb2_grpc
 from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import options_pb2
 from google.iam.v1 import policy_pb2
@@ -69,7 +67,7 @@ class SecretManagerServiceClient(object):
 
     # The name of the interface for this client. This is the key used to
     # find the method configuration in the client_config dictionary.
-    _INTERFACE_NAME = "google.cloud.secrets.v1beta1.SecretManagerService"
+    _INTERFACE_NAME = "google.cloud.secretmanager.v1.SecretManagerService"
 
     @classmethod
     def from_service_account_file(cls, filename, *args, **kwargs):
@@ -240,9 +238,9 @@ class SecretManagerServiceClient(object):
         Lists ``Secrets``.
 
         Example:
-            >>> from google.cloud import secretmanager_v1beta1
+            >>> from google.cloud import secretmanager_v1
             >>>
-            >>> client = secretmanager_v1beta1.SecretManagerServiceClient()
+            >>> client = secretmanager_v1.SecretManagerServiceClient()
             >>>
             >>> parent = client.project_path('[PROJECT]')
             >>>
@@ -279,7 +277,7 @@ class SecretManagerServiceClient(object):
 
         Returns:
             A :class:`~google.api_core.page_iterator.PageIterator` instance.
-            An iterable of :class:`~google.cloud.secretmanager_v1beta1.types.Secret` instances.
+            An iterable of :class:`~google.cloud.secretmanager_v1.types.Secret` instances.
             You can also iterate over the pages of the response
             using its `pages` property.
 
@@ -334,7 +332,7 @@ class SecretManagerServiceClient(object):
         self,
         parent,
         secret_id,
-        secret=None,
+        secret,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -343,25 +341,28 @@ class SecretManagerServiceClient(object):
         Creates a new ``Secret`` containing no ``SecretVersions``.
 
         Example:
-            >>> from google.cloud import secretmanager_v1beta1
+            >>> from google.cloud import secretmanager_v1
             >>>
-            >>> client = secretmanager_v1beta1.SecretManagerServiceClient()
+            >>> client = secretmanager_v1.SecretManagerServiceClient()
             >>>
             >>> parent = client.project_path('[PROJECT]')
             >>>
             >>> # TODO: Initialize `secret_id`:
             >>> secret_id = ''
             >>>
-            >>> response = client.create_secret(parent, secret_id)
+            >>> # TODO: Initialize `secret`:
+            >>> secret = {}
+            >>>
+            >>> response = client.create_secret(parent, secret_id, secret)
 
         Args:
             parent (str): Required. The resource name of the project to associate with the
                 ``Secret``, in the format ``projects/*``.
             secret_id (str): Required. This must be unique within the project.
-            secret (Union[dict, ~google.cloud.secretmanager_v1beta1.types.Secret]): A ``Secret`` with initial field values.
+            secret (Union[dict, ~google.cloud.secretmanager_v1.types.Secret]): Required. A ``Secret`` with initial field values.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.secretmanager_v1beta1.types.Secret`
+                message :class:`~google.cloud.secretmanager_v1.types.Secret`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -372,7 +373,7 @@ class SecretManagerServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.secretmanager_v1beta1.types.Secret` instance.
+            A :class:`~google.cloud.secretmanager_v1.types.Secret` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -425,9 +426,9 @@ class SecretManagerServiceClient(object):
         it to an existing ``Secret``.
 
         Example:
-            >>> from google.cloud import secretmanager_v1beta1
+            >>> from google.cloud import secretmanager_v1
             >>>
-            >>> client = secretmanager_v1beta1.SecretManagerServiceClient()
+            >>> client = secretmanager_v1.SecretManagerServiceClient()
             >>>
             >>> parent = client.secret_path('[PROJECT]', '[SECRET]')
             >>>
@@ -439,10 +440,10 @@ class SecretManagerServiceClient(object):
         Args:
             parent (str): Required. The resource name of the ``Secret`` to associate with the
                 ``SecretVersion`` in the format ``projects/*/secrets/*``.
-            payload (Union[dict, ~google.cloud.secretmanager_v1beta1.types.SecretPayload]): Required. The secret payload of the ``SecretVersion``.
+            payload (Union[dict, ~google.cloud.secretmanager_v1.types.SecretPayload]): Required. The secret payload of the ``SecretVersion``.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.secretmanager_v1beta1.types.SecretPayload`
+                message :class:`~google.cloud.secretmanager_v1.types.SecretPayload`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -453,7 +454,7 @@ class SecretManagerServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.secretmanager_v1beta1.types.SecretVersion` instance.
+            A :class:`~google.cloud.secretmanager_v1.types.SecretVersion` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -502,9 +503,9 @@ class SecretManagerServiceClient(object):
         Gets metadata for a given ``Secret``.
 
         Example:
-            >>> from google.cloud import secretmanager_v1beta1
+            >>> from google.cloud import secretmanager_v1
             >>>
-            >>> client = secretmanager_v1beta1.SecretManagerServiceClient()
+            >>> client = secretmanager_v1.SecretManagerServiceClient()
             >>>
             >>> name = client.secret_path('[PROJECT]', '[SECRET]')
             >>>
@@ -523,7 +524,7 @@ class SecretManagerServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.secretmanager_v1beta1.types.Secret` instance.
+            A :class:`~google.cloud.secretmanager_v1.types.Secret` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -573,9 +574,9 @@ class SecretManagerServiceClient(object):
         Updates metadata of an existing ``Secret``.
 
         Example:
-            >>> from google.cloud import secretmanager_v1beta1
+            >>> from google.cloud import secretmanager_v1
             >>>
-            >>> client = secretmanager_v1beta1.SecretManagerServiceClient()
+            >>> client = secretmanager_v1.SecretManagerServiceClient()
             >>>
             >>> # TODO: Initialize `secret`:
             >>> secret = {}
@@ -586,14 +587,14 @@ class SecretManagerServiceClient(object):
             >>> response = client.update_secret(secret, update_mask)
 
         Args:
-            secret (Union[dict, ~google.cloud.secretmanager_v1beta1.types.Secret]): Required. ``Secret`` with updated field values.
+            secret (Union[dict, ~google.cloud.secretmanager_v1.types.Secret]): Required. ``Secret`` with updated field values.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.secretmanager_v1beta1.types.Secret`
-            update_mask (Union[dict, ~google.cloud.secretmanager_v1beta1.types.FieldMask]): Required. Specifies the fields to be updated.
+                message :class:`~google.cloud.secretmanager_v1.types.Secret`
+            update_mask (Union[dict, ~google.cloud.secretmanager_v1.types.FieldMask]): Required. Specifies the fields to be updated.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.secretmanager_v1beta1.types.FieldMask`
+                message :class:`~google.cloud.secretmanager_v1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -604,7 +605,7 @@ class SecretManagerServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.secretmanager_v1beta1.types.Secret` instance.
+            A :class:`~google.cloud.secretmanager_v1.types.Secret` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -655,9 +656,9 @@ class SecretManagerServiceClient(object):
         Deletes a ``Secret``.
 
         Example:
-            >>> from google.cloud import secretmanager_v1beta1
+            >>> from google.cloud import secretmanager_v1
             >>>
-            >>> client = secretmanager_v1beta1.SecretManagerServiceClient()
+            >>> client = secretmanager_v1.SecretManagerServiceClient()
             >>>
             >>> name = client.secret_path('[PROJECT]', '[SECRET]')
             >>>
@@ -723,9 +724,9 @@ class SecretManagerServiceClient(object):
         Lists ``SecretVersions``. This call does not return secret data.
 
         Example:
-            >>> from google.cloud import secretmanager_v1beta1
+            >>> from google.cloud import secretmanager_v1
             >>>
-            >>> client = secretmanager_v1beta1.SecretManagerServiceClient()
+            >>> client = secretmanager_v1.SecretManagerServiceClient()
             >>>
             >>> parent = client.secret_path('[PROJECT]', '[SECRET]')
             >>>
@@ -762,7 +763,7 @@ class SecretManagerServiceClient(object):
 
         Returns:
             A :class:`~google.api_core.page_iterator.PageIterator` instance.
-            An iterable of :class:`~google.cloud.secretmanager_v1beta1.types.SecretVersion` instances.
+            An iterable of :class:`~google.cloud.secretmanager_v1.types.SecretVersion` instances.
             You can also iterate over the pages of the response
             using its `pages` property.
 
@@ -829,9 +830,9 @@ class SecretManagerServiceClient(object):
         ``SecretVersion``.
 
         Example:
-            >>> from google.cloud import secretmanager_v1beta1
+            >>> from google.cloud import secretmanager_v1
             >>>
-            >>> client = secretmanager_v1beta1.SecretManagerServiceClient()
+            >>> client = secretmanager_v1.SecretManagerServiceClient()
             >>>
             >>> name = client.secret_version_path('[PROJECT]', '[SECRET]', '[SECRET_VERSION]')
             >>>
@@ -852,7 +853,7 @@ class SecretManagerServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.secretmanager_v1beta1.types.SecretVersion` instance.
+            A :class:`~google.cloud.secretmanager_v1.types.SecretVersion` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -904,9 +905,9 @@ class SecretManagerServiceClient(object):
         ``SecretVersion``.
 
         Example:
-            >>> from google.cloud import secretmanager_v1beta1
+            >>> from google.cloud import secretmanager_v1
             >>>
-            >>> client = secretmanager_v1beta1.SecretManagerServiceClient()
+            >>> client = secretmanager_v1.SecretManagerServiceClient()
             >>>
             >>> name = client.secret_version_path('[PROJECT]', '[SECRET]', '[SECRET_VERSION]')
             >>>
@@ -925,7 +926,7 @@ class SecretManagerServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.secretmanager_v1beta1.types.AccessSecretVersionResponse` instance.
+            A :class:`~google.cloud.secretmanager_v1.types.AccessSecretVersionResponse` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -976,9 +977,9 @@ class SecretManagerServiceClient(object):
         Sets the ``state`` of the ``SecretVersion`` to ``DISABLED``.
 
         Example:
-            >>> from google.cloud import secretmanager_v1beta1
+            >>> from google.cloud import secretmanager_v1
             >>>
-            >>> client = secretmanager_v1beta1.SecretManagerServiceClient()
+            >>> client = secretmanager_v1.SecretManagerServiceClient()
             >>>
             >>> name = client.secret_version_path('[PROJECT]', '[SECRET]', '[SECRET_VERSION]')
             >>>
@@ -997,7 +998,7 @@ class SecretManagerServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.secretmanager_v1beta1.types.SecretVersion` instance.
+            A :class:`~google.cloud.secretmanager_v1.types.SecretVersion` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1048,9 +1049,9 @@ class SecretManagerServiceClient(object):
         Sets the ``state`` of the ``SecretVersion`` to ``ENABLED``.
 
         Example:
-            >>> from google.cloud import secretmanager_v1beta1
+            >>> from google.cloud import secretmanager_v1
             >>>
-            >>> client = secretmanager_v1beta1.SecretManagerServiceClient()
+            >>> client = secretmanager_v1.SecretManagerServiceClient()
             >>>
             >>> name = client.secret_version_path('[PROJECT]', '[SECRET]', '[SECRET_VERSION]')
             >>>
@@ -1069,7 +1070,7 @@ class SecretManagerServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.secretmanager_v1beta1.types.SecretVersion` instance.
+            A :class:`~google.cloud.secretmanager_v1.types.SecretVersion` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1121,9 +1122,9 @@ class SecretManagerServiceClient(object):
         irrevocably destroys the secret data.
 
         Example:
-            >>> from google.cloud import secretmanager_v1beta1
+            >>> from google.cloud import secretmanager_v1
             >>>
-            >>> client = secretmanager_v1beta1.SecretManagerServiceClient()
+            >>> client = secretmanager_v1.SecretManagerServiceClient()
             >>>
             >>> name = client.secret_version_path('[PROJECT]', '[SECRET]', '[SECRET_VERSION]')
             >>>
@@ -1142,7 +1143,7 @@ class SecretManagerServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.secretmanager_v1beta1.types.SecretVersion` instance.
+            A :class:`~google.cloud.secretmanager_v1.types.SecretVersion` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1196,9 +1197,9 @@ class SecretManagerServiceClient(object):
         set on the associated ``Secret``.
 
         Example:
-            >>> from google.cloud import secretmanager_v1beta1
+            >>> from google.cloud import secretmanager_v1
             >>>
-            >>> client = secretmanager_v1beta1.SecretManagerServiceClient()
+            >>> client = secretmanager_v1.SecretManagerServiceClient()
             >>>
             >>> # TODO: Initialize `resource`:
             >>> resource = ''
@@ -1211,13 +1212,13 @@ class SecretManagerServiceClient(object):
         Args:
             resource (str): REQUIRED: The resource for which the policy is being specified.
                 See the operation documentation for the appropriate value for this field.
-            policy (Union[dict, ~google.cloud.secretmanager_v1beta1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The
+            policy (Union[dict, ~google.cloud.secretmanager_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The
                 size of the policy is limited to a few 10s of KB. An empty policy is a
                 valid policy but certain Cloud Platform services (such as Projects)
                 might reject them.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.secretmanager_v1beta1.types.Policy`
+                message :class:`~google.cloud.secretmanager_v1.types.Policy`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1228,7 +1229,7 @@ class SecretManagerServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.secretmanager_v1beta1.types.Policy` instance.
+            A :class:`~google.cloud.secretmanager_v1.types.Policy` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1279,9 +1280,9 @@ class SecretManagerServiceClient(object):
         Returns empty policy if the secret exists and does not have a policy set.
 
         Example:
-            >>> from google.cloud import secretmanager_v1beta1
+            >>> from google.cloud import secretmanager_v1
             >>>
-            >>> client = secretmanager_v1beta1.SecretManagerServiceClient()
+            >>> client = secretmanager_v1.SecretManagerServiceClient()
             >>>
             >>> # TODO: Initialize `resource`:
             >>> resource = ''
@@ -1291,11 +1292,11 @@ class SecretManagerServiceClient(object):
         Args:
             resource (str): REQUIRED: The resource for which the policy is being requested.
                 See the operation documentation for the appropriate value for this field.
-            options_ (Union[dict, ~google.cloud.secretmanager_v1beta1.types.GetPolicyOptions]): OPTIONAL: A ``GetPolicyOptions`` object for specifying options to
+            options_ (Union[dict, ~google.cloud.secretmanager_v1.types.GetPolicyOptions]): OPTIONAL: A ``GetPolicyOptions`` object for specifying options to
                 ``GetIamPolicy``. This field is only used by Cloud IAM.
 
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.secretmanager_v1beta1.types.GetPolicyOptions`
+                message :class:`~google.cloud.secretmanager_v1.types.GetPolicyOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1306,7 +1307,7 @@ class SecretManagerServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.secretmanager_v1beta1.types.Policy` instance.
+            A :class:`~google.cloud.secretmanager_v1.types.Policy` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -1364,9 +1365,9 @@ class SecretManagerServiceClient(object):
         checking. This operation may "fail open" without warning.
 
         Example:
-            >>> from google.cloud import secretmanager_v1beta1
+            >>> from google.cloud import secretmanager_v1
             >>>
-            >>> client = secretmanager_v1beta1.SecretManagerServiceClient()
+            >>> client = secretmanager_v1.SecretManagerServiceClient()
             >>>
             >>> # TODO: Initialize `resource`:
             >>> resource = ''
@@ -1393,7 +1394,7 @@ class SecretManagerServiceClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.secretmanager_v1beta1.types.TestIamPermissionsResponse` instance.
+            A :class:`~google.cloud.secretmanager_v1.types.TestIamPermissionsResponse` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request

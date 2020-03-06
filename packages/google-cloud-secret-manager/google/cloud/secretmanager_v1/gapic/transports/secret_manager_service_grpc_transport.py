@@ -17,12 +17,12 @@
 
 import google.api_core.grpc_helpers
 
-from google.cloud.secretmanager_v1beta1.proto import service_pb2_grpc
+from google.cloud.secretmanager_v1.proto import service_pb2_grpc
 
 
 class SecretManagerServiceGrpcTransport(object):
     """gRPC transport class providing stubs for
-    google.cloud.secrets.v1beta1 SecretManagerService API.
+    google.cloud.secretmanager.v1 SecretManagerService API.
 
     The transport provides access to the raw gRPC stubs,
     which can be used to take advantage of advanced

@@ -143,7 +143,7 @@ Running System Tests
 - To run system tests, you can execute::
 
    $ nox -s system-3.7
-   $ nox  -s system-2.7
+   $ nox -s system-2.7
 
   .. note::
 

@@ -20,8 +20,8 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
-from google.cloud.secretmanager_v1beta1.proto import resources_pb2
-from google.cloud.secretmanager_v1beta1.proto import service_pb2
+from google.cloud.secretmanager_v1.proto import resources_pb2
+from google.cloud.secretmanager_v1.proto import service_pb2
 from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import options_pb2
 from google.iam.v1 import policy_pb2
@@ -51,7 +51,7 @@ for module in _shared_modules:  # pragma: NO COVER
         names.append(name)
 for module in _local_modules:
     for name, message in get_messages(module).items():
-        message.__module__ = "google.cloud.secretmanager_v1beta1.types"
+        message.__module__ = "google.cloud.secretmanager_v1.types"
         setattr(sys.modules[__name__], name, message)
         names.append(name)
 

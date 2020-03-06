@@ -19,30 +19,49 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate secret manager GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library(
-    "secretmanager", "v1beta1", config_path="/google/cloud/secrets/artman_secretmanager_v1beta1.yaml"
-)
 
-s.move(library, excludes=["google/cloud/secrets_v1beta1/proto", "nox.py", "setup.py", "README.rst", "docs/index.rst"])
+versions = [
+    # v1beta1 has a special config path so it must be passed explicitly
+    ("v1beta1", "/google/cloud/secrets/v1beta1"),
+    ("v1", None),
+]
 
-# protos are copied to the wrong location by default, so move separately
-s.move(
-    library / "google/cloud/secrets_v1beta1/proto",
-    "google/cloud/secretmanager_v1beta1/proto",
-)
+for version, proto_path in versions:
+    library = gapic.py_library(
+        "secretmanager",
+        version,
+        proto_path=proto_path,
+    )
 
-# correct proto import parth
-s.replace(
-    "google/cloud/**/proto/*.py",
-    r"from google\.cloud\.secrets_v1beta1\.proto",
-    "from google.cloud.secretmanager_v1beta1.proto",
-)
+    s.move(
+        library,
+        excludes=[
+            f"google/cloud/secrets_{version}/proto",
+            "nox.py",
+            "setup.py",
+            "README.rst",
+            "docs/index.rst",
+        ],
+    )
+
+    # protos are copied to the wrong location by default, so move separately
+    s.move(
+        library / f"google/cloud/secrets_{version}/proto",
+        f"google/cloud/secretmanager_{version}/proto",
+    )
+
+    # correct proto import parth
+    s.replace(
+        "google/cloud/**/proto/*.py",
+        rf"from google\.cloud\.secrets_{version}\.proto",
+        f"from google.cloud.secretmanager_{version}.proto",
+    )
 
 # fix import path for iam
 s.replace(
@@ -55,25 +74,31 @@ s.replace(
 python.fix_pb2_headers()
 python.fix_pb2_grpc_headers()
 
-# Fix package name
+# Fix package name (v1beta1)
 s.replace(
     ["docs/conf.py", "google/**/*.py", "README.rst", "setup.py"],
     "google-cloud-secretmanager",
     "google-cloud-secret-manager",
 )
 
+# Fix package name (v1)
+s.replace(
+    ["docs/conf.py", "google/**/*.py", "README.rst", "setup.py"],
+    "google-cloud-secrets",
+    "google-cloud-secret-manager",
+)
+
 # fix links in README
-s.replace("README.rst", "https://cloud\.google\.com/secrets", "https://cloud.google.com/secret-manager")
+s.replace(
+    "README.rst",
+    "https://cloud\.google\.com/secrets",
+    "https://cloud.google.com/secret-manager",
+)
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(cov_level=75)
 s.move(templated_files)
-
-# No local dependencies in a split repo
-# Manually remove from noxfile until the template is updated
-s.replace("noxfile.py", "LOCAL_DEPS = .*", "LOCAL_DEPS = []")
-
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

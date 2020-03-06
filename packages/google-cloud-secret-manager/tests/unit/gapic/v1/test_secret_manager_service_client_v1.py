@@ -19,9 +19,9 @@
 import mock
 import pytest
 
-from google.cloud import secretmanager_v1beta1
-from google.cloud.secretmanager_v1beta1.proto import resources_pb2
-from google.cloud.secretmanager_v1beta1.proto import service_pb2
+from google.cloud import secretmanager_v1
+from google.cloud.secretmanager_v1.proto import resources_pb2
+from google.cloud.secretmanager_v1.proto import service_pb2
 from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
 from google.protobuf import empty_pb2
@@ -83,7 +83,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup Request
         parent = client.project_path("[PROJECT]")
@@ -104,7 +104,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup request
         parent = client.project_path("[PROJECT]")
@@ -124,18 +124,19 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup Request
         parent = client.project_path("[PROJECT]")
         secret_id = "secretId-739547894"
+        secret = {}
 
-        response = client.create_secret(parent, secret_id)
+        response = client.create_secret(parent, secret_id, secret)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = service_pb2.CreateSecretRequest(
-            parent=parent, secret_id=secret_id
+            parent=parent, secret_id=secret_id, secret=secret
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -146,14 +147,15 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup request
         parent = client.project_path("[PROJECT]")
         secret_id = "secretId-739547894"
+        secret = {}
 
         with pytest.raises(CustomException):
-            client.create_secret(parent, secret_id)
+            client.create_secret(parent, secret_id, secret)
 
     def test_add_secret_version(self):
         # Setup Expected Response
@@ -166,7 +168,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup Request
         parent = client.secret_path("[PROJECT]", "[SECRET]")
@@ -188,7 +190,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup request
         parent = client.secret_path("[PROJECT]", "[SECRET]")
@@ -208,7 +210,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup Request
         name = client.secret_path("[PROJECT]", "[SECRET]")
@@ -227,7 +229,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup request
         name = client.secret_path("[PROJECT]", "[SECRET]")
@@ -246,7 +248,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup Request
         secret = {}
@@ -268,7 +270,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup request
         secret = {}
@@ -282,7 +284,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup Request
         name = client.secret_path("[PROJECT]", "[SECRET]")
@@ -300,7 +302,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup request
         name = client.secret_path("[PROJECT]", "[SECRET]")
@@ -326,7 +328,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup Request
         parent = client.secret_path("[PROJECT]", "[SECRET]")
@@ -347,7 +349,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup request
         parent = client.secret_path("[PROJECT]", "[SECRET]")
@@ -367,7 +369,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup Request
         name = client.secret_version_path("[PROJECT]", "[SECRET]", "[SECRET_VERSION]")
@@ -386,7 +388,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup request
         name = client.secret_version_path("[PROJECT]", "[SECRET]", "[SECRET_VERSION]")
@@ -405,7 +407,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup Request
         name = client.secret_version_path("[PROJECT]", "[SECRET]", "[SECRET_VERSION]")
@@ -424,7 +426,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup request
         name = client.secret_version_path("[PROJECT]", "[SECRET]", "[SECRET_VERSION]")
@@ -443,7 +445,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup Request
         name = client.secret_version_path("[PROJECT]", "[SECRET]", "[SECRET_VERSION]")
@@ -462,7 +464,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup request
         name = client.secret_version_path("[PROJECT]", "[SECRET]", "[SECRET_VERSION]")
@@ -481,7 +483,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup Request
         name = client.secret_version_path("[PROJECT]", "[SECRET]", "[SECRET_VERSION]")
@@ -500,7 +502,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup request
         name = client.secret_version_path("[PROJECT]", "[SECRET]", "[SECRET_VERSION]")
@@ -519,7 +521,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup Request
         name = client.secret_version_path("[PROJECT]", "[SECRET]", "[SECRET_VERSION]")
@@ -538,7 +540,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup request
         name = client.secret_version_path("[PROJECT]", "[SECRET]", "[SECRET_VERSION]")
@@ -558,7 +560,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup Request
         resource = "resource-341064690"
@@ -580,7 +582,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup request
         resource = "resource-341064690"
@@ -601,7 +603,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup Request
         resource = "resource-341064690"
@@ -620,7 +622,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup request
         resource = "resource-341064690"
@@ -640,7 +642,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup Request
         resource = "resource-341064690"
@@ -662,7 +664,7 @@ class TestSecretManagerServiceClient(object):
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
-            client = secretmanager_v1beta1.SecretManagerServiceClient()
+            client = secretmanager_v1.SecretManagerServiceClient()
 
         # Setup request
         resource = "resource-341064690"
