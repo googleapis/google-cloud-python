@@ -17,7 +17,7 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
         type_pb2.DATE: 'DateField',
         type_pb2.FLOAT64: 'FloatField',
         type_pb2.INT64: 'IntegerField',
-        type_pb2.STRING: 'TextField',
+        type_pb2.STRING: 'CharField',
         type_pb2.TIMESTAMP: 'DateTimeField',
     }
 
