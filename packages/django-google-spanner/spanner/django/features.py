@@ -8,6 +8,8 @@ from django.db.backends.base.features import BaseDatabaseFeatures
 
 
 class DatabaseFeatures(BaseDatabaseFeatures):
+    can_introspect_big_integer_field = False
+    can_introspect_duration_field = False
     # https://cloud.google.com/spanner/quotas#query_limits
     max_query_params = 950
     supports_foreign_keys = False
