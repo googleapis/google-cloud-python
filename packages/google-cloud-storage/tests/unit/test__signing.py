@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 # Copyright 2017 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -705,6 +707,61 @@ class Test_sign_message(unittest.TestCase):
                 )
 
 
+class TestCustomURLEncoding(unittest.TestCase):
+    def test_url_encode(self):
+        from google.cloud.storage._signing import _url_encode
+
+        # param1 includes safe symbol ~
+        # param# includes symbols, which must be encoded
+        query_params = {"param1": "value~1-2", "param#": "*value+value/"}
+
+        self.assertEqual(
+            _url_encode(query_params), "param%23=%2Avalue%2Bvalue%2F&param1=value~1-2"
+        )
+
+
+class TestQuoteParam(unittest.TestCase):
+    def test_ascii_symbols(self):
+        from google.cloud.storage._signing import _quote_param
+
+        encoded_param = _quote_param("param")
+        self.assertIsInstance(encoded_param, str)
+        self.assertEqual(encoded_param, "param")
+
+    def test_quoted_symbols(self):
+        from google.cloud.storage._signing import _quote_param
+
+        encoded_param = _quote_param("!#$%&'()*+,/:;=?@[]")
+        self.assertIsInstance(encoded_param, str)
+        self.assertEqual(
+            encoded_param, "%21%23%24%25%26%27%28%29%2A%2B%2C%2F%3A%3B%3D%3F%40%5B%5D"
+        )
+
+    def test_unquoted_symbols(self):
+        from google.cloud.storage._signing import _quote_param
+        import string
+
+        UNQUOTED = string.ascii_letters + string.digits + ".~_-"
+
+        encoded_param = _quote_param(UNQUOTED)
+        self.assertIsInstance(encoded_param, str)
+        self.assertEqual(encoded_param, UNQUOTED)
+
+    def test_unicode_symbols(self):
+        from google.cloud.storage._signing import _quote_param
+
+        encoded_param = _quote_param("ЁЙЦЯЩЯЩ")
+        self.assertIsInstance(encoded_param, str)
+        self.assertEqual(encoded_param, "%D0%81%D0%99%D0%A6%D0%AF%D0%A9%D0%AF%D0%A9")
+
+    def test_bytes(self):
+        from google.cloud.storage._signing import _quote_param
+
+        encoded_param = _quote_param(b"bytes")
+        self.assertIsInstance(encoded_param, str)
+        self.assertEqual(encoded_param, "bytes")
+
+
 _DUMMY_SERVICE_ACCOUNT = None
 
 
@@ -731,6 +788,7 @@ def _run_conformance_test(resource, test_data):
         method=test_data["method"],
         _request_timestamp=test_data["timestamp"],
         headers=test_data.get("headers"),
+        query_parameters=test_data.get("queryParameters"),
     )
 
     assert url == test_data["expectedUrl"]
