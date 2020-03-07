@@ -4,6 +4,12 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
+from collections import namedtuple
+
+from google.cloud.spanner_v1 import param_types
+
+ColumnDetails = namedtuple('column_details', ['null_ok', 'spanner_type'])
+
 
 class PeekIterator(object):
     """
@@ -40,3 +46,28 @@ class PeekIterator(object):
 
     def __iter__(self):
         return self
+
+
+def get_table_column_schema(spanner_db, table_name):
+    with spanner_db.snapshot() as snapshot:
+        rows = snapshot.execute_sql(
+            '''SELECT
+                COLUMN_NAME, IS_NULLABLE, SPANNER_TYPE
+            FROM
+                INFORMATION_SCHEMA.COLUMNS
+            WHERE
+                TABLE_SCHEMA = ''
+            AND
+                TABLE_NAME = @table_name''',
+            params={'table_name': table_name},
+            param_types={'table_name': param_types.STRING},
+        )
+
+        column_details = {}
+        for column_name, is_nullable, spanner_type in rows:
+            column_details[column_name] = ColumnDetails(
+                null_ok=is_nullable == 'YES',
+                spanner_type=spanner_type,
+            )
+
+        return column_details

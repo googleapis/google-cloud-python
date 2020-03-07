@@ -369,6 +369,9 @@ class Cursor(object):
         # hence this specialized method.
         return self.__connection.list_tables()
 
+    def get_table_column_schema(self, table_name):
+        return self.__connection.get_table_column_schema(table_name)
+
 
 class Column:
     def __init__(self, name, type_code, display_size=None, internal_size=None,

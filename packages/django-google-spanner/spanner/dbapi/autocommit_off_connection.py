@@ -7,6 +7,7 @@
 from .autocommit_off_cursor import Cursor
 from .exceptions import Error
 from .periodic_auto_refresh import PeriodicAutoRefreshingTransaction
+from .utils import get_table_column_schema as get_table_column_schema_impl
 
 
 class Connection(object):
@@ -181,3 +182,6 @@ class Connection(object):
               t.table_catalog = '' and t.table_schema = ''
             """)
             return list(res)
+
+    def get_table_column_schema(self, table_name):
+        return get_table_column_schema_impl(self.__connection, table_name)

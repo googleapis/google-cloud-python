@@ -32,17 +32,23 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
         interface.
         """
         cursor.execute("SELECT * FROM %s LIMIT 1" % self.connection.ops.quote_name(table_name))
-        return [
-            FieldInfo(
-                line.name,
-                line.type_code,
-                # TODO: Fill these in as they're implemented.
-                None,  # display_size
-                None,  # internal_size
-                None,  # precision
-                None,  # scale
-                None,  # null_ok
-                None,  # default
+        column_details = cursor.get_table_column_schema(table_name)
+        descriptions = []
+        for line in cursor.description:
+            column_name, type_code = line[0], line[1]
+            details = column_details[column_name]
+            descriptions.append(
+                FieldInfo(
+                    column_name,
+                    type_code,
+                    # TODO: Fill these in as they're implemented.
+                    None,  # display_size
+                    None,  # internal_size
+                    None,  # precision
+                    None,  # scale
+                    details.null_ok,
+                    None,  # default
+                )
             )
-            for line in cursor.description
-        ]
+
+        return descriptions
