@@ -16,16 +16,6 @@ class AssetServiceStub(object):
     Args:
       channel: A grpc.Channel.
     """
-        self.SearchResources = channel.unary_unary(
-            "/google.cloud.asset.v1p1beta1.AssetService/SearchResources",
-            request_serializer=google_dot_cloud_dot_asset__v1p1beta1_dot_proto_dot_asset__service__pb2.SearchResourcesRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_asset__v1p1beta1_dot_proto_dot_asset__service__pb2.SearchResourcesResponse.FromString,
-        )
-        self.SearchIamPolicies = channel.unary_unary(
-            "/google.cloud.asset.v1p1beta1.AssetService/SearchIamPolicies",
-            request_serializer=google_dot_cloud_dot_asset__v1p1beta1_dot_proto_dot_asset__service__pb2.SearchIamPoliciesRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_asset__v1p1beta1_dot_proto_dot_asset__service__pb2.SearchIamPoliciesResponse.FromString,
-        )
         self.SearchAllResources = channel.unary_unary(
             "/google.cloud.asset.v1p1beta1.AssetService/SearchAllResources",
             request_serializer=google_dot_cloud_dot_asset__v1p1beta1_dot_proto_dot_asset__service__pb2.SearchAllResourcesRequest.SerializeToString,
@@ -41,20 +31,6 @@ class AssetServiceStub(object):
 class AssetServiceServicer(object):
     """Asset service definition.
   """
-
-    def SearchResources(self, request, context):
-        """Searches resources which are accessible with .get permission.
-    """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
-
-    def SearchIamPolicies(self, request, context):
-        """Searches IAM policies which are accessible with .getIamPolicy permission.
-    """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
 
     def SearchAllResources(self, request, context):
         """Searches all the resources under a given accessible CRM scope
@@ -83,16 +59,6 @@ class AssetServiceServicer(object):
 
 def add_AssetServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-        "SearchResources": grpc.unary_unary_rpc_method_handler(
-            servicer.SearchResources,
-            request_deserializer=google_dot_cloud_dot_asset__v1p1beta1_dot_proto_dot_asset__service__pb2.SearchResourcesRequest.FromString,
-            response_serializer=google_dot_cloud_dot_asset__v1p1beta1_dot_proto_dot_asset__service__pb2.SearchResourcesResponse.SerializeToString,
-        ),
-        "SearchIamPolicies": grpc.unary_unary_rpc_method_handler(
-            servicer.SearchIamPolicies,
-            request_deserializer=google_dot_cloud_dot_asset__v1p1beta1_dot_proto_dot_asset__service__pb2.SearchIamPoliciesRequest.FromString,
-            response_serializer=google_dot_cloud_dot_asset__v1p1beta1_dot_proto_dot_asset__service__pb2.SearchIamPoliciesResponse.SerializeToString,
-        ),
         "SearchAllResources": grpc.unary_unary_rpc_method_handler(
             servicer.SearchAllResources,
             request_deserializer=google_dot_cloud_dot_asset__v1p1beta1_dot_proto_dot_asset__service__pb2.SearchAllResourcesRequest.FromString,

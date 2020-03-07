@@ -30,7 +30,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n com.google.cloud.asset.v1p2beta1B\nAssetProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/asset/v1p2beta1;asset\370\001\001\252\002\034Google.Cloud.Asset.v1p2beta1\312\002\034Google\\Cloud\\Asset\\v1p2beta1"
     ),
     serialized_pb=_b(
-        '\n/google/cloud/asset_v1p2beta1/proto/assets.proto\x12\x1cgoogle.cloud.asset.v1p2beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a\x19google/protobuf/any.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x8e\x01\n\rTemporalAsset\x12\x38\n\x06window\x18\x01 \x01(\x0b\x32(.google.cloud.asset.v1p2beta1.TimeWindow\x12\x0f\n\x07\x64\x65leted\x18\x02 \x01(\x08\x12\x32\n\x05\x61sset\x18\x03 \x01(\x0b\x32#.google.cloud.asset.v1p2beta1.Asset"j\n\nTimeWindow\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xba\x01\n\x05\x41sset\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nasset_type\x18\x02 \x01(\t\x12\x38\n\x08resource\x18\x03 \x01(\x0b\x32&.google.cloud.asset.v1p2beta1.Resource\x12)\n\niam_policy\x18\x04 \x01(\x0b\x32\x15.google.iam.v1.Policy\x12\x17\n\x0fiam_policy_name\x18\x05 \x01(\x0c\x12\x11\n\tancestors\x18\x06 \x03(\t"\xcd\x01\n\x08Resource\x12\x0f\n\x07version\x18\x01 \x01(\t\x12\x1e\n\x16\x64iscovery_document_uri\x18\x02 \x01(\t\x12\x16\n\x0e\x64iscovery_name\x18\x03 \x01(\t\x12\x14\n\x0cresource_url\x18\x04 \x01(\t\x12\x0e\n\x06parent\x18\x05 \x01(\t\x12%\n\x04\x64\x61ta\x18\x06 \x01(\x0b\x32\x17.google.protobuf.Struct\x12+\n\rinternal_data\x18\x07 \x01(\x0b\x32\x14.google.protobuf.AnyB\xb4\x01\n com.google.cloud.asset.v1p2beta1B\nAssetProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/asset/v1p2beta1;asset\xf8\x01\x01\xaa\x02\x1cGoogle.Cloud.Asset.v1p2beta1\xca\x02\x1cGoogle\\Cloud\\Asset\\v1p2beta1b\x06proto3'
+        '\n/google/cloud/asset_v1p2beta1/proto/assets.proto\x12\x1cgoogle.cloud.asset.v1p2beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a\x19google/protobuf/any.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x8e\x01\n\rTemporalAsset\x12\x38\n\x06window\x18\x01 \x01(\x0b\x32(.google.cloud.asset.v1p2beta1.TimeWindow\x12\x0f\n\x07\x64\x65leted\x18\x02 \x01(\x08\x12\x32\n\x05\x61sset\x18\x03 \x01(\x0b\x32#.google.cloud.asset.v1p2beta1.Asset"j\n\nTimeWindow\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xa1\x01\n\x05\x41sset\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nasset_type\x18\x02 \x01(\t\x12\x38\n\x08resource\x18\x03 \x01(\x0b\x32&.google.cloud.asset.v1p2beta1.Resource\x12)\n\niam_policy\x18\x04 \x01(\x0b\x32\x15.google.iam.v1.Policy\x12\x11\n\tancestors\x18\x06 \x03(\t"\xa0\x01\n\x08Resource\x12\x0f\n\x07version\x18\x01 \x01(\t\x12\x1e\n\x16\x64iscovery_document_uri\x18\x02 \x01(\t\x12\x16\n\x0e\x64iscovery_name\x18\x03 \x01(\t\x12\x14\n\x0cresource_url\x18\x04 \x01(\t\x12\x0e\n\x06parent\x18\x05 \x01(\t\x12%\n\x04\x64\x61ta\x18\x06 \x01(\x0b\x32\x17.google.protobuf.StructB\xb4\x01\n com.google.cloud.asset.v1p2beta1B\nAssetProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/asset/v1p2beta1;asset\xf8\x01\x01\xaa\x02\x1cGoogle.Cloud.Asset.v1p2beta1\xca\x02\x1cGoogle\\Cloud\\Asset\\v1p2beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -254,27 +254,9 @@ _ASSET = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
-            name="iam_policy_name",
-            full_name="google.cloud.asset.v1p2beta1.Asset.iam_policy_name",
-            index=4,
-            number=5,
-            type=12,
-            cpp_type=9,
-            label=1,
-            has_default_value=False,
-            default_value=_b(""),
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
-        _descriptor.FieldDescriptor(
             name="ancestors",
             full_name="google.cloud.asset.v1p2beta1.Asset.ancestors",
-            index=5,
+            index=4,
             number=6,
             type=9,
             cpp_type=9,
@@ -299,7 +281,7 @@ _ASSET = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=483,
-    serialized_end=669,
+    serialized_end=644,
 )
 
 
@@ -418,24 +400,6 @@ _RESOURCE = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
-        _descriptor.FieldDescriptor(
-            name="internal_data",
-            full_name="google.cloud.asset.v1p2beta1.Resource.internal_data",
-            index=6,
-            number=7,
-            type=11,
-            cpp_type=10,
-            label=1,
-            has_default_value=False,
-            default_value=None,
-            message_type=None,
-            enum_type=None,
-            containing_type=None,
-            is_extension=False,
-            extension_scope=None,
-            serialized_options=None,
-            file=DESCRIPTOR,
-        ),
     ],
     extensions=[],
     nested_types=[],
@@ -445,8 +409,8 @@ _RESOURCE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=672,
-    serialized_end=877,
+    serialized_start=647,
+    serialized_end=807,
 )
 
 _TEMPORALASSET.fields_by_name["window"].message_type = _TIMEWINDOW
@@ -466,9 +430,6 @@ _ASSET.fields_by_name[
 _RESOURCE.fields_by_name[
     "data"
 ].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
-_RESOURCE.fields_by_name[
-    "internal_data"
-].message_type = google_dot_protobuf_dot_any__pb2._ANY
 DESCRIPTOR.message_types_by_name["TemporalAsset"] = _TEMPORALASSET
 DESCRIPTOR.message_types_by_name["TimeWindow"] = _TIMEWINDOW
 DESCRIPTOR.message_types_by_name["Asset"] = _ASSET
@@ -544,18 +505,13 @@ Asset = _reflection.GeneratedProtocolMessageType(
           Representation of the actual Cloud IAM policy set on a cloud
           resource. For each resource, there must be at most one Cloud
           IAM policy set on it.
-      iam_policy_name:
-          Cloud IAM policy name of the Cloud IAM policy set on a cloud
-          resource. For each resource, there must be at most one Cloud
-          IAM policy name associated with it.
       ancestors:
           Asset's ancestry path in Cloud Resource Manager (CRM)
           hierarchy, represented as a list of relative resource names.
-          Ancestry path starts with the closest CRM ancestor and ending
-          at a visible root. If the asset is a CRM project/
-          folder/organization, this starts from the asset itself.
-          Example: ["projects/123456789", "folders/5432",
-          "organizations/1234"]
+          Ancestry path starts with the closest CRM ancestor and ends at
+          root. If the asset is a CRM project/folder/organization, this
+          starts from the asset itself.  Example: ["projects/123456789",
+          "folders/5432", "organizations/1234"]
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.asset.v1p2beta1.Asset)
     ),
@@ -602,9 +558,6 @@ Resource = _reflection.GeneratedProtocolMessageType(
       data:
           The content of the resource, in which some sensitive fields
           are scrubbed away and may not be present.
-      internal_data:
-          The actual metadata content for the resource, only visible for
-          internal users.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.asset.v1p2beta1.Resource)
     ),

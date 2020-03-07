@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -106,32 +106,6 @@ class AssetServiceGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return self._channel
-
-    @property
-    def search_resources(self):
-        """Return the gRPC stub for :meth:`AssetServiceClient.search_resources`.
-
-        Searches resources which are accessible with .get permission.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["asset_service_stub"].SearchResources
-
-    @property
-    def search_iam_policies(self):
-        """Return the gRPC stub for :meth:`AssetServiceClient.search_iam_policies`.
-
-        Searches IAM policies which are accessible with .getIamPolicy permission.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["asset_service_stub"].SearchIamPolicies
 
     @property
     def search_all_resources(self):

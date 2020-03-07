@@ -332,7 +332,8 @@ class AssetServiceClient(object):
         RESOURCE content, this API outputs history with asset in both non-delete
         or deleted status. For IAM\_POLICY content, this API outputs history
         when the asset and its attached IAM POLICY both exist. This can create
-        gaps in the output history.
+        gaps in the output history. If a specified asset does not exist, this
+        API returns an INVALID\_ARGUMENT error.
 
         Example:
             >>> from google.cloud import asset_v1beta1
@@ -354,7 +355,7 @@ class AssetServiceClient(object):
             parent (str): Required. The relative name of the root asset. It can only be an
                 organization number (such as "organizations/123"), a project ID (such as
                 "projects/my-project-id")", or a project number (such as "projects/12345").
-            content_type (~google.cloud.asset_v1beta1.types.ContentType): Required. The content type.
+            content_type (~google.cloud.asset_v1beta1.types.ContentType): Optional. The content type.
             read_time_window (Union[dict, ~google.cloud.asset_v1beta1.types.TimeWindow]): Optional. The time window for the asset history. Both start\_time and
                 end\_time are optional and if set, it must be after 2018-10-02 UTC. If
                 end\_time is not set, it is default to current timestamp. If start\_time

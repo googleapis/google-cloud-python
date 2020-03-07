@@ -17,16 +17,6 @@ config = {
                 }
             },
             "methods": {
-                "ExportAssets": {
-                    "timeout_millis": 600000,
-                    "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
-                },
-                "BatchGetAssetsHistory": {
-                    "timeout_millis": 600000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
-                },
                 "CreateFeed": {
                     "timeout_millis": 30000,
                     "retry_codes_name": "non_idempotent",

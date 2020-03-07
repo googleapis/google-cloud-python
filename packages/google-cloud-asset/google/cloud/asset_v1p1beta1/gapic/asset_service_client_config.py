@@ -17,23 +17,13 @@ config = {
                 }
             },
             "methods": {
-                "SearchResources": {
-                    "timeout_millis": 15000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
-                },
-                "SearchIamPolicies": {
-                    "timeout_millis": 15000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
-                },
                 "SearchAllResources": {
-                    "timeout_millis": 15000,
+                    "timeout_millis": 600000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "SearchAllIamPolicies": {
-                    "timeout_millis": 15000,
+                    "timeout_millis": 600000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },

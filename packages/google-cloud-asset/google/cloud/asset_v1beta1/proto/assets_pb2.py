@@ -16,6 +16,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.iam.v1 import iam_policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
 from google.protobuf import any_pb2 as google_dot_protobuf_dot_any__pb2
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
@@ -27,13 +28,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.asset.v1beta1",
     syntax="proto3",
     serialized_options=_b(
-        "\n\036com.google.cloud.asset.v1beta1B\nAssetProtoP\001Z?google.golang.org/genproto/googleapis/cloud/asset/v1beta1;asset\252\002\032Google.Cloud.Asset.V1Beta1\312\002\032Google\\Cloud\\Asset\\V1beta1"
+        "\n\036com.google.cloud.asset.v1beta1B\nAssetProtoP\001Z?google.golang.org/genproto/googleapis/cloud/asset/v1beta1;asset\370\001\001\252\002\032Google.Cloud.Asset.V1Beta1\312\002\032Google\\Cloud\\Asset\\V1beta1"
     ),
     serialized_pb=_b(
-        '\n-google/cloud/asset_v1beta1/proto/assets.proto\x12\x1agoogle.cloud.asset.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a\x19google/protobuf/any.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x8a\x01\n\rTemporalAsset\x12\x36\n\x06window\x18\x01 \x01(\x0b\x32&.google.cloud.asset.v1beta1.TimeWindow\x12\x0f\n\x07\x64\x65leted\x18\x02 \x01(\x08\x12\x30\n\x05\x61sset\x18\x03 \x01(\x0b\x32!.google.cloud.asset.v1beta1.Asset"j\n\nTimeWindow\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x8c\x01\n\x05\x41sset\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nasset_type\x18\x02 \x01(\t\x12\x36\n\x08resource\x18\x03 \x01(\x0b\x32$.google.cloud.asset.v1beta1.Resource\x12)\n\niam_policy\x18\x04 \x01(\x0b\x32\x15.google.iam.v1.Policy"\xa0\x01\n\x08Resource\x12\x0f\n\x07version\x18\x01 \x01(\t\x12\x1e\n\x16\x64iscovery_document_uri\x18\x02 \x01(\t\x12\x16\n\x0e\x64iscovery_name\x18\x03 \x01(\t\x12\x14\n\x0cresource_url\x18\x04 \x01(\t\x12\x0e\n\x06parent\x18\x05 \x01(\t\x12%\n\x04\x64\x61ta\x18\x06 \x01(\x0b\x32\x17.google.protobuf.StructB\xa9\x01\n\x1e\x63om.google.cloud.asset.v1beta1B\nAssetProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/asset/v1beta1;asset\xaa\x02\x1aGoogle.Cloud.Asset.V1Beta1\xca\x02\x1aGoogle\\Cloud\\Asset\\V1beta1b\x06proto3'
+        '\n-google/cloud/asset_v1beta1/proto/assets.proto\x12\x1agoogle.cloud.asset.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a\x19google/protobuf/any.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x8a\x01\n\rTemporalAsset\x12\x36\n\x06window\x18\x01 \x01(\x0b\x32&.google.cloud.asset.v1beta1.TimeWindow\x12\x0f\n\x07\x64\x65leted\x18\x02 \x01(\x08\x12\x30\n\x05\x61sset\x18\x03 \x01(\x0b\x32!.google.cloud.asset.v1beta1.Asset"j\n\nTimeWindow\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xb5\x01\n\x05\x41sset\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nasset_type\x18\x02 \x01(\t\x12\x36\n\x08resource\x18\x03 \x01(\x0b\x32$.google.cloud.asset.v1beta1.Resource\x12)\n\niam_policy\x18\x04 \x01(\x0b\x32\x15.google.iam.v1.Policy:\'\xea\x41$\n\x1f\x63loudasset.googleapis.com/Asset\x12\x01*"\xa0\x01\n\x08Resource\x12\x0f\n\x07version\x18\x01 \x01(\t\x12\x1e\n\x16\x64iscovery_document_uri\x18\x02 \x01(\t\x12\x16\n\x0e\x64iscovery_name\x18\x03 \x01(\t\x12\x14\n\x0cresource_url\x18\x04 \x01(\t\x12\x0e\n\x06parent\x18\x05 \x01(\t\x12%\n\x04\x64\x61ta\x18\x06 \x01(\x0b\x32\x17.google.protobuf.StructB\xac\x01\n\x1e\x63om.google.cloud.asset.v1beta1B\nAssetProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/asset/v1beta1;asset\xf8\x01\x01\xaa\x02\x1aGoogle.Cloud.Asset.V1Beta1\xca\x02\x1aGoogle\\Cloud\\Asset\\V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_any__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,
@@ -112,8 +114,8 @@ _TEMPORALASSET = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=226,
-    serialized_end=364,
+    serialized_start=253,
+    serialized_end=391,
 )
 
 
@@ -169,8 +171,8 @@ _TIMEWINDOW = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=366,
-    serialized_end=472,
+    serialized_start=393,
+    serialized_end=499,
 )
 
 
@@ -257,13 +259,13 @@ _ASSET = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b("\352A$\n\037cloudasset.googleapis.com/Asset\022\001*"),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=475,
-    serialized_end=615,
+    serialized_start=502,
+    serialized_end=683,
 )
 
 
@@ -391,8 +393,8 @@ _RESOURCE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=618,
-    serialized_end=778,
+    serialized_start=686,
+    serialized_end=846,
 )
 
 _TEMPORALASSET.fields_by_name["window"].message_type = _TIMEWINDOW
@@ -424,8 +426,8 @@ TemporalAsset = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TEMPORALASSET,
         __module__="google.cloud.asset_v1beta1.proto.assets_pb2",
-        __doc__="""Temporal asset. In addition to the asset, the temporal
-  asset includes the status of the asset and valid from and to time of it.
+        __doc__="""Temporal asset. In addition to the asset, the temporal asset includes
+  the status of the asset and valid from and to time of it.
   
   
   Attributes:
@@ -541,4 +543,5 @@ _sym_db.RegisterMessage(Resource)
 
 
 DESCRIPTOR._options = None
+_ASSET._options = None
 # @@protoc_insertion_point(module_scope)

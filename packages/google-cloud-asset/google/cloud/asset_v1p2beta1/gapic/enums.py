@@ -27,28 +27,8 @@ class ContentType(enum.IntEnum):
       CONTENT_TYPE_UNSPECIFIED (int): Unspecified content type.
       RESOURCE (int): Resource metadata.
       IAM_POLICY (int): The actual IAM policy set on a resource.
-      IAM_POLICY_NAME (int): The IAM policy name for the IAM policy set on a resource.
-      ORG_POLICY (int)
-      ACCESS_POLICY (int): The Cloud Access context mananger Policy set on an asset.
     """
 
     CONTENT_TYPE_UNSPECIFIED = 0
     RESOURCE = 1
     IAM_POLICY = 2
-    IAM_POLICY_NAME = 3
-    ORG_POLICY = 4
-    ACCESS_POLICY = 5
-
-
-class NullValue(enum.IntEnum):
-    """
-    ``NullValue`` is a singleton enumeration to represent the null value for
-    the ``Value`` type union.
-
-    The JSON representation for ``NullValue`` is JSON ``null``.
-
-    Attributes:
-      NULL_VALUE (int): Null value.
-    """
-
-    NULL_VALUE = 0

@@ -17,6 +17,9 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.asset_v1beta1.proto import (
     assets_pb2 as google_dot_cloud_dot_asset__v1beta1_dot_proto_dot_assets__pb2,
 )
@@ -34,10 +37,13 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\036com.google.cloud.asset.v1beta1B\021AssetServiceProtoP\001Z?google.golang.org/genproto/googleapis/cloud/asset/v1beta1;asset\252\002\032Google.Cloud.Asset.V1Beta1\312\002\032Google\\Cloud\\Asset\\V1beta1"
     ),
     serialized_pb=_b(
-        '\n4google/cloud/asset_v1beta1/proto/asset_service.proto\x12\x1agoogle.cloud.asset.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a-google/cloud/asset_v1beta1/proto/assets.proto\x1a#google/longrunning/operations.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xe9\x01\n\x13\x45xportAssetsRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12-\n\tread_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x13\n\x0b\x61sset_types\x18\x03 \x03(\t\x12=\n\x0c\x63ontent_type\x18\x04 \x01(\x0e\x32\'.google.cloud.asset.v1beta1.ContentType\x12?\n\routput_config\x18\x05 \x01(\x0b\x32(.google.cloud.asset.v1beta1.OutputConfig"\x86\x01\n\x14\x45xportAssetsResponse\x12-\n\tread_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12?\n\routput_config\x18\x02 \x01(\x0b\x32(.google.cloud.asset.v1beta1.OutputConfig"\xc4\x01\n\x1c\x42\x61tchGetAssetsHistoryRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x13\n\x0b\x61sset_names\x18\x02 \x03(\t\x12=\n\x0c\x63ontent_type\x18\x03 \x01(\x0e\x32\'.google.cloud.asset.v1beta1.ContentType\x12@\n\x10read_time_window\x18\x04 \x01(\x0b\x32&.google.cloud.asset.v1beta1.TimeWindow"Z\n\x1d\x42\x61tchGetAssetsHistoryResponse\x12\x39\n\x06\x61ssets\x18\x01 \x03(\x0b\x32).google.cloud.asset.v1beta1.TemporalAsset"d\n\x0cOutputConfig\x12\x45\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32*.google.cloud.asset.v1beta1.GcsDestinationH\x00\x42\r\n\x0b\x64\x65stination"-\n\x0eGcsDestination\x12\r\n\x03uri\x18\x01 \x01(\tH\x00\x42\x0c\n\nobject_uri*I\n\x0b\x43ontentType\x12\x1c\n\x18\x43ONTENT_TYPE_UNSPECIFIED\x10\x00\x12\x0c\n\x08RESOURCE\x10\x01\x12\x0e\n\nIAM_POLICY\x10\x02\x32\x91\x04\n\x0c\x41ssetService\x12\xfa\x01\n\x0c\x45xportAssets\x12/.google.cloud.asset.v1beta1.ExportAssetsRequest\x1a\x1d.google.longrunning.Operation"\x99\x01\x82\xd3\xe4\x93\x02\x92\x01")/v1beta1/{parent=projects/*}:exportAssets:\x01*Z-"(/v1beta1/{parent=folders/*}:exportAssets:\x01*Z3"./v1beta1/{parent=organizations/*}:exportAssets:\x01*\x12\x83\x02\n\x15\x42\x61tchGetAssetsHistory\x12\x38.google.cloud.asset.v1beta1.BatchGetAssetsHistoryRequest\x1a\x39.google.cloud.asset.v1beta1.BatchGetAssetsHistoryResponse"u\x82\xd3\xe4\x93\x02o\x12\x32/v1beta1/{parent=projects/*}:batchGetAssetsHistoryZ9\x12\x37/v1beta1/{parent=organizations/*}:batchGetAssetsHistoryB\xb0\x01\n\x1e\x63om.google.cloud.asset.v1beta1B\x11\x41ssetServiceProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/asset/v1beta1;asset\xaa\x02\x1aGoogle.Cloud.Asset.V1Beta1\xca\x02\x1aGoogle\\Cloud\\Asset\\V1beta1b\x06proto3'
+        '\n4google/cloud/asset_v1beta1/proto/asset_service.proto\x12\x1agoogle.cloud.asset.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a-google/cloud/asset_v1beta1/proto/assets.proto\x1a#google/longrunning/operations.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x97\x02\n\x13\x45xportAssetsRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\x12\x1f\x63loudasset.googleapis.com/Asset\x12-\n\tread_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x13\n\x0b\x61sset_types\x18\x03 \x03(\t\x12=\n\x0c\x63ontent_type\x18\x04 \x01(\x0e\x32\'.google.cloud.asset.v1beta1.ContentType\x12\x44\n\routput_config\x18\x05 \x01(\x0b\x32(.google.cloud.asset.v1beta1.OutputConfigB\x03\xe0\x41\x02"\x86\x01\n\x14\x45xportAssetsResponse\x12-\n\tread_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12?\n\routput_config\x18\x02 \x01(\x0b\x32(.google.cloud.asset.v1beta1.OutputConfig"\xf7\x01\n\x1c\x42\x61tchGetAssetsHistoryRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\x12\x1f\x63loudasset.googleapis.com/Asset\x12\x13\n\x0b\x61sset_names\x18\x02 \x03(\t\x12\x42\n\x0c\x63ontent_type\x18\x03 \x01(\x0e\x32\'.google.cloud.asset.v1beta1.ContentTypeB\x03\xe0\x41\x01\x12\x45\n\x10read_time_window\x18\x04 \x01(\x0b\x32&.google.cloud.asset.v1beta1.TimeWindowB\x03\xe0\x41\x01"Z\n\x1d\x42\x61tchGetAssetsHistoryResponse\x12\x39\n\x06\x61ssets\x18\x01 \x03(\x0b\x32).google.cloud.asset.v1beta1.TemporalAsset"d\n\x0cOutputConfig\x12\x45\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32*.google.cloud.asset.v1beta1.GcsDestinationH\x00\x42\r\n\x0b\x64\x65stination"C\n\x0eGcsDestination\x12\r\n\x03uri\x18\x01 \x01(\tH\x00\x12\x14\n\nuri_prefix\x18\x02 \x01(\tH\x00\x42\x0c\n\nobject_uri*I\n\x0b\x43ontentType\x12\x1c\n\x18\x43ONTENT_TYPE_UNSPECIFIED\x10\x00\x12\x0c\n\x08RESOURCE\x10\x01\x12\x0e\n\nIAM_POLICY\x10\x02\x32\xc4\x05\n\x0c\x41ssetService\x12\xde\x02\n\x0c\x45xportAssets\x12/.google.cloud.asset.v1beta1.ExportAssetsRequest\x1a\x1d.google.longrunning.Operation"\xfd\x01\x82\xd3\xe4\x93\x02\x92\x01")/v1beta1/{parent=projects/*}:exportAssets:\x01*Z-"(/v1beta1/{parent=folders/*}:exportAssets:\x01*Z3"./v1beta1/{parent=organizations/*}:exportAssets:\x01*\xca\x41\x61\n/google.cloud.asset.v1beta1.ExportAssetsResponse\x12.google.cloud.asset.v1beta1.ExportAssetsRequest\x12\x83\x02\n\x15\x42\x61tchGetAssetsHistory\x12\x38.google.cloud.asset.v1beta1.BatchGetAssetsHistoryRequest\x1a\x39.google.cloud.asset.v1beta1.BatchGetAssetsHistoryResponse"u\x82\xd3\xe4\x93\x02o\x12\x32/v1beta1/{parent=projects/*}:batchGetAssetsHistoryZ9\x12\x37/v1beta1/{parent=organizations/*}:batchGetAssetsHistory\x1aM\xca\x41\x19\x63loudasset.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xb0\x01\n\x1e\x63om.google.cloud.asset.v1beta1B\x11\x41ssetServiceProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/asset/v1beta1;asset\xaa\x02\x1aGoogle.Cloud.Asset.V1Beta1\xca\x02\x1aGoogle\\Cloud\\Asset\\V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_asset__v1beta1_dot_proto_dot_assets__pb2.DESCRIPTOR,
         google_dot_longrunning_dot_operations__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
@@ -66,8 +72,8 @@ _CONTENTTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1044,
-    serialized_end=1117,
+    serialized_start=1248,
+    serialized_end=1321,
 )
 _sym_db.RegisterEnumDescriptor(_CONTENTTYPE)
 
@@ -99,7 +105,9 @@ _EXPORTASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A!\022\037cloudasset.googleapis.com/Asset"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -171,7 +179,7 @@ _EXPORTASSETSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
     ],
@@ -183,8 +191,8 @@ _EXPORTASSETSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=232,
-    serialized_end=465,
+    serialized_start=317,
+    serialized_end=596,
 )
 
 
@@ -240,8 +248,8 @@ _EXPORTASSETSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=468,
-    serialized_end=602,
+    serialized_start=599,
+    serialized_end=733,
 )
 
 
@@ -267,7 +275,9 @@ _BATCHGETASSETSHISTORYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A!\022\037cloudasset.googleapis.com/Asset"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -303,7 +313,7 @@ _BATCHGETASSETSHISTORYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -321,7 +331,7 @@ _BATCHGETASSETSHISTORYREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\001"),
             file=DESCRIPTOR,
         ),
     ],
@@ -333,8 +343,8 @@ _BATCHGETASSETSHISTORYREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=605,
-    serialized_end=801,
+    serialized_start=736,
+    serialized_end=983,
 )
 
 
@@ -372,8 +382,8 @@ _BATCHGETASSETSHISTORYRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=803,
-    serialized_end=893,
+    serialized_start=985,
+    serialized_end=1075,
 )
 
 
@@ -419,8 +429,8 @@ _OUTPUTCONFIG = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=895,
-    serialized_end=995,
+    serialized_start=1077,
+    serialized_end=1177,
 )
 
 
@@ -448,7 +458,25 @@ _GCSDESTINATION = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        )
+        ),
+        _descriptor.FieldDescriptor(
+            name="uri_prefix",
+            full_name="google.cloud.asset.v1beta1.GcsDestination.uri_prefix",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -466,8 +494,8 @@ _GCSDESTINATION = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=997,
-    serialized_end=1042,
+    serialized_start=1179,
+    serialized_end=1246,
 )
 
 _EXPORTASSETSREQUEST.fields_by_name[
@@ -503,6 +531,12 @@ _GCSDESTINATION.oneofs_by_name["object_uri"].fields.append(
 _GCSDESTINATION.fields_by_name["uri"].containing_oneof = _GCSDESTINATION.oneofs_by_name[
     "object_uri"
 ]
+_GCSDESTINATION.oneofs_by_name["object_uri"].fields.append(
+    _GCSDESTINATION.fields_by_name["uri_prefix"]
+)
+_GCSDESTINATION.fields_by_name[
+    "uri_prefix"
+].containing_oneof = _GCSDESTINATION.oneofs_by_name["object_uri"]
 DESCRIPTOR.message_types_by_name["ExportAssetsRequest"] = _EXPORTASSETSREQUEST
 DESCRIPTOR.message_types_by_name["ExportAssetsResponse"] = _EXPORTASSETSRESPONSE
 DESCRIPTOR.message_types_by_name[
@@ -608,7 +642,7 @@ BatchGetAssetsHistoryRequest = _reflection.GeneratedProtocolMessageType(
           empty, and the max size of the asset name list is 100 in one
           request.
       content_type:
-          Required. The content type.
+          Optional. The content type.
       read_time_window:
           Optional. The time window for the asset history. Both
           start\_time and end\_time are optional and if set, it must be
@@ -679,6 +713,17 @@ GcsDestination = _reflection.GeneratedProtocolMessageType(
           See `Viewing and Editing Object Metadata
           <https://cloud.google.com/storage/docs/viewing-editing-
           metadata>`__ for more information.
+      uri_prefix:
+          The uri prefix of all generated Cloud Storage objects. For
+          example: "gs://bucket\_name/object\_name\_prefix". Each object
+          uri is in format: "gs://bucket\_name/object\_name\_prefix//
+          and only contains assets for that type. starts from 0. For
+          example:
+          "gs://bucket\_name/object\_name\_prefix/google.compute.disk/0"
+          is the first shard of output objects containing all
+          google.compute.disk assets. An INVALID\_ARGUMENT error will be
+          returned if file with the same name
+          "gs://bucket\_name/object\_name\_prefix" already exists.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.asset.v1beta1.GcsDestination)
     ),
@@ -687,15 +732,22 @@ _sym_db.RegisterMessage(GcsDestination)
 
 
 DESCRIPTOR._options = None
+_EXPORTASSETSREQUEST.fields_by_name["parent"]._options = None
+_EXPORTASSETSREQUEST.fields_by_name["output_config"]._options = None
+_BATCHGETASSETSHISTORYREQUEST.fields_by_name["parent"]._options = None
+_BATCHGETASSETSHISTORYREQUEST.fields_by_name["content_type"]._options = None
+_BATCHGETASSETSHISTORYREQUEST.fields_by_name["read_time_window"]._options = None
 
 _ASSETSERVICE = _descriptor.ServiceDescriptor(
     name="AssetService",
     full_name="google.cloud.asset.v1beta1.AssetService",
     file=DESCRIPTOR,
     index=0,
-    serialized_options=None,
-    serialized_start=1120,
-    serialized_end=1649,
+    serialized_options=_b(
+        "\312A\031cloudasset.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform"
+    ),
+    serialized_start=1324,
+    serialized_end=2032,
     methods=[
         _descriptor.MethodDescriptor(
             name="ExportAssets",
@@ -705,7 +757,7 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
             input_type=_EXPORTASSETSREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=_b(
-                '\202\323\344\223\002\222\001")/v1beta1/{parent=projects/*}:exportAssets:\001*Z-"(/v1beta1/{parent=folders/*}:exportAssets:\001*Z3"./v1beta1/{parent=organizations/*}:exportAssets:\001*'
+                '\202\323\344\223\002\222\001")/v1beta1/{parent=projects/*}:exportAssets:\001*Z-"(/v1beta1/{parent=folders/*}:exportAssets:\001*Z3"./v1beta1/{parent=organizations/*}:exportAssets:\001*\312Aa\n/google.cloud.asset.v1beta1.ExportAssetsResponse\022.google.cloud.asset.v1beta1.ExportAssetsRequest'
             ),
         ),
         _descriptor.MethodDescriptor(

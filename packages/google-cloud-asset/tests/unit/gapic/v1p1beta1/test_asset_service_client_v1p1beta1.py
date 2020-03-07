@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -61,96 +61,6 @@ class CustomException(Exception):
 
 
 class TestAssetServiceClient(object):
-    def test_search_resources(self):
-        # Setup Expected Response
-        next_page_token = ""
-        results_element = {}
-        results = [results_element]
-        expected_response = {"next_page_token": next_page_token, "results": results}
-        expected_response = asset_service_pb2.SearchResourcesResponse(
-            **expected_response
-        )
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = asset_v1p1beta1.AssetServiceClient()
-
-        # Setup Request
-        scope = "scope109264468"
-
-        paged_list_response = client.search_resources(scope)
-        resources = list(paged_list_response)
-        assert len(resources) == 1
-
-        assert expected_response.results[0] == resources[0]
-
-        assert len(channel.requests) == 1
-        expected_request = asset_service_pb2.SearchResourcesRequest(scope=scope)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_search_resources_exception(self):
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = asset_v1p1beta1.AssetServiceClient()
-
-        # Setup request
-        scope = "scope109264468"
-
-        paged_list_response = client.search_resources(scope)
-        with pytest.raises(CustomException):
-            list(paged_list_response)
-
-    def test_search_iam_policies(self):
-        # Setup Expected Response
-        next_page_token = ""
-        results_element = {}
-        results = [results_element]
-        expected_response = {"next_page_token": next_page_token, "results": results}
-        expected_response = asset_service_pb2.SearchIamPoliciesResponse(
-            **expected_response
-        )
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = asset_v1p1beta1.AssetServiceClient()
-
-        # Setup Request
-        scope = "scope109264468"
-
-        paged_list_response = client.search_iam_policies(scope)
-        resources = list(paged_list_response)
-        assert len(resources) == 1
-
-        assert expected_response.results[0] == resources[0]
-
-        assert len(channel.requests) == 1
-        expected_request = asset_service_pb2.SearchIamPoliciesRequest(scope=scope)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_search_iam_policies_exception(self):
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = asset_v1p1beta1.AssetServiceClient()
-
-        # Setup request
-        scope = "scope109264468"
-
-        paged_list_response = client.search_iam_policies(scope)
-        with pytest.raises(CustomException):
-            list(paged_list_response)
-
     def test_search_all_resources(self):
         # Setup Expected Response
         next_page_token = ""

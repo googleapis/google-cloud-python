@@ -26,8 +26,6 @@ import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
 import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
-import google.api_core.operation
-import google.api_core.operations_v1
 import google.api_core.path_template
 import grpc
 
@@ -36,11 +34,8 @@ from google.cloud.asset_v1p2beta1.gapic import enums
 from google.cloud.asset_v1p2beta1.gapic.transports import asset_service_grpc_transport
 from google.cloud.asset_v1p2beta1.proto import asset_service_pb2
 from google.cloud.asset_v1p2beta1.proto import asset_service_pb2_grpc
-from google.cloud.asset_v1p2beta1.proto import assets_pb2
-from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
-from google.protobuf import timestamp_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-asset").version
@@ -196,240 +191,6 @@ class AssetServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def export_assets(
-        self,
-        parent,
-        output_config,
-        read_time=None,
-        asset_types=None,
-        content_type=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Exports assets with time and resource types to a given Cloud Storage
-        location. The output format is newline-delimited JSON. This API
-        implements the ``google.longrunning.Operation`` API allowing you to keep
-        track of the export.
-
-        Example:
-            >>> from google.cloud import asset_v1p2beta1
-            >>>
-            >>> client = asset_v1p2beta1.AssetServiceClient()
-            >>>
-            >>> # TODO: Initialize `parent`:
-            >>> parent = ''
-            >>>
-            >>> # TODO: Initialize `output_config`:
-            >>> output_config = {}
-            >>>
-            >>> response = client.export_assets(parent, output_config)
-            >>>
-            >>> def callback(operation_future):
-            ...     # Handle result.
-            ...     result = operation_future.result()
-            >>>
-            >>> response.add_done_callback(callback)
-            >>>
-            >>> # Handle metadata.
-            >>> metadata = response.metadata()
-
-        Args:
-            parent (str): Required. The relative name of the root asset. This can only be an
-                organization number (such as "organizations/123"), a project ID (such as
-                "projects/my-project-id"), or a project number (such as "projects/12345").
-            output_config (Union[dict, ~google.cloud.asset_v1p2beta1.types.OutputConfig]): Required. Output configuration indicating where the results will be output
-                to. All results will be in newline delimited JSON format.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.asset_v1p2beta1.types.OutputConfig`
-            read_time (Union[dict, ~google.cloud.asset_v1p2beta1.types.Timestamp]): Timestamp to take an asset snapshot. This can only be set to a timestamp
-                between 2018-10-02 UTC (inclusive) and the current time. If not specified,
-                the current time will be used. Due to delays in resource data collection
-                and indexing, there is a volatile window during which running the same
-                query may get different results.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.asset_v1p2beta1.types.Timestamp`
-            asset_types (list[str]): A list of asset types of which to take a snapshot for. For example:
-                "compute.googleapis.com/Disk". If specified, only matching assets will
-                be returned. See `Introduction to Cloud Asset
-                Inventory <https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview>`__
-                for all supported asset types.
-            content_type (~google.cloud.asset_v1p2beta1.types.ContentType): Asset content type. If not specified, no content but the asset name will be
-                returned.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.asset_v1p2beta1.types._OperationFuture` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "export_assets" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "export_assets"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.export_assets,
-                default_retry=self._method_configs["ExportAssets"].retry,
-                default_timeout=self._method_configs["ExportAssets"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = asset_service_pb2.ExportAssetsRequest(
-            parent=parent,
-            output_config=output_config,
-            read_time=read_time,
-            asset_types=asset_types,
-            content_type=content_type,
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("parent", parent)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        operation = self._inner_api_calls["export_assets"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-        return google.api_core.operation.from_gapic(
-            operation,
-            self.transport._operations_client,
-            asset_service_pb2.ExportAssetsResponse,
-            metadata_type=asset_service_pb2.ExportAssetsRequest,
-        )
-
-    def batch_get_assets_history(
-        self,
-        parent,
-        asset_names,
-        content_type,
-        read_time_window=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Batch gets the update history of assets that overlap a time window. For
-        RESOURCE content, this API outputs history with asset in both non-delete
-        or deleted status. For IAM\_POLICY content, this API outputs history
-        when the asset and its attached IAM POLICY both exist. This can create
-        gaps in the output history.
-
-        Example:
-            >>> from google.cloud import asset_v1p2beta1
-            >>> from google.cloud.asset_v1p2beta1 import enums
-            >>>
-            >>> client = asset_v1p2beta1.AssetServiceClient()
-            >>>
-            >>> # TODO: Initialize `parent`:
-            >>> parent = ''
-            >>>
-            >>> # TODO: Initialize `asset_names`:
-            >>> asset_names = []
-            >>>
-            >>> # TODO: Initialize `content_type`:
-            >>> content_type = enums.ContentType.CONTENT_TYPE_UNSPECIFIED
-            >>>
-            >>> response = client.batch_get_assets_history(parent, asset_names, content_type)
-
-        Args:
-            parent (str): Required. The relative name of the root asset. It can only be an
-                organization number (such as "organizations/123"), a project ID (such as
-                "projects/my-project-id")", or a project number (such as "projects/12345").
-            asset_names (list[str]): A list of the full names of the assets. For example:
-                ``//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1``.
-                See `Resource
-                Names <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__
-                and `Resource Name
-                Format <https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/resource-name-format>`__
-                for more info.
-
-                The request becomes a no-op if the asset name list is empty, and the max
-                size of the asset name list is 100 in one request.
-            content_type (~google.cloud.asset_v1p2beta1.types.ContentType): Required. The content type.
-            read_time_window (Union[dict, ~google.cloud.asset_v1p2beta1.types.TimeWindow]): Optional. The time window for the asset history. Both start\_time and
-                end\_time are optional and if set, it must be after 2018-10-02 UTC. If
-                end\_time is not set, it is default to current timestamp. If start\_time
-                is not set, the snapshot of the assets at end\_time will be returned.
-                The returned results contain all temporal assets whose time window
-                overlap with read\_time\_window.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.asset_v1p2beta1.types.TimeWindow`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.asset_v1p2beta1.types.BatchGetAssetsHistoryResponse` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "batch_get_assets_history" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "batch_get_assets_history"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.batch_get_assets_history,
-                default_retry=self._method_configs["BatchGetAssetsHistory"].retry,
-                default_timeout=self._method_configs["BatchGetAssetsHistory"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = asset_service_pb2.BatchGetAssetsHistoryRequest(
-            parent=parent,
-            asset_names=asset_names,
-            content_type=content_type,
-            read_time_window=read_time_window,
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("parent", parent)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["batch_get_assets_history"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
     def create_feed(
         self,
         parent,
@@ -467,8 +228,8 @@ class AssetServiceClient(object):
                 "projects/12345").
             feed_id (str): Required. This is the client-assigned asset feed identifier and it needs to
                 be unique under a specific parent project/folder/organization.
-            feed (Union[dict, ~google.cloud.asset_v1p2beta1.types.Feed]): The feed details. The field ``name`` must be empty and it will be
-                generated in the format of: projects/project\_number/feeds/feed\_id
+            feed (Union[dict, ~google.cloud.asset_v1p2beta1.types.Feed]): Required. The feed details. The field ``name`` must be empty and it will
+                be generated in the format of: projects/project\_number/feeds/feed\_id
                 folders/folder\_number/feeds/feed\_id
                 organizations/organization\_number/feeds/feed\_id
 
@@ -544,7 +305,7 @@ class AssetServiceClient(object):
             >>> response = client.get_feed(name)
 
         Args:
-            name (str): The name of the Feed and it must be in the format of:
+            name (str): Required. The name of the Feed and it must be in the format of:
                 projects/project\_number/feeds/feed\_id
                 folders/folder\_number/feeds/feed\_id
                 organizations/organization\_number/feeds/feed\_id
@@ -693,17 +454,17 @@ class AssetServiceClient(object):
             >>> response = client.update_feed(feed, update_mask)
 
         Args:
-            feed (Union[dict, ~google.cloud.asset_v1p2beta1.types.Feed]): The new values of feed details. It must match an existing feed and the
-                field ``name`` must be in the format of:
+            feed (Union[dict, ~google.cloud.asset_v1p2beta1.types.Feed]): Required. The new values of feed details. It must match an existing feed
+                and the field ``name`` must be in the format of:
                 projects/project\_number/feeds/feed\_id or
                 folders/folder\_number/feeds/feed\_id or
                 organizations/organization\_number/feeds/feed\_id.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.asset_v1p2beta1.types.Feed`
-            update_mask (Union[dict, ~google.cloud.asset_v1p2beta1.types.FieldMask]): Only updates the ``feed`` fields indicated by this mask. The field mask
-                must not be empty, and it must not contain fields that are immutable or
-                only set by the server.
+            update_mask (Union[dict, ~google.cloud.asset_v1p2beta1.types.FieldMask]): Required. Only updates the ``feed`` fields indicated by this mask. The
+                field mask must not be empty, and it must not contain fields that are
+                immutable or only set by the server.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.asset_v1p2beta1.types.FieldMask`
@@ -777,7 +538,7 @@ class AssetServiceClient(object):
             >>> client.delete_feed(name)
 
         Args:
-            name (str): The name of the feed and it must be in the format of:
+            name (str): Required. The name of the feed and it must be in the format of:
                 projects/project\_number/feeds/feed\_id
                 folders/folder\_number/feeds/feed\_id
                 organizations/organization\_number/feeds/feed\_id
