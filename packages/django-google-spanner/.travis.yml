@@ -37,7 +37,8 @@ env:
         - DJANGO_TEST_APPS="messages_tests middleware middleware_exceptions"
         - DJANGO_TEST_APPS="migrate_signals migration_test_data_persistence"
         - DJANGO_TEST_APPS="null_fk null_fk_ordering null_queries one_to_one or_lookups ordering"
-        - DJANGO_TEST_APPS="queries.test_bulk_update queries.test_explain queries.test_iterator queries.test_q queries.test_qs_combinators queries.test_query"
+        - DJANGO_TEST_APPS="queries.test_bulk_update queries.test_explain queries.test_iterator"
+        - DJANGO_TEST_APPS="queries.test_q queries.test_qs_combinators queries.test_query"
         # Commented out because they take longer 2hr and TravisCI unconditionally terminates them.
         # - DJANGO_TEST_APPS="queries.tests"
         - DJANGO_TEST_APPS="raw_query reserved_names reverse_lookup"
