@@ -1,0 +1,13 @@
+{
+    "name": "servicedirectory",
+    "name_pretty": "Service Directory",
+    "product_documentation": "https://cloud.google.com/service-directory/",
+    "client_documentation": "https://googleapis.dev/python/recommendationengine/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-service-directory",
+    "distribution_name": "google-cloud-service-directory",
+    "api_id": "servicedirectory.googleapis.com"
+  }
+  
