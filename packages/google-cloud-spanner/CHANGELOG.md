@@ -10,14 +10,14 @@
 ### Features
 
 * **spanner:** add deprecation warnings; add field_mask to get_instance; add endpoint_uris to Instance proto; update timeouts; make mutations optional for commits (via synth) ([62edbe1](https://www.github.com/googleapis/python-spanner/commit/62edbe12a0c5a74eacb8d87ca265a19e6d27f890))
-* **spanner:** add resource based routing implementation ([#10183](https://www.github.com/googleapis/python-spanner/issues/10183)) ([e072d5d](https://www.github.com/googleapis/python-spanner/commit/e072d5dd04d58fff7f62ce19ce42e906dfd11012))
-* **spanner:** un-deprecate resource name helper functions, add 3.8 tests (via synth) ([#10062](https://www.github.com/googleapis/python-spanner/issues/10062)) ([dbb79b0](https://www.github.com/googleapis/python-spanner/commit/dbb79b0d8b0c79f6ed1772f28e4eedb9d986b108))
+* **spanner:** add resource based routing implementation ([#10183](https://www.github.com/googleapis/google-cloud-python/issues/10183)) ([e072d5d](https://www.github.com/googleapis/python-spanner/commit/e072d5dd04d58fff7f62ce19ce42e906dfd11012))
+* **spanner:** un-deprecate resource name helper functions, add 3.8 tests (via synth) ([#10062](https://www.github.com/googleapis/google-cloud-python/issues/10062)) ([dbb79b0](https://www.github.com/googleapis/python-spanner/commit/dbb79b0d8b0c79f6ed1772f28e4eedb9d986b108))
 
 
 ### Bug Fixes
 
-* be permssive about merging an empty struct ([#10079](https://www.github.com/googleapis/python-spanner/issues/10079)) ([cfae63d](https://www.github.com/googleapis/python-spanner/commit/cfae63d5a8b8332f8875307283da6075a544c838))
-* **spanner:** fix imports for doc samples ([#10283](https://www.github.com/googleapis/python-spanner/issues/10283)) ([55a21d9](https://www.github.com/googleapis/python-spanner/commit/55a21d97d0c863cbbbb2d973b6faa4aeba8e38bb))
+* be permssive about merging an empty struct ([#10079](https://www.github.com/googleapis/google-cloud-python/issues/10079)) ([cfae63d](https://www.github.com/googleapis/python-spanner/commit/cfae63d5a8b8332f8875307283da6075a544c838))
+* **spanner:** fix imports for doc samples ([#10283](https://www.github.com/googleapis/google-cloud-python/issues/10283)) ([55a21d9](https://www.github.com/googleapis/python-spanner/commit/55a21d97d0c863cbbbb2d973b6faa4aeba8e38bb))
 
 ## 1.13.0
 
