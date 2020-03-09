@@ -26,7 +26,6 @@ import six
 from six.moves import http_client
 
 import google.api_core.future.polling
-from google.auth.transport.requests import TimeoutGuard
 from google.cloud import exceptions
 from google.cloud.exceptions import NotFound
 from google.cloud.bigquery.dataset import Dataset
@@ -55,7 +54,6 @@ from google.cloud.bigquery.table import TimePartitioning
 _DONE_STATE = "DONE"
 _STOPPED_REASON = "stopped"
 _TIMEOUT_BUFFER_SECS = 0.1
-_SERVER_TIMEOUT_MARGIN_SECS = 1.0
 _CONTAINS_ORDER_BY = re.compile(r"ORDER\s+BY", re.IGNORECASE)
 
 _ERROR_REASON_TO_EXCEPTION = {
@@ -796,8 +794,8 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
-                If multiple requests are made under the hood, ``timeout`` is
-                interpreted as the approximate total time of **all** requests.
+                If multiple requests are made under the hood, ``timeout``
+                applies to each individual request.
 
         Returns:
             _AsyncJob: This instance.
@@ -809,11 +807,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
                 if the job did not complete in the given timeout.
         """
         if self.state is None:
-            with TimeoutGuard(
-                timeout, timeout_error_type=concurrent.futures.TimeoutError
-            ) as guard:
-                self._begin(retry=retry, timeout=timeout)
-            timeout = guard.remaining_timeout
+            self._begin(retry=retry, timeout=timeout)
         # TODO: modify PollingFuture so it can pass a retry argument to done().
         return super(_AsyncJob, self).result(timeout=timeout)
 
@@ -2602,6 +2596,7 @@ class QueryJob(_AsyncJob):
         self._configuration = job_config
         self._query_results = None
         self._done_timeout = None
+        self._transport_timeout = None
 
     @property
     def allow_large_results(self):
@@ -3059,19 +3054,9 @@ class QueryJob(_AsyncJob):
             self._done_timeout = max(0, self._done_timeout)
             timeout_ms = int(api_timeout * 1000)
 
-        # If the server-side processing timeout (timeout_ms) is specified and
-        # would be picked as the total request timeout, we want to add a small
-        # margin to it - we don't want to timeout the connection just as the
-        # server-side processing might have completed, but instead slightly
-        # after the server-side deadline.
-        # However, if `timeout` is specified, and is shorter than the adjusted
-        # server timeout, the former prevails.
-        if timeout_ms is not None and timeout_ms > 0:
-            server_timeout_with_margin = timeout_ms / 1000 + _SERVER_TIMEOUT_MARGIN_SECS
-            if timeout is not None:
-                timeout = min(server_timeout_with_margin, timeout)
-            else:
-                timeout = server_timeout_with_margin
+        # If an explicit timeout is not given, fall back to the transport timeout
+        # stored in _blocking_poll() in the process of polling for job completion.
+        transport_timeout = timeout if timeout is not None else self._transport_timeout
 
         # Do not refresh if the state is already done, as the job will not
         # change once complete.
@@ -3082,19 +3067,20 @@ class QueryJob(_AsyncJob):
                 project=self.project,
                 timeout_ms=timeout_ms,
                 location=self.location,
-                timeout=timeout,
+                timeout=transport_timeout,
             )
 
             # Only reload the job once we know the query is complete.
             # This will ensure that fields such as the destination table are
             # correctly populated.
             if self._query_results.complete:
-                self.reload(retry=retry, timeout=timeout)
+                self.reload(retry=retry, timeout=transport_timeout)
 
         return self.state == _DONE_STATE
 
     def _blocking_poll(self, timeout=None):
         self._done_timeout = timeout
+        self._transport_timeout = timeout
         super(QueryJob, self)._blocking_poll(timeout=timeout)
 
     @staticmethod
@@ -3170,8 +3156,8 @@ class QueryJob(_AsyncJob):
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
-                If multiple requests are made under the hood, ``timeout`` is
-                interpreted as the approximate total time of **all** requests.
+                If multiple requests are made under the hood, ``timeout``
+                applies to each individual request.
 
         Returns:
             google.cloud.bigquery.table.RowIterator:
@@ -3189,27 +3175,17 @@ class QueryJob(_AsyncJob):
                 If the job did not complete in the given timeout.
         """
         try:
-            guard = TimeoutGuard(
-                timeout, timeout_error_type=concurrent.futures.TimeoutError
-            )
-            with guard:
-                super(QueryJob, self).result(retry=retry, timeout=timeout)
-            timeout = guard.remaining_timeout
+            super(QueryJob, self).result(retry=retry, timeout=timeout)
 
             # Return an iterator instead of returning the job.
             if not self._query_results:
-                guard = TimeoutGuard(
-                    timeout, timeout_error_type=concurrent.futures.TimeoutError
+                self._query_results = self._client._get_query_results(
+                    self.job_id,
+                    retry,
+                    project=self.project,
+                    location=self.location,
+                    timeout=timeout,
                 )
-                with guard:
-                    self._query_results = self._client._get_query_results(
-                        self.job_id,
-                        retry,
-                        project=self.project,
-                        location=self.location,
-                        timeout=timeout,
-                    )
-                timeout = guard.remaining_timeout
         except exceptions.GoogleCloudError as exc:
             exc.message += self._format_for_exception(self.query, self.job_id)
             exc.query_job = self

@@ -22,7 +22,6 @@ try:
 except ImportError:  # Python 2.7
     import collections as collections_abc
 
-import concurrent.futures
 import copy
 import functools
 import gzip
@@ -48,7 +47,6 @@ from google.resumable_media.requests import ResumableUpload
 import google.api_core.client_options
 import google.api_core.exceptions
 from google.api_core import page_iterator
-from google.auth.transport.requests import TimeoutGuard
 import google.cloud._helpers
 from google.cloud import exceptions
 from google.cloud.client import ClientWithProject
@@ -2598,27 +2596,22 @@ class Client(ClientWithProject):
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
-                If multiple requests are made under the hood, ``timeout`` is
-                interpreted as the approximate total time of **all** requests.
+                If multiple requests are made under the hood, ``timeout``
+                applies to each individual request.
 
         Returns:
             List[str]:
                 A list of the partition ids present in the partitioned table
         """
         table = _table_arg_to_table_ref(table, default_project=self.project)
-
-        with TimeoutGuard(
-            timeout, timeout_error_type=concurrent.futures.TimeoutError
-        ) as guard:
-            meta_table = self.get_table(
-                TableReference(
-                    DatasetReference(table.project, table.dataset_id),
-                    "%s$__PARTITIONS_SUMMARY__" % table.table_id,
-                ),
-                retry=retry,
-                timeout=timeout,
-            )
-        timeout = guard.remaining_timeout
+        meta_table = self.get_table(
+            TableReference(
+                DatasetReference(table.project, table.dataset_id),
+                "%s$__PARTITIONS_SUMMARY__" % table.table_id,
+            ),
+            retry=retry,
+            timeout=timeout,
+        )
 
         subset = [col for col in meta_table.schema if col.name == "partition_id"]
         return [
@@ -2685,8 +2678,8 @@ class Client(ClientWithProject):
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
-                If multiple requests are made under the hood, ``timeout`` is
-                interpreted as the approximate total time of **all** requests.
+                If multiple requests are made under the hood, ``timeout``
+                applies to each individual request.
 
         Returns:
             google.cloud.bigquery.table.RowIterator:
@@ -2711,11 +2704,7 @@ class Client(ClientWithProject):
         # No schema, but no selected_fields. Assume the developer wants all
         # columns, so get the table resource for them rather than failing.
         elif len(schema) == 0:
-            with TimeoutGuard(
-                timeout, timeout_error_type=concurrent.futures.TimeoutError
-            ) as guard:
-                table = self.get_table(table.reference, retry=retry, timeout=timeout)
-            timeout = guard.remaining_timeout
+            table = self.get_table(table.reference, retry=retry, timeout=timeout)
             schema = table.schema
 
         params = {}
