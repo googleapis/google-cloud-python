@@ -1,10 +1,11 @@
 # `google-crc32c`
 
-> Python / CFFI wrapper for `google/crc32c`
+This package wraps the [`google/crc32c`](https://github.com/google/crc32c) hardware-based implementation of the CRC32C hashing algorithm. Multiple wheels are distributed as well as source. If a wheel is not published for the python version and platform you are using, you will need to compile crc32c using a C toolchain.
 
-## Checking Out
 
-Be sure to check out all submodules:
+# Building
+
+## Be sure to check out all submodules:
 
 ```
 $ git clone --recursive https://github.com/googleapis/python-crc32c
@@ -32,6 +33,7 @@ Unfortunately, `libcrc32c` relies on many C++11 features, so
 building a Python 2.7 extension with the
 [Visual C++ Compiler for Python 2.7][2] is infeasible.
 
+
 ## Building Wheels
 
 On Linux:
@@ -48,7 +50,7 @@ On OS X:
 
 On Windows: see `.appveyor.yml`.
 
-## Verify Wheels
+## Testing/Verify Wheels
 
 On Linux (i.e. a host OS, not a `docker` container):
 
