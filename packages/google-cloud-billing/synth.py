@@ -29,8 +29,7 @@ library = gapic.py_library(
     "billing", "v1"
 )
 
-# TODO: remove /docs/billing_v1/*.rst files after fix is released in 0.19.0
-excludes = ["setup.py", "docs/index.rst", "/docs/billing_v1/services.rst", "/docs/billing_v1/types.rst"] 
+excludes = ["setup.py", "docs/index.rst"] 
 s.move(library, excludes=excludes)
 
 # correct license headers
@@ -50,9 +49,7 @@ s.replace("noxfile.py", '''"3.5", ''', '')
 
 # Expand flake errors permitted to accomodate the Microgenerator
 # TODO: remove extra error codes once issues below are resolved
-# E712: https://github.com/googleapis/gapic-generator-python/issues/322
 # F401: https://github.com/googleapis/gapic-generator-python/issues/324
-# F841: https://github.com/googleapis/gapic-generator-python/issues/323
-s.replace(".flake8", "ignore = .*", "ignore = E203, E266, E501, W503, F401, F841, E712")
+s.replace(".flake8", "ignore = .*", "ignore = E203, E266, E501, W503, F401")
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
