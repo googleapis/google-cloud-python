@@ -233,8 +233,8 @@ OrganizationSettings = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_ORGANIZATIONSETTINGS,
         __module__="google.cloud.securitycenter_v1.proto.organization_settings_pb2",
-        __doc__="""User specified settings that are attached to the Cloud
-  Security Command Center (Cloud SCC) organization.
+        __doc__="""User specified settings that are attached to the Cloud Security Command
+  Center (Cloud SCC) organization.
   
   
   Attributes:

@@ -373,8 +373,8 @@ Asset = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_ASSET_SECURITYCENTERPROPERTIES,
                 __module__="google.cloud.securitycenter_v1beta1.proto.asset_pb2",
-                __doc__="""Cloud SCC managed properties. These properties are managed by Cloud SCC
-    and cannot be modified by the user.
+                __doc__="""Cloud SCC managed properties. These properties are managed
+    by Cloud SCC and cannot be modified by the user.
     
     
     Attributes:

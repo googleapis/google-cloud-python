@@ -1,5 +1,5 @@
 {
-  "updateTime": "2020-02-22T13:27:49.397385Z",
+  "updateTime": "2020-02-26T13:22:21.777839Z",
   "sources": [
     {
       "generator": {
@@ -10,25 +10,11 @@
     },
     {
       "git": {
-        "name": ".",
-        "remote": "https://github.com/googleapis/python-securitycenter.git",
-        "sha": "0663bba8574cf6f0c88951cbcea24dd55ffc1dde"
-      }
-    },
-    {
-      "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "7f910bcc4fc4704947ccfd3ceed015d16b9e00c2",
-        "internalRef": "296451205",
-        "log": "7f910bcc4fc4704947ccfd3ceed015d16b9e00c2\nUpdate Dataproc v1beta2 client.\n\nPiperOrigin-RevId: 296451205\n\nde287524405a3dce124d301634731584fc0432d7\nFix: Reinstate method signatures that had been missed off some RPCs\nFix: Correct resource types for two fields\n\nPiperOrigin-RevId: 296435091\n\ne5bc9566ae057fb4c92f8b7e047f1c8958235b53\nDeprecate the endpoint_uris field, as it is unused.\n\nPiperOrigin-RevId: 296357191\n\n8c12e2b4dca94e12bff9f538bdac29524ff7ef7a\nUpdate Dataproc v1 client.\n\nPiperOrigin-RevId: 296336662\n\n17567c4a1ef0a9b50faa87024d66f8acbb561089\nRemoving erroneous comment, a la https://github.com/googleapis/java-speech/pull/103\n\nPiperOrigin-RevId: 296332968\n\n"
-      }
-    },
-    {
-      "git": {
-        "name": "synthtool",
-        "remote": "rpc://devrel/cloud/libraries/tools/autosynth",
-        "sha": "706a38c26db42299845396cdae55db635c38794a"
+        "sha": "0aba1900ffef672ec5f0da677cf590ee5686e13b",
+        "internalRef": "297204568",
+        "log": "0aba1900ffef672ec5f0da677cf590ee5686e13b\ncluster: use square brace for cross-reference\n\nPiperOrigin-RevId: 297204568\n\n5dac2da18f6325cbaed54603c43f0667ecd50247\nRestore retry params in gapic config because securitycenter has non-standard default retry params.\nRestore a few retry codes for some idempotent methods.\n\nPiperOrigin-RevId: 297196720\n\n1eb61455530252bba8b2c8d4bc9832960e5a56f6\npubsub: v1 replace IAM HTTP rules\n\nPiperOrigin-RevId: 297188590\n\n80b2d25f8d43d9d47024ff06ead7f7166548a7ba\nDialogflow weekly v2/v2beta1 library update:\n  - updates to mega agent api\n  - adding field mask override control for output audio config\nImportant updates are also posted at:\nhttps://cloud.google.com/dialogflow/docs/release-notes\n\nPiperOrigin-RevId: 297187629\n\n0b1876b35e98f560f9c9ca9797955f020238a092\nUse an older version of protoc-docs-plugin that is compatible with the specified gapic-generator and protobuf versions.\n\nprotoc-docs-plugin >=0.4.0 (see commit https://github.com/googleapis/protoc-docs-plugin/commit/979f03ede6678c487337f3d7e88bae58df5207af) is incompatible with protobuf 3.9.1.\n\nPiperOrigin-RevId: 296986742\n\n1e47e676cddbbd8d93f19ba0665af15b5532417e\nFix: Restore a method signature for UpdateCluster\n\nPiperOrigin-RevId: 296901854\n\n"
       }
     },
     {

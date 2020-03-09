@@ -121,33 +121,6 @@ class SecurityCenterGrpcTransport(object):
         return self._channel
 
     @property
-    def create_source(self):
-        """Return the gRPC stub for :meth:`SecurityCenterClient.create_source`.
-
-        Creates a source.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["security_center_stub"].CreateSource
-
-    @property
-    def create_finding(self):
-        """Return the gRPC stub for :meth:`SecurityCenterClient.create_finding`.
-
-        Creates a finding. The corresponding source must exist for finding creation
-        to succeed.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["security_center_stub"].CreateFinding
-
-    @property
     def get_iam_policy(self):
         """Return the gRPC stub for :meth:`SecurityCenterClient.get_iam_policy`.
 
@@ -159,32 +132,6 @@ class SecurityCenterGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["security_center_stub"].GetIamPolicy
-
-    @property
-    def get_organization_settings(self):
-        """Return the gRPC stub for :meth:`SecurityCenterClient.get_organization_settings`.
-
-        Gets the settings for an organization.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["security_center_stub"].GetOrganizationSettings
-
-    @property
-    def get_source(self):
-        """Return the gRPC stub for :meth:`SecurityCenterClient.get_source`.
-
-        Gets a source.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["security_center_stub"].GetSource
 
     @property
     def group_assets(self):
@@ -216,6 +163,72 @@ class SecurityCenterGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["security_center_stub"].GroupFindings
+
+    @property
+    def test_iam_permissions(self):
+        """Return the gRPC stub for :meth:`SecurityCenterClient.test_iam_permissions`.
+
+        Returns the permissions that a caller has on the specified source.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["security_center_stub"].TestIamPermissions
+
+    @property
+    def create_source(self):
+        """Return the gRPC stub for :meth:`SecurityCenterClient.create_source`.
+
+        Creates a source.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["security_center_stub"].CreateSource
+
+    @property
+    def create_finding(self):
+        """Return the gRPC stub for :meth:`SecurityCenterClient.create_finding`.
+
+        Creates a finding. The corresponding source must exist for finding creation
+        to succeed.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["security_center_stub"].CreateFinding
+
+    @property
+    def get_organization_settings(self):
+        """Return the gRPC stub for :meth:`SecurityCenterClient.get_organization_settings`.
+
+        Gets the settings for an organization.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["security_center_stub"].GetOrganizationSettings
+
+    @property
+    def get_source(self):
+        """Return the gRPC stub for :meth:`SecurityCenterClient.get_source`.
+
+        Gets a source.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["security_center_stub"].GetSource
 
     @property
     def list_assets(self):
@@ -302,19 +315,6 @@ class SecurityCenterGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["security_center_stub"].SetIamPolicy
-
-    @property
-    def test_iam_permissions(self):
-        """Return the gRPC stub for :meth:`SecurityCenterClient.test_iam_permissions`.
-
-        Returns the permissions that a caller has on the specified source.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["security_center_stub"].TestIamPermissions
 
     @property
     def update_finding(self):
