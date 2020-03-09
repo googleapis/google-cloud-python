@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [0.8.0](https://www.github.com/googleapis/python-asset/compare/v0.7.0...v0.8.0) (2020-03-07)
+
+
+### Features
+
+* remove search resources and search iam policies support in v1p1beta1; remove export assets and batch get assets history from v1p2beta1 (via synth) ([#12](https://www.github.com/googleapis/python-asset/issues/12)) ([15b60a3](https://www.github.com/googleapis/python-asset/commit/15b60a349c93c928fe121dc47d44d812a0c14439))
+
+
+### Bug Fixes
+
+* **asset:** correct asset synthfile ([#10355](https://www.github.com/googleapis/python-asset/issues/10355)) ([32d9374](https://www.github.com/googleapis/python-asset/commit/32d937433109b55c8f6632d402859a38520ee153))
+
 ## 0.7.0
 
 01-29-2020 10:53 PST
