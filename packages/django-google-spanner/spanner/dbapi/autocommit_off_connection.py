@@ -160,20 +160,7 @@ class Connection(object):
         return self.__dbhandle.update_ddl(ddl_statements).result()
 
     def list_tables(self):
-        # We CANNOT list tables with
-        #   SELECT
-        #     t.table_name
-        #   FROM
-        #     information_schema.tables AS t
-        #   WHERE
-        #     t.table_catalog = '' and t.table_schema = ''
-        # with a transaction otherwise we get back:
-        #   400 Unsupported concurrency mode in query using INFORMATION_SCHEMA.
-        # hence this specialized method.
-        self.run_prior_DDL_statements()
-
-        with self.__dbhandle.snapshot() as snapshot:
-            res = snapshot.execute_sql("""
+        return self.run_sql_in_snapshot("""
              SELECT
               t.table_name
             FROM
@@ -181,6 +168,14 @@ class Connection(object):
             WHERE
               t.table_catalog = '' and t.table_schema = ''
             """)
+
+    def run_sql_in_snapshot(self, sql):
+        # Some SQL e.g. for INFORMATION_SCHEMA cannot be run in read-write transactions
+        # hence this method exists to circumvent that limit.
+        self.run_prior_DDL_statements()
+
+        with self.__dbhandle.snapshot() as snapshot:
+            res = snapshot.execute_sql(sql)
             return list(res)
 
     def get_table_column_schema(self, table_name):

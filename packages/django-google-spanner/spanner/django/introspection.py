@@ -52,3 +52,48 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
             )
 
         return descriptions
+
+    def get_relations(self, cursor, table_name):
+        # TODO: PLEASE DO NOT USE THIS METHOD UNTIL
+        #   https://github.com/orijtech/django-spanner/issues/313
+        # is resolved so that foreign keys can be supported, as documented in:
+        #   https://github.com/orijtech/django-spanner/issues/311
+        """
+        Return a dictionary of {field_name: (field_name_other_table, other_table)}
+        representing all relationships in the table.
+        """
+        results = cursor.run_sql_in_snapshot(
+            '''
+            SELECT
+                tc.COLUMN_NAME as col, ccu.COLUMN_NAME as ref_col, ccu.TABLE_NAME as ref_table
+            FROM
+                INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS tc
+            JOIN
+                INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS as rc
+            ON
+                tc.CONSTRAINT_NAME = rc.CONSTRAINT_NAME
+            JOIN
+                INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE as ccu
+            ON
+                rc.UNIQUE_CONSTRAINT_NAME = ccu.CONSTRAINT_NAME
+            WHERE
+                tc.TABLE_NAME="%s"''' % self.connection.ops.quote_name(table_name),
+        )
+        return {column: (referred_column, referred_table) for (column, referred_column, referred_table) in results}
+
+    def get_primary_key_column(self, cursor, table_name):
+        results = cursor.run_sql_in_snapshot(
+            '''
+            SELECT
+                ccu.COLUMN_NAME
+            FROM
+                INFORMATION_SCHEMA.TABLE_CONSTRAINTS as tc
+            RIGHT JOIN
+                INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+            AS
+                ccu ON tc.CONSTRAINT_NAME = ccu.CONSTRAINT_NAME
+            WHERE
+                tc.TABLE_NAME="%s" AND tc.CONSTRAINT_TYPE='PRIMARY KEY' AND tc.TABLE_SCHEMA=''
+            ''' % self.connection.ops.quote_name(table_name),
+        )
+        return results[0][0] if results else None

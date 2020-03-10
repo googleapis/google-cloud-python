@@ -357,17 +357,10 @@ class Cursor(object):
         return self.__connection.run_prior_DDL_statements()
 
     def list_tables(self):
-        # We CANNOT list tables with
-        #   SELECT
-        #     t.table_name
-        #   FROM
-        #     information_schema.tables AS t
-        #   WHERE
-        #     t.table_catalog = '' and t.table_schema = ''
-        # with a transaction otherwise we get back:
-        #   400 Unsupported concurrency mode in query using INFORMATION_SCHEMA.
-        # hence this specialized method.
         return self.__connection.list_tables()
+
+    def run_sql_in_snapshot(self, sql):
+        return self.__connection.run_sql_in_snapshot(sql)
 
     def get_table_column_schema(self, table_name):
         return self.__connection.get_table_column_schema(table_name)
