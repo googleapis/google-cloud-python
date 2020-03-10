@@ -56,7 +56,7 @@ def main():
 
     setuptools.setup(
         name="google-crc32c",
-        version="0.0.1",
+        version="0.0.2",
         description="A python wrapper of the C library 'Google CRC32C'",
         long_description=readme,
         long_description_content_type="text/markdown",
@@ -85,9 +85,7 @@ def main():
             "Programming Language :: Python :: 3.8",
         ],
         cmdclass={"build_ext": BuildExtWithDLL},
-        extras_require={
-            "testing": ["pytest"]
-        },
+        extras_require={"testing": ["pytest"]},
     )
 
 

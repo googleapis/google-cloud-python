@@ -15,6 +15,7 @@
 
 set -e -x
 echo "CHECKING OSX WHEELS"
+PACKAGE_VERSION=0.0.2
 
 # ``readlink -f`` is not our friend on OS X. This relies on **some**
 # ``python`` being installed.
@@ -45,7 +46,7 @@ VIRTUALENV_CMD="${PYTHON37}/python3 -m venv"
 
 ${PYTHON35}/python3 -m venv venv35
 curl https://bootstrap.pypa.io/get-pip.py | venv35/bin/python3
-WHL=${REPO_ROOT}/wheels/google_crc32c-0.0.1-cp35-cp35m-macosx_10_6_intel.whl
+WHL=${REPO_ROOT}/wheels/google_crc32c-${PACKAGE_VERSION}-cp35-cp35m-macosx_10_6_intel.whl
 venv35/bin/pip install ${WHL}
 venv35/bin/python ${REPO_ROOT}/scripts/check_cffi_crc32c.py
 ${LISTDEPS_CMD} ${WHL}
@@ -53,7 +54,7 @@ rm -fr venv35
 
 ${PYTHON36}/python3 -m venv venv36
 curl https://bootstrap.pypa.io/get-pip.py | venv36/bin/python3
-WHL=${REPO_ROOT}/wheels/google_crc32c-0.0.1-cp36-cp36m-macosx_10_9_x86_64.whl
+WHL=${REPO_ROOT}/wheels/google_crc32c-${PACKAGE_VERSION}-cp36-cp36m-macosx_10_9_x86_64.whl
 venv36/bin/pip install ${WHL}
 venv36/bin/python ${REPO_ROOT}/scripts/check_cffi_crc32c.py
 ${LISTDEPS_CMD} ${WHL}
@@ -61,7 +62,7 @@ rm -fr venv36
 
 ${PYTHON37}/python3 -m venv venv37
 curl https://bootstrap.pypa.io/get-pip.py | venv37/bin/python3
-WHL=${REPO_ROOT}/wheels/google_crc32c-0.0.1-cp37-cp37m-macosx_10_9_x86_64.whl
+WHL=${REPO_ROOT}/wheels/google_crc32c-${PACKAGE_VERSION}-cp37-cp37m-macosx_10_9_x86_64.whl
 venv37/bin/pip install ${WHL}
 venv37/bin/python ${REPO_ROOT}/scripts/check_cffi_crc32c.py
 ${LISTDEPS_CMD} ${WHL}
@@ -70,7 +71,7 @@ rm -fr venv37
 # TODO: As of 2019-Dec-30, 3.8 is not available on our CI
 # ${PYTHON38}/python3 -m venv venv38
 # curl https://bootstrap.pypa.io/get-pip.py | venv38/bin/python3
-# WHL=${REPO_ROOT}/wheels/google_crc32c-0.0.1-cp38-cp38m-macosx_10_9_x86_64.whl
+# WHL=${REPO_ROOT}/wheels/google_crc32c-${PACKAGE_VERSION}-cp38-cp38m-macosx_10_9_x86_64.whl
 # venv37/bin/pip install ${WHL}
 # venv37/bin/python ${REPO_ROOT}/scripts/check_cffi_crc32c.py
 # ${LISTDEPS_CMD} ${WHL}
