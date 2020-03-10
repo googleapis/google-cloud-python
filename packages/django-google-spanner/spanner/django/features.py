@@ -265,7 +265,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # DatabaseIntrospection.get_table_description() isn't fully implemented:
         # https://github.com/orijtech/django-spanner/issues/248
         'introspection.tests.IntrospectionTests.test_get_table_description_col_lengths',
-        'introspection.tests.IntrospectionTests.test_get_table_description_nullable',
         # DatabaseIntrospection.get_primary_key_column() isn't implemented:
         # https://github.com/orijtech/django-spanner/issues/312
         'introspection.tests.IntrospectionTests.test_get_primary_key_column',
