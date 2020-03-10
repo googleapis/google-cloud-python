@@ -22,6 +22,8 @@ from google.api_core.protobuf_helpers import get_messages
 
 from google.cloud.securitycenter_v1.proto import asset_pb2
 from google.cloud.securitycenter_v1.proto import finding_pb2
+from google.cloud.securitycenter_v1.proto import notification_config_pb2
+from google.cloud.securitycenter_v1.proto import notification_message_pb2
 from google.cloud.securitycenter_v1.proto import organization_settings_pb2
 from google.cloud.securitycenter_v1.proto import run_asset_discovery_response_pb2
 from google.cloud.securitycenter_v1.proto import security_marks_pb2
@@ -33,6 +35,7 @@ from google.iam.v1 import policy_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import any_pb2
 from google.protobuf import duration_pb2
+from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import struct_pb2
 from google.protobuf import timestamp_pb2
@@ -47,6 +50,7 @@ _shared_modules = [
     operations_pb2,
     any_pb2,
     duration_pb2,
+    empty_pb2,
     field_mask_pb2,
     struct_pb2,
     timestamp_pb2,
@@ -57,6 +61,8 @@ _shared_modules = [
 _local_modules = [
     asset_pb2,
     finding_pb2,
+    notification_config_pb2,
+    notification_message_pb2,
     organization_settings_pb2,
     run_asset_discovery_response_pb2,
     security_marks_pb2,

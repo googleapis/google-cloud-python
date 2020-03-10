@@ -5,6 +5,9 @@ from google.cloud.securitycenter_v1.proto import (
     finding_pb2 as google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_finding__pb2,
 )
 from google.cloud.securitycenter_v1.proto import (
+    notification_config_pb2 as google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_notification__config__pb2,
+)
+from google.cloud.securitycenter_v1.proto import (
     organization_settings_pb2 as google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_organization__settings__pb2,
 )
 from google.cloud.securitycenter_v1.proto import (
@@ -21,6 +24,7 @@ from google.iam.v1 import policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
 from google.longrunning import (
     operations_pb2 as google_dot_longrunning_dot_operations__pb2,
 )
+from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class SecurityCenterStub(object):
@@ -43,10 +47,25 @@ class SecurityCenterStub(object):
             request_serializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.CreateFindingRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_finding__pb2.Finding.FromString,
         )
+        self.CreateNotificationConfig = channel.unary_unary(
+            "/google.cloud.securitycenter.v1.SecurityCenter/CreateNotificationConfig",
+            request_serializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.CreateNotificationConfigRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_notification__config__pb2.NotificationConfig.FromString,
+        )
+        self.DeleteNotificationConfig = channel.unary_unary(
+            "/google.cloud.securitycenter.v1.SecurityCenter/DeleteNotificationConfig",
+            request_serializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.DeleteNotificationConfigRequest.SerializeToString,
+            response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+        )
         self.GetIamPolicy = channel.unary_unary(
             "/google.cloud.securitycenter.v1.SecurityCenter/GetIamPolicy",
             request_serializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.GetIamPolicyRequest.SerializeToString,
             response_deserializer=google_dot_iam_dot_v1_dot_policy__pb2.Policy.FromString,
+        )
+        self.GetNotificationConfig = channel.unary_unary(
+            "/google.cloud.securitycenter.v1.SecurityCenter/GetNotificationConfig",
+            request_serializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.GetNotificationConfigRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_notification__config__pb2.NotificationConfig.FromString,
         )
         self.GetOrganizationSettings = channel.unary_unary(
             "/google.cloud.securitycenter.v1.SecurityCenter/GetOrganizationSettings",
@@ -78,6 +97,11 @@ class SecurityCenterStub(object):
             request_serializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.ListFindingsRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.ListFindingsResponse.FromString,
         )
+        self.ListNotificationConfigs = channel.unary_unary(
+            "/google.cloud.securitycenter.v1.SecurityCenter/ListNotificationConfigs",
+            request_serializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.ListNotificationConfigsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.ListNotificationConfigsResponse.FromString,
+        )
         self.ListSources = channel.unary_unary(
             "/google.cloud.securitycenter.v1.SecurityCenter/ListSources",
             request_serializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.ListSourcesRequest.SerializeToString,
@@ -107,6 +131,11 @@ class SecurityCenterStub(object):
             "/google.cloud.securitycenter.v1.SecurityCenter/UpdateFinding",
             request_serializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.UpdateFindingRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_finding__pb2.Finding.FromString,
+        )
+        self.UpdateNotificationConfig = channel.unary_unary(
+            "/google.cloud.securitycenter.v1.SecurityCenter/UpdateNotificationConfig",
+            request_serializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.UpdateNotificationConfigRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_notification__config__pb2.NotificationConfig.FromString,
         )
         self.UpdateOrganizationSettings = channel.unary_unary(
             "/google.cloud.securitycenter.v1.SecurityCenter/UpdateOrganizationSettings",
@@ -144,8 +173,29 @@ class SecurityCenterServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def CreateNotificationConfig(self, request, context):
+        """Creates a notification config.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def DeleteNotificationConfig(self, request, context):
+        """Deletes a notification config.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
     def GetIamPolicy(self, request, context):
         """Gets the access control policy on the specified Source.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def GetNotificationConfig(self, request, context):
+        """Gets a notification config.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -201,6 +251,13 @@ class SecurityCenterServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def ListNotificationConfigs(self, request, context):
+        """Lists notification configs.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
     def ListSources(self, request, context):
         """Lists all sources belonging to an organization.
     """
@@ -249,6 +306,14 @@ class SecurityCenterServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def UpdateNotificationConfig(self, request, context):
+        """
+    Updates a notification config.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
     def UpdateOrganizationSettings(self, request, context):
         """Updates an organization's settings.
     """
@@ -283,10 +348,25 @@ def add_SecurityCenterServicer_to_server(servicer, server):
             request_deserializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.CreateFindingRequest.FromString,
             response_serializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_finding__pb2.Finding.SerializeToString,
         ),
+        "CreateNotificationConfig": grpc.unary_unary_rpc_method_handler(
+            servicer.CreateNotificationConfig,
+            request_deserializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.CreateNotificationConfigRequest.FromString,
+            response_serializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_notification__config__pb2.NotificationConfig.SerializeToString,
+        ),
+        "DeleteNotificationConfig": grpc.unary_unary_rpc_method_handler(
+            servicer.DeleteNotificationConfig,
+            request_deserializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.DeleteNotificationConfigRequest.FromString,
+            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        ),
         "GetIamPolicy": grpc.unary_unary_rpc_method_handler(
             servicer.GetIamPolicy,
             request_deserializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.GetIamPolicyRequest.FromString,
             response_serializer=google_dot_iam_dot_v1_dot_policy__pb2.Policy.SerializeToString,
+        ),
+        "GetNotificationConfig": grpc.unary_unary_rpc_method_handler(
+            servicer.GetNotificationConfig,
+            request_deserializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.GetNotificationConfigRequest.FromString,
+            response_serializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_notification__config__pb2.NotificationConfig.SerializeToString,
         ),
         "GetOrganizationSettings": grpc.unary_unary_rpc_method_handler(
             servicer.GetOrganizationSettings,
@@ -318,6 +398,11 @@ def add_SecurityCenterServicer_to_server(servicer, server):
             request_deserializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.ListFindingsRequest.FromString,
             response_serializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.ListFindingsResponse.SerializeToString,
         ),
+        "ListNotificationConfigs": grpc.unary_unary_rpc_method_handler(
+            servicer.ListNotificationConfigs,
+            request_deserializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.ListNotificationConfigsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.ListNotificationConfigsResponse.SerializeToString,
+        ),
         "ListSources": grpc.unary_unary_rpc_method_handler(
             servicer.ListSources,
             request_deserializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.ListSourcesRequest.FromString,
@@ -347,6 +432,11 @@ def add_SecurityCenterServicer_to_server(servicer, server):
             servicer.UpdateFinding,
             request_deserializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.UpdateFindingRequest.FromString,
             response_serializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_finding__pb2.Finding.SerializeToString,
+        ),
+        "UpdateNotificationConfig": grpc.unary_unary_rpc_method_handler(
+            servicer.UpdateNotificationConfig,
+            request_deserializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_securitycenter__service__pb2.UpdateNotificationConfigRequest.FromString,
+            response_serializer=google_dot_cloud_dot_securitycenter__v1_dot_proto_dot_notification__config__pb2.NotificationConfig.SerializeToString,
         ),
         "UpdateOrganizationSettings": grpc.unary_unary_rpc_method_handler(
             servicer.UpdateOrganizationSettings,

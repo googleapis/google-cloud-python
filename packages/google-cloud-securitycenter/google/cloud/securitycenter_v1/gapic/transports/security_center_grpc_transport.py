@@ -205,6 +205,45 @@ class SecurityCenterGrpcTransport(object):
         return self._stubs["security_center_stub"].CreateFinding
 
     @property
+    def create_notification_config(self):
+        """Return the gRPC stub for :meth:`SecurityCenterClient.create_notification_config`.
+
+        Creates a notification config.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["security_center_stub"].CreateNotificationConfig
+
+    @property
+    def delete_notification_config(self):
+        """Return the gRPC stub for :meth:`SecurityCenterClient.delete_notification_config`.
+
+        Deletes a notification config.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["security_center_stub"].DeleteNotificationConfig
+
+    @property
+    def get_notification_config(self):
+        """Return the gRPC stub for :meth:`SecurityCenterClient.get_notification_config`.
+
+        Gets a notification config.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["security_center_stub"].GetNotificationConfig
+
+    @property
     def get_organization_settings(self):
         """Return the gRPC stub for :meth:`SecurityCenterClient.get_organization_settings`.
 
@@ -258,6 +297,19 @@ class SecurityCenterGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["security_center_stub"].ListFindings
+
+    @property
+    def list_notification_configs(self):
+        """Return the gRPC stub for :meth:`SecurityCenterClient.list_notification_configs`.
+
+        Lists notification configs.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["security_center_stub"].ListNotificationConfigs
 
     @property
     def list_sources(self):
@@ -329,6 +381,19 @@ class SecurityCenterGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["security_center_stub"].UpdateFinding
+
+    @property
+    def update_notification_config(self):
+        """Return the gRPC stub for :meth:`SecurityCenterClient.update_notification_config`.
+
+        Updates a notification config.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["security_center_stub"].UpdateNotificationConfig
 
     @property
     def update_organization_settings(self):

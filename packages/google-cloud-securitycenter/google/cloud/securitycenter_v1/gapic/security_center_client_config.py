@@ -47,6 +47,21 @@ config = {
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
+                "CreateNotificationConfig": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "DeleteNotificationConfig": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "GetNotificationConfig": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
                 "GetOrganizationSettings": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
@@ -63,6 +78,11 @@ config = {
                     "retry_params_name": "default",
                 },
                 "ListFindings": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "ListNotificationConfigs": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
@@ -88,6 +108,11 @@ config = {
                     "retry_params_name": "default",
                 },
                 "UpdateFinding": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "UpdateNotificationConfig": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
