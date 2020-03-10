@@ -43,6 +43,13 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'queries.test_bulk_update.BulkUpdateNoteTests.test_unsaved_models',
         'timezones.tests.LegacyDatabaseTests.test_cursor_execute_accepts_naive_datetime',
         'timezones.tests.NewDatabaseTests.test_cursor_execute_accepts_naive_datetime',
+        'validation.test_custom_messages.CustomMessagesTests.test_custom_null_message',
+        'validation.test_custom_messages.CustomMessagesTests.test_custom_simple_validator_message',
+        'validation.test_unique.PerformUniqueChecksTest.test_primary_key_unique_check_not_performed_when_adding_and_pk_not_specified',  # noqa
+        'validation.test_unique.PerformUniqueChecksTest.test_primary_key_unique_check_not_performed_when_not_adding',
+        'validation.test_validators.TestModelsWithValidators.test_custom_validator_passes_for_correct_value',
+        'validation.test_validators.TestModelsWithValidators.test_custom_validator_raises_error_for_incorrect_value',
+        'validation.test_validators.TestModelsWithValidators.test_field_validators_can_be_any_iterable',
         # Tests that assume a serial pk.
         'admin_filters.tests.ListFiltersTests.test_booleanfieldlistfilter_nullbooleanfield',
         'admin_filters.tests.ListFiltersTests.test_booleanfieldlistfilter_tuple',
@@ -147,6 +154,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'model_fields.test_decimalfield.DecimalFieldTests.test_fetch_from_db_without_float_rounding',
         'model_fields.test_decimalfield.DecimalFieldTests.test_roundtrip_with_trailing_zeros',
         # No UNIQUE constraints in Spanner.
+        'auth_tests.test_basic.BasicTestCase.test_unicode_username',
         'model_fields.test_filefield.FileFieldTests.test_unique_when_same_filename',
         'one_to_one.tests.OneToOneTests.test_multiple_o2o',
         # No CHECK constraints in Spanner.
@@ -216,28 +224,9 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # casting DateField to DateTimeField adds an unexpected hour:
         # https://github.com/orijtech/spanner-orm/issues/260
         'db_functions.comparison.test_cast.CastTests.test_cast_from_db_date_to_datetime',
-        # Did not expect to issue a SQL statement:
-        # https://github.com/orijtech/spanner-orm/issues/266
-        'validation.test_unique.PerformUniqueChecksTest.test_primary_key_unique_check_not_performed_when_adding_and_pk_not_specified',  # noqa
-        'validation.test_unique.PerformUniqueChecksTest.test_primary_key_unique_check_not_performed_when_not_adding',
-        # Database queries are issued to 'default' but shouldn't be:
-        # https://github.com/orijtech/spanner-orm/issues/267
-        'validation.test_custom_messages.CustomMessagesTests.test_custom_null_message',
-        'validation.test_custom_messages.CustomMessagesTests.test_custom_simple_validator_message',
-        'validation.test_validators.TestModelsWithValidators.test_custom_validator_passes_for_correct_value',
-        'validation.test_validators.TestModelsWithValidators.test_custom_validator_raises_error_for_incorrect_value',
-        'validation.test_validators.TestModelsWithValidators.test_field_validators_can_be_any_iterable',
-        # Invalid table names aren't supported:
-        # https://github.com/orijtech/spanner-orm/issues/268
-        'backends',
-        # Cloud Spanner supports Unicode as the native encoding yet Django
-        # doesn't expect the backend to support it, so skip this test.
-        'auth_tests.test_basic.BasicTestCase.test_unicode_username',
         # Obscure error with auth_tests:
         # https://github.com/orijtech/spanner-orm/issues/271
         'auth_tests.test_admin_multidb.MultiDatabaseTests.test_add_view',
-        # We can't run GIS tests on a non-GIS database.
-        'gis_tests',
         # Tests that by-pass using spanner.django and generate
         # invalid DDL: https://github.com/orijtech/django-spanner/issues/298
         'cache.tests.CreateCacheTableForDBCacheTests',
@@ -246,9 +235,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # A rollback failed and should be investigated:
         # https://github.com/orijtech/django-spanner/issues/299
         'test_utils.tests.TestBadSetUpTestData.test_failure_in_setUpTestData_should_rollback_transaction',
-        # The default object being compared against apparently shouldn't have an assigned id.
-        # https://github.com/orijtech/django-spanner/issues/300
-        'str.tests.SimpleTests.test_defaults',
         # Spanner doesn't support views.
         'inspectdb.tests.InspectDBTransactionalTests.test_include_views',
         'introspection.tests.IntrospectionTests.test_table_names_with_views',
