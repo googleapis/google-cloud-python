@@ -37,17 +37,16 @@ def test___all__():
 class TestContext:
     def _make_one(self, **kwargs):
         client = mock.Mock(
-            namespace=None, project="testing", spec=("namespace", "project")
+            namespace=None,
+            project="testing",
+            spec=("namespace", "project"),
+            stub=mock.Mock(spec=()),
         )
-        stub = mock.Mock(spec=())
-        return context_module.Context(client, stub=stub, **kwargs)
+        return context_module.Context(client, **kwargs)
 
-    @mock.patch("google.cloud.ndb._datastore_api.make_stub")
-    def test_constructor_defaults(self, make_stub):
+    def test_constructor_defaults(self):
         context = context_module.Context("client")
         assert context.client == "client"
-        assert context.stub is make_stub.return_value
-        make_stub.assert_called_once_with("client")
         assert isinstance(context.eventloop, _eventloop.EventLoop)
         assert context.batches == {}
         assert context.transaction is None
@@ -55,13 +54,11 @@ class TestContext:
     def test_constructor_overrides(self):
         context = context_module.Context(
             client="client",
-            stub="stub",
             eventloop="eventloop",
             batches="batches",
             transaction="transaction",
         )
         assert context.client == "client"
-        assert context.stub == "stub"
         assert context.eventloop == "eventloop"
         assert context.batches == "batches"
         assert context.transaction == "transaction"

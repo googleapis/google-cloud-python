@@ -146,7 +146,6 @@ _ContextTuple = collections.namedtuple(
     [
         "client",
         "eventloop",
-        "stub",
         "batches",
         "commit_batches",
         "transaction",
@@ -179,7 +178,6 @@ class _Context(_ContextTuple):
         cls,
         client,
         eventloop=None,
-        stub=None,
         batches=None,
         commit_batches=None,
         transaction=None,
@@ -194,13 +192,9 @@ class _Context(_ContextTuple):
     ):
         # Prevent circular import in Python 2.7
         from google.cloud.ndb import _cache
-        from google.cloud.ndb import _datastore_api
 
         if eventloop is None:
             eventloop = _eventloop.EventLoop()
-
-        if stub is None:
-            stub = _datastore_api.make_stub(client)
 
         if batches is None:
             batches = {}
@@ -218,7 +212,6 @@ class _Context(_ContextTuple):
             cls,
             client=client,
             eventloop=eventloop,
-            stub=stub,
             batches=batches,
             commit_batches=commit_batches,
             transaction=transaction,

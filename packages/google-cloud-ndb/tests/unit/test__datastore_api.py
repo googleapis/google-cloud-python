@@ -46,43 +46,20 @@ def future_result(result):
 
 class TestStub:
     @staticmethod
-    @mock.patch("google.cloud.ndb._datastore_api._helpers")
-    @mock.patch("google.cloud.ndb._datastore_api.datastore_pb2_grpc")
-    def test_secure_channel(datastore_pb2_grpc, _helpers):
-        channel = _helpers.make_secure_channel.return_value
+    def test_it():
         client = mock.Mock(
             _credentials="creds",
             secure=True,
             host="thehost",
-            spec=("_credentials", "secure", "host"),
+            stub=object(),
+            spec=("_credentials", "secure", "host", "stub"),
             client_info=client_info.ClientInfo(
                 user_agent="google-cloud-ndb/{}".format(__version__)
             ),
         )
         context = context_module.Context(client)
         with context.use():
-            stub = _api.stub()
-            assert _api.stub() is stub  # one stub per context
-        assert stub is datastore_pb2_grpc.DatastoreStub.return_value
-        datastore_pb2_grpc.DatastoreStub.assert_called_once_with(channel)
-        _helpers.make_secure_channel.assert_called_once_with(
-            "creds", client.client_info.to_user_agent(), "thehost"
-        )
-
-    @staticmethod
-    @mock.patch("google.cloud.ndb._datastore_api.grpc")
-    @mock.patch("google.cloud.ndb._datastore_api.datastore_pb2_grpc")
-    def test_insecure_channel(datastore_pb2_grpc, grpc):
-        channel = grpc.insecure_channel.return_value
-        client = mock.Mock(
-            secure=False, host="thehost", spec=("secure", "host")
-        )
-        context = context_module.Context(client)
-        with context.use():
-            stub = _api.stub()
-        assert stub is datastore_pb2_grpc.DatastoreStub.return_value
-        datastore_pb2_grpc.DatastoreStub.assert_called_once_with(channel)
-        grpc.insecure_channel.assert_called_once_with("thehost")
+            assert _api.stub() is client.stub
 
 
 class Test_make_call:
@@ -510,10 +487,13 @@ class Test_LookupBatch:
 
 @mock.patch("google.cloud.ndb._datastore_api.datastore_pb2")
 def test__datastore_lookup(datastore_pb2, context):
-    client = mock.Mock(project="theproject", spec=("project",))
-    stub = mock.Mock(spec=("Lookup",))
-    with context.new(client=client, stub=stub).use() as context:
-        context.stub.Lookup = Lookup = mock.Mock(spec=("future",))
+    client = mock.Mock(
+        project="theproject",
+        stub=mock.Mock(spec=("Lookup",)),
+        spec=("project", "stub"),
+    )
+    with context.new(client=client).use() as context:
+        client.stub.Lookup = Lookup = mock.Mock(spec=("future",))
         future = tasklets.Future()
         future.set_result("response")
         Lookup.future.return_value = future
@@ -524,7 +504,7 @@ def test__datastore_lookup(datastore_pb2, context):
         datastore_pb2.LookupRequest.assert_called_once_with(
             project_id="theproject", keys=["foo", "bar"], read_options=None
         )
-        context.stub.Lookup.future.assert_called_once_with(
+        client.stub.Lookup.future.assert_called_once_with(
             datastore_pb2.LookupRequest.return_value,
             timeout=_api._DEFAULT_TIMEOUT,
         )

@@ -15,6 +15,7 @@
 """A client for NDB which manages credentials, project, namespace."""
 
 import contextlib
+import grpc
 import os
 import requests
 
@@ -23,9 +24,11 @@ from google.cloud import environment_vars
 from google.cloud import _helpers
 from google.cloud import client as google_client
 from google.cloud.datastore_v1.gapic import datastore_client
+from google.cloud.datastore_v1.proto import datastore_pb2_grpc
 
 from google.cloud.ndb import __version__
 from google.cloud.ndb import context as context_module
+
 
 _CLIENT_INFO = client_info.ClientInfo(
     user_agent="google-cloud-ndb/{}".format(__version__)
@@ -113,6 +116,17 @@ class Client(google_client.ClientWithProject):
             super(Client, self).__init__(
                 project=project, credentials=credentials
             )
+
+        if emulator:
+            channel = grpc.insecure_channel(self.host)
+
+        else:
+            user_agent = _CLIENT_INFO.to_user_agent()
+            channel = _helpers.make_secure_channel(
+                self._credentials, user_agent, self.host
+            )
+
+        self.stub = datastore_pb2_grpc.DatastoreStub(channel)
 
     @contextlib.contextmanager
     def context(

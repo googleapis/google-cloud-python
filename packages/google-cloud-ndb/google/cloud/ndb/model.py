@@ -20,8 +20,13 @@
     from google.cloud import ndb
     from google.cloud.ndb import context as context_module
 
-    client = mock.Mock(project="testing", spec=("project",), namespace="")
-    context = context_module.Context(client, stub=mock.Mock(spec=())).use()
+    client = mock.Mock(
+        project="testing",
+        namespace="",
+        stub=mock.Mock(spec=()),
+        spec=("project", "namespace", "stub"),
+    )
+    context = context_module.Context(client).use()
     context.__enter__()
 
 .. testcleanup:: *

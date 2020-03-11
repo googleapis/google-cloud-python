@@ -87,11 +87,13 @@ def initialize_environment(request, environ):
 @pytest.fixture
 def context():
     client = mock.Mock(
-        project="testing", namespace=None, spec=("project", "namespace")
+        project="testing",
+        namespace=None,
+        spec=("project", "namespace"),
+        stub=mock.Mock(spec=()),
     )
     context = context_module.Context(
         client,
-        stub=mock.Mock(spec=()),
         eventloop=TestingEventLoop(),
         datastore_policy=True,
         legacy_data=False,

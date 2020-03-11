@@ -17,12 +17,8 @@
 import itertools
 import logging
 
-import grpc
-
-from google.cloud import _helpers
 from google.cloud.datastore import helpers
 from google.cloud.datastore_v1.proto import datastore_pb2
-from google.cloud.datastore_v1.proto import datastore_pb2_grpc
 from google.cloud.datastore_v1.proto import entity_pb2
 
 from google.cloud.ndb import context as context_module
@@ -54,28 +50,7 @@ def stub():
             The stub instance.
     """
     context = context_module.get_context()
-    return context.stub
-
-
-def make_stub(client):
-    """Create the stub for the `Google Datastore` API.
-
-    Args:
-        client (client.Client): The NDB client.
-
-    Returns:
-        :class:`~google.cloud.datastore_v1.proto.datastore_pb2_grpc.DatastoreStub`:
-            The stub instance.
-    """
-    if client.secure:
-        user_agent = client.client_info.to_user_agent()
-        channel = _helpers.make_secure_channel(
-            client._credentials, user_agent, client.host
-        )
-    else:
-        channel = grpc.insecure_channel(client.host)
-
-    return datastore_pb2_grpc.DatastoreStub(channel)
+    return context.client.stub
 
 
 def make_call(rpc_name, request, retries=None, timeout=None):
