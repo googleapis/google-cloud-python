@@ -118,5 +118,55 @@
         "expiration": 10,
         "timestamp": "20190201T090000Z",
         "expectedUrl": "https://storage.googleapis.com/test-bucket?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=6dbe94f8e52b2b8a9a476b1c857efa474e09944e2b52b925800316e094a7169d8dbe0df9c0ac08dabb22ac7e827470ceccd65f5a3eadba2a4fb9beebfe37f0d9bb1e552b851fa31a25045bdf019e507f5feb44f061551ef1aeb18dcec0e38ba2e2f77d560a46eaace9c56ed9aa642281301a9d848b0eb30749e34bc7f73a3d596240533466ff9b5f289cd0d4c845c7d96b82a35a5abd0c3aff83e4440ee6873e796087f43545544dc8c01afe1d79c726696b6f555371e491980e7ec145cca0803cf562c38f3fa1d724242f5dea25aac91d74ec9ddd739ff65523627763eaef25cd1f95ad985aaf0079b7c74eb5bcb2870a9b137a7b2c8e41fbe838c95872f75b"
+    },
+
+    {
+      "description": "HTTP Bucket Bound Hostname Support",
+      "bucket": "test-bucket",
+      "object": "test-object",
+      "method": "GET",
+      "expiration": 10,
+      "timestamp": "20190201T090000Z",
+      "expectedUrl": "http://mydomain.tld/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=7115a77f8c7ed1a8b74bca8b520904fca7f3bab90d69ea052687a94efd9b3a4e2a7fb7135d40e295e0a21958194c55da7e106227957c22ed6edc9d8b3d2a8133bc8af84fc9695dda8081d53f0db5ea9f28e5bfc225d78f873e9f571fd287bb7a95330e726aebd8eb4623cdb0b1a7ceb210b2ce1351b6be0191c2ad7b38f7ceb6c5ce2f98dbfb5a5a649050585e46e97f72f1f5407de657a56e34a3fdc80cdaa0598bd47f3e8af5ff22d0916b19b106890bff8c3f6587f1d3b076b16cd0ba0508607a672be33b9c75d537e15258450b43d22a21c4d528090acbb8e5bae7b31fc394e61394106ef1d6a8ed43074ab05bcec65674cd8113fb3de388da4d97e62f56",
+      "scheme": "http",
+      "urlStyle": "BUCKET_BOUND_HOSTNAME",
+      "bucketBoundHostname": "mydomain.tld"
+    },
+
+    {
+        "description": "HTTPS Bucket Bound Hostname Support",
+        "bucket": "test-bucket",
+        "object": "test-object",
+        "method": "GET",
+        "expiration": 10,
+        "timestamp": "20190201T090000Z",
+        "expectedUrl": "https://mydomain.tld/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=7115a77f8c7ed1a8b74bca8b520904fca7f3bab90d69ea052687a94efd9b3a4e2a7fb7135d40e295e0a21958194c55da7e106227957c22ed6edc9d8b3d2a8133bc8af84fc9695dda8081d53f0db5ea9f28e5bfc225d78f873e9f571fd287bb7a95330e726aebd8eb4623cdb0b1a7ceb210b2ce1351b6be0191c2ad7b38f7ceb6c5ce2f98dbfb5a5a649050585e46e97f72f1f5407de657a56e34a3fdc80cdaa0598bd47f3e8af5ff22d0916b19b106890bff8c3f6587f1d3b076b16cd0ba0508607a672be33b9c75d537e15258450b43d22a21c4d528090acbb8e5bae7b31fc394e61394106ef1d6a8ed43074ab05bcec65674cd8113fb3de388da4d97e62f56",
+        "scheme": "https",
+        "urlStyle": "BUCKET_BOUND_HOSTNAME",
+        "bucketBoundHostname": "mydomain.tld"
+    },
+
+    {
+        "description": "HTTP Bucket Bound Hostname Support",
+        "bucket": "test-bucket",
+        "method": "GET",
+        "expiration": 10,
+        "timestamp": "20190201T090000Z",
+        "expectedUrl": "http://mydomain.tld/?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=7a629a5632f16dba78961250b17c1f0d2ac0d2a28dbd7cbf79088fd6cd0b7f3ec66285cdeccca024f7b8134376f5cdcf0d60f399c6df1f19fcf5cf3be9d7f905d72cb6c0b5600f83dd6a7c8df607510c0e12e36216530a7b832eab87920363c5368a7e610d44005c73324f6ca4b435e8687672f46cc1342419ec4a5264549cb4b77bdc73f4f461edf39fbdd8fda99db440b077e906ef48d2c6b854c11ded58096f293d664650c123c6ec2a0379affd05bf5696ba11d3474623e039d5e05d3dc331b86ff4f7afb9262cf9750ff5944e661e70cc443b28f7e150796dde831d70e205c7e848c19b8281510f1d195e5819176e4868713266d0e0db7a3354857187cf",
+        "scheme": "http",
+        "urlStyle": "BUCKET_BOUND_HOSTNAME",
+        "bucketBoundHostname": "mydomain.tld"
+    },
+
+    {
+        "description": "HTTPS Bucket Bound Hostname Support",
+        "bucket": "test-bucket",
+        "method": "GET",
+        "expiration": 10,
+        "timestamp": "20190201T090000Z",
+        "expectedUrl": "https://mydomain.tld/?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=7a629a5632f16dba78961250b17c1f0d2ac0d2a28dbd7cbf79088fd6cd0b7f3ec66285cdeccca024f7b8134376f5cdcf0d60f399c6df1f19fcf5cf3be9d7f905d72cb6c0b5600f83dd6a7c8df607510c0e12e36216530a7b832eab87920363c5368a7e610d44005c73324f6ca4b435e8687672f46cc1342419ec4a5264549cb4b77bdc73f4f461edf39fbdd8fda99db440b077e906ef48d2c6b854c11ded58096f293d664650c123c6ec2a0379affd05bf5696ba11d3474623e039d5e05d3dc331b86ff4f7afb9262cf9750ff5944e661e70cc443b28f7e150796dde831d70e205c7e848c19b8281510f1d195e5819176e4868713266d0e0db7a3354857187cf",
+        "scheme": "https",
+        "urlStyle": "BUCKET_BOUND_HOSTNAME",
+        "bucketBoundHostname": "mydomain.tld"
     }
 ]

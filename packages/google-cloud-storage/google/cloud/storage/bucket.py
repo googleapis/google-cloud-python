@@ -2395,6 +2395,8 @@ class Bucket(_PropertyMixin):
         credentials=None,
         version=None,
         virtual_hosted_style=False,
+        bucket_bound_hostname=None,
+        scheme="http",
     ):
         """Generates a signed URL for this bucket.
 
@@ -2412,6 +2414,20 @@ class Bucket(_PropertyMixin):
         If you have a bucket that you want to allow access to for a set
         amount of time, you can use this method to generate a URL that
         is only valid within a certain time period.
+
+        If ``bucket_bound_hostname`` is set as an argument of :attr:`api_access_endpoint`,
+        ``https`` works only if using a ``CDN``.
+
+        Example:
+            Generates a signed URL for this bucket using bucket_bound_hostname and scheme.
+
+            >>> from google.cloud import storage
+            >>> client = storage.Client()
+            >>> bucket = client.get_bucket('my-bucket-name')
+            >>> url = bucket.generate_signed_url(expiration='url-expiration-time', bucket_bound_hostname='mydomain.tld',
+            >>>                                  version='v4')
+            >>> url = bucket.generate_signed_url(expiration='url-expiration-time', bucket_bound_hostname='mydomain.tld',
+            >>>                                  version='v4',scheme='https')  # If using ``CDN``
 
         This is particularly useful if you don't want publicly
         accessible buckets, but don't want to require users to explicitly
@@ -2462,6 +2478,18 @@ class Bucket(_PropertyMixin):
             (Optional) If true, then construct the URL relative the bucket's
             virtual hostname, e.g., '<bucket-name>.storage.googleapis.com'.
 
+        :type bucket_bound_hostname: str
+        :param bucket_bound_hostname:
+            (Optional) If pass, then construct the URL relative to the bucket-bound hostname.
+            Value cane be a bare or with scheme, e.g., 'example.com' or 'http://example.com'.
+            See: https://cloud.google.com/storage/docs/request-endpoints#cname
+
+        :type scheme: str
+        :param scheme:
+            (Optional) If ``bucket_bound_hostname`` is passed as a bare hostname, use
+            this value as the scheme.  ``https`` will work only when using a CDN.
+            Defaults to ``"http"``.
+
         :raises: :exc:`ValueError` when version is invalid.
         :raises: :exc:`TypeError` when expiration is not a valid type.
         :raises: :exc:`AttributeError` if credentials is not an instance
@@ -2480,9 +2508,18 @@ class Bucket(_PropertyMixin):
             api_access_endpoint = "https://{bucket_name}.storage.googleapis.com".format(
                 bucket_name=self.name
             )
-            resource = "/"
+        elif bucket_bound_hostname:
+            if ":" in bucket_bound_hostname:
+                api_access_endpoint = bucket_bound_hostname
+            else:
+                api_access_endpoint = "{scheme}://{bucket_bound_hostname}".format(
+                    scheme=scheme, bucket_bound_hostname=bucket_bound_hostname
+                )
         else:
             resource = "/{bucket_name}".format(bucket_name=self.name)
+
+        if virtual_hosted_style or bucket_bound_hostname:
+            resource = "/"
 
         if credentials is None:
             client = self._require_client(client)

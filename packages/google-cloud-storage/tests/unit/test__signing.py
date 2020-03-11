@@ -778,13 +778,15 @@ def dummy_service_account():
     return _DUMMY_SERVICE_ACCOUNT
 
 
-def _run_conformance_test(resource, test_data):
+def _run_conformance_test(
+    resource, test_data, api_access_endpoint="https://storage.googleapis.com"
+):
     credentials = dummy_service_account()
-
     url = Test_generate_signed_url_v4._call_fut(
         credentials,
         resource,
         expiration=test_data["expiration"],
+        api_access_endpoint=api_access_endpoint,
         method=test_data["method"],
         _request_timestamp=test_data["timestamp"],
         headers=test_data.get("headers"),
@@ -802,14 +804,31 @@ def test_conformance_client(test_data):
 
 @pytest.mark.parametrize("test_data", _BUCKET_TESTS)
 def test_conformance_bucket(test_data):
-    resource = "/{}".format(test_data["bucket"])
-    _run_conformance_test(resource, test_data)
+    if "urlStyle" in test_data and test_data["urlStyle"] == "BUCKET_BOUND_HOSTNAME":
+        api_access_endpoint = "{scheme}://{bucket_bound_hostname}".format(
+            scheme=test_data["scheme"],
+            bucket_bound_hostname=test_data["bucketBoundHostname"],
+        )
+        resource = "/"
+        _run_conformance_test(resource, test_data, api_access_endpoint)
+    else:
+        resource = "/{}".format(test_data["bucket"])
+        _run_conformance_test(resource, test_data)
 
 
 @pytest.mark.parametrize("test_data", _BLOB_TESTS)
 def test_conformance_blob(test_data):
-    resource = "/{}/{}".format(test_data["bucket"], test_data["object"])
-    _run_conformance_test(resource, test_data)
+    if "urlStyle" in test_data and test_data["urlStyle"] == "BUCKET_BOUND_HOSTNAME":
+        api_access_endpoint = "{scheme}://{bucket_bound_hostname}".format(
+            scheme=test_data["scheme"],
+            bucket_bound_hostname=test_data["bucketBoundHostname"],
+        )
+        resource = "/{}".format(test_data["object"])
+        _run_conformance_test(resource, test_data, api_access_endpoint)
+    else:
+
+        resource = "/{}/{}".format(test_data["bucket"], test_data["object"])
+        _run_conformance_test(resource, test_data)
 
 
 def _make_credentials(signer_email=None):

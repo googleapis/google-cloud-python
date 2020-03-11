@@ -2779,6 +2779,8 @@ class Test_Bucket(unittest.TestCase):
         credentials=None,
         expiration=None,
         virtual_hosted_style=False,
+        bucket_bound_hostname=None,
+        scheme="http",
     ):
         from six.moves.urllib import parse
         from google.cloud._helpers import UTC
@@ -2814,6 +2816,7 @@ class Test_Bucket(unittest.TestCase):
                 query_parameters=query_parameters,
                 version=version,
                 virtual_hosted_style=virtual_hosted_style,
+                bucket_bound_hostname=bucket_bound_hostname,
             )
 
         self.assertEqual(signed_uri, signer.return_value)
@@ -2827,10 +2830,19 @@ class Test_Bucket(unittest.TestCase):
             expected_api_access_endpoint = "https://{}.storage.googleapis.com".format(
                 bucket_name
             )
-            expected_resource = "/"
+        elif bucket_bound_hostname:
+            if ":" in bucket_bound_hostname:
+                expected_api_access_endpoint = bucket_bound_hostname
+            else:
+                expected_api_access_endpoint = "{scheme}://{bucket_bound_hostname}".format(
+                    scheme=scheme, bucket_bound_hostname=bucket_bound_hostname
+                )
         else:
             expected_api_access_endpoint = api_access_endpoint
             expected_resource = "/{}".format(parse.quote(bucket_name))
+
+        if virtual_hosted_style or bucket_bound_hostname:
+            expected_resource = "/"
 
         expected_kwargs = {
             "resource": expected_resource,
@@ -2966,6 +2978,14 @@ class Test_Bucket(unittest.TestCase):
 
     def test_generate_signed_url_v4_w_virtual_hostname(self):
         self._generate_signed_url_v4_helper(virtual_hosted_style=True)
+
+    def test_generate_signed_url_v4_w_bucket_bound_hostname_w_scheme(self):
+        self._generate_signed_url_v4_helper(
+            bucket_bound_hostname="http://cdn.example.com"
+        )
+
+    def test_generate_signed_url_v4_w_bucket_bound_hostname_w_bare_hostname(self):
+        self._generate_signed_url_v4_helper(bucket_bound_hostname="cdn.example.com")
 
 
 class _Connection(object):
