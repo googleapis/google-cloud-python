@@ -91,7 +91,59 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             if field.remote_field.through._meta.auto_created:
                 self.create_model(field.remote_field.through)
 
-    def column_sql(self, model, field, include_default=False):
+    def delete_model(self, model):
+        # Spanner requires dropping all of a table's indexes before dropping
+        # the table.
+        index_names = self._constraint_names(model, index=True, primary_key=False)
+        for index_name in index_names:
+            self.execute(self._delete_index_sql(model, index_name))
+        super().delete_model(model)
+
+    def add_field(self, model, field):
+        # Special-case implicit M2M tables
+        if field.many_to_many and field.remote_field.through._meta.auto_created:
+            return self.create_model(field.remote_field.through)
+        # Get the column's definition
+        definition, params = self.column_sql(model, field, exclude_not_null=True)
+        # It might not actually have a column behind it
+        if definition is None:
+            return
+        # Check constraints can go on the column SQL here
+        db_params = field.db_parameters(connection=self.connection)
+        if db_params['check']:
+            definition += " " + self.sql_check_constraint % db_params
+        # Build the SQL and run it
+        sql = self.sql_create_column % {
+            "table": self.quote_name(model._meta.db_table),
+            "column": self.quote_name(field.column),
+            "definition": definition,
+        }
+        self.execute(sql, params)
+        # Set defaults values on existing rows. (Django usually uses-database
+        # defaults for this but Spanner doesn't support them.)
+        effective_default = self.effective_default(field)
+        if effective_default is not None:
+            self.execute('UPDATE %(table)s SET %(column)s=%(value)r' % {
+                "table": self.quote_name(model._meta.db_table),
+                "column": self.quote_name(field.column),
+                "value": effective_default,
+            })
+        # Spanner doesn't support adding NOT NULL columns to existing tables.
+        if not field.null:
+            self.execute(self.sql_alter_column % {
+                "table": self.quote_name(model._meta.db_table),
+                "changes": self.sql_alter_column_not_null % {
+                    'column': self.quote_name(field.column),
+                    'type':  db_params['type'],
+                },
+            })
+        # Add an index, if required
+        self.deferred_sql.extend(self._field_indexes_sql(model, field))
+        # Add any FK constraints later
+        if field.remote_field and self.connection.features.supports_foreign_keys and field.db_constraint:
+            self.deferred_sql.append(self._create_fk_sql(model, field, "_fk_%(to_table)s_%(to_column)s"))
+
+    def column_sql(self, model, field, include_default=False, exclude_not_null=False):
         """
         Take a field and return its column definition.
         The field must already have had set_attributes_from_name() called.
@@ -110,7 +162,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         if (field.empty_strings_allowed and not field.primary_key and
                 self.connection.features.interprets_empty_strings_as_nulls):
             null = True
-        if not null:
+        if not null and not exclude_not_null:
             sql += " NOT NULL"
         # Optionally add the tablespace if it's an implicitly indexed column
         tablespace = field.db_tablespace or model._meta.db_tablespace

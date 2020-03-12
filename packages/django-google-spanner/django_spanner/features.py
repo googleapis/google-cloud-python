@@ -227,4 +227,49 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # duplicate table raises GoogleAPICallError rather than DatabaseError:
         # https://github.com/orijtech/django-spanner/issues/344
         'backends.tests.BackendTestCase.test_duplicate_table_error',
+        # Spanner limitation: Cannot change type of column.
+        'schema.tests.SchemaTests.test_alter_auto_field_to_char_field',
+        'schema.tests.SchemaTests.test_alter_text_field_to_date_field',
+        'schema.tests.SchemaTests.test_alter_text_field_to_datetime_field',
+        'schema.tests.SchemaTests.test_alter_text_field_to_time_field',
+        # Spanner limitation: Cannot rename tables and columns.
+        'schema.tests.SchemaTests.test_alter_db_table_case',
+        'schema.tests.SchemaTests.test_alter_pk_with_self_referential_field',
+        'schema.tests.SchemaTests.test_rename',
+        'schema.tests.SchemaTests.test_db_table',
+        'schema.tests.SchemaTests.test_m2m_rename_field_in_target_model',
+        'schema.tests.SchemaTests.test_m2m_repoint',
+        'schema.tests.SchemaTests.test_m2m_repoint_custom',
+        'schema.tests.SchemaTests.test_m2m_repoint_inherited',
+        'schema.tests.SchemaTests.test_rename_column_renames_deferred_sql_references',
+        'schema.tests.SchemaTests.test_rename_keep_null_status',
+        'schema.tests.SchemaTests.test_rename_referenced_field',
+        'schema.tests.SchemaTests.test_rename_table_renames_deferred_sql_references',
+        'schema.tests.SchemaTests.test_referenced_field_without_constraint_rename_inside_atomic_block',
+        'schema.tests.SchemaTests.test_referenced_table_without_constraint_rename_inside_atomic_block',
+        'schema.tests.SchemaTests.test_unique_name_quoting',
+        # Spanner limitation: Cannot change a field to a primary key.
+        'schema.tests.SchemaTests.test_alter_not_unique_field_to_primary_key',
+        # Spanner limitation: Cannot drop column in primary key.
+        'schema.tests.SchemaTests.test_primary_key',
+        # Spanner limitation:  Cannot remove a column from the primary key.
+        'schema.tests.SchemaTests.test_alter_int_pk_to_int_unique',
+        # Altering a "not null" column's type shouldn't drop "not null":
+        # https://github.com/orijtech/django-spanner/issues/377
+        'schema.tests.SchemaTests.test_alter_textual_field_keep_null_status',
+        # Creating an index with a descending column fails:
+        # https://github.com/orijtech/django-spanner/issues/373
+        'schema.tests.SchemaTests.test_order_index',
+        'schema.tests.SchemaTests.test_remove_db_index_doesnt_remove_custom_indexes',
+        # SchemaEditor.create_model() doesn't create unique constraints.
+        'schema.tests.SchemaTests.test_remove_field_unique_does_not_remove_meta_constraints',
+        'schema.tests.SchemaTests.test_remove_constraints_capital_letters',
+        'schema.tests.SchemaTests.test_unique',
+        'schema.tests.SchemaTests.test_unique_and_reverse_m2m',
+        'schema.tests.SchemaTests.test_unique_together',
+        'schema.tests.SchemaTests.test_unique_together_with_fk',
+        'schema.tests.SchemaTests.test_unique_together_with_fk_with_existing_index',
+        'schema.tests.SchemaTests.test_remove_unique_together_does_not_remove_meta_constraints',
+        # SchemaEditor.add_field() doesn't create unique constraints.
+        'schema.tests.SchemaTests.test_indexes',
     )
