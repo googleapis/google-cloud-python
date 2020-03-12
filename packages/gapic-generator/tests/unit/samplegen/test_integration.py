@@ -111,7 +111,7 @@ def test_generate_sample_basic():
 
     sample_id = ("mollusc_classify_sync")
     expected_str = '''# -*- coding: utf-8 -*-
-# Copyright (C) 2019  Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -247,7 +247,7 @@ def test_generate_sample_basic_unflattenable():
 
     sample_id = ("mollusc_classify_sync")
     expected_str = '''# -*- coding: utf-8 -*-
-# Copyright (C) 2019  Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
