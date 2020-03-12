@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [0.5.0](https://www.github.com/googleapis/python-securitycenter/compare/v0.4.0...v0.5.0) (2020-03-10)
+
+
+### Features
+
+* add support for notification configs to v1 ([#15](https://www.github.com/googleapis/python-securitycenter/issues/15)) ([9720fa4](https://www.github.com/googleapis/python-securitycenter/commit/9720fa44dc6e785c60ee9af555b5fea0564f34e0))
+
 ## [0.4.0](https://www.github.com/googleapis/python-securitycenter/compare/v0.3.0...v0.4.0) (2020-02-13)
 
 
