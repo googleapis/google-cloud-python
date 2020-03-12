@@ -108,6 +108,7 @@ The following client libraries have **beta** support:
 -  `Google Cloud Data Catalog`_ (`Data Catalog README`_, `Data Catalog Documentation`_)
 -  `Google Cloud Data Labeling`_ (`Data Labeling README`_, `Data Labeling Documentation`_)
 -  `Google Cloud Firestore`_ (`Firestore README`_, `Firestore Documentation`_)
+-  `Google Cloud Monitoring Dashboards`_ (`Monitoring Dashboards README`_, `Monitoring Dashboards Documentation`_)
 -  `Google Cloud Video Intelligence`_ (`Video Intelligence README`_, `Video Intelligence Documentation`_)
 -  `Google Cloud Vision`_ (`Vision README`_, `Vision Documentation`_)
 
@@ -130,6 +131,10 @@ The following client libraries have **beta** support:
 .. _Google Cloud Firestore: https://pypi.org/project/google-cloud-firestore/
 .. _Firestore README: https://github.com/googleapis/python-firestore
 .. _Firestore Documentation: https://googleapis.dev/python/firestore/latest
+
+.. _Google Cloud Monitoring Dashboards: https://pypi.org/project/google-cloud-monitoring-dashboards/
+.. _Monitoring Dashboards README: https://github.com/googleapis/python-monitoring-dashboards
+.. _Monitoring Dashboards Documentation: https://googleapis.dev/python/monitoring-dashboards/latest
 
 .. _Google Cloud Video Intelligence: https://pypi.org/project/google-cloud-videointelligence
 .. _Video Intelligence README: https://github.com/googleapis/python-videointelligence
