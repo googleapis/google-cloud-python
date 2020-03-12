@@ -202,8 +202,6 @@ class StreamingVideoIntelligenceServiceClient(object):
         while sending video/audio bytes.
         This method is only available via the gRPC API (not REST).
 
-        EXPERIMENTAL: This method interface might change in the future.
-
         Example:
             >>> from google.cloud import videointelligence_v1p3beta1
             >>>

@@ -1841,12 +1841,12 @@ AnnotateVideoRequest = _reflection.GeneratedProtocolMessageType(
           ``gs://bucket-id/object-id`` (other URI formats return [google
           .rpc.Code.INVALID\_ARGUMENT][google.rpc.Code.INVALID\_ARGUMENT
           ]). For more information, see `Request URIs
-          </storage/docs/reference-uris>`__. A video URI may include
-          wildcards in ``object-id``, and thus identify multiple videos.
-          Supported wildcards: '\*' to match 0 or more characters; '?'
-          to match 1 character. If unset, the input video should be
-          embedded in the request as ``input_content``. If set,
-          ``input_content`` should be unset.
+          <https://cloud.google.com/storage/docs/request-endpoints>`__.
+          A video URI may include wildcards in ``object-id``, and thus
+          identify multiple videos. Supported wildcards: '\*' to match 0
+          or more characters; '?' to match 1 character. If unset, the
+          input video should be embedded in the request as
+          ``input_content``. If set, ``input_content`` should be unset.
       input_content:
           The video data bytes. If unset, the input video(s) should be
           specified via ``input_uri``. If set, ``input_uri`` should be
@@ -1863,7 +1863,7 @@ AnnotateVideoRequest = _reflection.GeneratedProtocolMessageType(
           ``gs://bucket-id/object-id`` (other URI formats return [google
           .rpc.Code.INVALID\_ARGUMENT][google.rpc.Code.INVALID\_ARGUMENT
           ]). For more information, see `Request URIs
-          </storage/docs/reference-uris>`__.
+          <https://cloud.google.com/storage/docs/request-endpoints>`__.
       location_id:
           Optional. Cloud region where annotation should take place.
           Supported cloud regions: ``us-east1``, ``us-west1``, ``europe-
