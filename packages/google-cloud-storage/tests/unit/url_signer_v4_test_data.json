@@ -168,5 +168,19 @@
         "scheme": "https",
         "urlStyle": "BUCKET_BOUND_HOSTNAME",
         "bucketBoundHostname": "mydomain.tld"
+    },
+
+    {
+      "description": "Virtual Hosted Style",
+      "bucket": "test-bucket",
+      "object": "test-object",
+      "method": "GET",
+      "expiration": 10,
+      "timestamp": "20190201T090000Z",
+      "expectedUrl": "https://test-bucket.storage.googleapis.com/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=06c633ea060b0eda81ee58dd3337b01b0d243a44f18cb03ec948861f533a129e579c7fd4c856d187f1c7b86e5715ea0abf6a1c6ba32b69274d22b1b0406df6847dc87f0d289fe8dc0682351574849b8b13e4b66922f39441af96becb73ea4c56cd5e3eeb30bc91fe84e8bd205adca8639253bdb65b2fcaf2598a230c6d8f6d8177c9e58a61b6e826767f594056b490184d676897c4bbedc15d6fbf08c3fa82a406c62e74db661e6c5d7d3ced29e0619ee719dce4b8136360345b8dce120b9f1debd511c8dac3e6d874ee05bfda8c8f1c4fedd0c07fc6d98f5f18a349bb204d8ff401402a025194e2792df8a09282141157e4ca51d26a8d0d142a01c805321911",
+      "scheme": "https",
+      "urlStyle": "VIRTUAL_HOSTED_STYLE",
+      "expectedCanonicalRequest": "GET\n/test-object\nX-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host\nhost:test-bucket.storage.googleapis.com\n\nhost\nUNSIGNED-PAYLOAD",
+      "expectedStringToSign": "GOOG4-RSA-SHA256\n20190201T090000Z\n20190201/auto/storage/goog4_request\n89eeae48258eccdcb1f592fb908008e3f5d36a949c002c1e614c94356dc18fc6"
     }
 ]

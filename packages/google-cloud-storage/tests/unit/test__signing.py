@@ -778,8 +778,11 @@ def dummy_service_account():
     return _DUMMY_SERVICE_ACCOUNT
 
 
+_API_ACCESS_ENDPOINT = "https://storage.googleapis.com"
+
+
 def _run_conformance_test(
-    resource, test_data, api_access_endpoint="https://storage.googleapis.com"
+    resource, test_data, api_access_endpoint=_API_ACCESS_ENDPOINT
 ):
     credentials = dummy_service_account()
     url = Test_generate_signed_url_v4._call_fut(
@@ -804,13 +807,14 @@ def test_conformance_client(test_data):
 
 @pytest.mark.parametrize("test_data", _BUCKET_TESTS)
 def test_conformance_bucket(test_data):
+    global _API_ACCESS_ENDPOINT
     if "urlStyle" in test_data and test_data["urlStyle"] == "BUCKET_BOUND_HOSTNAME":
-        api_access_endpoint = "{scheme}://{bucket_bound_hostname}".format(
+        _API_ACCESS_ENDPOINT = "{scheme}://{bucket_bound_hostname}".format(
             scheme=test_data["scheme"],
             bucket_bound_hostname=test_data["bucketBoundHostname"],
         )
         resource = "/"
-        _run_conformance_test(resource, test_data, api_access_endpoint)
+        _run_conformance_test(resource, test_data, _API_ACCESS_ENDPOINT)
     else:
         resource = "/{}".format(test_data["bucket"])
         _run_conformance_test(resource, test_data)
@@ -818,15 +822,22 @@ def test_conformance_bucket(test_data):
 
 @pytest.mark.parametrize("test_data", _BLOB_TESTS)
 def test_conformance_blob(test_data):
-    if "urlStyle" in test_data and test_data["urlStyle"] == "BUCKET_BOUND_HOSTNAME":
-        api_access_endpoint = "{scheme}://{bucket_bound_hostname}".format(
-            scheme=test_data["scheme"],
-            bucket_bound_hostname=test_data["bucketBoundHostname"],
-        )
-        resource = "/{}".format(test_data["object"])
-        _run_conformance_test(resource, test_data, api_access_endpoint)
-    else:
+    global _API_ACCESS_ENDPOINT
+    if "urlStyle" in test_data:
+        if test_data["urlStyle"] == "BUCKET_BOUND_HOSTNAME":
+            _API_ACCESS_ENDPOINT = "{scheme}://{bucket_bound_hostname}".format(
+                scheme=test_data["scheme"],
+                bucket_bound_hostname=test_data["bucketBoundHostname"],
+            )
 
+        # For the VIRTUAL_HOSTED_STYLE
+        else:
+            _API_ACCESS_ENDPOINT = "{scheme}://{bucket_name}.storage.googleapis.com".format(
+                scheme=test_data["scheme"], bucket_name=test_data["bucket"]
+            )
+        resource = "/{}".format(test_data["object"])
+        _run_conformance_test(resource, test_data, _API_ACCESS_ENDPOINT)
+    else:
         resource = "/{}/{}".format(test_data["bucket"], test_data["object"])
         _run_conformance_test(resource, test_data)
 
