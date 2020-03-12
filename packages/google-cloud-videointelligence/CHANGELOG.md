@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [1.14.0](https://www.github.com/googleapis/python-videointelligence/compare/v1.13.0...v1.14.0) (2020-03-12)
+
+
+### Features
+
+* add logo recognition to v1 (via synth) ([#15](https://www.github.com/googleapis/python-videointelligence/issues/15)) ([84b1688](https://www.github.com/googleapis/python-videointelligence/commit/84b16887225acbb1d1821310baf10ef52967ce0b))
+
 ## [1.13.0](https://www.github.com/googleapis/python-videointelligence/compare/v1.12.1...v1.13.0) (2020-02-13)
 
 
