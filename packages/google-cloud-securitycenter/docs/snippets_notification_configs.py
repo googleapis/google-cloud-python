@@ -19,10 +19,7 @@
 def create_notification_config(organization_id, notification_config_id, pubsub_topic):
 
     # [START scc_create_notification_config]
-    from google.cloud import securitycenter_v1p1beta1 as securitycenter
-    from google.cloud.securitycenter_v1p1beta1.proto.notification_config_pb2 import (
-        NotificationConfig,
-    )
+    from google.cloud import securitycenter as securitycenter
 
     client = securitycenter.SecurityCenterClient()
 
@@ -39,7 +36,6 @@ def create_notification_config(organization_id, notification_config_id, pubsub_t
         {
             "description": "Notification for active findings",
             "pubsub_topic": pubsub_topic,
-            "event_type": NotificationConfig.FINDING,
             "streaming_config": {"filter": 'state = "ACTIVE"',},
         },
     )
@@ -52,7 +48,7 @@ def create_notification_config(organization_id, notification_config_id, pubsub_t
 def delete_notification_config(organization_id, notification_config_id):
 
     # [START scc_delete_notification_config]
-    from google.cloud import securitycenter_v1p1beta1 as securitycenter
+    from google.cloud import securitycenter as securitycenter
 
     client = securitycenter.SecurityCenterClient()
 
@@ -72,7 +68,7 @@ def delete_notification_config(organization_id, notification_config_id):
 def get_notification_config(organization_id, notification_config_id):
 
     # [START scc_get_notification_config]
-    from google.cloud import securitycenter_v1p1beta1 as securitycenter
+    from google.cloud import securitycenter as securitycenter
 
     client = securitycenter.SecurityCenterClient()
 
@@ -92,7 +88,7 @@ def get_notification_config(organization_id, notification_config_id):
 def list_notification_configs(organization_id):
 
     # [START scc_list_notification_configs]
-    from google.cloud import securitycenter_v1p1beta1 as securitycenter
+    from google.cloud import securitycenter as securitycenter
 
     client = securitycenter.SecurityCenterClient()
 
@@ -108,7 +104,7 @@ def list_notification_configs(organization_id):
 
 def update_notification_config(organization_id, notification_config_id, pubsub_topic):
     # [START scc_update_notification_config]
-    from google.cloud import securitycenter_v1p1beta1 as securitycenter
+    from google.cloud import securitycenter as securitycenter
     from google.protobuf import field_mask_pb2
 
     client = securitycenter.SecurityCenterClient()

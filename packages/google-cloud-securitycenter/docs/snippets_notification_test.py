@@ -18,10 +18,7 @@
 import os
 import uuid
 
-from google.cloud import securitycenter_v1p1beta1 as securitycenter
-from google.cloud.securitycenter_v1p1beta1.proto.notification_config_pb2 import (
-    NotificationConfig,
-)
+from google.cloud import securitycenter as securitycenter
 import pytest
 
 import snippets_notification_configs
@@ -59,7 +56,6 @@ def new_notification_config_for_update():
         {
             "description": "Notification for active findings",
             "pubsub_topic": PUBSUB_TOPIC,
-            "event_type": NotificationConfig.FINDING,
             "streaming_config": {"filter": "",},
         },
     )
@@ -79,7 +75,6 @@ def new_notification_config_for_get():
         {
             "description": "Notification for active findings",
             "pubsub_topic": PUBSUB_TOPIC,
-            "event_type": NotificationConfig.FINDING,
             "streaming_config": {"filter": "",},
         },
     )
@@ -99,7 +94,6 @@ def deleted_notification_config():
         {
             "description": "Notification for active findings",
             "pubsub_topic": PUBSUB_TOPIC,
-            "event_type": NotificationConfig.FINDING,
             "streaming_config": {"filter": "",},
         },
     )

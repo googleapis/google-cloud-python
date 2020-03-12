@@ -176,7 +176,7 @@ def snippets(session):
         os.path.join('docs', 'snippets_orgs.py'),
         os.path.join('docs', 'snippets_findings.py'),
         os.path.join('docs', 'snippets_security_marks.py'),
-        os.path.join('docs', 'v1p1beta1', 'snippets_test.py'),
+        os.path.join('docs', 'snippets_notification_test.py'),
 
 
         *session.posargs

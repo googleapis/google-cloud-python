@@ -20,7 +20,7 @@ def receive_notifications(project_id, subscription_name):
     # [START scc_receive_notifications]
     # Requires https://cloud.google.com/pubsub/docs/quickstart-client-libraries#pubsub-client-libraries-python
     from google.cloud import pubsub_v1
-    from google.cloud.securitycenter_v1p1beta1.proto.notification_message_pb2 import (
+    from google.cloud.securitycenter_v1.proto.notification_message_pb2 import (
         NotificationMessage,
     )
     from google.protobuf import json_format
