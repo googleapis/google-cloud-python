@@ -562,8 +562,8 @@ class InstanceAdminClient(object):
         Args:
             name (str): Required. The name of the requested instance. Values are of the form
                 ``projects/<project>/instances/<instance>``.
-            field_mask (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.FieldMask]): If field\_mask is present, specifies the subset of [][google.spanner.admin.instance.v1.Instance] fields
-                that should be returned. If absent, all [][google.spanner.admin.instance.v1.Instance] fields are
+            field_mask (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.FieldMask]): If field\_mask is present, specifies the subset of ``Instance`` fields
+                that should be returned. If absent, all ``Instance`` fields are
                 returned.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -821,18 +821,15 @@ class InstanceAdminClient(object):
 
         Args:
             instance (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.Instance]): Required. The instance to update, which must always include the instance
-                name. Otherwise, only fields mentioned in
-                [][google.spanner.admin.instance.v1.UpdateInstanceRequest.field\_mask]
-                need be included.
+                name. Otherwise, only fields mentioned in ``field_mask`` need be
+                included.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_admin_instance_v1.types.Instance`
-            field_mask (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.FieldMask]): Required. A mask specifying which fields in
-                [][google.spanner.admin.instance.v1.UpdateInstanceRequest.instance]
-                should be updated. The field mask must always be specified; this
-                prevents any future fields in
-                [][google.spanner.admin.instance.v1.Instance] from being erased
-                accidentally by clients that do not know about them.
+            field_mask (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.FieldMask]): Required. A mask specifying which fields in ``Instance`` should be
+                updated. The field mask must always be specified; this prevents any
+                future fields in ``Instance`` from being erased accidentally by clients
+                that do not know about them.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_admin_instance_v1.types.FieldMask`

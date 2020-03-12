@@ -1340,8 +1340,8 @@ Instance = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_INSTANCE,
         __module__="google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2",
-        __doc__="""An isolated set of Cloud Spanner resources on which
-  databases can be hosted.
+        __doc__="""An isolated set of Cloud Spanner resources on which databases can be
+  hosted.
   
   
   Attributes:
@@ -1398,15 +1398,7 @@ Instance = _reflection.GeneratedProtocolMessageType(
           as the string: name + "*" + value would prove problematic if
           we were to allow "*" in a future release.
       endpoint_uris:
-          Output only. The endpoint URIs based on the instance config.
-          For example, instances located in a specific cloud region (or
-          multi region) such as nam3, would have a nam3 specific
-          endpoint URI. This URI is to be used implictly by SDK clients,
-          with fallback to default URI. These endpoints are intended to
-          optimize the network routing between the client and the
-          instance's serving resources. If multiple endpoints are
-          present, client may establish connections using any of the
-          given URIs.
+          Deprecated. This field is not populated.
   """,
         # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.Instance)
     ),
@@ -1506,8 +1498,10 @@ GetInstanceRequest = _reflection.GeneratedProtocolMessageType(
           the form ``projects/<project>/instances/<instance>``.
       field_mask:
           If field\_mask is present, specifies the subset of
-          [][Instance] fields that should be returned. If absent, all
-          [][Instance] fields are returned.
+          [Instance][google.spanner.admin.instance.v1.Instance] fields
+          that should be returned. If absent, all
+          [Instance][google.spanner.admin.instance.v1.Instance] fields
+          are returned.
   """,
         # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.GetInstanceRequest)
     ),
@@ -1620,16 +1614,17 @@ UpdateInstanceRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       instance:
           Required. The instance to update, which must always include
-          the instance name. Otherwise, only fields mentioned in [][goog
-          le.spanner.admin.instance.v1.UpdateInstanceRequest.field\_mask
-          ] need be included.
+          the instance name. Otherwise, only fields mentioned in [field\
+          _mask][google.spanner.admin.instance.v1.UpdateInstanceRequest.
+          field\_mask] need be included.
       field_mask:
-          Required. A mask specifying which fields in [][google.spanner.
-          admin.instance.v1.UpdateInstanceRequest.instance] should be
-          updated. The field mask must always be specified; this
+          Required. A mask specifying which fields in
+          [Instance][google.spanner.admin.instance.v1.Instance] should
+          be updated. The field mask must always be specified; this
           prevents any future fields in
-          [][google.spanner.admin.instance.v1.Instance] from being
-          erased accidentally by clients that do not know about them.
+          [Instance][google.spanner.admin.instance.v1.Instance] from
+          being erased accidentally by clients that do not know about
+          them.
   """,
         # @@protoc_insertion_point(class_scope:google.spanner.admin.instance.v1.UpdateInstanceRequest)
     ),

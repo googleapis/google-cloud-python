@@ -237,7 +237,7 @@ class SpannerClient(object):
 
         Active sessions use additional server resources, so it is a good idea to
         delete idle and unneeded sessions. Aside from explicit deletes, Cloud
-        Spanner can delete sessions for which no operations are sent for more
+        Spanner may delete sessions for which no operations are sent for more
         than an hour. If a session is deleted, requests to it return
         ``NOT_FOUND``.
 
@@ -659,6 +659,7 @@ class SpannerClient(object):
         query_mode=None,
         partition_token=None,
         seqno=None,
+        query_options=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -752,6 +753,10 @@ class SpannerClient(object):
                 handled requests will yield the same response as the first execution.
 
                 Required for DML statements. Ignored for queries.
+            query_options (Union[dict, ~google.cloud.spanner_v1.types.QueryOptions]): Query optimizer configuration to use for the given query.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.QueryOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -792,6 +797,7 @@ class SpannerClient(object):
             query_mode=query_mode,
             partition_token=partition_token,
             seqno=seqno,
+            query_options=query_options,
         )
         if metadata is None:
             metadata = []
@@ -821,6 +827,7 @@ class SpannerClient(object):
         query_mode=None,
         partition_token=None,
         seqno=None,
+        query_options=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -909,6 +916,10 @@ class SpannerClient(object):
                 handled requests will yield the same response as the first execution.
 
                 Required for DML statements. Ignored for queries.
+            query_options (Union[dict, ~google.cloud.spanner_v1.types.QueryOptions]): Query optimizer configuration to use for the given query.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.QueryOptions`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -949,6 +960,7 @@ class SpannerClient(object):
             query_mode=query_mode,
             partition_token=partition_token,
             seqno=seqno,
+            query_options=query_options,
         )
         if metadata is None:
             metadata = []
@@ -1028,9 +1040,9 @@ class SpannerClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.Statement`
-            seqno (long): Required. A per-transaction sequence number used to identify this request.
-                This field makes each request idempotent such that if the request is
-                received multiple times, at most one will succeed.
+            seqno (long): Required. A per-transaction sequence number used to identify this request. This field
+                makes each request idempotent such that if the request is received multiple
+                times, at most one will succeed.
 
                 The sequence number must be monotonically increasing within the
                 transaction. If a request arrives for the first time with an out-of-order
