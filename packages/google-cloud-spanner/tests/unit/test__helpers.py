@@ -16,6 +16,61 @@
 import unittest
 
 
+class Test_merge_query_options(unittest.TestCase):
+    def _callFUT(self, *args, **kw):
+        from google.cloud.spanner_v1._helpers import _merge_query_options
+
+        return _merge_query_options(*args, **kw)
+
+    def test_base_none_and_merge_none(self):
+        base = merge = None
+        result = self._callFUT(base, merge)
+        self.assertIsNone(result)
+
+    def test_base_dict_and_merge_none(self):
+        from google.cloud.spanner_v1.proto.spanner_pb2 import ExecuteSqlRequest
+
+        base = {"optimizer_version": "2"}
+        merge = None
+        expected = ExecuteSqlRequest.QueryOptions(optimizer_version="2")
+        result = self._callFUT(base, merge)
+        self.assertEqual(result, expected)
+
+    def test_base_empty_and_merge_empty(self):
+        from google.cloud.spanner_v1.proto.spanner_pb2 import ExecuteSqlRequest
+
+        base = ExecuteSqlRequest.QueryOptions()
+        merge = ExecuteSqlRequest.QueryOptions()
+        result = self._callFUT(base, merge)
+        self.assertIsNone(result)
+
+    def test_base_none_merge_object(self):
+        from google.cloud.spanner_v1.proto.spanner_pb2 import ExecuteSqlRequest
+
+        base = None
+        merge = ExecuteSqlRequest.QueryOptions(optimizer_version="3")
+        result = self._callFUT(base, merge)
+        self.assertEqual(result, merge)
+
+    def test_base_none_merge_dict(self):
+        from google.cloud.spanner_v1.proto.spanner_pb2 import ExecuteSqlRequest
+
+        base = None
+        merge = {"optimizer_version": "3"}
+        expected = ExecuteSqlRequest.QueryOptions(optimizer_version="3")
+        result = self._callFUT(base, merge)
+        self.assertEqual(result, expected)
+
+    def test_base_object_merge_dict(self):
+        from google.cloud.spanner_v1.proto.spanner_pb2 import ExecuteSqlRequest
+
+        base = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+        merge = {"optimizer_version": "3"}
+        expected = ExecuteSqlRequest.QueryOptions(optimizer_version="3")
+        result = self._callFUT(base, merge)
+        self.assertEqual(result, expected)
+
+
 class Test_make_value_pb(unittest.TestCase):
     def _callFUT(self, *args, **kw):
         from google.cloud.spanner_v1._helpers import _make_value_pb

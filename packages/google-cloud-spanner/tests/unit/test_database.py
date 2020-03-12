@@ -924,7 +924,9 @@ class TestDatabase(_BaseTest):
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
-    def _execute_partitioned_dml_helper(self, dml, params=None, param_types=None):
+    def _execute_partitioned_dml_helper(
+        self, dml, params=None, param_types=None, query_options=None
+    ):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.spanner_v1.proto.result_set_pb2 import (
             PartialResultSet,
@@ -935,7 +937,10 @@ class TestDatabase(_BaseTest):
             TransactionSelector,
             TransactionOptions,
         )
-        from google.cloud.spanner_v1._helpers import _make_value_pb
+        from google.cloud.spanner_v1._helpers import (
+            _make_value_pb,
+            _merge_query_options,
+        )
 
         transaction_pb = TransactionPB(id=self.TRANSACTION_ID)
 
@@ -953,7 +958,9 @@ class TestDatabase(_BaseTest):
         api.begin_transaction.return_value = transaction_pb
         api.execute_streaming_sql.return_value = iterator
 
-        row_count = database.execute_partitioned_dml(dml, params, param_types)
+        row_count = database.execute_partitioned_dml(
+            dml, params, param_types, query_options
+        )
 
         self.assertEqual(row_count, 2)
 
@@ -975,6 +982,11 @@ class TestDatabase(_BaseTest):
             expected_params = None
 
         expected_transaction = TransactionSelector(id=self.TRANSACTION_ID)
+        expected_query_options = client._query_options
+        if query_options:
+            expected_query_options = _merge_query_options(
+                expected_query_options, query_options
+            )
 
         api.execute_streaming_sql.assert_called_once_with(
             self.SESSION_NAME,
@@ -982,6 +994,7 @@ class TestDatabase(_BaseTest):
             transaction=expected_transaction,
             params=expected_params,
             param_types=param_types,
+            query_options=expected_query_options,
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
@@ -995,6 +1008,14 @@ class TestDatabase(_BaseTest):
     def test_execute_partitioned_dml_w_params_and_param_types(self):
         self._execute_partitioned_dml_helper(
             dml=DML_W_PARAM, params=PARAMS, param_types=PARAM_TYPES
+        )
+
+    def test_execute_partitioned_dml_w_query_options(self):
+        from google.cloud.spanner_v1.proto.spanner_pb2 import ExecuteSqlRequest
+
+        self._execute_partitioned_dml_helper(
+            dml=DML_W_PARAM,
+            query_options=ExecuteSqlRequest.QueryOptions(optimizer_version="3"),
         )
 
     def test_session_factory_defaults(self):
@@ -1615,7 +1636,9 @@ class TestBatchSnapshot(_BaseTest):
     def test_generate_query_batches_w_max_partitions(self):
         sql = "SELECT COUNT(*) FROM table_name"
         max_partitions = len(self.TOKENS)
-        database = self._make_database()
+        client = _Client(self.PROJECT_ID)
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        database = _Database(self.DATABASE_NAME, instance=instance)
         batch_txn = self._make_one(database)
         snapshot = batch_txn._snapshot = self._make_snapshot()
         snapshot.partition_query.return_value = self.TOKENS
@@ -1624,7 +1647,7 @@ class TestBatchSnapshot(_BaseTest):
             batch_txn.generate_query_batches(sql, max_partitions=max_partitions)
         )
 
-        expected_query = {"sql": sql}
+        expected_query = {"sql": sql, "query_options": client._query_options}
         self.assertEqual(len(batches), len(self.TOKENS))
         for batch, token in zip(batches, self.TOKENS):
             self.assertEqual(batch["partition"], token)
@@ -1645,7 +1668,9 @@ class TestBatchSnapshot(_BaseTest):
         params = {"max_age": 30}
         param_types = {"max_age": "INT64"}
         size = 1 << 20
-        database = self._make_database()
+        client = _Client(self.PROJECT_ID)
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        database = _Database(self.DATABASE_NAME, instance=instance)
         batch_txn = self._make_one(database)
         snapshot = batch_txn._snapshot = self._make_snapshot()
         snapshot.partition_query.return_value = self.TOKENS
@@ -1656,7 +1681,12 @@ class TestBatchSnapshot(_BaseTest):
             )
         )
 
-        expected_query = {"sql": sql, "params": params, "param_types": param_types}
+        expected_query = {
+            "sql": sql,
+            "params": params,
+            "param_types": param_types,
+            "query_options": client._query_options,
+        }
         self.assertEqual(len(batches), len(self.TOKENS))
         for batch, token in zip(batches, self.TOKENS):
             self.assertEqual(batch["partition"], token)
@@ -1782,12 +1812,15 @@ def _make_instance_api():
 
 class _Client(object):
     def __init__(self, project=TestDatabase.PROJECT_ID):
+        from google.cloud.spanner_v1.proto.spanner_pb2 import ExecuteSqlRequest
+
         self.project = project
         self.project_name = "projects/" + self.project
         self._endpoint_cache = {}
         self.instance_admin_api = _make_instance_api()
         self._client_info = mock.Mock()
         self._client_options = mock.Mock()
+        self._query_options = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
 
 
 class _Instance(object):

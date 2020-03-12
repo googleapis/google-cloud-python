@@ -350,14 +350,17 @@ class TestTransaction(unittest.TestCase):
         with self.assertRaises(ValueError):
             transaction.execute_update(DML_QUERY_WITH_PARAM, PARAMS)
 
-    def _execute_update_helper(self, count=0):
+    def _execute_update_helper(self, count=0, query_options=None):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.spanner_v1.proto.result_set_pb2 import (
             ResultSet,
             ResultSetStats,
         )
         from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionSelector
-        from google.cloud.spanner_v1._helpers import _make_value_pb
+        from google.cloud.spanner_v1._helpers import (
+            _make_value_pb,
+            _merge_query_options,
+        )
 
         MODE = 2  # PROFILE
         stats_pb = ResultSetStats(row_count_exact=1)
@@ -370,7 +373,11 @@ class TestTransaction(unittest.TestCase):
         transaction._execute_sql_count = count
 
         row_count = transaction.execute_update(
-            DML_QUERY_WITH_PARAM, PARAMS, PARAM_TYPES, query_mode=MODE
+            DML_QUERY_WITH_PARAM,
+            PARAMS,
+            PARAM_TYPES,
+            query_mode=MODE,
+            query_options=query_options,
         )
 
         self.assertEqual(row_count, 1)
@@ -380,6 +387,12 @@ class TestTransaction(unittest.TestCase):
             fields={key: _make_value_pb(value) for (key, value) in PARAMS.items()}
         )
 
+        expected_query_options = database._instance._client._query_options
+        if query_options:
+            expected_query_options = _merge_query_options(
+                expected_query_options, query_options
+            )
+
         api.execute_sql.assert_called_once_with(
             self.SESSION_NAME,
             DML_QUERY_WITH_PARAM,
@@ -387,6 +400,7 @@ class TestTransaction(unittest.TestCase):
             params=expected_params,
             param_types=PARAM_TYPES,
             query_mode=MODE,
+            query_options=expected_query_options,
             seqno=count,
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
@@ -398,6 +412,13 @@ class TestTransaction(unittest.TestCase):
 
     def test_execute_update_w_count(self):
         self._execute_update_helper(count=1)
+
+    def test_execute_update_w_query_options(self):
+        from google.cloud.spanner_v1.proto.spanner_pb2 import ExecuteSqlRequest
+
+        self._execute_update_helper(
+            query_options=ExecuteSqlRequest.QueryOptions(optimizer_version="3")
+        )
 
     def test_batch_update_other_error(self):
         database = _Database()
@@ -557,8 +578,22 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(metadata, [("google-cloud-resource-prefix", database.name)])
 
 
+class _Client(object):
+    def __init__(self):
+        from google.cloud.spanner_v1.proto.spanner_pb2 import ExecuteSqlRequest
+
+        self._query_options = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+
+
+class _Instance(object):
+    def __init__(self):
+        self._client = _Client()
+
+
 class _Database(object):
-    name = "testing"
+    def __init__(self):
+        self.name = "testing"
+        self._instance = _Instance()
 
 
 class _Session(object):

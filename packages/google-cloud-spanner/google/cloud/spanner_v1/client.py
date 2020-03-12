@@ -50,9 +50,10 @@ from google.cloud.spanner_admin_instance_v1.gapic.instance_admin_client import (
 
 from google.cloud.client import ClientWithProject
 from google.cloud.spanner_v1 import __version__
-from google.cloud.spanner_v1._helpers import _metadata_with_prefix
+from google.cloud.spanner_v1._helpers import _merge_query_options, _metadata_with_prefix
 from google.cloud.spanner_v1.instance import DEFAULT_NODE_COUNT
 from google.cloud.spanner_v1.instance import Instance
+from google.cloud.spanner_v1.proto.spanner_pb2 import ExecuteSqlRequest
 
 _CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 EMULATOR_ENV_VAR = "SPANNER_EMULATOR_HOST"
@@ -62,6 +63,7 @@ _EMULATOR_HOST_HTTP_SCHEME = (
     "without a scheme: ex %s=localhost:8080."
 ) % ((EMULATOR_ENV_VAR,) * 3)
 SPANNER_ADMIN_SCOPE = "https://www.googleapis.com/auth/spanner.admin"
+OPTIMIZER_VERSION_ENV_VAR = "SPANNER_OPTIMIZER_VERSION"
 _USER_AGENT_DEPRECATED = (
     "The 'user_agent' argument to 'Client' is deprecated / unused. "
     "Please pass an appropriate 'client_info' instead."
@@ -70,6 +72,10 @@ _USER_AGENT_DEPRECATED = (
 
 def _get_spanner_emulator_host():
     return os.getenv(EMULATOR_ENV_VAR)
+
+
+def _get_spanner_optimizer_version():
+    return os.getenv(OPTIMIZER_VERSION_ENV_VAR, "")
 
 
 class InstanceConfig(object):
@@ -132,10 +138,19 @@ class Client(ClientWithProject):
     :param user_agent:
         (Deprecated) The user agent to be used with API request.
         Not used.
+
     :type client_options: :class:`~google.api_core.client_options.ClientOptions`
         or :class:`dict`
     :param client_options: (Optional) Client options used to set user options
         on the client. API Endpoint should be set through client_options.
+
+    :type query_options:
+        :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
+        or :class:`dict`
+    :param query_options:
+        (Optional) Query optimizer configuration to use for the given query.
+        If a dict is provided, it must be of the same form as the protobuf
+        message :class:`~google.cloud.spanner_v1.types.QueryOptions`
 
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
@@ -157,6 +172,7 @@ class Client(ClientWithProject):
         client_info=_CLIENT_INFO,
         user_agent=None,
         client_options=None,
+        query_options=None,
     ):
         # NOTE: This API has no use for the _http argument, but sending it
         #       will have no impact since the _http() @property only lazily
@@ -171,6 +187,13 @@ class Client(ClientWithProject):
             )
         else:
             self._client_options = client_options
+
+        env_query_options = ExecuteSqlRequest.QueryOptions(
+            optimizer_version=_get_spanner_optimizer_version()
+        )
+
+        # Environment flag config has higher precedence than application config.
+        self._query_options = _merge_query_options(query_options, env_query_options)
 
         if user_agent is not None:
             warnings.warn(_USER_AGENT_DEPRECATED, DeprecationWarning, stacklevel=2)

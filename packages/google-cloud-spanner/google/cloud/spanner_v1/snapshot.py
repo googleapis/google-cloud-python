@@ -23,6 +23,7 @@ from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionSelector
 from google.api_core.exceptions import ServiceUnavailable
 import google.api_core.gapic_v1.method
 from google.cloud._helpers import _datetime_to_pb_timestamp
+from google.cloud.spanner_v1._helpers import _merge_query_options
 from google.cloud._helpers import _timedelta_to_duration_pb
 from google.cloud.spanner_v1._helpers import _make_value_pb
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
@@ -157,6 +158,7 @@ class _SnapshotBase(_SessionWrapper):
         params=None,
         param_types=None,
         query_mode=None,
+        query_options=None,
         partition=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -179,6 +181,14 @@ class _SnapshotBase(_SessionWrapper):
             :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryMode`
         :param query_mode: Mode governing return of results / query plan. See
             https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
+
+        :type query_options:
+            :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
+                or :class:`dict`
+        :param query_options:
+                (Optional) Query optimizer configuration to use for the given query.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.QueryOptions`
 
         :type partition: bytes
         :param partition: (Optional) one of the partition tokens returned
@@ -211,6 +221,11 @@ class _SnapshotBase(_SessionWrapper):
         transaction = self._make_txn_selector()
         api = database.spanner_api
 
+        # Query-level options have higher precedence than client-level and
+        # environment-level options
+        default_query_options = database._instance._client._query_options
+        query_options = _merge_query_options(default_query_options, query_options)
+
         restart = functools.partial(
             api.execute_streaming_sql,
             self._session.name,
@@ -221,6 +236,7 @@ class _SnapshotBase(_SessionWrapper):
             query_mode=query_mode,
             partition_token=partition,
             seqno=self._execute_sql_count,
+            query_options=query_options,
             metadata=metadata,
             retry=retry,
             timeout=timeout,

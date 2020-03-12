@@ -202,6 +202,7 @@ class Session(object):
         params=None,
         param_types=None,
         query_mode=None,
+        query_options=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
     ):
@@ -225,11 +226,22 @@ class Session(object):
         :param query_mode: Mode governing return of results / query plan. See
             https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
 
+        :type query_options:
+            :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
+            or :class:`dict`
+        :param query_options: (Optional) Options that are provided for query plan stability.
+
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
         """
         return self.snapshot().execute_sql(
-            sql, params, param_types, query_mode, retry=retry, timeout=timeout
+            sql,
+            params,
+            param_types,
+            query_mode,
+            query_options=query_options,
+            retry=retry,
+            timeout=timeout,
         )
 
     def batch(self):

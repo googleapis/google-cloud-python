@@ -30,8 +30,11 @@ from google.api_core.exceptions import PermissionDenied
 import six
 
 # pylint: disable=ungrouped-imports
-from google.cloud.spanner_v1._helpers import _make_value_pb
-from google.cloud.spanner_v1._helpers import _metadata_with_prefix
+from google.cloud.spanner_v1._helpers import (
+    _make_value_pb,
+    _merge_query_options,
+    _metadata_with_prefix,
+)
 from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.gapic.spanner_client import SpannerClient
 from google.cloud.spanner_v1.gapic.transports import spanner_grpc_transport
@@ -350,7 +353,9 @@ class Database(object):
         metadata = _metadata_with_prefix(self.name)
         api.drop_database(self.name, metadata=metadata)
 
-    def execute_partitioned_dml(self, dml, params=None, param_types=None):
+    def execute_partitioned_dml(
+        self, dml, params=None, param_types=None, query_options=None
+    ):
         """Execute a partitionable DML statement.
 
         :type dml: str
@@ -365,9 +370,20 @@ class Database(object):
             (Optional) maps explicit types for one or more param values;
             required if parameters are passed.
 
+        :type query_options:
+            :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
+            or :class:`dict`
+        :param query_options:
+                (Optional) Query optimizer configuration to use for the given query.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.QueryOptions`
+
         :rtype: int
         :returns: Count of rows affected by the DML statement.
         """
+        query_options = _merge_query_options(
+            self._instance._client._query_options, query_options
+        )
         if params is not None:
             if param_types is None:
                 raise ValueError("Specify 'param_types' when passing 'params'.")
@@ -398,6 +414,7 @@ class Database(object):
                 transaction=txn_selector,
                 params=params_pb,
                 param_types=param_types,
+                query_options=query_options,
                 metadata=metadata,
             )
 
@@ -748,6 +765,7 @@ class BatchSnapshot(object):
         param_types=None,
         partition_size_bytes=None,
         max_partitions=None,
+        query_options=None,
     ):
         """Start a partitioned query operation.
 
@@ -783,6 +801,14 @@ class BatchSnapshot(object):
             service uses this as a hint, the actual number of partitions may
             differ.
 
+        :type query_options:
+            :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
+            or :class:`dict`
+        :param query_options:
+                (Optional) Query optimizer configuration to use for the given query.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.QueryOptions`
+
         :rtype: iterable of dict
         :returns:
             mappings of information used peform actual partitioned reads via
@@ -800,6 +826,13 @@ class BatchSnapshot(object):
         if params:
             query_info["params"] = params
             query_info["param_types"] = param_types
+
+        # Query-level options have higher precedence than client-level and
+        # environment-level options
+        default_query_options = self._database._instance._client._query_options
+        query_info["query_options"] = _merge_query_options(
+            default_query_options, query_options
+        )
 
         for partition in partitions:
             yield {"partition": partition, "query": query_info}

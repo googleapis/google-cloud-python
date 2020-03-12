@@ -362,6 +362,7 @@ class TestSession(unittest.TestCase):
             None,
             None,
             None,
+            query_options=None,
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             retry=google.api_core.gapic_v1.method.DEFAULT,
         )
@@ -386,7 +387,13 @@ class TestSession(unittest.TestCase):
         self.assertIs(found, snapshot().execute_sql.return_value)
 
         snapshot().execute_sql.assert_called_once_with(
-            SQL, params, param_types, "PLAN", timeout=None, retry=None
+            SQL,
+            params,
+            param_types,
+            "PLAN",
+            query_options=None,
+            timeout=None,
+            retry=None,
         )
 
     def test_execute_sql_explicit(self):
@@ -411,6 +418,7 @@ class TestSession(unittest.TestCase):
             params,
             param_types,
             "PLAN",
+            query_options=None,
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             retry=google.api_core.gapic_v1.method.DEFAULT,
         )

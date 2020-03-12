@@ -326,6 +326,7 @@ class Test_SnapshotBase(unittest.TestCase):
         count=0,
         partition=None,
         sql_count=0,
+        query_options=None,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         retry=google.api_core.gapic_v1.method.DEFAULT,
     ):
@@ -341,7 +342,10 @@ class Test_SnapshotBase(unittest.TestCase):
         )
         from google.cloud.spanner_v1.proto.type_pb2 import Type, StructType
         from google.cloud.spanner_v1.proto.type_pb2 import STRING, INT64
-        from google.cloud.spanner_v1._helpers import _make_value_pb
+        from google.cloud.spanner_v1._helpers import (
+            _make_value_pb,
+            _merge_query_options,
+        )
 
         VALUES = [[u"bharney", u"rhubbyl", 31], [u"phred", u"phlyntstone", 32]]
         VALUE_PBS = [[_make_value_pb(item) for item in row] for row in VALUES]
@@ -378,6 +382,7 @@ class Test_SnapshotBase(unittest.TestCase):
             PARAMS,
             PARAM_TYPES,
             query_mode=MODE,
+            query_options=query_options,
             partition=partition,
             retry=retry,
             timeout=timeout,
@@ -410,6 +415,12 @@ class Test_SnapshotBase(unittest.TestCase):
             fields={key: _make_value_pb(value) for (key, value) in PARAMS.items()}
         )
 
+        expected_query_options = database._instance._client._query_options
+        if query_options:
+            expected_query_options = _merge_query_options(
+                expected_query_options, query_options
+            )
+
         api.execute_streaming_sql.assert_called_once_with(
             self.SESSION_NAME,
             SQL_QUERY_WITH_PARAM,
@@ -417,6 +428,7 @@ class Test_SnapshotBase(unittest.TestCase):
             params=expected_params,
             param_types=PARAM_TYPES,
             query_mode=MODE,
+            query_options=expected_query_options,
             partition_token=partition,
             seqno=sql_count,
             metadata=[("google-cloud-resource-prefix", database.name)],
@@ -451,6 +463,14 @@ class Test_SnapshotBase(unittest.TestCase):
 
     def test_execute_sql_w_timeout(self):
         self._execute_sql_helper(multi_use=False, timeout=None)
+
+    def test_execute_sql_w_query_options(self):
+        from google.cloud.spanner_v1.proto.spanner_pb2 import ExecuteSqlRequest
+
+        self._execute_sql_helper(
+            multi_use=False,
+            query_options=ExecuteSqlRequest.QueryOptions(optimizer_version="3"),
+        )
 
     def _partition_read_helper(
         self, multi_use, w_txn, size=None, max_partitions=None, index=None
@@ -971,14 +991,28 @@ class TestSnapshot(unittest.TestCase):
         )
 
 
+class _Client(object):
+    def __init__(self):
+        from google.cloud.spanner_v1.proto.spanner_pb2 import ExecuteSqlRequest
+
+        self._query_options = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+
+
+class _Instance(object):
+    def __init__(self):
+        self._client = _Client()
+
+
+class _Database(object):
+    def __init__(self):
+        self.name = "testing"
+        self._instance = _Instance()
+
+
 class _Session(object):
     def __init__(self, database=None, name=TestSnapshot.SESSION_NAME):
         self._database = database
         self.name = name
-
-
-class _Database(object):
-    name = "testing"
 
 
 class _MockIterator(object):
