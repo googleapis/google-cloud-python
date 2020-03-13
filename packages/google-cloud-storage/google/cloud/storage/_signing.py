@@ -220,7 +220,7 @@ def canonicalize_v2(method, resource, query_parameters, headers):
 
     :type query_parameters: dict
     :param query_parameters:
-        (Optional) Additional query paramtersto be included as part of the
+        (Optional) Additional query parameters to be included as part of the
         signed URLs.  See:
         https://cloud.google.com/storage/docs/xml-api/reference-headers#query
 
@@ -352,7 +352,7 @@ def generate_signed_url_v2(
 
     :type query_parameters: dict
     :param query_parameters:
-        (Optional) Additional query paramtersto be included as part of the
+        (Optional) Additional query parameters to be included as part of the
         signed URLs.  See:
         https://cloud.google.com/storage/docs/xml-api/reference-headers#query
 

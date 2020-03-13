@@ -339,7 +339,7 @@ class Test_canonicalize_v2(unittest.TestCase):
             canonical.headers, ["x-goog-extension:foobar", "x-goog-resumable:start"]
         )
 
-    def test_w_query_paramters(self):
+    def test_w_query_parameters(self):
         method = "GET"
         resource = "/bucket/blob"
         query_parameters = {"foo": "bar", "baz": "qux"}
