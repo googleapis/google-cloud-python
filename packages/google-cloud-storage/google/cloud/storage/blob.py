@@ -438,22 +438,21 @@ class Blob(_PropertyMixin):
         :type headers: dict
         :param headers:
             (Optional) Additional HTTP headers to be included as part of the
-            signed URLs.  See:
+            signed URLs. See:
             https://cloud.google.com/storage/docs/xml-api/reference-headers
             Requests using the signed URL *must* pass the specified header
             (name and value) with each request for the URL.
 
         :type query_parameters: dict
         :param query_parameters:
-            (Optional) Additional query paramtersto be included as part of the
-            signed URLs.  See:
+            (Optional) Additional query parameters to be included as part of the
+            signed URLs. See:
             https://cloud.google.com/storage/docs/xml-api/reference-headers#query
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: (Optional) The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use. If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
-
 
         :type credentials: :class:`google.auth.credentials.Credentials` or
                            :class:`NoneType`
@@ -479,8 +478,8 @@ class Blob(_PropertyMixin):
 
         :type bucket_bound_hostname: str
         :param bucket_bound_hostname:
-            (Optional) If pass, then construct the URL relative to the bucket-bound hostname.
-            Value cane be a bare or with scheme, e.g., 'example.com' or 'http://example.com'.
+            (Optional) If passed, then construct the URL relative to the bucket-bound hostname.
+            Value can be a bare or with scheme, e.g., 'example.com' or 'http://example.com'.
             See: https://cloud.google.com/storage/docs/request-endpoints#cname
 
         :type scheme: str
