@@ -14,16 +14,23 @@
 
 """User friendly container for Cloud Spanner Instance."""
 
+import google.api_core.operation
 import re
 
 from google.cloud.spanner_admin_instance_v1.proto import (
     spanner_instance_admin_pb2 as admin_v1_pb2,
 )
+from google.cloud.spanner_admin_database_v1.proto import (
+    backup_pb2,
+    spanner_database_admin_pb2,
+)
+from google.protobuf.empty_pb2 import Empty
 from google.protobuf.field_mask_pb2 import FieldMask
 
 # pylint: disable=ungrouped-imports
 from google.cloud.exceptions import NotFound
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
+from google.cloud.spanner_v1.backup import Backup
 from google.cloud.spanner_v1.database import Database
 from google.cloud.spanner_v1.pool import BurstyPool
 
@@ -35,6 +42,33 @@ _INSTANCE_NAME_RE = re.compile(
 )
 
 DEFAULT_NODE_COUNT = 1
+
+_OPERATION_METADATA_MESSAGES = (
+    backup_pb2.Backup,
+    backup_pb2.CreateBackupMetadata,
+    spanner_database_admin_pb2.CreateDatabaseMetadata,
+    spanner_database_admin_pb2.Database,
+    spanner_database_admin_pb2.OptimizeRestoredDatabaseMetadata,
+    spanner_database_admin_pb2.RestoreDatabaseMetadata,
+    spanner_database_admin_pb2.UpdateDatabaseDdlMetadata,
+)
+
+_OPERATION_METADATA_TYPES = {
+    "type.googleapis.com/{}".format(message.DESCRIPTOR.full_name): message
+    for message in _OPERATION_METADATA_MESSAGES
+}
+
+_OPERATION_RESPONSE_TYPES = {
+    backup_pb2.CreateBackupMetadata: backup_pb2.Backup,
+    spanner_database_admin_pb2.CreateDatabaseMetadata: spanner_database_admin_pb2.Database,
+    spanner_database_admin_pb2.OptimizeRestoredDatabaseMetadata: spanner_database_admin_pb2.Database,
+    spanner_database_admin_pb2.RestoreDatabaseMetadata: spanner_database_admin_pb2.Database,
+    spanner_database_admin_pb2.UpdateDatabaseDdlMetadata: Empty,
+}
+
+
+def _type_string_to_type_pb(type_string):
+    return _OPERATION_METADATA_TYPES.get(type_string, Empty)
 
 
 class Instance(object):
@@ -379,3 +413,136 @@ class Instance(object):
         :returns: The next database in the page.
         """
         return Database.from_pb(database_pb, self, pool=BurstyPool())
+
+    def backup(self, backup_id, database="", expire_time=None):
+        """Factory to create a backup within this instance.
+
+        :type backup_id: str
+        :param backup_id: The ID of the backup.
+
+        :type database: :class:`~google.cloud.spanner_v1.database.Database`
+        :param database:
+            Optional. The database that will be used when creating the backup.
+            Required if the create method needs to be called.
+
+        :type expire_time: :class:`datetime.datetime`
+        :param expire_time:
+            Optional. The expire time that will be used when creating the backup.
+            Required if the create method needs to be called.
+        """
+        try:
+            return Backup(
+                backup_id, self, database=database.name, expire_time=expire_time
+            )
+        except AttributeError:
+            return Backup(backup_id, self, database=database, expire_time=expire_time)
+
+    def list_backups(self, filter_="", page_size=None):
+        """List backups for the instance.
+
+        :type filter_: str
+        :param filter_:
+            Optional. A string specifying a filter for which backups to list.
+
+        :type page_size: int
+        :param page_size:
+            Optional. The maximum number of databases in each page of results
+            from this request. Non-positive values are ignored. Defaults to a
+            sensible value set by the API.
+
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
+        :returns:
+            Iterator of :class:`~google.cloud.spanner_v1.backup.Backup`
+            resources within the current instance.
+        """
+        metadata = _metadata_with_prefix(self.name)
+        page_iter = self._client.database_admin_api.list_backups(
+            self.name, filter_, page_size=page_size, metadata=metadata
+        )
+        page_iter.item_to_value = self._item_to_backup
+        return page_iter
+
+    def _item_to_backup(self, iterator, backup_pb):
+        """Convert a backup protobuf to the native object.
+
+        :type iterator: :class:`~google.api_core.page_iterator.Iterator`
+        :param iterator: The iterator that is currently in use.
+
+        :type backup_pb: :class:`~google.spanner.admin.database.v1.Backup`
+        :param backup_pb: A backup returned from the API.
+
+        :rtype: :class:`~google.cloud.spanner_v1.backup.Backup`
+        :returns: The next backup in the page.
+        """
+        return Backup.from_pb(backup_pb, self)
+
+    def list_backup_operations(self, filter_="", page_size=None):
+        """List backup operations for the instance.
+
+        :type filter_: str
+        :param filter_:
+            Optional. A string specifying a filter for which backup operations
+            to list.
+
+        :type page_size: int
+        :param page_size:
+            Optional. The maximum number of operations in each page of results
+            from this request. Non-positive values are ignored. Defaults to a
+            sensible value set by the API.
+
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
+        :returns:
+            Iterator of :class:`~google.api_core.operation.Operation`
+            resources within the current instance.
+        """
+        metadata = _metadata_with_prefix(self.name)
+        page_iter = self._client.database_admin_api.list_backup_operations(
+            self.name, filter_, page_size=page_size, metadata=metadata
+        )
+        page_iter.item_to_value = self._item_to_operation
+        return page_iter
+
+    def list_database_operations(self, filter_="", page_size=None):
+        """List database operations for the instance.
+
+        :type filter_: str
+        :param filter_:
+            Optional. A string specifying a filter for which database operations
+            to list.
+
+        :type page_size: int
+        :param page_size:
+            Optional. The maximum number of operations in each page of results
+            from this request. Non-positive values are ignored. Defaults to a
+            sensible value set by the API.
+
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
+        :returns:
+            Iterator of :class:`~google.api_core.operation.Operation`
+            resources within the current instance.
+        """
+        metadata = _metadata_with_prefix(self.name)
+        page_iter = self._client.database_admin_api.list_database_operations(
+            self.name, filter_, page_size=page_size, metadata=metadata
+        )
+        page_iter.item_to_value = self._item_to_operation
+        return page_iter
+
+    def _item_to_operation(self, iterator, operation_pb):
+        """Convert an operation protobuf to the native object.
+
+        :type iterator: :class:`~google.api_core.page_iterator.Iterator`
+        :param iterator: The iterator that is currently in use.
+
+        :type operation_pb: :class:`~google.longrunning.operations.Operation`
+        :param operation_pb: An operation returned from the API.
+
+        :rtype: :class:`~google.api_core.operation.Operation`
+        :returns: The next operation in the page.
+        """
+        operations_client = self._client.database_admin_api.transport._operations_client
+        metadata_type = _type_string_to_type_pb(operation_pb.metadata.type_url)
+        response_type = _OPERATION_RESPONSE_TYPES[metadata_type]
+        return google.api_core.operation.from_gapic(
+            operation_pb, operations_client, response_type, metadata_type=metadata_type
+        )
