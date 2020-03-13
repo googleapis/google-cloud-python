@@ -205,7 +205,11 @@ class Credentials(credentials.Credentials, credentials.Signing):
         super(Credentials, self).__init__()
 
         self._source_credentials = copy.copy(source_credentials)
-        self._source_credentials._scopes = _IAM_SCOPE
+        # Service account source credentials must have the _IAM_SCOPE
+        # added to refresh correctly. User credentials cannot have
+        # their original scopes modified.
+        if isinstance(self._source_credentials, credentials.Scoped):
+            self._source_credentials = self._source_credentials.with_scopes(_IAM_SCOPE)
         self._target_principal = target_principal
         self._target_scopes = target_scopes
         self._delegates = delegates

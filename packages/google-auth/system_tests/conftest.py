@@ -25,6 +25,9 @@ import urllib3
 
 HERE = os.path.dirname(__file__)
 DATA_DIR = os.path.join(HERE, "data")
+IMPERSONATED_SERVICE_ACCOUNT_FILE = os.path.join(
+    DATA_DIR, "impersonated_service_account.json"
+)
 SERVICE_ACCOUNT_FILE = os.path.join(DATA_DIR, "service_account.json")
 AUTHORIZED_USER_FILE = os.path.join(DATA_DIR, "authorized_user.json")
 URLLIB3_HTTP = urllib3.PoolManager(retries=False)
@@ -37,6 +40,12 @@ TOKEN_INFO_URL = "https://www.googleapis.com/oauth2/v3/tokeninfo"
 def service_account_file():
     """The full path to a valid service account key file."""
     yield SERVICE_ACCOUNT_FILE
+
+
+@pytest.fixture
+def impersonated_service_account_file():
+    """The full path to a valid service account key file."""
+    yield IMPERSONATED_SERVICE_ACCOUNT_FILE
 
 
 @pytest.fixture

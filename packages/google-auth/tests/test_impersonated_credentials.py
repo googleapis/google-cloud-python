@@ -26,6 +26,7 @@ from google.auth import exceptions
 from google.auth import impersonated_credentials
 from google.auth import transport
 from google.auth.impersonated_credentials import Credentials
+from google.oauth2 import credentials
 from google.oauth2 import service_account
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "", "data")
@@ -102,16 +103,29 @@ class TestImpersonatedCredentials(object):
     SOURCE_CREDENTIALS = service_account.Credentials(
         SIGNER, SERVICE_ACCOUNT_EMAIL, TOKEN_URI
     )
+    USER_SOURCE_CREDENTIALS = credentials.Credentials(token="ABCDE")
 
-    def make_credentials(self, lifetime=LIFETIME, target_principal=TARGET_PRINCIPAL):
+    def make_credentials(
+        self,
+        source_credentials=SOURCE_CREDENTIALS,
+        lifetime=LIFETIME,
+        target_principal=TARGET_PRINCIPAL,
+    ):
 
         return Credentials(
-            source_credentials=self.SOURCE_CREDENTIALS,
+            source_credentials=source_credentials,
             target_principal=target_principal,
             target_scopes=self.TARGET_SCOPES,
             delegates=self.DELEGATES,
             lifetime=lifetime,
         )
+
+    def test_make_from_user_credentials(self):
+        credentials = self.make_credentials(
+            source_credentials=self.USER_SOURCE_CREDENTIALS
+        )
+        assert not credentials.valid
+        assert credentials.expired
 
     def test_default_state(self):
         credentials = self.make_credentials()

@@ -43,21 +43,27 @@ To run a single session, specify it with ``nox -s``::
 
     $ nox -f system_tests/noxfile.py -s service_account
 
+
+Project and Credentials Setup
+-------------------------------
+
+Enable the IAM Service Account Credentials API on the project.
+
 To run system tests locally, you will need to set up a data directory ::
 
     $ mkdir system_tests/data
 
-Add a service account file and authorized user file to the data directory.
-Your directory should look like this ::
+Your directory should look like this. Follow the instructions below for creating each file. ::
 
   system_tests/
       data/
-        service_account.json
         authorized_user.json
+        impersonated_service_account.json
+        service_account.json
 
-The files must be named exactly ``service_account.json``
-and ``authorized_user.json``. See `Creating and Managing Service Account Keys`_ for how to
-obtain a service account. 
+
+``authorized_user.json``
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Use the `gcloud CLI`_ to get an authorized user file ::
 
@@ -65,15 +71,41 @@ Use the `gcloud CLI`_ to get an authorized user file ::
 
 You will see something like::
 
-    Credentials saved to file: [/usr/local/home/.config/gcloud/application_default_credentials.json]```
+    Credentials saved to file: [/usr/local/home/.config/gcloud/application_default_credentials.json]
 
 Copy the contents of the file to ``authorized_user.json``.
 
-.. _Creating and Managing Service Account Keys: https://cloud.google.com/iam/docs/creating-managing-service-account-keys
+Open the IAM page of the Google Cloud Console. Grant the user the `Service Account Token Creator Role`.
+This will allow the user to impersonate service accounts on the project.
+
 .. _gcloud CLI: https://cloud.google.com/sdk/gcloud/
 
+
+``service_account.json``
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Follow `Creating and Managing Service Account Keys`_ to create a service account. 
+
+Copy the credentials file to ``service_account.json``.
+
+Grant the account associated with ``service_account.json`` the following roles.
+
+- App Engine Admin (for App Engine tests)
+- Service Account Token Creator (for impersonated credentials tests)
+- Pub/Sub Viewer (for gRPC tests)
+- Storage Object Viewer (for impersonated credentials tests)
+
+``impersonated_service_account.json``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Follow `Creating and Managing Service Account Keys`_ to create a service account. 
+
+Copy the credentials file to ``impersonated_service_account.json``.
+
+.. _Creating and Managing Service Account Keys: https://cloud.google.com/iam/docs/creating-managing-service-account-keys
+
 App Engine System Tests
-^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 To run the App Engine tests, you wil need to deploy a default App Engine service.
 If you already have a default service associated with your project, you can skip this step.

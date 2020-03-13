@@ -170,7 +170,8 @@ def configure_cloud_sdk(session, application_default_credentials, project=False)
 # Test sesssions
 
 TEST_DEPENDENCIES = ["pytest", "requests"]
-PYTHON_VERSIONS=['2.7', '3.7']
+PYTHON_VERSIONS = ["2.7", "3.7"]
+
 
 @nox.session(python=PYTHON_VERSIONS)
 def service_account(session):
@@ -184,6 +185,13 @@ def oauth2_credentials(session):
     session.install(*TEST_DEPENDENCIES)
     session.install(LIBRARY_DIR)
     session.run("pytest", "test_oauth2_credentials.py")
+
+
+@nox.session(python=PYTHON_VERSIONS)
+def impersonated_credentials(session):
+    session.install(*TEST_DEPENDENCIES)
+    session.install(LIBRARY_DIR)
+    session.run("pytest", "test_impersonated_credentials.py")
 
 
 @nox.session(python=PYTHON_VERSIONS)
