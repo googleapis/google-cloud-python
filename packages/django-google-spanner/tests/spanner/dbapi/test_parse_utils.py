@@ -22,7 +22,7 @@ class ParseUtilsTests(TestCase):
         cases = [
                 ('SELECT 1', STMT_NON_UPDATING,),
                 ('SELECT s.SongName FROM Songs AS s', STMT_NON_UPDATING,),
-                ('EXPLAIN app', STMT_NON_UPDATING,),
+                ('WITH sq AS (SELECT SchoolID FROM Roster) SELECT * from sq', STMT_NON_UPDATING,),
                 (
                     'CREATE TABLE django_content_type (id STRING(64) NOT NULL, name STRING(100) '
                     'NOT NULL, app_label STRING(100) NOT NULL, model STRING(100) NOT NULL) PRIMARY KEY(id)',
