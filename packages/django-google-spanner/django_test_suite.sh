@@ -29,13 +29,13 @@ create_settings() {
     cat << ! > "$SETTINGS_FILE.py"
 DATABASES = {
    'default': {
-       'ENGINE': 'spanner.django',
+       'ENGINE': 'django_spanner',
        'PROJECT': "$PROJECT",
        'INSTANCE': "$INSTANCE",
        'NAME': "$TEST_DBNAME",
    },
    'other': {
-       'ENGINE': 'spanner.django',
+       'ENGINE': 'django_spanner',
        'PROJECT': "$PROJECT",
        'INSTANCE': "$INSTANCE",
        'NAME': "$TEST_DBNAME_OTHER",
@@ -55,10 +55,10 @@ run_django_tests() {
     python3 runtests.py $TEST_APPS --verbosity=2 --noinput --settings $SETTINGS_FILE
 }
 
-install_spanner_django() {
+install_django_spanner() {
     pip3 install .
 }
 
-install_spanner_django
+install_django_spanner
 checkout_django
 run_django_tests

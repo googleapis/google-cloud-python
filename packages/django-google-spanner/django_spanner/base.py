@@ -101,7 +101,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
             'project': self.settings_dict['PROJECT'],
             'instance': self.settings_dict['INSTANCE'],
             'database': self.settings_dict['NAME'],
-            'user_agent': 'spanner-django/0.0.1',
+            'user_agent': 'django_spanner/0.0.1',
             **self.settings_dict['OPTIONS'],
         }
 
