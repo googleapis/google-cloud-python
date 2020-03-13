@@ -1340,8 +1340,8 @@ Instance = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_INSTANCE,
         __module__="google.cloud.spanner.admin.instance_v1.proto.spanner_instance_admin_pb2",
-        __doc__="""An isolated set of Cloud Spanner resources on which databases can be
-  hosted.
+        __doc__="""An isolated set of Cloud Spanner resources on which
+  databases can be hosted.
   
   
   Attributes:

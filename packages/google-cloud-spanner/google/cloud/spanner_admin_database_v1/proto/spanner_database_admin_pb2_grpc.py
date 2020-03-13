@@ -2,6 +2,9 @@
 import grpc
 
 from google.cloud.spanner_admin_database_v1.proto import (
+    backup_pb2 as google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2,
+)
+from google.cloud.spanner_admin_database_v1.proto import (
     spanner_database_admin_pb2 as google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2,
 )
 from google.iam.v1 import iam_policy_pb2 as google_dot_iam_dot_v1_dot_iam__policy__pb2
@@ -17,7 +20,8 @@ class DatabaseAdminStub(object):
 
   The Cloud Spanner Database Admin API can be used to create, drop, and
   list databases. It also enables updating the schema of pre-existing
-  databases.
+  databases. It can be also used to create, delete and list backups for a
+  database and to restore from an existing backup.
   """
 
     def __init__(self, channel):
@@ -71,6 +75,46 @@ class DatabaseAdminStub(object):
             request_serializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsRequest.SerializeToString,
             response_deserializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsResponse.FromString,
         )
+        self.CreateBackup = channel.unary_unary(
+            "/google.spanner.admin.database.v1.DatabaseAdmin/CreateBackup",
+            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.CreateBackupRequest.SerializeToString,
+            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
+        )
+        self.GetBackup = channel.unary_unary(
+            "/google.spanner.admin.database.v1.DatabaseAdmin/GetBackup",
+            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.GetBackupRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.Backup.FromString,
+        )
+        self.UpdateBackup = channel.unary_unary(
+            "/google.spanner.admin.database.v1.DatabaseAdmin/UpdateBackup",
+            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.UpdateBackupRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.Backup.FromString,
+        )
+        self.DeleteBackup = channel.unary_unary(
+            "/google.spanner.admin.database.v1.DatabaseAdmin/DeleteBackup",
+            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.DeleteBackupRequest.SerializeToString,
+            response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+        )
+        self.ListBackups = channel.unary_unary(
+            "/google.spanner.admin.database.v1.DatabaseAdmin/ListBackups",
+            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.ListBackupsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.ListBackupsResponse.FromString,
+        )
+        self.RestoreDatabase = channel.unary_unary(
+            "/google.spanner.admin.database.v1.DatabaseAdmin/RestoreDatabase",
+            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.RestoreDatabaseRequest.SerializeToString,
+            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
+        )
+        self.ListDatabaseOperations = channel.unary_unary(
+            "/google.spanner.admin.database.v1.DatabaseAdmin/ListDatabaseOperations",
+            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabaseOperationsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabaseOperationsResponse.FromString,
+        )
+        self.ListBackupOperations = channel.unary_unary(
+            "/google.spanner.admin.database.v1.DatabaseAdmin/ListBackupOperations",
+            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.ListBackupOperationsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.ListBackupOperationsResponse.FromString,
+        )
 
 
 class DatabaseAdminServicer(object):
@@ -78,7 +122,8 @@ class DatabaseAdminServicer(object):
 
   The Cloud Spanner Database Admin API can be used to create, drop, and
   list databases. It also enables updating the schema of pre-existing
-  databases.
+  databases. It can be also used to create, delete and list backups for a
+  database and to restore from an existing backup.
   """
 
     def ListDatabases(self, request, context):
@@ -124,6 +169,8 @@ class DatabaseAdminServicer(object):
 
     def DropDatabase(self, request, context):
         """Drops (aka deletes) a Cloud Spanner database.
+    Completed backups for the database will be retained according to their
+    `expire_time`.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -139,10 +186,12 @@ class DatabaseAdminServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def SetIamPolicy(self, request, context):
-        """Sets the access control policy on a database resource.
+        """Sets the access control policy on a database or backup resource.
     Replaces any existing policy.
 
     Authorization requires `spanner.databases.setIamPolicy`
+    permission on [resource][google.iam.v1.SetIamPolicyRequest.resource].
+    For backups, authorization requires `spanner.backups.setIamPolicy`
     permission on [resource][google.iam.v1.SetIamPolicyRequest.resource].
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -150,24 +199,131 @@ class DatabaseAdminServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def GetIamPolicy(self, request, context):
-        """Gets the access control policy for a database resource.
-    Returns an empty policy if a database exists but does
-    not have a policy set.
+        """Gets the access control policy for a database or backup resource.
+    Returns an empty policy if a database or backup exists but does not have a
+    policy set.
 
     Authorization requires `spanner.databases.getIamPolicy` permission on
     [resource][google.iam.v1.GetIamPolicyRequest.resource].
+    For backups, authorization requires `spanner.backups.getIamPolicy`
+    permission on [resource][google.iam.v1.GetIamPolicyRequest.resource].
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def TestIamPermissions(self, request, context):
-        """Returns permissions that the caller has on the specified database resource.
+        """Returns permissions that the caller has on the specified database or backup
+    resource.
 
     Attempting this RPC on a non-existent Cloud Spanner database will
     result in a NOT_FOUND error if the user has
     `spanner.databases.list` permission on the containing Cloud
     Spanner instance. Otherwise returns an empty set of permissions.
+    Calling this method on a backup that does not exist will
+    result in a NOT_FOUND error if the user has
+    `spanner.backups.list` permission on the containing instance.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def CreateBackup(self, request, context):
+        """Starts creating a new Cloud Spanner Backup.
+    The returned backup [long-running operation][google.longrunning.Operation]
+    will have a name of the format
+    `projects/<project>/instances/<instance>/backups/<backup>/operations/<operation_id>`
+    and can be used to track creation of the backup. The
+    [metadata][google.longrunning.Operation.metadata] field type is
+    [CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata]. The
+    [response][google.longrunning.Operation.response] field type is
+    [Backup][google.spanner.admin.database.v1.Backup], if successful. Cancelling the returned operation will stop the
+    creation and delete the backup.
+    There can be only one pending backup creation per database. Backup creation
+    of different databases can run concurrently.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def GetBackup(self, request, context):
+        """Gets metadata on a pending or completed [Backup][google.spanner.admin.database.v1.Backup].
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def UpdateBackup(self, request, context):
+        """Updates a pending or completed [Backup][google.spanner.admin.database.v1.Backup].
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def DeleteBackup(self, request, context):
+        """Deletes a pending or completed [Backup][google.spanner.admin.database.v1.Backup].
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def ListBackups(self, request, context):
+        """Lists completed and pending backups.
+    Backups returned are ordered by `create_time` in descending order,
+    starting from the most recent `create_time`.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def RestoreDatabase(self, request, context):
+        """Create a new database by restoring from a completed backup. The new
+    database must be in the same project and in an instance with the same
+    instance configuration as the instance containing
+    the backup. The returned database [long-running
+    operation][google.longrunning.Operation] has a name of the format
+    `projects/<project>/instances/<instance>/databases/<database>/operations/<operation_id>`,
+    and can be used to track the progress of the operation, and to cancel it.
+    The [metadata][google.longrunning.Operation.metadata] field type is
+    [RestoreDatabaseMetadata][google.spanner.admin.database.v1.RestoreDatabaseMetadata].
+    The [response][google.longrunning.Operation.response] type
+    is [Database][google.spanner.admin.database.v1.Database], if
+    successful. Cancelling the returned operation will stop the restore and
+    delete the database.
+    There can be only one database being restored into an instance at a time.
+    Once the restore operation completes, a new restore operation can be
+    initiated, without waiting for the optimize operation associated with the
+    first restore to complete.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def ListDatabaseOperations(self, request, context):
+        """Lists database [longrunning-operations][google.longrunning.Operation].
+    A database operation has a name of the form
+    `projects/<project>/instances/<instance>/databases/<database>/operations/<operation>`.
+    The long-running operation
+    [metadata][google.longrunning.Operation.metadata] field type
+    `metadata.type_url` describes the type of the metadata. Operations returned
+    include those that have completed/failed/canceled within the last 7 days,
+    and pending operations.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def ListBackupOperations(self, request, context):
+        """Lists the backup [long-running operations][google.longrunning.Operation] in
+    the given instance. A backup operation has a name of the form
+    `projects/<project>/instances/<instance>/backups/<backup>/operations/<operation>`.
+    The long-running operation
+    [metadata][google.longrunning.Operation.metadata] field type
+    `metadata.type_url` describes the type of the metadata. Operations returned
+    include those that have completed/failed/canceled within the last 7 days,
+    and pending operations. Operations returned are ordered by
+    `operation.metadata.value.progress.start_time` in descending order starting
+    from the most recently started operation.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -220,6 +376,46 @@ def add_DatabaseAdminServicer_to_server(servicer, server):
             servicer.TestIamPermissions,
             request_deserializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsRequest.FromString,
             response_serializer=google_dot_iam_dot_v1_dot_iam__policy__pb2.TestIamPermissionsResponse.SerializeToString,
+        ),
+        "CreateBackup": grpc.unary_unary_rpc_method_handler(
+            servicer.CreateBackup,
+            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.CreateBackupRequest.FromString,
+            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
+        ),
+        "GetBackup": grpc.unary_unary_rpc_method_handler(
+            servicer.GetBackup,
+            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.GetBackupRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.Backup.SerializeToString,
+        ),
+        "UpdateBackup": grpc.unary_unary_rpc_method_handler(
+            servicer.UpdateBackup,
+            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.UpdateBackupRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.Backup.SerializeToString,
+        ),
+        "DeleteBackup": grpc.unary_unary_rpc_method_handler(
+            servicer.DeleteBackup,
+            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.DeleteBackupRequest.FromString,
+            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        ),
+        "ListBackups": grpc.unary_unary_rpc_method_handler(
+            servicer.ListBackups,
+            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.ListBackupsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.ListBackupsResponse.SerializeToString,
+        ),
+        "RestoreDatabase": grpc.unary_unary_rpc_method_handler(
+            servicer.RestoreDatabase,
+            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.RestoreDatabaseRequest.FromString,
+            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
+        ),
+        "ListDatabaseOperations": grpc.unary_unary_rpc_method_handler(
+            servicer.ListDatabaseOperations,
+            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabaseOperationsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabaseOperationsResponse.SerializeToString,
+        ),
+        "ListBackupOperations": grpc.unary_unary_rpc_method_handler(
+            servicer.ListBackupOperations,
+            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.ListBackupOperationsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.ListBackupOperationsResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

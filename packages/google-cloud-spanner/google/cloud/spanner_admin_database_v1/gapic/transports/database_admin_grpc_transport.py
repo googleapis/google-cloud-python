@@ -173,7 +173,8 @@ class DatabaseAdminGrpcTransport(object):
     def drop_database(self):
         """Return the gRPC stub for :meth:`DatabaseAdminClient.drop_database`.
 
-        Drops (aka deletes) a Cloud Spanner database.
+        Drops (aka deletes) a Cloud Spanner database. Completed backups for the
+        database will be retained according to their ``expire_time``.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -201,11 +202,12 @@ class DatabaseAdminGrpcTransport(object):
     def set_iam_policy(self):
         """Return the gRPC stub for :meth:`DatabaseAdminClient.set_iam_policy`.
 
-        Sets the access control policy on a database resource. Replaces any
-        existing policy.
+        Sets the access control policy on a database or backup resource.
+        Replaces any existing policy.
 
         Authorization requires ``spanner.databases.setIamPolicy`` permission on
-        ``resource``.
+        ``resource``. For backups, authorization requires
+        ``spanner.backups.setIamPolicy`` permission on ``resource``.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -218,11 +220,13 @@ class DatabaseAdminGrpcTransport(object):
     def get_iam_policy(self):
         """Return the gRPC stub for :meth:`DatabaseAdminClient.get_iam_policy`.
 
-        Gets the access control policy for a database resource. Returns an empty
-        policy if a database exists but does not have a policy set.
+        Gets the access control policy for a database or backup resource.
+        Returns an empty policy if a database or backup exists but does not have
+        a policy set.
 
         Authorization requires ``spanner.databases.getIamPolicy`` permission on
-        ``resource``.
+        ``resource``. For backups, authorization requires
+        ``spanner.backups.getIamPolicy`` permission on ``resource``.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -235,13 +239,15 @@ class DatabaseAdminGrpcTransport(object):
     def test_iam_permissions(self):
         """Return the gRPC stub for :meth:`DatabaseAdminClient.test_iam_permissions`.
 
-        Returns permissions that the caller has on the specified database
-        resource.
+        Returns permissions that the caller has on the specified database or
+        backup resource.
 
         Attempting this RPC on a non-existent Cloud Spanner database will result
         in a NOT\_FOUND error if the user has ``spanner.databases.list``
         permission on the containing Cloud Spanner instance. Otherwise returns
-        an empty set of permissions.
+        an empty set of permissions. Calling this method on a backup that does
+        not exist will result in a NOT\_FOUND error if the user has
+        ``spanner.backups.list`` permission on the containing instance.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -249,6 +255,146 @@ class DatabaseAdminGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["database_admin_stub"].TestIamPermissions
+
+    @property
+    def create_backup(self):
+        """Return the gRPC stub for :meth:`DatabaseAdminClient.create_backup`.
+
+        Starts creating a new Cloud Spanner Backup. The returned backup
+        ``long-running operation`` will have a name of the format
+        ``projects/<project>/instances/<instance>/backups/<backup>/operations/<operation_id>``
+        and can be used to track creation of the backup. The ``metadata`` field
+        type is ``CreateBackupMetadata``. The ``response`` field type is
+        ``Backup``, if successful. Cancelling the returned operation will stop
+        the creation and delete the backup. There can be only one pending backup
+        creation per database. Backup creation of different databases can run
+        concurrently.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["database_admin_stub"].CreateBackup
+
+    @property
+    def get_backup(self):
+        """Return the gRPC stub for :meth:`DatabaseAdminClient.get_backup`.
+
+        Gets metadata on a pending or completed ``Backup``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["database_admin_stub"].GetBackup
+
+    @property
+    def update_backup(self):
+        """Return the gRPC stub for :meth:`DatabaseAdminClient.update_backup`.
+
+        Updates a pending or completed ``Backup``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["database_admin_stub"].UpdateBackup
+
+    @property
+    def delete_backup(self):
+        """Return the gRPC stub for :meth:`DatabaseAdminClient.delete_backup`.
+
+        Deletes a pending or completed ``Backup``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["database_admin_stub"].DeleteBackup
+
+    @property
+    def list_backups(self):
+        """Return the gRPC stub for :meth:`DatabaseAdminClient.list_backups`.
+
+        Lists completed and pending backups. Backups returned are ordered by
+        ``create_time`` in descending order, starting from the most recent
+        ``create_time``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["database_admin_stub"].ListBackups
+
+    @property
+    def restore_database(self):
+        """Return the gRPC stub for :meth:`DatabaseAdminClient.restore_database`.
+
+        Create a new database by restoring from a completed backup. The new
+        database must be in the same project and in an instance with the same
+        instance configuration as the instance containing the backup. The
+        returned database ``long-running operation`` has a name of the format
+        ``projects/<project>/instances/<instance>/databases/<database>/operations/<operation_id>``,
+        and can be used to track the progress of the operation, and to cancel
+        it. The ``metadata`` field type is ``RestoreDatabaseMetadata``. The
+        ``response`` type is ``Database``, if successful. Cancelling the
+        returned operation will stop the restore and delete the database. There
+        can be only one database being restored into an instance at a time. Once
+        the restore operation completes, a new restore operation can be
+        initiated, without waiting for the optimize operation associated with
+        the first restore to complete.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["database_admin_stub"].RestoreDatabase
+
+    @property
+    def list_database_operations(self):
+        """Return the gRPC stub for :meth:`DatabaseAdminClient.list_database_operations`.
+
+        Lists database ``longrunning-operations``. A database operation has a
+        name of the form
+        ``projects/<project>/instances/<instance>/databases/<database>/operations/<operation>``.
+        The long-running operation ``metadata`` field type ``metadata.type_url``
+        describes the type of the metadata. Operations returned include those
+        that have completed/failed/canceled within the last 7 days, and pending
+        operations.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["database_admin_stub"].ListDatabaseOperations
+
+    @property
+    def list_backup_operations(self):
+        """Return the gRPC stub for :meth:`DatabaseAdminClient.list_backup_operations`.
+
+        Lists the backup ``long-running operations`` in the given instance. A
+        backup operation has a name of the form
+        ``projects/<project>/instances/<instance>/backups/<backup>/operations/<operation>``.
+        The long-running operation ``metadata`` field type ``metadata.type_url``
+        describes the type of the metadata. Operations returned include those
+        that have completed/failed/canceled within the last 7 days, and pending
+        operations. Operations returned are ordered by
+        ``operation.metadata.value.progress.start_time`` in descending order
+        starting from the most recently started operation.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["database_admin_stub"].ListBackupOperations
 
     @property
     def list_databases(self):
