@@ -22,7 +22,9 @@ STMT_UPDATING = 'UPDATING'
 STMT_INSERT = 'INSERT'
 
 # Heuristic for identifying statements that don't need to be run as updates.
-re_NON_UPDATE = re.compile(r'^\s*(SELECT|ANALYZE|AUDIT|EXPLAIN|SHOW)', re.IGNORECASE)
+re_NON_UPDATE = re.compile(r'^\s*(SELECT)', re.IGNORECASE)
+
+re_WITH = re.compile(r'^\s*(WITH)', re.IGNORECASE)
 
 # DDL statements follow https://cloud.google.com/spanner/docs/data-definition-language
 re_DDL = re.compile(r'^\s*(CREATE|ALTER|DROP)', re.IGNORECASE | re.DOTALL)
@@ -36,6 +38,11 @@ def classify_stmt(sql):
     elif re_IS_INSERT.match(sql):
         return STMT_INSERT
     elif re_NON_UPDATE.match(sql):
+        return STMT_NON_UPDATING
+    elif re_WITH.match(sql):
+        # As of Fri-13th-March-2020, Cloud Spanner only supports WITH for DQL
+        # statements and doesn't yet support WITH for DML statements.
+        # When WITH for DML is added, we'll need to update this classifier accordingly.
         return STMT_NON_UPDATING
     else:
         return STMT_UPDATING
