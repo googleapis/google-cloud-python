@@ -110,10 +110,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # USE_TZ = True: https://github.com/orijtech/spanner-orm/issues/193
         'datetimes.tests.DateTimesTests.test_21432',
         'db_functions.datetime.test_extract_trunc.DateFunctionWithTimeZoneTests.test_trunc_timezone_applied_before_truncation',  # noqa
-        # Unable to infer type for parameter:
-        # https://github.com/orijtech/spanner-orm/issues/185
-        'timezones.tests.LegacyDatabaseTests.test_cursor_execute_returns_naive_datetime',
-        'timezones.tests.NewDatabaseTests.test_cursor_execute_returns_naive_datetime',
         # extract() with timezone not working as expected:
         # https://github.com/orijtech/spanner-orm/issues/191
         'timezones.tests.NewDatabaseTests.test_query_datetimes',
@@ -210,14 +206,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # implement SchemaEditor.quote_value():
         # https://github.com/orijtech/spanner-orm/issues/227
         'indexes.tests.PartialIndexConditionIgnoredTests.test_condition_ignored',
-        # Cast from Python date or datetime crashes:
-        # https://github.com/orijtech/spanner-orm/issues/257
-        'db_functions.comparison.test_cast.CastTests.test_cast_from_python_to_date',
-        'db_functions.comparison.test_cast.CastTests.test_cast_from_python_to_datetime',
-        # Greatest/Least Coalesce workaround crashes:
-        # https://github.com/orijtech/spanner-orm/issues/259
-        'db_functions.comparison.test_greatest.GreatestTests.test_coalesce_workaround',
-        'db_functions.comparison.test_least.LeastTests.test_coalesce_workaround',
         # Cast to CharField with max_length doesn't work:
         # https://github.com/orijtech/spanner-orm/issues/258
         'db_functions.comparison.test_cast.CastTests.test_cast_to_char_field_with_max_length',
