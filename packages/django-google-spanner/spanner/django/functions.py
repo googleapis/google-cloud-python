@@ -7,8 +7,12 @@
 import math
 
 from django.db.models.functions import (
-    Cot, Degrees, Left, Log, Pi, Radians, Right, StrIndex, Substr,
+    Chr, Cot, Degrees, Left, Log, Ord, Pi, Radians, Right, StrIndex, Substr,
 )
+
+
+def chr_(self, compiler, connection, **extra_context):
+    return self.as_sql(compiler, connection, template='CODE_POINTS_TO_STRING([%(expressions)s])', **extra_context)
 
 
 def cot(self, compiler, connection, **extra_context):
@@ -35,6 +39,10 @@ def log(self, compiler, connection, **extra_context):
     return clone.as_sql(compiler, connection, **extra_context)
 
 
+def ord_(self, compiler, connection, **extra_context):
+    return self.as_sql(compiler, connection, template='TO_CODE_POINTS(%(expressions)s)[OFFSET(0)]', **extra_context)
+
+
 def pi(self, compiler, connection, **extra_context):
     return self.as_sql(compiler, connection, template=str(math.pi), **extra_context)
 
@@ -56,10 +64,12 @@ def substr(self, compiler, connection, **extra_context):
 
 
 def register_functions():
+    Chr.as_spanner = chr_
     Cot.as_spanner = cot
     Degrees.as_spanner = degrees
     Left.as_spanner = left_and_right
     Log.as_spanner = log
+    Ord.as_spanner = ord_
     Pi.as_spanner = pi
     Radians.as_spanner = radians
     Right.as_spanner = left_and_right

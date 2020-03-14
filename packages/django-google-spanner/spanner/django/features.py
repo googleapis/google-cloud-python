@@ -192,13 +192,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # FLOAT64. Supported signatures: MOD(INT64, INT64)
         'db_functions.math.test_mod.ModTests.test_decimal',
         'db_functions.math.test_mod.ModTests.test_float',
-        # The Chr and Ord database functions are not implemented:
-        # https://github.com/orijtech/spanner-orm/issues/243
-        'db_functions.text.test_chr.ChrTests.test_basic',
-        'db_functions.text.test_chr.ChrTests.test_non_ascii',
-        'db_functions.text.test_chr.ChrTests.test_transform',
-        'db_functions.text.test_ord.OrdTests.test_basic',
-        'db_functions.text.test_ord.OrdTests.test_transform',
         # Spanner's CAST function returns null if any of its arguments are
         # null: https://github.com/orijtech/spanner-orm/issues/242
         'db_functions.text.test_concat.ConcatTests.test_basic',
