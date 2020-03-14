@@ -123,20 +123,23 @@ class Blob(_PropertyMixin):
     :param bucket: The bucket to which this blob belongs.
 
     :type chunk_size: int
-
-    :param chunk_size: The size of a chunk of data whenever iterating (in
-                       bytes). This must be a multiple of 256 KB per the API
-                       specification.
+    :param chunk_size:
+        (Optional) The size of a chunk of data whenever iterating (in bytes).
+        This must be a multiple of 256 KB per the API specification.
 
     :type encryption_key: bytes
     :param encryption_key:
-        Optional 32 byte encryption key for customer-supplied encryption.
+        (Optional) 32 byte encryption key for customer-supplied encryption.
         See https://cloud.google.com/storage/docs/encryption#customer-supplied.
 
     :type kms_key_name: str
     :param kms_key_name:
-        Optional resource name of Cloud KMS key used to encrypt the blob's
+        (Optional) Resource name of Cloud KMS key used to encrypt the blob's
         contents.
+
+    :type generation: long
+    :param generation: (Optional) If present, selects a specific revision of
+                       this object.
     """
 
     _chunk_size = None  # Default value for each instance.
@@ -322,7 +325,7 @@ class Blob(_PropertyMixin):
 
          :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-         :param client: Optional. The client to use.
+         :param client: (Optional) The client to use.
 
          :rtype: :class:`google.cloud.storage.blob.Blob`
          :returns: The blob object created.
@@ -405,7 +408,7 @@ class Blob(_PropertyMixin):
         :param expiration: Point in time when the signed URL should expire.
 
         :type api_access_endpoint: str
-        :param api_access_endpoint: Optional URI base.
+        :param api_access_endpoint: (Optional) URI base.
 
         :type method: str
         :param method: The HTTP verb that will be used when requesting the URL.
@@ -568,10 +571,10 @@ class Blob(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -611,10 +614,10 @@ class Blob(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -693,17 +696,17 @@ class Blob(_PropertyMixin):
         :param download_url: The URL where the media can be accessed.
 
         :type headers: dict
-        :param headers: Optional headers to be sent with the request(s).
+        :param headers: Headers to be sent with the request(s).
 
         :type start: int
-        :param start: Optional, the first byte in a range to be downloaded.
+        :param start: (Optional) The first byte in a range to be downloaded.
 
         :type end: int
-        :param end: Optional, The last byte in a range to be downloaded.
+        :param end: (Optional) The last byte in a range to be downloaded.
 
         :type raw_download: bool
         :param raw_download:
-            Optional, If true, download the object without any expansion.
+            (Optional) If true, download the object without any expansion.
         """
         if self.chunk_size is None:
             if raw_download:
@@ -768,18 +771,18 @@ class Blob(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
         :type start: int
-        :param start: Optional, the first byte in a range to be downloaded.
+        :param start: (Optional) The first byte in a range to be downloaded.
 
         :type end: int
-        :param end: Optional, The last byte in a range to be downloaded.
+        :param end: (Optional) The last byte in a range to be downloaded.
 
         :type raw_download: bool
         :param raw_download:
-            Optional, If true, download the object without any expansion.
+            (Optional) If true, download the object without any expansion.
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
@@ -808,18 +811,18 @@ class Blob(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
         :type start: int
-        :param start: Optional, the first byte in a range to be downloaded.
+        :param start: (Optional) The first byte in a range to be downloaded.
 
         :type end: int
-        :param end: Optional, The last byte in a range to be downloaded.
+        :param end: (Optional) The last byte in a range to be downloaded.
 
         :type raw_download: bool
         :param raw_download:
-            Optional, If true, download the object without any expansion.
+            (Optional) If true, download the object without any expansion.
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
@@ -850,18 +853,18 @@ class Blob(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
         :type start: int
-        :param start: Optional, the first byte in a range to be downloaded.
+        :param start: (Optional) The first byte in a range to be downloaded.
 
         :type end: int
-        :param end: Optional, The last byte in a range to be downloaded.
+        :param end: (Optional) The last byte in a range to be downloaded.
 
         :type raw_download: bool
         :param raw_download:
-            Optional, If true, download the object without any expansion.
+            (Optional) If true, download the object without any expansion.
 
         :rtype: bytes
         :returns: The data stored in this blob.
@@ -887,7 +890,7 @@ class Blob(_PropertyMixin):
         - The default value ('application/octet-stream')
 
         :type content_type: str
-        :param content_type: (Optional) type of content.
+        :param content_type: (Optional) Type of content.
 
         :type filename: str
         :param filename: (Optional) The name of the file where the content
@@ -994,7 +997,7 @@ class Blob(_PropertyMixin):
                             argument will be removed in a future release.)
 
         :type predefined_acl: str
-        :param predefined_acl: (Optional) predefined access control list
+        :param predefined_acl: (Optional) Predefined access control list
 
         :rtype: :class:`~requests.Response`
         :returns: The "200 OK" response object returned after the multipart
@@ -1074,7 +1077,7 @@ class Blob(_PropertyMixin):
                      concluded once ``stream`` is exhausted (or :data:`None`).
 
         :type predefined_acl: str
-        :param predefined_acl: (Optional) predefined access control list
+        :param predefined_acl: (Optional) Predefined access control list
 
         :type num_retries: int
         :param num_retries: Number of upload retries. (Deprecated: This
@@ -1175,7 +1178,7 @@ class Blob(_PropertyMixin):
                             argument will be removed in a future release.)
 
         :type predefined_acl: str
-        :param predefined_acl: (Optional) predefined access control list
+        :param predefined_acl: (Optional) Predefined access control list
 
         :rtype: :class:`~requests.Response`
         :returns: The "200 OK" response object returned after the final chunk
@@ -1231,7 +1234,7 @@ class Blob(_PropertyMixin):
                             argument will be removed in a future release.)
 
         :type predefined_acl: str
-        :param predefined_acl: (Optional) predefined access control list
+        :param predefined_acl: (Optional) Predefined access control list
 
         :rtype: dict
         :returns: The parsed JSON from the "200 OK" response. This will be the
@@ -1306,7 +1309,7 @@ class Blob(_PropertyMixin):
                      concluded once ``file_obj`` is exhausted.
 
         :type content_type: str
-        :param content_type: Optional type of content being uploaded.
+        :param content_type: (Optional) Type of content being uploaded.
 
         :type num_retries: int
         :param num_retries: Number of upload retries. (Deprecated: This
@@ -1317,7 +1320,7 @@ class Blob(_PropertyMixin):
                        to the ``client`` stored on the blob's bucket.
 
         :type predefined_acl: str
-        :param predefined_acl: (Optional) predefined access control list
+        :param predefined_acl: (Optional) Predefined access control list
 
         :raises: :class:`~google.cloud.exceptions.GoogleCloudError`
                  if the upload response returns an error status.
@@ -1371,14 +1374,14 @@ class Blob(_PropertyMixin):
         :param filename: The path to the file.
 
         :type content_type: str
-        :param content_type: Optional type of content being uploaded.
+        :param content_type: (Optional) Type of content being uploaded.
 
         :type client: :class:`~google.cloud.storage.client.Client`
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
         :type predefined_acl: str
-        :param predefined_acl: (Optional) predefined access control list
+        :param predefined_acl: (Optional) Predefined access control list
         """
         content_type = self._get_content_type(content_type, filename=filename)
 
@@ -1416,16 +1419,16 @@ class Blob(_PropertyMixin):
                      text, it will be encoded as UTF-8.
 
         :type content_type: str
-        :param content_type: Optional type of content being uploaded. Defaults
+        :param content_type: (Optional) Type of content being uploaded. Defaults
                              to ``'text/plain'``.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
         :type predefined_acl: str
-        :param predefined_acl: (Optional) predefined access control list
+        :param predefined_acl: (Optional) Predefined access control list
         """
         data = _to_bytes(data, encoding="utf-8")
         string_buffer = BytesIO(data)
@@ -1480,7 +1483,7 @@ class Blob(_PropertyMixin):
         to that project.
 
         :type size: int
-        :param size: (Optional). The maximum number of bytes that can be
+        :param size: (Optional) The maximum number of bytes that can be
                      uploaded using this session. If the size is not known
                      when creating the session, this should be left blank.
 
@@ -1548,11 +1551,11 @@ class Blob(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current object's bucket.
 
         :type requested_policy_version: int or ``NoneType``
-        :param requested_policy_version: Optional. The version of IAM policies to request.
+        :param requested_policy_version: (Optional) The version of IAM policies to request.
                                          If a policy with a condition is requested without
                                          setting this, the server will return an error.
                                          This must be set to a value of 3 to retrieve IAM
@@ -1563,7 +1566,7 @@ class Blob(_PropertyMixin):
                                          than the one that was requested, based on the
                                          feature syntax in the policy fetched.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -1611,10 +1614,10 @@ class Blob(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -1662,10 +1665,10 @@ class Blob(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -1693,7 +1696,7 @@ class Blob(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
         """
         self.acl.all().grant_read()
@@ -1704,7 +1707,7 @@ class Blob(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
         """
         self.acl.all().revoke_read()
@@ -1721,10 +1724,10 @@ class Blob(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -1760,17 +1763,17 @@ class Blob(_PropertyMixin):
         :param source: blob whose contents will be rewritten into this blob.
 
         :type token: str
-        :param token: Optional. Token returned from an earlier, not-completed
+        :param token: (Optional) Token returned from an earlier, not-completed
                        call to rewrite the same source blob.  If passed,
                        result will include updated status, total bytes written.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -1844,7 +1847,7 @@ class Blob(_PropertyMixin):
             :attr:`~google.cloud.storage.constants.REGIONAL_LEGACY_STORAGE_CLASS`.
 
         :type client: :class:`~google.cloud.storage.client.Client`
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
         """
         if new_class not in self.STORAGE_CLASSES:

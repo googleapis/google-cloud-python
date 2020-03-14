@@ -25,10 +25,10 @@ class HMACKeyMetadata(object):
     :param client: client associated with the key metadata.
 
     :type access_id: str
-    :param access_id: (Optional) unique ID of an existing key.
+    :param access_id: (Optional) Unique ID of an existing key.
 
     :type project_id: str
-    :param project_id: (Optional) project ID of an existing key.
+    :param project_id: (Optional) Project ID of an existing key.
         Defaults to client's project.
 
     :type user_project: str
@@ -191,7 +191,7 @@ class HMACKeyMetadata(object):
         """Determine whether or not the key for this metadata exists.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -218,7 +218,7 @@ class HMACKeyMetadata(object):
         """Reload properties from Cloud Storage.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -240,7 +240,7 @@ class HMACKeyMetadata(object):
         """Save writable properties to Cloud Storage.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -266,7 +266,7 @@ class HMACKeyMetadata(object):
         """Delete the key from Cloud Storage.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).

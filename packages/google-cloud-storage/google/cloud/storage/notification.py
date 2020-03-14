@@ -55,25 +55,25 @@ class BucketNotification(object):
 
     :type topic_project: str
     :param topic_project:
-        (Optional) project ID of topic to which notifications are published.
+        (Optional) Project ID of topic to which notifications are published.
         If not passed, uses the project ID of the bucket's client.
 
     :type custom_attributes: dict
     :param custom_attributes:
-        (Optional) additional attributes passed with notification events.
+        (Optional) Additional attributes passed with notification events.
 
     :type event_types: list(str)
     :param event_types:
-        (Optional) event types for which notification events are published.
+        (Optional) Event types for which notification events are published.
 
     :type blob_name_prefix: str
     :param blob_name_prefix:
-        (Optional) prefix of blob names for which notification events are
-        published..
+        (Optional) Prefix of blob names for which notification events are
+        published.
 
     :type payload_format: str
     :param payload_format:
-        (Optional) format of payload for notification events.
+        (Optional) Format of payload for notification events.
 
     :type notification_id: str
     :param notification_id:
@@ -242,10 +242,10 @@ class BucketNotification(object):
         to that project.
 
         :type client: :class:`~google.cloud.storage.client.Client`
-        :param client: (Optional) the client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the notification's bucket.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -284,10 +284,10 @@ class BucketNotification(object):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -326,10 +326,10 @@ class BucketNotification(object):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -362,10 +362,10 @@ class BucketNotification(object):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).

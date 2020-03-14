@@ -222,7 +222,7 @@ class Client(ClientWithProject):
             (Optional) Project ID to use for retreiving GCS service account
             email address.  Defaults to the client's project.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -250,7 +250,7 @@ class Client(ClientWithProject):
         :param bucket_name: The name of the bucket to be instantiated.
 
         :type user_project: str
-        :param user_project: (Optional) the project ID to be billed for API
+        :param user_project: (Optional) The project ID to be billed for API
                              requests made via the bucket.
 
         :rtype: :class:`google.cloud.storage.bucket.Bucket`
@@ -336,7 +336,7 @@ class Client(ClientWithProject):
         :param bucket_name: The name of the bucket to get.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -374,23 +374,23 @@ class Client(ClientWithProject):
                 The bucket resource to pass or name to create.
             requester_pays (bool):
                 DEPRECATED. Use Bucket().requester_pays instead.
-                Optional. Whether requester pays for API requests for
+                (Optional) Whether requester pays for API requests for
                 this bucket and its blobs.
             project (str):
-                Optional. The project under which the bucket is to be created.
+                (Optional) The project under which the bucket is to be created.
                 If not passed, uses the project set on the client.
             user_project (str):
-                Optional. The project ID to be billed for API requests
+                (Optional) The project ID to be billed for API requests
                 made via created bucket.
             location (str):
-                Optional. The location of the bucket. If not passed,
+                (Optional) The location of the bucket. If not passed,
                 the default location, US, will be used. See
                 https://cloud.google.com/storage/docs/bucket-locations
             predefined_acl (str):
-                Optional. Name of predefined ACL to apply to bucket. See:
+                (Optional) Name of predefined ACL to apply to bucket. See:
                 https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
             predefined_default_object_acl (str):
-                Optional. Name of predefined ACL to apply to bucket's objects. See:
+                (Optional) Name of predefined ACL to apply to bucket's objects. See:
                 https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
             timeout (Optional[Union[float, Tuple[float, float]]]):
                 The amount of time, in seconds, to wait for the server response.
@@ -488,9 +488,9 @@ class Client(ClientWithProject):
             file_obj (file):
                 A file handle to which to write the blob's data.
             start (int):
-                Optional. The first byte in a range to be downloaded.
+                (Optional) The first byte in a range to be downloaded.
             end (int):
-                Optional. The last byte in a range to be downloaded.
+                (Optional) The last byte in a range to be downloaded.
 
         Examples:
             Download a blob using using a blob resource.
@@ -556,7 +556,7 @@ class Client(ClientWithProject):
                 token.
 
             prefix (str):
-                (Optional) prefix used to filter blobs.
+                (Optional) Prefix used to filter blobs.
 
             delimiter (str):
                 (Optional) Delimiter, used with ``prefix`` to
@@ -624,18 +624,18 @@ class Client(ClientWithProject):
         This implements "storage.buckets.list".
 
         :type max_results: int
-        :param max_results: Optional. The maximum number of buckets to return.
+        :param max_results: (Optional) The maximum number of buckets to return.
 
         :type page_token: str
         :param page_token:
-            Optional. If present, return the next batch of buckets, using the
+            (Optional) If present, return the next batch of buckets, using the
             value, which must correspond to the ``nextPageToken`` value
             returned in the previous response.  Deprecated: use the ``pages``
             property of the returned iterator instead of manually passing the
             token.
 
         :type prefix: str
-        :param prefix: Optional. Filter results to buckets whose names begin
+        :param prefix: (Optional) Filter results to buckets whose names begin
                        with this prefix.
 
         :type projection: str
@@ -651,11 +651,11 @@ class Client(ClientWithProject):
             bucket returned: 'items/id,nextPageToken'
 
         :type project: str
-        :param project: (Optional) the project whose buckets are to be listed.
+        :param project: (Optional) The project whose buckets are to be listed.
                         If not passed, uses the project set on the client.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -708,14 +708,14 @@ class Client(ClientWithProject):
         :param service_account_email: e-mail address of the service account
 
         :type project_id: str
-        :param project_id: (Optional) explicit project ID for the key.
+        :param project_id: (Optional) Explicit project ID for the key.
             Defaults to the client's project.
 
         :type user_project: str
         :param user_project: (Optional) This parameter is currently ignored.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -755,26 +755,26 @@ class Client(ClientWithProject):
 
         :type max_results: int
         :param max_results:
-            (Optional) max number of keys to return in a given page.
+            (Optional) Max number of keys to return in a given page.
 
         :type service_account_email: str
         :param service_account_email:
-            (Optional) limit keys to those created by the given service account.
+            (Optional) Limit keys to those created by the given service account.
 
         :type show_deleted_keys: bool
         :param show_deleted_keys:
-            (Optional) included deleted keys in the list. Default is to
+            (Optional) Included deleted keys in the list. Default is to
             exclude them.
 
         :type project_id: str
-        :param project_id: (Optional) explicit project ID for the key.
+        :param project_id: (Optional) Explicit project ID for the key.
             Defaults to the client's project.
 
         :type user_project: str
         :param user_project: (Optional) This parameter is currently ignored.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -819,11 +819,11 @@ class Client(ClientWithProject):
         :param access_id: Unique ID of an existing key.
 
         :type project_id: str
-        :param project_id: (Optional) project ID of an existing key.
+        :param project_id: (Optional) Project ID of an existing key.
             Defaults to client's project.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).

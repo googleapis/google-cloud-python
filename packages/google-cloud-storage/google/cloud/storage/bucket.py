@@ -146,26 +146,26 @@ class LifecycleRuleConditions(dict):
     See: https://cloud.google.com/storage/docs/lifecycle
 
     :type age: int
-    :param age: (optional) apply rule action to items whos age, in days,
+    :param age: (Optional) Apply rule action to items whos age, in days,
                 exceeds this value.
 
     :type created_before: datetime.date
-    :param created_before: (optional) apply rule action to items created
+    :param created_before: (Optional) Apply rule action to items created
                            before this date.
 
     :type is_live: bool
-    :param is_live: (optional) if true, apply rule action to non-versioned
+    :param is_live: (Optional) If true, apply rule action to non-versioned
                     items, or to items with no newer versions. If false, apply
                     rule action to versioned items with at least one newer
                     version.
 
     :type matches_storage_class: list(str), one or more of
                                  :attr:`Bucket.STORAGE_CLASSES`.
-    :param matches_storage_class: (optional) apply rule action to items which
+    :param matches_storage_class: (Optional) Apply rule action to items which
                                   whose storage class matches this value.
 
     :type number_of_newer_versions: int
-    :param number_of_newer_versions: (optional) apply rule action to versioned
+    :param number_of_newer_versions: (Optional) Apply rule action to versioned
                                      items having N newer versions.
 
     :raises ValueError: if no arguments are passed.
@@ -316,11 +316,11 @@ class IAMConfiguration(dict):
 
     :type uniform_bucket_level_access_enabled: bool
     :params bucket_policy_only_enabled:
-        (optional) whether the IAM-only policy is enabled for the bucket.
+        (Optional) Whether the IAM-only policy is enabled for the bucket.
 
     :type uniform_bucket_level_locked_time: :class:`datetime.datetime`
     :params uniform_bucket_level_locked_time:
-        (optional) When the bucket's IAM-only policy was enabled.
+        (Optional) When the bucket's IAM-only policy was enabled.
         This value should normally only be set by the back-end API.
 
     :type bucket_policy_only_enabled: bool
@@ -549,7 +549,7 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.
+        :param client: (Optional) The client to use.
 
         :rtype: :class:`google.cloud.storage.bucket.Bucket`
         :returns: The bucket object created.
@@ -593,14 +593,14 @@ class Bucket(_PropertyMixin):
 
         :type encryption_key: bytes
         :param encryption_key:
-            Optional 32 byte encryption key for customer-supplied encryption.
+            (Optional) 32 byte encryption key for customer-supplied encryption.
 
         :type kms_key_name: str
         :param kms_key_name:
-            Optional resource name of KMS key used to encrypt blob's content.
+            (Optional) Resource name of KMS key used to encrypt blob's content.
 
         :type generation: long
-        :param generation: Optional. If present, selects a specific revision of
+        :param generation: (Optional) If present, selects a specific revision of
                            this object.
 
         :rtype: :class:`google.cloud.storage.blob.Blob`
@@ -649,10 +649,10 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -706,11 +706,11 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use. If not passed, falls back
+        :param client: (Optional) The client to use. If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
         :type project: str
-        :param project: Optional. The project under which the bucket is to
+        :param project: (Optional) The project under which the bucket is to
                         be created. If not passed, uses the project set on
                         the client.
         :raises ValueError: if :attr:`user_project` is set.
@@ -718,22 +718,22 @@ class Bucket(_PropertyMixin):
                             :attr:`project` is also None.
 
         :type location: str
-        :param location: Optional. The location of the bucket. If not passed,
+        :param location: (Optional) The location of the bucket. If not passed,
                          the default location, US, will be used. See
                          https://cloud.google.com/storage/docs/bucket-locations
 
         :type predefined_acl: str
         :param predefined_acl:
-            Optional. Name of predefined ACL to apply to bucket. See:
+            (Optional) Name of predefined ACL to apply to bucket. See:
             https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
 
         :type predefined_default_object_acl: str
         :param predefined_default_object_acl:
-            Optional. Name of predefined ACL to apply to bucket's objects. See:
+            (Optional) Name of predefined ACL to apply to bucket's objects. See:
             https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -770,7 +770,7 @@ class Bucket(_PropertyMixin):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current object.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -841,21 +841,21 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
         :type encryption_key: bytes
         :param encryption_key:
-            Optional 32 byte encryption key for customer-supplied encryption.
+            (Optional) 32 byte encryption key for customer-supplied encryption.
             See
             https://cloud.google.com/storage/docs/encryption#customer-supplied.
 
         :type generation: long
-        :param generation: Optional. If present, selects a specific revision of
+        :param generation: (Optional) If present, selects a specific revision of
                            this object.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -916,7 +916,7 @@ class Bucket(_PropertyMixin):
             token.
 
         :type prefix: str
-        :param prefix: (Optional) prefix used to filter blobs.
+        :param prefix: (Optional) Prefix used to filter blobs.
 
         :type delimiter: str
         :param delimiter: (Optional) Delimiter, used with ``prefix`` to
@@ -945,7 +945,7 @@ class Bucket(_PropertyMixin):
                        to the ``client`` stored on the current bucket.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -999,10 +999,10 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -1036,10 +1036,10 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: (optional) The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -1085,10 +1085,10 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response on each request.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -1157,15 +1157,15 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
         :type generation: long
-        :param generation: Optional. If present, permanently deletes a specific
+        :param generation: (Optional) If present, permanently deletes a specific
                            revision of this object.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -1216,7 +1216,7 @@ class Bucket(_PropertyMixin):
                        to the ``client`` stored on the current bucket.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response. The timeout applies to each individual
             blob delete request.
 
@@ -1260,23 +1260,23 @@ class Bucket(_PropertyMixin):
                                    copied.
 
         :type new_name: str
-        :param new_name: (optional) the new name for the copied file.
+        :param new_name: (Optional) The new name for the copied file.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
         :type preserve_acl: bool
-        :param preserve_acl: Optional. Copies ACL from old blob to new blob.
+        :param preserve_acl: (Optional) Copies ACL from old blob to new blob.
                              Default: True.
 
         :type source_generation: long
-        :param source_generation: Optional. The generation of the blob to be
+        :param source_generation: (Optional) The generation of the blob to be
                                   copied.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -1335,11 +1335,11 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response. The timeout applies to each individual
             request.
 
@@ -1994,11 +1994,11 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
         :type requested_policy_version: int or ``NoneType``
-        :param requested_policy_version: Optional. The version of IAM policies to request.
+        :param requested_policy_version: (Optional) The version of IAM policies to request.
                                          If a policy with a condition is requested without
                                          setting this, the server will return an error.
                                          This must be set to a value of 3 to retrieve IAM
@@ -2010,7 +2010,7 @@ class Bucket(_PropertyMixin):
                                          feature syntax in the policy fetched.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -2075,11 +2075,11 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -2120,11 +2120,11 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -2161,10 +2161,10 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response. The timeout applies to each underlying
             request.
 
@@ -2227,11 +2227,11 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response. The timeout applies to each underlying
             request.
 
@@ -2297,7 +2297,7 @@ class Bucket(_PropertyMixin):
             /post-object#policydocument
 
         :type expiration: datetime
-        :param expiration: Optional expiration in UTC. If not specified, the
+        :param expiration: (Optional) Expiration in UTC. If not specified, the
                            policy will expire in 1 hour.
 
         :type conditions: list
@@ -2305,7 +2305,7 @@ class Bucket(_PropertyMixin):
                           `policy documents`_ documentation.
 
         :type client: :class:`~google.cloud.storage.client.Client`
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
         :rtype: dict
@@ -2345,7 +2345,7 @@ class Bucket(_PropertyMixin):
         """Lock the bucket's retention policy.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -2437,7 +2437,7 @@ class Bucket(_PropertyMixin):
         :param expiration: Point in time when the signed URL should expire.
 
         :type api_access_endpoint: str
-        :param api_access_endpoint: Optional URI base.
+        :param api_access_endpoint: (Optional) URI base.
 
         :type method: str
         :param method: The HTTP verb that will be used when requesting the URL.

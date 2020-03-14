@@ -92,8 +92,8 @@ class _ACLEntity(object):
     :param entity_type: The type of entity (ie, 'group' or 'user').
 
     :type identifier: str
-    :param identifier: The ID or e-mail of the entity. For the special
-                       entity types (like 'allUsers') this is optional.
+    :param identifier: (Optional) The ID or e-mail of the entity. For the special
+                       entity types (like 'allUsers').
     """
 
     READER_ROLE = "READER"
@@ -212,7 +212,7 @@ class ACL(object):
         """Load if not already loaded.
 
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -432,10 +432,10 @@ class ACL(object):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -465,16 +465,15 @@ class ACL(object):
                     current entries.
 
         :type predefined: str
-        :param predefined:
-            (Optional) An identifier for a predefined ACL.  Must be one of the
+        :param predefined: An identifier for a predefined ACL.  Must be one of the
             keys in :attr:`PREDEFINED_JSON_ACLS` If passed, `acl` must be None.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -514,10 +513,10 @@ class ACL(object):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -546,10 +545,10 @@ class ACL(object):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
@@ -570,10 +569,10 @@ class ACL(object):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
         :type timeout: float or tuple
-        :param timeout: (optional) The amount of time, in seconds, to wait
+        :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).

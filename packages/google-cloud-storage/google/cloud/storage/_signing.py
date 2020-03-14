@@ -304,7 +304,7 @@ def generate_signed_url_v2(
     :param expiration: Point in time when the signed URL should expire.
 
     :type api_access_endpoint: str
-    :param api_access_endpoint: Optional URI base. Defaults to empty string.
+    :param api_access_endpoint: (Optional) URI base. Defaults to empty string.
 
     :type method: str
     :param method: The HTTP verb that will be used when requesting the URL.
@@ -466,7 +466,7 @@ def generate_signed_url_v4(
     :param expiration: Point in time when the signed URL should expire.
 
     :type api_access_endpoint: str
-    :param api_access_endpoint: Optional URI base. Defaults to
+    :param api_access_endpoint: (Optional) URI base. Defaults to
                                 "https://storage.googleapis.com/"
 
     :type method: str
