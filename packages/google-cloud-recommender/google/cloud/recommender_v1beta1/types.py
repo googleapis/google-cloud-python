@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
+from google.cloud.recommender_v1beta1.proto import insight_pb2
 from google.cloud.recommender_v1beta1.proto import recommendation_pb2
 from google.cloud.recommender_v1beta1.proto import recommender_service_pb2
 from google.protobuf import duration_pb2
@@ -30,7 +31,7 @@ from google.type import money_pb2
 
 _shared_modules = [duration_pb2, struct_pb2, timestamp_pb2, money_pb2]
 
-_local_modules = [recommendation_pb2, recommender_service_pb2]
+_local_modules = [insight_pb2, recommendation_pb2, recommender_service_pb2]
 
 names = []
 

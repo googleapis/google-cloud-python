@@ -1,11 +1,46 @@
 {
-  "updateTime": "2020-02-05T00:09:38.363168Z",
+  "updateTime": "2020-03-14T00:25:36.917796Z",
   "sources": [
     {
+      "git": {
+        "name": ".",
+        "remote": "git@github.com:googleapis/python-recommender.git",
+        "sha": "b8f198ecb1d36afa16d9054653ebbb811e7dbd91"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "8386761d09819b665b6a6e1e6d6ff884bc8ff781",
+        "internalRef": "300843960"
+      }
+    },
+    {
       "template": {
-        "name": "python_split_library",
+        "name": "python_library",
         "origin": "synthtool.gcp",
-        "version": "2019.10.17"
+        "version": "2020.2.4"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "recommender",
+        "apiVersion": "v1beta1",
+        "language": "python",
+        "generator": "bazel"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "recommender",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "bazel"
       }
     }
   ]

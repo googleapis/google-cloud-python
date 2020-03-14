@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -81,12 +81,7 @@ class RecommenderClient(object):
 
     @classmethod
     def recommendation_path(cls, project, location, recommender, recommendation):
-        """DEPRECATED. Return a fully-qualified recommendation string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified recommendation string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/recommenders/{recommender}/recommendations/{recommendation}",
             project=project,
@@ -97,12 +92,7 @@ class RecommenderClient(object):
 
     @classmethod
     def recommender_path(cls, project, location, recommender):
-        """DEPRECATED. Return a fully-qualified recommender string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified recommender string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/recommenders/{recommender}",
             project=project,

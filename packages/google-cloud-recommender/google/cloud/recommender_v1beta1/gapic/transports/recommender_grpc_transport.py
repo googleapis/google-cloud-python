@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -106,6 +106,52 @@ class RecommenderGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return self._channel
+
+    @property
+    def list_insights(self):
+        """Return the gRPC stub for :meth:`RecommenderClient.list_insights`.
+
+        Lists insights for a Cloud project. Requires the recommender.*.list
+        IAM permission for the specified insight type.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["recommender_stub"].ListInsights
+
+    @property
+    def get_insight(self):
+        """Return the gRPC stub for :meth:`RecommenderClient.get_insight`.
+
+        Gets the requested insight. Requires the recommender.*.get IAM
+        permission for the specified insight type.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["recommender_stub"].GetInsight
+
+    @property
+    def mark_insight_accepted(self):
+        """Return the gRPC stub for :meth:`RecommenderClient.mark_insight_accepted`.
+
+        Marks the Insight State as Accepted. Users can use this method to
+        indicate to the Recommender API that they have applied some action based
+        on the insight. This stops the insight content from being updated.
+
+        MarkInsightAccepted can be applied to insights in ACTIVE state. Requires
+        the recommender.*.update IAM permission for the specified insight.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["recommender_stub"].MarkInsightAccepted
 
     @property
     def list_recommendations(self):

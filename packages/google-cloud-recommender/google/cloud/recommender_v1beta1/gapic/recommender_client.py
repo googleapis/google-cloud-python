@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ import grpc
 from google.cloud.recommender_v1beta1.gapic import enums
 from google.cloud.recommender_v1beta1.gapic import recommender_client_config
 from google.cloud.recommender_v1beta1.gapic.transports import recommender_grpc_transport
+from google.cloud.recommender_v1beta1.proto import insight_pb2
 from google.cloud.recommender_v1beta1.proto import recommendation_pb2
 from google.cloud.recommender_v1beta1.proto import recommender_service_pb2
 from google.cloud.recommender_v1beta1.proto import recommender_service_pb2_grpc
@@ -80,13 +81,29 @@ class RecommenderClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def recommendation_path(cls, project, location, recommender, recommendation):
-        """DEPRECATED. Return a fully-qualified recommendation string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
+    def insight_path(cls, project, location, insight_type, insight):
+        """Return a fully-qualified insight string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/insightTypes/{insight_type}/insights/{insight}",
+            project=project,
+            location=location,
+            insight_type=insight_type,
+            insight=insight,
         )
+
+    @classmethod
+    def insight_type_path(cls, project, location, insight_type):
+        """Return a fully-qualified insight_type string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/insightTypes/{insight_type}",
+            project=project,
+            location=location,
+            insight_type=insight_type,
+        )
+
+    @classmethod
+    def recommendation_path(cls, project, location, recommender, recommendation):
+        """Return a fully-qualified recommendation string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/recommenders/{recommender}/recommendations/{recommendation}",
             project=project,
@@ -97,12 +114,7 @@ class RecommenderClient(object):
 
     @classmethod
     def recommender_path(cls, project, location, recommender):
-        """DEPRECATED. Return a fully-qualified recommender string."""
-        warnings.warn(
-            "Resource name helper functions are deprecated.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
+        """Return a fully-qualified recommender string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/recommenders/{recommender}",
             project=project,
@@ -223,6 +235,275 @@ class RecommenderClient(object):
         self._inner_api_calls = {}
 
     # Service calls
+    def list_insights(
+        self,
+        parent,
+        page_size=None,
+        filter_=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Lists insights for a Cloud project. Requires the recommender.*.list
+        IAM permission for the specified insight type.
+
+        Example:
+            >>> from google.cloud import recommender_v1beta1
+            >>>
+            >>> client = recommender_v1beta1.RecommenderClient()
+            >>>
+            >>> parent = client.insight_type_path('[PROJECT]', '[LOCATION]', '[INSIGHT_TYPE]')
+            >>>
+            >>> # Iterate over all results
+            >>> for element in client.list_insights(parent):
+            ...     # process element
+            ...     pass
+            >>>
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
+            >>> for page in client.list_insights(parent).pages:
+            ...     for element in page:
+            ...         # process element
+            ...         pass
+
+        Args:
+            parent (str): Required. The container resource on which to execute the request.
+                Acceptable formats:
+
+                1.
+
+                "projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]",
+
+                LOCATION here refers to GCP Locations:
+                https://cloud.google.com/about/locations/
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
+            filter_ (str): Optional. Filter expression to restrict the insights returned.
+                Supported filter fields: state Eg: \`state:"DISMISSED" or state:"ACTIVE"
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.recommender_v1beta1.types.Insight` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "list_insights" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "list_insights"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_insights,
+                default_retry=self._method_configs["ListInsights"].retry,
+                default_timeout=self._method_configs["ListInsights"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = recommender_service_pb2.ListInsightsRequest(
+            parent=parent, page_size=page_size, filter=filter_
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._inner_api_calls["list_insights"],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            ),
+            request=request,
+            items_field="insights",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
+        )
+        return iterator
+
+    def get_insight(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Gets the requested insight. Requires the recommender.*.get IAM
+        permission for the specified insight type.
+
+        Example:
+            >>> from google.cloud import recommender_v1beta1
+            >>>
+            >>> client = recommender_v1beta1.RecommenderClient()
+            >>>
+            >>> name = client.insight_path('[PROJECT]', '[LOCATION]', '[INSIGHT_TYPE]', '[INSIGHT]')
+            >>>
+            >>> response = client.get_insight(name)
+
+        Args:
+            name (str): Required. Name of the insight.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.recommender_v1beta1.types.Insight` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_insight" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_insight"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_insight,
+                default_retry=self._method_configs["GetInsight"].retry,
+                default_timeout=self._method_configs["GetInsight"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = recommender_service_pb2.GetInsightRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["get_insight"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def mark_insight_accepted(
+        self,
+        name,
+        etag,
+        state_metadata=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Marks the Insight State as Accepted. Users can use this method to
+        indicate to the Recommender API that they have applied some action based
+        on the insight. This stops the insight content from being updated.
+
+        MarkInsightAccepted can be applied to insights in ACTIVE state. Requires
+        the recommender.*.update IAM permission for the specified insight.
+
+        Example:
+            >>> from google.cloud import recommender_v1beta1
+            >>>
+            >>> client = recommender_v1beta1.RecommenderClient()
+            >>>
+            >>> name = client.insight_path('[PROJECT]', '[LOCATION]', '[INSIGHT_TYPE]', '[INSIGHT]')
+            >>>
+            >>> # TODO: Initialize `etag`:
+            >>> etag = ''
+            >>>
+            >>> response = client.mark_insight_accepted(name, etag)
+
+        Args:
+            name (str): Required. Name of the insight.
+            etag (str): Required. Fingerprint of the Insight. Provides optimistic locking.
+            state_metadata (dict[str -> str]): Optional. State properties user wish to include with this state.
+                Full replace of the current state_metadata.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.recommender_v1beta1.types.Insight` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "mark_insight_accepted" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "mark_insight_accepted"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.mark_insight_accepted,
+                default_retry=self._method_configs["MarkInsightAccepted"].retry,
+                default_timeout=self._method_configs["MarkInsightAccepted"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = recommender_service_pb2.MarkInsightAcceptedRequest(
+            name=name, etag=etag, state_metadata=state_metadata
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["mark_insight_accepted"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def list_recommendations(
         self,
         parent,

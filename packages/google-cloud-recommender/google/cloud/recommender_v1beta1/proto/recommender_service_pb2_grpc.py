@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,6 +16,9 @@
 
 import grpc
 
+from google.cloud.recommender_v1beta1.proto import (
+    insight_pb2 as google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_insight__pb2,
+)
 from google.cloud.recommender_v1beta1.proto import (
     recommendation_pb2 as google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_recommendation__pb2,
 )
@@ -37,6 +40,21 @@ class RecommenderStub(object):
     Args:
       channel: A grpc.Channel.
     """
+        self.ListInsights = channel.unary_unary(
+            "/google.cloud.recommender.v1beta1.Recommender/ListInsights",
+            request_serializer=google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_recommender__service__pb2.ListInsightsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_recommender__service__pb2.ListInsightsResponse.FromString,
+        )
+        self.GetInsight = channel.unary_unary(
+            "/google.cloud.recommender.v1beta1.Recommender/GetInsight",
+            request_serializer=google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_recommender__service__pb2.GetInsightRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_insight__pb2.Insight.FromString,
+        )
+        self.MarkInsightAccepted = channel.unary_unary(
+            "/google.cloud.recommender.v1beta1.Recommender/MarkInsightAccepted",
+            request_serializer=google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_recommender__service__pb2.MarkInsightAcceptedRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_insight__pb2.Insight.FromString,
+        )
         self.ListRecommendations = channel.unary_unary(
             "/google.cloud.recommender.v1beta1.Recommender/ListRecommendations",
             request_serializer=google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_recommender__service__pb2.ListRecommendationsRequest.SerializeToString,
@@ -70,6 +88,34 @@ class RecommenderServicer(object):
   discovery, etc. Insights and recommendations are generated automatically
   based on analysis of user resources, configuration and monitoring metrics.
   """
+
+    def ListInsights(self, request, context):
+        """Lists insights for a Cloud project. Requires the recommender.*.list IAM
+    permission for the specified insight type.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def GetInsight(self, request, context):
+        """Gets the requested insight. Requires the recommender.*.get IAM permission
+    for the specified insight type.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def MarkInsightAccepted(self, request, context):
+        """Marks the Insight State as Accepted. Users can use this method to
+    indicate to the Recommender API that they have applied some action based
+    on the insight. This stops the insight content from being updated.
+
+    MarkInsightAccepted can be applied to insights in ACTIVE state. Requires
+    the recommender.*.update IAM permission for the specified insight.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def ListRecommendations(self, request, context):
         """Lists recommendations for a Cloud project. Requires the recommender.*.list
@@ -140,6 +186,21 @@ class RecommenderServicer(object):
 
 def add_RecommenderServicer_to_server(servicer, server):
     rpc_method_handlers = {
+        "ListInsights": grpc.unary_unary_rpc_method_handler(
+            servicer.ListInsights,
+            request_deserializer=google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_recommender__service__pb2.ListInsightsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_recommender__service__pb2.ListInsightsResponse.SerializeToString,
+        ),
+        "GetInsight": grpc.unary_unary_rpc_method_handler(
+            servicer.GetInsight,
+            request_deserializer=google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_recommender__service__pb2.GetInsightRequest.FromString,
+            response_serializer=google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_insight__pb2.Insight.SerializeToString,
+        ),
+        "MarkInsightAccepted": grpc.unary_unary_rpc_method_handler(
+            servicer.MarkInsightAccepted,
+            request_deserializer=google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_recommender__service__pb2.MarkInsightAcceptedRequest.FromString,
+            response_serializer=google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_insight__pb2.Insight.SerializeToString,
+        ),
         "ListRecommendations": grpc.unary_unary_rpc_method_handler(
             servicer.ListRecommendations,
             request_deserializer=google_dot_cloud_dot_recommender__v1beta1_dot_proto_dot_recommender__service__pb2.ListRecommendationsRequest.FromString,

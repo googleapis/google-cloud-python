@@ -47,6 +47,16 @@ s.replace(
     flags=re.MULTILINE | re.DOTALL,
 )
 
+# Fix multiline path
+s.replace(
+    "google/**/recommendation_pb2.py",
+    """projects/\[PROJECT_NUMBER\]/location
+            s/\[LOCATION\]/insightTypes/\[INSIGHT\_TYPE\_ID\]/insights/\[INSIGHT_
+            ID\]""",
+    """``projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/insights/[INSIGHT_ID]``"""
+)
+
+
 python.fix_pb2_headers()
 python.fix_pb2_grpc_headers()
 
