@@ -10,6 +10,9 @@ from django.db.backends.base.schema import BaseDatabaseSchemaEditor
 class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
     sql_create_table = "CREATE TABLE %(table)s (%(definition)s) PRIMARY KEY(%(primary_key)s)"
     sql_delete_table = "DROP TABLE %(table)s"
+    # Spanner doesn't support partial indexes. This string omits the
+    # %(condition)s placeholder so that partial indexes are ignored.
+    sql_create_index = "CREATE INDEX %(name)s ON %(table)s%(using)s (%(columns)s)%(extra)s"
     sql_create_unique = "CREATE UNIQUE INDEX %(name)s ON %(table)s (%(columns)s)"
 
     # Cloud Spanner requires when changing if a column is NULLABLE,

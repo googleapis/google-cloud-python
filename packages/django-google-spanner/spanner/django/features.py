@@ -203,9 +203,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # null: https://github.com/orijtech/spanner-orm/issues/242
         'db_functions.text.test_concat.ConcatTests.test_basic',
         'db_functions.text.test_concat.ConcatTests.test_many',
-        # implement SchemaEditor.quote_value():
-        # https://github.com/orijtech/spanner-orm/issues/227
-        'indexes.tests.PartialIndexConditionIgnoredTests.test_condition_ignored',
         # Cast to CharField with max_length doesn't work:
         # https://github.com/orijtech/spanner-orm/issues/258
         'db_functions.comparison.test_cast.CastTests.test_cast_to_char_field_with_max_length',
