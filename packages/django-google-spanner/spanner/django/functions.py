@@ -7,8 +7,19 @@
 import math
 
 from django.db.models.functions import (
-    Chr, Cot, Degrees, Left, Log, Ord, Pi, Radians, Right, StrIndex, Substr,
+    Cast, Chr, Cot, Degrees, Left, Log, Ord, Pi, Radians, Right, StrIndex,
+    Substr,
 )
+
+
+def cast(self, compiler, connection, **extra_context):
+    # Account for a field's max_length using SUBSTR.
+    max_length = getattr(self.output_field, 'max_length', None)
+    if max_length is not None:
+        template = 'SUBSTR(' + self.template + ', 0, %s)' % max_length
+    else:
+        template = self.template
+    return self.as_sql(compiler, connection, template=template, **extra_context)
 
 
 def chr_(self, compiler, connection, **extra_context):
@@ -64,6 +75,7 @@ def substr(self, compiler, connection, **extra_context):
 
 
 def register_functions():
+    Cast.as_spanner = cast
     Chr.as_spanner = chr_
     Cot.as_spanner = cot
     Degrees.as_spanner = degrees

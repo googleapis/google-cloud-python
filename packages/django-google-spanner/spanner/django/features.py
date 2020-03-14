@@ -196,9 +196,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # null: https://github.com/orijtech/spanner-orm/issues/242
         'db_functions.text.test_concat.ConcatTests.test_basic',
         'db_functions.text.test_concat.ConcatTests.test_many',
-        # Cast to CharField with max_length doesn't work:
-        # https://github.com/orijtech/spanner-orm/issues/258
-        'db_functions.comparison.test_cast.CastTests.test_cast_to_char_field_with_max_length',
         # casting DateField to DateTimeField adds an unexpected hour:
         # https://github.com/orijtech/spanner-orm/issues/260
         'db_functions.comparison.test_cast.CastTests.test_cast_from_db_date_to_datetime',
