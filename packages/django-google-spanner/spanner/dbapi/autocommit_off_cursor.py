@@ -9,8 +9,9 @@ import time
 import google.api_core.exceptions as grpc_exceptions
 from google.cloud.spanner_v1 import param_types
 
+from .base_cursor import BaseCursor
 from .exceptions import (
-    Error, IntegrityError, InternalError, OperationalError, ProgrammingError,
+    IntegrityError, InternalError, OperationalError, ProgrammingError,
 )
 from .parse_utils import (
     STMT_DDL, STMT_INSERT, STMT_NON_UPDATING, classify_stmt,
@@ -40,61 +41,20 @@ code_to_display_size = {
 }
 
 
-class Cursor(object):
-    def __init__(self, db_handle):
-        self.__itr = None
-        self.__res = None
-        self.__row_count = _UNSET_COUNT
-        self.__connection = db_handle
-        self.__last_op = None
-        self.__closed = False
+class Cursor(BaseCursor):
+    def __init__(self, connection):
+        super(Cursor, self).__init__(connection)
         self.__sql_in_same_txn = []
-
-        # arraysize is a readable and writable property mandated
-        # by PEP-0249 https://www.python.org/dev/peps/pep-0249/#arraysize
-        # It determines the results of .fetchmany
-        self.arraysize = 1
-
-    @property
-    def description(self):
-        if not (self.__res and self.__res.metadata):
-            return None
-
-        row_type = self.__res.metadata.row_type
-        columns = []
-        for field in row_type.fields:
-            columns.append(
-                Column(
-                    name=field.name,
-                    type_code=field.type.code,
-                    # Size of the SQL type of the column.
-                    display_size=code_to_display_size.get(field.type.code),
-                    # Client perceived size of the column.
-                    internal_size=field.ByteSize(),
-                )
-            )
-        return tuple(columns)
-
-    @property
-    def rowcount(self):
-        return self.__row_count
-
-    def __raise_if_already_closed(self):
-        """
-        Raises an exception if attempting to use an already closed connection.
-        """
-        if self.__closed:
-            raise Error('attempting to use an already closed connection')
 
     def close(self):
         self.__clear()
-        self.__closed = True
+        self._closed = True
 
     def __discard_aborted_txn(self):
-        return self.__connection.discard_aborted_txn()
+        return self._connection.discard_aborted_txn()
 
     def __get_txn(self):
-        return self.__connection.get_txn()
+        return self._connection.get_txn()
 
     def execute(self, sql, args=None, already_in_retry=False):
         """
@@ -110,23 +70,23 @@ class Cursor(object):
         Returns:
             None
         """
-        self.__raise_if_already_closed()
+        self._raise_if_already_closed()
 
-        if not self.__connection:
+        if not self._connection:
             raise ProgrammingError('Cursor is not connected to the database')
 
-        self.__res = None
+        self._res = None
 
         # Classify whether this is a read-only SQL statement.
         try:
             classification = classify_stmt(sql)
             if classification == STMT_DDL:
-                self.__connection.append_ddl_statement(sql)
+                self._connection.append_ddl_statement(sql)
                 return
 
             # For every other operation, we've got to ensure that
             # any prior DDL statements were run.
-            self.__run_prior_DDL_statements()
+            self._run_prior_DDL_statements()
 
             if classification == STMT_NON_UPDATING:
                 self.__handle_DQL(self.__get_txn(), sql, args or None)
@@ -213,9 +173,9 @@ class Cursor(object):
         sql, params = sql_pyformat_args_to_spanner(sql, params)
 
         res = txn.execute_update(sql, params=params, param_types=get_param_types(params))
-        self.__itr = None
+        self._itr = None
         if type(res) == int:
-            self.__row_count = res
+            self._row_count = res
 
         return res
 
@@ -245,7 +205,7 @@ class Cursor(object):
             if hasattr(res, '__iter__'):
                 _ = list(res)
             elif isinstance(res, int):
-                self.__row_count = res
+                self._row_count = res
 
     def __handle_DQL(self, txn, sql, params):
         # Reference
@@ -253,8 +213,8 @@ class Cursor(object):
         sql, params = sql_pyformat_args_to_spanner(sql, params)
         res = txn.execute_sql(sql, params=params, param_types=get_param_types(params))
         if type(res) == int:
-            self.__row_count = res
-            self.__itr = None
+            self._row_count = res
+            self._itr = None
         else:
             # Immediately using:
             #   iter(response)
@@ -264,147 +224,31 @@ class Cursor(object):
             # are for .fetchone() with those that would result in
             # many items returns a RuntimeError if .fetchone() is
             # invoked and vice versa.
-            self.__res = res
+            self._res = res
             # Read the first element so that StreamedResult can
             # return the metadata after a DQL statement. See issue #155.
-            self.__itr = PeekIterator(self.__res)
+            self._itr = PeekIterator(self._res)
             # Unfortunately, Spanner doesn't seem to send back
             # information about the number of rows available.
-            self.__row_count = _UNSET_COUNT
+            self._row_count = _UNSET_COUNT
 
     def __enter__(self):
         return self
 
     def __exit__(self, etype, value, traceback):
         if not etype:  # Not an exception thus we should commit.
-            self.__connection.commit()
+            self._connection.commit()
         else:  # An exception occured within the context so rollback.
-            self.__connection.rollback()
+            self._connection.rollback()
 
         self.__clear()
 
     def __clear(self):
-        self.__connection = None
+        self._connection = None
         self.__txn = None
 
     def executemany(self, operation, seq_of_params):
-        if not self.__connection:
+        if not self._connection:
             raise ProgrammingError('Cursor is not connected to the database')
 
         raise ProgrammingError('Unimplemented')
-
-    def __next__(self):
-        if self.__itr is None:
-            raise ProgrammingError('no results to return')
-        return next(self.__itr)
-
-    def __iter__(self):
-        if self.__itr is None:
-            raise ProgrammingError('no results to return')
-        return self.__itr
-
-    def fetchone(self):
-        self.__raise_if_already_closed()
-
-        try:
-            return next(self)
-        except StopIteration:
-            return None
-
-    def fetchall(self):
-        self.__raise_if_already_closed()
-
-        return list(self.__iter__())
-
-    def fetchmany(self, size=None):
-        """
-        Fetch the next set of rows of a query result, returning a sequence of sequences.
-        An empty sequence is returned when no more rows are available.
-
-        Args:
-            size: optional integer to determine the maximum number of results to fetch.
-
-
-        Raises:
-            Error if the previous call to .execute*() did not produce any result set
-            or if no call was issued yet.
-        """
-        self.__raise_if_already_closed()
-
-        if size is None:
-            size = self.arraysize
-
-        items = []
-        for i in range(size):
-            try:
-                items.append(tuple(self.__next__()))
-            except StopIteration:
-                break
-
-        return items
-
-    @property
-    def lastrowid(self):
-        return None
-
-    def setinputsizes(sizes):
-        raise ProgrammingError('Unimplemented')
-
-    def setoutputsize(size, column=None):
-        raise ProgrammingError('Unimplemented')
-
-    def __run_prior_DDL_statements(self):
-        return self.__connection.run_prior_DDL_statements()
-
-    def list_tables(self):
-        return self.__connection.list_tables()
-
-    def run_sql_in_snapshot(self, sql):
-        return self.__connection.run_sql_in_snapshot(sql)
-
-    def get_table_column_schema(self, table_name):
-        return self.__connection.get_table_column_schema(table_name)
-
-
-class Column:
-    def __init__(self, name, type_code, display_size=None, internal_size=None,
-                 precision=None, scale=None, null_ok=False):
-        self.name = name
-        self.type_code = type_code
-        self.display_size = display_size
-        self.internal_size = internal_size
-        self.precision = precision
-        self.scale = scale
-        self.null_ok = null_ok
-
-    def __repr__(self):
-        return self.__str__()
-
-    def __getitem__(self, index):
-        if index == 0:
-            return self.name
-        elif index == 1:
-            return self.type_code
-        elif index == 2:
-            return self.display_size
-        elif index == 3:
-            return self.internal_size
-        elif index == 4:
-            return self.precision
-        elif index == 5:
-            return self.scale
-        elif index == 6:
-            return self.null_ok
-
-    def __str__(self):
-        rstr = ', '.join([field for field in [
-            "name='%s'" % self.name,
-            "type_code=%d" % self.type_code,
-            None if not self.display_size else "display_size=%d" % self.display_size,
-            None if not self.internal_size else "internal_size=%d" % self.internal_size,
-            None if not self.precision else "precision='%s'" % self.precision,
-            None if not self.scale else "scale='%s'" % self.scale,
-            None if not self.null_ok else "null_ok='%s'" % self.null_ok,
-        ] if field])
-
-        return 'Column(%s)' % rstr
