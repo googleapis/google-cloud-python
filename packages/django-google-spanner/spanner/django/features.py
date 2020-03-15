@@ -185,9 +185,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'expressions.tests.FTimeDeltaTests.test_delta_add',
         'expressions.tests.FTimeDeltaTests.test_duration_with_datetime',
         'expressions.tests.FTimeDeltaTests.test_mixed_comparisons2',
-        # using F expression in range lookup fails:
-        # https://github.com/orijtech/django-spanner/issues/334
-        'expressions.tests.IterableLookupInnerExpressionsTests.test_expressions_in_lookups_join_choice',
         # bitrightshift operator gives incorrect result:
         # https://github.com/orijtech/django-spanner/issues/335
         'expressions.tests.ExpressionOperatorTests.test_lefthand_bitwise_right_shift_operator',

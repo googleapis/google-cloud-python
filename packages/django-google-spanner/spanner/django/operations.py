@@ -107,6 +107,9 @@ class DatabaseOperations(BaseDatabaseOperations):
     def adapt_timefield_value(self, value):
         if value is None:
             return None
+        # Expression values are adapted by the database.
+        if hasattr(value, 'resolve_expression'):
+            return value
         # Column is TIMESTAMP, so prefix a dummy date to the datetime.time.
         return TimestampStr('0001-01-01T' + value.isoformat(timespec='microseconds') + 'Z')
 
