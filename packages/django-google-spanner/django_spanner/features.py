@@ -303,11 +303,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # DatabaseIntrospection.get_key_columns() is only required if this
         # backend needs it (which it currently doesn't).
         'introspection.tests.IntrospectionTests.test_get_key_columns',
-        # DatabaseIntrospection.get_constraints() isn't implemented:
-        # https://github.com/orijtech/django-spanner/issues/294
-        'introspection.tests.IntrospectionTests.test_get_constraints',
-        'introspection.tests.IntrospectionTests.test_get_constraints_index_types',
-        'introspection.tests.IntrospectionTests.test_get_constraints_indexes_orders',
         # DatabaseIntrospection.get_table_description() isn't fully implemented:
         # https://github.com/orijtech/django-spanner/issues/248
         'introspection.tests.IntrospectionTests.test_get_table_description_col_lengths',

@@ -97,3 +97,112 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
             ''' % self.connection.ops.quote_name(table_name),
         )
         return results[0][0] if results else None
+
+    def get_constraints(self, cursor, table_name):
+        constraints = {}
+        quoted_table_name = self.connection.ops.quote_name(table_name)
+
+        # Firstly populate all available constraints and their columns.
+        constraint_columns = cursor.run_sql_in_snapshot(
+            '''
+            SELECT
+                CONSTRAINT_NAME, COLUMN_NAME
+            FROM
+                INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE
+               WHERE TABLE_NAME="{table}"'''.format(table=quoted_table_name),
+        )
+        for constraint, column_name in constraint_columns:
+            if constraint not in constraints:
+                constraints[constraint] = {
+                    'check': False,
+                    'columns': [],
+                    'foreign_key': None,
+                    'index': False,
+                    'orders': [],
+                    'primary_key': False,
+                    'type': None,
+                    'unique': False,
+                }
+
+            constraints[constraint]['columns'].append(column_name)
+
+        # Add the various constraints by type.
+        constraint_types = cursor.run_sql_in_snapshot(
+            '''
+            SELECT
+                CONSTRAINT_NAME, CONSTRAINT_TYPE
+            FROM
+                INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+            WHERE
+                TABLE_NAME="{table}"'''.format(table=quoted_table_name),
+        )
+        for constraint, constraint_type in constraint_types:
+            already_added = constraint in constraints
+            if constraint_type == 'FOREIGN KEY':
+                # We don't yet support anything related to FOREIGN KEY.
+                # See https://github.com/orijtech/django-spanner/issues/313.
+                if already_added:
+                    del constraints[constraint]
+                continue
+
+            if not already_added:
+                constraints[constraint] = {
+                    'check': False,
+                    'columns': [],
+                    'foreign_key': None,
+                    'index': False,
+                    'orders': [],
+                    'primary_key': False,
+                    'type': None,
+                    'unique': False,
+                }
+
+            is_primary_key = constraint_type == 'PRIMARY KEY'
+            constraints[constraint]['check'] = constraint_type == 'CHECK'
+            constraints[constraint]['index'] = constraint_type == 'INDEX'
+            constraints[constraint]['unique'] = constraint_type == 'UNIQUE' or is_primary_key
+            constraints[constraint]['primary_key'] = is_primary_key
+
+        # Add the indices.
+        indexes = cursor.run_sql_in_snapshot(
+            '''
+            SELECT
+                idx.INDEX_NAME, idx_col.COLUMN_NAME, idx_col.COLUMN_ORDERING, idx.INDEX_TYPE, idx.IS_UNIQUE
+            FROM
+                INFORMATION_SCHEMA.INDEXES AS idx
+            RIGHT JOIN
+                INFORMATION_SCHEMA.INDEX_COLUMNS AS idx_col
+            ON
+                idx_col.INDEX_NAME = idx.INDEX_NAME AND idx_col.TABLE_NAME="{table}"
+            WHERE
+                idx.TABLE_NAME="{table}"
+            ORDER BY
+                idx_col.ORDINAL_POSITION
+            '''.format(table=quoted_table_name),
+        )
+        for index_name, column_name, ordering, index_type, is_unique in indexes:
+            if index_name not in constraints:
+                constraints[index_name] = {
+                    'check': False,
+                    'columns': [],
+                    'foreign_key': None,
+                    'index': False,
+                    'orders': [],
+                    'primary_key': False,
+                    'type': None,
+                    'unique': False,
+                }
+
+            constraints[index_name]['columns'].append(column_name)
+            constraints[index_name]['index'] = True
+            constraints[index_name]['orders'].append(ordering)
+            # Index_type for PRIMARY KEY is 'PRIMARY_KEY' and NOT 'PRIMARY KEY'
+            constraints[index_name]['primary_key'] = index_type == 'PRIMARY_KEY'
+            # Cloud Spanner doesn't expose the index's data structure. However, Django
+            # expects last segment after '_', of the suffix of the index name, to be the type.
+            underscore_split = index_name.split('_')
+            index_type = underscore_split[-1] if len(underscore_split) > 1 else None
+            constraints[index_name]['type'] = index_type
+            constraints[index_name]['unique'] = is_unique
+
+        return constraints
