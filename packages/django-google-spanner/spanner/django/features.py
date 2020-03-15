@@ -121,6 +121,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'db_functions.datetime.test_extract_trunc.DateFunctionTests.test_trunc_date_none',
         'db_functions.datetime.test_extract_trunc.DateFunctionTests.test_trunc_time_func',
         'db_functions.datetime.test_extract_trunc.DateFunctionTests.test_trunc_time_none',
+        'expressions.tests.FieldTransformTests.test_multiple_transforms_in_values',
         'model_fields.test_datetimefield.DateTimeFieldTests.test_lookup_date_with_use_tz',
         'model_fields.test_datetimefield.DateTimeFieldTests.test_lookup_date_without_use_tz',
         # Implement DatabaseOperations.time_trunc_sql():
@@ -172,6 +173,40 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # nor aggregated: https://github.com/orijtech/spanner-orm/issues/245
         'aggregation_regress.tests.AggregationTests.test_annotated_conditional_aggregate',
         'aggregation_regress.tests.AggregationTests.test_annotation_with_value',
+        'expressions.tests.BasicExpressionsTests.test_filtering_on_annotate_that_uses_q',
+        # "No matching signature for operator" crash when comparing TIMESTAMP
+        # and DATE: https://github.com/orijtech/django-spanner/issues/255
+        'expressions.tests.BasicExpressionsTests.test_outerref_mixed_case_table_name',
+        'expressions.tests.FTimeDeltaTests.test_mixed_comparisons1',
+        # duration arithmetic fails with dates: No matching signature for
+        # function TIMESTAMP_ADD: https://github.com/orijtech/django-spanner/issues/253
+        'expressions.tests.FTimeDeltaTests.test_date_comparison',
+        'expressions.tests.FTimeDeltaTests.test_date_minus_duration',
+        'expressions.tests.FTimeDeltaTests.test_delta_add',
+        'expressions.tests.FTimeDeltaTests.test_duration_with_datetime',
+        'expressions.tests.FTimeDeltaTests.test_mixed_comparisons2',
+        # using F expression in range lookup fails:
+        # https://github.com/orijtech/django-spanner/issues/334
+        'expressions.tests.IterableLookupInnerExpressionsTests.test_expressions_in_lookups_join_choice',
+        # bitrightshift operator gives incorrect result:
+        # https://github.com/orijtech/django-spanner/issues/335
+        'expressions.tests.ExpressionOperatorTests.test_lefthand_bitwise_right_shift_operator',
+        # using an F expression as the value of a REGEXP_CONTAINS lookup
+        # crashes: https://github.com/orijtech/django-spanner/issues/251
+        'expressions.tests.BasicExpressionsTests.test_ticket_11722_iexact_lookup',
+        # integer division produces a float result, which can't be assigned to
+        # an integer column:
+        # https://github.com/orijtech/django-spanner/issues/331
+        'expressions.tests.ExpressionOperatorTests.test_lefthand_division',
+        'expressions.tests.ExpressionOperatorTests.test_right_hand_division',
+        # modulo operator doesn't work:
+        # https://github.com/orijtech/django-spanner/issues/332
+        'expressions.tests.ExpressionOperatorTests.test_lefthand_modulo',
+        'expressions.tests.ExpressionOperatorTests.test_right_hand_modulo',
+        # power operator doesn't work:
+        # https://github.com/orijtech/django-spanner/issues/333
+        'expressions.tests.ExpressionOperatorTests.test_lefthand_power',
+        'expressions.tests.ExpressionOperatorTests.test_righthand_power',
         # Cloud Spanner's docs: "The rows that are returned by LIMIT and OFFSET
         # is unspecified unless these operators are used after ORDER BY."
         'aggregation_regress.tests.AggregationTests.test_sliced_conditional_aggregate',
