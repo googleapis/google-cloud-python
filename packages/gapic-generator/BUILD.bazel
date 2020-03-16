@@ -1,0 +1,20 @@
+load("@gapic_generator_python_pip_deps//:requirements.bzl", "requirement")
+
+py_binary(
+    name = "gapic_plugin",
+    srcs = glob(["gapic/**/*.py"]),
+    data = glob(["gapic/**/*.j2"]),
+    main = "gapic/cli/generate.py",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_google_protobuf//:protobuf_python",
+        requirement("click"),
+        requirement("google-api-core"),
+        requirement("googleapis-common-protos"),
+        requirement("grpcio"),
+        requirement("jinja2"),
+        requirement("pypandoc"),
+        requirement("PyYAML"),
+    ],
+    python_version = "PY3",
+)
