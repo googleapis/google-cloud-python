@@ -61,6 +61,22 @@ class ParseUtilsTests(TestCase):
                 },
             ),
             (
+                'INSERT INTO django_migrations(app, name, applied) VALUES (%s, %s, %s)',
+                [1, 2, 3, 4, 5, 6],
+                {
+                    'sql_params_list': [
+                        (
+                            'INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s)',
+                            (1, 2, 3,),
+                        ),
+                        (
+                            'INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s)',
+                            (4, 5, 6,),
+                        ),
+                    ],
+                },
+            ),
+            (
                 'INSERT INTO sales.addresses (street, city, state, zip_code) '
                 'SELECT street, city, state, zip_code FROM sales.customers'
                 'ORDER BY first_name, last_name',

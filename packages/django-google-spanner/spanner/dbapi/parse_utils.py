@@ -52,7 +52,7 @@ re_INSERT = re.compile(
     # Only match the `INSERT INTO <table_name> (columns...)
     # otherwise the rest of the statement could be a complex
     # operation.
-    r'^\s*INSERT INTO (?P<table_name>[^\s\(\)]+)\s+\((?P<columns>[^\(\)]+)\)',
+    r'^\s*INSERT INTO (?P<table_name>[^\s\(\)]+)\s*\((?P<columns>[^\(\)]+)\)',
     re.IGNORECASE | re.DOTALL,
 )
 
