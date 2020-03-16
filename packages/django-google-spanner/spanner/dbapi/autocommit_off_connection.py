@@ -5,43 +5,34 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 from .autocommit_off_cursor import Cursor
-from .exceptions import Error
+from .base_connection import BaseConnection
 from .periodic_auto_refresh import PeriodicAutoRefreshingTransaction
-from .utils import get_table_column_schema as get_table_column_schema_impl
 
 
-class Connection(object):
+class Connection(BaseConnection):
     def __init__(self, db_handle, session, discard_session):
+        super().__init__(db_handle)
         self.__sess = session
         self.__discard_session = discard_session
         self.__txn = None
-        self.__dbhandle = db_handle
-        self.__closed = False
         self.__on_transaction_clean_up = None
-        self.__ddl_statements = []
-
-    def __raise_if_already_closed(self):
-        """
-        Raises an exception if attempting to use an already closed connection.
-        """
-        if self.__closed:
-            raise Error('attempting to use an already closed connection')
+        self._ddl_statements = []
 
     def close(self):
         self.rollback()
         self.__clear()
-        self.__closed = True
+        self._closed = True
 
     def __enter__(self):
         return self
 
     def __clear(self):
-        self.__dbhandle = None
+        self._dbhandle = None
         self.__discard_session()
         self.__sess = None
 
     def __exit__(self, etype, value, traceback):
-        self.__raise_if_already_closed()
+        self._raise_if_already_closed()
 
         self.run_prior_DDL_statements()
 
@@ -83,7 +74,7 @@ class Connection(object):
             self.__txn.stop()
 
     def cursor(self):
-        self.__raise_if_already_closed()
+        self._raise_if_already_closed()
 
         cur = Cursor(self)
         self.__on_transaction_clean_up = cur._clear_transaction_state
@@ -115,68 +106,3 @@ class Connection(object):
             self.__txn = self.get_txn()
 
         return self.__txn
-
-    def append_ddl_statement(self, ddl_statement):
-        self.__ddl_statements.append(ddl_statement)
-
-    def run_prior_DDL_statements(self):
-        """
-        Runs the list of saved Data Definition Language (DDL) statements on the underlying
-        database. Note that each DDL statement MUST NOT contain a semicolon.
-
-        Args:
-            ddl_statements: a list of DDL statements, each without a semicolon.
-
-        Returns:
-            google.api_core.operation.Operation.result()
-        """
-        self.__raise_if_already_closed()
-
-        if not self.__ddl_statements:
-            return
-
-        # DDL and Transactions in Cloud Spanner don't mix thus before any DDL is executed,
-        # any prior transaction MUST have been committed. This behavior is also present
-        # on MySQL. Please see:
-        # * https://gist.github.com/odeke-em/8e02576d8523e07eb27b43a772aecc92
-        # * https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html
-        # * https://wiki.postgresql.org/wiki/Transactional_DDL_in_PostgreSQL:_A_Competitive_Analysis
-        self.commit()
-
-        ddl_statements = self.__ddl_statements
-        self.__ddl_statements = []
-        return self.__dbhandle.update_ddl(ddl_statements).result()
-
-    def __update_ddl(self, ddl_statements):
-        """
-        Runs the list of Data Definition Language (DDL) statements on the specified
-        database. Note that each DDL statement MUST NOT contain a semicolon.
-        Args:
-            ddl_statements: a list of DDL statements, each without a semicolon.
-        Returns:
-            google.api_core.operation.Operation
-        """
-        # Synchronously wait on the operation's completion.
-        return self.__dbhandle.update_ddl(ddl_statements).result()
-
-    def list_tables(self):
-        return self.run_sql_in_snapshot("""
-             SELECT
-              t.table_name
-            FROM
-              information_schema.tables AS t
-            WHERE
-              t.table_catalog = '' and t.table_schema = ''
-            """)
-
-    def run_sql_in_snapshot(self, sql):
-        # Some SQL e.g. for INFORMATION_SCHEMA cannot be run in read-write transactions
-        # hence this method exists to circumvent that limit.
-        self.run_prior_DDL_statements()
-
-        with self.__dbhandle.snapshot() as snapshot:
-            res = snapshot.execute_sql(sql)
-            return list(res)
-
-    def get_table_column_schema(self, table_name):
-        return get_table_column_schema_impl(self.__connection, table_name)
