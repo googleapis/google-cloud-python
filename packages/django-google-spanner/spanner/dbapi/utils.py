@@ -16,6 +16,8 @@ class PeekIterator(object):
     PeekIterator peeks at the first element out of an iterator
     for the sake of operations like auto-population of fields on reading
     the first element.
+    If next's result is an instance of list, it'll be converted into a tuple
+    to conform with DBAPI v2's sequence expectations.
     """
     def __init__(self, source):
         itr_src = iter(source)
@@ -42,7 +44,7 @@ class PeekIterator(object):
             self.__index += 1
             return self.__next__()
         else:
-            return head
+            return tuple(head) if isinstance(head, list) else head
 
     def __iter__(self):
         return self
