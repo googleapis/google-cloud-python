@@ -3744,6 +3744,18 @@ class TestLocalStructuredProperty:
             ds_entity = model._entity_to_ds_entity(entity.foo, set_key=False)
             assert data == {"foo": ds_entity}
 
+    @staticmethod
+    def test_legacy_repeated_compressed_local_structured_property():
+        class SubKind(model.Model):
+            bar = model.TextProperty()
+
+        prop = model.LocalStructuredProperty(
+            SubKind, repeated=True, compressed=True
+        )
+        entity = SubKind(bar="baz")
+        ds_entity = model._entity_to_ds_entity(entity, set_key=False)
+        assert prop._call_from_base_type(ds_entity) == entity
+
 
 class TestGenericProperty:
     @staticmethod

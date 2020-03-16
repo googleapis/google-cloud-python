@@ -421,6 +421,28 @@ def test_compressed_repeated_local_structured_property(dispose_of, ds_client):
     assert retrieved.dogs == dogs
 
 
+def test_get_by_id_with_compressed_repeated_local_structured_property(
+    client_context, dispose_of, ds_client
+):
+    class Dog(ndb.Model):
+        name = ndb.TextProperty()
+
+    class House(ndb.Model):
+        dogs = ndb.LocalStructuredProperty(Dog, repeated=True, compressed=True)
+
+    with client_context.new(legacy_data=True).use():
+        entity = House()
+        dogs = [Dog(name="Mika"), Dog(name="Mocha")]
+        entity.dogs = dogs
+
+        key = entity.put()
+        house_id = key.id()
+        dispose_of(key._key)
+
+        retrieved = House.get_by_id(house_id)
+        assert retrieved.dogs == dogs
+
+
 @pytest.mark.usefixtures("client_context")
 def test_retrieve_entity_with_legacy_compressed_property(
     ds_entity_with_meanings,

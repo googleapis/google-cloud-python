@@ -2494,9 +2494,14 @@ class BlobProperty(Property):
             indicate that the value didn't need to be unwrapped and
             decompressed.
         """
+        # First, check for legacy compressed LocalStructuredProperty values.
+        # See https://github.com/googleapis/python-ndb/issues/359
+        if self._compressed and isinstance(value, ds_entity_module.Entity):
+            return
+
         if self._compressed and not isinstance(value, _CompressedValue):
             if not value.startswith(_ZLIB_COMPRESSION_MARKER):
-                value = zlib.compress(value)
+                return value
             value = _CompressedValue(value)
 
         if isinstance(value, _CompressedValue):
