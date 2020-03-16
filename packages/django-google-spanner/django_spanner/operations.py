@@ -25,7 +25,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         'TextField': 'STRING',
     }
     cast_char_field_without_max_length = 'STRING'
-    compiler_module = 'spanner.django.compiler'
+    compiler_module = 'django_spanner.compiler'
     # Django's lookup names that require a different name in Spanner's
     # EXTRACT() function.
     # https://cloud.google.com/spanner/docs/functions-and-operators#extract

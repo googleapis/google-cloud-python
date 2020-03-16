@@ -29,7 +29,7 @@ and particularly the `DATABASES` section to point to an EXISTING database, of th
 ```python
 DATABASES = {
     'default': {
-        'ENGINE': 'spanner.django',
+        'ENGINE': 'django_spanner',
         'PROJECT': '<project_id>',
         'INSTANCE': '<instance_id>',
         'NAME': '<database_name>',
@@ -48,7 +48,7 @@ For example:
 ```python
 DATABASES = {
     'default': {
-        'ENGINE': 'spanner.django',
+        'ENGINE': 'django_spanner',
         'PROJECT': 'appdev-soda-spanner-staging', # Or the GCP project-id
         'INSTANCE': 'django-dev1', # Or the Cloud Spanner instance
         'DATABASE': 'db1', # Or the Cloud Spanner database to use
@@ -87,7 +87,7 @@ Lack of VARIANCE, STDDEV database functions|Cloud Spanned doesn't yet implement 
 ## How it works
 
 ### Overall design
-![](./assets/spanner-django.png)
+![](./assets/overview.png)
 
 ### Internals
-![](./assets/spanner-django-internals.png)
+![](./assets/internals.png)

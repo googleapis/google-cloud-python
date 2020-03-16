@@ -9,7 +9,7 @@ import sys
 from google.api_core.gapic_v1.client_info import ClientInfo
 
 VERSION = '0.0.1'
-DEFAULT_USER_AGENT = 'spanner-django/' + VERSION
+DEFAULT_USER_AGENT = 'django_spanner/' + VERSION
 
 vers = sys.version_info
 
