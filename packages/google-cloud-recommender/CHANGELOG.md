@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [0.3.0](https://www.github.com/googleapis/python-recommender/compare/v0.2.0...v0.3.0) (2020-03-14)
+
+
+### Features
+
+* add insight support; undeprecate resource name helper methods (via synth) ([#7](https://www.github.com/googleapis/python-recommender/issues/7)) ([876c383](https://www.github.com/googleapis/python-recommender/commit/876c383afed9a2384d9ef361b4054c381ab9a23b))
+
 ## 0.2.0
 
 01-24-2020 14:03 PST
@@ -28,4 +35,3 @@
 
 ### New Features
 - initial release of v1beta1 ([#9257](https://github.com/googleapis/google-cloud-python/pull/9257))
-
