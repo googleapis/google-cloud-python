@@ -25,6 +25,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     # Django tests that aren't supported by Spanner.
     skip_tests = (
         # No foreign key constraints in Spanner.
+        'backends.tests.FkConstraintsTests.test_check_constraints',
         'fixtures_regress.tests.TestFixtures.test_loaddata_raises_error_when_fixture_has_invalid_foreign_key',
         # No Django transaction management in Spanner.
         'basic.tests.SelectOnSaveTests.test_select_on_save_lying_update',
@@ -105,6 +106,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'syndication_tests.tests.SyndicationFeedTest.test_template_feed',
         # can't use QuerySet.dates() on DateTimeField:
         # https://github.com/orijtech/spanner-orm/issues/182
+        'backends.tests.DateQuotingTest.test_django_date_trunc',
         'dates.tests.DatesTests.test_dates_trunc_datetime_fields',
         # datetimes retrieved from the database with the wrong hour when
         # USE_TZ = True: https://github.com/orijtech/spanner-orm/issues/193
@@ -261,4 +263,30 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # DatabaseIntrospection.get_relations() isn't implemented:
         # https://github.com/orijtech/django-spanner/issues/311
         'introspection.tests.IntrospectionTests.test_get_relations',
+        # Implement Cursor.executemany():
+        # https://github.com/orijtech/django-spanner/issues/29
+        'backends.base.test_base.ExecuteWrapperTests.test_nested_wrapper_invoked',
+        'backends.base.test_base.ExecuteWrapperTests.test_wrapper_invoked_many',
+        'backends.tests.BackendTestCase.test_cursor_executemany',
+        'backends.tests.BackendTestCase.test_cursor_executemany_with_empty_params_list',
+        'backends.tests.BackendTestCase.test_cursor_executemany_with_iterator',
+        'backends.tests.BackendTestCase.test_cursor_executemany_with_pyformat',
+        'backends.tests.BackendTestCase.test_cursor_executemany_with_pyformat_iterator',
+        'backends.base.test_base.ExecuteWrapperTests.test_database_queried',
+        # parameter escaping of % not working correctly:
+        # https://github.com/orijtech/django-spanner/issues/347
+        'backends.tests.EscapingChecks.test_parameter_escaping',
+        'backends.tests.EscapingChecksDebug.test_parameter_escaping',
+        # Non-ascii SELECT alias crashes "Syntax error: Illegal input character"
+        # https://github.com/orijtech/django-spanner/issues/341
+        'backends.tests.LastExecutedQueryTest.test_query_encoding',
+        # pyformat parameters not supported on INSERT:
+        # https://github.com/orijtech/django-spanner/issues/343
+        'backends.tests.BackendTestCase.test_cursor_execute_with_pyformat',
+        # duplicate table raises GoogleAPICallError rather than DatabaseError:
+        # https://github.com/orijtech/django-spanner/issues/344
+        'backends.tests.BackendTestCase.test_duplicate_table_error',
+        # ProgrammingError or InterfaceError should be raised on an already
+        # closed cursor: https://github.com/orijtech/django-spanner/issues/342
+        'backends.tests.BackendTestCase.test_cursor_contextmanager',
     )

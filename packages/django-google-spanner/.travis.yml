@@ -14,7 +14,7 @@ env:
         - DJANGO_TEST_APPS="aggregation_regress annotations"
         # Commented out because they take longer 2hr and TravisCI unconditionally terminates them.
         # - DJANGO_TEST_APPS="auth_tests"
-        - DJANGO_TEST_APPS="basic"
+        - DJANGO_TEST_APPS="backends basic"
         - DJANGO_TEST_APPS="bulk_create choices custom_columns"
         - DJANGO_TEST_APPS="cache"
         - DJANGO_TEST_APPS="custom_methods custom_pk datatypes"
