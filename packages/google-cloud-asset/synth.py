@@ -17,9 +17,9 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = ["v1beta1", "v1p2beta1", "v1p1beta1", "v1"]
+versions = ["v1beta1", "v1p2beta1", "v1p4beta1", "v1"]
 
 excludes = ["setup.py", "nox*.py", "README.rst", "docs/conf.py", "docs/index.rst"]
 
@@ -27,17 +27,19 @@ excludes = ["setup.py", "nox*.py", "README.rst", "docs/conf.py", "docs/index.rst
 # Generate asset GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
+    # v1p1beta1 is missing a BUILD.bazel file
+    # Don't use Artman once that is resolved
+    artman_gapic = gcp.GAPICGenerator()
     if version == "v1p1beta1":
-        config_path = "/google/cloud/asset/v1p1beta1/artman_cloudasset_v1p1beta1.yaml"
+        library = artman_gapic.py_library(
+            "asset",
+            version=version,
+        )
     else:
-        config_path = f"/google/cloud/asset/artman_cloudasset_{version}.yaml"
-    library = gapic.py_library(
-        "asset",
-        version,
-        config_path=config_path,
-        artman_output_name=f"asset-{version}",
-        include_protos=True,
-    )
+        library = gapic.py_library(
+            "asset",
+            version,
+        )
 
     s.move(library, excludes=excludes)
 
@@ -65,13 +67,11 @@ s.replace(
 
 s.replace(
     "google/cloud/asset_v*/proto/assets_pb2.py",
-    "_IAMPOLICYSEARCHRESULT\.fields_by_name\['policy'\]\.message_type "
-    "= google_dot_iam_dot_v1_dot_policy__pb2\._POLICY",
-    "_IAMPOLICYSEARCHRESULT.fields_by_name['policy'].message_type = google_dot_iam_dot"
-    "_v1_dot_policy__pb2.google_dot_iam_dot_v1_dot_policy__pb2._POLICY",
+    "_IAMPOLICYANALYSISRESULT\.fields_by_name\['iam_binding'\]\.message_type "
+    "= google_dot_iam_dot_v1_dot_policy__pb2\._BINDING",
+    "_IAMPOLICYANALYSISRESULT.fields_by_name['iam_binding'].message_type = google_dot_iam_dot"
+    "_v1_dot_policy__pb2.google_dot_iam_dot_v1_dot_policy__pb2._BINDING",
 )
-
-
 
 _BORKED_ASSET_DOCSTRING = """\
           The full name of the asset. For example: ``//compute.googleapi
@@ -101,8 +101,8 @@ s.replace(
 # Fix docstrings with no summary line
 s.replace(
     "google/cloud/**/proto/*_pb2.py",
-    r'''__doc__\s*=\s*"""Attributes:''',
-    '''__doc__ = """
+    r''''__doc__': """Attributes:''',
+    ''''__doc__' : """
     Attributes:''',
 )
 

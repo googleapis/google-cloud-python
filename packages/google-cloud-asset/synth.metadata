@@ -1,20 +1,47 @@
 {
-  "updateTime": "2020-03-03T13:13:26.707956Z",
+  "updateTime": "2020-03-16T17:29:50.350305Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "0.47.0",
-        "dockerImage": "googleapis/artman@sha256:b3e50d6b8de03920b9f065bbc3d210e2ca93a043446f1fa16cdf567393c09678"
+        "version": "1.1.0",
+        "dockerImage": "googleapis/artman@sha256:f54b7644a1d2e7a37b23f5c0dfe9bba473e41c675002a507a244389e27487ca9"
+      }
+    },
+    {
+      "generator": {
+        "name": "artman",
+        "version": "1.1.0",
+        "dockerImage": "googleapis/artman@sha256:f54b7644a1d2e7a37b23f5c0dfe9bba473e41c675002a507a244389e27487ca9"
+      }
+    },
+    {
+      "generator": {
+        "name": "artman",
+        "version": "1.1.0",
+        "dockerImage": "googleapis/artman@sha256:f54b7644a1d2e7a37b23f5c0dfe9bba473e41c675002a507a244389e27487ca9"
+      }
+    },
+    {
+      "generator": {
+        "name": "artman",
+        "version": "1.1.0",
+        "dockerImage": "googleapis/artman@sha256:f54b7644a1d2e7a37b23f5c0dfe9bba473e41c675002a507a244389e27487ca9"
+      }
+    },
+    {
+      "git": {
+        "name": ".",
+        "remote": "git@github.com:googleapis/python-asset.git",
+        "sha": "37067265776c1ee5e21feeb709679d5c1e981dee"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "4a180bfff8a21645b3a935c2756e8d6ab18a74e0",
-        "internalRef": "298484782",
-        "log": "4a180bfff8a21645b3a935c2756e8d6ab18a74e0\nautoml/v1beta1 publish proto updates\n\nPiperOrigin-RevId: 298484782\n\n6de6e938b7df1cd62396563a067334abeedb9676\nchore: use the latest gapic-generator and protoc-java-resource-name-plugin in Bazel workspace.\n\nPiperOrigin-RevId: 298474513\n\n244ab2b83a82076a1fa7be63b7e0671af73f5c02\nAdds service config definition for bigqueryreservation v1\n\nPiperOrigin-RevId: 298455048\n\n83c6f84035ee0f80eaa44d8b688a010461cc4080\nUpdate google/api/auth.proto to make AuthProvider to have JwtLocation\n\nPiperOrigin-RevId: 297918498\n\ne9e90a787703ec5d388902e2cb796aaed3a385b4\nDialogflow weekly v2/v2beta1 library update:\n  - adding get validation result\n  - adding field mask override control for output audio config\nImportant updates are also posted at:\nhttps://cloud.google.com/dialogflow/docs/release-notes\n\nPiperOrigin-RevId: 297671458\n\n1a2b05cc3541a5f7714529c665aecc3ea042c646\nAdding .yaml and .json config files.\n\nPiperOrigin-RevId: 297570622\n\ndfe1cf7be44dee31d78f78e485d8c95430981d6e\nPublish `QueryOptions` proto.\n\nIntroduced a `query_options` input in `ExecuteSqlRequest`.\n\nPiperOrigin-RevId: 297497710\n\ndafc905f71e5d46f500b41ed715aad585be062c3\npubsub: revert pull init_rpc_timeout & max_rpc_timeout back to 25 seconds and reset multiplier to 1.0\n\nPiperOrigin-RevId: 297486523\n\nf077632ba7fee588922d9e8717ee272039be126d\nfirestore: add update_transform\n\nPiperOrigin-RevId: 297405063\n\n0aba1900ffef672ec5f0da677cf590ee5686e13b\ncluster: use square brace for cross-reference\n\nPiperOrigin-RevId: 297204568\n\n5dac2da18f6325cbaed54603c43f0667ecd50247\nRestore retry params in gapic config because securitycenter has non-standard default retry params.\nRestore a few retry codes for some idempotent methods.\n\nPiperOrigin-RevId: 297196720\n\n1eb61455530252bba8b2c8d4bc9832960e5a56f6\npubsub: v1 replace IAM HTTP rules\n\nPiperOrigin-RevId: 297188590\n\n80b2d25f8d43d9d47024ff06ead7f7166548a7ba\nDialogflow weekly v2/v2beta1 library update:\n  - updates to mega agent api\n  - adding field mask override control for output audio config\nImportant updates are also posted at:\nhttps://cloud.google.com/dialogflow/docs/release-notes\n\nPiperOrigin-RevId: 297187629\n\n0b1876b35e98f560f9c9ca9797955f020238a092\nUse an older version of protoc-docs-plugin that is compatible with the specified gapic-generator and protobuf versions.\n\nprotoc-docs-plugin >=0.4.0 (see commit https://github.com/googleapis/protoc-docs-plugin/commit/979f03ede6678c487337f3d7e88bae58df5207af) is incompatible with protobuf 3.9.1.\n\nPiperOrigin-RevId: 296986742\n\n1e47e676cddbbd8d93f19ba0665af15b5532417e\nFix: Restore a method signature for UpdateCluster\n\nPiperOrigin-RevId: 296901854\n\n7f910bcc4fc4704947ccfd3ceed015d16b9e00c2\nUpdate Dataproc v1beta2 client.\n\nPiperOrigin-RevId: 296451205\n\nde287524405a3dce124d301634731584fc0432d7\nFix: Reinstate method signatures that had been missed off some RPCs\nFix: Correct resource types for two fields\n\nPiperOrigin-RevId: 296435091\n\ne5bc9566ae057fb4c92f8b7e047f1c8958235b53\nDeprecate the endpoint_uris field, as it is unused.\n\nPiperOrigin-RevId: 296357191\n\n8c12e2b4dca94e12bff9f538bdac29524ff7ef7a\nUpdate Dataproc v1 client.\n\nPiperOrigin-RevId: 296336662\n\n17567c4a1ef0a9b50faa87024d66f8acbb561089\nRemoving erroneous comment, a la https://github.com/googleapis/java-speech/pull/103\n\nPiperOrigin-RevId: 296332968\n\n3eaaaf8626ce5b0c0bc7eee05e143beffa373b01\nAdd BUILD.bazel for v1 secretmanager.googleapis.com\n\nPiperOrigin-RevId: 296274723\n\ne76149c3d992337f85eeb45643106aacae7ede82\nMove securitycenter v1 to use generate from annotations.\n\nPiperOrigin-RevId: 296266862\n\n203740c78ac69ee07c3bf6be7408048751f618f8\nAdd StackdriverLoggingConfig field to Cloud Tasks v2 API.\n\nPiperOrigin-RevId: 296256388\n\ne4117d5e9ed8bbca28da4a60a94947ca51cb2083\nCreate a Bazel BUILD file for the google.actions.type export.\n\nPiperOrigin-RevId: 296212567\n\na9639a0a9854fd6e1be08bba1ac3897f4f16cb2f\nAdd secretmanager.googleapis.com v1 protos\n\nPiperOrigin-RevId: 295983266\n\nce4f4c21d9dd2bfab18873a80449b9d9851efde8\nasset: v1p1beta1 remove SearchResources and SearchIamPolicies\n\nPiperOrigin-RevId: 295861722\n\ncb61d6c2d070b589980c779b68ffca617f789116\nasset: v1p1beta1 remove SearchResources and SearchIamPolicies\n\nPiperOrigin-RevId: 295855449\n\nab2685d8d3a0e191dc8aef83df36773c07cb3d06\nfix: Dataproc v1 - AutoscalingPolicy annotation\n\nThis adds the second resource name pattern to the\nAutoscalingPolicy resource.\n\nCommitter: @lukesneeringer\nPiperOrigin-RevId: 295738415\n\n8a1020bf6828f6e3c84c3014f2c51cb62b739140\nUpdate cloud asset api v1p4beta1.\n\nPiperOrigin-RevId: 295286165\n\n5cfa105206e77670369e4b2225597386aba32985\nAdd service control related proto build rule.\n\nPiperOrigin-RevId: 295262088\n\nee4dddf805072004ab19ac94df2ce669046eec26\nmonitoring v3: Add prefix \"https://cloud.google.com/\" into the link for global access\ncl 295167522, get ride of synth.py hacks\n\nPiperOrigin-RevId: 295238095\n\nd9835e922ea79eed8497db270d2f9f85099a519c\nUpdate some minor docs changes about user event proto\n\nPiperOrigin-RevId: 295185610\n\n5f311e416e69c170243de722023b22f3df89ec1c\nfix: use correct PHP package name in gapic configuration\n\nPiperOrigin-RevId: 295161330\n\n6cdd74dcdb071694da6a6b5a206e3a320b62dd11\npubsub: v1 add client config annotations and retry config\n\nPiperOrigin-RevId: 295158776\n\n5169f46d9f792e2934d9fa25c36d0515b4fd0024\nAdded cloud asset api v1p4beta1.\n\nPiperOrigin-RevId: 295026522\n\n56b55aa8818cd0a532a7d779f6ef337ba809ccbd\nFix: Resource annotations for CreateTimeSeriesRequest and ListTimeSeriesRequest should refer to valid resources. TimeSeries is not a named resource.\n\nPiperOrigin-RevId: 294931650\n\n0646bc775203077226c2c34d3e4d50cc4ec53660\nRemove unnecessary languages from bigquery-related artman configuration files.\n\nPiperOrigin-RevId: 294809380\n\n8b78aa04382e3d4147112ad6d344666771bb1909\nUpdate backend.proto for schemes and protocol\n\nPiperOrigin-RevId: 294788800\n\n80b8f8b3de2359831295e24e5238641a38d8488f\nAdds artman config files for bigquerystorage endpoints v1beta2, v1alpha2, v1\n\nPiperOrigin-RevId: 294763931\n\n2c17ac33b226194041155bb5340c3f34733f1b3a\nAdd parameter to sample generated for UpdateInstance. Related to https://github.com/googleapis/python-redis/issues/4\n\nPiperOrigin-RevId: 294734008\n\nd5e8a8953f2acdfe96fb15e85eb2f33739623957\nMove bigquery datatransfer to gapic v2.\n\nPiperOrigin-RevId: 294703703\n\nefd36705972cfcd7d00ab4c6dfa1135bafacd4ae\nfix: Add two annotations that we missed.\n\nPiperOrigin-RevId: 294664231\n\n8a36b928873ff9c05b43859b9d4ea14cd205df57\nFix: Define the \"bigquery.googleapis.com/Table\" resource in the BigQuery Storage API (v1beta2).\n\nPiperOrigin-RevId: 294459768\n\nc7a3caa2c40c49f034a3c11079dd90eb24987047\nFix: Define the \"bigquery.googleapis.com/Table\" resource in the BigQuery Storage API (v1).\n\nPiperOrigin-RevId: 294456889\n\n5006247aa157e59118833658084345ee59af7c09\nFix: Make deprecated fields optional\nFix: Deprecate SetLoggingServiceRequest.zone in line with the comments\nFeature: Add resource name method signatures where appropriate\n\nPiperOrigin-RevId: 294383128\n\neabba40dac05c5cbe0fca3a35761b17e372036c4\nFix: C# and PHP package/namespace capitalization for BigQuery Storage v1.\n\nPiperOrigin-RevId: 294382444\n\nf8d9a858a7a55eba8009a23aa3f5cc5fe5e88dde\nfix: artman configuration file for bigtable-admin\n\nPiperOrigin-RevId: 294322616\n\n0f29555d1cfcf96add5c0b16b089235afbe9b1a9\nAPI definition for (not-yet-launched) GCS gRPC.\n\nPiperOrigin-RevId: 294321472\n\nfcc86bee0e84dc11e9abbff8d7c3529c0626f390\nfix: Bigtable Admin v2\n\nChange LRO metadata from PartialUpdateInstanceMetadata\nto UpdateInstanceMetadata. (Otherwise, it will not build.)\n\nPiperOrigin-RevId: 294264582\n\n6d9361eae2ebb3f42d8c7ce5baf4bab966fee7c0\nrefactor: Add annotations to Bigtable Admin v2.\n\nPiperOrigin-RevId: 294243406\n\nad7616f3fc8e123451c8b3a7987bc91cea9e6913\nFix: Resource type in CreateLogMetricRequest should use logging.googleapis.com.\nFix: ListLogEntries should have a method signature for convenience of calling it.\n\nPiperOrigin-RevId: 294222165\n\n63796fcbb08712676069e20a3e455c9f7aa21026\nFix: Remove extraneous resource definition for cloudkms.googleapis.com/CryptoKey.\n\nPiperOrigin-RevId: 294176658\n\ne7d8a694f4559201e6913f6610069cb08b39274e\nDepend on the latest gapic-generator and resource names plugin.\n\nThis fixes the very old an very annoying bug: https://github.com/googleapis/gapic-generator/pull/3087\n\nPiperOrigin-RevId: 293903652\n\n806b2854a966d55374ee26bb0cef4e30eda17b58\nfix: correct capitalization of Ruby namespaces in SecurityCenter V1p1beta1\n\nPiperOrigin-RevId: 293903613\n\n1b83c92462b14d67a7644e2980f723112472e03a\nPublish annotations and grpc service config for Logging API.\n\nPiperOrigin-RevId: 293893514\n\n"
+        "sha": "ae78682c05e864d71223ce22532219813b0245ac",
+        "internalRef": "301185150"
       }
     },
     {
@@ -32,8 +59,7 @@
         "apiName": "asset",
         "apiVersion": "v1beta1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/asset/artman_cloudasset_v1beta1.yaml"
+        "generator": "bazel"
       }
     },
     {
@@ -42,18 +68,16 @@
         "apiName": "asset",
         "apiVersion": "v1p2beta1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/asset/artman_cloudasset_v1p2beta1.yaml"
+        "generator": "bazel"
       }
     },
     {
       "client": {
         "source": "googleapis",
         "apiName": "asset",
-        "apiVersion": "v1p1beta1",
+        "apiVersion": "v1p4beta1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/asset/v1p1beta1/artman_cloudasset_v1p1beta1.yaml"
+        "generator": "bazel"
       }
     },
     {
@@ -62,8 +86,7 @@
         "apiName": "asset",
         "apiVersion": "v1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/asset/artman_cloudasset_v1.yaml"
+        "generator": "bazel"
       }
     }
   ]
