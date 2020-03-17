@@ -222,10 +222,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # FLOAT64. Supported signatures: MOD(INT64, INT64)
         'db_functions.math.test_mod.ModTests.test_decimal',
         'db_functions.math.test_mod.ModTests.test_float',
-        # Spanner's CAST function returns null if any of its arguments are
-        # null: https://github.com/orijtech/spanner-orm/issues/242
-        'db_functions.text.test_concat.ConcatTests.test_basic',
-        'db_functions.text.test_concat.ConcatTests.test_many',
         # casting DateField to DateTimeField adds an unexpected hour:
         # https://github.com/orijtech/spanner-orm/issues/260
         'db_functions.comparison.test_cast.CastTests.test_cast_from_db_date_to_datetime',
