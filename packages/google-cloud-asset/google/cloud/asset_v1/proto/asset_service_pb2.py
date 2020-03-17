@@ -1244,10 +1244,10 @@ BatchGetAssetsHistoryRequest = _reflection.GeneratedProtocolMessageType(
           te.googleapis.com/projects/my_project_123/zones/zone1/instance
           s/instance1``. See `Resource Names <https://cloud.google.com/a
           pis/design/resource_names#full_resource_name>`__ and `Resource
-          Name Format <https://cloud.google.com/asset-
-          inventory/docs/resource-name-format>`__ for more info.  The
-          request becomes a no-op if the asset name list is empty, and
-          the max size of the asset name list is 100 in one request.
+          Name Format <https://cloud.google.com/asset-inventory/docs
+          /resource-name-format>`__ for more info.  The request becomes
+          a no-op if the asset name list is empty, and the max size of
+          the asset name list is 100 in one request.
       content_type:
           Optional. The content type.
       read_time_window:
@@ -1559,9 +1559,8 @@ Feed = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Required. The format will be
-          projects/{project_number}/feeds/{client-
-          assigned_feed_identifier} or
+          Required. The format will be projects/{project_number}/feeds
+          /{client-assigned_feed_identifier} or
           folders/{folder_number}/feeds/{client-
           assigned_feed_identifier} or
           organizations/{organization_number}/feeds/{client-
@@ -1581,9 +1580,9 @@ Feed = _reflection.GeneratedProtocolMessageType(
           asset updates matching specified asset_names and asset_types
           are exported to the feed. For example:
           “compute.googleapis.com/Disk” See `Introduction to Cloud Asset
-          Inventory <https://cloud.google.com/resource-
-          manager/docs/cloud-asset-inventory/overview>`__ for all
-          supported asset types.
+          Inventory <https://cloud.google.com/resource-manager/docs
+          /cloud-asset-inventory/overview>`__ for all supported asset
+          types.
       content_type:
           Asset content type. If not specified, no content but the asset
           name and type will be returned.

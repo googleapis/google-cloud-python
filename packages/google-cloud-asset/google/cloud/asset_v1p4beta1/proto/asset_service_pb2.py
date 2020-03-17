@@ -1220,12 +1220,11 @@ AnalyzeIamPolicyRequest = _reflection.GeneratedProtocolMessageType(
             rsonation_analysis].  Default is false.
         execution_timeout:
             Optional. Amount of time executable has to complete. See JSON
-            representation of `Duration
-            <https://developers.google.com/protocol-
-            buffers/docs/proto3#json>`__.  If this field is set with a
-            value less than the RPC deadline, and the execution of your
-            query hasn’t finished in the specified execution timeout, you
-            will get a response with partial result. Otherwise, your
+            representation of `Duration <https://developers.google.com
+            /protocol-buffers/docs/proto3#json>`__.  If this field is set
+            with a value less than the RPC deadline, and the execution of
+            your query hasn’t finished in the specified execution timeout,
+            you will get a response with partial result. Otherwise, your
             query’s execution will continue until the RPC deadline. If
             it’s not finished until then, you will get a DEADLINE_EXCEEDED
             error.  Default is empty.
@@ -1328,9 +1327,8 @@ IamPolicyAnalysisOutputConfig = _reflection.GeneratedProtocolMessageType(
             Required. The uri of the Cloud Storage object. It’s the same
             uri that is used by gsutil. For example:
             “gs://bucket_name/object_name”. See `Viewing and Editing
-            Object Metadata
-            <https://cloud.google.com/storage/docs/viewing-editing-
-            metadata>`__ for more information.
+            Object Metadata <https://cloud.google.com/storage/docs
+            /viewing-editing-metadata>`__ for more information.
     """,
                 # @@protoc_insertion_point(class_scope:google.cloud.asset.v1p4beta1.IamPolicyAnalysisOutputConfig.GcsDestination)
             },

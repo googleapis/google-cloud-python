@@ -40,10 +40,10 @@ class ContentType(enum.IntEnum):
 
 class NullValue(enum.IntEnum):
     """
-    ``NullValue`` is a singleton enumeration to represent the null value
-    for the ``Value`` type union.
-
-    The JSON representation for ``NullValue`` is JSON ``null``.
+    Required. The name of the Feed and it must be in the format of:
+    projects/project_number/feeds/feed_id
+    folders/folder_number/feeds/feed_id
+    organizations/organization_number/feeds/feed_id
 
     Attributes:
       NULL_VALUE (int): Null value.

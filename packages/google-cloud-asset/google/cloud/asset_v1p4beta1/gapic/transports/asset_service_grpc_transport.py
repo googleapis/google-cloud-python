@@ -119,8 +119,8 @@ class AssetServiceGrpcTransport(object):
     def analyze_iam_policy(self):
         """Return the gRPC stub for :meth:`AssetServiceClient.analyze_iam_policy`.
 
-        Analyzes IAM policies based on the specified request. Returns a list
-        of ``IamPolicyAnalysisResult`` matching the request.
+        For extensions, this is the name of the type being extended. It is
+        resolved in the same manner as type_name.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -133,10 +133,14 @@ class AssetServiceGrpcTransport(object):
     def export_iam_policy_analysis(self):
         """Return the gRPC stub for :meth:`AssetServiceClient.export_iam_policy_analysis`.
 
-        Exports IAM policy analysis based on the specified request. This API
-        implements the ``google.longrunning.Operation`` API allowing you to keep
-        track of the export. The metadata contains the request to help callers
-        to map responses to requests.
+        The normal response of the operation in case of success. If the
+        original method returns no data on success, such as ``Delete``, the
+        response is ``google.protobuf.Empty``. If the original method is
+        standard ``Get``/``Create``/``Update``, the response should be the
+        resource. For other methods, the response should have the type
+        ``XxxResponse``, where ``Xxx`` is the original method name. For example,
+        if the original method name is ``TakeSnapshot()``, the inferred response
+        type is ``TakeSnapshotResponse``.
 
         Returns:
             Callable: A callable which accepts the appropriate

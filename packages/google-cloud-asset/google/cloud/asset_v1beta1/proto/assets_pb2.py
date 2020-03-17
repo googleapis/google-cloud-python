@@ -463,8 +463,8 @@ Asset = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _ASSET,
         "__module__": "google.cloud.asset_v1beta1.proto.assets_pb2",
-        "__doc__": """Cloud asset. This includes all Google Cloud Platform resources, Cloud
-  IAM policies, and other non-GCP assets.
+        "__doc__": """Cloud asset. This includes all Google Cloud Platform
+  resources, Cloud IAM policies, and other non-GCP assets.
   
   
   Attributes:

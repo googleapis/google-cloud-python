@@ -206,10 +206,7 @@ class AssetServiceClient(object):
         metadata=None,
     ):
         """
-        Exports assets with time and resource types to a given Cloud Storage
-        location. The output format is newline-delimited JSON. This API
-        implements the ``google.longrunning.Operation`` API allowing you to keep
-        track of the export.
+        See ``HttpRule``.
 
         Example:
             >>> from google.cloud import asset_v1beta1
@@ -250,11 +247,15 @@ class AssetServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.asset_v1beta1.types.Timestamp`
-            asset_types (list[str]): A list of asset types of which to take a snapshot for. For example:
-                "google.compute.Disk". If specified, only matching assets will be
-                returned. See `Introduction to Cloud Asset
-                Inventory <https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview>`__
-                for all supported asset types.
+            asset_types (list[str]): Waits for the specified long-running operation until it is done or
+                reaches at most a specified timeout, returning the latest state. If the
+                operation is already done, the latest state is immediately returned. If
+                the timeout specified is greater than the default HTTP/RPC timeout, the
+                HTTP/RPC timeout is used. If the server does not support this method, it
+                returns ``google.rpc.Code.UNIMPLEMENTED``. Note that this method is on a
+                best-effort basis. It may return the latest state before the specified
+                timeout (including immediately), meaning even an immediate response is
+                no guarantee that the operation is done.
             content_type (~google.cloud.asset_v1beta1.types.ContentType): Asset content type. If not specified, no content but the asset name will be
                 returned.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -328,12 +329,32 @@ class AssetServiceClient(object):
         metadata=None,
     ):
         """
-        Batch gets the update history of assets that overlap a time window.
-        For RESOURCE content, this API outputs history with asset in both
-        non-delete or deleted status. For IAM_POLICY content, this API outputs
-        history when the asset and its attached IAM POLICY both exist. This can
-        create gaps in the output history. If a specified asset does not exist,
-        this API returns an INVALID_ARGUMENT error.
+        A URL/resource name that uniquely identifies the type of the
+        serialized protocol buffer message. This string must contain at least
+        one "/" character. The last segment of the URL's path must represent the
+        fully qualified name of the type (as in
+        ``path/google.protobuf.Duration``). The name should be in a canonical
+        form (e.g., leading "." is not accepted).
+
+        In practice, teams usually precompile into the binary all types that
+        they expect it to use in the context of Any. However, for URLs which use
+        the scheme ``http``, ``https``, or no scheme, one can optionally set up
+        a type server that maps type URLs to message definitions as follows:
+
+        -  If no scheme is provided, ``https`` is assumed.
+        -  An HTTP GET on the URL must yield a ``google.protobuf.Type`` value in
+           binary format, or produce an error.
+        -  Applications are allowed to cache lookup results based on the URL, or
+           have them precompiled into a binary to avoid any lookup. Therefore,
+           binary compatibility needs to be preserved on changes to types. (Use
+           versioned type names to manage breaking changes.)
+
+        Note: this functionality is not currently available in the official
+        protobuf release, and it is not used for type URLs beginning with
+        type.googleapis.com.
+
+        Schemes other than ``http``, ``https`` (or the empty scheme) might be
+        used with implementation specific semantics.
 
         Example:
             >>> from google.cloud import asset_v1beta1
@@ -356,23 +377,26 @@ class AssetServiceClient(object):
                 organization number (such as "organizations/123"), a project ID (such as
                 "projects/my-project-id")", or a project number (such as "projects/12345").
             content_type (~google.cloud.asset_v1beta1.types.ContentType): Optional. The content type.
-            read_time_window (Union[dict, ~google.cloud.asset_v1beta1.types.TimeWindow]): Optional. The time window for the asset history. Both start_time and
-                end_time are optional and if set, it must be after 2018-10-02 UTC. If
-                end_time is not set, it is default to current timestamp. If start_time
-                is not set, the snapshot of the assets at end_time will be returned. The
-                returned results contain all temporal assets whose time window overlap
-                with read_time_window.
+            read_time_window (Union[dict, ~google.cloud.asset_v1beta1.types.TimeWindow]): If set, all the classes from the .proto file are wrapped in a single
+                outer class with the given name. This applies to both Proto1 (equivalent
+                to the old "--one_java_file" option) and Proto2 (where a .proto always
+                translates to a single class, but you may want to explicitly choose the
+                class name).
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.asset_v1beta1.types.TimeWindow`
-            asset_names (list[str]): A list of the full names of the assets. For example:
-                ``//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1``.
-                See `Resource
+            asset_names (list[str]): The full name of the immediate parent of this resource. See
+                `Resource
                 Names <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__
-                for more info.
+                for more information.
 
-                The request becomes a no-op if the asset name list is empty, and the max
-                size of the asset name list is 100 in one request.
+                For GCP assets, it is the parent resource defined in the `Cloud IAM
+                policy
+                hierarchy <https://cloud.google.com/iam/docs/overview#policy_hierarchy>`__.
+                For example:
+                ``"//cloudresourcemanager.googleapis.com/projects/my_project_123"``.
+
+                For third-party assets, it is up to the users to define.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.

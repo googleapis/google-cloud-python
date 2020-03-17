@@ -566,9 +566,9 @@ ExportAssetsRequest = _reflection.GeneratedProtocolMessageType(
           A list of asset types of which to take a snapshot for. For
           example: “google.compute.Disk”. If specified, only matching
           assets will be returned. See `Introduction to Cloud Asset
-          Inventory <https://cloud.google.com/resource-
-          manager/docs/cloud-asset-inventory/overview>`__ for all
-          supported asset types.
+          Inventory <https://cloud.google.com/resource-manager/docs
+          /cloud-asset-inventory/overview>`__ for all supported asset
+          types.
       content_type:
           Asset content type. If not specified, no content but the asset
           name will be returned.

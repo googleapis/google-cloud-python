@@ -932,9 +932,8 @@ Feed = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       name:
-          Required. The format will be
-          projects/{project_number}/feeds/{client-
-          assigned_feed_identifier} or
+          Required. The format will be projects/{project_number}/feeds
+          /{client-assigned_feed_identifier} or
           folders/{folder_number}/feeds/{client-
           assigned_feed_identifier} or
           organizations/{organization_number}/feeds/{client-
@@ -954,9 +953,9 @@ Feed = _reflection.GeneratedProtocolMessageType(
           asset updates matching specified asset_names and asset_types
           are exported to the feed. For example:
           “compute.googleapis.com/Disk” See `Introduction to Cloud Asset
-          Inventory <https://cloud.google.com/resource-
-          manager/docs/cloud-asset-inventory/overview>`__ for all
-          supported asset types.
+          Inventory <https://cloud.google.com/resource-manager/docs
+          /cloud-asset-inventory/overview>`__ for all supported asset
+          types.
       content_type:
           Asset content type. If not specified, no content but the asset
           name and type will be returned.

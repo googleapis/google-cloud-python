@@ -119,10 +119,7 @@ class AssetServiceGrpcTransport(object):
     def export_assets(self):
         """Return the gRPC stub for :meth:`AssetServiceClient.export_assets`.
 
-        Exports assets with time and resource types to a given Cloud Storage
-        location. The output format is newline-delimited JSON. This API
-        implements the ``google.longrunning.Operation`` API allowing you to keep
-        track of the export.
+        See ``HttpRule``.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -135,12 +132,32 @@ class AssetServiceGrpcTransport(object):
     def batch_get_assets_history(self):
         """Return the gRPC stub for :meth:`AssetServiceClient.batch_get_assets_history`.
 
-        Batch gets the update history of assets that overlap a time window.
-        For RESOURCE content, this API outputs history with asset in both
-        non-delete or deleted status. For IAM_POLICY content, this API outputs
-        history when the asset and its attached IAM POLICY both exist. This can
-        create gaps in the output history. If a specified asset does not exist,
-        this API returns an INVALID_ARGUMENT error.
+        A URL/resource name that uniquely identifies the type of the
+        serialized protocol buffer message. This string must contain at least
+        one "/" character. The last segment of the URL's path must represent the
+        fully qualified name of the type (as in
+        ``path/google.protobuf.Duration``). The name should be in a canonical
+        form (e.g., leading "." is not accepted).
+
+        In practice, teams usually precompile into the binary all types that
+        they expect it to use in the context of Any. However, for URLs which use
+        the scheme ``http``, ``https``, or no scheme, one can optionally set up
+        a type server that maps type URLs to message definitions as follows:
+
+        -  If no scheme is provided, ``https`` is assumed.
+        -  An HTTP GET on the URL must yield a ``google.protobuf.Type`` value in
+           binary format, or produce an error.
+        -  Applications are allowed to cache lookup results based on the URL, or
+           have them precompiled into a binary to avoid any lookup. Therefore,
+           binary compatibility needs to be preserved on changes to types. (Use
+           versioned type names to manage breaking changes.)
+
+        Note: this functionality is not currently available in the official
+        protobuf release, and it is not used for type URLs beginning with
+        type.googleapis.com.
+
+        Schemes other than ``http``, ``https`` (or the empty scheme) might be
+        used with implementation specific semantics.
 
         Returns:
             Callable: A callable which accepts the appropriate
