@@ -211,6 +211,11 @@ class DatabaseOperations(BaseDatabaseOperations):
     def format_for_duration_arithmetic(self, sql):
         return 'INTERVAL %s MICROSECOND' % sql
 
+    def combine_expression(self, connector, sub_expressions):
+        if connector == '%%':
+            return 'MOD(%s)' % ', '.join(sub_expressions)
+        return super().combine_expression(connector, sub_expressions)
+
     def combine_duration_expression(self, connector, sub_expressions):
         if connector == '+':
             return 'TIMESTAMP_ADD(' + ', '.join(sub_expressions) + ')'
