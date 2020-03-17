@@ -13,6 +13,10 @@ from django.db.utils import InterfaceError
 class DatabaseFeatures(BaseDatabaseFeatures):
     can_introspect_big_integer_field = False
     can_introspect_duration_field = False
+    can_introspect_foreign_keys = False
+    # TimeField is introspected as DateTimeField because they both use
+    # TIMESTAMP.
+    can_introspect_time_field = False
     closed_cursor_error_class = InterfaceError
     # Spanner uses REGEXP_CONTAINS which is case-sensitive.
     has_case_insensitive_like = False
@@ -22,6 +26,8 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     supports_ignore_conflicts = False
     supports_partial_indexes = False
     supports_regex_backreferencing = False
+    supports_select_for_update_with_limit = False
+    supports_sequence_reset = False
     supports_timezones = False
     supports_transactions = False
     supports_column_check_constraints = False
@@ -37,6 +43,9 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'basic.tests.SelectOnSaveTests.test_select_on_save_lying_update',
         # django_spanner monkey patches AutoField to have a default value.
         'basic.tests.ModelTest.test_hash',
+        'generic_relations.test_forms.GenericInlineFormsetTests.test_options',
+        'generic_relations.tests.GenericRelationsTests.test_unsaved_instance_on_generic_foreign_key',
+        'generic_relations_regress.tests.GenericRelationTests.test_target_model_is_unsaved',
         'm2m_through_regress.tests.ToFieldThroughTests.test_m2m_relations_unusable_on_null_pk_obj',
         'many_to_many.tests.ManyToManyTests.test_add',
         'many_to_one.tests.ManyToOneTests.test_fk_assignment_and_related_object_cache',
@@ -44,14 +53,18 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'model_fields.test_durationfield.TestSerialization.test_dumping',
         'model_fields.test_uuid.TestSerialization.test_dumping',
         'model_fields.test_booleanfield.ValidationTest.test_nullbooleanfield_blank',
+        'model_inheritance.tests.ModelInheritanceTests.test_create_child_no_update',
+        'model_regress.tests.ModelTests.test_get_next_prev_by_field_unsaved',
         'one_to_one.tests.OneToOneTests.test_get_reverse_on_unsaved_object',
         'one_to_one.tests.OneToOneTests.test_set_reverse_on_unsaved_object',
         'one_to_one.tests.OneToOneTests.test_unsaved_object',
         'queries.test_bulk_update.BulkUpdateNoteTests.test_unsaved_models',
         'serializers.test_json.JsonSerializerTestCase.test_pkless_serialized_strings',
         'serializers.test_json.JsonSerializerTestCase.test_serialize_with_null_pk',
-        'serializers.test_json.JsonSerializerTestCase.test_json_serializer_natural_keys',
-        'serializers.test_json.JsonSerializerTestCase.test_python_serializer_natural_keys',
+        'serializers.test_xml.XmlSerializerTestCase.test_pkless_serialized_strings',
+        'serializers.test_xml.XmlSerializerTestCase.test_serialize_with_null_pk',
+        'serializers.test_yaml.YamlSerializerTestCase.test_pkless_serialized_strings',
+        'serializers.test_yaml.YamlSerializerTestCase.test_serialize_with_null_pk',
         'timezones.tests.LegacyDatabaseTests.test_cursor_execute_accepts_naive_datetime',
         'timezones.tests.NewDatabaseTests.test_cursor_execute_accepts_naive_datetime',
         'validation.test_custom_messages.CustomMessagesTests.test_custom_null_message',
@@ -88,6 +101,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'aggregation_regress.tests.AggregationTests.test_ticket_11293',
         'defer_regress.tests.DeferRegressionTest.test_ticket_23270',
         'distinct_on_fields.tests.DistinctOnTests.test_basic_distinct_on',
+        'extra_regress.tests.ExtraRegressTests.test_regression_7314_7372',
         'generic_relations_regress.tests.GenericRelationTests.test_annotate',
         'get_earliest_or_latest.tests.TestFirstLast',
         'known_related_objects.tests.ExistingRelatedInstancesTests.test_reverse_one_to_one_multi_prefetch_related',
@@ -96,12 +110,19 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'lookup.tests.LookupTests.test_values_list',
         'migrations.test_operations.OperationTests.test_alter_order_with_respect_to',
         'model_fields.tests.GetChoicesOrderingTests.test_get_choices_reverse_related_field',
+        'model_formsets.tests.ModelFormsetTest.test_custom_pk',
         'model_formsets_regress.tests.FormfieldShouldDeleteFormTests.test_custom_delete',
         'multiple_database.tests.RouterTestCase.test_generic_key_cross_database_protection',
         'ordering.tests.OrderingTests.test_default_ordering_by_f_expression',
         'ordering.tests.OrderingTests.test_order_by_fk_attname',
         'ordering.tests.OrderingTests.test_order_by_override',
         'ordering.tests.OrderingTests.test_order_by_pk',
+        'prefetch_related.test_prefetch_related_objects.PrefetchRelatedObjectsTests.test_m2m_then_m2m',
+        'prefetch_related.tests.CustomPrefetchTests.test_custom_qs',
+        'prefetch_related.tests.CustomPrefetchTests.test_nested_prefetch_related_are_not_overwritten',
+        'prefetch_related.tests.DirectPrefechedObjectCacheReuseTests.test_detect_is_fetched',
+        'prefetch_related.tests.DirectPrefechedObjectCacheReuseTests.test_detect_is_fetched_with_to_attr',
+        'prefetch_related.tests.ForeignKeyToFieldTest.test_m2m',
         'queries.test_bulk_update.BulkUpdateNoteTests.test_multiple_fields',
         'queries.test_bulk_update.BulkUpdateTests.test_inherited_fields',
         'queries.tests.Queries1Tests.test_ticket9411',
@@ -136,6 +157,9 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'model_fields.test_decimalfield.DecimalFieldTests.test_roundtrip_with_trailing_zeros',
         # No CHECK constraints in Spanner.
         'model_fields.test_integerfield.PositiveIntegerFieldTests.test_negative_values',
+        # contains lookup crashes with bilateral transform:
+        # https://github.com/googleapis/python-spanner-django/issues/419
+        'custom_lookups.tests.BilateralTransformTests.test_bilateral_upper',
         # Spanner doesn't support the variance the standard deviation database
         # functions:
         'aggregation.test_filter_argument.FilteredAggregateTests.test_filtered_numerical_aggregates',
@@ -156,6 +180,10 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'expressions.tests.FTimeDeltaTests.test_delta_add',
         'expressions.tests.FTimeDeltaTests.test_duration_with_datetime',
         'expressions.tests.FTimeDeltaTests.test_mixed_comparisons2',
+        # This test doesn't raise NotSupportedError because Spanner doesn't
+        # support select for update either (besides the "with limit"
+        # restriction).
+        'select_for_update.tests.SelectForUpdateTests.test_unsupported_select_for_update_with_limit',
         # integer division produces a float result, which can't be assigned to
         # an integer column:
         # https://github.com/orijtech/django-spanner/issues/331
@@ -186,19 +214,32 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # casting DateField to DateTimeField adds an unexpected hour:
         # https://github.com/orijtech/spanner-orm/issues/260
         'db_functions.comparison.test_cast.CastTests.test_cast_from_db_date_to_datetime',
-        # Obscure error with auth_tests:
-        # https://github.com/orijtech/spanner-orm/issues/271
+        # Tests that fail during tear down on databases that don't support
+        # transactions: https://github.com/orijtech/spanner-orm/issues/271
+        'admin_views.test_multidb.MultiDatabaseTests.test_add_view',
+        'admin_views.test_multidb.MultiDatabaseTests.test_change_view',
+        'admin_views.test_multidb.MultiDatabaseTests.test_delete_view',
         'auth_tests.test_admin_multidb.MultiDatabaseTests.test_add_view',
+        'contenttypes_tests.test_models.ContentTypesMultidbTests.test_multidb',
         # Tests that by-pass using django_spanner and generate
         # invalid DDL: https://github.com/orijtech/django-spanner/issues/298
         'cache.tests.CreateCacheTableForDBCacheTests',
         'cache.tests.DBCacheTests',
         'cache.tests.DBCacheWithTimeZoneTests',
+        # Tests that require transactions.
+        'transaction_hooks.tests.TestConnectionOnCommit.test_does_not_execute_if_transaction_rolled_back',
+        'transaction_hooks.tests.TestConnectionOnCommit.test_hooks_cleared_after_rollback',
+        'transaction_hooks.tests.TestConnectionOnCommit.test_hooks_cleared_on_reconnect',
+        'transaction_hooks.tests.TestConnectionOnCommit.test_no_hooks_run_from_failed_transaction',
+        'transaction_hooks.tests.TestConnectionOnCommit.test_no_savepoints_atomic_merged_with_outer',
         # Tests that require savepoints.
         'get_or_create.tests.UpdateOrCreateTests.test_integrity',
         'get_or_create.tests.UpdateOrCreateTests.test_manual_primary_key_test',
         'get_or_create.tests.UpdateOrCreateTestsWithManualPKs.test_create_with_duplicate_primary_key',
         'test_utils.tests.TestBadSetUpTestData.test_failure_in_setUpTestData_should_rollback_transaction',
+        'transaction_hooks.tests.TestConnectionOnCommit.test_discards_hooks_from_rolled_back_savepoint',
+        'transaction_hooks.tests.TestConnectionOnCommit.test_inner_savepoint_rolled_back_with_outer',
+        'transaction_hooks.tests.TestConnectionOnCommit.test_inner_savepoint_does_not_affect_outer',
         # Spanner doesn't support views.
         'inspectdb.tests.InspectDBTransactionalTests.test_include_views',
         'introspection.tests.IntrospectionTests.test_table_names_with_views',
@@ -228,6 +269,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'schema.tests.SchemaTests.test_alter_text_field_to_datetime_field',
         'schema.tests.SchemaTests.test_alter_text_field_to_time_field',
         # Spanner limitation: Cannot rename tables and columns.
+        'contenttypes_tests.test_operations.ContentTypeOperationsTests',
         'migrations.test_operations.OperationTests.test_alter_fk_non_fk',
         'migrations.test_operations.OperationTests.test_alter_model_table',
         'migrations.test_operations.OperationTests.test_alter_model_table_m2m',
@@ -278,6 +320,14 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # This test isn't isolated on databases like Spanner that don't
         # support transactions: https://code.djangoproject.com/ticket/31413
         'migrations.test_loader.LoaderTests.test_loading_squashed',
+        # Probably due to django-spanner setting a default on AutoField:
+        # https://github.com/googleapis/python-spanner-django/issues/422
+        'model_inheritance_regress.tests.ModelInheritanceTest.test_issue_6755',
+        # Probably due to django-spanner setting a default on AutoField:
+        # https://github.com/googleapis/python-spanner-django/issues/424
+        'model_formsets.tests.ModelFormsetTest.test_prevent_change_outer_model_and_create_invalid_data',
+        'model_formsets_regress.tests.FormfieldShouldDeleteFormTests.test_no_delete',
+        'model_formsets_regress.tests.FormsetTests.test_extraneous_query_is_not_run',
     )
     # Kokoro-specific skips.
     if os.environ.get('KOKORO_JOB_NAME'):
@@ -285,7 +335,9 @@ class DatabaseFeatures(BaseDatabaseFeatures):
             # os.chmod() doesn't work on Kokoro?
             'file_uploads.tests.DirectoryCreationTests.test_readonly_root',
             # Tests that sometimes fail on Kokoro for unknown reasons.
+            'contenttypes_tests.test_models.ContentTypesTests.test_cache_not_shared_between_managers',
             'migration_test_data_persistence.tests.MigrationDataNormalPersistenceTestCase.test_persistence',
+            'servers.test_liveserverthread.LiveServerThreadTest.test_closes_connections',
         )
 
     if os.environ.get('SPANNER_EMULATOR_HOST', None):
