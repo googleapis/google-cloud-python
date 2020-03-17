@@ -172,11 +172,3 @@ class Cursor(BaseCursor):
 
     def __clear(self):
         self._connection = None
-
-    def executemany(self, operation, seq_of_params):
-        self._raise_if_already_closed()
-
-        if not self._connection:
-            raise ProgrammingError('Cursor is not connected to the database')
-
-        raise ProgrammingError('Unimplemented')

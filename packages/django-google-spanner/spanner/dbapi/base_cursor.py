@@ -87,7 +87,8 @@ class BaseCursor(object):
         if not self._connection:
             raise ProgrammingError('Cursor is not connected to the database')
 
-        raise ProgrammingError('Unimplemented')
+        for params in seq_of_params:
+            self.execute(operation, params)
 
     def __next__(self):
         if self._itr is None:
