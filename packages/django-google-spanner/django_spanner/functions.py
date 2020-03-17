@@ -6,10 +6,16 @@
 
 import math
 
+from django.db.models.expressions import Func, Value
 from django.db.models.functions import (
-    Cast, Chr, Cot, Degrees, Left, Log, Ord, Pi, Radians, Right, StrIndex,
-    Substr,
+    Cast, Chr, ConcatPair, Cot, Degrees, Left, Log, Ord, Pi, Radians, Right,
+    StrIndex, Substr,
 )
+
+
+class IfNull(Func):
+    function = 'IFNULL'
+    arity = 2
 
 
 def cast(self, compiler, connection, **extra_context):
@@ -24,6 +30,14 @@ def cast(self, compiler, connection, **extra_context):
 
 def chr_(self, compiler, connection, **extra_context):
     return self.as_sql(compiler, connection, template='CODE_POINTS_TO_STRING([%(expressions)s])', **extra_context)
+
+
+def concatpair(self, compiler, connection, **extra_context):
+    # Spanner's CONCAT function returns null if any of its arguments are null.
+    # Prevent that by converting null arguments to an empty string.
+    clone = self.copy()
+    clone.set_source_expressions(IfNull(e, Value('')) for e in self.get_source_expressions())
+    return clone.as_sql(compiler, connection, **extra_context)
 
 
 def cot(self, compiler, connection, **extra_context):
@@ -77,6 +91,7 @@ def substr(self, compiler, connection, **extra_context):
 def register_functions():
     Cast.as_spanner = cast
     Chr.as_spanner = chr_
+    ConcatPair.as_spanner = concatpair
     Cot.as_spanner = cot
     Degrees.as_spanner = degrees
     Left.as_spanner = left_and_right
