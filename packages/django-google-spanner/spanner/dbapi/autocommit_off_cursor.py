@@ -246,9 +246,3 @@ class Cursor(BaseCursor):
     def __clear(self):
         self._connection = None
         self.__txn = None
-
-    def executemany(self, operation, seq_of_params):
-        if not self._connection:
-            raise ProgrammingError('Cursor is not connected to the database')
-
-        raise ProgrammingError('Unimplemented')
