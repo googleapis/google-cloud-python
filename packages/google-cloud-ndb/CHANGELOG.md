@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+### [1.1.2](https://www.github.com/googleapis/python-ndb/compare/v1.1.1...v1.1.2) (2020-03-16)
+
+
+### Bug Fixes
+
+* check for legacy local structured property values ([#365](https://www.github.com/googleapis/python-ndb/issues/365)) ([f81f406](https://www.github.com/googleapis/python-ndb/commit/f81f406d8e1059121341828836fce2aae5782fca)), closes [#359](https://www.github.com/googleapis/python-ndb/issues/359)
+* move stub (grpc communication channel) to client ([#362](https://www.github.com/googleapis/python-ndb/issues/362)) ([90e0625](https://www.github.com/googleapis/python-ndb/commit/90e06252df25fa2ce199543e7b01b17ec284aaf1)), closes [#343](https://www.github.com/googleapis/python-ndb/issues/343)
+
 ### [1.1.1](https://www.github.com/googleapis/python-ndb/compare/v1.1.0...v1.1.1) (2020-03-05)
 
 
