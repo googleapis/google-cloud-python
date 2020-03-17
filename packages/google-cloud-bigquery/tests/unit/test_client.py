@@ -6582,6 +6582,42 @@ class TestClientUpload(object):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(fastparquet is None, "Requires `fastparquet`")
+    def test_load_table_from_dataframe_no_pyarrow_warning(self):
+        from google.cloud.bigquery.client import PyarrowMissingWarning
+
+        client = self._make_client()
+
+        # Pick at least one column type that translates to Pandas dtype
+        # "object". A string column matches that.
+        records = [{"name": "Monty", "age": 100}, {"name": "Python", "age": 60}]
+        dataframe = pandas.DataFrame(records)
+
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            side_effect=google.api_core.exceptions.NotFound("Table not found"),
+        )
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+        pyarrow_patch = mock.patch("google.cloud.bigquery.client.pyarrow", None)
+        pyarrow_patch_helpers = mock.patch(
+            "google.cloud.bigquery._pandas_helpers.pyarrow", None
+        )
+        catch_warnings = warnings.catch_warnings(record=True)
+
+        with get_table_patch, load_patch, pyarrow_patch, pyarrow_patch_helpers, catch_warnings as warned:
+            client.load_table_from_dataframe(
+                dataframe, self.TABLE_REF, location=self.LOCATION
+            )
+
+        matches = [
+            warning for warning in warned if warning.category is PyarrowMissingWarning
+        ]
+        assert matches, "A missing pyarrow deprecation warning was not raised."
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(fastparquet is None, "Requires `fastparquet`")
     def test_load_table_from_dataframe_no_schema_warning_wo_pyarrow(self):
         client = self._make_client()
 
@@ -6854,7 +6890,9 @@ class TestClientUpload(object):
         assert warned  # there should be at least one warning
         for warning in warned:
             assert "pyarrow" in str(warning)
-            assert warning.category in (DeprecationWarning, PendingDeprecationWarning)
+            assert issubclass(
+                warning.category, (DeprecationWarning, PendingDeprecationWarning)
+            )
 
         load_table_from_file.assert_called_once_with(
             client,

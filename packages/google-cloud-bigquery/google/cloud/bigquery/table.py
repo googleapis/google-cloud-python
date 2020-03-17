@@ -54,6 +54,7 @@ from google.cloud.bigquery import _pandas_helpers
 from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
 from google.cloud.bigquery.schema import _to_schema_fields
+from google.cloud.bigquery.exceptions import PyarrowMissingWarning
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 
@@ -1739,6 +1740,14 @@ class RowIterator(HTTPIterator):
             for column in dtypes:
                 df[column] = pandas.Series(df[column], dtype=dtypes[column])
             return df
+        else:
+            warnings.warn(
+                "Converting to a dataframe without pyarrow installed is "
+                "often slower and will become unsupported in the future. "
+                "Please install the pyarrow package.",
+                PyarrowMissingWarning,
+                stacklevel=2,
+            )
 
         # The bqstorage_client is only used if pyarrow is available, so the
         # rest of this method only needs to account for tabledata.list.

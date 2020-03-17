@@ -2240,6 +2240,38 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(df.age.dtype.name, "int64")
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_warning_wo_pyarrow(self):
+        from google.cloud.bigquery.client import PyarrowMissingWarning
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+        rows = [
+            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
+            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
+        ]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
+
+        no_pyarrow_patch = mock.patch("google.cloud.bigquery.table.pyarrow", new=None)
+        catch_warnings = warnings.catch_warnings(record=True)
+
+        with no_pyarrow_patch, catch_warnings as warned:
+            df = row_iterator.to_dataframe()
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 2)
+        matches = [
+            warning for warning in warned if warning.category is PyarrowMissingWarning
+        ]
+        self.assertTrue(
+            matches, msg="A missing pyarrow deprecation warning was not raised."
+        )
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(tqdm is None, "Requires `tqdm`")
     @mock.patch("tqdm.tqdm_gui")
     @mock.patch("tqdm.tqdm_notebook")
