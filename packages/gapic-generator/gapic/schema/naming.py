@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import abc
 import dataclasses
 import os
 import re
@@ -22,15 +23,16 @@ from google.protobuf import descriptor_pb2
 from gapic import utils
 from gapic.generator import options
 
-
-@dataclasses.dataclass(frozen=True)
-class Naming:
+# See https://github.com/python/mypy/issues/5374 for details on the mypy false
+# positive.
+@dataclasses.dataclass(frozen=True)  # type: ignore
+class Naming(abc.ABC):
     """Naming data for an API.
 
     This class contains the naming nomenclature used for this API
     within templates.
 
-    An instance of this object is made available to every template
+    An concrete child of this object is made available to every template
     (as ``api.naming``).
     """
     name: str = ''
@@ -43,11 +45,11 @@ class Naming:
         if not self.product_name:
             self.__dict__['product_name'] = self.name
 
-    @classmethod
-    def build(cls,
-              *file_descriptors: descriptor_pb2.FileDescriptorProto,
-              opts: options.Options = options.Options(),
-              ) -> 'Naming':
+    @staticmethod
+    def build(
+        *file_descriptors: descriptor_pb2.FileDescriptorProto,
+        opts: options.Options = options.Options(),
+    ) -> 'Naming':
         """Return a full Naming instance based on these file descriptors.
 
         This is pieced together from the proto package names as well as the
@@ -103,10 +105,12 @@ class Naming:
         match = cast(Match,
                      re.search(pattern=pattern, string=root_package)).groupdict()
         match['namespace'] = match['namespace'] or ''
-        package_info = cls(
+        klass = OldNaming if opts.old_naming else NewNaming
+        package_info = klass(
             name=match['name'].capitalize(),
-            namespace=tuple([i.capitalize()
-                             for i in match['namespace'].split('.') if i]),
+            namespace=tuple(
+                i.capitalize() for i in match['namespace'].split('.') if i
+            ),
             product_name=match['name'].capitalize(),
             proto_package=root_package,
             version=match.get('version', ''),
@@ -125,16 +129,16 @@ class Naming:
         # likely make sense to many users to use dot-separated namespaces and
         # snake case, so handle that and do the right thing.
         if opts.name:
-            package_info = dataclasses.replace(package_info, name=' '.join([
+            package_info = dataclasses.replace(package_info, name=' '.join((
                 i.capitalize() for i in opts.name.replace('_', ' ').split(' ')
-            ]))
+            )))
         if opts.namespace:
-            package_info = dataclasses.replace(package_info, namespace=tuple([
+            package_info = dataclasses.replace(package_info, namespace=tuple(
                 # The join-and-split on "." here causes us to expand out
                 # dot notation that we may have been sent; e.g. a one-tuple
                 # with ('x.y',) will become a two-tuple: ('x', 'y')
                 i.capitalize() for i in '.'.join(opts.namespace).split('.')
-            ]))
+            ))
 
         # Done; return the naming information.
         return package_info
@@ -142,7 +146,7 @@ class Naming:
     def __bool__(self):
         """Return True if any of the fields are truthy, False otherwise."""
         return any(
-            [getattr(self, i.name) for i in dataclasses.fields(self)],
+            (getattr(self, i.name) for i in dataclasses.fields(self)),
         )
 
     @property
@@ -164,19 +168,18 @@ class Naming:
     def namespace_packages(self) -> Tuple[str, ...]:
         """Return the appropriate Python namespace packages."""
         answer: List[str] = []
-        for cursor in [i.lower() for i in self.namespace]:
+        for cursor in (i.lower() for i in self.namespace):
             answer.append(f'{answer[-1]}.{cursor}' if answer else cursor)
         return tuple(answer)
 
     @property
+    @abc.abstractmethod
     def versioned_module_name(self) -> str:
         """Return the versiond module name (e.g. ``apiname_v1``).
 
         If there is no version, this is the same as ``module_name``.
         """
-        if self.version:
-            return f'{self.module_name}_{self.version}'
-        return self.module_name
+        raise NotImplementedError
 
     @property
     def warehouse_package_name(self) -> str:
@@ -186,3 +189,23 @@ class Naming:
         # proper package name.
         answer = list(self.namespace) + self.name.split(' ')
         return '-'.join(answer).lower()
+
+
+class NewNaming(Naming):
+    @property
+    def versioned_module_name(self) -> str:
+        """Return the versiond module name (e.g. ``apiname_v1``).
+
+        If there is no version, this is the same as ``module_name``.
+        """
+        return self.module_name + (f'_{self.version}' if self.version else '')
+
+
+class OldNaming(Naming):
+    @property
+    def versioned_module_name(self) -> str:
+        """Return the versiond module name (e.g. ``apiname_v1``).
+
+        If there is no version, this is the same as ``module_name``.
+        """
+        return self.module_name + (f'.{self.version}' if self.version else '')

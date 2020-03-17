@@ -83,7 +83,7 @@ def test_preprocess_sample():
     # Verify that the default response is added.
     sample = {}
     api_schema = api.API(
-        naming.Naming(
+        naming.NewNaming(
             namespace=("mollusc", "cephalopod", "teuthida")
         ),
         all_protos={},

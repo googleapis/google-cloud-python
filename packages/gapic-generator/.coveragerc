@@ -16,4 +16,5 @@ exclude_lines =
     def __repr__
     # Abstract methods by definition are not invoked
     @abstractmethod
+    @abc.abstractmethod
     

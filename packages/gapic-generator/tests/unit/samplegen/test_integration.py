@@ -68,7 +68,7 @@ def test_generate_sample_basic():
         }
     )
 
-    api_naming = naming.Naming(
+    api_naming = naming.NewNaming(
         name="MolluscClient", namespace=("molluscs", "v1"))
     service = wrappers.Service(
         service_pb=namedtuple('service_pb', ['name'])('MolluscService'),
@@ -207,7 +207,7 @@ def test_generate_sample_basic_unflattenable():
         }
     )
 
-    api_naming = naming.Naming(
+    api_naming = naming.NewNaming(
         name="MolluscClient", namespace=("molluscs", "v1"))
     service = wrappers.Service(
         service_pb=namedtuple('service_pb', ['name'])('MolluscService'),

@@ -37,10 +37,12 @@ class Options:
     sample_configs: Tuple[str, ...] = dataclasses.field(default=())
     templates: Tuple[str, ...] = dataclasses.field(default=('DEFAULT',))
     lazy_import: bool = False
+    old_naming: bool = False
 
     # Class constants
     PYTHON_GAPIC_PREFIX: str = 'python-gapic-'
     OPT_FLAGS: FrozenSet[str] = frozenset((
+        'old-naming',           # TODO(dovs): Come up with a better comment
         'retry-config',         # takes a path
         'samples',              # output dir
         'lazy-import',          # requires >= 3.7
@@ -115,7 +117,8 @@ class Options:
                 for cfg_path in samplegen_utils.generate_all_sample_fpaths(s)
             ),
             templates=tuple(os.path.expanduser(i) for i in templates),
-            lazy_import=bool(opts.pop('lazy-import', False))
+            lazy_import=bool(opts.pop('lazy-import', False)),
+            old_naming=bool(opts.pop('old-naming', False)),
         )
 
         # Note: if we ever need to recursively check directories for sample

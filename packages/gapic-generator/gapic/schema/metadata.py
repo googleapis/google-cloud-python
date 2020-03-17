@@ -44,7 +44,7 @@ class Address:
     package: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
     parent: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
     api_naming: naming.Naming = dataclasses.field(
-        default_factory=naming.Naming,
+        default_factory=naming.NewNaming,
     )
     collisions: FrozenSet[str] = dataclasses.field(default_factory=frozenset)
 

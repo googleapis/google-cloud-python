@@ -135,7 +135,7 @@ def test_address_resolve():
 def test_address_subpackage():
     addr = metadata.Address(
         package=('foo', 'bar', 'baz', 'v1', 'spam', 'eggs'),
-        api_naming=naming.Naming(proto_package='foo.bar.baz.v1'),
+        api_naming=naming.NewNaming(proto_package='foo.bar.baz.v1'),
     )
     assert addr.subpackage == ('spam', 'eggs')
 
@@ -143,7 +143,7 @@ def test_address_subpackage():
 def test_address_subpackage_no_version():
     addr = metadata.Address(
         package=('foo', 'bar', 'baz', 'spam', 'eggs'),
-        api_naming=naming.Naming(proto_package='foo.bar.baz'),
+        api_naming=naming.NewNaming(proto_package='foo.bar.baz'),
     )
     assert addr.subpackage == ('spam', 'eggs')
 
@@ -151,7 +151,7 @@ def test_address_subpackage_no_version():
 def test_address_subpackage_empty():
     addr = metadata.Address(
         package=('foo', 'bar', 'baz', 'v1'),
-        api_naming=naming.Naming(proto_package='foo.bar.baz.v1'),
+        api_naming=naming.NewNaming(proto_package='foo.bar.baz.v1'),
     )
     assert addr.subpackage == ()
 
@@ -188,7 +188,7 @@ def make_doc_meta(
         leading: str = '',
         trailing: str = '',
         detached: typing.List[str] = [],
-        ) -> descriptor_pb2.SourceCodeInfo.Location:
+) -> descriptor_pb2.SourceCodeInfo.Location:
     return metadata.Metadata(
         documentation=descriptor_pb2.SourceCodeInfo.Location(
             leading_comments=leading,

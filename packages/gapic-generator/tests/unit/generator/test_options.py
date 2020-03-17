@@ -25,6 +25,7 @@ def test_options_empty():
     assert len(opts.templates) == 1
     assert opts.templates[0].endswith('gapic/templates')
     assert not opts.lazy_import
+    assert not opts.old_naming
 
 
 def test_options_replace_templates():
@@ -121,3 +122,8 @@ def test_options_service_config(fs):
 def test_options_lazy_import():
     opts = options.Options.build('lazy-import')
     assert opts.lazy_import
+
+
+def test_options_old_naming():
+    opts = options.Options.build('old-naming')
+    assert opts.old_naming

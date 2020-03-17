@@ -356,7 +356,9 @@ def test_samplegen_config_to_output_files(
     # Need to have the sample template visible to the generator.
     g._env.loader = jinja2.DictLoader({'sample.py.j2': ''})
 
-    api_schema = make_api(naming=naming.Naming(name='Mollusc', version='v6'))
+    api_schema = make_api(
+        naming=naming.NewNaming(name='Mollusc', version='v6')
+    )
     actual_response = g.get_response(
         api_schema,
         opts=options.Options.build('')
@@ -445,7 +447,9 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
     # Need to have the sample template visible to the generator.
     g._env.loader = jinja2.DictLoader({'sample.py.j2': ''})
 
-    api_schema = make_api(naming=naming.Naming(name='Mollusc', version='v6'))
+    api_schema = make_api(
+        naming=naming.NewNaming(name='Mollusc', version='v6')
+    )
     actual_response = g.get_response(
         api_schema,
         opts=options.Options.build('')
@@ -517,7 +521,9 @@ def test_generator_duplicate_samples(fs):
 
     generator = make_generator('samples=samples.yaml')
     generator._env.loader = jinja2.DictLoader({'sample.py.j2': ''})
-    api_schema = make_api(naming=naming.Naming(name='Mollusc', version='v6'))
+    api_schema = make_api(
+        naming=naming.NewNaming(name='Mollusc', version='v6')
+    )
 
     with pytest.raises(types.DuplicateSample):
         generator.get_response(
@@ -591,7 +597,7 @@ def test_dont_generate_in_code_samples(
                     name='Mollusc')],
             ),
         ),
-        naming=naming.Naming(name='Mollusc', version='v6'),
+        naming=naming.NewNaming(name='Mollusc', version='v6'),
     )
 
     # Note that we do NOT expect a clam sample.
@@ -674,4 +680,4 @@ def make_naming(**kwargs) -> naming.Naming:
     kwargs.setdefault('namespace', ('Google', 'Cloud'))
     kwargs.setdefault('version', 'v1')
     kwargs.setdefault('product_name', 'Hatstand')
-    return naming.Naming(**kwargs)
+    return naming.NewNaming(**kwargs)
