@@ -7,9 +7,7 @@
 import google.api_core.exceptions as grpc_exceptions
 
 from .base_cursor import BaseCursor
-from .exceptions import (
-    Error, IntegrityError, OperationalError, ProgrammingError,
-)
+from .exceptions import IntegrityError, OperationalError, ProgrammingError
 from .parse_utils import (
     STMT_DDL, STMT_INSERT, STMT_NON_UPDATING, classify_stmt,
     ensure_where_clause, get_param_types, parse_insert,
@@ -21,13 +19,6 @@ _UNSET_COUNT = -1
 
 
 class Cursor(BaseCursor):
-    def _raise_if_already_closed(self):
-        """
-        Raises an exception if attempting to use an already closed connection.
-        """
-        if self._closed:
-            raise Error('attempting to use an already closed connection')
-
     def close(self):
         self.__clear()
         self._closed = True

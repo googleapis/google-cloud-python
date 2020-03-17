@@ -6,7 +6,7 @@
 
 from google.cloud.spanner_v1 import param_types
 
-from .exceptions import Error, ProgrammingError
+from .exceptions import InterfaceError, ProgrammingError
 
 _UNSET_COUNT = -1
 
@@ -68,10 +68,10 @@ class BaseCursor(object):
 
     def _raise_if_already_closed(self):
         """
-        Raises an exception if attempting to use an already closed connection.
+        Raise an exception if attempting to use an already closed connection.
         """
         if self._closed:
-            raise Error('attempting to use an already closed connection')
+            raise InterfaceError('cursor already closed')
 
     def close(self):
         self.__clear()

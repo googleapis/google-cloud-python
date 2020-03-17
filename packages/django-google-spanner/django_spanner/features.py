@@ -5,11 +5,13 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 from django.db.backends.base.features import BaseDatabaseFeatures
+from django.db.utils import InterfaceError
 
 
 class DatabaseFeatures(BaseDatabaseFeatures):
     can_introspect_big_integer_field = False
     can_introspect_duration_field = False
+    closed_cursor_error_class = InterfaceError
     # https://cloud.google.com/spanner/quotas#query_limits
     max_query_params = 950
     supports_foreign_keys = False
@@ -278,7 +280,4 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # duplicate table raises GoogleAPICallError rather than DatabaseError:
         # https://github.com/orijtech/django-spanner/issues/344
         'backends.tests.BackendTestCase.test_duplicate_table_error',
-        # ProgrammingError or InterfaceError should be raised on an already
-        # closed cursor: https://github.com/orijtech/django-spanner/issues/342
-        'backends.tests.BackendTestCase.test_cursor_contextmanager',
     )

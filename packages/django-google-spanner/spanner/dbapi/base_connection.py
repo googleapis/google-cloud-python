@@ -4,7 +4,7 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
-from .exceptions import Error
+from .exceptions import InterfaceError
 from .utils import get_table_column_schema as get_table_column_schema_impl
 
 
@@ -19,7 +19,7 @@ class BaseConnection:
         Raise an exception if attempting to use an already closed connection.
         """
         if self._closed:
-            raise Error('attempting to use an already closed connection')
+            raise InterfaceError('connection already closed')
 
     def __handle_update_ddl(self, ddl_statements):
         """
