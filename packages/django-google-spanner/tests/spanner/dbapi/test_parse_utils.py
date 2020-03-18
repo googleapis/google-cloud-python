@@ -345,6 +345,7 @@ class ParseUtilsTests(TestCase):
                 {'a1': 10, 'b1': TimestampStr('2019-11-26T02:55:41.000000Z')},
                 {'a1': param_types.INT64, 'b1': param_types.TIMESTAMP},
             ),
+            ({'a1': b'bytes'}, {'a1': param_types.BYTES}),
             ({'a1': 10, 'b1': None}, {'a1': param_types.INT64}),
             (None, None),
         ]

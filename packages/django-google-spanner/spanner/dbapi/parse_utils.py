@@ -378,6 +378,8 @@ def get_param_types(params):
             param_types[key] = spanner.param_types.DATE
         elif isinstance(value, str):
             param_types[key] = spanner.param_types.STRING
+        elif isinstance(value, bytes):
+            param_types[key] = spanner.param_types.BYTES
     return param_types
 
 
