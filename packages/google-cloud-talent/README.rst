@@ -1,7 +1,7 @@
-Python Client for Cloud Talent Solution API (`Alpha`_)
+Python Client for Cloud Talent Solution API
 ======================================================
 
-
+|beta| |pypi| |versions| 
 
 `Cloud Talent Solution API`_: Cloud Talent Solution provides the capability to create, read, update, and
 delete job postings, as well as search jobs based on keywords and filters.
@@ -9,7 +9,12 @@ delete job postings, as well as search jobs based on keywords and filters.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-talent.svg
+   :target: https://pypi.org/project/google-cloud-talent/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-talent.svg
+   :target: https://pypi.org/project/google-cloud-talent/
 .. _Cloud Talent Solution API: https://cloud.google.com/jobs
 .. _Client Library Documentation: https://googleapis.dev/python/talent/latest
 .. _Product Documentation:  https://cloud.google.com/jobs
