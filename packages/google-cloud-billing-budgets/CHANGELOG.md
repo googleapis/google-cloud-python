@@ -1,4 +1,11 @@
 # Changelog
+## [0.3.0](https://www.github.com/googleapis/python-billingbudgets/compare/v0.2.0...v0.3.0) (2020-03-18)
+
+
+### Features
+
+* release to beta ([#15](https://www.github.com/googleapis/python-billingbudgets/issues/15)) ([b7c3605](https://www.github.com/googleapis/python-billingbudgets/commit/b7c36056d166fef72aacc80773868c447bf8c1b4))
+
 ## 0.2.0
 
 12-12-2019 12:36 PST
@@ -21,4 +28,3 @@
 
 ### Documentation
 - Add Python 2 sunset banner (via synth). ([#9813](https://github.com/googleapis/google-cloud-python/pull/9813))
-
