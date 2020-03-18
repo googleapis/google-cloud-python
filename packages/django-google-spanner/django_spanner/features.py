@@ -316,13 +316,10 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'introspection.tests.IntrospectionTests.test_get_relations',
         # Implement Cursor.executemany():
         # https://github.com/orijtech/django-spanner/issues/29
-        'backends.base.test_base.ExecuteWrapperTests.test_nested_wrapper_invoked',
         'backends.base.test_base.ExecuteWrapperTests.test_wrapper_invoked_many',
         'backends.tests.BackendTestCase.test_cursor_executemany',
         'backends.tests.BackendTestCase.test_cursor_executemany_with_empty_params_list',
         'backends.tests.BackendTestCase.test_cursor_executemany_with_iterator',
-        'backends.tests.BackendTestCase.test_cursor_executemany_with_pyformat',
-        'backends.tests.BackendTestCase.test_cursor_executemany_with_pyformat_iterator',
         'backends.base.test_base.ExecuteWrapperTests.test_database_queried',
         # parameter escaping of % not working correctly:
         # https://github.com/orijtech/django-spanner/issues/347
@@ -334,6 +331,8 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # pyformat parameters not supported on INSERT:
         # https://github.com/orijtech/django-spanner/issues/343
         'backends.tests.BackendTestCase.test_cursor_execute_with_pyformat',
+        'backends.tests.BackendTestCase.test_cursor_executemany_with_pyformat',
+        'backends.tests.BackendTestCase.test_cursor_executemany_with_pyformat_iterator',
         # duplicate table raises GoogleAPICallError rather than DatabaseError:
         # https://github.com/orijtech/django-spanner/issues/344
         'backends.tests.BackendTestCase.test_duplicate_table_error',
