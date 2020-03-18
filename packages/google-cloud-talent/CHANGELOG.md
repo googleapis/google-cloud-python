@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [0.6.0](https://www.github.com/googleapis/python-talent/compare/v0.5.0...v0.6.0) (2020-03-18)
+
+
+### Features
+
+* bump library release_status to beta ([#6](https://www.github.com/googleapis/python-talent/issues/6)) ([2f1321d](https://www.github.com/googleapis/python-talent/commit/2f1321d1a9c76ca53fded6487d36e5496ed3d23c))
+
 ## [0.5.0](https://www.github.com/googleapis/python-talent/compare/v0.4.0...v0.5.0) (2020-02-03)
 
 
