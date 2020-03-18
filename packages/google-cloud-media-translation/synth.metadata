@@ -1,0 +1,37 @@
+{
+  "updateTime": "2020-03-18T00:11:30.725469Z",
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "sso://devrel/cloud/libraries/python/python-media-translation"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "0e9f1f60ded9ad1c2e725e37719112f5b487ab65",
+        "internalRef": "301480457"
+      }
+    },
+    {
+      "template": {
+        "name": "python_library",
+        "origin": "synthtool.gcp",
+        "version": "2020.2.4"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "mediatranslation",
+        "apiVersion": "v1beta1",
+        "language": "python",
+        "generator": "gapic-generator-python"
+      }
+    }
+  ]
+}
