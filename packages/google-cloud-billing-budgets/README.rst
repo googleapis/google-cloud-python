@@ -1,5 +1,7 @@
-Python Client for Cloud Billing Budget API (`Alpha`_)
+Python Client for Cloud Billing Budget API
 =====================================================
+
+|beta| |pypi| |versions| 
 
 `Cloud Billing Budget API`_: The Cloud Billing Budget API stores Cloud Billing budgets, which define a
 budget plan and the rules to execute as spend is tracked against that
@@ -8,7 +10,12 @@ plan.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-billingbudgets.svg
+   :target: https://pypi.org/project/google-cloud-billingbudgets
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-billingbudgets.svg
+   :target: https://pypi.org/project/google-cloud-billingbudgets/
 .. _Cloud Billing Budget API: https://cloud.google.com/billing/docs/how-to/budget-api-overview
 .. _Client Library Documentation: https://googleapis.dev/python/billingbudgets/latest
 .. _Product Documentation:  https://cloud.google.com/billing/docs/how-to/budget-api-overview
@@ -70,8 +77,8 @@ Next Steps
    API to see other available methods on the client.
 -  Read the `Cloud Billing Budget API Product documentation`_ to learn
    more about the product and see How-to Guides.
--  View this `repository’s main README`_ to see the full list of Cloud
+-  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
 .. _Cloud Billing Budget API Product documentation:  https://cloud.google.com/billing/docs/how-to/budget-api-overview
-.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
