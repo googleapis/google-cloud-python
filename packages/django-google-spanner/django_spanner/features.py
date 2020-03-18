@@ -314,13 +314,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # DatabaseIntrospection.get_relations() isn't implemented:
         # https://github.com/orijtech/django-spanner/issues/311
         'introspection.tests.IntrospectionTests.test_get_relations',
-        # Implement Cursor.executemany():
-        # https://github.com/orijtech/django-spanner/issues/29
-        'backends.base.test_base.ExecuteWrapperTests.test_wrapper_invoked_many',
-        'backends.tests.BackendTestCase.test_cursor_executemany',
-        'backends.tests.BackendTestCase.test_cursor_executemany_with_empty_params_list',
-        'backends.tests.BackendTestCase.test_cursor_executemany_with_iterator',
-        'backends.base.test_base.ExecuteWrapperTests.test_database_queried',
         # parameter escaping of % not working correctly:
         # https://github.com/orijtech/django-spanner/issues/347
         'backends.tests.EscapingChecks.test_parameter_escaping',
