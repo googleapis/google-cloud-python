@@ -205,6 +205,20 @@ class DatabaseOperations(BaseDatabaseOperations):
             sql = 'TIMESTAMP_ADD(' + sql + ', INTERVAL 1 DAY)'
         return sql
 
+    def time_trunc_sql(self, lookup_type, field_name):
+        # https://cloud.google.com/spanner/docs/functions-and-operators#timestamp_trunc
+        return 'TIMESTAMP_TRUNC(%s, %s, "UTC")' % (field_name, lookup_type)
+
+    def datetime_cast_date_sql(self, field_name, tzname):
+        # https://cloud.google.com/spanner/docs/functions-and-operators#date
+        tzname = tzname if settings.USE_TZ else 'UTC'
+        return 'DATE(%s, "%s")' % (field_name, tzname)
+
+    def datetime_cast_time_sql(self, field_name, tzname):
+        tzname = tzname if settings.USE_TZ else 'UTC'
+        # Cloud Spanner doesn't have a function for converting TIMESTAMP to another time zone.
+        return "TIMESTAMP(FORMAT_TIMESTAMP('%%Y-%%m-%%d %%R:%%E9S %%Z', %s, '%s'))" % (field_name, tzname)
+
     def date_interval_sql(self, timedelta):
         return 'INTERVAL %s MICROSECOND' % duration_microseconds(timedelta)
 

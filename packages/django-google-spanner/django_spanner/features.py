@@ -163,36 +163,21 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'syndication_tests.tests.SyndicationFeedTest.test_latest_post_date',
         'syndication_tests.tests.SyndicationFeedTest.test_rss091_feed',
         'syndication_tests.tests.SyndicationFeedTest.test_template_feed',
-        # can't use QuerySet.dates() on DateTimeField:
+        # DATE_TRUNC cannot be used on DateTimeField:
         # https://github.com/orijtech/spanner-orm/issues/182
         'backends.tests.DateQuotingTest.test_django_date_trunc',
         'dates.tests.DatesTests.test_dates_trunc_datetime_fields',
+        'db_functions.datetime.test_extract_trunc.DateFunctionTests.test_trunc_func',
         # datetimes retrieved from the database with the wrong hour when
         # USE_TZ = True: https://github.com/orijtech/spanner-orm/issues/193
         'datetimes.tests.DateTimesTests.test_21432',
+        'db_functions.datetime.test_extract_trunc.DateFunctionWithTimeZoneTests.test_trunc_func_with_timezone',
         'db_functions.datetime.test_extract_trunc.DateFunctionWithTimeZoneTests.test_trunc_timezone_applied_before_truncation',  # noqa
         # extract() with timezone not working as expected:
         # https://github.com/orijtech/spanner-orm/issues/191
         'timezones.tests.NewDatabaseTests.test_query_datetimes',
         # To be investigated: https://github.com/orijtech/spanner-orm/issues/135
         'admin_changelist.tests.ChangeListTests.test_multiuser_edit',
-        # Implement DatabaseOperations.datetime_cast_date_sql():
-        # https://github.com/orijtech/spanner-orm/issues/170
-        'db_functions.datetime.test_extract_trunc.DateFunctionTests.test_trunc_date_func',
-        'db_functions.datetime.test_extract_trunc.DateFunctionTests.test_trunc_date_none',
-        'db_functions.datetime.test_extract_trunc.DateFunctionTests.test_trunc_time_func',
-        'db_functions.datetime.test_extract_trunc.DateFunctionTests.test_trunc_time_none',
-        'expressions.tests.FieldTransformTests.test_multiple_transforms_in_values',
-        'model_fields.test_datetimefield.DateTimeFieldTests.test_lookup_date_with_use_tz',
-        'model_fields.test_datetimefield.DateTimeFieldTests.test_lookup_date_without_use_tz',
-        # Implement DatabaseOperations.time_trunc_sql():
-        # https://github.com/orijtech/spanner-orm/issues/262
-        'db_functions.datetime.test_extract_trunc.DateFunctionTests.test_trunc_func',
-        'db_functions.datetime.test_extract_trunc.DateFunctionTests.test_trunc_hour_func',
-        'db_functions.datetime.test_extract_trunc.DateFunctionTests.test_trunc_minute_func',
-        'db_functions.datetime.test_extract_trunc.DateFunctionTests.test_trunc_none',
-        'db_functions.datetime.test_extract_trunc.DateFunctionTests.test_trunc_second_func',
-        'db_functions.datetime.test_extract_trunc.DateFunctionWithTimeZoneTests.test_trunc_func_with_timezone',
         # Spanner's EXTRACT() 'week' differs from Django:
         # https://github.com/orijtech/spanner-orm/issues/263
         'db_functions.datetime.test_extract_trunc.DateFunctionTests.test_extract_func',
