@@ -18,7 +18,7 @@ import shutil
 
 import setuptools
 import setuptools.command.build_ext
-
+import warnings
 
 _EXTRA_DLL = "extra-dll"
 _DLL_FILENAME = "crc32c.dll"
@@ -46,48 +46,34 @@ class BuildExtWithDLL(setuptools.command.build_ext.build_ext):
         return result
 
 
-def main():
+def main(build_cffi=True):
     build_path = os.path.join("src", "crc32c_build.py")
     builder = "{}:FFIBUILDER".format(build_path)
     cffi_dep = "cffi >= 1.0.0"
 
-    with io.open("README.md", encoding="utf-8") as readme_file:
-        readme = readme_file.read()
-
     setuptools.setup(
-        name="google-crc32c",
-        version="0.0.2",
-        description="A python wrapper of the C library 'Google CRC32C'",
-        long_description=readme,
-        long_description_content_type="text/markdown",
-        author="Google LLC",
-        author_email="googleapis-packages@oogle.com",
-        scripts=(),
-        url="https://github.com/googleapis/python-crc32c",
         packages=["crc32c"],
         package_dir={"": "src"},
-        license="Apache 2.0",
-        platforms="Posix; MacOS X; Windows",
         package_data={"crc32c": [os.path.join(_EXTRA_DLL, _DLL_FILENAME)]},
-        zip_safe=True,
-        setup_requires=[cffi_dep],
-        cffi_modules=[builder],
-        install_requires=[cffi_dep],
-        classifiers=[
-            "Development Status :: 2 - Pre-Alpha",
-            "Intended Audience :: Developers",
-            "License :: OSI Approved :: Apache Software License",
-            "Operating System :: OS Independent",
-            "Programming Language :: Python :: 3",
-            "Programming Language :: Python :: 3.5",
-            "Programming Language :: Python :: 3.6",
-            "Programming Language :: Python :: 3.7",
-            "Programming Language :: Python :: 3.8",
-        ],
+        setup_requires=[cffi_dep] if build_cffi else [],
+        cffi_modules=[builder] if build_cffi else [],
+        install_requires=[cffi_dep] if build_cffi else [],
         cmdclass={"build_ext": BuildExtWithDLL},
-        extras_require={"testing": ["pytest"]},
     )
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    try:
+        main()
+    except KeyboardInterrupt:
+        raise
+    except SystemExit:
+        # If installation fails, it is likely a compilation error with CFFI
+        # Try to install again.
+        warnings.warn(
+            "Compiling the CFFI Extension crc32c has failed. Only a pure "
+            "python implementation will be usable."
+        )
+        main(build_cffi=False)
+
