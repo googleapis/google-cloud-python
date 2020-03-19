@@ -5,4 +5,4 @@ grpcio==1.27.2
 jinja2==2.11.1
 protobuf==3.11.3
 pypandoc==1.4
-PyYAML==5.3
+PyYAML==5.3.1
