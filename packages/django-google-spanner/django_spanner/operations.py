@@ -229,7 +229,7 @@ class DatabaseOperations(BaseDatabaseOperations):
     def lookup_cast(self, lookup_type, internal_type=None):
         # Cast text lookups to string to allow things like filter(x__contains=4)
         if lookup_type in ('contains', 'icontains', 'startswith', 'istartswith',
-                           'endswith', 'iendswith', 'regex', 'iregex'):
+                           'endswith', 'iendswith', 'regex', 'iregex', 'iexact'):
             return 'CAST(%s AS STRING)'
         return '%s'
 

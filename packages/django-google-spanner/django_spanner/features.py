@@ -217,9 +217,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'one_to_one.tests.OneToOneTests.test_multiple_o2o',
         # No CHECK constraints in Spanner.
         'model_fields.test_integerfield.PositiveIntegerFieldTests.test_negative_values',
-        # No matching signature for function REGEXP_CONTAINS for argument
-        # types: INT64, INT64: https://github.com/orijtech/spanner-orm/issues/177
-        'lookup.tests.LookupTests.test_lookup_int_as_str',
         # 'DatabaseWrapper' object has no attribute 'pattern_ops'
         # https://github.com/orijtech/spanner-orm/issues/178
         'expressions.tests.BasicExpressionsTests.test_ticket_16731_startswith_lookup',
