@@ -257,8 +257,9 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # https://github.com/orijtech/django-spanner/issues/331
         'expressions.tests.ExpressionOperatorTests.test_lefthand_division',
         'expressions.tests.ExpressionOperatorTests.test_right_hand_division',
-        # power operator doesn't work:
-        # https://github.com/orijtech/django-spanner/issues/333
+        # power operator produces a float result, which can't be assigned to
+        # an integer column:
+        # https://github.com/orijtech/django-spanner/issues/331
         'expressions.tests.ExpressionOperatorTests.test_lefthand_power',
         'expressions.tests.ExpressionOperatorTests.test_righthand_power',
         # Cloud Spanner's docs: "The rows that are returned by LIMIT and OFFSET

@@ -214,6 +214,8 @@ class DatabaseOperations(BaseDatabaseOperations):
     def combine_expression(self, connector, sub_expressions):
         if connector == '%%':
             return 'MOD(%s)' % ', '.join(sub_expressions)
+        elif connector == '^':
+            return 'POWER(%s)' % ', '.join(sub_expressions)
         return super().combine_expression(connector, sub_expressions)
 
     def combine_duration_expression(self, connector, sub_expressions):
