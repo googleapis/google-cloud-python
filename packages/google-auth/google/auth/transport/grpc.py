@@ -51,6 +51,15 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
             object used to refresh credentials as needed.
     """
 
+    # Python 2.7 has no default for max_workers.
+    # In Python >= 3.5, ThreadPoolExecutor defaults to the
+    # number of processors on the machine, multiplied by 5.
+    if six.PY2:  # pragma: NO COVER
+        max_workers = 5
+    else:
+        max_workers = None
+    _AUTH_THREAD_POOL = futures.ThreadPoolExecutor(max_workers=max_workers)
+
     def __init__(self, credentials, request):
         # pylint: disable=no-value-for-parameter
         # pylint doesn't realize that the super method takes no arguments
@@ -58,7 +67,6 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
         super(AuthMetadataPlugin, self).__init__()
         self._credentials = credentials
         self._request = request
-        self._pool = futures.ThreadPoolExecutor(max_workers=1)
 
     def _get_authorization_headers(self, context):
         """Gets the authorization headers for a request.
@@ -89,11 +97,8 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
             callback (grpc.AuthMetadataPluginCallback): The callback that will
                 be invoked to pass in the authorization metadata.
         """
-        future = self._pool.submit(self._get_authorization_headers, context)
+        future = self._AUTH_THREAD_POOL.submit(self._get_authorization_headers, context)
         future.add_done_callback(self._callback_wrapper(callback))
-
-    def __del__(self):
-        self._pool.shutdown(wait=False)
 
 
 def secure_authorized_channel(
