@@ -19,6 +19,8 @@ from google.protobuf import descriptor_pb2
 from gapic.schema import metadata
 from gapic.schema import wrappers
 
+from test_utils.test_utils import make_enum
+
 
 def test_enum_properties():
     enum_type = make_enum(name='Color')
@@ -38,26 +40,3 @@ def test_enum_ident():
     message = make_enum('Baz', package='foo.v1', module='bar')
     assert str(message.ident) == 'bar.Baz'
     assert message.ident.sphinx == '~.bar.Baz'
-
-
-def make_enum(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
-        values: Tuple[str, int] = (), meta: metadata.Metadata = None,
-              ) -> wrappers.EnumType:
-    enum_value_pbs = [
-        descriptor_pb2.EnumValueDescriptorProto(name=i[0], number=i[1])
-        for i in values
-    ]
-    enum_pb = descriptor_pb2.EnumDescriptorProto(
-        name=name,
-        value=enum_value_pbs,
-    )
-    return wrappers.EnumType(
-        enum_pb=enum_pb,
-        values=[wrappers.EnumValueType(enum_value_pb=evpb)
-                for evpb in enum_value_pbs],
-        meta=meta or metadata.Metadata(address=metadata.Address(
-            name=name,
-            package=tuple(package.split('.')),
-            module=module,
-        )),
-    )

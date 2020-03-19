@@ -23,6 +23,12 @@ from google.protobuf import descriptor_pb2
 from gapic.schema import metadata
 from gapic.schema import wrappers
 
+from test_utils.test_utils import (
+    make_enum,
+    make_field,
+    make_message,
+)
+
 
 def test_message_properties():
     message = make_message('MyMessage')
@@ -153,69 +159,3 @@ def test_field_map():
     entry_field = make_field('foos', message=entry_msg, repeated=True)
     assert entry_msg.map
     assert entry_field.map
-
-
-def make_message(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
-                 fields: Sequence[wrappers.Field] = (), meta: metadata.Metadata = None,
-                 options: descriptor_pb2.MethodOptions = None,
-                 ) -> wrappers.MessageType:
-    message_pb = descriptor_pb2.DescriptorProto(
-        name=name,
-        field=[i.field_pb for i in fields],
-        options=options,
-    )
-    return wrappers.MessageType(
-        message_pb=message_pb,
-        fields=collections.OrderedDict((i.name, i) for i in fields),
-        nested_messages={},
-        nested_enums={},
-        meta=meta or metadata.Metadata(address=metadata.Address(
-            name=name,
-            package=tuple(package.split('.')),
-            module=module,
-        )),
-    )
-
-
-def make_field(name: str, repeated: bool = False,
-               message: wrappers.MessageType = None,
-               enum: wrappers.EnumType = None,
-               meta: metadata.Metadata = None, **kwargs) -> wrappers.Method:
-    if message:
-        kwargs['type_name'] = str(message.meta.address)
-    if enum:
-        kwargs['type_name'] = str(enum.meta.address)
-    field_pb = descriptor_pb2.FieldDescriptorProto(
-        name=name,
-        label=3 if repeated else 1,
-        **kwargs
-    )
-    return wrappers.Field(
-        enum=enum,
-        field_pb=field_pb,
-        message=message,
-        meta=meta or metadata.Metadata(),
-    )
-
-
-def make_enum(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
-              values: Tuple[str, int] = (), meta: metadata.Metadata = None,
-              ) -> wrappers.EnumType:
-    enum_value_pbs = [
-        descriptor_pb2.EnumValueDescriptorProto(name=i[0], number=i[1])
-        for i in values
-    ]
-    enum_pb = descriptor_pb2.EnumDescriptorProto(
-        name=name,
-        value=enum_value_pbs,
-    )
-    return wrappers.EnumType(
-        enum_pb=enum_pb,
-        values=[wrappers.EnumValueType(enum_value_pb=evpb)
-                for evpb in enum_value_pbs],
-        meta=meta or metadata.Metadata(address=metadata.Address(
-            name=name,
-            package=tuple(package.split('.')),
-            module=module,
-        )),
-    )

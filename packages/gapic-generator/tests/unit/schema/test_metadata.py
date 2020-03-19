@@ -16,6 +16,8 @@ import typing
 
 from google.protobuf import descriptor_pb2
 
+from test_utils.test_utils import make_doc_meta
+
 from gapic.schema import metadata
 from gapic.schema import naming
 
@@ -181,18 +183,3 @@ def test_doc_trailing_trumps_detached():
 def test_doc_detached_joined():
     meta = make_doc_meta(detached=['foo', 'bar'])
     assert meta.doc == 'foo\n\nbar'
-
-
-def make_doc_meta(
-        *,
-        leading: str = '',
-        trailing: str = '',
-        detached: typing.List[str] = [],
-) -> descriptor_pb2.SourceCodeInfo.Location:
-    return metadata.Metadata(
-        documentation=descriptor_pb2.SourceCodeInfo.Location(
-            leading_comments=leading,
-            trailing_comments=trailing,
-            leading_detached_comments=detached,
-        ),
-    )

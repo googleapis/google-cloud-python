@@ -28,6 +28,13 @@ from gapic.schema import imp
 from gapic.schema import naming
 from gapic.schema import wrappers
 
+from test_utils.test_utils import (
+    make_field_pb2,
+    make_file_pb2,
+    make_message_pb2,
+    make_naming,
+)
+
 
 def test_api_build():
     # Put together a couple of minimal protos.
@@ -979,47 +986,3 @@ def test_enums():
     assert enum.values[1].meta.doc == 'This is the one value.'
     assert enum.values[2].name == 'THREE'
     assert enum.values[2].meta.doc == ''
-
-
-def make_file_pb2(name: str = 'my_proto.proto', package: str = 'example.v1', *,
-                  messages: Sequence[descriptor_pb2.DescriptorProto] = (),
-                  enums: Sequence[descriptor_pb2.EnumDescriptorProto] = (),
-                  services: Sequence[descriptor_pb2.ServiceDescriptorProto] = (),
-                  locations: Sequence[descriptor_pb2.SourceCodeInfo.Location] = (),
-                  ) -> descriptor_pb2.FileDescriptorProto:
-    return descriptor_pb2.FileDescriptorProto(
-        name=name,
-        package=package,
-        message_type=messages,
-        enum_type=enums,
-        service=services,
-        source_code_info=descriptor_pb2.SourceCodeInfo(location=locations),
-    )
-
-
-def make_message_pb2(
-        name: str,
-        fields: tuple = (),
-        **kwargs
-) -> descriptor_pb2.DescriptorProto:
-    return descriptor_pb2.DescriptorProto(name=name, field=fields, **kwargs)
-
-
-def make_field_pb2(name: str, number: int,
-                   type: int = 11,  # 11 == message
-                   type_name: str = None,
-                   ) -> descriptor_pb2.FieldDescriptorProto:
-    return descriptor_pb2.FieldDescriptorProto(
-        name=name,
-        number=number,
-        type=type,
-        type_name=type_name,
-    )
-
-
-def make_naming(**kwargs) -> naming.Naming:
-    kwargs.setdefault('name', 'Hatstand')
-    kwargs.setdefault('namespace', ('Google', 'Cloud'))
-    kwargs.setdefault('version', 'v1')
-    kwargs.setdefault('product_name', 'Hatstand')
-    return naming.NewNaming(**kwargs)

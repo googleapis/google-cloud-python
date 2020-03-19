@@ -22,6 +22,11 @@ from google.protobuf import descriptor_pb2
 from gapic.schema import metadata
 from gapic.schema import wrappers
 
+from test_utils.test_utils import (
+    make_field,
+    make_message,
+)
+
 
 def test_field_properties():
     field = make_field(name='my_field', number=1, type='TYPE_BOOL')
@@ -236,36 +241,3 @@ def test_mock_value_message():
         message=message,
     )
     assert field.mock_value == 'bogus.Message(foo=324)'
-
-
-def make_field(*, message=None, enum=None, **kwargs) -> wrappers.Field:
-    T = descriptor_pb2.FieldDescriptorProto.Type
-    kwargs.setdefault('name', 'my_field')
-    kwargs.setdefault('number', 1)
-    kwargs.setdefault('type', T.Value('TYPE_BOOL'))
-    if isinstance(kwargs['type'], str):
-        kwargs['type'] = T.Value(kwargs['type'])
-    field_pb = descriptor_pb2.FieldDescriptorProto(**kwargs)
-    field = wrappers.Field(field_pb=field_pb, message=message, enum=enum)
-    return field
-
-
-def make_message(
-    name, package='foo.bar.v1', module='baz', fields=(), meta=None, options=None
-) -> wrappers.MessageType:
-    message_pb = descriptor_pb2.DescriptorProto(
-        name=name,
-        field=[i.field_pb for i in fields],
-        options=options,
-    )
-    return wrappers.MessageType(
-        message_pb=message_pb,
-        fields=collections.OrderedDict((i.name, i) for i in fields),
-        nested_messages={},
-        nested_enums={},
-        meta=meta or metadata.Metadata(address=metadata.Address(
-            name=name,
-            package=tuple(package.split('.')),
-            module=module,
-        )),
-    )

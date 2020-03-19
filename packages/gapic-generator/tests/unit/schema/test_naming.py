@@ -19,6 +19,8 @@ from google.protobuf import descriptor_pb2
 from gapic.generator import options
 from gapic.schema import naming
 
+from test_utils.test_utils import make_naming
+
 
 def test_long_name():
     n = make_naming(name='Genie', namespace=['Agrabah', 'Lamp'])
@@ -231,11 +233,3 @@ def test_build_factory():
         opts=options.Options()
     )
     assert new.versioned_module_name == 'mollusc_v1alpha1'
-
-
-def make_naming(klass=naming.NewNaming, **kwargs) -> naming.Naming:
-    kwargs.setdefault('name', 'Hatstand')
-    kwargs.setdefault('namespace', ('Google', 'Cloud'))
-    kwargs.setdefault('version', 'v1')
-    kwargs.setdefault('product_name', 'Hatstand')
-    return klass(**kwargs)

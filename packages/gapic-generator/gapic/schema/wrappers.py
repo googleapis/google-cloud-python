@@ -184,8 +184,8 @@ class Field:
             return PrimitiveType.build(bytes)
 
         # This should never happen.
-        raise TypeError('Unrecognized protobuf type. This code should '
-                        'not be reachable; please file a bug.')
+        raise TypeError(f'Unrecognized protobuf type: {self.field_pb.type}. '
+                        'This code should not be reachable; please file a bug.')
 
     def with_context(self, *, collisions: FrozenSet[str]) -> 'Field':
         """Return a derivative of this field with the provided context.
@@ -652,7 +652,8 @@ class Method:
         # We found no repeated fields. Return None.
         return None
 
-    def _ref_types(self, use_legacy: bool = False) -> Sequence[Union[MessageType, EnumType]]:
+    @utils.cached_property
+    def ref_types(self) -> Sequence[Union[MessageType, EnumType]]:
         """Return types referenced by this method."""
         # Begin with the input (request) and output (response) messages.
         answer = [self.input]
@@ -660,15 +661,9 @@ class Method:
             answer.append(self.client_output)
             answer.extend(self.client_output.field_types)
 
-        # If this method has flattening that is honored, add its
-        # composite types.
-        #
-        # This entails adding the module for any field on the signature
-        # unless the field is a primitive.
-        flattening = self.legacy_flattened_fields if use_legacy else self.flattened_fields
         answer.extend(
             field.type
-            for field in flattening.values()
+            for field in self.flattened_fields.values()
             if field.message or field.enum
         )
 
@@ -685,14 +680,6 @@ class Method:
 
         # Done; return the answer.
         return tuple(answer)
-
-    @utils.cached_property
-    def ref_types(self) -> Sequence[Union[MessageType, EnumType]]:
-        return self._ref_types()
-
-    @utils.cached_property
-    def ref_types_legacy(self) -> Sequence[Union[MessageType, EnumType]]:
-        return self._ref_types(use_legacy=True)
 
     @property
     def void(self) -> bool:

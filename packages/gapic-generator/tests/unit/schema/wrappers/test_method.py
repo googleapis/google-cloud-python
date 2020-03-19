@@ -15,14 +15,18 @@
 import collections
 from typing import Sequence
 
-from google.api import annotations_pb2
-from google.api import client_pb2
 from google.api import field_behavior_pb2
 from google.api import http_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import metadata
 from gapic.schema import wrappers
+
+from test_utils.test_utils import (
+    make_field,
+    make_message,
+    make_method,
+)
 
 
 def test_method_types():
@@ -296,82 +300,3 @@ def test_method_legacy_flattened_fields():
     ])
 
     assert method.legacy_flattened_fields == expected
-
-
-def make_method(
-        name: str, input_message: wrappers.MessageType = None,
-        output_message: wrappers.MessageType = None,
-        package: str = 'foo.bar.v1', module: str = 'baz',
-        http_rule: http_pb2.HttpRule = None,
-        signatures: Sequence[str] = (),
-        **kwargs) -> wrappers.Method:
-    # Use default input and output messages if they are not provided.
-    input_message = input_message or make_message('MethodInput')
-    output_message = output_message or make_message('MethodOutput')
-
-    # Create the method pb2.
-    method_pb = descriptor_pb2.MethodDescriptorProto(
-        name=name,
-        input_type=str(input_message.meta.address),
-        output_type=str(output_message.meta.address),
-        **kwargs
-    )
-
-    # If there is an HTTP rule, process it.
-    if http_rule:
-        ext_key = annotations_pb2.http
-        method_pb.options.Extensions[ext_key].MergeFrom(http_rule)
-
-    # If there are signatures, include them.
-    for sig in signatures:
-        ext_key = client_pb2.method_signature
-        method_pb.options.Extensions[ext_key].append(sig)
-
-    # Instantiate the wrapper class.
-    return wrappers.Method(
-        method_pb=method_pb,
-        input=input_message,
-        output=output_message,
-        meta=metadata.Metadata(address=metadata.Address(
-            name=name,
-            package=tuple(package.split('.')),
-            module=module,
-            parent=(f'{name}Service',),
-        )),
-    )
-
-
-def make_message(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
-                 fields: Sequence[wrappers.Field] = (),
-                 ) -> wrappers.MessageType:
-    message_pb = descriptor_pb2.DescriptorProto(
-        name=name,
-        field=[i.field_pb for i in fields],
-    )
-    return wrappers.MessageType(
-        message_pb=message_pb,
-        nested_messages={},
-        nested_enums={},
-        fields=collections.OrderedDict((i.name, i) for i in fields),
-        meta=metadata.Metadata(address=metadata.Address(
-            name=name,
-            package=tuple(package.split('.')),
-            module=module,
-        )),
-    )
-
-
-def make_field(name: str, repeated: bool = False,
-               meta: metadata.Metadata = None,
-               message: wrappers.MessageType = None,
-               **kwargs) -> wrappers.Method:
-    field_pb = descriptor_pb2.FieldDescriptorProto(
-        name=name,
-        label=3 if repeated else 1,
-        **kwargs
-    )
-    return wrappers.Field(
-        field_pb=field_pb,
-        message=message,
-        meta=meta or metadata.Metadata(),
-    )
