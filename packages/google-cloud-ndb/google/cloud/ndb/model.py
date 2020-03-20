@@ -3801,7 +3801,7 @@ class DateTimeProperty(Property):
             value (datetime.datetime): The value to be converted.
 
         Returns:
-            google.cloud.datastore.Key: The converted value.
+            Optional[datetime.datetime]: The converted value.
 
         Raises:
             TypeError: If ``value`` is not a :class:`~key.Key`.
