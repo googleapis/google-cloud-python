@@ -4294,6 +4294,14 @@ class LocalStructuredProperty(BlobProperty):
                 )
             )
 
+    def _get_for_dict(self, entity):
+        value = self._get_value(entity)
+        if self._repeated:
+            value = [v._to_dict() for v in value]
+        elif value is not None:
+            value = value._to_dict()
+        return value
+
     def _to_base_type(self, value):
         """Convert a value to the "base" value type for this property.
         Args:
