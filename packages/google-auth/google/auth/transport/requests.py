@@ -35,10 +35,14 @@ except ImportError as caught_exc:  # pragma: NO COVER
     )
 import requests.adapters  # pylint: disable=ungrouped-imports
 import requests.exceptions  # pylint: disable=ungrouped-imports
+from requests.packages.urllib3.util.ssl_ import (
+    create_urllib3_context,
+)  # pylint: disable=ungrouped-imports
 import six  # pylint: disable=ungrouped-imports
 
 from google.auth import exceptions
 from google.auth import transport
+import google.auth.transport._mtls_helper
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -182,6 +186,52 @@ class Request(transport.Request):
             six.raise_from(new_exc, caught_exc)
 
 
+class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
+    """
+    A TransportAdapter that enables mutual TLS.
+
+    Args:
+        cert (bytes): client certificate in PEM format
+        key (bytes): client private key in PEM format
+
+    Raises:
+        ImportError: if certifi or pyOpenSSL is not installed
+        OpenSSL.crypto.Error: if client cert or key is invalid
+    """
+
+    def __init__(self, cert, key):
+        import certifi
+        from OpenSSL import crypto
+        import urllib3.contrib.pyopenssl
+
+        urllib3.contrib.pyopenssl.inject_into_urllib3()
+
+        pkey = crypto.load_privatekey(crypto.FILETYPE_PEM, key)
+        x509 = crypto.load_certificate(crypto.FILETYPE_PEM, cert)
+
+        ctx_poolmanager = create_urllib3_context()
+        ctx_poolmanager.load_verify_locations(cafile=certifi.where())
+        ctx_poolmanager._ctx.use_certificate(x509)
+        ctx_poolmanager._ctx.use_privatekey(pkey)
+        self._ctx_poolmanager = ctx_poolmanager
+
+        ctx_proxymanager = create_urllib3_context()
+        ctx_proxymanager.load_verify_locations(cafile=certifi.where())
+        ctx_proxymanager._ctx.use_certificate(x509)
+        ctx_proxymanager._ctx.use_privatekey(pkey)
+        self._ctx_proxymanager = ctx_proxymanager
+
+        super(_MutualTlsAdapter, self).__init__()
+
+    def init_poolmanager(self, *args, **kwargs):
+        kwargs["ssl_context"] = self._ctx_poolmanager
+        super(_MutualTlsAdapter, self).init_poolmanager(*args, **kwargs)
+
+    def proxy_manager_for(self, *args, **kwargs):
+        kwargs["ssl_context"] = self._ctx_proxymanager
+        return super(_MutualTlsAdapter, self).proxy_manager_for(*args, **kwargs)
+
+
 class AuthorizedSession(requests.Session):
     """A Requests Session class with credentials.
 
@@ -197,6 +247,48 @@ class AuthorizedSession(requests.Session):
 
     The underlying :meth:`request` implementation handles adding the
     credentials' headers to the request and refreshing credentials as needed.
+
+    This class also supports mutual TLS via :meth:`configure_mtls_channel`
+    method. If client_cert_callabck is provided, client certificate and private
+    key are loaded using the callback; if client_cert_callabck is None,
+    application default SSL credentials will be used. Exceptions are raised if
+    there are problems with the certificate, private key, or the loading process,
+    so it should be called within a try/except block.
+
+    First we create an :class:`AuthorizedSession` instance and specify the endpoints::
+
+        regular_endpoint = 'https://pubsub.googleapis.com/v1/projects/{my_project_id}/topics'
+        mtls_endpoint = 'https://pubsub.mtls.googleapis.com/v1/projects/{my_project_id}/topics'
+
+        authed_session = AuthorizedSession(credentials)
+
+    Now we can pass a callback to :meth:`configure_mtls_channel`::
+
+        def my_cert_callback():
+            # some code to load client cert bytes and private key bytes, both in
+            # PEM format.
+            some_code_to_load_client_cert_and_key()
+            if loaded:
+                return cert, key
+            raise MyClientCertFailureException()
+
+        # Always call configure_mtls_channel within a try/except block.
+        try:
+            authed_session.configure_mtls_channel(my_cert_callback)
+        except:
+            # handle exceptions.
+
+        if authed_session.is_mtls:
+            response = authed_session.request('GET', mtls_endpoint)
+        else:
+            response = authed_session.request('GET', regular_endpoint)
+
+    You can alternatively use application default SSL credentials like this::
+
+        try:
+            authed_session.configure_mtls_channel()
+        except:
+            # handle exceptions.
 
     Args:
         credentials (google.auth.credentials.Credentials): The credentials to
@@ -229,6 +321,7 @@ class AuthorizedSession(requests.Session):
         self._refresh_status_codes = refresh_status_codes
         self._max_refresh_attempts = max_refresh_attempts
         self._refresh_timeout = refresh_timeout
+        self._is_mtls = False
 
         if auth_request is None:
             auth_request_session = requests.Session()
@@ -246,6 +339,39 @@ class AuthorizedSession(requests.Session):
         # Request instance used by internal methods (for example,
         # credentials.refresh).
         self._auth_request = auth_request
+
+    def configure_mtls_channel(self, client_cert_callback=None):
+        """Configure the client certificate and key for SSL connection.
+
+        If client certificate and key are successfully obtained (from the given
+        client_cert_callabck or from application default SSL credentials), a
+        :class:`_MutualTlsAdapter` instance will be mounted to "https://" prefix.
+
+        Args:
+            client_cert_callabck (Optional[Callable[[], (bytes, bytes)]]):
+                The optional callback returns the client certificate and private
+                key bytes both in PEM format.
+                If the callback is None, application default SSL credentials
+                will be used.
+
+        Raises:
+            ImportError: If certifi or pyOpenSSL is not installed.
+            OpenSSL.crypto.Error: If client cert or key is invalid.
+            OSError: If the cert provider command launch fails during the
+                application default SSL credentials loading process.
+            RuntimeError: If the cert provider command has a runtime error during
+                the application default SSL credentials loading process.
+            ValueError: If the context aware metadata file is malformed or the
+                cert provider command doesn't produce both client certicate and
+                key during the application default SSL credentials loading process.
+        """
+        self._is_mtls, cert, key = google.auth.transport._mtls_helper.get_client_cert_and_key(
+            client_cert_callback
+        )
+
+        if self._is_mtls:
+            mtls_adapter = _MutualTlsAdapter(cert, key)
+            self.mount("https://", mtls_adapter)
 
     def request(
         self,
@@ -361,3 +487,8 @@ class AuthorizedSession(requests.Session):
             )
 
         return response
+
+    @property
+    def is_mtls(self):
+        """Indicates if the created SSL channel is mutual TLS."""
+        return self._is_mtls

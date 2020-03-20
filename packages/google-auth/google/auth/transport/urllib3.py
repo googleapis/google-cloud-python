@@ -17,7 +17,7 @@
 from __future__ import absolute_import
 
 import logging
-
+import warnings
 
 # Certifi is Mozilla's certificate bundle. Urllib3 needs a certificate bundle
 # to verify HTTPS requests, and certifi is the recommended and most reliable
@@ -149,6 +149,39 @@ def _make_default_http():
         return urllib3.PoolManager()
 
 
+def _make_mutual_tls_http(cert, key):
+    """Create a mutual TLS HTTP connection with the given client cert and key.
+    See https://github.com/urllib3/urllib3/issues/474#issuecomment-253168415
+
+    Args:
+        cert (bytes): client certificate in PEM format
+        key (bytes): client private key in PEM format
+
+    Returns:
+        urllib3.PoolManager: Mutual TLS HTTP connection.
+
+    Raises:
+        ImportError: If certifi or pyOpenSSL is not installed.
+        OpenSSL.crypto.Error: If the cert or key is invalid.
+    """
+    import certifi
+    from OpenSSL import crypto
+    import urllib3.contrib.pyopenssl
+
+    urllib3.contrib.pyopenssl.inject_into_urllib3()
+    ctx = urllib3.util.ssl_.create_urllib3_context()
+    ctx.load_verify_locations(cafile=certifi.where())
+
+    pkey = crypto.load_privatekey(crypto.FILETYPE_PEM, key)
+    x509 = crypto.load_certificate(crypto.FILETYPE_PEM, cert)
+
+    ctx._ctx.use_certificate(x509)
+    ctx._ctx.use_privatekey(pkey)
+
+    http = urllib3.PoolManager(ssl_context=ctx)
+    return http
+
+
 class AuthorizedHttp(urllib3.request.RequestMethods):
     """A urllib3 HTTP class with credentials.
 
@@ -167,6 +200,48 @@ class AuthorizedHttp(urllib3.request.RequestMethods):
 
     The underlying :meth:`urlopen` implementation handles adding the
     credentials' headers to the request and refreshing credentials as needed.
+
+    This class also supports mutual TLS via :meth:`configure_mtls_channel`
+    method. If client_cert_callabck is provided, client certificate and private
+    key are loaded using the callback; if client_cert_callabck is None,
+    application default SSL credentials will be used. Exceptions are raised if
+    there are problems with the certificate, private key, or the loading process,
+    so it should be called within a try/except block.
+
+    First we create an :class:`AuthorizedHttp` instance and specify the endpoints::
+
+        regular_endpoint = 'https://pubsub.googleapis.com/v1/projects/{my_project_id}/topics'
+        mtls_endpoint = 'https://pubsub.mtls.googleapis.com/v1/projects/{my_project_id}/topics'
+
+        authed_http = AuthorizedHttp(credentials)
+
+    Now we can pass a callback to :meth:`configure_mtls_channel`::
+
+        def my_cert_callback():
+            # some code to load client cert bytes and private key bytes, both in
+            # PEM format.
+            some_code_to_load_client_cert_and_key()
+            if loaded:
+                return cert, key
+            raise MyClientCertFailureException()
+
+        # Always call configure_mtls_channel within a try/except block.
+        try:
+            is_mtls = authed_http.configure_mtls_channel(my_cert_callback)
+        except:
+            # handle exceptions.
+
+        if is_mtls:
+            response = authed_http.request('GET', mtls_endpoint)
+        else:
+            response = authed_http.request('GET', regular_endpoint)
+
+    You can alternatively use application default SSL credentials like this::
+
+        try:
+            is_mtls = authed_http.configure_mtls_channel()
+        except:
+            # handle exceptions.
 
     Args:
         credentials (google.auth.credentials.Credentials): The credentials to
@@ -189,12 +264,14 @@ class AuthorizedHttp(urllib3.request.RequestMethods):
         refresh_status_codes=transport.DEFAULT_REFRESH_STATUS_CODES,
         max_refresh_attempts=transport.DEFAULT_MAX_REFRESH_ATTEMPTS,
     ):
-
         if http is None:
-            http = _make_default_http()
+            self.http = _make_default_http()
+            self._has_user_provided_http = False
+        else:
+            self.http = http
+            self._has_user_provided_http = True
 
         self.credentials = credentials
-        self.http = http
         self._refresh_status_codes = refresh_status_codes
         self._max_refresh_attempts = max_refresh_attempts
         # Request instance used by internal methods (for example,
@@ -202,6 +279,50 @@ class AuthorizedHttp(urllib3.request.RequestMethods):
         self._request = Request(self.http)
 
         super(AuthorizedHttp, self).__init__()
+
+    def configure_mtls_channel(self, client_cert_callabck=None):
+        """Configures mutual TLS channel using the given client_cert_callabck or
+        application default SSL credentials. Returns True if the channel is
+        mutual TLS and False otherwise. Note that the `http` provided in the
+        constructor will be overwritten.
+
+        Args:
+            client_cert_callabck (Optional[Callable[[], (bytes, bytes)]]):
+                The optional callback returns the client certificate and private
+                key bytes both in PEM format.
+                If the callback is None, application default SSL credentials
+                will be used.
+
+        Returns:
+            True if the channel is mutual TLS and False otherwise.
+
+        Raises:
+            ImportError: If certifi or pyOpenSSL is not installed.
+            OpenSSL.crypto.Error: If client cert or key is invalid.
+            OSError: If the cert provider command launch fails during the
+                application default SSL credentials loading process.
+            RuntimeError: If the cert provider command has a runtime error during
+                the application default SSL credentials loading process.
+            ValueError: If the context aware metadata file is malformed or the
+                cert provider command doesn't produce both client certicate and
+                key during the application default SSL credentials loading process.
+        """
+        found_cert_key, cert, key = transport._mtls_helper.get_client_cert_and_key(
+            client_cert_callabck
+        )
+
+        if found_cert_key:
+            self.http = _make_mutual_tls_http(cert, key)
+        else:
+            self.http = _make_default_http()
+
+        if self._has_user_provided_http:
+            self._has_user_provided_http = False
+            warnings.warn(
+                "`http` provided in the constructor is overwritten", UserWarning
+            )
+
+        return found_cert_key
 
     def urlopen(self, method, url, body=None, headers=None, **kwargs):
         """Implementation of urllib3's urlopen."""

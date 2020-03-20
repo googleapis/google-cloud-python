@@ -305,3 +305,11 @@ def grpc(session):
     session.install(*TEST_DEPENDENCIES, "google-cloud-pubsub==1.0.0")
     session.env[EXPLICIT_CREDENTIALS_ENV] = SERVICE_ACCOUNT_FILE
     session.run("pytest", "test_grpc.py")
+
+
+@nox.session(python=PYTHON_VERSIONS)
+def mtls_http(session):
+    session.install(LIBRARY_DIR)
+    session.install(*TEST_DEPENDENCIES, "pyopenssl")
+    session.env[EXPLICIT_CREDENTIALS_ENV] = SERVICE_ACCOUNT_FILE
+    session.run("pytest", "test_mtls_http.py")

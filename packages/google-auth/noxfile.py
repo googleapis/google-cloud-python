@@ -19,6 +19,7 @@ TEST_DEPENDENCIES = [
     "freezegun",
     "mock",
     "oauth2client",
+    "pyopenssl",
     "pytest",
     "pytest-cov",
     "pytest-localserver",

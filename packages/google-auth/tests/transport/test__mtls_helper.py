@@ -20,14 +20,6 @@ import pytest
 
 from google.auth.transport import _mtls_helper
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
-
-with open(os.path.join(DATA_DIR, "privatekey.pem"), "rb") as fh:
-    PRIVATE_KEY_BYTES = fh.read()
-
-with open(os.path.join(DATA_DIR, "public_cert.pem"), "rb") as fh:
-    PUBLIC_CERT_BYTES = fh.read()
-
 CONTEXT_AWARE_METADATA = {"cert_provider_command": ["some command"]}
 
 CONTEXT_AWARE_METADATA_NO_CERT_PROVIDER_COMMAND = {}
@@ -49,22 +41,30 @@ class TestCertAndKeyRegex(object):
     def test_cert_and_key(self):
         # Test single cert and single key
         check_cert_and_key(
-            PUBLIC_CERT_BYTES + PRIVATE_KEY_BYTES, PUBLIC_CERT_BYTES, PRIVATE_KEY_BYTES
+            pytest.public_cert_bytes + pytest.private_key_bytes,
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
         )
         check_cert_and_key(
-            PRIVATE_KEY_BYTES + PUBLIC_CERT_BYTES, PUBLIC_CERT_BYTES, PRIVATE_KEY_BYTES
+            pytest.private_key_bytes + pytest.public_cert_bytes,
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
         )
 
         # Test cert chain and single key
         check_cert_and_key(
-            PUBLIC_CERT_BYTES + PUBLIC_CERT_BYTES + PRIVATE_KEY_BYTES,
-            PUBLIC_CERT_BYTES + PUBLIC_CERT_BYTES,
-            PRIVATE_KEY_BYTES,
+            pytest.public_cert_bytes
+            + pytest.public_cert_bytes
+            + pytest.private_key_bytes,
+            pytest.public_cert_bytes + pytest.public_cert_bytes,
+            pytest.private_key_bytes,
         )
         check_cert_and_key(
-            PRIVATE_KEY_BYTES + PUBLIC_CERT_BYTES + PUBLIC_CERT_BYTES,
-            PUBLIC_CERT_BYTES + PUBLIC_CERT_BYTES,
-            PRIVATE_KEY_BYTES,
+            pytest.private_key_bytes
+            + pytest.public_cert_bytes
+            + pytest.public_cert_bytes,
+            pytest.public_cert_bytes + pytest.public_cert_bytes,
+            pytest.private_key_bytes,
         )
 
     def test_key(self):
@@ -82,33 +82,39 @@ class TestCertAndKeyRegex(object):
         /fy3ZpsL7WqgsZS7Q+0VRK8gKfqkxg5OYQIDAQAB
         -----END EC PRIVATE KEY-----"""
 
-        check_cert_and_key(PUBLIC_CERT_BYTES + KEY, PUBLIC_CERT_BYTES, KEY)
-        check_cert_and_key(PUBLIC_CERT_BYTES + RSA_KEY, PUBLIC_CERT_BYTES, RSA_KEY)
-        check_cert_and_key(PUBLIC_CERT_BYTES + EC_KEY, PUBLIC_CERT_BYTES, EC_KEY)
+        check_cert_and_key(
+            pytest.public_cert_bytes + KEY, pytest.public_cert_bytes, KEY
+        )
+        check_cert_and_key(
+            pytest.public_cert_bytes + RSA_KEY, pytest.public_cert_bytes, RSA_KEY
+        )
+        check_cert_and_key(
+            pytest.public_cert_bytes + EC_KEY, pytest.public_cert_bytes, EC_KEY
+        )
 
 
 class TestCheckaMetadataPath(object):
     def test_success(self):
-        metadata_path = os.path.join(DATA_DIR, "context_aware_metadata.json")
+        metadata_path = os.path.join(pytest.data_dir, "context_aware_metadata.json")
         returned_path = _mtls_helper._check_dca_metadata_path(metadata_path)
         assert returned_path is not None
 
     def test_failure(self):
-        metadata_path = os.path.join(DATA_DIR, "not_exists.json")
+        metadata_path = os.path.join(pytest.data_dir, "not_exists.json")
         returned_path = _mtls_helper._check_dca_metadata_path(metadata_path)
         assert returned_path is None
 
 
 class TestReadMetadataFile(object):
     def test_success(self):
-        metadata_path = os.path.join(DATA_DIR, "context_aware_metadata.json")
+        metadata_path = os.path.join(pytest.data_dir, "context_aware_metadata.json")
         metadata = _mtls_helper._read_dca_metadata_file(metadata_path)
 
         assert "cert_provider_command" in metadata
 
     def test_file_not_json(self):
         # read a file which is not json format.
-        metadata_path = os.path.join(DATA_DIR, "privatekey.pem")
+        metadata_path = os.path.join(pytest.data_dir, "privatekey.pem")
         with pytest.raises(ValueError):
             _mtls_helper._read_dca_metadata_file(metadata_path)
 
@@ -129,21 +135,21 @@ class TestGetClientSslCredentials(object):
     @mock.patch("subprocess.Popen", autospec=True)
     def test_success(self, mock_popen):
         mock_popen.return_value = self.create_mock_process(
-            PUBLIC_CERT_BYTES + PRIVATE_KEY_BYTES, b""
+            pytest.public_cert_bytes + pytest.private_key_bytes, b""
         )
         cert, key = _mtls_helper.get_client_ssl_credentials(CONTEXT_AWARE_METADATA)
-        assert cert == PUBLIC_CERT_BYTES
-        assert key == PRIVATE_KEY_BYTES
+        assert cert == pytest.public_cert_bytes
+        assert key == pytest.private_key_bytes
 
     @mock.patch("subprocess.Popen", autospec=True)
     def test_success_with_cert_chain(self, mock_popen):
-        PUBLIC_CERT_CHAIN_BYTES = PUBLIC_CERT_BYTES + PUBLIC_CERT_BYTES
+        PUBLIC_CERT_CHAIN_BYTES = pytest.public_cert_bytes + pytest.public_cert_bytes
         mock_popen.return_value = self.create_mock_process(
-            PUBLIC_CERT_CHAIN_BYTES + PRIVATE_KEY_BYTES, b""
+            PUBLIC_CERT_CHAIN_BYTES + pytest.private_key_bytes, b""
         )
         cert, key = _mtls_helper.get_client_ssl_credentials(CONTEXT_AWARE_METADATA)
         assert cert == PUBLIC_CERT_CHAIN_BYTES
-        assert key == PRIVATE_KEY_BYTES
+        assert key == pytest.private_key_bytes
 
     def test_missing_cert_provider_command(self):
         with pytest.raises(ValueError):
@@ -153,13 +159,17 @@ class TestGetClientSslCredentials(object):
 
     @mock.patch("subprocess.Popen", autospec=True)
     def test_missing_cert(self, mock_popen):
-        mock_popen.return_value = self.create_mock_process(PRIVATE_KEY_BYTES, b"")
+        mock_popen.return_value = self.create_mock_process(
+            pytest.private_key_bytes, b""
+        )
         with pytest.raises(ValueError):
             assert _mtls_helper.get_client_ssl_credentials(CONTEXT_AWARE_METADATA)
 
     @mock.patch("subprocess.Popen", autospec=True)
     def test_missing_key(self, mock_popen):
-        mock_popen.return_value = self.create_mock_process(PUBLIC_CERT_BYTES, b"")
+        mock_popen.return_value = self.create_mock_process(
+            pytest.public_cert_bytes, b""
+        )
         with pytest.raises(ValueError):
             assert _mtls_helper.get_client_ssl_credentials(CONTEXT_AWARE_METADATA)
 
@@ -175,3 +185,45 @@ class TestGetClientSslCredentials(object):
         mock_popen.side_effect = OSError()
         with pytest.raises(OSError):
             assert _mtls_helper.get_client_ssl_credentials(CONTEXT_AWARE_METADATA)
+
+
+class TestGetClientCertAndKey(object):
+    def test_callback_success(self):
+        callback = mock.Mock()
+        callback.return_value = (pytest.public_cert_bytes, pytest.private_key_bytes)
+
+        found_cert_key, cert, key = _mtls_helper.get_client_cert_and_key(callback)
+        assert found_cert_key
+        assert cert == pytest.public_cert_bytes
+        assert key == pytest.private_key_bytes
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper._check_dca_metadata_path", autospec=True
+    )
+    def test_no_metadata(self, mock_check_dca_metadata_path):
+        mock_check_dca_metadata_path.return_value = None
+
+        found_cert_key, cert, key = _mtls_helper.get_client_cert_and_key()
+        assert not found_cert_key
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper.get_client_ssl_credentials", autospec=True
+    )
+    @mock.patch(
+        "google.auth.transport._mtls_helper._check_dca_metadata_path", autospec=True
+    )
+    def test_use_metadata(
+        self, mock_check_dca_metadata_path, mock_get_client_ssl_credentials
+    ):
+        mock_check_dca_metadata_path.return_value = os.path.join(
+            pytest.data_dir, "context_aware_metadata.json"
+        )
+        mock_get_client_ssl_credentials.return_value = (
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+        )
+
+        found_cert_key, cert, key = _mtls_helper.get_client_cert_and_key()
+        assert found_cert_key
+        assert cert == pytest.public_cert_bytes
+        assert key == pytest.private_key_bytes

@@ -13,10 +13,13 @@
 # limitations under the License.
 
 import mock
+import OpenSSL
+import pytest
 from six.moves import http_client
 import urllib3
 
 import google.auth.credentials
+import google.auth.transport._mtls_helper
 import google.auth.transport.urllib3
 from tests.transport import compliance
 
@@ -75,6 +78,27 @@ class ResponseStub(object):
     def __init__(self, status=http_client.OK, data=None):
         self.status = status
         self.data = data
+
+
+class TestMakeMutualTlsHttp(object):
+    def test_success(self):
+        http = google.auth.transport.urllib3._make_mutual_tls_http(
+            pytest.public_cert_bytes, pytest.private_key_bytes
+        )
+        assert isinstance(http, urllib3.PoolManager)
+
+    def test_crypto_error(self):
+        with pytest.raises(OpenSSL.crypto.Error):
+            google.auth.transport.urllib3._make_mutual_tls_http(
+                b"invalid cert", b"invalid key"
+            )
+
+    @mock.patch.dict("sys.modules", {"OpenSSL.crypto": None})
+    def test_import_error(self):
+        with pytest.raises(ImportError):
+            google.auth.transport.urllib3._make_mutual_tls_http(
+                pytest.public_cert_bytes, pytest.private_key_bytes
+            )
 
 
 class TestAuthorizedHttp(object):
@@ -138,3 +162,62 @@ class TestAuthorizedHttp(object):
 
         authed_http.headers = mock.sentinel.headers
         assert authed_http.headers == http.headers
+
+    @mock.patch("google.auth.transport.urllib3._make_mutual_tls_http", autospec=True)
+    def test_configure_mtls_channel_with_callback(self, mock_make_mutual_tls_http):
+        callback = mock.Mock()
+        callback.return_value = (pytest.public_cert_bytes, pytest.private_key_bytes)
+
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials=mock.Mock(), http=mock.Mock()
+        )
+
+        with pytest.warns(UserWarning):
+            is_mtls = authed_http.configure_mtls_channel(callback)
+
+        assert is_mtls
+        mock_make_mutual_tls_http.assert_called_once_with(
+            cert=pytest.public_cert_bytes, key=pytest.private_key_bytes
+        )
+
+    @mock.patch("google.auth.transport.urllib3._make_mutual_tls_http", autospec=True)
+    @mock.patch(
+        "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
+    )
+    def test_configure_mtls_channel_with_metadata(
+        self, mock_get_client_cert_and_key, mock_make_mutual_tls_http
+    ):
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials=mock.Mock()
+        )
+
+        mock_get_client_cert_and_key.return_value = (
+            True,
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+        )
+        is_mtls = authed_http.configure_mtls_channel()
+
+        assert is_mtls
+        mock_get_client_cert_and_key.assert_called_once()
+        mock_make_mutual_tls_http.assert_called_once_with(
+            cert=pytest.public_cert_bytes, key=pytest.private_key_bytes
+        )
+
+    @mock.patch("google.auth.transport.urllib3._make_mutual_tls_http", autospec=True)
+    @mock.patch(
+        "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
+    )
+    def test_configure_mtls_channel_non_mtls(
+        self, mock_get_client_cert_and_key, mock_make_mutual_tls_http
+    ):
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials=mock.Mock()
+        )
+
+        mock_get_client_cert_and_key.return_value = (False, None, None)
+        is_mtls = authed_http.configure_mtls_channel()
+
+        assert not is_mtls
+        mock_get_client_cert_and_key.assert_called_once()
+        mock_make_mutual_tls_http.assert_not_called()
