@@ -3756,6 +3756,26 @@ class TestLocalStructuredProperty:
         ds_entity = model._entity_to_ds_entity(entity, set_key=False)
         assert prop._call_from_base_type(ds_entity) == entity
 
+    @staticmethod
+    def test_legacy_optional_local_structured_property(in_context):
+        class SubKind(model.Model):
+            foo = model.Property()
+
+        class ContainerB(model.Model):
+            child_b = model.LocalStructuredProperty(SubKind)
+
+        class ContainerA(model.Model):
+            child_a = model.LocalStructuredProperty(ContainerB)
+
+        with in_context.new(legacy_data=True).use():
+            entity = ContainerA(child_a=ContainerB())
+            data = {"_exclude_from_indexes": []}
+            assert ContainerA.child_a._to_datastore(entity, data) == (
+                "child_a",
+            )
+            assert data.pop("_exclude_from_indexes") == ["child_a"]
+            assert data["child_a"]["child_b"] is None
+
 
 class TestGenericProperty:
     @staticmethod
