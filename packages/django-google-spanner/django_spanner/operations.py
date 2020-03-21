@@ -216,7 +216,8 @@ class DatabaseOperations(BaseDatabaseOperations):
 
     def datetime_cast_time_sql(self, field_name, tzname):
         tzname = tzname if settings.USE_TZ else 'UTC'
-        # Cloud Spanner doesn't have a function for converting TIMESTAMP to another time zone.
+        # Cloud Spanner doesn't have a function for converting
+        # TIMESTAMP to another time zone.
         return "TIMESTAMP(FORMAT_TIMESTAMP('%%Y-%%m-%%d %%R:%%E9S %%Z', %s, '%s'))" % (field_name, tzname)
 
     def date_interval_sql(self, timedelta):
