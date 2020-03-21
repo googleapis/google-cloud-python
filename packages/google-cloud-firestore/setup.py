@@ -23,11 +23,7 @@ import setuptools
 name = "google-cloud-firestore"
 description = "Google Cloud Firestore API client library"
 version = "1.6.2"
-# Should be one of:
-# 'Development Status :: 3 - Alpha'
-# 'Development Status :: 4 - Beta'
-# 'Development Status :: 5 - Production/Stable'
-release_status = "Development Status :: 4 - Beta"
+release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
     "google-cloud-core >= 1.0.3, < 2.0dev",
@@ -39,7 +35,6 @@ extras = {}
 # Setup boilerplate below this line.
 
 package_root = os.path.abspath(os.path.dirname(__file__))
-
 readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
