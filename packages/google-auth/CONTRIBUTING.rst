@@ -42,7 +42,9 @@ You can run the system tests with ``nox``::
 To run a single session, specify it with ``nox -s``::
 
     $ nox -f system_tests/noxfile.py -s service_account
-
+    
+First, set the environemnt variable ``GOOGLE_APPLICATION_CREDENTIALS`` to a valid service account.
+See `Creating and Managing Service Account Keys`_ for how to obtain a service account. 
 
 Project and Credentials Setup
 -------------------------------
@@ -113,13 +115,24 @@ If you already have a default service associated with your project, you can skip
 Edit ``app.yaml`` so ``service`` is ``default`` instead of ``google-auth-system-tests``.
 From ``system_tests/app_engine_test_app`` run the following commands ::
 
-    $ pip install --target-lib -r requirements.txt
+    $ pip install --target lib -r requirements.txt
     $ gcloud app deploy -q app.yaml
 
 After the app is deployed, change ``service`` in ``app.yaml`` back to ``google-auth-system-tests``. 
 You can now run the App Engine tests: ::
 
     $ nox -f system_tests/noxfile.py -s app_engine
+    
+Compute Engine Tests
+^^^^^^^^^^^^^^^^^^^^
+
+These tests cannot be run locally and will be skipped if they are run outside of Google Compute Engine.
+    
+grpc Tests
+^^^^^^^^^^^^
+
+These tests use the Pub/Sub API. Grant the service account specified by `GOOGLE_APPLICATION_CREDENTIALS`
+permissions to list topics. The service account should have at least `roles/pubsub.viewer`.
 
 Coding Style
 ------------
