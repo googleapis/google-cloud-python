@@ -73,3 +73,12 @@ def get_table_column_schema(spanner_db, table_name):
             )
 
         return column_details
+
+
+def unescape_percent_literals(s):
+    """
+    Convert %% (escaped percent literals) to %. Percent signs must be escaped when
+    values like %s are used as SQL parameter placeholders but Spanner's query language
+    uses placeholders like @a0 and doesn't expect percent signs to be escaped.
+    """
+    return s.replace('%%', '%')

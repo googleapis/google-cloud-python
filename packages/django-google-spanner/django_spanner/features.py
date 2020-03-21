@@ -255,9 +255,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # Cloud Spanner limit: "Number of functions exceeds the maximum
         # allowed limit of 1000."
         'queries.test_bulk_update.BulkUpdateTests.test_large_batch',
-        # QuerySet.extra() with select literal percent doesn't work:
-        # https://github.com/orijtech/spanner-orm/issues/252
-        'queries.tests.Queries5Tests.test_extra_select_literal_percent_s',
         # Spanner doesn't support random ordering.
         'ordering.tests.OrderingTests.test_random_ordering',
         # No matching signature for function MOD for argument types: FLOAT64,
@@ -292,10 +289,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # DatabaseIntrospection.get_relations() isn't implemented:
         # https://github.com/orijtech/django-spanner/issues/311
         'introspection.tests.IntrospectionTests.test_get_relations',
-        # parameter escaping of % not working correctly:
-        # https://github.com/orijtech/django-spanner/issues/347
-        'backends.tests.EscapingChecks.test_parameter_escaping',
-        'backends.tests.EscapingChecksDebug.test_parameter_escaping',
         # Non-ascii SELECT alias crashes "Syntax error: Illegal input character"
         # https://github.com/orijtech/django-spanner/issues/341
         'backends.tests.LastExecutedQueryTest.test_query_encoding',

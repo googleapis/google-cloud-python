@@ -48,7 +48,7 @@ env:
         - DJANGO_TEST_APPS="queries.test_q queries.test_qs_combinators queries.test_query"
         # Commented out because they take longer 2hr and TravisCI unconditionally terminates them.
         # - DJANGO_TEST_APPS="queries.tests"
-        - DJANGO_TEST_APPS="raw_query redirects_tests reserved_names reverse_lookup"
+        - DJANGO_TEST_APPS="queries.tests.Queries5Tests.test_extra_select_literal_percent_s raw_query redirects_tests reserved_names reverse_lookup"
         - DJANGO_TEST_APPS="save_delete_hooks select_related"
         - DJANGO_TEST_APPS="select_related_onetoone signing sitemaps_tests"
         - DJANGO_TEST_APPS="string_lookup signals"
