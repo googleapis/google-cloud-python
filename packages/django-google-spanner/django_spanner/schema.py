@@ -14,7 +14,8 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
     # Spanner doesn't support partial indexes. This string omits the
     # %(condition)s placeholder so that partial indexes are ignored.
     sql_create_index = "CREATE INDEX %(name)s ON %(table)s%(using)s (%(columns)s)%(extra)s"
-    sql_create_unique = "CREATE UNIQUE INDEX %(name)s ON %(table)s (%(columns)s)"
+    sql_create_unique = "CREATE UNIQUE NULL_FILTERED INDEX %(name)s ON %(table)s (%(columns)s)"
+    sql_delete_unique = "DROP INDEX %(name)s"
 
     # Cloud Spanner requires when changing if a column is NULLABLE,
     # that it should get redefined with its type and size.
@@ -63,6 +64,10 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                 self.quote_name(field.column),
                 definition,
             ))
+            # Create a unique constraint separately because Spanner doesn't
+            # allow them inline on a column.
+            if field.unique and not field.primary_key:
+                self.deferred_sql.append(self._create_unique_sql(model, [field.column]))
 
         # Add any unique_togethers (always deferred, as some fields might be
         # created afterwards, like geometry fields with some backends)
@@ -139,6 +144,10 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             })
         # Add an index, if required
         self.deferred_sql.extend(self._field_indexes_sql(model, field))
+        # Create a unique constraint separately because Spanner doesn't allow
+        # them inline on a column.
+        if field.unique and not field.primary_key:
+            self.deferred_sql.append(self._create_unique_sql(model, [field.column]))
         # Add any FK constraints later
         if field.remote_field and self.connection.features.supports_foreign_keys and field.db_constraint:
             self.deferred_sql.append(self._create_fk_sql(model, field, "_fk_%(to_table)s_%(to_column)s"))

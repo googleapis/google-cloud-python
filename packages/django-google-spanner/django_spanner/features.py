@@ -132,10 +132,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'db_functions.comparison.test_cast.CastTests.test_cast_to_decimal_field',
         'model_fields.test_decimalfield.DecimalFieldTests.test_fetch_from_db_without_float_rounding',
         'model_fields.test_decimalfield.DecimalFieldTests.test_roundtrip_with_trailing_zeros',
-        # No UNIQUE constraints in Spanner.
-        'auth_tests.test_basic.BasicTestCase.test_unicode_username',
-        'model_fields.test_filefield.FileFieldTests.test_unique_when_same_filename',
-        'one_to_one.tests.OneToOneTests.test_multiple_o2o',
         # No CHECK constraints in Spanner.
         'model_fields.test_integerfield.PositiveIntegerFieldTests.test_negative_values',
         # 'DatabaseWrapper' object has no attribute 'pattern_ops'
@@ -261,15 +257,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # https://github.com/orijtech/django-spanner/issues/373
         'schema.tests.SchemaTests.test_order_index',
         'schema.tests.SchemaTests.test_remove_db_index_doesnt_remove_custom_indexes',
-        # SchemaEditor.create_model() doesn't create unique constraints.
-        'schema.tests.SchemaTests.test_remove_field_unique_does_not_remove_meta_constraints',
-        'schema.tests.SchemaTests.test_remove_constraints_capital_letters',
-        'schema.tests.SchemaTests.test_unique',
-        'schema.tests.SchemaTests.test_unique_and_reverse_m2m',
-        'schema.tests.SchemaTests.test_unique_together',
-        'schema.tests.SchemaTests.test_unique_together_with_fk',
-        'schema.tests.SchemaTests.test_unique_together_with_fk_with_existing_index',
-        'schema.tests.SchemaTests.test_remove_unique_together_does_not_remove_meta_constraints',
-        # SchemaEditor.add_field() doesn't create unique constraints.
-        'schema.tests.SchemaTests.test_indexes',
+        # This test doesn't flush the database properly:
+        # https://code.djangoproject.com/ticket/31398
+        'multiple_database.tests.AuthTestCase',
     )
