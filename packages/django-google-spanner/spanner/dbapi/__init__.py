@@ -30,8 +30,6 @@ paramstyle = 'format'
 # are working properly, we'll update the threadsafety level.
 threadsafety = 1
 
-global_session_pool = spanner.pool.BurstyPool()
-
 
 def connect(project=None, instance=None, database=None, credentials_uri=None, user_agent=None, autocommit=True):
     """
@@ -70,11 +68,11 @@ def connect(project=None, instance=None, database=None, credentials_uri=None, us
     if not client_instance.exists():
         raise ProgrammingError("instance '%s' does not exist." % instance)
 
-    db = client_instance.database(database, pool=global_session_pool)
+    db = client_instance.database(database, pool=spanner.pool.BurstyPool())
     if not db.exists():
         raise ProgrammingError("database '%s' does not exist." % database)
 
-    # Correctly retrieve a session from the global session pool.
+    # Correctly retrieve a session from the session pool.
     # See:
     #   * https://github.com/orijtech/django-spanner/issues/291
     #   * https://github.com/googleapis/python-spanner/issues/10#issuecomment-585056760
