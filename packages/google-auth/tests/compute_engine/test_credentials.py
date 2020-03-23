@@ -25,6 +25,24 @@ from google.auth import transport
 from google.auth.compute_engine import credentials
 from google.auth.transport import requests
 
+SAMPLE_ID_TOKEN_EXP = 1584393400
+
+# header: {"alg": "RS256", "typ": "JWT", "kid": "1"}
+# payload: {"iss": "issuer", "iat": 1584393348, "sub": "subject",
+#   "exp": 1584393400,"aud": "audience"}
+SAMPLE_ID_TOKEN = (
+    b"eyJhbGciOiAiUlMyNTYiLCAidHlwIjogIkpXVCIsICJraWQiOiAiMSJ9."
+    b"eyJpc3MiOiAiaXNzdWVyIiwgImlhdCI6IDE1ODQzOTMzNDgsICJzdWIiO"
+    b"iAic3ViamVjdCIsICJleHAiOiAxNTg0MzkzNDAwLCAiYXVkIjogImF1ZG"
+    b"llbmNlIn0."
+    b"OquNjHKhTmlgCk361omRo18F_uY-7y0f_AmLbzW062Q1Zr61HAwHYP5FM"
+    b"316CK4_0cH8MUNGASsvZc3VqXAqub6PUTfhemH8pFEwBdAdG0LhrNkU0H"
+    b"WN1YpT55IiQ31esLdL5q-qDsOPpNZJUti1y1lAreM5nIn2srdWzGXGs4i"
+    b"TRQsn0XkNUCL4RErpciXmjfhMrPkcAjKA-mXQm2fa4jmTlEZFqFmUlym1"
+    b"ozJ0yf5grjN6AslN4OGvAv1pS-_Ko_pGBS6IQtSBC6vVKCUuBfaqNjykg"
+    b"bsxbLa6Fp0SYeYwO8ifEnkRvasVpc1WTQqfRB2JCj5pTBDzJpIpFCMmnQ"
+)
+
 
 class TestCredentials(object):
     credentials = None
@@ -237,6 +255,26 @@ class TestIDTokenCredentials(object):
             "target_audience": "https://audience.com",
             "foo": "bar",
         }
+
+    def test_token_uri(self):
+        request = mock.create_autospec(transport.Request, instance=True)
+
+        self.credentials = credentials.IDTokenCredentials(
+            request=request,
+            signer=mock.Mock(),
+            service_account_email="foo@example.com",
+            target_audience="https://audience.com",
+        )
+        assert self.credentials._token_uri == credentials._DEFAULT_TOKEN_URI
+
+        self.credentials = credentials.IDTokenCredentials(
+            request=request,
+            signer=mock.Mock(),
+            service_account_email="foo@example.com",
+            target_audience="https://audience.com",
+            token_uri="https://example.com/token",
+        )
+        assert self.credentials._token_uri == "https://example.com/token"
 
     @mock.patch(
         "google.auth._helpers.utcnow",
@@ -469,3 +507,104 @@ class TestIDTokenCredentials(object):
 
         # The JWT token signature is 'signature' encoded in base 64:
         assert signature == b"signature"
+
+    @mock.patch(
+        "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
+    )
+    @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
+    def test_get_id_token_from_metadata(self, get, get_service_account_info):
+        get.return_value = SAMPLE_ID_TOKEN
+        get_service_account_info.return_value = {"email": "foo@example.com"}
+
+        cred = credentials.IDTokenCredentials(
+            mock.Mock(), "audience", use_metadata_identity_endpoint=True
+        )
+        cred.refresh(request=mock.Mock())
+
+        assert cred.token == SAMPLE_ID_TOKEN
+        assert cred.expiry == SAMPLE_ID_TOKEN_EXP
+        assert cred._use_metadata_identity_endpoint
+        assert cred._signer is None
+        assert cred._token_uri is None
+        assert cred._service_account_email == "foo@example.com"
+        assert cred._target_audience == "audience"
+        with pytest.raises(ValueError):
+            cred.sign_bytes(b"bytes")
+
+    @mock.patch(
+        "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
+    )
+    def test_with_target_audience_for_metadata(self, get_service_account_info):
+        get_service_account_info.return_value = {"email": "foo@example.com"}
+
+        cred = credentials.IDTokenCredentials(
+            mock.Mock(), "audience", use_metadata_identity_endpoint=True
+        )
+        cred = cred.with_target_audience("new_audience")
+
+        assert cred._target_audience == "new_audience"
+        assert cred._use_metadata_identity_endpoint
+        assert cred._signer is None
+        assert cred._token_uri is None
+        assert cred._service_account_email == "foo@example.com"
+
+    @mock.patch(
+        "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
+    )
+    @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
+    def test_invalid_id_token_from_metadata(self, get, get_service_account_info):
+        get.return_value = "invalid_id_token"
+        get_service_account_info.return_value = {"email": "foo@example.com"}
+
+        cred = credentials.IDTokenCredentials(
+            mock.Mock(), "audience", use_metadata_identity_endpoint=True
+        )
+
+        with pytest.raises(ValueError):
+            cred.refresh(request=mock.Mock())
+
+    @mock.patch(
+        "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
+    )
+    @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
+    def test_transport_error_from_metadata(self, get, get_service_account_info):
+        get.side_effect = exceptions.TransportError("transport error")
+        get_service_account_info.return_value = {"email": "foo@example.com"}
+
+        cred = credentials.IDTokenCredentials(
+            mock.Mock(), "audience", use_metadata_identity_endpoint=True
+        )
+
+        with pytest.raises(exceptions.RefreshError) as excinfo:
+            cred.refresh(request=mock.Mock())
+        assert excinfo.match(r"transport error")
+
+    def test_get_id_token_from_metadata_constructor(self):
+        with pytest.raises(ValueError):
+            credentials.IDTokenCredentials(
+                mock.Mock(),
+                "audience",
+                use_metadata_identity_endpoint=True,
+                token_uri="token_uri",
+            )
+        with pytest.raises(ValueError):
+            credentials.IDTokenCredentials(
+                mock.Mock(),
+                "audience",
+                use_metadata_identity_endpoint=True,
+                signer=mock.Mock(),
+            )
+        with pytest.raises(ValueError):
+            credentials.IDTokenCredentials(
+                mock.Mock(),
+                "audience",
+                use_metadata_identity_endpoint=True,
+                additional_claims={"key", "value"},
+            )
+        with pytest.raises(ValueError):
+            credentials.IDTokenCredentials(
+                mock.Mock(),
+                "audience",
+                use_metadata_identity_endpoint=True,
+                service_account_email="foo@example.com",
+            )
