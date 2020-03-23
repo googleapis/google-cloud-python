@@ -274,15 +274,17 @@ class SubscriberClient(object):
             >>> response = client.create_subscription(name, topic)
 
         Args:
-            name (str): The name of the subscription. It must have the format
-                `"projects/{project}/subscriptions/{subscription}"`. `{subscription}` must
-                start with a letter, and contain only letters (`[A-Za-z]`), numbers
-                (`[0-9]`), dashes (`-`), underscores (`_`), periods (`.`), tildes (`~`),
-                plus (`+`) or percent signs (`%`). It must be between 3 and 255 characters
-                in length, and it must not start with `"goog"`
-            topic (str): The name of the topic from which this subscription is receiving
-                messages. Format is ``projects/{project}/topics/{topic}``. The value of
-                this field will be ``_deleted-topic_`` if the topic has been deleted.
+            name (str): Required. The name of the subscription. It must have the format
+                ``"projects/{project}/subscriptions/{subscription}"``.
+                ``{subscription}`` must start with a letter, and contain only letters
+                (``[A-Za-z]``), numbers (``[0-9]``), dashes (``-``), underscores
+                (``_``), periods (``.``), tildes (``~``), plus (``+``) or percent signs
+                (``%``). It must be between 3 and 255 characters in length, and it must
+                not start with ``"goog"``.
+            topic (str): Required. The name of the topic from which this subscription is
+                receiving messages. Format is ``projects/{project}/topics/{topic}``. The
+                value of this field will be ``_deleted-topic_`` if the topic has been
+                deleted.
             push_config (Union[dict, ~google.cloud.pubsub_v1.types.PushConfig]): If push delivery is used with this subscription, this field is used to
                 configure it. An empty ``pushConfig`` signifies that the subscriber will
                 pull and ack messages using API methods.
@@ -434,7 +436,7 @@ class SubscriberClient(object):
             >>> response = client.get_subscription(subscription)
 
         Args:
-            subscription (str): The name of the subscription to get. Format is
+            subscription (str): Required. The name of the subscription to get. Format is
                 ``projects/{project}/subscriptions/{sub}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -510,11 +512,11 @@ class SubscriberClient(object):
             >>> response = client.update_subscription(subscription, update_mask)
 
         Args:
-            subscription (Union[dict, ~google.cloud.pubsub_v1.types.Subscription]): The updated subscription object.
+            subscription (Union[dict, ~google.cloud.pubsub_v1.types.Subscription]): Required. The updated subscription object.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.Subscription`
-            update_mask (Union[dict, ~google.cloud.pubsub_v1.types.FieldMask]): Indicates which fields in the provided subscription to update.
+            update_mask (Union[dict, ~google.cloud.pubsub_v1.types.FieldMask]): Required. Indicates which fields in the provided subscription to update.
                 Must be specified and non-empty.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -602,8 +604,8 @@ class SubscriberClient(object):
             ...         pass
 
         Args:
-            project (str): The name of the project in which to list subscriptions. Format is
-                ``projects/{project-id}``.
+            project (str): Required. The name of the project in which to list subscriptions. Format
+                is ``projects/{project-id}``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -698,7 +700,7 @@ class SubscriberClient(object):
             >>> client.delete_subscription(subscription)
 
         Args:
-            subscription (str): The subscription to delete. Format is
+            subscription (str): Required. The subscription to delete. Format is
                 ``projects/{project}/subscriptions/{sub}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -777,11 +779,11 @@ class SubscriberClient(object):
             >>> client.modify_ack_deadline(subscription, ack_ids, ack_deadline_seconds)
 
         Args:
-            subscription (str): The name of the subscription. Format is
+            subscription (str): Required. The name of the subscription. Format is
                 ``projects/{project}/subscriptions/{sub}``.
-            ack_ids (list[str]): List of acknowledgment IDs.
-            ack_deadline_seconds (int): The new ack deadline with respect to the time this request was sent to
-                the Pub/Sub system. For example, if the value is 10, the new ack
+            ack_ids (list[str]): Required. List of acknowledgment IDs.
+            ack_deadline_seconds (int): Required. The new ack deadline with respect to the time this request was
+                sent to the Pub/Sub system. For example, if the value is 10, the new ack
                 deadline will expire 10 seconds after the ``ModifyAckDeadline`` call was
                 made. Specifying zero might immediately make the message available for
                 delivery to another subscriber client. This typically results in an
@@ -867,10 +869,10 @@ class SubscriberClient(object):
             >>> client.acknowledge(subscription, ack_ids)
 
         Args:
-            subscription (str): The subscription whose message is being acknowledged. Format is
-                ``projects/{project}/subscriptions/{sub}``.
-            ack_ids (list[str]): The acknowledgment ID for the messages being acknowledged that was
-                returned by the Pub/Sub system in the ``Pull`` response. Must not be
+            subscription (str): Required. The subscription whose message is being acknowledged. Format
+                is ``projects/{project}/subscriptions/{sub}``.
+            ack_ids (list[str]): Required. The acknowledgment ID for the messages being acknowledged that
+                was returned by the Pub/Sub system in the ``Pull`` response. Must not be
                 empty.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -946,9 +948,9 @@ class SubscriberClient(object):
             >>> response = client.pull(subscription, max_messages)
 
         Args:
-            subscription (str): The subscription from which messages should be pulled. Format is
-                ``projects/{project}/subscriptions/{sub}``.
-            max_messages (int): The maximum number of messages to return for this request. Must be a
+            subscription (str): Required. The subscription from which messages should be pulled. Format
+                is ``projects/{project}/subscriptions/{sub}``.
+            max_messages (int): Required. The maximum number of messages to return for this request. Must be a
                 positive integer. The Pub/Sub system may return fewer than the number
                 specified.
             return_immediately (bool): If this field set to true, the system will respond immediately even if
@@ -1020,8 +1022,6 @@ class SubscriberClient(object):
         status ``UNAVAILABLE`` to reassign server-side resources, in which case,
         the client should re-establish the stream. Flow control can be achieved
         by configuring the underlying RPC channel.
-
-        EXPERIMENTAL: This method interface might change in the future.
 
         Example:
             >>> from google.cloud import pubsub_v1
@@ -1106,9 +1106,9 @@ class SubscriberClient(object):
             >>> client.modify_push_config(subscription, push_config)
 
         Args:
-            subscription (str): The name of the subscription. Format is
+            subscription (str): Required. The name of the subscription. Format is
                 ``projects/{project}/subscriptions/{sub}``.
-            push_config (Union[dict, ~google.cloud.pubsub_v1.types.PushConfig]): The push configuration for future deliveries.
+            push_config (Union[dict, ~google.cloud.pubsub_v1.types.PushConfig]): Required. The push configuration for future deliveries.
 
                 An empty ``pushConfig`` indicates that the Pub/Sub system should stop
                 pushing messages from the given subscription and allow messages to be
@@ -1202,7 +1202,7 @@ class SubscriberClient(object):
             ...         pass
 
         Args:
-            project (str): The name of the project in which to list snapshots. Format is
+            project (str): Required. The name of the project in which to list snapshots. Format is
                 ``projects/{project-id}``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -1307,18 +1307,18 @@ class SubscriberClient(object):
             >>> response = client.create_snapshot(name, subscription)
 
         Args:
-            name (str): User-provided name for this snapshot. If the name is not provided in the
-                request, the server will assign a random name for this snapshot on the
-                same project as the subscription. Note that for REST API requests, you
-                must specify a name. See the resource name rules. Format is
-                ``projects/{project}/snapshots/{snap}``.
-            subscription (str): The subscription whose backlog the snapshot retains. Specifically, the
-                created snapshot is guaranteed to retain: (a) The existing backlog on
-                the subscription. More precisely, this is defined as the messages in the
-                subscription's backlog that are unacknowledged upon the successful
-                completion of the ``CreateSnapshot`` request; as well as: (b) Any
-                messages published to the subscription's topic following the successful
-                completion of the CreateSnapshot request. Format is
+            name (str): Required. User-provided name for this snapshot. If the name is not
+                provided in the request, the server will assign a random name for this
+                snapshot on the same project as the subscription. Note that for REST API
+                requests, you must specify a name. See the resource name rules. Format
+                is ``projects/{project}/snapshots/{snap}``.
+            subscription (str): Required. The subscription whose backlog the snapshot retains.
+                Specifically, the created snapshot is guaranteed to retain: (a) The
+                existing backlog on the subscription. More precisely, this is defined as
+                the messages in the subscription's backlog that are unacknowledged upon
+                the successful completion of the ``CreateSnapshot`` request; as well as:
+                (b) Any messages published to the subscription's topic following the
+                successful completion of the CreateSnapshot request. Format is
                 ``projects/{project}/subscriptions/{sub}``.
             labels (dict[str -> str]): See <a href="https://cloud.google.com/pubsub/docs/labels"> Creating and
                 managing labels</a>.
@@ -1403,11 +1403,11 @@ class SubscriberClient(object):
             >>> response = client.update_snapshot(snapshot, update_mask)
 
         Args:
-            snapshot (Union[dict, ~google.cloud.pubsub_v1.types.Snapshot]): The updated snapshot object.
+            snapshot (Union[dict, ~google.cloud.pubsub_v1.types.Snapshot]): Required. The updated snapshot object.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.Snapshot`
-            update_mask (Union[dict, ~google.cloud.pubsub_v1.types.FieldMask]): Indicates which fields in the provided snapshot to update.
+            update_mask (Union[dict, ~google.cloud.pubsub_v1.types.FieldMask]): Required. Indicates which fields in the provided snapshot to update.
                 Must be specified and non-empty.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -1491,7 +1491,7 @@ class SubscriberClient(object):
             >>> client.delete_snapshot(snapshot)
 
         Args:
-            snapshot (str): The name of the snapshot to delete. Format is
+            snapshot (str): Required. The name of the snapshot to delete. Format is
                 ``projects/{project}/snapshots/{snap}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -1567,7 +1567,7 @@ class SubscriberClient(object):
             >>> response = client.seek(subscription)
 
         Args:
-            subscription (str): The subscription to affect.
+            subscription (str): Required. The subscription to affect.
             time (Union[dict, ~google.cloud.pubsub_v1.types.Timestamp]): The time to seek to. Messages retained in the subscription that were
                 published before this time are marked as acknowledged, and messages
                 retained in the subscription that were published after this time are
@@ -1645,8 +1645,11 @@ class SubscriberClient(object):
         metadata=None,
     ):
         """
-        Sets the access control policy on the specified resource. Replaces any
-        existing policy.
+        Sets the access control policy on the specified resource. Replaces
+        any existing policy.
+
+        Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and
+        PERMISSION_DENIED
 
         Example:
             >>> from google.cloud import pubsub_v1
@@ -1727,9 +1730,8 @@ class SubscriberClient(object):
         metadata=None,
     ):
         """
-        Gets the access control policy for a resource.
-        Returns an empty policy if the resource exists and does not have a policy
-        set.
+        Gets the access control policy for a resource. Returns an empty policy
+        if the resource exists and does not have a policy set.
 
         Example:
             >>> from google.cloud import pubsub_v1
@@ -1808,8 +1810,8 @@ class SubscriberClient(object):
     ):
         """
         Returns permissions that a caller has on the specified resource. If the
-        resource does not exist, this will return an empty set of permissions,
-        not a NOT\_FOUND error.
+        resource does not exist, this will return an empty set of
+        permissions, not a NOT_FOUND error.
 
         Note: This operation is designed to be used for building
         permission-aware UIs and command-line tools, not for authorization

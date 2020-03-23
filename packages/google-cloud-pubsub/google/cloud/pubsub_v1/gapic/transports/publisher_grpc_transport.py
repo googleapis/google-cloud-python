@@ -215,8 +215,11 @@ class PublisherGrpcTransport(object):
     def set_iam_policy(self):
         """Return the gRPC stub for :meth:`PublisherClient.set_iam_policy`.
 
-        Sets the access control policy on the specified resource. Replaces any
-        existing policy.
+        Sets the access control policy on the specified resource. Replaces
+        any existing policy.
+
+        Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and
+        PERMISSION_DENIED
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -229,9 +232,8 @@ class PublisherGrpcTransport(object):
     def get_iam_policy(self):
         """Return the gRPC stub for :meth:`PublisherClient.get_iam_policy`.
 
-        Gets the access control policy for a resource.
-        Returns an empty policy if the resource exists and does not have a policy
-        set.
+        Gets the access control policy for a resource. Returns an empty policy
+        if the resource exists and does not have a policy set.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -245,8 +247,8 @@ class PublisherGrpcTransport(object):
         """Return the gRPC stub for :meth:`PublisherClient.test_iam_permissions`.
 
         Returns permissions that a caller has on the specified resource. If the
-        resource does not exist, this will return an empty set of permissions,
-        not a NOT\_FOUND error.
+        resource does not exist, this will return an empty set of
+        permissions, not a NOT_FOUND error.
 
         Note: This operation is designed to be used for building
         permission-aware UIs and command-line tools, not for authorization

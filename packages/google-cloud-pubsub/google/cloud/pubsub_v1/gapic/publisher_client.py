@@ -260,12 +260,12 @@ class PublisherClient(object):
             >>> response = client.create_topic(name)
 
         Args:
-            name (str): The name of the topic. It must have the format
-                `"projects/{project}/topics/{topic}"`. `{topic}` must start with a letter,
-                and contain only letters (`[A-Za-z]`), numbers (`[0-9]`), dashes (`-`),
-                underscores (`_`), periods (`.`), tildes (`~`), plus (`+`) or percent
-                signs (`%`). It must be between 3 and 255 characters in length, and it
-                must not start with `"goog"`.
+            name (str): Required. The name of the topic. It must have the format
+                ``"projects/{project}/topics/{topic}"``. ``{topic}`` must start with a
+                letter, and contain only letters (``[A-Za-z]``), numbers (``[0-9]``),
+                dashes (``-``), underscores (``_``), periods (``.``), tildes (``~``),
+                plus (``+``) or percent signs (``%``). It must be between 3 and 255
+                characters in length, and it must not start with ``"goog"``.
             labels (dict[str -> str]): See <a href="https://cloud.google.com/pubsub/docs/labels"> Creating and
                 managing labels</a>.
             message_storage_policy (Union[dict, ~google.cloud.pubsub_v1.types.MessageStoragePolicy]): Policy constraining the set of Google Cloud Platform regions where messages
@@ -358,12 +358,12 @@ class PublisherClient(object):
             >>> response = client.update_topic(topic, update_mask)
 
         Args:
-            topic (Union[dict, ~google.cloud.pubsub_v1.types.Topic]): The updated topic object.
+            topic (Union[dict, ~google.cloud.pubsub_v1.types.Topic]): Required. The updated topic object.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.Topic`
-            update_mask (Union[dict, ~google.cloud.pubsub_v1.types.FieldMask]): Indicates which fields in the provided topic to update. Must be
-                specified and non-empty. Note that if ``update_mask`` contains
+            update_mask (Union[dict, ~google.cloud.pubsub_v1.types.FieldMask]): Required. Indicates which fields in the provided topic to update. Must
+                be specified and non-empty. Note that if ``update_mask`` contains
                 "message\_storage\_policy" then the new value will be determined based
                 on the policy configured at the project or organization level. The
                 ``message_storage_policy`` must not be set in the ``topic`` provided
@@ -444,9 +444,9 @@ class PublisherClient(object):
             >>> response = client.publish(topic, messages)
 
         Args:
-            topic (str): The messages in the request will be published on this topic. Format is
-                ``projects/{project}/topics/{topic}``.
-            messages (list[Union[dict, ~google.cloud.pubsub_v1.types.PubsubMessage]]): The messages to publish.
+            topic (str): Required. The messages in the request will be published on this topic.
+                Format is ``projects/{project}/topics/{topic}``.
+            messages (list[Union[dict, ~google.cloud.pubsub_v1.types.PubsubMessage]]): Required. The messages to publish.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.PubsubMessage`
@@ -518,7 +518,7 @@ class PublisherClient(object):
             >>> response = client.get_topic(topic)
 
         Args:
-            topic (str): The name of the topic to get. Format is
+            topic (str): Required. The name of the topic to get. Format is
                 ``projects/{project}/topics/{topic}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -601,7 +601,7 @@ class PublisherClient(object):
             ...         pass
 
         Args:
-            project (str): The name of the project in which to list topics. Format is
+            project (str): Required. The name of the project in which to list topics. Format is
                 ``projects/{project-id}``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -703,8 +703,8 @@ class PublisherClient(object):
             ...         pass
 
         Args:
-            topic (str): The name of the topic that subscriptions are attached to. Format is
-                ``projects/{project}/topics/{topic}``.
+            topic (str): Required. The name of the topic that subscriptions are attached to.
+                Format is ``projects/{project}/topics/{topic}``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -799,7 +799,7 @@ class PublisherClient(object):
             >>> client.delete_topic(topic)
 
         Args:
-            topic (str): Name of the topic to delete. Format is
+            topic (str): Required. Name of the topic to delete. Format is
                 ``projects/{project}/topics/{topic}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -855,8 +855,11 @@ class PublisherClient(object):
         metadata=None,
     ):
         """
-        Sets the access control policy on the specified resource. Replaces any
-        existing policy.
+        Sets the access control policy on the specified resource. Replaces
+        any existing policy.
+
+        Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and
+        PERMISSION_DENIED
 
         Example:
             >>> from google.cloud import pubsub_v1
@@ -937,9 +940,8 @@ class PublisherClient(object):
         metadata=None,
     ):
         """
-        Gets the access control policy for a resource.
-        Returns an empty policy if the resource exists and does not have a policy
-        set.
+        Gets the access control policy for a resource. Returns an empty policy
+        if the resource exists and does not have a policy set.
 
         Example:
             >>> from google.cloud import pubsub_v1
@@ -1018,8 +1020,8 @@ class PublisherClient(object):
     ):
         """
         Returns permissions that a caller has on the specified resource. If the
-        resource does not exist, this will return an empty set of permissions,
-        not a NOT\_FOUND error.
+        resource does not exist, this will return an empty set of
+        permissions, not a NOT_FOUND error.
 
         Note: This operation is designed to be used for building
         permission-aware UIs and command-line tools, not for authorization

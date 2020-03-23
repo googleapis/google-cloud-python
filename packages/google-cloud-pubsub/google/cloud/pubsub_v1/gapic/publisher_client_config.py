@@ -47,7 +47,7 @@ config = {
                     "retry_params_name": "default",
                 },
                 "Publish": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 20000,
                     "retry_codes_name": "publish",
                     "retry_params_name": "messaging",
                     "bundling": {
