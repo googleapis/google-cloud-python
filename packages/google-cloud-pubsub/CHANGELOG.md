@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## [1.4.0](https://www.github.com/googleapis/python-pubsub/compare/v1.3.1...v1.4.0) (2020-03-06)
+
+
+### Features
+
+* **pubsub:** implement max_duration_per_lease_extension option ([#38](https://www.github.com/googleapis/python-pubsub/issues/38)) ([d911a2d](https://www.github.com/googleapis/python-pubsub/commit/d911a2dc8edf3c348ad3f128368b30e32dbc449e))
+
 ### [1.3.1](https://www.github.com/googleapis/python-pubsub/compare/v1.3.0...v1.3.1) (2020-02-28)
 
 
