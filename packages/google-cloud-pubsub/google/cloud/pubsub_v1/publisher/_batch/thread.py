@@ -369,3 +369,6 @@ class Batch(base.Batch):
             self.commit()
 
         return future
+
+    def _set_status(self, status):
+        self._status = status

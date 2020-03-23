@@ -65,6 +65,12 @@ class UnorderedSequencer(base.Sequencer):
         if self._current_batch:
             self._current_batch.commit()
 
+            # At this point, we lose track of the old batch, but we don't
+            # care since we just committed it.
+            # Setting this to None guarantees the next publish() creates a new
+            # batch.
+            self._current_batch = None
+
     def unpause(self):
         """ Not relevant for this class. """
         raise NotImplementedError

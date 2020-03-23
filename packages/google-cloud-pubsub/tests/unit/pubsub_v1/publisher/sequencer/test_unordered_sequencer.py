@@ -18,6 +18,7 @@ import pytest
 from google.auth import credentials
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
+from google.cloud.pubsub_v1.publisher._batch import base
 from google.cloud.pubsub_v1.publisher._sequencer import unordered_sequencer
 
 
@@ -101,4 +102,25 @@ def test_publish_batch_full():
     # Will create a new batch since the old one is full, and return a future.
     future = sequencer.publish(message)
     batch.publish.assert_called_once_with(message)
+    assert future is not None
+
+
+def test_publish_after_batch_error():
+    client = create_client()
+    message = create_message()
+    batch = mock.Mock(spec=client._batch_class)
+
+    sequencer = unordered_sequencer.UnorderedSequencer(client, "topic_name")
+    sequencer._set_batch(batch)
+
+    sequencer.commit()
+    batch.commit.assert_called_once()
+
+    # Simulate publish RPC failing.
+    batch._set_status(base.BatchStatus.ERROR)
+
+    # Will create a new batch since the old one has been committed. The fact
+    # that the old batch errored should not matter in the publish of the next
+    # message.
+    future = sequencer.publish(message)
     assert future is not None
