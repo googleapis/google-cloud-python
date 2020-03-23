@@ -145,13 +145,15 @@ def get_message(dot_path: str, *,
 
 
 def make_method(
-        name: str, input_message: wrappers.MessageType = None,
+        name: str,
+        input_message: wrappers.MessageType = None,
         output_message: wrappers.MessageType = None,
         package: typing.Union[typing.Tuple[str], str] = 'foo.bar.v1',
         module: str = 'baz',
         http_rule: http_pb2.HttpRule = None,
         signatures: typing.Sequence[str] = (),
-        **kwargs) -> wrappers.Method:
+        **kwargs
+) -> wrappers.Method:
     # Use default input and output messages if they are not provided.
     input_message = input_message or make_message('MethodInput')
     output_message = output_message or make_message('MethodOutput')
@@ -229,11 +231,14 @@ def make_field(
     )
 
 
-def make_message(name: str, package: str = 'foo.bar.v1', module: str = 'baz',
-                 fields: typing.Sequence[wrappers.Field] = (),
-                 meta: metadata.Metadata = None,
-                 options: desc.MethodOptions = None,
-                 ) -> wrappers.MessageType:
+def make_message(
+    name: str,
+    package: str = 'foo.bar.v1',
+    module: str = 'baz',
+    fields: typing.Sequence[wrappers.Field] = (),
+    meta: metadata.Metadata = None,
+    options: desc.MethodOptions = None,
+) -> wrappers.MessageType:
     message_pb = desc.DescriptorProto(
         name=name,
         field=[i.field_pb for i in fields],

@@ -31,7 +31,7 @@ import collections
 import dataclasses
 import re
 from itertools import chain
-from typing import (cast, Dict, FrozenSet, List, Mapping, Optional,
+from typing import (cast, Dict, FrozenSet, Iterable, List, Mapping, Optional,
                     Sequence, Set, Union)
 
 from google.api import annotations_pb2      # type: ignore
@@ -225,7 +225,6 @@ class MessageType:
 
     @utils.cached_property
     def field_types(self) -> Sequence[Union['MessageType', 'EnumType']]:
-        """Return all composite fields used in this proto's messages."""
         answer = tuple(
             field.type
             for field in self.fields.values()
@@ -233,6 +232,23 @@ class MessageType:
         )
 
         return answer
+
+    @utils.cached_property
+    def recursive_field_types(self) -> Sequence[
+        Union['MessageType', 'EnumType']
+    ]:
+        """Return all composite fields used in this proto's messages."""
+        types: List[Union['MessageType', 'EnumType']] = []
+        stack = [iter(self.fields.values())]
+        while stack:
+            fields_iter = stack.pop()
+            for field in fields_iter:
+                if field.message and field.type not in types:
+                    stack.append(iter(field.message.fields.values()))
+                if not field.is_primitive:
+                    types.append(field.type)
+
+        return tuple(types)
 
     @property
     def map(self) -> bool:
@@ -654,18 +670,29 @@ class Method:
 
     @utils.cached_property
     def ref_types(self) -> Sequence[Union[MessageType, EnumType]]:
+        return self._ref_types(True)
+
+    @utils.cached_property
+    def flat_ref_types(self) -> Sequence[Union[MessageType, EnumType]]:
+        return self._ref_types(False)
+
+    def _ref_types(self, recursive: bool) -> Sequence[Union[MessageType, EnumType]]:
         """Return types referenced by this method."""
         # Begin with the input (request) and output (response) messages.
-        answer = [self.input]
+        answer: List[Union[MessageType, EnumType]] = [self.input]
+        types: Iterable[Union[MessageType, EnumType]] = (
+            self.input.recursive_field_types if recursive
+            else (
+                f.type
+                for f in self.flattened_fields.values()
+                if f.message or f.enum
+            )
+        )
+        answer.extend(types)
+
         if not self.void:
             answer.append(self.client_output)
             answer.extend(self.client_output.field_types)
-
-        answer.extend(
-            field.type
-            for field in self.flattened_fields.values()
-            if field.message or field.enum
-        )
 
         # If this method has LRO, it is possible (albeit unlikely) that
         # the LRO messages reside in a different module.

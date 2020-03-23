@@ -19,10 +19,8 @@ through an :class:`~.API` object.
 
 import collections
 import dataclasses
-import keyword
 import os
 import sys
-from itertools import chain
 from typing import Callable, Container, Dict, FrozenSet, Mapping, Optional, Sequence, Set, Tuple
 
 from google.api_core import exceptions  # type: ignore
@@ -37,6 +35,7 @@ from gapic.schema import wrappers
 from gapic.schema import naming as api_naming
 from gapic.utils import cached_property
 from gapic.utils import to_snake_case
+from gapic.utils import RESERVED_NAMES
 
 
 @dataclasses.dataclass(frozen=True)
@@ -130,13 +129,13 @@ class Proto:
         # from distinct packages.
         modules: Dict[str, Set[str]] = collections.defaultdict(set)
         for m in self.all_messages.values():
-            for t in m.field_types:
+            for t in m.recursive_field_types:
                 modules[t.ident.module].add(t.ident.package)
 
         answer.update(
             module_name
             for module_name, packages in modules.items()
-            if len(packages) > 1
+            if len(packages) > 1 or module_name in RESERVED_NAMES
         )
 
         # Return the set of collision names.
@@ -229,7 +228,7 @@ class API:
                 visited_names: Container[str]) -> str:
             path, fname = os.path.split(full_path)
             name, ext = os.path.splitext(fname)
-            if name in keyword.kwlist or full_path in visited_names:
+            if name in RESERVED_NAMES or full_path in visited_names:
                 name += "_"
                 full_path = os.path.join(path, name + ext)
                 if full_path in visited_names:

@@ -23,6 +23,7 @@ from gapic.schema import metadata
 from gapic.schema import wrappers
 
 from test_utils.test_utils import (
+    make_enum,
     make_field,
     make_message,
     make_method,
@@ -149,6 +150,53 @@ def test_method_paged_result_ref_types():
         'ListSquidsPager',
         'Mollusc',
     }
+
+
+def test_flattened_ref_types():
+    method = make_method(
+        'IdentifyMollusc',
+        input_message=make_message(
+            'IdentifyMolluscRequest',
+            fields=(
+                make_field(
+                    'cephalopod',
+                    message=make_message(
+                        'Cephalopod',
+                        fields=(
+                            make_field('mass_kg', type='TYPE_INT32'),
+                            make_field(
+                                'squid',
+                                number=2,
+                                message=make_message('Squid'),
+                            ),
+                            make_field(
+                                'clam',
+                                number=3,
+                                message=make_message('Clam'),
+                            ),
+                        ),
+                    ),
+                ),
+                make_field(
+                    'stratum',
+                    enum=make_enum(
+                        'Stratum',
+                    )
+                ),
+            ),
+        ),
+        signatures=('cephalopod.squid,stratum',),
+        output_message=make_message('Mollusc'),
+    )
+
+    expected_flat_ref_type_names = {
+        'IdentifyMolluscRequest',
+        'Squid',
+        'Stratum',
+        'Mollusc',
+    }
+    actual_flat_ref_type_names = {t.name for t in method.flat_ref_types}
+    assert expected_flat_ref_type_names == actual_flat_ref_type_names
 
 
 def test_method_field_headers_none():

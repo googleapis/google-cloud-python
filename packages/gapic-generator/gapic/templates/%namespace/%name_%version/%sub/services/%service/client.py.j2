@@ -14,7 +14,7 @@ from google.oauth2 import service_account              # type: ignore
 
 {% filter sort_lines -%}
 {% for method in service.methods.values() -%}
-{% for ref_type in method.ref_types -%}
+{% for ref_type in method.flat_ref_types -%}
 {{ ref_type.ident.python_import }}
 {% endfor -%}
 {% endfor -%}

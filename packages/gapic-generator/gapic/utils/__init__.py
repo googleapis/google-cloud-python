@@ -21,6 +21,7 @@ from gapic.utils.filename import to_valid_filename
 from gapic.utils.filename import to_valid_module_name
 from gapic.utils.lines import sort_lines
 from gapic.utils.lines import wrap
+from gapic.utils.reserved_names import RESERVED_NAMES
 from gapic.utils.rst import rst
 
 
@@ -29,6 +30,7 @@ __all__ = (
     'doc',
     'empty',
     'partition',
+    'RESERVED_NAMES',
     'rst',
     'sort_lines',
     'to_snake_case',
