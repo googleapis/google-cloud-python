@@ -221,7 +221,8 @@ class MessageType:
         return getattr(self.message_pb, name)
 
     def __hash__(self):
-        return hash(self.name)
+        # Identity is sufficiently unambiguous.
+        return hash(self.ident)
 
     @utils.cached_property
     def field_types(self) -> Sequence[Union['MessageType', 'EnumType']]:
@@ -238,7 +239,8 @@ class MessageType:
         Union['MessageType', 'EnumType']
     ]:
         """Return all composite fields used in this proto's messages."""
-        types: List[Union['MessageType', 'EnumType']] = []
+        types: Set[Union['MessageType', 'EnumType']] = set()
+
         stack = [iter(self.fields.values())]
         while stack:
             fields_iter = stack.pop()
@@ -246,7 +248,7 @@ class MessageType:
                 if field.message and field.type not in types:
                     stack.append(iter(field.message.fields.values()))
                 if not field.is_primitive:
-                    types.append(field.type)
+                    types.add(field.type)
 
         return tuple(types)
 
@@ -390,6 +392,10 @@ class EnumType:
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
+
+    def __hash__(self):
+        # Identity is sufficiently unambiguous.
+        return hash(self.ident)
 
     def __getattr__(self, name):
         return getattr(self.enum_pb, name)

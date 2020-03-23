@@ -52,6 +52,19 @@ class Address:
         return all([getattr(self, i) == getattr(other, i) for i
                     in ('name', 'module', 'module_path', 'package', 'parent')])
 
+    def __hash__(self):
+        # Do NOT include collisions; they are not relevant.
+        return hash(
+            (
+                self.name,
+                self.module,
+                self.module_path,
+                self.package,
+                self.parent,
+                self.api_naming,
+            )
+        )
+
     def __str__(self) -> str:
         """Return the Python identifier for this type.
 

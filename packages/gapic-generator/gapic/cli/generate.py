@@ -37,7 +37,6 @@ def generate(
         request: typing.BinaryIO,
         output: typing.BinaryIO) -> None:
     """Generate a full API client description."""
-
     # Load the protobuf CodeGeneratorRequest.
     req = plugin_pb2.CodeGeneratorRequest.FromString(request.read())
 
