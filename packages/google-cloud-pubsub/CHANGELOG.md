@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+### [1.4.1](https://www.github.com/googleapis/python-pubsub/compare/v1.4.0...v1.4.1) (2020-03-23)
+
+
+### Bug Fixes
+
+* Don't assert on unordered publishes after publish error. ([#49](https://www.github.com/googleapis/python-pubsub/issues/49)) ([ea19ce6](https://www.github.com/googleapis/python-pubsub/commit/ea19ce616f6961e8993b72cd2921f7f3e61541f9))
+
 ## [1.4.0](https://www.github.com/googleapis/python-pubsub/compare/v1.3.1...v1.4.0) (2020-03-06)
 
 
