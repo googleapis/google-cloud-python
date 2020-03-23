@@ -27,13 +27,13 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
 setuptools.setup(
-    name="google-cloud-mediatranslation",
+    name="google-cloud-media-translation",
     version=version,
     long_description=readme,
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
-    url="https://github.com/googleapis/python-memcache",
+    url="https://github.com/googleapis/python-media-translation",
     packages=setuptools.PEP420PackageFinder.find(),
     namespace_packages=("google", "google.cloud"),
     platforms="Posix; MacOS X; Windows",
