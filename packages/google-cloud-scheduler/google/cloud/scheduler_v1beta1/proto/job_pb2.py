@@ -533,7 +533,8 @@ Job = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_JOB,
         __module__="google.cloud.scheduler_v1beta1.proto.job_pb2",
-        __doc__="""Configuration for a job. The maximum allowed size for a job is 100KB.
+        __doc__="""Configuration for a job. The maximum allowed size for a
+  job is 100KB.
   
   
   Attributes:

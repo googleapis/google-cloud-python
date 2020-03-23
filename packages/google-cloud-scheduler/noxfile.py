@@ -72,6 +72,7 @@ def default(session):
     session.run(
         "py.test",
         "--quiet",
+        "--cov=google.cloud.cloudscheduler",
         "--cov=google.cloud",
         "--cov=tests.unit",
         "--cov-append",

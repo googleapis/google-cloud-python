@@ -919,8 +919,8 @@ AppEngineHttpTarget = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_APPENGINEHTTPTARGET,
         __module__="google.cloud.scheduler_v1beta1.proto.target_pb2",
-        __doc__="""App Engine target. The job will be pushed to a job handler by means of
-  an HTTP request via an
+        __doc__="""App Engine target. The job will be pushed to a job handler
+  by means of an HTTP request via an
   [http\_method][google.cloud.scheduler.v1beta1.AppEngineHttpTarget.http\_method]
   such as HTTP POST, HTTP GET, etc. The job is acknowledged by means of an
   HTTP response code in the range [200 - 299]. Error 503 is considered an
@@ -995,8 +995,8 @@ PubsubTarget = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_PUBSUBTARGET,
         __module__="google.cloud.scheduler_v1beta1.proto.target_pb2",
-        __doc__="""Pub/Sub target. The job will be delivered by publishing a message to the
-  given Pub/Sub topic.
+        __doc__="""Pub/Sub target. The job will be delivered by publishing a
+  message to the given Pub/Sub topic.
   
   
   Attributes:
@@ -1129,7 +1129,7 @@ OAuthToken = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       service_account_email:
-          `Service account email
+          \ `Service account email
           <https://cloud.google.com/iam/docs/service-accounts>`__ to be
           used for generating OAuth token. The service account must be
           within the same project as the job. The caller must have
@@ -1150,7 +1150,8 @@ OidcToken = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OIDCTOKEN,
         __module__="google.cloud.scheduler_v1beta1.proto.target_pb2",
-        __doc__="""Contains information needed for generating an `OpenID Connect
+        __doc__="""Contains information needed for generating an `OpenID
+  Connect
   token <https://developers.google.com/identity/protocols/OpenIDConnect>`__.
   This type of authorization can be used for many scenarios, including
   calling Cloud Run, or endpoints where you intend to validate the token
@@ -1159,7 +1160,7 @@ OidcToken = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       service_account_email:
-          `Service account email
+          \ `Service account email
           <https://cloud.google.com/iam/docs/service-accounts>`__ to be
           used for generating OIDC token. The service account must be
           within the same project as the job. The caller must have
