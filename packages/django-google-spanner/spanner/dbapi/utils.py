@@ -4,6 +4,7 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
+import re
 from collections import namedtuple
 
 from google.cloud.spanner_v1 import param_types
@@ -75,10 +76,36 @@ def get_table_column_schema(spanner_db, table_name):
         return column_details
 
 
-def unescape_percent_literals(s):
+re_UNICODE_POINTS = re.compile(r'([^\s]*[\u0080-\uFFFF]+[^\s]*)')
+
+
+def backtick_unicode(sql):
+    matches = list(re_UNICODE_POINTS.finditer(sql))
+    if not matches:
+        return sql
+
+    segments = []
+
+    last_end = 0
+    for match in matches:
+        start, end = match.span()
+        if sql[start] != '`' and sql[end-1] != '`':
+            segments.append(sql[last_end:start] + '`' + sql[start:end] + '`')
+        else:
+            segments.append(sql[last_end:end])
+
+        last_end = end
+
+    return ''.join(segments)
+
+
+def escape_literals_for_spanner(s):
     """
+    Convert literals in s to acceptable by Spanner.
     Convert %% (escaped percent literals) to %. Percent signs must be escaped when
     values like %s are used as SQL parameter placeholders but Spanner's query language
     uses placeholders like @a0 and doesn't expect percent signs to be escaped.
+    Quotes words containing non-ASCII, with backticks, for example föö to `föö`.
     """
-    return s.replace('%%', '%')
+
+    return backtick_unicode(s.replace('%%', '%'))

@@ -15,7 +15,7 @@ from google.cloud import spanner_v1 as spanner
 from .exceptions import Error, ProgrammingError
 from .parser import parse_values
 from .types import DateStr, TimestampStr
-from .utils import unescape_percent_literals
+from .utils import escape_literals_for_spanner
 
 STMT_DDL = 'DDL'
 STMT_NON_UPDATING = 'NON_UPDATING'
@@ -144,7 +144,7 @@ def parse_insert(insert_sql, params):
     after_values_sql = re_VALUES_TILL_END.findall(insert_sql)
     if not after_values_sql:
         # Case b)
-        insert_sql = unescape_percent_literals(insert_sql)
+        insert_sql = escape_literals_for_spanner(insert_sql)
         return {
             'sql_params_list': [(insert_sql, None,)],
         }
@@ -156,7 +156,7 @@ def parse_insert(insert_sql, params):
         if pyformat_str_count > 0:
             raise ProgrammingError('no params yet there are %d "%s" tokens' % pyformat_str_count)
 
-        insert_sql = unescape_percent_literals(insert_sql)
+        insert_sql = escape_literals_for_spanner(insert_sql)
         # Confirmed case of:
         # SQL: INSERT INTO T (a1, a2) VALUES (1, 2)
         # Params: None
@@ -180,7 +180,7 @@ def parse_insert(insert_sql, params):
         )
         values_pyformat = [str(arg) for arg in values.argv]
         rows_list = rows_for_insert_or_update(columns, params, values_pyformat)
-        insert_sql_preamble = unescape_percent_literals(insert_sql_preamble)
+        insert_sql_preamble = escape_literals_for_spanner(insert_sql_preamble)
         for row in rows_list:
             sql_params_list.append((insert_sql_preamble, row,))
 
@@ -206,7 +206,7 @@ def parse_insert(insert_sql, params):
     sql_param_tuples = []
     for token_arg in values.argv:
         row_sql = before_values_sql + ' VALUES%s' % token_arg
-        row_sql = unescape_percent_literals(row_sql)
+        row_sql = escape_literals_for_spanner(row_sql)
         row_params, params = tuple(params[0:len(token_arg)]), params[len(token_arg):]
         sql_param_tuples.append((row_sql, row_params,))
 
@@ -319,14 +319,14 @@ def sql_pyformat_args_to_spanner(sql, params):
         Params:   {'a0': 'a', 'a1': 23, 'a2': '888***'}
     """
     if not params:
-        return unescape_percent_literals(sql), params
+        return escape_literals_for_spanner(sql), params
 
     found_pyformat_placeholders = re_PYFORMAT.findall(sql)
     params_is_dict = isinstance(params, dict)
 
     if params_is_dict:
         if not found_pyformat_placeholders:
-            return unescape_percent_literals(sql), params
+            return escape_literals_for_spanner(sql), params
     else:
         n_params = len(params) if params else 0
         n_matches = len(found_pyformat_placeholders)
@@ -336,7 +336,7 @@ def sql_pyformat_args_to_spanner(sql, params):
                 'want %d args in %s' % (n_matches, found_pyformat_placeholders, n_params, params))
 
     if len(params) == 0:
-        return unescape_percent_literals(sql), params
+        return escape_literals_for_spanner(sql), params
 
     named_args = {}
     # We've now got for example:
@@ -354,7 +354,7 @@ def sql_pyformat_args_to_spanner(sql, params):
         else:
             named_args[key] = cast_for_spanner(params[i])
 
-    return unescape_percent_literals(sql), named_args
+    return escape_literals_for_spanner(sql), named_args
 
 
 def cast_for_spanner(param):

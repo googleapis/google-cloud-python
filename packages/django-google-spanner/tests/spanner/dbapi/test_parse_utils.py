@@ -15,6 +15,7 @@ from spanner.dbapi.parse_utils import (
     ensure_where_clause, escape_name, get_param_types, parse_insert,
     rows_for_insert_or_update, sql_pyformat_args_to_spanner, strip_backticks,
 )
+from spanner.dbapi.utils import backtick_unicode
 
 
 class ParseUtilsTests(TestCase):
@@ -410,4 +411,17 @@ class ParseUtilsTests(TestCase):
         for name, want in cases:
             with self.subTest(name=name):
                 got = strip_backticks(name)
+                self.assertEqual(got, want)
+
+    def test_backtick_unicode(self):
+        cases = [
+                ('SELECT (1) as foo WHERE 1=1', 'SELECT (1) as foo WHERE 1=1'),
+                ('SELECT (1) as föö', 'SELECT (1) as `föö`'),
+                ('SELECT (1) as `föö`', 'SELECT (1) as `föö`'),
+                ('SELECT (1) as `föö` `umläut', 'SELECT (1) as `föö` `umläut'),
+                ('SELECT (1) as `föö', 'SELECT (1) as `föö'),
+        ]
+        for sql, want in cases:
+            with self.subTest():
+                got = backtick_unicode(sql)
                 self.assertEqual(got, want)

@@ -289,9 +289,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # DatabaseIntrospection.get_relations() isn't implemented:
         # https://github.com/orijtech/django-spanner/issues/311
         'introspection.tests.IntrospectionTests.test_get_relations',
-        # Non-ascii SELECT alias crashes "Syntax error: Illegal input character"
-        # https://github.com/orijtech/django-spanner/issues/341
-        'backends.tests.LastExecutedQueryTest.test_query_encoding',
         # pyformat parameters not supported on INSERT:
         # https://github.com/orijtech/django-spanner/issues/343
         'backends.tests.BackendTestCase.test_cursor_execute_with_pyformat',
