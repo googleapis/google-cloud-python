@@ -99,13 +99,12 @@ def backtick_unicode(sql):
     return ''.join(segments)
 
 
-def escape_literals_for_spanner(s):
+def sanitize_literals_for_upload(s):
     """
-    Convert literals in s to acceptable by Spanner.
-    Convert %% (escaped percent literals) to %. Percent signs must be escaped when
+    Convert literals in s, to be fit for consumption by Cloud Spanner.
+    1. Convert %% (escaped percent literals) to %. Percent signs must be escaped when
     values like %s are used as SQL parameter placeholders but Spanner's query language
     uses placeholders like @a0 and doesn't expect percent signs to be escaped.
-    Quotes words containing non-ASCII, with backticks, for example föö to `föö`.
+    2. Quote words containing non-ASCII, with backticks, for example föö to `föö`.
     """
-
     return backtick_unicode(s.replace('%%', '%'))
