@@ -51,6 +51,18 @@ fails if the result set is too large,
         print(row)
 
 
+Execute a SQL DML Statement
+------------------------------
+
+Modify data from a query against tables in the database.  Calls
+the ``ExecuteSql`` API, and returns the number of rows affected,
+
+.. code:: python
+
+    QUERY = 'DELETE from Table WHERE 1=1'
+    row_count = transaction.execute_sql(QUERY)
+
+
 Insert records using a Transaction
 ----------------------------------
 
