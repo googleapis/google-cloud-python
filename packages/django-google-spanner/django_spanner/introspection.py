@@ -21,6 +21,11 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
         type_pb2.TIMESTAMP: 'DateTimeField',
     }
 
+    def get_field_type(self, data_type, description):
+        if data_type == type_pb2.STRING and description.internal_size == 'MAX':
+            return 'TextField'
+        return super().get_field_type(data_type, description)
+
     def get_table_list(self, cursor):
         """Return a list of table and view names in the current database."""
         # The second TableInfo field is 't' for table or 'v' for view.
@@ -37,13 +42,19 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
         for line in cursor.description:
             column_name, type_code = line[0], line[1]
             details = column_details[column_name]
+            if details.spanner_type.startswith('STRING'):
+                # Extract the size of the string from, e.g. STRING(#).
+                internal_size = details.spanner_type[7:-1]
+                if internal_size != 'MAX':
+                    internal_size = int(internal_size)
+            else:
+                internal_size = None
             descriptions.append(
                 FieldInfo(
                     column_name,
                     type_code,
-                    # TODO: Fill these in as they're implemented.
                     None,  # display_size
-                    None,  # internal_size
+                    internal_size,
                     None,  # precision
                     None,  # scale
                     details.null_ok,
