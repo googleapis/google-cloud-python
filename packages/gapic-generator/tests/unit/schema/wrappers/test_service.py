@@ -23,6 +23,7 @@ from gapic.schema import imp
 
 from test_utils.test_utils import (
     get_method,
+    make_enum,
     make_field,
     make_message,
     make_method,
@@ -156,47 +157,78 @@ def test_module_name():
 
 
 def test_resource_messages():
-    # Resources
-    squid_options = descriptor_pb2.MessageOptions()
-    squid_options.Extensions[resource_pb2.resource].pattern.append(
-        "squid/{squid}")
-    squid_message = make_message("Squid", options=squid_options)
-    clam_options = descriptor_pb2.MessageOptions()
-    clam_options.Extensions[resource_pb2.resource].pattern.append(
-        "clam/{clam}")
-    clam_message = make_message("Clam", options=clam_options)
-    whelk_options = descriptor_pb2.MessageOptions()
-    whelk_options.Extensions[resource_pb2.resource].pattern.append(
-        "whelk/{whelk}")
-    whelk_message = make_message("Whelk", options=whelk_options)
+    # Resources are labeled via an options extension
+    def make_resource_opts(*args):
+        opts = descriptor_pb2.MessageOptions()
+        opts.Extensions[resource_pb2.resource].pattern.append(
+            "/".join("{{{arg}}}/{arg}" for arg in args)
+        )
+        return opts
 
-    # Not resources
-    octopus_message = make_message("Octopus")
-    oyster_message = make_message("Oyster")
-    nudibranch_message = make_message("Nudibranch")
+    # Regular, top level resource
+    squid_resource = make_message("Squid", options=make_resource_opts("squid"))
+    squid_request = make_message(
+        "CreateSquid",
+        fields=(
+            make_field('squid', message=squid_resource),
+        ),
+    )
+
+    # Nested resource
+    squamosa_message = make_message(
+        "Squamosa",
+        options=make_resource_opts("clam", "squamosa"),
+    )
+    clam_resource = make_message(
+        "Clam",
+        options=make_resource_opts("clam"),
+        fields=(
+            make_field('squamosa', message=squamosa_message),
+        ),
+    )
+    clam_request = make_message(
+        'CreateClam',
+        fields=(
+            make_field('clam', message=clam_resource),
+            # Red herring, not resources :)
+            make_field('zone', 2, enum=make_enum('Zone')),
+            make_field('pearls', 3, True, message=make_message('Pearl')),
+        ),
+    )
+
+    # Some special APIs have request messages that _are_ resources.
+    whelk_resource = make_message("Whelk", options=make_resource_opts("whelk"))
+
+    # Not a resource
+    octopus_request = make_message(
+        "CreateOctopus",
+        fields=(
+            make_field('Octopus', message=make_message('Octopus')),
+        ),
+    )
 
     service = make_service(
         'Molluscs',
         methods=(
             make_method(
-                f"Get{message.name}",
-                input_message=make_message(
-                    f"{message.name}Request",
-                    fields=[make_field(message.name, message=message)]
-                )
+                f"{message.name}",
+                input_message=message,
             )
             for message in (
-                squid_message,
-                clam_message,
-                whelk_message,
-                octopus_message,
-                oyster_message,
-                nudibranch_message
+                squid_request,
+                clam_request,
+                whelk_resource,
+                octopus_request,
             )
         )
     )
 
-    expected = {squid_message, clam_message, whelk_message}
+    expected = {
+        squid_resource,
+        clam_resource,
+        whelk_resource,
+        squamosa_message,
+    }
     actual = service.resource_messages
     assert expected == actual
 
