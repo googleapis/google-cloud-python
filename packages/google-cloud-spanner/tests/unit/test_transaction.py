@@ -413,6 +413,19 @@ class TestTransaction(unittest.TestCase):
     def test_execute_update_w_count(self):
         self._execute_update_helper(count=1)
 
+    def test_execute_update_error(self):
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        database.spanner_api.execute_sql.side_effect = RuntimeError()
+        session = _Session(database)
+        transaction = self._make_one(session)
+        transaction._transaction_id = self.TRANSACTION_ID
+
+        with self.assertRaises(RuntimeError):
+            transaction.execute_update(DML_QUERY)
+
+        self.assertEqual(transaction._execute_sql_count, 1)
+
     def test_execute_update_w_query_options(self):
         from google.cloud.spanner_v1.proto.spanner_pb2 import ExecuteSqlRequest
 
@@ -512,6 +525,31 @@ class TestTransaction(unittest.TestCase):
 
     def test_batch_update_w_errors(self):
         self._batch_update_helper(error_after=2, count=1)
+
+    def test_batch_update_error(self):
+        database = _Database()
+        api = database.spanner_api = self._make_spanner_api()
+        api.execute_batch_dml.side_effect = RuntimeError()
+        session = _Session(database)
+        transaction = self._make_one(session)
+        transaction._transaction_id = self.TRANSACTION_ID
+
+        insert_dml = "INSERT INTO table(pkey, desc) VALUES (%pkey, %desc)"
+        insert_params = {"pkey": 12345, "desc": "DESCRIPTION"}
+        insert_param_types = {"pkey": "INT64", "desc": "STRING"}
+        update_dml = 'UPDATE table SET desc = desc + "-amended"'
+        delete_dml = "DELETE FROM table WHERE desc IS NULL"
+
+        dml_statements = [
+            (insert_dml, insert_params, insert_param_types),
+            update_dml,
+            delete_dml,
+        ]
+
+        with self.assertRaises(RuntimeError):
+            transaction.batch_update(dml_statements)
+
+        self.assertEqual(transaction._execute_sql_count, 1)
 
     def test_context_mgr_success(self):
         import datetime

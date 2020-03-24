@@ -311,6 +311,8 @@ class Test_SnapshotBase(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             list(derived.execute_sql(SQL_QUERY))
 
+        self.assertEqual(derived._execute_sql_count, 1)
+
     def test_execute_sql_w_params_wo_param_types(self):
         database = _Database()
         session = _Session(database)
