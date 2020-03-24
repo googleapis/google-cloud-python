@@ -29,7 +29,7 @@ code_to_display_size = {
 }
 
 
-class BaseCursor(object):
+class BaseCursor:
     def __init__(self, connection):
         self._itr = None
         self._res = None

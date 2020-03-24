@@ -43,7 +43,7 @@ def Binary(string):
     return b64encode(string)
 
 
-class BINARY(object):
+class BINARY:
     """
     This object describes (long) binary columns in a database (e.g. LONG, RAW, BLOBS).
     """
@@ -51,7 +51,7 @@ class BINARY(object):
     pass
 
 
-class STRING(object):
+class STRING:
     """
     This object describes columns in a database that are string-based (e.g. CHAR).
     """
@@ -59,7 +59,7 @@ class STRING(object):
     pass
 
 
-class NUMBER(object):
+class NUMBER:
     """
     This object describes numeric columns in a database.
     """
@@ -67,7 +67,7 @@ class NUMBER(object):
     pass
 
 
-class DATETIME(object):
+class DATETIME:
     """
     This object describes date/time columns in a database.
     """
@@ -75,7 +75,7 @@ class DATETIME(object):
     pass
 
 
-class ROWID(object):
+class ROWID:
     """
     This object describes the "Row ID" column in a database.
     """

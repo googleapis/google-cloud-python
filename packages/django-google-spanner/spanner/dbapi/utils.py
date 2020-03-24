@@ -12,7 +12,7 @@ from google.cloud.spanner_v1 import param_types
 ColumnDetails = namedtuple('column_details', ['null_ok', 'spanner_type'])
 
 
-class PeekIterator(object):
+class PeekIterator:
     """
     PeekIterator peeks at the first element out of an iterator
     for the sake of operations like auto-population of fields on reading
