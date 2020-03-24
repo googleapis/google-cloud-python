@@ -7,6 +7,7 @@
 from django.db.backends.base.introspection import (
     BaseDatabaseIntrospection, FieldInfo, TableInfo,
 )
+from django.db.models import Index
 from google.cloud.spanner_v1.proto import type_pb2
 
 
@@ -208,12 +209,9 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
             constraints[index_name]['index'] = True
             constraints[index_name]['orders'].append(ordering)
             # Index_type for PRIMARY KEY is 'PRIMARY_KEY' and NOT 'PRIMARY KEY'
-            constraints[index_name]['primary_key'] = index_type == 'PRIMARY_KEY'
-            # Cloud Spanner doesn't expose the index's data structure. However, Django
-            # expects last segment after '_', of the suffix of the index name, to be the type.
-            underscore_split = index_name.split('_')
-            index_type = underscore_split[-1] if len(underscore_split) > 1 else None
-            constraints[index_name]['type'] = index_type
+            is_primary_key = index_type == 'PRIMARY_KEY'
+            constraints[index_name]['primary_key'] = is_primary_key
+            constraints[index_name]['type'] = index_type if is_primary_key else Index.suffix
             constraints[index_name]['unique'] = is_unique
 
         return constraints
