@@ -133,6 +133,14 @@ s.replace(
     '"""Protocol buffer.\n\n  Attributes:',
 )
 
+# Fix LRO return types
+s.replace("google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.py",
+          "cloud.spanner_admin_instance_v1.types._OperationFuture",
+          "api_core.operation.Operation")
+s.replace("google/cloud/spanner_admin_database_v1/gapic/database_admin_client.py",
+          "cloud.spanner_admin_database_v1.types._OperationFuture",
+          "api_core.operation.Operation")
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
