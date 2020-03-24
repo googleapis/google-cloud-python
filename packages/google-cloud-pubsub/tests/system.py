@@ -27,6 +27,7 @@ import pytest
 import six
 
 import google.auth
+from google.api_core import exceptions as core_exceptions
 from google.cloud import pubsub_v1
 from google.cloud.pubsub_v1 import exceptions
 from google.cloud.pubsub_v1 import futures
@@ -430,6 +431,28 @@ def test_subscriber_not_leaking_open_sockets(
 
     conn_count_end = len(current_process.connections())
     assert conn_count_end == conn_count_start
+
+
+def test_synchronous_pull_no_deadline_error_if_no_messages(
+    publisher, topic_path, subscriber, subscription_path, cleanup
+):
+    # Make sure the topic and subscription get deleted.
+    cleanup.append((publisher.delete_topic, topic_path))
+    cleanup.append((subscriber.delete_subscription, subscription_path))
+
+    # Create a topic and subscribe to it.
+    publisher.create_topic(topic_path)
+    subscriber.create_subscription(subscription_path, topic_path)
+
+    try:
+        response = subscriber.pull(subscription_path, max_messages=2)
+    except core_exceptions.DeadlineExceeded:
+        pytest.fail(
+            "Unexpected DeadlineExceeded error on synchronous pull when no "
+            "messages published to the topic."
+        )
+    else:
+        assert list(response.received_messages) == []
 
 
 class TestStreamingPull(object):
