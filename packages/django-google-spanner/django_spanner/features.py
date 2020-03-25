@@ -106,11 +106,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'syndication_tests.tests.SyndicationFeedTest.test_latest_post_date',
         'syndication_tests.tests.SyndicationFeedTest.test_rss091_feed',
         'syndication_tests.tests.SyndicationFeedTest.test_template_feed',
-        # DATE_TRUNC cannot be used on DateTimeField:
-        # https://github.com/orijtech/spanner-orm/issues/182
-        'backends.tests.DateQuotingTest.test_django_date_trunc',
-        'dates.tests.DatesTests.test_dates_trunc_datetime_fields',
-        'db_functions.datetime.test_extract_trunc.DateFunctionTests.test_trunc_func',
         # datetimes retrieved from the database with the wrong hour when
         # USE_TZ = True: https://github.com/orijtech/spanner-orm/issues/193
         'datetimes.tests.DateTimesTests.test_21432',

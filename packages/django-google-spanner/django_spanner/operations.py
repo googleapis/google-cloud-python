@@ -184,11 +184,11 @@ class DatabaseOperations(BaseDatabaseOperations):
             # Spanner truncates to Sunday but Django expects Monday. First,
             # subtract a day so that a Sunday will be truncated to the previous
             # week...
-            field_name = 'DATE_SUB(' + field_name + ', INTERVAL 1 DAY)'
-        sql = 'DATE_TRUNC(%s, %s)' % (field_name, lookup_type)
+            field_name = 'DATE_SUB(CAST(' + field_name + ' AS DATE), INTERVAL 1 DAY)'
+        sql = 'DATE_TRUNC(CAST(%s AS DATE), %s)' % (field_name, lookup_type)
         if lookup_type == 'week':
             # ...then add a day to get from Sunday to Monday.
-            sql = 'DATE_ADD(' + sql + ', INTERVAL 1 DAY)'
+            sql = 'DATE_ADD(CAST(' + sql + ' AS DATE), INTERVAL 1 DAY)'
         return sql
 
     def datetime_trunc_sql(self, lookup_type, field_name, tzname):
