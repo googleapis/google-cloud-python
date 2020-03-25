@@ -16,7 +16,6 @@
 
 from __future__ import absolute_import
 
-from concurrent import futures
 import logging
 
 import six
@@ -51,15 +50,6 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
             object used to refresh credentials as needed.
     """
 
-    # Python 2.7 has no default for max_workers.
-    # In Python >= 3.5, ThreadPoolExecutor defaults to the
-    # number of processors on the machine, multiplied by 5.
-    if six.PY2:  # pragma: NO COVER
-        max_workers = 5
-    else:
-        max_workers = None
-    _AUTH_THREAD_POOL = futures.ThreadPoolExecutor(max_workers=max_workers)
-
     def __init__(self, credentials, request):
         # pylint: disable=no-value-for-parameter
         # pylint doesn't realize that the super method takes no arguments
@@ -82,13 +72,6 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
 
         return list(six.iteritems(headers))
 
-    @staticmethod
-    def _callback_wrapper(callback):
-        def wrapped(future):
-            callback(future.result(), None)
-
-        return wrapped
-
     def __call__(self, context, callback):
         """Passes authorization metadata into the given callback.
 
@@ -97,8 +80,7 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
             callback (grpc.AuthMetadataPluginCallback): The callback that will
                 be invoked to pass in the authorization metadata.
         """
-        future = self._AUTH_THREAD_POOL.submit(self._get_authorization_headers, context)
-        future.add_done_callback(self._callback_wrapper(callback))
+        callback(self._get_authorization_headers(context), None)
 
 
 def secure_authorized_channel(
