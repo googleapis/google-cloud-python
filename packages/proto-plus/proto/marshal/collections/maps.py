@@ -17,7 +17,7 @@ import collections
 from proto.utils import cached_property
 
 
-class MapComposite(collections.MutableMapping):
+class MapComposite(collections.abc.MutableMapping):
     """A view around a mutable sequence in protocol buffers.
 
     This implements the full Python MutableMapping interface, but all methods

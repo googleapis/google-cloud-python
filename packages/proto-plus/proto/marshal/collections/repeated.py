@@ -18,12 +18,13 @@ import copy
 from proto.utils import cached_property
 
 
-class Repeated(collections.MutableSequence):
+class Repeated(collections.abc.MutableSequence):
     """A view around a mutable sequence in protocol buffers.
 
     This implements the full Python MutableSequence interface, but all methods
     modify the underlying field container directly.
     """
+
     def __init__(self, sequence, *, marshal):
         """Initialize a wrapper around a protobuf repeated field.
 
