@@ -133,6 +133,16 @@ class Client(object):
                 target=os.environ.get("PUBSUB_EMULATOR_HOST")
             )
 
+        client_options = kwargs.pop("client_options", None)
+        if (
+            client_options
+            and "api_endpoint" in client_options
+            and isinstance(client_options["api_endpoint"], six.string_types)
+        ):
+            self._target = client_options["api_endpoint"]
+        else:
+            self._target = publisher_client.PublisherClient.SERVICE_ADDRESS
+
         # Use a custom channel.
         # We need this in order to set appropriate default message size and
         # keepalive options.
@@ -217,7 +227,7 @@ class Client(object):
         Returns:
             str: The location of the API.
         """
-        return publisher_client.PublisherClient.SERVICE_ADDRESS
+        return self._target
 
     def _get_or_create_sequencer(self, topic, ordering_key):
         """ Get an existing sequencer or create a new one given the (topic,

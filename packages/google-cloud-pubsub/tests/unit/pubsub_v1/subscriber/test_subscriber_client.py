@@ -34,6 +34,35 @@ def test_init_w_custom_transport():
     assert client.api.transport is transport
 
 
+def test_init_w_api_endpoint():
+    client_options = {"api_endpoint": "testendpoint.google.com"}
+    client = subscriber.Client(client_options=client_options)
+
+    assert isinstance(client.api, subscriber_client.SubscriberClient)
+    assert (client.api.transport._channel._channel.target()).decode(
+        "utf-8"
+    ) == "testendpoint.google.com"
+
+
+def test_init_w_unicode_api_endpoint():
+    client_options = {"api_endpoint": u"testendpoint.google.com"}
+    client = subscriber.Client(client_options=client_options)
+
+    assert isinstance(client.api, subscriber_client.SubscriberClient)
+    assert (client.api.transport._channel._channel.target()).decode(
+        "utf-8"
+    ) == "testendpoint.google.com"
+
+
+def test_init_w_empty_client_options():
+    client = subscriber.Client(client_options={})
+
+    assert isinstance(client.api, subscriber_client.SubscriberClient)
+    assert (client.api.transport._channel._channel.target()).decode(
+        "utf-8"
+    ) == subscriber_client.SubscriberClient.SERVICE_ADDRESS
+
+
 def test_init_emulator(monkeypatch):
     monkeypatch.setenv("PUBSUB_EMULATOR_HOST", "/baz/bacon/")
     # NOTE: When the emulator host is set, a custom channel will be used, so
