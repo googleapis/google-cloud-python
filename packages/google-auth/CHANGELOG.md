@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [1.12.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.11.3...v1.12.0) (2020-03-25)
+
+
+### Features
+
+* add mTLS ADC support for HTTP ([#457](https://www.github.com/googleapis/google-auth-library-python/issues/457)) ([bb9215a](https://www.github.com/googleapis/google-auth-library-python/commit/bb9215ad6dee6c1dc7f255a2e4ed7011b85bd6cf))
+* add SslCredentials class for mTLS ADC ([#448](https://www.github.com/googleapis/google-auth-library-python/issues/448)) ([dafb41f](https://www.github.com/googleapis/google-auth-library-python/commit/dafb41fae3f513ea9a4f93404f6148bee7dda202))
+* fetch id token from GCE metadata server ([#462](https://www.github.com/googleapis/google-auth-library-python/issues/462)) ([97e7700](https://www.github.com/googleapis/google-auth-library-python/commit/97e7700da031bfd80b63b1a3d2abc29c500936ef))
+
+
+### Bug Fixes
+
+* don't use threads for gRPC AuthMetadataPlugin ([#467](https://www.github.com/googleapis/google-auth-library-python/issues/467)) ([ee373f8](https://www.github.com/googleapis/google-auth-library-python/commit/ee373f88b512a38e791a1c085452c6c6da501eb6))
+* make ThreadPoolExecutor a class var ([#461](https://www.github.com/googleapis/google-auth-library-python/issues/461)) ([b526473](https://www.github.com/googleapis/google-auth-library-python/commit/b5264730603947295cc97ecff2f6aef84aa3d6e9))
+
 ### [1.11.3](https://www.github.com/googleapis/google-auth-library-python/compare/v1.11.2...v1.11.3) (2020-03-13)
 
 
