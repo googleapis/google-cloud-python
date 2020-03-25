@@ -116,15 +116,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'timezones.tests.NewDatabaseTests.test_query_datetimes',
         # To be investigated: https://github.com/orijtech/spanner-orm/issues/135
         'admin_changelist.tests.ChangeListTests.test_multiuser_edit',
-        # Spanner's EXTRACT() 'week' differs from Django:
-        # https://github.com/orijtech/spanner-orm/issues/263
-        'db_functions.datetime.test_extract_trunc.DateFunctionTests.test_extract_func',
-        'db_functions.datetime.test_extract_trunc.DateFunctionTests.test_extract_week_func',
-        'db_functions.datetime.test_extract_trunc.DateFunctionTests.test_extract_week_func_boundaries',
-        'db_functions.datetime.test_extract_trunc.DateFunctionWithTimeZoneTests.test_extract_func',
-        'db_functions.datetime.test_extract_trunc.DateFunctionWithTimeZoneTests.test_extract_func_with_timezone',
-        'db_functions.datetime.test_extract_trunc.DateFunctionWithTimeZoneTests.test_extract_week_func',
-        'db_functions.datetime.test_extract_trunc.DateFunctionWithTimeZoneTests.test_extract_week_func_boundaries',
         # using NULL with + crashes: https://github.com/orijtech/spanner-orm/issues/201
         'annotations.tests.NonAggregateAnnotationTestCase.test_combined_annotation_commutative',
         # Spanner loses DecimalField precision due to conversion to float:
