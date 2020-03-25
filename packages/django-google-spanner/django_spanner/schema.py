@@ -185,6 +185,21 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         # https://github.com/orijtech/django-spanner/issues/227
         return str(value)
 
+    def _alter_column_type_sql(self, model, old_field, new_field, new_type):
+        # Spanner needs to use sql_alter_column_not_null if the field is
+        # NOT NULL, otherwise the constraint is dropped.
+        sql = self.sql_alter_column_type if new_field.null else self.sql_alter_column_not_null
+        return (
+            (
+                sql % {
+                    "column": self.quote_name(new_field.column),
+                    "type": new_type,
+                },
+                [],
+            ),
+            [],
+        )
+
     def _check_sql(self, name, check):
         # Spanner doesn't support CHECK constraints.
         return None

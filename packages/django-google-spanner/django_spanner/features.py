@@ -250,9 +250,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'schema.tests.SchemaTests.test_primary_key',
         # Spanner limitation:  Cannot remove a column from the primary key.
         'schema.tests.SchemaTests.test_alter_int_pk_to_int_unique',
-        # Altering a "not null" column's type shouldn't drop "not null":
-        # https://github.com/orijtech/django-spanner/issues/377
-        'schema.tests.SchemaTests.test_alter_textual_field_keep_null_status',
         # Creating an index with a descending column fails:
         # https://github.com/orijtech/django-spanner/issues/373
         'schema.tests.SchemaTests.test_order_index',
