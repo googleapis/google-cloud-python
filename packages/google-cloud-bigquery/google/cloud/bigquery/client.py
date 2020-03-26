@@ -51,9 +51,11 @@ import google.cloud._helpers
 from google.cloud import exceptions
 from google.cloud.client import ClientWithProject
 
+from google.cloud.bigquery._helpers import _get_sub_prop
 from google.cloud.bigquery._helpers import _record_field_to_json
 from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery._helpers import _verify_job_config_type
+from google.cloud.bigquery._helpers import _del_sub_prop
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery import _pandas_helpers
 from google.cloud.bigquery.dataset import Dataset
@@ -1312,6 +1314,70 @@ class Client(ClientWithProject):
         elif "query" in config:
             return job.QueryJob.from_api_repr(resource, self)
         return job.UnknownJob.from_api_repr(resource, self)
+
+    def create_job(self, job_config, retry=DEFAULT_RETRY):
+        """Create a new job.
+        Arguments:
+            job_config (dict): configuration job representation returned from the API.
+
+        Keyword Arguments:
+            retry (google.api_core.retry.Retry):
+                (Optional) How to retry the RPC.
+
+        Returns:
+            Union[ \
+                google.cloud.bigquery.job.LoadJob, \
+                google.cloud.bigquery.job.CopyJob, \
+                google.cloud.bigquery.job.ExtractJob, \
+                google.cloud.bigquery.job.QueryJob \
+            ]:
+                A new job instance.
+        """
+
+        if "load" in job_config:
+            load_job_config = google.cloud.bigquery.job.LoadJobConfig.from_api_repr(
+                job_config
+            )
+            destination = _get_sub_prop(job_config, ["load", "destinationTable"])
+            source_uris = _get_sub_prop(job_config, ["load", "sourceUris"])
+            return self.load_table_from_uri(
+                source_uris, destination, job_config=load_job_config, retry=retry
+            )
+        elif "copy" in job_config:
+            copy_job_config = google.cloud.bigquery.job.CopyJobConfig.from_api_repr(
+                job_config
+            )
+            destination = _get_sub_prop(job_config, ["copy", "destinationTable"])
+            sources = []
+            source_configs = _get_sub_prop(job_config, ["copy", "sourceTables"])
+
+            if source_configs is None:
+                source_configs = [_get_sub_prop(job_config, ["copy", "sourceTable"])]
+            for source_config in source_configs:
+                table_ref = TableReference.from_api_repr(source_config)
+                sources.append(table_ref)
+            return self.copy_table(
+                sources, destination, job_config=copy_job_config, retry=retry
+            )
+        elif "extract" in job_config:
+            extract_job_config = google.cloud.bigquery.job.ExtractJobConfig.from_api_repr(
+                job_config
+            )
+            source = _get_sub_prop(job_config, ["extract", "sourceTable"])
+            destination_uris = _get_sub_prop(job_config, ["extract", "destinationUris"])
+            return self.extract_table(
+                source, destination_uris, job_config=extract_job_config, retry=retry
+            )
+        elif "query" in job_config:
+            copy_config = copy.deepcopy(job_config)
+            _del_sub_prop(copy_config, ["query", "destinationTable"])
+            query_job_config = google.cloud.bigquery.job.QueryJobConfig.from_api_repr(
+                copy_config
+            )
+            query = _get_sub_prop(copy_config, ["query", "query"])
+            return self.query(query, job_config=query_job_config, retry=retry)
+        else:
+            raise TypeError("Invalid job configuration received.")
 
     def get_job(
         self, job_id, project=None, location=None, retry=DEFAULT_RETRY, timeout=None

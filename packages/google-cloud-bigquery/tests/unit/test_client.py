@@ -2795,6 +2795,176 @@ class TestClient(unittest.TestCase):
 
         conn.api_request.assert_called_with(method="DELETE", path=path, timeout=None)
 
+    def _create_job_helper(self, job_config, client_method):
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        client._connection = make_connection()
+        rf1 = mock.Mock()
+        get_config_patch = mock.patch(
+            "google.cloud.bigquery.job._JobConfig.from_api_repr", return_value=rf1,
+        )
+        load_patch = mock.patch(client_method, autospec=True)
+
+        with load_patch as client_method, get_config_patch:
+            client.create_job(job_config=job_config)
+        client_method.assert_called_once()
+
+    def test_create_job_load_config(self):
+        configuration = {
+            "load": {
+                "destinationTable": {
+                    "projectId": self.PROJECT,
+                    "datasetId": self.DS_ID,
+                    "tableId": "source_table",
+                },
+                "sourceUris": ["gs://test_bucket/src_object*"],
+            }
+        }
+
+        self._create_job_helper(
+            configuration, "google.cloud.bigquery.client.Client.load_table_from_uri"
+        )
+
+    def test_create_job_copy_config(self):
+        configuration = {
+            "copy": {
+                "sourceTables": [
+                    {
+                        "projectId": self.PROJECT,
+                        "datasetId": self.DS_ID,
+                        "tableId": "source_table",
+                    }
+                ],
+                "destinationTable": {
+                    "projectId": self.PROJECT,
+                    "datasetId": self.DS_ID,
+                    "tableId": "destination_table",
+                },
+            }
+        }
+
+        self._create_job_helper(
+            configuration, "google.cloud.bigquery.client.Client.copy_table",
+        )
+
+    def test_create_job_copy_config_w_single_source(self):
+        configuration = {
+            "copy": {
+                "sourceTable": {
+                    "projectId": self.PROJECT,
+                    "datasetId": self.DS_ID,
+                    "tableId": "source_table",
+                },
+                "destinationTable": {
+                    "projectId": self.PROJECT,
+                    "datasetId": self.DS_ID,
+                    "tableId": "destination_table",
+                },
+            }
+        }
+
+        self._create_job_helper(
+            configuration, "google.cloud.bigquery.client.Client.copy_table",
+        )
+
+    def test_create_job_extract_config(self):
+        configuration = {
+            "extract": {
+                "sourceTable": {
+                    "projectId": self.PROJECT,
+                    "datasetId": self.DS_ID,
+                    "tableId": "source_table",
+                },
+                "destinationUris": ["gs://test_bucket/dst_object*"],
+            }
+        }
+        self._create_job_helper(
+            configuration, "google.cloud.bigquery.client.Client.extract_table",
+        )
+
+    def test_create_job_query_config(self):
+        configuration = {
+            "query": {"query": "query", "destinationTable": {"tableId": "table_id"}}
+        }
+        self._create_job_helper(
+            configuration, "google.cloud.bigquery.client.Client.query",
+        )
+
+    def test_create_job_query_config_w_rateLimitExceeded_error(self):
+        from google.cloud.exceptions import Forbidden
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+
+        query = "select count(*) from persons"
+        configuration = {
+            "query": {
+                "query": query,
+                "useLegacySql": False,
+                "destinationTable": {"tableId": "table_id"},
+            }
+        }
+        resource = {
+            "jobReference": {"projectId": self.PROJECT, "jobId": mock.ANY},
+            "configuration": {
+                "query": {
+                    "query": query,
+                    "useLegacySql": False,
+                    "destinationTable": {
+                        "projectId": self.PROJECT,
+                        "datasetId": self.DS_ID,
+                        "tableId": "query_destination_table",
+                    },
+                }
+            },
+        }
+        data_without_destination = {
+            "jobReference": {"projectId": self.PROJECT, "jobId": mock.ANY},
+            "configuration": {"query": {"query": query, "useLegacySql": False}},
+        }
+
+        creds = _make_credentials()
+        http = object()
+        retry = DEFAULT_RETRY.with_deadline(1).with_predicate(
+            lambda exc: isinstance(exc, Forbidden)
+        )
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        api_request_patcher = mock.patch.object(
+            client._connection,
+            "api_request",
+            side_effect=[
+                Forbidden("", errors=[{"reason": "rateLimitExceeded"}]),
+                resource,
+            ],
+        )
+
+        with api_request_patcher as fake_api_request:
+            job = client.create_job(job_config=configuration, retry=retry)
+
+        self.assertEqual(job.destination.table_id, "query_destination_table")
+        self.assertEqual(len(fake_api_request.call_args_list), 2)  # was retried once
+        self.assertEqual(
+            fake_api_request.call_args_list[1],
+            mock.call(
+                method="POST",
+                path="/projects/PROJECT/jobs",
+                data=data_without_destination,
+                timeout=None,
+            ),
+        )
+
+    def test_create_job_w_invalid_job_config(self):
+        configuration = {"unknown": {}}
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        with self.assertRaises(TypeError) as exc:
+            client.create_job(job_config=configuration)
+
+        self.assertIn("Invalid job configuration", exc.exception.args[0])
+
     def test_job_from_resource_unknown_type(self):
         from google.cloud.bigquery.job import UnknownJob
 
