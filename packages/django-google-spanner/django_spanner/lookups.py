@@ -34,7 +34,13 @@ def iexact(self, compiler, connection):
     params.extend(rhs_params)
     rhs_sql = self.get_rhs_op(connection, rhs_sql)
     # Wrap the parameter in ^ and $ to restrict the regex to an exact match.
-    params[0] = '^(?i)%s$' % params[0]
+    if params:
+        params[0] = '^(?i)%s$' % params[0]
+    else:
+        # If no params, then lhs_sql is the expression/column to use as the
+        # regular expression. Use concat to make the value case-insensitive.
+        lhs_sql = "CONCAT('^(?i)', " + lhs_sql + ", '$')"
+        rhs_sql = rhs_sql.replace('%%s', '%s')
     # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
     return rhs_sql % lhs_sql, params
 

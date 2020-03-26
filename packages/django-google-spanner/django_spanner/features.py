@@ -160,9 +160,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # bitrightshift operator gives incorrect result:
         # https://github.com/orijtech/django-spanner/issues/335
         'expressions.tests.ExpressionOperatorTests.test_lefthand_bitwise_right_shift_operator',
-        # using an F expression as the value of a REGEXP_CONTAINS lookup
-        # crashes: https://github.com/orijtech/django-spanner/issues/251
-        'expressions.tests.BasicExpressionsTests.test_ticket_11722_iexact_lookup',
         # integer division produces a float result, which can't be assigned to
         # an integer column:
         # https://github.com/orijtech/django-spanner/issues/331
