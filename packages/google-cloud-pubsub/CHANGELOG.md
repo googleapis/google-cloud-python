@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+### [1.4.2](https://www.github.com/googleapis/python-pubsub/compare/v1.4.1...v1.4.2) (2020-03-25)
+
+
+### Bug Fixes
+
+* update generated retry timings for publish and pull rpcs via synth ([#43](https://www.github.com/googleapis/python-pubsub/issues/43)) ([4f7fe85](https://www.github.com/googleapis/python-pubsub/commit/4f7fe85618d811fea94cb46b5dc758aa78c328a8))
+* use client_options.api_endpoint parameter instead of ignoring it ([#59](https://www.github.com/googleapis/python-pubsub/issues/59)) ([56b8d7b](https://www.github.com/googleapis/python-pubsub/commit/56b8d7b046a495ce2ce59bebdd354385147a5013)), closes [#61](https://www.github.com/googleapis/python-pubsub/issues/61)
+
 ### [1.4.1](https://www.github.com/googleapis/python-pubsub/compare/v1.4.0...v1.4.1) (2020-03-23)
 
 
