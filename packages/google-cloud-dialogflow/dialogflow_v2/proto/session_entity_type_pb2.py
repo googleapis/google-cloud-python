@@ -34,7 +34,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\036com.google.cloud.dialogflow.v2B\026SessionEntityTypeProtoP\001ZDgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2;dialogflow\370\001\001\242\002\002DF\252\002\032Google.Cloud.Dialogflow.V2"
     ),
     serialized_pb=_b(
-        '\n:google/cloud/dialogflow_v2/proto/session_entity_type.proto\x12\x1agoogle.cloud.dialogflow.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x32google/cloud/dialogflow_v2/proto/entity_type.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"\xcf\x03\n\x11SessionEntityType\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x63\n\x14\x65ntity_override_mode\x18\x02 \x01(\x0e\x32@.google.cloud.dialogflow.v2.SessionEntityType.EntityOverrideModeB\x03\xe0\x41\x02\x12\x44\n\x08\x65ntities\x18\x03 \x03(\x0b\x32-.google.cloud.dialogflow.v2.EntityType.EntityB\x03\xe0\x41\x02"\x82\x01\n\x12\x45ntityOverrideMode\x12$\n ENTITY_OVERRIDE_MODE_UNSPECIFIED\x10\x00\x12!\n\x1d\x45NTITY_OVERRIDE_MODE_OVERRIDE\x10\x01\x12#\n\x1f\x45NTITY_OVERRIDE_MODE_SUPPLEMENT\x10\x02:w\xea\x41t\n+dialogflow.googleapis.com/SessionEntityType\x12\x45projects/{project}/agent/sessions/{session}/entityTypes/{entity_type}"e\n\x1dListSessionEntityTypesRequest\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x16\n\tpage_size\x18\x02 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x03 \x01(\tB\x03\xe0\x41\x01"\x86\x01\n\x1eListSessionEntityTypesResponse\x12K\n\x14session_entity_types\x18\x01 \x03(\x0b\x32-.google.cloud.dialogflow.v2.SessionEntityType\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"`\n\x1bGetSessionEntityTypeRequest\x12\x41\n\x04name\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+dialogflow.googleapis.com/SessionEntityType"\x86\x01\n\x1e\x43reateSessionEntityTypeRequest\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12O\n\x13session_entity_type\x18\x02 \x01(\x0b\x32-.google.cloud.dialogflow.v2.SessionEntityTypeB\x03\xe0\x41\x02"\xa7\x01\n\x1eUpdateSessionEntityTypeRequest\x12O\n\x13session_entity_type\x18\x01 \x01(\x0b\x32-.google.cloud.dialogflow.v2.SessionEntityTypeB\x03\xe0\x41\x02\x12\x34\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x01"Y\n\x1e\x44\x65leteSessionEntityTypeRequest\x12\x37\n\x04name\x18\x01 \x01(\tB)\xe0\x41\x02\xfa\x41#\n!dialogflow.googleapis.com/Context2\xd6\t\n\x12SessionEntityTypes\x12\xd6\x01\n\x16ListSessionEntityTypes\x12\x39.google.cloud.dialogflow.v2.ListSessionEntityTypesRequest\x1a:.google.cloud.dialogflow.v2.ListSessionEntityTypesResponse"E\x82\xd3\xe4\x93\x02\x36\x12\x34/v2/{parent=projects/*/agent/sessions/*}/entityTypes\xda\x41\x06parent\x12\xbc\x01\n\x14GetSessionEntityType\x12\x37.google.cloud.dialogflow.v2.GetSessionEntityTypeRequest\x1a-.google.cloud.dialogflow.v2.SessionEntityType"<\x82\xd3\xe4\x93\x02\x36\x12\x34/v2/{name=projects/*/agent/sessions/*/entityTypes/*}\x12\xf4\x01\n\x17\x43reateSessionEntityType\x12:.google.cloud.dialogflow.v2.CreateSessionEntityTypeRequest\x1a-.google.cloud.dialogflow.v2.SessionEntityType"n\x82\xd3\xe4\x93\x02K"4/v2/{parent=projects/*/agent/sessions/*}/entityTypes:\x13session_entity_type\xda\x41\x1aparent,session_entity_type\x12\x81\x02\n\x17UpdateSessionEntityType\x12:.google.cloud.dialogflow.v2.UpdateSessionEntityTypeRequest\x1a-.google.cloud.dialogflow.v2.SessionEntityType"{\x82\xd3\xe4\x93\x02_2H/v2/{session_entity_type.name=projects/*/agent/sessions/*/entityTypes/*}:\x13session_entity_type\xda\x41\x13session_entity_type\x12\xb2\x01\n\x17\x44\x65leteSessionEntityType\x12:.google.cloud.dialogflow.v2.DeleteSessionEntityTypeRequest\x1a\x16.google.protobuf.Empty"C\x82\xd3\xe4\x93\x02\x36*4/v2/{name=projects/*/agent/sessions/*/entityTypes/*}\xda\x41\x04name\x1ax\xca\x41\x19\x64ialogflow.googleapis.com\xd2\x41Yhttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/dialogflowB\xa5\x01\n\x1e\x63om.google.cloud.dialogflow.v2B\x16SessionEntityTypeProtoP\x01ZDgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2;dialogflow\xf8\x01\x01\xa2\x02\x02\x44\x46\xaa\x02\x1aGoogle.Cloud.Dialogflow.V2b\x06proto3'
+        '\n:google/cloud/dialogflow_v2/proto/session_entity_type.proto\x12\x1agoogle.cloud.dialogflow.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x32google/cloud/dialogflow_v2/proto/entity_type.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"\xcf\x03\n\x11SessionEntityType\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x63\n\x14\x65ntity_override_mode\x18\x02 \x01(\x0e\x32@.google.cloud.dialogflow.v2.SessionEntityType.EntityOverrideModeB\x03\xe0\x41\x02\x12\x44\n\x08\x65ntities\x18\x03 \x03(\x0b\x32-.google.cloud.dialogflow.v2.EntityType.EntityB\x03\xe0\x41\x02"\x82\x01\n\x12\x45ntityOverrideMode\x12$\n ENTITY_OVERRIDE_MODE_UNSPECIFIED\x10\x00\x12!\n\x1d\x45NTITY_OVERRIDE_MODE_OVERRIDE\x10\x01\x12#\n\x1f\x45NTITY_OVERRIDE_MODE_SUPPLEMENT\x10\x02:w\xea\x41t\n+dialogflow.googleapis.com/SessionEntityType\x12\x45projects/{project}/agent/sessions/{session}/entityTypes/{entity_type}"e\n\x1dListSessionEntityTypesRequest\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x16\n\tpage_size\x18\x02 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x03 \x01(\tB\x03\xe0\x41\x01"\x86\x01\n\x1eListSessionEntityTypesResponse\x12K\n\x14session_entity_types\x18\x01 \x03(\x0b\x32-.google.cloud.dialogflow.v2.SessionEntityType\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"`\n\x1bGetSessionEntityTypeRequest\x12\x41\n\x04name\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+dialogflow.googleapis.com/SessionEntityType"\x86\x01\n\x1e\x43reateSessionEntityTypeRequest\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12O\n\x13session_entity_type\x18\x02 \x01(\x0b\x32-.google.cloud.dialogflow.v2.SessionEntityTypeB\x03\xe0\x41\x02"\xa7\x01\n\x1eUpdateSessionEntityTypeRequest\x12O\n\x13session_entity_type\x18\x01 \x01(\x0b\x32-.google.cloud.dialogflow.v2.SessionEntityTypeB\x03\xe0\x41\x02\x12\x34\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x01"Y\n\x1e\x44\x65leteSessionEntityTypeRequest\x12\x37\n\x04name\x18\x01 \x01(\tB)\xe0\x41\x02\xfa\x41#\n!dialogflow.googleapis.com/Context2\xbc\r\n\x12SessionEntityTypes\x12\xa7\x02\n\x16ListSessionEntityTypes\x12\x39.google.cloud.dialogflow.v2.ListSessionEntityTypesRequest\x1a:.google.cloud.dialogflow.v2.ListSessionEntityTypesResponse"\x95\x01\x82\xd3\xe4\x93\x02\x85\x01\x12\x34/v2/{parent=projects/*/agent/sessions/*}/entityTypesZM\x12K/v2/{parent=projects/*/agent/environments/*/users/*/sessions/*}/entityTypes\xda\x41\x06parent\x12\x94\x02\n\x14GetSessionEntityType\x12\x37.google.cloud.dialogflow.v2.GetSessionEntityTypeRequest\x1a-.google.cloud.dialogflow.v2.SessionEntityType"\x93\x01\x82\xd3\xe4\x93\x02\x85\x01\x12\x34/v2/{name=projects/*/agent/sessions/*/entityTypes/*}ZM\x12K/v2/{name=projects/*/agent/environments/*/users/*/sessions/*/entityTypes/*}\xda\x41\x04name\x12\xda\x02\n\x17\x43reateSessionEntityType\x12:.google.cloud.dialogflow.v2.CreateSessionEntityTypeRequest\x1a-.google.cloud.dialogflow.v2.SessionEntityType"\xd3\x01\x82\xd3\xe4\x93\x02\xaf\x01"4/v2/{parent=projects/*/agent/sessions/*}/entityTypes:\x13session_entity_typeZb"K/v2/{parent=projects/*/agent/environments/*/users/*/sessions/*}/entityTypes:\x13session_entity_type\xda\x41\x1aparent,session_entity_type\x12\x87\x03\n\x17UpdateSessionEntityType\x12:.google.cloud.dialogflow.v2.UpdateSessionEntityTypeRequest\x1a-.google.cloud.dialogflow.v2.SessionEntityType"\x80\x02\x82\xd3\xe4\x93\x02\xd7\x01\x32H/v2/{session_entity_type.name=projects/*/agent/sessions/*/entityTypes/*}:\x13session_entity_typeZv2_/v2/{session_entity_type.name=projects/*/agent/environments/*/users/*/sessions/*/entityTypes/*}:\x13session_entity_type\xda\x41\x1fsession_entity_type,update_mask\x12\x83\x02\n\x17\x44\x65leteSessionEntityType\x12:.google.cloud.dialogflow.v2.DeleteSessionEntityTypeRequest\x1a\x16.google.protobuf.Empty"\x93\x01\x82\xd3\xe4\x93\x02\x85\x01*4/v2/{name=projects/*/agent/sessions/*/entityTypes/*}ZM*K/v2/{name=projects/*/agent/environments/*/users/*/sessions/*/entityTypes/*}\xda\x41\x04name\x1ax\xca\x41\x19\x64ialogflow.googleapis.com\xd2\x41Yhttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/dialogflowB\xa5\x01\n\x1e\x63om.google.cloud.dialogflow.v2B\x16SessionEntityTypeProtoP\x01ZDgoogle.golang.org/genproto/googleapis/cloud/dialogflow/v2;dialogflow\xf8\x01\x01\xa2\x02\x02\x44\x46\xaa\x02\x1aGoogle.Cloud.Dialogflow.V2b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -550,10 +550,14 @@ SessionEntityType = _reflection.GeneratedProtocolMessageType(
       name:
           Required. The unique identifier of this session entity type.
           Format: ``projects/<Project ID>/agent/sessions/<Session
-          ID>/entityTypes/<Entity Type Display Name>``.  ``<Entity Type
-          Display Name>`` must be the display name of an existing entity
-          type in the same agent that will be overridden or
-          supplemented.
+          ID>/entityTypes/<Entity Type Display Name>``, or
+          ``projects/<Project ID>/agent/environments/<Environment
+          ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity
+          Type Display Name>``. If ``Environment ID`` is not specified,
+          we assume default 'draft' environment. If ``User ID`` is not
+          specified, we assume default '-' user.  ``<Entity Type Display
+          Name>`` must be the display name of an existing entity type in
+          the same agent that will be overridden or supplemented.
       entity_override_mode:
           Required. Indicates whether the additional data should
           override or supplement the custom entity type definition.
@@ -579,7 +583,11 @@ ListSessionEntityTypesRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       parent:
           Required. The session to list all session entity types from.
-          Format: ``projects/<Project ID>/agent/sessions/<Session ID>``.
+          Format: ``projects/<Project ID>/agent/sessions/<Session ID>``
+          or ``projects/<Project ID>/agent/environments/<Environment
+          ID>/users/<User ID>/ sessions/<Session ID>``. If ``Environment
+          ID`` is not specified, we assume default 'draft' environment.
+          If ``User ID`` is not specified, we assume default '-' user.
       page_size:
           Optional. The maximum number of items to return in a single
           page. By default 100 and at most 1000.
@@ -630,7 +638,12 @@ GetSessionEntityTypeRequest = _reflection.GeneratedProtocolMessageType(
       name:
           Required. The name of the session entity type. Format:
           ``projects/<Project ID>/agent/sessions/<Session
-          ID>/entityTypes/<Entity Type Display Name>``.
+          ID>/entityTypes/<Entity Type Display Name>`` or
+          ``projects/<Project ID>/agent/environments/<Environment
+          ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity
+          Type Display Name>``. If ``Environment ID`` is not specified,
+          we assume default 'draft' environment. If ``User ID`` is not
+          specified, we assume default '-' user.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.GetSessionEntityTypeRequest)
     ),
@@ -650,7 +663,11 @@ CreateSessionEntityTypeRequest = _reflection.GeneratedProtocolMessageType(
   Attributes:
       parent:
           Required. The session to create a session entity type for.
-          Format: ``projects/<Project ID>/agent/sessions/<Session ID>``.
+          Format: ``projects/<Project ID>/agent/sessions/<Session ID>``
+          or ``projects/<Project ID>/agent/environments/<Environment
+          ID>/users/<User ID>/ sessions/<Session ID>``. If ``Environment
+          ID`` is not specified, we assume default 'draft' environment.
+          If ``User ID`` is not specified, we assume default '-' user.
       session_entity_type:
           Required. The session entity type to create.
   """,
@@ -671,9 +688,7 @@ UpdateSessionEntityTypeRequest = _reflection.GeneratedProtocolMessageType(
   
   Attributes:
       session_entity_type:
-          Required. The entity type to update. Format:
-          ``projects/<Project ID>/agent/sessions/<Session
-          ID>/entityTypes/<Entity Type Display Name>``.
+          Required. The session entity type to update.
       update_mask:
           Optional. The mask to control which fields get updated.
   """,
@@ -696,7 +711,12 @@ DeleteSessionEntityTypeRequest = _reflection.GeneratedProtocolMessageType(
       name:
           Required. The name of the entity type to delete. Format:
           ``projects/<Project ID>/agent/sessions/<Session
-          ID>/entityTypes/<Entity Type Display Name>``.
+          ID>/entityTypes/<Entity Type Display Name>`` or
+          ``projects/<Project ID>/agent/environments/<Environment
+          ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity
+          Type Display Name>``. If ``Environment ID`` is not specified,
+          we assume default 'draft' environment. If ``User ID`` is not
+          specified, we assume default '-' user.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.dialogflow.v2.DeleteSessionEntityTypeRequest)
     ),
@@ -728,7 +748,7 @@ _SESSIONENTITYTYPES = _descriptor.ServiceDescriptor(
         "\312A\031dialogflow.googleapis.com\322AYhttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/dialogflow"
     ),
     serialized_start=1523,
-    serialized_end=2761,
+    serialized_end=3247,
     methods=[
         _descriptor.MethodDescriptor(
             name="ListSessionEntityTypes",
@@ -738,7 +758,7 @@ _SESSIONENTITYTYPES = _descriptor.ServiceDescriptor(
             input_type=_LISTSESSIONENTITYTYPESREQUEST,
             output_type=_LISTSESSIONENTITYTYPESRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\0026\0224/v2/{parent=projects/*/agent/sessions/*}/entityTypes\332A\006parent"
+                "\202\323\344\223\002\205\001\0224/v2/{parent=projects/*/agent/sessions/*}/entityTypesZM\022K/v2/{parent=projects/*/agent/environments/*/users/*/sessions/*}/entityTypes\332A\006parent"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -749,7 +769,7 @@ _SESSIONENTITYTYPES = _descriptor.ServiceDescriptor(
             input_type=_GETSESSIONENTITYTYPEREQUEST,
             output_type=_SESSIONENTITYTYPE,
             serialized_options=_b(
-                "\202\323\344\223\0026\0224/v2/{name=projects/*/agent/sessions/*/entityTypes/*}"
+                "\202\323\344\223\002\205\001\0224/v2/{name=projects/*/agent/sessions/*/entityTypes/*}ZM\022K/v2/{name=projects/*/agent/environments/*/users/*/sessions/*/entityTypes/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -760,7 +780,7 @@ _SESSIONENTITYTYPES = _descriptor.ServiceDescriptor(
             input_type=_CREATESESSIONENTITYTYPEREQUEST,
             output_type=_SESSIONENTITYTYPE,
             serialized_options=_b(
-                '\202\323\344\223\002K"4/v2/{parent=projects/*/agent/sessions/*}/entityTypes:\023session_entity_type\332A\032parent,session_entity_type'
+                '\202\323\344\223\002\257\001"4/v2/{parent=projects/*/agent/sessions/*}/entityTypes:\023session_entity_typeZb"K/v2/{parent=projects/*/agent/environments/*/users/*/sessions/*}/entityTypes:\023session_entity_type\332A\032parent,session_entity_type'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -771,7 +791,7 @@ _SESSIONENTITYTYPES = _descriptor.ServiceDescriptor(
             input_type=_UPDATESESSIONENTITYTYPEREQUEST,
             output_type=_SESSIONENTITYTYPE,
             serialized_options=_b(
-                "\202\323\344\223\002_2H/v2/{session_entity_type.name=projects/*/agent/sessions/*/entityTypes/*}:\023session_entity_type\332A\023session_entity_type"
+                "\202\323\344\223\002\327\0012H/v2/{session_entity_type.name=projects/*/agent/sessions/*/entityTypes/*}:\023session_entity_typeZv2_/v2/{session_entity_type.name=projects/*/agent/environments/*/users/*/sessions/*/entityTypes/*}:\023session_entity_type\332A\037session_entity_type,update_mask"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -782,7 +802,7 @@ _SESSIONENTITYTYPES = _descriptor.ServiceDescriptor(
             input_type=_DELETESESSIONENTITYTYPEREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\0026*4/v2/{name=projects/*/agent/sessions/*/entityTypes/*}\332A\004name"
+                "\202\323\344\223\002\205\001*4/v2/{name=projects/*/agent/sessions/*/entityTypes/*}ZM*K/v2/{name=projects/*/agent/environments/*/users/*/sessions/*/entityTypes/*}\332A\004name"
             ),
         ),
     ],

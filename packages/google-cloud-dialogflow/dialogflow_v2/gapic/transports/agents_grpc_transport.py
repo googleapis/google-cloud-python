@@ -240,3 +240,17 @@ class AgentsGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["agents_stub"].RestoreAgent
+
+    @property
+    def get_validation_result(self):
+        """Return the gRPC stub for :meth:`AgentsClient.get_validation_result`.
+
+        Gets agent validation result. Agent validation is performed during
+        training time and is updated automatically when training is completed.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["agents_stub"].GetValidationResult

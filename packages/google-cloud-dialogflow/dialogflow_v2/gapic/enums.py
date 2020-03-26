@@ -517,3 +517,23 @@ class StreamingRecognitionResult(object):
         MESSAGE_TYPE_UNSPECIFIED = 0
         TRANSCRIPT = 1
         END_OF_SINGLE_UTTERANCE = 2
+
+
+class ValidationError(object):
+    class Severity(enum.IntEnum):
+        """
+        Represents a level of severity.
+
+        Attributes:
+          SEVERITY_UNSPECIFIED (int): Not specified. This value should never be used.
+          INFO (int): The agent doesn't follow Dialogflow best practicies.
+          WARNING (int): The agent may not behave as expected.
+          ERROR (int): The agent may experience partial failures.
+          CRITICAL (int): The agent may completely fail.
+        """
+
+        SEVERITY_UNSPECIFIED = 0
+        INFO = 1
+        WARNING = 2
+        ERROR = 3
+        CRITICAL = 4

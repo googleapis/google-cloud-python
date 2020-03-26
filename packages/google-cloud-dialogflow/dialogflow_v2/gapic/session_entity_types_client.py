@@ -44,6 +44,7 @@ from dialogflow_v2.proto import intent_pb2
 from dialogflow_v2.proto import intent_pb2_grpc
 from dialogflow_v2.proto import session_entity_type_pb2
 from dialogflow_v2.proto import session_entity_type_pb2_grpc
+from dialogflow_v2.proto import validation_result_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
@@ -270,7 +271,11 @@ class SessionEntityTypesClient(object):
 
         Args:
             parent (str): Required. The session to list all session entity types from. Format:
-                ``projects/<Project ID>/agent/sessions/<Session ID>``.
+                ``projects/<Project ID>/agent/sessions/<Session ID>`` or
+                ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/ sessions/<Session ID>``.
+                If ``Environment ID`` is not specified, we assume default 'draft'
+                environment. If ``User ID`` is not specified, we assume default '-'
+                user.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -365,7 +370,12 @@ class SessionEntityTypesClient(object):
 
         Args:
             name (str): Required. The name of the session entity type. Format:
-                ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``.
+                ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+                or
+                ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``.
+                If ``Environment ID`` is not specified, we assume default 'draft'
+                environment. If ``User ID`` is not specified, we assume default '-'
+                user.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -446,7 +456,11 @@ class SessionEntityTypesClient(object):
 
         Args:
             parent (str): Required. The session to create a session entity type for. Format:
-                ``projects/<Project ID>/agent/sessions/<Session ID>``.
+                ``projects/<Project ID>/agent/sessions/<Session ID>`` or
+                ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/ sessions/<Session ID>``.
+                If ``Environment ID`` is not specified, we assume default 'draft'
+                environment. If ``User ID`` is not specified, we assume default '-'
+                user.
             session_entity_type (Union[dict, ~google.cloud.dialogflow_v2.types.SessionEntityType]): Required. The session entity type to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -527,8 +541,7 @@ class SessionEntityTypesClient(object):
             >>> response = client.update_session_entity_type(session_entity_type)
 
         Args:
-            session_entity_type (Union[dict, ~google.cloud.dialogflow_v2.types.SessionEntityType]): Required. The entity type to update. Format:
-                ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``.
+            session_entity_type (Union[dict, ~google.cloud.dialogflow_v2.types.SessionEntityType]): Required. The session entity type to update.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2.types.SessionEntityType`
@@ -611,7 +624,12 @@ class SessionEntityTypesClient(object):
 
         Args:
             name (str): Required. The name of the entity type to delete. Format:
-                ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``.
+                ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
+                or
+                ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``.
+                If ``Environment ID`` is not specified, we assume default 'draft'
+                environment. If ``User ID`` is not specified, we assume default '-'
+                user.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.

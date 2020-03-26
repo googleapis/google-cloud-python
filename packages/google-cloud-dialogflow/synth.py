@@ -18,18 +18,12 @@ import synthtool as s
 from synthtool import gcp
 
 gapic = gcp.GAPICGenerator()
-common = gcp.CommonTemplates()
 
 versions = ["v2beta1", "v2"]
 
 
 for version in versions:
-    library = gapic.py_library(
-        "dialogflow",
-        version,
-        config_path=version + "/artman_dialogflow_" + version + ".yaml",
-        include_protos=True,
-    )
+    library = gapic.py_library("dialogflow", version,  config_path=version + '/artman_dialogflow_' + version + '.yaml', include_protos=True)
 
     s.move(
         library,
@@ -101,19 +95,29 @@ s.replace(
 )
 
 # Docstring has '-----' which is interpreted as RST section title
-s.replace("dialogflow_v2beta1/proto/intent_pb2.py", "\s+-----------", "")
+s.replace(
+    "dialogflow_v2beta1/proto/intent_pb2.py",
+    "\s+-----------",
+    ""
+)
 
-s.replace("dialogflow_v2/proto/agent_pb2.py", ":math:", "")
-s.replace("dialogflow_v2/proto/agent_pb2.py", ":raw-latex:", "")
+s.replace(
+    "dialogflow_*/proto/session_pb2.py",
+    "============================================================================",
+    ""
+)
 
-# Docstring has links with no target
-s.replace("dialogflow_v*/proto/audio_config_pb2.py", "`(.+?) \<\>`__", "\g<1>")
 
-# ----------------------------------------------------------------------------
-# Add templated files
-# ----------------------------------------------------------------------------
-templated_files = common.py_library(coverage=96)
-s.move(templated_files, excludes=['noxfile.py'])
+# Replace bad hyperlink references
+s.replace(
+    "dialogflow_*/proto/audio_config_pb2.py",
+    "\s*\<\>`__",
+    "`"
+)
 
+
+s.replace('dialogflow_v2/proto/agent_pb2.py', ':math:', '')
+s.replace('dialogflow_v2/proto/agent_pb2.py', ':raw-latex:', '')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+

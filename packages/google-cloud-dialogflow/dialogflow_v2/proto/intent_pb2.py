@@ -5031,7 +5031,8 @@ Intent = _reflection.GeneratedProtocolMessageType(
           Optional. The collection of event names that trigger the
           intent. If the collection of input contexts is not empty, all
           of the contexts must be present in the active user session for
-          an event to trigger this intent.
+          an event to trigger this intent. Event names are limited to
+          150 characters.
       training_phrases:
           Optional. The collection of examples that the agent is trained
           on.

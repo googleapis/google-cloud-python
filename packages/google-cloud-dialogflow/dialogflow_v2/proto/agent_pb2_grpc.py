@@ -4,6 +4,9 @@ import grpc
 from dialogflow_v2.proto import (
     agent_pb2 as google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_agent__pb2,
 )
+from dialogflow_v2.proto import (
+    validation_result_pb2 as google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_validation__result__pb2,
+)
 from google.longrunning import (
     operations_pb2 as google_dot_longrunning_dot_operations__pb2,
 )
@@ -86,6 +89,11 @@ class AgentsStub(object):
             "/google.cloud.dialogflow.v2.Agents/RestoreAgent",
             request_serializer=google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_agent__pb2.RestoreAgentRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
+        )
+        self.GetValidationResult = channel.unary_unary(
+            "/google.cloud.dialogflow.v2.Agents/GetValidationResult",
+            request_serializer=google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_agent__pb2.GetValidationResultRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_validation__result__pb2.ValidationResult.FromString,
         )
 
 
@@ -197,6 +205,14 @@ class AgentsServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def GetValidationResult(self, request, context):
+        """Gets agent validation result. Agent validation is performed during
+    training time and is updated automatically when training is completed.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_AgentsServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -239,6 +255,11 @@ def add_AgentsServicer_to_server(servicer, server):
             servicer.RestoreAgent,
             request_deserializer=google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_agent__pb2.RestoreAgentRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
+        ),
+        "GetValidationResult": grpc.unary_unary_rpc_method_handler(
+            servicer.GetValidationResult,
+            request_deserializer=google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_agent__pb2.GetValidationResultRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dialogflow__v2_dot_proto_dot_validation__result__pb2.ValidationResult.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

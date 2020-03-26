@@ -43,6 +43,7 @@ from dialogflow_v2.proto import context_pb2
 from dialogflow_v2.proto import context_pb2_grpc
 from dialogflow_v2.proto import entity_type_pb2
 from dialogflow_v2.proto import entity_type_pb2_grpc
+from dialogflow_v2.proto import validation_result_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2

@@ -45,6 +45,7 @@ from dialogflow_v2.proto import session_entity_type_pb2
 from dialogflow_v2.proto import session_entity_type_pb2_grpc
 from dialogflow_v2.proto import session_pb2
 from dialogflow_v2.proto import session_pb2_grpc
+from dialogflow_v2.proto import validation_result_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
@@ -216,6 +217,7 @@ class SessionsClient(object):
         query_input,
         query_params=None,
         output_audio_config=None,
+        output_audio_config_mask=None,
         input_audio=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -241,10 +243,14 @@ class SessionsClient(object):
 
         Args:
             session (str): Required. The name of the session this query is sent to. Format:
-                ``projects/<Project ID>/agent/sessions/<Session ID>``. It's up to the
-                API caller to choose an appropriate session ID. It can be a random
-                number or some type of user identifier (preferably hashed). The length
-                of the session ID must not exceed 36 bytes.
+                ``projects/<Project ID>/agent/sessions/<Session ID>``, or
+                ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``.
+                If ``Environment ID`` is not specified, we assume default 'draft'
+                environment. If ``User ID`` is not specified, we are using "-". It's up
+                to the API caller to choose an appropriate ``Session ID`` and
+                ``User Id``. They can be a random number or some type of user and
+                session identifiers (preferably hashed). The length of the
+                ``Session ID`` and ``User ID`` must not exceed 36 characters.
             query_input (Union[dict, ~google.cloud.dialogflow_v2.types.QueryInput]): Required. The input specification. It can be set to:
 
                 1.  an audio config
@@ -256,19 +262,28 @@ class SessionsClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2.types.QueryInput`
-            query_params (Union[dict, ~google.cloud.dialogflow_v2.types.QueryParameters]): Optional. The parameters of this query.
+            query_params (Union[dict, ~google.cloud.dialogflow_v2.types.QueryParameters]): The parameters of this query.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2.types.QueryParameters`
-            output_audio_config (Union[dict, ~google.cloud.dialogflow_v2.types.OutputAudioConfig]): Optional. Instructs the speech synthesizer how to generate the output
+            output_audio_config (Union[dict, ~google.cloud.dialogflow_v2.types.OutputAudioConfig]): Instructs the speech synthesizer how to generate the output
                 audio. If this field is not set and agent-level speech synthesizer is not
                 configured, no output audio is generated.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2.types.OutputAudioConfig`
-            input_audio (bytes): Optional. The natural language speech audio to be processed. This field
-                should be populated iff ``query_input`` is set to an input audio config.
-                A single request can contain up to 1 minute of speech audio data.
+            output_audio_config_mask (Union[dict, ~google.cloud.dialogflow_v2.types.FieldMask]): Mask for ``output_audio_config`` indicating which settings in this
+                request-level config should override speech synthesizer settings defined
+                at agent-level.
+
+                If unspecified or empty, ``output_audio_config`` replaces the
+                agent-level config in its entirety.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dialogflow_v2.types.FieldMask`
+            input_audio (bytes): The natural language speech audio to be processed. This field should be
+                populated iff ``query_input`` is set to an input audio config. A single
+                request can contain up to 1 minute of speech audio data.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -304,6 +319,7 @@ class SessionsClient(object):
             query_input=query_input,
             query_params=query_params,
             output_audio_config=output_audio_config,
+            output_audio_config_mask=output_audio_config_mask,
             input_audio=input_audio,
         )
         if metadata is None:
@@ -334,8 +350,6 @@ class SessionsClient(object):
         Processes a natural language query in audio format in a streaming fashion
         and returns structured, actionable data as a result. This method is only
         available via the gRPC API (not REST).
-
-        EXPERIMENTAL: This method interface might change in the future.
 
         Example:
             >>> import dialogflow_v2

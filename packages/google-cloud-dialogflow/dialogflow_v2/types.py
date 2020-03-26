@@ -27,6 +27,7 @@ from dialogflow_v2.proto import entity_type_pb2
 from dialogflow_v2.proto import intent_pb2
 from dialogflow_v2.proto import session_entity_type_pb2
 from dialogflow_v2.proto import session_pb2
+from dialogflow_v2.proto import validation_result_pb2
 from dialogflow_v2.proto import webhook_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import any_pb2
@@ -57,6 +58,7 @@ _local_modules = [
     intent_pb2,
     session_entity_type_pb2,
     session_pb2,
+    validation_result_pb2,
     webhook_pb2,
 ]
 

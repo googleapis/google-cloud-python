@@ -38,6 +38,7 @@ from dialogflow_v2.proto import agent_pb2
 from dialogflow_v2.proto import agent_pb2_grpc
 from dialogflow_v2.proto import context_pb2
 from dialogflow_v2.proto import context_pb2_grpc
+from dialogflow_v2.proto import validation_result_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
@@ -260,7 +261,11 @@ class ContextsClient(object):
 
         Args:
             parent (str): Required. The session to list all contexts from. Format:
-                ``projects/<Project ID>/agent/sessions/<Session ID>``.
+                ``projects/<Project ID>/agent/sessions/<Session ID>`` or
+                ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``.
+                If ``Environment ID`` is not specified, we assume default 'draft'
+                environment. If ``User ID`` is not specified, we assume default '-'
+                user.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -349,7 +354,12 @@ class ContextsClient(object):
 
         Args:
             name (str): Required. The name of the context. Format:
-                ``projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>``.
+                ``projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>``
+                or
+                ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``.
+                If ``Environment ID`` is not specified, we assume default 'draft'
+                environment. If ``User ID`` is not specified, we assume default '-'
+                user.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -425,7 +435,11 @@ class ContextsClient(object):
 
         Args:
             parent (str): Required. The session to create a context for. Format:
-                ``projects/<Project ID>/agent/sessions/<Session ID>``.
+                ``projects/<Project ID>/agent/sessions/<Session ID>`` or
+                ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``.
+                If ``Environment ID`` is not specified, we assume default 'draft'
+                environment. If ``User ID`` is not specified, we assume default '-'
+                user.
             context (Union[dict, ~google.cloud.dialogflow_v2.types.Context]): Required. The context to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -579,7 +593,12 @@ class ContextsClient(object):
 
         Args:
             name (str): Required. The name of the context to delete. Format:
-                ``projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>``.
+                ``projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>``
+                or
+                ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>/contexts/<Context ID>``.
+                If ``Environment ID`` is not specified, we assume default 'draft'
+                environment. If ``User ID`` is not specified, we assume default '-'
+                user.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -646,7 +665,11 @@ class ContextsClient(object):
 
         Args:
             parent (str): Required. The name of the session to delete all contexts from. Format:
-                ``projects/<Project ID>/agent/sessions/<Session ID>``.
+                ``projects/<Project ID>/agent/sessions/<Session ID>`` or
+                ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``.
+                If ``Environment ID`` is not specified we assume default 'draft'
+                environment. If ``User ID`` is not specified, we assume default '-'
+                user.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.

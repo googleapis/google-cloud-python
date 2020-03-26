@@ -57,6 +57,11 @@ config = {
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
+                "GetValidationResult": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
             },
         }
     }
