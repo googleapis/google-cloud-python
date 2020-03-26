@@ -136,5 +136,5 @@ def test_repr(target_class):
     got = repr(model)
     assert (
         got
-        == "ModelReference(project='my-proj', dataset_id='my_dset', project_id='my_model')"
+        == "ModelReference(project_id='my-proj', dataset_id='my_dset', model_id='my_model')"
     )

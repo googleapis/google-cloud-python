@@ -430,6 +430,6 @@ class ModelReference(object):
         return hash(self._key())
 
     def __repr__(self):
-        return "ModelReference(project='{}', dataset_id='{}', project_id='{}')".format(
+        return "ModelReference(project_id='{}', dataset_id='{}', model_id='{}')".format(
             self.project, self.dataset_id, self.model_id
         )
