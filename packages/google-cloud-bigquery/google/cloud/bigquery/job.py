@@ -3168,6 +3168,9 @@ class QueryJob(_AsyncJob):
                 set** (this is distinct from the total number of rows in the
                 current page: ``iterator.page.num_items``).
 
+                If the query is a special query that produces no results, e.g.
+                a DDL query, an ``_EmptyRowIterator`` instance is returned.
+
         Raises:
             google.cloud.exceptions.GoogleCloudError:
                 If the job failed.

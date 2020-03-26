@@ -42,7 +42,7 @@ extensions = [
 
 # autodoc/autosummary flags
 autoclass_content = "both"
-autodoc_default_flags = ["members"]
+autodoc_default_flags = ["members", "inherited-members"]
 autosummary_generate = True
 
 
