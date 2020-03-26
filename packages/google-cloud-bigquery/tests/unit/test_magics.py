@@ -800,6 +800,22 @@ def test_bigquery_magic_w_table_id_invalid():
     assert "Traceback (most recent call last)" not in output
 
 
+def test_bigquery_magic_w_missing_query():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+
+    cell_body = "   \n    \n   \t\t  \n  "
+
+    with io.capture_output() as captured_io:
+        ip.run_cell_magic("bigquery", "df", cell_body)
+
+    output = captured_io.stderr
+    assert "Could not save output to variable" in output
+    assert "Query is missing" in output
+    assert "Traceback (most recent call last)" not in output
+
+
 @pytest.mark.usefixtures("ipython_interactive")
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_bigquery_magic_w_table_id_and_destination_var():

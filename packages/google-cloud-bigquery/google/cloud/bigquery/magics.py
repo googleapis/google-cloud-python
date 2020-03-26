@@ -66,7 +66,9 @@
           the variable name (ex. ``$my_dict_var``). See ``In[6]`` and ``In[7]``
           in the Examples section below.
     * ``<query>`` (required, cell argument):
-        SQL query to run.
+        SQL query to run. If the query does not contain any whitespace (aside
+        from leading and trailing whitespace), it is assumed to represent a
+        fully-qualified table ID, and the latter's data will be fetched.
 
     Returns:
         A :class:`pandas.DataFrame` with the query results.
@@ -505,6 +507,11 @@ def _cell_magic(line, query):
             max_results = None
 
         query = query.strip()
+
+        if not query:
+            error = ValueError("Query is missing.")
+            _handle_error(error, args.destination_var)
+            return
 
         # Any query that does not contain whitespace (aside from leading and trailing whitespace)
         # is assumed to be a table id
