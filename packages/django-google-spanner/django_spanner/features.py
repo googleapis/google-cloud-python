@@ -250,10 +250,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'schema.tests.SchemaTests.test_primary_key',
         # Spanner limitation:  Cannot remove a column from the primary key.
         'schema.tests.SchemaTests.test_alter_int_pk_to_int_unique',
-        # Creating an index with a descending column fails:
-        # https://github.com/orijtech/django-spanner/issues/373
-        'schema.tests.SchemaTests.test_order_index',
-        'schema.tests.SchemaTests.test_remove_db_index_doesnt_remove_custom_indexes',
         # This test doesn't flush the database properly:
         # https://code.djangoproject.com/ticket/31398
         'multiple_database.tests.AuthTestCase',

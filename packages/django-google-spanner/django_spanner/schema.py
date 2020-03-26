@@ -180,6 +180,16 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         # Return the sql
         return sql, params
 
+    def add_index(self, model, index):
+        # Work around a bug in Django where a space isn't inserting before
+        # DESC: https://code.djangoproject.com/ticket/30961
+        # This method can be removed in Django 3.1.
+        index.fields_orders = [
+            (field_name, ' DESC' if order == 'DESC' else '')
+            for field_name, order in index.fields_orders
+        ]
+        super().add_index(model, index)
+
     def quote_value(self, value):
         # TODO: a real implementation:
         # https://github.com/orijtech/django-spanner/issues/227
