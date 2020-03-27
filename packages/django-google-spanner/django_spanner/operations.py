@@ -231,6 +231,14 @@ class DatabaseOperations(BaseDatabaseOperations):
             return 'MOD(%s)' % ', '.join(sub_expressions)
         elif connector == '^':
             return 'POWER(%s)' % ', '.join(sub_expressions)
+        elif connector == '>>':
+            lhs, rhs = sub_expressions
+            # Use an alternate computation because Cloud Sapnner's '>>' operator does not do
+            # sign bit extension with a signed type (i.e. produces different results for
+            # negative numbers than what Django's tests expect). Cast float result as INT64 to
+            # allow assigning to both INT64 and FLOAT64 columns (otherwise the FLOAT result
+            # couldn't be assigned to INT64 columns).
+            return 'CAST(FLOOR(%(lhs)s / POW(2, %(rhs)s)) AS INT64)' % {'lhs': lhs, 'rhs': rhs}
         return super().combine_expression(connector, sub_expressions)
 
     def combine_duration_expression(self, connector, sub_expressions):
