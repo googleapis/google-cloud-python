@@ -27,8 +27,8 @@ setup(
     name='gapic-generator',
     version='0.20.0',
     license='Apache 2.0',
-    author='Luke Sneeringer',
-    author_email='lukesneeringer@google.com',
+    author='Dov Shlachter',
+    author_email='dovs@google.com',
     url='https://github.com/googleapis/gapic-generator-python.git',
     packages=find_packages(exclude=['docs', 'tests']),
     description='Python client library generator for APIs defined by protocol'
