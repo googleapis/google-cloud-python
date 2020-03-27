@@ -421,3 +421,31 @@ class TestCredentials(object):
         ) as f:
             credentials = pickle.load(f)
             assert credentials.quota_project_id is None
+
+
+class TestUserAccessTokenCredentials(object):
+    def test_instance(self):
+        cred = credentials.UserAccessTokenCredentials()
+        assert cred._account is None
+
+        cred = cred.with_account("account")
+        assert cred._account == "account"
+
+    @mock.patch("google.auth._cloud_sdk.get_auth_access_token", autospec=True)
+    def test_refresh(self, get_auth_access_token):
+        get_auth_access_token.return_value = "access_token"
+        cred = credentials.UserAccessTokenCredentials()
+        cred.refresh(None)
+        assert cred.token == "access_token"
+
+    @mock.patch(
+        "google.oauth2.credentials.UserAccessTokenCredentials.apply", autospec=True
+    )
+    @mock.patch(
+        "google.oauth2.credentials.UserAccessTokenCredentials.refresh", autospec=True
+    )
+    def test_before_request(self, refresh, apply):
+        cred = credentials.UserAccessTokenCredentials()
+        cred.before_request(mock.Mock(), "GET", "https://example.com", {})
+        refresh.assert_called()
+        apply.assert_called()

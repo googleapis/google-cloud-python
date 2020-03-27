@@ -28,5 +28,9 @@ class RefreshError(GoogleAuthError):
     failed."""
 
 
+class UserAccessTokenError(GoogleAuthError):
+    """Used to indicate ``gcloud auth print-access-token`` command failed."""
+
+
 class DefaultCredentialsError(GoogleAuthError):
     """Used to indicate that acquiring default credentials failed."""

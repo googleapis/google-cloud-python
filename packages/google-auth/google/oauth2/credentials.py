@@ -36,6 +36,7 @@ import json
 
 import six
 
+from google.auth import _cloud_sdk
 from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
@@ -292,3 +293,50 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
             prep = {k: v for k, v in prep.items() if k not in strip}
 
         return json.dumps(prep)
+
+
+class UserAccessTokenCredentials(credentials.Credentials):
+    """Access token credentials for user account.
+
+    Obtain the access token for a given user account or the current active
+    user account with the ``gcloud auth print-access-token`` command.
+
+    Args:
+        account (Optional[str]): Account to get the access token for. If not
+            specified, the current active account will be used.
+    """
+
+    def __init__(self, account=None):
+        super(UserAccessTokenCredentials, self).__init__()
+        self._account = account
+
+    def with_account(self, account):
+        """Create a new instance with the given account.
+
+        Args:
+            account (str): Account to get the access token for.
+
+        Returns:
+            google.oauth2.credentials.UserAccessTokenCredentials: The created
+                credentials with the given account.
+        """
+        return self.__class__(account=account)
+
+    def refresh(self, request):
+        """Refreshes the access token.
+
+        Args:
+            request (google.auth.transport.Request): This argument is required
+                by the base class interface but not used in this implementation,
+                so just set it to `None`.
+
+        Raises:
+            google.auth.exceptions.UserAccessTokenError: If the access token
+                refresh failed.
+        """
+        self.token = _cloud_sdk.get_auth_access_token(self._account)
+
+    @_helpers.copy_docstring(credentials.Credentials)
+    def before_request(self, request, method, url, headers):
+        self.refresh(request)
+        self.apply(headers)

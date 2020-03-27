@@ -106,10 +106,10 @@ def _load_credentials_from_file(filename):
     credential_type = info.get("type")
 
     if credential_type == _AUTHORIZED_USER_TYPE:
-        from google.auth import _cloud_sdk
+        from google.oauth2 import credentials
 
         try:
-            credentials = _cloud_sdk.load_authorized_user_credentials(info)
+            credentials = credentials.Credentials.from_authorized_user_info(info)
         except ValueError as caught_exc:
             msg = "Failed to load authorized user credentials from {}".format(filename)
             new_exc = exceptions.DefaultCredentialsError(msg, caught_exc)

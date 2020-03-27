@@ -14,6 +14,7 @@
 
 import json
 from os import path
+import time
 
 import google.auth
 import google.auth.credentials
@@ -42,6 +43,9 @@ def test_requests():
     # supposed to be created.
     assert authed_session.is_mtls == check_context_aware_metadata()
 
+    # Sleep 1 second to avoid 503 error.
+    time.sleep(1)
+
     if authed_session.is_mtls:
         response = authed_session.get(MTLS_ENDPOINT.format(project_id))
     else:
@@ -62,6 +66,9 @@ def test_urllib3():
     # If the devices has context aware metadata, then a mutual TLS channel is
     # supposed to be created.
     assert is_mtls == check_context_aware_metadata()
+
+    # Sleep 1 second to avoid 503 error.
+    time.sleep(1)
 
     if is_mtls:
         response = authed_http.request("GET", MTLS_ENDPOINT.format(project_id))

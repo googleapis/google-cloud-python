@@ -22,7 +22,7 @@ import pytest
 
 from google.auth import _cloud_sdk
 from google.auth import environment_vars
-import google.oauth2.credentials
+from google.auth import exceptions
 
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
@@ -137,23 +137,33 @@ def test_get_config_path_no_appdata(monkeypatch):
     assert os.path.split(config_path) == ("G:/\\", _cloud_sdk._CONFIG_DIRECTORY)
 
 
-def test_load_authorized_user_credentials():
-    credentials = _cloud_sdk.load_authorized_user_credentials(AUTHORIZED_USER_FILE_DATA)
+@mock.patch("os.name", new="nt")
+@mock.patch("subprocess.check_output", autospec=True)
+def test_get_auth_access_token_windows(check_output):
+    check_output.return_value = b"access_token\n"
 
-    assert isinstance(credentials, google.oauth2.credentials.Credentials)
-
-    assert credentials.token is None
-    assert credentials._refresh_token == AUTHORIZED_USER_FILE_DATA["refresh_token"]
-    assert credentials._client_id == AUTHORIZED_USER_FILE_DATA["client_id"]
-    assert credentials._client_secret == AUTHORIZED_USER_FILE_DATA["client_secret"]
-    assert (
-        credentials._token_uri
-        == google.oauth2.credentials._GOOGLE_OAUTH2_TOKEN_ENDPOINT
+    token = _cloud_sdk.get_auth_access_token()
+    assert token == "access_token"
+    check_output.assert_called_with(
+        ("gcloud.cmd", "auth", "print-access-token"), stderr=subprocess.STDOUT
     )
 
 
-def test_load_authorized_user_credentials_bad_format():
-    with pytest.raises(ValueError) as excinfo:
-        _cloud_sdk.load_authorized_user_credentials({})
+@mock.patch("subprocess.check_output", autospec=True)
+def test_get_auth_access_token_with_account(check_output):
+    check_output.return_value = b"access_token\n"
 
-    assert excinfo.match(r"missing fields")
+    token = _cloud_sdk.get_auth_access_token(account="account")
+    assert token == "access_token"
+    check_output.assert_called_with(
+        ("gcloud", "auth", "print-access-token", "--account=account"),
+        stderr=subprocess.STDOUT,
+    )
+
+
+@mock.patch("subprocess.check_output", autospec=True)
+def test_get_auth_access_token_with_exception(check_output):
+    check_output.side_effect = OSError()
+
+    with pytest.raises(exceptions.UserAccessTokenError):
+        _cloud_sdk.get_auth_access_token(account="account")
