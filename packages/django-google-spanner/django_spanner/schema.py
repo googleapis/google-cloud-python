@@ -128,11 +128,10 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         # defaults for this but Spanner doesn't support them.)
         effective_default = self.effective_default(field)
         if effective_default is not None:
-            self.execute('UPDATE %(table)s SET %(column)s=%(value)r' % {
+            self.execute('UPDATE %(table)s SET %(column)s=%%s' % {
                 "table": self.quote_name(model._meta.db_table),
                 "column": self.quote_name(field.column),
-                "value": effective_default,
-            })
+            }, (effective_default,))
         # Spanner doesn't support adding NOT NULL columns to existing tables.
         if not field.null:
             self.execute(self.sql_alter_column % {

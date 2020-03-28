@@ -263,9 +263,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'schema.tests.SchemaTests.test_primary_key',
         # Spanner limitation:  Cannot remove a column from the primary key.
         'schema.tests.SchemaTests.test_alter_int_pk_to_int_unique',
-        # adding BinaryField sets wrong value on existing rows:
-        # https://github.com/orijtech/django-spanner/issues/388
-        'migrations.test_operations.OperationTests.test_add_binaryfield',
         # changing a not null constraint isn't allowed if it affects an index:
         # https://github.com/orijtech/django-spanner/issues/378
         'migrations.test_operations.OperationTests.test_alter_field_with_index',
