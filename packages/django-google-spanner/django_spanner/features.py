@@ -228,6 +228,20 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'schema.tests.SchemaTests.test_alter_text_field_to_datetime_field',
         'schema.tests.SchemaTests.test_alter_text_field_to_time_field',
         # Spanner limitation: Cannot rename tables and columns.
+        'migrations.test_operations.OperationTests.test_alter_fk_non_fk',
+        'migrations.test_operations.OperationTests.test_alter_model_table',
+        'migrations.test_operations.OperationTests.test_alter_model_table_m2m',
+        'migrations.test_operations.OperationTests.test_rename_field',
+        'migrations.test_operations.OperationTests.test_rename_field_reloads_state_on_fk_target_changes',
+        'migrations.test_operations.OperationTests.test_rename_m2m_model_after_rename_field',
+        'migrations.test_operations.OperationTests.test_rename_m2m_target_model',
+        'migrations.test_operations.OperationTests.test_rename_m2m_through_model',
+        'migrations.test_operations.OperationTests.test_rename_model',
+        'migrations.test_operations.OperationTests.test_rename_model_with_m2m',
+        'migrations.test_operations.OperationTests.test_rename_model_with_self_referential_fk',
+        'migrations.test_operations.OperationTests.test_rename_model_with_self_referential_m2m',
+        'migrations.test_operations.OperationTests.test_rename_model_with_superclass_fk',
+        'migrations.test_operations.OperationTests.test_repoint_field_m2m',
         'schema.tests.SchemaTests.test_alter_db_table_case',
         'schema.tests.SchemaTests.test_alter_pk_with_self_referential_field',
         'schema.tests.SchemaTests.test_rename',
@@ -249,6 +263,18 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'schema.tests.SchemaTests.test_primary_key',
         # Spanner limitation:  Cannot remove a column from the primary key.
         'schema.tests.SchemaTests.test_alter_int_pk_to_int_unique',
+        # adding BinaryField sets wrong value on existing rows:
+        # https://github.com/orijtech/django-spanner/issues/388
+        'migrations.test_operations.OperationTests.test_add_binaryfield',
+        # changing a not null constraint isn't allowed if it affects an index:
+        # https://github.com/orijtech/django-spanner/issues/378
+        'migrations.test_operations.OperationTests.test_alter_field_with_index',
+        # dropping a field with an index fails:
+        # https://github.com/orijtech/django-spanner/issues/389
+        'migrations.test_operations.OperationTests.test_remove_fk',
+        # parsing INSERT with one inlined value and one placeholder fails:
+        # https://github.com/orijtech/django-spanner/issues/393
+        'migrations.test_operations.OperationTests.test_run_sql_params',
         # This test doesn't flush the database properly:
         # https://code.djangoproject.com/ticket/31398
         'multiple_database.tests.AuthTestCase',
