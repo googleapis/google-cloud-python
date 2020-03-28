@@ -26,7 +26,7 @@ env:
         - DJANGO_TEST_APPS="expressions expressions_window"
         - DJANGO_TEST_APPS="field_defaults field_subclassing file_storage file_uploads"
         - DJANGO_TEST_APPS="fixtures fixtures_model_package from_db_value"
-        - DJANGO_TEST_APPS="get_earliest_or_latest get_object_or_404"
+        - DJANGO_TEST_APPS="get_earliest_or_latest get_object_or_404 get_or_create"
         - DJANGO_TEST_APPS="i18n"
         - DJANGO_TEST_APPS="indexes inline_formsets introspection invalid_models_tests"
         - DJANGO_TEST_APPS="known_related_objects lookup max_lengths m2m_and_m2o m2m_intermediary m2m_multiple"
