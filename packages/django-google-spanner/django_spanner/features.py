@@ -266,9 +266,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # changing a not null constraint isn't allowed if it affects an index:
         # https://github.com/orijtech/django-spanner/issues/378
         'migrations.test_operations.OperationTests.test_alter_field_with_index',
-        # dropping a field with an index fails:
-        # https://github.com/orijtech/django-spanner/issues/389
-        'migrations.test_operations.OperationTests.test_remove_fk',
         # parsing INSERT with one inlined value and one placeholder fails:
         # https://github.com/orijtech/django-spanner/issues/393
         'migrations.test_operations.OperationTests.test_run_sql_params',

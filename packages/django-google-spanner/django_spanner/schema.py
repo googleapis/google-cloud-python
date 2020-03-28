@@ -151,6 +151,14 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         if field.remote_field and self.connection.features.supports_foreign_keys and field.db_constraint:
             self.deferred_sql.append(self._create_fk_sql(model, field, "_fk_%(to_table)s_%(to_column)s"))
 
+    def remove_field(self, model, field):
+        # Spanner requires dropping a column's indexes before dropping the
+        # column.
+        index_names = self._constraint_names(model, [field.column], index=True)
+        for index_name in index_names:
+            self.execute(self._delete_index_sql(model, index_name))
+        super().remove_field(model, field)
+
     def column_sql(self, model, field, include_default=False, exclude_not_null=False):
         """
         Take a field and return its column definition.
