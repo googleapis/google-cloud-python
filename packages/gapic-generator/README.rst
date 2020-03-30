@@ -5,7 +5,7 @@ API Client Generator for Python
 
     A generator for protocol buffer described APIs for and in Python 3.
 
-This is a proof-of-concept generator for API client libraries for APIs
+This is a generator for API client libraries for APIs
 specified by `protocol buffers`_, such as those inside Google.
 It takes a protocol buffer (with particular annotations) and uses it
 to generate a client library.
