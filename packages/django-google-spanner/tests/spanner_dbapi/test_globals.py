@@ -6,7 +6,7 @@
 
 from unittest import TestCase
 
-from spanner.dbapi import apilevel, paramstyle, threadsafety
+from spanner_dbapi import apilevel, paramstyle, threadsafety
 
 
 class DBAPIGlobalsTests(TestCase):

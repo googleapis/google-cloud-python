@@ -16,7 +16,7 @@ from django.db.backends.base.operations import BaseDatabaseOperations
 from django.db.utils import DatabaseError
 from django.utils import timezone
 from django.utils.duration import duration_microseconds
-from spanner.dbapi.parse_utils import DateStr, TimestampStr, escape_name
+from spanner_dbapi.parse_utils import DateStr, TimestampStr, escape_name
 
 
 class DatabaseOperations(BaseDatabaseOperations):

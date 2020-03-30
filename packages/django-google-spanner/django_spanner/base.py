@@ -4,7 +4,7 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
-import spanner.dbapi as Database
+import spanner_dbapi as Database
 from django.db.backends.base.base import BaseDatabaseWrapper
 from google.cloud import spanner_v1 as spanner
 

@@ -6,8 +6,8 @@
 
 from unittest import TestCase
 
-from spanner.dbapi.exceptions import ProgrammingError
-from spanner.dbapi.parser import (
+from spanner_dbapi.exceptions import ProgrammingError
+from spanner_dbapi.parser import (
     ARGS, FUNC, TERMINAL, VALUES, a_args, expect, func, pyfmt_str, values,
 )
 

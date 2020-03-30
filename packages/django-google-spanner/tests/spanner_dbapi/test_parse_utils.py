@@ -9,13 +9,13 @@ import decimal
 from unittest import TestCase
 
 from google.cloud.spanner_v1 import param_types
-from spanner.dbapi.exceptions import Error, ProgrammingError
-from spanner.dbapi.parse_utils import (
+from spanner_dbapi.exceptions import Error, ProgrammingError
+from spanner_dbapi.parse_utils import (
     STMT_DDL, STMT_NON_UPDATING, DateStr, TimestampStr, classify_stmt,
     ensure_where_clause, escape_name, get_param_types, parse_insert,
     rows_for_insert_or_update, sql_pyformat_args_to_spanner, strip_backticks,
 )
-from spanner.dbapi.utils import backtick_unicode
+from spanner_dbapi.utils import backtick_unicode
 
 
 class ParseUtilsTests(TestCase):
