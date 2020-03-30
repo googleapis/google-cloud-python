@@ -52,6 +52,7 @@ env:
         - DJANGO_TEST_APPS="queries.tests.Queries5Tests.test_extra_select_literal_percent_s raw_query redirects_tests reserved_names reverse_lookup"
         - DJANGO_TEST_APPS="save_delete_hooks schema select_related"
         - DJANGO_TEST_APPS="select_related_onetoone signing sitemaps_tests"
+        - DJANGO_TEST_APPS="sessions_tests"
         - DJANGO_TEST_APPS="string_lookup signals"
         - DJANGO_TEST_APPS="test_utils"
         - DJANGO_TEST_APPS="test_client test_client_regress timezones transactions"
