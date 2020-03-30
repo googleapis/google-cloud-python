@@ -1,6 +1,8 @@
 # django-spanner
 ORM plugin for using Cloud Spanner as a database for Django.
 
+# 🚨THIS CODE IS STILL UNDER DEVELOPMENT🚨
+
 ## Table of contents
 - [Installing it](#installing-it)
 - [Using it](#using-it)
@@ -91,3 +93,5 @@ Lack of VARIANCE, STDDEV database functions|Cloud Spanned doesn't yet implement 
 
 ### Internals
 ![](./assets/internals.png)
+
+# 🚨THIS CODE IS STILL UNDER DEVELOPMENT🚨
