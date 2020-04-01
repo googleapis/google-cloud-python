@@ -20,34 +20,31 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICMicrogenerator()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate document AI GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library("documentai", "v1beta1", include_protos=True)
+library = gapic.py_library("documentai", "v1beta2")
 
-excludes = ["README.rst", "nox.py", "setup.py", "docs/index.rst"]
+excludes = ["README.rst", "nox.py", "docs/index.rst", "setup.py"]
 s.move(library, excludes=excludes)
-
-# Fix bad docstring with stray pipe characters
-s.replace(
-    "google/cloud/**/document_understanding_pb2.py",
-    """\| Specifies a known document type for deeper structure
-          detection\. Valid   values are currently "general" and
-          "invoice"\. If not provided,   "general" \| is used as default.
-          If any other value is given, the request is   rejected\.""",
-    """Specifies a known document type for deeper structure
-          detection. Valid   values are currently "general" and
-          "invoice". If not provided,   "general" is used as default.
-          If any other value is given, the request is   rejected.""",
-)
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(cov_level=73)
 s.move(templated_files)
+
+# Remove 2.7 and 3.5 tests from noxfile.py
+s.replace("noxfile.py", '''\["2\.7", ''', '[')
+s.replace("noxfile.py", '''"3.5", ''', '')
+
+# Expand flake errors permitted to accomodate the Microgenerator
+# TODO: remove extra error codes once issues below are resolved
+# F401: https://github.com/googleapis/gapic-generator-python/issues/324
+# F841: local variable 'client'/'response' is assigned to but never use
+s.replace(".flake8", "ignore = .*", "ignore = E203, E266, E501, W503, F401, F841")
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

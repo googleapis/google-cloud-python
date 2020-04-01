@@ -4,7 +4,7 @@
   "product_documentation": "https://cloud.google.com/document-understanding/docs/",
   "client_documentation": "https://googleapis.dev/python/documentai/latest",
   "issue_tracker": "",
-  "release_level": "alpha",
+  "release_level": "beta",
   "language": "python",
   "repo": "googleapis/python-documentai",
   "distribution_name": "google-cloud-documentai",

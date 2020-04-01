@@ -1,12 +1,13 @@
 .. include:: README.rst
 
-Api Reference
+API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    gapic/v1beta1/api
-    gapic/v1beta1/types
+    documentai_v1beta2/services
+    documentai_v1beta2/types
+
 
 Changelog
 ---------
