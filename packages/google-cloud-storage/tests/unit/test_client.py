@@ -1762,6 +1762,10 @@ def test_conformance_post_policy(test_data):
                     scheme=in_data.get("scheme"),
                 )
     fields = policy["fields"]
+    out_data = test_data["policyOutput"]
+
+    decoded_policy = base64.b64decode(fields["policy"]).decode("unicode_escape")
+    assert decoded_policy == out_data["expectedDecodedPolicy"]
 
     for field in (
         "x-goog-algorithm",
@@ -1771,9 +1775,6 @@ def test_conformance_post_policy(test_data):
     ):
         assert fields[field] == test_data["policyOutput"]["fields"][field]
 
-    out_data = test_data["policyOutput"]
-    decoded_policy = base64.b64decode(fields["policy"]).decode("unicode_escape")
-    assert decoded_policy == out_data["expectedDecodedPolicy"]
     assert policy["url"] == out_data["url"]
 
 

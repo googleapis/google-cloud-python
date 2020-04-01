@@ -16,6 +16,7 @@
 
 import base64
 import binascii
+import collections
 import datetime
 import functools
 import json
@@ -972,7 +973,14 @@ class Client(ClientWithProject):
 
         # encode policy for signing
         policy = json.dumps(
-            {"conditions": conditions, "expiration": policy_expires.isoformat() + "Z"},
+            collections.OrderedDict(
+                sorted(
+                    {
+                        "conditions": conditions,
+                        "expiration": policy_expires.isoformat() + "Z",
+                    }.items()
+                )
+            ),
             separators=(",", ":"),
         )
         str_to_sign = base64.b64encode(policy.encode("utf-8"))
