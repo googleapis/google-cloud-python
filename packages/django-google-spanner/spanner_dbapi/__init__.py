@@ -31,7 +31,7 @@ paramstyle = 'format'
 threadsafety = 1
 
 
-def connect(project=None, instance=None, database=None, credentials_uri=None, user_agent=None, autocommit=True):
+def connect(project=None, instance=None, database=None, credentials_uri=None, user_agent=None):
     """
     Connect to Cloud Spanner.
 
@@ -72,27 +72,7 @@ def connect(project=None, instance=None, database=None, credentials_uri=None, us
     if not db.exists():
         raise ProgrammingError("database '%s' does not exist." % database)
 
-    # Correctly retrieve a session from the session pool.
-    # See:
-    #   * https://github.com/orijtech/django-spanner/issues/291
-    #   * https://github.com/googleapis/python-spanner/issues/10#issuecomment-585056760
-    #
-    # Adapted from:
-    #   https://bit.ly/3c8MK6p: python-spanner, Git hash 997a03477b07ec39c7184
-    #   google/cloud/spanner_v1/pool.py#L514-L535
-    # TODO: File a bug to googleapis/python-spanner asking for a convenience
-    # method since invoke database.session() gives the wrong result
-    # yet requires a context manager wrapped with SessionCheckout
-    # and needs accessing private methods, which leaks the details of the
-    # implementation in order to try to use it correctly.
-    pool = db._pool
-    session_checkout = spanner.pool.SessionCheckout(pool)
-    session = session_checkout.__enter__()
-    if not session.exists():
-        session.create()
-    return_session = lambda: session_checkout.__exit__() # noqa
-
-    return Connection(autocommit, db, session, return_session)
+    return Connection(db)
 
 
 __all__ = [
