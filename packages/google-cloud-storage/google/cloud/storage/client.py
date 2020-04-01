@@ -14,18 +14,28 @@
 
 """Client for interacting with the Google Cloud Storage API."""
 
-import warnings
+import base64
+import binascii
+import datetime
 import functools
+import json
+import warnings
 import google.api_core.client_options
 
 from google.auth.credentials import AnonymousCredentials
 
 from google.api_core import page_iterator
-from google.cloud._helpers import _LocalStack
+from google.cloud._helpers import _LocalStack, _NOW
 from google.cloud.client import ClientWithProject
 from google.cloud.exceptions import NotFound
 from google.cloud.storage._helpers import _get_storage_host
 from google.cloud.storage._http import Connection
+from google.cloud.storage._signing import (
+    get_expiration_seconds_v4,
+    get_v4_now_dtstamps,
+    ensure_signed_credentials,
+    _sign_message,
+)
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
 from google.cloud.storage.blob import Blob
@@ -835,6 +845,174 @@ class Client(ClientWithProject):
         metadata = HMACKeyMetadata(self, access_id, project_id, user_project)
         metadata.reload(timeout=timeout)  # raises NotFound for missing key
         return metadata
+
+    def generate_signed_post_policy_v4(
+        self,
+        bucket_name,
+        blob_name,
+        expiration,
+        conditions=None,
+        fields=None,
+        credentials=None,
+        virtual_hosted_style=False,
+        bucket_bound_hostname=None,
+        scheme=None,
+        service_account_email=None,
+        access_token=None,
+    ):
+        """Generate a V4 signed policy object.
+
+        .. note::
+
+            Assumes ``credentials`` implements the
+            :class:`google.auth.credentials.Signing` interface. Also assumes
+            ``credentials`` has a ``service_account_email`` property which
+            identifies the credentials.
+
+        Generated policy object allows user to upload objects with a POST request.
+
+        :type bucket_name: str
+        :param bucket_name: Bucket name.
+
+        :type blob_name: str
+        :param blob_name: Object name.
+
+        :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
+        :param expiration: Policy expiration time.
+
+        :type conditions: list
+        :param conditions: (Optional) List of POST policy conditions, which are
+                           used to restrict what is allowed in the request.
+
+        :type fields: dict
+        :param fields: (Optional) Additional elements to include into request.
+
+        :type credentials: :class:`google.auth.credentials.Signing`
+        :param credentials: (Optional) Credentials object with an associated private
+                            key to sign text.
+
+        :type virtual_hosted_style: bool
+        :param virtual_hosted_style: (Optional) If True, construct the URL relative to the bucket
+                                     virtual hostname, e.g., '<bucket-name>.storage.googleapis.com'.
+
+        :type bucket_bound_hostname: str
+        :param bucket_bound_hostname:
+            (Optional) If passed, construct the URL relative to the bucket-bound hostname.
+            Value can be bare or with a scheme, e.g., 'example.com' or 'http://example.com'.
+            See: https://cloud.google.com/storage/docs/request-endpoints#cname
+
+        :type scheme: str
+        :param scheme:
+            (Optional) If ``bucket_bound_hostname`` is passed as a bare hostname, use
+            this value as a scheme. ``https`` will work only when using a CDN.
+            Defaults to ``"http"``.
+
+        :type service_account_email: str
+        :param service_account_email: (Optional) E-mail address of the service account.
+
+        :type access_token: str
+        :param access_token: (Optional) Access token for a service account.
+
+        :rtype: dict
+        :returns: Signed POST policy.
+
+        Example:
+            Generate signed POST policy and upload a file.
+
+            >>> from google.cloud import storage
+            >>> client = storage.Client()
+            >>> policy = client.generate_signed_post_policy_v4(
+                "bucket-name",
+                "blob-name",
+                expiration=datetime.datetime(2020, 3, 17),
+                conditions=[
+                    ["content-length-range", 0, 255]
+                ],
+                fields=[
+                    "x-goog-meta-hello" => "world"
+                ],
+            )
+            >>> with open("bucket-name", "rb") as f:
+                files = {"file": ("bucket-name", f)}
+                requests.post(policy["url"], data=policy["fields"], files=files)
+        """
+        credentials = self._credentials if credentials is None else credentials
+        ensure_signed_credentials(credentials)
+
+        # prepare policy conditions and fields
+        timestamp, datestamp = get_v4_now_dtstamps()
+
+        x_goog_credential = "{email}/{datestamp}/auto/storage/goog4_request".format(
+            email=credentials.signer_email, datestamp=datestamp
+        )
+        required_conditions = [
+            {"key": blob_name},
+            {"x-goog-date": timestamp},
+            {"x-goog-credential": x_goog_credential},
+            {"x-goog-algorithm": "GOOG4-RSA-SHA256"},
+        ]
+
+        conditions = conditions or []
+        policy_fields = {}
+        for key, value in sorted((fields or {}).items()):
+            if not key.startswith("x-ignore-"):
+                policy_fields[key] = value
+                conditions.append({key: value})
+
+        conditions += required_conditions
+
+        # calculate policy expiration time
+        now = _NOW()
+        if expiration is None:
+            expiration = now + datetime.timedelta(hours=1)
+
+        policy_expires = now + datetime.timedelta(
+            seconds=get_expiration_seconds_v4(expiration)
+        )
+
+        # encode policy for signing
+        policy = json.dumps(
+            {"conditions": conditions, "expiration": policy_expires.isoformat() + "Z"},
+            separators=(",", ":"),
+        )
+        str_to_sign = base64.b64encode(policy.encode("utf-8"))
+
+        # sign the policy and get its cryptographic signature
+        if access_token and service_account_email:
+            signature = _sign_message(str_to_sign, access_token, service_account_email)
+            signature_bytes = base64.b64decode(signature)
+        else:
+            signature_bytes = credentials.sign_bytes(str_to_sign)
+
+        # get hexadecimal representation of the signature
+        signature = binascii.hexlify(signature_bytes).decode("utf-8")
+
+        policy_fields.update(
+            {
+                "key": blob_name,
+                "x-goog-algorithm": "GOOG4-RSA-SHA256",
+                "x-goog-credential": x_goog_credential,
+                "x-goog-date": timestamp,
+                "x-goog-signature": signature,
+                "policy": str_to_sign,
+            }
+        )
+        # designate URL
+        if virtual_hosted_style:
+            url = "https://{}.storage.googleapis.com/".format(bucket_name)
+
+        elif bucket_bound_hostname:
+            if ":" in bucket_bound_hostname:  # URL includes scheme
+                url = bucket_bound_hostname
+
+            else:  # scheme is given separately
+                url = "{scheme}://{host}/".format(
+                    scheme=scheme, host=bucket_bound_hostname
+                )
+        else:
+            url = "https://storage.googleapis.com/{}/".format(bucket_name)
+
+        return {"url": url, "fields": policy_fields}
 
 
 def _item_to_bucket(iterator, item):

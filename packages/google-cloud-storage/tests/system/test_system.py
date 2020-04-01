@@ -1955,3 +1955,67 @@ class TestIAMConfiguration(unittest.TestCase):
 
         self.assertEqual(bucket_acl_before, bucket_acl_after)
         self.assertEqual(blob_acl_before, blob_acl_after)
+
+
+class TestV4POSTPolicies(unittest.TestCase):
+    def setUp(self):
+        self.case_buckets_to_delete = []
+
+    def tearDown(self):
+        for bucket_name in self.case_buckets_to_delete:
+            bucket = Config.CLIENT.bucket(bucket_name)
+            retry_429_harder(bucket.delete)(force=True)
+
+    def test_get_signed_policy_v4(self):
+        bucket_name = "post_policy" + unique_resource_id("-")
+        self.assertRaises(exceptions.NotFound, Config.CLIENT.get_bucket, bucket_name)
+        retry_429_503(Config.CLIENT.create_bucket)(bucket_name)
+        self.case_buckets_to_delete.append(bucket_name)
+
+        blob_name = "post_policy_obj.txt"
+        with open(blob_name, "w") as f:
+            f.write("DEADBEEF")
+
+        policy = Config.CLIENT.generate_signed_post_policy_v4(
+            bucket_name,
+            blob_name,
+            conditions=[
+                {"bucket": bucket_name},
+                ["starts-with", "$Content-Type", "text/pla"],
+            ],
+            expiration=datetime.datetime.now() + datetime.timedelta(hours=1),
+            fields={"content-type": "text/plain"},
+        )
+        with open(blob_name, "r") as f:
+            files = {"file": (blob_name, f)}
+            response = requests.post(policy["url"], data=policy["fields"], files=files)
+
+        os.remove(blob_name)
+        self.assertEqual(response.status_code, 204)
+
+    def test_get_signed_policy_v4_invalid_field(self):
+        bucket_name = "post_policy" + unique_resource_id("-")
+        self.assertRaises(exceptions.NotFound, Config.CLIENT.get_bucket, bucket_name)
+        retry_429_503(Config.CLIENT.create_bucket)(bucket_name)
+        self.case_buckets_to_delete.append(bucket_name)
+
+        blob_name = "post_policy_obj.txt"
+        with open(blob_name, "w") as f:
+            f.write("DEADBEEF")
+
+        policy = Config.CLIENT.generate_signed_post_policy_v4(
+            bucket_name,
+            blob_name,
+            conditions=[
+                {"bucket": bucket_name},
+                ["starts-with", "$Content-Type", "text/pla"],
+            ],
+            expiration=datetime.datetime.now() + datetime.timedelta(hours=1),
+            fields={"x-goog-random": "invalid_field", "content-type": "text/plain"},
+        )
+        with open(blob_name, "r") as f:
+            files = {"file": (blob_name, f)}
+            response = requests.post(policy["url"], data=policy["fields"], files=files)
+
+        os.remove(blob_name)
+        self.assertEqual(response.status_code, 400)

@@ -18,9 +18,7 @@ import base64
 import binascii
 import calendar
 import datetime
-import io
 import json
-import os
 import time
 import unittest
 
@@ -29,12 +27,7 @@ import pytest
 import six
 from six.moves import urllib_parse
 
-
-def _read_local_json(json_file):
-    here = os.path.dirname(__file__)
-    json_path = os.path.abspath(os.path.join(here, json_file))
-    with io.open(json_path, "r", encoding="utf-8-sig") as fileobj:
-        return json.load(fileobj)
+from . import _read_local_json
 
 
 _SERVICE_ACCOUNT_JSON = _read_local_json("url_signer_v4_test_account.json")
@@ -760,6 +753,22 @@ class TestQuoteParam(unittest.TestCase):
         encoded_param = _quote_param(b"bytes")
         self.assertIsInstance(encoded_param, str)
         self.assertEqual(encoded_param, "bytes")
+
+
+class TestV4Stamps(unittest.TestCase):
+    def test_get_v4_now_dtstamps(self):
+        import datetime
+        from google.cloud.storage._signing import get_v4_now_dtstamps
+
+        with mock.patch(
+            "google.cloud.storage._signing.NOW",
+            return_value=datetime.datetime(2020, 3, 12, 13, 14, 15),
+        ) as now_mock:
+            timestamp, datestamp = get_v4_now_dtstamps()
+            now_mock.assert_called_once()
+
+        self.assertEqual(timestamp, "20200312T131415Z")
+        self.assertEqual(datestamp, "20200312")
 
 
 _DUMMY_SERVICE_ACCOUNT = None

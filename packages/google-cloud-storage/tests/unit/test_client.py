@@ -12,20 +12,43 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import base64
 import io
 import json
-import unittest
-
 import mock
 import pytest
+import re
 import requests
+import unittest
 from six.moves import http_client
+
+from google.oauth2.service_account import Credentials
+from . import _read_local_json
+
+_SERVICE_ACCOUNT_JSON = _read_local_json("url_signer_v4_test_account.json")
+_CONFORMANCE_TESTS = _read_local_json("url_signer_v4_test_data.json")
+_POST_POLICY_TESTS = [test for test in _CONFORMANCE_TESTS if "policyInput" in test]
+_DUMMY_CREDENTIALS = Credentials.from_service_account_info(_SERVICE_ACCOUNT_JSON)
 
 
 def _make_credentials():
     import google.auth.credentials
 
     return mock.Mock(spec=google.auth.credentials.Credentials)
+
+
+def _create_signing_credentials():
+    import google.auth.credentials
+
+    class _SigningCredentials(
+        google.auth.credentials.Credentials, google.auth.credentials.Signing
+    ):
+        pass
+
+    credentials = mock.Mock(spec=_SigningCredentials)
+    credentials.sign_bytes = mock.Mock(return_value=b"Signature_bytes")
+    credentials.signer_email = "test@mail.com"
+    return credentials
 
 
 def _make_connection(*responses):
@@ -1471,3 +1494,322 @@ class TestClient(unittest.TestCase):
             headers=mock.ANY,
             timeout=self._get_default_timeout(),
         )
+
+    def test_get_signed_policy_v4(self):
+        import datetime
+
+        BUCKET_NAME = "bucket-name"
+        BLOB_NAME = "object-name"
+        EXPECTED_SIGN = "5369676e61747572655f6279746573"
+        EXPECTED_POLICY = b"eyJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJidWNrZXQtbmFtZSJ9LHsiYWNsIjoicHJpdmF0ZSJ9LFsic3RhcnRzLXdpdGgiLCIkQ29udGVudC1UeXBlIiwidGV4dC9wbGFpbiJdLHsia2V5Ijoib2JqZWN0LW5hbWUifSx7IngtZ29vZy1kYXRlIjoiMjAyMDAzMTJUMTE0NzE2WiJ9LHsieC1nb29nLWNyZWRlbnRpYWwiOiJ0ZXN0QG1haWwuY29tLzIwMjAwMzEyL2F1dG8vc3RvcmFnZS9nb29nNF9yZXF1ZXN0In0seyJ4LWdvb2ctYWxnb3JpdGhtIjoiR09PRzQtUlNBLVNIQTI1NiJ9XSwiZXhwaXJhdGlvbiI6IjIwMjAtMDMtMjZUMDA6MDA6MTBaIn0="
+
+        client = self._make_one(project="PROJECT")
+
+        dtstamps_patch, now_patch, expire_secs_patch = _time_functions_patches()
+        with dtstamps_patch, now_patch, expire_secs_patch:
+            policy = client.generate_signed_post_policy_v4(
+                BUCKET_NAME,
+                BLOB_NAME,
+                expiration=datetime.datetime(2020, 3, 12),
+                conditions=[
+                    {"bucket": BUCKET_NAME},
+                    {"acl": "private"},
+                    ["starts-with", "$Content-Type", "text/plain"],
+                ],
+                credentials=_create_signing_credentials(),
+            )
+        self.assertEqual(
+            policy["url"], "https://storage.googleapis.com/" + BUCKET_NAME + "/"
+        )
+        fields = policy["fields"]
+
+        self.assertEqual(fields["key"], BLOB_NAME)
+        self.assertEqual(fields["x-goog-algorithm"], "GOOG4-RSA-SHA256")
+        self.assertEqual(fields["x-goog-date"], "20200312T114716Z")
+        self.assertEqual(
+            fields["x-goog-credential"],
+            "test@mail.com/20200312/auto/storage/goog4_request",
+        )
+        self.assertEqual(fields["x-goog-signature"], EXPECTED_SIGN)
+        self.assertEqual(fields["policy"], EXPECTED_POLICY)
+
+    def test_get_signed_policy_v4_without_credentials(self):
+        import datetime
+
+        BUCKET_NAME = "bucket-name"
+        BLOB_NAME = "object-name"
+        EXPECTED_SIGN = "5369676e61747572655f6279746573"
+        EXPECTED_POLICY = b"eyJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJidWNrZXQtbmFtZSJ9LHsiYWNsIjoicHJpdmF0ZSJ9LFsic3RhcnRzLXdpdGgiLCIkQ29udGVudC1UeXBlIiwidGV4dC9wbGFpbiJdLHsia2V5Ijoib2JqZWN0LW5hbWUifSx7IngtZ29vZy1kYXRlIjoiMjAyMDAzMTJUMTE0NzE2WiJ9LHsieC1nb29nLWNyZWRlbnRpYWwiOiJ0ZXN0QG1haWwuY29tLzIwMjAwMzEyL2F1dG8vc3RvcmFnZS9nb29nNF9yZXF1ZXN0In0seyJ4LWdvb2ctYWxnb3JpdGhtIjoiR09PRzQtUlNBLVNIQTI1NiJ9XSwiZXhwaXJhdGlvbiI6IjIwMjAtMDMtMjZUMDA6MDA6MTBaIn0="
+
+        client = self._make_one(
+            project="PROJECT", credentials=_create_signing_credentials()
+        )
+
+        dtstamps_patch, now_patch, expire_secs_patch = _time_functions_patches()
+        with dtstamps_patch, now_patch, expire_secs_patch:
+            policy = client.generate_signed_post_policy_v4(
+                BUCKET_NAME,
+                BLOB_NAME,
+                expiration=datetime.datetime(2020, 3, 12),
+                conditions=[
+                    {"bucket": BUCKET_NAME},
+                    {"acl": "private"},
+                    ["starts-with", "$Content-Type", "text/plain"],
+                ],
+            )
+        self.assertEqual(
+            policy["url"], "https://storage.googleapis.com/" + BUCKET_NAME + "/"
+        )
+        fields = policy["fields"]
+
+        self.assertEqual(fields["key"], BLOB_NAME)
+        self.assertEqual(fields["x-goog-algorithm"], "GOOG4-RSA-SHA256")
+        self.assertEqual(fields["x-goog-date"], "20200312T114716Z")
+        self.assertEqual(
+            fields["x-goog-credential"],
+            "test@mail.com/20200312/auto/storage/goog4_request",
+        )
+        self.assertEqual(fields["x-goog-signature"], EXPECTED_SIGN)
+        self.assertEqual(fields["policy"], EXPECTED_POLICY)
+
+    def test_get_signed_policy_v4_with_fields(self):
+        import datetime
+
+        BUCKET_NAME = "bucket-name"
+        BLOB_NAME = "object-name"
+        FIELD1_VALUE = "Value1"
+        EXPECTED_SIGN = "5369676e61747572655f6279746573"
+        EXPECTED_POLICY = b"eyJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJidWNrZXQtbmFtZSJ9LHsiYWNsIjoicHJpdmF0ZSJ9LFsic3RhcnRzLXdpdGgiLCIkQ29udGVudC1UeXBlIiwidGV4dC9wbGFpbiJdLHsiZmllbGQxIjoiVmFsdWUxIn0seyJrZXkiOiJvYmplY3QtbmFtZSJ9LHsieC1nb29nLWRhdGUiOiIyMDIwMDMxMlQxMTQ3MTZaIn0seyJ4LWdvb2ctY3JlZGVudGlhbCI6InRlc3RAbWFpbC5jb20vMjAyMDAzMTIvYXV0by9zdG9yYWdlL2dvb2c0X3JlcXVlc3QifSx7IngtZ29vZy1hbGdvcml0aG0iOiJHT09HNC1SU0EtU0hBMjU2In1dLCJleHBpcmF0aW9uIjoiMjAyMC0wMy0yNlQwMDowMDoxMFoifQ=="
+
+        client = self._make_one(project="PROJECT")
+
+        dtstamps_patch, now_patch, expire_secs_patch = _time_functions_patches()
+        with dtstamps_patch, now_patch, expire_secs_patch:
+            policy = client.generate_signed_post_policy_v4(
+                BUCKET_NAME,
+                BLOB_NAME,
+                expiration=datetime.datetime(2020, 3, 12),
+                conditions=[
+                    {"bucket": BUCKET_NAME},
+                    {"acl": "private"},
+                    ["starts-with", "$Content-Type", "text/plain"],
+                ],
+                fields={"field1": FIELD1_VALUE, "x-ignore-field": "Ignored_value"},
+                credentials=_create_signing_credentials(),
+            )
+        self.assertEqual(
+            policy["url"], "https://storage.googleapis.com/" + BUCKET_NAME + "/"
+        )
+        fields = policy["fields"]
+
+        self.assertEqual(fields["key"], BLOB_NAME)
+        self.assertEqual(fields["x-goog-algorithm"], "GOOG4-RSA-SHA256")
+        self.assertEqual(fields["x-goog-date"], "20200312T114716Z")
+        self.assertEqual(fields["field1"], FIELD1_VALUE)
+        self.assertNotIn("x-ignore-field", fields.keys())
+        self.assertEqual(
+            fields["x-goog-credential"],
+            "test@mail.com/20200312/auto/storage/goog4_request",
+        )
+        self.assertEqual(fields["x-goog-signature"], EXPECTED_SIGN)
+        self.assertEqual(fields["policy"], EXPECTED_POLICY)
+
+    def test_get_signed_policy_v4_virtual_hosted_style(self):
+        import datetime
+
+        BUCKET_NAME = "bucket-name"
+
+        client = self._make_one(project="PROJECT")
+
+        dtstamps_patch, _, _ = _time_functions_patches()
+        with dtstamps_patch:
+            policy = client.generate_signed_post_policy_v4(
+                BUCKET_NAME,
+                "object-name",
+                expiration=datetime.datetime(2020, 3, 12),
+                virtual_hosted_style=True,
+                credentials=_create_signing_credentials(),
+            )
+        self.assertEqual(
+            policy["url"], "https://{}.storage.googleapis.com/".format(BUCKET_NAME)
+        )
+
+    def test_get_signed_policy_v4_bucket_bound_hostname(self):
+        import datetime
+
+        client = self._make_one(project="PROJECT")
+
+        dtstamps_patch, _, _ = _time_functions_patches()
+        with dtstamps_patch:
+            policy = client.generate_signed_post_policy_v4(
+                "bucket-name",
+                "object-name",
+                expiration=datetime.datetime(2020, 3, 12),
+                bucket_bound_hostname="https://bucket.bound_hostname",
+                credentials=_create_signing_credentials(),
+            )
+        self.assertEqual(policy["url"], "https://bucket.bound_hostname")
+
+    def test_get_signed_policy_v4_bucket_bound_hostname_with_scheme(self):
+        import datetime
+
+        client = self._make_one(project="PROJECT")
+
+        dtstamps_patch, _, _ = _time_functions_patches()
+        with dtstamps_patch:
+            policy = client.generate_signed_post_policy_v4(
+                "bucket-name",
+                "object-name",
+                expiration=datetime.datetime(2020, 3, 12),
+                bucket_bound_hostname="bucket.bound_hostname",
+                scheme="http",
+                credentials=_create_signing_credentials(),
+            )
+        self.assertEqual(policy["url"], "http://bucket.bound_hostname/")
+
+    def test_get_signed_policy_v4_no_expiration(self):
+        BUCKET_NAME = "bucket-name"
+        EXPECTED_POLICY = b"eyJjb25kaXRpb25zIjpbeyJrZXkiOiJvYmplY3QtbmFtZSJ9LHsieC1nb29nLWRhdGUiOiIyMDIwMDMxMlQxMTQ3MTZaIn0seyJ4LWdvb2ctY3JlZGVudGlhbCI6InRlc3RAbWFpbC5jb20vMjAyMDAzMTIvYXV0by9zdG9yYWdlL2dvb2c0X3JlcXVlc3QifSx7IngtZ29vZy1hbGdvcml0aG0iOiJHT09HNC1SU0EtU0hBMjU2In1dLCJleHBpcmF0aW9uIjoiMjAyMC0wMy0yNlQwMDowMDoxMFoifQ=="
+
+        client = self._make_one(project="PROJECT")
+
+        dtstamps_patch, now_patch, expire_secs_patch = _time_functions_patches()
+        with dtstamps_patch, now_patch, expire_secs_patch:
+            policy = client.generate_signed_post_policy_v4(
+                BUCKET_NAME,
+                "object-name",
+                expiration=None,
+                credentials=_create_signing_credentials(),
+            )
+
+        self.assertEqual(
+            policy["url"], "https://storage.googleapis.com/" + BUCKET_NAME + "/"
+        )
+        self.assertEqual(policy["fields"]["policy"], EXPECTED_POLICY)
+
+    def test_get_signed_policy_v4_with_access_token(self):
+        import datetime
+
+        BUCKET_NAME = "bucket-name"
+        BLOB_NAME = "object-name"
+        EXPECTED_SIGN = "0c4003044105"
+        EXPECTED_POLICY = b"eyJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJidWNrZXQtbmFtZSJ9LHsiYWNsIjoicHJpdmF0ZSJ9LFsic3RhcnRzLXdpdGgiLCIkQ29udGVudC1UeXBlIiwidGV4dC9wbGFpbiJdLHsia2V5Ijoib2JqZWN0LW5hbWUifSx7IngtZ29vZy1kYXRlIjoiMjAyMDAzMTJUMTE0NzE2WiJ9LHsieC1nb29nLWNyZWRlbnRpYWwiOiJ0ZXN0QG1haWwuY29tLzIwMjAwMzEyL2F1dG8vc3RvcmFnZS9nb29nNF9yZXF1ZXN0In0seyJ4LWdvb2ctYWxnb3JpdGhtIjoiR09PRzQtUlNBLVNIQTI1NiJ9XSwiZXhwaXJhdGlvbiI6IjIwMjAtMDMtMjZUMDA6MDA6MTBaIn0="
+
+        client = self._make_one(project="PROJECT")
+
+        dtstamps_patch, now_patch, expire_secs_patch = _time_functions_patches()
+        with dtstamps_patch, now_patch, expire_secs_patch:
+            with mock.patch(
+                "google.cloud.storage.client._sign_message", return_value=b"DEADBEEF"
+            ):
+                policy = client.generate_signed_post_policy_v4(
+                    BUCKET_NAME,
+                    BLOB_NAME,
+                    expiration=datetime.datetime(2020, 3, 12),
+                    conditions=[
+                        {"bucket": BUCKET_NAME},
+                        {"acl": "private"},
+                        ["starts-with", "$Content-Type", "text/plain"],
+                    ],
+                    credentials=_create_signing_credentials(),
+                    service_account_email="test@mail.com",
+                    access_token="token",
+                )
+        self.assertEqual(
+            policy["url"], "https://storage.googleapis.com/" + BUCKET_NAME + "/"
+        )
+        fields = policy["fields"]
+
+        self.assertEqual(fields["key"], BLOB_NAME)
+        self.assertEqual(fields["x-goog-algorithm"], "GOOG4-RSA-SHA256")
+        self.assertEqual(fields["x-goog-date"], "20200312T114716Z")
+        self.assertEqual(
+            fields["x-goog-credential"],
+            "test@mail.com/20200312/auto/storage/goog4_request",
+        )
+        self.assertEqual(fields["x-goog-signature"], EXPECTED_SIGN)
+        self.assertEqual(fields["policy"], EXPECTED_POLICY)
+
+
+@pytest.mark.parametrize("test_data", _POST_POLICY_TESTS)
+def test_conformance_post_policy(test_data):
+    import datetime
+    from google.cloud.storage.client import Client
+
+    in_data = test_data["policyInput"]
+    timestamp = datetime.datetime.strptime(in_data["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
+
+    client = Client(credentials=_DUMMY_CREDENTIALS)
+
+    # mocking time functions
+    with mock.patch("google.cloud.storage._signing.NOW", return_value=timestamp):
+        with mock.patch(
+            "google.cloud.storage.client.get_expiration_seconds_v4",
+            return_value=in_data["expiration"],
+        ):
+            with mock.patch("google.cloud.storage.client._NOW", return_value=timestamp):
+
+                policy = client.generate_signed_post_policy_v4(
+                    bucket_name=in_data["bucket"],
+                    blob_name=in_data["object"],
+                    conditions=_prepare_conditions(in_data),
+                    fields=in_data.get("fields"),
+                    credentials=_DUMMY_CREDENTIALS,
+                    expiration=in_data["expiration"],
+                    virtual_hosted_style=in_data.get("urlStyle")
+                    == "VIRTUAL_HOSTED_STYLE",
+                    bucket_bound_hostname=in_data.get("bucketBoundHostname"),
+                    scheme=in_data.get("scheme"),
+                )
+    fields = policy["fields"]
+
+    for field in (
+        "x-goog-algorithm",
+        "x-goog-credential",
+        "x-goog-date",
+        "x-goog-signature",
+    ):
+        assert fields[field] == test_data["policyOutput"]["fields"][field]
+
+    out_data = test_data["policyOutput"]
+    decoded_policy = base64.b64decode(fields["policy"]).decode("unicode_escape")
+    assert decoded_policy == out_data["expectedDecodedPolicy"]
+    assert policy["url"] == out_data["url"]
+
+
+def _prepare_conditions(in_data):
+    """Helper for V4 POST policy generation conformance tests.
+
+    Convert conformance test data conditions dict into list.
+
+    Args:
+        in_data (dict): conditions arg from conformance test data.
+
+    Returns:
+        list: conditions arg to pass into generate_signed_post_policy_v4().
+    """
+    if "conditions" in in_data:
+        conditions = []
+        for key, value in in_data["conditions"].items():
+            # camel case to snake case with "-" separator
+            field = re.sub(r"(?<!^)(?=[A-Z])", "-", key).lower()
+            conditions.append([field] + value)
+
+        return conditions
+
+
+def _time_functions_patches():
+    """Helper for POST policy generation - returns all necessary time functions patches."""
+    import datetime
+
+    dtstamps_patch = mock.patch(
+        "google.cloud.storage.client.get_v4_now_dtstamps",
+        return_value=("20200312T114716Z", "20200312"),
+    )
+    now_patch = mock.patch(
+        "google.cloud.storage.client._NOW", return_value=datetime.datetime(2020, 3, 26)
+    )
+    expire_secs_patch = mock.patch(
+        "google.cloud.storage.client.get_expiration_seconds_v4", return_value=10
+    )
+    return dtstamps_patch, now_patch, expire_secs_patch
