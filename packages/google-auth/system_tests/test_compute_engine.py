@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from datetime import datetime
+
 import pytest
 
 import google.auth
@@ -61,8 +63,9 @@ def test_id_token_from_metadata(http_request):
     credentials.refresh(http_request)
 
     _, payload, _, _ = jwt._unverified_decode(credentials.token)
+    assert credentials.valid
     assert payload["aud"] == AUDIENCE
-    assert payload["exp"] == credentials.expiry
+    assert datetime.fromtimestamp(payload["exp"]) == credentials.expiry
 
 
 def test_fetch_id_token(http_request):
