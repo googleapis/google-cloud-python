@@ -291,7 +291,21 @@ Impersonated ::
                                       target_credentials,
                                       target_audience=target_audience)
 
-IDToken verification can be done for various type of IDTokens using the :class:`google.oauth2.id_token` module 
+IDToken verification can be done for various type of IDTokens using the
+:class:`google.oauth2.id_token` module. It supports ID token signed with RS256
+and ES256 algorithms. However, ES256 algorithm won't be available unless
+`cryptography` dependency of version at least 1.4.0 is installed. You can check
+the dependency with `pip freeze` or try `from google.auth.crypt import es256`.
+The following is an example of verifying ID tokens:
+
+    from google.auth2 import id_token
+
+    request = google.auth.transport.requests.Request()
+
+    try:
+      decoded_token = id_token.verify_token(token_to_verify,request)
+    except ValueError:
+      # Verification failed.
 
 A sample end-to-end flow using an ID Token against a Cloud Run endpoint maybe ::
 

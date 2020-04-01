@@ -12,4 +12,5 @@ Submodules
 .. toctree::
 
    google.auth.crypt.base
+   google.auth.crypt.es256
    google.auth.crypt.rsa
