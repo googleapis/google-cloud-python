@@ -200,7 +200,7 @@ def default_explicit_service_account(session):
     session.env[EXPECT_PROJECT_ENV] = "1"
     session.install(*TEST_DEPENDENCIES)
     session.install(LIBRARY_DIR)
-    session.run("pytest", "test_default.py")
+    session.run("pytest", "test_default.py", "test_id_token.py")
 
 
 @nox.session(python=PYTHON_VERSIONS)
