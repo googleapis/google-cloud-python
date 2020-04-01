@@ -14,6 +14,7 @@
 
 import datetime
 import functools
+import sys
 
 import freezegun
 import mock
@@ -23,6 +24,7 @@ import requests
 import requests.adapters
 from six.moves import http_client
 
+from google.auth import exceptions
 import google.auth.credentials
 import google.auth.transport._mtls_helper
 import google.auth.transport.requests
@@ -414,3 +416,21 @@ class TestAuthorizedSession(object):
 
         # Assert _MutualTlsAdapter constructor is not called.
         mock_adapter_ctor.assert_not_called()
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
+    )
+    def test_configure_mtls_channel_exceptions(self, mock_get_client_cert_and_key):
+        mock_get_client_cert_and_key.side_effect = ValueError()
+
+        auth_session = google.auth.transport.requests.AuthorizedSession(
+            credentials=mock.Mock()
+        )
+        with pytest.raises(exceptions.MutualTLSChannelError):
+            auth_session.configure_mtls_channel()
+
+        mock_get_client_cert_and_key.return_value = (False, None, None)
+        with mock.patch.dict("sys.modules"):
+            sys.modules["OpenSSL"] = None
+            with pytest.raises(exceptions.MutualTLSChannelError):
+                auth_session.configure_mtls_channel()

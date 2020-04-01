@@ -355,23 +355,32 @@ class AuthorizedSession(requests.Session):
                 will be used.
 
         Raises:
-            ImportError: If certifi or pyOpenSSL is not installed.
-            OpenSSL.crypto.Error: If client cert or key is invalid.
-            OSError: If the cert provider command launch fails during the
-                application default SSL credentials loading process.
-            RuntimeError: If the cert provider command has a runtime error during
-                the application default SSL credentials loading process.
-            ValueError: If the context aware metadata file is malformed or the
-                cert provider command doesn't produce both client certicate and
-                key during the application default SSL credentials loading process.
+            google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
+                creation failed for any reason.
         """
-        self._is_mtls, cert, key = google.auth.transport._mtls_helper.get_client_cert_and_key(
-            client_cert_callback
-        )
+        try:
+            import OpenSSL
+        except ImportError as caught_exc:
+            new_exc = exceptions.MutualTLSChannelError(caught_exc)
+            six.raise_from(new_exc, caught_exc)
 
-        if self._is_mtls:
-            mtls_adapter = _MutualTlsAdapter(cert, key)
-            self.mount("https://", mtls_adapter)
+        try:
+            self._is_mtls, cert, key = google.auth.transport._mtls_helper.get_client_cert_and_key(
+                client_cert_callback
+            )
+
+            if self._is_mtls:
+                mtls_adapter = _MutualTlsAdapter(cert, key)
+                self.mount("https://", mtls_adapter)
+        except (
+            ImportError,
+            OpenSSL.crypto.Error,
+            OSError,
+            RuntimeError,
+            ValueError,
+        ) as caught_exc:
+            new_exc = exceptions.MutualTLSChannelError(caught_exc)
+            six.raise_from(new_exc, caught_exc)
 
     def request(
         self,

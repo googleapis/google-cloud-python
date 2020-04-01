@@ -20,6 +20,7 @@ import logging
 
 import six
 
+from google.auth import exceptions
 from google.auth.transport import _mtls_helper
 
 try:
@@ -217,17 +218,8 @@ def secure_authorized_channel(
         grpc.Channel: The created gRPC channel.
 
     Raises:
-        OSError: If the cert provider command launch fails during the application
-            default SSL credentials loading process on devices with endpoint
-            verification support.
-        RuntimeError: If the cert provider command has a runtime error during the
-            application default SSL credentials loading process on devices with
-            endpoint verification support.
-        ValueError:
-            If the context aware metadata file is malformed or if the cert provider
-            command doesn't produce both client certificate and key during the
-            application default SSL credentials loading process on devices with
-            endpoint verification support.
+        google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
+            creation failed for any reason.
     """
     # Create the metadata plugin for inserting the authorization header.
     metadata_plugin = AuthMetadataPlugin(credentials, request)
@@ -293,20 +285,21 @@ class SslCredentials:
             grpc.ChannelCredentials: The created grpc channel credentials.
 
         Raises:
-            OSError: If the cert provider command launch fails.
-            RuntimeError: If the cert provider command has a runtime error.
-            ValueError:
-                If the context aware metadata file is malformed or if the cert provider
-                command doesn't produce both the client certificate and key.
+            google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
+                creation failed for any reason.
         """
         if self._context_aware_metadata_path:
-            metadata = _mtls_helper._read_dca_metadata_file(
-                self._context_aware_metadata_path
-            )
-            cert, key = _mtls_helper.get_client_ssl_credentials(metadata)
-            self._ssl_credentials = grpc.ssl_channel_credentials(
-                certificate_chain=cert, private_key=key
-            )
+            try:
+                metadata = _mtls_helper._read_dca_metadata_file(
+                    self._context_aware_metadata_path
+                )
+                cert, key = _mtls_helper.get_client_ssl_credentials(metadata)
+                self._ssl_credentials = grpc.ssl_channel_credentials(
+                    certificate_chain=cert, private_key=key
+                )
+            except (OSError, RuntimeError, ValueError) as caught_exc:
+                new_exc = exceptions.MutualTLSChannelError(caught_exc)
+                six.raise_from(new_exc, caught_exc)
         else:
             self._ssl_credentials = grpc.ssl_channel_credentials()
 

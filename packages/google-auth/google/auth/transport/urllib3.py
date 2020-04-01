@@ -297,24 +297,33 @@ class AuthorizedHttp(urllib3.request.RequestMethods):
             True if the channel is mutual TLS and False otherwise.
 
         Raises:
-            ImportError: If certifi or pyOpenSSL is not installed.
-            OpenSSL.crypto.Error: If client cert or key is invalid.
-            OSError: If the cert provider command launch fails during the
-                application default SSL credentials loading process.
-            RuntimeError: If the cert provider command has a runtime error during
-                the application default SSL credentials loading process.
-            ValueError: If the context aware metadata file is malformed or the
-                cert provider command doesn't produce both client certicate and
-                key during the application default SSL credentials loading process.
+            google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
+                creation failed for any reason.
         """
-        found_cert_key, cert, key = transport._mtls_helper.get_client_cert_and_key(
-            client_cert_callabck
-        )
+        try:
+            import OpenSSL
+        except ImportError as caught_exc:
+            new_exc = exceptions.MutualTLSChannelError(caught_exc)
+            six.raise_from(new_exc, caught_exc)
 
-        if found_cert_key:
-            self.http = _make_mutual_tls_http(cert, key)
-        else:
-            self.http = _make_default_http()
+        try:
+            found_cert_key, cert, key = transport._mtls_helper.get_client_cert_and_key(
+                client_cert_callabck
+            )
+
+            if found_cert_key:
+                self.http = _make_mutual_tls_http(cert, key)
+            else:
+                self.http = _make_default_http()
+        except (
+            ImportError,
+            OpenSSL.crypto.Error,
+            OSError,
+            RuntimeError,
+            ValueError,
+        ) as caught_exc:
+            new_exc = exceptions.MutualTLSChannelError(caught_exc)
+            six.raise_from(new_exc, caught_exc)
 
         if self._has_user_provided_http:
             self._has_user_provided_http = False

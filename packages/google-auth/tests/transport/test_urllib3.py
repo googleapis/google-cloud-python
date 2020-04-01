@@ -12,12 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
+
 import mock
 import OpenSSL
 import pytest
 from six.moves import http_client
 import urllib3
 
+from google.auth import exceptions
 import google.auth.credentials
 import google.auth.transport._mtls_helper
 import google.auth.transport.urllib3
@@ -221,3 +224,21 @@ class TestAuthorizedHttp(object):
         assert not is_mtls
         mock_get_client_cert_and_key.assert_called_once()
         mock_make_mutual_tls_http.assert_not_called()
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
+    )
+    def test_configure_mtls_channel_exceptions(self, mock_get_client_cert_and_key):
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials=mock.Mock()
+        )
+
+        mock_get_client_cert_and_key.side_effect = ValueError()
+        with pytest.raises(exceptions.MutualTLSChannelError):
+            authed_http.configure_mtls_channel()
+
+        mock_get_client_cert_and_key.return_value = (False, None, None)
+        with mock.patch.dict("sys.modules"):
+            sys.modules["OpenSSL"] = None
+            with pytest.raises(exceptions.MutualTLSChannelError):
+                authed_http.configure_mtls_channel()

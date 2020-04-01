@@ -21,6 +21,7 @@ import pytest
 
 from google.auth import _helpers
 from google.auth import credentials
+from google.auth import exceptions
 from google.auth import transport
 
 try:
@@ -315,7 +316,7 @@ class TestSslCredentials(object):
         # Mock that client cert and key are not loaded and exception is raised.
         mock_get_client_ssl_credentials.side_effect = ValueError()
 
-        with pytest.raises(ValueError):
+        with pytest.raises(exceptions.MutualTLSChannelError):
             assert google.auth.transport.grpc.SslCredentials().ssl_credentials
 
     def test_get_client_ssl_credentials_success(
