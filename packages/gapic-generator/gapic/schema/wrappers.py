@@ -32,7 +32,7 @@ import dataclasses
 import re
 from itertools import chain
 from typing import (cast, Dict, FrozenSet, Iterable, List, Mapping, Optional,
-                    Sequence, Set, Union)
+                    Sequence, Set, Tuple, Union)
 
 from google.api import annotations_pb2      # type: ignore
 from google.api import client_pb2
@@ -606,7 +606,7 @@ class Method:
         """Return the signature defined for this method."""
         cross_pkg_request = self.input.ident.package != self.ident.package
 
-        def filter_fields(sig):
+        def filter_fields(sig: str) -> Iterable[Tuple[str, Field]]:
             for f in sig.split(','):
                 if not f:
                     # Special case for an empty signature
