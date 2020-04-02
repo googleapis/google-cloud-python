@@ -37,16 +37,21 @@ python3.6 -m tox
 python3.6 -m isort --recursive --check-only --diff
 python3.6 -m flake8
 
-# Run with the Django test apps.
+# Export essential environment variables for Django tests.
 export RUNNING_SPANNER_BACKEND_TESTS=1
-export DJANGO_TEST_APPS="admin_changelist admin_custom_urls admin_docs admin_inlines admin_ordering aggregation aggregation_regress annotations backends basic bulk_create cache choices custom_columns indexes inline_formsets introspection invalid_models_tests known_related_objects lookup max_lengths m2m_and_m2o m2m_intermediary m2m_multiple m2m_recursive m2m_regress m2m_signals m2m_through m2m_through_regress m2o_recursive managers_regress many_to_many many_to_one many_to_one_null max_lengths migrate_signals migrations.test_operations migration_test_data_persistence"
+# Hardcode the max number of workers since Spanner has issues
+# with a very low QPS for administrative RPCs of 5QPS (averaged every 100 seconds)
+export DJANGO_WORKER_COUNT=4 # $(ls .kokoro/presubmit/worker* | wc -l)
 
 pip3 install .
-mkdir -p django_tests && git clone --depth 1 --single-branch --branch spanner-2.2.x https://github.com/timgraham/django.git django_tests/django
-# cd django_tests/django && pip3 install -e .; cd ../../
+# Create a unique DJANGO_TESTS_DIR per worker to avoid
+# any clashes with configured tests by other workers.
+export DJANGO_TESTS_DIR="django_tests_$DJANGO_WORKER_INDEX"
+mkdir -p $DJANGO_TESTS_DIR && git clone --depth 1 --single-branch --branch spanner-2.2.x https://github.com/timgraham/django.git $DJANGO_TESTS_DIR/django
 
 # Install dependencies for Django tests.
 sudo apt-get update
 apt-get install -y libffi-dev libjpeg-dev zlib1g-dev libmemcached-dev
-cd django_tests/django && pip3 install -e . && pip3 install -r tests/requirements/py3.txt; cd ../../
+cd $DJANGO_TESTS_DIR/django && pip3 install -e . && pip3 install -r tests/requirements/py3.txt; cd ../../
+
 ./bin/parallelize_tests_linux

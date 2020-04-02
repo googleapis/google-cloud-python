@@ -17,6 +17,7 @@ TEST_APPS=${DJANGO_TEST_APPS:-basic}
 INSTANCE=${SPANNER_TEST_INSTANCE:-django-tests}
 PROJECT=${PROJECT_ID:-appdev-soda-spanner-staging}
 SETTINGS_FILE="$TEST_DBNAME-settings"
+TESTS_DIR=${DJANGO_TESTS_DIR}
 
 create_settings() {
     cat << ! > "$SETTINGS_FILE.py"
@@ -42,7 +43,7 @@ PASSWORD_HASHERS = [
 }
 
 run_django_tests() {
-    cd django_tests/django/tests
+    cd $TESTS_DIR/django/tests
     create_settings
     echo -e "\033[32mRunning Django tests $TEST_APPS\033[00m"
     python3 runtests.py $TEST_APPS --verbosity=2 --noinput --settings $SETTINGS_FILE

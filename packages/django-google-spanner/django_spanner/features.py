@@ -272,4 +272,10 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # This test doesn't flush the database properly:
         # https://code.djangoproject.com/ticket/31398
         'multiple_database.tests.AuthTestCase',
+        # "Permission errors are not swallowed":
+        # https://github.com/googleapis/python-spanner-django/issues/407
+        'file_uploads.tests.DirectoryCreationTests.test_readonly_root',
+        # Migrations data  persistance issue to be investigated:
+        # https://github.com/googleapis/python-spanner-django/issues/408
+        'migration_test_data_persistence.tests.MigrationDataNormalPersistenceTestCase.test_persistence',
     )
