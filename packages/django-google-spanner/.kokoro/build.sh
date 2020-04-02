@@ -30,7 +30,14 @@ export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
 export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
 
 # Install tox
-python3.6 -m pip install --upgrade --quiet tox
+python3.6 -m pip install --upgrade --quiet tox flake8 isort
 python3.6 -m tox --version
 
 python3.6 -m tox
+python3.6 -m isort --recursive --check-only --diff
+python3.6 -m flake8
+
+# Run with the Django test apps.
+export RUNNING_SPANNER_BACKEND_TESTS=1
+export DJANGO_TEST_APPS="backends basic bulk_create choices custom_columns"
+bash django_test_suite.sh
