@@ -26,7 +26,9 @@ from google.oauth2.service_account import Credentials
 from . import _read_local_json
 
 _SERVICE_ACCOUNT_JSON = _read_local_json("url_signer_v4_test_account.json")
-_CONFORMANCE_TESTS = _read_local_json("url_signer_v4_test_data.json")
+_CONFORMANCE_TESTS = _read_local_json("url_signer_v4_test_data.json")[
+    "postPolicyV4Tests"
+]
 _POST_POLICY_TESTS = [test for test in _CONFORMANCE_TESTS if "policyInput" in test]
 _DUMMY_CREDENTIALS = Credentials.from_service_account_info(_SERVICE_ACCOUNT_JSON)
 

@@ -31,7 +31,7 @@ from . import _read_local_json
 
 
 _SERVICE_ACCOUNT_JSON = _read_local_json("url_signer_v4_test_account.json")
-_CONFORMANCE_TESTS = _read_local_json("url_signer_v4_test_data.json")
+_CONFORMANCE_TESTS = _read_local_json("url_signer_v4_test_data.json")["signingV4Tests"]
 _CLIENT_TESTS = [test for test in _CONFORMANCE_TESTS if "bucket" not in test]
 _BUCKET_TESTS = [
     test for test in _CONFORMANCE_TESTS if "bucket" in test and not test.get("object")

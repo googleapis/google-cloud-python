@@ -1,453 +1,457 @@
-﻿[
-    {
-        "description": "Simple GET",
-        "bucket": "test-bucket",
-        "object": "test-object",
-        "method": "GET",
-        "expiration": 10,
-        "timestamp": "20190201T090000Z",
-        "expectedUrl": "https://storage.googleapis.com/test-bucket/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=95e6a13d43a1d1962e667f17397f2b80ac9bdd1669210d5e08e0135df9dff4e56113485dbe429ca2266487b9d1796ebdee2d7cf682a6ef3bb9fbb4c351686fba90d7b621cf1c4eb1fdf126460dd25fa0837dfdde0a9fd98662ce60844c458448fb2b352c203d9969cb74efa4bdb742287744a4f2308afa4af0e0773f55e32e92973619249214b97283b2daa14195244444e33f938138d1e5f561088ce8011f4986dda33a556412594db7c12fc40e1ff3f1bedeb7a42f5bcda0b9567f17f65855f65071fabb88ea12371877f3f77f10e1466fff6ff6973b74a933322ff0949ce357e20abe96c3dd5cfab42c9c83e740a4d32b9e11e146f0eb3404d2e975896f74"
-    },
-
-    {
-        "description": "Simple PUT",
-        "bucket": "test-bucket",
-        "object": "test-object",
-        "method": "PUT",
-        "expiration": 10,
-        "timestamp": "20190201T090000Z",
-        "expectedUrl": "https://storage.googleapis.com/test-bucket/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=8adff1d4285739e31aa68e73767a46bc5511fde377497dbe08481bf5ceb34e29cc9a59921748d8ec3dd4085b7e9b7772a952afedfcdaecb3ae8352275b8b7c867f204e3db85076220a3127a8a9589302fc1181eae13b9b7fe41109ec8cdc93c1e8bac2d7a0cc32a109ca02d06957211326563ab3d3e678a0ba296e298b5fc5e14593c99d444c94724cc4be97015dbff1dca377b508fa0cb7169195de98d0e4ac96c42b918d28c8d92d33e1bd125ce0fb3cd7ad2c45dae65c22628378f6584971b8bf3945b26f2611eb651e9b6a8648970c1ecf386bb71327b082e7296c4e1ee2fc0bdd8983da80af375c817fb1ad491d0bc22c0f51dba0d66e2cffbc90803e47"
-    },
-
-    {
-        "description": "POST for resumable uploads",
-        "bucket": "test-bucket",
-        "object": "test-object",
-        "method": "POST",
-        "expiration": 10,
-        "headers": {
-            "x-goog-resumable": "start"
-        },
-        "timestamp": "20190201T090000Z",
-        "expectedUrl": "https://storage.googleapis.com/test-bucket/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host%3Bx-goog-resumable&X-Goog-Signature=4a6d39b23343cedf4c30782aed4b384001828c79ffa3a080a481ea01a640dea0a0ceb58d67a12cef3b243c3f036bb3799c6ee88e8db3eaf7d0bdd4b70a228d0736e07eaa1ee076aff5c6ce09dff1f1f03a0d8ead0d2893408dd3604fdabff553aa6d7af2da67cdba6790006a70240f96717b98f1a6ccb24f00940749599be7ef72aaa5358db63ddd54b2de9e2d6d6a586eac4fe25f36d86fc6ab150418e9c6fa01b732cded226c6d62fc95b72473a4cc55a8257482583fe66d9ab6ede909eb41516a8690946c3e87b0f2052eb0e97e012a14b2f721c42e6e19b8a1cd5658ea36264f10b9b1ada66b8ed5bf7ed7d1708377ac6e5fe608ae361fb594d2e5b24c54"
-    },
-
-    {
-        "description": "Vary expiration and timestamp",
-        "bucket": "test-bucket",
-        "object": "test-object",
-        "method": "GET",
-        "expiration": 20,
-        "timestamp": "20190301T090000Z",
-        "expectedUrl": "https://storage.googleapis.com/test-bucket/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190301%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190301T090000Z&X-Goog-Expires=20&X-Goog-SignedHeaders=host&X-Goog-Signature=9669ed5b10664dc594c758296580662912cf4bcc5a4ba0b6bf055bcbf6f34eed7bdad664f534962174a924741a0c273a4f67bc1847cef20192a6beab44223bd9d4fbbd749c407b79997598c30f82ddc269ff47ec09fa3afe74e00616d438df0d96a7d8ad0adacfad1dc3286f864d924fe919fb0dce45d3d975c5afe8e13af2db9cc37ba77835f92f7669b61e94c6d562196c1274529e76cfff1564cc2cad7d5387dc8e12f7a5dfd925685fe92c30b43709eee29fa2f66067472cee5423d1a3a4182fe8cea75c9329d181dc6acad7c393cd04f8bf5bc0515127d8ebd65d80c08e19ad03316053ea60033fd1b1fd85a69c576415da3bf0a3718d9ea6d03e0d66f0"
-    },
-
-    {
-        "description": "Vary bucket and object",
-        "bucket": "test-bucket2",
-        "object": "test-object2",
-        "method": "GET",
-        "expiration": 10,
-        "timestamp": "20190201T090000Z",
-        "expectedUrl": "https://storage.googleapis.com/test-bucket2/test-object2?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=36e3d58dfd3ec1d2dd2f24b5ee372a71e811ffaa2162a2b871d26728d0354270bc116face87127532969c4a3967ed05b7309af741e19c7202f3167aa8c2ac420b61417d6451442bb91d7c822cd17be8783f01e05372769c88913561d27e6660dd8259f0081a71f831be6c50283626cbf04494ac10c394b29bb3bce74ab91548f58a37118a452693cf0483d77561fc9cac8f1765d2c724994cca46a83517a10157ee0347a233a2aaeae6e6ab5e204ff8fc5f54f90a3efdb8301d9fff5475d58cd05b181affd657f48203f4fb133c3a3d355b8eefbd10d5a0a5fd70d06e9515460ad74e22334b2cba4b29cae4f6f285cdb92d8f3126d7a1479ca3bdb69c207d860"
-    },
-
-    {
-        "description": "Simple headers",
-        "bucket": "test-bucket",
-        "object": "test-object",
-        "headers": {
-            "foo": "foo-value",
-            "BAR": "BAR-value"
-        },
-        "method": "GET",
-        "expiration": 10,
-        "timestamp": "20190201T090000Z",
-        "expectedUrl": "https://storage.googleapis.com/test-bucket/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=bar%3Bfoo%3Bhost&X-Goog-Signature=68ecd3b008328ed30d91e2fe37444ed7b9b03f28ed4424555b5161980531ef87db1c3a5bc0265aad5640af30f96014c94fb2dba7479c41bfe1c020eb90c0c6d387d4dd09d4a5df8b60ea50eb6b01cdd786a1e37020f5f95eb8f9b6cd3f65a1f8a8a65c9fcb61ea662959efd9cd73b683f8d8804ef4d6d9b2852419b013368842731359d7f9e6d1139032ceca75d5e67cee5fd0192ea2125e5f2955d38d3d50cf116f3a52e6a62de77f6207f5b95aaa1d7d0f8a46de89ea72e7ea30f21286318d7eba0142232b0deb3a1dc9e1e812a981c66b5ffda3c6b01a8a9d113155792309fd53a3acfd054ca7776e8eec28c26480cd1e3c812f67f91d14217f39a606669d"
-    },
-
-    {
-        "description": "Headers should be trimmed",
-        "bucket": "test-bucket",
-        "object": "test-object",
-        "headers": {
-            "leading": "    xyz",
-            "trailing": "abc    ",
-            "collapsed": "abc    def"
-        },
-        "method": "GET",
-        "expiration": 10,
-        "timestamp": "20190201T090000Z",
-        "expectedUrl": "https://storage.googleapis.com/test-bucket/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=collapsed%3Bhost%3Bleading%3Btrailing&X-Goog-Signature=1839511d6238d9ac2bbcbba8b23515b3757db35dfa7b8f9bc4b8b4aa270224df747c812526f1a3bcf294d67ed84cd14e074c36bc090e0a542782934a7c925af4a5ea68123e97533704ce8b08ccdf5fe6b412f89c9fc4de243e29abdb098382c5672188ee3f6fef7131413e252c78e7a35658825ad842a50609e9cc463731e17284ff7a14824c989f87cef22fb99dfec20cfeed69d8b3a08f00b43b8284eecd535e50e982b05cd74c5750cd5f986cfc21a2a05f7f3ab7fc31bd684ed1b823b64d29281e923fc6580c49005552ca19c253de087d9d2df881144e44eda40965cfdb4889bf3a35553c9809f4ed20b8355be481b92b9618952b6a04f3017b36053e15"
-    },
-
-    {
-        "description": "Header value with multiple inline values",
-        "bucket": "test-bucket",
-        "object": "test-object",
-        "headers": {
-            "multiple": " xyz ,  abc, def  , xyz   "
-        },
-        "method": "GET",
-        "expiration": 10,
-        "timestamp": "20190201T090000Z",
-        "expectedUrl": "https://storage.googleapis.com/test-bucket/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host%3Bmultiple&X-Goog-Signature=5cc113735625341f59c7203f0c2c9febc95ba6af6b9c38814f8e523214712087dc0996e4960d273ae1889f248ac1e58d4d19cb3a69ad7670e9a8ca1b434e878f59339dc7006cf32dfd715337e9f593e0504371839174962a08294586e0c78160a7aa303397888c8350637c6af3b32ac310886cc4590bfda9ca561ee58fb5b8ec56bc606d2ada6e7df31f4276e9dcb96bcaea39dc2cd096f3fad774f9c4b30e317ad43736c05f76831437f44e8726c1e90d3f6c9827dc273f211f32fc85658dfc5d357eb606743a6b00a29e519eef1bebaf9db3e8f4b1f5f9afb648ad06e60bc42fa8b57025056697c874c9ea76f5a73201c9717ea43e54713ff3502ff3fc626b"
-    },
-
-    {
-        "description": "Customer-supplied encryption key",
-        "bucket": "test-bucket",
-        "object": "test-object",
-        "headers":
+﻿{
+    "signingV4Tests": [
         {
-            "X-Goog-Encryption-Key": "key",
-            "X-Goog-Encryption-Key-Sha256": "key-hash",
-            "X-Goog-Encryption-Algorithm": "AES256"
+            "description": "Simple GET",
+            "bucket": "test-bucket",
+            "object": "test-object",
+            "method": "GET",
+            "expiration": 10,
+            "timestamp": "20190201T090000Z",
+            "expectedUrl": "https://storage.googleapis.com/test-bucket/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=95e6a13d43a1d1962e667f17397f2b80ac9bdd1669210d5e08e0135df9dff4e56113485dbe429ca2266487b9d1796ebdee2d7cf682a6ef3bb9fbb4c351686fba90d7b621cf1c4eb1fdf126460dd25fa0837dfdde0a9fd98662ce60844c458448fb2b352c203d9969cb74efa4bdb742287744a4f2308afa4af0e0773f55e32e92973619249214b97283b2daa14195244444e33f938138d1e5f561088ce8011f4986dda33a556412594db7c12fc40e1ff3f1bedeb7a42f5bcda0b9567f17f65855f65071fabb88ea12371877f3f77f10e1466fff6ff6973b74a933322ff0949ce357e20abe96c3dd5cfab42c9c83e740a4d32b9e11e146f0eb3404d2e975896f74"
         },
-        "method": "GET",
-        "expiration": 10,
-        "timestamp": "20190201T090000Z",
-        "expectedUrl": "https://storage.googleapis.com/test-bucket/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host%3Bx-goog-encryption-algorithm%3Bx-goog-encryption-key%3Bx-goog-encryption-key-sha256&X-Goog-Signature=278a1c5a3bad248637054a047014760353942433955871031ed08f515b54588654ad033e91f046ab202b68673030e117d1b786c325e870238b035ba75b3feed560a17aff9bab6bddebd4a31a52cb68b214e27d3b0bd886502c6b36b164306fe88b5a07c6063592afe746b2a5d205dbe90dd5386b94f0a78f75d9f53ee884e18f476e8fc2eb1dd910ce0b4ae1f5d7b09876ef9bf983f539c028429e14bad3c75dbd4ed1ae37856f6d6f8a1805eaf8b52a0d6fc993902e4c1ee8de477661f7b67c3663000474cb00e178189789b2a3ed6bd21b4ade684fca8108ac4dd106acb17f5954d045775f7aa5a98ebda5d3075e11a8ea49c64c6ad1481e463e8c9f11f704"
-    },
 
-    {
-        "description": "List Objects",
-        "bucket": "test-bucket",
-        "object": "",
-        "method": "GET",
-        "expiration": 10,
-        "timestamp": "20190201T090000Z",
-        "expectedUrl": "https://storage.googleapis.com/test-bucket?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=6dbe94f8e52b2b8a9a476b1c857efa474e09944e2b52b925800316e094a7169d8dbe0df9c0ac08dabb22ac7e827470ceccd65f5a3eadba2a4fb9beebfe37f0d9bb1e552b851fa31a25045bdf019e507f5feb44f061551ef1aeb18dcec0e38ba2e2f77d560a46eaace9c56ed9aa642281301a9d848b0eb30749e34bc7f73a3d596240533466ff9b5f289cd0d4c845c7d96b82a35a5abd0c3aff83e4440ee6873e796087f43545544dc8c01afe1d79c726696b6f555371e491980e7ec145cca0803cf562c38f3fa1d724242f5dea25aac91d74ec9ddd739ff65523627763eaef25cd1f95ad985aaf0079b7c74eb5bcb2870a9b137a7b2c8e41fbe838c95872f75b"
-    },
+        {
+            "description": "Simple PUT",
+            "bucket": "test-bucket",
+            "object": "test-object",
+            "method": "PUT",
+            "expiration": 10,
+            "timestamp": "20190201T090000Z",
+            "expectedUrl": "https://storage.googleapis.com/test-bucket/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=8adff1d4285739e31aa68e73767a46bc5511fde377497dbe08481bf5ceb34e29cc9a59921748d8ec3dd4085b7e9b7772a952afedfcdaecb3ae8352275b8b7c867f204e3db85076220a3127a8a9589302fc1181eae13b9b7fe41109ec8cdc93c1e8bac2d7a0cc32a109ca02d06957211326563ab3d3e678a0ba296e298b5fc5e14593c99d444c94724cc4be97015dbff1dca377b508fa0cb7169195de98d0e4ac96c42b918d28c8d92d33e1bd125ce0fb3cd7ad2c45dae65c22628378f6584971b8bf3945b26f2611eb651e9b6a8648970c1ecf386bb71327b082e7296c4e1ee2fc0bdd8983da80af375c817fb1ad491d0bc22c0f51dba0d66e2cffbc90803e47"
+        },
 
-    {
-      "description": "HTTP Bucket Bound Hostname Support",
-      "bucket": "test-bucket",
-      "object": "test-object",
-      "method": "GET",
-      "expiration": 10,
-      "timestamp": "20190201T090000Z",
-      "expectedUrl": "http://mydomain.tld/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=7115a77f8c7ed1a8b74bca8b520904fca7f3bab90d69ea052687a94efd9b3a4e2a7fb7135d40e295e0a21958194c55da7e106227957c22ed6edc9d8b3d2a8133bc8af84fc9695dda8081d53f0db5ea9f28e5bfc225d78f873e9f571fd287bb7a95330e726aebd8eb4623cdb0b1a7ceb210b2ce1351b6be0191c2ad7b38f7ceb6c5ce2f98dbfb5a5a649050585e46e97f72f1f5407de657a56e34a3fdc80cdaa0598bd47f3e8af5ff22d0916b19b106890bff8c3f6587f1d3b076b16cd0ba0508607a672be33b9c75d537e15258450b43d22a21c4d528090acbb8e5bae7b31fc394e61394106ef1d6a8ed43074ab05bcec65674cd8113fb3de388da4d97e62f56",
-      "scheme": "http",
-      "urlStyle": "BUCKET_BOUND_HOSTNAME",
-      "bucketBoundHostname": "mydomain.tld"
-    },
+        {
+            "description": "POST for resumable uploads",
+            "bucket": "test-bucket",
+            "object": "test-object",
+            "method": "POST",
+            "expiration": 10,
+            "headers": {
+                "x-goog-resumable": "start"
+            },
+            "timestamp": "20190201T090000Z",
+            "expectedUrl": "https://storage.googleapis.com/test-bucket/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host%3Bx-goog-resumable&X-Goog-Signature=4a6d39b23343cedf4c30782aed4b384001828c79ffa3a080a481ea01a640dea0a0ceb58d67a12cef3b243c3f036bb3799c6ee88e8db3eaf7d0bdd4b70a228d0736e07eaa1ee076aff5c6ce09dff1f1f03a0d8ead0d2893408dd3604fdabff553aa6d7af2da67cdba6790006a70240f96717b98f1a6ccb24f00940749599be7ef72aaa5358db63ddd54b2de9e2d6d6a586eac4fe25f36d86fc6ab150418e9c6fa01b732cded226c6d62fc95b72473a4cc55a8257482583fe66d9ab6ede909eb41516a8690946c3e87b0f2052eb0e97e012a14b2f721c42e6e19b8a1cd5658ea36264f10b9b1ada66b8ed5bf7ed7d1708377ac6e5fe608ae361fb594d2e5b24c54"
+        },
 
-    {
-        "description": "HTTPS Bucket Bound Hostname Support",
-        "bucket": "test-bucket",
-        "object": "test-object",
-        "method": "GET",
-        "expiration": 10,
-        "timestamp": "20190201T090000Z",
-        "expectedUrl": "https://mydomain.tld/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=7115a77f8c7ed1a8b74bca8b520904fca7f3bab90d69ea052687a94efd9b3a4e2a7fb7135d40e295e0a21958194c55da7e106227957c22ed6edc9d8b3d2a8133bc8af84fc9695dda8081d53f0db5ea9f28e5bfc225d78f873e9f571fd287bb7a95330e726aebd8eb4623cdb0b1a7ceb210b2ce1351b6be0191c2ad7b38f7ceb6c5ce2f98dbfb5a5a649050585e46e97f72f1f5407de657a56e34a3fdc80cdaa0598bd47f3e8af5ff22d0916b19b106890bff8c3f6587f1d3b076b16cd0ba0508607a672be33b9c75d537e15258450b43d22a21c4d528090acbb8e5bae7b31fc394e61394106ef1d6a8ed43074ab05bcec65674cd8113fb3de388da4d97e62f56",
-        "scheme": "https",
-        "urlStyle": "BUCKET_BOUND_HOSTNAME",
-        "bucketBoundHostname": "mydomain.tld"
-    },
+        {
+            "description": "Vary expiration and timestamp",
+            "bucket": "test-bucket",
+            "object": "test-object",
+            "method": "GET",
+            "expiration": 20,
+            "timestamp": "20190301T090000Z",
+            "expectedUrl": "https://storage.googleapis.com/test-bucket/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190301%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190301T090000Z&X-Goog-Expires=20&X-Goog-SignedHeaders=host&X-Goog-Signature=9669ed5b10664dc594c758296580662912cf4bcc5a4ba0b6bf055bcbf6f34eed7bdad664f534962174a924741a0c273a4f67bc1847cef20192a6beab44223bd9d4fbbd749c407b79997598c30f82ddc269ff47ec09fa3afe74e00616d438df0d96a7d8ad0adacfad1dc3286f864d924fe919fb0dce45d3d975c5afe8e13af2db9cc37ba77835f92f7669b61e94c6d562196c1274529e76cfff1564cc2cad7d5387dc8e12f7a5dfd925685fe92c30b43709eee29fa2f66067472cee5423d1a3a4182fe8cea75c9329d181dc6acad7c393cd04f8bf5bc0515127d8ebd65d80c08e19ad03316053ea60033fd1b1fd85a69c576415da3bf0a3718d9ea6d03e0d66f0"
+        },
 
-    {
+        {
+            "description": "Vary bucket and object",
+            "bucket": "test-bucket2",
+            "object": "test-object2",
+            "method": "GET",
+            "expiration": 10,
+            "timestamp": "20190201T090000Z",
+            "expectedUrl": "https://storage.googleapis.com/test-bucket2/test-object2?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=36e3d58dfd3ec1d2dd2f24b5ee372a71e811ffaa2162a2b871d26728d0354270bc116face87127532969c4a3967ed05b7309af741e19c7202f3167aa8c2ac420b61417d6451442bb91d7c822cd17be8783f01e05372769c88913561d27e6660dd8259f0081a71f831be6c50283626cbf04494ac10c394b29bb3bce74ab91548f58a37118a452693cf0483d77561fc9cac8f1765d2c724994cca46a83517a10157ee0347a233a2aaeae6e6ab5e204ff8fc5f54f90a3efdb8301d9fff5475d58cd05b181affd657f48203f4fb133c3a3d355b8eefbd10d5a0a5fd70d06e9515460ad74e22334b2cba4b29cae4f6f285cdb92d8f3126d7a1479ca3bdb69c207d860"
+        },
+
+        {
+            "description": "Simple headers",
+            "bucket": "test-bucket",
+            "object": "test-object",
+            "headers": {
+                "foo": "foo-value",
+                "BAR": "BAR-value"
+            },
+            "method": "GET",
+            "expiration": 10,
+            "timestamp": "20190201T090000Z",
+            "expectedUrl": "https://storage.googleapis.com/test-bucket/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=bar%3Bfoo%3Bhost&X-Goog-Signature=68ecd3b008328ed30d91e2fe37444ed7b9b03f28ed4424555b5161980531ef87db1c3a5bc0265aad5640af30f96014c94fb2dba7479c41bfe1c020eb90c0c6d387d4dd09d4a5df8b60ea50eb6b01cdd786a1e37020f5f95eb8f9b6cd3f65a1f8a8a65c9fcb61ea662959efd9cd73b683f8d8804ef4d6d9b2852419b013368842731359d7f9e6d1139032ceca75d5e67cee5fd0192ea2125e5f2955d38d3d50cf116f3a52e6a62de77f6207f5b95aaa1d7d0f8a46de89ea72e7ea30f21286318d7eba0142232b0deb3a1dc9e1e812a981c66b5ffda3c6b01a8a9d113155792309fd53a3acfd054ca7776e8eec28c26480cd1e3c812f67f91d14217f39a606669d"
+        },
+
+        {
+            "description": "Headers should be trimmed",
+            "bucket": "test-bucket",
+            "object": "test-object",
+            "headers": {
+                "leading": "    xyz",
+                "trailing": "abc    ",
+                "collapsed": "abc    def"
+            },
+            "method": "GET",
+            "expiration": 10,
+            "timestamp": "20190201T090000Z",
+            "expectedUrl": "https://storage.googleapis.com/test-bucket/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=collapsed%3Bhost%3Bleading%3Btrailing&X-Goog-Signature=1839511d6238d9ac2bbcbba8b23515b3757db35dfa7b8f9bc4b8b4aa270224df747c812526f1a3bcf294d67ed84cd14e074c36bc090e0a542782934a7c925af4a5ea68123e97533704ce8b08ccdf5fe6b412f89c9fc4de243e29abdb098382c5672188ee3f6fef7131413e252c78e7a35658825ad842a50609e9cc463731e17284ff7a14824c989f87cef22fb99dfec20cfeed69d8b3a08f00b43b8284eecd535e50e982b05cd74c5750cd5f986cfc21a2a05f7f3ab7fc31bd684ed1b823b64d29281e923fc6580c49005552ca19c253de087d9d2df881144e44eda40965cfdb4889bf3a35553c9809f4ed20b8355be481b92b9618952b6a04f3017b36053e15"
+        },
+
+        {
+            "description": "Header value with multiple inline values",
+            "bucket": "test-bucket",
+            "object": "test-object",
+            "headers": {
+                "multiple": " xyz ,  abc, def  , xyz   "
+            },
+            "method": "GET",
+            "expiration": 10,
+            "timestamp": "20190201T090000Z",
+            "expectedUrl": "https://storage.googleapis.com/test-bucket/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host%3Bmultiple&X-Goog-Signature=5cc113735625341f59c7203f0c2c9febc95ba6af6b9c38814f8e523214712087dc0996e4960d273ae1889f248ac1e58d4d19cb3a69ad7670e9a8ca1b434e878f59339dc7006cf32dfd715337e9f593e0504371839174962a08294586e0c78160a7aa303397888c8350637c6af3b32ac310886cc4590bfda9ca561ee58fb5b8ec56bc606d2ada6e7df31f4276e9dcb96bcaea39dc2cd096f3fad774f9c4b30e317ad43736c05f76831437f44e8726c1e90d3f6c9827dc273f211f32fc85658dfc5d357eb606743a6b00a29e519eef1bebaf9db3e8f4b1f5f9afb648ad06e60bc42fa8b57025056697c874c9ea76f5a73201c9717ea43e54713ff3502ff3fc626b"
+        },
+
+        {
+            "description": "Customer-supplied encryption key",
+            "bucket": "test-bucket",
+            "object": "test-object",
+            "headers":
+            {
+                "X-Goog-Encryption-Key": "key",
+                "X-Goog-Encryption-Key-Sha256": "key-hash",
+                "X-Goog-Encryption-Algorithm": "AES256"
+            },
+            "method": "GET",
+            "expiration": 10,
+            "timestamp": "20190201T090000Z",
+            "expectedUrl": "https://storage.googleapis.com/test-bucket/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host%3Bx-goog-encryption-algorithm%3Bx-goog-encryption-key%3Bx-goog-encryption-key-sha256&X-Goog-Signature=278a1c5a3bad248637054a047014760353942433955871031ed08f515b54588654ad033e91f046ab202b68673030e117d1b786c325e870238b035ba75b3feed560a17aff9bab6bddebd4a31a52cb68b214e27d3b0bd886502c6b36b164306fe88b5a07c6063592afe746b2a5d205dbe90dd5386b94f0a78f75d9f53ee884e18f476e8fc2eb1dd910ce0b4ae1f5d7b09876ef9bf983f539c028429e14bad3c75dbd4ed1ae37856f6d6f8a1805eaf8b52a0d6fc993902e4c1ee8de477661f7b67c3663000474cb00e178189789b2a3ed6bd21b4ade684fca8108ac4dd106acb17f5954d045775f7aa5a98ebda5d3075e11a8ea49c64c6ad1481e463e8c9f11f704"
+        },
+
+        {
+            "description": "List Objects",
+            "bucket": "test-bucket",
+            "object": "",
+            "method": "GET",
+            "expiration": 10,
+            "timestamp": "20190201T090000Z",
+            "expectedUrl": "https://storage.googleapis.com/test-bucket?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=6dbe94f8e52b2b8a9a476b1c857efa474e09944e2b52b925800316e094a7169d8dbe0df9c0ac08dabb22ac7e827470ceccd65f5a3eadba2a4fb9beebfe37f0d9bb1e552b851fa31a25045bdf019e507f5feb44f061551ef1aeb18dcec0e38ba2e2f77d560a46eaace9c56ed9aa642281301a9d848b0eb30749e34bc7f73a3d596240533466ff9b5f289cd0d4c845c7d96b82a35a5abd0c3aff83e4440ee6873e796087f43545544dc8c01afe1d79c726696b6f555371e491980e7ec145cca0803cf562c38f3fa1d724242f5dea25aac91d74ec9ddd739ff65523627763eaef25cd1f95ad985aaf0079b7c74eb5bcb2870a9b137a7b2c8e41fbe838c95872f75b"
+        },
+
+        {
         "description": "HTTP Bucket Bound Hostname Support",
         "bucket": "test-bucket",
+        "object": "test-object",
         "method": "GET",
         "expiration": 10,
         "timestamp": "20190201T090000Z",
-        "expectedUrl": "http://mydomain.tld/?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=7a629a5632f16dba78961250b17c1f0d2ac0d2a28dbd7cbf79088fd6cd0b7f3ec66285cdeccca024f7b8134376f5cdcf0d60f399c6df1f19fcf5cf3be9d7f905d72cb6c0b5600f83dd6a7c8df607510c0e12e36216530a7b832eab87920363c5368a7e610d44005c73324f6ca4b435e8687672f46cc1342419ec4a5264549cb4b77bdc73f4f461edf39fbdd8fda99db440b077e906ef48d2c6b854c11ded58096f293d664650c123c6ec2a0379affd05bf5696ba11d3474623e039d5e05d3dc331b86ff4f7afb9262cf9750ff5944e661e70cc443b28f7e150796dde831d70e205c7e848c19b8281510f1d195e5819176e4868713266d0e0db7a3354857187cf",
+        "expectedUrl": "http://mydomain.tld/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=7115a77f8c7ed1a8b74bca8b520904fca7f3bab90d69ea052687a94efd9b3a4e2a7fb7135d40e295e0a21958194c55da7e106227957c22ed6edc9d8b3d2a8133bc8af84fc9695dda8081d53f0db5ea9f28e5bfc225d78f873e9f571fd287bb7a95330e726aebd8eb4623cdb0b1a7ceb210b2ce1351b6be0191c2ad7b38f7ceb6c5ce2f98dbfb5a5a649050585e46e97f72f1f5407de657a56e34a3fdc80cdaa0598bd47f3e8af5ff22d0916b19b106890bff8c3f6587f1d3b076b16cd0ba0508607a672be33b9c75d537e15258450b43d22a21c4d528090acbb8e5bae7b31fc394e61394106ef1d6a8ed43074ab05bcec65674cd8113fb3de388da4d97e62f56",
         "scheme": "http",
         "urlStyle": "BUCKET_BOUND_HOSTNAME",
         "bucketBoundHostname": "mydomain.tld"
-    },
+        },
 
-    {
-        "description": "HTTPS Bucket Bound Hostname Support",
+        {
+            "description": "HTTPS Bucket Bound Hostname Support",
+            "bucket": "test-bucket",
+            "object": "test-object",
+            "method": "GET",
+            "expiration": 10,
+            "timestamp": "20190201T090000Z",
+            "expectedUrl": "https://mydomain.tld/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=7115a77f8c7ed1a8b74bca8b520904fca7f3bab90d69ea052687a94efd9b3a4e2a7fb7135d40e295e0a21958194c55da7e106227957c22ed6edc9d8b3d2a8133bc8af84fc9695dda8081d53f0db5ea9f28e5bfc225d78f873e9f571fd287bb7a95330e726aebd8eb4623cdb0b1a7ceb210b2ce1351b6be0191c2ad7b38f7ceb6c5ce2f98dbfb5a5a649050585e46e97f72f1f5407de657a56e34a3fdc80cdaa0598bd47f3e8af5ff22d0916b19b106890bff8c3f6587f1d3b076b16cd0ba0508607a672be33b9c75d537e15258450b43d22a21c4d528090acbb8e5bae7b31fc394e61394106ef1d6a8ed43074ab05bcec65674cd8113fb3de388da4d97e62f56",
+            "scheme": "https",
+            "urlStyle": "BUCKET_BOUND_HOSTNAME",
+            "bucketBoundHostname": "mydomain.tld"
+        },
+
+        {
+            "description": "HTTP Bucket Bound Hostname Support",
+            "bucket": "test-bucket",
+            "method": "GET",
+            "expiration": 10,
+            "timestamp": "20190201T090000Z",
+            "expectedUrl": "http://mydomain.tld/?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=7a629a5632f16dba78961250b17c1f0d2ac0d2a28dbd7cbf79088fd6cd0b7f3ec66285cdeccca024f7b8134376f5cdcf0d60f399c6df1f19fcf5cf3be9d7f905d72cb6c0b5600f83dd6a7c8df607510c0e12e36216530a7b832eab87920363c5368a7e610d44005c73324f6ca4b435e8687672f46cc1342419ec4a5264549cb4b77bdc73f4f461edf39fbdd8fda99db440b077e906ef48d2c6b854c11ded58096f293d664650c123c6ec2a0379affd05bf5696ba11d3474623e039d5e05d3dc331b86ff4f7afb9262cf9750ff5944e661e70cc443b28f7e150796dde831d70e205c7e848c19b8281510f1d195e5819176e4868713266d0e0db7a3354857187cf",
+            "scheme": "http",
+            "urlStyle": "BUCKET_BOUND_HOSTNAME",
+            "bucketBoundHostname": "mydomain.tld"
+        },
+
+        {
+            "description": "HTTPS Bucket Bound Hostname Support",
+            "bucket": "test-bucket",
+            "method": "GET",
+            "expiration": 10,
+            "timestamp": "20190201T090000Z",
+            "expectedUrl": "https://mydomain.tld/?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=7a629a5632f16dba78961250b17c1f0d2ac0d2a28dbd7cbf79088fd6cd0b7f3ec66285cdeccca024f7b8134376f5cdcf0d60f399c6df1f19fcf5cf3be9d7f905d72cb6c0b5600f83dd6a7c8df607510c0e12e36216530a7b832eab87920363c5368a7e610d44005c73324f6ca4b435e8687672f46cc1342419ec4a5264549cb4b77bdc73f4f461edf39fbdd8fda99db440b077e906ef48d2c6b854c11ded58096f293d664650c123c6ec2a0379affd05bf5696ba11d3474623e039d5e05d3dc331b86ff4f7afb9262cf9750ff5944e661e70cc443b28f7e150796dde831d70e205c7e848c19b8281510f1d195e5819176e4868713266d0e0db7a3354857187cf",
+            "scheme": "https",
+            "urlStyle": "BUCKET_BOUND_HOSTNAME",
+            "bucketBoundHostname": "mydomain.tld"
+        },
+
+        {
+        "description": "Virtual Hosted Style",
         "bucket": "test-bucket",
+        "object": "test-object",
         "method": "GET",
         "expiration": 10,
         "timestamp": "20190201T090000Z",
-        "expectedUrl": "https://mydomain.tld/?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=7a629a5632f16dba78961250b17c1f0d2ac0d2a28dbd7cbf79088fd6cd0b7f3ec66285cdeccca024f7b8134376f5cdcf0d60f399c6df1f19fcf5cf3be9d7f905d72cb6c0b5600f83dd6a7c8df607510c0e12e36216530a7b832eab87920363c5368a7e610d44005c73324f6ca4b435e8687672f46cc1342419ec4a5264549cb4b77bdc73f4f461edf39fbdd8fda99db440b077e906ef48d2c6b854c11ded58096f293d664650c123c6ec2a0379affd05bf5696ba11d3474623e039d5e05d3dc331b86ff4f7afb9262cf9750ff5944e661e70cc443b28f7e150796dde831d70e205c7e848c19b8281510f1d195e5819176e4868713266d0e0db7a3354857187cf",
+        "expectedUrl": "https://test-bucket.storage.googleapis.com/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=06c633ea060b0eda81ee58dd3337b01b0d243a44f18cb03ec948861f533a129e579c7fd4c856d187f1c7b86e5715ea0abf6a1c6ba32b69274d22b1b0406df6847dc87f0d289fe8dc0682351574849b8b13e4b66922f39441af96becb73ea4c56cd5e3eeb30bc91fe84e8bd205adca8639253bdb65b2fcaf2598a230c6d8f6d8177c9e58a61b6e826767f594056b490184d676897c4bbedc15d6fbf08c3fa82a406c62e74db661e6c5d7d3ced29e0619ee719dce4b8136360345b8dce120b9f1debd511c8dac3e6d874ee05bfda8c8f1c4fedd0c07fc6d98f5f18a349bb204d8ff401402a025194e2792df8a09282141157e4ca51d26a8d0d142a01c805321911",
         "scheme": "https",
-        "urlStyle": "BUCKET_BOUND_HOSTNAME",
-        "bucketBoundHostname": "mydomain.tld"
-    },
-
-    {
-      "description": "Virtual Hosted Style",
-      "bucket": "test-bucket",
-      "object": "test-object",
-      "method": "GET",
-      "expiration": 10,
-      "timestamp": "20190201T090000Z",
-      "expectedUrl": "https://test-bucket.storage.googleapis.com/test-object?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host&X-Goog-Signature=06c633ea060b0eda81ee58dd3337b01b0d243a44f18cb03ec948861f533a129e579c7fd4c856d187f1c7b86e5715ea0abf6a1c6ba32b69274d22b1b0406df6847dc87f0d289fe8dc0682351574849b8b13e4b66922f39441af96becb73ea4c56cd5e3eeb30bc91fe84e8bd205adca8639253bdb65b2fcaf2598a230c6d8f6d8177c9e58a61b6e826767f594056b490184d676897c4bbedc15d6fbf08c3fa82a406c62e74db661e6c5d7d3ced29e0619ee719dce4b8136360345b8dce120b9f1debd511c8dac3e6d874ee05bfda8c8f1c4fedd0c07fc6d98f5f18a349bb204d8ff401402a025194e2792df8a09282141157e4ca51d26a8d0d142a01c805321911",
-      "scheme": "https",
-      "urlStyle": "VIRTUAL_HOSTED_STYLE",
-      "expectedCanonicalRequest": "GET\n/test-object\nX-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host\nhost:test-bucket.storage.googleapis.com\n\nhost\nUNSIGNED-PAYLOAD",
-      "expectedStringToSign": "GOOG4-RSA-SHA256\n20190201T090000Z\n20190201/auto/storage/goog4_request\n89eeae48258eccdcb1f592fb908008e3f5d36a949c002c1e614c94356dc18fc6"
-    },
-
-    {
-        "description": "POST Policy Simple",
-        "policyInput": {
-            "scheme": "https",
-            "bucket": "rsaposttest-1579902670-h3q7wvodjor6bc7y",
-            "object": "test-object",
-            "expiration": 10,
-            "timestamp": "2020-01-23T04:35:30Z"
-        },
-        "policyOutput": {
-            "url": "https://storage.googleapis.com/rsaposttest-1579902670-h3q7wvodjor6bc7y/",
-            "fields": {
-                "key": "test-object",
-                "x-goog-algorithm": "GOOG4-RSA-SHA256",
-                "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
-                "x-goog-date": "20200123T043530Z",
-                "x-goog-signature": "2821a23ca8886ae9e9d67e8c094c06626a733f373cdca76d9d8c325e60ed8237b500b2f39937a15a1ebbdef7ed156fe3f41bc3456d453bb68d6755872eb429c329ae4e0dfb5e0abef4ca976394430ad7b3d1f14e50f6040c2cf81a2880980c26f9aeb800a674fc834b0e21e414adc3d1a0835da64107cce6a14bd2b39b4d6627029f821009e15ff3a7538ddc27dcf8c189ed197d25d50f0bddf58f99e0265adf562fff7f6689faba60920d73e6a6704c3d2be34a424766398396c55d3680f8dfd19513e2861fa4efa7ae99001877f043567132d413dc3c69e04a7ef5d30a325c2f9bc64e19dd6f0576781e546383378e7a4f2904411ee32d5c5a763683333dd7",
-                "policy": "eyJjb25kaXRpb25zIjpbeyJrZXkiOiJ0ZXN0LW9iamVjdCJ9LHsieC1nb29nLWRhdGUiOiIyMDIwMDEyM1QwNDM1MzBaIn0seyJ4LWdvb2ctY3JlZGVudGlhbCI6InRlc3QtaWFtLWNyZWRlbnRpYWxzQGR1bW15LXByb2plY3QtaWQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20vMjAyMDAxMjMvYXV0by9zdG9yYWdlL2dvb2c0X3JlcXVlc3QifSx7IngtZ29vZy1hbGdvcml0aG0iOiJHT09HNC1SU0EtU0hBMjU2In1dLCJleHBpcmF0aW9uIjoiMjAyMC0wMS0yM1QwNDozNTo0MFoifQ=="
-            },
-            "expectedDecodedPolicy": "{\"conditions\":[{\"key\":\"test-object\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
+        "urlStyle": "VIRTUAL_HOSTED_STYLE",
+        "expectedCanonicalRequest": "GET\n/test-object\nX-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=test-iam-credentials%40dummy-project-id.iam.gserviceaccount.com%2F20190201%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20190201T090000Z&X-Goog-Expires=10&X-Goog-SignedHeaders=host\nhost:test-bucket.storage.googleapis.com\n\nhost\nUNSIGNED-PAYLOAD",
+        "expectedStringToSign": "GOOG4-RSA-SHA256\n20190201T090000Z\n20190201/auto/storage/goog4_request\n89eeae48258eccdcb1f592fb908008e3f5d36a949c002c1e614c94356dc18fc6"
         }
-    },
+    ],
 
-    {
-        "description": "POST Policy Simple Virtual Hosted Style",
-        "policyInput": {
-            "scheme": "https",
-            "urlStyle": "VIRTUAL_HOSTED_STYLE",
-            "bucket": "rsaposttest-1579902670-h3q7wvodjor6bc7y",
-            "object": "test-object",
-            "expiration": 10,
-            "timestamp": "2020-01-23T04:35:30Z"
-        },
-        "policyOutput": {
-            "url": "https://rsaposttest-1579902670-h3q7wvodjor6bc7y.storage.googleapis.com/",
-            "fields": {
-                "key": "test-object",
-                "x-goog-algorithm": "GOOG4-RSA-SHA256",
-                "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
-                "x-goog-date": "20200123T043530Z",
-                "x-goog-signature": "2821a23ca8886ae9e9d67e8c094c06626a733f373cdca76d9d8c325e60ed8237b500b2f39937a15a1ebbdef7ed156fe3f41bc3456d453bb68d6755872eb429c329ae4e0dfb5e0abef4ca976394430ad7b3d1f14e50f6040c2cf81a2880980c26f9aeb800a674fc834b0e21e414adc3d1a0835da64107cce6a14bd2b39b4d6627029f821009e15ff3a7538ddc27dcf8c189ed197d25d50f0bddf58f99e0265adf562fff7f6689faba60920d73e6a6704c3d2be34a424766398396c55d3680f8dfd19513e2861fa4efa7ae99001877f043567132d413dc3c69e04a7ef5d30a325c2f9bc64e19dd6f0576781e546383378e7a4f2904411ee32d5c5a763683333dd7",
-                "policy": "eyJjb25kaXRpb25zIjpbeyJrZXkiOiJ0ZXN0LW9iamVjdCJ9LHsieC1nb29nLWRhdGUiOiIyMDIwMDEyM1QwNDM1MzBaIn0seyJ4LWdvb2ctY3JlZGVudGlhbCI6InRlc3QtaWFtLWNyZWRlbnRpYWxzQGR1bW15LXByb2plY3QtaWQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20vMjAyMDAxMjMvYXV0by9zdG9yYWdlL2dvb2c0X3JlcXVlc3QifSx7IngtZ29vZy1hbGdvcml0aG0iOiJHT09HNC1SU0EtU0hBMjU2In1dLCJleHBpcmF0aW9uIjoiMjAyMC0wMS0yM1QwNDozNTo0MFoifQ=="
+    "postPolicyV4Tests": [
+        {
+            "description": "POST Policy Simple",
+            "policyInput": {
+                "scheme": "https",
+                "bucket": "rsaposttest-1579902670-h3q7wvodjor6bc7y",
+                "object": "test-object",
+                "expiration": 10,
+                "timestamp": "2020-01-23T04:35:30Z"
             },
-            "expectedDecodedPolicy": "{\"conditions\":[{\"key\":\"test-object\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
-        }
-    },
-
-    {
-        "description": "POST Policy Simple Bucket Bound Hostname",
-        "policyInput": {
-            "scheme": "https",
-            "urlStyle": "BUCKET_BOUND_HOSTNAME",
-            "bucketBoundHostname": "mydomain.tld",
-            "bucket": "rsaposttest-1579902670-h3q7wvodjor6bc7y",
-            "object": "test-object",
-            "expiration": 10,
-            "timestamp": "2020-01-23T04:35:30Z"
-        },
-        "policyOutput": {
-            "url": "https://mydomain.tld/",
-            "fields": {
-                "key": "test-object",
-                "x-goog-algorithm": "GOOG4-RSA-SHA256",
-                "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
-                "x-goog-date": "20200123T043530Z",
-                "x-goog-signature": "2821a23ca8886ae9e9d67e8c094c06626a733f373cdca76d9d8c325e60ed8237b500b2f39937a15a1ebbdef7ed156fe3f41bc3456d453bb68d6755872eb429c329ae4e0dfb5e0abef4ca976394430ad7b3d1f14e50f6040c2cf81a2880980c26f9aeb800a674fc834b0e21e414adc3d1a0835da64107cce6a14bd2b39b4d6627029f821009e15ff3a7538ddc27dcf8c189ed197d25d50f0bddf58f99e0265adf562fff7f6689faba60920d73e6a6704c3d2be34a424766398396c55d3680f8dfd19513e2861fa4efa7ae99001877f043567132d413dc3c69e04a7ef5d30a325c2f9bc64e19dd6f0576781e546383378e7a4f2904411ee32d5c5a763683333dd7",
-                "policy": "eyJjb25kaXRpb25zIjpbeyJrZXkiOiJ0ZXN0LW9iamVjdCJ9LHsieC1nb29nLWRhdGUiOiIyMDIwMDEyM1QwNDM1MzBaIn0seyJ4LWdvb2ctY3JlZGVudGlhbCI6InRlc3QtaWFtLWNyZWRlbnRpYWxzQGR1bW15LXByb2plY3QtaWQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20vMjAyMDAxMjMvYXV0by9zdG9yYWdlL2dvb2c0X3JlcXVlc3QifSx7IngtZ29vZy1hbGdvcml0aG0iOiJHT09HNC1SU0EtU0hBMjU2In1dLCJleHBpcmF0aW9uIjoiMjAyMC0wMS0yM1QwNDozNTo0MFoifQ=="
-            },
-            "expectedDecodedPolicy": "{\"conditions\":[{\"key\":\"test-object\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
-        }
-    },
-
-    {
-        "description": "POST Policy Simple Bucket Bound Hostname HTTP",
-        "policyInput": {
-            "scheme": "http",
-            "urlStyle": "BUCKET_BOUND_HOSTNAME",
-            "bucketBoundHostname": "mydomain.tld",
-            "bucket": "rsaposttest-1579902670-h3q7wvodjor6bc7y",
-            "object": "test-object",
-            "expiration": 10,
-            "timestamp": "2020-01-23T04:35:30Z"
-        },
-        "policyOutput": {
-            "url": "http://mydomain.tld/",
-            "fields": {
-                "key": "test-object",
-                "x-goog-algorithm": "GOOG4-RSA-SHA256",
-                "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
-                "x-goog-date": "20200123T043530Z",
-                "x-goog-signature": "2821a23ca8886ae9e9d67e8c094c06626a733f373cdca76d9d8c325e60ed8237b500b2f39937a15a1ebbdef7ed156fe3f41bc3456d453bb68d6755872eb429c329ae4e0dfb5e0abef4ca976394430ad7b3d1f14e50f6040c2cf81a2880980c26f9aeb800a674fc834b0e21e414adc3d1a0835da64107cce6a14bd2b39b4d6627029f821009e15ff3a7538ddc27dcf8c189ed197d25d50f0bddf58f99e0265adf562fff7f6689faba60920d73e6a6704c3d2be34a424766398396c55d3680f8dfd19513e2861fa4efa7ae99001877f043567132d413dc3c69e04a7ef5d30a325c2f9bc64e19dd6f0576781e546383378e7a4f2904411ee32d5c5a763683333dd7",
-                "policy": "eyJjb25kaXRpb25zIjpbeyJrZXkiOiJ0ZXN0LW9iamVjdCJ9LHsieC1nb29nLWRhdGUiOiIyMDIwMDEyM1QwNDM1MzBaIn0seyJ4LWdvb2ctY3JlZGVudGlhbCI6InRlc3QtaWFtLWNyZWRlbnRpYWxzQGR1bW15LXByb2plY3QtaWQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20vMjAyMDAxMjMvYXV0by9zdG9yYWdlL2dvb2c0X3JlcXVlc3QifSx7IngtZ29vZy1hbGdvcml0aG0iOiJHT09HNC1SU0EtU0hBMjU2In1dLCJleHBpcmF0aW9uIjoiMjAyMC0wMS0yM1QwNDozNTo0MFoifQ=="
-            },
-            "expectedDecodedPolicy": "{\"conditions\":[{\"key\":\"test-object\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
-        }
-    },
-
-    {
-        "description": "POST Policy ACL matching",
-        "policyInput": {
-            "scheme": "https",
-            "bucket": "rsaposttest-1579902662-x2kd7kjwh2w5izcw",
-            "object": "test-object",
-            "expiration": 10,
-            "timestamp": "2020-01-23T04:35:30Z",
-            "conditions": {
-                "startsWith": [
-                    "$acl",
-                    "public"
-                ]
+            "policyOutput": {
+                "url": "https://storage.googleapis.com/rsaposttest-1579902670-h3q7wvodjor6bc7y/",
+                "fields": {
+                    "key": "test-object",
+                    "x-goog-algorithm": "GOOG4-RSA-SHA256",
+                    "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
+                    "x-goog-date": "20200123T043530Z",
+                    "x-goog-signature": "2821a23ca8886ae9e9d67e8c094c06626a733f373cdca76d9d8c325e60ed8237b500b2f39937a15a1ebbdef7ed156fe3f41bc3456d453bb68d6755872eb429c329ae4e0dfb5e0abef4ca976394430ad7b3d1f14e50f6040c2cf81a2880980c26f9aeb800a674fc834b0e21e414adc3d1a0835da64107cce6a14bd2b39b4d6627029f821009e15ff3a7538ddc27dcf8c189ed197d25d50f0bddf58f99e0265adf562fff7f6689faba60920d73e6a6704c3d2be34a424766398396c55d3680f8dfd19513e2861fa4efa7ae99001877f043567132d413dc3c69e04a7ef5d30a325c2f9bc64e19dd6f0576781e546383378e7a4f2904411ee32d5c5a763683333dd7",
+                    "policy": "eyJjb25kaXRpb25zIjpbeyJrZXkiOiJ0ZXN0LW9iamVjdCJ9LHsieC1nb29nLWRhdGUiOiIyMDIwMDEyM1QwNDM1MzBaIn0seyJ4LWdvb2ctY3JlZGVudGlhbCI6InRlc3QtaWFtLWNyZWRlbnRpYWxzQGR1bW15LXByb2plY3QtaWQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20vMjAyMDAxMjMvYXV0by9zdG9yYWdlL2dvb2c0X3JlcXVlc3QifSx7IngtZ29vZy1hbGdvcml0aG0iOiJHT09HNC1SU0EtU0hBMjU2In1dLCJleHBpcmF0aW9uIjoiMjAyMC0wMS0yM1QwNDozNTo0MFoifQ=="
+                },
+                "expectedDecodedPolicy": "{\"conditions\":[{\"key\":\"test-object\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
             }
         },
-        "policyOutput": {
-            "url": "https://storage.googleapis.com/rsaposttest-1579902662-x2kd7kjwh2w5izcw/",
-            "fields": {
-                "key": "test-object",
-                "x-goog-algorithm": "GOOG4-RSA-SHA256",
-                "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
-                "x-goog-date": "20200123T043530Z",
-                "x-goog-signature": "512593e9f739b044cf1b1f38e9ce492e43917a4864a027bc296fd595dd1ed53bb1e4da804251a812400bc93111181a13aad6f8e85b1442700cb13ac830309a8d2cfa5f21b85815644ad2942393a413f90ec6c34b4d3234630185c3e2bcee2bf560b2d1a07cd2d94bd28021b7ee60d95ba98486d574b6255663350805e88f14c8be3f095e1f40c5c9f97c7c8cbbb67538cfa3e23e7dbda6dbfd2a0f98daa6c40fadfb8f3e7799fe152a542a7784ddd2e6ba0b21fbdc13984dfdff1af886207fa6b0b50e774337d7d9eb6516ed1f81b338b9d4ddefda1b11d7bc3d0308b8d3e93f78709be4e1308562c5c0713f88267df40c51b887917d254718393a2c09fc4c55",
-                "policy": "eyJjb25kaXRpb25zIjpbWyJzdGFydHMtd2l0aCIsIiRhY2wiLCJwdWJsaWMiXSx7ImtleSI6InRlc3Qtb2JqZWN0In0seyJ4LWdvb2ctZGF0ZSI6IjIwMjAwMTIzVDA0MzUzMFoifSx7IngtZ29vZy1jcmVkZW50aWFsIjoidGVzdC1pYW0tY3JlZGVudGlhbHNAZHVtbXktcHJvamVjdC1pZC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbS8yMDIwMDEyMy9hdXRvL3N0b3JhZ2UvZ29vZzRfcmVxdWVzdCJ9LHsieC1nb29nLWFsZ29yaXRobSI6IkdPT0c0LVJTQS1TSEEyNTYifV0sImV4cGlyYXRpb24iOiIyMDIwLTAxLTIzVDA0OjM1OjQwWiJ9"
-            },
-            "expectedDecodedPolicy": "{\"conditions\":[[\"starts-with\",\"$acl\",\"public\"],{\"key\":\"test-object\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
-        }
-    },
 
-    {
-        "description": "POST Policy Within Content-Range",
-        "policyInput": {
-            "scheme": "https",
-            "bucket": "rsaposttest-1579902672-lpd47iogn6hx4sle",
-            "object": "test-object",
-            "expiration": 10,
-            "timestamp": "2020-01-23T04:35:30Z",
-            "conditions": {
-                "contentLengthRange": [
-                    246,
-                    266
-                ]
+        {
+            "description": "POST Policy Simple Virtual Hosted Style",
+            "policyInput": {
+                "scheme": "https",
+                "urlStyle": "VIRTUAL_HOSTED_STYLE",
+                "bucket": "rsaposttest-1579902670-h3q7wvodjor6bc7y",
+                "object": "test-object",
+                "expiration": 10,
+                "timestamp": "2020-01-23T04:35:30Z"
+            },
+            "policyOutput": {
+                "url": "https://rsaposttest-1579902670-h3q7wvodjor6bc7y.storage.googleapis.com/",
+                "fields": {
+                    "key": "test-object",
+                    "x-goog-algorithm": "GOOG4-RSA-SHA256",
+                    "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
+                    "x-goog-date": "20200123T043530Z",
+                    "x-goog-signature": "2821a23ca8886ae9e9d67e8c094c06626a733f373cdca76d9d8c325e60ed8237b500b2f39937a15a1ebbdef7ed156fe3f41bc3456d453bb68d6755872eb429c329ae4e0dfb5e0abef4ca976394430ad7b3d1f14e50f6040c2cf81a2880980c26f9aeb800a674fc834b0e21e414adc3d1a0835da64107cce6a14bd2b39b4d6627029f821009e15ff3a7538ddc27dcf8c189ed197d25d50f0bddf58f99e0265adf562fff7f6689faba60920d73e6a6704c3d2be34a424766398396c55d3680f8dfd19513e2861fa4efa7ae99001877f043567132d413dc3c69e04a7ef5d30a325c2f9bc64e19dd6f0576781e546383378e7a4f2904411ee32d5c5a763683333dd7",
+                    "policy": "eyJjb25kaXRpb25zIjpbeyJrZXkiOiJ0ZXN0LW9iamVjdCJ9LHsieC1nb29nLWRhdGUiOiIyMDIwMDEyM1QwNDM1MzBaIn0seyJ4LWdvb2ctY3JlZGVudGlhbCI6InRlc3QtaWFtLWNyZWRlbnRpYWxzQGR1bW15LXByb2plY3QtaWQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20vMjAyMDAxMjMvYXV0by9zdG9yYWdlL2dvb2c0X3JlcXVlc3QifSx7IngtZ29vZy1hbGdvcml0aG0iOiJHT09HNC1SU0EtU0hBMjU2In1dLCJleHBpcmF0aW9uIjoiMjAyMC0wMS0yM1QwNDozNTo0MFoifQ=="
+                },
+                "expectedDecodedPolicy": "{\"conditions\":[{\"key\":\"test-object\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
             }
         },
-        "policyOutput": {
-            "url": "https://storage.googleapis.com/rsaposttest-1579902672-lpd47iogn6hx4sle/",
-            "fields": {
-                "key": "test-object",
-                "x-goog-algorithm": "GOOG4-RSA-SHA256",
-                "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
-                "x-goog-date": "20200123T043530Z",
-                "x-goog-signature": "26a8a68997592a5bbd52c8e429ad1687db87aea9fa3ac6fcf4ff7d4526a46b5baf081e6baf5bb028bdddd260f1fcb04d12b0431587e5136815d377dbf62405ab19a6434ddf82b46cddf23e03c7e42613964fffbb70ec5a7d9878191c62fa3b3cdce2e3d3b55a47496c366161ddc24a80199678fe6c90e732fa0803024e9d9c4fada45a06608184420a4e6a0d97faff3cad30ce1956ea5416d9df41cf3b3911fec4a416248478a9557fa527a0ee732adf22d2b87de7f34d49dd9ecd4a4eca8aadd5eb7207c0fe71215fdfd2b4341c58146206e66c908f2c3922e45e4a84da4e0f9b2cfa102f498605b2ec71646c24355f524ae5e14ff4fcd36dd81a6c95c52e55",
-                "policy": "eyJjb25kaXRpb25zIjpbWyJjb250ZW50LWxlbmd0aC1yYW5nZSIsMjQ2LDI2Nl0seyJrZXkiOiJ0ZXN0LW9iamVjdCJ9LHsieC1nb29nLWRhdGUiOiIyMDIwMDEyM1QwNDM1MzBaIn0seyJ4LWdvb2ctY3JlZGVudGlhbCI6InRlc3QtaWFtLWNyZWRlbnRpYWxzQGR1bW15LXByb2plY3QtaWQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20vMjAyMDAxMjMvYXV0by9zdG9yYWdlL2dvb2c0X3JlcXVlc3QifSx7IngtZ29vZy1hbGdvcml0aG0iOiJHT09HNC1SU0EtU0hBMjU2In1dLCJleHBpcmF0aW9uIjoiMjAyMC0wMS0yM1QwNDozNTo0MFoifQ=="
-            },
-            "expectedDecodedPolicy": "{\"conditions\":[[\"content-length-range\",246,266],{\"key\":\"test-object\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
-        }
-    },
 
-    {
-        "description": "POST Policy Cache-Control File Header",
-        "policyInput": {
-            "scheme": "https",
-            "bucket": "rsaposttest-1579902669-nwk5s7vvfjgdjs62",
-            "object": "test-object",
-            "expiration": 10,
-            "timestamp": "2020-01-23T04:35:30Z",
-            "fields": {
-                "acl": "public-read",
-                "cache-control": "public,max-age=86400"
+        {
+            "description": "POST Policy Simple Bucket Bound Hostname",
+            "policyInput": {
+                "scheme": "https",
+                "urlStyle": "BUCKET_BOUND_HOSTNAME",
+                "bucketBoundHostname": "mydomain.tld",
+                "bucket": "rsaposttest-1579902670-h3q7wvodjor6bc7y",
+                "object": "test-object",
+                "expiration": 10,
+                "timestamp": "2020-01-23T04:35:30Z"
+            },
+            "policyOutput": {
+                "url": "https://mydomain.tld/",
+                "fields": {
+                    "key": "test-object",
+                    "x-goog-algorithm": "GOOG4-RSA-SHA256",
+                    "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
+                    "x-goog-date": "20200123T043530Z",
+                    "x-goog-signature": "2821a23ca8886ae9e9d67e8c094c06626a733f373cdca76d9d8c325e60ed8237b500b2f39937a15a1ebbdef7ed156fe3f41bc3456d453bb68d6755872eb429c329ae4e0dfb5e0abef4ca976394430ad7b3d1f14e50f6040c2cf81a2880980c26f9aeb800a674fc834b0e21e414adc3d1a0835da64107cce6a14bd2b39b4d6627029f821009e15ff3a7538ddc27dcf8c189ed197d25d50f0bddf58f99e0265adf562fff7f6689faba60920d73e6a6704c3d2be34a424766398396c55d3680f8dfd19513e2861fa4efa7ae99001877f043567132d413dc3c69e04a7ef5d30a325c2f9bc64e19dd6f0576781e546383378e7a4f2904411ee32d5c5a763683333dd7",
+                    "policy": "eyJjb25kaXRpb25zIjpbeyJrZXkiOiJ0ZXN0LW9iamVjdCJ9LHsieC1nb29nLWRhdGUiOiIyMDIwMDEyM1QwNDM1MzBaIn0seyJ4LWdvb2ctY3JlZGVudGlhbCI6InRlc3QtaWFtLWNyZWRlbnRpYWxzQGR1bW15LXByb2plY3QtaWQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20vMjAyMDAxMjMvYXV0by9zdG9yYWdlL2dvb2c0X3JlcXVlc3QifSx7IngtZ29vZy1hbGdvcml0aG0iOiJHT09HNC1SU0EtU0hBMjU2In1dLCJleHBpcmF0aW9uIjoiMjAyMC0wMS0yM1QwNDozNTo0MFoifQ=="
+                },
+                "expectedDecodedPolicy": "{\"conditions\":[{\"key\":\"test-object\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
             }
         },
-        "policyOutput": {
-            "url": "https://storage.googleapis.com/rsaposttest-1579902669-nwk5s7vvfjgdjs62/",
-            "fields": {
-                "key": "test-object",
-                "acl": "public-read",
-                "cache-control": "public,max-age=86400",
-                "x-goog-algorithm": "GOOG4-RSA-SHA256",
-                "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
-                "x-goog-date": "20200123T043530Z",
-                "x-goog-signature": "2fc42968e980af863af91c20f0a9158b76249b64fd066f3a9e974e3f95fc4a56fb3753845913556180d99f4e3678f326cbfef0b91d2181dcc76a2900d85070443fba87f73f139df02c7a391459006e4e22defd1746272bb42af180ec4bc6d440e831e8074413ca2078a8fac622f1d64a116bbbd61ac3ef7df4f67dc568df9d489ed1dcbb8dc1964b459d5e557caf1f5710be5863b7606adeca85befe8d2754f4ca368fb7e87f4e490218dcfcbdd64f1a65f79d45dc3634b7aac96a9520829357b2694902e8eb7e2a22ba7aa9150730eadc7b99de2929ff302efc6839c811fd6ad9a31c895421266784dd49dc76ee30140cbc577852237fd2f1715358e67d8c0f",
-                "policy": "eyJjb25kaXRpb25zIjpbeyJhY2wiOiJwdWJsaWMtcmVhZCJ9LHsiY2FjaGUtY29udHJvbCI6InB1YmxpYyxtYXgtYWdlPTg2NDAwIn0seyJrZXkiOiJ0ZXN0LW9iamVjdCJ9LHsieC1nb29nLWRhdGUiOiIyMDIwMDEyM1QwNDM1MzBaIn0seyJ4LWdvb2ctY3JlZGVudGlhbCI6InRlc3QtaWFtLWNyZWRlbnRpYWxzQGR1bW15LXByb2plY3QtaWQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20vMjAyMDAxMjMvYXV0by9zdG9yYWdlL2dvb2c0X3JlcXVlc3QifSx7IngtZ29vZy1hbGdvcml0aG0iOiJHT09HNC1SU0EtU0hBMjU2In1dLCJleHBpcmF0aW9uIjoiMjAyMC0wMS0yM1QwNDozNTo0MFoifQ=="
-            },
-            "expectedDecodedPolicy": "{\"conditions\":[{\"acl\":\"public-read\"},{\"cache-control\":\"public,max-age=86400\"},{\"key\":\"test-object\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
-        }
-    },
 
-    {
-        "description": "POST Policy Success With Status",
-        "policyInput": {
-            "scheme": "https",
-            "bucket": "rsaposttest-1579902678-pt5yms55j47r6qy4",
-            "object": "test-object",
-            "expiration": 10,
-            "timestamp": "2020-01-23T04:35:30Z",
-            "fields": {
-                "success_action_status": "200"
+        {
+            "description": "POST Policy Simple Bucket Bound Hostname HTTP",
+            "policyInput": {
+                "scheme": "http",
+                "urlStyle": "BUCKET_BOUND_HOSTNAME",
+                "bucketBoundHostname": "mydomain.tld",
+                "bucket": "rsaposttest-1579902670-h3q7wvodjor6bc7y",
+                "object": "test-object",
+                "expiration": 10,
+                "timestamp": "2020-01-23T04:35:30Z"
+            },
+            "policyOutput": {
+                "url": "http://mydomain.tld/",
+                "fields": {
+                    "key": "test-object",
+                    "x-goog-algorithm": "GOOG4-RSA-SHA256",
+                    "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
+                    "x-goog-date": "20200123T043530Z",
+                    "x-goog-signature": "2821a23ca8886ae9e9d67e8c094c06626a733f373cdca76d9d8c325e60ed8237b500b2f39937a15a1ebbdef7ed156fe3f41bc3456d453bb68d6755872eb429c329ae4e0dfb5e0abef4ca976394430ad7b3d1f14e50f6040c2cf81a2880980c26f9aeb800a674fc834b0e21e414adc3d1a0835da64107cce6a14bd2b39b4d6627029f821009e15ff3a7538ddc27dcf8c189ed197d25d50f0bddf58f99e0265adf562fff7f6689faba60920d73e6a6704c3d2be34a424766398396c55d3680f8dfd19513e2861fa4efa7ae99001877f043567132d413dc3c69e04a7ef5d30a325c2f9bc64e19dd6f0576781e546383378e7a4f2904411ee32d5c5a763683333dd7",
+                    "policy": "eyJjb25kaXRpb25zIjpbeyJrZXkiOiJ0ZXN0LW9iamVjdCJ9LHsieC1nb29nLWRhdGUiOiIyMDIwMDEyM1QwNDM1MzBaIn0seyJ4LWdvb2ctY3JlZGVudGlhbCI6InRlc3QtaWFtLWNyZWRlbnRpYWxzQGR1bW15LXByb2plY3QtaWQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20vMjAyMDAxMjMvYXV0by9zdG9yYWdlL2dvb2c0X3JlcXVlc3QifSx7IngtZ29vZy1hbGdvcml0aG0iOiJHT09HNC1SU0EtU0hBMjU2In1dLCJleHBpcmF0aW9uIjoiMjAyMC0wMS0yM1QwNDozNTo0MFoifQ=="
+                },
+                "expectedDecodedPolicy": "{\"conditions\":[{\"key\":\"test-object\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
             }
         },
-        "policyOutput": {
-            "url": "https://storage.googleapis.com/rsaposttest-1579902678-pt5yms55j47r6qy4/",
-            "fields": {
-                "key": "test-object",
-                "success_action_status": "200",
-                "x-goog-algorithm": "GOOG4-RSA-SHA256",
-                "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
-                "x-goog-date": "20200123T043530Z",
-                "x-goog-signature": "98b21b196e889787a779e98f0349cb69d46f75efe10278c1834eb29d6bc6635f0abfb3708108882a12071dd3aedaa30622c291b80e68b53ad959ef614c32576a8af5bfcbf87ecf3dbc4626360c093ed351f3517ff59793e43c26de3477a3ea2abb733ef2e847f0fa0f761ca1a18c82f196d16775522be6f0030bba03e9b0b0a533cf1eda07e4809f8b984ccf2652911b5c2eb01cf1a404bd8cfca628ce124f71d390d718d9f7f983c504b110f638874d1e5928ca607e5324dea0a8ec8fe8f8799b7d2b5801059dbffaa02fe6525e88ac393b86325ab5401ebc74661fa07932d385e1f2bb6703447b4b593ca13482426201464fe81d60a5c6ca47519137f009ea",
-                "policy": "eyJjb25kaXRpb25zIjpbeyJzdWNjZXNzX2FjdGlvbl9zdGF0dXMiOiIyMDAifSx7ImtleSI6InRlc3Qtb2JqZWN0In0seyJ4LWdvb2ctZGF0ZSI6IjIwMjAwMTIzVDA0MzUzMFoifSx7IngtZ29vZy1jcmVkZW50aWFsIjoidGVzdC1pYW0tY3JlZGVudGlhbHNAZHVtbXktcHJvamVjdC1pZC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbS8yMDIwMDEyMy9hdXRvL3N0b3JhZ2UvZ29vZzRfcmVxdWVzdCJ9LHsieC1nb29nLWFsZ29yaXRobSI6IkdPT0c0LVJTQS1TSEEyNTYifV0sImV4cGlyYXRpb24iOiIyMDIwLTAxLTIzVDA0OjM1OjQwWiJ9"
-            },
-            "expectedDecodedPolicy": "{\"conditions\":[{\"success_action_status\":\"200\"},{\"key\":\"test-object\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
-        }
-    },
 
-    {
-        "description": "POST Policy Success With Redirect",
-        "policyInput": {
-            "scheme": "https",
-            "bucket": "rsaposttest-1579902671-6ldm6caw4se52vrx",
-            "object": "test-object",
-            "expiration": 10,
-            "timestamp": "2020-01-23T04:35:30Z",
-            "fields": {
-                "success_action_redirect": "http://www.google.com/"
+        {
+            "description": "POST Policy ACL matching",
+            "policyInput": {
+                "scheme": "https",
+                "bucket": "rsaposttest-1579902662-x2kd7kjwh2w5izcw",
+                "object": "test-object",
+                "expiration": 10,
+                "timestamp": "2020-01-23T04:35:30Z",
+                "conditions": {
+                    "startsWith": [
+                        "$acl",
+                        "public"
+                    ]
+                }
+            },
+            "policyOutput": {
+                "url": "https://storage.googleapis.com/rsaposttest-1579902662-x2kd7kjwh2w5izcw/",
+                "fields": {
+                    "key": "test-object",
+                    "x-goog-algorithm": "GOOG4-RSA-SHA256",
+                    "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
+                    "x-goog-date": "20200123T043530Z",
+                    "x-goog-signature": "512593e9f739b044cf1b1f38e9ce492e43917a4864a027bc296fd595dd1ed53bb1e4da804251a812400bc93111181a13aad6f8e85b1442700cb13ac830309a8d2cfa5f21b85815644ad2942393a413f90ec6c34b4d3234630185c3e2bcee2bf560b2d1a07cd2d94bd28021b7ee60d95ba98486d574b6255663350805e88f14c8be3f095e1f40c5c9f97c7c8cbbb67538cfa3e23e7dbda6dbfd2a0f98daa6c40fadfb8f3e7799fe152a542a7784ddd2e6ba0b21fbdc13984dfdff1af886207fa6b0b50e774337d7d9eb6516ed1f81b338b9d4ddefda1b11d7bc3d0308b8d3e93f78709be4e1308562c5c0713f88267df40c51b887917d254718393a2c09fc4c55",
+                    "policy": "eyJjb25kaXRpb25zIjpbWyJzdGFydHMtd2l0aCIsIiRhY2wiLCJwdWJsaWMiXSx7ImtleSI6InRlc3Qtb2JqZWN0In0seyJ4LWdvb2ctZGF0ZSI6IjIwMjAwMTIzVDA0MzUzMFoifSx7IngtZ29vZy1jcmVkZW50aWFsIjoidGVzdC1pYW0tY3JlZGVudGlhbHNAZHVtbXktcHJvamVjdC1pZC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbS8yMDIwMDEyMy9hdXRvL3N0b3JhZ2UvZ29vZzRfcmVxdWVzdCJ9LHsieC1nb29nLWFsZ29yaXRobSI6IkdPT0c0LVJTQS1TSEEyNTYifV0sImV4cGlyYXRpb24iOiIyMDIwLTAxLTIzVDA0OjM1OjQwWiJ9"
+                },
+                "expectedDecodedPolicy": "{\"conditions\":[[\"starts-with\",\"$acl\",\"public\"],{\"key\":\"test-object\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
             }
         },
-        "policyOutput": {
-            "url": "https://storage.googleapis.com/rsaposttest-1579902671-6ldm6caw4se52vrx/",
-            "fields": {
-                "key": "test-object",
-                "success_action_redirect": "http://www.google.com/",
-                "x-goog-algorithm": "GOOG4-RSA-SHA256",
-                "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
-                "x-goog-date": "20200123T043530Z",
-                "x-goog-signature": "39faed7256b042d0bd763ad1eb2439fcd6636aeaadc8a5501510f3baa6769f5f96bfe59321c6c76a82890a714afcb59580673a471f00d41c4ee0cdb1bbd51c05e2c32d9847bdfd96442996e81b783eac54c494c1ba8fdee50370c6b9b03c3812ccaa82bed390d27f82e9abf1e99b69c93a55e9dbcceac3a629e1e4f7178731fcfcda9fafee2fbbee20c135b67873ea298b5a29908215597a81adede5116b9e7b01b718c0c4b11b387a42a9281cad75b3b5f1dd5d62bec746ac1f723119b745d2ca4079282bfd82007a3e8db631736f9fa1ca1abe28975a0bbfa99eff065fa05328d2bcb69a9506b4bd4b694b357afc9ff0fb0b7457ab0b63a4f8f9ec46719d60",
-                "policy": "eyJjb25kaXRpb25zIjpbeyJzdWNjZXNzX2FjdGlvbl9yZWRpcmVjdCI6Imh0dHA6Ly93d3cuZ29vZ2xlLmNvbS8ifSx7ImtleSI6InRlc3Qtb2JqZWN0In0seyJ4LWdvb2ctZGF0ZSI6IjIwMjAwMTIzVDA0MzUzMFoifSx7IngtZ29vZy1jcmVkZW50aWFsIjoidGVzdC1pYW0tY3JlZGVudGlhbHNAZHVtbXktcHJvamVjdC1pZC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbS8yMDIwMDEyMy9hdXRvL3N0b3JhZ2UvZ29vZzRfcmVxdWVzdCJ9LHsieC1nb29nLWFsZ29yaXRobSI6IkdPT0c0LVJTQS1TSEEyNTYifV0sImV4cGlyYXRpb24iOiIyMDIwLTAxLTIzVDA0OjM1OjQwWiJ9"
-            },
-            "expectedDecodedPolicy": "{\"conditions\":[{\"success_action_redirect\":\"http://www.google.com/\"},{\"key\":\"test-object\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
-        }
-    },
 
-    {
-        "description": "POST Policy Character Escaping",
-        "policyInput": {
-            "scheme": "https",
-            "bucket": "rsaposttest-1579902671-6ldm6caw4se52vrx",
-            "object": "$test-object-é",
-            "expiration": 10,
-            "timestamp": "2020-01-23T04:35:30Z",
-            "fields": {
-                "success_action_redirect": "http://www.google.com/",
-                "x-goog-meta": "$test-object-é-metadata"
+        {
+            "description": "POST Policy Within Content-Range",
+            "policyInput": {
+                "scheme": "https",
+                "bucket": "rsaposttest-1579902672-lpd47iogn6hx4sle",
+                "object": "test-object",
+                "expiration": 10,
+                "timestamp": "2020-01-23T04:35:30Z",
+                "conditions": {
+                    "contentLengthRange": [
+                        246,
+                        266
+                    ]
+                }
+            },
+            "policyOutput": {
+                "url": "https://storage.googleapis.com/rsaposttest-1579902672-lpd47iogn6hx4sle/",
+                "fields": {
+                    "key": "test-object",
+                    "x-goog-algorithm": "GOOG4-RSA-SHA256",
+                    "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
+                    "x-goog-date": "20200123T043530Z",
+                    "x-goog-signature": "26a8a68997592a5bbd52c8e429ad1687db87aea9fa3ac6fcf4ff7d4526a46b5baf081e6baf5bb028bdddd260f1fcb04d12b0431587e5136815d377dbf62405ab19a6434ddf82b46cddf23e03c7e42613964fffbb70ec5a7d9878191c62fa3b3cdce2e3d3b55a47496c366161ddc24a80199678fe6c90e732fa0803024e9d9c4fada45a06608184420a4e6a0d97faff3cad30ce1956ea5416d9df41cf3b3911fec4a416248478a9557fa527a0ee732adf22d2b87de7f34d49dd9ecd4a4eca8aadd5eb7207c0fe71215fdfd2b4341c58146206e66c908f2c3922e45e4a84da4e0f9b2cfa102f498605b2ec71646c24355f524ae5e14ff4fcd36dd81a6c95c52e55",
+                    "policy": "eyJjb25kaXRpb25zIjpbWyJjb250ZW50LWxlbmd0aC1yYW5nZSIsMjQ2LDI2Nl0seyJrZXkiOiJ0ZXN0LW9iamVjdCJ9LHsieC1nb29nLWRhdGUiOiIyMDIwMDEyM1QwNDM1MzBaIn0seyJ4LWdvb2ctY3JlZGVudGlhbCI6InRlc3QtaWFtLWNyZWRlbnRpYWxzQGR1bW15LXByb2plY3QtaWQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20vMjAyMDAxMjMvYXV0by9zdG9yYWdlL2dvb2c0X3JlcXVlc3QifSx7IngtZ29vZy1hbGdvcml0aG0iOiJHT09HNC1SU0EtU0hBMjU2In1dLCJleHBpcmF0aW9uIjoiMjAyMC0wMS0yM1QwNDozNTo0MFoifQ=="
+                },
+                "expectedDecodedPolicy": "{\"conditions\":[[\"content-length-range\",246,266],{\"key\":\"test-object\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
             }
         },
-        "policyOutput": {
-            "url": "https://storage.googleapis.com/rsaposttest-1579902671-6ldm6caw4se52vrx/",
-            "fields": {
-                "key": "$test-object-é",
-                "success_action_redirect": "http://www.google.com/",
-                "x-goog-meta": "$test-object-é-metadata",
-                "x-goog-algorithm": "GOOG4-RSA-SHA256",
-                "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
-                "x-goog-date": "20200123T043530Z",
-                "x-goog-signature": "05eb19ea4ece513cbb2bc6a92c9bc82de6be46943fb4703df3f7b26e6033f90a194e2444e6c3166e9585ca468b5727702aa2696e5cca54677c047f7734119ea0d635404d6a5e577b737ffd5414059cd1b508aa99cfad592d9228f1bf47d7df3ffd73bcae6af6d8d83f7f50b4ccbf6e6c0798d2d9923a7e18c8888e2519fcf09d174b7015581a7de021964eeb9d27293213686d80d825332819c4e98d4ab2c5237f352840993e22a02a41d827ce6a4a294e84a33bf051519fdcbf982f2ad932f58714608c4b5a1f89d5e322d194f5e29fa4160fce771008320ac4e659adeead36aa07fe26a96e52e809436b7bd169256d6613c135148fdee6926caaef65817dc2",
-                "policy": "eyJjb25kaXRpb25zIjpbeyJ4LWdvb2ctbWV0YSI6IiR0ZXN0LW9iamVjdC1cdTAwZTktbWV0YWRhdGEifSx7InN1Y2Nlc3NfYWN0aW9uX3JlZGlyZWN0IjoiaHR0cDovL3d3dy5nb29nbGUuY29tLyJ9LHsia2V5IjoiJHRlc3Qtb2JqZWN0LVx1MDBlOSJ9LHsieC1nb29nLWRhdGUiOiIyMDIwMDEyM1QwNDM1MzBaIn0seyJ4LWdvb2ctY3JlZGVudGlhbCI6InRlc3QtaWFtLWNyZWRlbnRpYWxzQGR1bW15LXByb2plY3QtaWQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20vMjAyMDAxMjMvYXV0by9zdG9yYWdlL2dvb2c0X3JlcXVlc3QifSx7IngtZ29vZy1hbGdvcml0aG0iOiJHT09HNC1SU0EtU0hBMjU2In1dLCJleHBpcmF0aW9uIjoiMjAyMC0wMS0yM1QwNDozNTo0MFoifQ"
+
+        {
+            "description": "POST Policy Cache-Control File Header",
+            "policyInput": {
+                "scheme": "https",
+                "bucket": "rsaposttest-1579902669-nwk5s7vvfjgdjs62",
+                "object": "test-object",
+                "expiration": 10,
+                "timestamp": "2020-01-23T04:35:30Z",
+                "fields": {
+                    "acl": "public-read",
+                    "cache-control": "public,max-age=86400"
+                }
             },
-            "expectedDecodedPolicy": "{\"conditions\":[{\"success_action_redirect\":\"http://www.google.com/\"},{\"x-goog-meta\":\"$test-object-\u00e9-metadata\"},{\"key\":\"$test-object-\u00e9\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
+            "policyOutput": {
+                "url": "https://storage.googleapis.com/rsaposttest-1579902669-nwk5s7vvfjgdjs62/",
+                "fields": {
+                    "key": "test-object",
+                    "acl": "public-read",
+                    "cache-control": "public,max-age=86400",
+                    "x-goog-algorithm": "GOOG4-RSA-SHA256",
+                    "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
+                    "x-goog-date": "20200123T043530Z",
+                    "x-goog-signature": "2fc42968e980af863af91c20f0a9158b76249b64fd066f3a9e974e3f95fc4a56fb3753845913556180d99f4e3678f326cbfef0b91d2181dcc76a2900d85070443fba87f73f139df02c7a391459006e4e22defd1746272bb42af180ec4bc6d440e831e8074413ca2078a8fac622f1d64a116bbbd61ac3ef7df4f67dc568df9d489ed1dcbb8dc1964b459d5e557caf1f5710be5863b7606adeca85befe8d2754f4ca368fb7e87f4e490218dcfcbdd64f1a65f79d45dc3634b7aac96a9520829357b2694902e8eb7e2a22ba7aa9150730eadc7b99de2929ff302efc6839c811fd6ad9a31c895421266784dd49dc76ee30140cbc577852237fd2f1715358e67d8c0f",
+                    "policy": "eyJjb25kaXRpb25zIjpbeyJhY2wiOiJwdWJsaWMtcmVhZCJ9LHsiY2FjaGUtY29udHJvbCI6InB1YmxpYyxtYXgtYWdlPTg2NDAwIn0seyJrZXkiOiJ0ZXN0LW9iamVjdCJ9LHsieC1nb29nLWRhdGUiOiIyMDIwMDEyM1QwNDM1MzBaIn0seyJ4LWdvb2ctY3JlZGVudGlhbCI6InRlc3QtaWFtLWNyZWRlbnRpYWxzQGR1bW15LXByb2plY3QtaWQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20vMjAyMDAxMjMvYXV0by9zdG9yYWdlL2dvb2c0X3JlcXVlc3QifSx7IngtZ29vZy1hbGdvcml0aG0iOiJHT09HNC1SU0EtU0hBMjU2In1dLCJleHBpcmF0aW9uIjoiMjAyMC0wMS0yM1QwNDozNTo0MFoifQ=="
+                },
+                "expectedDecodedPolicy": "{\"conditions\":[{\"acl\":\"public-read\"},{\"cache-control\":\"public,max-age=86400\"},{\"key\":\"test-object\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
+            }
+        },
+
+        {
+            "description": "POST Policy Success With Status",
+            "policyInput": {
+                "scheme": "https",
+                "bucket": "rsaposttest-1579902678-pt5yms55j47r6qy4",
+                "object": "test-object",
+                "expiration": 10,
+                "timestamp": "2020-01-23T04:35:30Z",
+                "fields": {
+                    "success_action_status": "200"
+                }
+            },
+            "policyOutput": {
+                "url": "https://storage.googleapis.com/rsaposttest-1579902678-pt5yms55j47r6qy4/",
+                "fields": {
+                    "key": "test-object",
+                    "success_action_status": "200",
+                    "x-goog-algorithm": "GOOG4-RSA-SHA256",
+                    "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
+                    "x-goog-date": "20200123T043530Z",
+                    "x-goog-signature": "98b21b196e889787a779e98f0349cb69d46f75efe10278c1834eb29d6bc6635f0abfb3708108882a12071dd3aedaa30622c291b80e68b53ad959ef614c32576a8af5bfcbf87ecf3dbc4626360c093ed351f3517ff59793e43c26de3477a3ea2abb733ef2e847f0fa0f761ca1a18c82f196d16775522be6f0030bba03e9b0b0a533cf1eda07e4809f8b984ccf2652911b5c2eb01cf1a404bd8cfca628ce124f71d390d718d9f7f983c504b110f638874d1e5928ca607e5324dea0a8ec8fe8f8799b7d2b5801059dbffaa02fe6525e88ac393b86325ab5401ebc74661fa07932d385e1f2bb6703447b4b593ca13482426201464fe81d60a5c6ca47519137f009ea",
+                    "policy": "eyJjb25kaXRpb25zIjpbeyJzdWNjZXNzX2FjdGlvbl9zdGF0dXMiOiIyMDAifSx7ImtleSI6InRlc3Qtb2JqZWN0In0seyJ4LWdvb2ctZGF0ZSI6IjIwMjAwMTIzVDA0MzUzMFoifSx7IngtZ29vZy1jcmVkZW50aWFsIjoidGVzdC1pYW0tY3JlZGVudGlhbHNAZHVtbXktcHJvamVjdC1pZC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbS8yMDIwMDEyMy9hdXRvL3N0b3JhZ2UvZ29vZzRfcmVxdWVzdCJ9LHsieC1nb29nLWFsZ29yaXRobSI6IkdPT0c0LVJTQS1TSEEyNTYifV0sImV4cGlyYXRpb24iOiIyMDIwLTAxLTIzVDA0OjM1OjQwWiJ9"
+                },
+                "expectedDecodedPolicy": "{\"conditions\":[{\"success_action_status\":\"200\"},{\"key\":\"test-object\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
+            }
+        },
+
+        {
+            "description": "POST Policy Success With Redirect",
+            "policyInput": {
+                "scheme": "https",
+                "bucket": "rsaposttest-1579902671-6ldm6caw4se52vrx",
+                "object": "test-object",
+                "expiration": 10,
+                "timestamp": "2020-01-23T04:35:30Z",
+                "fields": {
+                    "success_action_redirect": "http://www.google.com/"
+                }
+            },
+            "policyOutput": {
+                "url": "https://storage.googleapis.com/rsaposttest-1579902671-6ldm6caw4se52vrx/",
+                "fields": {
+                    "key": "test-object",
+                    "success_action_redirect": "http://www.google.com/",
+                    "x-goog-algorithm": "GOOG4-RSA-SHA256",
+                    "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
+                    "x-goog-date": "20200123T043530Z",
+                    "x-goog-signature": "39faed7256b042d0bd763ad1eb2439fcd6636aeaadc8a5501510f3baa6769f5f96bfe59321c6c76a82890a714afcb59580673a471f00d41c4ee0cdb1bbd51c05e2c32d9847bdfd96442996e81b783eac54c494c1ba8fdee50370c6b9b03c3812ccaa82bed390d27f82e9abf1e99b69c93a55e9dbcceac3a629e1e4f7178731fcfcda9fafee2fbbee20c135b67873ea298b5a29908215597a81adede5116b9e7b01b718c0c4b11b387a42a9281cad75b3b5f1dd5d62bec746ac1f723119b745d2ca4079282bfd82007a3e8db631736f9fa1ca1abe28975a0bbfa99eff065fa05328d2bcb69a9506b4bd4b694b357afc9ff0fb0b7457ab0b63a4f8f9ec46719d60",
+                    "policy": "eyJjb25kaXRpb25zIjpbeyJzdWNjZXNzX2FjdGlvbl9yZWRpcmVjdCI6Imh0dHA6Ly93d3cuZ29vZ2xlLmNvbS8ifSx7ImtleSI6InRlc3Qtb2JqZWN0In0seyJ4LWdvb2ctZGF0ZSI6IjIwMjAwMTIzVDA0MzUzMFoifSx7IngtZ29vZy1jcmVkZW50aWFsIjoidGVzdC1pYW0tY3JlZGVudGlhbHNAZHVtbXktcHJvamVjdC1pZC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbS8yMDIwMDEyMy9hdXRvL3N0b3JhZ2UvZ29vZzRfcmVxdWVzdCJ9LHsieC1nb29nLWFsZ29yaXRobSI6IkdPT0c0LVJTQS1TSEEyNTYifV0sImV4cGlyYXRpb24iOiIyMDIwLTAxLTIzVDA0OjM1OjQwWiJ9"
+                },
+                "expectedDecodedPolicy": "{\"conditions\":[{\"success_action_redirect\":\"http://www.google.com/\"},{\"key\":\"test-object\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
+            }
+        },
+
+        {
+            "description": "POST Policy Character Escaping",
+            "policyInput": {
+                "scheme": "https",
+                "bucket": "rsaposttest-1579902671-6ldm6caw4se52vrx",
+                "object": "$test-object-é",
+                "expiration": 10,
+                "timestamp": "2020-01-23T04:35:30Z",
+                "fields": {
+                    "success_action_redirect": "http://www.google.com/",
+                    "x-goog-meta": "$test-object-é-metadata"
+                }
+            },
+            "policyOutput": {
+                "url": "https://storage.googleapis.com/rsaposttest-1579902671-6ldm6caw4se52vrx/",
+                "fields": {
+                    "key": "$test-object-é",
+                    "success_action_redirect": "http://www.google.com/",
+                    "x-goog-meta": "$test-object-é-metadata",
+                    "x-goog-algorithm": "GOOG4-RSA-SHA256",
+                    "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
+                    "x-goog-date": "20200123T043530Z",
+                    "x-goog-signature": "05eb19ea4ece513cbb2bc6a92c9bc82de6be46943fb4703df3f7b26e6033f90a194e2444e6c3166e9585ca468b5727702aa2696e5cca54677c047f7734119ea0d635404d6a5e577b737ffd5414059cd1b508aa99cfad592d9228f1bf47d7df3ffd73bcae6af6d8d83f7f50b4ccbf6e6c0798d2d9923a7e18c8888e2519fcf09d174b7015581a7de021964eeb9d27293213686d80d825332819c4e98d4ab2c5237f352840993e22a02a41d827ce6a4a294e84a33bf051519fdcbf982f2ad932f58714608c4b5a1f89d5e322d194f5e29fa4160fce771008320ac4e659adeead36aa07fe26a96e52e809436b7bd169256d6613c135148fdee6926caaef65817dc2",
+                    "policy": "eyJjb25kaXRpb25zIjpbeyJ4LWdvb2ctbWV0YSI6IiR0ZXN0LW9iamVjdC1cdTAwZTktbWV0YWRhdGEifSx7InN1Y2Nlc3NfYWN0aW9uX3JlZGlyZWN0IjoiaHR0cDovL3d3dy5nb29nbGUuY29tLyJ9LHsia2V5IjoiJHRlc3Qtb2JqZWN0LVx1MDBlOSJ9LHsieC1nb29nLWRhdGUiOiIyMDIwMDEyM1QwNDM1MzBaIn0seyJ4LWdvb2ctY3JlZGVudGlhbCI6InRlc3QtaWFtLWNyZWRlbnRpYWxzQGR1bW15LXByb2plY3QtaWQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20vMjAyMDAxMjMvYXV0by9zdG9yYWdlL2dvb2c0X3JlcXVlc3QifSx7IngtZ29vZy1hbGdvcml0aG0iOiJHT09HNC1SU0EtU0hBMjU2In1dLCJleHBpcmF0aW9uIjoiMjAyMC0wMS0yM1QwNDozNTo0MFoifQ"
+                },
+                "expectedDecodedPolicy": "{\"conditions\":[{\"success_action_redirect\":\"http://www.google.com/\"},{\"x-goog-meta\":\"$test-object-\u00e9-metadata\"},{\"key\":\"$test-object-\u00e9\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
+            }
         }
-    }
-]
+    ]
+}
