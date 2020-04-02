@@ -1627,3 +1627,22 @@ def test_IN(ds_entity):
     assert len(results) == 2
     assert results[0].foo == 2
     assert results[1].foo == 3
+
+
+@pytest.mark.usefixtures("client_context")
+def test_projection_with_json_property(dispose_of):
+    """Regression test for #378
+
+    https://github.com/googleapis/python-ndb/issues/378
+    """
+
+    class SomeKind(ndb.Model):
+        foo = ndb.JsonProperty(indexed=True)
+
+    key = SomeKind(foo={"hi": "mom!"}).put()
+    dispose_of(key._key)
+
+    eventually(SomeKind.query().fetch, _length_equals(1))
+
+    results = SomeKind.query().fetch(projection=[SomeKind.foo])
+    assert results[0].foo == {"hi": "mom!"}

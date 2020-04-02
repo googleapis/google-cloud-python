@@ -2253,11 +2253,11 @@ class TestJsonProperty:
         assert prop._from_base_type(value) == expected
 
     @staticmethod
-    def test__from_base_type_invalid():
+    def test__from_base_type_str():
         prop = model.JsonProperty(name="json-val")
-        if six.PY3:  # pragma: NO PY2 COVER  # pragma: NO BRANCH
-            with pytest.raises(AttributeError):
-                prop._from_base_type("{}")
+        value = u'[14,true,{"a":null,"b":"\\u2603"}]'
+        expected = [14, True, {"a": None, "b": u"\N{snowman}"}]
+        assert prop._from_base_type(value) == expected
 
 
 class TestUser:

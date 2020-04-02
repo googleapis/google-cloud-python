@@ -2033,7 +2033,7 @@ class Property(ModelAttribute):
         """
         if require_indexed and not self._indexed:
             raise InvalidPropertyError(
-                "Property is unindexed {}".format(self._name)
+                "Property is unindexed: {}".format(self._name)
             )
 
         if rest:
@@ -3049,12 +3049,16 @@ class JsonProperty(BlobProperty):
         """Convert a value from the "base" value type for this property.
 
         Args:
-            value (bytes): The value to be converted.
+            value (Union[bytes, str]): The value to be converted.
 
         Returns:
             Any: The ``value`` (ASCII bytes or string) loaded as JSON.
         """
-        return json.loads(value.decode("ascii"))
+        # We write and retrieve `bytes` normally, but for some reason get back
+        # `str` from a projection query.
+        if not isinstance(value, six.text_type):
+            value = value.decode("ascii")
+        return json.loads(value)
 
 
 @functools.total_ordering
