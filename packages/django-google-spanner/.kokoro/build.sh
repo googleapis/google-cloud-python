@@ -39,5 +39,14 @@ python3.6 -m flake8
 
 # Run with the Django test apps.
 export RUNNING_SPANNER_BACKEND_TESTS=1
-export DJANGO_TEST_APPS="backends basic bulk_create choices custom_columns"
-bash django_test_suite.sh
+export DJANGO_TEST_APPS="admin_changelist admin_custom_urls admin_docs admin_inlines admin_ordering aggregation aggregation_regress annotations backends basic bulk_create cache choices custom_columns indexes inline_formsets introspection invalid_models_tests known_related_objects lookup max_lengths m2m_and_m2o m2m_intermediary m2m_multiple m2m_recursive m2m_regress m2m_signals m2m_through m2m_through_regress m2o_recursive managers_regress many_to_many many_to_one many_to_one_null max_lengths migrate_signals migrations.test_operations migration_test_data_persistence"
+
+pip3 install .
+mkdir -p django_tests && git clone --depth 1 --single-branch --branch spanner-2.2.x https://github.com/timgraham/django.git django_tests/django
+# cd django_tests/django && pip3 install -e .; cd ../../
+
+# Install dependencies for Django tests.
+sudo apt-get update
+apt-get install -y libffi-dev libjpeg-dev zlib1g-dev libmemcached-dev
+cd django_tests/django && pip3 install -e . && pip3 install -r tests/requirements/py3.txt; cd ../../
+./bin/parallelize_tests_linux
