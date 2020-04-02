@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [1.27.0](https://www.github.com/googleapis/python-storage/compare/v1.26.0...v1.27.0) (2020-04-01)
+
+
+### Features
+
+* generate signed URLs for blobs/buckets using virtual hostname ([#58](https://www.github.com/googleapis/python-storage/issues/58)) ([23df542](https://www.github.com/googleapis/python-storage/commit/23df542d0669852b05139023d5ef1ae14a09f4c7))
+* **storage:** Add cname support for V4 signature ([#72](https://www.github.com/googleapis/python-storage/issues/72)) ([cc853af](https://www.github.com/googleapis/python-storage/commit/cc853af6bf8e44e5b16e8cdfb3a275629ffb1f27))
+* **storage:** add conformance tests for virtual hosted style signed URLs ([#83](https://www.github.com/googleapis/python-storage/issues/83)) ([5adc8b0](https://www.github.com/googleapis/python-storage/commit/5adc8b0e6ffe28185a4085cd1fc8c1b4998094aa))
+* **storage:** add get notification method ([#77](https://www.github.com/googleapis/python-storage/issues/77)) ([f602252](https://www.github.com/googleapis/python-storage/commit/f6022521bee0824e1b291211703afc5eae6c6891))
+* **storage:** improve v4 signature query parameters encoding ([#48](https://www.github.com/googleapis/python-storage/issues/48)) ([8df0b55](https://www.github.com/googleapis/python-storage/commit/8df0b554a1904787889309707f08c6b8683cad44))
+
+
+### Bug Fixes
+
+* **storage:** fix blob metadata to None regression ([#60](https://www.github.com/googleapis/python-storage/issues/60)) ([a834d1b](https://www.github.com/googleapis/python-storage/commit/a834d1b54aa96152ced4d841c4e0c241acd2d8d8))
+* add classifer for Python 3.8 ([#63](https://www.github.com/googleapis/python-storage/issues/63)) ([1b9b6bc](https://www.github.com/googleapis/python-storage/commit/1b9b6bc2601ee336a8399266852fb850e368b30a))
+* make v4 signing formatting consistent w/ spec ([#56](https://www.github.com/googleapis/python-storage/issues/56)) ([8712da8](https://www.github.com/googleapis/python-storage/commit/8712da84c93600a736e72a097c42a49b4724347d))
+* use correct IAM object admin role ([#71](https://www.github.com/googleapis/python-storage/issues/71)) ([2e27edd](https://www.github.com/googleapis/python-storage/commit/2e27edd3fe65cd5e17c12bf11f2b58f611937d61))
+* **storage:** remove docstring of retrun in reload method ([#78](https://www.github.com/googleapis/python-storage/issues/78)) ([4abeb1c](https://www.github.com/googleapis/python-storage/commit/4abeb1c0810c4e5d716758536da9fc204fa4c2a9))
+* **storage:** use OrderedDict while encoding POST policy ([#95](https://www.github.com/googleapis/python-storage/issues/95)) ([df560e1](https://www.github.com/googleapis/python-storage/commit/df560e178369a6d03140e412a25af6ec7444f5a1))
+
 ## [1.26.0](https://www.github.com/googleapis/python-storage/compare/v1.25.0...v1.26.0) (2020-02-12)
 
 
