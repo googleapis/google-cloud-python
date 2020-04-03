@@ -1702,11 +1702,18 @@ class TestKMSIntegration(TestStorageFiles):
 class TestRetentionPolicy(unittest.TestCase):
     def setUp(self):
         self.case_buckets_to_delete = []
+        self.case_blobs_to_delete = []
 
     def tearDown(self):
+        # discard test blobs retention policy settings
+        for blob in self.case_blobs_to_delete:
+            blob.event_based_hold = False
+            blob.temporary_hold = False
+            blob.patch()
+
         for bucket_name in self.case_buckets_to_delete:
             bucket = Config.CLIENT.bucket(bucket_name)
-            retry_429_harder(bucket.delete)()
+            retry_429_harder(bucket.delete)(force=True)
 
     def test_bucket_w_retention_period(self):
         import datetime
@@ -1732,6 +1739,8 @@ class TestRetentionPolicy(unittest.TestCase):
         blob = bucket.blob(blob_name)
         blob.upload_from_string(payload)
 
+        self.case_blobs_to_delete.append(blob)
+
         other = bucket.get_blob(blob_name)
 
         self.assertFalse(other.event_based_hold)
@@ -1756,6 +1765,7 @@ class TestRetentionPolicy(unittest.TestCase):
         self.assertIsNone(other.retention_expiration_time)
 
         other.delete()
+        self.case_blobs_to_delete.pop()
 
     def test_bucket_w_default_event_based_hold(self):
         from google.api_core import exceptions
@@ -1780,6 +1790,8 @@ class TestRetentionPolicy(unittest.TestCase):
         blob = bucket.blob(blob_name)
         blob.upload_from_string(payload)
 
+        self.case_blobs_to_delete.append(blob)
+
         other = bucket.get_blob(blob_name)
 
         self.assertTrue(other.event_based_hold)
@@ -1791,7 +1803,6 @@ class TestRetentionPolicy(unittest.TestCase):
 
         other.event_based_hold = False
         other.patch()
-
         other.delete()
 
         bucket.default_event_based_hold = False
@@ -1803,11 +1814,12 @@ class TestRetentionPolicy(unittest.TestCase):
         self.assertFalse(bucket.retention_policy_locked)
 
         blob.upload_from_string(payload)
-        self.assertFalse(other.event_based_hold)
-        self.assertFalse(other.temporary_hold)
-        self.assertIsNone(other.retention_expiration_time)
+        self.assertFalse(blob.event_based_hold)
+        self.assertFalse(blob.temporary_hold)
+        self.assertIsNone(blob.retention_expiration_time)
 
         blob.delete()
+        self.case_blobs_to_delete.pop()
 
     def test_blob_w_temporary_hold(self):
         from google.api_core import exceptions
@@ -1824,6 +1836,8 @@ class TestRetentionPolicy(unittest.TestCase):
         blob = bucket.blob(blob_name)
         blob.upload_from_string(payload)
 
+        self.case_blobs_to_delete.append(blob)
+
         other = bucket.get_blob(blob_name)
         other.temporary_hold = True
         other.patch()
@@ -1839,6 +1853,7 @@ class TestRetentionPolicy(unittest.TestCase):
         other.patch()
 
         other.delete()
+        self.case_blobs_to_delete.pop()
 
     def test_bucket_lock_retention_policy(self):
         import datetime
