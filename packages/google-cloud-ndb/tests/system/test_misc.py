@@ -60,8 +60,7 @@ def test_pickle_roundtrip_structured_property(dispose_of):
 
 @pytest.mark.usefixtures("client_context")
 def test_tasklet_yield_emtpy_list():
-    """
-    Regression test for Issue #353.
+    """Regression test for Issue #353.
 
     https://github.com/googleapis/python-ndb/issues/353
     """
@@ -72,3 +71,44 @@ def test_tasklet_yield_emtpy_list():
         raise ndb.Return(nothing)
 
     assert test_it().result() == ()
+
+
+@pytest.mark.usefixtures("client_context")
+def test_transactional_composable(dispose_of):
+    """Regression test for Issue #366.
+
+    https://github.com/googleapis/python-ndb/issues/366
+    """
+
+    class OtherKind(ndb.Model):
+        bar = ndb.IntegerProperty()
+
+    class SomeKind(ndb.Model):
+        foos = ndb.KeyProperty(repeated=True)
+        bar = ndb.IntegerProperty(default=42)
+
+    others = [OtherKind(bar=bar) for bar in range(5)]
+    other_keys = ndb.put_multi(others)
+    for key in other_keys:
+        dispose_of(key._key)
+
+    entity = SomeKind(foos=other_keys[1:])
+    entity_key = entity.put()
+    dispose_of(entity_key._key)
+
+    @ndb.transactional()
+    def get_entities(*keys):
+        entities = []
+        for entity in ndb.get_multi(keys):
+            entities.append(entity)
+            if isinstance(entity, SomeKind):
+                entities.extend(get_foos(entity))
+
+        return entities
+
+    @ndb.transactional()
+    def get_foos(entity):
+        return ndb.get_multi(entity.foos)
+
+    results = get_entities(entity_key, other_keys[0])
+    assert [result.bar for result in results] == [42, 1, 2, 3, 4, 0]

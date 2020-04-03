@@ -70,7 +70,12 @@ class Test_transaction:
         transaction_async.return_value.result.return_value = 42
         assert _transaction.transaction("callback") == 42
         transaction_async.assert_called_once_with(
-            "callback", read_only=False, retries=3, xg=True, propagation=None
+            "callback",
+            read_only=False,
+            retries=3,
+            join=False,
+            xg=True,
+            propagation=None,
         )
 
 
@@ -103,6 +108,29 @@ class Test_transaction_async:
 
         assert future.result() == "I tried, momma."
         on_commit_callback.assert_called_once_with()
+
+    @staticmethod
+    def test_success_join(in_context):
+        def callback():
+            return "I tried, momma."
+
+        with in_context.new(transaction=b"tx123").use():
+            future = _transaction.transaction_async(callback, join=True)
+
+        assert future.result() == "I tried, momma."
+
+    @staticmethod
+    def test_success_join_callback_returns_future(in_context):
+        future = tasklets.Future()
+
+        def callback():
+            return future
+
+        with in_context.new(transaction=b"tx123").use():
+            future = _transaction.transaction_async(callback, join=True)
+
+        future.set_result("I tried, momma.")
+        assert future.result() == "I tried, momma."
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

@@ -39,6 +39,7 @@ def transaction(
     callback,
     retries=_retry._DEFAULT_RETRIES,
     read_only=False,
+    join=False,
     xg=True,
     propagation=None,
 ):
@@ -49,6 +50,10 @@ def transaction(
         retries (int): Number of times to potentially retry the callback in
             case of transient server errors.
         read_only (bool): Whether to run the transaction in read only mode.
+        join (bool): In the event of an already running transaction, if `join`
+            is `True`, `callback` will be run in the already running
+            transaction, otherwise an exception will be raised. Transactions
+            cannot be nested.
         xg (bool): Enable cross-group transactions. This argument is included
             for backwards compatibility reasons and is ignored. All Datastore
             transactions are cross-group, up to 25 entity groups, all the time.
@@ -60,6 +65,7 @@ def transaction(
         callback,
         retries=retries,
         read_only=read_only,
+        join=join,
         xg=xg,
         propagation=propagation,
     )
@@ -70,6 +76,7 @@ def transaction_async(
     callback,
     retries=_retry._DEFAULT_RETRIES,
     read_only=False,
+    join=False,
     xg=True,
     propagation=None,
 ):
@@ -83,12 +90,20 @@ def transaction_async(
     if propagation is not None:
         raise exceptions.NoLongerImplementedError()
 
-    # Keep transaction propagation simple: don't do it.
     context = context_module.get_context()
     if context.transaction:
-        raise NotImplementedError(
-            "Can't start a transaction during a transaction."
-        )
+        if join:
+            result = callback()
+            if not isinstance(result, tasklets.Future):
+                future = tasklets.Future()
+                future.set_result(result)
+                result = future
+            return result
+        else:
+            raise NotImplementedError(
+                "Transactions may not be nested. Pass 'join=True' in order to "
+                "join an already running transaction."
+            )
 
     tasklet = functools.partial(
         _transaction_async, context, callback, read_only=read_only
@@ -138,7 +153,11 @@ def _transaction_async(context, callback, read_only=False):
 
 
 def transactional(
-    retries=_retry._DEFAULT_RETRIES, read_only=False, xg=True, propagation=None
+    retries=_retry._DEFAULT_RETRIES,
+    read_only=False,
+    join=True,
+    xg=True,
+    propagation=None,
 ):
     """A decorator to run a function automatically in a transaction.
 
@@ -147,6 +166,12 @@ def transactional(
     @transactional(retries=1, read_only=False)
     def callback(args):
         ...
+
+    Unlike func:`transaction`_, the ``join`` argument defaults to ``True``,
+    making functions decorated with func:`transactional`_ composable, by
+    default. IE, a function decorated with ``transactional`` can call another
+    function decorated with ``transactional`` and the second function will be
+    executed in the already running transaction.
 
     See google.cloud.ndb.transaction for available options.
     """
@@ -161,6 +186,7 @@ def transactional(
                 callback,
                 retries=retries,
                 read_only=read_only,
+                join=join,
                 xg=xg,
                 propagation=propagation,
             )
@@ -171,7 +197,11 @@ def transactional(
 
 
 def transactional_async(
-    retries=_retry._DEFAULT_RETRIES, read_only=False, xg=True, propagation=None
+    retries=_retry._DEFAULT_RETRIES,
+    read_only=False,
+    join=True,
+    xg=True,
+    propagation=None,
 ):
     """A decorator to run a function in an async transaction.
 
@@ -180,6 +210,12 @@ def transactional_async(
     @transactional_async(retries=1, read_only=False)
     def callback(args):
         ...
+
+    Unlike func:`transaction`_, the ``join`` argument defaults to ``True``,
+    making functions decorated with func:`transactional`_ composable, by
+    default. IE, a function decorated with ``transactional_async`` can call
+    another function decorated with ``transactional_async`` and the second
+    function will be executed in the already running transaction.
 
     See google.cloud.ndb.transaction above for available options.
     """
@@ -194,6 +230,7 @@ def transactional_async(
                 callback,
                 retries=retries,
                 read_only=read_only,
+                join=join,
                 xg=xg,
                 propagation=propagation,
             )
@@ -204,11 +241,21 @@ def transactional_async(
 
 
 def transactional_tasklet(
-    retries=_retry._DEFAULT_RETRIES, read_only=False, xg=True, propagation=None
+    retries=_retry._DEFAULT_RETRIES,
+    read_only=False,
+    join=True,
+    xg=True,
+    propagation=None,
 ):
     """A decorator that turns a function into a tasklet running in transaction.
 
     Wrapped function returns a Future.
+
+    Unlike func:`transaction`_, the ``join`` argument defaults to ``True``,
+    making functions decorated with func:`transactional`_ composable, by
+    default. IE, a function decorated with ``transactional_tasklet`` can call
+    another function decorated with ``transactional_tasklet`` and the second
+    function will be executed in the already running transaction.
 
     See google.cloud.ndb.transaction above for available options.
     """
@@ -224,6 +271,7 @@ def transactional_tasklet(
                 callback,
                 retries=retries,
                 read_only=read_only,
+                join=join,
                 xg=xg,
                 propagation=propagation,
             )
