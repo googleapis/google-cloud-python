@@ -73,19 +73,20 @@ func main() {
 	shutdownCtx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
+	exitCode := int32(0)
+	var wg sync.WaitGroup
+	defer func() {
+		wg.Wait()
+		os.Exit(int(exitCode))
+	}()
+
 	// Gracefully shutdown on Ctrl+C.
 	sigCh := make(chan os.Signal, 1)
 	signal.Notify(sigCh, os.Interrupt)
 	go func() {
 		<-sigCh
 		cancel()
-	}()
-
-	exitCode := int32(0)
-	var wg sync.WaitGroup
-	defer func() {
 		wg.Wait()
-		os.Exit(int(exitCode))
 	}()
 
 	// The number of Django apps to run per goroutine.
@@ -109,8 +110,15 @@ func main() {
 			continue
 		}
 
-		wg.Add(1)
-		sema <- true
+		select {
+		case <-shutdownCtx.Done():
+			// No more spawning goroutines, the test has been cancelled.
+			return
+
+		case sema <- true:
+			// Proceed normally.
+			wg.Add(1)
+		}
 
 		go func(wg *sync.WaitGroup, apps []string) {
 			defer func() {
@@ -120,8 +128,13 @@ func main() {
 					fmt.Printf("\033[31m%v\033[00m\n", r)
 					atomic.StoreInt32(&exitCode, -1)
 				}
-				<-sema
+
 				wg.Done()
+
+				select {
+				case <-sema:
+				case <-shutdownCtx.Done():
+				}
 			}()
 
 			// Artificially add a wait time so as to ensure that we don't
@@ -131,7 +144,13 @@ func main() {
 			// to try to introduce variability.
 			throttle := (time.Millisecond * time.Duration(rng.Intn(937))) + (time.Second * time.Duration(1+rng.Intn(int(6*100/5.0))))
 			fmt.Printf("Throttling by sleeping for %s\n", throttle)
-			time.Sleep(throttle)
+
+			select {
+			case <-shutdownCtx.Done():
+				println("Canceled so returning ASAP")
+				return
+			case <-time.After(throttle):
+			}
 
 			if err := runTests(shutdownCtx, apps, "django_test_suite.sh"); err != nil {
 				panic(err)
