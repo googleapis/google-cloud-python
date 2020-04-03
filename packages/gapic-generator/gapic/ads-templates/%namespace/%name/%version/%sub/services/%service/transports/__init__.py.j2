@@ -1,0 +1,20 @@
+{% extends '_base.py.j2' %}
+
+{% block content %}
+from collections import OrderedDict
+from typing import Dict, Type
+
+from .base import {{ service.name }}Transport
+from .grpc import {{ service.name }}GrpcTransport
+
+
+# Compile a registry of transports.
+_transport_registry = OrderedDict()  # type: Dict[str, Type[{{ service.name }}Transport]]
+_transport_registry['grpc'] = {{ service.name }}GrpcTransport
+
+
+__all__ = (
+    '{{ service.name }}Transport',
+    '{{ service.name }}GrpcTransport',
+)
+{% endblock %}

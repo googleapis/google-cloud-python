@@ -92,11 +92,15 @@ class Options:
 
         # If templates are specified, one of the specified directories
         # may be our default; perform that replacement.
-        templates = opts.pop('templates', ['DEFAULT'])
-        while 'DEFAULT' in templates:
-            templates[templates.index('DEFAULT')] = os.path.realpath(
-                os.path.join(os.path.dirname(__file__), '..', 'templates'),
-            )
+        default_token = 'DEFAULT'
+        templates = opts.pop('templates', [default_token])
+        default_path = os.path.realpath(
+            os.path.join(os.path.dirname(__file__), '..', 'templates'),
+        )
+        templates = [
+            (default_path if path == default_token else path)
+            for path in templates
+        ]
 
         retry_cfg = None
         retry_paths = opts.pop('retry-config', None)

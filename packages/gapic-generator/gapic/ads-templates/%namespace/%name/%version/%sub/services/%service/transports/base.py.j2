@@ -1,0 +1,77 @@
+{% extends '_base.py.j2' %}
+
+{% block content %}
+import abc
+import typing
+
+from google import auth
+{%- if service.has_lro %}
+from google.api_core import operations_v1  # type: ignore
+{%- endif %}
+from google.auth import credentials  # type: ignore
+
+{% filter sort_lines -%}
+{% for method in service.methods.values() -%}
+{{ method.input.ident.python_import }}
+{{ method.output.ident.python_import }}
+{% endfor -%}
+{% endfilter %}
+
+class {{ service.name }}Transport(metaclass=abc.ABCMeta):
+    """Abstract transport class for {{ service.name }}."""
+
+    AUTH_SCOPES = (
+        {%- for scope in service.oauth_scopes %}
+        '{{ scope }}',
+        {%- endfor %}
+    )
+
+    def __init__(
+            self, *,
+            host: str{% if service.host %} = '{{ service.host }}'{% endif %},
+            credentials: credentials.Credentials = None,
+            ) -> None:
+        """Instantiate the transport.
+
+        Args:
+            host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
+                {{- ' ' }}The hostname to connect to.
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify the application to the service; if none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
+        """
+        # Save the hostname. Default to port 443 (HTTPS) if none is specified.
+        if ':' not in host:
+            host += ':443'
+        self._host = host
+
+        # If no credentials are provided, then determine the appropriate
+        # defaults.
+        if credentials is None:
+            credentials, _ = auth.default(scopes=self.AUTH_SCOPES)
+
+        # Save the credentials.
+        self._credentials = credentials
+    {%- if service.has_lro %}
+
+    @property
+    def operations_client(self) -> operations_v1.OperationsClient:
+        """Return the client designed to process long-running operations."""
+        raise NotImplementedError
+    {%- endif %}
+    {%- for method in service.methods.values() %}
+
+    @property
+    def {{ method.name|snake_case }}(self) -> typing.Callable[
+            [{{ method.input.ident }}],
+            {{ method.output.ident }}]:
+        raise NotImplementedError
+    {%- endfor %}
+
+
+__all__ = (
+    '{{ service.name }}Transport',
+)
+{% endblock %}

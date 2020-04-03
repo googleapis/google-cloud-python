@@ -1,0 +1,75 @@
+{% extends '_base.py.j2' %}
+
+{% block content %}
+{% for method in service.methods.values() | selectattr('paged_result_field') -%}
+{% if loop.first -%}
+{# This lives within the loop in order to ensure that this template
+   is empty if there are no paged methods.
+ -#}
+from typing import Any, Callable, Iterable
+
+{% filter sort_lines -%}
+{% for method in service.methods.values() | selectattr('paged_result_field') -%}
+{{ method.input.ident.python_import }}
+{{ method.output.ident.python_import }}
+{{ method.paged_result_field.message.ident.python_import }}
+{% endfor %}
+{% endfilter -%}
+{% endif %}
+
+class {{ method.name }}Pager:
+    """A pager for iterating through ``{{ method.name|snake_case }}`` requests.
+
+    This class thinly wraps an initial
+    :class:`{{ method.output.ident.sphinx }}` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``{{ method.paged_result_field.name }}`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``{{ method.name }}`` requests and continue to iterate
+    through the ``{{ method.paged_result_field.name }}`` field on the
+    corresponding responses.
+
+    All the usual :class:`{{ method.output.ident.sphinx }}`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+    def __init__(self,
+            method: Callable[[{{ method.input.ident }}],
+                {{ method.output.ident }}],
+            request: {{ method.input.ident }},
+            response: {{ method.output.ident }}):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (:class:`{{ method.input.ident.sphinx }}`):
+                The initial request object.
+            response (:class:`{{ method.output.ident.sphinx }}`):
+                The initial response object.
+        """
+        self._method = method
+        self._request = {{ method.input.ident }}(request)
+        self._response = response
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterable[{{ method.output.ident }}]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request)
+            yield self._response
+
+    def __iter__(self) -> {{ method.paged_result_field.ident | replace('Sequence', 'Iterable') }}:
+        for page in self.pages:
+            yield from page.{{ method.paged_result_field.name }}
+
+    def __repr__(self) -> str:
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+
+{% endfor %}
+{% endblock %}

@@ -15,8 +15,10 @@
 from __future__ import absolute_import
 import os
 import tempfile
-
+import typing
 import nox  # type: ignore
+
+from os import path
 
 
 showcase_version = '0.6.1'
@@ -26,22 +28,33 @@ showcase_version = '0.6.1'
 def unit(session):
     """Run the unit test suite."""
 
-    session.install('coverage', 'pytest', 'pytest-cov', 'pyfakefs')
+    session.install(
+        'coverage',
+        'pytest',
+        'pytest-cov',
+        'pytest-xdist',
+        'pyfakefs',
+    )
     session.install('-e', '.')
 
     session.run(
         'py.test',
         '-vv',
+        '-n=auto',
         '--cov=gapic',
         '--cov-config=.coveragerc',
         '--cov-report=term',
         '--cov-report=html',
-        *(session.posargs or [os.path.join('tests', 'unit')]),
+        *(session.posargs or [path.join('tests', 'unit')]),
     )
 
 
 @nox.session(python='3.8')
-def showcase(session):
+def showcase(
+    session,
+    templates='DEFAULT',
+    other_opts: typing.Iterable[str] = (),
+):
     """Run the Showcase test suite."""
 
     # Try to make it clear if Showcase is not running, so that
@@ -64,35 +77,48 @@ def showcase(session):
             'curl', 'https://github.com/googleapis/gapic-showcase/releases/'
                     f'download/v{showcase_version}/'
                     f'gapic-showcase-{showcase_version}.desc',
-            '-L', '--output', os.path.join(tmp_dir, 'showcase.desc'),
+            '-L', '--output', path.join(tmp_dir, 'showcase.desc'),
             external=True,
             silent=True,
         )
 
         # Write out a client library for Showcase.
-        session.run('protoc',
-                    f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
-                    f'--python_gapic_out={tmp_dir}',
-                    '--python_gapic_opt=lazy-import,',
-                    'google/showcase/v1beta1/echo.proto',
-                    'google/showcase/v1beta1/identity.proto',
-                    external=True,
-                    )
+        template_opt = f'python-gapic-templates={templates}'
+        opts = f'--python_gapic_opt={template_opt}'
+        opts += ','.join(other_opts + ('lazy-import',))
+        session.run(
+            'protoc',
+            f'--descriptor_set_in={tmp_dir}{path.sep}showcase.desc',
+            f'--python_gapic_out={tmp_dir}',
+            'google/showcase/v1beta1/echo.proto',
+            'google/showcase/v1beta1/identity.proto',
+            external=True,
+        )
 
         # Install the library.
         session.install(tmp_dir)
 
     session.run(
-        'py.test', '--quiet', *(session.posargs or [os.path.join('tests', 'system')])
+        'py.test', '--quiet', *(session.posargs or [path.join('tests', 'system')])
     )
 
 
+@nox.session(python='3.8')
+def showcase_alternative_templates(session):
+    templates = path.join(path.dirname(__file__), 'gapic', 'ads-templates')
+    showcase(session, templates=templates, other_opts=('old-naming',))
+
+
 @nox.session(python=['3.6', '3.7', '3.8'])
-def showcase_unit(session):
+def showcase_unit(
+    session,
+    templates='DEFAULT',
+    other_opts: typing.Iterable[str] = (),
+):
     """Run the generated unit tests against the Showcase library."""
 
     # Install pytest and gapic-generator-python
-    session.install('coverage', 'pytest', 'pytest-cov')
+    session.install('coverage', 'pytest', 'pytest-cov', 'pytest-xdist',)
     session.install('.')
 
     # Install a client library for Showcase.
@@ -103,26 +129,30 @@ def showcase_unit(session):
             'curl', 'https://github.com/googleapis/gapic-showcase/releases/'
                     f'download/v{showcase_version}/'
                     f'gapic-showcase-{showcase_version}.desc',
-            '-L', '--output', os.path.join(tmp_dir, 'showcase.desc'),
+            '-L', '--output', path.join(tmp_dir, 'showcase.desc'),
             external=True,
             silent=True,
         )
 
         # Write out a client library for Showcase.
-        args = [
+        opts = [
+            f'python-gapic-templates={templates}',
+        ]
+        opts.extend(other_opts)
+        if session.python == '3.8':
+            opts.append('lazy-import')
+
+        opt_str = f'--python_gapic_opt={",".join(opts)},'
+
+        session.run(
             'protoc',
-            f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
+            f'--descriptor_set_in={tmp_dir}{path.sep}showcase.desc',
             f'--python_gapic_out={tmp_dir}',
+            opt_str,
             'google/showcase/v1beta1/echo.proto',
             'google/showcase/v1beta1/identity.proto',
             'google/showcase/v1beta1/messaging.proto',
             'google/showcase/v1beta1/testing.proto',
-        ]
-        if session.python == '3.8':
-            args.append('--python_gapic_opt=lazy-import')
-
-        session.run(
-            *args,
             external=True,
         )
 
@@ -133,15 +163,25 @@ def showcase_unit(session):
         # Run the tests.
         session.run(
             'py.test',
+            '-n=auto',
             '--quiet',
             '--cov=google',
             '--cov-report=term',
-            *(session.posargs or [os.path.join('tests', 'unit')]),
+            *(session.posargs or [path.join('tests', 'unit')]),
         )
 
 
+@nox.session(python=['3.6', '3.7', '3.8'])
+def showcase_unit_alternative_templates(session):
+    templates = path.join(path.dirname(__file__), 'gapic', 'ads-templates')
+    showcase_unit(session, templates=templates, other_opts=('old-naming',))
+
+
 @nox.session(python='3.8')
-def showcase_mypy(session):
+def showcase_mypy(
+    session, templates='DEFAULT',
+    other_opts: typing.Iterable[str] = (),
+):
     """Perform typecheck analysis on the generated Showcase library."""
 
     # Install pytest and gapic-generator-python
@@ -155,21 +195,25 @@ def showcase_mypy(session):
             'curl', 'https://github.com/googleapis/gapic-showcase/releases/'
                     f'download/v{showcase_version}/'
                     f'gapic-showcase-{showcase_version}.desc',
-            '-L', '--output', os.path.join(tmp_dir, 'showcase.desc'),
+            '-L', '--output', path.join(tmp_dir, 'showcase.desc'),
             external=True,
             silent=True,
         )
-
         # Write out a client library for Showcase.
-        session.run('protoc',
-                    f'--descriptor_set_in={tmp_dir}{os.path.sep}showcase.desc',
-                    f'--python_gapic_out={tmp_dir}',
-                    'google/showcase/v1beta1/echo.proto',
-                    'google/showcase/v1beta1/identity.proto',
-                    'google/showcase/v1beta1/messaging.proto',
-                    'google/showcase/v1beta1/testing.proto',
-                    external=True,
-                    )
+        template_opt = f'python-gapic-templates={templates}'
+        gapic_opts = f'--python_gapic_opt={template_opt},'
+        gapic_opts += ','.join(other_opts)
+        session.run(
+            'protoc',
+            f'--descriptor_set_in={tmp_dir}{path.sep}showcase.desc',
+            f'--python_gapic_out={tmp_dir}',
+            gapic_opts,
+            'google/showcase/v1beta1/echo.proto',
+            'google/showcase/v1beta1/identity.proto',
+            'google/showcase/v1beta1/messaging.proto',
+            'google/showcase/v1beta1/testing.proto',
+            external=True,
+        )
 
         # Install the library.
         session.chdir(tmp_dir)
@@ -177,6 +221,12 @@ def showcase_mypy(session):
 
         # Run the tests.
         session.run('mypy', 'google')
+
+
+@nox.session(python='3.8')
+def showcase_mypy_alternative_templates(session):
+    templates = path.join(path.dirname(__file__), 'gapic', 'ads-templates')
+    showcase_mypy(session, templates=templates, other_opts=('old-naming',))
 
 
 @nox.session(python='3.6')

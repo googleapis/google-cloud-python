@@ -1,0 +1,158 @@
+{% extends '_base.py.j2' %}
+{% block content %}
+{% if opts.lazy_import -%} {# lazy import #}
+import importlib
+import re
+import sys
+
+from itertools import chain
+
+def to_snake_case(s: str) -> str:
+    s = re.sub(r'(?<=[a-z])([A-Z])', r'_\1', str(s))
+    s = re.sub(r'(?<=[^_])([A-Z])(?=[a-z])', r'_\1', s)
+
+    # Numbers are a weird case; the goal is to spot when they _start_
+    # some kind of name or acronym (e.g. 2FA, 3M).
+    #
+    # Find cases of a number preceded by a lower-case letter _and_
+    # followed by at least two capital letters or a single capital and
+    # end of string.
+    s = re.sub(r'(?<=[a-z])(\d)(?=[A-Z]{2})', r'_\1', s)
+    s = re.sub(r'(?<=[a-z])(\d)(?=[A-Z]$)', r'_\1', s)
+
+    return s.lower()
+
+
+def from_snake_case(s):
+    _CHARS_TO_UPCASE_RE = re.compile(r'(?:_|^)([a-z])')
+    return _CHARS_TO_UPCASE_RE.sub(lambda m: m.group().replace('_', '').upper(), s)
+
+
+if sys.version_info < (3, 7):
+    raise ImportError('This module requires Python 3.7 or later.')
+
+_lazy_name_to_package_map = {
+    'types': '{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.types',
+  {%- for service in api.services.values()|sort(attribute='name')|unique(attribute='name') if service.meta.address.subpackage == api.subpackage_view %}
+    '{{ service.client_name|snake_case }}': '{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.services.{{ service.name|snake_case }}.client',
+    '{{ service.transport_name|snake_case }}': '{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.services.transports.base',
+    '{{ service.grpc_transport_name|snake_case }}': '{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.services.transports.grpc',
+    {%- endfor %}  {# Need to do types and enums #}
+}
+
+_lazy_type_to_package_map = {
+{%- for proto in api.protos.values() if proto.meta.address.subpackage == api.subpackage_view %}{%- for message in proto.messages.values() %}
+    '{{ message.name }}':'{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.types.{{ proto.module_name }}',
+{%- endfor %}
+{%- for enum in proto.enums.values() %}
+    '{{ enum.name }}': '{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.types.{{ proto.module_name }}',
+{%- endfor %}{%- endfor %}
+}
+
+
+# Background on how this behaves: https://www.python.org/dev/peps/pep-0562/
+def __getattr__(name):  # Requires Python >= 3.7
+    if name == '__all__':
+        all_names = globals()['__all__'] = sorted(
+            chain(
+                (from_snake_case(k) for k in _lazy_name_to_package_map),
+                _lazy_type_to_package_map,
+            )
+        )
+        return all_names
+    elif name.endswith('Transport'):
+        module = __getattr__(to_snake_case(name))
+        sub_mod_class = getattr(module, name)
+        klass = type(name, (sub_mod_class,), {'__doc__': sub_mod_class.__doc__})
+        globals()[name] = klass
+        return klass
+    elif name.endswith('Client'):
+        module = __getattr__(to_snake_case(name))
+        sub_mod_class = getattr(module, name)
+        klass = type(
+            name,
+            (sub_mod_class,),
+            {'__doc__': sub_mod_class.__doc__}
+        )
+        globals()[name] = klass
+        return klass
+    elif name in _lazy_name_to_package_map:
+        module = importlib.import_module(f'{_lazy_name_to_package_map[name]}')
+        globals()[name] = module
+        return module
+    elif name in _lazy_type_to_package_map:
+        module = importlib.import_module(f'{_lazy_type_to_package_map[name]}')
+        klass = getattr(module, name)
+        {# new_klass = type(name, (klass,), {'__doc__': klass.__doc__}) #}
+        globals()[name] = klass
+        return klass
+    else:
+        raise AttributeError(f'unknown sub-module {name!r}.')
+
+
+def __dir__():
+    return globals().get('__all__') or __getattr__('__all__')
+{% else -%}                {# do not use lazy import #}
+{#  Import subpackages. -#}
+{% filter sort_lines -%}
+{% for subpackage in api.subpackages.keys() -%}
+from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.') }}.{% endif -%}
+    {{ api.naming.versioned_module_name }} import {{ subpackage }}
+{% endfor -%}
+
+{#  Import services for this package. -#}
+{% for service in api.services.values()|sort(attribute='name')
+        if service.meta.address.subpackage == api.subpackage_view -%}
+from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.') }}.{% endif -%}
+    {{ api.naming.versioned_module_name }}.services.{{ service.name|snake_case }}.client import {{ service.client_name }}
+{% endfor -%}
+
+{#  Import messages and enums from each proto.
+    It is safe to import all of the messages into the same namespace here,
+    because protocol buffers itself enforces selector uniqueness within
+    a proto package.
+-#}
+{#  Import messages from each proto.
+    It is safe to import all of the messages into the same namespace here,
+    because protocol buffers itself enforces selector uniqueness within
+    a proto package.
+  -#}
+{% for proto in api.protos.values()|sort(attribute='module_name')
+        if proto.meta.address.subpackage == api.subpackage_view -%}
+  {% for message in proto.messages.values()|sort(attribute='name') -%}
+from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.') }}.{% endif -%}
+    {{ api.naming.versioned_module_name }}.types.{{ proto.module_name }} import {{ message.name }}
+{% endfor -%}
+{% for enum in proto.enums.values()|sort(attribute='name') -%}
+from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.') }}.{% endif -%}
+    {{ api.naming.versioned_module_name }}.types.{{ proto.module_name }} import {{ enum.name }}
+{% endfor %}{% endfor -%}
+{% endfilter %}
+{#  Define __all__.
+    This requires the full set of imported names, so we iterate over
+    them again.
+-#}
+__all__ = (
+{%- filter indent %}
+{% filter sort_lines -%}
+{% for subpackage in api.subpackages.keys() -%}
+'{{ subpackage }}',
+{% endfor -%}
+{% for service in api.services.values()|sort(attribute='name')
+   if service.meta.address.subpackage == api.subpackage_view -%}
+'{{ service.client_name }}',
+{% endfor -%}
+{% for proto in api.protos.values()|sort(attribute='module_name')
+   if proto.meta.address.subpackage == api.subpackage_view -%}
+{% for message in proto.messages.values()|sort(attribute='name') -%}
+'{{ message.name }}',
+{% endfor -%}
+{% for enum in proto.enums.values()|sort(attribute='name')
+   if proto.meta.address.subpackage == api.subpackage_view -%}
+'{{ enum.name }}',
+{% endfor -%}{% endfor -%}
+{% endfilter -%}
+{% endfilter -%}
+)
+{% endif -%} {# lazy import #}
+{% endblock %}

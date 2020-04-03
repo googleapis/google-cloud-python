@@ -1,0 +1,550 @@
+{% extends "_base.py.j2" %}
+
+{% block content %}
+from unittest import mock
+
+import grpc
+import math
+import pytest
+
+{# Import the service itself as well as every proto module that it imports. -#}
+{% filter sort_lines -%}
+from google import auth
+from google.auth import credentials
+from google.oauth2 import service_account
+from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.client_name }}
+from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import transports
+from google.api_core import client_options
+{% if service.has_lro -%}
+from google.api_core import future
+from google.api_core import operations_v1
+from google.longrunning import operations_pb2
+{% endif -%}
+{% for method in service.methods.values() -%}
+{% for ref_type in method.ref_types
+   if not ((ref_type.ident.python_import.package == ('google', 'api_core') and ref_type.ident.python_import.module == 'operation')
+           or ref_type.ident.python_import.package == ('google', 'protobuf') and ref_type.ident.python_import.module == 'empty_pb2') -%}
+{{ ref_type.ident.python_import }}
+{% endfor -%}
+{% endfor -%}
+{% endfilter %}
+
+
+def test_{{ service.client_name|snake_case }}_from_service_account_file():
+    creds = credentials.AnonymousCredentials()
+    with mock.patch.object(service_account.Credentials, 'from_service_account_file') as factory:
+        factory.return_value = creds
+        client = {{ service.client_name }}.from_service_account_file("dummy/file/path.json")
+        assert client._transport._credentials == creds
+
+        client = {{ service.client_name }}.from_service_account_json("dummy/file/path.json")
+        assert client._transport._credentials == creds
+
+        {% if service.host %}assert client._transport._host == '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'{% endif %}
+
+
+def test_{{ service.client_name|snake_case }}_client_options():
+    # Check the default options have their expected values.
+    {% if service.host %}assert {{ service.client_name }}.DEFAULT_OPTIONS.api_endpoint == '{{ service.host }}'{% endif %}
+
+    # Check that options can be customized.
+    options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
+    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.{{ service.client_name }}.get_transport_class') as gtc:
+        transport = gtc.return_value = mock.MagicMock()
+        client = {{ service.client_name }}(
+            client_options=options
+        )
+        transport.assert_called_once_with(credentials=None, host="squid.clam.whelk")
+
+
+def test_{{ service.client_name|snake_case }}_client_options_from_dict():
+    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.{{ service.client_name }}.get_transport_class') as gtc:
+        transport = gtc.return_value = mock.MagicMock()
+        client = {{ service.client_name }}(
+            client_options={'api_endpoint': 'squid.clam.whelk'}
+        )
+        transport.assert_called_once_with(credentials=None, host="squid.clam.whelk")
+
+
+{% for method in service.methods.values() -%}
+def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
+    client = {{ service.client_name }}(
+        credentials=credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = {{ method.input.ident }}()
+    {% if method.client_streaming %}
+    requests = [request]
+    {% endif %}
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client._transport.{{ method.name|snake_case }}),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        {% if method.void -%}
+        call.return_value = None
+        {% elif method.lro -%}
+        call.return_value = operations_pb2.Operation(name='operations/spam')
+        {% elif method.server_streaming -%}
+        call.return_value = iter([{{ method.output.ident }}()])
+        {% else -%}
+        call.return_value = {{ method.output.ident }}(
+            {%- for field in method.output.fields.values() | rejectattr('message') %}
+            {{ field.name }}={{ field.mock_value }},
+            {%- endfor %}
+        )
+        {% endif -%}
+        {% if method.client_streaming %}
+        response = client.{{ method.name|snake_case }}(iter(requests))
+        {% else %}
+        response = client.{{ method.name|snake_case }}(request)
+        {% endif %}
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        {% if method.client_streaming %}
+        assert next(args[0]) == request
+        {% else %}
+        assert args[0] == request
+        {% endif %}
+
+    # Establish that the response is the type that we expect.
+    {% if method.void -%}
+    assert response is None
+    {% elif method.lro -%}
+    assert isinstance(response, future.Future)
+    {% elif method.server_streaming -%}
+    for message in response:
+        assert isinstance(message, {{ method.output.ident }})
+    {% else -%}
+    assert isinstance(response, {{ method.client_output.ident }})
+    {% for field in method.output.fields.values() | rejectattr('message') -%}
+    {% if field.field_pb.type in [1, 2] -%} {# Use approx eq for floats -#}
+    assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
+    {% elif field.field_pb.type == 8 -%} {# Use 'is' for bools #}
+    assert response.{{ field.name }} is {{ field.mock_value }}
+    {% else -%}
+    assert response.{{ field.name }} == {{ field.mock_value }}
+    {% endif -%}
+    {% endfor %}
+    {% endif %}
+
+{% if method.field_headers %}
+def test_{{ method.name|snake_case }}_field_headers():
+    client = {{ service.client_name }}(
+        credentials=credentials.AnonymousCredentials(),
+  )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = {{ method.input.ident }}(
+        {%- for field_header in method.field_headers %}
+        {{ field_header }}='{{ field_header }}/value',
+        {%- endfor %}
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client._transport.{{ method.name|snake_case }}),
+            '__call__') as call:
+        call.return_value = {{ method.output.ident }}()
+        client.{{ method.name|snake_case }}(request)
+        
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        '{% for field_header in method.field_headers -%}
+        {{ field_header }}={{ field_header }}/value
+        {%- if not loop.last %}&{% endif -%}
+        {%- endfor %}',
+    ) in kw['metadata']
+{% endif %}
+
+{% if method.ident.package != method.input.ident.package %}
+def test_{{ method.name|snake_case }}_from_dict():
+    client = {{ service.client_name }}(
+        credentials=credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client._transport.{{ method.name|snake_case }}),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        {% if method.void -%}
+        call.return_value = None
+        {% elif method.lro -%}
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        {% elif method.server_streaming -%}
+        call.return_value = iter([{{ method.output.ident }}()])
+        {% else -%}
+        call.return_value = {{ method.output.ident }}()
+        {% endif %}
+        response = client.{{ method.name|snake_case }}(request={
+            {%- for field in method.input.fields.values() %}
+            '{{ field.name }}': {{ field.mock_value }},
+            {%- endfor %}
+            }
+        )
+        call.assert_called()
+
+{% endif %}
+
+{% if method.flattened_fields %} 
+def test_{{ method.name|snake_case }}_flattened(): 
+    client = {{ service.client_name }}( 
+        credentials=credentials.AnonymousCredentials(), 
+    ) 
+
+    # Mock the actual call within the gRPC stub, and fake the request. 
+    with mock.patch.object( 
+            type(client._transport.{{ method.name|snake_case }}), 
+            '__call__') as call: 
+        # Designate an appropriate return value for the call. 
+        {% if method.void -%} 
+        call.return_value = None 
+        {% elif method.lro -%} 
+        call.return_value = operations_pb2.Operation(name='operations/op') 
+        {% elif method.server_streaming -%} 
+        call.return_value = iter([{{ method.output.ident }}()]) 
+        {% else -%} 
+        call.return_value = {{ method.output.ident }}() 
+        {% endif %} 
+        # Call the method with a truthy value for each flattened field, 
+        # using the keyword arguments to the method. 
+        response = client.{{ method.name|snake_case }}( 
+            {%- for field in method.flattened_fields.values() %} 
+            {{ field.name }}={{ field.mock_value }}, 
+            {%- endfor %} 
+        ) 
+
+        # Establish that the underlying call was made with the expected 
+        # request object values. 
+        assert len(call.mock_calls) == 1 
+        _, args, _ = call.mock_calls[0] 
+        {% for key, field in method.flattened_fields.items() -%}
+        assert args[0].{{ key }} == {{ field.mock_value }} 
+        {% endfor %} 
+
+
+def test_{{ method.name|snake_case }}_flattened_error(): 
+    client = {{ service.client_name }}( 
+        credentials=credentials.AnonymousCredentials(), 
+    ) 
+
+    # Attempting to call a method with both a request object and flattened 
+    # fields is an error. 
+    with pytest.raises(ValueError): 
+        client.{{ method.name|snake_case }}( 
+            {{ method.input.ident }}(), 
+            {%- for field in method.flattened_fields.values() %} 
+            {{ field.name }}={{ field.mock_value }}, 
+            {%- endfor %} 
+        ) 
+{% endif %}
+
+
+{% if method.paged_result_field %}
+def test_{{ method.name|snake_case }}_pager():
+    client = {{ service.client_name }}(
+        credentials=credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client._transport.{{ method.name|snake_case }}),
+            '__call__') as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.message.ident }}(),
+                ],
+                next_page_token='abc',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[],
+                next_page_token='def',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.message.ident }}(),
+                ],
+                next_page_token='ghi',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.message.ident }}(),
+                ],
+            ),
+            RuntimeError,
+        )
+        results = [i for i in client.{{ method.name|snake_case }}(
+            request={},
+        )]
+        assert len(results) == 6
+        assert all(isinstance(i, {{ method.paged_result_field.message.ident }})
+                   for i in results)
+
+def test_{{ method.name|snake_case }}_pages():
+    client = {{ service.client_name }}(
+        credentials=credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client._transport.{{ method.name|snake_case }}),
+            '__call__') as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.message.ident }}(),
+                ],
+                next_page_token='abc',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[],
+                next_page_token='def',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.message.ident }}(),
+                ],
+                next_page_token='ghi',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.message.ident }}(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.{{ method.name|snake_case }}(request={}).pages)
+        for page, token in zip(pages, ['abc','def','ghi', '']):
+            assert page.raw_page.next_page_token == token
+{% elif method.lro and "next_page_token" in method.lro.response_type.fields.keys() %}
+def test_{{ method.name|snake_case }}_raw_page_lro():
+    response = {{ method.lro.response_type.ident }}()
+    assert response.raw_page is response
+{% endif %} {#- method.paged_result_field #}
+
+{% endfor -%} {#- method in methods #}
+
+{% if opts.lazy_import -%} {# lazy import #}
+def test_module_level_imports():
+    # Use the other transport import path so that code gets tested.
+    from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }} import {{ service.name }}GrpcTransport
+    transport = {{ service.name }}GrpcTransport(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }} import {{ service.client_name }}
+    client = {{ service.client_name }}(transport=transport)
+    assert client._transport is transport
+
+    from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }} import {{ service.name|snake_case }}_grpc_transport
+    transport2 = {{ service.name|snake_case }}_grpc_transport.{{ service.name }}GrpcTransport(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    client2 = {{ service.client_name }}(transport=transport2)
+    assert client2._transport is transport2
+
+    {% with type_name = cycler(*service.methods.values()).next().input.name -%}
+    from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }} import {{ type_name }}
+    type_ = {{ type_name }}()
+
+    try:
+        from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }} import {{ type_name|lower }}_squidification
+    except (AttributeError, ImportError) as e:
+        pass
+    else:
+        assert False
+    {% endwith -%}
+
+    import {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }} as mod
+    all_names = dir(mod)
+    expected_names = sorted([
+        'types',
+        {%- for service in api.services.values()|sort(attribute='name')|unique(attribute='name') if service.meta.address.subpackage == api.subpackage_view %}
+        '{{ service.client_name }}',
+        '{{ service.transport_name }}',
+        '{{ service.grpc_transport_name }}',
+        {%- endfor %}
+        {%- for proto in api.protos.values() if proto.meta.address.subpackage == api.subpackage_view %}{%- for message in proto.messages.values() %}
+        '{{ message.name }}',
+        {%- endfor %}
+        {%- for enum in proto.enums.values() %}
+        '{{ enum.name }}'
+        {% endfor %}{%- endfor %}
+    ])
+    assert all_names == expected_names
+
+    {% with type_name = cycler(*service.methods.values()).next().input.name -%}
+    from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.types import {{ type_name }}
+    type_ = {{ type_name }}()
+    {% endwith -%}
+
+    import {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.types as types
+    all_types = dir(types)
+    expected_types = sorted([
+    {%- for proto in api.protos.values() if proto.meta.address.subpackage == api.subpackage_view %}{%- for message in proto.messages.values() %}
+        '{{ message.name }}',
+        {%- endfor %}
+        {%- for enum in proto.enums.values() %}
+        '{{ enum.name }}',
+        {% endfor %}{%- endfor %}
+    ])
+    assert all_types == expected_types
+
+{% endif -%} {# lazy import #}
+
+def test_credentials_transport_error():
+    # It is an error to provide credentials and a transport instance.
+    transport = transports.{{ service.name }}GrpcTransport(
+        credentials=credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = {{ service.client_name }}(
+            credentials=credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+
+def test_transport_instance():
+    # A client may be instantiated with a custom transport instance.
+    transport = transports.{{ service.name }}GrpcTransport(
+        credentials=credentials.AnonymousCredentials(),
+    )
+    client = {{ service.client_name }}(transport=transport)
+    assert client._transport is transport
+
+
+def test_transport_grpc_default():
+    # A client should use the gRPC transport by default.
+    client = {{ service.client_name }}(
+        credentials=credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client._transport,
+        transports.{{ service.name }}GrpcTransport,
+    )
+
+
+def test_{{ service.name|snake_case }}_base_transport():
+    # Instantiate the base transport.
+    transport = transports.{{ service.name }}Transport(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Every method on the transport should just blindly
+    # raise NotImplementedError.
+    methods = (
+        {% for method in service.methods.values() -%}
+        '{{ method.name|snake_case }}',
+        {% endfor -%}
+    )
+    for method in methods:
+        with pytest.raises(NotImplementedError):
+            getattr(transport, method)(request=object())
+
+    {% if service.has_lro -%}
+    # Additionally, the LRO client (a property) should
+    # also raise NotImplementedError
+    with pytest.raises(NotImplementedError):
+        transport.operations_client
+    {% endif %}
+
+
+def test_{{ service.name|snake_case }}_auth_adc():
+    # If no credentials are provided, we should use ADC credentials.
+    with mock.patch.object(auth, 'default') as adc:
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        {{ service.client_name }}()
+        adc.assert_called_once_with(scopes=(
+            {%- for scope in service.oauth_scopes %}
+            '{{ scope }}',
+            {%- endfor %}
+        ))
+
+
+def test_{{ service.name|snake_case }}_host_no_port():
+    {% with host = (service.host|default('localhost', true)).split(':')[0] -%}
+    client = {{ service.client_name }}(
+        credentials=credentials.AnonymousCredentials(),
+        client_options=client_options.ClientOptions(api_endpoint='{{ host }}'),
+        transport='grpc',
+    )
+    assert client._transport._host == '{{ host }}:443'
+    {% endwith %}
+
+
+def test_{{ service.name|snake_case }}_host_with_port():
+    {% with host = (service.host|default('localhost', true)).split(':')[0] -%}
+    client = {{ service.client_name }}(
+        credentials=credentials.AnonymousCredentials(),
+        client_options=client_options.ClientOptions(api_endpoint='{{ host }}:8000'),
+        transport='grpc',
+    )
+    assert client._transport._host == '{{ host }}:8000'
+    {% endwith %}
+
+
+def test_{{ service.name|snake_case }}_grpc_transport_channel():
+    channel = grpc.insecure_channel('http://localhost/')
+    transport = transports.{{ service.name }}GrpcTransport(
+        channel=channel,
+    )
+    assert transport.grpc_channel is channel
+
+
+{% if service.has_lro -%}
+def test_{{ service.name|snake_case }}_grpc_lro_client():
+    client = {{ service.client_name }}(
+        credentials=credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+    transport = client._transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+{% endif -%}
+
+{% for message in service.resource_messages -%}
+{% with molluscs = cycler("squid", "clam", "whelk", "octopus", "oyster", "nudibranch", "cuttlefish", "mussel", "winkle") -%}
+def test_{{ message.resource_type|snake_case }}_path():
+  {% for arg in message.resource_path_args -%}
+  {{ arg }} = "{{ molluscs.next() }}"
+  {% endfor %}
+  expected = "{{ message.resource_path }}".format({% for arg in message.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
+  actual = {{ service.client_name }}.{{ message.resource_type|snake_case }}_path({{message.resource_path_args|join(", ") }})
+  assert expected == actual
+
+{% endwith -%}
+{% endfor -%}
+
+{% endblock %}

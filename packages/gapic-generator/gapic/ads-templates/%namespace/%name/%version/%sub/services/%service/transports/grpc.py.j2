@@ -1,0 +1,162 @@
+{% extends '_base.py.j2' %}
+
+{% block content %}
+from typing import Callable, Dict
+
+from google.api_core import grpc_helpers   # type: ignore
+{%- if service.has_lro %}
+from google.api_core import operations_v1  # type: ignore
+{%- endif %}
+from google.auth import credentials        # type: ignore
+
+import grpc  # type: ignore
+
+{% filter sort_lines -%}
+{% for method in service.methods.values() -%}
+{{ method.input.ident.python_import }}
+{{ method.output.ident.python_import }}
+{% endfor -%}
+{% endfilter %}
+from .base import {{ service.name }}Transport
+
+
+class {{ service.name }}GrpcTransport({{ service.name }}Transport):
+    """gRPC backend transport for {{ service.name }}.
+
+    {{ service.meta.doc|rst(width=72, indent=4) }}
+
+    This class defines the same methods as the primary client, so the
+    primary client can load the underlying transport implementation
+    and call it.
+
+    It sends protocol buffers over the wire using gRPC (which is built on
+    top of HTTP/2); the ``grpcio`` package must be installed.
+    """
+    def __init__(self, *,
+            host: str{% if service.host %} = '{{ service.host }}'{% endif %},
+            credentials: credentials.Credentials = None,
+            channel: grpc.Channel = None) -> None:
+        """Instantiate the transport.
+
+        Args:
+            host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
+                {{- ' ' }}The hostname to connect to.
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify the application to the service; if none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
+                This argument is ignored if ``channel`` is provided.
+            channel (Optional[grpc.Channel]): A ``Channel`` instance through
+                which to make calls.
+        """
+        # Sanity check: Ensure that channel and credentials are not both
+        # provided.
+        if channel:
+            credentials = False
+
+        # Run the base constructor.
+        super().__init__(host=host, credentials=credentials)
+        self._stubs = {}  # type: Dict[str, Callable]
+
+        # If a channel was explicitly provided, set it.
+        if channel:
+            self._grpc_channel = channel
+
+    @classmethod
+    def create_channel(cls,
+                       host: str{% if service.host %} = '{{ service.host }}'{% endif %},
+                       credentials: credentials.Credentials = None,
+                       **kwargs) -> grpc.Channel:
+        """Create and return a gRPC channel object.
+        Args:
+            address (Optionsl[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            grpc.Channel: A gRPC channel object.
+        """
+        return grpc_helpers.create_channel(
+            host,
+            credentials=credentials,
+            scopes=cls.AUTH_SCOPES,
+            **kwargs
+        )
+
+    @property
+    def grpc_channel(self) -> grpc.Channel:
+        """Create the channel designed to connect to this service.
+
+        This property caches on the instance; repeated calls return
+        the same channel.
+        """
+        # Sanity check: Only create a new channel if we do not already
+        # have one.
+        if not hasattr(self, '_grpc_channel'):
+            self._grpc_channel = self.create_channel(
+                self._host,
+                credentials=self._credentials,
+            )
+
+        # Return the channel from cache.
+        return self._grpc_channel
+    {%- if service.has_lro %}
+
+    @property
+    def operations_client(self) -> operations_v1.OperationsClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Sanity check: Only create a new client if we do not already have one.
+        if 'operations_client' not in self.__dict__:
+            self.__dict__['operations_client'] = operations_v1.OperationsClient(
+                self.grpc_channel
+            )
+
+        # Return the client from cache.
+        return self.__dict__['operations_client']
+    {%- endif %}
+    {%- for method in service.methods.values() %}
+
+    @property
+    def {{ method.name|snake_case }}(self) -> Callable[
+            [{{ method.input.ident }}],
+            {{ method.output.ident }}]:
+        r"""Return a callable for the {{- ' ' -}}
+        {{ (method.name|snake_case).replace('_',' ')|wrap(
+                width=70, offset=40, indent=8) }}
+        {{- ' ' -}} method over gRPC.
+
+        {{ method.meta.doc|rst(width=72, indent=8) }}
+
+        Returns:
+            Callable[[~.{{ method.input.name }}],
+                    ~.{{ method.output.name }}]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if '{{ method.name|snake_case }}' not in self._stubs:
+            self._stubs['{{ method.name|snake_case }}'] = self.grpc_channel.{{ method.grpc_stub_type }}(
+                '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',
+                request_serializer={{ method.input.ident }}.{% if method.input.ident.python_import.module.endswith('_pb2') %}SerializeToString{% else %}serialize{% endif %},
+                response_deserializer={{ method.output.ident }}.{% if method.output.ident.python_import.module.endswith('_pb2') %}FromString{% else %}deserialize{% endif %},
+            )
+        return self._stubs['{{ method.name|snake_case }}']
+    {%- endfor %}
+
+
+__all__ = (
+    '{{ service.name }}GrpcTransport',
+)
+{%- endblock -%}

@@ -1,0 +1,53 @@
+{% extends '_base.py.j2' %}
+
+{% block content %}
+{% if opts.lazy_import -%} {# lazy import #}
+import importlib
+import sys
+
+
+if sys.version_info < (3, 7):
+    raise ImportError('This module requires Python 3.7 or later.')  # pragma: NO COVER
+
+
+_lazy_type_to_package_map = {
+  {%- filter sort_lines %}
+{%- for proto in api.protos.values() if proto.meta.address.subpackage == api.subpackage_view %}{%- for message in proto.messages.values() %}
+    '{{ message.name }}': '{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.types.{{ proto.module_name }}',
+{%- endfor %}
+{%- for enum in proto.enums.values() %}
+    '{{ enum.name }}': '{% if api.naming.module_namespace %}{{ api.naming.module_namespace|join(".") }}.{% endif -%}{{ api.naming.versioned_module_name }}.types.{{ proto.module_name }}',
+{%- endfor %}{%- endfor %}{%- endfilter %}
+}
+
+
+# Background on how this behaves: https://www.python.org/dev/peps/pep-0562/
+def __getattr__(name):  # Requires Python >= 3.7
+    if name == '__all__':
+        all_names = globals()['__all__'] = sorted(_lazy_type_to_package_map)
+        return all_names
+    elif name in _lazy_type_to_package_map:
+        module = importlib.import_module(f'{_lazy_type_to_package_map[name]}')
+        klass = getattr(module, name)
+        {# new_klass = type(name, (klass,), {'__doc__': klass.__doc__}) #}
+        globals()[name] = klass
+        return klass
+    else:
+        raise AttributeError(f'unknown sub-module {name!r}.')
+
+
+def __dir__():
+    return globals().get('__all__') or __getattr__('__all__')
+
+{% else -%}
+{% for p in api.protos.values() if p.file_to_generate and p.messages -%}
+from .{{p.module_name }} import ({% for m in p.messages.values() %}{{ m.name }}, {% endfor %})
+{% endfor %}
+
+__all__ = (
+{%- for p in api.protos.values() if p.file_to_generate %}{% for m in p.messages.values() %}
+    '{{ m.name }}',
+{%- endfor %}{% endfor %}
+)
+{% endif -%} {# lazy import #}
+{% endblock %}
