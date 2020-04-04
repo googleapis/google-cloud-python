@@ -121,8 +121,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # extract() with timezone not working as expected:
         # https://github.com/orijtech/spanner-orm/issues/191
         'timezones.tests.NewDatabaseTests.test_query_datetimes',
-        # To be investigated: https://github.com/orijtech/spanner-orm/issues/135
-        'admin_changelist.tests.ChangeListTests.test_multiuser_edit',
         # using NULL with + crashes: https://github.com/orijtech/spanner-orm/issues/201
         'annotations.tests.NonAggregateAnnotationTestCase.test_combined_annotation_commutative',
         # Spanner loses DecimalField precision due to conversion to float:
