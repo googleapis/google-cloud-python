@@ -39,9 +39,7 @@ python3.6 -m flake8
 
 # Export essential environment variables for Django tests.
 export RUNNING_SPANNER_BACKEND_TESTS=1
-# Hardcode the max number of workers since Spanner has issues
-# with a very low QPS for administrative RPCs of 5QPS (averaged every 100 seconds)
-export DJANGO_WORKER_COUNT=4 # $(ls .kokoro/presubmit/worker* | wc -l)
+export DJANGO_WORKER_COUNT=$(ls .kokoro/presubmit/worker* | wc -l)
 
 pip3 install .
 # Create a unique DJANGO_TESTS_DIR per worker to avoid
@@ -53,5 +51,12 @@ mkdir -p $DJANGO_TESTS_DIR && git clone --depth 1 --single-branch --branch spann
 sudo apt-get update
 apt-get install -y libffi-dev libjpeg-dev zlib1g-dev libmemcached-dev
 cd $DJANGO_TESTS_DIR/django && pip3 install -e . && pip3 install -r tests/requirements/py3.txt; cd ../../
+
+# Install and start the Spanner emulator
+VERSION=0.7.3
+wget https://storage.googleapis.com/cloud-spanner-emulator/releases/${VERSION}/cloud-spanner-emulator_linux_amd64-${VERSION}.tar.gz
+tar zxvf cloud-spanner-emulator_linux_amd64-${VERSION}.tar.gz
+chmod +x emulator_main
+export USE_SPANNER_EMULATOR=1
 
 ./bin/parallelize_tests_linux

@@ -102,6 +102,16 @@ func main() {
 		nAppsPerG = 2
 	}
 
+	emulatorPortIds := int(0)
+	useEmulator := os.Getenv("USE_SPANNER_EMULATOR") != ""
+	genEmulatorHost := func() string {
+		if !useEmulator {
+			return ""
+		}
+		emulatorPortIds++
+		return fmt.Sprintf("localhost:%d", 9010+emulatorPortIds)
+	}
+
 	sema := make(chan bool, nProcs)
 	// Now run the tests in parallel.
 	for i := 0; i < len(testApps); i += nAppsPerG {
@@ -152,20 +162,23 @@ func main() {
 			case <-time.After(throttle):
 			}
 
-			if err := runTests(shutdownCtx, apps, "django_test_suite.sh"); err != nil {
+			if err := runTests(shutdownCtx, apps, "django_test_suite.sh", genEmulatorHost); err != nil {
 				panic(err)
 			}
 		}(&wg, apps)
 	}
 }
 
-func runTests(ctx context.Context, djangoApps []string, testSuiteScriptPath string) error {
+func runTests(ctx context.Context, djangoApps []string, testSuiteScriptPath string, genEmulatorHost func() string) error {
 	if len(djangoApps) == 0 {
 		return errors.New("Expected at least one app")
 	}
 
 	cmd := exec.CommandContext(ctx, "bash", testSuiteScriptPath)
 	cmd.Env = append(os.Environ(), `DJANGO_TEST_APPS=`+strings.Join(djangoApps, " ")+``)
+	if emulatorHost := genEmulatorHost(); emulatorHost != "" {
+		cmd.Env = append(cmd.Env, "SPANNER_EMULATOR_HOST="+emulatorHost)
+	}
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = os.Stdout
 	return cmd.Run()
