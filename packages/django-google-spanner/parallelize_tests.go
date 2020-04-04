@@ -147,13 +147,16 @@ func main() {
 				}
 			}()
 
-			// Artificially add a wait time so as to ensure that we don't
-			// violate the 5QPs averaged over 100 seconds.
-			// Here our throttle will be in the range:
-			//      [1, 6 * (100sec / 5QPs)] aka [1s, 120sec]
-			// to try to introduce variability.
-			throttle := (time.Millisecond * time.Duration(rng.Intn(937))) + (time.Second * time.Duration(1+rng.Intn(int(6*100/5.0))))
-			fmt.Printf("Throttling by sleeping for %s\n", throttle)
+			var throttle time.Duration
+			if !useEmulator {
+				// Artificially add a wait time so as to ensure that we don't
+				// violate Cloud Spanner's 5QPs averaged over 100 seconds.
+				// Here our throttle will be in the range:
+				//      [1, 6 * (100sec / 5QPs)] aka [1s, 120sec]
+				// to try to introduce variability.
+				throttle = (time.Millisecond * time.Duration(rng.Intn(937))) + (time.Second * time.Duration(1+rng.Intn(int(6*100/5.0))))
+				fmt.Printf("Throttling by sleeping for %s\n", throttle)
+			}
 
 			select {
 			case <-shutdownCtx.Done():
