@@ -103,7 +103,8 @@ func main() {
 	}
 
 	emulatorPortIds := int(0)
-	useEmulator := os.Getenv("USE_SPANNER_EMULATOR") != ""
+	envUseEmulator := os.Getenv("USE_SPANNER_EMULATOR")
+	useEmulator := envUseEmulator != "0" && envUseEmulator != ""
 	genEmulatorHost := func() string {
 		if !useEmulator {
 			return ""
