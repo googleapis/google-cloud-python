@@ -257,7 +257,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         return '%s'
 
     def prep_for_like_query(self, x):
-        """Lookups that use this method use REGEX_CONTAINS instead of LIKE."""
+        """Lookups that use this method use REGEXP_CONTAINS instead of LIKE."""
         return re.escape(str(x))
 
     prep_for_iexact_query = prep_for_like_query
