@@ -43,21 +43,18 @@ PASSWORD_HASHERS = [
 }
 
 setup_emulator_if_needed() {
-    emulatorHost="$SPANNER_EMULATOR_HOST"
-    if [[ $emulatorHost != "" ]]
+    if [[ $SPANNER_EMULATOR_HOST != "" ]]
     then
         echo "Running the emulator at: $SPANNER_EMULATOR_HOST"
         ./emulator_main --host_port "$SPANNER_EMULATOR_HOST" &
         SPANNER_INSTANCE=$INSTANCE python3 .kokoro/ensure_instance_exists.py
-    else
-        echo 'Not using the emulator'
     fi
 }
 
 run_django_tests() {
     cd $TESTS_DIR/django/tests
     create_settings
-    echo -e "\033[32mRunning Django tests $TEST_APPS\033[00m"
+    echo -e "\033[32mRunning Django tests: $TEST_APPS\033[00m"
     python3 runtests.py $TEST_APPS --verbosity=2 --noinput --settings $SETTINGS_FILE
 }
 
