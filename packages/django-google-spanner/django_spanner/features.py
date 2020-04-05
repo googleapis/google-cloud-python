@@ -140,7 +140,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'expressions.tests.ExpressionsTests.test_insensitive_patterns_escape',
         'expressions.tests.ExpressionsTests.test_patterns_escape',
         'lookup.tests.LookupTests.test_pattern_lookups_with_substr',
-        # Spanner doesn't supoprt the variance the standard deviation database
+        # Spanner doesn't support the variance the standard deviation database
         # functions:
         'aggregation.test_filter_argument.FilteredAggregateTests.test_filtered_numerical_aggregates',
         'aggregation_regress.tests.AggregationTests.test_stddev',
