@@ -156,7 +156,7 @@ The following client libraries have **alpha** support:
 
 -  `Google Cloud AutoML`_ (`AutoML README`_, `AutoML Documentation`_)
 -  `Google BigQuery Data Transfer`_ (`BigQuery Data Transfer README`_, `BigQuery Data Transfer Documentation`_)
--  `Google BigQuery Storage`_ (`BigQuery Storage README`_, `BigQuery Storage Documentation`)
+-  `Google BigQuery Storage`_ (`BigQuery Storage README`_, `BigQuery Storage Documentation`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_, `HappyBase Documentation`_)
 -  `Google Cloud Build`_ (`Cloud Build README`_, `Cloud Build Documentation`_)
 -  `Google Cloud Container`_ (`Container README`_, `Container Documentation`_)
