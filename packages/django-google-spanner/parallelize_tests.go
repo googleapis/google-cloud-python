@@ -8,6 +8,7 @@ package main
 
 import (
 	"context"
+	"crypto/sha256"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -23,6 +24,9 @@ import (
 	"sync"
 	"sync/atomic"
 	"time"
+
+	instance "cloud.google.com/go/spanner/admin/instance/apiv1"
+	instancepb "google.golang.org/genproto/googleapis/spanner/admin/instance/v1"
 )
 
 func main() {
@@ -45,10 +49,10 @@ func main() {
 	}
 	allApps := strings.Split(string(allAppsBlob), "\n")
 	appsPerWorker := int(math.Ceil(float64(len(allApps)) / float64(workerCount)))
-	if err != nil {
-		log.Fatalf("Failed to parse WORKER_COUNT: %v", err)
-	}
 	startIndex := int(workerIndex) * appsPerWorker
+	if startIndex >= len(allApps) {
+		startIndex = int(workerIndex)
+	}
 	endIndex := startIndex + appsPerWorker
 	if endIndex >= len(allApps) {
 		endIndex = len(allApps)
@@ -66,6 +70,17 @@ func main() {
 		testApps[i], testApps[j] = testApps[j], testApps[i]
 	})
 
+	// Create a unique instance for this worker to circumvent quota limits; to upto 56 seconds.
+	createInstanceThrottle := time.Millisecond * time.Duration(417+rng.Intn(54937))
+	fmt.Printf("createInstance: throttling by sleeping for %s\n", createInstanceThrottle)
+	time.Sleep(createInstanceThrottle)
+	instanceName, deleteInstance, err := createInstance()
+	if err != nil {
+		panic(err)
+	}
+	defer deleteInstance()
+	fmt.Printf("Spanner instance: %q\n", instanceName)
+
 	// Otherwise, we'll parallelize the builds.
 	nProcs := runtime.GOMAXPROCS(0)
 	println("GOMAXPROCS:", nProcs)
@@ -81,12 +96,13 @@ func main() {
 	}()
 
 	// Gracefully shutdown on Ctrl+C.
-	sigCh := make(chan os.Signal, 1)
+	sigCh := make(chan os.Signal)
 	signal.Notify(sigCh, os.Interrupt)
 	go func() {
 		<-sigCh
 		cancel()
 		wg.Wait()
+		deleteInstance()
 	}()
 
 	// The number of Django apps to run per goroutine.
@@ -96,11 +112,11 @@ func main() {
 	} else {
 		nAppsPerG = len(testApps) / (nAppsPerG * nProcs)
 	}
-	println("apps per G: ", nAppsPerG)
-
 	if nAppsPerG == 0 {
 		nAppsPerG = 2
 	}
+
+	println("apps per G: ", nAppsPerG)
 
 	emulatorPortIds := int(0)
 	envUseEmulator := os.Getenv("USE_SPANNER_EMULATOR")
@@ -166,24 +182,86 @@ func main() {
 			case <-time.After(throttle):
 			}
 
-			if err := runTests(shutdownCtx, apps, "django_test_suite.sh", genEmulatorHost); err != nil {
+			if err := runTests(shutdownCtx, instanceName, apps, "django_test_suite.sh", genEmulatorHost); err != nil {
 				panic(err)
 			}
 		}(&wg, apps)
+
+                // Add as much jitter as possible.
+                <-time.After(871 * time.Millisecond)
 	}
 }
 
-func runTests(ctx context.Context, djangoApps []string, testSuiteScriptPath string, genEmulatorHost func() string) error {
+func runTests(ctx context.Context, instanceName string, djangoApps []string, testSuiteScriptPath string, genEmulatorHost func() string) error {
 	if len(djangoApps) == 0 {
 		return errors.New("Expected at least one app")
 	}
 
 	cmd := exec.CommandContext(ctx, "bash", testSuiteScriptPath)
 	cmd.Env = append(os.Environ(), `DJANGO_TEST_APPS=`+strings.Join(djangoApps, " ")+``)
+	cmd.Env = append(cmd.Env, "SPANNER_TEST_INSTANCE="+instanceName)
 	if emulatorHost := genEmulatorHost(); emulatorHost != "" {
 		cmd.Env = append(cmd.Env, "SPANNER_EMULATOR_HOST="+emulatorHost)
 	}
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = os.Stdout
 	return cmd.Run()
+}
+
+func createInstance() (name string, done func(), xerr error) {
+	ctx := context.Background()
+	client, err := instance.NewInstanceAdminClient(ctx)
+	if err != nil {
+		xerr = err
+		return
+	}
+
+	h := sha256.New()
+	fmt.Fprintf(h, "%s", time.Now())
+	hs := fmt.Sprintf("%x", h.Sum(nil))
+	displayName := fmt.Sprintf("django-%s", hs[:12])
+
+	projectPrefix := "projects/" + os.Getenv("PROJECT_ID")
+	instanceName := projectPrefix + "/instances/" + displayName
+	req := &instancepb.CreateInstanceRequest{
+		Parent:     projectPrefix,
+		InstanceId: displayName,
+		Instance: &instancepb.Instance{
+			Name:        instanceName,
+			DisplayName: displayName,
+			NodeCount:   1,
+			Config:      projectPrefix + "/instanceConfigs/regional-us-west2",
+		},
+	}
+
+	op, err := client.CreateInstance(ctx, req)
+	if err != nil {
+		xerr = err
+		return
+	}
+
+	res, err := op.Wait(context.Background())
+	if err != nil {
+		xerr = err
+		return
+	}
+	// Double check that the instance was actually
+	// created as we wanted and that its state is READY!
+	retrieved, err := client.GetInstance(ctx, &instancepb.GetInstanceRequest{
+		Name: res.Name,
+	})
+	if err != nil {
+		xerr = err
+		return
+	}
+	if g, w := retrieved.GetState(), instancepb.Instance_READY; g != w {
+		xerr = fmt.Errorf("invalid state of instance:: got %s, want %s", g, w)
+	}
+
+	// The short name of reference for the Spanner instance, and not its InstanceName.
+	name = retrieved.DisplayName
+	done = func() {
+		client.DeleteInstance(ctx, &instancepb.DeleteInstanceRequest{Name: name})
+	}
+	return
 }
