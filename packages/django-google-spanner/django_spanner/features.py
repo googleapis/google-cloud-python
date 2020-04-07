@@ -14,6 +14,8 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     can_introspect_big_integer_field = False
     can_introspect_duration_field = False
     closed_cursor_error_class = InterfaceError
+    # Spanner uses REGEXP_CONTAINS which is case-sensitive.
+    has_case_insensitive_like = False
     # https://cloud.google.com/spanner/quotas#query_limits
     max_query_params = 950
     supports_foreign_keys = False
@@ -134,11 +136,8 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'model_fields.test_decimalfield.DecimalFieldTests.test_roundtrip_with_trailing_zeros',
         # No CHECK constraints in Spanner.
         'model_fields.test_integerfield.PositiveIntegerFieldTests.test_negative_values',
-        # 'DatabaseWrapper' object has no attribute 'pattern_ops'
-        # https://github.com/orijtech/spanner-orm/issues/178
-        'expressions.tests.BasicExpressionsTests.test_ticket_16731_startswith_lookup',
-        'expressions.tests.ExpressionsTests.test_insensitive_patterns_escape',
-        'expressions.tests.ExpressionsTests.test_patterns_escape',
+        # (i)contains, (i)startswith, and (i)endswith lookups with database
+        # function crash: https://github.com/googleapis/python-spanner-django/issues/409
         'lookup.tests.LookupTests.test_pattern_lookups_with_substr',
         # Spanner doesn't support the variance the standard deviation database
         # functions:

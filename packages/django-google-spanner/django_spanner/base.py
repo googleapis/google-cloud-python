@@ -81,6 +81,23 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         'iregex': 'REGEXP_CONTAINS(%s, %%%%s)',
     }
 
+    # pattern_esc is used to generate SQL pattern lookup clauses when the
+    # right-hand side of the lookup isn't a raw string (it might be an
+    # expression or the result of a bilateral transformation). In those cases,
+    # special characters for REGEXP_CONTAINS operators (e.g. \, *, _) must be
+    # escaped on database side.
+    pattern_esc = r'REPLACE(REPLACE(REPLACE({}, "\\", "\\\\"), "%%", r"\%%"), "_", r"\_")'
+    # These are all no-ops in favor of using REGEXP_CONTAINS in the customized
+    # lookups.
+    pattern_ops = {
+        'contains': '',
+        'icontains': '',
+        'startswith': '',
+        'istartswith': '',
+        'endswith': '',
+        'iendswith': '',
+    }
+
     Database = Database
     SchemaEditorClass = DatabaseSchemaEditor
     creation_class = DatabaseCreation
