@@ -62,7 +62,12 @@ then
     # Not using the emulator!
     # Hardcode the max number of workers since Spanner has a very low
     # QPS for administrative RPCs of 5QPS (averaged every 100 seconds)
-    export DJANGO_WORKER_COUNT=5
+    if [[ $KOKORO_JOB_NAME == *"continuous"* ]]
+    then
+        export DJANGO_WORKER_COUNT=1 # Only using 1 worker for continuous instead of $(ls .kokoro/continuous/worker* | wc -l)
+    else
+        export DJANGO_WORKER_COUNT=6
+    fi
 else
     export DJANGO_WORKER_COUNT=$(ls .kokoro/presubmit/worker* | wc -l)
     # Install and start the Spanner emulator

@@ -187,8 +187,8 @@ func main() {
 			}
 		}(&wg, apps)
 
-                // Add as much jitter as possible.
-                <-time.After(871 * time.Millisecond)
+		// Add as much jitter as possible.
+		<-time.After(871 * time.Millisecond)
 	}
 }
 
