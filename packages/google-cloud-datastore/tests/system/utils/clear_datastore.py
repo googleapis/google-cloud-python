@@ -80,6 +80,13 @@ def remove_kind(kind, client):
         delete_chunks(client, results)
 
 
+def remove_all_entities(client):
+    query = client.query()
+    results = list(query.fetch())
+    keys = [entity.key for entity in results]
+    client.delete_multi(keys)
+
+
 def main():
     client = datastore.Client()
     kinds = sys.argv[1:]
