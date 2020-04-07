@@ -498,7 +498,6 @@ class Iterator(page_iterator.Iterator):
         :raises ValueError: If ``more_results`` is an unexpected value.
         """
         self._skipped_results = response_pb.batch.skipped_results
-
         if response_pb.batch.more_results == _NO_MORE_RESULTS:
             self.next_page_token = None
         else:
@@ -540,6 +539,21 @@ class Iterator(page_iterator.Iterator):
         response_pb = self.client._datastore_api.run_query(
             self._query.project, partition_id, read_options, query=query_pb
         )
+
+        while (
+            response_pb.batch.more_results == _NOT_FINISHED
+            and response_pb.batch.skipped_results < query_pb.offset
+        ):
+            # We haven't finished processing. A likely reason is we haven't
+            # skipped all of the results yet. Don't return any results.
+            # Instead, rerun query, adjusting offsets. Datastore doesn't process
+            # more than 1000 skipped results in a query.
+            query_pb.start_cursor = response_pb.batch.skipped_cursor
+            query_pb.offset -= response_pb.batch.skipped_results
+            response_pb = self.client._datastore_api.run_query(
+                self._query.project, partition_id, read_options, query=query_pb
+            )
+
         entity_pbs = self._process_query_results(response_pb)
         return page_iterator.Page(self, entity_pbs, self.item_to_value)
 

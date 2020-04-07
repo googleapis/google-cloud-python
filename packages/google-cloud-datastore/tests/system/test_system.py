@@ -14,6 +14,7 @@
 
 import datetime
 import os
+import string
 import unittest
 
 import requests
@@ -463,6 +464,62 @@ class TestDatastoreQuery(TestDatastore):
 
         self.assertEqual(entities[0]["name"], "Catelyn")
         self.assertEqual(entities[1]["name"], "Arya")
+
+
+class TestDatastoreQueryOffsets(TestDatastore):
+    TOTAL_OBJECTS = 2500
+    NAMESPACE = "LargeCharacterEntity"
+    KIND = "LargeCharacter"
+
+    @classmethod
+    def setUpClass(cls):
+        cls.CLIENT = clone_client(Config.CLIENT)
+        # Remove the namespace from the cloned client, since these
+        # query tests rely on the entities to be already stored
+        # cls.CLIENT.namespace = cls.NAMESPACE
+        cls.CLIENT.namespace = None
+
+        # Populating the datastore if necessary.
+        populate_datastore.add_large_character_entities(client=cls.CLIENT)
+
+    @classmethod
+    def tearDownClass(cls):
+        # In the emulator, destroy the query entities.
+        if os.getenv(GCD_DATASET) is not None:
+            # Use the client for this test instead of the global.
+            clear_datastore.remove_all_entities(client=cls.CLIENT)
+
+    def _base_query(self):
+        # Use the client for this test instead of the global.
+        return self.CLIENT.query(kind=self.KIND, namespace=self.NAMESPACE)
+
+    def _verify(self, limit, offset, expected):
+        # Query used for all tests
+        page_query = self._base_query()
+        page_query.add_filter("family", "=", "Stark")
+        page_query.add_filter("alive", "=", False)
+
+        iterator = page_query.fetch(limit=limit, offset=offset)
+        entities = [e for e in iterator]
+        self.assertEqual(len(entities), expected)
+
+    def test_query_in_bounds_offsets(self):
+        # Verify that with no offset there are the correct # of results
+        self._verify(limit=None, offset=None, expected=self.TOTAL_OBJECTS)
+
+        # Verify that with no limit there are results (offset provided)")
+        self._verify(limit=None, offset=900, expected=self.TOTAL_OBJECTS - 900)
+
+        # Offset beyond items larger Verify 200 items found")
+        self._verify(limit=200, offset=1100, expected=200)
+
+    def test_query_partially_out_of_bounds_offsets(self):
+        # Offset within range, expect 50 despite larger limit")
+        self._verify(limit=100, offset=self.TOTAL_OBJECTS - 50, expected=50)
+
+    def test_query_out_of_bounds_offsets(self):
+        # Offset beyond items larger Verify no items found")
+        self._verify(limit=200, offset=self.TOTAL_OBJECTS + 1000, expected=0)
 
 
 class TestDatastoreTransaction(TestDatastore):
