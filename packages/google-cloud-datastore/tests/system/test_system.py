@@ -14,7 +14,6 @@
 
 import datetime
 import os
-import string
 import unittest
 
 import requests

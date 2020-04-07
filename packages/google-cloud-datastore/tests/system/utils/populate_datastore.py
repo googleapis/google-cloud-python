@@ -75,7 +75,6 @@ def add_large_character_entities(client=None):
     page_query = client.query(kind=KIND, namespace=NAMESPACE)
 
     def put_objects(count):
-        remaining = count
         current = 0
 
         # Can only do 500 operations in a transaction with an overall
