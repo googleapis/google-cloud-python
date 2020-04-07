@@ -14,7 +14,10 @@ install_requires = [
 
 setup(
         name='django-spanner',
-        version=__import__('django_spanner').__version__,
+        # Duplicate version here rather than using
+        # __import__('django_spanner').__version__ because that file imports
+        # django and google.cloud which may not be installed.
+        version='2.2a0',
         author='Google LLC',
         author_email='cloud-spanner-developers@googlegroups.com',
         description=('Bridge to enable using Django with Spanner.'),
