@@ -4,6 +4,7 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
+from django.db import NotSupportedError
 from django.db.backends.base.schema import BaseDatabaseSchemaEditor
 
 
@@ -201,6 +202,35 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         # TODO: a real implementation:
         # https://github.com/orijtech/django-spanner/issues/227
         return str(value)
+
+    def _alter_field(self, model, old_field, new_field, old_type, new_type,
+                     old_db_params, new_db_params, strict=False):
+        # Spanner requires dropping indexes before changing the nullability
+        # of a column.
+        nullability_changed = old_field.null != new_field.null
+        if nullability_changed:
+            index_names = self._constraint_names(
+                model, [old_field.column], index=True,
+            )
+            if index_names and not old_field.db_index:
+                raise NotSupportedError(
+                    "Changing nullability of a field with an index other than "
+                    "Field(db_index=True) isn't yet supported."
+                )
+            if len(index_names) > 1:
+                raise NotSupportedError(
+                    "Changing nullability of a field with more than one "
+                    "index isn't yet supported."
+                )
+            for index_name in index_names:
+                self.execute(self._delete_index_sql(model, index_name))
+        super()._alter_field(
+            model, old_field, new_field, old_type, new_type,
+            old_db_params, new_db_params, strict=False,
+        )
+        # Recreate the index that was dropped earlier.
+        if nullability_changed and new_field.db_index:
+            self.execute(self._create_index_sql(model, [new_field]))
 
     def _alter_column_type_sql(self, model, old_field, new_field, new_type):
         # Spanner needs to use sql_alter_column_not_null if the field is
