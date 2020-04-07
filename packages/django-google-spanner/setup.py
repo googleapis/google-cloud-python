@@ -14,7 +14,7 @@ install_requires = [
 
 setup(
         name='django-spanner',
-        version='0.0.1',
+        version=__import__('django_spanner').__version__,
         author='Google LLC',
         author_email='cloud-spanner-developers@googlegroups.com',
         description=('Bridge to enable using Django with Spanner.'),

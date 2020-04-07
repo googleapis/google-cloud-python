@@ -16,7 +16,11 @@ from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 from .expressions import register_expressions
 from .functions import register_functions
 from .lookups import register_lookups
+from .utils import check_django_compatability
 
+__version__ = '2.2a0'
+
+check_django_compatability()
 register_expressions()
 register_functions()
 register_lookups()

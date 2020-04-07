@@ -18,6 +18,14 @@ ORM plugin for using Cloud Spanner as a database for Django.
 
 
 ## Installing it
+
+Use the version of django-spanner that corresponds to your version of Django.
+For example, django-spanner 2.2.x works with Django 2.2.y. (This is the only
+supported version at this time.)
+
+The minor release number of Django doesn't correspond to the minor release
+number of django-spanner. Use the latest minor release of each.
+
 ```shell
 pip3 install --user .
 ```
