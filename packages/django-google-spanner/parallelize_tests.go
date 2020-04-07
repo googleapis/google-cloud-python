@@ -107,7 +107,9 @@ func main() {
 
 	// The number of Django apps to run per goroutine.
 	nAppsPerG := 3
-	if len(testApps) <= nAppsPerG {
+
+	if len(testApps) <= nProcs || len(testApps) <= nAppsPerG {
+		// We can evenly spread each app per P.
 		nAppsPerG = 1
 	} else {
 		nAppsPerG = len(testApps) / (nAppsPerG * nProcs)
