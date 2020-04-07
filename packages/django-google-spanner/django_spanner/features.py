@@ -222,7 +222,11 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # duplicate table raises GoogleAPICallError rather than DatabaseError:
         # https://github.com/orijtech/django-spanner/issues/344
         'backends.tests.BackendTestCase.test_duplicate_table_error',
+        'migrations.test_commands.MigrateTests.test_migrate_fake_initial',
+        'migrations.test_commands.MigrateTests.test_migrate_initial_false',
+        'migrations.test_executor.ExecutorTests.test_soft_apply',
         # Spanner limitation: Cannot change type of column.
+        'migrations.test_executor.ExecutorTests.test_alter_id_type_with_fk',
         'schema.tests.SchemaTests.test_alter_auto_field_to_char_field',
         'schema.tests.SchemaTests.test_alter_text_field_to_date_field',
         'schema.tests.SchemaTests.test_alter_text_field_to_datetime_field',
@@ -263,6 +267,9 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'schema.tests.SchemaTests.test_primary_key',
         # Spanner limitation:  Cannot remove a column from the primary key.
         'schema.tests.SchemaTests.test_alter_int_pk_to_int_unique',
+        # Spanner limitation: migrations aren't atomic since Spanner doesn't
+        # support transactions.
+        'migrations.test_executor.ExecutorTests.test_atomic_operation_in_non_atomic_migration',
         # changing a not null constraint isn't allowed if it affects an index:
         # https://github.com/orijtech/django-spanner/issues/378
         'migrations.test_operations.OperationTests.test_alter_field_with_index',
@@ -272,6 +279,9 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # This test doesn't flush the database properly:
         # https://code.djangoproject.com/ticket/31398
         'multiple_database.tests.AuthTestCase',
+        # This test isn't isolated on databases like Spanner that don't
+        # support transactions: https://code.djangoproject.com/ticket/31413
+        'migrations.test_loader.LoaderTests.test_loading_squashed',
         # "Permission errors are not swallowed":
         # https://github.com/googleapis/python-spanner-django/issues/407
         'file_uploads.tests.DirectoryCreationTests.test_readonly_root',

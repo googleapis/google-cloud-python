@@ -60,8 +60,8 @@ many_to_one
 many_to_one_null
 max_lengths
 migrate_signals
+migrations
 migration_test_data_persistence
-migrations.test_operations
 model_fields.test_binaryfield
 model_fields.test_booleanfield
 model_fields.test_charfield
