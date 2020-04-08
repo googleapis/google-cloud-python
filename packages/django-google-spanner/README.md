@@ -10,7 +10,7 @@ ORM plugin for using Cloud Spanner as a database for Django.
     - [Example](#example)
 - [Functional tests](#functional-tests)
 - [Django integration tests](#django-integration-tests)
-    - [djang_test_suite.sh](#djang_test_suite.sh)
+    - [django_test_suite.sh](#django_test_suitesh)
         - [Environment variables](#environment-variables)
         - [Example run](#example-run)
     - [Parallelization script](#parallelization-script)
@@ -84,7 +84,7 @@ The tests to be run are specified in file [django_test_apps.txt](./django_test_a
 
 There are 2 ways to run the tests:
 
-### djang_test_suite.sh
+### django_test_suite.sh
 
 This method requires an already existing Cloud Spanner instance.
 Expected environment variables:
