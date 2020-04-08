@@ -705,7 +705,7 @@ class InstanceAdminClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.spanner_admin_instance_v1.types._OperationFuture` instance.
+            A :class:`~google.api_core.operation.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -843,7 +843,7 @@ class InstanceAdminClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.spanner_admin_instance_v1.types._OperationFuture` instance.
+            A :class:`~google.api_core.operation.Operation` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
