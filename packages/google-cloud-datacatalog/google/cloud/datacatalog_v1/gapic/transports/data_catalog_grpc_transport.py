@@ -17,12 +17,12 @@
 
 import google.api_core.grpc_helpers
 
-from google.cloud.datacatalog_v1beta1.proto import datacatalog_pb2_grpc
+from google.cloud.datacatalog_v1.proto import datacatalog_pb2_grpc
 
 
 class DataCatalogGrpcTransport(object):
     """gRPC transport class providing stubs for
-    google.cloud.datacatalog.v1beta1 DataCatalog API.
+    google.cloud.datacatalog.v1 DataCatalog API.
 
     The transport provides access to the raw gRPC stubs,
     which can be used to take advantage of advanced
@@ -179,6 +179,22 @@ class DataCatalogGrpcTransport(object):
         return self._stubs["data_catalog_stub"].GetEntryGroup
 
     @property
+    def update_entry_group(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.update_entry_group`.
+
+        Updates an EntryGroup. The user should enable the Data Catalog API
+        in the project identified by the ``entry_group.name`` parameter (see
+        [Data Catalog Resource Project]
+        (/data-catalog/docs/concepts/resource-project) for more information).
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].UpdateEntryGroup
+
+    @property
     def delete_entry_group(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.delete_entry_group`.
 
@@ -194,6 +210,19 @@ class DataCatalogGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["data_catalog_stub"].DeleteEntryGroup
+
+    @property
+    def list_entry_groups(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.list_entry_groups`.
+
+        Lists entry groups.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].ListEntryGroups
 
     @property
     def create_entry(self):
@@ -277,19 +306,6 @@ class DataCatalogGrpcTransport(object):
         return self._stubs["data_catalog_stub"].LookupEntry
 
     @property
-    def list_entry_groups(self):
-        """Return the gRPC stub for :meth:`DataCatalogClient.list_entry_groups`.
-
-        Lists entry groups.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["data_catalog_stub"].ListEntryGroups
-
-    @property
     def list_entries(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.list_entries`.
 
@@ -301,22 +317,6 @@ class DataCatalogGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["data_catalog_stub"].ListEntries
-
-    @property
-    def update_entry_group(self):
-        """Return the gRPC stub for :meth:`DataCatalogClient.update_entry_group`.
-
-        Updates an EntryGroup. The user should enable the Data Catalog API
-        in the project identified by the ``entry_group.name`` parameter (see
-        [Data Catalog Resource Project]
-        (/data-catalog/docs/concepts/resource-project) for more information).
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["data_catalog_stub"].UpdateEntryGroup
 
     @property
     def create_tag_template(self):
@@ -456,9 +456,9 @@ class DataCatalogGrpcTransport(object):
 
         Creates a tag on an ``Entry``. Note: The project identified by the
         ``parent`` parameter for the
-        `tag <https://cloud.google.com/data-catalog/docs/reference/rest/v1beta1/projects.locations.entryGroups.entries.tags/create#path-parameters>`__
+        `tag <https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.entryGroups.entries.tags/create#path-parameters>`__
         and the `tag
-        template <https://cloud.google.com/data-catalog/docs/reference/rest/v1beta1/projects.locations.tagTemplates/create#path-parameters>`__
+        template <https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.tagTemplates/create#path-parameters>`__
         used to create the tag must be from the same organization.
 
         Returns:
@@ -517,8 +517,8 @@ class DataCatalogGrpcTransport(object):
         -  Tag templates.
         -  Entries.
         -  Entry groups. Note, this method cannot be used to manage policies for
-           BigQuery, Cloud Pub/Sub and any external Google Cloud Platform
-           resources synced to Cloud Data Catalog.
+           BigQuery, Pub/Sub and any external Google Cloud Platform resources
+           synced to Data Catalog.
 
         Callers must have following Google IAM permission
 
@@ -548,8 +548,8 @@ class DataCatalogGrpcTransport(object):
         -  Tag templates.
         -  Entries.
         -  Entry groups. Note, this method cannot be used to manage policies for
-           BigQuery, Cloud Pub/Sub and any external Google Cloud Platform
-           resources synced to Cloud Data Catalog.
+           BigQuery, Pub/Sub and any external Google Cloud Platform resources
+           synced to Data Catalog.
 
         Callers must have following Google IAM permission
 
@@ -579,8 +579,8 @@ class DataCatalogGrpcTransport(object):
         -  Tag templates.
         -  Entries.
         -  Entry groups. Note, this method cannot be used to manage policies for
-           BigQuery, Cloud Pub/Sub and any external Google Cloud Platform
-           resources synced to Cloud Data Catalog.
+           BigQuery, Pub/Sub and any external Google Cloud Platform resources
+           synced to Data Catalog.
 
         A caller is not required to have Google IAM permission to make this
         request.

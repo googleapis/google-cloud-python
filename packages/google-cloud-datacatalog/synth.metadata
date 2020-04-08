@@ -1,20 +1,19 @@
 {
-  "updateTime": "2020-02-25T13:14:24.965186Z",
+  "updateTime": "2020-03-27T17:42:23.096126Z",
   "sources": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "0.45.1",
-        "dockerImage": "googleapis/artman@sha256:36956ca6a4dc70a59de5d5d0fd35061b050bb56884516f0898f46d8220f25738"
+      "git": {
+        "name": ".",
+        "remote": "git@github.com:googleapis/python-datacatalog",
+        "sha": "9323589a08498263831913cdf4b8dfac0689f476"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "0b1876b35e98f560f9c9ca9797955f020238a092",
-        "internalRef": "296986742",
-        "log": "0b1876b35e98f560f9c9ca9797955f020238a092\nUse an older version of protoc-docs-plugin that is compatible with the specified gapic-generator and protobuf versions.\n\nprotoc-docs-plugin >=0.4.0 (see commit https://github.com/googleapis/protoc-docs-plugin/commit/979f03ede6678c487337f3d7e88bae58df5207af) is incompatible with protobuf 3.9.1.\n\nPiperOrigin-RevId: 296986742\n\n1e47e676cddbbd8d93f19ba0665af15b5532417e\nFix: Restore a method signature for UpdateCluster\n\nPiperOrigin-RevId: 296901854\n\n"
+        "sha": "48a166ce9f6e2a88b10947341b37336fe9dd3478",
+        "internalRef": "303302813"
       }
     },
     {
@@ -30,10 +29,18 @@
       "client": {
         "source": "googleapis",
         "apiName": "datacatalog",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "bazel"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "datacatalog",
         "apiVersion": "v1beta1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/datacatalog/v1beta1/artman_datacatalog_v1beta1.yaml"
+        "generator": "bazel"
       }
     }
   ]

@@ -355,8 +355,8 @@ class PolicyTagManagerClient(object):
             >>> response = client.update_taxonomy()
 
         Args:
-            taxonomy (Union[dict, ~google.cloud.datacatalog_v1beta1.types.Taxonomy]): The taxonomy to update. Only description, display\_name, and activated
-                policy types can be updated.
+            taxonomy (Union[dict, ~google.cloud.datacatalog_v1beta1.types.Taxonomy]): The taxonomy to update. Only description, display_name, and
+                activated policy types can be updated.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.Taxonomy`
@@ -441,7 +441,7 @@ class PolicyTagManagerClient(object):
             parent (str): Required. Resource name of the project to list the taxonomies of.
             page_size (int): The maximum number of items to return. Must be a value between 1 and 1000.
                 If not set, defaults to 50.
-            page_token (str): The next\_page\_token value returned from a previous list request, if
+            page_token (str): The next_page_token value returned from a previous list request, if
                 any. If not set, defaults to an empty string.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -718,15 +718,15 @@ class PolicyTagManagerClient(object):
             >>> response = client.update_policy_tag()
 
         Args:
-            policy_tag (Union[dict, ~google.cloud.datacatalog_v1beta1.types.PolicyTag]): The policy tag to update. Only the description, display\_name, and
-                parent\_policy\_tag fields can be updated.
+            policy_tag (Union[dict, ~google.cloud.datacatalog_v1beta1.types.PolicyTag]): The policy tag to update. Only the description, display_name, and
+                parent_policy_tag fields can be updated.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.PolicyTag`
-            update_mask (Union[dict, ~google.cloud.datacatalog_v1beta1.types.FieldMask]): The update mask applies to the resource. Only display\_name, description
-                and parent\_policy\_tag can be updated and thus can be listed in the
-                mask. If update\_mask is not provided, all allowed fields (i.e.
-                display\_name, description and parent) will be updated. For more
+            update_mask (Union[dict, ~google.cloud.datacatalog_v1beta1.types.FieldMask]): The update mask applies to the resource. Only display_name,
+                description and parent_policy_tag can be updated and thus can be listed
+                in the mask. If update_mask is not provided, all allowed fields (i.e.
+                display_name, description and parent) will be updated. For more
                 information including the ``FieldMask`` definition, see
                 https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
                 If not set, defaults to all of the fields that are allowed to update.
@@ -806,7 +806,7 @@ class PolicyTagManagerClient(object):
             parent (str): Required. Resource name of the taxonomy to list the policy tags of.
             page_size (int): The maximum number of items to return. Must be a value between 1 and 1000.
                 If not set, defaults to 50.
-            page_token (str): The next\_page\_token value returned from a previous List request, if
+            page_token (str): The next_page_token value returned from a previous List request, if
                 any. If not set, defaults to an empty string.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -1099,8 +1099,8 @@ class PolicyTagManagerClient(object):
         Args:
             resource (str): REQUIRED: The resource for which the policy detail is being requested.
                 See the operation documentation for the appropriate value for this field.
-            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with
-                wildcards (such as '*' or 'storage.*') are not allowed. For more
+            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions
+                with wildcards (such as '*' or 'storage.*') are not allowed. For more
                 information see `IAM
                 Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used

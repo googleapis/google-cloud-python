@@ -17,40 +17,37 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-version = 'v1beta1'
+
 
 # ----------------------------------------------------------------------------
 # Generate datacatalog GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library(
-    'datacatalog',
-    version,
-    config_path='/google/cloud/datacatalog/v1beta1/artman_datacatalog_v1beta1.yaml',
-    artman_output_name='datacatalog-v1beta1',
-    include_protos=True,
-    generator_args=["--dev_samples"],
-)
+versions = ['v1', 'v1beta1']
+for version in versions:
+    library = gapic.py_library(
+        'datacatalog',
+        version,
+    )
 
-s.move(
-    library,
-    excludes=[
-        'docs/conf.py',
-        'docs/index.rst',
-        'google/cloud/datacatalog_v1beta1/__init__.py',
-        'README.rst',
-        'nox*.py',
-        'setup.py',
-        'setup.cfg',
-    ],
-)
+    s.move(
+        library,
+        excludes=[
+            'docs/conf.py',
+            'docs/index.rst',
+            'README.rst',
+            'nox*.py',
+            'setup.py',
+            'setup.cfg',
+        ],
+    )
 
 # Fix docstring issue for classes with no summary line
 s.replace(
     "google/cloud/**/proto/*_pb2.py",
-    '''__doc__ = """Attributes:''',
-    '''__doc__ = """
+    ''''__doc__': """Attributes:''',
+    '''"__doc__": """
     Attributes:''',
 )
 
