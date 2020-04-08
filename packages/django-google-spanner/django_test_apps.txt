@@ -80,6 +80,7 @@ model_fields.test_promises
 model_fields.test_slugfield
 model_fields.test_textfield
 model_fields.test_uuid
+modeladmin
 multiple_database
 null_fk
 null_fk_ordering
