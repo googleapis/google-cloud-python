@@ -223,7 +223,12 @@ func createInstance() (name string, done func(), xerr error) {
 	hs := fmt.Sprintf("%x", h.Sum(nil))
 	displayName := fmt.Sprintf("django-%s", hs[:12])
 
-	projectPrefix := "projects/" + os.Getenv("PROJECT_ID")
+	projectID := strings.TrimSpace(os.Getenv("PROJECT_ID"))
+	if projectID == "" {
+		xerr = errors.New(`"PROJECT_ID" must be set in your environment`)
+		return
+	}
+	projectPrefix := "projects/" + projectID
 	instanceName := projectPrefix + "/instances/" + displayName
 	req := &instancepb.CreateInstanceRequest{
 		Parent:     projectPrefix,
