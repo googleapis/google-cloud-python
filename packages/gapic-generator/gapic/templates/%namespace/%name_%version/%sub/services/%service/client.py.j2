@@ -2,7 +2,8 @@
 
 {% block content %}
 from collections import OrderedDict
-from typing import Dict, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union
+import re
+from typing import Callable, Dict, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions # type: ignore
@@ -57,7 +58,40 @@ class {{ service.client_name }}Meta(type):
 class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     """{{ service.meta.doc|rst(width=72, indent=4) }}"""
 
-    DEFAULT_OPTIONS = ClientOptions.ClientOptions({% if service.host %}api_endpoint='{{ service.host }}'{% endif %})
+    @staticmethod
+    def _get_default_mtls_endpoint(api_endpoint):
+        """Convert api endpoint to mTLS endpoint.
+        Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
+        "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
+        Args:
+            api_endpoint (Optional[str]): the api endpoint to convert.
+        Returns:
+            str: converted mTLS api endpoint.
+        """
+        if not api_endpoint:
+            return api_endpoint
+
+        mtls_endpoint_re = re.compile(
+            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
+        )
+
+        m = mtls_endpoint_re.match(api_endpoint)
+        name, mtls, sandbox, googledomain = m.groups()
+        if mtls or not googledomain:
+            return api_endpoint
+
+        if sandbox:
+            return api_endpoint.replace(
+                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
+            )
+
+        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
+
+    DEFAULT_ENDPOINT = {% if service.host %}'{{ service.host }}'{% else %}None{% endif %}
+    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
+        DEFAULT_ENDPOINT
+    )
+    DEFAULT_OPTIONS = ClientOptions.ClientOptions(api_endpoint=DEFAULT_ENDPOINT)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -106,23 +140,56 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (ClientOptions): Custom options for the client.
+                (1) The ``api_endpoint`` property can be used to override the
+                default endpoint provided by the client.
+                (2) If ``transport`` argument is None, ``client_options`` can be
+                used to create a mutual TLS transport. If ``api_endpoint`` is
+                provided and different from the default endpoint, or the
+                ``client_cert_source`` property is provided,  mutual TLS
+                transport will be created if client SSL credentials are found.
+                Client SSL credentials are obtained from ``client_cert_source``
+                or application default SSL credentials.
+
+        Raises:
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+                creation failed for any reason.
         """
         if isinstance(client_options, dict):
             client_options = ClientOptions.from_dict(client_options)
+
+        # Set default api endpoint if not set.
+        if client_options.api_endpoint is None:
+            client_options.api_endpoint = self.DEFAULT_ENDPOINT
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
         if isinstance(transport, {{ service.name }}Transport):
+            # transport is a {{ service.name }}Transport instance.
             if credentials:
                 raise ValueError('When providing a transport instance, '
                                  'provide its credentials directly.')
             self._transport = transport
-        else:
+        elif transport is not None or (
+            client_options.api_endpoint == self.DEFAULT_ENDPOINT
+            and client_options.client_cert_source is None
+        ):
+            # Don't trigger mTLS.
             Transport = type(self).get_transport_class(transport)
             self._transport = Transport(
+                credentials=credentials, host=client_options.api_endpoint
+            )
+        else:
+            # Trigger mTLS. If the user overrides endpoint, use it as the mTLS
+            # endpoint, otherwise use the default mTLS endpoint.
+            option_endpoint = client_options.api_endpoint
+            api_mtls_endpoint = self.DEFAULT_MTLS_ENDPOINT if option_endpoint == self.DEFAULT_ENDPOINT else option_endpoint
+
+            self._transport = {{ service.name }}GrpcTransport(
                 credentials=credentials,
-                host=client_options.api_endpoint{% if service.host %} or '{{ service.host }}'{% endif %},
+                host=client_options.api_endpoint,
+                api_mtls_endpoint=api_mtls_endpoint,
+                client_cert_source=client_options.client_cert_source,
             )
 
     {% for method in service.methods.values() -%}

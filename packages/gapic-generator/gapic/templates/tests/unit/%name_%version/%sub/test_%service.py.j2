@@ -15,6 +15,7 @@ from google.oauth2 import service_account
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.client_name }}
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import transports
 from google.api_core import client_options
+from google.api_core import grpc_helpers
 {% if service.has_lro -%}
 from google.api_core import future
 from google.api_core import operations_v1
@@ -28,6 +29,25 @@ from google.longrunning import operations_pb2
 {% endfor -%}
 {% endfor -%}
 {% endfilter %}
+
+
+def client_cert_source_callback():
+    return b"cert bytes", b"key bytes"
+
+
+def test__get_default_mtls_endpoint():
+    api_endpoint = "example.googleapis.com"
+    api_mtls_endpoint = "example.mtls.googleapis.com"
+    sandbox_endpoint = "example.sandbox.googleapis.com"
+    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
+    non_googleapi = "api.example.com"
+
+    assert {{ service.client_name }}._get_default_mtls_endpoint(None) == None
+    assert {{ service.client_name }}._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
+    assert {{ service.client_name }}._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
+    assert {{ service.client_name }}._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
+    assert {{ service.client_name }}._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
+    assert {{ service.client_name }}._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
 def test_{{ service.client_name|snake_case }}_from_service_account_file():
@@ -45,25 +65,65 @@ def test_{{ service.client_name|snake_case }}_from_service_account_file():
 
 def test_{{ service.client_name|snake_case }}_client_options():
     # Check the default options have their expected values.
-    {% if service.host %}assert {{ service.client_name }}.DEFAULT_OPTIONS.api_endpoint == '{{ service.host }}'{% endif %}
+    assert {{ service.client_name }}.DEFAULT_OPTIONS.api_endpoint == {% if service.host %}'{{ service.host }}'{% else %}None{% endif %}
+    assert {{ service.client_name }}.DEFAULT_OPTIONS.api_endpoint == {{ service.client_name }}.DEFAULT_ENDPOINT
 
-    # Check that options can be customized.
-    options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
+    # Check that if channel is provided we won't create a new one.
+    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.{{ service.client_name }}.get_transport_class') as gtc:
+        transport = transports.{{ service.name }}GrpcTransport(
+            credentials=credentials.AnonymousCredentials()
+        )
+        client = {{ service.client_name }}(transport=transport)
+        gtc.assert_not_called()
+
+    # Check mTLS is not triggered with empty client options.
+    options = client_options.ClientOptions()
     with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.{{ service.client_name }}.get_transport_class') as gtc:
         transport = gtc.return_value = mock.MagicMock()
-        client = {{ service.client_name }}(
-            client_options=options
+        client = {{ service.client_name }}(client_options=options)
+        transport.assert_called_once_with(
+            credentials=None,
+            host=client.DEFAULT_ENDPOINT,
         )
-        transport.assert_called_once_with(credentials=None, host="squid.clam.whelk")
 
+    # Check mTLS is triggered with api endpoint override.
+    options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
+    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}GrpcTransport.__init__') as grpc_transport:
+        grpc_transport.return_value = None
+        client = {{ service.client_name }}(client_options=options)
+        grpc_transport.assert_called_once_with(
+            api_mtls_endpoint="squid.clam.whelk",
+            client_cert_source=None,
+            credentials=None,
+            host="squid.clam.whelk",
+        )
+
+    # Check mTLS is triggered if client_cert_source is provided.
+    options = client_options.ClientOptions(
+        client_cert_source=client_cert_source_callback
+    )
+    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}GrpcTransport.__init__') as grpc_transport:
+        grpc_transport.return_value = None
+        client = {{ service.client_name }}(client_options=options)
+        grpc_transport.assert_called_once_with(
+            api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
+            client_cert_source=client_cert_source_callback,
+            credentials=None,
+            host=client.DEFAULT_ENDPOINT,
+        )
 
 def test_{{ service.client_name|snake_case }}_client_options_from_dict():
-    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.{{ service.client_name }}.get_transport_class') as gtc:
-        transport = gtc.return_value = mock.MagicMock()
+    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}GrpcTransport.__init__') as grpc_transport:
+        grpc_transport.return_value = None
         client = {{ service.client_name }}(
             client_options={'api_endpoint': 'squid.clam.whelk'}
         )
-        transport.assert_called_once_with(credentials=None, host="squid.clam.whelk")
+        grpc_transport.assert_called_once_with(
+            api_mtls_endpoint="squid.clam.whelk",
+            client_cert_source=None,
+            credentials=None,
+            host="squid.clam.whelk",
+        )
 
 
 {% for method in service.methods.values() -%}
@@ -154,7 +214,7 @@ def test_{{ method.name|snake_case }}_field_headers():
             '__call__') as call:
         call.return_value = {{ method.output.ident }}()
         client.{{ method.name|snake_case }}(request)
-        
+
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
@@ -200,57 +260,57 @@ def test_{{ method.name|snake_case }}_from_dict():
 
 {% endif %}
 
-{% if method.flattened_fields %} 
-def test_{{ method.name|snake_case }}_flattened(): 
-    client = {{ service.client_name }}( 
-        credentials=credentials.AnonymousCredentials(), 
-    ) 
+{% if method.flattened_fields %}
+def test_{{ method.name|snake_case }}_flattened():
+    client = {{ service.client_name }}(
+        credentials=credentials.AnonymousCredentials(),
+    )
 
-    # Mock the actual call within the gRPC stub, and fake the request. 
-    with mock.patch.object( 
-            type(client._transport.{{ method.name|snake_case }}), 
-            '__call__') as call: 
-        # Designate an appropriate return value for the call. 
-        {% if method.void -%} 
-        call.return_value = None 
-        {% elif method.lro -%} 
-        call.return_value = operations_pb2.Operation(name='operations/op') 
-        {% elif method.server_streaming -%} 
-        call.return_value = iter([{{ method.output.ident }}()]) 
-        {% else -%} 
-        call.return_value = {{ method.output.ident }}() 
-        {% endif %} 
-        # Call the method with a truthy value for each flattened field, 
-        # using the keyword arguments to the method. 
-        response = client.{{ method.name|snake_case }}( 
-            {%- for field in method.flattened_fields.values() %} 
-            {{ field.name }}={{ field.mock_value }}, 
-            {%- endfor %} 
-        ) 
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client._transport.{{ method.name|snake_case }}),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        {% if method.void -%}
+        call.return_value = None
+        {% elif method.lro -%}
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        {% elif method.server_streaming -%}
+        call.return_value = iter([{{ method.output.ident }}()])
+        {% else -%}
+        call.return_value = {{ method.output.ident }}()
+        {% endif %}
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = client.{{ method.name|snake_case }}(
+            {%- for field in method.flattened_fields.values() %}
+            {{ field.name }}={{ field.mock_value }},
+            {%- endfor %}
+        )
 
-        # Establish that the underlying call was made with the expected 
-        # request object values. 
-        assert len(call.mock_calls) == 1 
-        _, args, _ = call.mock_calls[0] 
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
         {% for key, field in method.flattened_fields.items() -%}
-        assert args[0].{{ key }} == {{ field.mock_value }} 
-        {% endfor %} 
+        assert args[0].{{ key }} == {{ field.mock_value }}
+        {% endfor %}
 
 
-def test_{{ method.name|snake_case }}_flattened_error(): 
-    client = {{ service.client_name }}( 
-        credentials=credentials.AnonymousCredentials(), 
-    ) 
+def test_{{ method.name|snake_case }}_flattened_error():
+    client = {{ service.client_name }}(
+        credentials=credentials.AnonymousCredentials(),
+    )
 
-    # Attempting to call a method with both a request object and flattened 
-    # fields is an error. 
-    with pytest.raises(ValueError): 
-        client.{{ method.name|snake_case }}( 
-            {{ method.input.ident }}(), 
-            {%- for field in method.flattened_fields.values() %} 
-            {{ field.name }}={{ field.mock_value }}, 
-            {%- endfor %} 
-        ) 
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.{{ method.name|snake_case }}(
+            {{ method.input.ident }}(),
+            {%- for field in method.flattened_fields.values() %}
+            {{ field.name }}={{ field.mock_value }},
+            {%- endfor %}
+        )
 {% endif %}
 
 
@@ -509,10 +569,95 @@ def test_{{ service.name|snake_case }}_host_with_port():
 
 def test_{{ service.name|snake_case }}_grpc_transport_channel():
     channel = grpc.insecure_channel('http://localhost/')
+
+    # Check that if channel is provided, mtls endpoint and client_cert_source
+    # won't be used.
+    callback = mock.MagicMock()
     transport = transports.{{ service.name }}GrpcTransport(
+        host="squid.clam.whelk",
         channel=channel,
+        api_mtls_endpoint="mtls.squid.clam.whelk",
+        client_cert_source=callback,
     )
-    assert transport.grpc_channel is channel
+    assert transport.grpc_channel == channel
+    assert transport._host == "squid.clam.whelk:443"
+    assert not callback.called
+
+
+@mock.patch("grpc.ssl_channel_credentials", autospec=True)
+@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
+def test_{{ service.name|snake_case }}_grpc_transport_channel_mtls_with_client_cert_source(
+    grpc_create_channel, grpc_ssl_channel_cred
+):
+    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
+    # are provided, then a mTLS channel will be created.
+    mock_cred = mock.Mock()
+
+    mock_ssl_cred = mock.Mock()
+    grpc_ssl_channel_cred.return_value = mock_ssl_cred
+
+    mock_grpc_channel = mock.Mock()
+    grpc_create_channel.return_value = mock_grpc_channel
+
+    transport = transports.{{ service.name }}GrpcTransport(
+        host="squid.clam.whelk",
+        credentials=mock_cred,
+        api_mtls_endpoint="mtls.squid.clam.whelk",
+        client_cert_source=client_cert_source_callback,
+    )
+    grpc_ssl_channel_cred.assert_called_once_with(
+        certificate_chain=b"cert bytes", private_key=b"key bytes"
+    )
+    grpc_create_channel.assert_called_once_with(
+        "mtls.squid.clam.whelk:443",
+        credentials=mock_cred,
+        ssl_credentials=mock_ssl_cred,
+        scopes=(
+            {%- for scope in service.oauth_scopes %}
+            '{{ scope }}',
+            {%- endfor %}
+        ),
+    )
+    assert transport.grpc_channel == mock_grpc_channel
+
+
+@pytest.mark.parametrize(
+    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
+)
+@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
+def test_{{ service.name|snake_case }}_grpc_transport_channel_mtls_with_adc(
+    grpc_create_channel, api_mtls_endpoint
+):
+    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
+    # is provided, then a mTLS channel will be created with SSL ADC.
+    mock_grpc_channel = mock.Mock()
+    grpc_create_channel.return_value = mock_grpc_channel
+
+    # Mock google.auth.transport.grpc.SslCredentials class.
+    mock_ssl_cred = mock.Mock()
+    with mock.patch.multiple(
+        "google.auth.transport.grpc.SslCredentials",
+        __init__=mock.Mock(return_value=None),
+        ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
+    ):
+        mock_cred = mock.Mock()
+        transport = transports.{{ service.name }}GrpcTransport(
+            host="squid.clam.whelk",
+            credentials=mock_cred,
+            api_mtls_endpoint=api_mtls_endpoint,
+            client_cert_source=None,
+        )
+        grpc_create_channel.assert_called_once_with(
+            "mtls.squid.clam.whelk:443",
+            credentials=mock_cred,
+            ssl_credentials=mock_ssl_cred,
+            scopes=(
+                {%- for scope in service.oauth_scopes %}
+                '{{ scope }}',
+                {%- endfor %}
+            ),
+        )
+        assert transport.grpc_channel == mock_grpc_channel
 
 
 {% if service.has_lro -%}

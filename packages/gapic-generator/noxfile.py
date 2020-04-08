@@ -118,6 +118,10 @@ def showcase_unit(
     """Run the generated unit tests against the Showcase library."""
 
     # Install pytest and gapic-generator-python
+    session.install(
+        "-e",
+        "git+https://github.com/googleapis/python-api-core.git@ca6c41cf460e505e6b228263170927270626222a#egg=google-api-core",
+    )
     session.install('coverage', 'pytest', 'pytest-cov', 'pytest-xdist',)
     session.install('.')
 

@@ -253,7 +253,7 @@ jobs:
             ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - run:
           name: Run showcase tests.
-          command: nox -s showcase_alternative_templates          
+          command: nox -s showcase_alternative_templates
   showcase-unit-3.6:
     docker:
       - image: python:3.6-slim
@@ -263,7 +263,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc unzip
+            apt-get install -y curl pandoc unzip git
       - run:
           name: Install protoc 3.7.1.
           command: |
@@ -287,7 +287,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc unzip
+            apt-get install -y curl pandoc unzip git
       - run:
           name: Install protoc 3.7.1.
           command: |
@@ -311,7 +311,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc unzip
+            apt-get install -y curl pandoc unzip git
       - run:
           name: Install protoc 3.7.1.
           command: |
@@ -335,7 +335,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc unzip
+            apt-get install -y curl pandoc unzip git
       - run:
           name: Install protoc 3.7.1.
           command: |
@@ -359,7 +359,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc unzip
+            apt-get install -y curl pandoc unzip git
       - run:
           name: Install protoc 3.7.1.
           command: |
@@ -383,7 +383,7 @@ jobs:
           name: Install system dependencies.
           command: |
             apt-get update
-            apt-get install -y curl pandoc unzip
+            apt-get install -y curl pandoc unzip git
       - run:
           name: Install protoc 3.7.1.
           command: |
