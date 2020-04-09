@@ -28,7 +28,7 @@ pip-log.txt
 .nox
 .cache
 .pytest_cache
-
+sponge_log.xml
 
 # Mac
 .DS_Store
