@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [0.7.0](https://www.github.com/googleapis/python-datacatalog/compare/v0.6.0...v0.7.0) (2020-04-09)
+
+
+### Features
+
+* add v1 ([#13](https://www.github.com/googleapis/python-datacatalog/issues/13)) ([21629fe](https://www.github.com/googleapis/python-datacatalog/commit/21629fed1f86bb1a2800b5213f59acc5d862e2f5))
+
 ## [0.6.0](https://www.github.com/googleapis/python-datacatalog/compare/v0.5.0...v0.6.0) (2020-02-24)
 
 
