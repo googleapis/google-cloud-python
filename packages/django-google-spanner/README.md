@@ -96,6 +96,7 @@ Variable|Description|Comment
 `PROJECT_ID`|The project id of the Google Application credentials being used|For example `PROJECT_ID=appdev-soda-spanner-staging`
 `DJANGO_TEST_APPS`|The Django test suite apps to run|For example `DJANGO_TEST_APPS="basic i18n admin_views"`
 `SPANNER_TEST_INSTANCE`|The Cloud Spanner instance to use, it MUST exist before running tests|For example `SPANNER_TEST_INSTANCE="django-tests"`
+`DJANGO_TESTS_DIR`|The directory into which Django has been cloned to run the test suite|For example `DJANGO_TESTS_DIR=django_tests`
 
 #### Example run
 ```shell

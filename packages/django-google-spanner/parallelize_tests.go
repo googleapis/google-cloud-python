@@ -268,7 +268,11 @@ func createInstance() (name string, done func(), xerr error) {
 	// The short name of reference for the Spanner instance, and not its InstanceName.
 	name = retrieved.DisplayName
 	done = func() {
-		client.DeleteInstance(ctx, &instancepb.DeleteInstanceRequest{Name: name})
+		if err := client.DeleteInstance(ctx, &instancepb.DeleteInstanceRequest{Name: name}); err == nil {
+			fmt.Printf("Deleted instance: %q\n", name)
+		} else {
+			fmt.Printf("Failed to delete instance: %q ==> %v\n", name, err)
+		}
 	}
 	return
 }
