@@ -39,4 +39,4 @@ python3.6 -m nox --version
 python3.6 -m nox
 
 # Run sample tests
-python3.6 -m nox --file samples/noxfile.py
+python3.6 -m nox -f samples/noxfile.py
