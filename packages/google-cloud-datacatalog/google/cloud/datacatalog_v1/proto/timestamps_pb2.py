@@ -121,7 +121,8 @@ SystemTimestamps = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _SYSTEMTIMESTAMPS,
         "__module__": "google.cloud.datacatalog_v1.proto.timestamps_pb2",
-        "__doc__": """Timestamps about this resource according to a particular system.
+        "__doc__": """Timestamps about this resource according to a particular
+  system.
   
   
   Attributes:

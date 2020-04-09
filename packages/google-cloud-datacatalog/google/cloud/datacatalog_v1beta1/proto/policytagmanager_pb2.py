@@ -1234,10 +1234,10 @@ UpdatePolicyTagRequest = _reflection.GeneratedProtocolMessageType(
           be listed in the mask. If update_mask is not provided, all
           allowed fields (i.e. display_name, description and parent)
           will be updated. For more information including the
-          ``FieldMask`` definition, see
-          https://developers.google.com/protocol-
-          buffers/docs/reference/google.protobuf#fieldmask If not set,
-          defaults to all of the fields that are allowed to update.
+          ``FieldMask`` definition, see https://developers.google.com
+          /protocol-buffers/docs/reference/google.protobuf#fieldmask If
+          not set, defaults to all of the fields that are allowed to
+          update.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1beta1.UpdatePolicyTagRequest)
     },

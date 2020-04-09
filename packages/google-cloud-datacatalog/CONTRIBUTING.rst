@@ -22,7 +22,7 @@ In order to add a feature:
   documentation.
 
 - The feature must work fully on the following CPython versions:  2.7,
-  3.5, 3.6, and 3.7 on both UNIX and Windows.
+  3.5, 3.6, 3.7 and 3.8 on both UNIX and Windows.
 
 - The feature must not add unnecessary dependencies (where
   "unnecessary" is of course subjective, but new dependencies should
@@ -214,25 +214,17 @@ We support:
 -  `Python 3.5`_
 -  `Python 3.6`_
 -  `Python 3.7`_
+-  `Python 3.8`_
 
 .. _Python 3.5: https://docs.python.org/3.5/
 .. _Python 3.6: https://docs.python.org/3.6/
 .. _Python 3.7: https://docs.python.org/3.7/
+.. _Python 3.8: https://docs.python.org/3.8/
 
 
 Supported versions can be found in our ``noxfile.py`` `config`_.
 
 .. _config: https://github.com/googleapis/python-datacatalog/blob/master/noxfile.py
-
-We explicitly decided not to support `Python 2.5`_ due to `decreased usage`_
-and lack of continuous integration `support`_.
-
-.. _Python 2.5: https://docs.python.org/2.5/
-.. _decreased usage: https://caremad.io/2013/10/a-look-at-pypi-downloads/
-.. _support: https://blog.travis-ci.com/2013-11-18-upcoming-build-environment-updates/
-
-We have `dropped 2.6`_ as a supported version as well since Python 2.6 is no
-longer supported by the core development team.
 
 Python 2.7 support is deprecated. All code changes should maintain Python 2.7 compatibility until January 1, 2020.
 
@@ -247,7 +239,6 @@ We also explicitly decided to support Python 3 beginning with version
 .. _prominent: https://docs.djangoproject.com/en/1.9/faq/install/#what-python-version-can-i-use-with-django
 .. _projects: http://flask.pocoo.org/docs/0.10/python3/
 .. _Unicode literal support: https://www.python.org/dev/peps/pep-0414/
-.. _dropped 2.6: https://github.com/googleapis/google-cloud-python/issues/995
 
 **********
 Versioning

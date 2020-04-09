@@ -355,15 +355,16 @@ class PolicyTagManagerClient(object):
             >>> response = client.update_taxonomy()
 
         Args:
-            taxonomy (Union[dict, ~google.cloud.datacatalog_v1beta1.types.Taxonomy]): The taxonomy to update. Only description, display_name, and
-                activated policy types can be updated.
+            taxonomy (Union[dict, ~google.cloud.datacatalog_v1beta1.types.Taxonomy]): Request message for ``CreateEntryGroup``.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.Taxonomy`
-            update_mask (Union[dict, ~google.cloud.datacatalog_v1beta1.types.FieldMask]): The update mask applies to the resource. For the ``FieldMask``
-                definition, see
-                https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
-                If not set, defaults to all of the fields that are allowed to update.
+            update_mask (Union[dict, ~google.cloud.datacatalog_v1beta1.types.FieldMask]): Required. The name of the project this entry group is in. Example:
+
+                -  projects/{project_id}/locations/{location}
+
+                Note that this EntryGroup and its child resources may not actually be
+                stored in the location in this name.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.FieldMask`
@@ -441,8 +442,8 @@ class PolicyTagManagerClient(object):
             parent (str): Required. Resource name of the project to list the taxonomies of.
             page_size (int): The maximum number of items to return. Must be a value between 1 and 1000.
                 If not set, defaults to 50.
-            page_token (str): The next_page_token value returned from a previous list request, if
-                any. If not set, defaults to an empty string.
+            page_token (str): Input and output type names. These are resolved in the same way as
+                FieldDescriptorProto.type_name, but must refer to a message type.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -718,18 +719,18 @@ class PolicyTagManagerClient(object):
             >>> response = client.update_policy_tag()
 
         Args:
-            policy_tag (Union[dict, ~google.cloud.datacatalog_v1beta1.types.PolicyTag]): The policy tag to update. Only the description, display_name, and
-                parent_policy_tag fields can be updated.
+            policy_tag (Union[dict, ~google.cloud.datacatalog_v1beta1.types.PolicyTag]): Resources like Entry can have schemas associated with them. This
+                scope allows users to attach tags to an individual column based on that
+                schema.
+
+                For attaching a tag to a nested column, use ``.`` to separate the column
+                names. Example:
+
+                -  ``outer_column.inner_column``
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.PolicyTag`
-            update_mask (Union[dict, ~google.cloud.datacatalog_v1beta1.types.FieldMask]): The update mask applies to the resource. Only display_name,
-                description and parent_policy_tag can be updated and thus can be listed
-                in the mask. If update_mask is not provided, all allowed fields (i.e.
-                display_name, description and parent) will be updated. For more
-                information including the ``FieldMask`` definition, see
-                https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
-                If not set, defaults to all of the fields that are allowed to update.
+            update_mask (Union[dict, ~google.cloud.datacatalog_v1beta1.types.FieldMask]): Associates ``members`` with a ``role``.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.FieldMask`
@@ -806,8 +807,22 @@ class PolicyTagManagerClient(object):
             parent (str): Required. Resource name of the taxonomy to list the policy tags of.
             page_size (int): The maximum number of items to return. Must be a value between 1 and 1000.
                 If not set, defaults to 50.
-            page_token (str): The next_page_token value returned from a previous List request, if
-                any. If not set, defaults to an empty string.
+            page_token (str): Sets the access control policy for a resource. Replaces any existing
+                policy. Supported resources are:
+
+                -  Tag templates.
+                -  Entries.
+                -  Entry groups. Note, this method cannot be used to manage policies for
+                   BigQuery, Cloud Pub/Sub and any external Google Cloud Platform
+                   resources synced to Cloud Data Catalog.
+
+                Callers must have following Google IAM permission
+
+                -  ``datacatalog.tagTemplates.setIamPolicy`` to set policies on tag
+                   templates.
+                -  ``datacatalog.entries.setIamPolicy`` to set policies on entries.
+                -  ``datacatalog.entryGroups.setIamPolicy`` to set policies on entry
+                   groups.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -946,8 +961,11 @@ class PolicyTagManagerClient(object):
         Args:
             resource (str): REQUIRED: The resource for which the policy is being requested.
                 See the operation documentation for the appropriate value for this field.
-            options_ (Union[dict, ~google.cloud.datacatalog_v1beta1.types.GetPolicyOptions]): OPTIONAL: A ``GetPolicyOptions`` object for specifying options to
-                ``GetIamPolicy``. This field is only used by Cloud IAM.
+            options_ (Union[dict, ~google.cloud.datacatalog_v1beta1.types.GetPolicyOptions]): Renames a field in a tag template. The user should enable the Data
+                Catalog API in the project identified by the ``name`` parameter (see
+                `Data Catalog Resource
+                Project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__
+                for more information).
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.GetPolicyOptions`
@@ -1022,10 +1040,8 @@ class PolicyTagManagerClient(object):
         Args:
             resource (str): REQUIRED: The resource for which the policy is being specified.
                 See the operation documentation for the appropriate value for this field.
-            policy (Union[dict, ~google.cloud.datacatalog_v1beta1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The
-                size of the policy is limited to a few 10s of KB. An empty policy is a
-                valid policy but certain Cloud Platform services (such as Projects)
-                might reject them.
+            policy (Union[dict, ~google.cloud.datacatalog_v1beta1.types.Policy]): Required. The name of the entry group. For example,
+                ``projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}``.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.Policy`
@@ -1099,10 +1115,8 @@ class PolicyTagManagerClient(object):
         Args:
             resource (str): REQUIRED: The resource for which the policy detail is being requested.
                 See the operation documentation for the appropriate value for this field.
-            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions
-                with wildcards (such as '*' or 'storage.*') are not allowed. For more
-                information see `IAM
-                Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
+            permissions (list[str]): An annotation that describes a resource reference, see
+                ``ResourceReference``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.

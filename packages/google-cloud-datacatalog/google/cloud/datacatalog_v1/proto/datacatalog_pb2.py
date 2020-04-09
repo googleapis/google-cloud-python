@@ -2865,9 +2865,8 @@ LookupEntryRequest = _reflection.GeneratedProtocolMessageType(
           ``bigquery.dataset.project_id.dataset_id`` -  ``datacatalog.en
           try.project_id.location_id.entry_group_id.entry_id``
           ``*_id``\ s shoud satisfy the standard SQL rules for
-          identifiers.
-          https://cloud.google.com/bigquery/docs/reference/standard-
-          sql/lexical.
+          identifiers. https://cloud.google.com/bigquery/docs/reference
+          /standard-sql/lexical.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1.LookupEntryRequest)
     },

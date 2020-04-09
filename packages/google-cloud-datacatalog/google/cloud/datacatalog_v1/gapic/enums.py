@@ -21,9 +21,7 @@ import enum
 
 class EntryType(enum.IntEnum):
     """
-    Entry resources in Data Catalog can be of different types e.g. a
-    BigQuery Table entry is of type ``TABLE``. This enum describes all the
-    possible types Data Catalog contains.
+    Request message for ``DeleteTag``.
 
     Attributes:
       ENTRY_TYPE_UNSPECIFIED (int): Default unknown type.
@@ -66,9 +64,16 @@ class SearchResultType(enum.IntEnum):
 
     Attributes:
       SEARCH_RESULT_TYPE_UNSPECIFIED (int): Default unknown type.
-      ENTRY (int): An ``Entry``.
-      TAG_TEMPLATE (int): A ``TagTemplate``.
-      ENTRY_GROUP (int): An ``EntryGroup``.
+      ENTRY (int): Request message for ``GetEntryGroup``.
+      TAG_TEMPLATE (int): An indicator of the behavior of a given field (for example, that a
+      field is required in requests, or given as output but ignored as input).
+      This **does not** change the behavior in protocol buffers itself; it
+      only denotes the behavior and may affect how API tooling handles the
+      field.
+
+      Note: This enum **may** receive new values in the future.
+      ENTRY_GROUP (int): Required. The name of the entry group. For example,
+      ``projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}``.
     """
 
     SEARCH_RESULT_TYPE_UNSPECIFIED = 0
