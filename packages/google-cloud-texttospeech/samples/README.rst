@@ -175,7 +175,7 @@ To run this sample:
 
     Example usage:
         python audio_profile.py --text "hello" --effects_profile_id
-            "telephony-class-application"
+            "telephony-class-application" --output "output.mp3"
 
     optional arguments:
       -h, --help            show this help message and exit

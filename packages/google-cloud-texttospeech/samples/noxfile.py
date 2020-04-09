@@ -123,32 +123,17 @@ def py(session):
 #
 
 
-# def _get_repo_root():
-#     """ Returns the root folder of the project. """
-#     # Get root of this repository. Assume we don't have directories nested deeper than 10 items.
-#     p = Path(os.getcwd())
-#     for i in range(10):
-#         if p is None:
-#             break
-#         if Path(p / ".git").exists():
-#             return str(p)
-#         p = p.parent
-#     raise Exception("Unable to detect repository root.")
+GENERATED_READMES = sorted([str(Path.resolve(x)) for x in Path(".").rglob("*.rst.in")])
 
+@nox.session
+@nox.parametrize("path", GENERATED_READMES)
+def readmegen(session, path):
+    """(Re-)generates the readme for a sample."""
+    session.install("jinja2", "pyyaml")
 
-# GENERATED_READMES = sorted([x for x in Path(".").rglob("*.rst.in")])
+    if os.path.exists(os.path.join(path, "requirements.txt")):
+        session.install("-r", os.path.join(path, "requirements.txt"))
 
-
-# @nox.session
-# @nox.parametrize("path", GENERATED_READMES)
-# def readmegen(session, path):
-#     """(Re-)generates the readme for a sample."""
-#     session.install("jinja2", "pyyaml")
-
-#     if os.path.exists(os.path.join(path, "requirements.txt")):
-#         session.install("-r", os.path.join(path, "requirements.txt"))
-
-#     in_file = os.path.join(path, "README.rst.in")
-#     session.run(
-#         "python", _get_repo_root() + "/scripts/readme-gen/readme_gen.py", in_file
-#     )
+    session.run(
+        "python", "../scripts/readme-gen/readme_gen.py", path)
+    
