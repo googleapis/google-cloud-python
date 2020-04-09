@@ -4,16 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
-### [1.4.2](https://www.github.com/googleapis/python-pubsub/compare/v1.4.1...v1.4.2) (2020-03-25)
-
+## [1.4.2](https://www.github.com/googleapis/python-pubsub/compare/v1.4.1...v1.4.2) (2020-03-25)
 
 ### Bug Fixes
 
 * update generated retry timings for publish and pull rpcs via synth ([#43](https://www.github.com/googleapis/python-pubsub/issues/43)) ([4f7fe85](https://www.github.com/googleapis/python-pubsub/commit/4f7fe85618d811fea94cb46b5dc758aa78c328a8))
 * use client_options.api_endpoint parameter instead of ignoring it ([#59](https://www.github.com/googleapis/python-pubsub/issues/59)) ([56b8d7b](https://www.github.com/googleapis/python-pubsub/commit/56b8d7b046a495ce2ce59bebdd354385147a5013)), closes [#61](https://www.github.com/googleapis/python-pubsub/issues/61)
 
-### [1.4.1](https://www.github.com/googleapis/python-pubsub/compare/v1.4.0...v1.4.1) (2020-03-23)
-
+## [1.4.1](https://www.github.com/googleapis/python-pubsub/compare/v1.4.0...v1.4.1) (2020-03-23)
 
 ### Bug Fixes
 
@@ -21,20 +19,17 @@
 
 ## [1.4.0](https://www.github.com/googleapis/python-pubsub/compare/v1.3.1...v1.4.0) (2020-03-06)
 
-
 ### Features
 
 * **pubsub:** implement max_duration_per_lease_extension option ([#38](https://www.github.com/googleapis/python-pubsub/issues/38)) ([d911a2d](https://www.github.com/googleapis/python-pubsub/commit/d911a2dc8edf3c348ad3f128368b30e32dbc449e))
 
-### [1.3.1](https://www.github.com/googleapis/python-pubsub/compare/v1.3.0...v1.3.1) (2020-02-28)
-
+## [1.3.1](https://www.github.com/googleapis/python-pubsub/compare/v1.3.0...v1.3.1) (2020-02-28)
 
 ### Bug Fixes
 
 * shutdown error on streaming pull callback error ([#40](https://www.github.com/googleapis/python-pubsub/issues/40)) ([552539e](https://www.github.com/googleapis/python-pubsub/commit/552539e7beb30833c39dd29bfcb0183a07895f97))
 
 ## [1.3.0](https://www.github.com/googleapis/python-pubsub/compare/v1.2.0...v1.3.0) (2020-02-20)
-
 
 ### Features
 
@@ -43,12 +38,10 @@
 
 ## [1.2.0](https://www.github.com/googleapis/python-pubsub/compare/v1.1.0...v1.2.0) (2020-02-05)
 
-
 ### Features
 
 * **pubsub:** add delivery attempt property to message object received by user code ([#10205](https://www.github.com/googleapis/google-cloud-python/issues/10205)) ([a0937c1](https://www.github.com/googleapis/python-pubsub/commit/a0937c13107b92271913de579b60f24b2aaac177))
 * add `StreamingPullRequest.client_id` field (via synth) ([199d56a](https://www.github.com/googleapis/python-pubsub/commit/199d56a939bb6244f67138f843dafdd80721f0d3))
-
 
 ### Bug Fixes
 
@@ -158,7 +151,7 @@
 - Use kwargs in test_subscriber_client ([#8414](https://github.com/googleapis/google-cloud-python/pull/8414))
 
 ### New Features
-- Add 'options_' argument to clients' 'get_iam_policy'; pin black version (via synth). ([#8657](https://github.com/googleapis/google-cloud-python/pull/8657))
+- Add `options_` argument to clients' `get_iam_policy`; pin black version (via synth). ([#8657](https://github.com/googleapis/google-cloud-python/pull/8657))
 - Add 'client_options' support, update list method docstrings (via synth). ([#8518](https://github.com/googleapis/google-cloud-python/pull/8518))
 
 ### Dependencies
@@ -420,8 +413,7 @@
 
 ### New Features
 
-- A new implementation of the subscriber has been added. This is available as `SubscriberClient.subscribe_experimental`. In the next release, this will be replace the current `subscribe` method. If you use this, please report your
-findings to us on GitHub. (#5189, #5201, #5210, #5229, #5230, #5237, #5256)
+- A new implementation of the subscriber has been added. This is available as `SubscriberClient.subscribe_experimental`. In the next release, this will be replace the current `subscribe` method. If you use this, please report your findings to us on GitHub. (#5189, #5201, #5210, #5229, #5230, #5237, #5256)
 
 ### Dependencies
 
@@ -524,6 +516,7 @@ PyPI: https://pypi.org/project/google-cloud-pubsub/0.30.1/
   when a "monitor" worker calls `commit()` after `max_latency` seconds,
   a failure can occur if a new message is added to the batch **during**
   the commit. To fix, the following changes were implemented:
+
   - Adding a "STARTING" status for `Batch.commit()` (#4614). This
     fixes the issue when the batch exceeds `max_messages`.
   - Adding extra check in `Batch.will_accept` for the number of
@@ -601,10 +594,12 @@ PyPI: https://pypi.org/project/google-cloud-pubsub/0.29.3/
   running after encountering an exception (#4472, #4498). This bug
   is the **only** reason for the `0.29.2` release.
 - Thread Changes
+
   - Added names to all threads created directly by Pub / Sub (#4474,
     #4476, #4480). Also removing spaces and colons from thread
     names (#4476).
 - Logging changes
+
   - Adding debug logs when lease management exits (#4484)
   - Adding debug logs when `QueueCallbackThread` exits (#4494).
     Instances handle the processing of messages in a
@@ -656,6 +651,6 @@ PyPI: https://pypi.org/project/google-cloud-pubsub/0.29.1/
 - Upgrading to `google-cloud-core >= 0.28.0` and adding dependency
   on `google-api-core` (#4221, #4280)
 - Deferring to `google-api-core` for `grpcio` and
-  `googleapis-common-protos`dependencies (#4096, #4098)
+  `googleapis-common-protos` dependencies (#4096, #4098)
 
 PyPI: https://pypi.org/project/google-cloud-pubsub/0.29.0/
