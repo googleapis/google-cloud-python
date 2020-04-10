@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+### [1.15.1](https://www.github.com/googleapis/python-spanner/compare/v1.15.0...v1.15.1) (2020-04-08)
+
+
+### Bug Fixes
+
+* add keepalive to gRPC channel ([#49](https://www.github.com/googleapis/python-spanner/issues/49)) ([dfbc656](https://www.github.com/googleapis/python-spanner/commit/dfbc656891c687bc077f811f8490ae92818307f8))
+* increment seqno before execute calls to prevent InvalidArgument … ([#19](https://www.github.com/googleapis/python-spanner/issues/19)) ([adeacee](https://www.github.com/googleapis/python-spanner/commit/adeacee3cc07260fa9fcd496b3187402f02bf157))
+* Pin Sphnix version to last working release ([#51](https://www.github.com/googleapis/python-spanner/issues/51)) ([430ca32](https://www.github.com/googleapis/python-spanner/commit/430ca32fcbedebdfdb00366008a72d8229e4df98))
+
 ## [1.15.0](https://www.github.com/googleapis/python-spanner/compare/v1.14.0...v1.15.0) (2020-03-17)
 
 
