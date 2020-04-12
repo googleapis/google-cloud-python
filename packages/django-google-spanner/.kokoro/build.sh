@@ -66,7 +66,7 @@ then
     then
         export DJANGO_WORKER_COUNT=1 # Only using 1 worker for continuous instead of $(ls .kokoro/continuous/worker* | wc -l)
     else
-        export DJANGO_WORKER_COUNT=6
+        export DJANGO_WORKER_COUNT=5
     fi
 else
     export DJANGO_WORKER_COUNT=$(ls .kokoro/presubmit/worker* | wc -l)

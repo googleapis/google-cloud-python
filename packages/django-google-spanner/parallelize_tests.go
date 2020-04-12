@@ -25,6 +25,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"cloud.google.com/go/compute/metadata"
 	instance "cloud.google.com/go/spanner/admin/instance/apiv1"
 	instancepb "google.golang.org/genproto/googleapis/spanner/admin/instance/v1"
 )
@@ -43,6 +44,7 @@ func main() {
 		fmt.Printf("workerIndex (%d) >= workerCount (%d)", workerIndex, workerCount)
 		return
 	}
+
 	allAppsBlob, err := ioutil.ReadFile("django_test_apps.txt")
 	if err != nil {
 		panic(err)
@@ -81,10 +83,6 @@ func main() {
 	defer deleteInstance()
 	fmt.Printf("Spanner instance: %q\n", instanceName)
 
-	// Otherwise, we'll parallelize the builds.
-	nProcs := runtime.GOMAXPROCS(0)
-	println("GOMAXPROCS:", nProcs)
-
 	shutdownCtx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -92,6 +90,8 @@ func main() {
 	var wg sync.WaitGroup
 	defer func() {
 		wg.Wait()
+		cancel()
+		deleteInstance()
 		os.Exit(int(exitCode))
 	}()
 
@@ -104,6 +104,9 @@ func main() {
 		wg.Wait()
 		deleteInstance()
 	}()
+
+	nProcs := runtime.GOMAXPROCS(0)
+	println("GOMAXPROCS:", nProcs)
 
 	// The number of Django apps to run per goroutine.
 	nAppsPerG := 3
@@ -230,6 +233,7 @@ func createInstance() (name string, done func(), xerr error) {
 	}
 	projectPrefix := "projects/" + projectID
 	instanceName := projectPrefix + "/instances/" + displayName
+	instanceConfig := projectPrefix + "/instanceConfigs/regional-" + findRegion()
 	req := &instancepb.CreateInstanceRequest{
 		Parent:     projectPrefix,
 		InstanceId: displayName,
@@ -237,7 +241,7 @@ func createInstance() (name string, done func(), xerr error) {
 			Name:        instanceName,
 			DisplayName: displayName,
 			NodeCount:   1,
-			Config:      projectPrefix + "/instanceConfigs/regional-us-west2",
+			Config:      instanceConfig,
 		},
 	}
 
@@ -267,12 +271,30 @@ func createInstance() (name string, done func(), xerr error) {
 
 	// The short name of reference for the Spanner instance, and not its InstanceName.
 	name = retrieved.DisplayName
+	deletionName := retrieved.Name
+	var doneOnce sync.Once
 	done = func() {
-		if err := client.DeleteInstance(ctx, &instancepb.DeleteInstanceRequest{Name: name}); err == nil {
-			fmt.Printf("Deleted instance: %q\n", name)
-		} else {
-			fmt.Printf("Failed to delete instance: %q ==> %v\n", name, err)
-		}
+		doneOnce.Do(func() {
+			if err := client.DeleteInstance(ctx, &instancepb.DeleteInstanceRequest{Name: deletionName}); err == nil {
+				fmt.Printf("Deleted instance: %q\n", name)
+			} else {
+				fmt.Printf("Failed to delete instance: %q ==> %v\n", name, err)
+			}
+		})
 	}
 	return
+}
+
+func findRegion() string {
+	zone := "us-central1-b"
+	if metadata.OnGCE() {
+		foundZone, err := metadata.Zone()
+		if err == nil {
+			zone = foundZone
+		}
+	}
+	// There is no metadata API to retrieve the region from the zone,
+	// so we have to improvise and trim off the last '-' e.g.
+	// with a zone of "us-central1-b", the region will be "us-central".
+	return zone[:strings.LastIndex(zone, "-")]
 }
