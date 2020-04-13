@@ -60,12 +60,21 @@ def regex(self, compiler, connection):
     rhs_sql, rhs_params = self.process_rhs(compiler, connection)
     params.extend(rhs_params)
     rhs_sql = self.get_rhs_op(connection, rhs_sql)
-    if self.lookup_name.startswith('i'):
-        params[0] = '(?i)%s' % params[0]
+    is_iregex = self.lookup_name.startswith('i')
+    if self.rhs_is_direct_value() and params and not self.bilateral_transforms:
+        if is_iregex:
+            params[0] = '(?i)%s' % params[0]
+        else:
+            params[0] = str(params[0])
+        # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
+        return rhs_sql % lhs_sql, params
     else:
-        params[0] = str(params[0])
-    # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
-    return rhs_sql % lhs_sql, params
+        # rhs is the expression/column to use as the base of the regular
+        # expression.
+        rhs = compiler.compile(self.rhs)[0]
+        if is_iregex:
+            rhs = "CONCAT('(?i)', " + rhs + ")"
+        return 'REGEXP_CONTAINS(%s, %s)' % (lhs_sql, rhs), params
 
 
 def startswith_endswith(self, compiler, connection):
