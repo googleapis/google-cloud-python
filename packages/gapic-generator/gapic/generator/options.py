@@ -70,6 +70,7 @@ class Options:
         # Parse out every option beginning with `python-gapic`
         opts: DefaultDict[str, List[str]] = defaultdict(list)
         for opt in opt_string.split(','):
+            opt = opt.strip()
             # Parse out the key and value.
             value = 'true'
             if '=' in opt:

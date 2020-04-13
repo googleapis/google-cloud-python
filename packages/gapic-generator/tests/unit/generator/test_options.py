@@ -52,6 +52,18 @@ def test_options_unrecognized_likely_typo():
     assert len(warn.mock_calls) == 0
 
 
+def test_options_trim_whitespace():
+    # When writing shell scripts, users may construct options strings with
+    # whitespace that needs to be trimmed after tokenizing.
+    opts = options.Options.build(
+        '''
+        python-gapic-templates=/squid/clam/whelk ,
+        python-gapic-name=mollusca ,
+        ''')
+    assert opts.templates[0] == '/squid/clam/whelk'
+    assert opts.name == 'mollusca'
+
+
 def test_options_no_valid_sample_config(fs):
     fs.create_file("sampledir/not_a_config.yaml")
     with pytest.raises(types.InvalidConfig):
