@@ -84,9 +84,9 @@ def startswith_endswith(self, compiler, connection):
             params[0] = str(params[0][1:]) + '$'
         else:
             params[0] = '^' + str(params[0][:-1])
-            # Add the case insensitive flag for istartswith or iendswith.
-            if is_insensitive:
-                params[0] = '(?i)' + params[0]
+        # Add the case insensitive flag for istartswith or iendswith.
+        if is_insensitive:
+            params[0] = '(?i)' + params[0]
         # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
         return rhs_sql % lhs_sql, params
     else:
