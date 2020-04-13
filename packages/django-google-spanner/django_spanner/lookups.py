@@ -19,7 +19,7 @@ def contains(self, compiler, connection):
     params.extend(rhs_params)
     rhs_sql = self.get_rhs_op(connection, rhs_sql)
     is_icontains = self.lookup_name.startswith('i')
-    if params:
+    if self.rhs_is_direct_value() and params and not self.bilateral_transforms:
         # Chop the leading and trailing percent signs that Django adds to the
         # param since this isn't a LIKE query as Django expects.
         params[0] = params[0][1:-1]
@@ -29,12 +29,12 @@ def contains(self, compiler, connection):
         # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
         return rhs_sql % lhs_sql, params
     else:
-        # If no params, then rhs is the expression/column to use as the base of
-        # the regular expression.
-        rhs, _ = self.rhs.as_sql(compiler, connection)
+        # rhs is the expression/column to use as the base of the regular
+        # expression.
+        rhs = compiler.compile(self.rhs)[0]
         if is_icontains:
             rhs = "CONCAT('(?i)', " + rhs + ")"
-        return 'REGEXP_CONTAINS(%s, %s)' % (lhs_sql, connection.pattern_esc.format(rhs)), []
+        return 'REGEXP_CONTAINS(%s, %s)' % (lhs_sql, connection.pattern_esc.format(rhs)), params
 
 
 def iexact(self, compiler, connection):
@@ -43,11 +43,11 @@ def iexact(self, compiler, connection):
     params.extend(rhs_params)
     rhs_sql = self.get_rhs_op(connection, rhs_sql)
     # Wrap the parameter in ^ and $ to restrict the regex to an exact match.
-    if params:
+    if self.rhs_is_direct_value() and params and not self.bilateral_transforms:
         params[0] = '^(?i)%s$' % params[0]
     else:
-        # If no params, then lhs_sql is the expression/column to use as the
-        # regular expression. Use concat to make the value case-insensitive.
+        # lhs_sql is the expression/column to use as the regular expression.
+        # Use concat to make the value case-insensitive.
         lhs_sql = "CONCAT('^(?i)', " + lhs_sql + ", '$')"
         rhs_sql = rhs_sql.replace('%%s', '%s')
     # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
@@ -79,7 +79,7 @@ def startswith_endswith(self, compiler, connection):
     is_insensitive = self.lookup_name.startswith('i')
     # Chop the leading (endswith) or trailing (startswith) percent sign that
     # Django adds to the param since this isn't a LIKE query as Django expects.
-    if params:
+    if self.rhs_is_direct_value() and params and not self.bilateral_transforms:
         if is_endswith:
             params[0] = str(params[0][1:]) + '$'
         else:
@@ -90,18 +90,18 @@ def startswith_endswith(self, compiler, connection):
         # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
         return rhs_sql % lhs_sql, params
     else:
-        # If no params, then rhs is the expression/column to use as the base
-        # of the regular expression.
+        # rhs is the expression/column to use as the base of the regular
+        # expression.
         sql = "CONCAT('"
         if is_startswith:
             sql += '^'
         if is_insensitive:
             sql += '(?i)'
-        sql += "', " + self.rhs.as_sql(compiler, connection)[0]
+        sql += "', " + compiler.compile(self.rhs)[0]
         if is_endswith:
             sql += ", '$'"
         sql += ")"
-        return 'REGEXP_CONTAINS(%s, %s)' % (lhs_sql, connection.pattern_esc.format(sql)), []
+        return 'REGEXP_CONTAINS(%s, %s)' % (lhs_sql, connection.pattern_esc.format(sql)), params
 
 
 def cast_param_to_float(self, compiler, connection):

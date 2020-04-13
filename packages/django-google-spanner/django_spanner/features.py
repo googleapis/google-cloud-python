@@ -136,9 +136,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'model_fields.test_decimalfield.DecimalFieldTests.test_roundtrip_with_trailing_zeros',
         # No CHECK constraints in Spanner.
         'model_fields.test_integerfield.PositiveIntegerFieldTests.test_negative_values',
-        # (i)contains, (i)startswith, and (i)endswith lookups with database
-        # function crash: https://github.com/googleapis/python-spanner-django/issues/409
-        'lookup.tests.LookupTests.test_pattern_lookups_with_substr',
         # Spanner doesn't support the variance the standard deviation database
         # functions:
         'aggregation.test_filter_argument.FilteredAggregateTests.test_filtered_numerical_aggregates',
