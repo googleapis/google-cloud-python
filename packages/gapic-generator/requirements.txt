@@ -2,7 +2,7 @@ click==7.1.1
 google-api-core==1.16.0
 googleapis-common-protos==1.51.0
 grpcio==1.28.1
-jinja2==2.11.1
+jinja2==2.11.2
 protobuf==3.11.3
 pypandoc==1.4
 PyYAML==5.3.1
