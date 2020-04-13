@@ -202,8 +202,8 @@ class AuthorizedHttp(urllib3.request.RequestMethods):
     credentials' headers to the request and refreshing credentials as needed.
 
     This class also supports mutual TLS via :meth:`configure_mtls_channel`
-    method. If client_cert_callabck is provided, client certificate and private
-    key are loaded using the callback; if client_cert_callabck is None,
+    method. If client_cert_callback is provided, client certificate and private
+    key are loaded using the callback; if client_cert_callback is None,
     application default SSL credentials will be used. Exceptions are raised if
     there are problems with the certificate, private key, or the loading process,
     so it should be called within a try/except block.
@@ -280,14 +280,14 @@ class AuthorizedHttp(urllib3.request.RequestMethods):
 
         super(AuthorizedHttp, self).__init__()
 
-    def configure_mtls_channel(self, client_cert_callabck=None):
-        """Configures mutual TLS channel using the given client_cert_callabck or
+    def configure_mtls_channel(self, client_cert_callback=None):
+        """Configures mutual TLS channel using the given client_cert_callback or
         application default SSL credentials. Returns True if the channel is
         mutual TLS and False otherwise. Note that the `http` provided in the
         constructor will be overwritten.
 
         Args:
-            client_cert_callabck (Optional[Callable[[], (bytes, bytes)]]):
+            client_cert_callback (Optional[Callable[[], (bytes, bytes)]]):
                 The optional callback returns the client certificate and private
                 key bytes both in PEM format.
                 If the callback is None, application default SSL credentials
@@ -308,7 +308,7 @@ class AuthorizedHttp(urllib3.request.RequestMethods):
 
         try:
             found_cert_key, cert, key = transport._mtls_helper.get_client_cert_and_key(
-                client_cert_callabck
+                client_cert_callback
             )
 
             if found_cert_key:

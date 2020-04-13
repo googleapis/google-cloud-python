@@ -249,8 +249,8 @@ class AuthorizedSession(requests.Session):
     credentials' headers to the request and refreshing credentials as needed.
 
     This class also supports mutual TLS via :meth:`configure_mtls_channel`
-    method. If client_cert_callabck is provided, client certificate and private
-    key are loaded using the callback; if client_cert_callabck is None,
+    method. If client_cert_callback is provided, client certificate and private
+    key are loaded using the callback; if client_cert_callback is None,
     application default SSL credentials will be used. Exceptions are raised if
     there are problems with the certificate, private key, or the loading process,
     so it should be called within a try/except block.
@@ -344,11 +344,11 @@ class AuthorizedSession(requests.Session):
         """Configure the client certificate and key for SSL connection.
 
         If client certificate and key are successfully obtained (from the given
-        client_cert_callabck or from application default SSL credentials), a
+        client_cert_callback or from application default SSL credentials), a
         :class:`_MutualTlsAdapter` instance will be mounted to "https://" prefix.
 
         Args:
-            client_cert_callabck (Optional[Callable[[], (bytes, bytes)]]):
+            client_cert_callback (Optional[Callable[[], (bytes, bytes)]]):
                 The optional callback returns the client certificate and private
                 key bytes both in PEM format.
                 If the callback is None, application default SSL credentials
