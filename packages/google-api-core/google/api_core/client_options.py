@@ -24,7 +24,12 @@ You can pass a client options object to a client.
     from google.api_core.client_options import ClientOptions
     from google.cloud.vision_v1 import ImageAnnotatorClient
 
-    options = ClientOptions(api_endpoint="foo.googleapis.com")
+    def get_client_cert():
+        # code to load client certificate and private key.
+        return client_cert_bytes, client_private_key_bytes
+
+    options = ClientOptions(api_endpoint="foo.googleapis.com",
+        client_cert_source=get_client_cert)
 
     client = ImageAnnotatorClient(client_options=options)
 
@@ -34,7 +39,11 @@ You can also pass a dictionary.
 
     from google.cloud.vision_v1 import ImageAnnotatorClient
 
-    client = ImageAnnotatorClient(client_options={"api_endpoint": "foo.googleapis.com"})
+    client = ImageAnnotatorClient(
+        client_options={
+            "api_endpoint": "foo.googleapis.com",
+            "client_cert_source" : get_client_cert
+        })
 
 
 """
@@ -45,10 +54,14 @@ class ClientOptions(object):
 
     Args:
         api_endpoint (str): The desired API endpoint, e.g., compute.googleapis.com
+        client_cert_source (Callable[[], (bytes, bytes)]): An optional callback
+            which returns client certificate bytes and private key bytes both in
+            PEM format.
     """
 
-    def __init__(self, api_endpoint=None):
+    def __init__(self, api_endpoint=None, client_cert_source=None):
         self.api_endpoint = api_endpoint
+        self.client_cert_source = client_cert_source
 
     def __repr__(self):
         return "ClientOptions: " + repr(self.__dict__)

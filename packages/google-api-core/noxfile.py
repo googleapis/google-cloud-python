@@ -112,7 +112,7 @@ def docs(session):
 
     session.install(".", "grpcio >= 1.8.2", "grpcio-gcp >= 0.2.2")
     session.install("-e", ".")
-    session.install("sphinx", "alabaster", "recommonmark")
+    session.install("sphinx < 3.0", "alabaster", "recommonmark")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(

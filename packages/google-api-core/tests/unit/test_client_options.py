@@ -17,26 +17,46 @@ import pytest
 from google.api_core import client_options
 
 
+def get_client_cert():
+    return b"cert", b"key"
+
+
 def test_constructor():
-    options = client_options.ClientOptions(api_endpoint="foo.googleapis.com")
+
+    options = client_options.ClientOptions(
+        api_endpoint="foo.googleapis.com", client_cert_source=get_client_cert
+    )
 
     assert options.api_endpoint == "foo.googleapis.com"
+    assert options.client_cert_source() == (b"cert", b"key")
 
 
 def test_from_dict():
-    options = client_options.from_dict({"api_endpoint": "foo.googleapis.com"})
+    options = client_options.from_dict(
+        {"api_endpoint": "foo.googleapis.com", "client_cert_source": get_client_cert}
+    )
 
     assert options.api_endpoint == "foo.googleapis.com"
+    # assert options.client_cert_source == get_client_cert
+    assert options.client_cert_source() == (b"cert", b"key")
 
 
 def test_from_dict_bad_argument():
     with pytest.raises(ValueError):
         client_options.from_dict(
-            {"api_endpoint": "foo.googleapis.com", "bad_arg": "1234"}
+            {
+                "api_endpoint": "foo.googleapis.com",
+                "bad_arg": "1234",
+                "client_cert_source": get_client_cert,
+            }
         )
 
 
 def test_repr():
     options = client_options.ClientOptions(api_endpoint="foo.googleapis.com")
 
-    assert repr(options) == "ClientOptions: {'api_endpoint': 'foo.googleapis.com'}"
+    assert (
+        repr(options)
+        == "ClientOptions: {'api_endpoint': 'foo.googleapis.com', 'client_cert_source': None}"
+        or "ClientOptions: {'client_cert_source': None, 'api_endpoint': 'foo.googleapis.com'}"
+    )
