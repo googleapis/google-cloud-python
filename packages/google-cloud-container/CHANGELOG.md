@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [0.5.0](https://www.github.com/googleapis/python-container/compare/v0.4.0...v0.5.0) (2020-04-14)
+
+
+### Features
+
+* make `project_id`, `zone`, `cluster_id`, `node_pool` optional arguments to methods in `cluster_manager_client`; change default timeout config; add 2.7 sunset warning; bump copyright year to 2020 (via synth)([#8](https://www.github.com/googleapis/python-container/issues/8)) ([6afc050](https://www.github.com/googleapis/python-container/commit/6afc050f21c57a2d0eda3327c07510f2226aa6a6))
+
 ## [0.4.0](https://www.github.com/googleapis/python-container/compare/v0.3.0...v0.4.0) (2020-02-03)
 
 

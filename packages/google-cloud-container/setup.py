@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-container"
 description = "Google Container Engine API client library"
-version = "0.4.0"
+version = "0.5.0"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
