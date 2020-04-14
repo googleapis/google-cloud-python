@@ -28,10 +28,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.container.v1beta1",
     syntax="proto3",
     serialized_options=_b(
-        "\n\034com.google.container.v1beta1B\023ClusterServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/container/v1beta1;container\252\002\036Google.Cloud.Container.V1Beta1\312\002\036Google\\Cloud\\Container\\V1beta1"
+        "\n\034com.google.container.v1beta1B\023ClusterServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/container/v1beta1;container\252\002\036Google.Cloud.Container.V1Beta1\312\002\036Google\\Cloud\\Container\\V1beta1\352\002!Google::Cloud::Container::V1beta1"
     ),
     serialized_pb=_b(
-        '\n:google/cloud/container_v1beta1/proto/cluster_service.proto\x12\x18google.container.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xec\x05\n\nNodeConfig\x12\x14\n\x0cmachine_type\x18\x01 \x01(\t\x12\x14\n\x0c\x64isk_size_gb\x18\x02 \x01(\x05\x12\x14\n\x0coauth_scopes\x18\x03 \x03(\t\x12\x17\n\x0fservice_account\x18\t \x01(\t\x12\x44\n\x08metadata\x18\x04 \x03(\x0b\x32\x32.google.container.v1beta1.NodeConfig.MetadataEntry\x12\x12\n\nimage_type\x18\x05 \x01(\t\x12@\n\x06labels\x18\x06 \x03(\x0b\x32\x30.google.container.v1beta1.NodeConfig.LabelsEntry\x12\x17\n\x0flocal_ssd_count\x18\x07 \x01(\x05\x12\x0c\n\x04tags\x18\x08 \x03(\t\x12\x13\n\x0bpreemptible\x18\n \x01(\x08\x12\x41\n\x0c\x61\x63\x63\x65lerators\x18\x0b \x03(\x0b\x32+.google.container.v1beta1.AcceleratorConfig\x12\x11\n\tdisk_type\x18\x0c \x01(\t\x12\x18\n\x10min_cpu_platform\x18\r \x01(\t\x12R\n\x18workload_metadata_config\x18\x0e \x01(\x0b\x32\x30.google.container.v1beta1.WorkloadMetadataConfig\x12\x33\n\x06taints\x18\x0f \x03(\x0b\x32#.google.container.v1beta1.NodeTaint\x12R\n\x18shielded_instance_config\x18\x14 \x01(\x0b\x32\x30.google.container.v1beta1.ShieldedInstanceConfig\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"Y\n\x16ShieldedInstanceConfig\x12\x1a\n\x12\x65nable_secure_boot\x18\x01 \x01(\x08\x12#\n\x1b\x65nable_integrity_monitoring\x18\x02 \x01(\x08"\xbe\x01\n\tNodeTaint\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\x12:\n\x06\x65\x66\x66\x65\x63t\x18\x03 \x01(\x0e\x32*.google.container.v1beta1.NodeTaint.Effect"Y\n\x06\x45\x66\x66\x65\x63t\x12\x16\n\x12\x45\x46\x46\x45\x43T_UNSPECIFIED\x10\x00\x12\x0f\n\x0bNO_SCHEDULE\x10\x01\x12\x16\n\x12PREFER_NO_SCHEDULE\x10\x02\x12\x0e\n\nNO_EXECUTE\x10\x03"\xd6\x01\n\nMasterAuth\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12T\n\x19\x63lient_certificate_config\x18\x03 \x01(\x0b\x32\x31.google.container.v1beta1.ClientCertificateConfig\x12\x1e\n\x16\x63luster_ca_certificate\x18\x64 \x01(\t\x12\x1a\n\x12\x63lient_certificate\x18\x65 \x01(\t\x12\x12\n\nclient_key\x18\x66 \x01(\t";\n\x17\x43lientCertificateConfig\x12 \n\x18issue_client_certificate\x18\x01 \x01(\x08"\xd0\x03\n\x0c\x41\x64\x64onsConfig\x12H\n\x13http_load_balancing\x18\x01 \x01(\x0b\x32+.google.container.v1beta1.HttpLoadBalancing\x12V\n\x1ahorizontal_pod_autoscaling\x18\x02 \x01(\x0b\x32\x32.google.container.v1beta1.HorizontalPodAutoscaling\x12O\n\x14kubernetes_dashboard\x18\x03 \x01(\x0b\x32-.google.container.v1beta1.KubernetesDashboardB\x02\x18\x01\x12L\n\x15network_policy_config\x18\x04 \x01(\x0b\x32-.google.container.v1beta1.NetworkPolicyConfig\x12;\n\x0cistio_config\x18\x05 \x01(\x0b\x32%.google.container.v1beta1.IstioConfig\x12\x42\n\x10\x63loud_run_config\x18\x07 \x01(\x0b\x32(.google.container.v1beta1.CloudRunConfig"%\n\x11HttpLoadBalancing\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08",\n\x18HorizontalPodAutoscaling\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08"\'\n\x13KubernetesDashboard\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08"\'\n\x13NetworkPolicyConfig\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08"\xa8\x01\n\x14PrivateClusterConfig\x12\x1c\n\x14\x65nable_private_nodes\x18\x01 \x01(\x08\x12\x1f\n\x17\x65nable_private_endpoint\x18\x02 \x01(\x08\x12\x1e\n\x16master_ipv4_cidr_block\x18\x03 \x01(\t\x12\x18\n\x10private_endpoint\x18\x04 \x01(\t\x12\x17\n\x0fpublic_endpoint\x18\x05 \x01(\t"\x97\x01\n\x0bIstioConfig\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08\x12\x41\n\x04\x61uth\x18\x02 \x01(\x0e\x32\x33.google.container.v1beta1.IstioConfig.IstioAuthMode"3\n\rIstioAuthMode\x12\r\n\tAUTH_NONE\x10\x00\x12\x13\n\x0f\x41UTH_MUTUAL_TLS\x10\x01""\n\x0e\x43loudRunConfig\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08"\xc1\x01\n\x1eMasterAuthorizedNetworksConfig\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08\x12W\n\x0b\x63idr_blocks\x18\x02 \x03(\x0b\x32\x42.google.container.v1beta1.MasterAuthorizedNetworksConfig.CidrBlock\x1a\x35\n\tCidrBlock\x12\x14\n\x0c\x64isplay_name\x18\x01 \x01(\t\x12\x12\n\ncidr_block\x18\x02 \x01(\t"\x1d\n\nLegacyAbac\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08"\x96\x01\n\rNetworkPolicy\x12\x42\n\x08provider\x18\x01 \x01(\x0e\x32\x30.google.container.v1beta1.NetworkPolicy.Provider\x12\x0f\n\x07\x65nabled\x18\x02 \x01(\x08"0\n\x08Provider\x12\x18\n\x14PROVIDER_UNSPECIFIED\x10\x00\x12\n\n\x06\x43\x41LICO\x10\x01"\xa3\x03\n\x12IPAllocationPolicy\x12\x16\n\x0euse_ip_aliases\x18\x01 \x01(\x08\x12\x19\n\x11\x63reate_subnetwork\x18\x02 \x01(\x08\x12\x17\n\x0fsubnetwork_name\x18\x03 \x01(\t\x12\x1d\n\x11\x63luster_ipv4_cidr\x18\x04 \x01(\tB\x02\x18\x01\x12\x1a\n\x0enode_ipv4_cidr\x18\x05 \x01(\tB\x02\x18\x01\x12\x1e\n\x12services_ipv4_cidr\x18\x06 \x01(\tB\x02\x18\x01\x12$\n\x1c\x63luster_secondary_range_name\x18\x07 \x01(\t\x12%\n\x1dservices_secondary_range_name\x18\x08 \x01(\t\x12\x1f\n\x17\x63luster_ipv4_cidr_block\x18\t \x01(\t\x12\x1c\n\x14node_ipv4_cidr_block\x18\n \x01(\t\x12 \n\x18services_ipv4_cidr_block\x18\x0b \x01(\t\x12\x1b\n\x13\x61llow_route_overlap\x18\x0c \x01(\x08\x12\x1b\n\x13tpu_ipv4_cidr_block\x18\r \x01(\t"&\n\x13\x42inaryAuthorization\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08"*\n\x17PodSecurityPolicyConfig\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08"D\n\x19\x41uthenticatorGroupsConfig\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08\x12\x16\n\x0esecurity_group\x18\x02 \x01(\t"\xec\x13\n\x07\x43luster\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x1e\n\x12initial_node_count\x18\x03 \x01(\x05\x42\x02\x18\x01\x12=\n\x0bnode_config\x18\x04 \x01(\x0b\x32$.google.container.v1beta1.NodeConfigB\x02\x18\x01\x12\x39\n\x0bmaster_auth\x18\x05 \x01(\x0b\x32$.google.container.v1beta1.MasterAuth\x12\x17\n\x0flogging_service\x18\x06 \x01(\t\x12\x1a\n\x12monitoring_service\x18\x07 \x01(\t\x12\x0f\n\x07network\x18\x08 \x01(\t\x12\x19\n\x11\x63luster_ipv4_cidr\x18\t \x01(\t\x12=\n\raddons_config\x18\n \x01(\x0b\x32&.google.container.v1beta1.AddonsConfig\x12\x12\n\nsubnetwork\x18\x0b \x01(\t\x12\x36\n\nnode_pools\x18\x0c \x03(\x0b\x32".google.container.v1beta1.NodePool\x12\x11\n\tlocations\x18\r \x03(\t\x12\x1f\n\x17\x65nable_kubernetes_alpha\x18\x0e \x01(\x08\x12N\n\x0fresource_labels\x18\x0f \x03(\x0b\x32\x35.google.container.v1beta1.Cluster.ResourceLabelsEntry\x12\x19\n\x11label_fingerprint\x18\x10 \x01(\t\x12\x39\n\x0blegacy_abac\x18\x12 \x01(\x0b\x32$.google.container.v1beta1.LegacyAbac\x12?\n\x0enetwork_policy\x18\x13 \x01(\x0b\x32\'.google.container.v1beta1.NetworkPolicy\x12J\n\x14ip_allocation_policy\x18\x14 \x01(\x0b\x32,.google.container.v1beta1.IPAllocationPolicy\x12\x63\n!master_authorized_networks_config\x18\x16 \x01(\x0b\x32\x38.google.container.v1beta1.MasterAuthorizedNetworksConfig\x12G\n\x12maintenance_policy\x18\x17 \x01(\x0b\x32+.google.container.v1beta1.MaintenancePolicy\x12K\n\x14\x62inary_authorization\x18\x18 \x01(\x0b\x32-.google.container.v1beta1.BinaryAuthorization\x12U\n\x1apod_security_policy_config\x18\x19 \x01(\x0b\x32\x31.google.container.v1beta1.PodSecurityPolicyConfig\x12\x41\n\x0b\x61utoscaling\x18\x1a \x01(\x0b\x32,.google.container.v1beta1.ClusterAutoscaling\x12?\n\x0enetwork_config\x18\x1b \x01(\x0b\x32\'.google.container.v1beta1.NetworkConfig\x12\x1b\n\x0fprivate_cluster\x18\x1c \x01(\x08\x42\x02\x18\x01\x12"\n\x16master_ipv4_cidr_block\x18\x1d \x01(\tB\x02\x18\x01\x12P\n\x1b\x64\x65\x66\x61ult_max_pods_constraint\x18\x1e \x01(\x0b\x32+.google.container.v1beta1.MaxPodsConstraint\x12Y\n\x1cresource_usage_export_config\x18! \x01(\x0b\x32\x33.google.container.v1beta1.ResourceUsageExportConfig\x12X\n\x1b\x61uthenticator_groups_config\x18" \x01(\x0b\x32\x33.google.container.v1beta1.AuthenticatorGroupsConfig\x12N\n\x16private_cluster_config\x18% \x01(\x0b\x32..google.container.v1beta1.PrivateClusterConfig\x12R\n\x18vertical_pod_autoscaling\x18\' \x01(\x0b\x32\x30.google.container.v1beta1.VerticalPodAutoscaling\x12\x11\n\tself_link\x18\x64 \x01(\t\x12\x10\n\x04zone\x18\x65 \x01(\tB\x02\x18\x01\x12\x10\n\x08\x65ndpoint\x18\x66 \x01(\t\x12\x1f\n\x17initial_cluster_version\x18g \x01(\t\x12\x1e\n\x16\x63urrent_master_version\x18h \x01(\t\x12 \n\x14\x63urrent_node_version\x18i \x01(\tB\x02\x18\x01\x12\x13\n\x0b\x63reate_time\x18j \x01(\t\x12\x38\n\x06status\x18k \x01(\x0e\x32(.google.container.v1beta1.Cluster.Status\x12\x1a\n\x0estatus_message\x18l \x01(\tB\x02\x18\x01\x12\x1b\n\x13node_ipv4_cidr_size\x18m \x01(\x05\x12\x1a\n\x12services_ipv4_cidr\x18n \x01(\t\x12\x1f\n\x13instance_group_urls\x18o \x03(\tB\x02\x18\x01\x12\x1e\n\x12\x63urrent_node_count\x18p \x01(\x05\x42\x02\x18\x01\x12\x13\n\x0b\x65xpire_time\x18q \x01(\t\x12\x10\n\x08location\x18r \x01(\t\x12\x12\n\nenable_tpu\x18s \x01(\x08\x12\x1b\n\x13tpu_ipv4_cidr_block\x18t \x01(\t\x12I\n\x13\x64\x61tabase_encryption\x18& \x01(\x0b\x32,.google.container.v1beta1.DatabaseEncryption\x12=\n\nconditions\x18v \x03(\x0b\x32).google.container.v1beta1.StatusCondition\x1a\x35\n\x13ResourceLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"w\n\x06Status\x12\x16\n\x12STATUS_UNSPECIFIED\x10\x00\x12\x10\n\x0cPROVISIONING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x0f\n\x0bRECONCILING\x10\x03\x12\x0c\n\x08STOPPING\x10\x04\x12\t\n\x05\x45RROR\x10\x05\x12\x0c\n\x08\x44\x45GRADED\x10\x06"\x9a\x08\n\rClusterUpdate\x12\x1c\n\x14\x64\x65sired_node_version\x18\x04 \x01(\t\x12"\n\x1a\x64\x65sired_monitoring_service\x18\x05 \x01(\t\x12\x45\n\x15\x64\x65sired_addons_config\x18\x06 \x01(\x0b\x32&.google.container.v1beta1.AddonsConfig\x12\x1c\n\x14\x64\x65sired_node_pool_id\x18\x07 \x01(\t\x12\x1a\n\x12\x64\x65sired_image_type\x18\x08 \x01(\t\x12T\n\x1d\x64\x65sired_node_pool_autoscaling\x18\t \x01(\x0b\x32-.google.container.v1beta1.NodePoolAutoscaling\x12\x19\n\x11\x64\x65sired_locations\x18\n \x03(\t\x12k\n)desired_master_authorized_networks_config\x18\x0c \x01(\x0b\x32\x38.google.container.v1beta1.MasterAuthorizedNetworksConfig\x12]\n"desired_pod_security_policy_config\x18\x0e \x01(\x0b\x32\x31.google.container.v1beta1.PodSecurityPolicyConfig\x12Q\n\x1b\x64\x65sired_cluster_autoscaling\x18\x0f \x01(\x0b\x32,.google.container.v1beta1.ClusterAutoscaling\x12S\n\x1c\x64\x65sired_binary_authorization\x18\x10 \x01(\x0b\x32-.google.container.v1beta1.BinaryAuthorization\x12\x1f\n\x17\x64\x65sired_logging_service\x18\x13 \x01(\t\x12\x61\n$desired_resource_usage_export_config\x18\x15 \x01(\x0b\x32\x33.google.container.v1beta1.ResourceUsageExportConfig\x12Z\n desired_vertical_pod_autoscaling\x18\x16 \x01(\x0b\x32\x30.google.container.v1beta1.VerticalPodAutoscaling\x12\x61\n$desired_intra_node_visibility_config\x18\x1a \x01(\x0b\x32\x33.google.container.v1beta1.IntraNodeVisibilityConfig\x12\x1e\n\x16\x64\x65sired_master_version\x18\x64 \x01(\t"\xd7\x07\n\tOperation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12@\n\x0eoperation_type\x18\x03 \x01(\x0e\x32(.google.container.v1beta1.Operation.Type\x12:\n\x06status\x18\x04 \x01(\x0e\x32*.google.container.v1beta1.Operation.Status\x12\x0e\n\x06\x64\x65tail\x18\x08 \x01(\t\x12\x1a\n\x0estatus_message\x18\x05 \x01(\tB\x02\x18\x01\x12\x11\n\tself_link\x18\x06 \x01(\t\x12\x13\n\x0btarget_link\x18\x07 \x01(\t\x12\x10\n\x08location\x18\t \x01(\t\x12\x12\n\nstart_time\x18\n \x01(\t\x12\x10\n\x08\x65nd_time\x18\x0b \x01(\t\x12=\n\x08progress\x18\x0c \x01(\x0b\x32+.google.container.v1beta1.OperationProgress\x12\x45\n\x12\x63luster_conditions\x18\r \x03(\x0b\x32).google.container.v1beta1.StatusCondition\x12\x46\n\x13nodepool_conditions\x18\x0e \x03(\x0b\x32).google.container.v1beta1.StatusCondition"R\n\x06Status\x12\x16\n\x12STATUS_UNSPECIFIED\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03\x12\x0c\n\x08\x41\x42ORTING\x10\x04"\xfd\x02\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x43REATE_CLUSTER\x10\x01\x12\x12\n\x0e\x44\x45LETE_CLUSTER\x10\x02\x12\x12\n\x0eUPGRADE_MASTER\x10\x03\x12\x11\n\rUPGRADE_NODES\x10\x04\x12\x12\n\x0eREPAIR_CLUSTER\x10\x05\x12\x12\n\x0eUPDATE_CLUSTER\x10\x06\x12\x14\n\x10\x43REATE_NODE_POOL\x10\x07\x12\x14\n\x10\x44\x45LETE_NODE_POOL\x10\x08\x12\x1c\n\x18SET_NODE_POOL_MANAGEMENT\x10\t\x12\x15\n\x11\x41UTO_REPAIR_NODES\x10\n\x12\x16\n\x12\x41UTO_UPGRADE_NODES\x10\x0b\x12\x0e\n\nSET_LABELS\x10\x0c\x12\x13\n\x0fSET_MASTER_AUTH\x10\r\x12\x16\n\x12SET_NODE_POOL_SIZE\x10\x0e\x12\x16\n\x12SET_NETWORK_POLICY\x10\x0f\x12\x1a\n\x16SET_MAINTENANCE_POLICY\x10\x10"\xc5\x02\n\x11OperationProgress\x12\x0c\n\x04name\x18\x01 \x01(\t\x12:\n\x06status\x18\x02 \x01(\x0e\x32*.google.container.v1beta1.Operation.Status\x12\x43\n\x07metrics\x18\x03 \x03(\x0b\x32\x32.google.container.v1beta1.OperationProgress.Metric\x12;\n\x06stages\x18\x04 \x03(\x0b\x32+.google.container.v1beta1.OperationProgress\x1a\x64\n\x06Metric\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\tint_value\x18\x02 \x01(\x03H\x00\x12\x16\n\x0c\x64ouble_value\x18\x03 \x01(\x01H\x00\x12\x16\n\x0cstring_value\x18\x04 \x01(\tH\x00\x42\x07\n\x05value"\x8f\x01\n\x14\x43reateClusterRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x37\n\x07\x63luster\x18\x03 \x01(\x0b\x32!.google.container.v1beta1.ClusterB\x03\xe0\x41\x02\x12\x0e\n\x06parent\x18\x05 \x01(\t"l\n\x11GetClusterRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x05 \x01(\t"\xad\x01\n\x14UpdateClusterRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12<\n\x06update\x18\x04 \x01(\x0b\x32\'.google.container.v1beta1.ClusterUpdateB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x05 \x01(\t"\x95\x02\n\x15UpdateNodePoolRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0cnode_pool_id\x18\x04 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\x0cnode_version\x18\x05 \x01(\tB\x03\xe0\x41\x02\x12\x17\n\nimage_type\x18\x06 \x01(\tB\x03\xe0\x41\x02\x12R\n\x18workload_metadata_config\x18\x0e \x01(\x0b\x32\x30.google.container.v1beta1.WorkloadMetadataConfig\x12\x0c\n\x04name\x18\x08 \x01(\t"\xde\x01\n\x1dSetNodePoolAutoscalingRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0cnode_pool_id\x18\x04 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12G\n\x0b\x61utoscaling\x18\x05 \x01(\x0b\x32-.google.container.v1beta1.NodePoolAutoscalingB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t"\x91\x01\n\x18SetLoggingServiceRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1c\n\x0flogging_service\x18\x04 \x01(\tB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x05 \x01(\t"\x97\x01\n\x1bSetMonitoringServiceRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1f\n\x12monitoring_service\x18\x04 \x01(\tB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t"\xb5\x01\n\x16SetAddonsConfigRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x42\n\raddons_config\x18\x04 \x01(\x0b\x32&.google.container.v1beta1.AddonsConfigB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t"\x86\x01\n\x13SetLocationsRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x16\n\tlocations\x18\x04 \x03(\tB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t"\x8b\x01\n\x13UpdateMasterRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0emaster_version\x18\x04 \x01(\tB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x07 \x01(\t"\xc8\x02\n\x14SetMasterAuthRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12J\n\x06\x61\x63tion\x18\x04 \x01(\x0e\x32\x35.google.container.v1beta1.SetMasterAuthRequest.ActionB\x03\xe0\x41\x02\x12\x39\n\x06update\x18\x05 \x01(\x0b\x32$.google.container.v1beta1.MasterAuthB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x07 \x01(\t"P\n\x06\x41\x63tion\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x10\n\x0cSET_PASSWORD\x10\x01\x12\x15\n\x11GENERATE_PASSWORD\x10\x02\x12\x10\n\x0cSET_USERNAME\x10\x03"o\n\x14\x44\x65leteClusterRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x04 \x01(\t"U\n\x13ListClustersRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0e\n\x06parent\x18\x04 \x01(\t"b\n\x14ListClustersResponse\x12\x33\n\x08\x63lusters\x18\x01 \x03(\x0b\x32!.google.container.v1beta1.Cluster\x12\x15\n\rmissing_zones\x18\x02 \x03(\t"p\n\x13GetOperationRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0coperation_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x05 \x01(\t"W\n\x15ListOperationsRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0e\n\x06parent\x18\x04 \x01(\t"s\n\x16\x43\x61ncelOperationRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0coperation_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x04 \x01(\t"h\n\x16ListOperationsResponse\x12\x37\n\noperations\x18\x01 \x03(\x0b\x32#.google.container.v1beta1.Operation\x12\x15\n\rmissing_zones\x18\x02 \x03(\t"V\n\x16GetServerConfigRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x04 \x01(\t"\xa2\x01\n\x0cServerConfig\x12\x1f\n\x17\x64\x65\x66\x61ult_cluster_version\x18\x01 \x01(\t\x12\x1b\n\x13valid_node_versions\x18\x03 \x03(\t\x12\x1a\n\x12\x64\x65\x66\x61ult_image_type\x18\x04 \x01(\t\x12\x19\n\x11valid_image_types\x18\x05 \x03(\t\x12\x1d\n\x15valid_master_versions\x18\x06 \x03(\t"\xae\x01\n\x15\x43reateNodePoolRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12:\n\tnode_pool\x18\x04 \x01(\x0b\x32".google.container.v1beta1.NodePoolB\x03\xe0\x41\x02\x12\x0e\n\x06parent\x18\x06 \x01(\t"\x8d\x01\n\x15\x44\x65leteNodePoolRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0cnode_pool_id\x18\x04 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t"q\n\x14ListNodePoolsRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0e\n\x06parent\x18\x05 \x01(\t"\x8a\x01\n\x12GetNodePoolRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0cnode_pool_id\x18\x04 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t"\xad\x05\n\x08NodePool\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x34\n\x06\x63onfig\x18\x02 \x01(\x0b\x32$.google.container.v1beta1.NodeConfig\x12\x1a\n\x12initial_node_count\x18\x03 \x01(\x05\x12\x11\n\tself_link\x18\x64 \x01(\t\x12\x0f\n\x07version\x18\x65 \x01(\t\x12\x1b\n\x13instance_group_urls\x18\x66 \x03(\t\x12\x39\n\x06status\x18g \x01(\x0e\x32).google.container.v1beta1.NodePool.Status\x12\x1a\n\x0estatus_message\x18h \x01(\tB\x02\x18\x01\x12\x42\n\x0b\x61utoscaling\x18\x04 \x01(\x0b\x32-.google.container.v1beta1.NodePoolAutoscaling\x12<\n\nmanagement\x18\x05 \x01(\x0b\x32(.google.container.v1beta1.NodeManagement\x12H\n\x13max_pods_constraint\x18\x06 \x01(\x0b\x32+.google.container.v1beta1.MaxPodsConstraint\x12=\n\nconditions\x18i \x03(\x0b\x32).google.container.v1beta1.StatusCondition\x12\x1a\n\x12pod_ipv4_cidr_size\x18\x07 \x01(\x05"\x81\x01\n\x06Status\x12\x16\n\x12STATUS_UNSPECIFIED\x10\x00\x12\x10\n\x0cPROVISIONING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x16\n\x12RUNNING_WITH_ERROR\x10\x03\x12\x0f\n\x0bRECONCILING\x10\x04\x12\x0c\n\x08STOPPING\x10\x05\x12\t\n\x05\x45RROR\x10\x06"\x82\x01\n\x0eNodeManagement\x12\x14\n\x0c\x61uto_upgrade\x18\x01 \x01(\x08\x12\x13\n\x0b\x61uto_repair\x18\x02 \x01(\x08\x12\x45\n\x0fupgrade_options\x18\n \x01(\x0b\x32,.google.container.v1beta1.AutoUpgradeOptions"J\n\x12\x41utoUpgradeOptions\x12\x1f\n\x17\x61uto_upgrade_start_time\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t"j\n\x11MaintenancePolicy\x12;\n\x06window\x18\x01 \x01(\x0b\x32+.google.container.v1beta1.MaintenanceWindow\x12\x18\n\x10resource_version\x18\x03 \x01(\t"\x8a\x03\n\x11MaintenanceWindow\x12T\n\x18\x64\x61ily_maintenance_window\x18\x02 \x01(\x0b\x32\x30.google.container.v1beta1.DailyMaintenanceWindowH\x00\x12I\n\x10recurring_window\x18\x03 \x01(\x0b\x32-.google.container.v1beta1.RecurringTimeWindowH\x00\x12\x66\n\x16maintenance_exclusions\x18\x04 \x03(\x0b\x32\x46.google.container.v1beta1.MaintenanceWindow.MaintenanceExclusionsEntry\x1a\x62\n\x1aMaintenanceExclusionsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x33\n\x05value\x18\x02 \x01(\x0b\x32$.google.container.v1beta1.TimeWindow:\x02\x38\x01\x42\x08\n\x06policy"j\n\nTimeWindow\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"_\n\x13RecurringTimeWindow\x12\x34\n\x06window\x18\x01 \x01(\x0b\x32$.google.container.v1beta1.TimeWindow\x12\x12\n\nrecurrence\x18\x02 \x01(\t">\n\x16\x44\x61ilyMaintenanceWindow\x12\x12\n\nstart_time\x18\x02 \x01(\t\x12\x10\n\x08\x64uration\x18\x03 \x01(\t"\xd7\x01\n\x1cSetNodePoolManagementRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0cnode_pool_id\x18\x04 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x41\n\nmanagement\x18\x05 \x01(\x0b\x32(.google.container.v1beta1.NodeManagementB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x07 \x01(\t"\xa7\x01\n\x16SetNodePoolSizeRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0cnode_pool_id\x18\x04 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x17\n\nnode_count\x18\x05 \x01(\x05\x42\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x07 \x01(\t"\x96\x01\n\x1eRollbackNodePoolUpgradeRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0cnode_pool_id\x18\x04 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t"O\n\x15ListNodePoolsResponse\x12\x36\n\nnode_pools\x18\x01 \x03(\x0b\x32".google.container.v1beta1.NodePool"\x89\x02\n\x12\x43lusterAutoscaling\x12$\n\x1c\x65nable_node_autoprovisioning\x18\x01 \x01(\x08\x12@\n\x0fresource_limits\x18\x02 \x03(\x0b\x32\'.google.container.v1beta1.ResourceLimit\x12g\n#autoprovisioning_node_pool_defaults\x18\x04 \x01(\x0b\x32:.google.container.v1beta1.AutoprovisioningNodePoolDefaults\x12"\n\x1a\x61utoprovisioning_locations\x18\x05 \x03(\t"Q\n AutoprovisioningNodePoolDefaults\x12\x14\n\x0coauth_scopes\x18\x01 \x03(\t\x12\x17\n\x0fservice_account\x18\x02 \x01(\t"H\n\rResourceLimit\x12\x15\n\rresource_type\x18\x01 \x01(\t\x12\x0f\n\x07minimum\x18\x02 \x01(\x03\x12\x0f\n\x07maximum\x18\x03 \x01(\x03"o\n\x13NodePoolAutoscaling\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08\x12\x16\n\x0emin_node_count\x18\x02 \x01(\x05\x12\x16\n\x0emax_node_count\x18\x03 \x01(\x05\x12\x17\n\x0f\x61utoprovisioned\x18\x04 \x01(\x08"\xa0\x02\n\x10SetLabelsRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\\\n\x0fresource_labels\x18\x04 \x03(\x0b\x32>.google.container.v1beta1.SetLabelsRequest.ResourceLabelsEntryB\x03\xe0\x41\x02\x12\x1e\n\x11label_fingerprint\x18\x05 \x01(\tB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x07 \x01(\t\x1a\x35\n\x13ResourceLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x85\x01\n\x14SetLegacyAbacRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x14\n\x07\x65nabled\x18\x04 \x01(\x08\x42\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t"\x8d\x01\n\x16StartIPRotationRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t\x12\x1a\n\x12rotate_credentials\x18\x07 \x01(\x08"t\n\x19\x43ompleteIPRotationRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x07 \x01(\t"H\n\x11\x41\x63\x63\x65leratorConfig\x12\x19\n\x11\x61\x63\x63\x65lerator_count\x18\x01 \x01(\x03\x12\x18\n\x10\x61\x63\x63\x65lerator_type\x18\x02 \x01(\t"\xa7\x01\n\x16WorkloadMetadataConfig\x12T\n\rnode_metadata\x18\x01 \x01(\x0e\x32=.google.container.v1beta1.WorkloadMetadataConfig.NodeMetadata"7\n\x0cNodeMetadata\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\n\n\x06SECURE\x10\x01\x12\n\n\x06\x45XPOSE\x10\x02"\xb8\x01\n\x17SetNetworkPolicyRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x44\n\x0enetwork_policy\x18\x04 \x01(\x0b\x32\'.google.container.v1beta1.NetworkPolicyB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t"\xbe\x01\n\x1bSetMaintenancePolicyRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x11\n\x04zone\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x17\n\ncluster_id\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12L\n\x12maintenance_policy\x18\x04 \x01(\x0b\x32+.google.container.v1beta1.MaintenancePolicyB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x05 \x01(\t"+\n\x14ListLocationsRequest\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02"g\n\x15ListLocationsResponse\x12\x35\n\tlocations\x18\x01 \x03(\x0b\x32".google.container.v1beta1.Location\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\xb1\x01\n\x08Location\x12=\n\x04type\x18\x01 \x01(\x0e\x32/.google.container.v1beta1.Location.LocationType\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0brecommended\x18\x03 \x01(\x08"C\n\x0cLocationType\x12\x1d\n\x19LOCATION_TYPE_UNSPECIFIED\x10\x00\x12\x08\n\x04ZONE\x10\x01\x12\n\n\x06REGION\x10\x02"\xef\x01\n\x0fStatusCondition\x12<\n\x04\x63ode\x18\x01 \x01(\x0e\x32..google.container.v1beta1.StatusCondition.Code\x12\x0f\n\x07message\x18\x02 \x01(\t"\x8c\x01\n\x04\x43ode\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x10\n\x0cGCE_STOCKOUT\x10\x01\x12\x1f\n\x1bGKE_SERVICE_ACCOUNT_DELETED\x10\x02\x12\x16\n\x12GCE_QUOTA_EXCEEDED\x10\x03\x12\x13\n\x0fSET_BY_OPERATOR\x10\x04\x12\x17\n\x13\x43LOUD_KMS_KEY_ERROR\x10\x07"Z\n\rNetworkConfig\x12\x0f\n\x07network\x18\x01 \x01(\t\x12\x12\n\nsubnetwork\x18\x02 \x01(\t\x12$\n\x1c\x65nable_intra_node_visibility\x18\x05 \x01(\x08"j\n\x1cListUsableSubnetworksRequest\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"y\n\x1dListUsableSubnetworksResponse\x12?\n\x0bsubnetworks\x18\x01 \x03(\x0b\x32*.google.container.v1beta1.UsableSubnetwork\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x85\x02\n\x1eUsableSubnetworkSecondaryRange\x12\x12\n\nrange_name\x18\x01 \x01(\t\x12\x15\n\rip_cidr_range\x18\x02 \x01(\t\x12O\n\x06status\x18\x03 \x01(\x0e\x32?.google.container.v1beta1.UsableSubnetworkSecondaryRange.Status"g\n\x06Status\x12\x0b\n\x07UNKNOWN\x10\x00\x12\n\n\x06UNUSED\x10\x01\x12\x12\n\x0eIN_USE_SERVICE\x10\x02\x12\x18\n\x14IN_USE_SHAREABLE_POD\x10\x03\x12\x16\n\x12IN_USE_MANAGED_POD\x10\x04"\xbd\x01\n\x10UsableSubnetwork\x12\x12\n\nsubnetwork\x18\x01 \x01(\t\x12\x0f\n\x07network\x18\x02 \x01(\t\x12\x15\n\rip_cidr_range\x18\x03 \x01(\t\x12U\n\x13secondary_ip_ranges\x18\x04 \x03(\x0b\x32\x38.google.container.v1beta1.UsableSubnetworkSecondaryRange\x12\x16\n\x0estatus_message\x18\x05 \x01(\t")\n\x16VerticalPodAutoscaling\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08",\n\x19IntraNodeVisibilityConfig\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08".\n\x11MaxPodsConstraint\x12\x19\n\x11max_pods_per_node\x18\x01 \x01(\x03"\x9d\x01\n\x12\x44\x61tabaseEncryption\x12\x41\n\x05state\x18\x02 \x01(\x0e\x32\x32.google.container.v1beta1.DatabaseEncryption.State\x12\x10\n\x08key_name\x18\x01 \x01(\t"2\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\r\n\tENCRYPTED\x10\x01\x12\r\n\tDECRYPTED\x10\x02"\xf7\x02\n\x19ResourceUsageExportConfig\x12\x65\n\x14\x62igquery_destination\x18\x01 \x01(\x0b\x32G.google.container.v1beta1.ResourceUsageExportConfig.BigQueryDestination\x12&\n\x1e\x65nable_network_egress_metering\x18\x02 \x01(\x08\x12r\n\x1b\x63onsumption_metering_config\x18\x03 \x01(\x0b\x32M.google.container.v1beta1.ResourceUsageExportConfig.ConsumptionMeteringConfig\x1a)\n\x13\x42igQueryDestination\x12\x12\n\ndataset_id\x18\x01 \x01(\t\x1a,\n\x19\x43onsumptionMeteringConfig\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08\x32\xafI\n\x0e\x43lusterManager\x12\xf3\x01\n\x0cListClusters\x12-.google.container.v1beta1.ListClustersRequest\x1a..google.container.v1beta1.ListClustersResponse"\x83\x01\x82\xd3\xe4\x93\x02k\x12\x31/v1beta1/{parent=projects/*/locations/*}/clustersZ6\x12\x34/v1beta1/projects/{project_id}/zones/{zone}/clusters\xda\x41\x0fproject_id,zone\x12\xfa\x01\n\nGetCluster\x12+.google.container.v1beta1.GetClusterRequest\x1a!.google.container.v1beta1.Cluster"\x9b\x01\x82\xd3\xe4\x93\x02x\x12\x31/v1beta1/{name=projects/*/locations/*/clusters/*}ZC\x12\x41/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}\xda\x41\x1aproject_id,zone,cluster_id\x12\xf8\x01\n\rCreateCluster\x12..google.container.v1beta1.CreateClusterRequest\x1a#.google.container.v1beta1.Operation"\x91\x01\x82\xd3\xe4\x93\x02q"1/v1beta1/{parent=projects/*/locations/*}/clusters:\x01*Z9"4/v1beta1/projects/{project_id}/zones/{zone}/clusters:\x01*\xda\x41\x17project_id,zone,cluster\x12\x8f\x02\n\rUpdateCluster\x12..google.container.v1beta1.UpdateClusterRequest\x1a#.google.container.v1beta1.Operation"\xa8\x01\x82\xd3\xe4\x93\x02~\x1a\x31/v1beta1/{name=projects/*/locations/*/clusters/*}:\x01*ZF\x1a\x41/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:\x01*\xda\x41!project_id,zone,cluster_id,update\x12\x9a\x02\n\x0eUpdateNodePool\x12/.google.container.v1beta1.UpdateNodePoolRequest\x1a#.google.container.v1beta1.Operation"\xb1\x01\x82\xd3\xe4\x93\x02\xaa\x01\x1a=/v1beta1/{name=projects/*/locations/*/clusters/*/nodePools/*}:\x01*Zf"a/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/update:\x01*\x12\xbe\x02\n\x16SetNodePoolAutoscaling\x12\x37.google.container.v1beta1.SetNodePoolAutoscalingRequest\x1a#.google.container.v1beta1.Operation"\xc5\x01\x82\xd3\xe4\x93\x02\xbe\x01"L/v1beta1/{name=projects/*/locations/*/clusters/*/nodePools/*}:setAutoscaling:\x01*Zk"f/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/autoscaling:\x01*\x12\xb4\x02\n\x11SetLoggingService\x12\x32.google.container.v1beta1.SetLoggingServiceRequest\x1a#.google.container.v1beta1.Operation"\xc5\x01\x82\xd3\xe4\x93\x02\x91\x01"</v1beta1/{name=projects/*/locations/*/clusters/*}:setLogging:\x01*ZN"I/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/logging:\x01*\xda\x41*project_id,zone,cluster_id,logging_service\x12\xc3\x02\n\x14SetMonitoringService\x12\x35.google.container.v1beta1.SetMonitoringServiceRequest\x1a#.google.container.v1beta1.Operation"\xce\x01\x82\xd3\xe4\x93\x02\x97\x01"?/v1beta1/{name=projects/*/locations/*/clusters/*}:setMonitoring:\x01*ZQ"L/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/monitoring:\x01*\xda\x41-project_id,zone,cluster_id,monitoring_service\x12\xac\x02\n\x0fSetAddonsConfig\x12\x30.google.container.v1beta1.SetAddonsConfigRequest\x1a#.google.container.v1beta1.Operation"\xc1\x01\x82\xd3\xe4\x93\x02\x8f\x01";/v1beta1/{name=projects/*/locations/*/clusters/*}:setAddons:\x01*ZM"H/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/addons:\x01*\xda\x41(project_id,zone,cluster_id,addons_config\x12\xa8\x02\n\x0cSetLocations\x12-.google.container.v1beta1.SetLocationsRequest\x1a#.google.container.v1beta1.Operation"\xc3\x01\x82\xd3\xe4\x93\x02\x95\x01">/v1beta1/{name=projects/*/locations/*/clusters/*}:setLocations:\x01*ZP"K/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/locations:\x01*\xda\x41$project_id,zone,cluster_id,locations\x12\xaa\x02\n\x0cUpdateMaster\x12-.google.container.v1beta1.UpdateMasterRequest\x1a#.google.container.v1beta1.Operation"\xc5\x01\x82\xd3\xe4\x93\x02\x92\x01">/v1beta1/{name=projects/*/locations/*/clusters/*}:updateMaster:\x01*ZM"H/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/master:\x01*\xda\x41)project_id,zone,cluster_id,master_version\x12\x88\x02\n\rSetMasterAuth\x12..google.container.v1beta1.SetMasterAuthRequest\x1a#.google.container.v1beta1.Operation"\xa1\x01\x82\xd3\xe4\x93\x02\x9a\x01"?/v1beta1/{name=projects/*/locations/*/clusters/*}:setMasterAuth:\x01*ZT"O/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setMasterAuth:\x01*\x12\x82\x02\n\rDeleteCluster\x12..google.container.v1beta1.DeleteClusterRequest\x1a#.google.container.v1beta1.Operation"\x9b\x01\x82\xd3\xe4\x93\x02x*1/v1beta1/{name=projects/*/locations/*/clusters/*}ZC*A/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}\xda\x41\x1aproject_id,zone,cluster_id\x12\xfd\x01\n\x0eListOperations\x12/.google.container.v1beta1.ListOperationsRequest\x1a\x30.google.container.v1beta1.ListOperationsResponse"\x87\x01\x82\xd3\xe4\x93\x02o\x12\x33/v1beta1/{parent=projects/*/locations/*}/operationsZ8\x12\x36/v1beta1/projects/{project_id}/zones/{zone}/operations\xda\x41\x0fproject_id,zone\x12\x88\x02\n\x0cGetOperation\x12-.google.container.v1beta1.GetOperationRequest\x1a#.google.container.v1beta1.Operation"\xa3\x01\x82\xd3\xe4\x93\x02~\x12\x33/v1beta1/{name=projects/*/locations/*/operations/*}ZG\x12\x45/v1beta1/projects/{project_id}/zones/{zone}/operations/{operation_id}\xda\x41\x1cproject_id,zone,operation_id\x12\x96\x02\n\x0f\x43\x61ncelOperation\x12\x30.google.container.v1beta1.CancelOperationRequest\x1a\x16.google.protobuf.Empty"\xb8\x01\x82\xd3\xe4\x93\x02\x92\x01":/v1beta1/{name=projects/*/locations/*/operations/*}:cancel:\x01*ZQ"L/v1beta1/projects/{project_id}/zones/{zone}/operations/{operation_id}:cancel:\x01*\xda\x41\x1cproject_id,zone,operation_id\x12\xf7\x01\n\x0fGetServerConfig\x12\x30.google.container.v1beta1.GetServerConfigRequest\x1a&.google.container.v1beta1.ServerConfig"\x89\x01\x82\xd3\xe4\x93\x02q\x12\x33/v1beta1/{name=projects/*/locations/*}/serverConfigZ:\x12\x38/v1beta1/projects/{project_id}/zones/{zone}/serverconfig\xda\x41\x0fproject_id,zone\x12\xa5\x02\n\rListNodePools\x12..google.container.v1beta1.ListNodePoolsRequest\x1a/.google.container.v1beta1.ListNodePoolsResponse"\xb2\x01\x82\xd3\xe4\x93\x02\x8e\x01\x12=/v1beta1/{parent=projects/*/locations/*/clusters/*}/nodePoolsZM\x12K/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools\xda\x41\x1aproject_id,zone,cluster_id\x12\xb0\x02\n\x0bGetNodePool\x12,.google.container.v1beta1.GetNodePoolRequest\x1a".google.container.v1beta1.NodePool"\xce\x01\x82\xd3\xe4\x93\x02\x9d\x01\x12=/v1beta1/{name=projects/*/locations/*/clusters/*/nodePools/*}Z\\\x12Z/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}\xda\x41\'project_id,zone,cluster_id,node_pool_id\x12\xab\x02\n\x0e\x43reateNodePool\x12/.google.container.v1beta1.CreateNodePoolRequest\x1a#.google.container.v1beta1.Operation"\xc2\x01\x82\xd3\xe4\x93\x02\x94\x01"=/v1beta1/{parent=projects/*/locations/*/clusters/*}/nodePools:\x01*ZP"K/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools:\x01*\xda\x41$project_id,zone,cluster_id,node_pool\x12\xb7\x02\n\x0e\x44\x65leteNodePool\x12/.google.container.v1beta1.DeleteNodePoolRequest\x1a#.google.container.v1beta1.Operation"\xce\x01\x82\xd3\xe4\x93\x02\x9d\x01*=/v1beta1/{name=projects/*/locations/*/clusters/*/nodePools/*}Z\\*Z/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}\xda\x41\'project_id,zone,cluster_id,node_pool_id\x12\xe1\x02\n\x17RollbackNodePoolUpgrade\x12\x38.google.container.v1beta1.RollbackNodePoolUpgradeRequest\x1a#.google.container.v1beta1.Operation"\xe6\x01\x82\xd3\xe4\x93\x02\xb5\x01"F/v1beta1/{name=projects/*/locations/*/clusters/*/nodePools/*}:rollback:\x01*Zh"c/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}:rollback:\x01*\xda\x41\'project_id,zone,cluster_id,node_pool_id\x12\xf2\x02\n\x15SetNodePoolManagement\x12\x36.google.container.v1beta1.SetNodePoolManagementRequest\x1a#.google.container.v1beta1.Operation"\xfb\x01\x82\xd3\xe4\x93\x02\xbf\x01"K/v1beta1/{name=projects/*/locations/*/clusters/*/nodePools/*}:setManagement:\x01*Zm"h/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/setManagement:\x01*\xda\x41\x32project_id,zone,cluster_id,node_pool_id,management\x12\xc4\x02\n\tSetLabels\x12*.google.container.v1beta1.SetLabelsRequest\x1a#.google.container.v1beta1.Operation"\xe5\x01\x82\xd3\xe4\x93\x02\x9f\x01"C/v1beta1/{name=projects/*/locations/*/clusters/*}:setResourceLabels:\x01*ZU"P/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/resourceLabels:\x01*\xda\x41<project_id,zone,cluster_id,resource_labels,label_fingerprint\x12\xaa\x02\n\rSetLegacyAbac\x12..google.container.v1beta1.SetLegacyAbacRequest\x1a#.google.container.v1beta1.Operation"\xc3\x01\x82\xd3\xe4\x93\x02\x97\x01"?/v1beta1/{name=projects/*/locations/*/clusters/*}:setLegacyAbac:\x01*ZQ"L/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/legacyAbac:\x01*\xda\x41"project_id,zone,cluster_id,enabled\x12\xad\x02\n\x0fStartIPRotation\x12\x30.google.container.v1beta1.StartIPRotationRequest\x1a#.google.container.v1beta1.Operation"\xc2\x01\x82\xd3\xe4\x93\x02\x9e\x01"A/v1beta1/{name=projects/*/locations/*/clusters/*}:startIpRotation:\x01*ZV"Q/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:startIpRotation:\x01*\xda\x41\x1aproject_id,zone,cluster_id\x12\xb9\x02\n\x12\x43ompleteIPRotation\x12\x33.google.container.v1beta1.CompleteIPRotationRequest\x1a#.google.container.v1beta1.Operation"\xc8\x01\x82\xd3\xe4\x93\x02\xa4\x01"D/v1beta1/{name=projects/*/locations/*/clusters/*}:completeIpRotation:\x01*ZY"T/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:completeIpRotation:\x01*\xda\x41\x1aproject_id,zone,cluster_id\x12\xa5\x02\n\x0fSetNodePoolSize\x12\x30.google.container.v1beta1.SetNodePoolSizeRequest\x1a#.google.container.v1beta1.Operation"\xba\x01\x82\xd3\xe4\x93\x02\xb3\x01"E/v1beta1/{name=projects/*/locations/*/clusters/*/nodePools/*}:setSize:\x01*Zg"b/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/setSize:\x01*\x12\xc0\x02\n\x10SetNetworkPolicy\x12\x31.google.container.v1beta1.SetNetworkPolicyRequest\x1a#.google.container.v1beta1.Operation"\xd3\x01\x82\xd3\xe4\x93\x02\xa0\x01"B/v1beta1/{name=projects/*/locations/*/clusters/*}:setNetworkPolicy:\x01*ZW"R/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setNetworkPolicy:\x01*\xda\x41)project_id,zone,cluster_id,network_policy\x12\xd4\x02\n\x14SetMaintenancePolicy\x12\x35.google.container.v1beta1.SetMaintenancePolicyRequest\x1a#.google.container.v1beta1.Operation"\xdf\x01\x82\xd3\xe4\x93\x02\xa8\x01"F/v1beta1/{name=projects/*/locations/*/clusters/*}:setMaintenancePolicy:\x01*Z["V/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setMaintenancePolicy:\x01*\xda\x41-project_id,zone,cluster_id,maintenance_policy\x12\xd4\x01\n\x15ListUsableSubnetworks\x12\x36.google.container.v1beta1.ListUsableSubnetworksRequest\x1a\x37.google.container.v1beta1.ListUsableSubnetworksResponse"J\x82\xd3\xe4\x93\x02;\x12\x39/v1beta1/{parent=projects/*}/aggregated/usableSubnetworks\xda\x41\x06parent\x12\xa9\x01\n\rListLocations\x12..google.container.v1beta1.ListLocationsRequest\x1a/.google.container.v1beta1.ListLocationsResponse"7\x82\xd3\xe4\x93\x02(\x12&/v1beta1/{parent=projects/*}/locations\xda\x41\x06parent\x1aL\xca\x41\x18\x63ontainer.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xba\x01\n\x1c\x63om.google.container.v1beta1B\x13\x43lusterServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/container/v1beta1;container\xaa\x02\x1eGoogle.Cloud.Container.V1Beta1\xca\x02\x1eGoogle\\Cloud\\Container\\V1beta1b\x06proto3'
+        '\n:google/cloud/container_v1beta1/proto/cluster_service.proto\x12\x18google.container.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xec\x05\n\nNodeConfig\x12\x14\n\x0cmachine_type\x18\x01 \x01(\t\x12\x14\n\x0c\x64isk_size_gb\x18\x02 \x01(\x05\x12\x14\n\x0coauth_scopes\x18\x03 \x03(\t\x12\x17\n\x0fservice_account\x18\t \x01(\t\x12\x44\n\x08metadata\x18\x04 \x03(\x0b\x32\x32.google.container.v1beta1.NodeConfig.MetadataEntry\x12\x12\n\nimage_type\x18\x05 \x01(\t\x12@\n\x06labels\x18\x06 \x03(\x0b\x32\x30.google.container.v1beta1.NodeConfig.LabelsEntry\x12\x17\n\x0flocal_ssd_count\x18\x07 \x01(\x05\x12\x0c\n\x04tags\x18\x08 \x03(\t\x12\x13\n\x0bpreemptible\x18\n \x01(\x08\x12\x41\n\x0c\x61\x63\x63\x65lerators\x18\x0b \x03(\x0b\x32+.google.container.v1beta1.AcceleratorConfig\x12\x11\n\tdisk_type\x18\x0c \x01(\t\x12\x18\n\x10min_cpu_platform\x18\r \x01(\t\x12R\n\x18workload_metadata_config\x18\x0e \x01(\x0b\x32\x30.google.container.v1beta1.WorkloadMetadataConfig\x12\x33\n\x06taints\x18\x0f \x03(\x0b\x32#.google.container.v1beta1.NodeTaint\x12R\n\x18shielded_instance_config\x18\x14 \x01(\x0b\x32\x30.google.container.v1beta1.ShieldedInstanceConfig\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"Y\n\x16ShieldedInstanceConfig\x12\x1a\n\x12\x65nable_secure_boot\x18\x01 \x01(\x08\x12#\n\x1b\x65nable_integrity_monitoring\x18\x02 \x01(\x08"\xbe\x01\n\tNodeTaint\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\x12:\n\x06\x65\x66\x66\x65\x63t\x18\x03 \x01(\x0e\x32*.google.container.v1beta1.NodeTaint.Effect"Y\n\x06\x45\x66\x66\x65\x63t\x12\x16\n\x12\x45\x46\x46\x45\x43T_UNSPECIFIED\x10\x00\x12\x0f\n\x0bNO_SCHEDULE\x10\x01\x12\x16\n\x12PREFER_NO_SCHEDULE\x10\x02\x12\x0e\n\nNO_EXECUTE\x10\x03"\xd6\x01\n\nMasterAuth\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12T\n\x19\x63lient_certificate_config\x18\x03 \x01(\x0b\x32\x31.google.container.v1beta1.ClientCertificateConfig\x12\x1e\n\x16\x63luster_ca_certificate\x18\x64 \x01(\t\x12\x1a\n\x12\x63lient_certificate\x18\x65 \x01(\t\x12\x12\n\nclient_key\x18\x66 \x01(\t";\n\x17\x43lientCertificateConfig\x12 \n\x18issue_client_certificate\x18\x01 \x01(\x08"\xd0\x03\n\x0c\x41\x64\x64onsConfig\x12H\n\x13http_load_balancing\x18\x01 \x01(\x0b\x32+.google.container.v1beta1.HttpLoadBalancing\x12V\n\x1ahorizontal_pod_autoscaling\x18\x02 \x01(\x0b\x32\x32.google.container.v1beta1.HorizontalPodAutoscaling\x12O\n\x14kubernetes_dashboard\x18\x03 \x01(\x0b\x32-.google.container.v1beta1.KubernetesDashboardB\x02\x18\x01\x12L\n\x15network_policy_config\x18\x04 \x01(\x0b\x32-.google.container.v1beta1.NetworkPolicyConfig\x12;\n\x0cistio_config\x18\x05 \x01(\x0b\x32%.google.container.v1beta1.IstioConfig\x12\x42\n\x10\x63loud_run_config\x18\x07 \x01(\x0b\x32(.google.container.v1beta1.CloudRunConfig"%\n\x11HttpLoadBalancing\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08",\n\x18HorizontalPodAutoscaling\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08"\'\n\x13KubernetesDashboard\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08"\'\n\x13NetworkPolicyConfig\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08"\xa8\x01\n\x14PrivateClusterConfig\x12\x1c\n\x14\x65nable_private_nodes\x18\x01 \x01(\x08\x12\x1f\n\x17\x65nable_private_endpoint\x18\x02 \x01(\x08\x12\x1e\n\x16master_ipv4_cidr_block\x18\x03 \x01(\t\x12\x18\n\x10private_endpoint\x18\x04 \x01(\t\x12\x17\n\x0fpublic_endpoint\x18\x05 \x01(\t"\x97\x01\n\x0bIstioConfig\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08\x12\x41\n\x04\x61uth\x18\x02 \x01(\x0e\x32\x33.google.container.v1beta1.IstioConfig.IstioAuthMode"3\n\rIstioAuthMode\x12\r\n\tAUTH_NONE\x10\x00\x12\x13\n\x0f\x41UTH_MUTUAL_TLS\x10\x01""\n\x0e\x43loudRunConfig\x12\x10\n\x08\x64isabled\x18\x01 \x01(\x08"\xc1\x01\n\x1eMasterAuthorizedNetworksConfig\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08\x12W\n\x0b\x63idr_blocks\x18\x02 \x03(\x0b\x32\x42.google.container.v1beta1.MasterAuthorizedNetworksConfig.CidrBlock\x1a\x35\n\tCidrBlock\x12\x14\n\x0c\x64isplay_name\x18\x01 \x01(\t\x12\x12\n\ncidr_block\x18\x02 \x01(\t"\x1d\n\nLegacyAbac\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08"\x96\x01\n\rNetworkPolicy\x12\x42\n\x08provider\x18\x01 \x01(\x0e\x32\x30.google.container.v1beta1.NetworkPolicy.Provider\x12\x0f\n\x07\x65nabled\x18\x02 \x01(\x08"0\n\x08Provider\x12\x18\n\x14PROVIDER_UNSPECIFIED\x10\x00\x12\n\n\x06\x43\x41LICO\x10\x01"\xa3\x03\n\x12IPAllocationPolicy\x12\x16\n\x0euse_ip_aliases\x18\x01 \x01(\x08\x12\x19\n\x11\x63reate_subnetwork\x18\x02 \x01(\x08\x12\x17\n\x0fsubnetwork_name\x18\x03 \x01(\t\x12\x1d\n\x11\x63luster_ipv4_cidr\x18\x04 \x01(\tB\x02\x18\x01\x12\x1a\n\x0enode_ipv4_cidr\x18\x05 \x01(\tB\x02\x18\x01\x12\x1e\n\x12services_ipv4_cidr\x18\x06 \x01(\tB\x02\x18\x01\x12$\n\x1c\x63luster_secondary_range_name\x18\x07 \x01(\t\x12%\n\x1dservices_secondary_range_name\x18\x08 \x01(\t\x12\x1f\n\x17\x63luster_ipv4_cidr_block\x18\t \x01(\t\x12\x1c\n\x14node_ipv4_cidr_block\x18\n \x01(\t\x12 \n\x18services_ipv4_cidr_block\x18\x0b \x01(\t\x12\x1b\n\x13\x61llow_route_overlap\x18\x0c \x01(\x08\x12\x1b\n\x13tpu_ipv4_cidr_block\x18\r \x01(\t"&\n\x13\x42inaryAuthorization\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08"*\n\x17PodSecurityPolicyConfig\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08"D\n\x19\x41uthenticatorGroupsConfig\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08\x12\x16\n\x0esecurity_group\x18\x02 \x01(\t"\xec\x13\n\x07\x43luster\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x1e\n\x12initial_node_count\x18\x03 \x01(\x05\x42\x02\x18\x01\x12=\n\x0bnode_config\x18\x04 \x01(\x0b\x32$.google.container.v1beta1.NodeConfigB\x02\x18\x01\x12\x39\n\x0bmaster_auth\x18\x05 \x01(\x0b\x32$.google.container.v1beta1.MasterAuth\x12\x17\n\x0flogging_service\x18\x06 \x01(\t\x12\x1a\n\x12monitoring_service\x18\x07 \x01(\t\x12\x0f\n\x07network\x18\x08 \x01(\t\x12\x19\n\x11\x63luster_ipv4_cidr\x18\t \x01(\t\x12=\n\raddons_config\x18\n \x01(\x0b\x32&.google.container.v1beta1.AddonsConfig\x12\x12\n\nsubnetwork\x18\x0b \x01(\t\x12\x36\n\nnode_pools\x18\x0c \x03(\x0b\x32".google.container.v1beta1.NodePool\x12\x11\n\tlocations\x18\r \x03(\t\x12\x1f\n\x17\x65nable_kubernetes_alpha\x18\x0e \x01(\x08\x12N\n\x0fresource_labels\x18\x0f \x03(\x0b\x32\x35.google.container.v1beta1.Cluster.ResourceLabelsEntry\x12\x19\n\x11label_fingerprint\x18\x10 \x01(\t\x12\x39\n\x0blegacy_abac\x18\x12 \x01(\x0b\x32$.google.container.v1beta1.LegacyAbac\x12?\n\x0enetwork_policy\x18\x13 \x01(\x0b\x32\'.google.container.v1beta1.NetworkPolicy\x12J\n\x14ip_allocation_policy\x18\x14 \x01(\x0b\x32,.google.container.v1beta1.IPAllocationPolicy\x12\x63\n!master_authorized_networks_config\x18\x16 \x01(\x0b\x32\x38.google.container.v1beta1.MasterAuthorizedNetworksConfig\x12G\n\x12maintenance_policy\x18\x17 \x01(\x0b\x32+.google.container.v1beta1.MaintenancePolicy\x12K\n\x14\x62inary_authorization\x18\x18 \x01(\x0b\x32-.google.container.v1beta1.BinaryAuthorization\x12U\n\x1apod_security_policy_config\x18\x19 \x01(\x0b\x32\x31.google.container.v1beta1.PodSecurityPolicyConfig\x12\x41\n\x0b\x61utoscaling\x18\x1a \x01(\x0b\x32,.google.container.v1beta1.ClusterAutoscaling\x12?\n\x0enetwork_config\x18\x1b \x01(\x0b\x32\'.google.container.v1beta1.NetworkConfig\x12\x1b\n\x0fprivate_cluster\x18\x1c \x01(\x08\x42\x02\x18\x01\x12"\n\x16master_ipv4_cidr_block\x18\x1d \x01(\tB\x02\x18\x01\x12P\n\x1b\x64\x65\x66\x61ult_max_pods_constraint\x18\x1e \x01(\x0b\x32+.google.container.v1beta1.MaxPodsConstraint\x12Y\n\x1cresource_usage_export_config\x18! \x01(\x0b\x32\x33.google.container.v1beta1.ResourceUsageExportConfig\x12X\n\x1b\x61uthenticator_groups_config\x18" \x01(\x0b\x32\x33.google.container.v1beta1.AuthenticatorGroupsConfig\x12N\n\x16private_cluster_config\x18% \x01(\x0b\x32..google.container.v1beta1.PrivateClusterConfig\x12R\n\x18vertical_pod_autoscaling\x18\' \x01(\x0b\x32\x30.google.container.v1beta1.VerticalPodAutoscaling\x12\x11\n\tself_link\x18\x64 \x01(\t\x12\x10\n\x04zone\x18\x65 \x01(\tB\x02\x18\x01\x12\x10\n\x08\x65ndpoint\x18\x66 \x01(\t\x12\x1f\n\x17initial_cluster_version\x18g \x01(\t\x12\x1e\n\x16\x63urrent_master_version\x18h \x01(\t\x12 \n\x14\x63urrent_node_version\x18i \x01(\tB\x02\x18\x01\x12\x13\n\x0b\x63reate_time\x18j \x01(\t\x12\x38\n\x06status\x18k \x01(\x0e\x32(.google.container.v1beta1.Cluster.Status\x12\x1a\n\x0estatus_message\x18l \x01(\tB\x02\x18\x01\x12\x1b\n\x13node_ipv4_cidr_size\x18m \x01(\x05\x12\x1a\n\x12services_ipv4_cidr\x18n \x01(\t\x12\x1f\n\x13instance_group_urls\x18o \x03(\tB\x02\x18\x01\x12\x1e\n\x12\x63urrent_node_count\x18p \x01(\x05\x42\x02\x18\x01\x12\x13\n\x0b\x65xpire_time\x18q \x01(\t\x12\x10\n\x08location\x18r \x01(\t\x12\x12\n\nenable_tpu\x18s \x01(\x08\x12\x1b\n\x13tpu_ipv4_cidr_block\x18t \x01(\t\x12I\n\x13\x64\x61tabase_encryption\x18& \x01(\x0b\x32,.google.container.v1beta1.DatabaseEncryption\x12=\n\nconditions\x18v \x03(\x0b\x32).google.container.v1beta1.StatusCondition\x1a\x35\n\x13ResourceLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"w\n\x06Status\x12\x16\n\x12STATUS_UNSPECIFIED\x10\x00\x12\x10\n\x0cPROVISIONING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x0f\n\x0bRECONCILING\x10\x03\x12\x0c\n\x08STOPPING\x10\x04\x12\t\n\x05\x45RROR\x10\x05\x12\x0c\n\x08\x44\x45GRADED\x10\x06"\x9a\x08\n\rClusterUpdate\x12\x1c\n\x14\x64\x65sired_node_version\x18\x04 \x01(\t\x12"\n\x1a\x64\x65sired_monitoring_service\x18\x05 \x01(\t\x12\x45\n\x15\x64\x65sired_addons_config\x18\x06 \x01(\x0b\x32&.google.container.v1beta1.AddonsConfig\x12\x1c\n\x14\x64\x65sired_node_pool_id\x18\x07 \x01(\t\x12\x1a\n\x12\x64\x65sired_image_type\x18\x08 \x01(\t\x12T\n\x1d\x64\x65sired_node_pool_autoscaling\x18\t \x01(\x0b\x32-.google.container.v1beta1.NodePoolAutoscaling\x12\x19\n\x11\x64\x65sired_locations\x18\n \x03(\t\x12k\n)desired_master_authorized_networks_config\x18\x0c \x01(\x0b\x32\x38.google.container.v1beta1.MasterAuthorizedNetworksConfig\x12]\n"desired_pod_security_policy_config\x18\x0e \x01(\x0b\x32\x31.google.container.v1beta1.PodSecurityPolicyConfig\x12Q\n\x1b\x64\x65sired_cluster_autoscaling\x18\x0f \x01(\x0b\x32,.google.container.v1beta1.ClusterAutoscaling\x12S\n\x1c\x64\x65sired_binary_authorization\x18\x10 \x01(\x0b\x32-.google.container.v1beta1.BinaryAuthorization\x12\x1f\n\x17\x64\x65sired_logging_service\x18\x13 \x01(\t\x12\x61\n$desired_resource_usage_export_config\x18\x15 \x01(\x0b\x32\x33.google.container.v1beta1.ResourceUsageExportConfig\x12Z\n desired_vertical_pod_autoscaling\x18\x16 \x01(\x0b\x32\x30.google.container.v1beta1.VerticalPodAutoscaling\x12\x61\n$desired_intra_node_visibility_config\x18\x1a \x01(\x0b\x32\x33.google.container.v1beta1.IntraNodeVisibilityConfig\x12\x1e\n\x16\x64\x65sired_master_version\x18\x64 \x01(\t"\xd7\x07\n\tOperation\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x04zone\x18\x02 \x01(\tB\x02\x18\x01\x12@\n\x0eoperation_type\x18\x03 \x01(\x0e\x32(.google.container.v1beta1.Operation.Type\x12:\n\x06status\x18\x04 \x01(\x0e\x32*.google.container.v1beta1.Operation.Status\x12\x0e\n\x06\x64\x65tail\x18\x08 \x01(\t\x12\x1a\n\x0estatus_message\x18\x05 \x01(\tB\x02\x18\x01\x12\x11\n\tself_link\x18\x06 \x01(\t\x12\x13\n\x0btarget_link\x18\x07 \x01(\t\x12\x10\n\x08location\x18\t \x01(\t\x12\x12\n\nstart_time\x18\n \x01(\t\x12\x10\n\x08\x65nd_time\x18\x0b \x01(\t\x12=\n\x08progress\x18\x0c \x01(\x0b\x32+.google.container.v1beta1.OperationProgress\x12\x45\n\x12\x63luster_conditions\x18\r \x03(\x0b\x32).google.container.v1beta1.StatusCondition\x12\x46\n\x13nodepool_conditions\x18\x0e \x03(\x0b\x32).google.container.v1beta1.StatusCondition"R\n\x06Status\x12\x16\n\x12STATUS_UNSPECIFIED\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03\x12\x0c\n\x08\x41\x42ORTING\x10\x04"\xfd\x02\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x43REATE_CLUSTER\x10\x01\x12\x12\n\x0e\x44\x45LETE_CLUSTER\x10\x02\x12\x12\n\x0eUPGRADE_MASTER\x10\x03\x12\x11\n\rUPGRADE_NODES\x10\x04\x12\x12\n\x0eREPAIR_CLUSTER\x10\x05\x12\x12\n\x0eUPDATE_CLUSTER\x10\x06\x12\x14\n\x10\x43REATE_NODE_POOL\x10\x07\x12\x14\n\x10\x44\x45LETE_NODE_POOL\x10\x08\x12\x1c\n\x18SET_NODE_POOL_MANAGEMENT\x10\t\x12\x15\n\x11\x41UTO_REPAIR_NODES\x10\n\x12\x16\n\x12\x41UTO_UPGRADE_NODES\x10\x0b\x12\x0e\n\nSET_LABELS\x10\x0c\x12\x13\n\x0fSET_MASTER_AUTH\x10\r\x12\x16\n\x12SET_NODE_POOL_SIZE\x10\x0e\x12\x16\n\x12SET_NETWORK_POLICY\x10\x0f\x12\x1a\n\x16SET_MAINTENANCE_POLICY\x10\x10"\xc5\x02\n\x11OperationProgress\x12\x0c\n\x04name\x18\x01 \x01(\t\x12:\n\x06status\x18\x02 \x01(\x0e\x32*.google.container.v1beta1.Operation.Status\x12\x43\n\x07metrics\x18\x03 \x03(\x0b\x32\x32.google.container.v1beta1.OperationProgress.Metric\x12;\n\x06stages\x18\x04 \x03(\x0b\x32+.google.container.v1beta1.OperationProgress\x1a\x64\n\x06Metric\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\tint_value\x18\x02 \x01(\x03H\x00\x12\x16\n\x0c\x64ouble_value\x18\x03 \x01(\x01H\x00\x12\x16\n\x0cstring_value\x18\x04 \x01(\tH\x00\x42\x07\n\x05value"\x8f\x01\n\x14\x43reateClusterRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x37\n\x07\x63luster\x18\x03 \x01(\x0b\x32!.google.container.v1beta1.ClusterB\x03\xe0\x41\x02\x12\x0e\n\x06parent\x18\x05 \x01(\t"l\n\x11GetClusterRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x05 \x01(\t"\xad\x01\n\x14UpdateClusterRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12<\n\x06update\x18\x04 \x01(\x0b\x32\'.google.container.v1beta1.ClusterUpdateB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x05 \x01(\t"\x95\x02\n\x15UpdateNodePoolRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0cnode_pool_id\x18\x04 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\x0cnode_version\x18\x05 \x01(\tB\x03\xe0\x41\x02\x12\x17\n\nimage_type\x18\x06 \x01(\tB\x03\xe0\x41\x02\x12R\n\x18workload_metadata_config\x18\x0e \x01(\x0b\x32\x30.google.container.v1beta1.WorkloadMetadataConfig\x12\x0c\n\x04name\x18\x08 \x01(\t"\xde\x01\n\x1dSetNodePoolAutoscalingRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0cnode_pool_id\x18\x04 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12G\n\x0b\x61utoscaling\x18\x05 \x01(\x0b\x32-.google.container.v1beta1.NodePoolAutoscalingB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t"\x91\x01\n\x18SetLoggingServiceRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1c\n\x0flogging_service\x18\x04 \x01(\tB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x05 \x01(\t"\x97\x01\n\x1bSetMonitoringServiceRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1f\n\x12monitoring_service\x18\x04 \x01(\tB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t"\xb5\x01\n\x16SetAddonsConfigRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x42\n\raddons_config\x18\x04 \x01(\x0b\x32&.google.container.v1beta1.AddonsConfigB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t"\x86\x01\n\x13SetLocationsRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x16\n\tlocations\x18\x04 \x03(\tB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t"\x8b\x01\n\x13UpdateMasterRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0emaster_version\x18\x04 \x01(\tB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x07 \x01(\t"\xc8\x02\n\x14SetMasterAuthRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12J\n\x06\x61\x63tion\x18\x04 \x01(\x0e\x32\x35.google.container.v1beta1.SetMasterAuthRequest.ActionB\x03\xe0\x41\x02\x12\x39\n\x06update\x18\x05 \x01(\x0b\x32$.google.container.v1beta1.MasterAuthB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x07 \x01(\t"P\n\x06\x41\x63tion\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x10\n\x0cSET_PASSWORD\x10\x01\x12\x15\n\x11GENERATE_PASSWORD\x10\x02\x12\x10\n\x0cSET_USERNAME\x10\x03"o\n\x14\x44\x65leteClusterRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x04 \x01(\t"U\n\x13ListClustersRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0e\n\x06parent\x18\x04 \x01(\t"b\n\x14ListClustersResponse\x12\x33\n\x08\x63lusters\x18\x01 \x03(\x0b\x32!.google.container.v1beta1.Cluster\x12\x15\n\rmissing_zones\x18\x02 \x03(\t"p\n\x13GetOperationRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0coperation_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x05 \x01(\t"W\n\x15ListOperationsRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0e\n\x06parent\x18\x04 \x01(\t"s\n\x16\x43\x61ncelOperationRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0coperation_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x04 \x01(\t"h\n\x16ListOperationsResponse\x12\x37\n\noperations\x18\x01 \x03(\x0b\x32#.google.container.v1beta1.Operation\x12\x15\n\rmissing_zones\x18\x02 \x03(\t"V\n\x16GetServerConfigRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x04 \x01(\t"\xa2\x01\n\x0cServerConfig\x12\x1f\n\x17\x64\x65\x66\x61ult_cluster_version\x18\x01 \x01(\t\x12\x1b\n\x13valid_node_versions\x18\x03 \x03(\t\x12\x1a\n\x12\x64\x65\x66\x61ult_image_type\x18\x04 \x01(\t\x12\x19\n\x11valid_image_types\x18\x05 \x03(\t\x12\x1d\n\x15valid_master_versions\x18\x06 \x03(\t"\xae\x01\n\x15\x43reateNodePoolRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12:\n\tnode_pool\x18\x04 \x01(\x0b\x32".google.container.v1beta1.NodePoolB\x03\xe0\x41\x02\x12\x0e\n\x06parent\x18\x06 \x01(\t"\x8d\x01\n\x15\x44\x65leteNodePoolRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0cnode_pool_id\x18\x04 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t"q\n\x14ListNodePoolsRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0e\n\x06parent\x18\x05 \x01(\t"\x8a\x01\n\x12GetNodePoolRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0cnode_pool_id\x18\x04 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t"\xad\x05\n\x08NodePool\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x34\n\x06\x63onfig\x18\x02 \x01(\x0b\x32$.google.container.v1beta1.NodeConfig\x12\x1a\n\x12initial_node_count\x18\x03 \x01(\x05\x12\x11\n\tself_link\x18\x64 \x01(\t\x12\x0f\n\x07version\x18\x65 \x01(\t\x12\x1b\n\x13instance_group_urls\x18\x66 \x03(\t\x12\x39\n\x06status\x18g \x01(\x0e\x32).google.container.v1beta1.NodePool.Status\x12\x1a\n\x0estatus_message\x18h \x01(\tB\x02\x18\x01\x12\x42\n\x0b\x61utoscaling\x18\x04 \x01(\x0b\x32-.google.container.v1beta1.NodePoolAutoscaling\x12<\n\nmanagement\x18\x05 \x01(\x0b\x32(.google.container.v1beta1.NodeManagement\x12H\n\x13max_pods_constraint\x18\x06 \x01(\x0b\x32+.google.container.v1beta1.MaxPodsConstraint\x12=\n\nconditions\x18i \x03(\x0b\x32).google.container.v1beta1.StatusCondition\x12\x1a\n\x12pod_ipv4_cidr_size\x18\x07 \x01(\x05"\x81\x01\n\x06Status\x12\x16\n\x12STATUS_UNSPECIFIED\x10\x00\x12\x10\n\x0cPROVISIONING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x16\n\x12RUNNING_WITH_ERROR\x10\x03\x12\x0f\n\x0bRECONCILING\x10\x04\x12\x0c\n\x08STOPPING\x10\x05\x12\t\n\x05\x45RROR\x10\x06"\x82\x01\n\x0eNodeManagement\x12\x14\n\x0c\x61uto_upgrade\x18\x01 \x01(\x08\x12\x13\n\x0b\x61uto_repair\x18\x02 \x01(\x08\x12\x45\n\x0fupgrade_options\x18\n \x01(\x0b\x32,.google.container.v1beta1.AutoUpgradeOptions"J\n\x12\x41utoUpgradeOptions\x12\x1f\n\x17\x61uto_upgrade_start_time\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t"j\n\x11MaintenancePolicy\x12;\n\x06window\x18\x01 \x01(\x0b\x32+.google.container.v1beta1.MaintenanceWindow\x12\x18\n\x10resource_version\x18\x03 \x01(\t"\x8a\x03\n\x11MaintenanceWindow\x12T\n\x18\x64\x61ily_maintenance_window\x18\x02 \x01(\x0b\x32\x30.google.container.v1beta1.DailyMaintenanceWindowH\x00\x12I\n\x10recurring_window\x18\x03 \x01(\x0b\x32-.google.container.v1beta1.RecurringTimeWindowH\x00\x12\x66\n\x16maintenance_exclusions\x18\x04 \x03(\x0b\x32\x46.google.container.v1beta1.MaintenanceWindow.MaintenanceExclusionsEntry\x1a\x62\n\x1aMaintenanceExclusionsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x33\n\x05value\x18\x02 \x01(\x0b\x32$.google.container.v1beta1.TimeWindow:\x02\x38\x01\x42\x08\n\x06policy"j\n\nTimeWindow\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"_\n\x13RecurringTimeWindow\x12\x34\n\x06window\x18\x01 \x01(\x0b\x32$.google.container.v1beta1.TimeWindow\x12\x12\n\nrecurrence\x18\x02 \x01(\t">\n\x16\x44\x61ilyMaintenanceWindow\x12\x12\n\nstart_time\x18\x02 \x01(\t\x12\x10\n\x08\x64uration\x18\x03 \x01(\t"\xd7\x01\n\x1cSetNodePoolManagementRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0cnode_pool_id\x18\x04 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x41\n\nmanagement\x18\x05 \x01(\x0b\x32(.google.container.v1beta1.NodeManagementB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x07 \x01(\t"\xa7\x01\n\x16SetNodePoolSizeRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0cnode_pool_id\x18\x04 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x17\n\nnode_count\x18\x05 \x01(\x05\x42\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x07 \x01(\t"\x96\x01\n\x1eRollbackNodePoolUpgradeRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x1b\n\x0cnode_pool_id\x18\x04 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t"O\n\x15ListNodePoolsResponse\x12\x36\n\nnode_pools\x18\x01 \x03(\x0b\x32".google.container.v1beta1.NodePool"\x89\x02\n\x12\x43lusterAutoscaling\x12$\n\x1c\x65nable_node_autoprovisioning\x18\x01 \x01(\x08\x12@\n\x0fresource_limits\x18\x02 \x03(\x0b\x32\'.google.container.v1beta1.ResourceLimit\x12g\n#autoprovisioning_node_pool_defaults\x18\x04 \x01(\x0b\x32:.google.container.v1beta1.AutoprovisioningNodePoolDefaults\x12"\n\x1a\x61utoprovisioning_locations\x18\x05 \x03(\t"Q\n AutoprovisioningNodePoolDefaults\x12\x14\n\x0coauth_scopes\x18\x01 \x03(\t\x12\x17\n\x0fservice_account\x18\x02 \x01(\t"H\n\rResourceLimit\x12\x15\n\rresource_type\x18\x01 \x01(\t\x12\x0f\n\x07minimum\x18\x02 \x01(\x03\x12\x0f\n\x07maximum\x18\x03 \x01(\x03"o\n\x13NodePoolAutoscaling\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08\x12\x16\n\x0emin_node_count\x18\x02 \x01(\x05\x12\x16\n\x0emax_node_count\x18\x03 \x01(\x05\x12\x17\n\x0f\x61utoprovisioned\x18\x04 \x01(\x08"\xa0\x02\n\x10SetLabelsRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\\\n\x0fresource_labels\x18\x04 \x03(\x0b\x32>.google.container.v1beta1.SetLabelsRequest.ResourceLabelsEntryB\x03\xe0\x41\x02\x12\x1e\n\x11label_fingerprint\x18\x05 \x01(\tB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x07 \x01(\t\x1a\x35\n\x13ResourceLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x85\x01\n\x14SetLegacyAbacRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x14\n\x07\x65nabled\x18\x04 \x01(\x08\x42\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t"\x8d\x01\n\x16StartIPRotationRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t\x12\x1a\n\x12rotate_credentials\x18\x07 \x01(\x08"t\n\x19\x43ompleteIPRotationRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x0c\n\x04name\x18\x07 \x01(\t"H\n\x11\x41\x63\x63\x65leratorConfig\x12\x19\n\x11\x61\x63\x63\x65lerator_count\x18\x01 \x01(\x03\x12\x18\n\x10\x61\x63\x63\x65lerator_type\x18\x02 \x01(\t"\xa7\x01\n\x16WorkloadMetadataConfig\x12T\n\rnode_metadata\x18\x01 \x01(\x0e\x32=.google.container.v1beta1.WorkloadMetadataConfig.NodeMetadata"7\n\x0cNodeMetadata\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\n\n\x06SECURE\x10\x01\x12\n\n\x06\x45XPOSE\x10\x02"\xb8\x01\n\x17SetNetworkPolicyRequest\x12\x19\n\nproject_id\x18\x01 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x13\n\x04zone\x18\x02 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x19\n\ncluster_id\x18\x03 \x01(\tB\x05\x18\x01\xe0\x41\x02\x12\x44\n\x0enetwork_policy\x18\x04 \x01(\x0b\x32\'.google.container.v1beta1.NetworkPolicyB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x06 \x01(\t"\xbe\x01\n\x1bSetMaintenancePolicyRequest\x12\x17\n\nproject_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x11\n\x04zone\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x17\n\ncluster_id\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12L\n\x12maintenance_policy\x18\x04 \x01(\x0b\x32+.google.container.v1beta1.MaintenancePolicyB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x05 \x01(\t"+\n\x14ListLocationsRequest\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02"g\n\x15ListLocationsResponse\x12\x35\n\tlocations\x18\x01 \x03(\x0b\x32".google.container.v1beta1.Location\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\xb1\x01\n\x08Location\x12=\n\x04type\x18\x01 \x01(\x0e\x32/.google.container.v1beta1.Location.LocationType\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0brecommended\x18\x03 \x01(\x08"C\n\x0cLocationType\x12\x1d\n\x19LOCATION_TYPE_UNSPECIFIED\x10\x00\x12\x08\n\x04ZONE\x10\x01\x12\n\n\x06REGION\x10\x02"\xef\x01\n\x0fStatusCondition\x12<\n\x04\x63ode\x18\x01 \x01(\x0e\x32..google.container.v1beta1.StatusCondition.Code\x12\x0f\n\x07message\x18\x02 \x01(\t"\x8c\x01\n\x04\x43ode\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x10\n\x0cGCE_STOCKOUT\x10\x01\x12\x1f\n\x1bGKE_SERVICE_ACCOUNT_DELETED\x10\x02\x12\x16\n\x12GCE_QUOTA_EXCEEDED\x10\x03\x12\x13\n\x0fSET_BY_OPERATOR\x10\x04\x12\x17\n\x13\x43LOUD_KMS_KEY_ERROR\x10\x07"Z\n\rNetworkConfig\x12\x0f\n\x07network\x18\x01 \x01(\t\x12\x12\n\nsubnetwork\x18\x02 \x01(\t\x12$\n\x1c\x65nable_intra_node_visibility\x18\x05 \x01(\x08"j\n\x1cListUsableSubnetworksRequest\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"y\n\x1dListUsableSubnetworksResponse\x12?\n\x0bsubnetworks\x18\x01 \x03(\x0b\x32*.google.container.v1beta1.UsableSubnetwork\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x85\x02\n\x1eUsableSubnetworkSecondaryRange\x12\x12\n\nrange_name\x18\x01 \x01(\t\x12\x15\n\rip_cidr_range\x18\x02 \x01(\t\x12O\n\x06status\x18\x03 \x01(\x0e\x32?.google.container.v1beta1.UsableSubnetworkSecondaryRange.Status"g\n\x06Status\x12\x0b\n\x07UNKNOWN\x10\x00\x12\n\n\x06UNUSED\x10\x01\x12\x12\n\x0eIN_USE_SERVICE\x10\x02\x12\x18\n\x14IN_USE_SHAREABLE_POD\x10\x03\x12\x16\n\x12IN_USE_MANAGED_POD\x10\x04"\xbd\x01\n\x10UsableSubnetwork\x12\x12\n\nsubnetwork\x18\x01 \x01(\t\x12\x0f\n\x07network\x18\x02 \x01(\t\x12\x15\n\rip_cidr_range\x18\x03 \x01(\t\x12U\n\x13secondary_ip_ranges\x18\x04 \x03(\x0b\x32\x38.google.container.v1beta1.UsableSubnetworkSecondaryRange\x12\x16\n\x0estatus_message\x18\x05 \x01(\t")\n\x16VerticalPodAutoscaling\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08",\n\x19IntraNodeVisibilityConfig\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08".\n\x11MaxPodsConstraint\x12\x19\n\x11max_pods_per_node\x18\x01 \x01(\x03"\x9d\x01\n\x12\x44\x61tabaseEncryption\x12\x41\n\x05state\x18\x02 \x01(\x0e\x32\x32.google.container.v1beta1.DatabaseEncryption.State\x12\x10\n\x08key_name\x18\x01 \x01(\t"2\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\r\n\tENCRYPTED\x10\x01\x12\r\n\tDECRYPTED\x10\x02"\xf7\x02\n\x19ResourceUsageExportConfig\x12\x65\n\x14\x62igquery_destination\x18\x01 \x01(\x0b\x32G.google.container.v1beta1.ResourceUsageExportConfig.BigQueryDestination\x12&\n\x1e\x65nable_network_egress_metering\x18\x02 \x01(\x08\x12r\n\x1b\x63onsumption_metering_config\x18\x03 \x01(\x0b\x32M.google.container.v1beta1.ResourceUsageExportConfig.ConsumptionMeteringConfig\x1a)\n\x13\x42igQueryDestination\x12\x12\n\ndataset_id\x18\x01 \x01(\t\x1a,\n\x19\x43onsumptionMeteringConfig\x12\x0f\n\x07\x65nabled\x18\x01 \x01(\x08\x32\xafI\n\x0e\x43lusterManager\x12\xf3\x01\n\x0cListClusters\x12-.google.container.v1beta1.ListClustersRequest\x1a..google.container.v1beta1.ListClustersResponse"\x83\x01\x82\xd3\xe4\x93\x02k\x12\x31/v1beta1/{parent=projects/*/locations/*}/clustersZ6\x12\x34/v1beta1/projects/{project_id}/zones/{zone}/clusters\xda\x41\x0fproject_id,zone\x12\xfa\x01\n\nGetCluster\x12+.google.container.v1beta1.GetClusterRequest\x1a!.google.container.v1beta1.Cluster"\x9b\x01\x82\xd3\xe4\x93\x02x\x12\x31/v1beta1/{name=projects/*/locations/*/clusters/*}ZC\x12\x41/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}\xda\x41\x1aproject_id,zone,cluster_id\x12\xf8\x01\n\rCreateCluster\x12..google.container.v1beta1.CreateClusterRequest\x1a#.google.container.v1beta1.Operation"\x91\x01\x82\xd3\xe4\x93\x02q"1/v1beta1/{parent=projects/*/locations/*}/clusters:\x01*Z9"4/v1beta1/projects/{project_id}/zones/{zone}/clusters:\x01*\xda\x41\x17project_id,zone,cluster\x12\x8f\x02\n\rUpdateCluster\x12..google.container.v1beta1.UpdateClusterRequest\x1a#.google.container.v1beta1.Operation"\xa8\x01\x82\xd3\xe4\x93\x02~\x1a\x31/v1beta1/{name=projects/*/locations/*/clusters/*}:\x01*ZF\x1a\x41/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:\x01*\xda\x41!project_id,zone,cluster_id,update\x12\x9a\x02\n\x0eUpdateNodePool\x12/.google.container.v1beta1.UpdateNodePoolRequest\x1a#.google.container.v1beta1.Operation"\xb1\x01\x82\xd3\xe4\x93\x02\xaa\x01\x1a=/v1beta1/{name=projects/*/locations/*/clusters/*/nodePools/*}:\x01*Zf"a/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/update:\x01*\x12\xbe\x02\n\x16SetNodePoolAutoscaling\x12\x37.google.container.v1beta1.SetNodePoolAutoscalingRequest\x1a#.google.container.v1beta1.Operation"\xc5\x01\x82\xd3\xe4\x93\x02\xbe\x01"L/v1beta1/{name=projects/*/locations/*/clusters/*/nodePools/*}:setAutoscaling:\x01*Zk"f/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/autoscaling:\x01*\x12\xb4\x02\n\x11SetLoggingService\x12\x32.google.container.v1beta1.SetLoggingServiceRequest\x1a#.google.container.v1beta1.Operation"\xc5\x01\x82\xd3\xe4\x93\x02\x91\x01"</v1beta1/{name=projects/*/locations/*/clusters/*}:setLogging:\x01*ZN"I/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/logging:\x01*\xda\x41*project_id,zone,cluster_id,logging_service\x12\xc3\x02\n\x14SetMonitoringService\x12\x35.google.container.v1beta1.SetMonitoringServiceRequest\x1a#.google.container.v1beta1.Operation"\xce\x01\x82\xd3\xe4\x93\x02\x97\x01"?/v1beta1/{name=projects/*/locations/*/clusters/*}:setMonitoring:\x01*ZQ"L/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/monitoring:\x01*\xda\x41-project_id,zone,cluster_id,monitoring_service\x12\xac\x02\n\x0fSetAddonsConfig\x12\x30.google.container.v1beta1.SetAddonsConfigRequest\x1a#.google.container.v1beta1.Operation"\xc1\x01\x82\xd3\xe4\x93\x02\x8f\x01";/v1beta1/{name=projects/*/locations/*/clusters/*}:setAddons:\x01*ZM"H/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/addons:\x01*\xda\x41(project_id,zone,cluster_id,addons_config\x12\xa8\x02\n\x0cSetLocations\x12-.google.container.v1beta1.SetLocationsRequest\x1a#.google.container.v1beta1.Operation"\xc3\x01\x82\xd3\xe4\x93\x02\x95\x01">/v1beta1/{name=projects/*/locations/*/clusters/*}:setLocations:\x01*ZP"K/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/locations:\x01*\xda\x41$project_id,zone,cluster_id,locations\x12\xaa\x02\n\x0cUpdateMaster\x12-.google.container.v1beta1.UpdateMasterRequest\x1a#.google.container.v1beta1.Operation"\xc5\x01\x82\xd3\xe4\x93\x02\x92\x01">/v1beta1/{name=projects/*/locations/*/clusters/*}:updateMaster:\x01*ZM"H/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/master:\x01*\xda\x41)project_id,zone,cluster_id,master_version\x12\x88\x02\n\rSetMasterAuth\x12..google.container.v1beta1.SetMasterAuthRequest\x1a#.google.container.v1beta1.Operation"\xa1\x01\x82\xd3\xe4\x93\x02\x9a\x01"?/v1beta1/{name=projects/*/locations/*/clusters/*}:setMasterAuth:\x01*ZT"O/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setMasterAuth:\x01*\x12\x82\x02\n\rDeleteCluster\x12..google.container.v1beta1.DeleteClusterRequest\x1a#.google.container.v1beta1.Operation"\x9b\x01\x82\xd3\xe4\x93\x02x*1/v1beta1/{name=projects/*/locations/*/clusters/*}ZC*A/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}\xda\x41\x1aproject_id,zone,cluster_id\x12\xfd\x01\n\x0eListOperations\x12/.google.container.v1beta1.ListOperationsRequest\x1a\x30.google.container.v1beta1.ListOperationsResponse"\x87\x01\x82\xd3\xe4\x93\x02o\x12\x33/v1beta1/{parent=projects/*/locations/*}/operationsZ8\x12\x36/v1beta1/projects/{project_id}/zones/{zone}/operations\xda\x41\x0fproject_id,zone\x12\x88\x02\n\x0cGetOperation\x12-.google.container.v1beta1.GetOperationRequest\x1a#.google.container.v1beta1.Operation"\xa3\x01\x82\xd3\xe4\x93\x02~\x12\x33/v1beta1/{name=projects/*/locations/*/operations/*}ZG\x12\x45/v1beta1/projects/{project_id}/zones/{zone}/operations/{operation_id}\xda\x41\x1cproject_id,zone,operation_id\x12\x96\x02\n\x0f\x43\x61ncelOperation\x12\x30.google.container.v1beta1.CancelOperationRequest\x1a\x16.google.protobuf.Empty"\xb8\x01\x82\xd3\xe4\x93\x02\x92\x01":/v1beta1/{name=projects/*/locations/*/operations/*}:cancel:\x01*ZQ"L/v1beta1/projects/{project_id}/zones/{zone}/operations/{operation_id}:cancel:\x01*\xda\x41\x1cproject_id,zone,operation_id\x12\xf7\x01\n\x0fGetServerConfig\x12\x30.google.container.v1beta1.GetServerConfigRequest\x1a&.google.container.v1beta1.ServerConfig"\x89\x01\x82\xd3\xe4\x93\x02q\x12\x33/v1beta1/{name=projects/*/locations/*}/serverConfigZ:\x12\x38/v1beta1/projects/{project_id}/zones/{zone}/serverconfig\xda\x41\x0fproject_id,zone\x12\xa5\x02\n\rListNodePools\x12..google.container.v1beta1.ListNodePoolsRequest\x1a/.google.container.v1beta1.ListNodePoolsResponse"\xb2\x01\x82\xd3\xe4\x93\x02\x8e\x01\x12=/v1beta1/{parent=projects/*/locations/*/clusters/*}/nodePoolsZM\x12K/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools\xda\x41\x1aproject_id,zone,cluster_id\x12\xb0\x02\n\x0bGetNodePool\x12,.google.container.v1beta1.GetNodePoolRequest\x1a".google.container.v1beta1.NodePool"\xce\x01\x82\xd3\xe4\x93\x02\x9d\x01\x12=/v1beta1/{name=projects/*/locations/*/clusters/*/nodePools/*}Z\\\x12Z/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}\xda\x41\'project_id,zone,cluster_id,node_pool_id\x12\xab\x02\n\x0e\x43reateNodePool\x12/.google.container.v1beta1.CreateNodePoolRequest\x1a#.google.container.v1beta1.Operation"\xc2\x01\x82\xd3\xe4\x93\x02\x94\x01"=/v1beta1/{parent=projects/*/locations/*/clusters/*}/nodePools:\x01*ZP"K/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools:\x01*\xda\x41$project_id,zone,cluster_id,node_pool\x12\xb7\x02\n\x0e\x44\x65leteNodePool\x12/.google.container.v1beta1.DeleteNodePoolRequest\x1a#.google.container.v1beta1.Operation"\xce\x01\x82\xd3\xe4\x93\x02\x9d\x01*=/v1beta1/{name=projects/*/locations/*/clusters/*/nodePools/*}Z\\*Z/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}\xda\x41\'project_id,zone,cluster_id,node_pool_id\x12\xe1\x02\n\x17RollbackNodePoolUpgrade\x12\x38.google.container.v1beta1.RollbackNodePoolUpgradeRequest\x1a#.google.container.v1beta1.Operation"\xe6\x01\x82\xd3\xe4\x93\x02\xb5\x01"F/v1beta1/{name=projects/*/locations/*/clusters/*/nodePools/*}:rollback:\x01*Zh"c/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}:rollback:\x01*\xda\x41\'project_id,zone,cluster_id,node_pool_id\x12\xf2\x02\n\x15SetNodePoolManagement\x12\x36.google.container.v1beta1.SetNodePoolManagementRequest\x1a#.google.container.v1beta1.Operation"\xfb\x01\x82\xd3\xe4\x93\x02\xbf\x01"K/v1beta1/{name=projects/*/locations/*/clusters/*/nodePools/*}:setManagement:\x01*Zm"h/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/setManagement:\x01*\xda\x41\x32project_id,zone,cluster_id,node_pool_id,management\x12\xc4\x02\n\tSetLabels\x12*.google.container.v1beta1.SetLabelsRequest\x1a#.google.container.v1beta1.Operation"\xe5\x01\x82\xd3\xe4\x93\x02\x9f\x01"C/v1beta1/{name=projects/*/locations/*/clusters/*}:setResourceLabels:\x01*ZU"P/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/resourceLabels:\x01*\xda\x41<project_id,zone,cluster_id,resource_labels,label_fingerprint\x12\xaa\x02\n\rSetLegacyAbac\x12..google.container.v1beta1.SetLegacyAbacRequest\x1a#.google.container.v1beta1.Operation"\xc3\x01\x82\xd3\xe4\x93\x02\x97\x01"?/v1beta1/{name=projects/*/locations/*/clusters/*}:setLegacyAbac:\x01*ZQ"L/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/legacyAbac:\x01*\xda\x41"project_id,zone,cluster_id,enabled\x12\xad\x02\n\x0fStartIPRotation\x12\x30.google.container.v1beta1.StartIPRotationRequest\x1a#.google.container.v1beta1.Operation"\xc2\x01\x82\xd3\xe4\x93\x02\x9e\x01"A/v1beta1/{name=projects/*/locations/*/clusters/*}:startIpRotation:\x01*ZV"Q/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:startIpRotation:\x01*\xda\x41\x1aproject_id,zone,cluster_id\x12\xb9\x02\n\x12\x43ompleteIPRotation\x12\x33.google.container.v1beta1.CompleteIPRotationRequest\x1a#.google.container.v1beta1.Operation"\xc8\x01\x82\xd3\xe4\x93\x02\xa4\x01"D/v1beta1/{name=projects/*/locations/*/clusters/*}:completeIpRotation:\x01*ZY"T/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:completeIpRotation:\x01*\xda\x41\x1aproject_id,zone,cluster_id\x12\xa5\x02\n\x0fSetNodePoolSize\x12\x30.google.container.v1beta1.SetNodePoolSizeRequest\x1a#.google.container.v1beta1.Operation"\xba\x01\x82\xd3\xe4\x93\x02\xb3\x01"E/v1beta1/{name=projects/*/locations/*/clusters/*/nodePools/*}:setSize:\x01*Zg"b/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/setSize:\x01*\x12\xc0\x02\n\x10SetNetworkPolicy\x12\x31.google.container.v1beta1.SetNetworkPolicyRequest\x1a#.google.container.v1beta1.Operation"\xd3\x01\x82\xd3\xe4\x93\x02\xa0\x01"B/v1beta1/{name=projects/*/locations/*/clusters/*}:setNetworkPolicy:\x01*ZW"R/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setNetworkPolicy:\x01*\xda\x41)project_id,zone,cluster_id,network_policy\x12\xd4\x02\n\x14SetMaintenancePolicy\x12\x35.google.container.v1beta1.SetMaintenancePolicyRequest\x1a#.google.container.v1beta1.Operation"\xdf\x01\x82\xd3\xe4\x93\x02\xa8\x01"F/v1beta1/{name=projects/*/locations/*/clusters/*}:setMaintenancePolicy:\x01*Z["V/v1beta1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setMaintenancePolicy:\x01*\xda\x41-project_id,zone,cluster_id,maintenance_policy\x12\xd4\x01\n\x15ListUsableSubnetworks\x12\x36.google.container.v1beta1.ListUsableSubnetworksRequest\x1a\x37.google.container.v1beta1.ListUsableSubnetworksResponse"J\x82\xd3\xe4\x93\x02;\x12\x39/v1beta1/{parent=projects/*}/aggregated/usableSubnetworks\xda\x41\x06parent\x12\xa9\x01\n\rListLocations\x12..google.container.v1beta1.ListLocationsRequest\x1a/.google.container.v1beta1.ListLocationsResponse"7\x82\xd3\xe4\x93\x02(\x12&/v1beta1/{parent=projects/*}/locations\xda\x41\x06parent\x1aL\xca\x41\x18\x63ontainer.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xde\x01\n\x1c\x63om.google.container.v1beta1B\x13\x43lusterServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/container/v1beta1;container\xaa\x02\x1eGoogle.Cloud.Container.V1Beta1\xca\x02\x1eGoogle\\Cloud\\Container\\V1beta1\xea\x02!Google::Cloud::Container::V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -10181,13 +10181,12 @@ NodeConfig = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_NODECONFIG,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""Parameters that describe the nodes in a cluster.
-  
-  
   Attributes:
       machine_type:
           The name of a Google Compute Engine `machine type
-          </compute/docs/machine-types>`__ (e.g. ``n1-standard-1``).  If
-          unspecified, the default machine type is ``n1-standard-1``.
+          <https://cloud.google.com/compute/docs/machine-types>`__ (e.g.
+          ``n1-standard-1``).  If unspecified, the default machine type
+          is ``n1-standard-1``.
       disk_size_gb:
           Size of the disk attached to each node, specified in GB. The
           smallest allowed disk size is 10GB.  If unspecified, the
@@ -10201,10 +10200,10 @@ NodeConfig = _reflection.GeneratedProtocolMessageType(
           mounting    persistent storage on your nodes. -
           ``https://www.googleapis.com/auth/devstorage.read_only`` is
           required    for communicating with **gcr.io** (the `Google
-          Container    Registry </container-registry/>`__).  If
-          unspecified, no scopes are added, unless Cloud Logging or
-          Cloud Monitoring are enabled, in which case their required
-          scopes will be added.
+          Container    Registry <https://cloud.google.com/container-
+          registry/>`__).  If unspecified, no scopes are added, unless
+          Cloud Logging or Cloud Monitoring are enabled, in which case
+          their required scopes will be added.
       service_account:
           The Google Cloud Platform Service Account to be used by the
           node VMs. If no Service Account is specified, the "default"
@@ -10298,8 +10297,6 @@ ShieldedInstanceConfig = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_SHIELDEDINSTANCECONFIG,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""A set of Shielded Instance options.
-  
-  
   Attributes:
       enable_secure_boot:
           Defines whether the instance has Secure Boot enabled.  Secure
@@ -10325,14 +10322,11 @@ NodeTaint = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NODETAINT,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""Kubernetes taint is comprised of three fields: key, value,
-  and effect. Effect can only be one of three types: NoSchedule,
-  PreferNoSchedule or NoExecute.
-  
-  For more information, including usage and the valid values, see:
-  https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
-  
-  
+        __doc__="""Kubernetes taint is comprised of three fields: key, value, and effect.
+  Effect can only be one of three types: NoSchedule, PreferNoSchedule or
+  NoExecute.  For more information, including usage and the valid
+  values, see: https://kubernetes.io/docs/concepts/configuration/taint-
+  and-toleration/
   Attributes:
       key:
           Key for taint.
@@ -10352,11 +10346,9 @@ MasterAuth = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_MASTERAUTH,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""The authentication information for accessing the master
-  endpoint. Authentication can be done using HTTP basic auth or using
-  client certificates.
-  
-  
+        __doc__="""The authentication information for accessing the master endpoint.
+  Authentication can be done using HTTP basic auth or using client
+  certificates.
   Attributes:
       username:
           The username to use for HTTP basic authentication to the
@@ -10394,8 +10386,6 @@ ClientCertificateConfig = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_CLIENTCERTIFICATECONFIG,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""Configuration for client certificates on the cluster.
-  
-  
   Attributes:
       issue_client_certificate:
           Issue a client certificate.
@@ -10411,10 +10401,8 @@ AddonsConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ADDONSCONFIG,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""Configuration for the addons that can be automatically
-  spun up in the cluster, enabling additional functionality.
-  
-  
+        __doc__="""Configuration for the addons that can be automatically spun up in the
+  cluster, enabling additional functionality.
   Attributes:
       http_load_balancing:
           Configuration for the HTTP (L7) load balancing controller
@@ -10455,11 +10443,9 @@ HttpLoadBalancing = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_HTTPLOADBALANCING,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""Configuration options for the HTTP (L7) load balancing
-  controller addon, which makes it easy to set up HTTP load balancers for
-  services in a cluster.
-  
-  
+        __doc__="""Configuration options for the HTTP (L7) load balancing controller
+  addon, which makes it easy to set up HTTP load balancers for services
+  in a cluster.
   Attributes:
       disabled:
           Whether the HTTP Load Balancing controller is enabled in the
@@ -10477,12 +10463,9 @@ HorizontalPodAutoscaling = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_HORIZONTALPODAUTOSCALING,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""Configuration options for the horizontal pod autoscaling
-  feature, which increases or decreases the number of replica pods a
-  replication controller has based on the resource usage of the existing
-  pods.
-  
-  
+        __doc__="""Configuration options for the horizontal pod autoscaling feature,
+  which increases or decreases the number of replica pods a replication
+  controller has based on the resource usage of the existing pods.
   Attributes:
       disabled:
           Whether the Horizontal Pod Autoscaling feature is enabled in
@@ -10502,8 +10485,6 @@ KubernetesDashboard = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_KUBERNETESDASHBOARD,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""Configuration for the Kubernetes Dashboard.
-  
-  
   Attributes:
       disabled:
           Whether the Kubernetes Dashboard is enabled for this cluster.
@@ -10519,11 +10500,9 @@ NetworkPolicyConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NETWORKPOLICYCONFIG,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""Configuration for NetworkPolicy. This only tracks whether
-  the addon is enabled or not on the Master, it does not track whether
-  network policy is enabled for the nodes.
-  
-  
+        __doc__="""Configuration for NetworkPolicy. This only tracks whether the addon is
+  enabled or not on the Master, it does not track whether network policy
+  is enabled for the nodes.
   Attributes:
       disabled:
           Whether NetworkPolicy is enabled for this cluster.
@@ -10540,8 +10519,6 @@ PrivateClusterConfig = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_PRIVATECLUSTERCONFIG,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""Configuration options for private clusters.
-  
-  
   Attributes:
       enable_private_nodes:
           Whether nodes have internal IP addresses only. If enabled, all
@@ -10575,8 +10552,6 @@ IstioConfig = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_ISTIOCONFIG,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""Configuration options for Istio addon.
-  
-  
   Attributes:
       disabled:
           Whether Istio is enabled for this cluster.
@@ -10595,8 +10570,6 @@ CloudRunConfig = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_CLOUDRUNCONFIG,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""Configuration options for the Cloud Run feature.
-  
-  
   Attributes:
       disabled:
           Whether Cloud Run addon is enabled for this cluster.
@@ -10617,8 +10590,6 @@ MasterAuthorizedNetworksConfig = _reflection.GeneratedProtocolMessageType(
                 DESCRIPTOR=_MASTERAUTHORIZEDNETWORKSCONFIG_CIDRBLOCK,
                 __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
                 __doc__="""CidrBlock contains an optional name and one CIDR block.
-    
-    
     Attributes:
         display_name:
             display\_name is an optional field for users to identify CIDR
@@ -10631,13 +10602,11 @@ MasterAuthorizedNetworksConfig = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_MASTERAUTHORIZEDNETWORKSCONFIG,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""Configuration options for the master authorized networks
-  feature. Enabled master authorized networks will disallow all external
-  traffic to access Kubernetes master through HTTPS except traffic from
-  the given CIDR blocks, Google Compute Engine Public IPs and Google Prod
+        __doc__="""Configuration options for the master authorized networks feature.
+  Enabled master authorized networks will disallow all external traffic
+  to access Kubernetes master through HTTPS except traffic from the
+  given CIDR blocks, Google Compute Engine Public IPs and Google Prod
   IPs.
-  
-  
   Attributes:
       enabled:
           Whether or not master authorized networks is enabled.
@@ -10657,10 +10626,8 @@ LegacyAbac = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LEGACYABAC,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""Configuration for the legacy Attribute Based Access
-  Control authorization mode.
-  
-  
+        __doc__="""Configuration for the legacy Attribute Based Access Control
+  authorization mode.
   Attributes:
       enabled:
           Whether the ABAC authorizer is enabled for this cluster. When
@@ -10681,9 +10648,8 @@ NetworkPolicy = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_NETWORKPOLICY,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""Configuration options for the NetworkPolicy feature.
-  https://kubernetes.io/docs/concepts/services-networking/networkpolicies/
-  
-  
+  https://kubernetes.io/docs/concepts/services-
+  networking/networkpolicies/
   Attributes:
       provider:
           The selected network policy provider.
@@ -10701,10 +10667,7 @@ IPAllocationPolicy = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_IPALLOCATIONPOLICY,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""Configuration for controlling how IPs are allocated in the
-  cluster.
-  
-  
+        __doc__="""Configuration for controlling how IPs are allocated in the cluster.
   Attributes:
       use_ip_aliases:
           Whether alias IPs will be used for pod IPs in the cluster.
@@ -10808,8 +10771,6 @@ BinaryAuthorization = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_BINARYAUTHORIZATION,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""Configuration for Binary Authorization.
-  
-  
   Attributes:
       enabled:
           Enable Binary Authorization for this cluster. If enabled, all
@@ -10827,8 +10788,6 @@ PodSecurityPolicyConfig = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_PODSECURITYPOLICYCONFIG,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""Configuration for the PodSecurityPolicy feature.
-  
-  
   Attributes:
       enabled:
           Enable the PodSecurityPolicy controller for this cluster. If
@@ -10846,10 +10805,7 @@ AuthenticatorGroupsConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_AUTHENTICATORGROUPSCONFIG,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""Configuration for returning group information from
-  authenticators.
-  
-  
+        __doc__="""Configuration for returning group information from authenticators.
   Attributes:
       enabled:
           Whether this cluster should return group membership lookups
@@ -10879,8 +10835,6 @@ Cluster = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_CLUSTER,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""A Google Kubernetes Engine cluster.
-  
-  
   Attributes:
       name:
           The name of this cluster. The name must be unique within this
@@ -10932,10 +10886,10 @@ Cluster = _reflection.GeneratedProtocolMessageType(
           ``monitoring.googleapis.com`` will be    used.
       network:
           The name of the Google Compute Engine `network
-          </compute/docs/networks-and-firewalls#networks>`__ to which
-          the cluster is connected. If left unspecified, the ``default``
-          network will be used. On output this shows the network ID
-          instead of the name.
+          <https://cloud.google.com/compute/docs/networks-and-
+          firewalls#networks>`__ to which the cluster is connected. If
+          left unspecified, the ``default`` network will be used. On
+          output this shows the network ID instead of the name.
       cluster_ipv4_cidr:
           The IP address range of the container pods in this cluster, in
           `CIDR <http://en.wikipedia.org/wiki/Classless_Inter-
@@ -10947,17 +10901,17 @@ Cluster = _reflection.GeneratedProtocolMessageType(
           cluster.
       subnetwork:
           The name of the Google Compute Engine `subnetwork
-          </compute/docs/subnetworks>`__ to which the cluster is
-          connected. On output this shows the subnetwork ID instead of
-          the name.
+          <https://cloud.google.com/compute/docs/subnetworks>`__ to
+          which the cluster is connected. On output this shows the
+          subnetwork ID instead of the name.
       node_pools:
           The node pools associated with this cluster. This field should
           not be set if "node\_config" or "initial\_node\_count" are
           specified.
       locations:
           The list of Google Compute Engine `zones
-          </compute/docs/zones#available>`__ in which the cluster's
-          nodes should be located.
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster's nodes should be located.
       enable_kubernetes_alpha:
           Kubernetes alpha features are enabled on this cluster. This
           includes alpha API groups (e.g. v1beta1) and features that may
@@ -11019,8 +10973,9 @@ Cluster = _reflection.GeneratedProtocolMessageType(
           [Output only] Server-defined URL for the resource.
       zone:
           [Output only] The name of the Google Compute Engine `zone
-          </compute/docs/zones#available>`__ in which the cluster
-          resides. This field is deprecated, use location instead.
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field is deprecated, use
+          location instead.
       endpoint:
           [Output only] The IP address of this cluster's master
           endpoint. The endpoint can be accessed from the internet at
@@ -11044,12 +10999,13 @@ Cluster = _reflection.GeneratedProtocolMessageType(
           [Output only] The current software version of the master
           endpoint.
       current_node_version:
-          [Output only] Deprecated, use `NodePool.version </kubernetes-e
-          ngine/docs/reference/rest/v1beta1/projects.locations.clusters.
-          nodePools>`__ instead. The current version of the node
-          software components. If they are currently at multiple
-          versions because they're in the process of being upgraded,
-          this reflects the minimum version of all nodes.
+          [Output only] Deprecated, use `NodePool.version
+          <https://cloud.google.com/kubernetes-engine/docs/reference/res
+          t/v1beta1/projects.locations.clusters.nodePools>`__ instead.
+          The current version of the node software components. If they
+          are currently at multiple versions because they're in the
+          process of being upgraded, this reflects the minimum version
+          of all nodes.
       create_time:
           [Output only] The time the cluster was created, in `RFC3339
           <https://www.ietf.org/rfc/rfc3339.txt>`__ text format.
@@ -11082,8 +11038,9 @@ Cluster = _reflection.GeneratedProtocolMessageType(
           text format.
       location:
           [Output only] The name of the Google Compute Engine `zone
-          </compute/docs/regions-zones/regions-zones#available>`__ or
-          `region </compute/docs/regions-zones/regions-
+          <https://cloud.google.com/compute/docs/regions-zones/regions-
+          zones#available>`__ or `region
+          <https://cloud.google.com/compute/docs/regions-zones/regions-
           zones#available>`__ in which the cluster resides.
       enable_tpu:
           Enable the ability to use Cloud TPUs in this cluster.
@@ -11109,11 +11066,9 @@ ClusterUpdate = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CLUSTERUPDATE,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""ClusterUpdate describes an update to the cluster. Exactly
-  one update can be applied to a cluster with each request, so at most one
-  field can be provided.
-  
-  
+        __doc__="""ClusterUpdate describes an update to the cluster. Exactly one update
+  can be applied to a cluster with each request, so at most one field
+  can be provided.
   Attributes:
       desired_node_version:
           The Kubernetes version to change the nodes to (typically an
@@ -11152,12 +11107,12 @@ ClusterUpdate = _reflection.GeneratedProtocolMessageType(
           change applies to that single node pool.
       desired_locations:
           The desired list of Google Compute Engine `zones
-          </compute/docs/zones#available>`__ in which the cluster's
-          nodes should be located. Changing the locations a cluster is
-          in will result in nodes being either created or removed from
-          the cluster, depending on whether locations are being added or
-          removed.  This list must always include the cluster's primary
-          zone.
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster's nodes should be located. Changing the
+          locations a cluster is in will result in nodes being either
+          created or removed from the cluster, depending on whether
+          locations are being added or removed.  This list must always
+          include the cluster's primary zone.
       desired_master_authorized_networks_config:
           The desired configuration options for master authorized
           networks feature.
@@ -11204,18 +11159,16 @@ Operation = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OPERATION,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""This operation resource represents operations that may
-  have happened or are happening on the cluster. All fields are output
-  only.
-  
-  
+        __doc__="""This operation resource represents operations that may have happened
+  or are happening on the cluster. All fields are output only.
   Attributes:
       name:
           The server-assigned ID for the operation.
       zone:
           The name of the Google Compute Engine `zone
-          </compute/docs/zones#available>`__ in which the operation is
-          taking place. This field is deprecated, use location instead.
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the operation is taking place. This field is deprecated,
+          use location instead.
       operation_type:
           The operation type.
       status:
@@ -11230,8 +11183,9 @@ Operation = _reflection.GeneratedProtocolMessageType(
           Server-defined URL for the target of the operation.
       location:
           [Output only] The name of the Google Compute Engine `zone
-          </compute/docs/regions-zones/regions-zones#available>`__ or
-          `region </compute/docs/regions-zones/regions-
+          <https://cloud.google.com/compute/docs/regions-zones/regions-
+          zones#available>`__ or `region
+          <https://cloud.google.com/compute/docs/regions-zones/regions-
           zones#available>`__ in which the cluster resides.
       start_time:
           [Output only] The time the operation started, in `RFC3339
@@ -11262,8 +11216,6 @@ OperationProgress = _reflection.GeneratedProtocolMessageType(
                 DESCRIPTOR=_OPERATIONPROGRESS_METRIC,
                 __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
                 __doc__="""Progress metric is (string, int\|float\|string) pair.
-    
-    
     Attributes:
         name:
             Metric name, required. e.g., "nodes total", "percent done"
@@ -11283,8 +11235,6 @@ OperationProgress = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_OPERATIONPROGRESS,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""Information about operation (or operation stage) progress.
-  
-  
   Attributes:
       name:
           A non-parameterized string describing an operation stage.
@@ -11313,8 +11263,6 @@ CreateClusterRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_CREATECLUSTERREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""CreateClusterRequest creates a cluster.
-  
-  
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -11323,15 +11271,17 @@ CreateClusterRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the parent field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          parent field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the parent field.
       cluster:
-          Required. A `cluster resource </container-
+          Required. A `cluster resource
+          <https://cloud.google.com/container-
           engine/reference/rest/v1beta1/projects.zones.clusters>`__
       parent:
           The parent (project and location) where the cluster will be
-          created. Specified in the format 'projects/*/locations/*'.
+          created. Specified in the format ``projects/*/locations/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.CreateClusterRequest)
     ),
@@ -11345,8 +11295,6 @@ GetClusterRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_GETCLUSTERREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""GetClusterRequest gets the settings of a cluster.
-  
-  
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -11355,16 +11303,17 @@ GetClusterRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster to retrieve.
           This field has been deprecated and replaced by the name field.
       name:
           The name (project, location, cluster) of the cluster to
           retrieve. Specified in the format
-          'projects/*/locations/*/clusters/\*'.
+          ``projects/*/locations/*/clusters/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.GetClusterRequest)
     ),
@@ -11378,8 +11327,6 @@ UpdateClusterRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_UPDATECLUSTERREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""UpdateClusterRequest updates the settings of a cluster.
-  
-  
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -11388,9 +11335,10 @@ UpdateClusterRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster to upgrade. This
           field has been deprecated and replaced by the name field.
@@ -11399,7 +11347,7 @@ UpdateClusterRequest = _reflection.GeneratedProtocolMessageType(
       name:
           The name (project, location, cluster) of the cluster to
           update. Specified in the format
-          'projects/*/locations/*/clusters/\*'.
+          ``projects/*/locations/*/clusters/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.UpdateClusterRequest)
     ),
@@ -11412,10 +11360,7 @@ UpdateNodePoolRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_UPDATENODEPOOLREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""SetNodePoolVersionRequest updates the version of a node
-  pool.
-  
-  
+        __doc__="""SetNodePoolVersionRequest updates the version of a node pool.
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -11424,9 +11369,10 @@ UpdateNodePoolRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster to upgrade. This
           field has been deprecated and replaced by the name field.
@@ -11450,7 +11396,7 @@ UpdateNodePoolRequest = _reflection.GeneratedProtocolMessageType(
       name:
           The name (project, location, cluster, node pool) of the node
           pool to update. Specified in the format
-          'projects/*/locations/*/clusters/*/nodePools/*'.
+          ``projects/*/locations/*/clusters/*/nodePools/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.UpdateNodePoolRequest)
     ),
@@ -11463,10 +11409,8 @@ SetNodePoolAutoscalingRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SETNODEPOOLAUTOSCALINGREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""SetNodePoolAutoscalingRequest sets the autoscaler settings
-  of a node pool.
-  
-  
+        __doc__="""SetNodePoolAutoscalingRequest sets the autoscaler settings of a node
+  pool.
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -11475,9 +11419,10 @@ SetNodePoolAutoscalingRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster to upgrade. This
           field has been deprecated and replaced by the name field.
@@ -11489,7 +11434,7 @@ SetNodePoolAutoscalingRequest = _reflection.GeneratedProtocolMessageType(
       name:
           The name (project, location, cluster, node pool) of the node
           pool to set autoscaler settings. Specified in the format
-          'projects/*/locations/*/clusters/*/nodePools/*'.
+          ``projects/*/locations/*/clusters/*/nodePools/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.SetNodePoolAutoscalingRequest)
     ),
@@ -11502,10 +11447,7 @@ SetLoggingServiceRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SETLOGGINGSERVICEREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""SetLoggingServiceRequest sets the logging service of a
-  cluster.
-  
-  
+        __doc__="""SetLoggingServiceRequest sets the logging service of a cluster.
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -11514,9 +11456,10 @@ SetLoggingServiceRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster to upgrade. This
           field has been deprecated and replaced by the name field.
@@ -11528,7 +11471,7 @@ SetLoggingServiceRequest = _reflection.GeneratedProtocolMessageType(
       name:
           The name (project, location, cluster) of the cluster to set
           logging. Specified in the format
-          'projects/*/locations/*/clusters/\*'.
+          ``projects/*/locations/*/clusters/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.SetLoggingServiceRequest)
     ),
@@ -11541,10 +11484,7 @@ SetMonitoringServiceRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SETMONITORINGSERVICEREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""SetMonitoringServiceRequest sets the monitoring service of
-  a cluster.
-  
-  
+        __doc__="""SetMonitoringServiceRequest sets the monitoring service of a cluster.
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -11553,9 +11493,10 @@ SetMonitoringServiceRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster to upgrade. This
           field has been deprecated and replaced by the name field.
@@ -11568,7 +11509,7 @@ SetMonitoringServiceRequest = _reflection.GeneratedProtocolMessageType(
       name:
           The name (project, location, cluster) of the cluster to set
           monitoring. Specified in the format
-          'projects/*/locations/*/clusters/\*'.
+          ``projects/*/locations/*/clusters/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.SetMonitoringServiceRequest)
     ),
@@ -11581,10 +11522,7 @@ SetAddonsConfigRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SETADDONSCONFIGREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""SetAddonsRequest sets the addons associated with the
-  cluster.
-  
-  
+        __doc__="""SetAddonsRequest sets the addons associated with the cluster.
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -11593,9 +11531,10 @@ SetAddonsConfigRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster to upgrade. This
           field has been deprecated and replaced by the name field.
@@ -11605,7 +11544,7 @@ SetAddonsConfigRequest = _reflection.GeneratedProtocolMessageType(
       name:
           The name (project, location, cluster) of the cluster to set
           addons. Specified in the format
-          'projects/*/locations/*/clusters/\*'.
+          ``projects/*/locations/*/clusters/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.SetAddonsConfigRequest)
     ),
@@ -11619,8 +11558,6 @@ SetLocationsRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_SETLOCATIONSREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""SetLocationsRequest sets the locations of the cluster.
-  
-  
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -11629,24 +11566,25 @@ SetLocationsRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster to upgrade. This
           field has been deprecated and replaced by the name field.
       locations:
           Required. The desired list of Google Compute Engine `zones
-          </compute/docs/zones#available>`__ in which the cluster's
-          nodes should be located. Changing the locations a cluster is
-          in will result in nodes being either created or removed from
-          the cluster, depending on whether locations are being added or
-          removed.  This list must always include the cluster's primary
-          zone.
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster's nodes should be located. Changing the
+          locations a cluster is in will result in nodes being either
+          created or removed from the cluster, depending on whether
+          locations are being added or removed.  This list must always
+          include the cluster's primary zone.
       name:
           The name (project, location, cluster) of the cluster to set
           locations. Specified in the format
-          'projects/*/locations/*/clusters/\*'.
+          ``projects/*/locations/*/clusters/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.SetLocationsRequest)
     ),
@@ -11660,8 +11598,6 @@ UpdateMasterRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_UPDATEMASTERREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""UpdateMasterRequest updates the master of the cluster.
-  
-  
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -11670,9 +11606,10 @@ UpdateMasterRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster to upgrade. This
           field has been deprecated and replaced by the name field.
@@ -11689,7 +11626,7 @@ UpdateMasterRequest = _reflection.GeneratedProtocolMessageType(
       name:
           The name (project, location, cluster) of the cluster to
           update. Specified in the format
-          'projects/*/locations/*/clusters/\*'.
+          ``projects/*/locations/*/clusters/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.UpdateMasterRequest)
     ),
@@ -11702,10 +11639,7 @@ SetMasterAuthRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SETMASTERAUTHREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""SetMasterAuthRequest updates the admin password of a
-  cluster.
-  
-  
+        __doc__="""SetMasterAuthRequest updates the admin password of a cluster.
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -11714,9 +11648,10 @@ SetMasterAuthRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster to upgrade. This
           field has been deprecated and replaced by the name field.
@@ -11728,7 +11663,7 @@ SetMasterAuthRequest = _reflection.GeneratedProtocolMessageType(
       name:
           The name (project, location, cluster) of the cluster to set
           auth. Specified in the format
-          'projects/*/locations/*/clusters/\*'.
+          ``projects/*/locations/*/clusters/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.SetMasterAuthRequest)
     ),
@@ -11742,8 +11677,6 @@ DeleteClusterRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_DELETECLUSTERREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""DeleteClusterRequest deletes a cluster.
-  
-  
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -11752,16 +11685,17 @@ DeleteClusterRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster to delete. This
           field has been deprecated and replaced by the name field.
       name:
           The name (project, location, cluster) of the cluster to
           delete. Specified in the format
-          'projects/*/locations/*/clusters/\*'.
+          ``projects/*/locations/*/clusters/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.DeleteClusterRequest)
     ),
@@ -11775,8 +11709,6 @@ ListClustersRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTCLUSTERSREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""ListClustersRequest lists clusters.
-  
-  
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -11785,12 +11717,13 @@ ListClustersRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the parent field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides, or "-" for all zones. This field has been deprecated
-          and replaced by the parent field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides, or "-" for all zones. This field
+          has been deprecated and replaced by the parent field.
       parent:
           The parent (project and location) where the clusters will be
-          listed. Specified in the format 'projects/*/locations/*'.
+          listed. Specified in the format ``projects/*/locations/*``.
           Location "-" matches all zones and all regions.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.ListClustersRequest)
@@ -11805,8 +11738,6 @@ ListClustersResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTCLUSTERSRESPONSE,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""ListClustersResponse is the result of ListClustersRequest.
-  
-  
   Attributes:
       clusters:
           A list of clusters in the project in the specified zone, or
@@ -11827,8 +11758,6 @@ GetOperationRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_GETOPERATIONREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""GetOperationRequest gets a single operation.
-  
-  
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -11837,9 +11766,10 @@ GetOperationRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       operation_id:
           Required. Deprecated. The server-assigned ``name`` of the
           operation. This field has been deprecated and replaced by the
@@ -11847,7 +11777,7 @@ GetOperationRequest = _reflection.GeneratedProtocolMessageType(
       name:
           The name (project, location, operation id) of the operation to
           get. Specified in the format
-          'projects/*/locations/*/operations/\*'.
+          ``projects/*/locations/*/operations/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.GetOperationRequest)
     ),
@@ -11861,8 +11791,6 @@ ListOperationsRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTOPERATIONSREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""ListOperationsRequest lists operations.
-  
-  
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -11871,12 +11799,13 @@ ListOperationsRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the parent field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ to return operations
-          for, or ``-`` for all zones. This field has been deprecated
-          and replaced by the parent field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ to
+          return operations for, or ``-`` for all zones. This field has
+          been deprecated and replaced by the parent field.
       parent:
           The parent (project and location) where the operations will be
-          listed. Specified in the format 'projects/*/locations/*'.
+          listed. Specified in the format ``projects/*/locations/*``.
           Location "-" matches all zones and all regions.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.ListOperationsRequest)
@@ -11891,8 +11820,6 @@ CancelOperationRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_CANCELOPERATIONREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""CancelOperationRequest cancels a single operation.
-  
-  
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -11901,9 +11828,10 @@ CancelOperationRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the
-          operation resides. This field has been deprecated and replaced
-          by the name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the operation resides. This field has been deprecated
+          and replaced by the name field.
       operation_id:
           Required. Deprecated. The server-assigned ``name`` of the
           operation. This field has been deprecated and replaced by the
@@ -11911,7 +11839,7 @@ CancelOperationRequest = _reflection.GeneratedProtocolMessageType(
       name:
           The name (project, location, operation id) of the operation to
           cancel. Specified in the format
-          'projects/*/locations/*/operations/\*'.
+          ``projects/*/locations/*/operations/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.CancelOperationRequest)
     ),
@@ -11924,10 +11852,7 @@ ListOperationsResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTOPERATIONSRESPONSE,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""ListOperationsResponse is the result of
-  ListOperationsRequest.
-  
-  
+        __doc__="""ListOperationsResponse is the result of ListOperationsRequest.
   Attributes:
       operations:
           A list of operations in the project in the specified zone.
@@ -11947,8 +11872,6 @@ GetServerConfigRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_GETSERVERCONFIGREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""Gets the current Kubernetes Engine service configuration.
-  
-  
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -11957,12 +11880,13 @@ GetServerConfigRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ to return operations
-          for. This field has been deprecated and replaced by the name
-          field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ to
+          return operations for. This field has been deprecated and
+          replaced by the name field.
       name:
           The name (project and location) of the server config to get,
-          specified in the format 'projects/*/locations/*'.
+          specified in the format ``projects/*/locations/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.GetServerConfigRequest)
     ),
@@ -11976,8 +11900,6 @@ ServerConfig = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_SERVERCONFIG,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""Kubernetes Engine service configuration.
-  
-  
   Attributes:
       default_cluster_version:
           Version of Kubernetes the service deploys by default.
@@ -12002,8 +11924,6 @@ CreateNodePoolRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_CREATENODEPOOLREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""CreateNodePoolRequest creates a node pool for a cluster.
-  
-  
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -12012,9 +11932,10 @@ CreateNodePoolRequest = _reflection.GeneratedProtocolMessageType(
           replaced by the parent field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          parent field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the parent field.
       cluster_id:
           Required. Deprecated. The name of the cluster. This field has
           been deprecated and replaced by the parent field.
@@ -12023,7 +11944,7 @@ CreateNodePoolRequest = _reflection.GeneratedProtocolMessageType(
       parent:
           The parent (project, location, cluster id) where the node pool
           will be created. Specified in the format
-          'projects/*/locations/*/clusters/\*'.
+          ``projects/*/locations/*/clusters/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.CreateNodePoolRequest)
     ),
@@ -12037,8 +11958,6 @@ DeleteNodePoolRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_DELETENODEPOOLREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""DeleteNodePoolRequest deletes a node pool for a cluster.
-  
-  
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -12047,9 +11966,10 @@ DeleteNodePoolRequest = _reflection.GeneratedProtocolMessageType(
           replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster. This field has
           been deprecated and replaced by the name field.
@@ -12059,7 +11979,7 @@ DeleteNodePoolRequest = _reflection.GeneratedProtocolMessageType(
       name:
           The name (project, location, cluster, node pool id) of the
           node pool to delete. Specified in the format
-          'projects/*/locations/*/clusters/*/nodePools/*'.
+          ``projects/*/locations/*/clusters/*/nodePools/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.DeleteNodePoolRequest)
     ),
@@ -12073,8 +11993,6 @@ ListNodePoolsRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTNODEPOOLSREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""ListNodePoolsRequest lists the node pool(s) for a cluster.
-  
-  
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -12083,16 +12001,17 @@ ListNodePoolsRequest = _reflection.GeneratedProtocolMessageType(
           replaced by the parent field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          parent field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the parent field.
       cluster_id:
           Required. Deprecated. The name of the cluster. This field has
           been deprecated and replaced by the parent field.
       parent:
           The parent (project, location, cluster id) where the node
           pools will be listed. Specified in the format
-          'projects/*/locations/*/clusters/\*'.
+          ``projects/*/locations/*/clusters/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.ListNodePoolsRequest)
     ),
@@ -12106,8 +12025,6 @@ GetNodePoolRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_GETNODEPOOLREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""GetNodePoolRequest retrieves a node pool for a cluster.
-  
-  
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -12116,9 +12033,10 @@ GetNodePoolRequest = _reflection.GeneratedProtocolMessageType(
           replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster. This field has
           been deprecated and replaced by the name field.
@@ -12128,7 +12046,7 @@ GetNodePoolRequest = _reflection.GeneratedProtocolMessageType(
       name:
           The name (project, location, cluster, node pool id) of the
           node pool to get. Specified in the format
-          'projects/*/locations/*/clusters/*/nodePools/*'.
+          ``projects/*/locations/*/clusters/*/nodePools/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.GetNodePoolRequest)
     ),
@@ -12141,14 +12059,12 @@ NodePool = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NODEPOOL,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""NodePool contains the name and configuration for a
-  cluster's node pool. Node pools are a set of nodes (i.e. VM's), with a
-  common configuration and specification, under the control of the cluster
-  master. They may have a set of Kubernetes labels applied to them, which
-  may be used to reference them during pod scheduling. They may also be
-  resized up or down, to accommodate the workload.
-  
-  
+        __doc__="""NodePool contains the name and configuration for a cluster's node
+  pool. Node pools are a set of nodes (i.e. VM's), with a common
+  configuration and specification, under the control of the cluster
+  master. They may have a set of Kubernetes labels applied to them,
+  which may be used to reference them during pod scheduling. They may
+  also be resized up or down, to accommodate the workload.
   Attributes:
       name:
           The name of the node pool.
@@ -12165,8 +12081,9 @@ NodePool = _reflection.GeneratedProtocolMessageType(
           The version of the Kubernetes of this node.
       instance_group_urls:
           [Output only] The resource URLs of the `managed instance
-          groups </compute/docs/instance-groups/creating-groups-of-
-          managed-instances>`__ associated with this node pool.
+          groups <https://cloud.google.com/compute/docs/instance-
+          groups/creating-groups-of-managed-instances>`__ associated
+          with this node pool.
       status:
           [Output only] The status of the nodes in this pool instance.
       status_message:
@@ -12197,10 +12114,8 @@ NodeManagement = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NODEMANAGEMENT,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""NodeManagement defines the set of node management services
-  turned on for the node pool.
-  
-  
+        __doc__="""NodeManagement defines the set of node management services turned on
+  for the node pool.
   Attributes:
       auto_upgrade:
           Whether the nodes will be automatically upgraded.
@@ -12220,10 +12135,8 @@ AutoUpgradeOptions = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_AUTOUPGRADEOPTIONS,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""AutoUpgradeOptions defines the set of options for the user
-  to control how the Auto Upgrades will proceed.
-  
-  
+        __doc__="""AutoUpgradeOptions defines the set of options for the user to control
+  how the Auto Upgrades will proceed.
   Attributes:
       auto_upgrade_start_time:
           [Output only] This field is set when upgrades are about to
@@ -12245,10 +12158,8 @@ MaintenancePolicy = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_MAINTENANCEPOLICY,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""MaintenancePolicy defines the maintenance policy to be
-  used for the cluster.
-  
-  
+        __doc__="""MaintenancePolicy defines the maintenance policy to be used for the
+  cluster.
   Attributes:
       window:
           Specifies the maintenance window in which maintenance may be
@@ -12281,10 +12192,8 @@ MaintenanceWindow = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_MAINTENANCEWINDOW,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""MaintenanceWindow defines the maintenance window to be
-  used for the cluster.
-  
-  
+        __doc__="""MaintenanceWindow defines the maintenance window to be used for the
+  cluster.
   Attributes:
       policy:
           Unimplemented, reserved for future use.
@@ -12314,8 +12223,6 @@ TimeWindow = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_TIMEWINDOW,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""Represents an arbitrary window of time.
-  
-  
   Attributes:
       start_time:
           The time that the window first starts.
@@ -12335,8 +12242,6 @@ RecurringTimeWindow = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_RECURRINGTIMEWINDOW,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""Represents an arbitrary window of time that recurs.
-  
-  
   Attributes:
       window:
           The window of the first recurrence.
@@ -12374,8 +12279,6 @@ DailyMaintenanceWindow = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_DAILYMAINTENANCEWINDOW,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""Time window specified for daily maintenance operations.
-  
-  
   Attributes:
       start_time:
           Time within the maintenance window to start the maintenance
@@ -12396,10 +12299,8 @@ SetNodePoolManagementRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SETNODEPOOLMANAGEMENTREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""SetNodePoolManagementRequest sets the node management
-  properties of a node pool.
-  
-  
+        __doc__="""SetNodePoolManagementRequest sets the node management properties of a
+  node pool.
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -12408,9 +12309,10 @@ SetNodePoolManagementRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster to update. This
           field has been deprecated and replaced by the name field.
@@ -12422,7 +12324,7 @@ SetNodePoolManagementRequest = _reflection.GeneratedProtocolMessageType(
       name:
           The name (project, location, cluster, node pool id) of the
           node pool to set management properties. Specified in the
-          format 'projects/*/locations/*/clusters/*/nodePools/*'.
+          format ``projects/*/locations/*/clusters/*/nodePools/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.SetNodePoolManagementRequest)
     ),
@@ -12436,8 +12338,6 @@ SetNodePoolSizeRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_SETNODEPOOLSIZEREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""SetNodePoolSizeRequest sets the size a node pool.
-  
-  
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -12446,9 +12346,10 @@ SetNodePoolSizeRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster to update. This
           field has been deprecated and replaced by the name field.
@@ -12460,7 +12361,7 @@ SetNodePoolSizeRequest = _reflection.GeneratedProtocolMessageType(
       name:
           The name (project, location, cluster, node pool id) of the
           node pool to set size. Specified in the format
-          'projects/*/locations/*/clusters/*/nodePools/*'.
+          ``projects/*/locations/*/clusters/*/nodePools/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.SetNodePoolSizeRequest)
     ),
@@ -12473,11 +12374,9 @@ RollbackNodePoolUpgradeRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ROLLBACKNODEPOOLUPGRADEREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""RollbackNodePoolUpgradeRequest rollbacks the previously
-  Aborted or Failed NodePool upgrade. This will be an no-op if the last
-  upgrade successfully completed.
-  
-  
+        __doc__="""RollbackNodePoolUpgradeRequest rollbacks the previously Aborted or
+  Failed NodePool upgrade. This will be an no-op if the last upgrade
+  successfully completed.
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -12486,9 +12385,10 @@ RollbackNodePoolUpgradeRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster to rollback.
           This field has been deprecated and replaced by the name field.
@@ -12498,7 +12398,7 @@ RollbackNodePoolUpgradeRequest = _reflection.GeneratedProtocolMessageType(
       name:
           The name (project, location, cluster, node pool id) of the
           node poll to rollback upgrade. Specified in the format
-          'projects/*/locations/*/clusters/*/nodePools/*'.
+          ``projects/*/locations/*/clusters/*/nodePools/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.RollbackNodePoolUpgradeRequest)
     ),
@@ -12511,10 +12411,7 @@ ListNodePoolsResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTNODEPOOLSRESPONSE,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""ListNodePoolsResponse is the result of
-  ListNodePoolsRequest.
-  
-  
+        __doc__="""ListNodePoolsResponse is the result of ListNodePoolsRequest.
   Attributes:
       node_pools:
           A list of node pools for a cluster.
@@ -12530,12 +12427,9 @@ ClusterAutoscaling = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CLUSTERAUTOSCALING,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""ClusterAutoscaling contains global, per-cluster
-  information required by Cluster Autoscaler to automatically adjust the
-  size of the cluster and create/delete node pools based on the current
-  needs.
-  
-  
+        __doc__="""ClusterAutoscaling contains global, per-cluster information required
+  by Cluster Autoscaler to automatically adjust the size of the cluster
+  and create/delete node pools based on the current needs.
   Attributes:
       enable_node_autoprovisioning:
           Enables automatic node pool creation and deletion.
@@ -12547,8 +12441,8 @@ ClusterAutoscaling = _reflection.GeneratedProtocolMessageType(
           pool created by NAP.
       autoprovisioning_locations:
           The list of Google Compute Engine `zones
-          </compute/docs/zones#available>`__ in which the NodePool's
-          nodes can be created by NAP.
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the NodePool's nodes can be created by NAP.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.ClusterAutoscaling)
     ),
@@ -12561,10 +12455,8 @@ AutoprovisioningNodePoolDefaults = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_AUTOPROVISIONINGNODEPOOLDEFAULTS,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""AutoprovisioningNodePoolDefaults contains defaults for a
-  node pool created by NAP.
-  
-  
+        __doc__="""AutoprovisioningNodePoolDefaults contains defaults for a node pool
+  created by NAP.
   Attributes:
       oauth_scopes:
           Scopes that are used by NAP when creating node pools. If
@@ -12585,10 +12477,8 @@ ResourceLimit = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_RESOURCELIMIT,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""Contains information about amount of some resource in the
-  cluster. For memory, value should be in GB.
-  
-  
+        __doc__="""Contains information about amount of some resource in the cluster. For
+  memory, value should be in GB.
   Attributes:
       resource_type:
           Resource name "cpu", "memory" or gpu-specific string.
@@ -12608,11 +12498,9 @@ NodePoolAutoscaling = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NODEPOOLAUTOSCALING,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""NodePoolAutoscaling contains information required by
-  cluster autoscaler to adjust the size of the node pool to the current
-  cluster usage.
-  
-  
+        __doc__="""NodePoolAutoscaling contains information required by cluster
+  autoscaler to adjust the size of the node pool to the current cluster
+  usage.
   Attributes:
       enabled:
           Is autoscaling enabled for this node pool.
@@ -12646,11 +12534,9 @@ SetLabelsRequest = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SETLABELSREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""SetLabelsRequest sets the Google Cloud Platform labels on
-  a Google Container Engine cluster, which will in turn set them for
-  Google Compute Engine resources used by that cluster
-  
-  
+        __doc__="""SetLabelsRequest sets the Google Cloud Platform labels on a Google
+  Container Engine cluster, which will in turn set them for Google
+  Compute Engine resources used by that cluster
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -12659,9 +12545,10 @@ SetLabelsRequest = _reflection.GeneratedProtocolMessageType(
           replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster. This field has
           been deprecated and replaced by the name field.
@@ -12678,7 +12565,7 @@ SetLabelsRequest = _reflection.GeneratedProtocolMessageType(
       name:
           The name (project, location, cluster id) of the cluster to set
           labels. Specified in the format
-          'projects/*/locations/*/clusters/\*'.
+          ``projects/*/locations/*/clusters/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.SetLabelsRequest)
     ),
@@ -12692,10 +12579,8 @@ SetLegacyAbacRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SETLEGACYABACREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""SetLegacyAbacRequest enables or disables the ABAC
-  authorization mechanism for a cluster.
-  
-  
+        __doc__="""SetLegacyAbacRequest enables or disables the ABAC authorization
+  mechanism for a cluster.
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -12704,9 +12589,10 @@ SetLegacyAbacRequest = _reflection.GeneratedProtocolMessageType(
           field has been deprecated and replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster to update. This
           field has been deprecated and replaced by the name field.
@@ -12716,7 +12602,7 @@ SetLegacyAbacRequest = _reflection.GeneratedProtocolMessageType(
       name:
           The name (project, location, cluster id) of the cluster to set
           legacy abac. Specified in the format
-          'projects/*/locations/*/clusters/\*'.
+          ``projects/*/locations/*/clusters/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.SetLegacyAbacRequest)
     ),
@@ -12729,11 +12615,8 @@ StartIPRotationRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_STARTIPROTATIONREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""StartIPRotationRequest creates a new IP for the cluster
-  and then performs a node upgrade on each node pool to point to the new
-  IP.
-  
-  
+        __doc__="""StartIPRotationRequest creates a new IP for the cluster and then
+  performs a node upgrade on each node pool to point to the new IP.
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -12742,16 +12625,17 @@ StartIPRotationRequest = _reflection.GeneratedProtocolMessageType(
           replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster. This field has
           been deprecated and replaced by the name field.
       name:
           The name (project, location, cluster id) of the cluster to
           start IP rotation. Specified in the format
-          'projects/*/locations/*/clusters/\*'.
+          ``projects/*/locations/*/clusters/*``.
       rotate_credentials:
           Whether to rotate credentials during IP rotation.
   """,
@@ -12766,10 +12650,8 @@ CompleteIPRotationRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_COMPLETEIPROTATIONREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""CompleteIPRotationRequest moves the cluster master back
-  into single-IP mode.
-  
-  
+        __doc__="""CompleteIPRotationRequest moves the cluster master back into single-IP
+  mode.
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -12778,16 +12660,17 @@ CompleteIPRotationRequest = _reflection.GeneratedProtocolMessageType(
           replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster. This field has
           been deprecated and replaced by the name field.
       name:
           The name (project, location, cluster id) of the cluster to
           complete IP rotation. Specified in the format
-          'projects/*/locations/*/clusters/\*'.
+          ``projects/*/locations/*/clusters/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.CompleteIPRotationRequest)
     ),
@@ -12800,16 +12683,14 @@ AcceleratorConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ACCELERATORCONFIG,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""AcceleratorConfig represents a Hardware Accelerator
-  request.
-  
-  
+        __doc__="""AcceleratorConfig represents a Hardware Accelerator request.
   Attributes:
       accelerator_count:
           The number of the accelerator cards exposed to an instance.
       accelerator_type:
           The accelerator type resource name. List of supported
-          accelerators `here </compute/docs/gpus>`__
+          accelerators `here
+          <https://cloud.google.com/compute/docs/gpus>`__
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.AcceleratorConfig)
     ),
@@ -12822,10 +12703,8 @@ WorkloadMetadataConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_WORKLOADMETADATACONFIG,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""WorkloadMetadataConfig defines the metadata configuration
-  to expose to workloads on the node pool.
-  
-  
+        __doc__="""WorkloadMetadataConfig defines the metadata configuration to expose to
+  workloads on the node pool.
   Attributes:
       node_metadata:
           NodeMetadata is the configuration for how to expose metadata
@@ -12842,10 +12721,7 @@ SetNetworkPolicyRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SETNETWORKPOLICYREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""SetNetworkPolicyRequest enables/disables network policy
-  for a cluster.
-  
-  
+        __doc__="""SetNetworkPolicyRequest enables/disables network policy for a cluster.
   Attributes:
       project_id:
           Required. Deprecated. The Google Developers Console `project
@@ -12854,9 +12730,10 @@ SetNetworkPolicyRequest = _reflection.GeneratedProtocolMessageType(
           replaced by the name field.
       zone:
           Required. Deprecated. The name of the Google Compute Engine
-          `zone </compute/docs/zones#available>`__ in which the cluster
-          resides. This field has been deprecated and replaced by the
-          name field.
+          `zone
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides. This field has been deprecated and
+          replaced by the name field.
       cluster_id:
           Required. Deprecated. The name of the cluster. This field has
           been deprecated and replaced by the name field.
@@ -12865,7 +12742,7 @@ SetNetworkPolicyRequest = _reflection.GeneratedProtocolMessageType(
       name:
           The name (project, location, cluster id) of the cluster to set
           networking policy. Specified in the format
-          'projects/*/locations/*/clusters/\*'.
+          ``projects/*/locations/*/clusters/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.SetNetworkPolicyRequest)
     ),
@@ -12878,18 +12755,15 @@ SetMaintenancePolicyRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SETMAINTENANCEPOLICYREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""SetMaintenancePolicyRequest sets the maintenance policy
-  for a cluster.
-  
-  
+        __doc__="""SetMaintenancePolicyRequest sets the maintenance policy for a cluster.
   Attributes:
       project_id:
           Required. The Google Developers Console `project ID or project
           number <https://support.google.com/cloud/answer/6158840>`__.
       zone:
           Required. The name of the Google Compute Engine `zone
-          </compute/docs/zones#available>`__ in which the cluster
-          resides.
+          <https://cloud.google.com/compute/docs/zones#available>`__ in
+          which the cluster resides.
       cluster_id:
           Required. The name of the cluster to update.
       maintenance_policy:
@@ -12898,7 +12772,7 @@ SetMaintenancePolicyRequest = _reflection.GeneratedProtocolMessageType(
       name:
           The name (project, location, cluster id) of the cluster to set
           maintenance policy. Specified in the format
-          'projects/*/locations/*/clusters/\*'.
+          ``projects/*/locations/*/clusters/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.SetMaintenancePolicyRequest)
     ),
@@ -12911,14 +12785,11 @@ ListLocationsRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTLOCATIONSREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""ListLocationsRequest is used to request the locations that
-  offer GKE.
-  
-  
+        __doc__="""ListLocationsRequest is used to request the locations that offer GKE.
   Attributes:
       parent:
           Required. Contains the name of the resource requested.
-          Specified in the format 'projects/\*'.
+          Specified in the format ``projects/*``.
   """,
         # @@protoc_insertion_point(class_scope:google.container.v1beta1.ListLocationsRequest)
     ),
@@ -12931,10 +12802,8 @@ ListLocationsResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTLOCATIONSRESPONSE,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""ListLocationsResponse returns the list of all GKE
-  locations and their recommendation state.
-  
-  
+        __doc__="""ListLocationsResponse returns the list of all GKE locations and their
+  recommendation state.
   Attributes:
       locations:
           A full list of GKE locations.
@@ -12956,17 +12825,15 @@ Location = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LOCATION,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""Location returns the location name, and if the location is
-  recommended for GKE cluster scheduling.
-  
-  
+        __doc__="""Location returns the location name, and if the location is recommended
+  for GKE cluster scheduling.
   Attributes:
       type:
           Contains the type of location this Location is for. Regional
           or Zonal.
       name:
           Contains the name of the resource requested. Specified in the
-          format 'projects/*/locations/*'.
+          format ``projects/*/locations/*``.
       recommended:
           Whether the location is recomended for GKE cluster scheduling.
   """,
@@ -12981,10 +12848,8 @@ StatusCondition = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_STATUSCONDITION,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""StatusCondition describes why a cluster or a node pool has
-  a certain status (e.g., ERROR or DEGRADED).
-  
-  
+        __doc__="""StatusCondition describes why a cluster or a node pool has a certain
+  status (e.g., ERROR or DEGRADED).
   Attributes:
       code:
           Machine-friendly representation of the condition
@@ -13002,22 +12867,19 @@ NetworkConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_NETWORKCONFIG,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""NetworkConfig reports the relative names of network &
-  subnetwork.
-  
-  
+        __doc__="""NetworkConfig reports the relative names of network & subnetwork.
   Attributes:
       network:
           Output only. The relative name of the Google Compute Engine [n
-          etwork][google.container.v1beta1.NetworkConfig.network](/compu
-          te/docs/networks-and-firewalls#networks) to which the cluster
-          is connected. Example: projects/my-project/global/networks/my-
-          network
+          etwork][google.container.v1beta1.NetworkConfig.network](https:
+          //cloud.google.com/compute/docs/networks-and-
+          firewalls#networks) to which the cluster is connected.
+          Example: projects/my-project/global/networks/my-network
       subnetwork:
           Output only. The relative name of the Google Compute Engine
-          `subnetwork </compute/docs/vpc>`__ to which the cluster is
-          connected. Example: projects/my-project/regions/us-
-          central1/subnetworks/my-subnet
+          `subnetwork <https://cloud.google.com/compute/docs/vpc>`__ to
+          which the cluster is connected. Example: projects/my-
+          project/regions/us-central1/subnetworks/my-subnet
       enable_intra_node_visibility:
           Whether Intra-node visibility is enabled for this cluster.
           This makes same node pod to pod traffic visible for VPC
@@ -13034,14 +12896,12 @@ ListUsableSubnetworksRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTUSABLESUBNETWORKSREQUEST,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""ListUsableSubnetworksRequest requests the list of usable
-  subnetworks. available to a user for creating clusters.
-  
-  
+        __doc__="""ListUsableSubnetworksRequest requests the list of usable subnetworks.
+  available to a user for creating clusters.
   Attributes:
       parent:
           Required. The parent project where subnetworks are usable.
-          Specified in the format 'projects/\*'.
+          Specified in the format ``projects/*``.
       filter:
           Filtering currently only supports equality on the
           networkProjectId and must be in the form:
@@ -13072,8 +12932,6 @@ ListUsableSubnetworksResponse = _reflection.GeneratedProtocolMessageType(
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""ListUsableSubnetworksResponse is the response of
   ListUsableSubnetworksRequest.
-  
-  
   Attributes:
       subnetworks:
           A list of usable subnetworks in the specified network project.
@@ -13096,8 +12954,6 @@ UsableSubnetworkSecondaryRange = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_USABLESUBNETWORKSECONDARYRANGE,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""Secondary IP range of a usable subnetwork.
-  
-  
   Attributes:
       range_name:
           The name associated with this subnetwork secondary range, used
@@ -13120,10 +12976,7 @@ UsableSubnetwork = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_USABLESUBNETWORK,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""Network Name. Example:
-  projects/my-project/global/networks/my-network
-  
-  
+        __doc__="""Network Name. Example: projects/my-project/global/networks/my-network
   Attributes:
       subnetwork:
           Subnetwork Name. Example: projects/my-project/regions/us-
@@ -13151,11 +13004,9 @@ VerticalPodAutoscaling = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_VERTICALPODAUTOSCALING,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""VerticalPodAutoscaling contains global, per-cluster
-  information required by Vertical Pod Autoscaler to automatically adjust
-  the resources of pods controlled by it.
-  
-  
+        __doc__="""VerticalPodAutoscaling contains global, per-cluster information
+  required by Vertical Pod Autoscaler to automatically adjust the
+  resources of pods controlled by it.
   Attributes:
       enabled:
           Enables vertical pod autoscaling.
@@ -13171,10 +13022,8 @@ IntraNodeVisibilityConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_INTRANODEVISIBILITYCONFIG,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-        __doc__="""IntraNodeVisibilityConfig contains the desired config of
-  the intra-node visibility on this cluster.
-  
-  
+        __doc__="""IntraNodeVisibilityConfig contains the desired config of the intra-
+  node visibility on this cluster.
   Attributes:
       enabled:
           Enables intra node visibility for this cluster.
@@ -13191,8 +13040,6 @@ MaxPodsConstraint = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_MAXPODSCONSTRAINT,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""Constraints applied to pods.
-  
-  
   Attributes:
       max_pods_per_node:
           Constraint enforced on the max num of pods per node.
@@ -13209,8 +13056,6 @@ DatabaseEncryption = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_DATABASEENCRYPTION,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""Configuration of etcd encryption.
-  
-  
   Attributes:
       state:
           Denotes the state of etcd encryption.
@@ -13234,10 +13079,8 @@ ResourceUsageExportConfig = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_RESOURCEUSAGEEXPORTCONFIG_BIGQUERYDESTINATION,
                 __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
-                __doc__="""Parameters for using BigQuery as the destination of
-    resource usage export.
-    
-    
+                __doc__="""Parameters for using BigQuery as the destination of resource usage
+    export.
     Attributes:
         dataset_id:
             The ID of a BigQuery Dataset.
@@ -13252,8 +13095,6 @@ ResourceUsageExportConfig = _reflection.GeneratedProtocolMessageType(
                 DESCRIPTOR=_RESOURCEUSAGEEXPORTCONFIG_CONSUMPTIONMETERINGCONFIG,
                 __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
                 __doc__="""Parameters for controlling consumption metering.
-    
-    
     Attributes:
         enabled:
             Whether to enable consumption metering for this cluster. If
@@ -13266,8 +13107,6 @@ ResourceUsageExportConfig = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_RESOURCEUSAGEEXPORTCONFIG,
         __module__="google.cloud.container_v1beta1.proto.cluster_service_pb2",
         __doc__="""Configuration for exporting cluster resource usages.
-  
-  
   Attributes:
       bigquery_destination:
           Configuration to use BigQuery as usage export destination.
