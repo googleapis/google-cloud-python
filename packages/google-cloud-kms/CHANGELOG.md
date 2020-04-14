@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [1.4.0](https://www.github.com/googleapis/python-kms/compare/v1.3.0...v1.4.0) (2020-04-14)
+
+
+### Features
+
+* add support for external key manager (via synth) ([#8](https://www.github.com/googleapis/python-kms/issues/8)) ([4077fc8](https://www.github.com/googleapis/python-kms/commit/4077fc89943cc09d489d44c05efcf9cab61cdbaf))
+
 ## [1.3.0](https://www.github.com/googleapis/python-kms/compare/v1.2.1...v1.3.0) (2020-02-12)
 
 
