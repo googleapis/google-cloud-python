@@ -114,6 +114,7 @@ class CryptoKeyVersion(object):
           RSA_DECRYPT_OAEP_4096_SHA512 (int): RSAES-OAEP 4096 bit key with a SHA512 digest.
           EC_SIGN_P256_SHA256 (int): ECDSA on the NIST P-256 curve with a SHA256 digest.
           EC_SIGN_P384_SHA384 (int): ECDSA on the NIST P-384 curve with a SHA384 digest.
+          EXTERNAL_SYMMETRIC_ENCRYPTION (int): Algorithm representing symmetric encryption by an external key manager.
         """
 
         CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED = 0
@@ -132,6 +133,7 @@ class CryptoKeyVersion(object):
         RSA_DECRYPT_OAEP_4096_SHA512 = 17
         EC_SIGN_P256_SHA256 = 12
         EC_SIGN_P384_SHA384 = 13
+        EXTERNAL_SYMMETRIC_ENCRYPTION = 18
 
     class CryptoKeyVersionState(enum.IntEnum):
         """

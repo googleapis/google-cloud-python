@@ -818,9 +818,7 @@ class TestKeyManagementServiceClient(object):
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        name = client.crypto_key_path_path(
-            "[PROJECT]", "[LOCATION]", "[KEY_RING]", "[CRYPTO_KEY_PATH]"
-        )
+        name = "name3373707"
         plaintext = b"-9"
 
         response = client.encrypt(name, plaintext)
@@ -840,9 +838,7 @@ class TestKeyManagementServiceClient(object):
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        name = client.crypto_key_path_path(
-            "[PROJECT]", "[LOCATION]", "[KEY_RING]", "[CRYPTO_KEY_PATH]"
-        )
+        name = "name3373707"
         plaintext = b"-9"
 
         with pytest.raises(CustomException):
@@ -1221,7 +1217,7 @@ class TestKeyManagementServiceClient(object):
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        resource = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+        resource = "resource-341064690"
         policy = {}
 
         response = client.set_iam_policy(resource, policy)
@@ -1243,7 +1239,7 @@ class TestKeyManagementServiceClient(object):
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        resource = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+        resource = "resource-341064690"
         policy = {}
 
         with pytest.raises(CustomException):
@@ -1264,7 +1260,7 @@ class TestKeyManagementServiceClient(object):
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        resource = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+        resource = "resource-341064690"
 
         response = client.get_iam_policy(resource)
         assert expected_response == response
@@ -1283,7 +1279,7 @@ class TestKeyManagementServiceClient(object):
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        resource = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+        resource = "resource-341064690"
 
         with pytest.raises(CustomException):
             client.get_iam_policy(resource)
@@ -1303,7 +1299,7 @@ class TestKeyManagementServiceClient(object):
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup Request
-        resource = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+        resource = "resource-341064690"
         permissions = []
 
         response = client.test_iam_permissions(resource, permissions)
@@ -1325,7 +1321,7 @@ class TestKeyManagementServiceClient(object):
             client = kms_v1.KeyManagementServiceClient()
 
         # Setup request
-        resource = client.key_ring_path("[PROJECT]", "[LOCATION]", "[KEY_RING]")
+        resource = "resource-341064690"
         permissions = []
 
         with pytest.raises(CustomException):

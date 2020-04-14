@@ -117,6 +117,7 @@ class KeyManagementServiceClient(object):
     def crypto_key_version_path(
         cls, project, location, key_ring, crypto_key, crypto_key_version
     ):
+
         """Return a fully-qualified crypto_key_version string."""
         return google.api_core.path_template.expand(
             "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}",
@@ -1676,7 +1677,8 @@ class KeyManagementServiceClient(object):
             >>>
             >>> client = kms_v1.KeyManagementServiceClient()
             >>>
-            >>> name = client.crypto_key_path_path('[PROJECT]', '[LOCATION]', '[KEY_RING]', '[CRYPTO_KEY_PATH]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> # TODO: Initialize `plaintext`:
             >>> plaintext = b''
@@ -2320,7 +2322,8 @@ class KeyManagementServiceClient(object):
             >>>
             >>> client = kms_v1.KeyManagementServiceClient()
             >>>
-            >>> resource = client.key_ring_path('[PROJECT]', '[LOCATION]', '[KEY_RING]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> # TODO: Initialize `policy`:
             >>> policy = {}
@@ -2402,7 +2405,8 @@ class KeyManagementServiceClient(object):
             >>>
             >>> client = kms_v1.KeyManagementServiceClient()
             >>>
-            >>> resource = client.key_ring_path('[PROJECT]', '[LOCATION]', '[KEY_RING]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> response = client.get_iam_policy(resource)
 
@@ -2486,7 +2490,8 @@ class KeyManagementServiceClient(object):
             >>>
             >>> client = kms_v1.KeyManagementServiceClient()
             >>>
-            >>> resource = client.key_ring_path('[PROJECT]', '[LOCATION]', '[KEY_RING]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> # TODO: Initialize `permissions`:
             >>> permissions = []

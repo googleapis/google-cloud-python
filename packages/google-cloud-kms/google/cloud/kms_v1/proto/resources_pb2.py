@@ -16,11 +16,11 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -28,17 +28,17 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.kms.v1",
     syntax="proto3",
     serialized_options=_b(
-        "\n\027com.google.cloud.kms.v1B\021KmsResourcesProtoP\001Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms\370\001\001\252\002\023Google.Cloud.Kms.V1\312\002\023Google\\Cloud\\Kms\\V1\352A\200\001\n!cloudkms.googleapis.com/CryptoKey\022[projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key_path=**}"
+        "\n\027com.google.cloud.kms.v1B\021KmsResourcesProtoP\001Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms\370\001\001\252\002\023Google.Cloud.Kms.V1\312\002\023Google\\Cloud\\Kms\\V1"
     ),
     serialized_pb=_b(
-        '\n)google/cloud/kms_v1/proto/resources.proto\x12\x13google.cloud.kms.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xb5\x01\n\x07KeyRing\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x34\n\x0b\x63reate_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03:a\xea\x41^\n\x1f\x63loudkms.googleapis.com/KeyRing\x12;projects/{project}/locations/{location}/keyRings/{key_ring}"\x86\x06\n\tCryptoKey\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12;\n\x07primary\x18\x02 \x01(\x0b\x32%.google.cloud.kms.v1.CryptoKeyVersionB\x03\xe0\x41\x03\x12\x45\n\x07purpose\x18\x03 \x01(\x0e\x32/.google.cloud.kms.v1.CryptoKey.CryptoKeyPurposeB\x03\xe0\x41\x05\x12\x34\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x36\n\x12next_rotation_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\x0frotation_period\x18\x08 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12G\n\x10version_template\x18\x0b \x01(\x0b\x32-.google.cloud.kms.v1.CryptoKeyVersionTemplate\x12:\n\x06labels\x18\n \x03(\x0b\x32*.google.cloud.kms.v1.CryptoKey.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"x\n\x10\x43ryptoKeyPurpose\x12"\n\x1e\x43RYPTO_KEY_PURPOSE_UNSPECIFIED\x10\x00\x12\x13\n\x0f\x45NCRYPT_DECRYPT\x10\x01\x12\x13\n\x0f\x41SYMMETRIC_SIGN\x10\x05\x12\x16\n\x12\x41SYMMETRIC_DECRYPT\x10\x06:{\xea\x41x\n!cloudkms.googleapis.com/CryptoKey\x12Sprojects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}B\x13\n\x11rotation_schedule"\xb3\x01\n\x18\x43ryptoKeyVersionTemplate\x12>\n\x10protection_level\x18\x01 \x01(\x0e\x32$.google.cloud.kms.v1.ProtectionLevel\x12W\n\talgorithm\x18\x03 \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithmB\x03\xe0\x41\x02"\xf1\x01\n\x17KeyOperationAttestation\x12S\n\x06\x66ormat\x18\x04 \x01(\x0e\x32>.google.cloud.kms.v1.KeyOperationAttestation.AttestationFormatB\x03\xe0\x41\x03\x12\x14\n\x07\x63ontent\x18\x05 \x01(\x0c\x42\x03\xe0\x41\x03"k\n\x11\x41ttestationFormat\x12"\n\x1e\x41TTESTATION_FORMAT_UNSPECIFIED\x10\x00\x12\x18\n\x14\x43\x41VIUM_V1_COMPRESSED\x10\x03\x12\x18\n\x14\x43\x41VIUM_V2_COMPRESSED\x10\x04"\x87\r\n\x10\x43ryptoKeyVersion\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12J\n\x05state\x18\x03 \x01(\x0e\x32;.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState\x12\x43\n\x10protection_level\x18\x07 \x01(\x0e\x32$.google.cloud.kms.v1.ProtectionLevelB\x03\xe0\x41\x03\x12W\n\talgorithm\x18\n \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithmB\x03\xe0\x41\x03\x12\x46\n\x0b\x61ttestation\x18\x08 \x01(\x0b\x32,.google.cloud.kms.v1.KeyOperationAttestationB\x03\xe0\x41\x03\x12\x34\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x36\n\rgenerate_time\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x35\n\x0c\x64\x65stroy_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12;\n\x12\x64\x65stroy_event_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x17\n\nimport_job\x18\x0e \x01(\tB\x03\xe0\x41\x03\x12\x34\n\x0bimport_time\x18\x0f \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12"\n\x15import_failure_reason\x18\x10 \x01(\tB\x03\xe0\x41\x03"\x9c\x04\n\x19\x43ryptoKeyVersionAlgorithm\x12,\n(CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED\x10\x00\x12\x1f\n\x1bGOOGLE_SYMMETRIC_ENCRYPTION\x10\x01\x12\x1c\n\x18RSA_SIGN_PSS_2048_SHA256\x10\x02\x12\x1c\n\x18RSA_SIGN_PSS_3072_SHA256\x10\x03\x12\x1c\n\x18RSA_SIGN_PSS_4096_SHA256\x10\x04\x12\x1c\n\x18RSA_SIGN_PSS_4096_SHA512\x10\x0f\x12\x1e\n\x1aRSA_SIGN_PKCS1_2048_SHA256\x10\x05\x12\x1e\n\x1aRSA_SIGN_PKCS1_3072_SHA256\x10\x06\x12\x1e\n\x1aRSA_SIGN_PKCS1_4096_SHA256\x10\x07\x12\x1e\n\x1aRSA_SIGN_PKCS1_4096_SHA512\x10\x10\x12 \n\x1cRSA_DECRYPT_OAEP_2048_SHA256\x10\x08\x12 \n\x1cRSA_DECRYPT_OAEP_3072_SHA256\x10\t\x12 \n\x1cRSA_DECRYPT_OAEP_4096_SHA256\x10\n\x12 \n\x1cRSA_DECRYPT_OAEP_4096_SHA512\x10\x11\x12\x17\n\x13\x45\x43_SIGN_P256_SHA256\x10\x0c\x12\x17\n\x13\x45\x43_SIGN_P384_SHA384\x10\r"\xc1\x01\n\x15\x43ryptoKeyVersionState\x12(\n$CRYPTO_KEY_VERSION_STATE_UNSPECIFIED\x10\x00\x12\x16\n\x12PENDING_GENERATION\x10\x05\x12\x0b\n\x07\x45NABLED\x10\x01\x12\x0c\n\x08\x44ISABLED\x10\x02\x12\r\n\tDESTROYED\x10\x03\x12\x15\n\x11\x44\x45STROY_SCHEDULED\x10\x04\x12\x12\n\x0ePENDING_IMPORT\x10\x06\x12\x11\n\rIMPORT_FAILED\x10\x07"I\n\x14\x43ryptoKeyVersionView\x12\'\n#CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED\x10\x00\x12\x08\n\x04\x46ULL\x10\x01:\xaa\x01\xea\x41\xa6\x01\n(cloudkms.googleapis.com/CryptoKeyVersion\x12zprojects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}"l\n\tPublicKey\x12\x0b\n\x03pem\x18\x01 \x01(\t\x12R\n\talgorithm\x18\x02 \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm"\xdb\x07\n\tImportJob\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12J\n\rimport_method\x18\x02 \x01(\x0e\x32+.google.cloud.kms.v1.ImportJob.ImportMethodB\x06\xe0\x41\x02\xe0\x41\x05\x12\x46\n\x10protection_level\x18\t \x01(\x0e\x32$.google.cloud.kms.v1.ProtectionLevelB\x06\xe0\x41\x02\xe0\x41\x05\x12\x34\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x36\n\rgenerate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x34\n\x0b\x65xpire_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12:\n\x11\x65xpire_event_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x41\n\x05state\x18\x06 \x01(\x0e\x32-.google.cloud.kms.v1.ImportJob.ImportJobStateB\x03\xe0\x41\x03\x12I\n\npublic_key\x18\x07 \x01(\x0b\x32\x30.google.cloud.kms.v1.ImportJob.WrappingPublicKeyB\x03\xe0\x41\x03\x12\x46\n\x0b\x61ttestation\x18\x08 \x01(\x0b\x32,.google.cloud.kms.v1.KeyOperationAttestationB\x03\xe0\x41\x03\x1a \n\x11WrappingPublicKey\x12\x0b\n\x03pem\x18\x01 \x01(\t"m\n\x0cImportMethod\x12\x1d\n\x19IMPORT_METHOD_UNSPECIFIED\x10\x00\x12\x1e\n\x1aRSA_OAEP_3072_SHA1_AES_256\x10\x01\x12\x1e\n\x1aRSA_OAEP_4096_SHA1_AES_256\x10\x02"c\n\x0eImportJobState\x12 \n\x1cIMPORT_JOB_STATE_UNSPECIFIED\x10\x00\x12\x16\n\x12PENDING_GENERATION\x10\x01\x12\n\n\x06\x41\x43TIVE\x10\x02\x12\x0b\n\x07\x45XPIRED\x10\x03:{\xea\x41x\n!cloudkms.googleapis.com/ImportJob\x12Sprojects/{project}/locations/{location}/keyRings/{key_ring}/importJobs/{import_job}*X\n\x0fProtectionLevel\x12 \n\x1cPROTECTION_LEVEL_UNSPECIFIED\x10\x00\x12\x0c\n\x08SOFTWARE\x10\x01\x12\x07\n\x03HSM\x10\x02\x12\x0c\n\x08\x45XTERNAL\x10\x03\x42\x99\x02\n\x17\x63om.google.cloud.kms.v1B\x11KmsResourcesProtoP\x01Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms\xf8\x01\x01\xaa\x02\x13Google.Cloud.Kms.V1\xca\x02\x13Google\\Cloud\\Kms\\V1\xea\x41\x80\x01\n!cloudkms.googleapis.com/CryptoKey\x12[projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key_path=**}b\x06proto3'
+        '\n)google/cloud/kms_v1/proto/resources.proto\x12\x13google.cloud.kms.v1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\xb5\x01\n\x07KeyRing\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x34\n\x0b\x63reate_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03:a\xea\x41^\n\x1f\x63loudkms.googleapis.com/KeyRing\x12;projects/{project}/locations/{location}/keyRings/{key_ring}"\x86\x06\n\tCryptoKey\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12;\n\x07primary\x18\x02 \x01(\x0b\x32%.google.cloud.kms.v1.CryptoKeyVersionB\x03\xe0\x41\x03\x12\x45\n\x07purpose\x18\x03 \x01(\x0e\x32/.google.cloud.kms.v1.CryptoKey.CryptoKeyPurposeB\x03\xe0\x41\x05\x12\x34\n\x0b\x63reate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x36\n\x12next_rotation_time\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\x0frotation_period\x18\x08 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12G\n\x10version_template\x18\x0b \x01(\x0b\x32-.google.cloud.kms.v1.CryptoKeyVersionTemplate\x12:\n\x06labels\x18\n \x03(\x0b\x32*.google.cloud.kms.v1.CryptoKey.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"x\n\x10\x43ryptoKeyPurpose\x12"\n\x1e\x43RYPTO_KEY_PURPOSE_UNSPECIFIED\x10\x00\x12\x13\n\x0f\x45NCRYPT_DECRYPT\x10\x01\x12\x13\n\x0f\x41SYMMETRIC_SIGN\x10\x05\x12\x16\n\x12\x41SYMMETRIC_DECRYPT\x10\x06:{\xea\x41x\n!cloudkms.googleapis.com/CryptoKey\x12Sprojects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}B\x13\n\x11rotation_schedule"\xb3\x01\n\x18\x43ryptoKeyVersionTemplate\x12>\n\x10protection_level\x18\x01 \x01(\x0e\x32$.google.cloud.kms.v1.ProtectionLevel\x12W\n\talgorithm\x18\x03 \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithmB\x03\xe0\x41\x02"\xf1\x01\n\x17KeyOperationAttestation\x12S\n\x06\x66ormat\x18\x04 \x01(\x0e\x32>.google.cloud.kms.v1.KeyOperationAttestation.AttestationFormatB\x03\xe0\x41\x03\x12\x14\n\x07\x63ontent\x18\x05 \x01(\x0c\x42\x03\xe0\x41\x03"k\n\x11\x41ttestationFormat\x12"\n\x1e\x41TTESTATION_FORMAT_UNSPECIFIED\x10\x00\x12\x18\n\x14\x43\x41VIUM_V1_COMPRESSED\x10\x03\x12\x18\n\x14\x43\x41VIUM_V2_COMPRESSED\x10\x04"\x8a\x0e\n\x10\x43ryptoKeyVersion\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12J\n\x05state\x18\x03 \x01(\x0e\x32;.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState\x12\x43\n\x10protection_level\x18\x07 \x01(\x0e\x32$.google.cloud.kms.v1.ProtectionLevelB\x03\xe0\x41\x03\x12W\n\talgorithm\x18\n \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithmB\x03\xe0\x41\x03\x12\x46\n\x0b\x61ttestation\x18\x08 \x01(\x0b\x32,.google.cloud.kms.v1.KeyOperationAttestationB\x03\xe0\x41\x03\x12\x34\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x36\n\rgenerate_time\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x35\n\x0c\x64\x65stroy_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12;\n\x12\x64\x65stroy_event_time\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x17\n\nimport_job\x18\x0e \x01(\tB\x03\xe0\x41\x03\x12\x34\n\x0bimport_time\x18\x0f \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12"\n\x15import_failure_reason\x18\x10 \x01(\tB\x03\xe0\x41\x03\x12^\n!external_protection_level_options\x18\x11 \x01(\x0b\x32\x33.google.cloud.kms.v1.ExternalProtectionLevelOptions"\xbf\x04\n\x19\x43ryptoKeyVersionAlgorithm\x12,\n(CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED\x10\x00\x12\x1f\n\x1bGOOGLE_SYMMETRIC_ENCRYPTION\x10\x01\x12\x1c\n\x18RSA_SIGN_PSS_2048_SHA256\x10\x02\x12\x1c\n\x18RSA_SIGN_PSS_3072_SHA256\x10\x03\x12\x1c\n\x18RSA_SIGN_PSS_4096_SHA256\x10\x04\x12\x1c\n\x18RSA_SIGN_PSS_4096_SHA512\x10\x0f\x12\x1e\n\x1aRSA_SIGN_PKCS1_2048_SHA256\x10\x05\x12\x1e\n\x1aRSA_SIGN_PKCS1_3072_SHA256\x10\x06\x12\x1e\n\x1aRSA_SIGN_PKCS1_4096_SHA256\x10\x07\x12\x1e\n\x1aRSA_SIGN_PKCS1_4096_SHA512\x10\x10\x12 \n\x1cRSA_DECRYPT_OAEP_2048_SHA256\x10\x08\x12 \n\x1cRSA_DECRYPT_OAEP_3072_SHA256\x10\t\x12 \n\x1cRSA_DECRYPT_OAEP_4096_SHA256\x10\n\x12 \n\x1cRSA_DECRYPT_OAEP_4096_SHA512\x10\x11\x12\x17\n\x13\x45\x43_SIGN_P256_SHA256\x10\x0c\x12\x17\n\x13\x45\x43_SIGN_P384_SHA384\x10\r\x12!\n\x1d\x45XTERNAL_SYMMETRIC_ENCRYPTION\x10\x12"\xc1\x01\n\x15\x43ryptoKeyVersionState\x12(\n$CRYPTO_KEY_VERSION_STATE_UNSPECIFIED\x10\x00\x12\x16\n\x12PENDING_GENERATION\x10\x05\x12\x0b\n\x07\x45NABLED\x10\x01\x12\x0c\n\x08\x44ISABLED\x10\x02\x12\r\n\tDESTROYED\x10\x03\x12\x15\n\x11\x44\x45STROY_SCHEDULED\x10\x04\x12\x12\n\x0ePENDING_IMPORT\x10\x06\x12\x11\n\rIMPORT_FAILED\x10\x07"I\n\x14\x43ryptoKeyVersionView\x12\'\n#CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED\x10\x00\x12\x08\n\x04\x46ULL\x10\x01:\xaa\x01\xea\x41\xa6\x01\n(cloudkms.googleapis.com/CryptoKeyVersion\x12zprojects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}"\x9d\x02\n\tPublicKey\x12\x0b\n\x03pem\x18\x01 \x01(\t\x12R\n\talgorithm\x18\x02 \x01(\x0e\x32?.google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm:\xae\x01\xea\x41\xaa\x01\n!cloudkms.googleapis.com/PublicKey\x12\x84\x01projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}/publicKey"\xdb\x07\n\tImportJob\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12J\n\rimport_method\x18\x02 \x01(\x0e\x32+.google.cloud.kms.v1.ImportJob.ImportMethodB\x06\xe0\x41\x02\xe0\x41\x05\x12\x46\n\x10protection_level\x18\t \x01(\x0e\x32$.google.cloud.kms.v1.ProtectionLevelB\x06\xe0\x41\x02\xe0\x41\x05\x12\x34\n\x0b\x63reate_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x36\n\rgenerate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x34\n\x0b\x65xpire_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12:\n\x11\x65xpire_event_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x41\n\x05state\x18\x06 \x01(\x0e\x32-.google.cloud.kms.v1.ImportJob.ImportJobStateB\x03\xe0\x41\x03\x12I\n\npublic_key\x18\x07 \x01(\x0b\x32\x30.google.cloud.kms.v1.ImportJob.WrappingPublicKeyB\x03\xe0\x41\x03\x12\x46\n\x0b\x61ttestation\x18\x08 \x01(\x0b\x32,.google.cloud.kms.v1.KeyOperationAttestationB\x03\xe0\x41\x03\x1a \n\x11WrappingPublicKey\x12\x0b\n\x03pem\x18\x01 \x01(\t"m\n\x0cImportMethod\x12\x1d\n\x19IMPORT_METHOD_UNSPECIFIED\x10\x00\x12\x1e\n\x1aRSA_OAEP_3072_SHA1_AES_256\x10\x01\x12\x1e\n\x1aRSA_OAEP_4096_SHA1_AES_256\x10\x02"c\n\x0eImportJobState\x12 \n\x1cIMPORT_JOB_STATE_UNSPECIFIED\x10\x00\x12\x16\n\x12PENDING_GENERATION\x10\x01\x12\n\n\x06\x41\x43TIVE\x10\x02\x12\x0b\n\x07\x45XPIRED\x10\x03:{\xea\x41x\n!cloudkms.googleapis.com/ImportJob\x12Sprojects/{project}/locations/{location}/keyRings/{key_ring}/importJobs/{import_job}":\n\x1e\x45xternalProtectionLevelOptions\x12\x18\n\x10\x65xternal_key_uri\x18\x01 \x01(\t*X\n\x0fProtectionLevel\x12 \n\x1cPROTECTION_LEVEL_UNSPECIFIED\x10\x00\x12\x0c\n\x08SOFTWARE\x10\x01\x12\x07\n\x03HSM\x10\x02\x12\x0c\n\x08\x45XTERNAL\x10\x03\x42\x95\x01\n\x17\x63om.google.cloud.kms.v1B\x11KmsResourcesProtoP\x01Z6google.golang.org/genproto/googleapis/cloud/kms/v1;kms\xf8\x01\x01\xaa\x02\x13Google.Cloud.Kms.V1\xca\x02\x13Google\\Cloud\\Kms\\V1b\x06proto3'
     ),
     dependencies=[
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -67,8 +67,8 @@ _PROTECTIONLEVEL = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=4382,
-    serialized_end=4470,
+    serialized_start=4751,
+    serialized_end=4839,
 )
 _sym_db.RegisterEnumDescriptor(_PROTECTIONLEVEL)
 
@@ -274,11 +274,18 @@ _CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM = _descriptor.EnumDescriptor(
             serialized_options=None,
             type=None,
         ),
+        _descriptor.EnumValueDescriptor(
+            name="EXTERNAL_SYMMETRIC_ENCRYPTION",
+            index=16,
+            number=18,
+            serialized_options=None,
+            type=None,
+        ),
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2296,
-    serialized_end=2836,
+    serialized_start=2392,
+    serialized_end=2967,
 )
 _sym_db.RegisterEnumDescriptor(_CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM)
 
@@ -327,8 +334,8 @@ _CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2839,
-    serialized_end=3032,
+    serialized_start=2970,
+    serialized_end=3163,
 )
 _sym_db.RegisterEnumDescriptor(_CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE)
 
@@ -351,8 +358,8 @@ _CRYPTOKEYVERSION_CRYPTOKEYVERSIONVIEW = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=3034,
-    serialized_end=3107,
+    serialized_start=3165,
+    serialized_end=3238,
 )
 _sym_db.RegisterEnumDescriptor(_CRYPTOKEYVERSION_CRYPTOKEYVERSIONVIEW)
 
@@ -386,8 +393,8 @@ _IMPORTJOB_IMPORTMETHOD = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=4045,
-    serialized_end=4154,
+    serialized_start=4354,
+    serialized_end=4463,
 )
 _sym_db.RegisterEnumDescriptor(_IMPORTJOB_IMPORTMETHOD)
 
@@ -420,8 +427,8 @@ _IMPORTJOB_IMPORTJOBSTATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=4156,
-    serialized_end=4255,
+    serialized_start=4465,
+    serialized_end=4564,
 )
 _sym_db.RegisterEnumDescriptor(_IMPORTJOB_IMPORTJOBSTATE)
 
@@ -1053,6 +1060,24 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
             serialized_options=_b("\340A\003"),
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="external_protection_level_options",
+            full_name="google.cloud.kms.v1.CryptoKeyVersion.external_protection_level_options",
+            index=12,
+            number=17,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1069,7 +1094,7 @@ _CRYPTOKEYVERSION = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=1609,
-    serialized_end=3280,
+    serialized_end=3411,
 )
 
 
@@ -1120,13 +1145,15 @@ _PUBLICKEY = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A\252\001\n!cloudkms.googleapis.com/PublicKey\022\204\001projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}/publicKey"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3282,
-    serialized_end=3390,
+    serialized_start=3414,
+    serialized_end=3699,
 )
 
 
@@ -1164,8 +1191,8 @@ _IMPORTJOB_WRAPPINGPUBLICKEY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=4011,
-    serialized_end=4043,
+    serialized_start=4320,
+    serialized_end=4352,
 )
 
 _IMPORTJOB = _descriptor.Descriptor(
@@ -1366,8 +1393,47 @@ _IMPORTJOB = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=3393,
-    serialized_end=4380,
+    serialized_start=3702,
+    serialized_end=4689,
+)
+
+
+_EXTERNALPROTECTIONLEVELOPTIONS = _descriptor.Descriptor(
+    name="ExternalProtectionLevelOptions",
+    full_name="google.cloud.kms.v1.ExternalProtectionLevelOptions",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="external_key_uri",
+            full_name="google.cloud.kms.v1.ExternalProtectionLevelOptions.external_key_uri",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=4691,
+    serialized_end=4749,
 )
 
 _KEYRING.fields_by_name[
@@ -1427,6 +1493,9 @@ _CRYPTOKEYVERSION.fields_by_name[
 _CRYPTOKEYVERSION.fields_by_name[
     "import_time"
 ].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_CRYPTOKEYVERSION.fields_by_name[
+    "external_protection_level_options"
+].message_type = _EXTERNALPROTECTIONLEVELOPTIONS
 _CRYPTOKEYVERSION_CRYPTOKEYVERSIONALGORITHM.containing_type = _CRYPTOKEYVERSION
 _CRYPTOKEYVERSION_CRYPTOKEYVERSIONSTATE.containing_type = _CRYPTOKEYVERSION
 _CRYPTOKEYVERSION_CRYPTOKEYVERSIONVIEW.containing_type = _CRYPTOKEYVERSION
@@ -1460,6 +1529,9 @@ DESCRIPTOR.message_types_by_name["KeyOperationAttestation"] = _KEYOPERATIONATTES
 DESCRIPTOR.message_types_by_name["CryptoKeyVersion"] = _CRYPTOKEYVERSION
 DESCRIPTOR.message_types_by_name["PublicKey"] = _PUBLICKEY
 DESCRIPTOR.message_types_by_name["ImportJob"] = _IMPORTJOB
+DESCRIPTOR.message_types_by_name[
+    "ExternalProtectionLevelOptions"
+] = _EXTERNALPROTECTIONLEVELOPTIONS
 DESCRIPTOR.enum_types_by_name["ProtectionLevel"] = _PROTECTIONLEVEL
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -1469,10 +1541,8 @@ KeyRing = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_KEYRING,
         __module__="google.cloud.kms_v1.proto.resources_pb2",
-        __doc__="""A [KeyRing][google.cloud.kms.v1.KeyRing] is a toplevel
-  logical grouping of [CryptoKeys][google.cloud.kms.v1.CryptoKey].
-  
-  
+        __doc__="""A [KeyRing][google.cloud.kms.v1.KeyRing] is a toplevel logical
+  grouping of [CryptoKeys][google.cloud.kms.v1.CryptoKey].
   Attributes:
       name:
           Output only. The resource name for the
@@ -1502,14 +1572,11 @@ CryptoKey = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_CRYPTOKEY,
         __module__="google.cloud.kms_v1.proto.resources_pb2",
-        __doc__="""A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents a
-  logical key that can be used for cryptographic operations.
-  
-  A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made up of one or more
+        __doc__="""A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents a logical key
+  that can be used for cryptographic operations.  A
+  [CryptoKey][google.cloud.kms.v1.CryptoKey] is made up of one or more
   [versions][google.cloud.kms.v1.CryptoKeyVersion], which represent the
   actual key material used in cryptographic operations.
-  
-  
   Attributes:
       name:
           Output only. The resource name for this
@@ -1589,15 +1656,12 @@ CryptoKeyVersionTemplate = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CRYPTOKEYVERSIONTEMPLATE,
         __module__="google.cloud.kms_v1.proto.resources_pb2",
-        __doc__="""A
-  [CryptoKeyVersionTemplate][google.cloud.kms.v1.CryptoKeyVersionTemplate]
-  specifies the properties to use when creating a new
+        __doc__="""A [CryptoKeyVersionTemplate][google.cloud.kms.v1.CryptoKeyVersionTempl
+  ate] specifies the properties to use when creating a new
   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion], either
-  manually with
-  [CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion]
-  or automatically as a result of auto-rotation.
-  
-  
+  manually with [CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManageme
+  ntService.CreateCryptoKeyVersion] or automatically as a result of
+  auto-rotation.
   Attributes:
       protection_level:
           [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] to use
@@ -1627,11 +1691,9 @@ KeyOperationAttestation = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_KEYOPERATIONATTESTATION,
         __module__="google.cloud.kms_v1.proto.resources_pb2",
-        __doc__="""Contains an HSM-generated attestation about a key
-  operation. For more information, see [Verifying attestations]
+        __doc__="""Contains an HSM-generated attestation about a key operation. For more
+  information, see [Verifying attestations]
   (https://cloud.google.com/kms/docs/attest-key).
-  
-  
   Attributes:
       format:
           Output only. The format of the attestation data.
@@ -1650,20 +1712,14 @@ CryptoKeyVersion = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CRYPTOKEYVERSION,
         __module__="google.cloud.kms_v1.proto.resources_pb2",
-        __doc__="""A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-  represents an individual cryptographic key, and the associated key
-  material.
-  
-  An
-  [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
-  version can be used for cryptographic operations.
-  
-  For security reasons, the raw cryptographic key material represented by
-  a [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] can never be
+        __doc__="""A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents
+  an individual cryptographic key, and the associated key material.  An 
+  [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.E
+  NABLED] version can be used for cryptographic operations.  For
+  security reasons, the raw cryptographic key material represented by a
+  [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] can never be
   viewed or exported. It can only be used to encrypt, decrypt, or sign
   data when an authorized user or application invokes Cloud KMS.
-  
-  
   Attributes:
       name:
           Output only. The resource name for this
@@ -1725,6 +1781,13 @@ CryptoKeyVersion = _reflection.GeneratedProtocolMessageType(
           if [state][google.cloud.kms.v1.CryptoKeyVersion.state] is [IMP
           ORT\_FAILED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVer
           sionState.IMPORT\_FAILED].
+      external_protection_level_options:
+          ExternalProtectionLevelOptions stores a group of additional
+          fields for configuring a
+          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] that
+          are specific to the
+          [EXTERNAL][google.cloud.kms.v1.ProtectionLevel.EXTERNAL]
+          protection level.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.kms.v1.CryptoKeyVersion)
     ),
@@ -1740,8 +1803,6 @@ PublicKey = _reflection.GeneratedProtocolMessageType(
         __doc__="""The public key for a given
   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]. Obtained via
   [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
-  
-  
   Attributes:
       pem:
           The public key, encoded in PEM format. For more information,
@@ -1769,11 +1830,9 @@ ImportJob = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_IMPORTJOB_WRAPPINGPUBLICKEY,
                 __module__="google.cloud.kms_v1.proto.resources_pb2",
-                __doc__="""The public key component of the wrapping key. For details
-    of the type of key this public key corresponds to, see the
+                __doc__="""The public key component of the wrapping key. For details of the type
+    of key this public key corresponds to, see the
     [ImportMethod][google.cloud.kms.v1.ImportJob.ImportMethod].
-    
-    
     Attributes:
         pem:
             The public key, encoded in PEM format. For more information,
@@ -1788,42 +1847,37 @@ ImportJob = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_IMPORTJOB,
         __module__="google.cloud.kms_v1.proto.resources_pb2",
-        __doc__="""An [ImportJob][google.cloud.kms.v1.ImportJob] can be used
-  to create [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
-  [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] using
-  pre-existing key material, generated outside of Cloud KMS.
-  
-  When an [ImportJob][google.cloud.kms.v1.ImportJob] is created, Cloud KMS
-  will generate a "wrapping key", which is a public/private key pair. You
-  use the wrapping key to encrypt (also known as wrap) the pre-existing
-  key material to protect it during the import process. The nature of the
+        __doc__="""An [ImportJob][google.cloud.kms.v1.ImportJob] can be used to create
+  [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
+  [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] using pre-
+  existing key material, generated outside of Cloud KMS.  When an
+  [ImportJob][google.cloud.kms.v1.ImportJob] is created, Cloud KMS will
+  generate a "wrapping key", which is a public/private key pair. You use
+  the wrapping key to encrypt (also known as wrap) the pre-existing key
+  material to protect it during the import process. The nature of the
   wrapping key depends on the choice of
-  [import\_method][google.cloud.kms.v1.ImportJob.import\_method]. When the
-  wrapping key generation is complete, the
+  [import\_method][google.cloud.kms.v1.ImportJob.import\_method]. When
+  the wrapping key generation is complete, the
   [state][google.cloud.kms.v1.ImportJob.state] will be set to
   [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE] and the
-  [public\_key][google.cloud.kms.v1.ImportJob.public\_key] can be fetched.
-  The fetched public key can then be used to wrap your pre-existing key
-  material.
-  
-  Once the key material is wrapped, it can be imported into a new
-  [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] in an existing
-  [CryptoKey][google.cloud.kms.v1.CryptoKey] by calling
-  [ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
-  Multiple [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] can
-  be imported with a single [ImportJob][google.cloud.kms.v1.ImportJob].
-  Cloud KMS uses the private key portion of the wrapping key to unwrap the
-  key material. Only Cloud KMS has access to the private key.
-  
-  An [ImportJob][google.cloud.kms.v1.ImportJob] expires 3 days after it is
+  [public\_key][google.cloud.kms.v1.ImportJob.public\_key] can be
+  fetched. The fetched public key can then be used to wrap your pre-
+  existing key material.  Once the key material is wrapped, it can be
+  imported into a new
+  [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] in an
+  existing [CryptoKey][google.cloud.kms.v1.CryptoKey] by calling [Import
+  CryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCrypt
+  oKeyVersion]. Multiple
+  [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] can be
+  imported with a single [ImportJob][google.cloud.kms.v1.ImportJob].
+  Cloud KMS uses the private key portion of the wrapping key to unwrap
+  the key material. Only Cloud KMS has access to the private key.  An
+  [ImportJob][google.cloud.kms.v1.ImportJob] expires 3 days after it is
   created. Once expired, Cloud KMS will no longer be able to import or
   unwrap any key material that was wrapped with the
-  [ImportJob][google.cloud.kms.v1.ImportJob]'s public key.
-  
-  For more information, see `Importing a
-  key <https://cloud.google.com/kms/docs/importing-a-key>`__.
-  
-  
+  [ImportJob][google.cloud.kms.v1.ImportJob]'s public key.  For more
+  information, see `Importing a key
+  <https://cloud.google.com/kms/docs/importing-a-key>`__.
   Attributes:
       name:
           Output only. The resource name for this
@@ -1880,6 +1934,28 @@ ImportJob = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(ImportJob)
 _sym_db.RegisterMessage(ImportJob.WrappingPublicKey)
 
+ExternalProtectionLevelOptions = _reflection.GeneratedProtocolMessageType(
+    "ExternalProtectionLevelOptions",
+    (_message.Message,),
+    dict(
+        DESCRIPTOR=_EXTERNALPROTECTIONLEVELOPTIONS,
+        __module__="google.cloud.kms_v1.proto.resources_pb2",
+        __doc__="""ExternalProtectionLevelOptions stores a group of additional fields for
+  configuring a [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+  that are specific to the
+  [EXTERNAL][google.cloud.kms.v1.ProtectionLevel.EXTERNAL] protection
+  level.
+  Attributes:
+      external_key_uri:
+          The URI for an external resource that this
+          [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+          represents.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.kms.v1.ExternalProtectionLevelOptions)
+    ),
+)
+_sym_db.RegisterMessage(ExternalProtectionLevelOptions)
+
 
 DESCRIPTOR._options = None
 _KEYRING.fields_by_name["name"]._options = None
@@ -1906,6 +1982,7 @@ _CRYPTOKEYVERSION.fields_by_name["import_job"]._options = None
 _CRYPTOKEYVERSION.fields_by_name["import_time"]._options = None
 _CRYPTOKEYVERSION.fields_by_name["import_failure_reason"]._options = None
 _CRYPTOKEYVERSION._options = None
+_PUBLICKEY._options = None
 _IMPORTJOB.fields_by_name["name"]._options = None
 _IMPORTJOB.fields_by_name["import_method"]._options = None
 _IMPORTJOB.fields_by_name["protection_level"]._options = None

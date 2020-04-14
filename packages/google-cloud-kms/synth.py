@@ -45,6 +45,29 @@ s.replace(
     "from google.iam.v1 import iam_policy_pb2",
     "from google.iam.v1 import iam_policy_pb2_grpc as iam_policy_pb2",
 )
+# re-insert `crypto_key_path_path` method as this was used in the published samples
+# TODO: remove when this library is moved to the microgenerator and mention it in the relase
+# notes
+count = s.replace("google/cloud/kms_v1/gapic/key_management_service_client.py",
+"""(@classmethod
+\s+def crypto_key_version_path\(.*)""",
+"""
+    @classmethod	
+    def crypto_key_path_path(cls, project, location, key_ring, crypto_key_path):	
+        \"\"\"Return a fully-qualified crypto_key_path string.\"\"\"	
+        return google.api_core.path_template.expand(	
+            "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key_path=**}",	
+            project=project,	
+            location=location,	
+            key_ring=key_ring,	
+            crypto_key_path=crypto_key_path,	
+        )
+
+    \g<1>
+""")
+
+if count != 1:
+    raise Exception("Required insertion of `crypto_key_path_path` not made.")
 
 # ----------------------------------------------------------------------------
 # Add templated files
