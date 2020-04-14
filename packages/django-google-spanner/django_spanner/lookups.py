@@ -122,10 +122,10 @@ def cast_param_to_float(self, compiler, connection):
         if isinstance(self.lhs.output_field, DecimalField):
             params[0] = float(params[0])
         # Cast remote field lookups that must be integer but come in as string.
-        elif (hasattr(self.lhs.output_field, 'target_field') and
-                self.lhs.output_field.target_field.rel_db_type(connection) == 'INT64' and
-                isinstance(params[0], str)):
-            params[0] = int(params[0])
+        elif hasattr(self.lhs.output_field, 'get_path_info'):
+            for i, field in enumerate(self.lhs.output_field.get_path_info()[-1].target_fields):
+                if field.rel_db_type(connection) == 'INT64' and isinstance(params[i], str):
+                    params[i] = int(params[i])
     return sql, params
 
 

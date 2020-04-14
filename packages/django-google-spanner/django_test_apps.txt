@@ -33,6 +33,7 @@ file_storage
 file_uploads
 fixtures
 fixtures_model_package
+foreign_object
 from_db_value
 get_earliest_or_latest
 get_object_or_404
