@@ -356,7 +356,9 @@ class BigQueryDialect(DefaultDialect):
         project = None
 
         table_name_split = full_table_name.split('.')
-        if len(table_name_split) == 2:
+        if len(table_name_split) == 1:
+            table_name = full_table_name
+        elif len(table_name_split) == 2:
             dataset, table_name = table_name_split
         elif len(table_name_split) == 3:
             project, dataset, table_name = table_name_split
@@ -367,17 +369,12 @@ class BigQueryDialect(DefaultDialect):
         if isinstance(connection, Engine):
             connection = connection.connect()
 
-        table_name_prepared = dataset = project = None
-        if self.dataset_id:
-            table_name_prepared = table_name
-            dataset = self.dataset_id
-            project = None
-
-        else:
-            project, dataset, table_name_prepared = self._split_table_name(table_name)
-            if dataset is None and schema is not None:
-                table_name_prepared = table_name
+        project, dataset, table_name_prepared = self._split_table_name(table_name)
+        if dataset is None:
+            if schema is not None:
                 dataset = schema
+            elif self.dataset_id:
+                dataset = self.dataset_id
 
         table = connection.connection._client.dataset(dataset, project=project).table(table_name_prepared)
         try:
