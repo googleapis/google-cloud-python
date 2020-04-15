@@ -27,6 +27,7 @@ import pytz
 import test_utils.system
 
 from google.cloud import ndb
+from google.cloud.datastore import key as ds_key_module
 
 from tests.system import KIND, eventually
 
@@ -1646,3 +1647,108 @@ def test_projection_with_json_property(dispose_of):
 
     results = SomeKind.query().fetch(projection=[SomeKind.foo])
     assert results[0].foo == {"hi": "mom!"}
+
+
+@pytest.mark.usefixtures("client_context")
+def test_DateTime(ds_entity):
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(
+            KIND, entity_id, foo=datetime.datetime(2020, i + 1, 1, 12, 0, 0)
+        )
+
+    class SomeKind(ndb.Model):
+        foo = ndb.DateTimeProperty()
+
+    eventually(SomeKind.query().fetch, _length_equals(5))
+
+    query = SomeKind.gql("where foo > DateTime(2020, 4, 1, 11, 0, 0)").order(
+        SomeKind.foo
+    )
+    results = query.fetch()
+    assert len(results) == 2
+    assert results[0].foo == datetime.datetime(2020, 4, 1, 12, 0, 0)
+    assert results[1].foo == datetime.datetime(2020, 5, 1, 12, 0, 0)
+
+
+@pytest.mark.usefixtures("client_context")
+def test_Date(ds_entity):
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=datetime.datetime(2020, i + 1, 1))
+
+    class SomeKind(ndb.Model):
+        foo = ndb.DateProperty()
+
+    eventually(SomeKind.query().fetch, _length_equals(5))
+
+    query = SomeKind.gql("where foo > Date(2020, 3, 1)").order(SomeKind.foo)
+    results = query.fetch()
+    assert len(results) == 2
+    assert results[0].foo == datetime.date(2020, 4, 1)
+    assert results[1].foo == datetime.date(2020, 5, 1)
+
+
+@pytest.mark.usefixtures("client_context")
+def test_Time(ds_entity):
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(
+            KIND, entity_id, foo=datetime.datetime(1970, 1, 1, i + 1, 0, 0)
+        )
+
+    class SomeKind(ndb.Model):
+        foo = ndb.TimeProperty()
+
+    eventually(SomeKind.query().fetch, _length_equals(5))
+
+    query = SomeKind.gql("where foo > Time(3, 0, 0)").order(SomeKind.foo)
+    results = query.fetch()
+    assert len(results) == 2
+    assert results[0].foo == datetime.time(4, 0, 0)
+    assert results[1].foo == datetime.time(5, 0, 0)
+
+
+@pytest.mark.usefixtures("client_context")
+def test_GeoPt(ds_entity):
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=ndb.model.GeoPt(20, i * 20))
+
+    class SomeKind(ndb.Model):
+        foo = ndb.GeoPtProperty()
+
+    eventually(SomeKind.query().fetch, _length_equals(5))
+
+    query = SomeKind.gql("where foo > GeoPt(20, 40)").order(SomeKind.foo)
+    results = query.fetch()
+    assert len(results) == 2
+    assert results[0].foo == ndb.model.GeoPt(20, 60)
+    assert results[1].foo == ndb.model.GeoPt(20, 80)
+
+
+@pytest.mark.usefixtures("client_context")
+def test_Key(ds_entity, client_context):
+    project = client_context.client.project
+    namespace = client_context.get_namespace()
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(
+            KIND,
+            entity_id,
+            foo=ds_key_module.Key(
+                "test_key", i + 1, project=project, namespace=namespace
+            ),
+        )
+
+    class SomeKind(ndb.Model):
+        foo = ndb.KeyProperty()
+
+    eventually(SomeKind.query().fetch, _length_equals(5))
+
+    query = SomeKind.gql("where foo = Key('test_key', 3)")
+    results = query.fetch()
+    assert len(results) == 1
+    assert results[0].foo == ndb.key.Key(
+        "test_key", 3, project=project, namespace=namespace
+    )

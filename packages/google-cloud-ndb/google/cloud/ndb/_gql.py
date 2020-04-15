@@ -1,8 +1,12 @@
+import datetime
 import re
 import six
+import time
 
+from google.cloud.ndb import context as context_module
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import query as query_module
+from google.cloud.ndb import key
 from google.cloud.ndb import model
 from google.cloud.ndb import _datastore_query
 
@@ -778,8 +782,122 @@ def _raise_not_implemented(func):
     return raise_inner
 
 
+def _raise_cast_error(message):
+    raise exceptions.BadQueryError("GQL function error: {}".format(message))
+
+
+def _time_function(values):
+    if len(values) == 1:
+        value = values[0]
+        if isinstance(value, six.string_types):
+            try:
+                time_tuple = time.strptime(value, "%H:%M:%S")
+            except ValueError as error:
+                _raise_cast_error(
+                    "Error during time conversion, {}, {}".format(
+                        error, values
+                    )
+                )
+            time_tuple = time_tuple[3:]
+            time_tuple = time_tuple[0:3]
+        elif isinstance(value, six.integer_types):
+            time_tuple = (value,)
+        else:
+            _raise_cast_error("Invalid argument for time(), {}".format(value))
+    elif len(values) < 4:
+        time_tuple = tuple(values)
+    else:
+        _raise_cast_error("Too many arguments for time(), {}".format(values))
+    try:
+        return datetime.time(*time_tuple)
+    except ValueError as error:
+        _raise_cast_error(
+            "Error during time conversion, {}, {}".format(error, values)
+        )
+
+
+def _date_function(values):
+    if len(values) == 1:
+        value = values[0]
+        if isinstance(value, six.string_types):
+            try:
+                time_tuple = time.strptime(value, "%Y-%m-%d")[0:6]
+            except ValueError as error:
+                _raise_cast_error(
+                    "Error during date conversion, {}, {}".format(
+                        error, values
+                    )
+                )
+        else:
+            _raise_cast_error("Invalid argument for date(), {}".format(value))
+    elif len(values) == 3:
+        time_tuple = (values[0], values[1], values[2], 0, 0, 0)
+    else:
+        _raise_cast_error("Too many arguments for date(), {}".format(values))
+    try:
+        return datetime.datetime(*time_tuple)
+    except ValueError as error:
+        _raise_cast_error(
+            "Error during date conversion, {}, {}".format(error, values)
+        )
+
+
+def _datetime_function(values):
+    if len(values) == 1:
+        value = values[0]
+        if isinstance(value, six.string_types):
+            try:
+                time_tuple = time.strptime(value, "%Y-%m-%d %H:%M:%S")[0:6]
+            except ValueError as error:
+                _raise_cast_error(
+                    "Error during date conversion, {}, {}".format(
+                        error, values
+                    )
+                )
+        else:
+            _raise_cast_error(
+                "Invalid argument for datetime(), {}".format(value)
+            )
+    else:
+        time_tuple = values
+    try:
+        return datetime.datetime(*time_tuple)
+    except ValueError as error:
+        _raise_cast_error(
+            "Error during datetime conversion, {}, {}".format(error, values)
+        )
+
+
+def _geopt_function(values):
+    if len(values) != 2:
+        _raise_cast_error("GeoPt requires two input values, {}".format(values))
+    return model.GeoPt(*values)
+
+
+def _key_function(values):
+    if not len(values) % 2:
+        context = context_module.get_context()
+        client = context.client
+        return key.Key(
+            *values, namespace=context.get_namespace(), project=client.project
+        )
+    _raise_cast_error(
+        "Key requires even number of operands or single string, {}".format(
+            values
+        )
+    )
+
+
 FUNCTIONS = {
     "list": list,
+    "date": _date_function,
+    "datetime": _datetime_function,
+    "time": _time_function,
+    # even though gql for ndb supports querying for users, datastore does
+    # not, because it doesn't support passing entity representations as
+    # comparison arguments. Thus, we can't implement this.
     "user": _raise_not_implemented("user"),
-    "key": _raise_not_implemented("key"),
+    "key": _key_function,
+    "geopt": _geopt_function,
+    "nop": _raise_not_implemented("nop"),
 }
