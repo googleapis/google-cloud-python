@@ -1,5 +1,5 @@
 click==7.1.1
-google-api-core==1.16.0
+google-api-core==1.17.0
 googleapis-common-protos==1.51.0
 grpcio==1.28.1
 jinja2==2.11.2
