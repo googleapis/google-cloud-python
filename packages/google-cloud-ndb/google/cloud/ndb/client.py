@@ -28,6 +28,7 @@ from google.cloud.datastore_v1.proto import datastore_pb2_grpc
 
 from google.cloud.ndb import __version__
 from google.cloud.ndb import context as context_module
+from google.cloud.ndb import key as key_module
 
 
 _CLIENT_INFO = client_info.ClientInfo(
@@ -131,6 +132,7 @@ class Client(google_client.ClientWithProject):
     @contextlib.contextmanager
     def context(
         self,
+        namespace=key_module.UNDEFINED,
         cache_policy=None,
         global_cache=None,
         global_cache_policy=None,
@@ -188,6 +190,7 @@ class Client(google_client.ClientWithProject):
 
         context = context_module.Context(
             self,
+            namespace=namespace,
             cache_policy=cache_policy,
             global_cache=global_cache,
             global_cache_policy=global_cache_policy,

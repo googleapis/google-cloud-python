@@ -123,9 +123,12 @@ def other_namespace():
 
 @pytest.fixture
 def client_context(namespace):
-    client = ndb.Client(namespace=namespace)
-    with client.context(cache_policy=False, legacy_data=False) as the_context:
-        yield the_context
+    client = ndb.Client()
+    context_manager = client.context(
+        cache_policy=False, legacy_data=False, namespace=namespace,
+    )
+    with context_manager as context:
+        yield context
 
 
 @pytest.fixture

@@ -22,7 +22,7 @@
 
     client = mock.Mock(
         project="testing",
-        namespace="",
+        namespace=None,
         stub=mock.Mock(spec=()),
         spec=("project", "namespace", "stub"),
     )

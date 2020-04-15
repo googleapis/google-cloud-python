@@ -22,6 +22,7 @@ import threading
 
 from google.cloud.ndb import _eventloop
 from google.cloud.ndb import exceptions
+from google.cloud.ndb import key as key_module
 from google.cloud.ndb import tasklets
 
 
@@ -145,6 +146,7 @@ _ContextTuple = collections.namedtuple(
     "_ContextTuple",
     [
         "client",
+        "namespace",
         "eventloop",
         "batches",
         "commit_batches",
@@ -177,6 +179,7 @@ class _Context(_ContextTuple):
     def __new__(
         cls,
         client,
+        namespace=key_module.UNDEFINED,
         eventloop=None,
         batches=None,
         commit_batches=None,
@@ -211,6 +214,7 @@ class _Context(_ContextTuple):
         context = super(_Context, cls).__new__(
             cls,
             client=client,
+            namespace=namespace,
             eventloop=eventloop,
             batches=batches,
             commit_batches=commit_batches,
@@ -328,6 +332,20 @@ class Context(_Context):
     def flush(self):
         """Force any pending batch operations to go ahead and run."""
         self.eventloop.run()
+
+    def get_namespace(self):
+        """Return the current context namespace.
+
+        If `namespace` isn't set on the context, the client's namespace will be
+        returned.
+
+        Returns:
+            str: The namespace, or `None`.
+        """
+        if self.namespace is key_module.UNDEFINED:
+            return self.client.namespace
+
+        return self.namespace
 
     def get_cache_policy(self):
         """Return the current context cache policy function.

@@ -1230,8 +1230,8 @@ def _query_options(wrapped):
         # sort out. Some might be synonyms or shorthand for other options.
         query_arguments.update(kwargs)
 
-        client = context_module.get_context().client
-        query_options = QueryOptions(client=client, **query_arguments)
+        context = context_module.get_context()
+        query_options = QueryOptions(context=context, **query_arguments)
 
         return wrapped(self, *dummy_args, _options=query_options)
 
@@ -1262,7 +1262,7 @@ class QueryOptions(_options.ReadOptions):
         "callback",
     )
 
-    def __init__(self, config=None, client=None, **kwargs):
+    def __init__(self, config=None, context=None, **kwargs):
         if kwargs.get("batch_size"):
             raise exceptions.NoLongerImplementedError()
 
@@ -1284,12 +1284,12 @@ class QueryOptions(_options.ReadOptions):
 
         super(QueryOptions, self).__init__(config=config, **kwargs)
 
-        if client:
+        if context:
             if not self.project:
-                self.project = client.project
+                self.project = context.client.project
 
             if not self.namespace:
-                self.namespace = client.namespace
+                self.namespace = context.get_namespace()
 
 
 class Query(object):

@@ -348,6 +348,16 @@ class TestContext:
         context = self._make_one()
         assert context.in_transaction() is False
 
+    def test_get_namespace_from_client(self):
+        context = self._make_one()
+        context.client.namespace = "hamburgers"
+        assert context.get_namespace() == "hamburgers"
+
+    def test_get_namespace_from_context(self):
+        context = self._make_one(namespace="hotdogs")
+        context.client.namespace = "hamburgers"
+        assert context.get_namespace() == "hotdogs"
+
     def test_memcache_add(self):
         context = self._make_one()
         with pytest.raises(NotImplementedError):

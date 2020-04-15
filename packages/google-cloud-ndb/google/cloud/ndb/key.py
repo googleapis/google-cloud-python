@@ -74,15 +74,11 @@ Other constraints:
 * Integer IDs must be at least ``1`` and at most ``2**63 - 1`` (i.e. the
   positive part of the range for a 64-bit signed integer)
 
-For more info about namespaces, see the multitenancy `overview`_.
 In the "legacy" Google App Engine runtime, the default namespace could be
 set via the namespace manager (``google.appengine.api.namespace_manager``).
 On the gVisor Google App Engine runtime (e.g. Python 3.7), the namespace
 manager is not available so the default is to have an unset or empty
 namespace. To explicitly select the empty namespace pass ``namespace=""``.
-
-.. _overview:
-  https://cloud.google.com/appengine/docs/standard/python/multitenancy/
 """
 
 
@@ -149,7 +145,7 @@ class Key(object):
         from google.cloud.ndb import context as context_module
         client = mock.Mock(
             project="testing",
-            namespace="",
+            namespace=None,
             stub=mock.Mock(spec=()),
             spec=("project", "namespace", "stub"),
         )
@@ -294,11 +290,8 @@ class Key(object):
 
         # Make sure to pass in the namespace if it's not explicitly set.
         if kwargs.get("namespace", UNDEFINED) is UNDEFINED:
-            client = context_module.get_context().client
-            if client.namespace:
-                kwargs["namespace"] = client.namespace
-            else:
-                kwargs["namespace"] = None  # default namespace
+            context = context_module.get_context()
+            kwargs["namespace"] = context.get_namespace()
 
         if (
             "reference" in kwargs
