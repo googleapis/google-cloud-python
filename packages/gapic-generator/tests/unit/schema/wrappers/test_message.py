@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import collections
+import re
 from typing import Sequence, Tuple
 
 import pytest
@@ -179,6 +180,46 @@ def test_resource_path():
     assert message.resource_path == "kingdoms/{kingdom}/phyla/{phylum}/classes/{klass}"
     assert message.resource_path_args == ["kingdom", "phylum", "klass"]
     assert message.resource_type == "Class"
+
+
+def test_parse_resource_path():
+    options = descriptor_pb2.MessageOptions()
+    resource = options.Extensions[resource_pb2.resource]
+    resource.pattern.append(
+        "kingdoms/{kingdom}/phyla/{phylum}/classes/{klass}"
+    )
+    resource.type = "taxonomy.biology.com/Klass"
+    message = make_message('Klass', options=options)
+
+    # Plausible resource ID path
+    path = "kingdoms/animalia/phyla/mollusca/classes/cephalopoda"
+    expected = {
+        'kingdom': 'animalia',
+        'phylum': 'mollusca',
+        'klass': 'cephalopoda',
+    }
+    actual = re.match(message.path_regex_str, path).groupdict()
+
+    assert expected == actual
+
+    options2 = descriptor_pb2.MessageOptions()
+    resource2 = options2.Extensions[resource_pb2.resource]
+    resource2.pattern.append(
+        "kingdoms-{kingdom}_{phylum}#classes%{klass}"
+    )
+    resource2.type = "taxonomy.biology.com/Klass"
+    message2 = make_message('Klass', options=options2)
+
+    # Plausible resource ID path from a non-standard schema
+    path2 = "kingdoms-Animalia/_Mollusca~#classes%Cephalopoda"
+    expected2 = {
+        'kingdom': 'Animalia/',
+        'phylum': 'Mollusca~',
+        'klass': 'Cephalopoda',
+    }
+    actual2 = re.match(message2.path_regex_str, path2).groupdict()
+
+    assert expected2 == actual2
 
 
 def test_field_map():

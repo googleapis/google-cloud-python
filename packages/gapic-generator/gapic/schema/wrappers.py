@@ -209,6 +209,10 @@ class Field:
 @dataclasses.dataclass(frozen=True)
 class MessageType:
     """Description of a message (defined with the ``message`` keyword)."""
+    # Class attributes
+    PATH_ARG_RE = re.compile(r'\{([a-zA-Z0-9_-]+)\}')
+
+    # Instance attributes
     message_pb: descriptor_pb2.DescriptorProto
     fields: Mapping[str, Field]
     nested_enums: Mapping[str, 'EnumType']
@@ -278,8 +282,32 @@ class MessageType:
 
     @property
     def resource_path_args(self) -> Sequence[str]:
-        path_arg_re = re.compile(r'\{([a-zA-Z0-9_-]+)\}')
-        return path_arg_re.findall(self.resource_path or '')
+        return self.PATH_ARG_RE.findall(self.resource_path or '')
+
+    @utils.cached_property
+    def path_regex_str(self) -> str:
+        # The indirection here is a little confusing:
+        # we're using the resource path template as the base of a regex,
+        # with each resource ID segment being captured by a regex.
+        # E.g., the path schema
+        # kingdoms/{kingdom}/phyla/{phylum}
+        # becomes the regex
+        # ^kingdoms/(?P<kingdom>.+?)/phyla/(?P<phylum>.+?)$
+        parsing_regex_str = (
+            "^" +
+            self.PATH_ARG_RE.sub(
+                # We can't just use (?P<name>[^/]+) because segments may be
+                # separated by delimiters other than '/'.
+                # Multiple delimiter characters within one schema are allowed,
+                # e.g.
+                # as/{a}-{b}/cs/{c}%{d}_{e}
+                # This is discouraged but permitted by AIP4231
+                lambda m: "(?P<{name}>.+?)".format(name=m.groups()[0]),
+                self.resource_path or ''
+            ) +
+            "$"
+        )
+        return parsing_regex_str
 
     def get_field(self, *field_path: str,
                   collisions: FrozenSet[str] = frozenset()) -> Field:

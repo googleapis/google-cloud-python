@@ -692,14 +692,27 @@ def test_{{ service.name|snake_case }}_grpc_lro_client():
 {% endif -%}
 
 {% for message in service.resource_messages -%}
-{% with molluscs = cycler("squid", "clam", "whelk", "octopus", "oyster", "nudibranch", "cuttlefish", "mussel", "winkle") -%}
+{% with molluscs = cycler("squid", "clam", "whelk", "octopus", "oyster", "nudibranch", "cuttlefish", "mussel", "winkle", "nautilus", "scallop", "abalone") -%}
 def test_{{ message.resource_type|snake_case }}_path():
-  {% for arg in message.resource_path_args -%}
-  {{ arg }} = "{{ molluscs.next() }}"
-  {% endfor %}
-  expected = "{{ message.resource_path }}".format({% for arg in message.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
-  actual = {{ service.client_name }}.{{ message.resource_type|snake_case }}_path({{message.resource_path_args|join(", ") }})
-  assert expected == actual
+    {% for arg in message.resource_path_args -%}
+    {{ arg }} = "{{ molluscs.next() }}"
+    {% endfor %}
+    expected = "{{ message.resource_path }}".format({% for arg in message.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
+    actual = {{ service.client_name }}.{{ message.resource_type|snake_case }}_path({{message.resource_path_args|join(", ") }})
+    assert expected == actual
+
+
+def test_parse_{{ message.resource_type|snake_case }}_path():
+    expected = {
+    {% for arg in message.resource_path_args -%}
+        "{{ arg }}": "{{ molluscs.next() }}",
+    {% endfor %}
+    }
+    path = {{ service.client_name }}.{{ message.resource_type|snake_case }}_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = {{ service.client_name }}.parse_{{ message.resource_type|snake_case }}_path(path)
+    assert expected == actual
 
 {% endwith -%}
 {% endfor -%}
