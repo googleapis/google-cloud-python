@@ -288,14 +288,17 @@ class BigQueryDialect(DefaultDialect):
     def _add_default_dataset_to_job_config(job_config, project_id, dataset_id):
         # If dataset_id is set, then we know the job_config isn't None
         if dataset_id:
-            # If project_id is missing, use default project_id
+            # If project_id is missing, use default project_id for the current environment
             if not project_id:
                 _, project_id = auth.default()
 
             job_config.default_dataset = '{}.{}'.format(project_id, dataset_id)
 
 
-    def _create_client_from_credentials(self, credentials, default_query_job_config):
+    def _create_client_from_credentials(self, credentials, default_query_job_config, project_id):
+        if project_id is None:
+            project_id = credentials.project_id
+
         scopes = (
                 'https://www.googleapis.com/auth/bigquery',
                 'https://www.googleapis.com/auth/cloud-platform',
@@ -303,18 +306,17 @@ class BigQueryDialect(DefaultDialect):
             )
         credentials = credentials.with_scopes(scopes)
 
-        self._add_default_dataset_to_job_config(default_query_job_config,
-                                        credentials.project_id, self.dataset_id)
+        self._add_default_dataset_to_job_config(default_query_job_config, project_id, self.dataset_id)
 
         return bigquery.Client(
-                project=credentials.project_id,
+                project=project_id,
                 credentials=credentials,
                 location=self.location,
                 default_query_job_config=default_query_job_config,
             )
 
     def create_connect_args(self, url):
-        location, dataset_id, arraysize, credentials_path, default_query_job_config = parse_url(url)
+        project_id, location, dataset_id, arraysize, credentials_path, default_query_job_config = parse_url(url)
 
         self.arraysize = self.arraysize or arraysize
         self.location = location or self.location
@@ -323,18 +325,17 @@ class BigQueryDialect(DefaultDialect):
 
         if self.credentials_path:
             credentials = service_account.Credentials.from_service_account_file(self.credentials_path)
-            client = self._create_client_from_credentials(credentials, default_query_job_config)
+            client = self._create_client_from_credentials(credentials, default_query_job_config, project_id)
 
         elif self.credentials_info:
             credentials = service_account.Credentials.from_service_account_info(self.credentials_info)
-            client = self._create_client_from_credentials(credentials, default_query_job_config)
+            client = self._create_client_from_credentials(credentials, default_query_job_config, project_id)
 
         else:
-            self._add_default_dataset_to_job_config(default_query_job_config,
-                                        url.host, dataset_id)
+            self._add_default_dataset_to_job_config(default_query_job_config, project_id, dataset_id)
 
             client = bigquery.Client(
-                project=url.host,
+                project=project_id,
                 location=self.location,
                 default_query_job_config=default_query_job_config
             )
