@@ -106,12 +106,12 @@ Return sessions from pool in LIFO order. ([#9454](https://github.com/googleapis/
 
 
 ### Implementation Changes
-- Add backoff for `run_in_transaction' when backend does not provide 'RetryInfo' in response. ([#8461](https://github.com/googleapis/google-cloud-python/pull/8461))
+- Add backoff for `run_in_transaction` when backend does not provide 'RetryInfo' in response. ([#8461](https://github.com/googleapis/google-cloud-python/pull/8461))
 - Adjust gRPC timeouts (via synth). ([#8445](https://github.com/googleapis/google-cloud-python/pull/8445))
 - Allow kwargs to be passed to create_channel (via synth). ([#8403](https://github.com/googleapis/google-cloud-python/pull/8403))
 
 ### New Features
-- Add 'options_' argument to clients' 'get_iam_policy'; pin black version (via synth). ([#8659](https://github.com/googleapis/google-cloud-python/pull/8659))
+- Add 'options_' argument to clients 'get_iam_policy'; pin black version (via synth). ([#8659](https://github.com/googleapis/google-cloud-python/pull/8659))
 - Add 'client_options' support, update list method docstrings (via synth). ([#8522](https://github.com/googleapis/google-cloud-python/pull/8522))
 
 ### Dependencies
@@ -382,6 +382,6 @@ Return sessions from pool in LIFO order. ([#9454](https://github.com/googleapis/
 - Upgrading to `google-cloud-core >= 0.28.0` and adding dependency
   on `google-api-core` (#4221, #4280)
 - Deferring to `google-api-core` for `grpcio` and
-  `googleapis-common-protos`dependencies (#4096, #4098)
+  `googleapis-common-protos` dependencies (#4096, #4098)
 
 PyPI: https://pypi.org/project/google-cloud-spanner/0.29.0/
