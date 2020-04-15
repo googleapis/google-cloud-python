@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [0.14.0](https://www.github.com/googleapis/python-dlp/compare/v0.13.0...v0.14.0) (2020-02-21)
+
+
+### Features
+
+* **dlp:** undeprecate resource name helper methods, add 2.7 deprecation warning (via synth)  ([#10040](https://www.github.com/googleapis/python-dlp/issues/10040)) ([b30d7c1](https://www.github.com/googleapis/python-dlp/commit/b30d7c1cd48fba47fdddb7b9232e421261108a52))
+
 ## 0.13.0
 
 12-06-2019 14:29 PST
@@ -195,5 +202,3 @@
 ## 0.1.0
 
 Initial release of the DLP (Data Loss Prevention) client library. (#4879)
-
-
