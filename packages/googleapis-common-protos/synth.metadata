@@ -1,0 +1,11 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": "api-common-protos",
+        "remote": "https://github.com/googleapis/api-common-protos.git",
+        "sha": "be41e82ef4af6406b4cf331af00a837f813c0c3b"
+      }
+    }
+  ]
+}
