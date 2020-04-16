@@ -129,7 +129,7 @@ class Database(object):
         """Creates an instance of this class from a protobuf.
 
         :type database_pb:
-            :class:`google.spanner.v2.spanner_instance_admin_pb2.Instance`
+            :class:`~google.spanner.v2.spanner_instance_admin_pb2.Instance`
         :param database_pb: A instance protobuf object.
 
         :type instance: :class:`~google.cloud.spanner_v1.instance.Instance`
@@ -410,7 +410,7 @@ class Database(object):
             required if parameters are passed.
 
         :type query_options:
-            :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
+            :class:`~google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
             or :class:`dict`
         :param query_options:
                 (Optional) Query optimizer configuration to use for the given query.
@@ -566,7 +566,7 @@ class Database(object):
         :type backup: :class:`~google.cloud.spanner_v1.backup.Backup`
         :param backup: the path of the backup being restored from.
 
-        :rtype: :class:'~google.api_core.operation.Operation`
+        :rtype: :class:`~google.api_core.operation.Operation`
         :returns: a future used to poll the status of the create request
         :raises Conflict: if the database already exists
         :raises NotFound:
@@ -908,7 +908,7 @@ class BatchSnapshot(object):
             differ.
 
         :type query_options:
-            :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
+            :class:`~google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
             or :class:`dict`
         :param query_options:
                 (Optional) Query optimizer configuration to use for the given query.

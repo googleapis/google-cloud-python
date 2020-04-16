@@ -127,7 +127,7 @@ class Client(ClientWithProject):
                         If none are specified, the client will attempt to ascertain
                         the credentials from the environment.
 
-    :type client_info: :class:`google.api_core.gapic_v1.client_info.ClientInfo`
+    :type client_info: :class:`~google.api_core.gapic_v1.client_info.ClientInfo`
     :param client_info:
         (Optional) The client info used to send a user-agent string along with
         API requests. If ``None``, then default info will be used. Generally,
@@ -145,7 +145,7 @@ class Client(ClientWithProject):
         on the client. API Endpoint should be set through client_options.
 
     :type query_options:
-        :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
+        :class:`~google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
         or :class:`dict`
     :param query_options:
         (Optional) Query optimizer configuration to use for the given query.
@@ -341,7 +341,8 @@ class Client(ClientWithProject):
         :param configuration_name:
            (Optional) Name of the instance configuration used to set up the
            instance's cluster, in the form:
-           ``projects/<project>/instanceConfigs/<config>``.
+           ``projects/<project>/instanceConfigs/``
+           ``<config>``.
            **Required** for instances which do not yet exist.
 
         :type display_name: str

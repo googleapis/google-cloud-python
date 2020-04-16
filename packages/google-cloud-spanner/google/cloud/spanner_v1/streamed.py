@@ -32,7 +32,7 @@ class StreamedResultSet(object):
     :type response_iterator:
     :param response_iterator:
         Iterator yielding
-        :class:`google.cloud.spanner_v1.proto.result_set_pb2.PartialResultSet`
+        :class:`~google.cloud.spanner_v1.proto.result_set_pb2.PartialResultSet`
         instances.
 
     :type source: :class:`~google.cloud.spanner_v1.snapshot.Snapshot`
@@ -195,13 +195,13 @@ class StreamedResultSet(object):
 class Unmergeable(ValueError):
     """Unable to merge two values.
 
-    :type lhs: :class:`google.protobuf.struct_pb2.Value`
+    :type lhs: :class:`~google.protobuf.struct_pb2.Value`
     :param lhs: pending value to be merged
 
-    :type rhs: :class:`google.protobuf.struct_pb2.Value`
+    :type rhs: :class:`~google.protobuf.struct_pb2.Value`
     :param rhs: remaining value to be merged
 
-    :type type_: :class:`google.cloud.spanner_v1.proto.type_pb2.Type`
+    :type type_: :class:`~google.cloud.spanner_v1.proto.type_pb2.Type`
     :param type_: field type of values being merged
     """
 

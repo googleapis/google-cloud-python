@@ -216,18 +216,18 @@ class Session(object):
                        the names used in ``sql``.
 
         :type param_types:
-            dict, {str -> :class:`google.spanner.v1.type_pb2.TypeCode`}
+            dict, {str -> :class:`~google.spanner.v1.type_pb2.TypeCode`}
         :param param_types: (Optional) explicit types for one or more param
                             values;  overrides default type detection on the
                             back-end.
 
         :type query_mode:
-            :class:`google.spanner.v1.spanner_pb2.ExecuteSqlRequest.QueryMode`
-        :param query_mode: Mode governing return of results / query plan. See
-            https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
+            :class:`~google.spanner.v1.spanner_pb2.ExecuteSqlRequest.QueryMode`
+        :param query_mode: Mode governing return of results / query plan. See:
+            `QueryMode <https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode>`_.
 
         :type query_options:
-            :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
+            :class:`~google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
             or :class:`dict`
         :param query_options: (Optional) Options that are provided for query plan stability.
 

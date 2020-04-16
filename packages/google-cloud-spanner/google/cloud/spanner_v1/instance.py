@@ -135,7 +135,7 @@ class Instance(object):
         """Creates an instance from a protobuf.
 
         :type instance_pb:
-            :class:`google.spanner.v2.spanner_instance_admin_pb2.Instance`
+            :class:`~google.spanner.v2.spanner_instance_admin_pb2.Instance`
         :param instance_pb: A instance protobuf object.
 
         :type client: :class:`~google.cloud.spanner_v1.client.Client`
@@ -234,7 +234,7 @@ class Instance(object):
 
            before calling :meth:`create`.
 
-        :rtype: :class:`google.api_core.operation.Operation`
+        :rtype: :class:`~google.api_core.operation.Operation`
         :returns: an operation instance
         :raises Conflict: if the instance already exists
         """

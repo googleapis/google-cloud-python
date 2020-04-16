@@ -183,12 +183,13 @@ class Transaction(_SnapshotBase, _BatchBase):
             required if parameters are passed.
 
         :type query_mode:
-            :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryMode`
-        :param query_mode: Mode governing return of results / query plan. See
-            https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
+            :class:`~google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryMode`
+        :param query_mode: Mode governing return of results / query plan.
+            See:
+            `QueryMode <https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode>`_.
 
         :type query_options:
-            :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
+            :class:`~google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
             or :class:`dict`
         :param query_options: (Optional) Options that are provided for query plan stability.
 
