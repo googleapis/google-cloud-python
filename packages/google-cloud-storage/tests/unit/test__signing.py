@@ -252,7 +252,7 @@ class Test_get_signed_query_params_v2(unittest.TestCase):
 
         expected = {
             "GoogleAccessId": account_name,
-            "Expires": str(expiration),
+            "Expires": expiration,
             "Signature": base64.b64encode(sig_bytes),
         }
         self.assertEqual(result, expected)

@@ -82,7 +82,7 @@ def get_signed_query_params_v2(credentials, expiration, string_to_sign):
     service_account_name = credentials.signer_email
     return {
         "GoogleAccessId": service_account_name,
-        "Expires": str(expiration),
+        "Expires": expiration,
         "Signature": signature,
     }
 
@@ -384,7 +384,7 @@ def generate_signed_url_v2(
         signature = _sign_message(string_to_sign, access_token, service_account_email)
         signed_query_params = {
             "GoogleAccessId": service_account_email,
-            "Expires": str(expiration),
+            "Expires": expiration_stamp,
             "Signature": signature,
         }
     else:
