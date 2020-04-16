@@ -1,0 +1,12 @@
+{
+    "name": "recaptchaenterprise",
+    "name_pretty": "reCAPTCHA Enterprise",
+    "product_documentation": "https://cloud.google.com/recaptcha-enterprise",
+    "client_documentation": "https://googleapis.dev/python/recaptchaenterprise/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-recaptcha-enterprise",
+    "distribution_name": "google-cloud-recpatcha-enterprise",
+    "api_id": "recaptchaenterprise.googleapis.com"
+  }
