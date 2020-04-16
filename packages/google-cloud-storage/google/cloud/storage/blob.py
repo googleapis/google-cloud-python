@@ -174,6 +174,10 @@ class Blob(_PropertyMixin):
         kms_key_name=None,
         generation=None,
     ):
+        """
+        property :attr:`name`
+            Get the blob's name.
+        """
         name = _bytes_to_unicode(name)
         super(Blob, self).__init__(name=name)
 

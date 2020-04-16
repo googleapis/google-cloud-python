@@ -505,6 +505,10 @@ class Bucket(_PropertyMixin):
     """Allowed values for :attr:`location_type`."""
 
     def __init__(self, client, name=None, user_project=None):
+        """
+        property :attr:`name`
+            Get the bucket's name.
+        """
         name = _validate_name(name)
         super(Bucket, self).__init__(name=name)
         self._client = client
