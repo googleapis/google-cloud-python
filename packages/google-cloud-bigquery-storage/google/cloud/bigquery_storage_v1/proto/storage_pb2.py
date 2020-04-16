@@ -731,8 +731,8 @@ ReadRowsResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_READROWSRESPONSE,
         __module__="google.cloud.bigquery.storage_v1.proto.storage_pb2",
-        __doc__="""Response from calling ``ReadRows`` may include row data, progress and
-  throttling information.
+        __doc__="""Response from calling ``ReadRows`` may include row data,
+  progress and throttling information.
   
   
   Attributes:

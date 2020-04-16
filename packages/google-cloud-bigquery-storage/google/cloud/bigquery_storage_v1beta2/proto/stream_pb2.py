@@ -511,12 +511,10 @@ ReadSession = _reflection.GeneratedProtocolMessageType(
             fields in selected\_fields.
         row_restriction:
             SQL text filtering statement, similar to a WHERE clause in a
-            query. Currently, only a single predicate that is a comparison
-            between a column and a constant value is supported. Aggregates
-            are not supported.  Examples: "int\_field > 5" "date\_field =
-            CAST('2014-9-27' as DATE)" "nullable\_field is not NULL"
-            "st\_equals(geo\_field, st\_geofromtext("POINT(2, 2)"))"
-            "numeric\_field BETWEEN 1.0 AND 5.0"
+            query. Aggregates are not supported.  Examples: "int\_field >
+            5" "date\_field = CAST('2014-9-27' as DATE)" "nullable\_field
+            is not NULL" "st\_equals(geo\_field, st\_geofromtext("POINT(2,
+            2)"))" "numeric\_field BETWEEN 1.0 AND 5.0"
         arrow_serialization_options:
             Optional. Options specific to the Apache Arrow output format.
     """,
