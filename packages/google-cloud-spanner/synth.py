@@ -46,7 +46,14 @@ s.replace(
 s.replace(
     "google/cloud/spanner_v1/gapic/transports/spanner_grpc_transport.py",
     "from google.cloud.spanner_v1.proto import spanner_pb2_grpc\n",
-    "\g<0>\n\n_SPANNER_GRPC_CONFIG = 'spanner.grpc.config'\n",
+    "\g<0>\n\n_GRPC_KEEPALIVE_MS = 2 * 60 * 1000\n"
+    "_SPANNER_GRPC_CONFIG = 'spanner.grpc.config'\n",
+)
+
+s.replace(
+    "google/cloud/spanner_v1/gapic/transports/spanner_grpc_transport.py",
+    "(\s+)'grpc.max_receive_message_length': -1,",
+    "\g<0>\g<1>\"grpc.keepalive_time_ms\": _GRPC_KEEPALIVE_MS,",
 )
 
 s.replace(
