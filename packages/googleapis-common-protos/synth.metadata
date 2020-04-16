@@ -2,9 +2,22 @@
   "sources": [
     {
       "git": {
+        "name": ".",
+        "sha": "3b501ead270a85db33130d9ecfe0ef9e303311d2"
+      }
+    },
+    {
+      "git": {
         "name": "api-common-protos",
         "remote": "https://github.com/googleapis/api-common-protos.git",
         "sha": "be41e82ef4af6406b4cf331af00a837f813c0c3b"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "f8a9933e5e98202b04ef427f28d1d79221190fa4"
       }
     }
   ]
