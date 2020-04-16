@@ -67,6 +67,7 @@ def showcase(
         session.log('-' * 70)
 
     # Install pytest and gapic-generator-python
+    session.install('mock')
     session.install('pytest')
     session.install('-e', '.')
 
@@ -104,9 +105,70 @@ def showcase(
 
 
 @nox.session(python='3.8')
+def showcase_mtls(
+    session,
+    templates='DEFAULT',
+    other_opts: typing.Iterable[str] = (),
+):
+    """Run the Showcase mtls test suite."""
+
+    # Try to make it clear if Showcase is not running, so that
+    # people do not end up with tons of difficult-to-debug failures over
+    # an obvious problem.
+    if not os.environ.get('CIRCLECI'):
+        session.log('-' * 70)
+        session.log('Note: Showcase must be running for these tests to work.')
+        session.log('See https://github.com/googleapis/gapic-showcase')
+        session.log('-' * 70)
+
+    # Install pytest and gapic-generator-python
+    session.install('mock')
+    session.install('pytest')
+    session.install('-e', '.')
+
+    # Install a client library for Showcase.
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        # Download the Showcase descriptor.
+        session.run(
+            'curl', 'https://github.com/googleapis/gapic-showcase/releases/'
+                    f'download/v{showcase_version}/'
+                    f'gapic-showcase-{showcase_version}.desc',
+            '-L', '--output', path.join(tmp_dir, 'showcase.desc'),
+            external=True,
+            silent=True,
+        )
+
+        # Write out a client library for Showcase.
+        template_opt = f'python-gapic-templates={templates}'
+        opts = f'--python_gapic_opt={template_opt}'
+        opts += ','.join(other_opts + ('lazy-import',))
+        session.run(
+            'protoc',
+            f'--descriptor_set_in={tmp_dir}{path.sep}showcase.desc',
+            f'--python_gapic_out={tmp_dir}',
+            'google/showcase/v1beta1/echo.proto',
+            'google/showcase/v1beta1/identity.proto',
+            external=True,
+        )
+
+        # Install the library.
+        session.install(tmp_dir)
+
+    session.run(
+        'py.test', '--quiet', '--mtls', *(session.posargs or [path.join('tests', 'system')])
+    )
+
+
+@nox.session(python='3.8')
 def showcase_alternative_templates(session):
     templates = path.join(path.dirname(__file__), 'gapic', 'ads-templates')
     showcase(session, templates=templates, other_opts=('old-naming',))
+
+
+@nox.session(python='3.8')
+def showcase_mtls_alternative_templates(session):
+    templates = path.join(path.dirname(__file__), 'gapic', 'ads-templates')
+    showcase_mtls(session, templates=templates, other_opts=('old-naming',))
 
 
 @nox.session(python=['3.6', '3.7', '3.8'])

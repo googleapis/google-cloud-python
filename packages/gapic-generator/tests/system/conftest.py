@@ -13,76 +13,142 @@
 # limitations under the License.
 
 import collections
+import mock
+import os
 import pytest
 
+import google.api_core.client_options as ClientOptions
+from google import showcase
+from google.auth import credentials
 from google.showcase import EchoClient
 from google.showcase import IdentityClient
 
 import grpc
 
 
-@pytest.fixture
-def echo():
-    transport = EchoClient.get_transport_class('grpc')(
-        channel=grpc.insecure_channel('localhost:7469'),
+dir = os.path.dirname(__file__)
+with open(os.path.join(dir, "../cert/mtls.crt"), "rb") as fh:
+    cert = fh.read()
+with open(os.path.join(dir, "../cert/mtls.key"), "rb") as fh:
+    key = fh.read()
+
+ssl_credentials = grpc.ssl_channel_credentials(
+    root_certificates=cert, certificate_chain=cert, private_key=key
+)
+
+
+def callback():
+    return cert, key
+
+
+client_options = ClientOptions.ClientOptions()
+client_options.client_cert_source = callback
+
+
+def pytest_addoption(parser):
+    parser.addoption(
+        "--mtls", action="store_true", help="Run system test with mutual TLS channel"
     )
-    return EchoClient(transport=transport)
 
 
 @pytest.fixture
-def identity():
-    transport = IdentityClient.get_transport_class('grpc')(
-        channel=grpc.insecure_channel('localhost:7469'),
-    )
-    return IdentityClient(transport=transport)
+def use_mtls(request):
+    return request.config.getoption("--mtls")
 
 
-class MetadataClientInterceptor(grpc.UnaryUnaryClientInterceptor,
-                                grpc.UnaryStreamClientInterceptor,
-                                grpc.StreamUnaryClientInterceptor,
-                                grpc.StreamStreamClientInterceptor):
+@pytest.fixture
+def echo(use_mtls):
+    if use_mtls:
+        with mock.patch("grpc.ssl_channel_credentials", autospec=True) as mock_ssl_cred:
+            mock_ssl_cred.return_value = ssl_credentials
+            client = EchoClient(
+                credentials=credentials.AnonymousCredentials(),
+                client_options=client_options,
+            )
+            mock_ssl_cred.assert_called_once_with(
+                certificate_chain=cert, private_key=key
+            )
+            return client
+    else:
+        transport = EchoClient.get_transport_class("grpc")(
+            channel=grpc.insecure_channel("localhost:7469")
+        )
+        return EchoClient(transport=transport)
 
+
+@pytest.fixture
+def identity(use_mtls):
+    if use_mtls:
+        with mock.patch("grpc.ssl_channel_credentials", autospec=True) as mock_ssl_cred:
+            mock_ssl_cred.return_value = ssl_credentials
+            client = IdentityClient(
+                credentials=credentials.AnonymousCredentials(),
+                client_options=client_options,
+            )
+            mock_ssl_cred.assert_called_once_with(
+                certificate_chain=cert, private_key=key
+            )
+            return client
+    else:
+        transport = IdentityClient.get_transport_class("grpc")(
+            channel=grpc.insecure_channel("localhost:7469")
+        )
+        return IdentityClient(transport=transport)
+
+
+class MetadataClientInterceptor(
+    grpc.UnaryUnaryClientInterceptor,
+    grpc.UnaryStreamClientInterceptor,
+    grpc.StreamUnaryClientInterceptor,
+    grpc.StreamStreamClientInterceptor,
+):
     def __init__(self, key, value):
         self._key = key
         self._value = value
 
     def _add_metadata(self, client_call_details):
         if client_call_details.metadata is not None:
-            client_call_details.metadata.append((self._key, self._value,))
+            client_call_details.metadata.append((self._key, self._value))
 
     def intercept_unary_unary(self, continuation, client_call_details, request):
         self._add_metadata(client_call_details)
         response = continuation(client_call_details, request)
         return response
 
-    def intercept_unary_stream(self, continuation, client_call_details,
-                               request):
+    def intercept_unary_stream(self, continuation, client_call_details, request):
         self._add_metadata(client_call_details)
         response_it = continuation(client_call_details, request)
         return response_it
 
-    def intercept_stream_unary(self, continuation, client_call_details,
-                               request_iterator):
+    def intercept_stream_unary(
+        self, continuation, client_call_details, request_iterator
+    ):
         self._add_metadata(client_call_details)
         response = continuation(client_call_details, request_iterator)
         return response
 
-    def intercept_stream_stream(self, continuation, client_call_details,
-                                request_iterator):
+    def intercept_stream_stream(
+        self, continuation, client_call_details, request_iterator
+    ):
         self._add_metadata(client_call_details)
         response_it = continuation(client_call_details, request_iterator)
         return response_it
 
 
 @pytest.fixture
-def intercepted_echo():
+def intercepted_echo(use_mtls):
     # The interceptor adds 'showcase-trailer' client metadata. Showcase server
     # echos any metadata with key 'showcase-trailer', so the same metadata
     # should appear as trailing metadata in the response.
-    interceptor = MetadataClientInterceptor('showcase-trailer', 'intercepted')
-    channel = grpc.insecure_channel('localhost:7469')
+    interceptor = MetadataClientInterceptor("showcase-trailer", "intercepted")
+    host = "localhost:7469"
+    channel = (
+        grpc.secure_channel(host, ssl_credentials)
+        if use_mtls
+        else grpc.insecure_channel(host)
+    )
     intercept_channel = grpc.intercept_channel(channel, interceptor)
-    transport = EchoClient.get_transport_class('grpc')(
-        channel=intercept_channel,
+    transport = EchoClient.get_transport_class("grpc")(
+        channel=intercept_channel
     )
     return EchoClient(transport=transport)
