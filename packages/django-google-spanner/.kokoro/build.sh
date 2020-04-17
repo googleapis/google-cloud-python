@@ -64,7 +64,11 @@ then
     # QPS for administrative RPCs of 5QPS (averaged every 100 seconds)
     if [[ $KOKORO_JOB_NAME == *"continuous"* ]]
     then
-        export DJANGO_WORKER_COUNT=1 # Only using 1 worker for continuous instead of $(ls .kokoro/continuous/worker* | wc -l)
+        # Disable continuous build as it creates too many Spanner instances
+        # ("Quota exceeded for quota metric 'Instance create requests' and
+        # limit 'Instance create requests per minute' of service
+        # 'spanner.googleapis.com').
+        export DJANGO_WORKER_COUNT=0
     else
         export DJANGO_WORKER_COUNT=5
     fi
