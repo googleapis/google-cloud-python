@@ -278,13 +278,13 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # This test isn't isolated on databases like Spanner that don't
         # support transactions: https://code.djangoproject.com/ticket/31413
         'migrations.test_loader.LoaderTests.test_loading_squashed',
-        # "Permission errors are not swallowed":
-        # https://github.com/googleapis/python-spanner-django/issues/407
-        'file_uploads.tests.DirectoryCreationTests.test_readonly_root',
-        # Migrations data  persistance issue to be investigated:
-        # https://github.com/googleapis/python-spanner-django/issues/408
-        'migration_test_data_persistence.tests.MigrationDataNormalPersistenceTestCase.test_persistence',
     )
+    # Kokoro-specific skips.
+    if os.environ.get('KOKORO_JOB_NAME'):
+        skip_tests += (
+            # os.chmod() doesn't work on Kokoro?
+            'file_uploads.tests.DirectoryCreationTests.test_readonly_root',
+        )
 
     if os.environ.get('SPANNER_EMULATOR_HOST', None):
         # Some code isn't yet supported by the Spanner emulator.
