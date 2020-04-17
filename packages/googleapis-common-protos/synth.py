@@ -19,7 +19,7 @@ import synthtool.gcp as gcp
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
-#  Treat api-common-protos repo as source
+#  Treat api-common-protos repo as a source
 # ----------------------------------------------------------------------------
 url = git.make_repo_clone_url("googleapis/api-common-protos")
 api_common_protos = git.clone(url) / "google"
@@ -30,7 +30,7 @@ api_common_protos = git.clone(url) / "google"
 s.copy(api_common_protos, excludes=["iam/**/*"])
 
 # ----------------------------------------------------------------------------
-# Add templated files
+#  Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library()
 s.move(templated_files / ".kokoro", excludes=["docs/**/*", "publish-docs.sh"])
