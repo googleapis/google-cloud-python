@@ -46,8 +46,9 @@ def url_with_everything():
 
 
 def test_basic(url_with_everything):
-    location, dataset_id, arraysize, credentials_path, job_config = parse_url(url_with_everything)
+    project_id, location, dataset_id, arraysize, credentials_path, job_config = parse_url(url_with_everything)
 
+    assert project_id == 'some-project'
     assert location == 'some-location'
     assert dataset_id == 'some-dataset'
     assert arraysize == 1000
@@ -68,7 +69,7 @@ def test_basic(url_with_everything):
     ('write_disposition', 'WRITE_APPEND'),
 ])
 def test_all_values(url_with_everything, param, value):
-    job_config = parse_url(url_with_everything)[4]
+    job_config = parse_url(url_with_everything)[5]
 
     config_value = getattr(job_config, param)
     if callable(value):
@@ -108,8 +109,9 @@ def test_empty_url():
 
 def test_empty_with_non_config():
     url = parse_url(make_url('bigquery:///?location=some-location&arraysize=1000&credentials_path=/some/path/to.json'))
-    location, dataset_id, arraysize, credentials_path, job_config = url
+    project_id, location, dataset_id, arraysize, credentials_path, job_config = url
 
+    assert project_id is None
     assert location == 'some-location'
     assert dataset_id is None
     assert arraysize == 1000
@@ -118,8 +120,9 @@ def test_empty_with_non_config():
 
 def test_only_dataset():
     url = parse_url(make_url('bigquery:///some-dataset'))
-    location, dataset_id, arraysize, credentials_path, job_config = url
+    project_id, location, dataset_id, arraysize, credentials_path, job_config = url
 
+    assert project_id is None
     assert location is None
     assert dataset_id == 'some-dataset'
     assert arraysize is None

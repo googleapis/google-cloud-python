@@ -29,6 +29,7 @@ def parse_url(url):
     # maximum_billing_tier (deprecated)
     if 'maximum_billing_tier' in query: raise ValueError("maximum_billing_tier is a deprecated argument")
 
+    project_id = url.host
     location = None
     dataset_id = url.database or None
     arraysize = None
@@ -55,9 +56,9 @@ def parse_url(url):
         # if a dataset_id exists, we need to return a job_config that isn't None
         # so it can be updated with a dataset reference from the client
         if dataset_id:
-            return location, dataset_id, arraysize, credentials_path, QueryJobConfig()
+            return project_id, location, dataset_id, arraysize, credentials_path, QueryJobConfig()
         else:
-            return location, dataset_id, arraysize, credentials_path, None
+            return project_id, location, dataset_id, arraysize, credentials_path, None
 
     job_config = QueryJobConfig()
 
@@ -169,4 +170,4 @@ def parse_url(url):
         except AttributeError:
             raise ValueError("invalid write_disposition in url query: " + query['write_disposition'])
 
-    return location, dataset_id, arraysize, credentials_path, job_config
+    return project_id, location, dataset_id, arraysize, credentials_path, job_config
