@@ -120,7 +120,7 @@ class TestBackup(_BaseTest):
 
         backup = backup_class.from_pb(backup_pb, instance)
 
-        self.assertTrue(isinstance(backup, backup_class))
+        self.assertIsInstance(backup, backup_class)
         self.assertEqual(backup._instance, instance)
         self.assertEqual(backup.backup_id, self.BACKUP_ID)
         self.assertEqual(backup._database, "")

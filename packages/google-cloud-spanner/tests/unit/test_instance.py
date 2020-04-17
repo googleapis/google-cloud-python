@@ -159,7 +159,7 @@ class TestInstance(unittest.TestCase):
 
         klass = self._getTargetClass()
         instance = klass.from_pb(instance_pb, client)
-        self.assertTrue(isinstance(instance, klass))
+        self.assertIsInstance(instance, klass)
         self.assertEqual(instance._client, client)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.configuration_name, self.CONFIG_NAME)
@@ -469,7 +469,7 @@ class TestInstance(unittest.TestCase):
 
         database = instance.database(DATABASE_ID)
 
-        self.assertTrue(isinstance(database, Database))
+        self.assertIsInstance(database, Database)
         self.assertEqual(database.database_id, DATABASE_ID)
         self.assertIs(database._instance, instance)
         self.assertEqual(list(database.ddl_statements), [])
@@ -490,7 +490,7 @@ class TestInstance(unittest.TestCase):
             DATABASE_ID, ddl_statements=DDL_STATEMENTS, pool=pool
         )
 
-        self.assertTrue(isinstance(database, Database))
+        self.assertIsInstance(database, Database)
         self.assertEqual(database.database_id, DATABASE_ID)
         self.assertIs(database._instance, instance)
         self.assertEqual(list(database.ddl_statements), DDL_STATEMENTS)

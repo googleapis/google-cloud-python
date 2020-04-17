@@ -459,7 +459,7 @@ class TestClient(unittest.TestCase):
 
         instance = client.instance(self.INSTANCE_ID)
 
-        self.assertTrue(isinstance(instance, Instance))
+        self.assertIsInstance(instance, Instance)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertIsNone(instance.configuration_name)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
@@ -479,7 +479,7 @@ class TestClient(unittest.TestCase):
             node_count=self.NODE_COUNT,
         )
 
-        self.assertTrue(isinstance(instance, Instance))
+        self.assertIsInstance(instance, Instance)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.configuration_name, self.CONFIGURATION_NAME)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)

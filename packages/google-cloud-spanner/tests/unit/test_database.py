@@ -198,7 +198,7 @@ class TestDatabase(_BaseTest):
 
         database = klass.from_pb(database_pb, instance, pool=pool)
 
-        self.assertTrue(isinstance(database, klass))
+        self.assertIsInstance(database, klass)
         self.assertEqual(database._instance, instance)
         self.assertEqual(database.database_id, self.DATABASE_ID)
         self.assertIs(database._pool, pool)
@@ -218,7 +218,7 @@ class TestDatabase(_BaseTest):
 
         database = klass.from_pb(database_pb, instance)
 
-        self.assertTrue(isinstance(database, klass))
+        self.assertIsInstance(database, klass)
         self.assertEqual(database._instance, instance)
         self.assertEqual(database.database_id, DATABASE_ID_HYPHEN)
         self.assertIsInstance(database._pool, BurstyPool)
@@ -1074,7 +1074,7 @@ class TestDatabase(_BaseTest):
 
         session = database.session()
 
-        self.assertTrue(isinstance(session, Session))
+        self.assertIsInstance(session, Session)
         self.assertIs(session.session_id, None)
         self.assertIs(session._database, database)
         self.assertEqual(session.labels, {})
@@ -1090,7 +1090,7 @@ class TestDatabase(_BaseTest):
 
         session = database.session(labels=labels)
 
-        self.assertTrue(isinstance(session, Session))
+        self.assertIsInstance(session, Session)
         self.assertIs(session.session_id, None)
         self.assertIs(session._database, database)
         self.assertEqual(session.labels, labels)
