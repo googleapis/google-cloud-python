@@ -45,8 +45,7 @@ def generate_protos(session):
     
     Some notes on the `google` directory:
     The _pb2.py files are produced by protoc. The .proto files are
-    non-functional but are left in the repository to make it easier for 
-    reviewers to understand diffs.
+    non-functional but are left in the repository to make it easier to understand diffs.
     
     The google `directory` also has `__init__.py` files to create proper modules. 
     If a new subdirectory is added, you will need to create more `__init__.py`
@@ -64,8 +63,8 @@ def default(session):
     session.install("mock", "pytest", "pytest-cov")
     session.install("-e", ".")
 
-    # Install googleapis-api-common-protos from source
-    # This must be the last install command to get the package from source.
+    # Install googleapis-api-common-protos
+    # This *must* be the last install command to get the package from source.
     session.install("..")
 
     # Run py.test against the unit tests.
@@ -113,8 +112,8 @@ def system(session):
 
     session.install("-e", ".")
 
-    # Install googleapis-api-common-protos from source
-    # This must be the last install command to get the package from source.
+    # Install googleapis-api-common-protos
+    # This *must* be the last install command to get the package from source.
     session.install("..")
 
     # Run py.test against the system tests.
@@ -136,8 +135,8 @@ def test(session, library):
     To verify that any changes we make here will not break downstream libraries, clone
     a few and run their unit and system tests.
 
-    NOTE: The unit and system test sessions are copied from the templates. They will need to be
-    updated when the templates change.
+    NOTE: The unit and system test functions above are copied from the templates. 
+    They will need to be updated when the templates change.
 
     * Pub/Sub: GAPIC with handwritten layer.
     * Firestore: GAPIC with handwritten layer.

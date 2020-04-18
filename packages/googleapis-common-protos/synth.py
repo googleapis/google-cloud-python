@@ -12,29 +12,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import requests
+import shutil
+import zipfile
+from io import BytesIO
+from pathlib import Path
+
 import synthtool as s
-from synthtool.sources import git
 import synthtool.gcp as gcp
+from synthtool import tmp
+from synthtool.sources import git
 
-common = gcp.CommonTemplates()
+API_COMMON_PROTOS_REPO = "googleapis/api-common-protos"
+# ----------------------------------------------------------------------------
+#  Get api-common-protos
+# ----------------------------------------------------------------------------
 
-# ----------------------------------------------------------------------------
-#  Treat api-common-protos repo as a source
-# ----------------------------------------------------------------------------
-url = git.make_repo_clone_url("googleapis/api-common-protos")
-api_common_protos = git.clone(url) / "google"
-
-# ----------------------------------------------------------------------------
-#  Copy protos to this repo, excluding IAM which is published separately
-# ----------------------------------------------------------------------------
-s.copy(api_common_protos, excludes=["iam/**/*"])
+# Use api-common-protos as a proper synthtool git source
+api_common_protos_url = git.make_repo_clone_url(API_COMMON_PROTOS_REPO)
+api_common_protos = git.clone(api_common_protos_url) / "google"
+# Exclude iam protos (they are released in a separate package)
+s.copy(api_common_protos, excludes=["iam/**/*", "**/BUILD.bazel"])
 
 # ----------------------------------------------------------------------------
 #  Add templated files
 # ----------------------------------------------------------------------------
+common = gcp.CommonTemplates()
 templated_files = common.py_library()
 s.move(templated_files / ".kokoro", excludes=["docs/**/*", "publish-docs.sh"])
 s.move(templated_files / "setup.cfg")
+s.move(templated_files / "LICENSE")
 
 # Generate _pb2.py files and format them
 s.shell.run(["nox", "-s", "generate_protos"], hide_output=False)

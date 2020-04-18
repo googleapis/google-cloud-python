@@ -3,7 +3,8 @@
     {
       "git": {
         "name": ".",
-        "sha": "3b501ead270a85db33130d9ecfe0ef9e303311d2"
+        "remote": "sso://devrel/cloud/libraries/python/python-api-common-protos",
+        "sha": "a40c873e9d5289919f0257798cb566893055ce2a"
       }
     },
     {
@@ -17,7 +18,7 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "f8a9933e5e98202b04ef427f28d1d79221190fa4"
+        "sha": "19465d3ec5e5acdb01521d8f3bddd311bcbee28d"
       }
     }
   ]
