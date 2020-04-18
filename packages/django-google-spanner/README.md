@@ -36,8 +36,17 @@ pip3 install --user .
 ```
 
 ## Using it
-After [installing it](#installing-it), you'll need to edit your Django `settings.py` file
-and particularly the `DATABASES` section to point to an EXISTING database, of the format:
+After [installing it](#installing-it), you'll need to edit your Django `settings.py` file:
+
+* Add `django_spanner` as the very first entry in the `INSTALLED_APPS` setting
+```python
+INSTALLED_APPS = [
+    'django_spanner',
+    ...
+]
+```
+
+* Edit the `DATABASES` setting to point to an EXISTING database
 
 ### Format
 
@@ -66,7 +75,7 @@ DATABASES = {
         'ENGINE': 'django_spanner',
         'PROJECT': 'appdev-soda-spanner-staging', # Or the GCP project-id
         'INSTANCE': 'django-dev1', # Or the Cloud Spanner instance
-        'DATABASE': 'db1', # Or the Cloud Spanner database to use
+        'NAME': 'db1', # Or the Cloud Spanner database to use
     }
 }
 ```
