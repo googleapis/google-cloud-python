@@ -177,3 +177,11 @@ class Test_is_transient_error:
         core_retry.if_transient_error.return_value = False
         assert _retry.is_transient_error(error) is False
         core_retry.if_transient_error.assert_called_once_with(error)
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._retry.core_retry")
+    def test_aborted(core_retry):
+        error = mock.Mock(code=mock.Mock(return_value=grpc.StatusCode.ABORTED))
+        core_retry.if_transient_error.return_value = False
+        assert _retry.is_transient_error(error) is True
+        core_retry.if_transient_error.assert_called_once_with(error)
