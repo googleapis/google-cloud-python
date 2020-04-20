@@ -82,11 +82,15 @@ class DataSource(object):
           for a refresh token on the backend.
           GOOGLE_PLUS_AUTHORIZATION_CODE (int): Return an authorization code for a given Google+ page that can then be
           exchanged for a refresh token on the backend.
+          FIRST_PARTY_OAUTH (int): Use First Party Client OAuth. First Party Client OAuth doesn't require a
+          refresh token to get an offline access token. Instead, it uses a
+          client-signed JWT assertion to retrieve an access token.
         """
 
         AUTHORIZATION_TYPE_UNSPECIFIED = 0
         AUTHORIZATION_CODE = 1
         GOOGLE_PLUS_AUTHORIZATION_CODE = 2
+        FIRST_PARTY_OAUTH = 3
 
     class DataRefreshType(enum.IntEnum):
         """

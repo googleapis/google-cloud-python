@@ -89,6 +89,15 @@ class DataTransferServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def data_source_path(cls, project, data_source):
+        """Return a fully-qualified data_source string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/dataSources/{data_source}",
+            project=project,
+            data_source=data_source,
+        )
+
+    @classmethod
     def location_path(cls, project, location):
         """Return a fully-qualified location string."""
         return google.api_core.path_template.expand(
@@ -157,6 +166,25 @@ class DataTransferServiceClient(object):
     @classmethod
     def project_transfer_config_path(cls, project, transfer_config):
         """Return a fully-qualified project_transfer_config string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/transferConfigs/{transfer_config}",
+            project=project,
+            transfer_config=transfer_config,
+        )
+
+    @classmethod
+    def run_path(cls, project, transfer_config, run):
+        """Return a fully-qualified run string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/transferConfigs/{transfer_config}/runs/{run}",
+            project=project,
+            transfer_config=transfer_config,
+            run=run,
+        )
+
+    @classmethod
+    def transfer_config_path(cls, project, transfer_config):
+        """Return a fully-qualified transfer_config string."""
         return google.api_core.path_template.expand(
             "projects/{project}/transferConfigs/{transfer_config}",
             project=project,
