@@ -19,23 +19,23 @@ import re
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = ["v1beta1"]
+versions = ["v1beta1", "v1"]
 
 # ----------------------------------------------------------------------------
 # Generate webrisk GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library("webrisk", version, include_protos=True)
+    library = gapic.py_library("webrisk", version)
     s.copy(library, excludes=["docs/index.rst", "nox.py", "README.rst", "setup.py"])
 
 
 # Fix docstring issue for classes with no summary line
 s.replace(
     "google/cloud/**/proto/webrisk_pb2.py",
-    '''__doc__ = """Attributes:''',
-    '''__doc__ = """
+    ''''__doc__': """Attributes:''',
+    ''''__doc__': """
     Attributes:''',
 )
 

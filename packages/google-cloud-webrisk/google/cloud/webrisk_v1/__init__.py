@@ -16,10 +16,26 @@
 
 
 from __future__ import absolute_import
+import sys
+import warnings
 
-from google.cloud.webrisk_v1 import WebRiskServiceClient
-from google.cloud.webrisk_v1 import enums
 from google.cloud.webrisk_v1 import types
+from google.cloud.webrisk_v1.gapic import enums
+from google.cloud.webrisk_v1.gapic import web_risk_service_client
+
+
+if sys.version_info[:2] == (2, 7):
+    message = (
+        "A future version of this library will drop support for Python 2.7."
+        "More details about Python 2 support for Google Cloud Client Libraries"
+        "can be found at https://cloud.google.com/python/docs/python2-sunset/"
+    )
+    warnings.warn(message, DeprecationWarning)
+
+
+class WebRiskServiceClient(web_risk_service_client.WebRiskServiceClient):
+    __doc__ = web_risk_service_client.WebRiskServiceClient.__doc__
+    enums = enums
 
 
 __all__ = ("enums", "types", "WebRiskServiceClient")
