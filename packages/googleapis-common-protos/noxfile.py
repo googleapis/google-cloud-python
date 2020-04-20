@@ -44,12 +44,12 @@ def generate_protos(session):
     """Generates the protos using protoc.
     
     Some notes on the `google` directory:
-    The _pb2.py files are produced by protoc. The .proto files are
-    non-functional but are left in the repository to make it easier to understand diffs.
-    
-    The google `directory` also has `__init__.py` files to create proper modules. 
-    If a new subdirectory is added, you will need to create more `__init__.py`
-    files.
+    1. The `_pb2.py` files are produced by protoc. 
+    2. The .proto files are non-functional but are left in the repository
+       to make it easier to understand diffs.
+    3. The `google` directory also has `__init__.py` files to create proper modules. 
+       If a new subdirectory is added, you will need to create more `__init__.py`
+       files.
     """
     session.install("grpcio-tools")
     protos = [str(p) for p in (Path(".").glob("google/**/*.proto"))]
@@ -90,7 +90,6 @@ def unit(session):
 
 def system(session):
     """Run the system test suite."""
-
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
     # Sanity check: Only run tests if the environment variable is set.
@@ -125,7 +124,7 @@ def system(session):
 
 @nox.parametrize(
     "library",
-    ["python-pubsub", "python-firestore", "python-storage", "python-asset"],
+    ["python-pubsub", "python-firestore", "python-storage", "python-texttospeech"],
     ids=["pubsub", "firestore", "storage", "texttospeech"],
 )
 @nox.session(python=["2.7", "3.5", "3.6", "3.7", "3.8"])

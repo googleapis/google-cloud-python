@@ -12,12 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import requests
-import shutil
-import zipfile
-from io import BytesIO
-from pathlib import Path
-
 import synthtool as s
 import synthtool.gcp as gcp
 from synthtool import tmp
