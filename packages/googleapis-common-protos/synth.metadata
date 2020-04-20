@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "sso://devrel/cloud/libraries/python/python-api-common-protos",
-        "sha": "a40c873e9d5289919f0257798cb566893055ce2a"
+        "sha": "6e6f343eb972ddbd8711c9d4b67fc97dac0884c7"
       }
     },
     {
@@ -18,7 +18,7 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "19465d3ec5e5acdb01521d8f3bddd311bcbee28d"
+        "sha": "f5e4c17dc78a966dbf29961dd01f9bbd63e20a04"
       }
     }
   ]

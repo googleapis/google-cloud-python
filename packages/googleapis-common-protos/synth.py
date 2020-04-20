@@ -15,6 +15,7 @@
 import synthtool as s
 import synthtool.gcp as gcp
 from synthtool import tmp
+from synthtool.languages import python
 from synthtool.sources import git
 
 API_COMMON_PROTOS_REPO = "googleapis/api-common-protos"
@@ -28,6 +29,8 @@ api_common_protos = git.clone(api_common_protos_url) / "google"
 # Exclude iam protos (they are released in a separate package)
 s.copy(api_common_protos, excludes=["iam/**/*", "**/BUILD.bazel"])
 
+
+
 # ----------------------------------------------------------------------------
 #  Add templated files
 # ----------------------------------------------------------------------------
@@ -40,3 +43,6 @@ s.move(templated_files / "LICENSE")
 # Generate _pb2.py files and format them
 s.shell.run(["nox", "-s", "generate_protos"], hide_output=False)
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+
+# Add license headers
+python.fix_pb2_headers()
