@@ -1258,10 +1258,7 @@ Stream = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_STREAM,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
-        __doc__="""Information about a single data stream within a read
-  session.
-  
-  
+        __doc__="""Information about a single data stream within a read session.
   Attributes:
       name:
           Name of the stream, in the form ``projects/{project_id}/locati
@@ -1278,10 +1275,7 @@ StreamPosition = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_STREAMPOSITION,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
-        __doc__="""Expresses a point within a given stream using an offset
-  position.
-  
-  
+        __doc__="""Expresses a point within a given stream using an offset position.
   Attributes:
       stream:
           Identifier for a given Stream.
@@ -1300,8 +1294,6 @@ ReadSession = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_READSESSION,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
         __doc__="""Information returned from a ``CreateReadSession`` request.
-  
-  
   Attributes:
       name:
           Unique identifier for the session, in the form ``projects/{pro
@@ -1338,11 +1330,8 @@ CreateReadSessionRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CREATEREADSESSIONREQUEST,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
-        __doc__="""Creates a new read session, which may include additional
-  options such as requested parallelism, projection filters and
-  constraints.
-  
-  
+        __doc__="""Creates a new read session, which may include additional options such
+  as requested parallelism, projection filters and constraints.
   Attributes:
       table_reference:
           Required. Reference to the table to read.
@@ -1380,10 +1369,8 @@ ReadRowsRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_READROWSREQUEST,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
-        __doc__="""Requesting row data via ``ReadRows`` must provide Stream
-  position information.
-  
-  
+        __doc__="""Requesting row data via ``ReadRows`` must provide Stream position
+  information.
   Attributes:
       read_position:
           Required. Identifier of the position in the stream to start
@@ -1403,8 +1390,6 @@ StreamStatus = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_STREAMSTATUS,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
         __doc__="""Progress information for a given Stream.
-  
-  
   Attributes:
       estimated_row_count:
           Number of estimated rows in the current stream. May change
@@ -1471,10 +1456,7 @@ ThrottleStatus = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_THROTTLESTATUS,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
-        __doc__="""Information on if the current connection is being
-  throttled.
-  
-  
+        __doc__="""Information on if the current connection is being throttled.
   Attributes:
       throttle_percent:
           How much this connection is being throttled. 0 is no
@@ -1491,10 +1473,8 @@ ReadRowsResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_READROWSRESPONSE,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
-        __doc__="""Response from calling ``ReadRows`` may include row data,
-  progress and throttling information.
-  
-  
+        __doc__="""Response from calling ``ReadRows`` may include row data, progress and
+  throttling information.
   Attributes:
       rows:
           Row data is returned in format specified during session
@@ -1526,10 +1506,8 @@ BatchCreateReadSessionStreamsRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_BATCHCREATEREADSESSIONSTREAMSREQUEST,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
-        __doc__="""Information needed to request additional streams for an
-  established read session.
-  
-  
+        __doc__="""Information needed to request additional streams for an established
+  read session.
   Attributes:
       session:
           Required. Must be a non-expired session obtained from a call
@@ -1550,10 +1528,8 @@ BatchCreateReadSessionStreamsResponse = _reflection.GeneratedProtocolMessageType
     dict(
         DESCRIPTOR=_BATCHCREATEREADSESSIONSTREAMSRESPONSE,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
-        __doc__="""The response from ``BatchCreateReadSessionStreams``
-  returns the stream identifiers for the newly created streams.
-  
-  
+        __doc__="""The response from ``BatchCreateReadSessionStreams`` returns the stream
+  identifiers for the newly created streams.
   Attributes:
       streams:
           Newly added streams.
@@ -1570,8 +1546,6 @@ FinalizeStreamRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_FINALIZESTREAMREQUEST,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
         __doc__="""Request information for invoking ``FinalizeStream``.
-  
-  
   Attributes:
       stream:
           Stream to finalize.
@@ -1588,8 +1562,6 @@ SplitReadStreamRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_SPLITREADSTREAMREQUEST,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
         __doc__="""Request information for ``SplitReadStream``.
-  
-  
   Attributes:
       original_stream:
           Stream to split.
@@ -1616,8 +1588,6 @@ SplitReadStreamResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_SPLITREADSTREAMRESPONSE,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.storage_pb2",
         __doc__="""Response from ``SplitReadStream``.
-  
-  
   Attributes:
       primary_stream:
           Primary stream, which contains the beginning portion of

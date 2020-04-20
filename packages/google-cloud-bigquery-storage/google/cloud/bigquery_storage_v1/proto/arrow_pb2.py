@@ -135,11 +135,10 @@ ArrowSchema = _reflection.GeneratedProtocolMessageType(
         __module__="google.cloud.bigquery.storage_v1.proto.arrow_pb2",
         __doc__="""Arrow schema as specified in
   https://arrow.apache.org/docs/python/api/datatypes.html and serialized
-  to bytes using IPC: https://arrow.apache.org/docs/ipc.html.
-  
-  See code samples on how this message can be deserialized.
-  
-  
+  to bytes using IPC:
+  https://arrow.apache.org/docs/format/Columnar.html#serialization-and-
+  interprocess-communication-ipc  See code samples on how this message
+  can be deserialized.
   Attributes:
       serialized_schema:
           IPC serialized Arrow schema.
@@ -156,8 +155,6 @@ ArrowRecordBatch = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_ARROWRECORDBATCH,
         __module__="google.cloud.bigquery.storage_v1.proto.arrow_pb2",
         __doc__="""Arrow RecordBatch.
-  
-  
   Attributes:
       serialized_record_batch:
           IPC-serialized Arrow RecordBatch.

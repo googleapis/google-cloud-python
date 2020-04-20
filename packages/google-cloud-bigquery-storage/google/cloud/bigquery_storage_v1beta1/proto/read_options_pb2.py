@@ -94,8 +94,6 @@ TableReadOptions = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_TABLEREADOPTIONS,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.read_options_pb2",
         __doc__="""Options dictating how we read a table.
-  
-  
   Attributes:
       selected_fields:
           Optional. Names of the fields in the table that should be

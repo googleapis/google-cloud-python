@@ -1,27 +1,32 @@
 {
-  "updateTime": "2020-03-05T13:15:08.957715Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "1.0.0",
-        "dockerImage": "googleapis/artman@sha256:f37f2464788cb551299209b4fcab4eb323533154488c2ef9ec0c75d7c2b4b482"
+        "version": "2.0.0",
+        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
+      }
+    },
+    {
+      "git": {
+        "name": ".",
+        "remote": "https://github.com/googleapis/python-bigquery-storage.git",
+        "sha": "49b941a207af28a3a30b96cd6eda22b6eda0a0f0"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "638253bf86d1ce1c314108a089b7351440c2f0bf",
-        "internalRef": "298971070",
-        "log": "638253bf86d1ce1c314108a089b7351440c2f0bf\nfix: add java_multiple_files option for automl text_sentiment.proto\n\nPiperOrigin-RevId: 298971070\n\n373d655703bf914fb8b0b1cc4071d772bac0e0d1\nUpdate Recs AI Beta public bazel file\n\nPiperOrigin-RevId: 298961623\n\ndcc5d00fc8a8d8b56f16194d7c682027b2c66a3b\nfix: add java_multiple_files option for automl classification.proto\n\nPiperOrigin-RevId: 298953301\n\na3f791827266f3496a6a5201d58adc4bb265c2a3\nchore: automl/v1 publish annotations and retry config\n\nPiperOrigin-RevId: 298942178\n\n01c681586d8d6dbd60155289b587aee678530bd9\nMark return_immediately in PullRequest deprecated.\n\nPiperOrigin-RevId: 298893281\n\nc9f5e9c4bfed54bbd09227e990e7bded5f90f31c\nRemove out of date documentation for predicate support on the Storage API\n\nPiperOrigin-RevId: 298883309\n\nfd5b3b8238d783b04692a113ffe07c0363f5de0f\ngenerate webrisk v1 proto\n\nPiperOrigin-RevId: 298847934\n\n"
+        "sha": "bcc476396e799806d3355e87246c6becf6250a70",
+        "internalRef": "306974763"
       }
     },
     {
-      "template": {
-        "name": "python_library",
-        "origin": "synthtool.gcp",
-        "version": "2020.2.4"
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "6980131905b652563280e4d2482384d4acc9eafc"
       }
     }
   ],

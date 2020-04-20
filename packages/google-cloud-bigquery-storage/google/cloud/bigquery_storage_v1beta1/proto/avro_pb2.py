@@ -134,8 +134,6 @@ AvroSchema = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_AVROSCHEMA,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.avro_pb2",
         __doc__="""Avro schema.
-  
-  
   Attributes:
       schema:
           Json serialized schema, as described at
@@ -153,8 +151,6 @@ AvroRows = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_AVROROWS,
         __module__="google.cloud.bigquery.storage_v1beta1.proto.avro_pb2",
         __doc__="""Avro rows.
-  
-  
   Attributes:
       serialized_binary_rows:
           Binary serialized rows in a block.
