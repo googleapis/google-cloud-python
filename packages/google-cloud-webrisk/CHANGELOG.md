@@ -3,6 +3,13 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [0.3.0](https://www.github.com/googleapis/python-webrisk/compare/v0.2.0...v0.3.0) (2020-04-20)
+
+
+### Features
+
+* add v1 ([#11](https://www.github.com/googleapis/python-webrisk/issues/11)) ([8b1ddd5](https://www.github.com/googleapis/python-webrisk/commit/8b1ddd5beed899ab0d30dbd79282beb0b055c78d))
+
 ## 0.2.0
 
 07-24-2019 17:55 PDT
@@ -38,4 +45,3 @@
 
 ### Documentation
 - Add whitelist info to README. ([#7717](https://github.com/googleapis/google-cloud-python/pull/7717))
-
