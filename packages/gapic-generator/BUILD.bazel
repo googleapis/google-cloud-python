@@ -13,6 +13,7 @@ py_binary(
         requirement("googleapis-common-protos"),
         requirement("grpcio"),
         requirement("jinja2"),
+        requirement("MarkupSafe"),
         requirement("pypandoc"),
         requirement("PyYAML"),
     ],
