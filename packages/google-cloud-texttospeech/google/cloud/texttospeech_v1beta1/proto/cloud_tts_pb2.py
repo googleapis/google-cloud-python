@@ -26,10 +26,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.texttospeech.v1beta1",
     syntax="proto3",
     serialized_options=_b(
-        "\n%com.google.cloud.texttospeech.v1beta1B\021TextToSpeechProtoP\001ZMgoogle.golang.org/genproto/googleapis/cloud/texttospeech/v1beta1;texttospeech\370\001\001\252\002!Google.Cloud.TextToSpeech.V1beta1\312\002!Google\\Cloud\\TextToSpeech\\V1beta1"
+        "\n%com.google.cloud.texttospeech.v1beta1B\021TextToSpeechProtoP\001ZMgoogle.golang.org/genproto/googleapis/cloud/texttospeech/v1beta1;texttospeech\370\001\001\252\002!Google.Cloud.TextToSpeech.V1beta1\312\002!Google\\Cloud\\TextToSpeech\\V1beta1\352\002$Google::Cloud::TextToSpeech::V1beta1"
     ),
     serialized_pb=_b(
-        '\n7google/cloud/texttospeech_v1beta1/proto/cloud_tts.proto\x12!google.cloud.texttospeech.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto"/\n\x11ListVoicesRequest\x12\x1a\n\rlanguage_code\x18\x01 \x01(\tB\x03\xe0\x41\x01"N\n\x12ListVoicesResponse\x12\x38\n\x06voices\x18\x01 \x03(\x0b\x32(.google.cloud.texttospeech.v1beta1.Voice"\x99\x01\n\x05Voice\x12\x16\n\x0elanguage_codes\x18\x01 \x03(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12G\n\x0bssml_gender\x18\x03 \x01(\x0e\x32\x32.google.cloud.texttospeech.v1beta1.SsmlVoiceGender\x12!\n\x19natural_sample_rate_hertz\x18\x04 \x01(\x05"\xf8\x01\n\x17SynthesizeSpeechRequest\x12\x45\n\x05input\x18\x01 \x01(\x0b\x32\x31.google.cloud.texttospeech.v1beta1.SynthesisInputB\x03\xe0\x41\x02\x12K\n\x05voice\x18\x02 \x01(\x0b\x32\x37.google.cloud.texttospeech.v1beta1.VoiceSelectionParamsB\x03\xe0\x41\x02\x12I\n\x0c\x61udio_config\x18\x03 \x01(\x0b\x32..google.cloud.texttospeech.v1beta1.AudioConfigB\x03\xe0\x41\x02"@\n\x0eSynthesisInput\x12\x0e\n\x04text\x18\x01 \x01(\tH\x00\x12\x0e\n\x04ssml\x18\x02 \x01(\tH\x00\x42\x0e\n\x0cinput_source"\x89\x01\n\x14VoiceSelectionParams\x12\x1a\n\rlanguage_code\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x02 \x01(\t\x12G\n\x0bssml_gender\x18\x03 \x01(\x0e\x32\x32.google.cloud.texttospeech.v1beta1.SsmlVoiceGender"\xf6\x01\n\x0b\x41udioConfig\x12M\n\x0e\x61udio_encoding\x18\x01 \x01(\x0e\x32\x30.google.cloud.texttospeech.v1beta1.AudioEncodingB\x03\xe0\x41\x02\x12\x1d\n\rspeaking_rate\x18\x02 \x01(\x01\x42\x06\xe0\x41\x04\xe0\x41\x01\x12\x15\n\x05pitch\x18\x03 \x01(\x01\x42\x06\xe0\x41\x04\xe0\x41\x01\x12\x1e\n\x0evolume_gain_db\x18\x04 \x01(\x01\x42\x06\xe0\x41\x04\xe0\x41\x01\x12\x1e\n\x11sample_rate_hertz\x18\x05 \x01(\x05\x42\x03\xe0\x41\x01\x12"\n\x12\x65\x66\x66\x65\x63ts_profile_id\x18\x06 \x03(\tB\x06\xe0\x41\x04\xe0\x41\x01"1\n\x18SynthesizeSpeechResponse\x12\x15\n\raudio_content\x18\x01 \x01(\x0c*W\n\x0fSsmlVoiceGender\x12!\n\x1dSSML_VOICE_GENDER_UNSPECIFIED\x10\x00\x12\x08\n\x04MALE\x10\x01\x12\n\n\x06\x46\x45MALE\x10\x02\x12\x0b\n\x07NEUTRAL\x10\x03*T\n\rAudioEncoding\x12\x1e\n\x1a\x41UDIO_ENCODING_UNSPECIFIED\x10\x00\x12\x0c\n\x08LINEAR16\x10\x01\x12\x07\n\x03MP3\x10\x02\x12\x0c\n\x08OGG_OPUS\x10\x03\x32\xd2\x03\n\x0cTextToSpeech\x12\xa2\x01\n\nListVoices\x12\x34.google.cloud.texttospeech.v1beta1.ListVoicesRequest\x1a\x35.google.cloud.texttospeech.v1beta1.ListVoicesResponse"\'\x82\xd3\xe4\x93\x02\x11\x12\x0f/v1beta1/voices\xda\x41\rlanguage_code\x12\xcb\x01\n\x10SynthesizeSpeech\x12:.google.cloud.texttospeech.v1beta1.SynthesizeSpeechRequest\x1a;.google.cloud.texttospeech.v1beta1.SynthesizeSpeechResponse">\x82\xd3\xe4\x93\x02\x1d"\x18/v1beta1/text:synthesize:\x01*\xda\x41\x18input,voice,audio_config\x1aO\xca\x41\x1btexttospeech.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xd6\x01\n%com.google.cloud.texttospeech.v1beta1B\x11TextToSpeechProtoP\x01ZMgoogle.golang.org/genproto/googleapis/cloud/texttospeech/v1beta1;texttospeech\xf8\x01\x01\xaa\x02!Google.Cloud.TextToSpeech.V1beta1\xca\x02!Google\\Cloud\\TextToSpeech\\V1beta1b\x06proto3'
+        '\n7google/cloud/texttospeech_v1beta1/proto/cloud_tts.proto\x12!google.cloud.texttospeech.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto"/\n\x11ListVoicesRequest\x12\x1a\n\rlanguage_code\x18\x01 \x01(\tB\x03\xe0\x41\x01"N\n\x12ListVoicesResponse\x12\x38\n\x06voices\x18\x01 \x03(\x0b\x32(.google.cloud.texttospeech.v1beta1.Voice"\x99\x01\n\x05Voice\x12\x16\n\x0elanguage_codes\x18\x01 \x03(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12G\n\x0bssml_gender\x18\x03 \x01(\x0e\x32\x32.google.cloud.texttospeech.v1beta1.SsmlVoiceGender\x12!\n\x19natural_sample_rate_hertz\x18\x04 \x01(\x05"\xf8\x01\n\x17SynthesizeSpeechRequest\x12\x45\n\x05input\x18\x01 \x01(\x0b\x32\x31.google.cloud.texttospeech.v1beta1.SynthesisInputB\x03\xe0\x41\x02\x12K\n\x05voice\x18\x02 \x01(\x0b\x32\x37.google.cloud.texttospeech.v1beta1.VoiceSelectionParamsB\x03\xe0\x41\x02\x12I\n\x0c\x61udio_config\x18\x03 \x01(\x0b\x32..google.cloud.texttospeech.v1beta1.AudioConfigB\x03\xe0\x41\x02"@\n\x0eSynthesisInput\x12\x0e\n\x04text\x18\x01 \x01(\tH\x00\x12\x0e\n\x04ssml\x18\x02 \x01(\tH\x00\x42\x0e\n\x0cinput_source"\x89\x01\n\x14VoiceSelectionParams\x12\x1a\n\rlanguage_code\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x0c\n\x04name\x18\x02 \x01(\t\x12G\n\x0bssml_gender\x18\x03 \x01(\x0e\x32\x32.google.cloud.texttospeech.v1beta1.SsmlVoiceGender"\xf6\x01\n\x0b\x41udioConfig\x12M\n\x0e\x61udio_encoding\x18\x01 \x01(\x0e\x32\x30.google.cloud.texttospeech.v1beta1.AudioEncodingB\x03\xe0\x41\x02\x12\x1d\n\rspeaking_rate\x18\x02 \x01(\x01\x42\x06\xe0\x41\x04\xe0\x41\x01\x12\x15\n\x05pitch\x18\x03 \x01(\x01\x42\x06\xe0\x41\x04\xe0\x41\x01\x12\x1e\n\x0evolume_gain_db\x18\x04 \x01(\x01\x42\x06\xe0\x41\x04\xe0\x41\x01\x12\x1e\n\x11sample_rate_hertz\x18\x05 \x01(\x05\x42\x03\xe0\x41\x01\x12"\n\x12\x65\x66\x66\x65\x63ts_profile_id\x18\x06 \x03(\tB\x06\xe0\x41\x04\xe0\x41\x01"1\n\x18SynthesizeSpeechResponse\x12\x15\n\raudio_content\x18\x01 \x01(\x0c*W\n\x0fSsmlVoiceGender\x12!\n\x1dSSML_VOICE_GENDER_UNSPECIFIED\x10\x00\x12\x08\n\x04MALE\x10\x01\x12\n\n\x06\x46\x45MALE\x10\x02\x12\x0b\n\x07NEUTRAL\x10\x03*T\n\rAudioEncoding\x12\x1e\n\x1a\x41UDIO_ENCODING_UNSPECIFIED\x10\x00\x12\x0c\n\x08LINEAR16\x10\x01\x12\x07\n\x03MP3\x10\x02\x12\x0c\n\x08OGG_OPUS\x10\x03\x32\xd2\x03\n\x0cTextToSpeech\x12\xa2\x01\n\nListVoices\x12\x34.google.cloud.texttospeech.v1beta1.ListVoicesRequest\x1a\x35.google.cloud.texttospeech.v1beta1.ListVoicesResponse"\'\x82\xd3\xe4\x93\x02\x11\x12\x0f/v1beta1/voices\xda\x41\rlanguage_code\x12\xcb\x01\n\x10SynthesizeSpeech\x12:.google.cloud.texttospeech.v1beta1.SynthesizeSpeechRequest\x1a;.google.cloud.texttospeech.v1beta1.SynthesizeSpeechResponse">\x82\xd3\xe4\x93\x02\x1d"\x18/v1beta1/text:synthesize:\x01*\xda\x41\x18input,voice,audio_config\x1aO\xca\x41\x1btexttospeech.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xfd\x01\n%com.google.cloud.texttospeech.v1beta1B\x11TextToSpeechProtoP\x01ZMgoogle.golang.org/genproto/googleapis/cloud/texttospeech/v1beta1;texttospeech\xf8\x01\x01\xaa\x02!Google.Cloud.TextToSpeech.V1beta1\xca\x02!Google\\Cloud\\TextToSpeech\\V1beta1\xea\x02$Google::Cloud::TextToSpeech::V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -700,10 +700,8 @@ ListVoicesRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_LISTVOICESREQUEST,
         __module__="google.cloud.texttospeech_v1beta1.proto.cloud_tts_pb2",
-        __doc__="""The top-level message sent by the client for the
-  ``ListVoices`` method.
-  
-  
+        __doc__="""The top-level message sent by the client for the ``ListVoices``
+  method.
   Attributes:
       language_code:
           Optional. Recommended. `BCP-47 <https://www.rfc-
@@ -728,8 +726,6 @@ ListVoicesResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTVOICESRESPONSE,
         __module__="google.cloud.texttospeech_v1beta1.proto.cloud_tts_pb2",
         __doc__="""The message returned to the client by the ``ListVoices`` method.
-  
-  
   Attributes:
       voices:
           The list of voices.
@@ -746,8 +742,6 @@ Voice = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_VOICE,
         __module__="google.cloud.texttospeech_v1beta1.proto.cloud_tts_pb2",
         __doc__="""Description of a voice supported by the TTS service.
-  
-  
   Attributes:
       language_codes:
           The languages that this voice supports, expressed as `BCP-47
@@ -771,10 +765,8 @@ SynthesizeSpeechRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SYNTHESIZESPEECHREQUEST,
         __module__="google.cloud.texttospeech_v1beta1.proto.cloud_tts_pb2",
-        __doc__="""The top-level message sent by the client for the
-  ``SynthesizeSpeech`` method.
-  
-  
+        __doc__="""The top-level message sent by the client for the ``SynthesizeSpeech``
+  method.
   Attributes:
       input:
           Required. The Synthesizer requires either plain text or SSML
@@ -795,12 +787,10 @@ SynthesisInput = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SYNTHESISINPUT,
         __module__="google.cloud.texttospeech_v1beta1.proto.cloud_tts_pb2",
-        __doc__="""Contains text input to be synthesized. Either ``text`` or
-  ``ssml`` must be supplied. Supplying both or neither returns
-  [google.rpc.Code.INVALID\_ARGUMENT][]. The input size is limited to 5000
-  characters.
-  
-  
+        __doc__="""Contains text input to be synthesized. Either ``text`` or ``ssml``
+  must be supplied. Supplying both or neither returns
+  [google.rpc.Code.INVALID\_ARGUMENT][]. The input size is limited to
+  5000 characters.
   Attributes:
       input_source:
           The input source, which is either plain text or SSML.
@@ -824,8 +814,6 @@ VoiceSelectionParams = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_VOICESELECTIONPARAMS,
         __module__="google.cloud.texttospeech_v1beta1.proto.cloud_tts_pb2",
         __doc__="""Description of which voice to use for a synthesis request.
-  
-  
   Attributes:
       language_code:
           Required. The language (and potentially also the region) of
@@ -865,8 +853,6 @@ AudioConfig = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_AUDIOCONFIG,
         __module__="google.cloud.texttospeech_v1beta1.proto.cloud_tts_pb2",
         __doc__="""Description of audio data to be synthesized.
-  
-  
   Attributes:
       audio_encoding:
           Required. The format of the audio byte stream.
@@ -919,10 +905,7 @@ SynthesizeSpeechResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SYNTHESIZESPEECHRESPONSE,
         __module__="google.cloud.texttospeech_v1beta1.proto.cloud_tts_pb2",
-        __doc__="""The message returned to the client by the
-  ``SynthesizeSpeech`` method.
-  
-  
+        __doc__="""The message returned to the client by the ``SynthesizeSpeech`` method.
   Attributes:
       audio_content:
           The audio data bytes encoded as specified in the request,
