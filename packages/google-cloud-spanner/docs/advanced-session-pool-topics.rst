@@ -57,7 +57,14 @@ from becoming stale:
 
    import threading
 
-   background = threading.Thread(target=pool.ping, name='ping-pool')
+
+   def background_loop():
+      while True:
+         # (Optional) Perform other background tasks here
+         pool.ping()
+
+
+   background = threading.Thread(target=background_loop, name='ping-pool')
    background.daemon = True
    background.start()
 
@@ -91,6 +98,13 @@ started before it is used:
 
    import threading
 
-   background = threading.Thread(target=pool.ping, name='ping-pool')
+
+   def background_loop():
+      while True:
+         # (Optional) Perform other background tasks here
+         pool.ping()
+
+
+   background = threading.Thread(target=background_loop, name='ping-pool')
    background.daemon = True
    background.start()
