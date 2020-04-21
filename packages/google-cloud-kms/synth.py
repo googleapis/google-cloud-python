@@ -22,7 +22,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 client_library_version = "0.1.0"
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 version = "v1"
 
@@ -30,10 +30,9 @@ version = "v1"
 # Generate kms GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "kms",
-    version,
-    config_path="artman_cloudkms.yaml",
-    artman_output_name="kms-v1",
+    service="kms",
+    version=version,
+    bazel_target="//google/cloud/kms/v1:kms-v1-py",
     include_protos=True,
 )
 
