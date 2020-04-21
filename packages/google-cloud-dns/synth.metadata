@@ -1,25 +1,11 @@
 {
-  "updateTime": "2020-02-19T02:23:01.332600Z",
+  "updateTime": "2020-03-31T12:13:26.210653Z",
   "sources": [
     {
       "git": {
-        "name": ".",
-        "remote": "https://github.com/googleapis/python-dns.git",
-        "sha": "2b4bb1a606d2a0aea77353cb53861d7f8e974955"
-      }
-    },
-    {
-      "git": {
         "name": "synthtool",
-        "remote": "rpc://devrel/cloud/libraries/tools/autosynth",
-        "sha": "b4b7af4a16a07b40bfd8dcdda89f9f193ff4e2ed"
-      }
-    },
-    {
-      "template": {
-        "name": "python_split_library",
-        "origin": "synthtool.gcp",
-        "version": "2020.2.4"
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "a003d8655d3ebec2bbbd5fc3898e91e152265c67"
       }
     }
   ]
