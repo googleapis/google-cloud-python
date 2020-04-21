@@ -112,6 +112,20 @@ decimal values without the possibility of data loss.
 
 Spanner doesn't have these functions.
 
+### Computations that yield FLOAT64 values can't be assigned to INT64 columns
+
+Spanner [doesn't support this](https://github.com/googleapis/python-spanner-django/issues/331).
+
+For example, if `integer` is `IntegerField`:
+
+```
+>>> ExampleModel.objects.update(integer=F('integer') / 2)
+...
+django.db.utils.ProgrammingError: 400 Value of type FLOAT64 cannot be
+assigned to integer, which has type INT64 [at 1:46]\nUPDATE
+example_model SET integer = (example_model.integer /...
+```
+
 ## How it works
 
 ### Overall design
