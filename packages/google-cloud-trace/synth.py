@@ -17,7 +17,7 @@
 import synthtool as s
 import synthtool.gcp as gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
@@ -25,21 +25,29 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 for version in ["v1", "v2"]:
     library = gapic.py_library(
-        "trace",
-        version,
-        config_path=f"/google/devtools/cloudtrace" f"/artman_cloudtrace_{version}.yaml",
-        artman_output_name=f"trace-{version}",
+        service="trace",
+        version=version,
+        bazel_target=f"//google/devtools/cloudtrace/{version}:devtools-cloudtrace-{version}-py",
+        proto_output_path=f"google/cloud/trace_{version}/proto",
         include_protos=True,
     )
 
     s.move(library / f"google/cloud/trace_{version}")
     s.move(library / f"tests/unit/gapic/{version}")
+    s.move(library/ f"google/cloud/devtools/cloudtrace_{version}/proto",
+           f"google/cloud/trace_{version}/proto")
 
     # Fix up imports
     s.replace(
         "google/**/*.py",
-        f"from google.devtools.cloudtrace_{version}.proto import ",
+        f"from google.cloud.devtools.cloudtrace_{version}.proto import ",
         f"from google.cloud.trace_{version}.proto import ",
+    )
+
+    s.replace(
+        f"google/cloud/trace_{version}/gapic/trace_service_client.py",
+        "google-cloud-devtools-cloudtrace",
+        "google-cloud-trace",
     )
 
 # Copy docs configuration
