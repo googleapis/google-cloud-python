@@ -38,8 +38,4 @@ class TraceServiceClient(trace_service_client.TraceServiceClient):
     enums = enums
 
 
-__all__ = (
-    "enums",
-    "types",
-    "TraceServiceClient",
-)
+__all__ = ("enums", "types", "TraceServiceClient")

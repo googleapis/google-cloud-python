@@ -29,18 +29,9 @@ from google.protobuf import wrappers_pb2
 from google.rpc import status_pb2
 
 
-_shared_modules = [
-    any_pb2,
-    empty_pb2,
-    timestamp_pb2,
-    wrappers_pb2,
-    status_pb2,
-]
+_shared_modules = [any_pb2, empty_pb2, timestamp_pb2, wrappers_pb2, status_pb2]
 
-_local_modules = [
-    trace_pb2,
-    tracing_pb2,
-]
+_local_modules = [trace_pb2, tracing_pb2]
 
 names = []
 

@@ -201,7 +201,7 @@ _TRACES = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
-        ),
+        )
     ],
     extensions=[],
     nested_types=[],
@@ -407,8 +407,8 @@ _TRACESPAN = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_TRACESPAN_LABELSENTRY,],
-    enum_types=[_TRACESPAN_SPANKIND,],
+    nested_types=[_TRACESPAN_LABELSENTRY],
+    enum_types=[_TRACESPAN_SPANKIND],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
@@ -573,7 +573,7 @@ _LISTTRACESREQUEST = _descriptor.Descriptor(
     ],
     extensions=[],
     nested_types=[],
-    enum_types=[_LISTTRACESREQUEST_VIEWTYPE,],
+    enum_types=[_LISTTRACESREQUEST_VIEWTYPE],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
@@ -791,11 +791,9 @@ Trace = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TRACE,
         __module__="google.devtools.cloudtrace_v1.proto.trace_pb2",
-        __doc__="""A trace describes how long it takes for an application to
-  perform an operation. It consists of a set of spans, each of which
-  represent a single timed event within the operation.
-  
-  
+        __doc__="""A trace describes how long it takes for an application to perform an
+  operation. It consists of a set of spans, each of which represent a
+  single timed event within the operation.
   Attributes:
       project_id:
           Project ID of the Cloud project where the trace data is
@@ -819,8 +817,6 @@ Traces = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_TRACES,
         __module__="google.devtools.cloudtrace_v1.proto.trace_pb2",
         __doc__="""List of new or updated traces.
-  
-  
   Attributes:
       traces:
           List of traces.
@@ -845,13 +841,11 @@ TraceSpan = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_TRACESPAN,
         __module__="google.devtools.cloudtrace_v1.proto.trace_pb2",
-        __doc__="""A span represents a single timed event within a trace.
-  Spans can be nested and form a trace tree. Often, a trace contains a
-  root span that describes the end-to-end latency of an operation and,
-  optionally, one or more subspans for its suboperations. Spans do not
-  need to be contiguous. There may be gaps between spans in a trace.
-  
-  
+        __doc__="""A span represents a single timed event within a trace. Spans can be
+  nested and form a trace tree. Often, a trace contains a root span that
+  describes the end-to-end latency of an operation and, optionally, one
+  or more subspans for its suboperations. Spans do not need to be
+  contiguous. There may be gaps between spans in a trace.
   Attributes:
       span_id:
           Identifier for the span. Must be a 64-bit integer other than 0
@@ -910,8 +904,6 @@ ListTracesRequest = _reflection.GeneratedProtocolMessageType(
         __module__="google.devtools.cloudtrace_v1.proto.trace_pb2",
         __doc__="""The request message for the ``ListTraces`` method. All fields are
   required unless specified.
-  
-  
   Attributes:
       project_id:
           Required. ID of the Cloud project where the trace data is
@@ -984,8 +976,6 @@ ListTracesResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTTRACESRESPONSE,
         __module__="google.devtools.cloudtrace_v1.proto.trace_pb2",
         __doc__="""The response message for the ``ListTraces`` method.
-  
-  
   Attributes:
       traces:
           List of trace records as specified by the view parameter.
@@ -1006,8 +996,6 @@ GetTraceRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_GETTRACEREQUEST,
         __module__="google.devtools.cloudtrace_v1.proto.trace_pb2",
         __doc__="""The request message for the ``GetTrace`` method.
-  
-  
   Attributes:
       project_id:
           Required. ID of the Cloud project where the trace data is
@@ -1027,8 +1015,6 @@ PatchTracesRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_PATCHTRACESREQUEST,
         __module__="google.devtools.cloudtrace_v1.proto.trace_pb2",
         __doc__="""The request message for the ``PatchTraces`` method.
-  
-  
   Attributes:
       project_id:
           Required. ID of the Cloud project where the trace data is

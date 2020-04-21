@@ -48,7 +48,7 @@ s.move(library / f"docs/conf.py")
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=97, cov_level=100)
-s.move(templated_files, excludes=["noxfile.py"])
+templated_files = common.py_library(cov_level=98)
+s.move(templated_files)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
