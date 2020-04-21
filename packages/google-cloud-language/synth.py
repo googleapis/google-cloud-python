@@ -17,7 +17,7 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 versions = ["v1beta2", "v1"]
 
@@ -27,12 +27,10 @@ versions = ["v1beta2", "v1"]
 # ----------------------------------------------------------------------------
 for version in versions:
     library = gapic.py_library(
-        "language",
-        version,
-        config_path=f"/google/cloud/language/artman_language_{version}.yaml",
-        artman_output_name=f"language-{version}",
+        service="language",
+        version=version,
+        bazel_target=f"//google/cloud/language/{version}:language-{version}-py",
         include_protos=True,
-        include_samples=True
     )
 
     s.move(library / f"google/cloud/language_{version}/proto")
