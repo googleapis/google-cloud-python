@@ -840,12 +840,10 @@ HttpTarget = _reflection.GeneratedProtocolMessageType(
         __doc__="""Http target. The job will be pushed to the job handler by means of an
   HTTP request via an
   [http\_method][google.cloud.scheduler.v1beta1.HttpTarget.http\_method]
-  such as HTTP POST, HTTP GET, etc. The job is acknowledged by means of an
-  HTTP response code in the range [200 - 299]. A failure to receive a
+  such as HTTP POST, HTTP GET, etc. The job is acknowledged by means of
+  an HTTP response code in the range [200 - 299]. A failure to receive a
   response constitutes a failed execution. For a redirected request, the
   response returned by the redirected request is considered.
-  
-  
   Attributes:
       uri:
           Required. The full URI path that the request will be sent to.
@@ -919,18 +917,15 @@ AppEngineHttpTarget = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_APPENGINEHTTPTARGET,
         __module__="google.cloud.scheduler_v1beta1.proto.target_pb2",
-        __doc__="""App Engine target. The job will be pushed to a job handler
-  by means of an HTTP request via an
-  [http\_method][google.cloud.scheduler.v1beta1.AppEngineHttpTarget.http\_method]
-  such as HTTP POST, HTTP GET, etc. The job is acknowledged by means of an
-  HTTP response code in the range [200 - 299]. Error 503 is considered an
-  App Engine system error instead of an application error. Requests
-  returning error 503 will be retried regardless of retry configuration
-  and not counted against retry counts. Any other response code, or a
-  failure to receive a response before the deadline, constitutes a failed
-  attempt.
-  
-  
+        __doc__="""App Engine target. The job will be pushed to a job handler by means of
+  an HTTP request via an [http\_method][google.cloud.scheduler.v1beta1.A
+  ppEngineHttpTarget.http\_method] such as HTTP POST, HTTP GET, etc. The
+  job is acknowledged by means of an HTTP response code in the range
+  [200 - 299]. Error 503 is considered an App Engine system error
+  instead of an application error. Requests returning error 503 will be
+  retried regardless of retry configuration and not counted against
+  retry counts. Any other response code, or a failure to receive a
+  response before the deadline, constitutes a failed attempt.
   Attributes:
       http_method:
           The HTTP method to use for the request. PATCH and OPTIONS are
@@ -995,10 +990,8 @@ PubsubTarget = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_PUBSUBTARGET,
         __module__="google.cloud.scheduler_v1beta1.proto.target_pb2",
-        __doc__="""Pub/Sub target. The job will be delivered by publishing a
-  message to the given Pub/Sub topic.
-  
-  
+        __doc__="""Pub/Sub target. The job will be delivered by publishing a message to
+  the given Pub/Sub topic.
   Attributes:
       topic_name:
           Required. The name of the Cloud Pub/Sub topic to which
@@ -1027,19 +1020,16 @@ AppEngineRouting = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_APPENGINEROUTING,
         __module__="google.cloud.scheduler_v1beta1.proto.target_pb2",
-        __doc__="""App Engine Routing.
-  
-  For more information about services, versions, and instances see `An
-  Overview of App
-  Engine <https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine>`__,
-  `Microservices Architecture on Google App
-  Engine <https://cloud.google.com/appengine/docs/python/microservices-on-app-engine>`__,
-  `App Engine Standard request
-  routing <https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>`__,
-  and `App Engine Flex request
-  routing <https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed>`__.
-  
-  
+        __doc__="""App Engine Routing.  For more information about services, versions,
+  and instances see `An Overview of App Engine
+  <https://cloud.google.com/appengine/docs/python/an-overview-of-app-
+  engine>`__, `Microservices Architecture on Google App Engine
+  <https://cloud.google.com/appengine/docs/python/microservices-on-app-
+  engine>`__, `App Engine Standard request routing
+  <https://cloud.google.com/appengine/docs/standard/python/how-requests-
+  are-routed>`__, and `App Engine Flex request routing
+  <https://cloud.google.com/appengine/docs/flexible/python/how-requests-
+  are-routed>`__.
   Attributes:
       service:
           App service.  By default, the job is sent to the service which
@@ -1121,12 +1111,10 @@ OAuthToken = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OAUTHTOKEN,
         __module__="google.cloud.scheduler_v1beta1.proto.target_pb2",
-        __doc__="""Contains information needed for generating an `OAuth
-  token <https://developers.google.com/identity/protocols/OAuth2>`__. This
-  type of authorization should generally only be used when calling Google
-  APIs hosted on \*.googleapis.com.
-  
-  
+        __doc__="""Contains information needed for generating an `OAuth token
+  <https://developers.google.com/identity/protocols/OAuth2>`__. This
+  type of authorization should generally only be used when calling
+  Google APIs hosted on \*.googleapis.com.
   Attributes:
       service_account_email:
           \ `Service account email
@@ -1150,14 +1138,11 @@ OidcToken = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OIDCTOKEN,
         __module__="google.cloud.scheduler_v1beta1.proto.target_pb2",
-        __doc__="""Contains information needed for generating an `OpenID
-  Connect
-  token <https://developers.google.com/identity/protocols/OpenIDConnect>`__.
+        __doc__="""Contains information needed for generating an `OpenID Connect token
+  <https://developers.google.com/identity/protocols/OpenIDConnect>`__.
   This type of authorization can be used for many scenarios, including
   calling Cloud Run, or endpoints where you intend to validate the token
   yourself.
-  
-  
   Attributes:
       service_account_email:
           \ `Service account email

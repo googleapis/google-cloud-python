@@ -533,10 +533,7 @@ Job = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_JOB,
         __module__="google.cloud.scheduler_v1beta1.proto.job_pb2",
-        __doc__="""Configuration for a job. The maximum allowed size for a
-  job is 100KB.
-  
-  
+        __doc__="""Configuration for a job. The maximum allowed size for a job is 100KB.
   Attributes:
       name:
           Optionally caller-specified in [CreateJob][google.cloud.schedu
@@ -642,14 +639,11 @@ RetryConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_RETRYCONFIG,
         __module__="google.cloud.scheduler_v1beta1.proto.job_pb2",
-        __doc__="""Settings that determine the retry behavior.
-  
-  By default, if a job does not complete successfully (meaning that an
-  acknowledgement is not received from the handler, then it will be
-  retried with exponential backoff according to the settings in
+        __doc__="""Settings that determine the retry behavior.  By default, if a job does
+  not complete successfully (meaning that an acknowledgement is not
+  received from the handler, then it will be retried with exponential
+  backoff according to the settings in
   [RetryConfig][google.cloud.scheduler.v1beta1.RetryConfig].
-  
-  
   Attributes:
       retry_count:
           The number of attempts that the system will make to run a job
