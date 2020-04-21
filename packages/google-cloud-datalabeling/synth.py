@@ -17,17 +17,15 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 version = 'v1beta1'
 
 library = gapic.py_library(
-    'datalabeling',
-    version,
-    config_path='/google/cloud/datalabeling/'
-                'artman_datalabeling_v1beta1.yaml',
-    artman_output_name='datalabeling-v1beta1',
+    service='datalabeling',
+    version=version,
+    bazel_target=f"//google/cloud/datalabeling/{version}:datalabeling-{version}-py",
     include_protos=True,
 )
 
