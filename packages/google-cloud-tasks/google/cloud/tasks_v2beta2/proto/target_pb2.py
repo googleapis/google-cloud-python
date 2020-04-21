@@ -477,9 +477,7 @@ PullTarget = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PULLTARGET,
         __module__="google.cloud.tasks_v2beta2.proto.target_pb2",
-        __doc__="""Pull target.
-  
-  """,
+        __doc__="""Pull target.""",
         # @@protoc_insertion_point(class_scope:google.cloud.tasks.v2beta2.PullTarget)
     ),
 )
@@ -491,14 +489,11 @@ PullMessage = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PULLMESSAGE,
         __module__="google.cloud.tasks_v2beta2.proto.target_pb2",
-        __doc__="""The pull message contains data that can be used by the
-  caller of [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks]
-  to process the task.
-  
-  This proto can only be used for tasks in a queue which has
+        __doc__="""The pull message contains data that can be used by the caller of
+  [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks] to
+  process the task.  This proto can only be used for tasks in a queue
+  which has
   [pull\_target][google.cloud.tasks.v2beta2.Queue.pull\_target] set.
-  
-  
   Attributes:
       payload:
           A data payload consumed by the worker to execute the task.
@@ -531,26 +526,18 @@ AppEngineHttpTarget = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_APPENGINEHTTPTARGET,
         __module__="google.cloud.tasks_v2beta2.proto.target_pb2",
-        __doc__="""App Engine HTTP target.
-  
-  The task will be delivered to the App Engine application hostname
-  specified by its
+        __doc__="""App Engine HTTP target.  The task will be delivered to the App Engine
+  application hostname specified by its
   [AppEngineHttpTarget][google.cloud.tasks.v2beta2.AppEngineHttpTarget]
-  and
-  [AppEngineHttpRequest][google.cloud.tasks.v2beta2.AppEngineHttpRequest].
-  The documentation for
-  [AppEngineHttpRequest][google.cloud.tasks.v2beta2.AppEngineHttpRequest]
-  explains how the task's host URL is constructed.
-  
-  Using
+  and [AppEngineHttpRequest][google.cloud.tasks.v2beta2.AppEngineHttpReq
+  uest]. The documentation for [AppEngineHttpRequest][google.cloud.tasks
+  .v2beta2.AppEngineHttpRequest] explains how the task's host URL is
+  constructed.  Using
   [AppEngineHttpTarget][google.cloud.tasks.v2beta2.AppEngineHttpTarget]
-  requires
-  ```appengine.applications.get`` <https://cloud.google.com/appengine/docs/admin-api/access-control>`_
+  requires ```appengine.applications.get``
+  <https://cloud.google.com/appengine/docs/admin-api/access-control>`_
   Google IAM permission for the project and the following scope:
-  
   ``https://www.googleapis.com/auth/cloud-platform``
-  
-  
   Attributes:
       app_engine_routing_override:
           Overrides for the [task-level app\_engine\_routing][google.clo
@@ -580,73 +567,54 @@ AppEngineHttpRequest = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_APPENGINEHTTPREQUEST,
         __module__="google.cloud.tasks_v2beta2.proto.target_pb2",
-        __doc__="""App Engine HTTP request.
-  
-  The message defines the HTTP request that is sent to an App Engine app
-  when the task is dispatched.
-  
-  This proto can only be used for tasks in a queue which has
-  [app\_engine\_http\_target][google.cloud.tasks.v2beta2.Queue.app\_engine\_http\_target]
-  set.
-  
-  Using
-  [AppEngineHttpRequest][google.cloud.tasks.v2beta2.AppEngineHttpRequest]
-  requires
-  ```appengine.applications.get`` <https://cloud.google.com/appengine/docs/admin-api/access-control>`_
+        __doc__="""App Engine HTTP request.  The message defines the HTTP request that is
+  sent to an App Engine app when the task is dispatched.  This proto can
+  only be used for tasks in a queue which has [app\_engine\_http\_target
+  ][google.cloud.tasks.v2beta2.Queue.app\_engine\_http\_target] set.
+  Using [AppEngineHttpRequest][google.cloud.tasks.v2beta2.AppEngineHttpR
+  equest] requires ```appengine.applications.get``
+  <https://cloud.google.com/appengine/docs/admin-api/access-control>`_
   Google IAM permission for the project and the following scope:
-  
-  ``https://www.googleapis.com/auth/cloud-platform``
-  
-  The task will be delivered to the App Engine app which belongs to the
-  same project as the queue. For more information, see `How Requests are
-  Routed <https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>`_
-  and how routing is affected by `dispatch
-  files <https://cloud.google.com/appengine/docs/python/config/dispatchref>`_.
+  ``https://www.googleapis.com/auth/cloud-platform``  The task will be
+  delivered to the App Engine app which belongs to the same project as
+  the queue. For more information, see `How Requests are Routed
+  <https://cloud.google.com/appengine/docs/standard/python/how-requests-
+  are-routed>`_ and how routing is affected by `dispatch files <https:/
+  /cloud.google.com/appengine/docs/python/config/dispatchref>`_.
   Traffic is encrypted during transport and never leaves Google
   datacenters. Because this traffic is carried over a communication
   mechanism internal to Google, you cannot explicitly set the protocol
-  (for example, HTTP or HTTPS). The request to the handler, however, will
-  appear to have used the HTTP protocol.
-  
-  The [AppEngineRouting][google.cloud.tasks.v2beta2.AppEngineRouting] used
+  (for example, HTTP or HTTPS). The request to the handler, however,
+  will appear to have used the HTTP protocol.  The
+  [AppEngineRouting][google.cloud.tasks.v2beta2.AppEngineRouting] used
   to construct the URL that the task is delivered to can be set at the
-  queue-level or task-level:
-  
-  -  If set,
-     [app\_engine\_routing\_override][google.cloud.tasks.v2beta2.AppEngineHttpTarget.app\_engine\_routing\_override]
-     is used for all tasks in the queue, no matter what the setting is for
-     the [task-level
-     app\_engine\_routing][google.cloud.tasks.v2beta2.AppEngineHttpRequest.app\_engine\_routing].
-  
-  The ``url`` that the task will be sent to is:
-  
-  -  ``url =`` [host][google.cloud.tasks.v2beta2.AppEngineRouting.host]
-     ``+``
-     [relative\_url][google.cloud.tasks.v2beta2.AppEngineHttpRequest.relative\_url]
-  
-  Tasks can be dispatched to secure app handlers, unsecure app handlers,
-  and URIs restricted with
-  ```login: admin`` <https://cloud.google.com/appengine/docs/standard/python/config/appref>`_.
-  Because tasks are not run as any user, they cannot be dispatched to URIs
-  restricted with
-  ```login: required`` <https://cloud.google.com/appengine/docs/standard/python/config/appref>`_
-  Task dispatches also do not follow redirects.
-  
-  The task attempt has succeeded if the app's request handler returns an
-  HTTP response code in the range [``200`` - ``299``]. The task attempt
-  has failed if the app's handler returns a non-2xx response code or Cloud
-  Tasks does not receive response before the
-  [deadline][Task.dispatch\_deadline]. Failed tasks will be retried
+  queue-level or task-level:  -  If set,    [app\_engine\_routing\_overr
+  ide][google.cloud.tasks.v2beta2.AppEngineHttpTarget.app\_engine\_routi
+  ng\_override]    is used for all tasks in the queue, no matter what
+  the setting is for    the [task-level    app\_engine\_routing][google.
+  cloud.tasks.v2beta2.AppEngineHttpRequest.app\_engine\_routing].  The
+  ``url`` that the task will be sent to is:  -  ``url =``
+  [host][google.cloud.tasks.v2beta2.AppEngineRouting.host]    ``+``    [
+  relative\_url][google.cloud.tasks.v2beta2.AppEngineHttpRequest.relativ
+  e\_url]  Tasks can be dispatched to secure app handlers, unsecure app
+  handlers, and URIs restricted with ```login: admin`` <https://cloud.go
+  ogle.com/appengine/docs/standard/python/config/appref>`_. Because
+  tasks are not run as any user, they cannot be dispatched to URIs
+  restricted with ```login: required`` <https://cloud.google.com/appengi
+  ne/docs/standard/python/config/appref>`_ Task dispatches also do not
+  follow redirects.  The task attempt has succeeded if the app's request
+  handler returns an HTTP response code in the range [``200`` -
+  ``299``]. The task attempt has failed if the app's handler returns a
+  non-2xx response code or Cloud Tasks does not receive response before
+  the [deadline][Task.dispatch\_deadline]. Failed tasks will be retried
   according to the [retry
-  configuration][google.cloud.tasks.v2beta2.Queue.retry\_config]. ``503``
-  (Service Unavailable) is considered an App Engine system error instead
-  of an application error and will cause Cloud Tasks' traffic congestion
-  control to temporarily throttle the queue's dispatches. Unlike other
-  types of task targets, a ``429`` (Too Many Requests) response from an
-  app handler does not cause traffic congestion control to throttle the
-  queue.
-  
-  
+  configuration][google.cloud.tasks.v2beta2.Queue.retry\_config].
+  ``503`` (Service Unavailable) is considered an App Engine system error
+  instead of an application error and will cause Cloud Tasks' traffic
+  congestion control to temporarily throttle the queue's dispatches.
+  Unlike other types of task targets, a ``429`` (Too Many Requests)
+  response from an app handler does not cause traffic congestion control
+  to throttle the queue.
   Attributes:
       http_method:
           The HTTP method to use for the request. The default is POST.
@@ -728,22 +696,17 @@ AppEngineRouting = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_APPENGINEROUTING,
         __module__="google.cloud.tasks_v2beta2.proto.target_pb2",
-        __doc__="""App Engine Routing.
-  
-  Defines routing characteristics specific to App Engine - service,
-  version, and instance.
-  
-  For more information about services, versions, and instances see `An
-  Overview of App
-  Engine <https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine>`_,
-  `Microservices Architecture on Google App
-  Engine <https://cloud.google.com/appengine/docs/python/microservices-on-app-engine>`_,
-  `App Engine Standard request
-  routing <https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>`_,
-  and `App Engine Flex request
-  routing <https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed>`_.
-  
-  
+        __doc__="""App Engine Routing.  Defines routing characteristics specific to App
+  Engine - service, version, and instance.  For more information about
+  services, versions, and instances see `An Overview of App Engine
+  <https://cloud.google.com/appengine/docs/python/an-overview-of-app-
+  engine>`_, `Microservices Architecture on Google App Engine
+  <https://cloud.google.com/appengine/docs/python/microservices-on-app-
+  engine>`_, `App Engine Standard request routing
+  <https://cloud.google.com/appengine/docs/standard/python/how-requests-
+  are-routed>`_, and `App Engine Flex request routing
+  <https://cloud.google.com/appengine/docs/flexible/python/how-requests-
+  are-routed>`_.
   Attributes:
       service:
           App service.  By default, the task is sent to the service

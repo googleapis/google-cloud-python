@@ -502,11 +502,9 @@ Queue = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_QUEUE,
         __module__="google.cloud.tasks_v2beta2.proto.queue_pb2",
-        __doc__="""A queue is a container of related tasks. Queues are configured to manage
-  how those tasks are dispatched. Configurable properties include rate
-  limits, retry options, target types, and others.
-  
-  
+        __doc__="""A queue is a container of related tasks. Queues are configured to
+  manage how those tasks are dispatched. Configurable properties include
+  rate limits, retry options, target types, and others.
   Attributes:
       name:
           Caller-specified and required in [CreateQueue][google.cloud.ta
@@ -597,18 +595,12 @@ RateLimits = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_RATELIMITS,
         __module__="google.cloud.tasks_v2beta2.proto.queue_pb2",
-        __doc__="""Rate limits.
-  
-  This message determines the maximum rate that tasks can be dispatched by
-  a queue, regardless of whether the dispatch is a first task attempt or a
-  retry.
-  
-  Note: The debugging command,
+        __doc__="""Rate limits.  This message determines the maximum rate that tasks can
+  be dispatched by a queue, regardless of whether the dispatch is a
+  first task attempt or a retry.  Note: The debugging command,
   [RunTask][google.cloud.tasks.v2beta2.CloudTasks.RunTask], will run a
   task even if the queue has reached its
   [RateLimits][google.cloud.tasks.v2beta2.RateLimits].
-  
-  
   Attributes:
       max_tasks_dispatched_per_second:
           The maximum rate at which tasks are dispatched from this
@@ -679,11 +671,8 @@ RetryConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_RETRYCONFIG,
         __module__="google.cloud.tasks_v2beta2.proto.queue_pb2",
-        __doc__="""Retry config.
-  
-  These settings determine how a failed task attempt is retried.
-  
-  
+        __doc__="""Retry config.  These settings determine how a failed task attempt is
+  retried.
   Attributes:
       num_attempts:
           Number of attempts per task.  If unspecified when the queue is

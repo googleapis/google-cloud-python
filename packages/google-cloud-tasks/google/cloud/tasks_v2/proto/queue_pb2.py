@@ -484,11 +484,9 @@ Queue = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_QUEUE,
         __module__="google.cloud.tasks_v2.proto.queue_pb2",
-        __doc__="""A queue is a container of related tasks. Queues are
-  configured to manage how those tasks are dispatched. Configurable
-  properties include rate limits, retry options, queue types, and others.
-  
-  
+        __doc__="""A queue is a container of related tasks. Queues are configured to
+  manage how those tasks are dispatched. Configurable properties include
+  rate limits, retry options, queue types, and others.
   Attributes:
       name:
           Caller-specified and required in
@@ -589,18 +587,12 @@ RateLimits = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_RATELIMITS,
         __module__="google.cloud.tasks_v2.proto.queue_pb2",
-        __doc__="""Rate limits.
-  
-  This message determines the maximum rate that tasks can be dispatched by
-  a queue, regardless of whether the dispatch is a first task attempt or a
-  retry.
-  
-  Note: The debugging command,
+        __doc__="""Rate limits.  This message determines the maximum rate that tasks can
+  be dispatched by a queue, regardless of whether the dispatch is a
+  first task attempt or a retry.  Note: The debugging command,
   [RunTask][google.cloud.tasks.v2.CloudTasks.RunTask], will run a task
   even if the queue has reached its
   [RateLimits][google.cloud.tasks.v2.RateLimits].
-  
-  
   Attributes:
       max_dispatches_per_second:
           The maximum rate at which tasks are dispatched from this
@@ -661,11 +653,8 @@ RetryConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_RETRYCONFIG,
         __module__="google.cloud.tasks_v2.proto.queue_pb2",
-        __doc__="""Retry config.
-  
-  These settings determine when a failed task attempt is retried.
-  
-  
+        __doc__="""Retry config.  These settings determine when a failed task attempt is
+  retried.
   Attributes:
       max_attempts:
           Number of attempts per task.  Cloud Tasks will attempt the
@@ -755,10 +744,8 @@ StackdriverLoggingConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_STACKDRIVERLOGGINGCONFIG,
         __module__="google.cloud.tasks_v2.proto.queue_pb2",
-        __doc__="""Configuration options for writing logs to `Stackdriver
-  Logging <https://cloud.google.com/logging/docs/>`_.
-  
-  
+        __doc__="""Configuration options for writing logs to `Stackdriver Logging
+  <https://cloud.google.com/logging/docs/>`_.
   Attributes:
       sampling_ratio:
           Specifies the fraction of operations to write to `Stackdriver

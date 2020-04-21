@@ -469,8 +469,6 @@ Task = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_TASK,
         __module__="google.cloud.tasks_v2beta2.proto.task_pb2",
         __doc__="""A unit of scheduled work.
-  
-  
   Attributes:
       name:
           Optionally caller-specified in [CreateTask][google.cloud.tasks
@@ -539,8 +537,6 @@ TaskStatus = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_TASKSTATUS,
         __module__="google.cloud.tasks_v2beta2.proto.task_pb2",
         __doc__="""Status of the task.
-  
-  
   Attributes:
       attempt_dispatch_count:
           Output only. The number of attempts dispatched.  This count
@@ -575,8 +571,6 @@ AttemptStatus = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_ATTEMPTSTATUS,
         __module__="google.cloud.tasks_v2beta2.proto.task_pb2",
         __doc__="""The status of a task attempt.
-  
-  
   Attributes:
       schedule_time:
           Output only. The time that this attempt was scheduled.

@@ -742,39 +742,29 @@ HttpRequest = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_HTTPREQUEST,
         __module__="google.cloud.tasks_v2beta3.proto.target_pb2",
-        __doc__="""HTTP request.
-  
-  The task will be pushed to the worker as an HTTP request. If the worker
-  or the redirected worker acknowledges the task by returning a successful
-  HTTP response code ([``200`` - ``299``]), the task will be removed from
-  the queue. If any other HTTP response code is returned or no response is
-  received, the task will be retried according to the following:
-  
-  -  User-specified throttling: [retry
-     configuration][google.cloud.tasks.v2beta3.Queue.retry\_config], [rate
-     limits][google.cloud.tasks.v2beta3.Queue.rate\_limits], and the
-     [queue's state][google.cloud.tasks.v2beta3.Queue.state].
-  
-  -  System throttling: To prevent the worker from overloading, Cloud
-     Tasks may temporarily reduce the queue's effective rate.
-     User-specified settings will not be changed.
-  
-  System throttling happens because:
-  
-  -  Cloud Tasks backs off on all errors. Normally the backoff specified
-     in [rate limits][google.cloud.tasks.v2beta3.Queue.rate\_limits] will
-     be used. But if the worker returns ``429`` (Too Many Requests),
-     ``503`` (Service Unavailable), or the rate of errors is high, Cloud
-     Tasks will use a higher backoff rate. The retry specified in the
-     ``Retry-After`` HTTP response header is considered.
-  
-  -  To prevent traffic spikes and to smooth sudden increases in traffic,
-     dispatches ramp up slowly when the queue is newly created or idle and
-     if large numbers of tasks suddenly become available to dispatch (due
-     to spikes in create task rates, the queue being unpaused, or many
-     tasks that are scheduled at the same time).
-  
-  
+        __doc__="""HTTP request.  The task will be pushed to the worker as an HTTP
+  request. If the worker or the redirected worker acknowledges the task
+  by returning a successful HTTP response code ([``200`` - ``299``]),
+  the task will be removed from the queue. If any other HTTP response
+  code is returned or no response is received, the task will be retried
+  according to the following:  -  User-specified throttling: [retry
+  configuration][google.cloud.tasks.v2beta3.Queue.retry\_config], [rate
+  limits][google.cloud.tasks.v2beta3.Queue.rate\_limits], and the
+  [queue's state][google.cloud.tasks.v2beta3.Queue.state].  -  System
+  throttling: To prevent the worker from overloading, Cloud    Tasks may
+  temporarily reduce the queue's effective rate.    User-specified
+  settings will not be changed.  System throttling happens because:  -
+  Cloud Tasks backs off on all errors. Normally the backoff specified
+  in [rate limits][google.cloud.tasks.v2beta3.Queue.rate\_limits] will
+  be used. But if the worker returns ``429`` (Too Many Requests),
+  ``503`` (Service Unavailable), or the rate of errors is high, Cloud
+  Tasks will use a higher backoff rate. The retry specified in the
+  ``Retry-After`` HTTP response header is considered.  -  To prevent
+  traffic spikes and to smooth sudden increases in traffic,
+  dispatches ramp up slowly when the queue is newly created or idle and
+  if large numbers of tasks suddenly become available to dispatch (due
+  to spikes in create task rates, the queue being unpaused, or many
+  tasks that are scheduled at the same time).
   Attributes:
       url:
           Required. The full url path that the request will be sent to.
@@ -848,25 +838,18 @@ AppEngineHttpQueue = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_APPENGINEHTTPQUEUE,
         __module__="google.cloud.tasks_v2beta3.proto.target_pb2",
-        __doc__="""App Engine HTTP queue.
-  
-  The task will be delivered to the App Engine application hostname
-  specified by its
-  [AppEngineHttpQueue][google.cloud.tasks.v2beta3.AppEngineHttpQueue] and
-  [AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest].
-  The documentation for
-  [AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest]
-  explains how the task's host URL is constructed.
-  
-  Using
+        __doc__="""App Engine HTTP queue.  The task will be delivered to the App Engine
+  application hostname specified by its
   [AppEngineHttpQueue][google.cloud.tasks.v2beta3.AppEngineHttpQueue]
-  requires
-  ```appengine.applications.get`` <https://cloud.google.com/appengine/docs/admin-api/access-control>`_
+  and [AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpReq
+  uest]. The documentation for [AppEngineHttpRequest][google.cloud.tasks
+  .v2beta3.AppEngineHttpRequest] explains how the task's host URL is
+  constructed.  Using
+  [AppEngineHttpQueue][google.cloud.tasks.v2beta3.AppEngineHttpQueue]
+  requires ```appengine.applications.get``
+  <https://cloud.google.com/appengine/docs/admin-api/access-control>`_
   Google IAM permission for the project and the following scope:
-  
   ``https://www.googleapis.com/auth/cloud-platform``
-  
-  
   Attributes:
       app_engine_routing_override:
           Overrides for the [task-level app\_engine\_routing][google.clo
@@ -896,69 +879,52 @@ AppEngineHttpRequest = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_APPENGINEHTTPREQUEST,
         __module__="google.cloud.tasks_v2beta3.proto.target_pb2",
-        __doc__="""App Engine HTTP request.
-  
-  The message defines the HTTP request that is sent to an App Engine app
-  when the task is dispatched.
-  
-  Using
-  [AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest]
-  requires
-  ```appengine.applications.get`` <https://cloud.google.com/appengine/docs/admin-api/access-control>`_
+        __doc__="""App Engine HTTP request.  The message defines the HTTP request that is
+  sent to an App Engine app when the task is dispatched.  Using [AppEngi
+  neHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest]
+  requires ```appengine.applications.get``
+  <https://cloud.google.com/appengine/docs/admin-api/access-control>`_
   Google IAM permission for the project and the following scope:
-  
-  ``https://www.googleapis.com/auth/cloud-platform``
-  
-  The task will be delivered to the App Engine app which belongs to the
-  same project as the queue. For more information, see `How Requests are
-  Routed <https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>`_
-  and how routing is affected by `dispatch
-  files <https://cloud.google.com/appengine/docs/python/config/dispatchref>`_.
+  ``https://www.googleapis.com/auth/cloud-platform``  The task will be
+  delivered to the App Engine app which belongs to the same project as
+  the queue. For more information, see `How Requests are Routed
+  <https://cloud.google.com/appengine/docs/standard/python/how-requests-
+  are-routed>`_ and how routing is affected by `dispatch files <https:/
+  /cloud.google.com/appengine/docs/python/config/dispatchref>`_.
   Traffic is encrypted during transport and never leaves Google
   datacenters. Because this traffic is carried over a communication
   mechanism internal to Google, you cannot explicitly set the protocol
-  (for example, HTTP or HTTPS). The request to the handler, however, will
-  appear to have used the HTTP protocol.
-  
-  The [AppEngineRouting][google.cloud.tasks.v2beta3.AppEngineRouting] used
+  (for example, HTTP or HTTPS). The request to the handler, however,
+  will appear to have used the HTTP protocol.  The
+  [AppEngineRouting][google.cloud.tasks.v2beta3.AppEngineRouting] used
   to construct the URL that the task is delivered to can be set at the
-  queue-level or task-level:
-  
-  -  If set,
-     [app\_engine\_routing\_override][google.cloud.tasks.v2beta3.AppEngineHttpQueue.app\_engine\_routing\_override]
-     is used for all tasks in the queue, no matter what the setting is for
-     the [task-level
-     app\_engine\_routing][google.cloud.tasks.v2beta3.AppEngineHttpRequest.app\_engine\_routing].
-  
-  The ``url`` that the task will be sent to is:
-  
-  -  ``url =`` [host][google.cloud.tasks.v2beta3.AppEngineRouting.host]
-     ``+``
-     [relative\_uri][google.cloud.tasks.v2beta3.AppEngineHttpRequest.relative\_uri]
-  
-  Tasks can be dispatched to secure app handlers, unsecure app handlers,
-  and URIs restricted with
-  ```login: admin`` <https://cloud.google.com/appengine/docs/standard/python/config/appref>`_.
-  Because tasks are not run as any user, they cannot be dispatched to URIs
-  restricted with
-  ```login: required`` <https://cloud.google.com/appengine/docs/standard/python/config/appref>`_
-  Task dispatches also do not follow redirects.
-  
-  The task attempt has succeeded if the app's request handler returns an
-  HTTP response code in the range [``200`` - ``299``]. The task attempt
-  has failed if the app's handler returns a non-2xx response code or Cloud
-  Tasks does not receive response before the
-  [deadline][google.cloud.tasks.v2beta3.Task.dispatch\_deadline]. Failed
-  tasks will be retried according to the [retry
-  configuration][google.cloud.tasks.v2beta3.Queue.retry\_config]. ``503``
-  (Service Unavailable) is considered an App Engine system error instead
-  of an application error and will cause Cloud Tasks' traffic congestion
-  control to temporarily throttle the queue's dispatches. Unlike other
-  types of task targets, a ``429`` (Too Many Requests) response from an
-  app handler does not cause traffic congestion control to throttle the
-  queue.
-  
-  
+  queue-level or task-level:  -  If set,    [app\_engine\_routing\_overr
+  ide][google.cloud.tasks.v2beta3.AppEngineHttpQueue.app\_engine\_routin
+  g\_override]    is used for all tasks in the queue, no matter what the
+  setting is for    the [task-level    app\_engine\_routing][google.clou
+  d.tasks.v2beta3.AppEngineHttpRequest.app\_engine\_routing].  The
+  ``url`` that the task will be sent to is:  -  ``url =``
+  [host][google.cloud.tasks.v2beta3.AppEngineRouting.host]    ``+``    [
+  relative\_uri][google.cloud.tasks.v2beta3.AppEngineHttpRequest.relativ
+  e\_uri]  Tasks can be dispatched to secure app handlers, unsecure app
+  handlers, and URIs restricted with ```login: admin`` <https://cloud.go
+  ogle.com/appengine/docs/standard/python/config/appref>`_. Because
+  tasks are not run as any user, they cannot be dispatched to URIs
+  restricted with ```login: required`` <https://cloud.google.com/appengi
+  ne/docs/standard/python/config/appref>`_ Task dispatches also do not
+  follow redirects.  The task attempt has succeeded if the app's request
+  handler returns an HTTP response code in the range [``200`` -
+  ``299``]. The task attempt has failed if the app's handler returns a
+  non-2xx response code or Cloud Tasks does not receive response before
+  the [deadline][google.cloud.tasks.v2beta3.Task.dispatch\_deadline].
+  Failed tasks will be retried according to the [retry
+  configuration][google.cloud.tasks.v2beta3.Queue.retry\_config].
+  ``503`` (Service Unavailable) is considered an App Engine system error
+  instead of an application error and will cause Cloud Tasks' traffic
+  congestion control to temporarily throttle the queue's dispatches.
+  Unlike other types of task targets, a ``429`` (Too Many Requests)
+  response from an app handler does not cause traffic congestion control
+  to throttle the queue.
   Attributes:
       http_method:
           The HTTP method to use for the request. The default is POST.
@@ -1039,22 +1005,17 @@ AppEngineRouting = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_APPENGINEROUTING,
         __module__="google.cloud.tasks_v2beta3.proto.target_pb2",
-        __doc__="""App Engine Routing.
-  
-  Defines routing characteristics specific to App Engine - service,
-  version, and instance.
-  
-  For more information about services, versions, and instances see `An
-  Overview of App
-  Engine <https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine>`_,
-  `Microservices Architecture on Google App
-  Engine <https://cloud.google.com/appengine/docs/python/microservices-on-app-engine>`_,
-  `App Engine Standard request
-  routing <https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>`_,
-  and `App Engine Flex request
-  routing <https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed>`_.
-  
-  
+        __doc__="""App Engine Routing.  Defines routing characteristics specific to App
+  Engine - service, version, and instance.  For more information about
+  services, versions, and instances see `An Overview of App Engine
+  <https://cloud.google.com/appengine/docs/python/an-overview-of-app-
+  engine>`_, `Microservices Architecture on Google App Engine
+  <https://cloud.google.com/appengine/docs/python/microservices-on-app-
+  engine>`_, `App Engine Standard request routing
+  <https://cloud.google.com/appengine/docs/standard/python/how-requests-
+  are-routed>`_, and `App Engine Flex request routing
+  <https://cloud.google.com/appengine/docs/flexible/python/how-requests-
+  are-routed>`_.
   Attributes:
       service:
           App service.  By default, the task is sent to the service
@@ -1127,12 +1088,10 @@ OAuthToken = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OAUTHTOKEN,
         __module__="google.cloud.tasks_v2beta3.proto.target_pb2",
-        __doc__="""Contains information needed for generating an `OAuth
-  token <https://developers.google.com/identity/protocols/OAuth2>`_. This
-  type of authorization should generally only be used when calling Google
-  APIs hosted on \*.googleapis.com.
-  
-  
+        __doc__="""Contains information needed for generating an `OAuth token
+  <https://developers.google.com/identity/protocols/OAuth2>`_. This
+  type of authorization should generally only be used when calling
+  Google APIs hosted on \*.googleapis.com.
   Attributes:
       service_account_email:
           \ `Service account email
@@ -1156,14 +1115,11 @@ OidcToken = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OIDCTOKEN,
         __module__="google.cloud.tasks_v2beta3.proto.target_pb2",
-        __doc__="""Contains information needed for generating an `OpenID
-  Connect
-  token <https://developers.google.com/identity/protocols/OpenIDConnect>`_.
+        __doc__="""Contains information needed for generating an `OpenID Connect token
+  <https://developers.google.com/identity/protocols/OpenIDConnect>`_.
   This type of authorization can be used for many scenarios, including
   calling Cloud Run, or endpoints where you intend to validate the token
   yourself.
-  
-  
   Attributes:
       service_account_email:
           \ `Service account email
