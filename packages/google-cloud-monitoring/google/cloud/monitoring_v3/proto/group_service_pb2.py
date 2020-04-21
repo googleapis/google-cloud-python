@@ -16,9 +16,12 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import client_pb2 as google_dot_api_dot_client__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.api import (
     monitored_resource_pb2 as google_dot_api_dot_monitored__resource__pb2,
 )
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.monitoring_v3.proto import (
     common_pb2 as google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2,
 )
@@ -26,7 +29,6 @@ from google.cloud.monitoring_v3.proto import (
     group_pb2 as google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2,
 )
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
-from google.api import client_pb2 as google_dot_api_dot_client__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -34,18 +36,20 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.monitoring.v3",
     syntax="proto3",
     serialized_options=_b(
-        "\n\030com.google.monitoring.v3B\021GroupServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
+        "\n\030com.google.monitoring.v3B\021GroupServiceProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3\352\002\035Google::Cloud::Monitoring::V3"
     ),
     serialized_pb=_b(
-        '\n4google/cloud/monitoring_v3/proto/group_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a#google/api/monitored_resource.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a,google/cloud/monitoring_v3/proto/group.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x17google/api/client.proto"\xad\x01\n\x11ListGroupsRequest\x12\x0c\n\x04name\x18\x07 \x01(\t\x12\x1b\n\x11\x63hildren_of_group\x18\x02 \x01(\tH\x00\x12\x1c\n\x12\x61ncestors_of_group\x18\x03 \x01(\tH\x00\x12\x1e\n\x14\x64\x65scendants_of_group\x18\x04 \x01(\tH\x00\x12\x11\n\tpage_size\x18\x05 \x01(\x05\x12\x12\n\npage_token\x18\x06 \x01(\tB\x08\n\x06\x66ilter"Y\n\x12ListGroupsResponse\x12*\n\x05group\x18\x01 \x03(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x1f\n\x0fGetGroupRequest\x12\x0c\n\x04name\x18\x03 \x01(\t"e\n\x12\x43reateGroupRequest\x12\x0c\n\x04name\x18\x04 \x01(\t\x12*\n\x05group\x18\x02 \x01(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x15\n\rvalidate_only\x18\x03 \x01(\x08"W\n\x12UpdateGroupRequest\x12*\n\x05group\x18\x02 \x01(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x15\n\rvalidate_only\x18\x03 \x01(\x08"5\n\x12\x44\x65leteGroupRequest\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x11\n\trecursive\x18\x04 \x01(\x08"\x94\x01\n\x17ListGroupMembersRequest\x12\x0c\n\x04name\x18\x07 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12\x34\n\x08interval\x18\x06 \x01(\x0b\x32".google.monitoring.v3.TimeInterval"w\n\x18ListGroupMembersResponse\x12.\n\x07members\x18\x01 \x03(\x0b\x32\x1d.google.api.MonitoredResource\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05\x32\xe7\x07\n\x0cGroupService\x12\x85\x01\n\nListGroups\x12\'.google.monitoring.v3.ListGroupsRequest\x1a(.google.monitoring.v3.ListGroupsResponse"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v3/{name=projects/*}/groups\x12v\n\x08GetGroup\x12%.google.monitoring.v3.GetGroupRequest\x1a\x1b.google.monitoring.v3.Group"&\x82\xd3\xe4\x93\x02 \x12\x1e/v3/{name=projects/*/groups/*}\x12\x81\x01\n\x0b\x43reateGroup\x12(.google.monitoring.v3.CreateGroupRequest\x1a\x1b.google.monitoring.v3.Group"+\x82\xd3\xe4\x93\x02%"\x1c/v3/{name=projects/*}/groups:\x05group\x12\x89\x01\n\x0bUpdateGroup\x12(.google.monitoring.v3.UpdateGroupRequest\x1a\x1b.google.monitoring.v3.Group"3\x82\xd3\xe4\x93\x02-\x1a$/v3/{group.name=projects/*/groups/*}:\x05group\x12w\n\x0b\x44\x65leteGroup\x12(.google.monitoring.v3.DeleteGroupRequest\x1a\x16.google.protobuf.Empty"&\x82\xd3\xe4\x93\x02 *\x1e/v3/{name=projects/*/groups/*}\x12\xa1\x01\n\x10ListGroupMembers\x12-.google.monitoring.v3.ListGroupMembersRequest\x1a..google.monitoring.v3.ListGroupMembersResponse".\x82\xd3\xe4\x93\x02(\x12&/v3/{name=projects/*/groups/*}/members\x1a\xa9\x01\xca\x41\x19monitoring.googleapis.com\xd2\x41\x89\x01https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/monitoring,https://www.googleapis.com/auth/monitoring.readB\xa9\x01\n\x18\x63om.google.monitoring.v3B\x11GroupServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
+        '\n4google/cloud/monitoring_v3/proto/group_service.proto\x12\x14google.monitoring.v3\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a#google/api/monitored_resource.proto\x1a\x19google/api/resource.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a,google/cloud/monitoring_v3/proto/group.proto\x1a\x1bgoogle/protobuf/empty.proto"\xc8\x02\n\x11ListGroupsRequest\x12\x35\n\x04name\x18\x07 \x01(\tB\'\xe0\x41\x02\xfa\x41!\x12\x1fmonitoring.googleapis.com/Group\x12\x41\n\x11\x63hildren_of_group\x18\x02 \x01(\tB$\xfa\x41!\n\x1fmonitoring.googleapis.com/GroupH\x00\x12\x42\n\x12\x61ncestors_of_group\x18\x03 \x01(\tB$\xfa\x41!\n\x1fmonitoring.googleapis.com/GroupH\x00\x12\x44\n\x14\x64\x65scendants_of_group\x18\x04 \x01(\tB$\xfa\x41!\n\x1fmonitoring.googleapis.com/GroupH\x00\x12\x11\n\tpage_size\x18\x05 \x01(\x05\x12\x12\n\npage_token\x18\x06 \x01(\tB\x08\n\x06\x66ilter"Y\n\x12ListGroupsResponse\x12*\n\x05group\x18\x01 \x03(\x0b\x32\x1b.google.monitoring.v3.Group\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"H\n\x0fGetGroupRequest\x12\x35\n\x04name\x18\x03 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1fmonitoring.googleapis.com/Group"\x93\x01\n\x12\x43reateGroupRequest\x12\x35\n\x04name\x18\x04 \x01(\tB\'\xe0\x41\x02\xfa\x41!\x12\x1fmonitoring.googleapis.com/Group\x12/\n\x05group\x18\x02 \x01(\x0b\x32\x1b.google.monitoring.v3.GroupB\x03\xe0\x41\x02\x12\x15\n\rvalidate_only\x18\x03 \x01(\x08"\\\n\x12UpdateGroupRequest\x12/\n\x05group\x18\x02 \x01(\x0b\x32\x1b.google.monitoring.v3.GroupB\x03\xe0\x41\x02\x12\x15\n\rvalidate_only\x18\x03 \x01(\x08"^\n\x12\x44\x65leteGroupRequest\x12\x35\n\x04name\x18\x03 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1fmonitoring.googleapis.com/Group\x12\x11\n\trecursive\x18\x04 \x01(\x08"\xbd\x01\n\x17ListGroupMembersRequest\x12\x35\n\x04name\x18\x07 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1fmonitoring.googleapis.com/Group\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t\x12\x34\n\x08interval\x18\x06 \x01(\x0b\x32".google.monitoring.v3.TimeInterval"w\n\x18ListGroupMembersResponse\x12.\n\x07members\x18\x01 \x03(\x0b\x32\x1d.google.api.MonitoredResource\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12\x12\n\ntotal_size\x18\x03 \x01(\x05\x32\x98\x08\n\x0cGroupService\x12\x8c\x01\n\nListGroups\x12\'.google.monitoring.v3.ListGroupsRequest\x1a(.google.monitoring.v3.ListGroupsResponse"+\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v3/{name=projects/*}/groups\xda\x41\x04name\x12}\n\x08GetGroup\x12%.google.monitoring.v3.GetGroupRequest\x1a\x1b.google.monitoring.v3.Group"-\x82\xd3\xe4\x93\x02 \x12\x1e/v3/{name=projects/*/groups/*}\xda\x41\x04name\x12\x8e\x01\n\x0b\x43reateGroup\x12(.google.monitoring.v3.CreateGroupRequest\x1a\x1b.google.monitoring.v3.Group"8\x82\xd3\xe4\x93\x02%"\x1c/v3/{name=projects/*}/groups:\x05group\xda\x41\nname,group\x12\x91\x01\n\x0bUpdateGroup\x12(.google.monitoring.v3.UpdateGroupRequest\x1a\x1b.google.monitoring.v3.Group";\x82\xd3\xe4\x93\x02-\x1a$/v3/{group.name=projects/*/groups/*}:\x05group\xda\x41\x05group\x12~\n\x0b\x44\x65leteGroup\x12(.google.monitoring.v3.DeleteGroupRequest\x1a\x16.google.protobuf.Empty"-\x82\xd3\xe4\x93\x02 *\x1e/v3/{name=projects/*/groups/*}\xda\x41\x04name\x12\xa8\x01\n\x10ListGroupMembers\x12-.google.monitoring.v3.ListGroupMembersRequest\x1a..google.monitoring.v3.ListGroupMembersResponse"5\x82\xd3\xe4\x93\x02(\x12&/v3/{name=projects/*/groups/*}/members\xda\x41\x04name\x1a\xa9\x01\xca\x41\x19monitoring.googleapis.com\xd2\x41\x89\x01https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/monitoring,https://www.googleapis.com/auth/monitoring.readB\xc9\x01\n\x18\x63om.google.monitoring.v3B\x11GroupServiceProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3\xea\x02\x1dGoogle::Cloud::Monitoring::V3b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
+        google_dot_api_dot_client__pb2.DESCRIPTOR,
+        google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_api_dot_monitored__resource__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,
-        google_dot_api_dot_client__pb2.DESCRIPTOR,
     ],
 )
 
@@ -72,7 +76,9 @@ _LISTGROUPSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A!\022\037monitoring.googleapis.com/Group"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -90,7 +96,7 @@ _LISTGROUPSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\372A!\n\037monitoring.googleapis.com/Group"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -108,7 +114,7 @@ _LISTGROUPSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\372A!\n\037monitoring.googleapis.com/Group"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -126,7 +132,7 @@ _LISTGROUPSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\372A!\n\037monitoring.googleapis.com/Group"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -182,8 +188,8 @@ _LISTGROUPSREQUEST = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=293,
-    serialized_end=466,
+    serialized_start=353,
+    serialized_end=681,
 )
 
 
@@ -239,8 +245,8 @@ _LISTGROUPSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=468,
-    serialized_end=557,
+    serialized_start=683,
+    serialized_end=772,
 )
 
 
@@ -266,7 +272,9 @@ _GETGROUPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A!\n\037monitoring.googleapis.com/Group"
+            ),
             file=DESCRIPTOR,
         )
     ],
@@ -278,8 +286,8 @@ _GETGROUPREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=559,
-    serialized_end=590,
+    serialized_start=774,
+    serialized_end=846,
 )
 
 
@@ -305,7 +313,9 @@ _CREATEGROUPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A!\022\037monitoring.googleapis.com/Group"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -323,7 +333,7 @@ _CREATEGROUPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -353,8 +363,8 @@ _CREATEGROUPREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=592,
-    serialized_end=693,
+    serialized_start=849,
+    serialized_end=996,
 )
 
 
@@ -380,7 +390,7 @@ _UPDATEGROUPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\340A\002"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -410,8 +420,8 @@ _UPDATEGROUPREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=695,
-    serialized_end=782,
+    serialized_start=998,
+    serialized_end=1090,
 )
 
 
@@ -437,7 +447,9 @@ _DELETEGROUPREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A!\n\037monitoring.googleapis.com/Group"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -467,8 +479,8 @@ _DELETEGROUPREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=784,
-    serialized_end=837,
+    serialized_start=1092,
+    serialized_end=1186,
 )
 
 
@@ -494,7 +506,9 @@ _LISTGROUPMEMBERSREQUEST = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b(
+                "\340A\002\372A!\n\037monitoring.googleapis.com/Group"
+            ),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -578,8 +592,8 @@ _LISTGROUPMEMBERSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=840,
-    serialized_end=988,
+    serialized_start=1189,
+    serialized_end=1378,
 )
 
 
@@ -653,8 +667,8 @@ _LISTGROUPMEMBERSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=990,
-    serialized_end=1109,
+    serialized_start=1380,
+    serialized_end=1499,
 )
 
 _LISTGROUPSREQUEST.oneofs_by_name["filter"].fields.append(
@@ -709,42 +723,39 @@ ListGroupsRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTGROUPSREQUEST,
         __module__="google.cloud.monitoring_v3.proto.group_service_pb2",
         __doc__="""The ``ListGroup`` request.
-  
-  
   Attributes:
       name:
-          The project whose groups are to be listed. The format is
-          ``"projects/{project_id_or_number}"``.
+          Required. The project whose groups are to be listed. The
+          format is:  ::      projects/[PROJECT_ID_OR_NUMBER]
       filter:
           An optional filter consisting of a single group name. The
           filters limit the groups returned based on their parent-child
           relationship with the specified group. If no filter is
           specified, all groups are returned.
       children_of_group:
-          A group name:
-          ``"projects/{project_id_or_number}/groups/{group_id}"``.
-          Returns groups whose ``parentName`` field contains the group
-          name. If no groups have this parent, the results are empty.
+          A group name. The format is:  ::
+          projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]  Returns
+          groups whose ``parent_name`` field contains the group name. If
+          no groups have this parent, the results are empty.
       ancestors_of_group:
-          A group name:
-          ``"projects/{project_id_or_number}/groups/{group_id}"``.
-          Returns groups that are ancestors of the specified group. The
-          groups are returned in order, starting with the immediate
-          parent and ending with the most distant ancestor. If the
-          specified group has no immediate parent, the results are
-          empty.
+          A group name. The format is:  ::
+          projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]  Returns
+          groups that are ancestors of the specified group. The groups
+          are returned in order, starting with the immediate parent and
+          ending with the most distant ancestor. If the specified group
+          has no immediate parent, the results are empty.
       descendants_of_group:
-          A group name:
-          ``"projects/{project_id_or_number}/groups/{group_id}"``.
-          Returns the descendants of the specified group. This is a
-          superset of the results returned by the ``childrenOfGroup``
-          filter, and includes children-of-children, and so forth.
+          A group name. The format is:  ::
+          projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]  Returns the
+          descendants of the specified group. This is a superset of the
+          results returned by the ``children_of_group`` filter, and
+          includes children-of-children, and so forth.
       page_size:
           A positive number that is the maximum number of results to
           return.
       page_token:
           If this field is not empty then it must contain the
-          ``nextPageToken`` value returned by a previous call to this
+          ``next_page_token`` value returned by a previous call to this
           method. Using this field causes the method to return
           additional results from the previous method call.
   """,
@@ -760,15 +771,13 @@ ListGroupsResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTGROUPSRESPONSE,
         __module__="google.cloud.monitoring_v3.proto.group_service_pb2",
         __doc__="""The ``ListGroups`` response.
-  
-  
   Attributes:
       group:
           The groups that match the specified filters.
       next_page_token:
           If there are more results than have been returned, then this
           field is set to a non-empty value. To see the additional
-          results, use that value as ``pageToken`` in the next call to
+          results, use that value as ``page_token`` in the next call to
           this method.
   """,
         # @@protoc_insertion_point(class_scope:google.monitoring.v3.ListGroupsResponse)
@@ -783,12 +792,10 @@ GetGroupRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_GETGROUPREQUEST,
         __module__="google.cloud.monitoring_v3.proto.group_service_pb2",
         __doc__="""The ``GetGroup`` request.
-  
-  
   Attributes:
       name:
-          The group to retrieve. The format is
-          ``"projects/{project_id_or_number}/groups/{group_id}"``.
+          Required. The group to retrieve. The format is:  ::
+          projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
   """,
         # @@protoc_insertion_point(class_scope:google.monitoring.v3.GetGroupRequest)
     ),
@@ -802,15 +809,13 @@ CreateGroupRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_CREATEGROUPREQUEST,
         __module__="google.cloud.monitoring_v3.proto.group_service_pb2",
         __doc__="""The ``CreateGroup`` request.
-  
-  
   Attributes:
       name:
-          The project in which to create the group. The format is
-          ``"projects/{project_id_or_number}"``.
+          Required. The project in which to create the group. The format
+          is:  ::      projects/[PROJECT_ID_OR_NUMBER]
       group:
-          A group definition. It is an error to define the ``name``
-          field because the system assigns the name.
+          Required. A group definition. It is an error to define the
+          ``name`` field because the system assigns the name.
       validate_only:
           If true, validate this request but do not create the group.
   """,
@@ -826,13 +831,11 @@ UpdateGroupRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_UPDATEGROUPREQUEST,
         __module__="google.cloud.monitoring_v3.proto.group_service_pb2",
         __doc__="""The ``UpdateGroup`` request.
-  
-  
   Attributes:
       group:
-          The new definition of the group. All fields of the existing
-          group, excepting ``name``, are replaced with the corresponding
-          fields of this group.
+          Required. The new definition of the group. All fields of the
+          existing group, excepting ``name``, are replaced with the
+          corresponding fields of this group.
       validate_only:
           If true, validate this request but do not update the existing
           group.
@@ -848,14 +851,12 @@ DeleteGroupRequest = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DELETEGROUPREQUEST,
         __module__="google.cloud.monitoring_v3.proto.group_service_pb2",
-        __doc__="""The ``DeleteGroup`` request. The default behavior is to be
-  able to delete a single group without any descendants.
-  
-  
+        __doc__="""The ``DeleteGroup`` request. The default behavior is to be able to
+  delete a single group without any descendants.
   Attributes:
       name:
-          The group to delete. The format is
-          ``"projects/{project_id_or_number}/groups/{group_id}"``.
+          Required. The group to delete. The format is:  ::
+          projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
       recursive:
           If this field is true, then the request means to delete a
           group with all its descendants. Otherwise, the request means
@@ -874,28 +875,26 @@ ListGroupMembersRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTGROUPMEMBERSREQUEST,
         __module__="google.cloud.monitoring_v3.proto.group_service_pb2",
         __doc__="""The ``ListGroupMembers`` request.
-  
-  
   Attributes:
       name:
-          The group whose members are listed. The format is
-          ``"projects/{project_id_or_number}/groups/{group_id}"``.
+          Required. The group whose members are listed. The format is:
+          ::      projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
       page_size:
           A positive number that is the maximum number of results to
           return.
       page_token:
           If this field is not empty then it must contain the
-          ``nextPageToken`` value returned by a previous call to this
+          ``next_page_token`` value returned by a previous call to this
           method. Using this field causes the method to return
           additional results from the previous method call.
       filter:
-          An optional `list filter
-          </monitoring/api/learn_more#filtering>`__ describing the
-          members to be returned. The filter may reference the type,
-          labels, and metadata of monitored resources that comprise the
-          group. For example, to return only resources representing
-          Compute Engine VM instances, use this filter:  ::
-          resource.type = "gce_instance"
+          An optional `list filter <https://cloud.google.com/monitoring/
+          api/learn_more#filtering>`__ describing the members to be
+          returned. The filter may reference the type, labels, and
+          metadata of monitored resources that comprise the group. For
+          example, to return only resources representing Compute Engine
+          VM instances, use this filter:  ::      `resource.type =
+          "gce_instance"`
       interval:
           An optional time interval for which results should be
           returned. Only members that were part of the group during the
@@ -915,15 +914,13 @@ ListGroupMembersResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTGROUPMEMBERSRESPONSE,
         __module__="google.cloud.monitoring_v3.proto.group_service_pb2",
         __doc__="""The ``ListGroupMembers`` response.
-  
-  
   Attributes:
       members:
           A set of monitored resources in the group.
       next_page_token:
           If there are more results than have been returned, then this
           field is set to a non-empty value. To see the additional
-          results, use that value as ``pageToken`` in the next call to
+          results, use that value as ``page_token`` in the next call to
           this method.
       total_size:
           The total number of elements matching this request.
@@ -935,6 +932,16 @@ _sym_db.RegisterMessage(ListGroupMembersResponse)
 
 
 DESCRIPTOR._options = None
+_LISTGROUPSREQUEST.fields_by_name["name"]._options = None
+_LISTGROUPSREQUEST.fields_by_name["children_of_group"]._options = None
+_LISTGROUPSREQUEST.fields_by_name["ancestors_of_group"]._options = None
+_LISTGROUPSREQUEST.fields_by_name["descendants_of_group"]._options = None
+_GETGROUPREQUEST.fields_by_name["name"]._options = None
+_CREATEGROUPREQUEST.fields_by_name["name"]._options = None
+_CREATEGROUPREQUEST.fields_by_name["group"]._options = None
+_UPDATEGROUPREQUEST.fields_by_name["group"]._options = None
+_DELETEGROUPREQUEST.fields_by_name["name"]._options = None
+_LISTGROUPMEMBERSREQUEST.fields_by_name["name"]._options = None
 
 _GROUPSERVICE = _descriptor.ServiceDescriptor(
     name="GroupService",
@@ -944,8 +951,8 @@ _GROUPSERVICE = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\031monitoring.googleapis.com\322A\211\001https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/monitoring,https://www.googleapis.com/auth/monitoring.read"
     ),
-    serialized_start=1112,
-    serialized_end=2111,
+    serialized_start=1502,
+    serialized_end=2550,
     methods=[
         _descriptor.MethodDescriptor(
             name="ListGroups",
@@ -955,7 +962,7 @@ _GROUPSERVICE = _descriptor.ServiceDescriptor(
             input_type=_LISTGROUPSREQUEST,
             output_type=_LISTGROUPSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002\036\022\034/v3/{name=projects/*}/groups"
+                "\202\323\344\223\002\036\022\034/v3/{name=projects/*}/groups\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -966,7 +973,7 @@ _GROUPSERVICE = _descriptor.ServiceDescriptor(
             input_type=_GETGROUPREQUEST,
             output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP,
             serialized_options=_b(
-                "\202\323\344\223\002 \022\036/v3/{name=projects/*/groups/*}"
+                "\202\323\344\223\002 \022\036/v3/{name=projects/*/groups/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -977,7 +984,7 @@ _GROUPSERVICE = _descriptor.ServiceDescriptor(
             input_type=_CREATEGROUPREQUEST,
             output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP,
             serialized_options=_b(
-                '\202\323\344\223\002%"\034/v3/{name=projects/*}/groups:\005group'
+                '\202\323\344\223\002%"\034/v3/{name=projects/*}/groups:\005group\332A\nname,group'
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -988,7 +995,7 @@ _GROUPSERVICE = _descriptor.ServiceDescriptor(
             input_type=_UPDATEGROUPREQUEST,
             output_type=google_dot_cloud_dot_monitoring__v3_dot_proto_dot_group__pb2._GROUP,
             serialized_options=_b(
-                "\202\323\344\223\002-\032$/v3/{group.name=projects/*/groups/*}:\005group"
+                "\202\323\344\223\002-\032$/v3/{group.name=projects/*/groups/*}:\005group\332A\005group"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -999,7 +1006,7 @@ _GROUPSERVICE = _descriptor.ServiceDescriptor(
             input_type=_DELETEGROUPREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=_b(
-                "\202\323\344\223\002 *\036/v3/{name=projects/*/groups/*}"
+                "\202\323\344\223\002 *\036/v3/{name=projects/*/groups/*}\332A\004name"
             ),
         ),
         _descriptor.MethodDescriptor(
@@ -1010,7 +1017,7 @@ _GROUPSERVICE = _descriptor.ServiceDescriptor(
             input_type=_LISTGROUPMEMBERSREQUEST,
             output_type=_LISTGROUPMEMBERSRESPONSE,
             serialized_options=_b(
-                "\202\323\344\223\002(\022&/v3/{name=projects/*/groups/*}/members"
+                "\202\323\344\223\002(\022&/v3/{name=projects/*/groups/*}/members\332A\004name"
             ),
         ),
     ],

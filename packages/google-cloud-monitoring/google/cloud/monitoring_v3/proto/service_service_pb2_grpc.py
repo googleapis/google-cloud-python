@@ -11,7 +11,7 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class ServiceMonitoringServiceStub(object):
-    """The Stackdriver Monitoring Service-Oriented Monitoring API has endpoints for
+    """The Cloud Monitoring Service-Oriented Monitoring API has endpoints for
   managing and querying aspects of a workspace's services. These include the
   `Service`'s monitored resources, its Service-Level Objectives, and a taxonomy
   of categorized Health Metrics.
@@ -76,7 +76,7 @@ class ServiceMonitoringServiceStub(object):
 
 
 class ServiceMonitoringServiceServicer(object):
-    """The Stackdriver Monitoring Service-Oriented Monitoring API has endpoints for
+    """The Cloud Monitoring Service-Oriented Monitoring API has endpoints for
   managing and querying aspects of a workspace's services. These include the
   `Service`'s monitored resources, its Service-Level Objectives, and a taxonomy
   of categorized Health Metrics.

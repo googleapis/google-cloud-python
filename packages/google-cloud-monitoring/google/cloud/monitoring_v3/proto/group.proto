@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC.
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,11 +11,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
 syntax = "proto3";
 
 package google.monitoring.v3;
+
+import "google/api/resource.proto";
 
 option csharp_namespace = "Google.Cloud.Monitoring.V3";
 option go_package = "google.golang.org/genproto/googleapis/monitoring/v3;monitoring";
@@ -23,6 +24,7 @@ option java_multiple_files = true;
 option java_outer_classname = "GroupProto";
 option java_package = "com.google.monitoring.v3";
 option php_namespace = "Google\\Cloud\\Monitoring\\V3";
+option ruby_package = "Google::Cloud::Monitoring::V3";
 
 // The description of a dynamic collection of monitored resources. Each group
 // has a filter that is matched against monitored resources and their associated
@@ -51,19 +53,31 @@ option php_namespace = "Google\\Cloud\\Monitoring\\V3";
 // depending on what resources exist and what filters are associated with the
 // group and its ancestors.
 message Group {
-  // Output only. The name of this group. The format is
-  // `"projects/{project_id_or_number}/groups/{group_id}"`.
+  option (google.api.resource) = {
+    type: "monitoring.googleapis.com/Group"
+    pattern: "projects/{project}/groups/{group}"
+    pattern: "organizations/{organization}/groups/{group}"
+    pattern: "folders/{folder}/groups/{group}"
+    pattern: "*"
+  };
+
+  // Output only. The name of this group. The format is:
+  //
+  //     projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+  //
   // When creating a group, this field is ignored and a new name is created
   // consisting of the project specified in the call to `CreateGroup`
-  // and a unique `{group_id}` that is generated automatically.
+  // and a unique `[GROUP_ID]` that is generated automatically.
   string name = 1;
 
   // A user-assigned name for this group, used only for display purposes.
   string display_name = 2;
 
-  // The name of the group's parent, if it has one.
-  // The format is `"projects/{project_id_or_number}/groups/{group_id}"`.
-  // For groups with no parent, `parentName` is the empty string, `""`.
+  // The name of the group's parent, if it has one. The format is:
+  //
+  //     projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+  //
+  // For groups with no parent, `parent_name` is the empty string, `""`.
   string parent_name = 3;
 
   // The filter used to determine which monitored resources belong to this

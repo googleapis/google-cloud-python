@@ -18,6 +18,7 @@ _sym_db = _symbol_database.Default()
 from google.api import (
     monitored_resource_pb2 as google_dot_api_dot_monitored__resource__pb2,
 )
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.type import calendar_period_pb2 as google_dot_type_dot_calendar__period__pb2
@@ -28,13 +29,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.monitoring.v3",
     syntax="proto3",
     serialized_options=_b(
-        "\n\030com.google.monitoring.v3B\026ServiceMonitoringProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
+        "\n\030com.google.monitoring.v3B\026ServiceMonitoringProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3\352\002\035Google::Cloud::Monitoring::V3"
     ),
     serialized_pb=_b(
-        '\n.google/cloud/monitoring_v3/proto/service.proto\x12\x14google.monitoring.v3\x1a#google/api/monitored_resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!google/type/calendar_period.proto"\xd6\x04\n\x07Service\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x36\n\x06\x63ustom\x18\x06 \x01(\x0b\x32$.google.monitoring.v3.Service.CustomH\x00\x12=\n\napp_engine\x18\x07 \x01(\x0b\x32\'.google.monitoring.v3.Service.AppEngineH\x00\x12G\n\x0f\x63loud_endpoints\x18\x08 \x01(\x0b\x32,.google.monitoring.v3.Service.CloudEndpointsH\x00\x12\x43\n\rcluster_istio\x18\t \x01(\x0b\x32*.google.monitoring.v3.Service.ClusterIstioH\x00\x12:\n\ttelemetry\x18\r \x01(\x0b\x32\'.google.monitoring.v3.Service.Telemetry\x1a\x08\n\x06\x43ustom\x1a\x1e\n\tAppEngine\x12\x11\n\tmodule_id\x18\x01 \x01(\t\x1a!\n\x0e\x43loudEndpoints\x12\x0f\n\x07service\x18\x01 \x01(\t\x1ag\n\x0c\x43lusterIstio\x12\x10\n\x08location\x18\x01 \x01(\t\x12\x14\n\x0c\x63luster_name\x18\x02 \x01(\t\x12\x19\n\x11service_namespace\x18\x03 \x01(\t\x12\x14\n\x0cservice_name\x18\x04 \x01(\t\x1a"\n\tTelemetry\x12\x15\n\rresource_name\x18\x01 \x01(\tB\x0c\n\nidentifier"\xc4\x02\n\x15ServiceLevelObjective\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x0b \x01(\t\x12L\n\x17service_level_indicator\x18\x03 \x01(\x0b\x32+.google.monitoring.v3.ServiceLevelIndicator\x12\x0c\n\x04goal\x18\x04 \x01(\x01\x12\x33\n\x0erolling_period\x18\x05 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12\x36\n\x0f\x63\x61lendar_period\x18\x06 \x01(\x0e\x32\x1b.google.type.CalendarPeriodH\x00"4\n\x04View\x12\x14\n\x10VIEW_UNSPECIFIED\x10\x00\x12\x08\n\x04\x46ULL\x10\x02\x12\x0c\n\x08\x45XPLICIT\x10\x01\x42\x08\n\x06period"\xd4\x01\n\x15ServiceLevelIndicator\x12\x33\n\tbasic_sli\x18\x04 \x01(\x0b\x32\x1e.google.monitoring.v3.BasicSliH\x00\x12>\n\rrequest_based\x18\x01 \x01(\x0b\x32%.google.monitoring.v3.RequestBasedSliH\x00\x12>\n\rwindows_based\x18\x02 \x01(\x0b\x32%.google.monitoring.v3.WindowsBasedSliH\x00\x42\x06\n\x04type"\xb6\x02\n\x08\x42\x61sicSli\x12\x0e\n\x06method\x18\x07 \x03(\t\x12\x10\n\x08location\x18\x08 \x03(\t\x12\x0f\n\x07version\x18\t \x03(\t\x12K\n\x0c\x61vailability\x18\x02 \x01(\x0b\x32\x33.google.monitoring.v3.BasicSli.AvailabilityCriteriaH\x00\x12\x41\n\x07latency\x18\x03 \x01(\x0b\x32..google.monitoring.v3.BasicSli.LatencyCriteriaH\x00\x1a\x16\n\x14\x41vailabilityCriteria\x1a?\n\x0fLatencyCriteria\x12,\n\tthreshold\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationB\x0e\n\x0csli_criteria"!\n\x05Range\x12\x0b\n\x03min\x18\x01 \x01(\x01\x12\x0b\n\x03max\x18\x02 \x01(\x01"\xa1\x01\n\x0fRequestBasedSli\x12\x41\n\x10good_total_ratio\x18\x01 \x01(\x0b\x32%.google.monitoring.v3.TimeSeriesRatioH\x00\x12\x41\n\x10\x64istribution_cut\x18\x03 \x01(\x0b\x32%.google.monitoring.v3.DistributionCutH\x00\x42\x08\n\x06method"h\n\x0fTimeSeriesRatio\x12\x1b\n\x13good_service_filter\x18\x04 \x01(\t\x12\x1a\n\x12\x62\x61\x64_service_filter\x18\x05 \x01(\t\x12\x1c\n\x14total_service_filter\x18\x06 \x01(\t"Z\n\x0f\x44istributionCut\x12\x1b\n\x13\x64istribution_filter\x18\x04 \x01(\t\x12*\n\x05range\x18\x05 \x01(\x0b\x32\x1b.google.monitoring.v3.Range"\x83\x05\n\x0fWindowsBasedSli\x12 \n\x16good_bad_metric_filter\x18\x05 \x01(\tH\x00\x12`\n\x1agood_total_ratio_threshold\x18\x02 \x01(\x0b\x32:.google.monitoring.v3.WindowsBasedSli.PerformanceThresholdH\x00\x12Q\n\x14metric_mean_in_range\x18\x06 \x01(\x0b\x32\x31.google.monitoring.v3.WindowsBasedSli.MetricRangeH\x00\x12P\n\x13metric_sum_in_range\x18\x07 \x01(\x0b\x32\x31.google.monitoring.v3.WindowsBasedSli.MetricRangeH\x00\x12\x30\n\rwindow_period\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x1a\xb0\x01\n\x14PerformanceThreshold\x12<\n\x0bperformance\x18\x01 \x01(\x0b\x32%.google.monitoring.v3.RequestBasedSliH\x00\x12?\n\x15\x62\x61sic_sli_performance\x18\x03 \x01(\x0b\x32\x1e.google.monitoring.v3.BasicSliH\x00\x12\x11\n\tthreshold\x18\x02 \x01(\x01\x42\x06\n\x04type\x1aN\n\x0bMetricRange\x12\x13\n\x0btime_series\x18\x01 \x01(\t\x12*\n\x05range\x18\x04 \x01(\x0b\x32\x1b.google.monitoring.v3.RangeB\x12\n\x10window_criterionB\xae\x01\n\x18\x63om.google.monitoring.v3B\x16ServiceMonitoringProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
+        '\n.google/cloud/monitoring_v3/proto/service.proto\x12\x14google.monitoring.v3\x1a#google/api/monitored_resource.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!google/type/calendar_period.proto"\x97\x07\n\x07Service\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x36\n\x06\x63ustom\x18\x06 \x01(\x0b\x32$.google.monitoring.v3.Service.CustomH\x00\x12=\n\napp_engine\x18\x07 \x01(\x0b\x32\'.google.monitoring.v3.Service.AppEngineH\x00\x12G\n\x0f\x63loud_endpoints\x18\x08 \x01(\x0b\x32,.google.monitoring.v3.Service.CloudEndpointsH\x00\x12G\n\rcluster_istio\x18\t \x01(\x0b\x32*.google.monitoring.v3.Service.ClusterIstioB\x02\x18\x01H\x00\x12=\n\nmesh_istio\x18\n \x01(\x0b\x32\'.google.monitoring.v3.Service.MeshIstioH\x00\x12:\n\ttelemetry\x18\r \x01(\x0b\x32\'.google.monitoring.v3.Service.Telemetry\x1a\x08\n\x06\x43ustom\x1a\x1e\n\tAppEngine\x12\x11\n\tmodule_id\x18\x01 \x01(\t\x1a!\n\x0e\x43loudEndpoints\x12\x0f\n\x07service\x18\x01 \x01(\t\x1ak\n\x0c\x43lusterIstio\x12\x10\n\x08location\x18\x01 \x01(\t\x12\x14\n\x0c\x63luster_name\x18\x02 \x01(\t\x12\x19\n\x11service_namespace\x18\x03 \x01(\t\x12\x14\n\x0cservice_name\x18\x04 \x01(\t:\x02\x18\x01\x1aN\n\tMeshIstio\x12\x10\n\x08mesh_uid\x18\x01 \x01(\t\x12\x19\n\x11service_namespace\x18\x03 \x01(\t\x12\x14\n\x0cservice_name\x18\x04 \x01(\t\x1a"\n\tTelemetry\x12\x15\n\rresource_name\x18\x01 \x01(\t:\xa7\x01\xea\x41\xa3\x01\n!monitoring.googleapis.com/Service\x12%projects/{project}/services/{service}\x12/organizations/{organization}/services/{service}\x12#folders/{folder}/services/{service}\x12\x01*B\x0c\n\nidentifier"\x91\x05\n\x15ServiceLevelObjective\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x0b \x01(\t\x12L\n\x17service_level_indicator\x18\x03 \x01(\x0b\x32+.google.monitoring.v3.ServiceLevelIndicator\x12\x0c\n\x04goal\x18\x04 \x01(\x01\x12\x33\n\x0erolling_period\x18\x05 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12\x36\n\x0f\x63\x61lendar_period\x18\x06 \x01(\x0e\x32\x1b.google.type.CalendarPeriodH\x00"4\n\x04View\x12\x14\n\x10VIEW_UNSPECIFIED\x10\x00\x12\x08\n\x04\x46ULL\x10\x02\x12\x0c\n\x08\x45XPLICIT\x10\x01:\xca\x02\xea\x41\xc6\x02\n/monitoring.googleapis.com/ServiceLevelObjective\x12Vprojects/{project}/services/{service}/serviceLevelObjectives/{service_level_objective}\x12`organizations/{organization}/services/{service}/serviceLevelObjectives/{service_level_objective}\x12Tfolders/{folder}/services/{service}/serviceLevelObjectives/{service_level_objective}\x12\x01* \x01\x42\x08\n\x06period"\xd4\x01\n\x15ServiceLevelIndicator\x12\x33\n\tbasic_sli\x18\x04 \x01(\x0b\x32\x1e.google.monitoring.v3.BasicSliH\x00\x12>\n\rrequest_based\x18\x01 \x01(\x0b\x32%.google.monitoring.v3.RequestBasedSliH\x00\x12>\n\rwindows_based\x18\x02 \x01(\x0b\x32%.google.monitoring.v3.WindowsBasedSliH\x00\x42\x06\n\x04type"\xb6\x02\n\x08\x42\x61sicSli\x12\x0e\n\x06method\x18\x07 \x03(\t\x12\x10\n\x08location\x18\x08 \x03(\t\x12\x0f\n\x07version\x18\t \x03(\t\x12K\n\x0c\x61vailability\x18\x02 \x01(\x0b\x32\x33.google.monitoring.v3.BasicSli.AvailabilityCriteriaH\x00\x12\x41\n\x07latency\x18\x03 \x01(\x0b\x32..google.monitoring.v3.BasicSli.LatencyCriteriaH\x00\x1a\x16\n\x14\x41vailabilityCriteria\x1a?\n\x0fLatencyCriteria\x12,\n\tthreshold\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationB\x0e\n\x0csli_criteria"!\n\x05Range\x12\x0b\n\x03min\x18\x01 \x01(\x01\x12\x0b\n\x03max\x18\x02 \x01(\x01"\xa1\x01\n\x0fRequestBasedSli\x12\x41\n\x10good_total_ratio\x18\x01 \x01(\x0b\x32%.google.monitoring.v3.TimeSeriesRatioH\x00\x12\x41\n\x10\x64istribution_cut\x18\x03 \x01(\x0b\x32%.google.monitoring.v3.DistributionCutH\x00\x42\x08\n\x06method"h\n\x0fTimeSeriesRatio\x12\x1b\n\x13good_service_filter\x18\x04 \x01(\t\x12\x1a\n\x12\x62\x61\x64_service_filter\x18\x05 \x01(\t\x12\x1c\n\x14total_service_filter\x18\x06 \x01(\t"Z\n\x0f\x44istributionCut\x12\x1b\n\x13\x64istribution_filter\x18\x04 \x01(\t\x12*\n\x05range\x18\x05 \x01(\x0b\x32\x1b.google.monitoring.v3.Range"\x83\x05\n\x0fWindowsBasedSli\x12 \n\x16good_bad_metric_filter\x18\x05 \x01(\tH\x00\x12`\n\x1agood_total_ratio_threshold\x18\x02 \x01(\x0b\x32:.google.monitoring.v3.WindowsBasedSli.PerformanceThresholdH\x00\x12Q\n\x14metric_mean_in_range\x18\x06 \x01(\x0b\x32\x31.google.monitoring.v3.WindowsBasedSli.MetricRangeH\x00\x12P\n\x13metric_sum_in_range\x18\x07 \x01(\x0b\x32\x31.google.monitoring.v3.WindowsBasedSli.MetricRangeH\x00\x12\x30\n\rwindow_period\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x1a\xb0\x01\n\x14PerformanceThreshold\x12<\n\x0bperformance\x18\x01 \x01(\x0b\x32%.google.monitoring.v3.RequestBasedSliH\x00\x12?\n\x15\x62\x61sic_sli_performance\x18\x03 \x01(\x0b\x32\x1e.google.monitoring.v3.BasicSliH\x00\x12\x11\n\tthreshold\x18\x02 \x01(\x01\x42\x06\n\x04type\x1aN\n\x0bMetricRange\x12\x13\n\x0btime_series\x18\x01 \x01(\t\x12*\n\x05range\x18\x04 \x01(\x0b\x32\x1b.google.monitoring.v3.RangeB\x12\n\x10window_criterionB\xce\x01\n\x18\x63om.google.monitoring.v3B\x16ServiceMonitoringProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3\xea\x02\x1dGoogle::Cloud::Monitoring::V3b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_monitored__resource__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
         google_dot_type_dot_calendar__period__pb2.DESCRIPTOR,
@@ -64,8 +66,8 @@ _SERVICELEVELOBJECTIVE_VIEW = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1073,
-    serialized_end=1125,
+    serialized_start=1421,
+    serialized_end=1473,
 )
 _sym_db.RegisterEnumDescriptor(_SERVICELEVELOBJECTIVE_VIEW)
 
@@ -85,8 +87,8 @@ _SERVICE_CUSTOM = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=578,
-    serialized_end=586,
+    serialized_start=672,
+    serialized_end=680,
 )
 
 _SERVICE_APPENGINE = _descriptor.Descriptor(
@@ -123,8 +125,8 @@ _SERVICE_APPENGINE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=588,
-    serialized_end=618,
+    serialized_start=682,
+    serialized_end=712,
 )
 
 _SERVICE_CLOUDENDPOINTS = _descriptor.Descriptor(
@@ -161,8 +163,8 @@ _SERVICE_CLOUDENDPOINTS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=620,
-    serialized_end=653,
+    serialized_start=714,
+    serialized_end=747,
 )
 
 _SERVICE_CLUSTERISTIO = _descriptor.Descriptor(
@@ -248,13 +250,87 @@ _SERVICE_CLUSTERISTIO = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[],
+    serialized_options=_b("\030\001"),
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=749,
+    serialized_end=856,
+)
+
+_SERVICE_MESHISTIO = _descriptor.Descriptor(
+    name="MeshIstio",
+    full_name="google.monitoring.v3.Service.MeshIstio",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="mesh_uid",
+            full_name="google.monitoring.v3.Service.MeshIstio.mesh_uid",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="service_namespace",
+            full_name="google.monitoring.v3.Service.MeshIstio.service_namespace",
+            index=1,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="service_name",
+            full_name="google.monitoring.v3.Service.MeshIstio.service_name",
+            index=2,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=655,
-    serialized_end=758,
+    serialized_start=858,
+    serialized_end=936,
 )
 
 _SERVICE_TELEMETRY = _descriptor.Descriptor(
@@ -291,8 +367,8 @@ _SERVICE_TELEMETRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=760,
-    serialized_end=794,
+    serialized_start=938,
+    serialized_end=972,
 )
 
 _SERVICE = _descriptor.Descriptor(
@@ -407,13 +483,31 @@ _SERVICE = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
+            serialized_options=_b("\030\001"),
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="mesh_istio",
+            full_name="google.monitoring.v3.Service.mesh_istio",
+            index=6,
+            number=10,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
             name="telemetry",
             full_name="google.monitoring.v3.Service.telemetry",
-            index=6,
+            index=7,
             number=13,
             type=11,
             cpp_type=10,
@@ -435,10 +529,13 @@ _SERVICE = _descriptor.Descriptor(
         _SERVICE_APPENGINE,
         _SERVICE_CLOUDENDPOINTS,
         _SERVICE_CLUSTERISTIO,
+        _SERVICE_MESHISTIO,
         _SERVICE_TELEMETRY,
     ],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A\243\001\n!monitoring.googleapis.com/Service\022%projects/{project}/services/{service}\022/organizations/{organization}/services/{service}\022#folders/{folder}/services/{service}\022\001*"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -451,8 +548,8 @@ _SERVICE = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=210,
-    serialized_end=808,
+    serialized_start=237,
+    serialized_end=1156,
 )
 
 
@@ -575,7 +672,9 @@ _SERVICELEVELOBJECTIVE = _descriptor.Descriptor(
     extensions=[],
     nested_types=[],
     enum_types=[_SERVICELEVELOBJECTIVE_VIEW],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A\306\002\n/monitoring.googleapis.com/ServiceLevelObjective\022Vprojects/{project}/services/{service}/serviceLevelObjectives/{service_level_objective}\022`organizations/{organization}/services/{service}/serviceLevelObjectives/{service_level_objective}\022Tfolders/{folder}/services/{service}/serviceLevelObjectives/{service_level_objective}\022\001* \001"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -588,8 +687,8 @@ _SERVICELEVELOBJECTIVE = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=811,
-    serialized_end=1135,
+    serialized_start=1159,
+    serialized_end=1816,
 )
 
 
@@ -671,8 +770,8 @@ _SERVICELEVELINDICATOR = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1138,
-    serialized_end=1350,
+    serialized_start=1819,
+    serialized_end=2031,
 )
 
 
@@ -691,8 +790,8 @@ _BASICSLI_AVAILABILITYCRITERIA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1560,
-    serialized_end=1582,
+    serialized_start=2241,
+    serialized_end=2263,
 )
 
 _BASICSLI_LATENCYCRITERIA = _descriptor.Descriptor(
@@ -729,8 +828,8 @@ _BASICSLI_LATENCYCRITERIA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1584,
-    serialized_end=1647,
+    serialized_start=2265,
+    serialized_end=2328,
 )
 
 _BASICSLI = _descriptor.Descriptor(
@@ -847,8 +946,8 @@ _BASICSLI = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1353,
-    serialized_end=1663,
+    serialized_start=2034,
+    serialized_end=2344,
 )
 
 
@@ -904,8 +1003,8 @@ _RANGE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1665,
-    serialized_end=1698,
+    serialized_start=2346,
+    serialized_end=2379,
 )
 
 
@@ -969,8 +1068,8 @@ _REQUESTBASEDSLI = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1701,
-    serialized_end=1862,
+    serialized_start=2382,
+    serialized_end=2543,
 )
 
 
@@ -1044,8 +1143,8 @@ _TIMESERIESRATIO = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1864,
-    serialized_end=1968,
+    serialized_start=2545,
+    serialized_end=2649,
 )
 
 
@@ -1101,8 +1200,8 @@ _DISTRIBUTIONCUT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1970,
-    serialized_end=2060,
+    serialized_start=2651,
+    serialized_end=2741,
 )
 
 
@@ -1184,8 +1283,8 @@ _WINDOWSBASEDSLI_PERFORMANCETHRESHOLD = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=2430,
-    serialized_end=2606,
+    serialized_start=3111,
+    serialized_end=3287,
 )
 
 _WINDOWSBASEDSLI_METRICRANGE = _descriptor.Descriptor(
@@ -1240,8 +1339,8 @@ _WINDOWSBASEDSLI_METRICRANGE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2608,
-    serialized_end=2686,
+    serialized_start=3289,
+    serialized_end=3367,
 )
 
 _WINDOWSBASEDSLI = _descriptor.Descriptor(
@@ -1358,19 +1457,21 @@ _WINDOWSBASEDSLI = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=2063,
-    serialized_end=2706,
+    serialized_start=2744,
+    serialized_end=3387,
 )
 
 _SERVICE_CUSTOM.containing_type = _SERVICE
 _SERVICE_APPENGINE.containing_type = _SERVICE
 _SERVICE_CLOUDENDPOINTS.containing_type = _SERVICE
 _SERVICE_CLUSTERISTIO.containing_type = _SERVICE
+_SERVICE_MESHISTIO.containing_type = _SERVICE
 _SERVICE_TELEMETRY.containing_type = _SERVICE
 _SERVICE.fields_by_name["custom"].message_type = _SERVICE_CUSTOM
 _SERVICE.fields_by_name["app_engine"].message_type = _SERVICE_APPENGINE
 _SERVICE.fields_by_name["cloud_endpoints"].message_type = _SERVICE_CLOUDENDPOINTS
 _SERVICE.fields_by_name["cluster_istio"].message_type = _SERVICE_CLUSTERISTIO
+_SERVICE.fields_by_name["mesh_istio"].message_type = _SERVICE_MESHISTIO
 _SERVICE.fields_by_name["telemetry"].message_type = _SERVICE_TELEMETRY
 _SERVICE.oneofs_by_name["identifier"].fields.append(_SERVICE.fields_by_name["custom"])
 _SERVICE.fields_by_name["custom"].containing_oneof = _SERVICE.oneofs_by_name[
@@ -1392,6 +1493,12 @@ _SERVICE.oneofs_by_name["identifier"].fields.append(
     _SERVICE.fields_by_name["cluster_istio"]
 )
 _SERVICE.fields_by_name["cluster_istio"].containing_oneof = _SERVICE.oneofs_by_name[
+    "identifier"
+]
+_SERVICE.oneofs_by_name["identifier"].fields.append(
+    _SERVICE.fields_by_name["mesh_istio"]
+)
+_SERVICE.fields_by_name["mesh_istio"].containing_oneof = _SERVICE.oneofs_by_name[
     "identifier"
 ]
 _SERVICELEVELOBJECTIVE.fields_by_name[
@@ -1549,10 +1656,8 @@ Service = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_SERVICE_CUSTOM,
                 __module__="google.cloud.monitoring_v3.proto.service_pb2",
-                __doc__="""Custom view of service telemetry. Currently a place-holder
-    pending final design.
-    
-    """,
+                __doc__="""Custom view of service telemetry. Currently a place-holder pending
+    final design.""",
                 # @@protoc_insertion_point(class_scope:google.monitoring.v3.Service.Custom)
             ),
         ),
@@ -1562,10 +1667,7 @@ Service = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_SERVICE_APPENGINE,
                 __module__="google.cloud.monitoring_v3.proto.service_pb2",
-                __doc__="""App Engine service. Learn more at
-    https://cloud.google.com/appengine.
-    
-    
+                __doc__="""App Engine service. Learn more at https://cloud.google.com/appengine.
     Attributes:
         module_id:
             The ID of the App Engine module underlying this service.
@@ -1584,8 +1686,6 @@ Service = _reflection.GeneratedProtocolMessageType(
                 __module__="google.cloud.monitoring_v3.proto.service_pb2",
                 __doc__="""Cloud Endpoints service. Learn more at
     https://cloud.google.com/endpoints.
-    
-    
     Attributes:
         service:
             The name of the Cloud Endpoints service underlying this
@@ -1602,9 +1702,8 @@ Service = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_SERVICE_CLUSTERISTIO,
                 __module__="google.cloud.monitoring_v3.proto.service_pb2",
-                __doc__="""Istio service. Learn more at http://istio.io.
-    
-    
+                __doc__="""Istio service scoped to a single Kubernetes cluster. Learn more at
+    http://istio.io.
     Attributes:
         location:
             The location of the Kubernetes cluster in which this Istio
@@ -1626,6 +1725,30 @@ Service = _reflection.GeneratedProtocolMessageType(
                 # @@protoc_insertion_point(class_scope:google.monitoring.v3.Service.ClusterIstio)
             ),
         ),
+        MeshIstio=_reflection.GeneratedProtocolMessageType(
+            "MeshIstio",
+            (_message.Message,),
+            dict(
+                DESCRIPTOR=_SERVICE_MESHISTIO,
+                __module__="google.cloud.monitoring_v3.proto.service_pb2",
+                __doc__="""Istio service scoped to an Istio mesh
+    Attributes:
+        mesh_uid:
+            Identifier for the mesh in which this Istio service is
+            defined. Corresponds to the ``mesh_uid`` metric label in Istio
+            metrics.
+        service_namespace:
+            The namespace of the Istio service underlying this service.
+            Corresponds to the ``destination_service_namespace`` metric
+            label in Istio metrics.
+        service_name:
+            The name of the Istio service underlying this service.
+            Corresponds to the ``destination_service_name`` metric label
+            in Istio metrics.
+    """,
+                # @@protoc_insertion_point(class_scope:google.monitoring.v3.Service.MeshIstio)
+            ),
+        ),
         Telemetry=_reflection.GeneratedProtocolMessageType(
             "Telemetry",
             (_message.Message,),
@@ -1633,8 +1756,6 @@ Service = _reflection.GeneratedProtocolMessageType(
                 DESCRIPTOR=_SERVICE_TELEMETRY,
                 __module__="google.cloud.monitoring_v3.proto.service_pb2",
                 __doc__="""Configuration for how to query telemetry on a Service.
-    
-    
     Attributes:
         resource_name:
             The full name of the resource that defines this service.
@@ -1646,17 +1767,15 @@ Service = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SERVICE,
         __module__="google.cloud.monitoring_v3.proto.service_pb2",
-        __doc__="""A ``Service`` is a discrete, autonomous, and
-  network-accessible unit, designed to solve an individual concern
-  (`Wikipedia <https://en.wikipedia.org/wiki/Service-orientation>`__). In
-  Stackdriver Monitoring, a ``Service`` acts as the root resource under
-  which operational aspects of the service are accessible.
-  
-  
+        __doc__="""A ``Service`` is a discrete, autonomous, and network-accessible unit,
+  designed to solve an individual concern (`Wikipedia
+  <https://en.wikipedia.org/wiki/Service-orientation>`__). In Cloud
+  Monitoring, a ``Service`` acts as the root resource under which
+  operational aspects of the service are accessible.
   Attributes:
       name:
-          Resource name for this Service. Of the form
-          ``projects/{project_id}/services/{service_id}``.
+          Resource name for this Service. The format is:  ::
+          projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
       display_name:
           Name used for UI elements listing this Service.
       identifier:
@@ -1671,6 +1790,8 @@ Service = _reflection.GeneratedProtocolMessageType(
       cluster_istio:
           Type used for Istio services that live in a Kubernetes
           cluster.
+      mesh_istio:
+          Type used for Istio services scoped to an Istio mesh.
       telemetry:
           Configuration for how to query telemetry on a Service.
   """,
@@ -1682,6 +1803,7 @@ _sym_db.RegisterMessage(Service.Custom)
 _sym_db.RegisterMessage(Service.AppEngine)
 _sym_db.RegisterMessage(Service.CloudEndpoints)
 _sym_db.RegisterMessage(Service.ClusterIstio)
+_sym_db.RegisterMessage(Service.MeshIstio)
 _sym_db.RegisterMessage(Service.Telemetry)
 
 ServiceLevelObjective = _reflection.GeneratedProtocolMessageType(
@@ -1690,20 +1812,18 @@ ServiceLevelObjective = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SERVICELEVELOBJECTIVE,
         __module__="google.cloud.monitoring_v3.proto.service_pb2",
-        __doc__="""A Service-Level Objective (SLO) describes a level of
-  desired good service. It consists of a service-level indicator (SLI), a
-  performance goal, and a period over which the objective is to be
-  evaluated against that goal. The SLO can use SLIs defined in a number of
-  different manners. Typical SLOs might include "99% of requests in each
-  rolling week have latency below 200 milliseconds" or "99.5% of requests
-  in each calendar month return successfully."
-  
-  
+        __doc__="""A Service-Level Objective (SLO) describes a level of desired good
+  service. It consists of a service-level indicator (SLI), a performance
+  goal, and a period over which the objective is to be evaluated against
+  that goal. The SLO can use SLIs defined in a number of different
+  manners. Typical SLOs might include "99% of requests in each rolling
+  week have latency below 200 milliseconds" or "99.5% of requests in
+  each calendar month return successfully."
   Attributes:
       name:
-          Resource name for this ``ServiceLevelObjective``. Of the form 
-          ``projects/{project_id}/services/{service_id}/serviceLevelObje
-          ctives/{slo_name}``.
+          Resource name for this ``ServiceLevelObjective``. The format
+          is:  ::      projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE
+          _ID]/serviceLevelObjectives/[SLO_NAME]
       display_name:
           Name used for UI elements listing this SLO.
       service_level_indicator:
@@ -1735,22 +1855,20 @@ ServiceLevelIndicator = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SERVICELEVELINDICATOR,
         __module__="google.cloud.monitoring_v3.proto.service_pb2",
-        __doc__="""A Service-Level Indicator (SLI) describes the
-  "performance" of a service. For some services, the SLI is well-defined.
-  In such cases, the SLI can be described easily by referencing the
-  well-known SLI and providing the needed parameters. Alternatively, a
-  "custom" SLI can be defined with a query to the underlying metric store.
-  An SLI is defined to be ``good_service / total_service`` over any
-  queried time interval. The value of performance always falls into the
-  range ``0 <= performance <= 1``. A custom SLI describes how to compute
-  this ratio, whether this is by dividing values from a pair of time
-  series, cutting a ``Distribution`` into good and bad counts, or counting
-  time windows in which the service complies with a criterion. For
-  separation of concerns, a single Service-Level Indicator measures
-  performance for only one aspect of service quality, such as fraction of
-  successful queries or fast-enough queries.
-  
-  
+        __doc__="""A Service-Level Indicator (SLI) describes the "performance" of a
+  service. For some services, the SLI is well-defined. In such cases,
+  the SLI can be described easily by referencing the well-known SLI and
+  providing the needed parameters. Alternatively, a "custom" SLI can be
+  defined with a query to the underlying metric store. An SLI is defined
+  to be ``good_service / total_service`` over any queried time interval.
+  The value of performance always falls into the range ``0 <=
+  performance <= 1``. A custom SLI describes how to compute this ratio,
+  whether this is by dividing values from a pair of time series, cutting
+  a ``Distribution`` into good and bad counts, or counting time windows
+  in which the service complies with a criterion. For separation of
+  concerns, a single Service-Level Indicator measures performance for
+  only one aspect of service quality, such as fraction of successful
+  queries or fast-enough queries.
   Attributes:
       type:
           Service level indicators can be grouped by whether the "unit"
@@ -1778,9 +1896,7 @@ BasicSli = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_BASICSLI_AVAILABILITYCRITERIA,
                 __module__="google.cloud.monitoring_v3.proto.service_pb2",
-                __doc__="""Future parameters for the availability SLI.
-    
-    """,
+                __doc__="""Future parameters for the availability SLI.""",
                 # @@protoc_insertion_point(class_scope:google.monitoring.v3.BasicSli.AvailabilityCriteria)
             ),
         ),
@@ -1791,8 +1907,6 @@ BasicSli = _reflection.GeneratedProtocolMessageType(
                 DESCRIPTOR=_BASICSLI_LATENCYCRITERIA,
                 __module__="google.cloud.monitoring_v3.proto.service_pb2",
                 __doc__="""Parameters for a latency threshold SLI.
-    
-    
     Attributes:
         threshold:
             Good service is defined to be the count of requests made to
@@ -1803,14 +1917,12 @@ BasicSli = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_BASICSLI,
         __module__="google.cloud.monitoring_v3.proto.service_pb2",
-        __doc__="""An SLI measuring performance on a well-known service type.
-  Performance will be computed on the basis of pre-defined metrics. The
-  type of the ``service_resource`` determines the metrics to use and the
-  ``service_resource.labels`` and ``metric_labels`` are used to construct
-  a monitoring filter to filter that metric down to just the data relevant
-  to this service.
-  
-  
+        __doc__="""An SLI measuring performance on a well-known service type. Performance
+  will be computed on the basis of pre-defined metrics. The type of the
+  ``service_resource`` determines the metrics to use and the
+  ``service_resource.labels`` and ``metric_labels`` are used to
+  construct a monitoring filter to filter that metric down to just the
+  data relevant to this service.
   Attributes:
       method:
           OPTIONAL: The set of RPCs to which this SLI is relevant.
@@ -1857,12 +1969,10 @@ Range = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_RANGE,
         __module__="google.cloud.monitoring_v3.proto.service_pb2",
-        __doc__="""Range of numerical values, inclusive of ``min`` and
-  exclusive of ``max``. If the open range "< range.max" is desired, set
-  ``range.min = -infinity``. If the open range ">= range.min" is desired,
-  set ``range.max = infinity``.
-  
-  
+        __doc__="""Range of numerical values, inclusive of ``min`` and exclusive of
+  ``max``. If the open range "< range.max" is desired, set ``range.min =
+  -infinity``. If the open range ">= range.min" is desired, set
+  ``range.max = infinity``.
   Attributes:
       min:
           Range minimum.
@@ -1880,10 +1990,8 @@ RequestBasedSli = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_REQUESTBASEDSLI,
         __module__="google.cloud.monitoring_v3.proto.service_pb2",
-        __doc__="""Service Level Indicators for which atomic units of service
-  are counted directly.
-  
-  
+        __doc__="""Service Level Indicators for which atomic units of service are counted
+  directly.
   Attributes:
       method:
           The means to compute a ratio of ``good_service`` to
@@ -1909,15 +2017,13 @@ TimeSeriesRatio = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TIMESERIESRATIO,
         __module__="google.cloud.monitoring_v3.proto.service_pb2",
-        __doc__="""A ``TimeSeriesRatio`` specifies two ``TimeSeries`` to use
-  for computing the ``good_service / total_service`` ratio. The specified
-  ``TimeSeries`` must have ``ValueType = DOUBLE`` or ``ValueType = INT64``
-  and must have ``MetricKind = DELTA`` or ``MetricKind = CUMULATIVE``. The
-  ``TimeSeriesRatio`` must specify exactly two of good, bad, and total,
-  and the relationship ``good_service + bad_service = total_service`` will
-  be assumed.
-  
-  
+        __doc__="""A ``TimeSeriesRatio`` specifies two ``TimeSeries`` to use for
+  computing the ``good_service / total_service`` ratio. The specified
+  ``TimeSeries`` must have ``ValueType = DOUBLE`` or ``ValueType =
+  INT64`` and must have ``MetricKind = DELTA`` or ``MetricKind =
+  CUMULATIVE``. The ``TimeSeriesRatio`` must specify exactly two of
+  good, bad, and total, and the relationship ``good_service +
+  bad_service = total_service`` will be assumed.
   Attributes:
       good_service_filter:
           A `monitoring filter
@@ -1953,14 +2059,12 @@ DistributionCut = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DISTRIBUTIONCUT,
         __module__="google.cloud.monitoring_v3.proto.service_pb2",
-        __doc__="""A ``DistributionCut`` defines a ``TimeSeries`` and
-  thresholds used for measuring good service and total service. The
-  ``TimeSeries`` must have ``ValueType = DISTRIBUTION`` and
-  ``MetricKind = DELTA`` or ``MetricKind = CUMULATIVE``. The computed
-  ``good_service`` will be the count of values x in the ``Distribution``
-  such that ``range.min <= x < range.max``.
-  
-  
+        __doc__="""A ``DistributionCut`` defines a ``TimeSeries`` and thresholds used for
+  measuring good service and total service. The ``TimeSeries`` must have
+  ``ValueType = DISTRIBUTION`` and ``MetricKind = DELTA`` or
+  ``MetricKind = CUMULATIVE``. The computed ``good_service`` will be the
+  count of values x in the ``Distribution`` such that ``range.min <= x <
+  range.max``.
   Attributes:
       distribution_filter:
           A `monitoring filter
@@ -1987,10 +2091,8 @@ WindowsBasedSli = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_WINDOWSBASEDSLI_PERFORMANCETHRESHOLD,
                 __module__="google.cloud.monitoring_v3.proto.service_pb2",
-                __doc__="""A ``PerformanceThreshold`` is used when each window is
-    good when that window has a sufficiently high ``performance``.
-    
-    
+                __doc__="""A ``PerformanceThreshold`` is used when each window is good when that
+    window has a sufficiently high ``performance``.
     Attributes:
         type:
             The means, either a request-based SLI or a basic SLI, by which
@@ -2012,13 +2114,10 @@ WindowsBasedSli = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_WINDOWSBASEDSLI_METRICRANGE,
                 __module__="google.cloud.monitoring_v3.proto.service_pb2",
-                __doc__="""A ``MetricRange`` is used when each window is good when
-    the value x of a single ``TimeSeries`` satisfies
-    ``range.min <= x < range.max``. The provided ``TimeSeries`` must have
-    ``ValueType = INT64`` or ``ValueType = DOUBLE`` and
-    ``MetricKind = GAUGE``.
-    
-    
+                __doc__="""A ``MetricRange`` is used when each window is good when the value x of
+    a single ``TimeSeries`` satisfies ``range.min <= x < range.max``. The
+    provided ``TimeSeries`` must have ``ValueType = INT64`` or ``ValueType
+    = DOUBLE`` and ``MetricKind = GAUGE``.
     Attributes:
         time_series:
             A `monitoring filter
@@ -2034,12 +2133,10 @@ WindowsBasedSli = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_WINDOWSBASEDSLI,
         __module__="google.cloud.monitoring_v3.proto.service_pb2",
-        __doc__="""A ``WindowsBasedSli`` defines ``good_service`` as the
-  count of time windows for which the provided service was of good
-  quality. Criteria for determining if service was good are embedded in
-  the ``window_criterion``.
-  
-  
+        __doc__="""A ``WindowsBasedSli`` defines ``good_service`` as the count of time
+  windows for which the provided service was of good quality. Criteria
+  for determining if service was good are embedded in the
+  ``window_criterion``.
   Attributes:
       window_criterion:
           The criterion to use for evaluating window goodness.
@@ -2069,4 +2166,8 @@ _sym_db.RegisterMessage(WindowsBasedSli.MetricRange)
 
 
 DESCRIPTOR._options = None
+_SERVICE_CLUSTERISTIO._options = None
+_SERVICE.fields_by_name["cluster_istio"]._options = None
+_SERVICE._options = None
+_SERVICELEVELOBJECTIVE._options = None
 # @@protoc_insertion_point(module_scope)

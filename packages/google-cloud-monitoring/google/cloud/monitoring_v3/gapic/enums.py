@@ -52,17 +52,17 @@ class CalendarPeriod(enum.IntEnum):
 
 class ComparisonType(enum.IntEnum):
     """
-    Specifies an ordering relationship on two arguments, here called left and
-    right.
+    Specifies an ordering relationship on two arguments, called ``left`` and
+    ``right``.
 
     Attributes:
       COMPARISON_UNSPECIFIED (int): No ordering relationship is specified.
-      COMPARISON_GT (int): The left argument is greater than the right argument.
-      COMPARISON_GE (int): The left argument is greater than or equal to the right argument.
-      COMPARISON_LT (int): The left argument is less than the right argument.
-      COMPARISON_LE (int): The left argument is less than or equal to the right argument.
-      COMPARISON_EQ (int): The left argument is equal to the right argument.
-      COMPARISON_NE (int): The left argument is not equal to the right argument.
+      COMPARISON_GT (int): True if the left argument is greater than the right argument.
+      COMPARISON_GE (int): True if the left argument is greater than or equal to the right argument.
+      COMPARISON_LT (int): True if the left argument is less than the right argument.
+      COMPARISON_LE (int): True if the left argument is less than or equal to the right argument.
+      COMPARISON_EQ (int): True if the left argument is equal to the right argument.
+      COMPARISON_NE (int): True if the left argument is not equal to the right argument.
     """
 
     COMPARISON_UNSPECIFIED = 0
@@ -202,110 +202,125 @@ class UptimeCheckRegion(enum.IntEnum):
 class Aggregation(object):
     class Aligner(enum.IntEnum):
         """
-        The Aligner describes how to bring the data points in a single
-        time series into temporal alignment.
+        The ``Aligner`` specifies the operation that will be applied to the data
+        points in each alignment period in a time series. Except for
+        ``ALIGN_NONE``, which specifies that no operation be applied, each
+        alignment operation replaces the set of data values in each alignment
+        period with a single value: the result of applying the operation to the
+        data values. An aligned time series has a single data value at the end
+        of each ``alignment_period``.
+
+        An alignment operation can change the data type of the values, too. For
+        example, if you apply a counting operation to boolean values, the data
+        ``value_type`` in the original time series is ``BOOLEAN``, but the
+        ``value_type`` in the aligned result is ``INT64``.
 
         Attributes:
-          ALIGN_NONE (int): No alignment. Raw data is returned. Not valid if cross-time
-          series reduction is requested. The value type of the result is
-          the same as the value type of the input.
-          ALIGN_DELTA (int): Align and convert to delta metric type. This alignment is valid for
-          cumulative metrics and delta metrics. Aligning an existing delta metric
-          to a delta metric requires that the alignment period be increased. The
-          value type of the result is the same as the value type of the input.
+          ALIGN_NONE (int): No alignment. Raw data is returned. Not valid if cross-series reduction
+          is requested. The ``value_type`` of the result is the same as the
+          ``value_type`` of the input.
+          ALIGN_DELTA (int): Align and convert to ``DELTA``. The output is ``delta = y1 - y0``.
 
-          One can think of this aligner as a rate but without time units; that is,
-          the output is conceptually (second\_point - first\_point).
-          ALIGN_RATE (int): Align and convert to a rate. This alignment is valid for cumulative
-          metrics and delta metrics with numeric values. The output is a gauge
-          metric with value type ``DOUBLE``.
+          This alignment is valid for ``CUMULATIVE`` and ``DELTA`` metrics. If the
+          selected alignment period results in periods with no data, then the
+          aligned value for such a period is created by interpolation. The
+          ``value_type`` of the aligned result is the same as the ``value_type``
+          of the input.
+          ALIGN_RATE (int): Align and convert to a rate. The result is computed as
+          ``rate = (y1 - y0)/(t1 - t0)``, or "delta over time". Think of this
+          aligner as providing the slope of the line that passes through the value
+          at the start and at the end of the ``alignment_period``.
 
-          One can think of this aligner as conceptually providing the slope of the
-          line that passes through the value at the start and end of the window.
-          In other words, this is conceptually ((y1 - y0)/(t1 - t0)), and the
-          output unit is one that has a "/time" dimension.
+          This aligner is valid for ``CUMULATIVE`` and ``DELTA`` metrics with
+          numeric values. If the selected alignment period results in periods with
+          no data, then the aligned value for such a period is created by
+          interpolation. The output is a ``GAUGE`` metric with ``value_type``
+          ``DOUBLE``.
 
-          If, by rate, you are looking for percentage change, see the
-          ``ALIGN_PERCENT_CHANGE`` aligner option.
-          ALIGN_INTERPOLATE (int): Align by interpolating between adjacent points around the
-          period boundary. This alignment is valid for gauge
-          metrics with numeric values. The value type of the result is the same
-          as the value type of the input.
-          ALIGN_NEXT_OLDER (int): Align by shifting the oldest data point before the period
-          boundary to the boundary. This alignment is valid for gauge
-          metrics. The value type of the result is the same as the
-          value type of the input.
-          ALIGN_MIN (int): Align time series via aggregation. The resulting data point in
-          the alignment period is the minimum of all data points in the
-          period. This alignment is valid for gauge and delta metrics with numeric
-          values. The value type of the result is the same as the value
-          type of the input.
-          ALIGN_MAX (int): Align time series via aggregation. The resulting data point in
-          the alignment period is the maximum of all data points in the
-          period. This alignment is valid for gauge and delta metrics with numeric
-          values. The value type of the result is the same as the value
-          type of the input.
-          ALIGN_MEAN (int): Align time series via aggregation. The resulting data point in the
-          alignment period is the average or arithmetic mean of all data points in
-          the period. This alignment is valid for gauge and delta metrics with
-          numeric values. The value type of the output is ``DOUBLE``.
-          ALIGN_COUNT (int): Align time series via aggregation. The resulting data point in the
-          alignment period is the count of all data points in the period. This
-          alignment is valid for gauge and delta metrics with numeric or Boolean
-          values. The value type of the output is ``INT64``.
-          ALIGN_SUM (int): Align time series via aggregation. The resulting data point in
-          the alignment period is the sum of all data points in the
-          period. This alignment is valid for gauge and delta metrics with numeric
-          and distribution values. The value type of the output is the
-          same as the value type of the input.
-          ALIGN_STDDEV (int): Align time series via aggregation. The resulting data point in the
-          alignment period is the standard deviation of all data points in the
-          period. This alignment is valid for gauge and delta metrics with numeric
-          values. The value type of the output is ``DOUBLE``.
-          ALIGN_COUNT_TRUE (int): Align time series via aggregation. The resulting data point in the
-          alignment period is the count of True-valued data points in the period.
-          This alignment is valid for gauge metrics with Boolean values. The value
-          type of the output is ``INT64``.
-          ALIGN_COUNT_FALSE (int): Align time series via aggregation. The resulting data point in the
-          alignment period is the count of False-valued data points in the period.
-          This alignment is valid for gauge metrics with Boolean values. The value
-          type of the output is ``INT64``.
-          ALIGN_FRACTION_TRUE (int): Align time series via aggregation. The resulting data point in the
-          alignment period is the fraction of True-valued data points in the
-          period. This alignment is valid for gauge metrics with Boolean values.
-          The output value is in the range [0, 1] and has value type ``DOUBLE``.
-          ALIGN_PERCENTILE_99 (int): Align time series via aggregation. The resulting data point in the
-          alignment period is the 99th percentile of all data points in the
-          period. This alignment is valid for gauge and delta metrics with
-          distribution values. The output is a gauge metric with value type
-          ``DOUBLE``.
-          ALIGN_PERCENTILE_95 (int): Align time series via aggregation. The resulting data point in the
-          alignment period is the 95th percentile of all data points in the
-          period. This alignment is valid for gauge and delta metrics with
-          distribution values. The output is a gauge metric with value type
-          ``DOUBLE``.
-          ALIGN_PERCENTILE_50 (int): Align time series via aggregation. The resulting data point in the
-          alignment period is the 50th percentile of all data points in the
-          period. This alignment is valid for gauge and delta metrics with
-          distribution values. The output is a gauge metric with value type
-          ``DOUBLE``.
-          ALIGN_PERCENTILE_05 (int): Align time series via aggregation. The resulting data point in the
-          alignment period is the 5th percentile of all data points in the period.
-          This alignment is valid for gauge and delta metrics with distribution
-          values. The output is a gauge metric with value type ``DOUBLE``.
-          ALIGN_PERCENT_CHANGE (int): Align and convert to a percentage change. This alignment is valid for
-          gauge and delta metrics with numeric values. This alignment conceptually
-          computes the equivalent of "((current - previous)/previous)\*100" where
-          previous value is determined based on the alignmentPeriod. In the event
-          that previous is 0 the calculated value is infinity with the exception
-          that if both (current - previous) and previous are 0 the calculated
-          value is 0. A 10 minute moving mean is computed at each point of the
-          time window prior to the above calculation to smooth the metric and
-          prevent false positives from very short lived spikes. Only applicable
-          for data that is >= 0. Any values < 0 are treated as no data. While
-          delta metrics are accepted by this alignment special care should be
-          taken that the values for the metric will always be positive. The output
-          is a gauge metric with value type ``DOUBLE``.
+          If, by "rate", you mean "percentage change", see the
+          ``ALIGN_PERCENT_CHANGE`` aligner instead.
+          ALIGN_INTERPOLATE (int): Align by interpolating between adjacent points around the alignment
+          period boundary. This aligner is valid for ``GAUGE`` metrics with
+          numeric values. The ``value_type`` of the aligned result is the same as
+          the ``value_type`` of the input.
+          ALIGN_NEXT_OLDER (int): Align by moving the most recent data point before the end of the
+          alignment period to the boundary at the end of the alignment period.
+          This aligner is valid for ``GAUGE`` metrics. The ``value_type`` of the
+          aligned result is the same as the ``value_type`` of the input.
+          ALIGN_MIN (int): Align the time series by returning the minimum value in each alignment
+          period. This aligner is valid for ``GAUGE`` and ``DELTA`` metrics with
+          numeric values. The ``value_type`` of the aligned result is the same as
+          the ``value_type`` of the input.
+          ALIGN_MAX (int): Align the time series by returning the maximum value in each alignment
+          period. This aligner is valid for ``GAUGE`` and ``DELTA`` metrics with
+          numeric values. The ``value_type`` of the aligned result is the same as
+          the ``value_type`` of the input.
+          ALIGN_MEAN (int): Align the time series by returning the mean value in each alignment
+          period. This aligner is valid for ``GAUGE`` and ``DELTA`` metrics with
+          numeric values. The ``value_type`` of the aligned result is ``DOUBLE``.
+          ALIGN_COUNT (int): Align the time series by returning the number of values in each
+          alignment period. This aligner is valid for ``GAUGE`` and ``DELTA``
+          metrics with numeric or Boolean values. The ``value_type`` of the
+          aligned result is ``INT64``.
+          ALIGN_SUM (int): Align the time series by returning the sum of the values in each
+          alignment period. This aligner is valid for ``GAUGE`` and ``DELTA``
+          metrics with numeric and distribution values. The ``value_type`` of the
+          aligned result is the same as the ``value_type`` of the input.
+          ALIGN_STDDEV (int): Align the time series by returning the standard deviation of the values
+          in each alignment period. This aligner is valid for ``GAUGE`` and
+          ``DELTA`` metrics with numeric values. The ``value_type`` of the output
+          is ``DOUBLE``.
+          ALIGN_COUNT_TRUE (int): Align the time series by returning the number of ``True`` values in each
+          alignment period. This aligner is valid for ``GAUGE`` metrics with
+          Boolean values. The ``value_type`` of the output is ``INT64``.
+          ALIGN_COUNT_FALSE (int): Align the time series by returning the number of ``False`` values in
+          each alignment period. This aligner is valid for ``GAUGE`` metrics with
+          Boolean values. The ``value_type`` of the output is ``INT64``.
+          ALIGN_FRACTION_TRUE (int): Align the time series by returning the ratio of the number of ``True``
+          values to the total number of values in each alignment period. This
+          aligner is valid for ``GAUGE`` metrics with Boolean values. The output
+          value is in the range [0.0, 1.0] and has ``value_type`` ``DOUBLE``.
+          ALIGN_PERCENTILE_99 (int): Align the time series by using `percentile
+          aggregation <https://en.wikipedia.org/wiki/Percentile>`__. The resulting
+          data point in each alignment period is the 99th percentile of all data
+          points in the period. This aligner is valid for ``GAUGE`` and ``DELTA``
+          metrics with distribution values. The output is a ``GAUGE`` metric with
+          ``value_type`` ``DOUBLE``.
+          ALIGN_PERCENTILE_95 (int): Align the time series by using `percentile
+          aggregation <https://en.wikipedia.org/wiki/Percentile>`__. The resulting
+          data point in each alignment period is the 95th percentile of all data
+          points in the period. This aligner is valid for ``GAUGE`` and ``DELTA``
+          metrics with distribution values. The output is a ``GAUGE`` metric with
+          ``value_type`` ``DOUBLE``.
+          ALIGN_PERCENTILE_50 (int): Align the time series by using `percentile
+          aggregation <https://en.wikipedia.org/wiki/Percentile>`__. The resulting
+          data point in each alignment period is the 50th percentile of all data
+          points in the period. This aligner is valid for ``GAUGE`` and ``DELTA``
+          metrics with distribution values. The output is a ``GAUGE`` metric with
+          ``value_type`` ``DOUBLE``.
+          ALIGN_PERCENTILE_05 (int): Align the time series by using `percentile
+          aggregation <https://en.wikipedia.org/wiki/Percentile>`__. The resulting
+          data point in each alignment period is the 5th percentile of all data
+          points in the period. This aligner is valid for ``GAUGE`` and ``DELTA``
+          metrics with distribution values. The output is a ``GAUGE`` metric with
+          ``value_type`` ``DOUBLE``.
+          ALIGN_PERCENT_CHANGE (int): Align and convert to a percentage change. This aligner is valid for
+          ``GAUGE`` and ``DELTA`` metrics with numeric values. This alignment
+          returns ``((current - previous)/previous) * 100``, where the value of
+          ``previous`` is determined based on the ``alignment_period``.
+
+          If the values of ``current`` and ``previous`` are both 0, then the
+          returned value is 0. If only ``previous`` is 0, the returned value is
+          infinity.
+
+          A 10-minute moving mean is computed at each point of the alignment
+          period prior to the above calculation to smooth the metric and prevent
+          false positives from very short-lived spikes. The moving mean is only
+          applicable for data whose values are ``>= 0``. Any values ``< 0`` are
+          treated as a missing datapoint, and are ignored. While ``DELTA`` metrics
+          are accepted by this alignment, special care should be taken that the
+          values for the metric will always be positive. The output is a ``GAUGE``
+          metric with ``value_type`` ``DOUBLE``.
         """
 
         ALIGN_NONE = 0
@@ -330,62 +345,71 @@ class Aggregation(object):
 
     class Reducer(enum.IntEnum):
         """
-        A Reducer describes how to aggregate data points from multiple
-        time series into a single time series.
+        A Reducer operation describes how to aggregate data points from multiple
+        time series into a single time series, where the value of each data point
+        in the resulting series is a function of all the already aligned values in
+        the input time series.
 
         Attributes:
-          REDUCE_NONE (int): No cross-time series reduction. The output of the aligner is
+          REDUCE_NONE (int): No cross-time series reduction. The output of the ``Aligner`` is
           returned.
-          REDUCE_MEAN (int): Reduce by computing the mean across time series for each alignment
-          period. This reducer is valid for delta and gauge metrics with numeric
-          or distribution values. The value type of the output is ``DOUBLE``.
-          REDUCE_MIN (int): Reduce by computing the minimum across time series for each
-          alignment period. This reducer is valid for delta and
-          gauge metrics with numeric values. The value type of the output
-          is the same as the value type of the input.
-          REDUCE_MAX (int): Reduce by computing the maximum across time series for each
-          alignment period. This reducer is valid for delta and
-          gauge metrics with numeric values. The value type of the output
-          is the same as the value type of the input.
-          REDUCE_SUM (int): Reduce by computing the sum across time series for each
-          alignment period. This reducer is valid for delta and
-          gauge metrics with numeric and distribution values. The value type of
-          the output is the same as the value type of the input.
-          REDUCE_STDDEV (int): Reduce by computing the standard deviation across time series for each
-          alignment period. This reducer is valid for delta and gauge metrics with
-          numeric or distribution values. The value type of the output is
+          REDUCE_MEAN (int): Reduce by computing the mean value across time series for each alignment
+          period. This reducer is valid for ``DELTA`` and ``GAUGE`` metrics with
+          numeric or distribution values. The ``value_type`` of the output is
           ``DOUBLE``.
-          REDUCE_COUNT (int): Reduce by computing the count of data points across time series for each
-          alignment period. This reducer is valid for delta and gauge metrics of
-          numeric, Boolean, distribution, and string value type. The value type of
-          the output is ``INT64``.
-          REDUCE_COUNT_TRUE (int): Reduce by computing the count of True-valued data points across time
-          series for each alignment period. This reducer is valid for delta and
-          gauge metrics of Boolean value type. The value type of the output is
-          ``INT64``.
-          REDUCE_COUNT_FALSE (int): Reduce by computing the count of False-valued data points across time
-          series for each alignment period. This reducer is valid for delta and
-          gauge metrics of Boolean value type. The value type of the output is
-          ``INT64``.
-          REDUCE_FRACTION_TRUE (int): Reduce by computing the fraction of True-valued data points across time
-          series for each alignment period. This reducer is valid for delta and
-          gauge metrics of Boolean value type. The output value is in the range
-          [0, 1] and has value type ``DOUBLE``.
-          REDUCE_PERCENTILE_99 (int): Reduce by computing 99th percentile of data points across time series
-          for each alignment period. This reducer is valid for gauge and delta
-          metrics of numeric and distribution type. The value of the output is
-          ``DOUBLE``
-          REDUCE_PERCENTILE_95 (int): Reduce by computing 95th percentile of data points across time series
-          for each alignment period. This reducer is valid for gauge and delta
-          metrics of numeric and distribution type. The value of the output is
-          ``DOUBLE``
-          REDUCE_PERCENTILE_50 (int): Reduce by computing 50th percentile of data points across time series
-          for each alignment period. This reducer is valid for gauge and delta
-          metrics of numeric and distribution type. The value of the output is
-          ``DOUBLE``
-          REDUCE_PERCENTILE_05 (int): Reduce by computing 5th percentile of data points across time series for
-          each alignment period. This reducer is valid for gauge and delta metrics
-          of numeric and distribution type. The value of the output is ``DOUBLE``
+          REDUCE_MIN (int): Reduce by computing the minimum value across time series for each
+          alignment period. This reducer is valid for ``DELTA`` and ``GAUGE``
+          metrics with numeric values. The ``value_type`` of the output is the
+          same as the ``value_type`` of the input.
+          REDUCE_MAX (int): Reduce by computing the maximum value across time series for each
+          alignment period. This reducer is valid for ``DELTA`` and ``GAUGE``
+          metrics with numeric values. The ``value_type`` of the output is the
+          same as the ``value_type`` of the input.
+          REDUCE_SUM (int): Reduce by computing the sum across time series for each alignment
+          period. This reducer is valid for ``DELTA`` and ``GAUGE`` metrics with
+          numeric and distribution values. The ``value_type`` of the output is the
+          same as the ``value_type`` of the input.
+          REDUCE_STDDEV (int): Reduce by computing the standard deviation across time series for each
+          alignment period. This reducer is valid for ``DELTA`` and ``GAUGE``
+          metrics with numeric or distribution values. The ``value_type`` of the
+          output is ``DOUBLE``.
+          REDUCE_COUNT (int): Reduce by computing the number of data points across time series for
+          each alignment period. This reducer is valid for ``DELTA`` and ``GAUGE``
+          metrics of numeric, Boolean, distribution, and string ``value_type``.
+          The ``value_type`` of the output is ``INT64``.
+          REDUCE_COUNT_TRUE (int): Reduce by computing the number of ``True``-valued data points across
+          time series for each alignment period. This reducer is valid for
+          ``DELTA`` and ``GAUGE`` metrics of Boolean ``value_type``. The
+          ``value_type`` of the output is ``INT64``.
+          REDUCE_COUNT_FALSE (int): Reduce by computing the number of ``False``-valued data points across
+          time series for each alignment period. This reducer is valid for
+          ``DELTA`` and ``GAUGE`` metrics of Boolean ``value_type``. The
+          ``value_type`` of the output is ``INT64``.
+          REDUCE_FRACTION_TRUE (int): Reduce by computing the ratio of the number of ``True``-valued data
+          points to the total number of data points for each alignment period.
+          This reducer is valid for ``DELTA`` and ``GAUGE`` metrics of Boolean
+          ``value_type``. The output value is in the range [0.0, 1.0] and has
+          ``value_type`` ``DOUBLE``.
+          REDUCE_PERCENTILE_99 (int): Reduce by computing the `99th
+          percentile <https://en.wikipedia.org/wiki/Percentile>`__ of data points
+          across time series for each alignment period. This reducer is valid for
+          ``GAUGE`` and ``DELTA`` metrics of numeric and distribution type. The
+          value of the output is ``DOUBLE``.
+          REDUCE_PERCENTILE_95 (int): Reduce by computing the `95th
+          percentile <https://en.wikipedia.org/wiki/Percentile>`__ of data points
+          across time series for each alignment period. This reducer is valid for
+          ``GAUGE`` and ``DELTA`` metrics of numeric and distribution type. The
+          value of the output is ``DOUBLE``.
+          REDUCE_PERCENTILE_50 (int): Reduce by computing the `50th
+          percentile <https://en.wikipedia.org/wiki/Percentile>`__ of data points
+          across time series for each alignment period. This reducer is valid for
+          ``GAUGE`` and ``DELTA`` metrics of numeric and distribution type. The
+          value of the output is ``DOUBLE``.
+          REDUCE_PERCENTILE_05 (int): Reduce by computing the `5th
+          percentile <https://en.wikipedia.org/wiki/Percentile>`__ of data points
+          across time series for each alignment period. This reducer is valid for
+          ``GAUGE`` and ``DELTA`` metrics of numeric and distribution type. The
+          value of the output is ``DOUBLE``.
         """
 
         REDUCE_NONE = 0
@@ -412,9 +436,9 @@ class AlertPolicy(object):
         Attributes:
           COMBINE_UNSPECIFIED (int): An unspecified combiner.
           AND (int): Combine conditions using the logical ``AND`` operator. An incident is
-          created only if all conditions are met simultaneously. This combiner is
-          satisfied if all conditions are met, even if they are met on completely
-          different resources.
+          created only if all the conditions are met simultaneously. This combiner
+          is satisfied if all conditions are met, even if they are met on
+          completely different resources.
           OR (int): Combine conditions using the logical ``OR`` operator. An incident is
           created if any of the listed conditions is met.
           AND_WITH_MATCHING_RESOURCE (int): Combine conditions using logical ``AND`` operator, but unlike the
@@ -583,6 +607,38 @@ class ServiceLevelObjective(object):
 
 
 class UptimeCheckConfig(object):
+    class HttpCheck(object):
+        class ContentType(enum.IntEnum):
+            """
+            Header options corresponding to the Content-Type of the body in HTTP
+            requests. Note that a ``Content-Type`` header cannot be present in the
+            ``headers`` field if this field is specified.
+
+            Attributes:
+              TYPE_UNSPECIFIED (int): No content type specified. If the request method is POST, an
+              unspecified content type results in a check creation rejection.
+              URL_ENCODED (int): ``body`` is in URL-encoded form. Equivalent to setting the
+              ``Content-Type`` to ``application/x-www-form-urlencoded`` in the HTTP
+              request.
+            """
+
+            TYPE_UNSPECIFIED = 0
+            URL_ENCODED = 1
+
+        class RequestMethod(enum.IntEnum):
+            """
+            The HTTP request method options.
+
+            Attributes:
+              METHOD_UNSPECIFIED (int): No request method specified.
+              GET (int): GET request.
+              POST (int): POST request.
+            """
+
+            METHOD_UNSPECIFIED = 0
+            GET = 1
+            POST = 2
+
     class ContentMatcher(object):
         class ContentMatcherOption(enum.IntEnum):
             """

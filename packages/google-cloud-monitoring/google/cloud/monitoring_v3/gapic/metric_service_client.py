@@ -236,7 +236,7 @@ class MetricServiceClient(object):
         metadata=None,
     ):
         """
-        Lists monitored resource descriptors that match a filter. This method does not require a Stackdriver account.
+        Lists monitored resource descriptors that match a filter. This method does not require a Workspace.
 
         Example:
             >>> from google.cloud import monitoring_v3
@@ -260,8 +260,11 @@ class MetricServiceClient(object):
             ...         pass
 
         Args:
-            name (str): The project on which to execute the request. The format is
-                ``"projects/{project_id_or_number}"``.
+            name (str): Required. The project on which to execute the request. The format is:
+
+                ::
+
+                     projects/[PROJECT_ID_OR_NUMBER]
             filter_ (str): An optional
                 `filter <https://cloud.google.com/monitoring/api/v3/filters>`__
                 describing the descriptors to be returned. The filter can reference the
@@ -355,7 +358,7 @@ class MetricServiceClient(object):
         metadata=None,
     ):
         """
-        Gets a single monitored resource descriptor. This method does not require a Stackdriver account.
+        Gets a single monitored resource descriptor. This method does not require a Workspace.
 
         Example:
             >>> from google.cloud import monitoring_v3
@@ -367,9 +370,13 @@ class MetricServiceClient(object):
             >>> response = client.get_monitored_resource_descriptor(name)
 
         Args:
-            name (str): The monitored resource descriptor to get. The format is
-                ``"projects/{project_id_or_number}/monitoredResourceDescriptors/{resource_type}"``.
-                The ``{resource_type}`` is a predefined type, such as
+            name (str): Required. The monitored resource descriptor to get. The format is:
+
+                ::
+
+                     projects/[PROJECT_ID_OR_NUMBER]/monitoredResourceDescriptors/[RESOURCE_TYPE]
+
+                The ``[RESOURCE_TYPE]`` is a predefined type, such as
                 ``cloudsql_database``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -436,7 +443,7 @@ class MetricServiceClient(object):
         metadata=None,
     ):
         """
-        Lists metric descriptors that match a filter. This method does not require a Stackdriver account.
+        Lists metric descriptors that match a filter. This method does not require a Workspace.
 
         Example:
             >>> from google.cloud import monitoring_v3
@@ -460,8 +467,11 @@ class MetricServiceClient(object):
             ...         pass
 
         Args:
-            name (str): The project on which to execute the request. The format is
-                ``"projects/{project_id_or_number}"``.
+            name (str): Required. The project on which to execute the request. The format is:
+
+                ::
+
+                     projects/[PROJECT_ID_OR_NUMBER]
             filter_ (str): If this field is empty, all custom and system-defined metric descriptors
                 are returned. Otherwise, the
                 `filter <https://cloud.google.com/monitoring/api/v3/filters>`__
@@ -552,7 +562,7 @@ class MetricServiceClient(object):
         metadata=None,
     ):
         """
-        Gets a single metric descriptor. This method does not require a Stackdriver account.
+        Gets a single metric descriptor. This method does not require a Workspace.
 
         Example:
             >>> from google.cloud import monitoring_v3
@@ -564,9 +574,14 @@ class MetricServiceClient(object):
             >>> response = client.get_metric_descriptor(name)
 
         Args:
-            name (str): The metric descriptor on which to execute the request. The format is
-                ``"projects/{project_id_or_number}/metricDescriptors/{metric_id}"``. An
-                example value of ``{metric_id}`` is
+            name (str): Required. The metric descriptor on which to execute the request. The
+                format is:
+
+                ::
+
+                     projects/[PROJECT_ID_OR_NUMBER]/metricDescriptors/[METRIC_ID]
+
+                An example value of ``[METRIC_ID]`` is
                 ``"compute.googleapis.com/instance/disk/read_bytes_count"``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -644,9 +659,12 @@ class MetricServiceClient(object):
             >>> response = client.create_metric_descriptor(name, metric_descriptor)
 
         Args:
-            name (str): The project on which to execute the request. The format is
-                ``"projects/{project_id_or_number}"``.
-            metric_descriptor (Union[dict, ~google.cloud.monitoring_v3.types.MetricDescriptor]): The new `custom
+            name (str): Required. The project on which to execute the request. The format is:
+
+                ::
+
+                     projects/[PROJECT_ID_OR_NUMBER]
+            metric_descriptor (Union[dict, ~google.cloud.monitoring_v3.types.MetricDescriptor]): Required. The new `custom
                 metric <https://cloud.google.com/monitoring/custom-metrics>`__
                 descriptor.
 
@@ -727,9 +745,14 @@ class MetricServiceClient(object):
             >>> client.delete_metric_descriptor(name)
 
         Args:
-            name (str): The metric descriptor on which to execute the request. The format is
-                ``"projects/{project_id_or_number}/metricDescriptors/{metric_id}"``. An
-                example of ``{metric_id}`` is:
+            name (str): Required. The metric descriptor on which to execute the request. The
+                format is:
+
+                ::
+
+                     projects/[PROJECT_ID_OR_NUMBER]/metricDescriptors/[METRIC_ID]
+
+                An example of ``[METRIC_ID]`` is:
                 ``"custom.googleapis.com/my_test_metric"``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -793,7 +816,7 @@ class MetricServiceClient(object):
         metadata=None,
     ):
         """
-        Lists time series that match a filter. This method does not require a Stackdriver account.
+        Lists time series that match a filter. This method does not require a Workspace.
 
         Example:
             >>> from google.cloud import monitoring_v3
@@ -827,9 +850,12 @@ class MetricServiceClient(object):
             ...         pass
 
         Args:
-            name (str): The project on which to execute the request. The format is
-                "projects/{project\_id\_or\_number}".
-            filter_ (str): A `monitoring
+            name (str): Required. The project on which to execute the request. The format is:
+
+                ::
+
+                     projects/[PROJECT_ID_OR_NUMBER]
+            filter_ (str): Required. A `monitoring
                 filter <https://cloud.google.com/monitoring/api/v3/filters>`__ that
                 specifies which time series should be returned. The filter must specify
                 a single metric type, and can additionally specify metric labels and
@@ -839,13 +865,13 @@ class MetricServiceClient(object):
 
                      metric.type = "compute.googleapis.com/instance/cpu/usage_time" AND
                          metric.labels.instance_name = "my-instance-name"
-            interval (Union[dict, ~google.cloud.monitoring_v3.types.TimeInterval]): The time interval for which results should be returned. Only time series
+            interval (Union[dict, ~google.cloud.monitoring_v3.types.TimeInterval]): Required. The time interval for which results should be returned. Only time series
                 that contain data points in the specified interval are included
                 in the response.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.TimeInterval`
-            view (~google.cloud.monitoring_v3.types.TimeSeriesView): Specifies which information is returned about the time series.
+            view (~google.cloud.monitoring_v3.types.TimeSeriesView): Required. Specifies which information is returned about the time series.
             aggregation (Union[dict, ~google.cloud.monitoring_v3.types.Aggregation]): Specifies the alignment of data points in individual time series as well
                 as how to combine the retrieved time series across specified labels.
 
@@ -961,13 +987,16 @@ class MetricServiceClient(object):
             >>> client.create_time_series(name, time_series)
 
         Args:
-            name (str): The project on which to execute the request. The format is
-                ``"projects/{project_id_or_number}"``.
-            time_series (list[Union[dict, ~google.cloud.monitoring_v3.types.TimeSeries]]): The new data to be added to a list of time series. Adds at most one data
-                point to each of several time series. The new data point must be more
-                recent than any other point in its time series. Each ``TimeSeries``
-                value must fully specify a unique time series by supplying all label
-                values for the metric and the monitored resource.
+            name (str): Required. The project on which to execute the request. The format is:
+
+                ::
+
+                     projects/[PROJECT_ID_OR_NUMBER]
+            time_series (list[Union[dict, ~google.cloud.monitoring_v3.types.TimeSeries]]): Required. The new data to be added to a list of time series. Adds at
+                most one data point to each of several time series. The new data point
+                must be more recent than any other point in its time series. Each
+                ``TimeSeries`` value must fully specify a unique time series by
+                supplying all label values for the metric and the monitored resource.
 
                 The maximum number of ``TimeSeries`` objects per ``Create`` request is
                 200.

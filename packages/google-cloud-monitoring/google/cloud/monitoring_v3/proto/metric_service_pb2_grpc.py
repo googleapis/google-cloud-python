@@ -70,28 +70,28 @@ class MetricServiceServicer(object):
   """
 
     def ListMonitoredResourceDescriptors(self, request, context):
-        """Lists monitored resource descriptors that match a filter. This method does not require a Stackdriver account.
+        """Lists monitored resource descriptors that match a filter. This method does not require a Workspace.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def GetMonitoredResourceDescriptor(self, request, context):
-        """Gets a single monitored resource descriptor. This method does not require a Stackdriver account.
+        """Gets a single monitored resource descriptor. This method does not require a Workspace.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def ListMetricDescriptors(self, request, context):
-        """Lists metric descriptors that match a filter. This method does not require a Stackdriver account.
+        """Lists metric descriptors that match a filter. This method does not require a Workspace.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def GetMetricDescriptor(self, request, context):
-        """Gets a single metric descriptor. This method does not require a Stackdriver account.
+        """Gets a single metric descriptor. This method does not require a Workspace.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -100,7 +100,7 @@ class MetricServiceServicer(object):
     def CreateMetricDescriptor(self, request, context):
         """Creates a new metric descriptor.
     User-created metric descriptors define
-    [custom metrics](/monitoring/custom-metrics).
+    [custom metrics](https://cloud.google.com/monitoring/custom-metrics).
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -108,14 +108,15 @@ class MetricServiceServicer(object):
 
     def DeleteMetricDescriptor(self, request, context):
         """Deletes a metric descriptor. Only user-created
-    [custom metrics](/monitoring/custom-metrics) can be deleted.
+    [custom metrics](https://cloud.google.com/monitoring/custom-metrics) can be
+    deleted.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def ListTimeSeries(self, request, context):
-        """Lists time series that match a filter. This method does not require a Stackdriver account.
+        """Lists time series that match a filter. This method does not require a Workspace.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

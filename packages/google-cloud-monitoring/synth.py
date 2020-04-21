@@ -71,9 +71,9 @@ s.replace(
 
 s.replace(
     "google/cloud/monitoring_v3/proto/metric_service_pb2.py",
-    "^(\s+)have an ``id`` label:  ::      resource.type =\n.*",
-    "\g<1>have an ``id`` label::\n\n"
-    '\g<1>    resource.type = starts_with("gce_") AND resource.label:id\n',
+    """(\s+)resource\.type
+          = starts_with\("gce_"\) AND resource\.label:id""",
+    """\n              resource.type = starts_with("gce_") AND resource.label:id"""
 )
 
 # Deal with long lines due to long proto name

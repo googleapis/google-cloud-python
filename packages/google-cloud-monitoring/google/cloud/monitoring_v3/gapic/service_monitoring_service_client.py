@@ -66,10 +66,10 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 
 class ServiceMonitoringServiceClient(object):
     """
-    The Stackdriver Monitoring Service-Oriented Monitoring API has endpoints
-    for managing and querying aspects of a workspace's services. These
-    include the ``Service``'s monitored resources, its Service-Level
-    Objectives, and a taxonomy of categorized Health Metrics.
+    The Cloud Monitoring Service-Oriented Monitoring API has endpoints for
+    managing and querying aspects of a workspace's services. These include
+    the ``Service``'s monitored resources, its Service-Level Objectives, and
+    a taxonomy of categorized Health Metrics.
     """
 
     SERVICE_ADDRESS = "monitoring.googleapis.com:443"
@@ -261,14 +261,17 @@ class ServiceMonitoringServiceClient(object):
             >>> response = client.create_service(parent, service)
 
         Args:
-            parent (str): Resource name of the parent workspace. Of the form
-                ``projects/{project_id}``.
-            service (Union[dict, ~google.cloud.monitoring_v3.types.Service]): The ``Service`` to create.
+            parent (str): Required. Resource name of the parent workspace. The format is:
+
+                ::
+
+                     projects/[PROJECT_ID_OR_NUMBER]
+            service (Union[dict, ~google.cloud.monitoring_v3.types.Service]): Required. The ``Service`` to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.Service`
             service_id (str): Optional. The Service id to use for this Service. If omitted, an id will
-                be generated instead. Must match the pattern [a-z0-9-]+
+                be generated instead. Must match the pattern ``[a-z0-9\-]+``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -342,8 +345,11 @@ class ServiceMonitoringServiceClient(object):
             >>> response = client.get_service(name)
 
         Args:
-            name (str): Resource name of the ``Service``. Of the form
-                ``projects/{project_id}/services/{service_id}``.
+            name (str): Required. Resource name of the ``Service``. The format is:
+
+                ::
+
+                     projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -429,8 +435,13 @@ class ServiceMonitoringServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Resource name of the parent ``Workspace``. Of the form
-                ``projects/{project_id}``.
+            parent (str): Required. Resource name of the parent containing the listed services,
+                either a project or a Monitoring Workspace. The formats are:
+
+                ::
+
+                     projects/[PROJECT_ID_OR_NUMBER]
+                     workspaces/[HOST_PROJECT_ID_OR_NUMBER]
             filter_ (str): A filter specifying what ``Service``\ s to return. The filter currently
                 supports the following fields:
 
@@ -542,8 +553,8 @@ class ServiceMonitoringServiceClient(object):
             >>> response = client.update_service(service)
 
         Args:
-            service (Union[dict, ~google.cloud.monitoring_v3.types.Service]): The ``Service`` to draw updates from. The given ``name`` specifies the
-                resource to update.
+            service (Union[dict, ~google.cloud.monitoring_v3.types.Service]): Required. The ``Service`` to draw updates from. The given ``name``
+                specifies the resource to update.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.Service`
@@ -624,8 +635,11 @@ class ServiceMonitoringServiceClient(object):
             >>> client.delete_service(name)
 
         Args:
-            name (str): Resource name of the ``Service`` to delete. Of the form
-                ``projects/{project_id}/service/{service_id}``.
+            name (str): Required. Resource name of the ``Service`` to delete. The format is:
+
+                ::
+
+                     projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -699,16 +713,19 @@ class ServiceMonitoringServiceClient(object):
             >>> response = client.create_service_level_objective(parent, service_level_objective)
 
         Args:
-            parent (str): Resource name of the parent ``Service``. Of the form
-                ``projects/{project_id}/services/{service_id}``.
-            service_level_objective (Union[dict, ~google.cloud.monitoring_v3.types.ServiceLevelObjective]): The ``ServiceLevelObjective`` to create. The provided ``name`` will be
-                respected if no ``ServiceLevelObjective`` exists with this name.
+            parent (str): Required. Resource name of the parent ``Service``. The format is:
+
+                ::
+
+                     projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
+            service_level_objective (Union[dict, ~google.cloud.monitoring_v3.types.ServiceLevelObjective]): Required. The ``ServiceLevelObjective`` to create. The provided ``name``
+                will be respected if no ``ServiceLevelObjective`` exists with this name.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.ServiceLevelObjective`
             service_level_objective_id (str): Optional. The ServiceLevelObjective id to use for this
                 ServiceLevelObjective. If omitted, an id will be generated instead. Must
-                match the pattern [a-z0-9-]+
+                match the pattern ``[a-z0-9\-]+``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -787,8 +804,12 @@ class ServiceMonitoringServiceClient(object):
             >>> response = client.get_service_level_objective(name)
 
         Args:
-            name (str): Resource name of the ``ServiceLevelObjective`` to get. Of the form
-                ``projects/{project_id}/services/{service_id}/serviceLevelObjectives/{slo_name}``.
+            name (str): Required. Resource name of the ``ServiceLevelObjective`` to get. The
+                format is:
+
+                ::
+
+                     projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]/serviceLevelObjectives/[SLO_NAME]
             view (~google.cloud.monitoring_v3.types.View): View of the ``ServiceLevelObjective`` to return. If ``DEFAULT``, return
                 the ``ServiceLevelObjective`` as originally defined. If ``EXPLICIT`` and
                 the ``ServiceLevelObjective`` is defined in terms of a ``BasicSli``,
@@ -884,8 +905,13 @@ class ServiceMonitoringServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Resource name of the parent ``Service``. Of the form
-                ``projects/{project_id}/services/{service_id}``.
+            parent (str): Required. Resource name of the parent containing the listed SLOs, either
+                a project or a Monitoring Workspace. The formats are:
+
+                ::
+
+                     projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
+                     workspaces/[HOST_PROJECT_ID_OR_NUMBER]/services/-
             filter_ (str): A filter specifying what ``ServiceLevelObjective``\ s to return.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -988,8 +1014,8 @@ class ServiceMonitoringServiceClient(object):
             >>> response = client.update_service_level_objective(service_level_objective)
 
         Args:
-            service_level_objective (Union[dict, ~google.cloud.monitoring_v3.types.ServiceLevelObjective]): The ``ServiceLevelObjective`` to draw updates from. The given ``name``
-                specifies the resource to update.
+            service_level_objective (Union[dict, ~google.cloud.monitoring_v3.types.ServiceLevelObjective]): Required. The ``ServiceLevelObjective`` to draw updates from. The given
+                ``name`` specifies the resource to update.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.ServiceLevelObjective`
@@ -1074,8 +1100,12 @@ class ServiceMonitoringServiceClient(object):
             >>> client.delete_service_level_objective(name)
 
         Args:
-            name (str): Resource name of the ``ServiceLevelObjective`` to delete. Of the form
-                ``projects/{project_id}/services/{service_id}/serviceLevelObjectives/{slo_name}``.
+            name (str): Required. Resource name of the ``ServiceLevelObjective`` to delete. The
+                format is:
+
+                ::
+
+                     projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]/serviceLevelObjectives/[SLO_NAME]
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.

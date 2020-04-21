@@ -27,10 +27,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.monitoring.v3",
     syntax="proto3",
     serialized_options=_b(
-        "\n\030com.google.monitoring.v3B\013CommonProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
+        "\n\030com.google.monitoring.v3B\013CommonProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3\352\002\035Google::Cloud::Monitoring::V3"
     ),
     serialized_pb=_b(
-        '\n-google/cloud/monitoring_v3/proto/common.proto\x12\x14google.monitoring.v3\x1a\x1dgoogle/api/distribution.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xaa\x01\n\nTypedValue\x12\x14\n\nbool_value\x18\x01 \x01(\x08H\x00\x12\x15\n\x0bint64_value\x18\x02 \x01(\x03H\x00\x12\x16\n\x0c\x64ouble_value\x18\x03 \x01(\x01H\x00\x12\x16\n\x0cstring_value\x18\x04 \x01(\tH\x00\x12\x36\n\x12\x64istribution_value\x18\x05 \x01(\x0b\x32\x18.google.api.DistributionH\x00\x42\x07\n\x05value"l\n\x0cTimeInterval\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xad\x07\n\x0b\x41ggregation\x12\x33\n\x10\x61lignment_period\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x45\n\x12per_series_aligner\x18\x02 \x01(\x0e\x32).google.monitoring.v3.Aggregation.Aligner\x12G\n\x14\x63ross_series_reducer\x18\x04 \x01(\x0e\x32).google.monitoring.v3.Aggregation.Reducer\x12\x17\n\x0fgroup_by_fields\x18\x05 \x03(\t"\x8b\x03\n\x07\x41ligner\x12\x0e\n\nALIGN_NONE\x10\x00\x12\x0f\n\x0b\x41LIGN_DELTA\x10\x01\x12\x0e\n\nALIGN_RATE\x10\x02\x12\x15\n\x11\x41LIGN_INTERPOLATE\x10\x03\x12\x14\n\x10\x41LIGN_NEXT_OLDER\x10\x04\x12\r\n\tALIGN_MIN\x10\n\x12\r\n\tALIGN_MAX\x10\x0b\x12\x0e\n\nALIGN_MEAN\x10\x0c\x12\x0f\n\x0b\x41LIGN_COUNT\x10\r\x12\r\n\tALIGN_SUM\x10\x0e\x12\x10\n\x0c\x41LIGN_STDDEV\x10\x0f\x12\x14\n\x10\x41LIGN_COUNT_TRUE\x10\x10\x12\x15\n\x11\x41LIGN_COUNT_FALSE\x10\x18\x12\x17\n\x13\x41LIGN_FRACTION_TRUE\x10\x11\x12\x17\n\x13\x41LIGN_PERCENTILE_99\x10\x12\x12\x17\n\x13\x41LIGN_PERCENTILE_95\x10\x13\x12\x17\n\x13\x41LIGN_PERCENTILE_50\x10\x14\x12\x17\n\x13\x41LIGN_PERCENTILE_05\x10\x15\x12\x18\n\x14\x41LIGN_PERCENT_CHANGE\x10\x17"\xb1\x02\n\x07Reducer\x12\x0f\n\x0bREDUCE_NONE\x10\x00\x12\x0f\n\x0bREDUCE_MEAN\x10\x01\x12\x0e\n\nREDUCE_MIN\x10\x02\x12\x0e\n\nREDUCE_MAX\x10\x03\x12\x0e\n\nREDUCE_SUM\x10\x04\x12\x11\n\rREDUCE_STDDEV\x10\x05\x12\x10\n\x0cREDUCE_COUNT\x10\x06\x12\x15\n\x11REDUCE_COUNT_TRUE\x10\x07\x12\x16\n\x12REDUCE_COUNT_FALSE\x10\x0f\x12\x18\n\x14REDUCE_FRACTION_TRUE\x10\x08\x12\x18\n\x14REDUCE_PERCENTILE_99\x10\t\x12\x18\n\x14REDUCE_PERCENTILE_95\x10\n\x12\x18\n\x14REDUCE_PERCENTILE_50\x10\x0b\x12\x18\n\x14REDUCE_PERCENTILE_05\x10\x0c*\x9e\x01\n\x0e\x43omparisonType\x12\x1a\n\x16\x43OMPARISON_UNSPECIFIED\x10\x00\x12\x11\n\rCOMPARISON_GT\x10\x01\x12\x11\n\rCOMPARISON_GE\x10\x02\x12\x11\n\rCOMPARISON_LT\x10\x03\x12\x11\n\rCOMPARISON_LE\x10\x04\x12\x11\n\rCOMPARISON_EQ\x10\x05\x12\x11\n\rCOMPARISON_NE\x10\x06*a\n\x0bServiceTier\x12\x1c\n\x18SERVICE_TIER_UNSPECIFIED\x10\x00\x12\x16\n\x12SERVICE_TIER_BASIC\x10\x01\x12\x18\n\x14SERVICE_TIER_PREMIUM\x10\x02\x1a\x02\x18\x01\x42\xa3\x01\n\x18\x63om.google.monitoring.v3B\x0b\x43ommonProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
+        '\n-google/cloud/monitoring_v3/proto/common.proto\x12\x14google.monitoring.v3\x1a\x1dgoogle/api/distribution.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xaa\x01\n\nTypedValue\x12\x14\n\nbool_value\x18\x01 \x01(\x08H\x00\x12\x15\n\x0bint64_value\x18\x02 \x01(\x03H\x00\x12\x16\n\x0c\x64ouble_value\x18\x03 \x01(\x01H\x00\x12\x16\n\x0cstring_value\x18\x04 \x01(\tH\x00\x12\x36\n\x12\x64istribution_value\x18\x05 \x01(\x0b\x32\x18.google.api.DistributionH\x00\x42\x07\n\x05value"l\n\x0cTimeInterval\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xad\x07\n\x0b\x41ggregation\x12\x33\n\x10\x61lignment_period\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x45\n\x12per_series_aligner\x18\x02 \x01(\x0e\x32).google.monitoring.v3.Aggregation.Aligner\x12G\n\x14\x63ross_series_reducer\x18\x04 \x01(\x0e\x32).google.monitoring.v3.Aggregation.Reducer\x12\x17\n\x0fgroup_by_fields\x18\x05 \x03(\t"\x8b\x03\n\x07\x41ligner\x12\x0e\n\nALIGN_NONE\x10\x00\x12\x0f\n\x0b\x41LIGN_DELTA\x10\x01\x12\x0e\n\nALIGN_RATE\x10\x02\x12\x15\n\x11\x41LIGN_INTERPOLATE\x10\x03\x12\x14\n\x10\x41LIGN_NEXT_OLDER\x10\x04\x12\r\n\tALIGN_MIN\x10\n\x12\r\n\tALIGN_MAX\x10\x0b\x12\x0e\n\nALIGN_MEAN\x10\x0c\x12\x0f\n\x0b\x41LIGN_COUNT\x10\r\x12\r\n\tALIGN_SUM\x10\x0e\x12\x10\n\x0c\x41LIGN_STDDEV\x10\x0f\x12\x14\n\x10\x41LIGN_COUNT_TRUE\x10\x10\x12\x15\n\x11\x41LIGN_COUNT_FALSE\x10\x18\x12\x17\n\x13\x41LIGN_FRACTION_TRUE\x10\x11\x12\x17\n\x13\x41LIGN_PERCENTILE_99\x10\x12\x12\x17\n\x13\x41LIGN_PERCENTILE_95\x10\x13\x12\x17\n\x13\x41LIGN_PERCENTILE_50\x10\x14\x12\x17\n\x13\x41LIGN_PERCENTILE_05\x10\x15\x12\x18\n\x14\x41LIGN_PERCENT_CHANGE\x10\x17"\xb1\x02\n\x07Reducer\x12\x0f\n\x0bREDUCE_NONE\x10\x00\x12\x0f\n\x0bREDUCE_MEAN\x10\x01\x12\x0e\n\nREDUCE_MIN\x10\x02\x12\x0e\n\nREDUCE_MAX\x10\x03\x12\x0e\n\nREDUCE_SUM\x10\x04\x12\x11\n\rREDUCE_STDDEV\x10\x05\x12\x10\n\x0cREDUCE_COUNT\x10\x06\x12\x15\n\x11REDUCE_COUNT_TRUE\x10\x07\x12\x16\n\x12REDUCE_COUNT_FALSE\x10\x0f\x12\x18\n\x14REDUCE_FRACTION_TRUE\x10\x08\x12\x18\n\x14REDUCE_PERCENTILE_99\x10\t\x12\x18\n\x14REDUCE_PERCENTILE_95\x10\n\x12\x18\n\x14REDUCE_PERCENTILE_50\x10\x0b\x12\x18\n\x14REDUCE_PERCENTILE_05\x10\x0c*\x9e\x01\n\x0e\x43omparisonType\x12\x1a\n\x16\x43OMPARISON_UNSPECIFIED\x10\x00\x12\x11\n\rCOMPARISON_GT\x10\x01\x12\x11\n\rCOMPARISON_GE\x10\x02\x12\x11\n\rCOMPARISON_LT\x10\x03\x12\x11\n\rCOMPARISON_LE\x10\x04\x12\x11\n\rCOMPARISON_EQ\x10\x05\x12\x11\n\rCOMPARISON_NE\x10\x06*a\n\x0bServiceTier\x12\x1c\n\x18SERVICE_TIER_UNSPECIFIED\x10\x00\x12\x16\n\x12SERVICE_TIER_BASIC\x10\x01\x12\x18\n\x14SERVICE_TIER_PREMIUM\x10\x02\x1a\x02\x18\x01\x42\xc3\x01\n\x18\x63om.google.monitoring.v3B\x0b\x43ommonProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3\xea\x02\x1dGoogle::Cloud::Monitoring::V3b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_distribution__pb2.DESCRIPTOR,
@@ -651,8 +651,6 @@ TypedValue = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_TYPEDVALUE,
         __module__="google.cloud.monitoring_v3.proto.common_pb2",
         __doc__="""A single strongly-typed value.
-  
-  
   Attributes:
       value:
           The typed value field.
@@ -680,30 +678,23 @@ TimeInterval = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TIMEINTERVAL,
         __module__="google.cloud.monitoring_v3.proto.common_pb2",
-        __doc__="""A closed time interval. It extends from the start time to
-  the end time, and includes both: ``[startTime, endTime]``. Valid time
-  intervals depend on the
-  ```MetricKind`` </monitoring/api/ref_v3/rest/v3/projects.metricDescriptors#MetricKind>`__
-  of the metric value. In no case can the end time be earlier than the
-  start time.
-  
-  -  For a ``GAUGE`` metric, the ``startTime`` value is technically
-     optional; if no value is specified, the start time defaults to the
-     value of the end time, and the interval represents a single point in
-     time. If both start and end times are specified, they must be
-     identical. Such an interval is valid only for ``GAUGE`` metrics,
-     which are point-in-time measurements.
-  
-  -  For ``DELTA`` and ``CUMULATIVE`` metrics, the start time must be
-     earlier than the end time.
-  
-  -  In all cases, the start time of the next interval must be at least a
-     microsecond after the end time of the previous interval. Because the
-     interval is closed, if the start time of a new interval is the same
-     as the end time of the previous interval, data written at the new
-     start time could overwrite data written at the previous end time.
-  
-  
+        __doc__="""A closed time interval. It extends from the start time to the end
+  time, and includes both: ``[startTime, endTime]``. Valid time
+  intervals depend on the ```MetricKind`` </monitoring/api/ref_v3/rest/v
+  3/projects.metricDescriptors#MetricKind>`__ of the metric value. In no
+  case can the end time be earlier than the start time.  -  For a
+  ``GAUGE`` metric, the ``startTime`` value is technically    optional;
+  if no value is specified, the start time defaults to the    value of
+  the end time, and the interval represents a single point in    time.
+  If both start and end times are specified, they must be    identical.
+  Such an interval is valid only for ``GAUGE`` metrics,    which are
+  point-in-time measurements.  -  For ``DELTA`` and ``CUMULATIVE``
+  metrics, the start time must be    earlier than the end time.  -  In
+  all cases, the start time of the next interval must be at least a
+  millisecond after the end time of the previous interval. Because the
+  interval is closed, if the start time of a new interval is the same
+  as the end time of the previous interval, data written at the new
+  start time could overwrite data written at the previous end time.
   Attributes:
       end_time:
           Required. The end of the time interval.
@@ -723,63 +714,89 @@ Aggregation = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_AGGREGATION,
         __module__="google.cloud.monitoring_v3.proto.common_pb2",
-        __doc__="""Describes how to combine multiple time series to provide
-  different views of the data. Aggregation consists of an alignment step
-  on individual time series (``alignment_period`` and
-  ``per_series_aligner``) followed by an optional reduction step of the
-  data across the aligned time series (``cross_series_reducer`` and
-  ``group_by_fields``). For more details, see
-  `Aggregation </monitoring/api/learn_more#aggregation>`__.
-  
-  
+        __doc__="""Describes how to combine multiple time series to provide a different
+  view of the data. Aggregation of time series is done in two steps.
+  First, each time series in the set is *aligned* to the same time
+  interval boundaries, then the set of time series is optionally
+  *reduced* in number.  Alignment consists of applying the
+  ``per_series_aligner`` operation to each time series after its data
+  has been divided into regular ``alignment_period`` time intervals.
+  This process takes *all* of the data points in an alignment period,
+  applies a mathematical transformation such as averaging, minimum,
+  maximum, delta, etc., and converts them into a single data point per
+  period.  Reduction is when the aligned and transformed time series can
+  optionally be combined, reducing the number of time series through
+  similar mathematical transformations. Reduction involves applying a
+  ``cross_series_reducer`` to all the time series, optionally sorting
+  the time series into subsets with ``group_by_fields``, and applying
+  the reducer to each subset.  The raw time series data can contain a
+  huge amount of information from multiple sources. Alignment and
+  reduction transforms this mass of data into a more manageable and
+  representative collection of data, for example "the 95% latency across
+  the average of all tasks in a cluster". This representative data can
+  be more easily graphed and comprehended, and the individual time
+  series data is still available for later drilldown. For more details,
+  see `Filtering and aggregation
+  <https://cloud.google.com/monitoring/api/v3/aggregation>`__.
   Attributes:
       alignment_period:
-          The alignment period for per-[time
-          series][google.monitoring.v3.TimeSeries] alignment. If
-          present, ``alignmentPeriod`` must be at least 60 seconds.
-          After per-time series alignment, each time series will contain
-          data points only on the period boundaries. If
-          ``perSeriesAligner`` is not specified or equals
-          ``ALIGN_NONE``, then this field is ignored. If
-          ``perSeriesAligner`` is specified and does not equal
-          ``ALIGN_NONE``, then this field must be defined; otherwise an
-          error is returned.
+          The ``alignment_period`` specifies a time interval, in
+          seconds, that is used to divide the data in all the [time
+          series][google.monitoring.v3.TimeSeries] into consistent
+          blocks of time. This will be done before the per-series
+          aligner can be applied to the data.  The value must be at
+          least 60 seconds. If a per-series aligner other than
+          ``ALIGN_NONE`` is specified, this field is required or an
+          error is returned. If no per-series aligner is specified, or
+          the aligner ``ALIGN_NONE`` is specified, then this field is
+          ignored.
       per_series_aligner:
-          The approach to be used to align individual time series. Not
-          all alignment functions may be applied to all time series,
-          depending on the metric type and value type of the original
-          time series. Alignment may change the metric type or the value
-          type of the time series.  Time series data must be aligned in
-          order to perform cross-time series reduction. If
-          ``crossSeriesReducer`` is specified, then ``perSeriesAligner``
-          must be specified and not equal ``ALIGN_NONE`` and
-          ``alignmentPeriod`` must be specified; otherwise, an error is
-          returned.
+          An ``Aligner`` describes how to bring the data points in a
+          single time series into temporal alignment. Except for
+          ``ALIGN_NONE``, all alignments cause all the data points in an
+          ``alignment_period`` to be mathematically grouped together,
+          resulting in a single data point for each ``alignment_period``
+          with end timestamp at the end of the period.  Not all
+          alignment operations may be applied to all time series. The
+          valid choices depend on the ``metric_kind`` and ``value_type``
+          of the original time series. Alignment can change the
+          ``metric_kind`` or the ``value_type`` of the time series.
+          Time series data must be aligned in order to perform cross-
+          time series reduction. If ``cross_series_reducer`` is
+          specified, then ``per_series_aligner`` must be specified and
+          not equal to ``ALIGN_NONE`` and ``alignment_period`` must be
+          specified; otherwise, an error is returned.
       cross_series_reducer:
-          The approach to be used to combine time series. Not all
-          reducer functions may be applied to all time series, depending
-          on the metric type and the value type of the original time
-          series. Reduction may change the metric type of value type of
-          the time series.  Time series data must be aligned in order to
-          perform cross-time series reduction. If ``crossSeriesReducer``
-          is specified, then ``perSeriesAligner`` must be specified and
-          not equal ``ALIGN_NONE`` and ``alignmentPeriod`` must be
+          The reduction operation to be used to combine time series into
+          a single time series, where the value of each data point in
+          the resulting series is a function of all the already aligned
+          values in the input time series.  Not all reducer operations
+          can be applied to all time series. The valid choices depend on
+          the ``metric_kind`` and the ``value_type`` of the original
+          time series. Reduction can yield a time series with a
+          different ``metric_kind`` or ``value_type`` than the input
+          time series.  Time series data must first be aligned (see
+          ``per_series_aligner``) in order to perform cross-time series
+          reduction. If ``cross_series_reducer`` is specified, then
+          ``per_series_aligner`` must be specified, and must not be
+          ``ALIGN_NONE``. An ``alignment_period`` must also be
           specified; otherwise, an error is returned.
       group_by_fields:
-          The set of fields to preserve when ``crossSeriesReducer`` is
-          specified. The ``groupByFields`` determine how the time series
-          are partitioned into subsets prior to applying the aggregation
-          function. Each subset contains time series that have the same
-          value for each of the grouping fields. Each individual time
-          series is a member of exactly one subset. The
-          ``crossSeriesReducer`` is applied to each subset of time
+          The set of fields to preserve when ``cross_series_reducer`` is
+          specified. The ``group_by_fields`` determine how the time
+          series are partitioned into subsets prior to applying the
+          aggregation operation. Each subset contains time series that
+          have the same value for each of the grouping fields. Each
+          individual time series is a member of exactly one subset. The
+          ``cross_series_reducer`` is applied to each subset of time
           series. It is not possible to reduce across different resource
           types, so this field implicitly contains ``resource.type``.
-          Fields not specified in ``groupByFields`` are aggregated away.
-          If ``groupByFields`` is not specified and all the time series
-          have the same resource type, then the time series are
+          Fields not specified in ``group_by_fields`` are aggregated
+          away. If ``group_by_fields`` is not specified and all the time
+          series have the same resource type, then the time series are
           aggregated into a single output time series. If
-          ``crossSeriesReducer`` is not defined, this field is ignored.
+          ``cross_series_reducer`` is not defined, this field is
+          ignored.
   """,
         # @@protoc_insertion_point(class_scope:google.monitoring.v3.Aggregation)
     ),
@@ -790,3 +807,4 @@ _sym_db.RegisterMessage(Aggregation)
 DESCRIPTOR._options = None
 _SERVICETIER._options = None
 # @@protoc_insertion_point(module_scope)
+# -*- coding: utf-8 -*-

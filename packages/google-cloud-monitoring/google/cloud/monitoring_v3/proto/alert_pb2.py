@@ -15,6 +15,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.monitoring_v3.proto import (
     common_pb2 as google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2,
 )
@@ -31,12 +32,13 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.monitoring.v3",
     syntax="proto3",
     serialized_options=_b(
-        "\n\030com.google.monitoring.v3B\nAlertProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
+        "\n\030com.google.monitoring.v3B\nAlertProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3\352\002\035Google::Cloud::Monitoring::V3"
     ),
     serialized_pb=_b(
-        '\n,google/cloud/monitoring_v3/proto/alert.proto\x12\x14google.monitoring.v3\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a\x36google/cloud/monitoring_v3/proto/mutation_record.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x17google/rpc/status.proto"\x83\r\n\x0b\x41lertPolicy\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x46\n\rdocumentation\x18\r \x01(\x0b\x32/.google.monitoring.v3.AlertPolicy.Documentation\x12\x46\n\x0buser_labels\x18\x10 \x03(\x0b\x32\x31.google.monitoring.v3.AlertPolicy.UserLabelsEntry\x12?\n\nconditions\x18\x0c \x03(\x0b\x32+.google.monitoring.v3.AlertPolicy.Condition\x12I\n\x08\x63ombiner\x18\x06 \x01(\x0e\x32\x37.google.monitoring.v3.AlertPolicy.ConditionCombinerType\x12+\n\x07\x65nabled\x18\x11 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12$\n\x08validity\x18\x12 \x01(\x0b\x32\x12.google.rpc.Status\x12\x1d\n\x15notification_channels\x18\x0e \x03(\t\x12=\n\x0f\x63reation_record\x18\n \x01(\x0b\x32$.google.monitoring.v3.MutationRecord\x12=\n\x0fmutation_record\x18\x0b \x01(\x0b\x32$.google.monitoring.v3.MutationRecord\x1a\x33\n\rDocumentation\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x11\n\tmime_type\x18\x02 \x01(\t\x1a\xf8\x06\n\tCondition\x12\x0c\n\x04name\x18\x0c \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x06 \x01(\t\x12Z\n\x13\x63ondition_threshold\x18\x01 \x01(\x0b\x32;.google.monitoring.v3.AlertPolicy.Condition.MetricThresholdH\x00\x12U\n\x10\x63ondition_absent\x18\x02 \x01(\x0b\x32\x39.google.monitoring.v3.AlertPolicy.Condition.MetricAbsenceH\x00\x1a\x35\n\x07Trigger\x12\x0f\n\x05\x63ount\x18\x01 \x01(\x05H\x00\x12\x11\n\x07percent\x18\x02 \x01(\x01H\x00\x42\x06\n\x04type\x1a\x81\x03\n\x0fMetricThreshold\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x37\n\x0c\x61ggregations\x18\x08 \x03(\x0b\x32!.google.monitoring.v3.Aggregation\x12\x1a\n\x12\x64\x65nominator_filter\x18\t \x01(\t\x12\x43\n\x18\x64\x65nominator_aggregations\x18\n \x03(\x0b\x32!.google.monitoring.v3.Aggregation\x12\x38\n\ncomparison\x18\x04 \x01(\x0e\x32$.google.monitoring.v3.ComparisonType\x12\x17\n\x0fthreshold_value\x18\x05 \x01(\x01\x12+\n\x08\x64uration\x18\x06 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x44\n\x07trigger\x18\x07 \x01(\x0b\x32\x33.google.monitoring.v3.AlertPolicy.Condition.Trigger\x1a\xcb\x01\n\rMetricAbsence\x12\x0e\n\x06\x66ilter\x18\x01 \x01(\t\x12\x37\n\x0c\x61ggregations\x18\x05 \x03(\x0b\x32!.google.monitoring.v3.Aggregation\x12+\n\x08\x64uration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x44\n\x07trigger\x18\x03 \x01(\x0b\x32\x33.google.monitoring.v3.AlertPolicy.Condition.TriggerB\x0b\n\tcondition\x1a\x31\n\x0fUserLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"a\n\x15\x43onditionCombinerType\x12\x17\n\x13\x43OMBINE_UNSPECIFIED\x10\x00\x12\x07\n\x03\x41ND\x10\x01\x12\x06\n\x02OR\x10\x02\x12\x1e\n\x1a\x41ND_WITH_MATCHING_RESOURCE\x10\x03\x42\xa2\x01\n\x18\x63om.google.monitoring.v3B\nAlertProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
+        '\n,google/cloud/monitoring_v3/proto/alert.proto\x12\x14google.monitoring.v3\x1a\x19google/api/resource.proto\x1a-google/cloud/monitoring_v3/proto/common.proto\x1a\x36google/cloud/monitoring_v3/proto/mutation_record.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x17google/rpc/status.proto"\xab\x12\n\x0b\x41lertPolicy\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x46\n\rdocumentation\x18\r \x01(\x0b\x32/.google.monitoring.v3.AlertPolicy.Documentation\x12\x46\n\x0buser_labels\x18\x10 \x03(\x0b\x32\x31.google.monitoring.v3.AlertPolicy.UserLabelsEntry\x12?\n\nconditions\x18\x0c \x03(\x0b\x32+.google.monitoring.v3.AlertPolicy.Condition\x12I\n\x08\x63ombiner\x18\x06 \x01(\x0e\x32\x37.google.monitoring.v3.AlertPolicy.ConditionCombinerType\x12+\n\x07\x65nabled\x18\x11 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12$\n\x08validity\x18\x12 \x01(\x0b\x32\x12.google.rpc.Status\x12\x1d\n\x15notification_channels\x18\x0e \x03(\t\x12=\n\x0f\x63reation_record\x18\n \x01(\x0b\x32$.google.monitoring.v3.MutationRecord\x12=\n\x0fmutation_record\x18\x0b \x01(\x0b\x32$.google.monitoring.v3.MutationRecord\x1a\x33\n\rDocumentation\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x11\n\tmime_type\x18\x02 \x01(\t\x1a\xd4\n\n\tCondition\x12\x0c\n\x04name\x18\x0c \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x06 \x01(\t\x12Z\n\x13\x63ondition_threshold\x18\x01 \x01(\x0b\x32;.google.monitoring.v3.AlertPolicy.Condition.MetricThresholdH\x00\x12U\n\x10\x63ondition_absent\x18\x02 \x01(\x0b\x32\x39.google.monitoring.v3.AlertPolicy.Condition.MetricAbsenceH\x00\x12|\n$condition_time_series_query_language\x18\x0e \x01(\x0b\x32L.google.monitoring.v3.AlertPolicy.Condition.TimeSeriesQueryLanguageConditionH\x00\x1a\x35\n\x07Trigger\x12\x0f\n\x05\x63ount\x18\x01 \x01(\x05H\x00\x12\x11\n\x07percent\x18\x02 \x01(\x01H\x00\x42\x06\n\x04type\x1a\x81\x03\n\x0fMetricThreshold\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x37\n\x0c\x61ggregations\x18\x08 \x03(\x0b\x32!.google.monitoring.v3.Aggregation\x12\x1a\n\x12\x64\x65nominator_filter\x18\t \x01(\t\x12\x43\n\x18\x64\x65nominator_aggregations\x18\n \x03(\x0b\x32!.google.monitoring.v3.Aggregation\x12\x38\n\ncomparison\x18\x04 \x01(\x0e\x32$.google.monitoring.v3.ComparisonType\x12\x17\n\x0fthreshold_value\x18\x05 \x01(\x01\x12+\n\x08\x64uration\x18\x06 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x44\n\x07trigger\x18\x07 \x01(\x0b\x32\x33.google.monitoring.v3.AlertPolicy.Condition.Trigger\x1a\xcb\x01\n\rMetricAbsence\x12\x0e\n\x06\x66ilter\x18\x01 \x01(\t\x12\x37\n\x0c\x61ggregations\x18\x05 \x03(\x0b\x32!.google.monitoring.v3.Aggregation\x12+\n\x08\x64uration\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x44\n\x07trigger\x18\x03 \x01(\x0b\x32\x33.google.monitoring.v3.AlertPolicy.Condition.Trigger\x1a\x42\n TimeSeriesQueryLanguageCondition\x12\r\n\x05query\x18\x01 \x01(\t\x12\x0f\n\x07summary\x18\x02 \x01(\t:\x97\x02\xea\x41\x93\x02\n.monitoring.googleapis.com/AlertPolicyCondition\x12\x46projects/{project}/alertPolicies/{alert_policy}/conditions/{condition}\x12Porganizations/{organization}/alertPolicies/{alert_policy}/conditions/{condition}\x12\x44\x66olders/{folder}/alertPolicies/{alert_policy}/conditions/{condition}\x12\x01*B\x0b\n\tcondition\x1a\x31\n\x0fUserLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"a\n\x15\x43onditionCombinerType\x12\x17\n\x13\x43OMBINE_UNSPECIFIED\x10\x00\x12\x07\n\x03\x41ND\x10\x01\x12\x06\n\x02OR\x10\x02\x12\x1e\n\x1a\x41ND_WITH_MATCHING_RESOURCE\x10\x03:\xc9\x01\xea\x41\xc5\x01\n%monitoring.googleapis.com/AlertPolicy\x12/projects/{project}/alertPolicies/{alert_policy}\x12\x39organizations/{organization}/alertPolicies/{alert_policy}\x12-folders/{folder}/alertPolicies/{alert_policy}\x12\x01*B\xc2\x01\n\x18\x63om.google.monitoring.v3B\nAlertProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3\xea\x02\x1dGoogle::Cloud::Monitoring::V3b\x06proto3'
     ),
     dependencies=[
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_monitoring__v3_dot_proto_dot_common__pb2.DESCRIPTOR,
         google_dot_cloud_dot_monitoring__v3_dot_proto_dot_mutation__record__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
@@ -75,8 +77,8 @@ _ALERTPOLICY_CONDITIONCOMBINERTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1833,
-    serialized_end=1930,
+    serialized_start=2336,
+    serialized_end=2433,
 )
 _sym_db.RegisterEnumDescriptor(_ALERTPOLICY_CONDITIONCOMBINERTYPE)
 
@@ -133,8 +135,8 @@ _ALERTPOLICY_DOCUMENTATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=838,
-    serialized_end=889,
+    serialized_start=865,
+    serialized_end=916,
 )
 
 _ALERTPOLICY_CONDITION_TRIGGER = _descriptor.Descriptor(
@@ -197,8 +199,8 @@ _ALERTPOLICY_CONDITION_TRIGGER = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1120,
-    serialized_end=1173,
+    serialized_start=1273,
+    serialized_end=1326,
 )
 
 _ALERTPOLICY_CONDITION_METRICTHRESHOLD = _descriptor.Descriptor(
@@ -361,8 +363,8 @@ _ALERTPOLICY_CONDITION_METRICTHRESHOLD = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1176,
-    serialized_end=1561,
+    serialized_start=1329,
+    serialized_end=1714,
 )
 
 _ALERTPOLICY_CONDITION_METRICABSENCE = _descriptor.Descriptor(
@@ -453,8 +455,64 @@ _ALERTPOLICY_CONDITION_METRICABSENCE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1564,
-    serialized_end=1767,
+    serialized_start=1717,
+    serialized_end=1920,
+)
+
+_ALERTPOLICY_CONDITION_TIMESERIESQUERYLANGUAGECONDITION = _descriptor.Descriptor(
+    name="TimeSeriesQueryLanguageCondition",
+    full_name="google.monitoring.v3.AlertPolicy.Condition.TimeSeriesQueryLanguageCondition",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="query",
+            full_name="google.monitoring.v3.AlertPolicy.Condition.TimeSeriesQueryLanguageCondition.query",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="summary",
+            full_name="google.monitoring.v3.AlertPolicy.Condition.TimeSeriesQueryLanguageCondition.summary",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b("").decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1922,
+    serialized_end=1988,
 )
 
 _ALERTPOLICY_CONDITION = _descriptor.Descriptor(
@@ -536,15 +594,36 @@ _ALERTPOLICY_CONDITION = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="condition_time_series_query_language",
+            full_name="google.monitoring.v3.AlertPolicy.Condition.condition_time_series_query_language",
+            index=4,
+            number=14,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[
         _ALERTPOLICY_CONDITION_TRIGGER,
         _ALERTPOLICY_CONDITION_METRICTHRESHOLD,
         _ALERTPOLICY_CONDITION_METRICABSENCE,
+        _ALERTPOLICY_CONDITION_TIMESERIESQUERYLANGUAGECONDITION,
     ],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A\223\002\n.monitoring.googleapis.com/AlertPolicyCondition\022Fprojects/{project}/alertPolicies/{alert_policy}/conditions/{condition}\022Porganizations/{organization}/alertPolicies/{alert_policy}/conditions/{condition}\022Dfolders/{folder}/alertPolicies/{alert_policy}/conditions/{condition}\022\001*"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -557,8 +636,8 @@ _ALERTPOLICY_CONDITION = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=892,
-    serialized_end=1780,
+    serialized_start=919,
+    serialized_end=2283,
 )
 
 _ALERTPOLICY_USERLABELSENTRY = _descriptor.Descriptor(
@@ -613,8 +692,8 @@ _ALERTPOLICY_USERLABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1782,
-    serialized_end=1831,
+    serialized_start=2285,
+    serialized_end=2334,
 )
 
 _ALERTPOLICY = _descriptor.Descriptor(
@@ -830,13 +909,15 @@ _ALERTPOLICY = _descriptor.Descriptor(
         _ALERTPOLICY_USERLABELSENTRY,
     ],
     enum_types=[_ALERTPOLICY_CONDITIONCOMBINERTYPE],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A\305\001\n%monitoring.googleapis.com/AlertPolicy\022/projects/{project}/alertPolicies/{alert_policy}\0229organizations/{organization}/alertPolicies/{alert_policy}\022-folders/{folder}/alertPolicies/{alert_policy}\022\001*"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=263,
-    serialized_end=1930,
+    serialized_start=290,
+    serialized_end=2637,
 )
 
 _ALERTPOLICY_DOCUMENTATION.containing_type = _ALERTPOLICY
@@ -887,12 +968,18 @@ _ALERTPOLICY_CONDITION_METRICABSENCE.fields_by_name[
     "trigger"
 ].message_type = _ALERTPOLICY_CONDITION_TRIGGER
 _ALERTPOLICY_CONDITION_METRICABSENCE.containing_type = _ALERTPOLICY_CONDITION
+_ALERTPOLICY_CONDITION_TIMESERIESQUERYLANGUAGECONDITION.containing_type = (
+    _ALERTPOLICY_CONDITION
+)
 _ALERTPOLICY_CONDITION.fields_by_name[
     "condition_threshold"
 ].message_type = _ALERTPOLICY_CONDITION_METRICTHRESHOLD
 _ALERTPOLICY_CONDITION.fields_by_name[
     "condition_absent"
 ].message_type = _ALERTPOLICY_CONDITION_METRICABSENCE
+_ALERTPOLICY_CONDITION.fields_by_name[
+    "condition_time_series_query_language"
+].message_type = _ALERTPOLICY_CONDITION_TIMESERIESQUERYLANGUAGECONDITION
 _ALERTPOLICY_CONDITION.containing_type = _ALERTPOLICY
 _ALERTPOLICY_CONDITION.oneofs_by_name["condition"].fields.append(
     _ALERTPOLICY_CONDITION.fields_by_name["condition_threshold"]
@@ -905,6 +992,12 @@ _ALERTPOLICY_CONDITION.oneofs_by_name["condition"].fields.append(
 )
 _ALERTPOLICY_CONDITION.fields_by_name[
     "condition_absent"
+].containing_oneof = _ALERTPOLICY_CONDITION.oneofs_by_name["condition"]
+_ALERTPOLICY_CONDITION.oneofs_by_name["condition"].fields.append(
+    _ALERTPOLICY_CONDITION.fields_by_name["condition_time_series_query_language"]
+)
+_ALERTPOLICY_CONDITION.fields_by_name[
+    "condition_time_series_query_language"
 ].containing_oneof = _ALERTPOLICY_CONDITION.oneofs_by_name["condition"]
 _ALERTPOLICY_USERLABELSENTRY.containing_type = _ALERTPOLICY
 _ALERTPOLICY.fields_by_name["documentation"].message_type = _ALERTPOLICY_DOCUMENTATION
@@ -941,10 +1034,8 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_ALERTPOLICY_DOCUMENTATION,
                 __module__="google.cloud.monitoring_v3.proto.alert_pb2",
-                __doc__="""A content string and a MIME type that describes the
-    content string's format.
-    
-    
+                __doc__="""A content string and a MIME type that describes the content string's
+    format.
     Attributes:
         content:
             The text of the documentation, interpreted according to
@@ -970,11 +1061,8 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
                     dict(
                         DESCRIPTOR=_ALERTPOLICY_CONDITION_TRIGGER,
                         __module__="google.cloud.monitoring_v3.proto.alert_pb2",
-                        __doc__="""Specifies how many time series must fail a predicate to
-      trigger a condition. If not specified, then a ``{count: 1}`` trigger is
-      used.
-      
-      
+                        __doc__="""Specifies how many time series must fail a predicate to trigger a
+      condition. If not specified, then a ``{count: 1}`` trigger is used.
       Attributes:
           type:
               A type of trigger.
@@ -994,17 +1082,16 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
                     dict(
                         DESCRIPTOR=_ALERTPOLICY_CONDITION_METRICTHRESHOLD,
                         __module__="google.cloud.monitoring_v3.proto.alert_pb2",
-                        __doc__="""A condition type that compares a collection of time series
-      against a threshold.
-      
-      
+                        __doc__="""A condition type that compares a collection of time series against a
+      threshold.
       Attributes:
           filter:
-              A `filter </monitoring/api/v3/filters>`__ that identifies
-              which time series should be compared with the threshold.  The
-              filter is similar to the one that is specified in the
-              ```ListTimeSeries`` request
-              </monitoring/api/ref_v3/rest/v3/projects.timeSeries/list>`__
+              A `filter
+              <https://cloud.google.com/monitoring/api/v3/filters>`__ that
+              identifies which time series should be compared with the
+              threshold.  The filter is similar to the one that is specified
+              in the ```ListTimeSeries`` request <https://cloud.google.com/m
+              onitoring/api/ref_v3/rest/v3/projects.timeSeries/list>`__
               (that call is useful to verify the time series that will be
               retrieved / processed) and must specify the metric type and
               optionally may contain restrictions on resource type, resource
@@ -1018,20 +1105,21 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
               aggregating streams across all members of a group of
               resrouces). Multiple aggregations are applied in the order
               specified.  This field is similar to the one in the
-              ```ListTimeSeries`` request
-              </monitoring/api/ref_v3/rest/v3/projects.timeSeries/list>`__.
-              It is advisable to use the ``ListTimeSeries`` method when
-              debugging this field.
+              ```ListTimeSeries`` request <https://cloud.google.com/monitori
+              ng/api/ref_v3/rest/v3/projects.timeSeries/list>`__. It is
+              advisable to use the ``ListTimeSeries`` method when debugging
+              this field.
           denominator_filter:
-              A `filter </monitoring/api/v3/filters>`__ that identifies a
-              time series that should be used as the denominator of a ratio
-              that will be compared with the threshold. If a
-              ``denominator_filter`` is specified, the time series specified
-              by the ``filter`` field will be used as the numerator.  The
-              filter must specify the metric type and optionally may contain
-              restrictions on resource type, resource labels, and metric
-              labels. This field may not exceed 2048 Unicode characters in
-              length.
+              A `filter
+              <https://cloud.google.com/monitoring/api/v3/filters>`__ that
+              identifies a time series that should be used as the
+              denominator of a ratio that will be compared with the
+              threshold. If a ``denominator_filter`` is specified, the time
+              series specified by the ``filter`` field will be used as the
+              numerator.  The filter must specify the metric type and
+              optionally may contain restrictions on resource type, resource
+              labels, and metric labels. This field may not exceed 2048
+              Unicode characters in length.
           denominator_aggregations:
               Specifies the alignment of data points in individual time
               series selected by ``denominatorFilter`` as well as how to
@@ -1081,20 +1169,19 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
                     dict(
                         DESCRIPTOR=_ALERTPOLICY_CONDITION_METRICABSENCE,
                         __module__="google.cloud.monitoring_v3.proto.alert_pb2",
-                        __doc__="""A condition type that checks that monitored resources are
-      reporting data. The configuration defines a metric and a set of
-      monitored resources. The predicate is considered in violation when a
-      time series for the specified metric of a monitored resource does not
-      include any data in the specified ``duration``.
-      
-      
+                        __doc__="""A condition type that checks that monitored resources are reporting
+      data. The configuration defines a metric and a set of monitored
+      resources. The predicate is considered in violation when a time series
+      for the specified metric of a monitored resource does not include any
+      data in the specified ``duration``.
       Attributes:
           filter:
-              A `filter </monitoring/api/v3/filters>`__ that identifies
-              which time series should be compared with the threshold.  The
-              filter is similar to the one that is specified in the
-              ```ListTimeSeries`` request
-              </monitoring/api/ref_v3/rest/v3/projects.timeSeries/list>`__
+              A `filter
+              <https://cloud.google.com/monitoring/api/v3/filters>`__ that
+              identifies which time series should be compared with the
+              threshold.  The filter is similar to the one that is specified
+              in the ```ListTimeSeries`` request <https://cloud.google.com/m
+              onitoring/api/ref_v3/rest/v3/projects.timeSeries/list>`__
               (that call is useful to verify the time series that will be
               retrieved / processed) and must specify the metric type and
               optionally may contain restrictions on resource type, resource
@@ -1108,10 +1195,10 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
               aggregating streams across all members of a group of
               resrouces). Multiple aggregations are applied in the order
               specified.  This field is similar to the one in the
-              ```ListTimeSeries`` request
-              </monitoring/api/ref_v3/rest/v3/projects.timeSeries/list>`__.
-              It is advisable to use the ``ListTimeSeries`` method when
-              debugging this field.
+              ```ListTimeSeries`` request <https://cloud.google.com/monitori
+              ng/api/ref_v3/rest/v3/projects.timeSeries/list>`__. It is
+              advisable to use the ``ListTimeSeries`` method when debugging
+              this field.
           duration:
               The amount of time that a time series must fail to report new
               data to be considered failing. Currently, only values that are
@@ -1128,18 +1215,35 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
                         # @@protoc_insertion_point(class_scope:google.monitoring.v3.AlertPolicy.Condition.MetricAbsence)
                     ),
                 ),
+                TimeSeriesQueryLanguageCondition=_reflection.GeneratedProtocolMessageType(
+                    "TimeSeriesQueryLanguageCondition",
+                    (_message.Message,),
+                    dict(
+                        DESCRIPTOR=_ALERTPOLICY_CONDITION_TIMESERIESQUERYLANGUAGECONDITION,
+                        __module__="google.cloud.monitoring_v3.proto.alert_pb2",
+                        __doc__="""A condition type that allows alert policies to be defined using
+      Monitoring Query Language.
+      Attributes:
+          query:
+              Monitoring Query Language query that generates time series
+              data and describes a condition for alerting on that data.
+          summary:
+              A short explanation of what the query represents. For example:
+              "Error ratio exceeds 15% for >5% of servers in >2 regions"
+      """,
+                        # @@protoc_insertion_point(class_scope:google.monitoring.v3.AlertPolicy.Condition.TimeSeriesQueryLanguageCondition)
+                    ),
+                ),
                 DESCRIPTOR=_ALERTPOLICY_CONDITION,
                 __module__="google.cloud.monitoring_v3.proto.alert_pb2",
-                __doc__="""A condition is a true/false test that determines when an
-    alerting policy should open an incident. If a condition evaluates to
-    true, it signifies that something is wrong.
-    
-    
+                __doc__="""A condition is a true/false test that determines when an alerting
+    policy should open an incident. If a condition evaluates to true, it
+    signifies that something is wrong.
     Attributes:
         name:
             Required if the condition exists. The unique resource name for
-            this condition. Its syntax is:  ::      projects/[PROJECT_ID]/
-            alertPolicies/[POLICY_ID]/conditions/[CONDITION_ID]
+            this condition. Its format is:  ::      projects/[PROJECT_ID_O
+            R_NUMBER]/alertPolicies/[POLICY_ID]/conditions/[CONDITION_ID]
             ``[CONDITION_ID]`` is assigned by Stackdriver Monitoring when
             the condition is created as part of a new or updated alerting
             policy.  When calling the [alertPolicies.create][google.monito
@@ -1169,6 +1273,9 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
         condition_absent:
             A condition that checks that a time series continues to
             receive new data points.
+        condition_time_series_query_language:
+            A condition that uses the Monitoring Query Language to define
+            alerts. If set, no other conditions can be present.
     """,
                 # @@protoc_insertion_point(class_scope:google.monitoring.v3.AlertPolicy.Condition)
             ),
@@ -1184,22 +1291,21 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_ALERTPOLICY,
         __module__="google.cloud.monitoring_v3.proto.alert_pb2",
-        __doc__="""A description of the conditions under which some aspect of
-  your system is considered to be "unhealthy" and the ways to notify
-  people or services about this state. For an overview of alert policies,
-  see `Introduction to Alerting </monitoring/alerts/>`__.
-  
-  
+        __doc__="""A description of the conditions under which some aspect of your system
+  is considered to be "unhealthy" and the ways to notify people or
+  services about this state. For an overview of alert policies, see
+  `Introduction to Alerting
+  <https://cloud.google.com/monitoring/alerts/>`__.
   Attributes:
       name:
           Required if the policy exists. The resource name for this
-          policy. The syntax is:  ::
-          projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]
-          ``[ALERT_POLICY_ID]`` is assigned by Stackdriver Monitoring
-          when the policy is created. When calling the [alertPolicies.cr
-          eate][google.monitoring.v3.AlertPolicyService.CreateAlertPolic
-          y] method, do not include the ``name`` field in the alerting
-          policy passed as part of the request.
+          policy. The format is:  ::      projects/[PROJECT_ID_OR_NUMBER
+          ]/alertPolicies/[ALERT_POLICY_ID]  ``[ALERT_POLICY_ID]`` is
+          assigned by Stackdriver Monitoring when the policy is created.
+          When calling the [alertPolicies.create][google.monitoring.v3.A
+          lertPolicyService.CreateAlertPolicy] method, do not include
+          the ``name`` field in the alerting policy passed as part of
+          the request.
       display_name:
           A short name or phrase used to identify the policy in
           dashboards, notifications, and incidents. To avoid confusion,
@@ -1224,10 +1330,14 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
           A list of conditions for the policy. The conditions are
           combined by AND or OR according to the ``combiner`` field. If
           the combined conditions evaluate to true, then an incident is
-          created. A policy can have from one to six conditions.
+          created. A policy can have from one to six conditions. If
+          ``condition_time_series_query_language`` is present, it must
+          be the only ``condition``.
       combiner:
           How to combine the results of multiple conditions to determine
-          if an incident should be opened.
+          if an incident should be opened. If
+          ``condition_time_series_query_language`` is present, this must
+          be ``COMBINE_UNSPECIFIED``.
       enabled:
           Whether or not the policy is enabled. On write, the default
           interpretation if unset is that the policy is enabled. On
@@ -1247,9 +1357,9 @@ AlertPolicy = _reflection.GeneratedProtocolMessageType(
           [``NotificationChannel``][google.monitoring.v3.NotificationCha
           nnel] objects that are returned from the [``ListNotificationCh
           annels``][google.monitoring.v3.NotificationChannelService.List
-          NotificationChannels] method. The syntax of the entries in
-          this field is:  ::
-          projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]
+          NotificationChannels] method. The format of the entries in
+          this field is:  ::      projects/[PROJECT_ID_OR_NUMBER]/notifi
+          cationChannels/[CHANNEL_ID]
       creation_record:
           A read-only record of the creation of the alerting policy. If
           provided in a call to create or update, this field will be
@@ -1268,9 +1378,12 @@ _sym_db.RegisterMessage(AlertPolicy.Condition)
 _sym_db.RegisterMessage(AlertPolicy.Condition.Trigger)
 _sym_db.RegisterMessage(AlertPolicy.Condition.MetricThreshold)
 _sym_db.RegisterMessage(AlertPolicy.Condition.MetricAbsence)
+_sym_db.RegisterMessage(AlertPolicy.Condition.TimeSeriesQueryLanguageCondition)
 _sym_db.RegisterMessage(AlertPolicy.UserLabelsEntry)
 
 
 DESCRIPTOR._options = None
+_ALERTPOLICY_CONDITION._options = None
 _ALERTPOLICY_USERLABELSENTRY._options = None
+_ALERTPOLICY._options = None
 # @@protoc_insertion_point(module_scope)

@@ -19,6 +19,7 @@ _sym_db = _symbol_database.Default()
 from google.api import (
     monitored_resource_pb2 as google_dot_api_dot_monitored__resource__pb2,
 )
+from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 
 
@@ -27,13 +28,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.monitoring.v3",
     syntax="proto3",
     serialized_options=_b(
-        "\n\030com.google.monitoring.v3B\013UptimeProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
+        "\n\030com.google.monitoring.v3B\013UptimeProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3\352\002\035Google::Cloud::Monitoring::V3"
     ),
     serialized_pb=_b(
-        '\n-google/cloud/monitoring_v3/proto/uptime.proto\x12\x14google.monitoring.v3\x1a#google/api/monitored_resource.proto\x1a\x1egoogle/protobuf/duration.proto"\xe6\x01\n\x0fInternalChecker\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x0f\n\x07network\x18\x03 \x01(\t\x12\x10\n\x08gcp_zone\x18\x04 \x01(\t\x12\x17\n\x0fpeer_project_id\x18\x06 \x01(\t\x12:\n\x05state\x18\x07 \x01(\x0e\x32+.google.monitoring.v3.InternalChecker.State"3\n\x05State\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02:\x02\x18\x01"\xd7\x0b\n\x11UptimeCheckConfig\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12;\n\x12monitored_resource\x18\x03 \x01(\x0b\x32\x1d.google.api.MonitoredResourceH\x00\x12O\n\x0eresource_group\x18\x04 \x01(\x0b\x32\x35.google.monitoring.v3.UptimeCheckConfig.ResourceGroupH\x00\x12G\n\nhttp_check\x18\x05 \x01(\x0b\x32\x31.google.monitoring.v3.UptimeCheckConfig.HttpCheckH\x01\x12\x45\n\ttcp_check\x18\x06 \x01(\x0b\x32\x30.google.monitoring.v3.UptimeCheckConfig.TcpCheckH\x01\x12)\n\x06period\x18\x07 \x01(\x0b\x32\x19.google.protobuf.Duration\x12*\n\x07timeout\x18\x08 \x01(\x0b\x32\x19.google.protobuf.Duration\x12P\n\x10\x63ontent_matchers\x18\t \x03(\x0b\x32\x36.google.monitoring.v3.UptimeCheckConfig.ContentMatcher\x12\x41\n\x10selected_regions\x18\n \x03(\x0e\x32\'.google.monitoring.v3.UptimeCheckRegion\x12\x17\n\x0bis_internal\x18\x0f \x01(\x08\x42\x02\x18\x01\x12\x44\n\x11internal_checkers\x18\x0e \x03(\x0b\x32%.google.monitoring.v3.InternalCheckerB\x02\x18\x01\x1a\x61\n\rResourceGroup\x12\x10\n\x08group_id\x18\x01 \x01(\t\x12>\n\rresource_type\x18\x02 \x01(\x0e\x32\'.google.monitoring.v3.GroupResourceType\x1a\xfa\x02\n\tHttpCheck\x12\x0f\n\x07use_ssl\x18\x01 \x01(\x08\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x0c\n\x04port\x18\x03 \x01(\x05\x12X\n\tauth_info\x18\x04 \x01(\x0b\x32\x45.google.monitoring.v3.UptimeCheckConfig.HttpCheck.BasicAuthentication\x12\x14\n\x0cmask_headers\x18\x05 \x01(\x08\x12O\n\x07headers\x18\x06 \x03(\x0b\x32>.google.monitoring.v3.UptimeCheckConfig.HttpCheck.HeadersEntry\x12\x14\n\x0cvalidate_ssl\x18\x07 \x01(\x08\x1a\x39\n\x13\x42\x61sicAuthentication\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a\x18\n\x08TcpCheck\x12\x0c\n\x04port\x18\x01 \x01(\x05\x1a\x98\x02\n\x0e\x43ontentMatcher\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\\\n\x07matcher\x18\x02 \x01(\x0e\x32K.google.monitoring.v3.UptimeCheckConfig.ContentMatcher.ContentMatcherOption"\x96\x01\n\x14\x43ontentMatcherOption\x12&\n"CONTENT_MATCHER_OPTION_UNSPECIFIED\x10\x00\x12\x13\n\x0f\x43ONTAINS_STRING\x10\x01\x12\x17\n\x13NOT_CONTAINS_STRING\x10\x02\x12\x11\n\rMATCHES_REGEX\x10\x03\x12\x15\n\x11NOT_MATCHES_REGEX\x10\x04\x42\n\n\x08resourceB\x14\n\x12\x63heck_request_type"n\n\rUptimeCheckIp\x12\x37\n\x06region\x18\x01 \x01(\x0e\x32\'.google.monitoring.v3.UptimeCheckRegion\x12\x10\n\x08location\x18\x02 \x01(\t\x12\x12\n\nip_address\x18\x03 \x01(\t*e\n\x11UptimeCheckRegion\x12\x16\n\x12REGION_UNSPECIFIED\x10\x00\x12\x07\n\x03USA\x10\x01\x12\n\n\x06\x45UROPE\x10\x02\x12\x11\n\rSOUTH_AMERICA\x10\x03\x12\x10\n\x0c\x41SIA_PACIFIC\x10\x04*[\n\x11GroupResourceType\x12\x1d\n\x19RESOURCE_TYPE_UNSPECIFIED\x10\x00\x12\x0c\n\x08INSTANCE\x10\x01\x12\x19\n\x15\x41WS_ELB_LOAD_BALANCER\x10\x02\x42\xa3\x01\n\x18\x63om.google.monitoring.v3B\x0bUptimeProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
+        '\n-google/cloud/monitoring_v3/proto/uptime.proto\x12\x14google.monitoring.v3\x1a#google/api/monitored_resource.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto"\xe6\x01\n\x0fInternalChecker\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12\x0f\n\x07network\x18\x03 \x01(\t\x12\x10\n\x08gcp_zone\x18\x04 \x01(\t\x12\x17\n\x0fpeer_project_id\x18\x06 \x01(\t\x12:\n\x05state\x18\x07 \x01(\x0e\x32+.google.monitoring.v3.InternalChecker.State"3\n\x05State\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02:\x02\x18\x01"\xfb\x0f\n\x11UptimeCheckConfig\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12;\n\x12monitored_resource\x18\x03 \x01(\x0b\x32\x1d.google.api.MonitoredResourceH\x00\x12O\n\x0eresource_group\x18\x04 \x01(\x0b\x32\x35.google.monitoring.v3.UptimeCheckConfig.ResourceGroupH\x00\x12G\n\nhttp_check\x18\x05 \x01(\x0b\x32\x31.google.monitoring.v3.UptimeCheckConfig.HttpCheckH\x01\x12\x45\n\ttcp_check\x18\x06 \x01(\x0b\x32\x30.google.monitoring.v3.UptimeCheckConfig.TcpCheckH\x01\x12)\n\x06period\x18\x07 \x01(\x0b\x32\x19.google.protobuf.Duration\x12*\n\x07timeout\x18\x08 \x01(\x0b\x32\x19.google.protobuf.Duration\x12P\n\x10\x63ontent_matchers\x18\t \x03(\x0b\x32\x36.google.monitoring.v3.UptimeCheckConfig.ContentMatcher\x12\x41\n\x10selected_regions\x18\n \x03(\x0e\x32\'.google.monitoring.v3.UptimeCheckRegion\x12\x17\n\x0bis_internal\x18\x0f \x01(\x08\x42\x02\x18\x01\x12\x44\n\x11internal_checkers\x18\x0e \x03(\x0b\x32%.google.monitoring.v3.InternalCheckerB\x02\x18\x01\x1a\x61\n\rResourceGroup\x12\x10\n\x08group_id\x18\x01 \x01(\t\x12>\n\rresource_type\x18\x02 \x01(\x0e\x32\'.google.monitoring.v3.GroupResourceType\x1a\xa8\x05\n\tHttpCheck\x12W\n\x0erequest_method\x18\x08 \x01(\x0e\x32?.google.monitoring.v3.UptimeCheckConfig.HttpCheck.RequestMethod\x12\x0f\n\x07use_ssl\x18\x01 \x01(\x08\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x0c\n\x04port\x18\x03 \x01(\x05\x12X\n\tauth_info\x18\x04 \x01(\x0b\x32\x45.google.monitoring.v3.UptimeCheckConfig.HttpCheck.BasicAuthentication\x12\x14\n\x0cmask_headers\x18\x05 \x01(\x08\x12O\n\x07headers\x18\x06 \x03(\x0b\x32>.google.monitoring.v3.UptimeCheckConfig.HttpCheck.HeadersEntry\x12S\n\x0c\x63ontent_type\x18\t \x01(\x0e\x32=.google.monitoring.v3.UptimeCheckConfig.HttpCheck.ContentType\x12\x14\n\x0cvalidate_ssl\x18\x07 \x01(\x08\x12\x0c\n\x04\x62ody\x18\n \x01(\x0c\x1a\x39\n\x13\x42\x61sicAuthentication\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x1a.\n\x0cHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01":\n\rRequestMethod\x12\x16\n\x12METHOD_UNSPECIFIED\x10\x00\x12\x07\n\x03GET\x10\x01\x12\x08\n\x04POST\x10\x02"4\n\x0b\x43ontentType\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x0f\n\x0bURL_ENCODED\x10\x01\x1a\x18\n\x08TcpCheck\x12\x0c\n\x04port\x18\x01 \x01(\x05\x1a\x98\x02\n\x0e\x43ontentMatcher\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\\\n\x07matcher\x18\x02 \x01(\x0e\x32K.google.monitoring.v3.UptimeCheckConfig.ContentMatcher.ContentMatcherOption"\x96\x01\n\x14\x43ontentMatcherOption\x12&\n"CONTENT_MATCHER_OPTION_UNSPECIFIED\x10\x00\x12\x13\n\x0f\x43ONTAINS_STRING\x10\x01\x12\x17\n\x13NOT_CONTAINS_STRING\x10\x02\x12\x11\n\rMATCHES_REGEX\x10\x03\x12\x15\n\x11NOT_MATCHES_REGEX\x10\x04:\xf3\x01\xea\x41\xef\x01\n+monitoring.googleapis.com/UptimeCheckConfig\x12;projects/{project}/uptimeCheckConfigs/{uptime_check_config}\x12\x45organizations/{organization}/uptimeCheckConfigs/{uptime_check_config}\x12\x39\x66olders/{folder}/uptimeCheckConfigs/{uptime_check_config}\x12\x01*B\n\n\x08resourceB\x14\n\x12\x63heck_request_type"n\n\rUptimeCheckIp\x12\x37\n\x06region\x18\x01 \x01(\x0e\x32\'.google.monitoring.v3.UptimeCheckRegion\x12\x10\n\x08location\x18\x02 \x01(\t\x12\x12\n\nip_address\x18\x03 \x01(\t*e\n\x11UptimeCheckRegion\x12\x16\n\x12REGION_UNSPECIFIED\x10\x00\x12\x07\n\x03USA\x10\x01\x12\n\n\x06\x45UROPE\x10\x02\x12\x11\n\rSOUTH_AMERICA\x10\x03\x12\x10\n\x0c\x41SIA_PACIFIC\x10\x04*[\n\x11GroupResourceType\x12\x1d\n\x19RESOURCE_TYPE_UNSPECIFIED\x10\x00\x12\x0c\n\x08INSTANCE\x10\x01\x12\x19\n\x15\x41WS_ELB_LOAD_BALANCER\x10\x02\x42\xc3\x01\n\x18\x63om.google.monitoring.v3B\x0bUptimeProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3\xea\x02\x1dGoogle::Cloud::Monitoring::V3b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_monitored__resource__pb2.DESCRIPTOR,
+        google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,
     ],
 )
@@ -66,8 +68,8 @@ _UPTIMECHECKREGION = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1983,
-    serialized_end=2084,
+    serialized_start=2558,
+    serialized_end=2659,
 )
 _sym_db.RegisterEnumDescriptor(_UPTIMECHECKREGION)
 
@@ -98,8 +100,8 @@ _GROUPRESOURCETYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=2086,
-    serialized_end=2177,
+    serialized_start=2661,
+    serialized_end=2752,
 )
 _sym_db.RegisterEnumDescriptor(_GROUPRESOURCETYPE)
 
@@ -132,10 +134,61 @@ _INTERNALCHECKER_STATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=316,
-    serialized_end=367,
+    serialized_start=343,
+    serialized_end=394,
 )
 _sym_db.RegisterEnumDescriptor(_INTERNALCHECKER_STATE)
+
+_UPTIMECHECKCONFIG_HTTPCHECK_REQUESTMETHOD = _descriptor.EnumDescriptor(
+    name="RequestMethod",
+    full_name="google.monitoring.v3.UptimeCheckConfig.HttpCheck.RequestMethod",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="METHOD_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="GET", index=1, number=1, serialized_options=None, type=None
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="POST", index=2, number=2, serialized_options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=1743,
+    serialized_end=1801,
+)
+_sym_db.RegisterEnumDescriptor(_UPTIMECHECKCONFIG_HTTPCHECK_REQUESTMETHOD)
+
+_UPTIMECHECKCONFIG_HTTPCHECK_CONTENTTYPE = _descriptor.EnumDescriptor(
+    name="ContentType",
+    full_name="google.monitoring.v3.UptimeCheckConfig.HttpCheck.ContentType",
+    filename=None,
+    file=DESCRIPTOR,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="TYPE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="URL_ENCODED", index=1, number=1, serialized_options=None, type=None
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=1803,
+    serialized_end=1855,
+)
+_sym_db.RegisterEnumDescriptor(_UPTIMECHECKCONFIG_HTTPCHECK_CONTENTTYPE)
 
 _UPTIMECHECKCONFIG_CONTENTMATCHER_CONTENTMATCHEROPTION = _descriptor.EnumDescriptor(
     name="ContentMatcherOption",
@@ -177,8 +230,8 @@ _UPTIMECHECKCONFIG_CONTENTMATCHER_CONTENTMATCHEROPTION = _descriptor.EnumDescrip
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1685,
-    serialized_end=1835,
+    serialized_start=2014,
+    serialized_end=2164,
 )
 _sym_db.RegisterEnumDescriptor(_UPTIMECHECKCONFIG_CONTENTMATCHER_CONTENTMATCHEROPTION)
 
@@ -307,8 +360,8 @@ _INTERNALCHECKER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=141,
-    serialized_end=371,
+    serialized_start=168,
+    serialized_end=398,
 )
 
 
@@ -364,8 +417,8 @@ _UPTIMECHECKCONFIG_RESOURCEGROUP = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1048,
-    serialized_end=1145,
+    serialized_start=1075,
+    serialized_end=1172,
 )
 
 _UPTIMECHECKCONFIG_HTTPCHECK_BASICAUTHENTICATION = _descriptor.Descriptor(
@@ -420,8 +473,8 @@ _UPTIMECHECKCONFIG_HTTPCHECK_BASICAUTHENTICATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1421,
-    serialized_end=1478,
+    serialized_start=1636,
+    serialized_end=1693,
 )
 
 _UPTIMECHECKCONFIG_HTTPCHECK_HEADERSENTRY = _descriptor.Descriptor(
@@ -476,8 +529,8 @@ _UPTIMECHECKCONFIG_HTTPCHECK_HEADERSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1480,
-    serialized_end=1526,
+    serialized_start=1695,
+    serialized_end=1741,
 )
 
 _UPTIMECHECKCONFIG_HTTPCHECK = _descriptor.Descriptor(
@@ -488,9 +541,27 @@ _UPTIMECHECKCONFIG_HTTPCHECK = _descriptor.Descriptor(
     containing_type=None,
     fields=[
         _descriptor.FieldDescriptor(
+            name="request_method",
+            full_name="google.monitoring.v3.UptimeCheckConfig.HttpCheck.request_method",
+            index=0,
+            number=8,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
             name="use_ssl",
             full_name="google.monitoring.v3.UptimeCheckConfig.HttpCheck.use_ssl",
-            index=0,
+            index=1,
             number=1,
             type=8,
             cpp_type=7,
@@ -508,7 +579,7 @@ _UPTIMECHECKCONFIG_HTTPCHECK = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="path",
             full_name="google.monitoring.v3.UptimeCheckConfig.HttpCheck.path",
-            index=1,
+            index=2,
             number=2,
             type=9,
             cpp_type=9,
@@ -526,7 +597,7 @@ _UPTIMECHECKCONFIG_HTTPCHECK = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="port",
             full_name="google.monitoring.v3.UptimeCheckConfig.HttpCheck.port",
-            index=2,
+            index=3,
             number=3,
             type=5,
             cpp_type=1,
@@ -544,7 +615,7 @@ _UPTIMECHECKCONFIG_HTTPCHECK = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="auth_info",
             full_name="google.monitoring.v3.UptimeCheckConfig.HttpCheck.auth_info",
-            index=3,
+            index=4,
             number=4,
             type=11,
             cpp_type=10,
@@ -562,7 +633,7 @@ _UPTIMECHECKCONFIG_HTTPCHECK = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="mask_headers",
             full_name="google.monitoring.v3.UptimeCheckConfig.HttpCheck.mask_headers",
-            index=4,
+            index=5,
             number=5,
             type=8,
             cpp_type=7,
@@ -580,7 +651,7 @@ _UPTIMECHECKCONFIG_HTTPCHECK = _descriptor.Descriptor(
         _descriptor.FieldDescriptor(
             name="headers",
             full_name="google.monitoring.v3.UptimeCheckConfig.HttpCheck.headers",
-            index=5,
+            index=6,
             number=6,
             type=11,
             cpp_type=10,
@@ -596,9 +667,27 @@ _UPTIMECHECKCONFIG_HTTPCHECK = _descriptor.Descriptor(
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
+            name="content_type",
+            full_name="google.monitoring.v3.UptimeCheckConfig.HttpCheck.content_type",
+            index=7,
+            number=9,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
             name="validate_ssl",
             full_name="google.monitoring.v3.UptimeCheckConfig.HttpCheck.validate_ssl",
-            index=6,
+            index=8,
             number=7,
             type=8,
             cpp_type=7,
@@ -613,20 +702,41 @@ _UPTIMECHECKCONFIG_HTTPCHECK = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="body",
+            full_name="google.monitoring.v3.UptimeCheckConfig.HttpCheck.body",
+            index=9,
+            number=10,
+            type=12,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=_b(""),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[
         _UPTIMECHECKCONFIG_HTTPCHECK_BASICAUTHENTICATION,
         _UPTIMECHECKCONFIG_HTTPCHECK_HEADERSENTRY,
     ],
-    enum_types=[],
+    enum_types=[
+        _UPTIMECHECKCONFIG_HTTPCHECK_REQUESTMETHOD,
+        _UPTIMECHECKCONFIG_HTTPCHECK_CONTENTTYPE,
+    ],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1148,
-    serialized_end=1526,
+    serialized_start=1175,
+    serialized_end=1855,
 )
 
 _UPTIMECHECKCONFIG_TCPCHECK = _descriptor.Descriptor(
@@ -663,8 +773,8 @@ _UPTIMECHECKCONFIG_TCPCHECK = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1528,
-    serialized_end=1552,
+    serialized_start=1857,
+    serialized_end=1881,
 )
 
 _UPTIMECHECKCONFIG_CONTENTMATCHER = _descriptor.Descriptor(
@@ -719,8 +829,8 @@ _UPTIMECHECKCONFIG_CONTENTMATCHER = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1555,
-    serialized_end=1835,
+    serialized_start=1884,
+    serialized_end=2164,
 )
 
 _UPTIMECHECKCONFIG = _descriptor.Descriptor(
@@ -955,7 +1065,9 @@ _UPTIMECHECKCONFIG = _descriptor.Descriptor(
         _UPTIMECHECKCONFIG_CONTENTMATCHER,
     ],
     enum_types=[],
-    serialized_options=None,
+    serialized_options=_b(
+        "\352A\357\001\n+monitoring.googleapis.com/UptimeCheckConfig\022;projects/{project}/uptimeCheckConfigs/{uptime_check_config}\022Eorganizations/{organization}/uptimeCheckConfigs/{uptime_check_config}\0229folders/{folder}/uptimeCheckConfigs/{uptime_check_config}\022\001*"
+    ),
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
@@ -975,8 +1087,8 @@ _UPTIMECHECKCONFIG = _descriptor.Descriptor(
             fields=[],
         ),
     ],
-    serialized_start=374,
-    serialized_end=1869,
+    serialized_start=401,
+    serialized_end=2444,
 )
 
 
@@ -1050,8 +1162,8 @@ _UPTIMECHECKIP = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1871,
-    serialized_end=1981,
+    serialized_start=2446,
+    serialized_end=2556,
 )
 
 _INTERNALCHECKER.fields_by_name["state"].enum_type = _INTERNALCHECKER_STATE
@@ -1065,12 +1177,22 @@ _UPTIMECHECKCONFIG_HTTPCHECK_BASICAUTHENTICATION.containing_type = (
 )
 _UPTIMECHECKCONFIG_HTTPCHECK_HEADERSENTRY.containing_type = _UPTIMECHECKCONFIG_HTTPCHECK
 _UPTIMECHECKCONFIG_HTTPCHECK.fields_by_name[
+    "request_method"
+].enum_type = _UPTIMECHECKCONFIG_HTTPCHECK_REQUESTMETHOD
+_UPTIMECHECKCONFIG_HTTPCHECK.fields_by_name[
     "auth_info"
 ].message_type = _UPTIMECHECKCONFIG_HTTPCHECK_BASICAUTHENTICATION
 _UPTIMECHECKCONFIG_HTTPCHECK.fields_by_name[
     "headers"
 ].message_type = _UPTIMECHECKCONFIG_HTTPCHECK_HEADERSENTRY
+_UPTIMECHECKCONFIG_HTTPCHECK.fields_by_name[
+    "content_type"
+].enum_type = _UPTIMECHECKCONFIG_HTTPCHECK_CONTENTTYPE
 _UPTIMECHECKCONFIG_HTTPCHECK.containing_type = _UPTIMECHECKCONFIG
+_UPTIMECHECKCONFIG_HTTPCHECK_REQUESTMETHOD.containing_type = (
+    _UPTIMECHECKCONFIG_HTTPCHECK
+)
+_UPTIMECHECKCONFIG_HTTPCHECK_CONTENTTYPE.containing_type = _UPTIMECHECKCONFIG_HTTPCHECK
 _UPTIMECHECKCONFIG_TCPCHECK.containing_type = _UPTIMECHECKCONFIG
 _UPTIMECHECKCONFIG_CONTENTMATCHER.fields_by_name[
     "matcher"
@@ -1140,17 +1262,15 @@ InternalChecker = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_INTERNALCHECKER,
         __module__="google.cloud.monitoring_v3.proto.uptime_pb2",
-        __doc__="""An internal checker allows Uptime checks to run on
-  private/internal GCP resources.
-  
-  
+        __doc__="""An internal checker allows Uptime checks to run on private/internal
+  GCP resources.
   Attributes:
       name:
           A unique resource name for this InternalChecker. The format
-          is:  ``projects/[PROJECT_ID]/internalCheckers/[INTERNAL_CHECKE
-          R_ID]``.  ``[PROJECT_ID]`` is the Stackdriver Workspace
-          project for the Uptime check config associated with the
-          internal checker.
+          is:  ::      projects/[PROJECT_ID_OR_NUMBER]/internalCheckers/
+          [INTERNAL_CHECKER_ID]  ``[PROJECT_ID_OR_NUMBER]`` is the
+          Stackdriver Workspace project for the Uptime check config
+          associated with the internal checker.
       display_name:
           The checker's human-readable name. The display name should be
           unique within a Stackdriver Workspace in order to make it
@@ -1184,16 +1304,13 @@ UptimeCheckConfig = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_UPTIMECHECKCONFIG_RESOURCEGROUP,
                 __module__="google.cloud.monitoring_v3.proto.uptime_pb2",
-                __doc__="""The resource submessage for group checks. It can be used
-    instead of a monitored resource, when multiple resources are being
-    monitored.
-    
-    
+                __doc__="""The resource submessage for group checks. It can be used instead of a
+    monitored resource, when multiple resources are being monitored.
     Attributes:
         group_id:
             The group of resources being monitored. Should be only the
             ``[GROUP_ID]``, and not the full-path
-            ``projects/[PROJECT_ID]/groups/[GROUP_ID]``.
+            ``projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]``.
         resource_type:
             The resource type of the group members.
     """,
@@ -1210,12 +1327,10 @@ UptimeCheckConfig = _reflection.GeneratedProtocolMessageType(
                     dict(
                         DESCRIPTOR=_UPTIMECHECKCONFIG_HTTPCHECK_BASICAUTHENTICATION,
                         __module__="google.cloud.monitoring_v3.proto.uptime_pb2",
-                        __doc__="""The authentication parameters to provide to the specified
-      resource or URL that requires a username and password. Currently, only
-      `Basic HTTP authentication <https://tools.ietf.org/html/rfc7617>`__ is
-      supported in Uptime checks.
-      
-      
+                        __doc__="""The authentication parameters to provide to the specified resource or
+      URL that requires a username and password. Currently, only `Basic HTTP
+      authentication <https://tools.ietf.org/html/rfc7617>`__ is supported
+      in Uptime checks.
       Attributes:
           username:
               The username to use when authenticating with the HTTP server.
@@ -1236,11 +1351,10 @@ UptimeCheckConfig = _reflection.GeneratedProtocolMessageType(
                 ),
                 DESCRIPTOR=_UPTIMECHECKCONFIG_HTTPCHECK,
                 __module__="google.cloud.monitoring_v3.proto.uptime_pb2",
-                __doc__="""Information involved in an HTTP/HTTPS Uptime check
-    request.
-    
-    
+                __doc__="""Information involved in an HTTP/HTTPS Uptime check request.
     Attributes:
+        request_method:
+            The HTTP request method to use for the check.
         use_ssl:
             If ``true``, use HTTPS instead of HTTP to run the check.
         path:
@@ -1276,12 +1390,21 @@ UptimeCheckConfig = _reflection.GeneratedProtocolMessageType(
             Entering two separate headers with the same key in a Create
             call will cause the first to be overwritten by the second. The
             maximum number of headers allowed is 100.
+        content_type:
+            The content type to use for the check.
         validate_ssl:
             Boolean specifying whether to include SSL certificate
             validation as a part of the Uptime check. Only applies to
             checks where ``monitored_resource`` is set to ``uptime_url``.
             If ``use_ssl`` is ``false``, setting ``validate_ssl`` to
             ``true`` has no effect.
+        body:
+            The request body associated with the HTTP request. If
+            ``content_type`` is ``URL_ENCODED``, the body passed in must
+            be URL-encoded. Users can provide a ``Content-Length`` header
+            via the ``headers`` field or the API will do so. The maximum
+            byte size is 1 megabyte. Note: As with all ``bytes`` fields
+            JSON representations are base64 encoded.
     """,
                 # @@protoc_insertion_point(class_scope:google.monitoring.v3.UptimeCheckConfig.HttpCheck)
             ),
@@ -1293,8 +1416,6 @@ UptimeCheckConfig = _reflection.GeneratedProtocolMessageType(
                 DESCRIPTOR=_UPTIMECHECKCONFIG_TCPCHECK,
                 __module__="google.cloud.monitoring_v3.proto.uptime_pb2",
                 __doc__="""Information required for a TCP Uptime check request.
-    
-    
     Attributes:
         port:
             The TCP port on the server against which to run the check.
@@ -1310,13 +1431,11 @@ UptimeCheckConfig = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_UPTIMECHECKCONFIG_CONTENTMATCHER,
                 __module__="google.cloud.monitoring_v3.proto.uptime_pb2",
-                __doc__="""Optional. Used to perform content matching. This allows
-    matching based on substrings and regular expressions, together with
-    their negations. Only the first 4 MB of an HTTP or HTTPS check's
-    response (and the first 1 MB of a TCP check's response) are examined for
-    purposes of content matching.
-    
-    
+                __doc__="""Optional. Used to perform content matching. This allows matching based
+    on substrings and regular expressions, together with their negations.
+    Only the first 4 MB of an HTTP or HTTPS check's response (and the
+    first 1 MB of a TCP check's response) are examined for purposes of
+    content matching.
     Attributes:
         content:
             String or regex content to match. Maximum 1024 bytes. An empty
@@ -1332,17 +1451,16 @@ UptimeCheckConfig = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_UPTIMECHECKCONFIG,
         __module__="google.cloud.monitoring_v3.proto.uptime_pb2",
-        __doc__="""This message configures which resources and services to
-  monitor for availability.
-  
-  
+        __doc__="""This message configures which resources and services to monitor for
+  availability.
   Attributes:
       name:
           A unique resource name for this Uptime check configuration.
-          The format is:  ``projects/[PROJECT_ID]/uptimeCheckConfigs/[UP
-          TIME_CHECK_ID]``.  This field should be omitted when creating
-          the Uptime check configuration; on create, the resource name
-          is assigned by the server and included in the response.
+          The format is:  ::       projects/[PROJECT_ID_OR_NUMBER]/uptim
+          eCheckConfigs/[UPTIME_CHECK_ID]  This field should be omitted
+          when creating the Uptime check configuration; on create, the
+          resource name is assigned by the server and included in the
+          response.
       display_name:
           A human-friendly name for the Uptime check configuration. The
           display name should be unique within a Stackdriver Workspace
@@ -1416,10 +1534,8 @@ UptimeCheckIp = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_UPTIMECHECKIP,
         __module__="google.cloud.monitoring_v3.proto.uptime_pb2",
-        __doc__="""Contains the region, location, and list of IP addresses
-  where checkers in the location run from.
-  
-  
+        __doc__="""Contains the region, location, and list of IP addresses where checkers
+  in the location run from.
   Attributes:
       region:
           A broad region category in which the IP address is located.
@@ -1447,4 +1563,5 @@ _INTERNALCHECKER._options = None
 _UPTIMECHECKCONFIG_HTTPCHECK_HEADERSENTRY._options = None
 _UPTIMECHECKCONFIG.fields_by_name["is_internal"]._options = None
 _UPTIMECHECKCONFIG.fields_by_name["internal_checkers"]._options = None
+_UPTIMECHECKCONFIG._options = None
 # @@protoc_insertion_point(module_scope)

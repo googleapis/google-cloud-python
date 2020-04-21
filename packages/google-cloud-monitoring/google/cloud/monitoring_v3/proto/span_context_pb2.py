@@ -20,10 +20,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.monitoring.v3",
     syntax="proto3",
     serialized_options=_b(
-        "\n\030com.google.monitoring.v3B\020SpanContextProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
+        "\n\030com.google.monitoring.v3B\020SpanContextProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3\352\002\035Google::Cloud::Monitoring::V3"
     ),
     serialized_pb=_b(
-        '\n3google/cloud/monitoring_v3/proto/span_context.proto\x12\x14google.monitoring.v3" \n\x0bSpanContext\x12\x11\n\tspan_name\x18\x01 \x01(\tB\xa8\x01\n\x18\x63om.google.monitoring.v3B\x10SpanContextProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
+        '\n3google/cloud/monitoring_v3/proto/span_context.proto\x12\x14google.monitoring.v3" \n\x0bSpanContext\x12\x11\n\tspan_name\x18\x01 \x01(\tB\xc8\x01\n\x18\x63om.google.monitoring.v3B\x10SpanContextProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3\xea\x02\x1dGoogle::Cloud::Monitoring::V3b\x06proto3'
     ),
 )
 
@@ -75,22 +75,20 @@ SpanContext = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_SPANCONTEXT,
         __module__="google.cloud.monitoring_v3.proto.span_context_pb2",
-        __doc__="""The context of a span, attached to google.api.Distribution.Exemplars in
-  google.api.Distribution values during aggregation.
-  
-  It contains the name of a span with format:
-  projects/[PROJECT\_ID]/traces/[TRACE\_ID]/spans/[SPAN\_ID]
-  
-  
+        __doc__="""The context of a span, attached to
+  [Exemplars][google.api.Distribution.Exemplars] in
+  [Distribution][google.api.Distribution] values during aggregation.  It
+  contains the name of a span with format:  ::
+  projects/[PROJECT_ID_OR_NUMBER]/traces/[TRACE_ID]/spans/[SPAN_ID]
   Attributes:
       span_name:
-          The resource name of the span in the following format:  ::
-          projects/[PROJECT_ID]/traces/[TRACE_ID]/spans/[SPAN_ID]
-          [TRACE\_ID] is a unique identifier for a trace within a
+          The resource name of the span. The format is:  ::      project
+          s/[PROJECT_ID_OR_NUMBER]/traces/[TRACE_ID]/spans/[SPAN_ID]
+          ``[TRACE_ID]`` is a unique identifier for a trace within a
           project; it is a 32-character hexadecimal encoding of a
-          16-byte array.  [SPAN\_ID] is a unique identifier for a span
-          within a trace; it is a 16-character hexadecimal encoding of
-          an 8-byte array.
+          16-byte array.  ``[SPAN_ID]`` is a unique identifier for a
+          span within a trace; it is a 16-character hexadecimal encoding
+          of an 8-byte array.
   """,
         # @@protoc_insertion_point(class_scope:google.monitoring.v3.SpanContext)
     ),

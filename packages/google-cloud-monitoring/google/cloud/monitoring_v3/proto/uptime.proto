@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC.
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,13 +11,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
 syntax = "proto3";
 
 package google.monitoring.v3;
 
 import "google/api/monitored_resource.proto";
+import "google/api/resource.proto";
 import "google/protobuf/duration.proto";
 
 option csharp_namespace = "Google.Cloud.Monitoring.V3";
@@ -26,6 +26,7 @@ option java_multiple_files = true;
 option java_outer_classname = "UptimeProto";
 option java_package = "com.google.monitoring.v3";
 option php_namespace = "Google\\Cloud\\Monitoring\\V3";
+option ruby_package = "Google::Cloud::Monitoring::V3";
 
 // An internal checker allows Uptime checks to run on private/internal GCP
 // resources.
@@ -56,9 +57,9 @@ message InternalChecker {
 
   // A unique resource name for this InternalChecker. The format is:
   //
-  //   `projects/[PROJECT_ID]/internalCheckers/[INTERNAL_CHECKER_ID]`.
+  //     projects/[PROJECT_ID_OR_NUMBER]/internalCheckers/[INTERNAL_CHECKER_ID]
   //
-  // `[PROJECT_ID]` is the Stackdriver Workspace project for the
+  // `[PROJECT_ID_OR_NUMBER]` is the Stackdriver Workspace project for the
   // Uptime check config associated with the internal checker.
   string name = 1;
 
@@ -83,14 +84,44 @@ message InternalChecker {
   State state = 7;
 }
 
+// The regions from which an Uptime check can be run.
+enum UptimeCheckRegion {
+  // Default value if no region is specified. Will result in Uptime checks
+  // running from all regions.
+  REGION_UNSPECIFIED = 0;
+
+  // Allows checks to run from locations within the United States of America.
+  USA = 1;
+
+  // Allows checks to run from locations within the continent of Europe.
+  EUROPE = 2;
+
+  // Allows checks to run from locations within the continent of South
+  // America.
+  SOUTH_AMERICA = 3;
+
+  // Allows checks to run from locations within the Asia Pacific area (ex:
+  // Singapore).
+  ASIA_PACIFIC = 4;
+}
+
 // This message configures which resources and services to monitor for
 // availability.
 message UptimeCheckConfig {
+  option (google.api.resource) = {
+    type: "monitoring.googleapis.com/UptimeCheckConfig"
+    pattern: "projects/{project}/uptimeCheckConfigs/{uptime_check_config}"
+    pattern: "organizations/{organization}/uptimeCheckConfigs/{uptime_check_config}"
+    pattern: "folders/{folder}/uptimeCheckConfigs/{uptime_check_config}"
+    pattern: "*"
+  };
+
   // The resource submessage for group checks. It can be used instead of a
   // monitored resource, when multiple resources are being monitored.
   message ResourceGroup {
     // The group of resources being monitored. Should be only the `[GROUP_ID]`,
-    // and not the full-path `projects/[PROJECT_ID]/groups/[GROUP_ID]`.
+    // and not the full-path
+    // `projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]`.
     string group_id = 1;
 
     // The resource type of the group members.
@@ -110,6 +141,34 @@ message UptimeCheckConfig {
       // The password to use when authenticating with the HTTP server.
       string password = 2;
     }
+
+    // The HTTP request method options.
+    enum RequestMethod {
+      // No request method specified.
+      METHOD_UNSPECIFIED = 0;
+
+      // GET request.
+      GET = 1;
+
+      // POST request.
+      POST = 2;
+    }
+
+    // Header options corresponding to the Content-Type of the body in HTTP
+    // requests. Note that a `Content-Type` header cannot be present in the
+    // `headers` field if this field is specified.
+    enum ContentType {
+      // No content type specified. If the request method is POST, an
+      // unspecified content type results in a check creation rejection.
+      TYPE_UNSPECIFIED = 0;
+
+      // `body` is in URL-encoded form. Equivalent to setting the `Content-Type`
+      // to `application/x-www-form-urlencoded` in the HTTP request.
+      URL_ENCODED = 1;
+    }
+
+    // The HTTP request method to use for the check.
+    RequestMethod request_method = 8;
 
     // If `true`, use HTTPS instead of HTTP to run the check.
     bool use_ssl = 1;
@@ -149,11 +208,21 @@ message UptimeCheckConfig {
     // The maximum number of headers allowed is 100.
     map<string, string> headers = 6;
 
+    // The content type to use for the check.
+    ContentType content_type = 9;
+
     // Boolean specifying whether to include SSL certificate validation as a
     // part of the Uptime check. Only applies to checks where
     // `monitored_resource` is set to `uptime_url`. If `use_ssl` is `false`,
     // setting `validate_ssl` to `true` has no effect.
     bool validate_ssl = 7;
+
+    // The request body associated with the HTTP request. If `content_type` is
+    // `URL_ENCODED`, the body passed in must be URL-encoded. Users can provide
+    // a `Content-Length` header via the `headers` field or the API will do
+    // so. The maximum byte size is 1 megabyte. Note: As with all `bytes` fields
+    // JSON representations are base64 encoded.
+    bytes body = 10;
   }
 
   // Information required for a TCP Uptime check request.
@@ -208,7 +277,7 @@ message UptimeCheckConfig {
 
   // A unique resource name for this Uptime check configuration. The format is:
   //
-  //   `projects/[PROJECT_ID]/uptimeCheckConfigs/[UPTIME_CHECK_ID]`.
+  //      projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
   //
   // This field should be omitted when creating the Uptime check configuration;
   // on create, the resource name is assigned by the server and included in the
@@ -281,27 +350,6 @@ message UptimeCheckConfig {
   // InternalCheckers configured for the project that owns this
   // `UptimeCheckConfig`.
   repeated InternalChecker internal_checkers = 14 [deprecated = true];
-}
-
-// The regions from which an Uptime check can be run.
-enum UptimeCheckRegion {
-  // Default value if no region is specified. Will result in Uptime checks
-  // running from all regions.
-  REGION_UNSPECIFIED = 0;
-
-  // Allows checks to run from locations within the United States of America.
-  USA = 1;
-
-  // Allows checks to run from locations within the continent of Europe.
-  EUROPE = 2;
-
-  // Allows checks to run from locations within the continent of South
-  // America.
-  SOUTH_AMERICA = 3;
-
-  // Allows checks to run from locations within the Asia Pacific area (ex:
-  // Singapore).
-  ASIA_PACIFIC = 4;
 }
 
 // Contains the region, location, and list of IP

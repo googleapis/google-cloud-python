@@ -1,5 +1,5 @@
-Client for Stackdriver Monitoring API
-=====================================
+Client for Cloud Monitoring API
+===============================
 
 .. automodule:: google.cloud.monitoring_v3
     :members:

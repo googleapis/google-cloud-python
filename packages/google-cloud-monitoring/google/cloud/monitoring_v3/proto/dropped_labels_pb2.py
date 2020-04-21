@@ -20,10 +20,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.monitoring.v3",
     syntax="proto3",
     serialized_options=_b(
-        "\n\030com.google.monitoring.v3B\022DroppedLabelsProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3"
+        "\n\030com.google.monitoring.v3B\022DroppedLabelsProtoP\001Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\252\002\032Google.Cloud.Monitoring.V3\312\002\032Google\\Cloud\\Monitoring\\V3\352\002\035Google::Cloud::Monitoring::V3"
     ),
     serialized_pb=_b(
-        '\n5google/cloud/monitoring_v3/proto/dropped_labels.proto\x12\x14google.monitoring.v3"|\n\rDroppedLabels\x12=\n\x05label\x18\x01 \x03(\x0b\x32..google.monitoring.v3.DroppedLabels.LabelEntry\x1a,\n\nLabelEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\xaa\x01\n\x18\x63om.google.monitoring.v3B\x12\x44roppedLabelsProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3b\x06proto3'
+        '\n5google/cloud/monitoring_v3/proto/dropped_labels.proto\x12\x14google.monitoring.v3"|\n\rDroppedLabels\x12=\n\x05label\x18\x01 \x03(\x0b\x32..google.monitoring.v3.DroppedLabels.LabelEntry\x1a,\n\nLabelEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\xca\x01\n\x18\x63om.google.monitoring.v3B\x12\x44roppedLabelsProtoP\x01Z>google.golang.org/genproto/googleapis/monitoring/v3;monitoring\xaa\x02\x1aGoogle.Cloud.Monitoring.V3\xca\x02\x1aGoogle\\Cloud\\Monitoring\\V3\xea\x02\x1dGoogle::Cloud::Monitoring::V3b\x06proto3'
     ),
 )
 
@@ -142,23 +142,19 @@ DroppedLabels = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_DROPPEDLABELS,
         __module__="google.cloud.monitoring_v3.proto.dropped_labels_pb2",
-        __doc__="""A set of (label, value) pairs which were dropped during
-  aggregation, attached to google.api.Distribution.Exemplars in
-  google.api.Distribution values during aggregation.
-  
-  These values are used in combination with the label values that remain
-  on the aggregated Distribution timeseries to construct the full label
-  set for the exemplar values. The resulting full label set may be used to
+        __doc__="""A set of (label, value) pairs which were dropped during aggregation,
+  attached to google.api.Distribution.Exemplars in
+  google.api.Distribution values during aggregation.  These values are
+  used in combination with the label values that remain on the
+  aggregated Distribution timeseries to construct the full label set for
+  the exemplar values. The resulting full label set may be used to
   identify the specific task/job/instance (for example) which may be
-  contributing to a long-tail, while allowing the storage savings of only
-  storing aggregated distribution values for a large group.
-  
-  Note that there are no guarantees on ordering of the labels from
-  exemplar-to-exemplar and from distribution-to-distribution in the same
-  stream, and there may be duplicates. It is up to clients to resolve any
+  contributing to a long-tail, while allowing the storage savings of
+  only storing aggregated distribution values for a large group.  Note
+  that there are no guarantees on ordering of the labels from exemplar-
+  to-exemplar and from distribution-to-distribution in the same stream,
+  and there may be duplicates. It is up to clients to resolve any
   ambiguities.
-  
-  
   Attributes:
       label:
           Map from label to its value, for all labels dropped in any
