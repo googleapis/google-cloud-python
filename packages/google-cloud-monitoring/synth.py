@@ -20,17 +20,16 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate monitoring GAPIC layer
 # ----------------------------------------------------------------------------
 v3_library = gapic.py_library(
-    "monitoring",
-    "v3",
-    config_path="/google/monitoring/artman_monitoring.yaml",
-    artman_output_name="monitoring-v3",
+    service="monitoring",
+    version="v3",
+    bazel_target="//google/monitoring/v3:monitoring-v3-py",
     include_protos=True,
 )
 
