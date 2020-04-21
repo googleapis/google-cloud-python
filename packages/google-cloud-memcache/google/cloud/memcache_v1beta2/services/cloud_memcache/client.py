@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019  Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -213,6 +213,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
+
         if parent is not None:
             request.parent = parent
 
@@ -289,6 +290,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
+
         if name is not None:
             request.name = name
 
@@ -383,14 +385,11 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
+
         if parent is not None:
             request.parent = parent
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
         if instance_id is not None:
             request.instance_id = instance_id
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
         if resource is not None:
             request.resource = resource
 
@@ -475,10 +474,9 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
+
         if update_mask is not None:
             request.update_mask = update_mask
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
         if resource is not None:
             request.resource = resource
 
@@ -570,14 +568,11 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
+
         if name is not None:
             request.name = name
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
         if update_mask is not None:
             request.update_mask = update_mask
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
         if parameters is not None:
             request.parameters = parameters
 
@@ -666,6 +661,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
+
         if name is not None:
             request.name = name
 
@@ -760,14 +756,11 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
+
         if name is not None:
             request.name = name
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
         if node_ids is not None:
             request.node_ids = node_ids
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
         if apply_all is not None:
             request.apply_all = apply_all
 
