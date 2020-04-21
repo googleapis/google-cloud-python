@@ -20,7 +20,7 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 excludes = ["README.rst", "setup.py", "nox*.py", "docs/index.rst"]
 
@@ -29,9 +29,9 @@ excludes = ["README.rst", "setup.py", "nox*.py", "docs/index.rst"]
 # ----------------------------------------------------------------------------
 for version in ["v2beta2", "v2beta3", "v2"]:
     library = gapic.py_library(
-        "tasks",
-        version,
-        config_path=f"artman_cloudtasks_{version}.yaml",
+        service="tasks",
+        version=version,
+        bazel_target=f"//google/cloud/tasks/{version}:tasks-{version}-py",
         include_protos=True,
     )
 
