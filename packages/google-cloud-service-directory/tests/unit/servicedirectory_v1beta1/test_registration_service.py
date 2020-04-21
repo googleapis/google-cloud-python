@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019  Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import pytest
 
 from google import auth
 from google.api_core import client_options
+from google.api_core import grpc_helpers
 from google.auth import credentials
 from google.cloud.servicedirectory_v1beta1.services.registration_service import (
     RegistrationServiceClient,
@@ -42,6 +43,40 @@ from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+
+
+def client_cert_source_callback():
+    return b"cert bytes", b"key bytes"
+
+
+def test__get_default_mtls_endpoint():
+    api_endpoint = "example.googleapis.com"
+    api_mtls_endpoint = "example.mtls.googleapis.com"
+    sandbox_endpoint = "example.sandbox.googleapis.com"
+    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
+    non_googleapi = "api.example.com"
+
+    assert RegistrationServiceClient._get_default_mtls_endpoint(None) is None
+    assert (
+        RegistrationServiceClient._get_default_mtls_endpoint(api_endpoint)
+        == api_mtls_endpoint
+    )
+    assert (
+        RegistrationServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        == api_mtls_endpoint
+    )
+    assert (
+        RegistrationServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
+        == sandbox_mtls_endpoint
+    )
+    assert (
+        RegistrationServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        == sandbox_mtls_endpoint
+    )
+    assert (
+        RegistrationServiceClient._get_default_mtls_endpoint(non_googleapi)
+        == non_googleapi
+    )
 
 
 def test_registration_service_client_from_service_account_file():
@@ -64,31 +99,89 @@ def test_registration_service_client_from_service_account_file():
 
 
 def test_registration_service_client_client_options():
-    # Check the default options have their expected values.
-    assert (
-        RegistrationServiceClient.DEFAULT_OPTIONS.api_endpoint
-        == "servicedirectory.googleapis.com"
-    )
+    # Check that if channel is provided we won't create a new one.
+    with mock.patch(
+        "google.cloud.servicedirectory_v1beta1.services.registration_service.RegistrationServiceClient.get_transport_class"
+    ) as gtc:
+        transport = transports.RegistrationServiceGrpcTransport(
+            credentials=credentials.AnonymousCredentials()
+        )
+        client = RegistrationServiceClient(transport=transport)
+        gtc.assert_not_called()
 
-    # Check that options can be customized.
-    options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
+    # Check mTLS is not triggered with empty client options.
+    options = client_options.ClientOptions()
     with mock.patch(
         "google.cloud.servicedirectory_v1beta1.services.registration_service.RegistrationServiceClient.get_transport_class"
     ) as gtc:
         transport = gtc.return_value = mock.MagicMock()
         client = RegistrationServiceClient(client_options=options)
-        transport.assert_called_once_with(credentials=None, host="squid.clam.whelk")
+        transport.assert_called_once_with(
+            credentials=None, host=client.DEFAULT_ENDPOINT
+        )
+
+    # Check mTLS is not triggered if api_endpoint is provided but
+    # client_cert_source is None.
+    options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
+    with mock.patch(
+        "google.cloud.servicedirectory_v1beta1.services.registration_service.transports.RegistrationServiceGrpcTransport.__init__"
+    ) as grpc_transport:
+        grpc_transport.return_value = None
+        client = RegistrationServiceClient(client_options=options)
+        grpc_transport.assert_called_once_with(
+            api_mtls_endpoint=None,
+            client_cert_source=None,
+            credentials=None,
+            host="squid.clam.whelk",
+        )
+
+    # Check mTLS is triggered if client_cert_source is provided.
+    options = client_options.ClientOptions(
+        client_cert_source=client_cert_source_callback
+    )
+    with mock.patch(
+        "google.cloud.servicedirectory_v1beta1.services.registration_service.transports.RegistrationServiceGrpcTransport.__init__"
+    ) as grpc_transport:
+        grpc_transport.return_value = None
+        client = RegistrationServiceClient(client_options=options)
+        grpc_transport.assert_called_once_with(
+            api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
+            client_cert_source=client_cert_source_callback,
+            credentials=None,
+            host=client.DEFAULT_ENDPOINT,
+        )
+
+    # Check mTLS is triggered if api_endpoint and client_cert_source are provided.
+    options = client_options.ClientOptions(
+        api_endpoint="squid.clam.whelk", client_cert_source=client_cert_source_callback
+    )
+    with mock.patch(
+        "google.cloud.servicedirectory_v1beta1.services.registration_service.transports.RegistrationServiceGrpcTransport.__init__"
+    ) as grpc_transport:
+        grpc_transport.return_value = None
+        client = RegistrationServiceClient(client_options=options)
+        grpc_transport.assert_called_once_with(
+            api_mtls_endpoint="squid.clam.whelk",
+            client_cert_source=client_cert_source_callback,
+            credentials=None,
+            host="squid.clam.whelk",
+        )
 
 
 def test_registration_service_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.servicedirectory_v1beta1.services.registration_service.RegistrationServiceClient.get_transport_class"
-    ) as gtc:
-        transport = gtc.return_value = mock.MagicMock()
+        "google.cloud.servicedirectory_v1beta1.services.registration_service.transports.RegistrationServiceGrpcTransport.__init__"
+    ) as grpc_transport:
+        grpc_transport.return_value = None
         client = RegistrationServiceClient(
             client_options={"api_endpoint": "squid.clam.whelk"}
         )
-        transport.assert_called_once_with(credentials=None, host="squid.clam.whelk")
+        grpc_transport.assert_called_once_with(
+            api_mtls_endpoint=None,
+            client_cert_source=None,
+            credentials=None,
+            host="squid.clam.whelk",
+        )
 
 
 def test_create_namespace(transport: str = "grpc"):
@@ -1545,35 +1638,87 @@ def test_registration_service_host_with_port():
 
 def test_registration_service_grpc_transport_channel():
     channel = grpc.insecure_channel("http://localhost/")
-    transport = transports.RegistrationServiceGrpcTransport(channel=channel)
-    assert transport.grpc_channel is channel
 
-
-def test_service_path():
-    project = "squid"
-    location = "clam"
-    namespace = "whelk"
-    service = "octopus"
-
-    expected = "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
-        project=project, location=location, namespace=namespace, service=service
+    # Check that if channel is provided, mtls endpoint and client_cert_source
+    # won't be used.
+    callback = mock.MagicMock()
+    transport = transports.RegistrationServiceGrpcTransport(
+        host="squid.clam.whelk",
+        channel=channel,
+        api_mtls_endpoint="mtls.squid.clam.whelk",
+        client_cert_source=callback,
     )
-    actual = RegistrationServiceClient.service_path(
-        project, location, namespace, service
+    assert transport.grpc_channel == channel
+    assert transport._host == "squid.clam.whelk:443"
+    assert not callback.called
+
+
+@mock.patch("grpc.ssl_channel_credentials", autospec=True)
+@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
+def test_registration_service_grpc_transport_channel_mtls_with_client_cert_source(
+    grpc_create_channel, grpc_ssl_channel_cred
+):
+    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
+    # are provided, then a mTLS channel will be created.
+    mock_cred = mock.Mock()
+
+    mock_ssl_cred = mock.Mock()
+    grpc_ssl_channel_cred.return_value = mock_ssl_cred
+
+    mock_grpc_channel = mock.Mock()
+    grpc_create_channel.return_value = mock_grpc_channel
+
+    transport = transports.RegistrationServiceGrpcTransport(
+        host="squid.clam.whelk",
+        credentials=mock_cred,
+        api_mtls_endpoint="mtls.squid.clam.whelk",
+        client_cert_source=client_cert_source_callback,
     )
-    assert expected == actual
-
-
-def test_namespace_path():
-    project = "squid"
-    location = "clam"
-    namespace = "whelk"
-
-    expected = "projects/{project}/locations/{location}/namespaces/{namespace}".format(
-        project=project, location=location, namespace=namespace
+    grpc_ssl_channel_cred.assert_called_once_with(
+        certificate_chain=b"cert bytes", private_key=b"key bytes"
     )
-    actual = RegistrationServiceClient.namespace_path(project, location, namespace)
-    assert expected == actual
+    grpc_create_channel.assert_called_once_with(
+        "mtls.squid.clam.whelk:443",
+        credentials=mock_cred,
+        ssl_credentials=mock_ssl_cred,
+        scopes=("https://www.googleapis.com/auth/cloud-platform",),
+    )
+    assert transport.grpc_channel == mock_grpc_channel
+
+
+@pytest.mark.parametrize(
+    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
+)
+@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
+def test_registration_service_grpc_transport_channel_mtls_with_adc(
+    grpc_create_channel, api_mtls_endpoint
+):
+    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
+    # is provided, then a mTLS channel will be created with SSL ADC.
+    mock_grpc_channel = mock.Mock()
+    grpc_create_channel.return_value = mock_grpc_channel
+
+    # Mock google.auth.transport.grpc.SslCredentials class.
+    mock_ssl_cred = mock.Mock()
+    with mock.patch.multiple(
+        "google.auth.transport.grpc.SslCredentials",
+        __init__=mock.Mock(return_value=None),
+        ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
+    ):
+        mock_cred = mock.Mock()
+        transport = transports.RegistrationServiceGrpcTransport(
+            host="squid.clam.whelk",
+            credentials=mock_cred,
+            api_mtls_endpoint=api_mtls_endpoint,
+            client_cert_source=None,
+        )
+        grpc_create_channel.assert_called_once_with(
+            "mtls.squid.clam.whelk:443",
+            credentials=mock_cred,
+            ssl_credentials=mock_ssl_cred,
+            scopes=("https://www.googleapis.com/auth/cloud-platform",),
+        )
+        assert transport.grpc_channel == mock_grpc_channel
 
 
 def test_endpoint_path():
@@ -1593,4 +1738,69 @@ def test_endpoint_path():
     actual = RegistrationServiceClient.endpoint_path(
         project, location, namespace, service, endpoint
     )
+    assert expected == actual
+
+
+def test_parse_endpoint_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "namespace": "mussel",
+        "service": "winkle",
+        "endpoint": "nautilus",
+    }
+    path = RegistrationServiceClient.endpoint_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RegistrationServiceClient.parse_endpoint_path(path)
+    assert expected == actual
+
+
+def test_service_path():
+    project = "squid"
+    location = "clam"
+    namespace = "whelk"
+    service = "octopus"
+
+    expected = "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
+        project=project, location=location, namespace=namespace, service=service
+    )
+    actual = RegistrationServiceClient.service_path(
+        project, location, namespace, service
+    )
+    assert expected == actual
+
+
+def test_parse_service_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "namespace": "cuttlefish",
+        "service": "mussel",
+    }
+    path = RegistrationServiceClient.service_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RegistrationServiceClient.parse_service_path(path)
+    assert expected == actual
+
+
+def test_namespace_path():
+    project = "squid"
+    location = "clam"
+    namespace = "whelk"
+
+    expected = "projects/{project}/locations/{location}/namespaces/{namespace}".format(
+        project=project, location=location, namespace=namespace
+    )
+    actual = RegistrationServiceClient.namespace_path(project, location, namespace)
+    assert expected == actual
+
+
+def test_parse_namespace_path():
+    expected = {"project": "octopus", "location": "oyster", "namespace": "nudibranch"}
+    path = RegistrationServiceClient.namespace_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RegistrationServiceClient.parse_namespace_path(path)
     assert expected == actual
