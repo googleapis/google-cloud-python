@@ -14,8 +14,6 @@
 
 """This script is used to synthesize generated parts of this library."""
 
-import re
-
 import synthtool as s
 from synthtool import gcp
 
@@ -27,7 +25,12 @@ versions = ["v1beta1", "v1"]
 # Generate webrisk GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library("webrisk", version)
+    library = gapic.py_library(
+        service="webrisk",
+        version=version,
+        bazel_target=f"//google/cloud/webrisk/{version}:webrisk-{version}-py",
+        include_protos=True,
+    )
     s.copy(library, excludes=["docs/index.rst", "nox.py", "README.rst", "setup.py"])
 
 
