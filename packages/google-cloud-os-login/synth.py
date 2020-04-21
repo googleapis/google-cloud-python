@@ -16,17 +16,16 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate oslogin GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "oslogin",
-    "v1",
-    config_path="/google/cloud/oslogin/artman_oslogin_v1.yaml",
-    artman_output_name="os-login-v1",
+    service="oslogin",
+    version="v1",
+    bazel_target="//google/cloud/oslogin/v1:oslogin-v1-py",
     include_protos=True,
 )
 # pb2's are incorrectly generated into deeper directories, so copy separately into proto/
@@ -42,7 +41,13 @@ s.move(
     ],
 )
 s.move(library / "google/cloud/oslogin_v1/proto/**/*.py", "google/cloud/oslogin_v1/proto")
+s.move(library / "google/cloud/oslogin/common/**/*.py", "google/cloud/oslogin_v1/proto")
 
+s.replace(
+    "google/cloud/oslogin_v1/gapic/os_login_service_client.py",
+    "google-cloud-oslogin",
+    "google-cloud-os-login",
+)
 
 # Fix up imports
 s.replace(
