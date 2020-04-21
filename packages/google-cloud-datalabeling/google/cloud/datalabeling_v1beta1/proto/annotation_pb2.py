@@ -2014,12 +2014,9 @@ Annotation = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ANNOTATION,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
-        __doc__="""Annotation for Example. Each example may have one or more
-  annotations. For example in image classification problem, each image
-  might have one or more labels. We call labels binded with this image an
-  Annotation.
-  
-  
+        __doc__="""Annotation for Example. Each example may have one or more annotations.
+  For example in image classification problem, each image might have one
+  or more labels. We call labels binded with this image an Annotation.
   Attributes:
       name:
           Output only. Unique name of this annotation, format is:  proje
@@ -2049,8 +2046,6 @@ AnnotationValue = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_ANNOTATIONVALUE,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
         __doc__="""Annotation value for an example.
-  
-  
   Attributes:
       image_classification_annotation:
           Annotation value for image classification case.
@@ -2087,8 +2082,6 @@ ImageClassificationAnnotation = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_IMAGECLASSIFICATIONANNOTATION,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
         __doc__="""Image classification annotation definition.
-  
-  
   Attributes:
       annotation_spec:
           Label of image.
@@ -2105,8 +2098,6 @@ Vertex = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_VERTEX,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
         __doc__="""X coordinate.
-  
-  
   Attributes:
       y:
           Y coordinate.
@@ -2123,8 +2114,6 @@ NormalizedVertex = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_NORMALIZEDVERTEX,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
         __doc__="""X coordinate.
-  
-  
   Attributes:
       y:
           Y coordinate.
@@ -2141,8 +2130,6 @@ BoundingPoly = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_BOUNDINGPOLY,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
         __doc__="""A bounding polygon in the image.
-  
-  
   Attributes:
       vertices:
           The bounding polygon vertices.
@@ -2159,8 +2146,6 @@ NormalizedBoundingPoly = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_NORMALIZEDBOUNDINGPOLY,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
         __doc__="""Normalized bounding polygon.
-  
-  
   Attributes:
       normalized_vertices:
           The bounding polygon normalized vertices.
@@ -2176,10 +2161,8 @@ ImageBoundingPolyAnnotation = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_IMAGEBOUNDINGPOLYANNOTATION,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
-        __doc__="""Image bounding poly annotation. It represents a polygon
-  including bounding box in the image.
-  
-  
+        __doc__="""Image bounding poly annotation. It represents a polygon including
+  bounding box in the image.
   Attributes:
       bounded_area:
           The region of the polygon. If it is a bounding box, it is
@@ -2199,8 +2182,6 @@ Polyline = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_POLYLINE,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
         __doc__="""A line with multiple line segments.
-  
-  
   Attributes:
       vertices:
           The polyline vertices.
@@ -2217,8 +2198,6 @@ NormalizedPolyline = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_NORMALIZEDPOLYLINE,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
         __doc__="""Normalized polyline.
-  
-  
   Attributes:
       normalized_vertices:
           The normalized polyline vertices.
@@ -2235,8 +2214,6 @@ ImagePolylineAnnotation = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_IMAGEPOLYLINEANNOTATION,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
         __doc__="""A polyline for the image annotation.
-  
-  
   Attributes:
       annotation_spec:
           Label of this polyline.
@@ -2262,8 +2239,6 @@ ImageSegmentationAnnotation = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_IMAGESEGMENTATIONANNOTATION,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
         __doc__="""Image segmentation annotation.
-  
-  
   Attributes:
       annotation_colors:
           The mapping between rgb color and annotation spec. The key is
@@ -2287,8 +2262,6 @@ TextClassificationAnnotation = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_TEXTCLASSIFICATIONANNOTATION,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
         __doc__="""Text classification annotation.
-  
-  
   Attributes:
       annotation_spec:
           Label of the text.
@@ -2305,8 +2278,6 @@ TextEntityExtractionAnnotation = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_TEXTENTITYEXTRACTIONANNOTATION,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
         __doc__="""Text entity extraction annotation.
-  
-  
   Attributes:
       annotation_spec:
           Label of the text entities.
@@ -2325,8 +2296,6 @@ SequentialSegment = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_SEQUENTIALSEGMENT,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
         __doc__="""Start and end position in a sequence (e.g. text segment).
-  
-  
   Attributes:
       start:
           Start position (inclusive).
@@ -2344,10 +2313,8 @@ TimeSegment = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_TIMESEGMENT,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
-        __doc__="""A time period inside of an example that has a time
-  dimension (e.g. video).
-  
-  
+        __doc__="""A time period inside of an example that has a time dimension (e.g.
+  video).
   Attributes:
       start_time_offset:
           Start of the time segment (inclusive), represented as the
@@ -2368,8 +2335,6 @@ VideoClassificationAnnotation = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_VIDEOCLASSIFICATIONANNOTATION,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
         __doc__="""Video classification annotation.
-  
-  
   Attributes:
       time_segment:
           The time segment of the video to which the annotation applies.
@@ -2387,10 +2352,7 @@ ObjectTrackingFrame = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OBJECTTRACKINGFRAME,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
-        __doc__="""Video frame level annotation for object detection and
-  tracking.
-  
-  
+        __doc__="""Video frame level annotation for object detection and tracking.
   Attributes:
       bounded_area:
           The bounding box location of this object track for the frame.
@@ -2410,8 +2372,6 @@ VideoObjectTrackingAnnotation = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_VIDEOOBJECTTRACKINGANNOTATION,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
         __doc__="""Video object tracking annotation.
-  
-  
   Attributes:
       annotation_spec:
           Label of the object tracked in this annotation.
@@ -2433,8 +2393,6 @@ VideoEventAnnotation = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_VIDEOEVENTANNOTATION,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
         __doc__="""Video event annotation.
-  
-  
   Attributes:
       annotation_spec:
           Label of the event in this annotation.
@@ -2453,8 +2411,6 @@ AnnotationMetadata = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_ANNOTATIONMETADATA,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
         __doc__="""Additional information associated with the annotation.
-  
-  
   Attributes:
       operator_metadata:
           Metadata related to human labeling.
@@ -2470,10 +2426,7 @@ OperatorMetadata = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OPERATORMETADATA,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_pb2",
-        __doc__="""General information useful for labels coming from
-  contributors.
-  
-  
+        __doc__="""General information useful for labels coming from contributors.
   Attributes:
       score:
           Confidence score corresponding to a label. For examle, if 3

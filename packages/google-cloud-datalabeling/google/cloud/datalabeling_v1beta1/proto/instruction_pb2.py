@@ -328,10 +328,8 @@ Instruction = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_INSTRUCTION,
         __module__="google.cloud.datalabeling_v1beta1.proto.instruction_pb2",
-        __doc__="""Instruction of how to perform the labeling task for human
-  operators. Currently only PDF instruction is supported.
-  
-  
+        __doc__="""Instruction of how to perform the labeling task for human operators.
+  Currently only PDF instruction is supported.
   Attributes:
       name:
           Output only. Instruction resource name, format:
@@ -373,10 +371,8 @@ CsvInstruction = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CSVINSTRUCTION,
         __module__="google.cloud.datalabeling_v1beta1.proto.instruction_pb2",
-        __doc__="""Deprecated: this instruction format is not supported any
-  more. Instruction from a CSV file.
-  
-  
+        __doc__="""Deprecated: this instruction format is not supported any more.
+  Instruction from a CSV file.
   Attributes:
       gcs_file_uri:
           CSV file for the instruction. Only gcs path is allowed.
@@ -393,8 +389,6 @@ PdfInstruction = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_PDFINSTRUCTION,
         __module__="google.cloud.datalabeling_v1beta1.proto.instruction_pb2",
         __doc__="""Instruction from a PDF file.
-  
-  
   Attributes:
       gcs_file_uri:
           PDF file for the instruction. Only gcs path is allowed.

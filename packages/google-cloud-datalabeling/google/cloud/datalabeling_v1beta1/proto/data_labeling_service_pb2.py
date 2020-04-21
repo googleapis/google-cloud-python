@@ -3465,8 +3465,6 @@ CreateDatasetRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_CREATEDATASETREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for CreateDataset.
-  
-  
   Attributes:
       parent:
           Required. Dataset resource parent, format:
@@ -3486,8 +3484,6 @@ GetDatasetRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_GETDATASETREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for GetDataSet.
-  
-  
   Attributes:
       name:
           Required. Dataset resource name, format:
@@ -3505,8 +3501,6 @@ ListDatasetsRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTDATASETSREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for ListDataset.
-  
-  
   Attributes:
       parent:
           Required. Dataset resource parent, format:
@@ -3536,8 +3530,6 @@ ListDatasetsResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTDATASETSRESPONSE,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Results of listing datasets within a project.
-  
-  
   Attributes:
       datasets:
           The list of datasets to return.
@@ -3556,8 +3548,6 @@ DeleteDatasetRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_DELETEDATASETREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for DeleteDataset.
-  
-  
   Attributes:
       name:
           Required. Dataset resource name, format:
@@ -3575,8 +3565,6 @@ ImportDataRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_IMPORTDATAREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for ImportData API.
-  
-  
   Attributes:
       name:
           Required. Dataset resource name, format:
@@ -3599,8 +3587,6 @@ ExportDataRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_EXPORTDATAREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for ExportData API.
-  
-  
   Attributes:
       name:
           Required. Dataset resource name, format:
@@ -3630,8 +3616,6 @@ GetDataItemRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_GETDATAITEMREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for GetDataItem.
-  
-  
   Attributes:
       name:
           Required. The name of the data item to get, format: projects/{
@@ -3649,8 +3633,6 @@ ListDataItemsRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTDATAITEMSREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for ListDataItems.
-  
-  
   Attributes:
       parent:
           Required. Name of the dataset to list data items, format:
@@ -3680,8 +3662,6 @@ ListDataItemsResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTDATAITEMSRESPONSE,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Results of listing data items in a dataset.
-  
-  
   Attributes:
       data_items:
           The list of data items to return.
@@ -3700,8 +3680,6 @@ GetAnnotatedDatasetRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_GETANNOTATEDDATASETREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for GetAnnotatedDataset.
-  
-  
   Attributes:
       name:
           Required. Name of the annotated dataset to get, format: projec
@@ -3720,8 +3698,6 @@ ListAnnotatedDatasetsRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTANNOTATEDDATASETSREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for ListAnnotatedDatasets.
-  
-  
   Attributes:
       parent:
           Required. Name of the dataset to list annotated datasets,
@@ -3751,8 +3727,6 @@ ListAnnotatedDatasetsResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTANNOTATEDDATASETSRESPONSE,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Results of listing annotated datasets for a dataset.
-  
-  
   Attributes:
       annotated_datasets:
           The list of annotated datasets to return.
@@ -3771,8 +3745,6 @@ DeleteAnnotatedDatasetRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_DELETEANNOTATEDDATASETREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for DeleteAnnotatedDataset.
-  
-  
   Attributes:
       name:
           Required. Name of the annotated dataset to delete, format: pro
@@ -3791,8 +3763,6 @@ LabelImageRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LABELIMAGEREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for starting an image labeling task.
-  
-  
   Attributes:
       request_config:
           Required. Config for labeling tasks. The type of request
@@ -3833,8 +3803,6 @@ LabelVideoRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LABELVIDEOREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for LabelVideo.
-  
-  
   Attributes:
       request_config:
           Required. Config for labeling tasks. The type of request
@@ -3875,8 +3843,6 @@ LabelTextRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LABELTEXTREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for LabelText.
-  
-  
   Attributes:
       request_config:
           Required. Config for labeling tasks. The type of request
@@ -3909,8 +3875,6 @@ GetExampleRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_GETEXAMPLEREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for GetExample
-  
-  
   Attributes:
       name:
           Required. Name of example, format: projects/{project\_id}/data
@@ -3933,8 +3897,6 @@ ListExamplesRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTEXAMPLESREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for ListExamples.
-  
-  
   Attributes:
       parent:
           Required. Example resource parent.
@@ -3966,8 +3928,6 @@ ListExamplesResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTEXAMPLESRESPONSE,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Results of listing Examples in and annotated dataset.
-  
-  
   Attributes:
       examples:
           The list of examples to return.
@@ -3986,8 +3946,6 @@ CreateAnnotationSpecSetRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_CREATEANNOTATIONSPECSETREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for CreateAnnotationSpecSet.
-  
-  
   Attributes:
       parent:
           Required. AnnotationSpecSet resource parent, format:
@@ -4009,8 +3967,6 @@ GetAnnotationSpecSetRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_GETANNOTATIONSPECSETREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for GetAnnotationSpecSet.
-  
-  
   Attributes:
       name:
           Required. AnnotationSpecSet resource name, format: projects/{p
@@ -4028,8 +3984,6 @@ ListAnnotationSpecSetsRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTANNOTATIONSPECSETSREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for ListAnnotationSpecSets.
-  
-  
   Attributes:
       parent:
           Required. Parent of AnnotationSpecSet resource, format:
@@ -4059,8 +4013,6 @@ ListAnnotationSpecSetsResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTANNOTATIONSPECSETSRESPONSE,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Results of listing annotation spec set under a project.
-  
-  
   Attributes:
       annotation_spec_sets:
           The list of annotation spec sets.
@@ -4079,8 +4031,6 @@ DeleteAnnotationSpecSetRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_DELETEANNOTATIONSPECSETREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for DeleteAnnotationSpecSet.
-  
-  
   Attributes:
       name:
           Required. AnnotationSpec resource name, format: ``projects/{pr
@@ -4098,8 +4048,6 @@ CreateInstructionRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_CREATEINSTRUCTIONREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for CreateInstruction.
-  
-  
   Attributes:
       parent:
           Required. Instruction resource parent, format:
@@ -4119,8 +4067,6 @@ GetInstructionRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_GETINSTRUCTIONREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for GetInstruction.
-  
-  
   Attributes:
       name:
           Required. Instruction resource name, format:
@@ -4138,8 +4084,6 @@ DeleteInstructionRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_DELETEINSTRUCTIONREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for DeleteInstruction.
-  
-  
   Attributes:
       name:
           Required. Instruction resource name, format:
@@ -4157,8 +4101,6 @@ ListInstructionsRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTINSTRUCTIONSREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for ListInstructions.
-  
-  
   Attributes:
       parent:
           Required. Instruction resource parent, format:
@@ -4188,8 +4130,6 @@ ListInstructionsResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTINSTRUCTIONSRESPONSE,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Results of listing instructions under a project.
-  
-  
   Attributes:
       instructions:
           The list of Instructions to return.
@@ -4208,8 +4148,6 @@ GetEvaluationRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_GETEVALUATIONREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for GetEvaluation.
-  
-  
   Attributes:
       name:
           Required. Name of the evaluation. Format:  "projects/{project\
@@ -4227,8 +4165,6 @@ SearchEvaluationsRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_SEARCHEVALUATIONSREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for SearchEvaluation.
-  
-  
   Attributes:
       parent:
           Required. Evaluation search parent (project ID). Format:
@@ -4284,8 +4220,6 @@ SearchEvaluationsResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_SEARCHEVALUATIONSRESPONSE,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Results of searching evaluations.
-  
-  
   Attributes:
       evaluations:
           The list of evaluations matching the search.
@@ -4304,8 +4238,6 @@ SearchExampleComparisonsRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_SEARCHEXAMPLECOMPARISONSREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message of SearchExampleComparisons.
-  
-  
   Attributes:
       parent:
           Required. Name of the
@@ -4339,10 +4271,8 @@ SearchExampleComparisonsResponse = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_SEARCHEXAMPLECOMPARISONSRESPONSE_EXAMPLECOMPARISON,
                 __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
-                __doc__="""Example comparisons comparing ground truth output and
-    predictions for a specific input.
-    
-    
+                __doc__="""Example comparisons comparing ground truth output and predictions for
+    a specific input.
     Attributes:
         ground_truth_example:
             The ground truth output for the input.
@@ -4355,8 +4285,6 @@ SearchExampleComparisonsResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_SEARCHEXAMPLECOMPARISONSRESPONSE,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Results of searching example comparisons.
-  
-  
   Attributes:
       example_comparisons:
           A list of example comparisons matching the search criteria.
@@ -4376,8 +4304,6 @@ CreateEvaluationJobRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_CREATEEVALUATIONJOBREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for CreateEvaluationJob.
-  
-  
   Attributes:
       parent:
           Required. Evaluation job resource parent. Format:
@@ -4397,8 +4323,6 @@ UpdateEvaluationJobRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_UPDATEEVALUATIONJOBREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for UpdateEvaluationJob.
-  
-  
   Attributes:
       evaluation_job:
           Required. Evaluation job that is going to be updated.
@@ -4423,8 +4347,6 @@ GetEvaluationJobRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_GETEVALUATIONJOBREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for GetEvaluationJob.
-  
-  
   Attributes:
       name:
           Required. Name of the evaluation job. Format:
@@ -4442,8 +4364,6 @@ PauseEvaluationJobRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_PAUSEEVALUATIONJOBREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for PauseEvaluationJob.
-  
-  
   Attributes:
       name:
           Required. Name of the evaluation job that is going to be
@@ -4462,8 +4382,6 @@ ResumeEvaluationJobRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_RESUMEEVALUATIONJOBREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message ResumeEvaluationJob.
-  
-  
   Attributes:
       name:
           Required. Name of the evaluation job that is going to be
@@ -4482,8 +4400,6 @@ DeleteEvaluationJobRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_DELETEEVALUATIONJOBREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message DeleteEvaluationJob.
-  
-  
   Attributes:
       name:
           Required. Name of the evaluation job that is going to be
@@ -4502,8 +4418,6 @@ ListEvaluationJobsRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTEVALUATIONJOBSREQUEST,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Request message for ListEvaluationJobs.
-  
-  
   Attributes:
       parent:
           Required. Evaluation job resource parent. Format:
@@ -4541,8 +4455,6 @@ ListEvaluationJobsResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTEVALUATIONJOBSRESPONSE,
         __module__="google.cloud.datalabeling_v1beta1.proto.data_labeling_service_pb2",
         __doc__="""Results for listing evaluation jobs.
-  
-  
   Attributes:
       evaluation_jobs:
           The list of evaluation jobs to return.

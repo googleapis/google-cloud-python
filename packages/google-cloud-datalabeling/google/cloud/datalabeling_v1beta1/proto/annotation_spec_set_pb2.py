@@ -216,12 +216,10 @@ AnnotationSpecSet = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ANNOTATIONSPECSET,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_spec_set_pb2",
-        __doc__="""An AnnotationSpecSet is a collection of label definitions.
-  For example, in image classification tasks, you define a set of possible
+        __doc__="""An AnnotationSpecSet is a collection of label definitions. For
+  example, in image classification tasks, you define a set of possible
   labels for images as an AnnotationSpecSet. An AnnotationSpecSet is
   immutable upon creation.
-  
-  
   Attributes:
       name:
           Output only. The AnnotationSpecSet resource name in the
@@ -253,13 +251,10 @@ AnnotationSpec = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ANNOTATIONSPEC,
         __module__="google.cloud.datalabeling_v1beta1.proto.annotation_spec_set_pb2",
-        __doc__="""Container of information related to one possible
-  annotation that can be used in a labeling task. For example, an image
-  classification task where images are labeled as ``dog`` or ``cat`` must
-  reference an AnnotationSpec for ``dog`` and an AnnotationSpec for
-  ``cat``.
-  
-  
+        __doc__="""Container of information related to one possible annotation that can
+  be used in a labeling task. For example, an image classification task
+  where images are labeled as ``dog`` or ``cat`` must reference an
+  AnnotationSpec for ``dog`` and an AnnotationSpec for ``cat``.
   Attributes:
       display_name:
           Required. The display name of the AnnotationSpec. Maximum of

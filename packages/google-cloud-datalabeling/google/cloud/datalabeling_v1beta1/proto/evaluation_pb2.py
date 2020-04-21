@@ -973,12 +973,10 @@ Evaluation = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_EVALUATION,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
-        __doc__="""Describes an evaluation between a machine learning model's
-  predictions and ground truth labels. Created when an
+        __doc__="""Describes an evaluation between a machine learning model's predictions
+  and ground truth labels. Created when an
   [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob] runs
   successfully.
-  
-  
   Attributes:
       name:
           Output only. Resource name of an evaluation. The name has the
@@ -1017,11 +1015,9 @@ EvaluationConfig = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_EVALUATIONCONFIG,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
-        __doc__="""Configuration details used for calculating evaluation
-  metrics and creating an
+        __doc__="""Configuration details used for calculating evaluation metrics and
+  creating an
   [Evaluation][google.cloud.datalabeling.v1beta1.Evaluation].
-  
-  
   Attributes:
       vertical_option:
           Vertical specific options for general metrics.
@@ -1042,8 +1038,6 @@ BoundingBoxEvaluationOptions = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_BOUNDINGBOXEVALUATIONOPTIONS,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
         __doc__="""Options regarding evaluation between bounding boxes.
-  
-  
   Attributes:
       iou_threshold:
           Minimum [intersection-over-union
@@ -1080,8 +1074,6 @@ ClassificationMetrics = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_CLASSIFICATIONMETRICS,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
         __doc__="""Metrics calculated for a classification model.
-  
-  
   Attributes:
       pr_curve:
           Precision-recall curve based on ground truth labels, predicted
@@ -1100,10 +1092,7 @@ ObjectDetectionMetrics = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_OBJECTDETECTIONMETRICS,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
-        __doc__="""Metrics calculated for an image object detection (bounding
-  box) model.
-  
-  
+        __doc__="""Metrics calculated for an image object detection (bounding box) model.
   Attributes:
       pr_curve:
           Precision-recall curve.
@@ -1217,10 +1206,8 @@ ConfusionMatrix = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_CONFUSIONMATRIX_ROW,
                 __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
-                __doc__="""A row in the confusion matrix. Each entry in this row has
-    the same ground truth label.
-    
-    
+                __doc__="""A row in the confusion matrix. Each entry in this row has the same
+    ground truth label.
     Attributes:
         annotation_spec:
             The annotation spec of the ground truth label for this row.
@@ -1233,11 +1220,9 @@ ConfusionMatrix = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_CONFUSIONMATRIX,
         __module__="google.cloud.datalabeling_v1beta1.proto.evaluation_pb2",
-        __doc__="""Confusion matrix of the model running the classification.
-  Only applicable when the metrics entry aggregates multiple labels. Not
-  applicable when the entry is for a single label.
-  
-  """,
+        __doc__="""Confusion matrix of the model running the classification. Only
+  applicable when the metrics entry aggregates multiple labels. Not
+  applicable when the entry is for a single label.""",
         # @@protoc_insertion_point(class_scope:google.cloud.datalabeling.v1beta1.ConfusionMatrix)
     ),
 )
