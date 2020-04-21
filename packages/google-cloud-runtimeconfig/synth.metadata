@@ -1,25 +1,11 @@
 {
-  "updateTime": "2020-02-20T23:14:52.693919Z",
+  "updateTime": "2020-03-31T12:13:49.228648Z",
   "sources": [
     {
       "git": {
-        "name": ".",
-        "remote": "https://github.com/googleapis/python-runtimeconfig.git",
-        "sha": "e9602fb3cf00e55b345537ca598f454f83987e14"
-      }
-    },
-    {
-      "git": {
         "name": "synthtool",
-        "remote": "rpc://devrel/cloud/libraries/tools/autosynth",
-        "sha": "706a38c26db42299845396cdae55db635c38794a"
-      }
-    },
-    {
-      "template": {
-        "name": "python_split_library",
-        "origin": "synthtool.gcp",
-        "version": "2020.2.4"
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "a003d8655d3ebec2bbbd5fc3898e91e152265c67"
       }
     }
   ]
