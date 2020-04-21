@@ -28,4 +28,5 @@ class TestSystemLanguageService(object):
         content = "Hello, world!"
         type_ = enums.Document.Type.PLAIN_TEXT
         document = {"content": content, "type": type_}
-        response = client.analyze_sentiment(document)
+        encoding_type = enums.EncodingType.NONE
+        response = client.analyze_sentiment(document, encoding_type=encoding_type)
