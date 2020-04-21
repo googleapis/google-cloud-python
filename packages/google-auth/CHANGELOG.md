@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.14.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.14.0...v1.14.1) (2020-04-21)
+
+
+### Bug Fixes
+
+* support es256 raw format signature ([#490](https://www.github.com/googleapis/google-auth-library-python/issues/490)) ([cf2c0a9](https://www.github.com/googleapis/google-auth-library-python/commit/cf2c0a90701ce42f47df71281ae9cdf212c28e0e))
+
 ## [1.14.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.13.1...v1.14.0) (2020-04-13)
 
 
