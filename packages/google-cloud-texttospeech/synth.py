@@ -18,7 +18,7 @@ import re
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 versions = ["v1beta1", "v1"]
 
@@ -26,7 +26,12 @@ versions = ["v1beta1", "v1"]
 # Generate texttospeech GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library("texttospeech", version, include_protos=True)
+    library = gapic.py_library(
+        service="texttospeech",
+        version=version,
+        bazel_target=f"//google/cloud/texttospeech/{version}:texttospeech-{version}-py",
+        include_protos=True,
+    )
     s.move(library / f"google/cloud/texttospeech_{version}")
     s.move(library / f"tests/unit/gapic/{version}")
     s.move(library / f"docs/gapic/{version}")
