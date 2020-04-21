@@ -15,12 +15,15 @@
 """ECDSA (ES256) verifier and signer that use the ``cryptography`` library.
 """
 
+from cryptography import utils
 import cryptography.exceptions
 from cryptography.hazmat import backends
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives.asymmetric.utils import decode_dss_signature
+from cryptography.hazmat.primitives.asymmetric.utils import encode_dss_signature
 import cryptography.x509
 import pkg_resources
 
@@ -58,9 +61,17 @@ class ES256Verifier(base.Verifier):
 
     @_helpers.copy_docstring(base.Verifier)
     def verify(self, message, signature):
+        # First convert (r||s) raw signature to ASN1 encoded signature.
+        sig_bytes = _helpers.to_bytes(signature)
+        if len(sig_bytes) != 64:
+            return False
+        r = utils.int_from_bytes(sig_bytes[:32], byteorder="big")
+        s = utils.int_from_bytes(sig_bytes[32:], byteorder="big")
+        asn1_sig = encode_dss_signature(r, s)
+
         message = _helpers.to_bytes(message)
         try:
-            self._pubkey.verify(signature, message, ec.ECDSA(hashes.SHA256()))
+            self._pubkey.verify(asn1_sig, message, ec.ECDSA(hashes.SHA256()))
             return True
         except (ValueError, cryptography.exceptions.InvalidSignature):
             return False
@@ -118,7 +129,11 @@ class ES256Signer(base.Signer, base.FromServiceAccountMixin):
     @_helpers.copy_docstring(base.Signer)
     def sign(self, message):
         message = _helpers.to_bytes(message)
-        return self._key.sign(message, ec.ECDSA(hashes.SHA256()))
+        asn1_signature = self._key.sign(message, ec.ECDSA(hashes.SHA256()))
+
+        # Convert ASN1 encoded signature to (r||s) raw signature.
+        (r, s) = decode_dss_signature(asn1_signature)
+        return utils.int_to_bytes(r, 32) + utils.int_to_bytes(s, 32)
 
     @classmethod
     def from_string(cls, key, key_id=None):

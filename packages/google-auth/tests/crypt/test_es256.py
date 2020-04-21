@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import base64
 import json
 import os
 
@@ -71,6 +72,17 @@ class TestES256Verifier(object):
         assert not verifier.verify(b"foo", bad_signature1)
         bad_signature2 = b"a"
         assert not verifier.verify(b"foo", bad_signature2)
+
+    def test_verify_failure_with_wrong_raw_signature(self):
+        to_sign = b"foo"
+
+        # This signature has a wrong "r" value in the "(r,s)" raw signature.
+        wrong_signature = base64.urlsafe_b64decode(
+            b"m7oaRxUDeYqjZ8qiMwo0PZLTMZWKJLFQREpqce1StMIa_yXQQ-C5WgeIRHW7OqlYSDL0XbUrj_uAw9i-QhfOJQ=="
+        )
+
+        verifier = es256.ES256Verifier.from_string(PUBLIC_KEY_BYTES)
+        assert not verifier.verify(to_sign, wrong_signature)
 
     def test_from_string_pub_key(self):
         verifier = es256.ES256Verifier.from_string(PUBLIC_KEY_BYTES)
