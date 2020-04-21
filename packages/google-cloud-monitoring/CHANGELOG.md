@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [0.35.0](https://www.github.com/googleapis/python-monitoring/compare/v0.34.0...v0.35.0) (2020-04-21)
+
+
+### Features
+
+* add uptime check feature; increase default timeout (via synth) ([#15](https://www.github.com/googleapis/python-monitoring/issues/15)) ([dcf074a](https://www.github.com/googleapis/python-monitoring/commit/dcf074aed9922982f7324d4f2943d9435778d46c))
+
 ## 0.34.0
 
 11-19-2019 14:27 PST
