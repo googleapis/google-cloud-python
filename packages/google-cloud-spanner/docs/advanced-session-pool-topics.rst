@@ -103,6 +103,7 @@ started before it is used:
       while True:
          # (Optional) Perform other background tasks here
          pool.ping()
+         pool.begin_pending_transactions()
 
 
    background = threading.Thread(target=background_loop, name='ping-pool')
