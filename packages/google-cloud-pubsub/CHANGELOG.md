@@ -4,7 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
-### [1.4.3](https://www.github.com/googleapis/python-pubsub/compare/v1.4.2...v1.4.3) (2020-04-16)
+## [1.4.3](https://www.github.com/googleapis/python-pubsub/compare/v1.4.2...v1.4.3) (2020-04-16)
 
 
 ### Bug Fixes
