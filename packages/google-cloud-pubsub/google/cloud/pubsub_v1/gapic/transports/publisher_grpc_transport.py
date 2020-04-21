@@ -194,6 +194,24 @@ class PublisherGrpcTransport(object):
         return self._stubs["publisher_stub"].ListTopicSubscriptions
 
     @property
+    def list_topic_snapshots(self):
+        """Return the gRPC stub for :meth:`PublisherClient.list_topic_snapshots`.
+
+        Lists the names of the snapshots on this topic. Snapshots are used in
+        <a href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
+        operations, which allow
+        you to manage message acknowledgments in bulk. That is, you can set the
+        acknowledgment state of messages in an existing subscription to the state
+        captured by a snapshot.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["publisher_stub"].ListTopicSnapshots
+
+    @property
     def delete_topic(self):
         """Return the gRPC stub for :meth:`PublisherClient.delete_topic`.
 
@@ -218,8 +236,8 @@ class PublisherGrpcTransport(object):
         Sets the access control policy on the specified resource. Replaces
         any existing policy.
 
-        Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and
-        PERMISSION_DENIED
+        Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED`
+        errors.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -248,7 +266,7 @@ class PublisherGrpcTransport(object):
 
         Returns permissions that a caller has on the specified resource. If the
         resource does not exist, this will return an empty set of
-        permissions, not a NOT_FOUND error.
+        permissions, not a `NOT_FOUND` error.
 
         Note: This operation is designed to be used for building
         permission-aware UIs and command-line tools, not for authorization

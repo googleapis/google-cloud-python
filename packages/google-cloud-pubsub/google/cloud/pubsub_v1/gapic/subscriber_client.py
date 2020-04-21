@@ -246,7 +246,9 @@ class SubscriberClient(object):
         labels=None,
         enable_message_ordering=None,
         expiration_policy=None,
+        filter_=None,
         dead_letter_policy=None,
+        retry_policy=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -343,6 +345,13 @@ class SubscriberClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.ExpirationPolicy`
+            filter_ (str): An expression written in the Cloud Pub/Sub filter language. If
+                non-empty, then only ``PubsubMessage``\ s whose ``attributes`` field
+                matches the filter are delivered on this subscription. If empty, then no
+                messages are filtered out. EXPERIMENTAL: This feature is part of a
+                closed alpha release. This API might be changed in backward-incompatible
+                ways and is not recommended for production use. It is not subject to any
+                SLA or deprecation policy.
             dead_letter_policy (Union[dict, ~google.cloud.pubsub_v1.types.DeadLetterPolicy]): A policy that specifies the conditions for dead lettering messages in
                 this subscription. If dead\_letter\_policy is not set, dead lettering is
                 disabled.
@@ -351,12 +360,22 @@ class SubscriberClient(object):
                 parent project (i.e.,
                 service-{project\_number}@gcp-sa-pubsub.iam.gserviceaccount.com) must
                 have permission to Acknowledge() messages on this subscription.
-                EXPERIMENTAL: This feature is part of a closed alpha release. This API
-                might be changed in backward-incompatible ways and is not recommended
-                for production use. It is not subject to any SLA or deprecation policy.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.DeadLetterPolicy`
+            retry_policy (Union[dict, ~google.cloud.pubsub_v1.types.RetryPolicy]): A policy that specifies how Cloud Pub/Sub retries message delivery for this
+                subscription.
+
+                If not set, the default retry policy is applied. This generally implies
+                that messages will be retried as soon as possible for healthy subscribers.
+                RetryPolicy will be triggered on NACKs or acknowledgement deadline
+                exceeded events for a given message.
+                <b>EXPERIMENTAL:</b> This API might be changed in backward-incompatible
+                ways and is not recommended for production use. It is not subject to any
+                SLA or deprecation policy.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.pubsub_v1.types.RetryPolicy`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -397,7 +416,9 @@ class SubscriberClient(object):
             labels=labels,
             enable_message_ordering=enable_message_ordering,
             expiration_policy=expiration_policy,
+            filter=filter_,
             dead_letter_policy=dead_letter_policy,
+            retry_policy=retry_policy,
         )
         if metadata is None:
             metadata = []
@@ -747,6 +768,80 @@ class SubscriberClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
+    def get_snapshot(
+        self,
+        snapshot,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Gets the configuration details of a snapshot. Snapshots are used in
+        <a href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
+        operations, which allow you to manage message acknowledgments in bulk. That
+        is, you can set the acknowledgment state of messages in an existing
+        subscription to the state captured by a snapshot.
+
+        Example:
+            >>> from google.cloud import pubsub_v1
+            >>>
+            >>> client = pubsub_v1.SubscriberClient()
+            >>>
+            >>> snapshot = client.snapshot_path('[PROJECT]', '[SNAPSHOT]')
+            >>>
+            >>> response = client.get_snapshot(snapshot)
+
+        Args:
+            snapshot (str): Required. The name of the snapshot to get. Format is
+                ``projects/{project}/snapshots/{snap}``.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.pubsub_v1.types.Snapshot` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_snapshot" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_snapshot"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_snapshot,
+                default_retry=self._method_configs["GetSnapshot"].retry,
+                default_timeout=self._method_configs["GetSnapshot"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = pubsub_pb2.GetSnapshotRequest(snapshot=snapshot)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("snapshot", snapshot)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["get_snapshot"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def modify_ack_deadline(
         self,
         subscription,
@@ -950,13 +1045,16 @@ class SubscriberClient(object):
         Args:
             subscription (str): Required. The subscription from which messages should be pulled. Format
                 is ``projects/{project}/subscriptions/{sub}``.
-            max_messages (int): Required. The maximum number of messages to return for this request. Must be a
-                positive integer. The Pub/Sub system may return fewer than the number
+            max_messages (int): Required. The maximum number of messages to return for this request. Must
+                be a positive integer. The Pub/Sub system may return fewer than the number
                 specified.
-            return_immediately (bool): If this field set to true, the system will respond immediately even if
-                it there are no messages available to return in the ``Pull`` response.
-                Otherwise, the system may wait (for a bounded amount of time) until at
-                least one message is available, rather than returning no messages.
+            return_immediately (bool): Optional. If this field set to true, the system will respond immediately
+                even if it there are no messages available to return in the ``Pull``
+                response. Otherwise, the system may wait (for a bounded amount of time)
+                until at least one message is available, rather than returning no
+                messages. Warning: setting this field to ``true`` is discouraged because
+                it adversely impacts the performance of ``Pull`` operations. We
+                recommend that users do not set this field.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1648,15 +1746,16 @@ class SubscriberClient(object):
         Sets the access control policy on the specified resource. Replaces
         any existing policy.
 
-        Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and
-        PERMISSION_DENIED
+        Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED`
+        errors.
 
         Example:
             >>> from google.cloud import pubsub_v1
             >>>
             >>> client = pubsub_v1.SubscriberClient()
             >>>
-            >>> resource = client.subscription_path('[PROJECT]', '[SUBSCRIPTION]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> # TODO: Initialize `policy`:
             >>> policy = {}
@@ -1738,7 +1837,8 @@ class SubscriberClient(object):
             >>>
             >>> client = pubsub_v1.SubscriberClient()
             >>>
-            >>> resource = client.subscription_path('[PROJECT]', '[SUBSCRIPTION]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> response = client.get_iam_policy(resource)
 
@@ -1811,7 +1911,7 @@ class SubscriberClient(object):
         """
         Returns permissions that a caller has on the specified resource. If the
         resource does not exist, this will return an empty set of
-        permissions, not a NOT_FOUND error.
+        permissions, not a `NOT_FOUND` error.
 
         Note: This operation is designed to be used for building
         permission-aware UIs and command-line tools, not for authorization
@@ -1822,7 +1922,8 @@ class SubscriberClient(object):
             >>>
             >>> client = pubsub_v1.SubscriberClient()
             >>>
-            >>> resource = client.subscription_path('[PROJECT]', '[SUBSCRIPTION]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> # TODO: Initialize `permissions`:
             >>> permissions = []

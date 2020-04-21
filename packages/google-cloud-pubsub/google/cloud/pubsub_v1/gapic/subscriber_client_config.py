@@ -4,6 +4,7 @@ config = {
             "retry_codes": {
                 "idempotent": ["ABORTED", "UNAVAILABLE", "UNKNOWN"],
                 "non_idempotent": ["UNAVAILABLE"],
+                "idempotent2": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
                 "streaming_pull": [
                     "ABORTED",
                     "DEADLINE_EXCEEDED",
@@ -65,6 +66,11 @@ config = {
                 "DeleteSubscription": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "GetSnapshot": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent2",
                     "retry_params_name": "default",
                 },
                 "ModifyAckDeadline": {

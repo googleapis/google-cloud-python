@@ -4,6 +4,7 @@ config = {
             "retry_codes": {
                 "idempotent": ["ABORTED", "UNAVAILABLE", "UNKNOWN"],
                 "non_idempotent": ["UNAVAILABLE"],
+                "idempotent2": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
                 "none": [],
                 "publish": [
                     "ABORTED",
@@ -71,6 +72,11 @@ config = {
                 "ListTopicSubscriptions": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "ListTopicSnapshots": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent2",
                     "retry_params_name": "default",
                 },
                 "DeleteTopic": {

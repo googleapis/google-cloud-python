@@ -321,6 +321,49 @@ class TestPublisherClient(object):
         with pytest.raises(CustomException):
             list(paged_list_response)
 
+    def test_list_topic_snapshots(self):
+        # Setup Expected Response
+        next_page_token = ""
+        snapshots_element = "snapshotsElement1339034092"
+        snapshots = [snapshots_element]
+        expected_response = {"next_page_token": next_page_token, "snapshots": snapshots}
+        expected_response = pubsub_pb2.ListTopicSnapshotsResponse(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = publisher_client.PublisherClient()
+
+        # Setup Request
+        topic = client.topic_path("[PROJECT]", "[TOPIC]")
+
+        paged_list_response = client.list_topic_snapshots(topic)
+        resources = list(paged_list_response)
+        assert len(resources) == 1
+
+        assert expected_response.snapshots[0] == resources[0]
+
+        assert len(channel.requests) == 1
+        expected_request = pubsub_pb2.ListTopicSnapshotsRequest(topic=topic)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_list_topic_snapshots_exception(self):
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = publisher_client.PublisherClient()
+
+        # Setup request
+        topic = client.topic_path("[PROJECT]", "[TOPIC]")
+
+        paged_list_response = client.list_topic_snapshots(topic)
+        with pytest.raises(CustomException):
+            list(paged_list_response)
+
     def test_delete_topic(self):
         channel = ChannelStub()
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
@@ -367,7 +410,7 @@ class TestPublisherClient(object):
             client = publisher_client.PublisherClient()
 
         # Setup Request
-        resource = client.topic_path("[PROJECT]", "[TOPIC]")
+        resource = "resource-341064690"
         policy = {}
 
         response = client.set_iam_policy(resource, policy)
@@ -389,7 +432,7 @@ class TestPublisherClient(object):
             client = publisher_client.PublisherClient()
 
         # Setup request
-        resource = client.topic_path("[PROJECT]", "[TOPIC]")
+        resource = "resource-341064690"
         policy = {}
 
         with pytest.raises(CustomException):
@@ -410,7 +453,7 @@ class TestPublisherClient(object):
             client = publisher_client.PublisherClient()
 
         # Setup Request
-        resource = client.topic_path("[PROJECT]", "[TOPIC]")
+        resource = "resource-341064690"
 
         response = client.get_iam_policy(resource)
         assert expected_response == response
@@ -429,7 +472,7 @@ class TestPublisherClient(object):
             client = publisher_client.PublisherClient()
 
         # Setup request
-        resource = client.topic_path("[PROJECT]", "[TOPIC]")
+        resource = "resource-341064690"
 
         with pytest.raises(CustomException):
             client.get_iam_policy(resource)
@@ -449,7 +492,7 @@ class TestPublisherClient(object):
             client = publisher_client.PublisherClient()
 
         # Setup Request
-        resource = client.topic_path("[PROJECT]", "[TOPIC]")
+        resource = "resource-341064690"
         permissions = []
 
         response = client.test_iam_permissions(resource, permissions)
@@ -471,7 +514,7 @@ class TestPublisherClient(object):
             client = publisher_client.PublisherClient()
 
         # Setup request
-        resource = client.topic_path("[PROJECT]", "[TOPIC]")
+        resource = "resource-341064690"
         permissions = []
 
         with pytest.raises(CustomException):
