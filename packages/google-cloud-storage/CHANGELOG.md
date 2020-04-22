@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [1.28.0](https://www.github.com/googleapis/python-storage/compare/v1.27.0...v1.28.0) (2020-04-22)
+
+
+### Features
+
+* **storage:** add arguments for *GenerationMatch uploading options ([#111](https://www.github.com/googleapis/python-storage/issues/111)) ([b11aa5f](https://www.github.com/googleapis/python-storage/commit/b11aa5f00753b094580847bc62c154ae0e584dbc))
+
+
+### Bug Fixes
+
+* **storage:** fix incorrect mtime by UTC offset ([#42](https://www.github.com/googleapis/python-storage/issues/42)) ([76bd652](https://www.github.com/googleapis/python-storage/commit/76bd652a3078d94e03e566b6a387fc488ab26910))
+* **storage:** remove expiration strict conversion ([#106](https://www.github.com/googleapis/python-storage/issues/106)) ([9550dad](https://www.github.com/googleapis/python-storage/commit/9550dad6e63e249110fc9dcda245061b76dacdcf)), closes [#105](https://www.github.com/googleapis/python-storage/issues/105)
+
 ## [1.27.0](https://www.github.com/googleapis/python-storage/compare/v1.26.0...v1.27.0) (2020-04-01)
 
 
