@@ -16,3 +16,6 @@ exclude_lines =
     # generates the code and tries to run it without pip installing. This
     # makes it virtually impossible to test properly.
     except pkg_resources.DistributionNotFound
+    # This is used to indicate a python version mismatch,
+    # which is not easily tested in unit tests.
+    raise ImportError

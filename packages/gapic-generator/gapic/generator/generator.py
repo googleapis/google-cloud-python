@@ -80,7 +80,6 @@ class Generator:
             files and contents. See ``plugin.proto``.
         """
         output_files: Dict[str, CodeGeneratorResponse.File] = OrderedDict()
-
         sample_templates, client_templates = utils.partition(
             lambda fname: os.path.basename(
                 fname) == samplegen.DEFAULT_TEMPLATE_NAME,

@@ -294,6 +294,24 @@ class API:
                                     )
 
     @cached_property
+    def top_level_messages(self) -> Mapping[str, wrappers.MessageType]:
+        """Return a map of all messages that are NOT nested."""
+        return {
+            k: v
+            for p in self.protos.values()
+            for k, v in p.messages.items()
+        }
+
+    @cached_property
+    def top_level_enums(self) -> Mapping[str, wrappers.EnumType]:
+        """Return a map of all messages that are NOT nested."""
+        return {
+            k: v
+            for p in self.protos.values()
+            for k, v in p.enums.items()
+        }
+
+    @cached_property
     def protos(self) -> Mapping[str, Proto]:
         """Return a map of all protos specific to this API.
 

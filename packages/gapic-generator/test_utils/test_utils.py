@@ -306,6 +306,19 @@ def make_naming(**kwargs) -> naming.Naming:
     return naming.NewNaming(**kwargs)
 
 
+def make_enum_pb2(
+    name: str,
+    *values: typing.Sequence[str],
+    **kwargs
+) -> desc.EnumDescriptorProto:
+    enum_value_pbs = [
+        desc.EnumValueDescriptorProto(name=n, number=i)
+        for i, n in enumerate(values)
+    ]
+    enum_pb = desc.EnumDescriptorProto(name=name, value=enum_value_pbs, **kwargs)
+    return enum_pb
+
+
 def make_message_pb2(
         name: str,
         fields: tuple = (),

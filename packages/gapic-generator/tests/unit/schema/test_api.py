@@ -29,6 +29,7 @@ from gapic.schema import naming
 from gapic.schema import wrappers
 
 from test_utils.test_utils import (
+    make_enum_pb2,
     make_field_pb2,
     make_file_pb2,
     make_message_pb2,
@@ -104,6 +105,57 @@ def test_api_build():
     assert len(sub.protos) == 1
     assert 'google.example.v1.common.Bar' in sub.messages
     assert 'google.example.v1.Foo' not in sub.messages
+
+
+def test_top_level_messages():
+    message_pbs = (
+        make_message_pb2(name='Mollusc', nested_type=(
+            make_message_pb2(name='Squid'),
+        )),
+    )
+    fds = (
+        make_file_pb2(
+            messages=message_pbs,
+            package='google.example.v3',
+        ),
+    )
+    api_schema = api.API.build(fds, package='google.example.v3')
+    actual = [m.name for m in api_schema.top_level_messages.values()]
+    expected = ['Mollusc']
+    assert expected == actual
+
+
+def test_top_level_enum():
+    # Test that a nested enum works properly.
+    message_pbs = (
+        make_message_pb2(name='Coleoidea', enum_type=(
+            make_enum_pb2(
+                'Superorder',
+                'Decapodiformes',
+                'Octopodiformes',
+                'Palaeoteuthomorpha',
+            ),
+        )),
+    )
+    enum_pbs = (
+        make_enum_pb2(
+            'Order',
+            'Gastropoda',
+            'Bivalvia',
+            'Cephalopoda',
+        ),
+    )
+    fds = (
+        make_file_pb2(
+            messages=message_pbs,
+            enums=enum_pbs,
+            package='google.example.v3',
+        ),
+    )
+    api_schema = api.API.build(fds, package='google.example.v3')
+    actual = [e.name for e in api_schema.top_level_enums.values()]
+    expected = ['Order']
+    assert expected == actual
 
 
 def test_proto_build():
