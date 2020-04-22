@@ -17,16 +17,14 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 version = 'v2'
 
 library = gapic.py_library(
-    'bigquery',
-    version,
-    config_path='/google/cloud/bigquery/'
-                'artman_bigquery_v2.yaml',
-    artman_output_name='bigquery-v2',
+    service='bigquery',
+    version=version,
+    bazel_target=f"//google/cloud/bigquery/{version}:bigquery-{version}-py",
     include_protos=True,
 )
 
