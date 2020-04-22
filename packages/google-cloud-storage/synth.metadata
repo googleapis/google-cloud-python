@@ -1,25 +1,11 @@
 {
-  "updateTime": "2020-02-19T02:28:15.687395Z",
+  "updateTime": "2020-03-31T12:14:08.930178Z",
   "sources": [
     {
       "git": {
-        "name": ".",
-        "remote": "https://github.com/googleapis/python-storage.git",
-        "sha": "6c9296ce6847e1ba35aec1a3cc22c020bedeb592"
-      }
-    },
-    {
-      "git": {
         "name": "synthtool",
-        "remote": "rpc://devrel/cloud/libraries/tools/autosynth",
-        "sha": "b4b7af4a16a07b40bfd8dcdda89f9f193ff4e2ed"
-      }
-    },
-    {
-      "template": {
-        "name": "python_split_library",
-        "origin": "synthtool.gcp",
-        "version": "2020.2.4"
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "a003d8655d3ebec2bbbd5fc3898e91e152265c67"
       }
     }
   ]
