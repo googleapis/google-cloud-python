@@ -19,7 +19,7 @@ import re
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 versions = ["v1beta1", "v1"]
 
@@ -28,7 +28,13 @@ versions = ["v1beta1", "v1"]
 # Generate automl GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library("automl", version, include_protos=True)
+    library = gapic.py_library(
+        service="automl",
+        version=version,
+        bazel_target=f"//google/cloud/automl/{version}:automl-{version}-py",
+        include_protos=True
+    )
+
     s.move(library / f"google/cloud/automl_{version}")
     s.move(library / f"tests/unit/gapic/{version}")
     s.move(library / f"docs/gapic/{version}")
