@@ -33,6 +33,7 @@ from google.cloud.storage._helpers import _base64_md5hash
 from google.cloud.storage.bucket import LifecycleRuleDelete
 from google.cloud.storage.bucket import LifecycleRuleSetStorageClass
 from google.cloud import kms
+import google.api_core
 import google.oauth2
 from test_utils.retry import RetryErrors
 from test_utils.system import unique_resource_id
@@ -709,6 +710,32 @@ class TestStorageWriteFiles(TestStorageFiles):
 
         raw = blob.download_as_string(raw_download=True)
         self.assertEqual(raw, zipped)
+
+    def test_resumable_upload_with_generation_match(self):
+        blob = self.bucket.blob("LargeFile")
+
+        # uploading the file
+        file_data = self.FILES["big"]
+        with open(file_data["path"], "rb") as file_obj:
+            blob.upload_from_file(file_obj)
+            self.case_blobs_to_delete.append(blob)
+
+        # reuploading with correct generations numbers
+        with open(file_data["path"], "rb") as file_obj:
+            blob.upload_from_file(
+                file_obj,
+                if_generation_match=blob.generation,
+                if_metageneration_match=blob.metageneration,
+            )
+
+        # reuploading with generations numbers that doesn't match original
+        with self.assertRaises(google.api_core.exceptions.PreconditionFailed):
+            with open(file_data["path"], "rb") as file_obj:
+                blob.upload_from_file(file_obj, if_generation_match=3)
+
+        with self.assertRaises(google.api_core.exceptions.PreconditionFailed):
+            with open(file_data["path"], "rb") as file_obj:
+                blob.upload_from_file(file_obj, if_metageneration_match=3)
 
 
 class TestUnicode(unittest.TestCase):
