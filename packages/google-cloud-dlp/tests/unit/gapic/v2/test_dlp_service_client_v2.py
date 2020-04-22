@@ -860,6 +860,74 @@ class TestDlpServiceClient(object):
         with pytest.raises(CustomException):
             client.cancel_dlp_job(name)
 
+    def test_finish_dlp_job(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
+
+        # Setup Request
+        name = client.dlp_job_path("[PROJECT]", "[DLP_JOB]")
+
+        client.finish_dlp_job(name)
+
+        assert len(channel.requests) == 1
+        expected_request = dlp_pb2.FinishDlpJobRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_finish_dlp_job_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
+
+        # Setup request
+        name = client.dlp_job_path("[PROJECT]", "[DLP_JOB]")
+
+        with pytest.raises(CustomException):
+            client.finish_dlp_job(name)
+
+    def test_hybrid_inspect_dlp_job(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = dlp_pb2.HybridInspectResponse(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
+
+        # Setup Request
+        name = "name3373707"
+
+        response = client.hybrid_inspect_dlp_job(name)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = dlp_pb2.HybridInspectDlpJobRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_hybrid_inspect_dlp_job_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
+
+        # Setup request
+        name = "name3373707"
+
+        with pytest.raises(CustomException):
+            client.hybrid_inspect_dlp_job(name)
+
     def test_list_job_triggers(self):
         # Setup Expected Response
         next_page_token = ""
@@ -980,6 +1048,43 @@ class TestDlpServiceClient(object):
 
         with pytest.raises(CustomException):
             client.delete_job_trigger(name)
+
+    def test_hybrid_inspect_job_trigger(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = dlp_pb2.HybridInspectResponse(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
+
+        # Setup Request
+        name = "name3373707"
+
+        response = client.hybrid_inspect_job_trigger(name)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = dlp_pb2.HybridInspectJobTriggerRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_hybrid_inspect_job_trigger_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dlp_v2.DlpServiceClient()
+
+        # Setup request
+        name = "name3373707"
+
+        with pytest.raises(CustomException):
+            client.hybrid_inspect_job_trigger(name)
 
     def test_update_job_trigger(self):
         # Setup Expected Response

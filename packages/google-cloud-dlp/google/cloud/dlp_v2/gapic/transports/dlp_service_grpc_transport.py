@@ -427,6 +427,41 @@ class DlpServiceGrpcTransport(object):
         return self._stubs["dlp_service_stub"].CancelDlpJob
 
     @property
+    def finish_dlp_job(self):
+        """Return the gRPC stub for :meth:`DlpServiceClient.finish_dlp_job`.
+
+        Finish a running hybrid DlpJob. Triggers the finalization steps and running
+        of any enabled actions that have not yet run.
+        Early access feature is in a pre-release state and might change or have
+        limited support. For more information, see
+        https://cloud.google.com/products#product-launch-stages.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["dlp_service_stub"].FinishDlpJob
+
+    @property
+    def hybrid_inspect_dlp_job(self):
+        """Return the gRPC stub for :meth:`DlpServiceClient.hybrid_inspect_dlp_job`.
+
+        Inspect hybrid content and store findings to a job.
+        To review the findings inspect the job. Inspection will occur
+        asynchronously.
+        Early access feature is in a pre-release state and might change or have
+        limited support. For more information, see
+        https://cloud.google.com/products#product-launch-stages.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["dlp_service_stub"].HybridInspectDlpJob
+
+    @property
     def list_job_triggers(self):
         """Return the gRPC stub for :meth:`DlpServiceClient.list_job_triggers`.
 
@@ -467,6 +502,24 @@ class DlpServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["dlp_service_stub"].DeleteJobTrigger
+
+    @property
+    def hybrid_inspect_job_trigger(self):
+        """Return the gRPC stub for :meth:`DlpServiceClient.hybrid_inspect_job_trigger`.
+
+        Inspect hybrid content and store findings to a trigger. The inspection
+        will be processed asynchronously. To review the findings monitor the
+        jobs within the trigger.
+        Early access feature is in a pre-release state and might change or have
+        limited support. For more information, see
+        https://cloud.google.com/products#product-launch-stages.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["dlp_service_stub"].HybridInspectJobTrigger
 
     @property
     def update_job_trigger(self):

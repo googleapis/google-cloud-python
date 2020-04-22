@@ -338,15 +338,20 @@ class CustomInfoType(object):
 class DlpJob(object):
     class JobState(enum.IntEnum):
         """
-        Possible states of a job.
+        Possible states of a job. New items may be added.
 
         Attributes:
           JOB_STATE_UNSPECIFIED (int): Unused.
           PENDING (int): The job has not yet started.
-          RUNNING (int): The job is currently running.
+          RUNNING (int): The job is currently running. Once a job has finished it will transition
+          to FAILED or DONE.
           DONE (int): The job is no longer running.
           CANCELED (int): The job was canceled before it could complete.
           FAILED (int): The job had an error and did not complete.
+          ACTIVE (int): The job is currently accepting findings via hybridInspect.
+          A hybrid job in ACTIVE state may continue to have findings added to it
+          through calling of hybridInspect. After the job has finished no more
+          calls to hybridInspect may be made. ACTIVE jobs can transition to DONE.
         """
 
         JOB_STATE_UNSPECIFIED = 0
@@ -355,6 +360,7 @@ class DlpJob(object):
         DONE = 3
         CANCELED = 4
         FAILED = 5
+        ACTIVE = 6
 
 
 class JobTrigger(object):
@@ -382,6 +388,7 @@ class OutputStorageConfig(object):
     class OutputSchema(enum.IntEnum):
         """
         Predefined schemas for storing findings.
+        Only for use with external storage.
 
         Attributes:
           OUTPUT_SCHEMA_UNSPECIFIED (int): Unused.

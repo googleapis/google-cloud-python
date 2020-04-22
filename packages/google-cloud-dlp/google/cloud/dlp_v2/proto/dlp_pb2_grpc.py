@@ -110,6 +110,11 @@ class DlpServiceStub(object):
             request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateJobTriggerRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.JobTrigger.FromString,
         )
+        self.HybridInspectJobTrigger = channel.unary_unary(
+            "/google.privacy.dlp.v2.DlpService/HybridInspectJobTrigger",
+            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectJobTriggerRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectResponse.FromString,
+        )
         self.GetJobTrigger = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/GetJobTrigger",
             request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetJobTriggerRequest.SerializeToString,
@@ -178,6 +183,16 @@ class DlpServiceStub(object):
         self.DeleteStoredInfoType = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/DeleteStoredInfoType",
             request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteStoredInfoTypeRequest.SerializeToString,
+            response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+        )
+        self.HybridInspectDlpJob = channel.unary_unary(
+            "/google.privacy.dlp.v2.DlpService/HybridInspectDlpJob",
+            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectDlpJobRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectResponse.FromString,
+        )
+        self.FinishDlpJob = channel.unary_unary(
+            "/google.privacy.dlp.v2.DlpService/FinishDlpJob",
+            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.FinishDlpJobRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
 
@@ -360,6 +375,18 @@ class DlpServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def HybridInspectJobTrigger(self, request, context):
+        """Inspect hybrid content and store findings to a trigger. The inspection
+    will be processed asynchronously. To review the findings monitor the
+    jobs within the trigger.
+    Early access feature is in a pre-release state and might change or have
+    limited support. For more information, see
+    https://cloud.google.com/products#product-launch-stages.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
     def GetJobTrigger(self, request, context):
         """Gets a job trigger.
     See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
@@ -491,6 +518,29 @@ class DlpServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def HybridInspectDlpJob(self, request, context):
+        """Inspect hybrid content and store findings to a job.
+    To review the findings inspect the job. Inspection will occur
+    asynchronously.
+    Early access feature is in a pre-release state and might change or have
+    limited support. For more information, see
+    https://cloud.google.com/products#product-launch-stages.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def FinishDlpJob(self, request, context):
+        """Finish a running hybrid DlpJob. Triggers the finalization steps and running
+    of any enabled actions that have not yet run.
+    Early access feature is in a pre-release state and might change or have
+    limited support. For more information, see
+    https://cloud.google.com/products#product-launch-stages.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_DlpServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -579,6 +629,11 @@ def add_DlpServiceServicer_to_server(servicer, server):
             request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateJobTriggerRequest.FromString,
             response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.JobTrigger.SerializeToString,
         ),
+        "HybridInspectJobTrigger": grpc.unary_unary_rpc_method_handler(
+            servicer.HybridInspectJobTrigger,
+            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectJobTriggerRequest.FromString,
+            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectResponse.SerializeToString,
+        ),
         "GetJobTrigger": grpc.unary_unary_rpc_method_handler(
             servicer.GetJobTrigger,
             request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetJobTriggerRequest.FromString,
@@ -647,6 +702,16 @@ def add_DlpServiceServicer_to_server(servicer, server):
         "DeleteStoredInfoType": grpc.unary_unary_rpc_method_handler(
             servicer.DeleteStoredInfoType,
             request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteStoredInfoTypeRequest.FromString,
+            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        ),
+        "HybridInspectDlpJob": grpc.unary_unary_rpc_method_handler(
+            servicer.HybridInspectDlpJob,
+            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectDlpJobRequest.FromString,
+            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectResponse.SerializeToString,
+        ),
+        "FinishDlpJob": grpc.unary_unary_rpc_method_handler(
+            servicer.FinishDlpJob,
+            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.FinishDlpJobRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
     }

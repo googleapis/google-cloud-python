@@ -117,6 +117,16 @@ config = {
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
+                "FinishDlpJob": {
+                    "timeout_millis": 300000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "HybridInspectDlpJob": {
+                    "timeout_millis": 300000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
                 "ListJobTriggers": {
                     "timeout_millis": 300000,
                     "retry_codes_name": "idempotent",
@@ -130,6 +140,11 @@ config = {
                 "DeleteJobTrigger": {
                     "timeout_millis": 300000,
                     "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "HybridInspectJobTrigger": {
+                    "timeout_millis": 300000,
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "UpdateJobTrigger": {
