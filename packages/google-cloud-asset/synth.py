@@ -27,19 +27,11 @@ excludes = ["setup.py", "nox*.py", "README.rst", "docs/conf.py", "docs/index.rst
 # Generate asset GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-    # v1p1beta1 is missing a BUILD.bazel file
-    # Don't use Artman once that is resolved
-    artman_gapic = gcp.GAPICGenerator()
-    if version == "v1p1beta1":
-        library = artman_gapic.py_library(
-            "asset",
-            version=version,
-        )
-    else:
-        library = gapic.py_library(
-            "asset",
-            version,
-        )
+    library = gapic.py_library(
+        service="asset",
+        version=version,
+        bazel_target=f"//google/cloud/asset/{version}:asset-{version}-py",
+    )
 
     s.move(library, excludes=excludes)
 
