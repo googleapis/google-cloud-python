@@ -18,6 +18,7 @@ import collections
 import functools
 import logging
 import threading
+import uuid
 
 import grpc
 import six
@@ -115,6 +116,12 @@ class StreamingPullManager(object):
         self._closing = threading.Lock()
         self._closed = False
         self._close_callbacks = []
+
+        # Generate a random client id tied to this object. All streaming pull
+        # connections (initial and re-connects) will then use the same client
+        # id. Doing so lets the server establish affinity even across stream
+        # disconncetions.
+        self._client_id = str(uuid.uuid4())
 
         if scheduler is None:
             self._scheduler = (
@@ -567,6 +574,7 @@ class StreamingPullManager(object):
             modify_deadline_seconds=[self.ack_deadline] * len(lease_ids),
             stream_ack_deadline_seconds=stream_ack_deadline_seconds,
             subscription=self._subscription,
+            client_id=self._client_id,
         )
 
         # Return the initial request.

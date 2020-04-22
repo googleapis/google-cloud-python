@@ -96,6 +96,7 @@ def test_constructor_and_default_state():
     assert manager._subscription == mock.sentinel.subscription
     assert manager._scheduler is not None
     assert manager._messages_on_hold is not None
+    assert manager._client_id is not None
 
 
 def test_constructor_with_options():
@@ -142,6 +143,20 @@ def test_ack_deadline():
     assert manager.ack_deadline == 20
     manager.ack_histogram.add(10)
     assert manager.ack_deadline == 20
+
+
+def test_client_id():
+    manager1 = make_manager()
+    request1 = manager1._get_initial_request(stream_ack_deadline_seconds=10)
+    client_id_1 = request1.client_id
+    assert client_id_1
+
+    manager2 = make_manager()
+    request2 = manager2._get_initial_request(stream_ack_deadline_seconds=10)
+    client_id_2 = request2.client_id
+    assert client_id_2
+
+    assert client_id_1 != client_id_2
 
 
 def test_ack_deadline_with_max_duration_per_lease_extension():
