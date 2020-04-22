@@ -17,7 +17,7 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 version = "v1"
 
@@ -25,11 +25,9 @@ version = "v1"
 # Generate bigquery_datatransfer GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "bigquery_datatransfer",
-    version,
-    config_path="/google/cloud/bigquery/datatransfer/"
-    "artman_bigquerydatatransfer.yaml",
-    artman_output_name="bigquerydatatransfer-v1",
+    service="bigquery_datatransfer",
+    version=version,
+    bazel_target="//google/cloud/bigquery/datatransfer/v1:bigquery-datatransfer-v1-py",
     include_protos=True,
 )
 
