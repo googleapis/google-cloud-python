@@ -212,4 +212,12 @@ class ReadOptions(Options):
                 )
             kwargs["read_consistency"] = read_policy
 
+        if not kwargs.get("transaction"):
+            # Avoid circular import in Python 2.7
+            from google.cloud.ndb import context as context_module
+
+            context = context_module.get_context(False)
+            if context:
+                kwargs["transaction"] = context.transaction
+
         super(ReadOptions, self).__init__(config=config, **kwargs)

@@ -191,7 +191,9 @@ class Test_lookup:
             _api.lookup(_mock_key("foo"), _options.ReadOptions())
             _api.lookup(_mock_key("bar"), _options.ReadOptions())
 
-            batch = new_context.batches[_api._LookupBatch][()]
+            batch = new_context.batches[_api._LookupBatch][
+                (("transaction", b"tx123"),)
+            ]
             assert len(batch.todo["foo"]) == 2
             assert len(batch.todo["bar"]) == 1
             assert new_context.eventloop.add_idle.call_count == 1
