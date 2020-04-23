@@ -10,8 +10,8 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-pubsub",
-        "sha": "96f4f820801dc83a04aed992af14e52f8e5bb710"
+        "remote": "https://github.com/googleapis/python-pubsub.git",
+        "sha": "4ce898e80eeb16b18d1ee29c678ade149804d186"
       }
     },
     {
