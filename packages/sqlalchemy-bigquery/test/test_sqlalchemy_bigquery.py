@@ -199,9 +199,12 @@ def test_engine_with_dataset(engine_using_test_dataset):
     rows = table_one_row.select().execute().fetchall()
     assert list(rows[0]) == ONE_ROW_CONTENTS_EXPANDED
 
-    # Table name shouldn't include dataset
-    with pytest.raises(Exception):
-        table_one_row = Table('test_pybigquery.sample_one_row', MetaData(bind=engine_using_test_dataset), autoload=True)
+    table_one_row = Table('test_pybigquery.sample_one_row', MetaData(bind=engine_using_test_dataset), autoload=True)
+    rows = table_one_row.select().execute().fetchall()
+    # verify that we are pulling from the specifically-named dataset,
+    # instead of pulling from the default dataset of the engine (which
+    # does not have this table at all)
+    assert list(rows[0]) == ONE_ROW_CONTENTS_EXPANDED
 
 
 def test_dataset_location(engine_with_location):
@@ -478,6 +481,14 @@ def test_has_table(engine, engine_using_test_dataset):
     assert engine.has_table('sample', 'test_pybigquery') is True
     assert engine.has_table('test_pybigquery.sample') is True
 
+    assert engine.has_table('sample_alt', 'test_pybigquery_alt') is True
+    assert engine.has_table('test_pybigquery_alt.sample_alt') is True
+
     assert engine_using_test_dataset.has_table('sample') is True
-    with pytest.raises(Exception):
-        assert engine_using_test_dataset.has_table('test_pybigquery.sample') is True
+    assert engine_using_test_dataset.has_table('sample', 'test_pybigquery') is True
+    assert engine_using_test_dataset.has_table('test_pybigquery.sample') is True
+
+    assert engine_using_test_dataset.has_table('sample_alt') is False
+
+    assert engine_using_test_dataset.has_table('sample_alt', 'test_pybigquery_alt') is True
+    assert engine_using_test_dataset.has_table('test_pybigquery_alt.sample_alt') is True
