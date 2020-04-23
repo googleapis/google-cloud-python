@@ -200,6 +200,11 @@ def test_engine_with_dataset(engine_using_test_dataset):
     assert list(rows[0]) == ONE_ROW_CONTENTS_EXPANDED
 
     table_one_row = Table('test_pybigquery.sample_one_row', MetaData(bind=engine_using_test_dataset), autoload=True)
+    rows = table_one_row.select().execute().fetchall()
+    # verify that we are pulling from the specifically-named dataset,
+    # instead of pulling from the default dataset of the engine (which
+    # does not have this table at all)
+    assert list(rows[0]) == ONE_ROW_CONTENTS_EXPANDED
 
 
 def test_dataset_location(engine_with_location):
