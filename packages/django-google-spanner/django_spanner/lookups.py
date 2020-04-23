@@ -17,9 +17,9 @@ def contains(self, compiler, connection):
     lhs_sql, params = self.process_lhs(compiler, connection)
     rhs_sql, rhs_params = self.process_rhs(compiler, connection)
     params.extend(rhs_params)
-    rhs_sql = self.get_rhs_op(connection, rhs_sql)
     is_icontains = self.lookup_name.startswith('i')
     if self.rhs_is_direct_value() and params and not self.bilateral_transforms:
+        rhs_sql = self.get_rhs_op(connection, rhs_sql)
         # Chop the leading and trailing percent signs that Django adds to the
         # param since this isn't a LIKE query as Django expects.
         params[0] = params[0][1:-1]
@@ -29,12 +29,11 @@ def contains(self, compiler, connection):
         # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
         return rhs_sql % lhs_sql, params
     else:
-        # rhs is the expression/column to use as the base of the regular
+        # rhs_sql is the expression/column to use as the base of the regular
         # expression.
-        rhs = compiler.compile(self.rhs)[0]
         if is_icontains:
-            rhs = "CONCAT('(?i)', " + rhs + ")"
-        return 'REGEXP_CONTAINS(%s, %s)' % (lhs_sql, connection.pattern_esc.format(rhs)), params
+            rhs_sql = "CONCAT('(?i)', " + rhs_sql + ")"
+        return 'REGEXP_CONTAINS(%s, %s)' % (lhs_sql, connection.pattern_esc.format(rhs_sql)), params
 
 
 def iexact(self, compiler, connection):
@@ -59,9 +58,9 @@ def regex(self, compiler, connection):
     lhs_sql, params = self.process_lhs(compiler, connection)
     rhs_sql, rhs_params = self.process_rhs(compiler, connection)
     params.extend(rhs_params)
-    rhs_sql = self.get_rhs_op(connection, rhs_sql)
     is_iregex = self.lookup_name.startswith('i')
     if self.rhs_is_direct_value() and params and not self.bilateral_transforms:
+        rhs_sql = self.get_rhs_op(connection, rhs_sql)
         if is_iregex:
             params[0] = '(?i)%s' % params[0]
         else:
@@ -69,12 +68,11 @@ def regex(self, compiler, connection):
         # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
         return rhs_sql % lhs_sql, params
     else:
-        # rhs is the expression/column to use as the base of the regular
+        # rhs_sql is the expression/column to use as the base of the regular
         # expression.
-        rhs = compiler.compile(self.rhs)[0]
         if is_iregex:
-            rhs = "CONCAT('(?i)', " + rhs + ")"
-        return 'REGEXP_CONTAINS(%s, %s)' % (lhs_sql, rhs), params
+            rhs_sql = "CONCAT('(?i)', " + rhs_sql + ")"
+        return 'REGEXP_CONTAINS(%s, %s)' % (lhs_sql, rhs_sql), params
 
 
 def startswith_endswith(self, compiler, connection):
@@ -82,13 +80,13 @@ def startswith_endswith(self, compiler, connection):
     lhs_sql, params = self.process_lhs(compiler, connection)
     rhs_sql, rhs_params = self.process_rhs(compiler, connection)
     params.extend(rhs_params)
-    rhs_sql = self.get_rhs_op(connection, rhs_sql)
     is_startswith = 'startswith' in self.lookup_name
     is_endswith = 'endswith' in self.lookup_name
     is_insensitive = self.lookup_name.startswith('i')
     # Chop the leading (endswith) or trailing (startswith) percent sign that
     # Django adds to the param since this isn't a LIKE query as Django expects.
     if self.rhs_is_direct_value() and params and not self.bilateral_transforms:
+        rhs_sql = self.get_rhs_op(connection, rhs_sql)
         if is_endswith:
             params[0] = str(params[0][1:]) + '$'
         else:
@@ -99,14 +97,14 @@ def startswith_endswith(self, compiler, connection):
         # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
         return rhs_sql % lhs_sql, params
     else:
-        # rhs is the expression/column to use as the base of the regular
+        # rhs_sql is the expression/column to use as the base of the regular
         # expression.
         sql = "CONCAT('"
         if is_startswith:
             sql += '^'
         if is_insensitive:
             sql += '(?i)'
-        sql += "', " + compiler.compile(self.rhs)[0]
+        sql += "', " + rhs_sql
         if is_endswith:
             sql += ", '$'"
         sql += ")"

@@ -157,9 +157,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         'model_fields.test_decimalfield.DecimalFieldTests.test_roundtrip_with_trailing_zeros',
         # No CHECK constraints in Spanner.
         'model_fields.test_integerfield.PositiveIntegerFieldTests.test_negative_values',
-        # contains lookup crashes with bilateral transform:
-        # https://github.com/googleapis/python-spanner-django/issues/419
-        'custom_lookups.tests.BilateralTransformTests.test_bilateral_upper',
         # Spanner doesn't support the variance the standard deviation database
         # functions:
         'aggregation.test_filter_argument.FilteredAggregateTests.test_filtered_numerical_aggregates',
