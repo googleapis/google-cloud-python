@@ -1,0 +1,18 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "git@github.com:googleapis/python-access-context-manager",
+        "sha": "a77a5d0746abaacd37cb8aa858f58db80bd4c558"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "be74d3e532faa47eb59f1a0eaebde0860d1d8ab4"
+      }
+    }
+  ]
+}

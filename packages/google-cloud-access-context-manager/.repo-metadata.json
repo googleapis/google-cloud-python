@@ -1,0 +1,10 @@
+{
+    "name": "accesscontextmanager",
+    "name_pretty": "Access Context Manager",
+    "client_documentation": "https://googleapis.dev/python/accesscontextmanager/latest",
+    "issue_tracker": "https://github.com/googleapis/python-access-context-manager/issues",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-access-context-manager",
+    "distribution_name": "google-cloud-access-context-manager"
+}
