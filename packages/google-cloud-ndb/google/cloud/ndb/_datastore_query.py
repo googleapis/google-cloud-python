@@ -266,9 +266,12 @@ class _QueryIteratorImpl(QueryIterator):
         if self._index < len(self._batch):
             raise tasklets.Return(True)
 
-        elif self._has_next_batch:
+        while self._has_next_batch:
+            # Firestore will sometimes send us empty batches when there are
+            # still more results to go. This `while` loop skips those.
             yield self._next_batch()
-            raise tasklets.Return(self._index < len(self._batch))
+            if self._batch:
+                raise tasklets.Return(self._index < len(self._batch))
 
         raise tasklets.Return(False)
 

@@ -255,6 +255,24 @@ class Test_QueryIteratorImpl:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test_has_next_async_next_batch_is_empty():
+        iterator = _datastore_query._QueryIteratorImpl("foo")
+        iterator._index = 3
+        iterator._batch = ["a", "b", "c"]
+        iterator._has_next_batch = True
+
+        batches = [[], ["d", "e", "f"]]
+
+        def dummy_next_batch():
+            iterator._index = 0
+            iterator._batch = batches.pop(0)
+            return utils.future_result(None)
+
+        iterator._next_batch = dummy_next_batch
+        assert iterator.has_next_async().result()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_has_next_async_next_batch_finished():
         iterator = _datastore_query._QueryIteratorImpl("foo")
         iterator._index = 3
