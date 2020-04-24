@@ -1,0 +1,18 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "git@github.com:googleapis/python-org-policy.git",
+        "sha": "316d35f8985e2239acdce078aec24780bebdd14e"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "be74d3e532faa47eb59f1a0eaebde0860d1d8ab4"
+      }
+    }
+  ]
+}
