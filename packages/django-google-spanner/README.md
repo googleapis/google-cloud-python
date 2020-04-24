@@ -112,6 +112,11 @@ decimal values without the possibility of data loss.
 
 Spanner doesn't have these functions.
 
+### `Meta.order_with_respect_to` model option isn't supported
+
+This feature uses a column name that starts with an underscore (`_order`) which
+Spanner doesn't allow.
+
 ### Computations that yield FLOAT64 values can't be assigned to INT64 columns
 
 Spanner [doesn't support this](https://github.com/googleapis/python-spanner-django/issues/331).
