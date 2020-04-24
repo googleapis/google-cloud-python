@@ -126,6 +126,17 @@ assigned to integer, which has type INT64 [at 1:46]\nUPDATE
 example_model SET integer = (example_model.integer /...
 ```
 
+### Addition with null values crash
+
+For example:
+
+```
+>>> Book.objects.annotate(adjusted_rating=F('rating') + None)
+...
+google.api_core.exceptions.InvalidArgument: 400 Operands of + cannot be literal
+NULL ...
+```
+
 ## How it works
 
 ### Overall design
