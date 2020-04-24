@@ -1,0 +1,18 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "git@github.com:googleapis/python-test-utils.git",
+        "sha": "db6a704119c62ae7d56b5028b4d754efb0a31969"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "716f741f2d307b48cbe8a5bc3bc883571212344a"
+      }
+    }
+  ]
+}

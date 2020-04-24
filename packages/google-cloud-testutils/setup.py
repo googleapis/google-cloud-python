@@ -12,53 +12,43 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import os
+import setuptools  # type: ignore
 
-from setuptools import find_packages
-from setuptools import setup
+version = "0.1.0"
 
+package_root = os.path.abspath(os.path.dirname(__file__))
 
-PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
+readme_filename = os.path.join(package_root, "README.rst")
+with io.open(readme_filename, encoding="utf-8") as readme_file:
+    readme = readme_file.read()
 
-
-# NOTE: This is duplicated throughout and we should try to
-#       consolidate.
-SETUP_BASE = {
-    'author': 'Google Cloud Platform',
-    'author_email': 'googleapis-publisher@google.com',
-    'scripts': [],
-    'url': 'https://github.com/GoogleCloudPlatform/google-cloud-python',
-    'license': 'Apache 2.0',
-    'platforms': 'Posix; MacOS X; Windows',
-    'include_package_data': True,
-    'zip_safe': False,
-    'classifiers': [
-        'Development Status :: 4 - Beta',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Topic :: Internet',
+setuptools.setup(
+    name="google-cloud-testutils",
+    version=version,
+    long_description=readme,
+    author="Google LLC",
+    author_email="googleapis-packages@google.com",
+    license="Apache 2.0",
+    url="https://github.com/googleapis/python-test-utils",
+    packages=setuptools.PEP420PackageFinder.find(),
+    platforms="Posix; MacOS X; Windows",
+    include_package_data=True,
+    install_requires=("google-auth >= 0.4.0", "six"),
+    python_requires=">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*",
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Topic :: Internet",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
-}
-
-
-REQUIREMENTS = [
-    'google-auth >= 0.4.0',
-    'six',
-]
-
-setup(
-    name='google-cloud-testutils',
-    version='0.24.0',
-    description='System test utilities for google-cloud-python',
-    packages=find_packages(),
-    install_requires=REQUIREMENTS,
-    python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*',
-    **SETUP_BASE
+    zip_safe=False,
 )

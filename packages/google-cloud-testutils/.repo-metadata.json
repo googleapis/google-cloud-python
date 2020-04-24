@@ -1,0 +1,11 @@
+{
+    "name": "google-cloud-test-utils",
+    "name_pretty": "Python Test Utils for Google Cloud",
+    "product_documentation": "",
+    "client_documentation": "https://github.com/googleapis/python-test-utils",
+    "issue_tracker": "https://github.com/googleapis/python-test-utils/issues",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-test-utils",
+    "distribution_name": "google-cloud-testutils"
+}  
