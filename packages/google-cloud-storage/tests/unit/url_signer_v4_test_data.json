@@ -435,7 +435,7 @@
                 "timestamp": "2020-01-23T04:35:30Z",
                 "fields": {
                     "success_action_redirect": "http://www.google.com/",
-                    "x-goog-meta": "$test-object-é-metadata"
+                    "x-goog-meta-custom-1": "$test-object-é-metadata"
                 }
             },
             "policyOutput": {
@@ -443,14 +443,14 @@
                 "fields": {
                     "key": "$test-object-é",
                     "success_action_redirect": "http://www.google.com/",
-                    "x-goog-meta": "$test-object-é-metadata",
+                    "x-goog-meta-custom-1": "$test-object-é-metadata",
                     "x-goog-algorithm": "GOOG4-RSA-SHA256",
                     "x-goog-credential": "test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request",
                     "x-goog-date": "20200123T043530Z",
-                    "x-goog-signature": "05eb19ea4ece513cbb2bc6a92c9bc82de6be46943fb4703df3f7b26e6033f90a194e2444e6c3166e9585ca468b5727702aa2696e5cca54677c047f7734119ea0d635404d6a5e577b737ffd5414059cd1b508aa99cfad592d9228f1bf47d7df3ffd73bcae6af6d8d83f7f50b4ccbf6e6c0798d2d9923a7e18c8888e2519fcf09d174b7015581a7de021964eeb9d27293213686d80d825332819c4e98d4ab2c5237f352840993e22a02a41d827ce6a4a294e84a33bf051519fdcbf982f2ad932f58714608c4b5a1f89d5e322d194f5e29fa4160fce771008320ac4e659adeead36aa07fe26a96e52e809436b7bd169256d6613c135148fdee6926caaef65817dc2",
-                    "policy": "eyJjb25kaXRpb25zIjpbeyJ4LWdvb2ctbWV0YSI6IiR0ZXN0LW9iamVjdC1cdTAwZTktbWV0YWRhdGEifSx7InN1Y2Nlc3NfYWN0aW9uX3JlZGlyZWN0IjoiaHR0cDovL3d3dy5nb29nbGUuY29tLyJ9LHsia2V5IjoiJHRlc3Qtb2JqZWN0LVx1MDBlOSJ9LHsieC1nb29nLWRhdGUiOiIyMDIwMDEyM1QwNDM1MzBaIn0seyJ4LWdvb2ctY3JlZGVudGlhbCI6InRlc3QtaWFtLWNyZWRlbnRpYWxzQGR1bW15LXByb2plY3QtaWQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20vMjAyMDAxMjMvYXV0by9zdG9yYWdlL2dvb2c0X3JlcXVlc3QifSx7IngtZ29vZy1hbGdvcml0aG0iOiJHT09HNC1SU0EtU0hBMjU2In1dLCJleHBpcmF0aW9uIjoiMjAyMC0wMS0yM1QwNDozNTo0MFoifQ"
+                    "x-goog-signature": "7e1c817aba3ed4b41898cb08e3d7d0e23fd4a5ab2df09d613bbde84559f007d50f516dc9ddeeadb3c22bf9ef9661ec40f0ee0d53f9e81dd849c81203c0e4de4328730e52aa9d5ffa60b3ffe4d65c9bec09dae5b9ac55fa799983db345ae1bd8fd847d7f14876275494b8ef1617fbb3640f4dd85f57ec074914dd6ddedda6a77405d855f352424f99605515c402e4de0147632a8ad9825dac9cbf1080b7b5ff3499d565eb5c392d40d1b7f08742199129387e07543c97df042deba0ca3ad2d17513e367bc5f64ab2b81a937b4342b93a4609226e610db6f95f6c16e62655788b0e4d6439fafafb0172a84d517e227de608dc767654561ffc5747ff80b39b44f4c",
+                    "policy": "eyJjb25kaXRpb25zIjpbeyJzdWNjZXNzX2FjdGlvbl9yZWRpcmVjdCI6Imh0dHA6Ly93d3cuZ29vZ2xlLmNvbS8ifSx7IngtZ29vZy1tZXRhLWN1c3RvbS0xIjoiJHRlc3Qtb2JqZWN0LVx1MDBlOS1tZXRhZGF0YSJ9LHsia2V5IjoiJHRlc3Qtb2JqZWN0LVx1MDBlOSJ9LHsieC1nb29nLWRhdGUiOiIyMDIwMDEyM1QwNDM1MzBaIn0seyJ4LWdvb2ctY3JlZGVudGlhbCI6InRlc3QtaWFtLWNyZWRlbnRpYWxzQGR1bW15LXByb2plY3QtaWQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20vMjAyMDAxMjMvYXV0by9zdG9yYWdlL2dvb2c0X3JlcXVlc3QifSx7IngtZ29vZy1hbGdvcml0aG0iOiJHT09HNC1SU0EtU0hBMjU2In1dLCJleHBpcmF0aW9uIjoiMjAyMC0wMS0yM1QwNDozNTo0MFoifQ=="
                 },
-                "expectedDecodedPolicy": "{\"conditions\":[{\"success_action_redirect\":\"http://www.google.com/\"},{\"x-goog-meta\":\"$test-object-\u00e9-metadata\"},{\"key\":\"$test-object-\u00e9\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
+                "expectedDecodedPolicy": "{\"conditions\":[{\"success_action_redirect\":\"http://www.google.com/\"},{\"x-goog-meta-custom-1\":\"$test-object-\u00e9-metadata\"},{\"key\":\"$test-object-\u00e9\"},{\"x-goog-date\":\"20200123T043530Z\"},{\"x-goog-credential\":\"test-iam-credentials@dummy-project-id.iam.gserviceaccount.com/20200123/auto/storage/goog4_request\"},{\"x-goog-algorithm\":\"GOOG4-RSA-SHA256\"}],\"expiration\":\"2020-01-23T04:35:40Z\"}"
             }
         }
     ]
