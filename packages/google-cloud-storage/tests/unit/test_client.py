@@ -137,18 +137,16 @@ class TestClient(unittest.TestCase):
         )
 
     def test_ctor_w_client_options_dict(self):
-
         PROJECT = "PROJECT"
         credentials = _make_credentials()
-        client_options = {"api_endpoint": "https://www.foo-googleapis.com"}
+        api_endpoint = "https://www.foo-googleapis.com"
+        client_options = {"api_endpoint": api_endpoint}
 
         client = self._make_one(
             project=PROJECT, credentials=credentials, client_options=client_options
         )
 
-        self.assertEqual(
-            client._connection.API_BASE_URL, "https://www.foo-googleapis.com"
-        )
+        self.assertEqual(client._connection.API_BASE_URL, api_endpoint)
 
     def test_ctor_w_client_options_object(self):
         from google.api_core.client_options import ClientOptions

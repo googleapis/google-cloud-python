@@ -54,7 +54,6 @@ from google.cloud._helpers import _bytes_to_unicode
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud._helpers import _to_bytes
 from google.cloud.exceptions import NotFound
-from google.cloud.storage._helpers import _get_storage_host
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage._helpers import _convert_to_timestamp
@@ -70,12 +69,11 @@ from google.cloud.storage.constants import NEARLINE_STORAGE_CLASS
 from google.cloud.storage.constants import REGIONAL_LEGACY_STORAGE_CLASS
 from google.cloud.storage.constants import STANDARD_STORAGE_CLASS
 
-_STORAGE_HOST = _get_storage_host()
 
 _API_ACCESS_ENDPOINT = "https://storage.googleapis.com"
 _DEFAULT_CONTENT_TYPE = u"application/octet-stream"
-_DOWNLOAD_URL_TEMPLATE = _STORAGE_HOST + u"/download/storage/v1{path}?alt=media"
-_BASE_UPLOAD_TEMPLATE = _STORAGE_HOST + u"/upload/storage/v1{bucket_path}/o?uploadType="
+_DOWNLOAD_URL_TEMPLATE = u"{hostname}/download/storage/v1{path}?alt=media"
+_BASE_UPLOAD_TEMPLATE = u"{hostname}/upload/storage/v1{bucket_path}/o?uploadType="
 _MULTIPART_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u"multipart"
 _RESUMABLE_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u"resumable"
 # NOTE: "acl" is also writeable but we defer ACL management to
@@ -650,19 +648,24 @@ class Blob(_PropertyMixin):
         client = self._require_client(client)
         return client._http
 
-    def _get_download_url(self):
+    def _get_download_url(self, client):
         """Get the download URL for the current blob.
 
         If the ``media_link`` has been loaded, it will be used, otherwise
         the URL will be constructed from the current blob's path (and possibly
         generation) to avoid a round trip.
 
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client: The client to use.
+
         :rtype: str
         :returns: The download URL for the current blob.
         """
         name_value_pairs = []
         if self.media_link is None:
-            base_url = _DOWNLOAD_URL_TEMPLATE.format(path=self.path)
+            base_url = _DOWNLOAD_URL_TEMPLATE.format(
+                hostname=client._connection.API_BASE_URL, path=self.path
+            )
             if self.generation is not None:
                 name_value_pairs.append(("generation", "{:d}".format(self.generation)))
         else:
@@ -790,7 +793,8 @@ class Blob(_PropertyMixin):
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
-        download_url = self._get_download_url()
+        client = self._require_client(client)
+        download_url = self._get_download_url(client)
         headers = _get_encryption_headers(self._encryption_key)
         headers["accept-encoding"] = "gzip"
 
@@ -1055,7 +1059,9 @@ class Blob(_PropertyMixin):
         info = self._get_upload_arguments(content_type)
         headers, object_metadata, content_type = info
 
-        base_url = _MULTIPART_URL_TEMPLATE.format(bucket_path=self.bucket.path)
+        base_url = _MULTIPART_URL_TEMPLATE.format(
+            hostname=self.client._connection.API_BASE_URL, bucket_path=self.bucket.path
+        )
         name_value_pairs = []
 
         if self.user_project is not None:
@@ -1190,7 +1196,9 @@ class Blob(_PropertyMixin):
         if extra_headers is not None:
             headers.update(extra_headers)
 
-        base_url = _RESUMABLE_URL_TEMPLATE.format(bucket_path=self.bucket.path)
+        base_url = _RESUMABLE_URL_TEMPLATE.format(
+            hostname=self.client._connection.API_BASE_URL, bucket_path=self.bucket.path
+        )
         name_value_pairs = []
 
         if self.user_project is not None:
