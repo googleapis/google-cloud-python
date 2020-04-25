@@ -82,6 +82,12 @@ DATABASES = {
 
 ## Limitations
 
+### Transaction management isn't supported
+
+django-spanner always works in Django's default transaction behavior,
+autocommit mode. There's no way to turn this off and control transactions
+manually such as with `django.db.transaction.atomic()`.
+
 ### `AutoField` generates random IDs
 
 Spanner doesn't have a way to auto-generate primary key values. Instead,
