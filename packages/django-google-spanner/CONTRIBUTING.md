@@ -26,3 +26,61 @@ information on using pull requests.
 
 This project follows [Google's Open Source Community
 Guidelines](https://opensource.google/conduct/).
+
+## Tests
+
+### Functional tests
+We have functional tests for individual components that can be run by
+```shell
+tox
+```
+
+### Django integration tests
+We run full integration tests with continuous integration on Google Cloud Build with Kokoro.
+
+The tests to be run are specified in file [django_test_apps.txt](./django_test_apps.txt)
+
+There are 2 ways to run the tests:
+
+#### django_test_suite.sh
+
+This method requires an already existing Cloud Spanner instance.
+Expected environment variables:
+
+##### Environment variables
+Variable|Description|Comment
+---|---|---
+`GOOGLE_APPLICATION_CREDENTIALS`|The Google Application Credentials file|For example `GOOGLE_APPLICATION_CREDENTIALS=~/Downloads/creds.json`
+`PROJECT_ID`|The project id of the Google Application credentials being used|For example `PROJECT_ID=appdev-soda-spanner-staging`
+`DJANGO_TEST_APPS`|The Django test suite apps to run|For example `DJANGO_TEST_APPS="basic i18n admin_views"`
+`SPANNER_TEST_INSTANCE`|The Cloud Spanner instance to use, it MUST exist before running tests|For example `SPANNER_TEST_INSTANCE="django-tests"`
+`DJANGO_TESTS_DIR`|The directory into which Django has been cloned to run the test suite|For example `DJANGO_TESTS_DIR=django_tests`
+
+##### Example run
+```shell
+GOOGLE_APPLICATION_CREDENTIALS=~/Downloads/creds.json \
+PROJECT_ID=appdev-soda DJANGO_TEST_APPS="expressions i18n" \
+SPANNER_TEST_INSTANCE=django-tests ./django_tests_suite.sh
+```
+
+#### Parallelization script
+
+This method shards tests over multiple builds, and over available cores.
+
+##### Environment variables
+To run the tests locally, you'll need the following environment variables.
+
+Variable|Description|Comment
+---|---|---
+`GOOGLE_APPLICATION_CREDENTIALS`|The Google Application Credentials file|For example `GOOGLE_APPLICATION_CREDENTIALS=~/Downloads/creds.json`
+`PROJECT_ID`|The project id of the Google Application credentials being used|For example `PROJECT_ID=appdev-soda-spanner-staging`
+`DJANGO_WORKER_COUNT`|The number of parallel jobs to split the tests amongst|To get all the tests run by one process, use a cout of 1, so `DJANGO_WORKER_COUNT=1`
+`DJANGO_WORKER_INDEX`|The zero based index of the parallel job number, to run tests, it is correlated with `DJANGO_WORKER_COUNT` and an offset to figure out  which tests to run with this job|
+`django_test_apps.txt`|The listing of Django apps to run|Set the apps you'd like to be run in parallel
+
+##### Example run
+```shell
+GOOGLE_APPLICATION_CREDENTIALS=~/Downloads/creds.json \
+PROJECT_ID=appdev-soda DJANGO_TEST_APPS="expressions i18n" \
+DJANGO_WORKER_COUNT=1 DJANGO_WORKER_INDEX=0SPANNER_TEST_INSTANCE=django-tests ./bin/parallelize_tests_linux
+```
