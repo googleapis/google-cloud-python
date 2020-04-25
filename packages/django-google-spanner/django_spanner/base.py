@@ -52,11 +52,6 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         'TimeField': 'TIMESTAMP',
         'UUIDField': 'STRING(32)',
     }
-
-    # TODO: (@odeke-em) examine Spanner's data type constraints.
-    data_types_check_constraints = {
-    }
-
     operators = {
         'exact': '= %s',
         'iexact': 'REGEXP_CONTAINS(%s, %%%%s)',
