@@ -130,6 +130,17 @@ Spanner doesn't have these functions.
 This feature uses a column name that starts with an underscore (`_order`) which
 Spanner doesn't allow.
 
+### Random `QuerySet` ordering isn't supported
+
+Spanner doesn't support it. For example:
+
+```
+>>> ExampleModel.objects.order_by('?')
+...
+django.db.utils.ProgrammingError: 400 Function not found: RANDOM ... FROM
+example_model ORDER BY RANDOM() ASC
+```
+
 ### Schema migrations
 
 Spanner has some limitations on schema changes which you must respect:
