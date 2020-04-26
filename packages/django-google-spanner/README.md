@@ -130,6 +130,15 @@ Spanner doesn't have these functions.
 This feature uses a column name that starts with an underscore (`_order`) which
 Spanner doesn't allow.
 
+### Schema migrations
+
+Spanner has some limitations on schema changes which you must respect:
+
+* Renaming tables and columns isn't supported.
+* A column's type can't be changed.
+* A table's primary key can't be altered.
+* Migrations aren't atomic since django-spanner doesn't support transactions.
+
 ### Computations that yield FLOAT64 values can't be assigned to INT64 columns
 
 Spanner [doesn't support this](https://github.com/googleapis/python-spanner-django/issues/331).
