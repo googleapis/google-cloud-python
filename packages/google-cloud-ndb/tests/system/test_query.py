@@ -1752,3 +1752,26 @@ def test_Key(ds_entity, client_context):
     assert results[0].foo == ndb.key.Key(
         "test_key", 3, project=project, namespace=namespace
     )
+
+
+@pytest.mark.usefixtures("client_context")
+def test_high_offset(dispose_of):
+    """Regression test for Issue #392
+
+    https://github.com/googleapis/python-ndb/issues/392
+    """
+    n_entities = 1100
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    entities = [SomeKind(id=i + 1, foo=i) for i in range(n_entities)]
+    keys = ndb.put_multi(entities)
+    for key in keys:
+        dispose_of(key._key)
+
+    eventually(SomeKind.query().fetch, _length_equals(n_entities))
+    query = SomeKind.query(order_by=[SomeKind.foo])
+    index = n_entities - 5
+    result = query.fetch(offset=index, limit=1)[0]
+    assert result.foo == index

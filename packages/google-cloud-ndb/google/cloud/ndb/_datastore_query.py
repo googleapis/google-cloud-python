@@ -316,8 +316,15 @@ class _QueryIteratorImpl(QueryIterator):
             limit = self._query.limit
             if limit is not None:
                 limit -= len(self._batch)
+
+            offset = self._query.offset
+            if offset:
+                offset -= response.batch.skipped_results
+
             self._query = self._query.copy(
-                start_cursor=Cursor(batch.end_cursor), offset=None, limit=limit
+                start_cursor=Cursor(batch.end_cursor),
+                offset=offset,
+                limit=limit,
             )
 
     def next(self):

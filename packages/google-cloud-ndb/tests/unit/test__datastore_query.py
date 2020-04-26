@@ -393,6 +393,7 @@ class Test_QueryIteratorImpl:
                     entity_result_type=query_pb2.EntityResult.FULL,
                     entity_results=entity_results,
                     end_cursor=b"abc",
+                    skipped_results=5,
                     more_results=query_pb2.QueryResultBatch.NOT_FINISHED,
                 )
             )
@@ -408,7 +409,7 @@ class Test_QueryIteratorImpl:
         assert iterator._batch[0].order_by is None
         assert iterator._has_next_batch
         assert iterator._query.start_cursor.cursor == b"abc"
-        assert iterator._query.offset is None
+        assert iterator._query.offset == 0
         assert iterator._query.limit == 2
 
     @staticmethod
