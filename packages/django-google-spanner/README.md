@@ -109,6 +109,13 @@ id isn't guaranteed to return them in the order in which they were created.
 
 django-spanner [doesn't create foreign key constraints](https://github.com/googleapis/python-spanner-django/issues/313).
 
+### Check constraints aren't supported
+
+Spanner doesn't support CHECK constraints so one isn't created for
+[`PositiveIntegerField`](https://docs.djangoproject.com/en/stable/ref/models/fields/#positiveintegerfield)
+and [`CheckConstraint`](https://docs.djangoproject.com/en/stable/ref/models/constraints/#checkconstraint)
+can't be used.
+
 ### `DecimalField` isn't supported
 
 Spanner doesn't support a NUMERIC data type that allows storing high precision
