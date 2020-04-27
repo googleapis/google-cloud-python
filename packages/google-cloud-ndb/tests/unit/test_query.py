@@ -2121,7 +2121,9 @@ class TestQuery:
         query = query_module.Query()
         assert query.count() == 5
         _datastore_query.iterate.assert_called_once_with(
-            query_module.QueryOptions(project="testing", keys_only=True),
+            query_module.QueryOptions(
+                project="testing", projection=["__key__"]
+            ),
             raw=True,
         )
 
@@ -2144,7 +2146,7 @@ class TestQuery:
         assert query.count(3) == 3
         _datastore_query.iterate.assert_called_once_with(
             query_module.QueryOptions(
-                project="testing", keys_only=True, limit=3
+                project="testing", projection=["__key__"], limit=3
             ),
             raw=True,
         )
@@ -2168,7 +2170,9 @@ class TestQuery:
         future = query.count_async()
         assert future.result() == 5
         _datastore_query.iterate.assert_called_once_with(
-            query_module.QueryOptions(project="testing", keys_only=True),
+            query_module.QueryOptions(
+                project="testing", projection=["__key__"]
+            ),
             raw=True,
         )
 
