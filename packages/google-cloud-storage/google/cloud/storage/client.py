@@ -947,6 +947,7 @@ class Client(ClientWithProject):
             email=credentials.signer_email, datestamp=datestamp
         )
         required_conditions = [
+            {"bucket": bucket_name},
             {"key": blob_name},
             {"x-goog-date": timestamp},
             {"x-goog-credential": x_goog_credential},
