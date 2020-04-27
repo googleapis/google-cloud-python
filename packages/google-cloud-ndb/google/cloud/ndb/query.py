@@ -109,6 +109,10 @@ query options are:
 - offset: int, skips this many results first.
 - start_cursor: Cursor, start returning results after this position.
 - end_cursor: Cursor, stop returning results after this position.
+
+The following query options have been deprecated or are not supported in
+datastore queries:
+
 - batch_size: int, hint for the number of results returned per RPC.
 - prefetch_size: int, hint for the number of results in the first RPC.
 - produce_cursors: bool, return Cursor objects with the results.
@@ -1738,12 +1742,9 @@ class Query(object):
             offset (int): Number of query results to skip.
             limit (Optional[int]): Maximum number of query results to return.
                 If not specified, there is no limit.
-            batch_size (Optional[int]): Number of results to fetch in a single
-                RPC call. Affects efficiency of queries only. Larger batch
-                sizes use more memory but make fewer RPC calls.
-            prefetch_size (Optional[int]): Overrides batch size for first batch
-                returned.
-            produce_cursors (bool): Whether to generate cursors from query.
+            batch_size: DEPRECATED: No longer implemented.
+            prefetch_size: DEPRECATED: No longer implemented.
+            produce_cursors: Ignored. Cursors always produced if available.
             start_cursor: Starting point for search.
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
@@ -1794,12 +1795,9 @@ class Query(object):
             offset (int): Number of query results to skip.
             limit (Optional[int]): Maximum number of query results to return.
                 If not specified, there is no limit.
-            batch_size (Optional[int]): Number of results to fetch in a single
-                RPC call. Affects efficiency of queries only. Larger batch
-                sizes use more memory but make fewer RPC calls.
-            prefetch_size (Optional[int]): Overrides batch size for first batch
-                returned.
-            produce_cursors (bool): Whether to generate cursors from query.
+            batch_size: DEPRECATED: No longer implemented.
+            prefetch_size: DEPRECATED: No longer implemented.
+            produce_cursors: Ignored. Cursors always produced if available.
             start_cursor: Starting point for search.
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
@@ -1899,12 +1897,9 @@ class Query(object):
             projection (list[str]): The fields to return as part of the query
                 results.
             offset (int): Number of query results to skip.
-            batch_size (Optional[int]): Number of results to fetch in a single
-                RPC call. Affects efficiency of queries only. Larger batch
-                sizes use more memory but make fewer RPC calls.
-            prefetch_size (Optional[int]): Overrides batch size for first batch
-                returned.
-            produce_cursors (bool): Whether to generate cursors from query.
+            batch_size: DEPRECATED: No longer implemented.
+            prefetch_size: DEPRECATED: No longer implemented.
+            produce_cursors: Ignored. Cursors always produced if available.
             start_cursor: Starting point for search.
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
@@ -1965,12 +1960,9 @@ class Query(object):
             offset (int): Number of query results to skip.
             limit (Optional[int]): Maximum number of query results to return.
                 If not specified, there is no limit.
-            batch_size (Optional[int]): Number of results to fetch in a single
-                RPC call. Affects efficiency of queries only. Larger batch
-                sizes use more memory but make fewer RPC calls.
-            prefetch_size (Optional[int]): Overrides batch size for first batch
-                returned.
-            produce_cursors (bool): Whether to generate cursors from query.
+            batch_size: DEPRECATED: No longer implemented.
+            prefetch_size: DEPRECATED: No longer implemented.
+            produce_cursors: Ignored. Cursors always produced if available.
             start_cursor: Starting point for search.
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
@@ -2081,12 +2073,9 @@ class Query(object):
             keys_only (bool): Return keys instead of entities.
             projection (list[str]): The fields to return as part of the query
                 results.
-            batch_size (Optional[int]): Number of results to fetch in a single
-                RPC call. Affects efficiency of queries only. Larger batch
-                sizes use more memory but make fewer RPC calls.
-            prefetch_size (Optional[int]): Overrides batch size for first batch
-                returned.
-            produce_cursors (bool): Whether to generate cursors from query.
+            batch_size: DEPRECATED: No longer implemented.
+            prefetch_size: DEPRECATED: No longer implemented.
+            produce_cursors: Ignored. Cursors always produced if available.
             start_cursor: Starting point for search.
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
@@ -2189,12 +2178,9 @@ class Query(object):
             projection (list[str]): The fields to return as part of the query
                 results.
             offset (int): Number of query results to skip.
-            batch_size (Optional[int]): Number of results to fetch in a single
-                RPC call. Affects efficiency of queries only. Larger batch
-                sizes use more memory but make fewer RPC calls.
-            prefetch_size (Optional[int]): Overrides batch size for first batch
-                returned.
-            produce_cursors (bool): Whether to generate cursors from query.
+            batch_size: DEPRECATED: No longer implemented.
+            prefetch_size: DEPRECATED: No longer implemented.
+            produce_cursors: Ignored. Cursors always produced if available.
             start_cursor: Starting point for search.
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
@@ -2299,12 +2285,9 @@ class Query(object):
             keys_only (bool): Return keys instead of entities.
             projection (list[str]): The fields to return as part of the query
                 results.
-            batch_size (Optional[int]): Number of results to fetch in a single
-                RPC call. Affects efficiency of queries only. Larger batch
-                sizes use more memory but make fewer RPC calls.
-            prefetch_size (Optional[int]): Overrides batch size for first batch
-                returned.
-            produce_cursors (bool): Whether to generate cursors from query.
+            batch_size: DEPRECATED: No longer implemented.
+            prefetch_size: DEPRECATED: No longer implemented.
+            produce_cursors: Ignored. Cursors always produced if available.
             start_cursor: Starting point for search.
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
