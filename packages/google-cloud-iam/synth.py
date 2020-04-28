@@ -17,17 +17,16 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate automl GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "iam_credentials",
-    "v1",
-    config_path="/google/iam/credentials/artman_iamcredentials_v1.yaml",
-    artman_output_name="iamcredentials-v1",
+    service="iam_credentials",
+    version="v1",
+    bazel_target="//google/iam/credentials/v1:iam-credentials-v1-py",
     include_protos=True,
 )
 
@@ -41,12 +40,12 @@ s.copy(library, excludes=excludes)
 
 s.replace(
     "google/**/*.py",
-    "google-cloud-iamcredentials",
+    "google-cloud-iam-credentials",
     "google-cloud-iam"
 )
 s.replace(
     "docs/**/*.py",
-    "google-cloud-iamcredentials",
+    "google-cloud-iam-credentials",
     "google-cloud-iam"
 )
 
