@@ -16,17 +16,16 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate spanner GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "spanner",
-    "v1",
-    config_path="/google/spanner/artman_spanner.yaml",
-    artman_output_name="spanner-v1",
+    service="spanner",
+    version="v1",
+    bazel_target="//google/spanner/v1:spanner-v1-py",
     include_protos=True,
 )
 
@@ -77,10 +76,9 @@ s.replace(
 # Generate instance admin client
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "spanner_admin_instance",
-    "v1",
-    config_path="/google/spanner/admin/instance" "/artman_spanner_admin_instance.yaml",
-    artman_output_name="spanner-admin-instance-v1",
+    service="spanner_admin_instance",
+    version="v1",
+    bazel_target="//google/spanner/admin/instance/v1:admin-instance-v1-py",
     include_protos=True,
 )
 
@@ -111,10 +109,9 @@ s.replace("google/cloud/spanner_v1/proto/transaction_pb2.py", r"""~~~~*""", r"")
 # Generate database admin client
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "spanner_admin_database",
-    "v1",
-    config_path="/google/spanner/admin/database" "/artman_spanner_admin_database.yaml",
-    artman_output_name="spanner-admin-database-v1",
+    service="spanner_admin_database",
+    version="v1",
+    bazel_target="//google/spanner/admin/database/v1:admin-database-v1-py",
     include_protos=True,
 )
 
