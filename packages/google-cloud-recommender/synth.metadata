@@ -1,26 +1,25 @@
 {
-  "updateTime": "2020-03-14T00:25:36.917796Z",
   "sources": [
     {
       "git": {
         "name": ".",
         "remote": "git@github.com:googleapis/python-recommender.git",
-        "sha": "b8f198ecb1d36afa16d9054653ebbb811e7dbd91"
+        "sha": "b42c8a8b81666c14ae19d8487748788eae27326c"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "8386761d09819b665b6a6e1e6d6ff884bc8ff781",
-        "internalRef": "300843960"
+        "sha": "756b174de4a122461993c1c583345533d819936d",
+        "internalRef": "308824110"
       }
     },
     {
-      "template": {
-        "name": "python_library",
-        "origin": "synthtool.gcp",
-        "version": "2020.2.4"
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "01b6f23d24b27878b48667ce597876d66b59780e"
       }
     }
   ],
