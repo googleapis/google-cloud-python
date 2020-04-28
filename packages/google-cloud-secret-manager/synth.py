@@ -28,15 +28,15 @@ common = gcp.CommonTemplates()
 
 versions = [
     # v1beta1 has a special config path so it must be passed explicitly
-    ("v1beta1", "/google/cloud/secrets/v1beta1"),
-    ("v1", None),
+    ("v1beta1", "//google/cloud/secrets/v1beta1:secretmanager-v1beta1-py"),
+    ("v1", "//google/cloud/secretmanager/v1:secretmanager-v1-py"),
 ]
 
-for version, proto_path in versions:
+for version, bazel_target in versions:
     library = gapic.py_library(
-        "secretmanager",
-        version,
-        proto_path=proto_path,
+        service="secretmanager",
+        version=version,
+        bazel_target=bazel_target,
     )
 
     s.move(
