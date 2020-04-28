@@ -28,7 +28,11 @@ common = gcp.CommonTemplates()
 # Generate Cloud Recommender
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library("recommender", version)
+    library = gapic.py_library(
+        service="recommender",
+        version=version,
+        bazel_target=f"//google/cloud/recommender/{version}:recommender-{version}-py",
+    )
     s.move(library, excludes=["nox.py", "docs/index.rst", "README.rst", "setup.py"])
 
 # Fix docstring with regex pattern that breaks docgen
