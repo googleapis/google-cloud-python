@@ -20,14 +20,18 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate Grafeas GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "grafeas", "v1", config_path="/grafeas/artman_grafeas_v1.yaml", include_protos=True
+    service="grafeas",
+    version="v1",
+    bazel_target="//grafeas/v1:grafeas-v1-py",
+    proto_output_path="grafeas/grafeas_v1/proto",
+    include_protos=True
 )
 
 excludes = ["README.rst", "nox.py", "setup.py", "docs/index.rst"]
