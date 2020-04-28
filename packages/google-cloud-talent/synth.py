@@ -14,12 +14,10 @@
 
 """This script is used to synthesize generated parts of this library."""
 
-import re
-
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 versions = ["v4beta1"]
 
@@ -28,7 +26,12 @@ excludes = ["setup.py", "nox*.py", "README.rst", "docs/conf.py", "docs/index.rst
 # Generate speech GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-   library = gapic.py_library("talent", version, include_protos=True,)
+   library = gapic.py_library(
+      service="talent",
+      version=version,
+       bazel_target=f"//google/cloud/talent/{version}:talent-{version}-py",
+      include_protos=True
+   )
    s.move(library, excludes=excludes)
 
 # ----------------------------------------------------------------------------
