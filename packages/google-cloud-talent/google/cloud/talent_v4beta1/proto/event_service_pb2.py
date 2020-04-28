@@ -32,7 +32,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\021EventServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n5google/cloud/talent_v4beta1/proto/event_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a-google/cloud/talent_v4beta1/proto/event.proto"\x9c\x01\n\x18\x43reateClientEventRequest\x12;\n\x06parent\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\n#jobs.googleapis.com/TenantOrProject\x12\x43\n\x0c\x63lient_event\x18\x02 \x01(\x0b\x32(.google.cloud.talent.v4beta1.ClientEventB\x03\xe0\x41\x02\x32\xfa\x02\n\x0c\x45ventService\x12\xfb\x01\n\x11\x43reateClientEvent\x12\x35.google.cloud.talent.v4beta1.CreateClientEventRequest\x1a(.google.cloud.talent.v4beta1.ClientEvent"\x84\x01\x82\xd3\xe4\x93\x02h"3/v4beta1/{parent=projects/*/tenants/*}/clientEvents:\x01*Z.")/v4beta1/{parent=projects/*}/clientEvents:\x01*\xda\x41\x13parent,client_event\x1al\xca\x41\x13jobs.googleapis.com\xd2\x41Shttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobsB\x7f\n\x1f\x63om.google.cloud.talent.v4beta1B\x11\x45ventServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n5google/cloud/talent_v4beta1/proto/event_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a-google/cloud/talent_v4beta1/proto/event.proto"\x94\x01\n\x18\x43reateClientEventRequest\x12\x33\n\x06parent\x18\x01 \x01(\tB#\xe0\x41\x02\xfa\x41\x1d\x12\x1bjobs.googleapis.com/Company\x12\x43\n\x0c\x63lient_event\x18\x02 \x01(\x0b\x32(.google.cloud.talent.v4beta1.ClientEventB\x03\xe0\x41\x02\x32\xfa\x02\n\x0c\x45ventService\x12\xfb\x01\n\x11\x43reateClientEvent\x12\x35.google.cloud.talent.v4beta1.CreateClientEventRequest\x1a(.google.cloud.talent.v4beta1.ClientEvent"\x84\x01\x82\xd3\xe4\x93\x02h"3/v4beta1/{parent=projects/*/tenants/*}/clientEvents:\x01*Z.")/v4beta1/{parent=projects/*}/clientEvents:\x01*\xda\x41\x13parent,client_event\x1al\xca\x41\x13jobs.googleapis.com\xd2\x41Shttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobsB\x7f\n\x1f\x63om.google.cloud.talent.v4beta1B\x11\x45ventServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -67,7 +67,7 @@ _CREATECLIENTEVENTREQUEST = _descriptor.Descriptor(
             is_extension=False,
             extension_scope=None,
             serialized_options=_b(
-                "\340A\002\372A%\n#jobs.googleapis.com/TenantOrProject"
+                "\340A\002\372A\035\022\033jobs.googleapis.com/Company"
             ),
             file=DESCRIPTOR,
         ),
@@ -99,7 +99,7 @@ _CREATECLIENTEVENTREQUEST = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=249,
-    serialized_end=405,
+    serialized_end=397,
 )
 
 _CREATECLIENTEVENTREQUEST.fields_by_name[
@@ -117,8 +117,6 @@ CreateClientEventRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_CREATECLIENTEVENTREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.event_service_pb2",
         __doc__="""The report event request.
-  
-  
   Attributes:
       parent:
           Required. Resource name of the tenant under which the event is
@@ -148,8 +146,8 @@ _EVENTSERVICE = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\023jobs.googleapis.com\322AShttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobs"
     ),
-    serialized_start=408,
-    serialized_end=786,
+    serialized_start=400,
+    serialized_end=778,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateClientEvent",

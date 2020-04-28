@@ -17,28 +17,28 @@ config = {
                 }
             },
             "methods": {
+                "DeleteCompany": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
                 "CreateCompany": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "GetCompany": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "UpdateCompany": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
-                "DeleteCompany": {
-                    "timeout_millis": 30000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
-                },
                 "ListCompanies": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },

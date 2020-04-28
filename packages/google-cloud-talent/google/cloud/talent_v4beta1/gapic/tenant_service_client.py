@@ -43,17 +43,11 @@ from google.cloud.talent_v4beta1.proto import company_service_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2_grpc
 from google.cloud.talent_v4beta1.proto import completion_service_pb2
 from google.cloud.talent_v4beta1.proto import completion_service_pb2_grpc
-from google.cloud.talent_v4beta1.proto import event_pb2
-from google.cloud.talent_v4beta1.proto import event_service_pb2
-from google.cloud.talent_v4beta1.proto import event_service_pb2_grpc
 from google.cloud.talent_v4beta1.proto import filters_pb2
 from google.cloud.talent_v4beta1.proto import histogram_pb2
 from google.cloud.talent_v4beta1.proto import job_pb2
 from google.cloud.talent_v4beta1.proto import job_service_pb2
 from google.cloud.talent_v4beta1.proto import job_service_pb2_grpc
-from google.cloud.talent_v4beta1.proto import profile_pb2
-from google.cloud.talent_v4beta1.proto import profile_service_pb2
-from google.cloud.talent_v4beta1.proto import profile_service_pb2_grpc
 from google.cloud.talent_v4beta1.proto import tenant_pb2
 from google.cloud.talent_v4beta1.proto import tenant_service_pb2
 from google.cloud.talent_v4beta1.proto import tenant_service_pb2_grpc
@@ -222,6 +216,75 @@ class TenantServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
+    def delete_tenant(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes specified tenant.
+
+        Example:
+            >>> from google.cloud import talent_v4beta1
+            >>>
+            >>> client = talent_v4beta1.TenantServiceClient()
+            >>>
+            >>> name = client.tenant_path('[PROJECT]', '[TENANT]')
+            >>>
+            >>> client.delete_tenant(name)
+
+        Args:
+            name (str): Required. The resource name of the tenant to be deleted.
+
+                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
+                example, "projects/foo/tenants/bar".
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_tenant" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_tenant"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_tenant,
+                default_retry=self._method_configs["DeleteTenant"].retry,
+                default_timeout=self._method_configs["DeleteTenant"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = tenant_service_pb2.DeleteTenantRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["delete_tenant"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def create_tenant(
         self,
         parent,
@@ -457,75 +520,6 @@ class TenantServiceClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls["update_tenant"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def delete_tenant(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Deletes specified tenant.
-
-        Example:
-            >>> from google.cloud import talent_v4beta1
-            >>>
-            >>> client = talent_v4beta1.TenantServiceClient()
-            >>>
-            >>> name = client.tenant_path('[PROJECT]', '[TENANT]')
-            >>>
-            >>> client.delete_tenant(name)
-
-        Args:
-            name (str): Required. The resource name of the tenant to be deleted.
-
-                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/foo/tenants/bar".
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "delete_tenant" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "delete_tenant"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_tenant,
-                default_retry=self._method_configs["DeleteTenant"].retry,
-                default_timeout=self._method_configs["DeleteTenant"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = tenant_service_pb2.DeleteTenantRequest(name=name)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        self._inner_api_calls["delete_tenant"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 

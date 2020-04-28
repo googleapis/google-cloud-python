@@ -62,6 +62,37 @@ class CustomException(Exception):
 
 
 class TestTenantServiceClient(object):
+    def test_delete_tenant(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.TenantServiceClient()
+
+        # Setup Request
+        name = client.tenant_path("[PROJECT]", "[TENANT]")
+
+        client.delete_tenant(name)
+
+        assert len(channel.requests) == 1
+        expected_request = tenant_service_pb2.DeleteTenantRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_tenant_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.TenantServiceClient()
+
+        # Setup request
+        name = client.tenant_path("[PROJECT]", "[TENANT]")
+
+        with pytest.raises(CustomException):
+            client.delete_tenant(name)
+
     def test_create_tenant(self):
         # Setup Expected Response
         name = "name3373707"
@@ -182,37 +213,6 @@ class TestTenantServiceClient(object):
 
         with pytest.raises(CustomException):
             client.update_tenant(tenant)
-
-    def test_delete_tenant(self):
-        channel = ChannelStub()
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = talent_v4beta1.TenantServiceClient()
-
-        # Setup Request
-        name = client.tenant_path("[PROJECT]", "[TENANT]")
-
-        client.delete_tenant(name)
-
-        assert len(channel.requests) == 1
-        expected_request = tenant_service_pb2.DeleteTenantRequest(name=name)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_tenant_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = talent_v4beta1.TenantServiceClient()
-
-        # Setup request
-        name = client.tenant_path("[PROJECT]", "[TENANT]")
-
-        with pytest.raises(CustomException):
-            client.delete_tenant(name)
 
     def test_list_tenants(self):
         # Setup Expected Response

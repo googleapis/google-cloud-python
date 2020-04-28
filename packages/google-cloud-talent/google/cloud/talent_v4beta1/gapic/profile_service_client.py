@@ -54,6 +54,9 @@ from google.cloud.talent_v4beta1.proto import job_service_pb2_grpc
 from google.cloud.talent_v4beta1.proto import profile_pb2
 from google.cloud.talent_v4beta1.proto import profile_service_pb2
 from google.cloud.talent_v4beta1.proto import profile_service_pb2_grpc
+from google.cloud.talent_v4beta1.proto import tenant_pb2
+from google.cloud.talent_v4beta1.proto import tenant_service_pb2
+from google.cloud.talent_v4beta1.proto import tenant_service_pb2_grpc
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
@@ -225,427 +228,6 @@ class ProfileServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def list_profiles(
-        self,
-        parent,
-        filter_=None,
-        page_size=None,
-        read_mask=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Lists profiles by filter. The order is unspecified.
-
-        Example:
-            >>> from google.cloud import talent_v4beta1
-            >>>
-            >>> client = talent_v4beta1.ProfileServiceClient()
-            >>>
-            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
-            >>>
-            >>> # Iterate over all results
-            >>> for element in client.list_profiles(parent):
-            ...     # process element
-            ...     pass
-            >>>
-            >>>
-            >>> # Alternatively:
-            >>>
-            >>> # Iterate over results one page at a time
-            >>> for page in client.list_profiles(parent).pages:
-            ...     for element in page:
-            ...         # process element
-            ...         pass
-
-        Args:
-            parent (str): Required. The resource name of the tenant under which the profile is
-                created.
-
-                The format is "projects/{project\_id}/tenants/{tenant\_id}". For
-                example, "projects/foo/tenants/bar".
-            filter_ (str): The filter string specifies the profiles to be enumerated.
-
-                Supported operator: =, AND
-
-                The field(s) eligible for filtering are:
-
-                -  ``externalId``
-                -  ``groupId``
-
-                externalId and groupId cannot be specified at the same time. If both
-                externalId and groupId are provided, the API will return a bad request
-                error.
-
-                Sample Query:
-
-                -  externalId = "externalId-1"
-                -  groupId = "groupId-1"
-            page_size (int): The maximum number of resources contained in the
-                underlying API response. If page streaming is performed per-
-                resource, this parameter does not affect the return value. If page
-                streaming is performed per-page, this determines the maximum number
-                of resources in a page.
-            read_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): A field mask to specify the profile fields to be listed in response. All
-                fields are listed if it is unset.
-
-                Valid values are:
-
-                -  name
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.talent_v4beta1.types.FieldMask`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.api_core.page_iterator.PageIterator` instance.
-            An iterable of :class:`~google.cloud.talent_v4beta1.types.Profile` instances.
-            You can also iterate over the pages of the response
-            using its `pages` property.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "list_profiles" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "list_profiles"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.list_profiles,
-                default_retry=self._method_configs["ListProfiles"].retry,
-                default_timeout=self._method_configs["ListProfiles"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = profile_service_pb2.ListProfilesRequest(
-            parent=parent, filter=filter_, page_size=page_size, read_mask=read_mask
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("parent", parent)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        iterator = google.api_core.page_iterator.GRPCIterator(
-            client=None,
-            method=functools.partial(
-                self._inner_api_calls["list_profiles"],
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            ),
-            request=request,
-            items_field="profiles",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
-        )
-        return iterator
-
-    def create_profile(
-        self,
-        parent,
-        profile,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Creates and returns a new profile.
-
-        Example:
-            >>> from google.cloud import talent_v4beta1
-            >>>
-            >>> client = talent_v4beta1.ProfileServiceClient()
-            >>>
-            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
-            >>>
-            >>> # TODO: Initialize `profile`:
-            >>> profile = {}
-            >>>
-            >>> response = client.create_profile(parent, profile)
-
-        Args:
-            parent (str): Required. The name of the tenant this profile belongs to.
-
-                The format is "projects/{project\_id}/tenants/{tenant\_id}". For
-                example, "projects/foo/tenants/bar".
-            profile (Union[dict, ~google.cloud.talent_v4beta1.types.Profile]): Required. The profile to be created.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.talent_v4beta1.types.Profile`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.talent_v4beta1.types.Profile` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "create_profile" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "create_profile"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_profile,
-                default_retry=self._method_configs["CreateProfile"].retry,
-                default_timeout=self._method_configs["CreateProfile"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = profile_service_pb2.CreateProfileRequest(
-            parent=parent, profile=profile
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("parent", parent)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["create_profile"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def get_profile(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Gets the specified profile.
-
-        Example:
-            >>> from google.cloud import talent_v4beta1
-            >>>
-            >>> client = talent_v4beta1.ProfileServiceClient()
-            >>>
-            >>> name = client.profile_path('[PROJECT]', '[TENANT]', '[PROFILE]')
-            >>>
-            >>> response = client.get_profile(name)
-
-        Args:
-            name (str): Required. Resource name of the profile to get.
-
-                The format is
-                "projects/{project\_id}/tenants/{tenant\_id}/profiles/{profile\_id}".
-                For example, "projects/foo/tenants/bar/profiles/baz".
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.talent_v4beta1.types.Profile` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "get_profile" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "get_profile"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_profile,
-                default_retry=self._method_configs["GetProfile"].retry,
-                default_timeout=self._method_configs["GetProfile"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = profile_service_pb2.GetProfileRequest(name=name)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["get_profile"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def update_profile(
-        self,
-        profile,
-        update_mask=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Updates the specified profile and returns the updated result.
-
-        Example:
-            >>> from google.cloud import talent_v4beta1
-            >>>
-            >>> client = talent_v4beta1.ProfileServiceClient()
-            >>>
-            >>> # TODO: Initialize `profile`:
-            >>> profile = {}
-            >>>
-            >>> response = client.update_profile(profile)
-
-        Args:
-            profile (Union[dict, ~google.cloud.talent_v4beta1.types.Profile]): Required. Profile to be updated.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.talent_v4beta1.types.Profile`
-            update_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): A field mask to specify the profile fields to update.
-
-                A full update is performed if it is unset.
-
-                Valid values are:
-
-                -  external\_id
-                -  source
-                -  source\_types
-                -  uri
-                -  is\_hirable
-                -  create\_time
-                -  update\_time
-                -  candidate\_update\_time
-                -  resume\_update\_time
-                -  resume
-                -  person\_names
-                -  addresses
-                -  email\_addresses
-                -  phone\_numbers
-                -  personal\_uris
-                -  additional\_contact\_info
-                -  employment\_records
-                -  education\_records
-                -  skills
-                -  activities
-                -  publications
-                -  patents
-                -  certifications
-                -  recruiting\_notes
-                -  custom\_attributes
-                -  group\_id
-                -  external\_system
-                -  source\_note
-                -  primary\_responsibilities
-                -  citizenships
-                -  work\_authorizations
-                -  employee\_types
-                -  language\_code
-                -  qualification\_summary
-                -  allowed\_contact\_types
-                -  preferred\_contact\_types
-                -  contact\_availability
-                -  language\_fluencies
-                -  work\_preference
-                -  industry\_experiences
-                -  work\_environment\_experiences
-                -  work\_availability
-                -  security\_clearances
-                -  references
-                -  assessments
-                -  interviews
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.talent_v4beta1.types.FieldMask`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.talent_v4beta1.types.Profile` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "update_profile" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "update_profile"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.update_profile,
-                default_retry=self._method_configs["UpdateProfile"].retry,
-                default_timeout=self._method_configs["UpdateProfile"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = profile_service_pb2.UpdateProfileRequest(
-            profile=profile, update_mask=update_mask
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("profile.name", profile.name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["update_profile"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
     def delete_profile(
         self,
         name,
@@ -1007,3 +589,375 @@ class ProfileServiceClient(object):
             response_token_field="next_page_token",
         )
         return iterator
+
+    def list_profiles(
+        self,
+        parent,
+        filter_=None,
+        page_size=None,
+        read_mask=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Lists profiles by filter. The order is unspecified.
+
+        Example:
+            >>> from google.cloud import talent_v4beta1
+            >>>
+            >>> client = talent_v4beta1.ProfileServiceClient()
+            >>>
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
+            >>>
+            >>> # Iterate over all results
+            >>> for element in client.list_profiles(parent):
+            ...     # process element
+            ...     pass
+            >>>
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
+            >>> for page in client.list_profiles(parent).pages:
+            ...     for element in page:
+            ...         # process element
+            ...         pass
+
+        Args:
+            parent (str): Required. The resource name of the tenant under which the profile is
+                created.
+
+                The format is "projects/{project\_id}/tenants/{tenant\_id}". For
+                example, "projects/foo/tenants/bar".
+            filter_ (str): The filter string specifies the profiles to be enumerated.
+
+                Supported operator: =, AND
+
+                The field(s) eligible for filtering are:
+
+                -  ``externalId``
+                -  ``groupId``
+
+                externalId and groupId cannot be specified at the same time. If both
+                externalId and groupId are provided, the API will return a bad request
+                error.
+
+                Sample Query:
+
+                -  externalId = "externalId-1"
+                -  groupId = "groupId-1"
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
+            read_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): A field mask to specify the profile fields to be listed in response. All
+                fields are listed if it is unset.
+
+                Valid values are:
+
+                -  name
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.talent_v4beta1.types.FieldMask`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.talent_v4beta1.types.Profile` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "list_profiles" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "list_profiles"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_profiles,
+                default_retry=self._method_configs["ListProfiles"].retry,
+                default_timeout=self._method_configs["ListProfiles"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = profile_service_pb2.ListProfilesRequest(
+            parent=parent, filter=filter_, page_size=page_size, read_mask=read_mask
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._inner_api_calls["list_profiles"],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            ),
+            request=request,
+            items_field="profiles",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
+        )
+        return iterator
+
+    def create_profile(
+        self,
+        parent,
+        profile,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Creates and returns a new profile.
+
+        Example:
+            >>> from google.cloud import talent_v4beta1
+            >>>
+            >>> client = talent_v4beta1.ProfileServiceClient()
+            >>>
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
+            >>>
+            >>> # TODO: Initialize `profile`:
+            >>> profile = {}
+            >>>
+            >>> response = client.create_profile(parent, profile)
+
+        Args:
+            parent (str): Required. The name of the tenant this profile belongs to.
+
+                The format is "projects/{project\_id}/tenants/{tenant\_id}". For
+                example, "projects/foo/tenants/bar".
+            profile (Union[dict, ~google.cloud.talent_v4beta1.types.Profile]): Required. The profile to be created.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.talent_v4beta1.types.Profile`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.talent_v4beta1.types.Profile` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "create_profile" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "create_profile"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_profile,
+                default_retry=self._method_configs["CreateProfile"].retry,
+                default_timeout=self._method_configs["CreateProfile"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = profile_service_pb2.CreateProfileRequest(
+            parent=parent, profile=profile
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["create_profile"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def get_profile(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Gets the specified profile.
+
+        Example:
+            >>> from google.cloud import talent_v4beta1
+            >>>
+            >>> client = talent_v4beta1.ProfileServiceClient()
+            >>>
+            >>> name = client.profile_path('[PROJECT]', '[TENANT]', '[PROFILE]')
+            >>>
+            >>> response = client.get_profile(name)
+
+        Args:
+            name (str): Required. Resource name of the profile to get.
+
+                The format is
+                "projects/{project\_id}/tenants/{tenant\_id}/profiles/{profile\_id}".
+                For example, "projects/foo/tenants/bar/profiles/baz".
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.talent_v4beta1.types.Profile` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_profile" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_profile"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_profile,
+                default_retry=self._method_configs["GetProfile"].retry,
+                default_timeout=self._method_configs["GetProfile"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = profile_service_pb2.GetProfileRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["get_profile"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def update_profile(
+        self,
+        profile,
+        update_mask=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Updates the specified profile and returns the updated result.
+
+        Example:
+            >>> from google.cloud import talent_v4beta1
+            >>>
+            >>> client = talent_v4beta1.ProfileServiceClient()
+            >>>
+            >>> # TODO: Initialize `profile`:
+            >>> profile = {}
+            >>>
+            >>> response = client.update_profile(profile)
+
+        Args:
+            profile (Union[dict, ~google.cloud.talent_v4beta1.types.Profile]): Required. Profile to be updated.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.talent_v4beta1.types.Profile`
+            update_mask (Union[dict, ~google.cloud.talent_v4beta1.types.FieldMask]): A field mask to specify the profile fields to update.
+
+                A full update is performed if it is unset.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.talent_v4beta1.types.FieldMask`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.talent_v4beta1.types.Profile` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "update_profile" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "update_profile"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_profile,
+                default_retry=self._method_configs["UpdateProfile"].retry,
+                default_timeout=self._method_configs["UpdateProfile"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = profile_service_pb2.UpdateProfileRequest(
+            profile=profile, update_mask=update_mask
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("profile.name", profile.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["update_profile"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )

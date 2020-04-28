@@ -485,14 +485,12 @@ ClientEvent = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CLIENTEVENT,
         __module__="google.cloud.talent_v4beta1.proto.event_pb2",
-        __doc__="""An event issued when an end user interacts with the
-  application that implements Cloud Talent Solution. Providing this
-  information improves the quality of results for the API clients,
-  enabling the service to perform optimally. The number of events sent
-  must be consistent with other calls, such as job searches, issued to the
-  service by the client.
-  
-  
+        __doc__="""An event issued when an end user interacts with the application that
+  implements Cloud Talent Solution. Providing this information improves
+  the quality of results for the API clients, enabling the service to
+  perform optimally. The number of events sent must be consistent with
+  other calls, such as job searches, issued to the service by the
+  client.
   Attributes:
       request_id:
           Strongly recommended for the best service experience.  A
@@ -527,10 +525,8 @@ JobEvent = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_JOBEVENT,
         __module__="google.cloud.talent_v4beta1.proto.event_pb2",
-        __doc__="""An event issued when a job seeker interacts with the
-  application that implements Cloud Talent Solution.
-  
-  
+        __doc__="""An event issued when a job seeker interacts with the application that
+  implements Cloud Talent Solution.
   Attributes:
       type:
           Required. The type of the event (see [JobEventType][google.clo
@@ -564,10 +560,8 @@ ProfileEvent = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PROFILEEVENT,
         __module__="google.cloud.talent_v4beta1.proto.event_pb2",
-        __doc__="""An event issued when a profile searcher interacts with the
-  application that implements Cloud Talent Solution.
-  
-  
+        __doc__="""An event issued when a profile searcher interacts with the application
+  that implements Cloud Talent Solution.
   Attributes:
       type:
           Required. Type of event.

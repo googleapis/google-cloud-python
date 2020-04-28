@@ -37,7 +37,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\023CompanyServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n7google/cloud/talent_v4beta1/proto/company_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a/google/cloud/talent_v4beta1/proto/company.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"\x87\x01\n\x14\x43reateCompanyRequest\x12\x33\n\x06parent\x18\x01 \x01(\tB#\xe0\x41\x02\xfa\x41\x1d\x12\x1bjobs.googleapis.com/Company\x12:\n\x07\x63ompany\x18\x02 \x01(\x0b\x32$.google.cloud.talent.v4beta1.CompanyB\x03\xe0\x41\x02"F\n\x11GetCompanyRequest\x12\x31\n\x04name\x18\x01 \x01(\tB#\xe0\x41\x02\xfa\x41\x1d\n\x1bjobs.googleapis.com/Company"\x83\x01\n\x14UpdateCompanyRequest\x12:\n\x07\x63ompany\x18\x01 \x01(\x0b\x32$.google.cloud.talent.v4beta1.CompanyB\x03\xe0\x41\x02\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"I\n\x14\x44\x65leteCompanyRequest\x12\x31\n\x04name\x18\x01 \x01(\tB#\xe0\x41\x02\xfa\x41\x1d\n\x1bjobs.googleapis.com/Company"\x95\x01\n\x14ListCompaniesRequest\x12;\n\x06parent\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\n#jobs.googleapis.com/TenantOrProject\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x19\n\x11require_open_jobs\x18\x04 \x01(\x08"\xaa\x01\n\x15ListCompaniesResponse\x12\x37\n\tcompanies\x18\x01 \x03(\x0b\x32$.google.cloud.talent.v4beta1.Company\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12?\n\x08metadata\x18\x03 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata2\xd2\t\n\x0e\x43ompanyService\x12\xe3\x01\n\rCreateCompany\x12\x31.google.cloud.talent.v4beta1.CreateCompanyRequest\x1a$.google.cloud.talent.v4beta1.Company"y\x82\xd3\xe4\x93\x02\x62"0/v4beta1/{parent=projects/*/tenants/*}/companies:\x01*Z+"&/v4beta1/{parent=projects/*}/companies:\x01*\xda\x41\x0eparent,company\x12\xcd\x01\n\nGetCompany\x12..google.cloud.talent.v4beta1.GetCompanyRequest\x1a$.google.cloud.talent.v4beta1.Company"i\x82\xd3\xe4\x93\x02\\\x12\x30/v4beta1/{name=projects/*/tenants/*/companies/*}Z(\x12&/v4beta1/{name=projects/*/companies/*}\xda\x41\x04name\x12\xed\x01\n\rUpdateCompany\x12\x31.google.cloud.talent.v4beta1.UpdateCompanyRequest\x1a$.google.cloud.talent.v4beta1.Company"\x82\x01\x82\xd3\xe4\x93\x02r28/v4beta1/{company.name=projects/*/tenants/*/companies/*}:\x01*Z32./v4beta1/{company.name=projects/*/companies/*}:\x01*\xda\x41\x07\x63ompany\x12\xc5\x01\n\rDeleteCompany\x12\x31.google.cloud.talent.v4beta1.DeleteCompanyRequest\x1a\x16.google.protobuf.Empty"i\x82\xd3\xe4\x93\x02\\*0/v4beta1/{name=projects/*/tenants/*/companies/*}Z(*&/v4beta1/{name=projects/*/companies/*}\xda\x41\x04name\x12\xe3\x01\n\rListCompanies\x12\x31.google.cloud.talent.v4beta1.ListCompaniesRequest\x1a\x32.google.cloud.talent.v4beta1.ListCompaniesResponse"k\x82\xd3\xe4\x93\x02\\\x12\x30/v4beta1/{parent=projects/*/tenants/*}/companiesZ(\x12&/v4beta1/{parent=projects/*}/companies\xda\x41\x06parent\x1al\xca\x41\x13jobs.googleapis.com\xd2\x41Shttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobsB\x81\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x13\x43ompanyServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n7google/cloud/talent_v4beta1/proto/company_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a/google/cloud/talent_v4beta1/proto/company.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"\x87\x01\n\x14\x43reateCompanyRequest\x12\x33\n\x06parent\x18\x01 \x01(\tB#\xe0\x41\x02\xfa\x41\x1d\x12\x1bjobs.googleapis.com/Company\x12:\n\x07\x63ompany\x18\x02 \x01(\x0b\x32$.google.cloud.talent.v4beta1.CompanyB\x03\xe0\x41\x02"F\n\x11GetCompanyRequest\x12\x31\n\x04name\x18\x01 \x01(\tB#\xe0\x41\x02\xfa\x41\x1d\n\x1bjobs.googleapis.com/Company"\x83\x01\n\x14UpdateCompanyRequest\x12:\n\x07\x63ompany\x18\x01 \x01(\x0b\x32$.google.cloud.talent.v4beta1.CompanyB\x03\xe0\x41\x02\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"I\n\x14\x44\x65leteCompanyRequest\x12\x31\n\x04name\x18\x01 \x01(\tB#\xe0\x41\x02\xfa\x41\x1d\n\x1bjobs.googleapis.com/Company"\x8d\x01\n\x14ListCompaniesRequest\x12\x33\n\x06parent\x18\x01 \x01(\tB#\xe0\x41\x02\xfa\x41\x1d\x12\x1bjobs.googleapis.com/Company\x12\x12\n\npage_token\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x19\n\x11require_open_jobs\x18\x04 \x01(\x08"\xaa\x01\n\x15ListCompaniesResponse\x12\x37\n\tcompanies\x18\x01 \x03(\x0b\x32$.google.cloud.talent.v4beta1.Company\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t\x12?\n\x08metadata\x18\x03 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata2\xd2\t\n\x0e\x43ompanyService\x12\xe3\x01\n\rCreateCompany\x12\x31.google.cloud.talent.v4beta1.CreateCompanyRequest\x1a$.google.cloud.talent.v4beta1.Company"y\x82\xd3\xe4\x93\x02\x62"0/v4beta1/{parent=projects/*/tenants/*}/companies:\x01*Z+"&/v4beta1/{parent=projects/*}/companies:\x01*\xda\x41\x0eparent,company\x12\xcd\x01\n\nGetCompany\x12..google.cloud.talent.v4beta1.GetCompanyRequest\x1a$.google.cloud.talent.v4beta1.Company"i\x82\xd3\xe4\x93\x02\\\x12\x30/v4beta1/{name=projects/*/tenants/*/companies/*}Z(\x12&/v4beta1/{name=projects/*/companies/*}\xda\x41\x04name\x12\xed\x01\n\rUpdateCompany\x12\x31.google.cloud.talent.v4beta1.UpdateCompanyRequest\x1a$.google.cloud.talent.v4beta1.Company"\x82\x01\x82\xd3\xe4\x93\x02r28/v4beta1/{company.name=projects/*/tenants/*/companies/*}:\x01*Z32./v4beta1/{company.name=projects/*/companies/*}:\x01*\xda\x41\x07\x63ompany\x12\xc5\x01\n\rDeleteCompany\x12\x31.google.cloud.talent.v4beta1.DeleteCompanyRequest\x1a\x16.google.protobuf.Empty"i\x82\xd3\xe4\x93\x02\\*0/v4beta1/{name=projects/*/tenants/*/companies/*}Z(*&/v4beta1/{name=projects/*/companies/*}\xda\x41\x04name\x12\xe3\x01\n\rListCompanies\x12\x31.google.cloud.talent.v4beta1.ListCompaniesRequest\x1a\x32.google.cloud.talent.v4beta1.ListCompaniesResponse"k\x82\xd3\xe4\x93\x02\\\x12\x30/v4beta1/{parent=projects/*/tenants/*}/companiesZ(\x12&/v4beta1/{parent=projects/*}/companies\xda\x41\x06parent\x1al\xca\x41\x13jobs.googleapis.com\xd2\x41Shttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobsB\x81\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x13\x43ompanyServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -273,7 +273,7 @@ _LISTCOMPANIESREQUEST = _descriptor.Descriptor(
             is_extension=False,
             extension_scope=None,
             serialized_options=_b(
-                "\340A\002\372A%\n#jobs.googleapis.com/TenantOrProject"
+                "\340A\002\372A\035\022\033jobs.googleapis.com/Company"
             ),
             file=DESCRIPTOR,
         ),
@@ -341,7 +341,7 @@ _LISTCOMPANIESREQUEST = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=783,
-    serialized_end=932,
+    serialized_end=924,
 )
 
 
@@ -415,8 +415,8 @@ _LISTCOMPANIESRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=935,
-    serialized_end=1105,
+    serialized_start=927,
+    serialized_end=1097,
 )
 
 _CREATECOMPANYREQUEST.fields_by_name[
@@ -457,8 +457,6 @@ CreateCompanyRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_CREATECOMPANYREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.company_service_pb2",
         __doc__="""The Request of the CreateCompany method.
-  
-  
   Attributes:
       parent:
           Required. Resource name of the tenant under which the company
@@ -481,8 +479,6 @@ GetCompanyRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_GETCOMPANYREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.company_service_pb2",
         __doc__="""Request for getting a company by name.
-  
-  
   Attributes:
       name:
           Required. The resource name of the company to be retrieved.
@@ -504,8 +500,6 @@ UpdateCompanyRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_UPDATECOMPANYREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.company_service_pb2",
         __doc__="""Request for updating a specified company.
-  
-  
   Attributes:
       company:
           Required. The company resource to replace the current resource
@@ -532,8 +526,6 @@ DeleteCompanyRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_DELETECOMPANYREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.company_service_pb2",
         __doc__="""Request to delete a company.
-  
-  
   Attributes:
       name:
           Required. The resource name of the company to be deleted.  The
@@ -555,8 +547,6 @@ ListCompaniesRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTCOMPANIESREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.company_service_pb2",
         __doc__="""List companies for which the client has ACL visibility.
-  
-  
   Attributes:
       parent:
           Required. Resource name of the tenant under which the company
@@ -588,8 +578,6 @@ ListCompaniesResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTCOMPANIESRESPONSE,
         __module__="google.cloud.talent_v4beta1.proto.company_service_pb2",
         __doc__="""The List companies response object.
-  
-  
   Attributes:
       companies:
           Companies for the current client.
@@ -621,8 +609,8 @@ _COMPANYSERVICE = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\023jobs.googleapis.com\322AShttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobs"
     ),
-    serialized_start=1108,
-    serialized_end=2342,
+    serialized_start=1100,
+    serialized_end=2334,
     methods=[
         _descriptor.MethodDescriptor(
             name="CreateCompany",

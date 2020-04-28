@@ -2821,10 +2821,8 @@ Profile = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_PROFILE,
         __module__="google.cloud.talent_v4beta1.proto.profile_pb2",
-        __doc__="""A resource that represents the profile for a job candidate
-  (also referred to as a "single-source profile").
-  
-  
+        __doc__="""A resource that represents the profile for a job candidate (also
+  referred to as a "single-source profile").
   Attributes:
       name:
           Required during profile update.  Resource name assigned to a
@@ -3044,8 +3042,6 @@ AvailabilitySignal = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_AVAILABILITYSIGNAL,
         __module__="google.cloud.talent_v4beta1.proto.profile_pb2",
         __doc__="""Candidate availability signal.
-  
-  
   Attributes:
       type:
           Type of signal.
@@ -3076,8 +3072,6 @@ Resume = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_RESUME,
         __module__="google.cloud.talent_v4beta1.proto.profile_pb2",
         __doc__="""Resource that represents a resume.
-  
-  
   Attributes:
       structured_resume:
           Users can create a profile with only this field field, if [res
@@ -3111,8 +3105,6 @@ PersonName = _reflection.GeneratedProtocolMessageType(
                 DESCRIPTOR=_PERSONNAME_PERSONSTRUCTUREDNAME,
                 __module__="google.cloud.talent_v4beta1.proto.profile_pb2",
                 __doc__="""Resource that represents a person's structured name.
-    
-    
     Attributes:
         given_name:
             Given/first name.  It's derived from [formatted\_name][google.
@@ -3140,8 +3132,6 @@ PersonName = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_PERSONNAME,
         __module__="google.cloud.talent_v4beta1.proto.profile_pb2",
         __doc__="""Resource that represents the name of a person.
-  
-  
   Attributes:
       person_name:
           The name of a person. It can be one of [formatted\_name][googl
@@ -3172,8 +3162,6 @@ Address = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_ADDRESS,
         __module__="google.cloud.talent_v4beta1.proto.profile_pb2",
         __doc__="""Resource that represents a address.
-  
-  
   Attributes:
       usage:
           The usage of the address. For example, SCHOOL, WORK, PERSONAL.
@@ -3204,8 +3192,6 @@ Email = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_EMAIL,
         __module__="google.cloud.talent_v4beta1.proto.profile_pb2",
         __doc__="""Resource that represents a person's email address.
-  
-  
   Attributes:
       usage:
           The usage of the email address. For example, SCHOOL, WORK,
@@ -3225,8 +3211,6 @@ Phone = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_PHONE,
         __module__="google.cloud.talent_v4beta1.proto.profile_pb2",
         __doc__="""Resource that represents a person's telephone number.
-  
-  
   Attributes:
       usage:
           The usage of the phone. For example, SCHOOL, WORK, PERSONAL.
@@ -3254,8 +3238,6 @@ PersonalUri = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_PERSONALURI,
         __module__="google.cloud.talent_v4beta1.proto.profile_pb2",
         __doc__="""Resource that represents a valid URI for a personal use.
-  
-  
   Attributes:
       uri:
           The personal URI.  Number of characters allowed is 4,000.
@@ -3271,10 +3253,8 @@ AdditionalContactInfo = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ADDITIONALCONTACTINFO,
         __module__="google.cloud.talent_v4beta1.proto.profile_pb2",
-        __doc__="""Resource that represents contact information other than
-  phone, email, URI and addresses.
-  
-  
+        __doc__="""Resource that represents contact information other than phone, email,
+  URI and addresses.
   Attributes:
       usage:
           The usage of this contact method. For example, SCHOOL, WORK,
@@ -3296,10 +3276,7 @@ EmploymentRecord = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_EMPLOYMENTRECORD,
         __module__="google.cloud.talent_v4beta1.proto.profile_pb2",
-        __doc__="""Resource that represents an employment record of a
-  candidate.
-  
-  
+        __doc__="""Resource that represents an employment record of a candidate.
   Attributes:
       start_date:
           Start date of the employment.
@@ -3358,10 +3335,7 @@ EducationRecord = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_EDUCATIONRECORD,
         __module__="google.cloud.talent_v4beta1.proto.profile_pb2",
-        __doc__="""Resource that represents an education record of a
-  candidate.
-  
-  
+        __doc__="""Resource that represents an education record of a candidate.
   Attributes:
       start_date:
           The start date of the education.
@@ -3415,10 +3389,7 @@ Degree = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DEGREE,
         __module__="google.cloud.talent_v4beta1.proto.profile_pb2",
-        __doc__="""Resource that represents a degree pursuing or acquired by
-  a candidate.
-  
-  
+        __doc__="""Resource that represents a degree pursuing or acquired by a candidate.
   Attributes:
       degree_type:
           ISCED degree type.
@@ -3440,11 +3411,9 @@ Activity = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_ACTIVITY,
         __module__="google.cloud.talent_v4beta1.proto.profile_pb2",
-        __doc__="""Resource that represents an individual or collaborative
-  activity participated in by a candidate, for example, an open-source
-  project, a class assignment, and so on.
-  
-  
+        __doc__="""Resource that represents an individual or collaborative activity
+  participated in by a candidate, for example, an open-source project, a
+  class assignment, and so on.
   Attributes:
       display_name:
           Activity display name.  Number of characters allowed is 100.
@@ -3494,10 +3463,7 @@ Publication = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PUBLICATION,
         __module__="google.cloud.talent_v4beta1.proto.profile_pb2",
-        __doc__="""Resource that represents a publication resource of a
-  candidate.
-  
-  
+        __doc__="""Resource that represents a publication resource of a candidate.
   Attributes:
       authors:
           A list of author names.  Number of characters allowed is 100.
@@ -3533,10 +3499,7 @@ Patent = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_PATENT,
         __module__="google.cloud.talent_v4beta1.proto.profile_pb2",
-        __doc__="""Resource that represents the patent acquired by a
-  candidate.
-  
-  
+        __doc__="""Resource that represents the patent acquired by a candidate.
   Attributes:
       display_name:
           Name of the patent.  Number of characters allowed is 100.

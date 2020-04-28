@@ -113,6 +113,19 @@ class ApplicationServiceGrpcTransport(object):
         return self._channel
 
     @property
+    def delete_application(self):
+        """Return the gRPC stub for :meth:`ApplicationServiceClient.delete_application`.
+
+        Deletes specified application.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["application_service_stub"].DeleteApplication
+
+    @property
     def create_application(self):
         """Return the gRPC stub for :meth:`ApplicationServiceClient.create_application`.
 
@@ -150,19 +163,6 @@ class ApplicationServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["application_service_stub"].UpdateApplication
-
-    @property
-    def delete_application(self):
-        """Return the gRPC stub for :meth:`ApplicationServiceClient.delete_application`.
-
-        Deletes specified application.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["application_service_stub"].DeleteApplication
 
     @property
     def list_applications(self):

@@ -63,6 +63,93 @@ class CustomException(Exception):
 
 
 class TestProfileServiceClient(object):
+    def test_delete_profile(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.ProfileServiceClient()
+
+        # Setup Request
+        name = client.profile_path("[PROJECT]", "[TENANT]", "[PROFILE]")
+
+        client.delete_profile(name)
+
+        assert len(channel.requests) == 1
+        expected_request = profile_service_pb2.DeleteProfileRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_profile_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.ProfileServiceClient()
+
+        # Setup request
+        name = client.profile_path("[PROJECT]", "[TENANT]", "[PROFILE]")
+
+        with pytest.raises(CustomException):
+            client.delete_profile(name)
+
+    def test_search_profiles(self):
+        # Setup Expected Response
+        estimated_total_size = 1882144769
+        next_page_token = ""
+        result_set_id = "resultSetId-770306950"
+        summarized_profiles_element = {}
+        summarized_profiles = [summarized_profiles_element]
+        expected_response = {
+            "estimated_total_size": estimated_total_size,
+            "next_page_token": next_page_token,
+            "result_set_id": result_set_id,
+            "summarized_profiles": summarized_profiles,
+        }
+        expected_response = profile_service_pb2.SearchProfilesResponse(
+            **expected_response
+        )
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.ProfileServiceClient()
+
+        # Setup Request
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
+        request_metadata = {}
+
+        paged_list_response = client.search_profiles(parent, request_metadata)
+        resources = list(paged_list_response)
+        assert len(resources) == 1
+
+        assert expected_response.summarized_profiles[0] == resources[0]
+
+        assert len(channel.requests) == 1
+        expected_request = profile_service_pb2.SearchProfilesRequest(
+            parent=parent, request_metadata=request_metadata
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_search_profiles_exception(self):
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.ProfileServiceClient()
+
+        # Setup request
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
+        request_metadata = {}
+
+        paged_list_response = client.search_profiles(parent, request_metadata)
+        with pytest.raises(CustomException):
+            list(paged_list_response)
+
     def test_list_profiles(self):
         # Setup Expected Response
         next_page_token = ""
@@ -267,90 +354,3 @@ class TestProfileServiceClient(object):
 
         with pytest.raises(CustomException):
             client.update_profile(profile)
-
-    def test_delete_profile(self):
-        channel = ChannelStub()
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = talent_v4beta1.ProfileServiceClient()
-
-        # Setup Request
-        name = client.profile_path("[PROJECT]", "[TENANT]", "[PROFILE]")
-
-        client.delete_profile(name)
-
-        assert len(channel.requests) == 1
-        expected_request = profile_service_pb2.DeleteProfileRequest(name=name)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_profile_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = talent_v4beta1.ProfileServiceClient()
-
-        # Setup request
-        name = client.profile_path("[PROJECT]", "[TENANT]", "[PROFILE]")
-
-        with pytest.raises(CustomException):
-            client.delete_profile(name)
-
-    def test_search_profiles(self):
-        # Setup Expected Response
-        estimated_total_size = 1882144769
-        next_page_token = ""
-        result_set_id = "resultSetId-770306950"
-        summarized_profiles_element = {}
-        summarized_profiles = [summarized_profiles_element]
-        expected_response = {
-            "estimated_total_size": estimated_total_size,
-            "next_page_token": next_page_token,
-            "result_set_id": result_set_id,
-            "summarized_profiles": summarized_profiles,
-        }
-        expected_response = profile_service_pb2.SearchProfilesResponse(
-            **expected_response
-        )
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = talent_v4beta1.ProfileServiceClient()
-
-        # Setup Request
-        parent = client.tenant_path("[PROJECT]", "[TENANT]")
-        request_metadata = {}
-
-        paged_list_response = client.search_profiles(parent, request_metadata)
-        resources = list(paged_list_response)
-        assert len(resources) == 1
-
-        assert expected_response.summarized_profiles[0] == resources[0]
-
-        assert len(channel.requests) == 1
-        expected_request = profile_service_pb2.SearchProfilesRequest(
-            parent=parent, request_metadata=request_metadata
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_search_profiles_exception(self):
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = talent_v4beta1.ProfileServiceClient()
-
-        # Setup request
-        parent = client.tenant_path("[PROJECT]", "[TENANT]")
-        request_metadata = {}
-
-        paged_list_response = client.search_profiles(parent, request_metadata)
-        with pytest.raises(CustomException):
-            list(paged_list_response)

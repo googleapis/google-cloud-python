@@ -62,6 +62,37 @@ class CustomException(Exception):
 
 
 class TestCompanyServiceClient(object):
+    def test_delete_company(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.CompanyServiceClient()
+
+        # Setup Request
+        name = client.company_path("[PROJECT]", "[TENANT]", "[COMPANY]")
+
+        client.delete_company(name)
+
+        assert len(channel.requests) == 1
+        expected_request = company_service_pb2.DeleteCompanyRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_company_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.CompanyServiceClient()
+
+        # Setup request
+        name = client.company_path("[PROJECT]", "[TENANT]", "[COMPANY]")
+
+        with pytest.raises(CustomException):
+            client.delete_company(name)
+
     def test_create_company(self):
         # Setup Expected Response
         name = "name3373707"
@@ -96,7 +127,7 @@ class TestCompanyServiceClient(object):
             client = talent_v4beta1.CompanyServiceClient()
 
         # Setup Request
-        parent = client.tenant_path("[PROJECT]", "[TENANT]")
+        parent = client.project_path("[PROJECT]")
         company = {}
 
         response = client.create_company(parent, company)
@@ -118,7 +149,7 @@ class TestCompanyServiceClient(object):
             client = talent_v4beta1.CompanyServiceClient()
 
         # Setup request
-        parent = client.tenant_path("[PROJECT]", "[TENANT]")
+        parent = client.project_path("[PROJECT]")
         company = {}
 
         with pytest.raises(CustomException):
@@ -240,37 +271,6 @@ class TestCompanyServiceClient(object):
         with pytest.raises(CustomException):
             client.update_company(company)
 
-    def test_delete_company(self):
-        channel = ChannelStub()
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = talent_v4beta1.CompanyServiceClient()
-
-        # Setup Request
-        name = client.company_path("[PROJECT]", "[TENANT]", "[COMPANY]")
-
-        client.delete_company(name)
-
-        assert len(channel.requests) == 1
-        expected_request = company_service_pb2.DeleteCompanyRequest(name=name)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_company_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = talent_v4beta1.CompanyServiceClient()
-
-        # Setup request
-        name = client.company_path("[PROJECT]", "[TENANT]", "[COMPANY]")
-
-        with pytest.raises(CustomException):
-            client.delete_company(name)
-
     def test_list_companies(self):
         # Setup Expected Response
         next_page_token = ""
@@ -289,7 +289,7 @@ class TestCompanyServiceClient(object):
             client = talent_v4beta1.CompanyServiceClient()
 
         # Setup Request
-        parent = client.tenant_path("[PROJECT]", "[TENANT]")
+        parent = client.project_path("[PROJECT]")
 
         paged_list_response = client.list_companies(parent)
         resources = list(paged_list_response)
@@ -310,7 +310,7 @@ class TestCompanyServiceClient(object):
             client = talent_v4beta1.CompanyServiceClient()
 
         # Setup request
-        parent = client.tenant_path("[PROJECT]", "[TENANT]")
+        parent = client.project_path("[PROJECT]")
 
         paged_list_response = client.list_companies(parent)
         with pytest.raises(CustomException):

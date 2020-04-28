@@ -429,8 +429,6 @@ CreateTenantRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_CREATETENANTREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.tenant_service_pb2",
         __doc__="""The Request of the CreateTenant method.
-  
-  
   Attributes:
       parent:
           Required. Resource name of the project under which the tenant
@@ -451,8 +449,6 @@ GetTenantRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_GETTENANTREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.tenant_service_pb2",
         __doc__="""Request for getting a tenant by name.
-  
-  
   Attributes:
       name:
           Required. The resource name of the tenant to be retrieved.
@@ -471,8 +467,6 @@ UpdateTenantRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_UPDATETENANTREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.tenant_service_pb2",
         __doc__="""Request for updating a specified tenant.
-  
-  
   Attributes:
       tenant:
           Required. The tenant resource to replace the current resource
@@ -499,8 +493,6 @@ DeleteTenantRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_DELETETENANTREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.tenant_service_pb2",
         __doc__="""Request to delete a tenant.
-  
-  
   Attributes:
       name:
           Required. The resource name of the tenant to be deleted.  The
@@ -519,8 +511,6 @@ ListTenantsRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTTENANTSREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.tenant_service_pb2",
         __doc__="""List tenants for which the client has ACL visibility.
-  
-  
   Attributes:
       parent:
           Required. Resource name of the project under which the tenant
@@ -544,8 +534,6 @@ ListTenantsResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTTENANTSRESPONSE,
         __module__="google.cloud.talent_v4beta1.proto.tenant_service_pb2",
         __doc__="""The List tenants response object.
-  
-  
   Attributes:
       tenants:
           Tenants for the current client.

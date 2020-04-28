@@ -32,7 +32,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\026CompletionServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n:google/cloud/talent_v4beta1/proto/completion_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x17google/api/client.proto"\x9b\x04\n\x14\x43ompleteQueryRequest\x12;\n\x06parent\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\n#jobs.googleapis.com/TenantOrProject\x12\x12\n\x05query\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x16\n\x0elanguage_codes\x18\x03 \x03(\t\x12\x16\n\tpage_size\x18\x04 \x01(\x05\x42\x03\xe0\x41\x02\x12\x31\n\x07\x63ompany\x18\x05 \x01(\tB \xfa\x41\x1d\n\x1bjobs.googleapis.com/Company\x12P\n\x05scope\x18\x06 \x01(\x0e\x32\x41.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionScope\x12N\n\x04type\x18\x07 \x01(\x0e\x32@.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionType"K\n\x0f\x43ompletionScope\x12 \n\x1c\x43OMPLETION_SCOPE_UNSPECIFIED\x10\x00\x12\n\n\x06TENANT\x10\x01\x12\n\n\x06PUBLIC\x10\x02"`\n\x0e\x43ompletionType\x12\x1f\n\x1b\x43OMPLETION_TYPE_UNSPECIFIED\x10\x00\x12\r\n\tJOB_TITLE\x10\x01\x12\x10\n\x0c\x43OMPANY_NAME\x10\x02\x12\x0c\n\x08\x43OMBINED\x10\x03"\xc5\x02\n\x15\x43ompleteQueryResponse\x12_\n\x12\x63ompletion_results\x18\x01 \x03(\x0b\x32\x43.google.cloud.talent.v4beta1.CompleteQueryResponse.CompletionResult\x12?\n\x08metadata\x18\x02 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata\x1a\x89\x01\n\x10\x43ompletionResult\x12\x12\n\nsuggestion\x18\x01 \x01(\t\x12N\n\x04type\x18\x02 \x01(\x0e\x32@.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionType\x12\x11\n\timage_uri\x18\x03 \x01(\t2\xd5\x02\n\nCompletion\x12\xd8\x01\n\rCompleteQuery\x12\x31.google.cloud.talent.v4beta1.CompleteQueryRequest\x1a\x32.google.cloud.talent.v4beta1.CompleteQueryResponse"`\x82\xd3\xe4\x93\x02Z\x12//v4beta1/{parent=projects/*/tenants/*}:completeZ\'\x12%/v4beta1/{parent=projects/*}:complete\x1al\xca\x41\x13jobs.googleapis.com\xd2\x41Shttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobsB\x84\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x16\x43ompletionServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n:google/cloud/talent_v4beta1/proto/completion_service.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x17google/api/client.proto"\x93\x04\n\x14\x43ompleteQueryRequest\x12\x33\n\x06parent\x18\x01 \x01(\tB#\xe0\x41\x02\xfa\x41\x1d\x12\x1bjobs.googleapis.com/Company\x12\x12\n\x05query\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x16\n\x0elanguage_codes\x18\x03 \x03(\t\x12\x16\n\tpage_size\x18\x04 \x01(\x05\x42\x03\xe0\x41\x02\x12\x31\n\x07\x63ompany\x18\x05 \x01(\tB \xfa\x41\x1d\n\x1bjobs.googleapis.com/Company\x12P\n\x05scope\x18\x06 \x01(\x0e\x32\x41.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionScope\x12N\n\x04type\x18\x07 \x01(\x0e\x32@.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionType"K\n\x0f\x43ompletionScope\x12 \n\x1c\x43OMPLETION_SCOPE_UNSPECIFIED\x10\x00\x12\n\n\x06TENANT\x10\x01\x12\n\n\x06PUBLIC\x10\x02"`\n\x0e\x43ompletionType\x12\x1f\n\x1b\x43OMPLETION_TYPE_UNSPECIFIED\x10\x00\x12\r\n\tJOB_TITLE\x10\x01\x12\x10\n\x0c\x43OMPANY_NAME\x10\x02\x12\x0c\n\x08\x43OMBINED\x10\x03"\xc5\x02\n\x15\x43ompleteQueryResponse\x12_\n\x12\x63ompletion_results\x18\x01 \x03(\x0b\x32\x43.google.cloud.talent.v4beta1.CompleteQueryResponse.CompletionResult\x12?\n\x08metadata\x18\x02 \x01(\x0b\x32-.google.cloud.talent.v4beta1.ResponseMetadata\x1a\x89\x01\n\x10\x43ompletionResult\x12\x12\n\nsuggestion\x18\x01 \x01(\t\x12N\n\x04type\x18\x02 \x01(\x0e\x32@.google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionType\x12\x11\n\timage_uri\x18\x03 \x01(\t2\xd5\x02\n\nCompletion\x12\xd8\x01\n\rCompleteQuery\x12\x31.google.cloud.talent.v4beta1.CompleteQueryRequest\x1a\x32.google.cloud.talent.v4beta1.CompleteQueryResponse"`\x82\xd3\xe4\x93\x02Z\x12//v4beta1/{parent=projects/*/tenants/*}:completeZ\'\x12%/v4beta1/{parent=projects/*}:complete\x1al\xca\x41\x13jobs.googleapis.com\xd2\x41Shttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobsB\x84\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x16\x43ompletionServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -66,8 +66,8 @@ _COMPLETEQUERYREQUEST_COMPLETIONSCOPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=621,
-    serialized_end=696,
+    serialized_start=613,
+    serialized_end=688,
 )
 _sym_db.RegisterEnumDescriptor(_COMPLETEQUERYREQUEST_COMPLETIONSCOPE)
 
@@ -96,8 +96,8 @@ _COMPLETEQUERYREQUEST_COMPLETIONTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=698,
-    serialized_end=794,
+    serialized_start=690,
+    serialized_end=786,
 )
 _sym_db.RegisterEnumDescriptor(_COMPLETEQUERYREQUEST_COMPLETIONTYPE)
 
@@ -125,7 +125,7 @@ _COMPLETEQUERYREQUEST = _descriptor.Descriptor(
             is_extension=False,
             extension_scope=None,
             serialized_options=_b(
-                "\340A\002\372A%\n#jobs.googleapis.com/TenantOrProject"
+                "\340A\002\372A\035\022\033jobs.googleapis.com/Company"
             ),
             file=DESCRIPTOR,
         ),
@@ -250,7 +250,7 @@ _COMPLETEQUERYREQUEST = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=255,
-    serialized_end=794,
+    serialized_end=786,
 )
 
 
@@ -324,8 +324,8 @@ _COMPLETEQUERYRESPONSE_COMPLETIONRESULT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=985,
-    serialized_end=1122,
+    serialized_start=977,
+    serialized_end=1114,
 )
 
 _COMPLETEQUERYRESPONSE = _descriptor.Descriptor(
@@ -380,8 +380,8 @@ _COMPLETEQUERYRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=797,
-    serialized_end=1122,
+    serialized_start=789,
+    serialized_end=1114,
 )
 
 _COMPLETEQUERYREQUEST.fields_by_name[
@@ -415,8 +415,6 @@ CompleteQueryRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_COMPLETEQUERYREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.completion_service_pb2",
         __doc__="""Auto-complete parameters.
-  
-  
   Attributes:
       parent:
           Required. Resource name of tenant the completion is performed
@@ -468,8 +466,6 @@ CompleteQueryResponse = _reflection.GeneratedProtocolMessageType(
                 DESCRIPTOR=_COMPLETEQUERYRESPONSE_COMPLETIONRESULT,
                 __module__="google.cloud.talent_v4beta1.proto.completion_service_pb2",
                 __doc__="""Resource that represents completion results.
-    
-    
     Attributes:
         suggestion:
             The suggestion for the query.
@@ -486,8 +482,6 @@ CompleteQueryResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_COMPLETEQUERYRESPONSE,
         __module__="google.cloud.talent_v4beta1.proto.completion_service_pb2",
         __doc__="""Response of auto-complete query.
-  
-  
   Attributes:
       completion_results:
           Results of the matching job/company candidates.
@@ -516,8 +510,8 @@ _COMPLETION = _descriptor.ServiceDescriptor(
     serialized_options=_b(
         "\312A\023jobs.googleapis.com\322AShttps://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/jobs"
     ),
-    serialized_start=1125,
-    serialized_end=1466,
+    serialized_start=1117,
+    serialized_end=1458,
     methods=[
         _descriptor.MethodDescriptor(
             name="CompleteQuery",

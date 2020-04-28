@@ -75,7 +75,7 @@ class TestCompletionClient(object):
             client = talent_v4beta1.CompletionClient()
 
         # Setup Request
-        parent = client.tenant_path("[PROJECT]", "[TENANT]")
+        parent = client.project_path("[PROJECT]")
         query = "query107944136"
         page_size = 883849137
 
@@ -98,7 +98,7 @@ class TestCompletionClient(object):
             client = talent_v4beta1.CompletionClient()
 
         # Setup request
-        parent = client.tenant_path("[PROJECT]", "[TENANT]")
+        parent = client.project_path("[PROJECT]")
         query = "query107944136"
         page_size = 883849137
 

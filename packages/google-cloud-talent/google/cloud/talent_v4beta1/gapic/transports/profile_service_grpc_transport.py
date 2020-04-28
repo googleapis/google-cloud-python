@@ -111,6 +111,40 @@ class ProfileServiceGrpcTransport(object):
         return self._channel
 
     @property
+    def delete_profile(self):
+        """Return the gRPC stub for :meth:`ProfileServiceClient.delete_profile`.
+
+        Deletes the specified profile.
+        Prerequisite: The profile has no associated applications or assignments
+        associated.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["profile_service_stub"].DeleteProfile
+
+    @property
+    def search_profiles(self):
+        """Return the gRPC stub for :meth:`ProfileServiceClient.search_profiles`.
+
+        Searches for profiles within a tenant.
+
+        For example, search by raw queries "software engineer in Mountain View"
+        or search by structured filters (location filter, education filter,
+        etc.).
+
+        See ``SearchProfilesRequest`` for more information.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["profile_service_stub"].SearchProfiles
+
+    @property
     def list_profiles(self):
         """Return the gRPC stub for :meth:`ProfileServiceClient.list_profiles`.
 
@@ -161,37 +195,3 @@ class ProfileServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["profile_service_stub"].UpdateProfile
-
-    @property
-    def delete_profile(self):
-        """Return the gRPC stub for :meth:`ProfileServiceClient.delete_profile`.
-
-        Deletes the specified profile.
-        Prerequisite: The profile has no associated applications or assignments
-        associated.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["profile_service_stub"].DeleteProfile
-
-    @property
-    def search_profiles(self):
-        """Return the gRPC stub for :meth:`ProfileServiceClient.search_profiles`.
-
-        Searches for profiles within a tenant.
-
-        For example, search by raw queries "software engineer in Mountain View"
-        or search by structured filters (location filter, education filter,
-        etc.).
-
-        See ``SearchProfilesRequest`` for more information.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["profile_service_stub"].SearchProfiles

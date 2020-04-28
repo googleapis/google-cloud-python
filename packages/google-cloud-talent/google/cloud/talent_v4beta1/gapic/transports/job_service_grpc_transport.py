@@ -117,6 +117,22 @@ class JobServiceGrpcTransport(object):
         return self._channel
 
     @property
+    def delete_job(self):
+        """Return the gRPC stub for :meth:`JobServiceClient.delete_job`.
+
+        Deletes the specified job.
+
+        Typically, the job becomes unsearchable within 10 seconds, but it may take
+        up to 5 minutes.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["job_service_stub"].DeleteJob
+
+    @property
     def create_job(self):
         """Return the gRPC stub for :meth:`JobServiceClient.create_job`.
 
@@ -131,6 +147,19 @@ class JobServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["job_service_stub"].CreateJob
+
+    @property
+    def batch_create_jobs(self):
+        """Return the gRPC stub for :meth:`JobServiceClient.batch_create_jobs`.
+
+        Begins executing a batch create jobs operation.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["job_service_stub"].BatchCreateJobs
 
     @property
     def get_job(self):
@@ -163,33 +192,17 @@ class JobServiceGrpcTransport(object):
         return self._stubs["job_service_stub"].UpdateJob
 
     @property
-    def delete_job(self):
-        """Return the gRPC stub for :meth:`JobServiceClient.delete_job`.
+    def batch_update_jobs(self):
+        """Return the gRPC stub for :meth:`JobServiceClient.batch_update_jobs`.
 
-        Deletes the specified job.
-
-        Typically, the job becomes unsearchable within 10 seconds, but it may take
-        up to 5 minutes.
+        Begins executing a batch update jobs operation.
 
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
                 deserialized response object.
         """
-        return self._stubs["job_service_stub"].DeleteJob
-
-    @property
-    def list_jobs(self):
-        """Return the gRPC stub for :meth:`JobServiceClient.list_jobs`.
-
-        Lists jobs by filter.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["job_service_stub"].ListJobs
+        return self._stubs["job_service_stub"].BatchUpdateJobs
 
     @property
     def batch_delete_jobs(self):
@@ -203,6 +216,19 @@ class JobServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["job_service_stub"].BatchDeleteJobs
+
+    @property
+    def list_jobs(self):
+        """Return the gRPC stub for :meth:`JobServiceClient.list_jobs`.
+
+        Lists jobs by filter.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["job_service_stub"].ListJobs
 
     @property
     def search_jobs(self):
@@ -240,29 +266,3 @@ class JobServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["job_service_stub"].SearchJobsForAlert
-
-    @property
-    def batch_create_jobs(self):
-        """Return the gRPC stub for :meth:`JobServiceClient.batch_create_jobs`.
-
-        Begins executing a batch create jobs operation.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["job_service_stub"].BatchCreateJobs
-
-    @property
-    def batch_update_jobs(self):
-        """Return the gRPC stub for :meth:`JobServiceClient.batch_update_jobs`.
-
-        Begins executing a batch update jobs operation.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["job_service_stub"].BatchUpdateJobs

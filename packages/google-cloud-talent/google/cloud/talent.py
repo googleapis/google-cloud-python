@@ -31,11 +31,11 @@ from google.cloud.talent_v4beta1 import types
 __all__ = (
     "enums",
     "types",
-    "ApplicationServiceClient",
+    "JobServiceClient",
     "CompanyServiceClient",
     "CompletionClient",
-    "EventServiceClient",
-    "JobServiceClient",
-    "ProfileServiceClient",
+    "ApplicationServiceClient",
     "TenantServiceClient",
+    "EventServiceClient",
+    "ProfileServiceClient",
 )

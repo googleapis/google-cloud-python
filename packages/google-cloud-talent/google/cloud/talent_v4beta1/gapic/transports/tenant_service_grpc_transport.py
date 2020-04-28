@@ -111,6 +111,19 @@ class TenantServiceGrpcTransport(object):
         return self._channel
 
     @property
+    def delete_tenant(self):
+        """Return the gRPC stub for :meth:`TenantServiceClient.delete_tenant`.
+
+        Deletes specified tenant.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["tenant_service_stub"].DeleteTenant
+
+    @property
     def create_tenant(self):
         """Return the gRPC stub for :meth:`TenantServiceClient.create_tenant`.
 
@@ -148,19 +161,6 @@ class TenantServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["tenant_service_stub"].UpdateTenant
-
-    @property
-    def delete_tenant(self):
-        """Return the gRPC stub for :meth:`TenantServiceClient.delete_tenant`.
-
-        Deletes specified tenant.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["tenant_service_stub"].DeleteTenant
 
     @property
     def list_tenants(self):

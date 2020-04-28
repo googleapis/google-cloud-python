@@ -31,7 +31,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n\037com.google.cloud.talent.v4beta1B\024CompanyResourceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\242\002\003CTS"
     ),
     serialized_pb=_b(
-        '\n/google/cloud/talent_v4beta1/proto/company.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x1cgoogle/api/annotations.proto"\xfc\x04\n\x07\x43ompany\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x19\n\x0c\x64isplay_name\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x18\n\x0b\x65xternal_id\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\x36\n\x04size\x18\x04 \x01(\x0e\x32(.google.cloud.talent.v4beta1.CompanySize\x12\x1c\n\x14headquarters_address\x18\x05 \x01(\t\x12\x15\n\rhiring_agency\x18\x06 \x01(\x08\x12\x10\n\x08\x65\x65o_text\x18\x07 \x01(\t\x12\x13\n\x0bwebsite_uri\x18\x08 \x01(\t\x12\x17\n\x0f\x63\x61reer_site_uri\x18\t \x01(\t\x12\x11\n\timage_uri\x18\n \x01(\t\x12\x30\n(keyword_searchable_job_custom_attributes\x18\x0b \x03(\t\x12K\n\x0c\x64\x65rived_info\x18\x0c \x01(\x0b\x32\x30.google.cloud.talent.v4beta1.Company.DerivedInfoB\x03\xe0\x41\x03\x12\x16\n\tsuspended\x18\r \x01(\x08\x42\x03\xe0\x41\x03\x1aS\n\x0b\x44\x65rivedInfo\x12\x44\n\x15headquarters_location\x18\x01 \x01(\x0b\x32%.google.cloud.talent.v4beta1.Location:\x81\x01\xea\x41~\n\x1bjobs.googleapis.com/Company\x12&projects/{project}/companies/{company}\x12\x37projects/{project}/tenants/{tenant}/companies/{company}B\x82\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x14\x43ompanyResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
+        '\n/google/cloud/talent_v4beta1/proto/company.proto\x12\x1bgoogle.cloud.talent.v4beta1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a.google/cloud/talent_v4beta1/proto/common.proto\x1a\x1cgoogle/api/annotations.proto"\xfc\x04\n\x07\x43ompany\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x19\n\x0c\x64isplay_name\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x18\n\x0b\x65xternal_id\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12\x36\n\x04size\x18\x04 \x01(\x0e\x32(.google.cloud.talent.v4beta1.CompanySize\x12\x1c\n\x14headquarters_address\x18\x05 \x01(\t\x12\x15\n\rhiring_agency\x18\x06 \x01(\x08\x12\x10\n\x08\x65\x65o_text\x18\x07 \x01(\t\x12\x13\n\x0bwebsite_uri\x18\x08 \x01(\t\x12\x17\n\x0f\x63\x61reer_site_uri\x18\t \x01(\t\x12\x11\n\timage_uri\x18\n \x01(\t\x12\x30\n(keyword_searchable_job_custom_attributes\x18\x0b \x03(\t\x12K\n\x0c\x64\x65rived_info\x18\x0c \x01(\x0b\x32\x30.google.cloud.talent.v4beta1.Company.DerivedInfoB\x03\xe0\x41\x03\x12\x16\n\tsuspended\x18\r \x01(\x08\x42\x03\xe0\x41\x03\x1aS\n\x0b\x44\x65rivedInfo\x12\x44\n\x15headquarters_location\x18\x01 \x01(\x0b\x32%.google.cloud.talent.v4beta1.Location:\x81\x01\xea\x41~\n\x1bjobs.googleapis.com/Company\x12\x37projects/{project}/tenants/{tenant}/companies/{company}\x12&projects/{project}/companies/{company}B\x82\x01\n\x1f\x63om.google.cloud.talent.v4beta1B\x14\x43ompanyResourceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/talent/v4beta1;talent\xa2\x02\x03\x43TSb\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
@@ -326,7 +326,7 @@ _COMPANY = _descriptor.Descriptor(
     nested_types=[_COMPANY_DERIVEDINFO],
     enum_types=[],
     serialized_options=_b(
-        "\352A~\n\033jobs.googleapis.com/Company\022&projects/{project}/companies/{company}\0227projects/{project}/tenants/{tenant}/companies/{company}"
+        "\352A~\n\033jobs.googleapis.com/Company\0227projects/{project}/tenants/{tenant}/companies/{company}\022&projects/{project}/companies/{company}"
     ),
     is_extendable=False,
     syntax="proto3",
@@ -362,8 +362,6 @@ Company = _reflection.GeneratedProtocolMessageType(
                 DESCRIPTOR=_COMPANY_DERIVEDINFO,
                 __module__="google.cloud.talent_v4beta1.proto.company_pb2",
                 __doc__="""Derived details about the company.
-    
-    
     Attributes:
         headquarters_location:
             A structured headquarters location of the company, resolved
@@ -375,11 +373,9 @@ Company = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_COMPANY,
         __module__="google.cloud.talent_v4beta1.proto.company_pb2",
-        __doc__="""A Company resource represents a company in the service. A
-  company is the entity that owns job postings, that is, the hiring entity
+        __doc__="""A Company resource represents a company in the service. A company is
+  the entity that owns job postings, that is, the hiring entity
   responsible for employing applicants for the job position.
-  
-  
   Attributes:
       name:
           Required during company update.  The resource name for a

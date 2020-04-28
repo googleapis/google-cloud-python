@@ -1706,8 +1706,6 @@ CreateJobRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_CREATEJOBREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.job_service_pb2",
         __doc__="""Create job request.
-  
-  
   Attributes:
       parent:
           Required. The resource name of the tenant under which the job
@@ -1730,8 +1728,6 @@ GetJobRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_GETJOBREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.job_service_pb2",
         __doc__="""Get job request.
-  
-  
   Attributes:
       name:
           Required. The resource name of the job to retrieve.  The
@@ -1753,8 +1749,6 @@ UpdateJobRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_UPDATEJOBREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.job_service_pb2",
         __doc__="""Update job request.
-  
-  
   Attributes:
       job:
           Required. The Job to be updated.
@@ -1779,8 +1773,6 @@ DeleteJobRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_DELETEJOBREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.job_service_pb2",
         __doc__="""Delete job request.
-  
-  
   Attributes:
       name:
           Required. The resource name of the job to be deleted.  The
@@ -1802,8 +1794,6 @@ BatchDeleteJobsRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_BATCHDELETEJOBSREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.job_service_pb2",
         __doc__="""Batch delete jobs request.
-  
-  
   Attributes:
       parent:
           Required. The resource name of the tenant under which the job
@@ -1830,8 +1820,6 @@ ListJobsRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTJOBSREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.job_service_pb2",
         __doc__="""List jobs request.
-  
-  
   Attributes:
       parent:
           Required. The resource name of the tenant under which the job
@@ -1879,8 +1867,6 @@ ListJobsResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_LISTJOBSRESPONSE,
         __module__="google.cloud.talent_v4beta1.proto.job_service_pb2",
         __doc__="""List jobs response.
-  
-  
   Attributes:
       jobs:
           The Jobs for a given company.  The maximum number of items
@@ -1908,8 +1894,6 @@ SearchJobsRequest = _reflection.GeneratedProtocolMessageType(
                 __module__="google.cloud.talent_v4beta1.proto.job_service_pb2",
                 __doc__="""Custom ranking information for
     [SearchJobsRequest][google.cloud.talent.v4beta1.SearchJobsRequest].
-    
-    
     Attributes:
         importance_level:
             Required. Controls over how important the score of [CustomRank
@@ -1942,8 +1926,6 @@ SearchJobsRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_SEARCHJOBSREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.job_service_pb2",
         __doc__="""The Request body of the ``SearchJobs`` call.
-  
-  
   Attributes:
       parent:
           Required. The resource name of the tenant to search within.
@@ -2073,12 +2055,11 @@ SearchJobsRequest = _reflection.GeneratedProtocolMessageType(
           as relevant) in search results. This field is only considered
           if [page\_token][google.cloud.talent.v4beta1.SearchJobsRequest
           .page\_token] is unset.  The maximum allowed value is 5000.
-          Otherwise an error is thrown.  The maximum allowed value is
-          5000. Otherwise an error is thrown.  For example, 0 means to
-          return results starting from the first matching job, and 10
-          means to return from the 11th job. This can be used for
-          pagination, (for example, pageSize = 10 and offset = 10 means
-          to return from the second page).
+          Otherwise an error is thrown.  For example, 0 means to return
+          results starting from the first matching job, and 10 means to
+          return from the 11th job. This can be used for pagination,
+          (for example, pageSize = 10 and offset = 10 means to return
+          from the second page).
       page_size:
           A limit on the number of jobs returned in the search results.
           Increasing this value above the default value of 10 can
@@ -2203,8 +2184,6 @@ SearchJobsResponse = _reflection.GeneratedProtocolMessageType(
                 __module__="google.cloud.talent_v4beta1.proto.job_service_pb2",
                 __doc__="""Job entry with metadata inside
     [SearchJobsResponse][google.cloud.talent.v4beta1.SearchJobsResponse].
-    
-    
     Attributes:
         job:
             Job resource that matches the specified [SearchJobsRequest][go
@@ -2238,8 +2217,6 @@ SearchJobsResponse = _reflection.GeneratedProtocolMessageType(
                 DESCRIPTOR=_SEARCHJOBSRESPONSE_COMMUTEINFO,
                 __module__="google.cloud.talent_v4beta1.proto.job_service_pb2",
                 __doc__="""Commute details related to this job.
-    
-    
     Attributes:
         job_location:
             Location used as the destination in the commute calculation.
@@ -2255,8 +2232,6 @@ SearchJobsResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_SEARCHJOBSRESPONSE,
         __module__="google.cloud.talent_v4beta1.proto.job_service_pb2",
         __doc__="""Response for SearchJob method.
-  
-  
   Attributes:
       matching_jobs:
           The Job entities that match the specified [SearchJobsRequest][
@@ -2318,8 +2293,6 @@ BatchCreateJobsRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_BATCHCREATEJOBSREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.job_service_pb2",
         __doc__="""Request to create a batch of jobs.
-  
-  
   Attributes:
       parent:
           Required. The resource name of the tenant under which the job
@@ -2342,8 +2315,6 @@ BatchUpdateJobsRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_BATCHUPDATEJOBSREQUEST,
         __module__="google.cloud.talent_v4beta1.proto.job_service_pb2",
         __doc__="""Request to update a batch of jobs.
-  
-  
   Attributes:
       parent:
           Required. The resource name of the tenant under which the job
@@ -2386,8 +2357,6 @@ JobOperationResult = _reflection.GeneratedProtocolMessageType(
                 DESCRIPTOR=_JOBOPERATIONRESULT_JOBRESULT,
                 __module__="google.cloud.talent_v4beta1.proto.job_service_pb2",
                 __doc__="""Mutation result of a job.
-    
-    
     Attributes:
         job:
             Here [Job][google.cloud.talent.v4beta1.Job] only contains
@@ -2408,15 +2377,11 @@ JobOperationResult = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_JOBOPERATIONRESULT,
         __module__="google.cloud.talent_v4beta1.proto.job_service_pb2",
-        __doc__="""The result of
-  [JobService.BatchCreateJobs][google.cloud.talent.v4beta1.JobService.BatchCreateJobs]
-  or
-  [JobService.BatchUpdateJobs][google.cloud.talent.v4beta1.JobService.BatchUpdateJobs]
-  APIs. It's used to replace
-  [google.longrunning.Operation.response][google.longrunning.Operation.response]
-  in case of success.
-  
-  
+        __doc__="""The result of [JobService.BatchCreateJobs][google.cloud.talent.v4beta1
+  .JobService.BatchCreateJobs] or [JobService.BatchUpdateJobs][google.cl
+  oud.talent.v4beta1.JobService.BatchUpdateJobs] APIs. It's used to
+  replace [google.longrunning.Operation.response][google.longrunning.Ope
+  ration.response] in case of success.
   Attributes:
       job_results:
           List of job mutation results from a batch mutate operation. It
