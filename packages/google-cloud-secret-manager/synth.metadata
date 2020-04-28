@@ -1,26 +1,25 @@
 {
-  "updateTime": "2020-02-26T00:46:15.817841Z",
   "sources": [
     {
       "git": {
         "name": ".",
         "remote": "git@github.com:googleapis/python-secret-manager.git",
-        "sha": "bbc389e0e13c10dd8ffd969ea845bffa61f717e1"
+        "sha": "4934d064dbacc6743a16e3e99adc84359ab002e8"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "0aba1900ffef672ec5f0da677cf590ee5686e13b",
-        "internalRef": "297204568"
+        "sha": "756b174de4a122461993c1c583345533d819936d",
+        "internalRef": "308824110"
       }
     },
     {
-      "template": {
-        "name": "python_library",
-        "origin": "synthtool.gcp",
-        "version": "2020.2.4"
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "01b6f23d24b27878b48667ce597876d66b59780e"
       }
     }
   ],

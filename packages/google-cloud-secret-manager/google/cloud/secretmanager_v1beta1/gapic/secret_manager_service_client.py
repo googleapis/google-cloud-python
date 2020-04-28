@@ -358,6 +358,10 @@ class SecretManagerServiceClient(object):
             parent (str): Required. The resource name of the project to associate with the
                 ``Secret``, in the format ``projects/*``.
             secret_id (str): Required. This must be unique within the project.
+
+                A secret ID is a string with a maximum length of 255 characters and can
+                contain uppercase and lowercase letters, numerals, and the hyphen
+                (``-``) and underscore (``_``) characters.
             secret (Union[dict, ~google.cloud.secretmanager_v1beta1.types.Secret]): A ``Secret`` with initial field values.
 
                 If a dict is provided, it must be of the same form as the protobuf
