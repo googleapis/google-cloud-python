@@ -29,7 +29,7 @@ To create a :class:`~google.cloud.spanner.database.Database` object:
 
     database = instance.database(database_id, ddl_statements)
 
-- ``ddl_statements`` is a string containing DDL for the new database.
+- ``ddl_statements`` is a list of strings containing DDL for the new database.
 
 You can also use :meth:`Instance.database` to create a local wrapper for
 a database that has already been created:
@@ -68,7 +68,7 @@ via its :meth:`~google.cloud.spanner.database.Database.update_ddl` method:
 
     operation = database.update_ddl(ddl_statements, operation_id)
 
-- ``ddl_statements`` is a string containing DDL to be applied to
+- ``ddl_statements`` is a list of strings containing DDL to be applied to
   the database.
 
 - ``operation_id`` is a string ID for the long-running operation.
