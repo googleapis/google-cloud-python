@@ -83,7 +83,6 @@ class AccessApprovalClient(object):
     the request is considered dismissed.
 
     If a request is not approved or dismissed, we call it pending.
-    LINT.IfChange
     """
 
     SERVICE_ADDRESS = "accessapproval.googleapis.com:443"

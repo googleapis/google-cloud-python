@@ -1,19 +1,25 @@
 {
-  "updateTime": "2020-02-07T23:51:37.341539Z",
   "sources": [
     {
       "git": {
-        "name": "googleapis",
-        "remote": "git@github.com:googleapis/googleapis.git",
-        "sha": "e7d8a694f4559201e6913f6610069cb08b39274e",
-        "internalRef": "293903652"
+        "name": ".",
+        "remote": "git@github.com:googleapis/python-access-approval",
+        "sha": "acb4951680f6337c4d8333ad3ee73f46e17eea8d"
       }
     },
     {
-      "template": {
-        "name": "python_split_library",
-        "origin": "synthtool.gcp",
-        "version": "2020.2.4"
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "756b174de4a122461993c1c583345533d819936d",
+        "internalRef": "308824110"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "01b6f23d24b27878b48667ce597876d66b59780e"
       }
     }
   ],

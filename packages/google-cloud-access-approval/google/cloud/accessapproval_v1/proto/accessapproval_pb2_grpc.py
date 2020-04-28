@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,7 +56,6 @@ class AccessApprovalStub(object):
   is considered dismissed.
 
   If a request is not approved or dismissed, we call it pending.
-  LINT.IfChange
   """
 
     def __init__(self, channel):
@@ -136,7 +135,6 @@ class AccessApprovalServicer(object):
   is considered dismissed.
 
   If a request is not approved or dismissed, we call it pending.
-  LINT.IfChange
   """
 
     def ListApprovalRequests(self, request, context):
