@@ -1,41 +1,32 @@
 {
-  "updateTime": "2020-02-21T13:22:22.924711Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "0.45.0",
-        "dockerImage": "googleapis/artman@sha256:6aec9c34db0e4be221cdaf6faba27bdc07cfea846808b3d3b964dfce3a9a0f9b"
+        "version": "2.0.0",
+        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
       }
     },
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-redis.git",
-        "sha": "b554bcbf20563ef59e87ffe72b51450bb1c7b5e9"
+        "remote": "git@github.com:googleapis/python-redis",
+        "sha": "276103ea988bff390f6835843c9665b97e671e11"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "e5bc9566ae057fb4c92f8b7e047f1c8958235b53",
-        "internalRef": "296357191",
-        "log": "e5bc9566ae057fb4c92f8b7e047f1c8958235b53\nDeprecate the endpoint_uris field, as it is unused.\n\nPiperOrigin-RevId: 296357191\n\n8c12e2b4dca94e12bff9f538bdac29524ff7ef7a\nUpdate Dataproc v1 client.\n\nPiperOrigin-RevId: 296336662\n\n17567c4a1ef0a9b50faa87024d66f8acbb561089\nRemoving erroneous comment, a la https://github.com/googleapis/java-speech/pull/103\n\nPiperOrigin-RevId: 296332968\n\n3eaaaf8626ce5b0c0bc7eee05e143beffa373b01\nAdd BUILD.bazel for v1 secretmanager.googleapis.com\n\nPiperOrigin-RevId: 296274723\n\ne76149c3d992337f85eeb45643106aacae7ede82\nMove securitycenter v1 to use generate from annotations.\n\nPiperOrigin-RevId: 296266862\n\n203740c78ac69ee07c3bf6be7408048751f618f8\nAdd StackdriverLoggingConfig field to Cloud Tasks v2 API.\n\nPiperOrigin-RevId: 296256388\n\ne4117d5e9ed8bbca28da4a60a94947ca51cb2083\nCreate a Bazel BUILD file for the google.actions.type export.\n\nPiperOrigin-RevId: 296212567\n\na9639a0a9854fd6e1be08bba1ac3897f4f16cb2f\nAdd secretmanager.googleapis.com v1 protos\n\nPiperOrigin-RevId: 295983266\n\n"
+        "sha": "756b174de4a122461993c1c583345533d819936d",
+        "internalRef": "308824110"
       }
     },
     {
       "git": {
         "name": "synthtool",
-        "remote": "rpc://devrel/cloud/libraries/tools/autosynth",
-        "sha": "706a38c26db42299845396cdae55db635c38794a"
-      }
-    },
-    {
-      "template": {
-        "name": "python_split_library",
-        "origin": "synthtool.gcp",
-        "version": "2020.2.4"
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "01b6f23d24b27878b48667ce597876d66b59780e"
       }
     }
   ],
