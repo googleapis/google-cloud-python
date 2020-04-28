@@ -37,8 +37,6 @@ import grpc
 from google.cloud.vision_v1.gapic import enums
 from google.cloud.vision_v1.gapic import product_search_client_config
 from google.cloud.vision_v1.gapic.transports import product_search_grpc_transport
-from google.cloud.vision_v1.proto import image_annotator_pb2
-from google.cloud.vision_v1.proto import image_annotator_pb2_grpc
 from google.cloud.vision_v1.proto import product_search_service_pb2
 from google.cloud.vision_v1.proto import product_search_service_pb2_grpc
 from google.longrunning import operations_pb2

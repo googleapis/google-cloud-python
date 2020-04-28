@@ -80,7 +80,7 @@ s.replace(
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-    unit_cov_level=97, cov_level=100, system_test_dependencies=["../storage"]
+   cov_level=99, system_test_external_dependencies=["google-cloud-storage"]
 )
 s.move(templated_files)
 

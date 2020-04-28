@@ -37,15 +37,15 @@ if sys.version_info[:2] == (2, 7):
     warnings.warn(message, DeprecationWarning)
 
 
+class ProductSearchClient(product_search_client.ProductSearchClient):
+    __doc__ = product_search_client.ProductSearchClient.__doc__
+    enums = enums
+
+
 @add_single_feature_methods
 class ImageAnnotatorClient(VisionHelpers, iac.ImageAnnotatorClient):
     __doc__ = iac.ImageAnnotatorClient.__doc__
     enums = enums
 
 
-class ProductSearchClient(product_search_client.ProductSearchClient):
-    __doc__ = product_search_client.ProductSearchClient.__doc__
-    enums = enums
-
-
-__all__ = ("enums", "types", "ImageAnnotatorClient", "ProductSearchClient")
+__all__ = ("enums", "types", "ProductSearchClient", "ImageAnnotatorClient")

@@ -72,6 +72,7 @@ def default(session):
     session.run(
         "py.test",
         "--quiet",
+        "--cov=google.cloud.vision",
         "--cov=google.cloud",
         "--cov=tests.unit",
         "--cov-append",
@@ -109,10 +110,7 @@ def system(session):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install("mock", "pytest")
-
-    session.install("google-cloud-storage")
-    session.install("-e", "test_utils")
+    session.install("mock", "pytest", "google-cloud-testutils", "google-cloud-storage")
     session.install("-e", ".")
 
     # Run py.test against the system tests.
@@ -140,7 +138,7 @@ def docs(session):
     """Build the docs for this library."""
 
     session.install("-e", ".")
-    session.install("sphinx", "alabaster", "recommonmark")
+    session.install("sphinx<3.0.0", "alabaster", "recommonmark")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
