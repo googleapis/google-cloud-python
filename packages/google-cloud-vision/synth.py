@@ -17,7 +17,7 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 versions = ["v1", "v1p1beta1", "v1p2beta1", "v1p3beta1", "v1p4beta1"]
 
@@ -26,7 +26,12 @@ versions = ["v1", "v1p1beta1", "v1p2beta1", "v1p3beta1", "v1p4beta1"]
 # Generate vision GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library("vision", version, include_protos=True)
+    library = gapic.py_library(
+        service="vision",
+        version=version,
+        bazel_target=f"//google/cloud/vision/{version}:vision-{version}-py",
+        include_protos=True
+    )
 
     s.move(library / f"google/cloud/vision_{version}/gapic")
     s.move(library / f"google/cloud/vision_{version}/__init__.py")
