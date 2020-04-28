@@ -23,9 +23,13 @@ gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
-# Generate access approva lGAPIC layer
+# Generate access approval GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library("accessapproval", "v1")
+library = gapic.py_library(
+    service="accessapproval",
+    version="v1",
+    bazel_target="//google/cloud/accessapproval/v1:accessapproval-v1-py",
+)
 
 s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
 
