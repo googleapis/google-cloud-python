@@ -2,7 +2,7 @@
 import grpc
 
 from google.cloud.trace_v1.proto import (
-    trace_pb2 as google_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2,
+    trace_pb2 as google_dot_cloud_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2,
 )
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
@@ -23,17 +23,17 @@ class TraceServiceStub(object):
     """
         self.ListTraces = channel.unary_unary(
             "/google.devtools.cloudtrace.v1.TraceService/ListTraces",
-            request_serializer=google_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.ListTracesRequest.SerializeToString,
-            response_deserializer=google_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.ListTracesResponse.FromString,
+            request_serializer=google_dot_cloud_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.ListTracesRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.ListTracesResponse.FromString,
         )
         self.GetTrace = channel.unary_unary(
             "/google.devtools.cloudtrace.v1.TraceService/GetTrace",
-            request_serializer=google_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.GetTraceRequest.SerializeToString,
-            response_deserializer=google_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.Trace.FromString,
+            request_serializer=google_dot_cloud_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.GetTraceRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.Trace.FromString,
         )
         self.PatchTraces = channel.unary_unary(
             "/google.devtools.cloudtrace.v1.TraceService/PatchTraces",
-            request_serializer=google_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.PatchTracesRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.PatchTracesRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
 
@@ -76,17 +76,17 @@ def add_TraceServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
         "ListTraces": grpc.unary_unary_rpc_method_handler(
             servicer.ListTraces,
-            request_deserializer=google_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.ListTracesRequest.FromString,
-            response_serializer=google_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.ListTracesResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.ListTracesRequest.FromString,
+            response_serializer=google_dot_cloud_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.ListTracesResponse.SerializeToString,
         ),
         "GetTrace": grpc.unary_unary_rpc_method_handler(
             servicer.GetTrace,
-            request_deserializer=google_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.GetTraceRequest.FromString,
-            response_serializer=google_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.Trace.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.GetTraceRequest.FromString,
+            response_serializer=google_dot_cloud_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.Trace.SerializeToString,
         ),
         "PatchTraces": grpc.unary_unary_rpc_method_handler(
             servicer.PatchTraces,
-            request_deserializer=google_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.PatchTracesRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_devtools_dot_cloudtrace__v1_dot_proto_dot_trace__pb2.PatchTracesRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
     }

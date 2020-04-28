@@ -235,8 +235,8 @@ class TraceServiceClient(object):
             >>> client.batch_write_spans(name, spans)
 
         Args:
-            name (str): Required. The name of the project where the spans belong. The format is
-                ``projects/[PROJECT_ID]``.
+            name (str): Required. The name of the project where the spans belong. The format
+                is ``projects/[PROJECT_ID]``.
             spans (list[Union[dict, ~google.cloud.trace_v2.types.Span]]): Required. A list of new spans. The span names must not match existing
                 spans, or the results are undefined.
 
@@ -335,14 +335,14 @@ class TraceServiceClient(object):
 
                 ::
 
-                     projects/[PROJECT_ID]/traces/[TRACE_ID]/spans/[SPAN_ID]
+                    projects/[PROJECT_ID]/traces/[TRACE_ID]/spans/[SPAN_ID]
 
-                [TRACE\_ID] is a unique identifier for a trace within a project; it is a
+                [TRACE_ID] is a unique identifier for a trace within a project; it is a
                 32-character hexadecimal encoding of a 16-byte array.
 
-                [SPAN\_ID] is a unique identifier for a span within a trace; it is a
+                [SPAN_ID] is a unique identifier for a span within a trace; it is a
                 16-character hexadecimal encoding of an 8-byte array.
-            span_id (str): The [SPAN\_ID] portion of the span's resource name.
+            span_id (str): The [SPAN_ID] portion of the span's resource name.
             display_name (Union[dict, ~google.cloud.trace_v2.types.TruncatableString]): A description of the span's operation (up to 128 bytes).
                 Stackdriver Trace displays the description in the
                 Google Cloud Platform Console.
@@ -365,8 +365,8 @@ class TraceServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.Timestamp`
-            parent_span_id (str): The [SPAN\_ID] of this span's parent span. If this is a root span, then
-                this field must be empty.
+            parent_span_id (str): The [SPAN_ID] of this span's parent span. If this is a root span,
+                then this field must be empty.
             attributes (Union[dict, ~google.cloud.trace_v2.types.Attributes]): A set of attributes on the span. You can have up to 32 attributes per
                 span.
 
