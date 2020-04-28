@@ -373,10 +373,8 @@ Asset = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_ASSET_SECURITYCENTERPROPERTIES,
                 __module__="google.cloud.securitycenter_v1beta1.proto.asset_pb2",
-                __doc__="""Cloud SCC managed properties. These properties are managed
-    by Cloud SCC and cannot be modified by the user.
-    
-    
+                __doc__="""Cloud SCC managed properties. These properties are managed by Cloud
+    SCC and cannot be modified by the user.
     Attributes:
         resource_name:
             Immutable. The full resource name of the GCP resource this
@@ -413,14 +411,11 @@ Asset = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_ASSET,
         __module__="google.cloud.securitycenter_v1beta1.proto.asset_pb2",
-        __doc__="""Cloud Security Command Center's (Cloud SCC) representation
-  of a Google Cloud Platform (GCP) resource.
-  
-  The Asset is a Cloud SCC resource that captures information about a
-  single GCP resource. All modifications to an Asset are only within the
-  context of Cloud SCC and don't affect the referenced GCP resource.
-  
-  
+        __doc__="""Cloud Security Command Center's (Cloud SCC) representation of a Google
+  Cloud Platform (GCP) resource.  The Asset is a Cloud SCC resource that
+  captures information about a single GCP resource. All modifications to
+  an Asset are only within the context of Cloud SCC and don't affect the
+  referenced GCP resource.
   Attributes:
       name:
           The relative resource name of this asset. See: https://cloud.g

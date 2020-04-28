@@ -142,8 +142,6 @@ RunAssetDiscoveryResponse = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_RUNASSETDISCOVERYRESPONSE,
         __module__="google.cloud.securitycenter_v1p1beta1.proto.run_asset_discovery_response_pb2",
         __doc__="""Response of asset discovery run
-  
-  
   Attributes:
       state:
           The state of an asset discovery run.

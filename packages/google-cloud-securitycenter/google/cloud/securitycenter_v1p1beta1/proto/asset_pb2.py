@@ -491,10 +491,8 @@ Asset = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_ASSET_SECURITYCENTERPROPERTIES,
                 __module__="google.cloud.securitycenter_v1p1beta1.proto.asset_pb2",
-                __doc__="""Cloud SCC managed properties. These properties are managed
-    by Cloud SCC and cannot be modified by the user.
-    
-    
+                __doc__="""Cloud SCC managed properties. These properties are managed by Cloud
+    SCC and cannot be modified by the user.
     Attributes:
         resource_name:
             The full resource name of the GCP resource this asset
@@ -533,17 +531,15 @@ Asset = _reflection.GeneratedProtocolMessageType(
             dict(
                 DESCRIPTOR=_ASSET_IAMPOLICY,
                 __module__="google.cloud.securitycenter_v1p1beta1.proto.asset_pb2",
-                __doc__="""IAM Policy information associated with the GCP resource
-    described by the Cloud SCC asset. This information is managed and
-    defined by the GCP resource and cannot be modified by the user.
-    
-    
+                __doc__="""IAM Policy information associated with the GCP resource described by
+    the Cloud SCC asset. This information is managed and defined by the
+    GCP resource and cannot be modified by the user.
     Attributes:
         policy_blob:
             The JSON representation of the Policy associated with the
             asset. See
-            https://cloud.google.com/iam/reference/rest/v1p1beta1/Policy
-            for format details.
+            https://cloud.google.com/iam/reference/rest/v1/Policy for
+            format details.
     """,
                 # @@protoc_insertion_point(class_scope:google.cloud.securitycenter.v1p1beta1.Asset.IamPolicy)
             ),
@@ -559,14 +555,11 @@ Asset = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_ASSET,
         __module__="google.cloud.securitycenter_v1p1beta1.proto.asset_pb2",
-        __doc__="""Cloud Security Command Center's (Cloud SCC) representation
-  of a Google Cloud Platform (GCP) resource.
-  
-  The Asset is a Cloud SCC resource that captures information about a
-  single GCP resource. All modifications to an Asset are only within the
-  context of Cloud SCC and don't affect the referenced GCP resource.
-  
-  
+        __doc__="""Cloud Security Command Center's (Cloud SCC) representation of a Google
+  Cloud Platform (GCP) resource.  The Asset is a Cloud SCC resource that
+  captures information about a single GCP resource. All modifications to
+  an Asset are only within the context of Cloud SCC and don't affect the
+  referenced GCP resource.
   Attributes:
       name:
           The relative resource name of this asset. See: https://cloud.g

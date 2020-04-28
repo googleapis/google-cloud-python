@@ -370,14 +370,12 @@ Finding = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_FINDING,
         __module__="google.cloud.securitycenter_v1.proto.finding_pb2",
-        __doc__="""Cloud Security Command Center (Cloud SCC) finding.
-  
-  A finding is a record of assessment data like security, risk, health, or
-  privacy, that is ingested into Cloud SCC for presentation, notification,
+        __doc__="""Cloud Security Command Center (Cloud SCC) finding.  A finding is a
+  record of assessment data like security, risk, health, or privacy,
+  that is ingested into Cloud SCC for presentation, notification,
   analysis, policy testing, and enforcement. For example, a cross-site
-  scripting (XSS) vulnerability in an App Engine application is a finding.
-  
-  
+  scripting (XSS) vulnerability in an App Engine application is a
+  finding.
   Attributes:
       name:
           The relative resource name of this finding. See: https://cloud

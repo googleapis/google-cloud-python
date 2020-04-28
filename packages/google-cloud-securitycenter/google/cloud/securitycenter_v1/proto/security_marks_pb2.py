@@ -170,12 +170,10 @@ SecurityMarks = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_SECURITYMARKS,
         __module__="google.cloud.securitycenter_v1.proto.security_marks_pb2",
-        __doc__="""User specified security marks that are attached to the
-  parent Cloud Security Command Center (Cloud SCC) resource. Security
-  marks are scoped within a Cloud SCC organization -- they can be modified
-  and viewed by all users who have proper permissions on the organization.
-  
-  
+        __doc__="""User specified security marks that are attached to the parent Cloud
+  Security Command Center (Cloud SCC) resource. Security marks are
+  scoped within a Cloud SCC organization -- they can be modified and
+  viewed by all users who have proper permissions on the organization.
   Attributes:
       name:
           The relative resource name of the SecurityMarks. See: https://

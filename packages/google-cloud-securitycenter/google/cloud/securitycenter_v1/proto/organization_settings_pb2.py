@@ -220,8 +220,6 @@ OrganizationSettings = _reflection.GeneratedProtocolMessageType(
                 DESCRIPTOR=_ORGANIZATIONSETTINGS_ASSETDISCOVERYCONFIG,
                 __module__="google.cloud.securitycenter_v1.proto.organization_settings_pb2",
                 __doc__="""The configuration used for Asset Discovery runs.
-    
-    
     Attributes:
         project_ids:
             The project ids to use for filtering asset discovery.
@@ -233,10 +231,8 @@ OrganizationSettings = _reflection.GeneratedProtocolMessageType(
         ),
         DESCRIPTOR=_ORGANIZATIONSETTINGS,
         __module__="google.cloud.securitycenter_v1.proto.organization_settings_pb2",
-        __doc__="""User specified settings that are attached to the Cloud
-  Security Command Center (Cloud SCC) organization.
-  
-  
+        __doc__="""User specified settings that are attached to the Cloud Security
+  Command Center (Cloud SCC) organization.
   Attributes:
       name:
           The relative resource name of the settings. See: https://cloud

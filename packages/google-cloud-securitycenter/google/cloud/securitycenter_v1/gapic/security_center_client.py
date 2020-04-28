@@ -145,6 +145,15 @@ class SecurityCenterClient(object):
         )
 
     @classmethod
+    def security_marks_path(cls, organization, asset):
+        """Return a fully-qualified security_marks string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}/assets/{asset}/securityMarks",
+            organization=organization,
+            asset=asset,
+        )
+
+    @classmethod
     def source_path(cls, organization, source):
         """Return a fully-qualified source string."""
         return google.api_core.path_template.expand(

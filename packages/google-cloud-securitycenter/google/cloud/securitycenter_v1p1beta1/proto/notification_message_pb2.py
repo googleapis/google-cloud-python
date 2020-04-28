@@ -127,8 +127,6 @@ NotificationMessage = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_NOTIFICATIONMESSAGE,
         __module__="google.cloud.securitycenter_v1p1beta1.proto.notification_message_pb2",
         __doc__="""Cloud SCC's Notification
-  
-  
   Attributes:
       notification_config_name:
           Name of the notification config that generated current
