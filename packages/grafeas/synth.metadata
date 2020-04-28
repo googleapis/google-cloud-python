@@ -1,27 +1,32 @@
 {
-  "updateTime": "2020-03-04T13:17:59.279627Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "1.0.0",
-        "dockerImage": "googleapis/artman@sha256:f37f2464788cb551299209b4fcab4eb323533154488c2ef9ec0c75d7c2b4b482"
+        "version": "2.0.0",
+        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
+      }
+    },
+    {
+      "git": {
+        "name": ".",
+        "remote": "git@github.com:googleapis/python-grafeas",
+        "sha": "42638ee7fd79bc62dbc25a39975369839b4f83d4"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "541b1ded4abadcc38e8178680b0677f65594ea6f",
-        "internalRef": "298686266",
-        "log": "541b1ded4abadcc38e8178680b0677f65594ea6f\nUpdate cloud asset api v1p4beta1.\n\nPiperOrigin-RevId: 298686266\n\nc0d171acecb4f5b0bfd2c4ca34fc54716574e300\n  Updated to include the Notification v1 API.\n\nPiperOrigin-RevId: 298652775\n\n2346a9186c0bff2c9cc439f2459d558068637e05\nAdd Service Directory v1beta1 protos and configs\n\nPiperOrigin-RevId: 298625638\n\na78ed801b82a5c6d9c5368e24b1412212e541bb7\nPublishing v3 protos and configs.\n\nPiperOrigin-RevId: 298607357\n\n"
+        "sha": "756b174de4a122461993c1c583345533d819936d",
+        "internalRef": "308824110"
       }
     },
     {
-      "template": {
-        "name": "python_library",
-        "origin": "synthtool.gcp",
-        "version": "2020.2.4"
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "01b6f23d24b27878b48667ce597876d66b59780e"
       }
     }
   ],

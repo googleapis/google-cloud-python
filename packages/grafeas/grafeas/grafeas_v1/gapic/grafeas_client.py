@@ -146,6 +146,150 @@ class GrafeasClient(object):
         self._inner_api_calls = {}
 
     # Service calls
+    def delete_occurrence(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes the specified occurrence. For example, use this method to delete an
+        occurrence when the occurrence is no longer applicable for the given
+        resource.
+
+        Example:
+            >>> from grafeas import grafeas_v1
+            >>> from grafeas.grafeas_v1.gapic.transports import grafeas_grpc_transport
+            >>> 
+            >>> address = "[SERVICE_ADDRESS]"
+            >>> scopes = ("[SCOPE]")
+            >>> transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+            >>> client = grafeas_v1.GrafeasClient(transport)
+            >>>
+            >>> name = client.occurrence_path('[PROJECT]', '[OCCURRENCE]')
+            >>>
+            >>> client.delete_occurrence(name)
+
+        Args:
+            name (str): The name of the occurrence in the form of
+                ``projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]``.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_occurrence" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_occurrence"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_occurrence,
+                default_retry=self._method_configs["DeleteOccurrence"].retry,
+                default_timeout=self._method_configs["DeleteOccurrence"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = grafeas_pb2.DeleteOccurrenceRequest(name=name,)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["delete_occurrence"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def delete_note(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes the specified note.
+
+        Example:
+            >>> from grafeas import grafeas_v1
+            >>> from grafeas.grafeas_v1.gapic.transports import grafeas_grpc_transport
+            >>> 
+            >>> address = "[SERVICE_ADDRESS]"
+            >>> scopes = ("[SCOPE]")
+            >>> transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+            >>> client = grafeas_v1.GrafeasClient(transport)
+            >>>
+            >>> name = client.note_path('[PROJECT]', '[NOTE]')
+            >>>
+            >>> client.delete_note(name)
+
+        Args:
+            name (str): The name of the note in the form of
+                ``projects/[PROVIDER_ID]/notes/[NOTE_ID]``.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_note" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_note"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_note,
+                default_retry=self._method_configs["DeleteNote"].retry,
+                default_timeout=self._method_configs["DeleteNote"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = grafeas_pb2.DeleteNoteRequest(name=name,)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["delete_note"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def get_occurrence(
         self,
         name,
@@ -329,79 +473,6 @@ class GrafeasClient(object):
             response_token_field="next_page_token",
         )
         return iterator
-
-    def delete_occurrence(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Deletes the specified occurrence. For example, use this method to delete an
-        occurrence when the occurrence is no longer applicable for the given
-        resource.
-
-        Example:
-            >>> from grafeas import grafeas_v1
-            >>> from grafeas.grafeas_v1.gapic.transports import grafeas_grpc_transport
-            >>> 
-            >>> address = "[SERVICE_ADDRESS]"
-            >>> scopes = ("[SCOPE]")
-            >>> transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
-            >>> client = grafeas_v1.GrafeasClient(transport)
-            >>>
-            >>> name = client.occurrence_path('[PROJECT]', '[OCCURRENCE]')
-            >>>
-            >>> client.delete_occurrence(name)
-
-        Args:
-            name (str): The name of the occurrence in the form of
-                ``projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]``.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "delete_occurrence" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "delete_occurrence"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_occurrence,
-                default_retry=self._method_configs["DeleteOccurrence"].retry,
-                default_timeout=self._method_configs["DeleteOccurrence"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = grafeas_pb2.DeleteOccurrenceRequest(name=name,)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        self._inner_api_calls["delete_occurrence"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
 
     def create_occurrence(
         self,
@@ -918,77 +989,6 @@ class GrafeasClient(object):
             response_token_field="next_page_token",
         )
         return iterator
-
-    def delete_note(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Deletes the specified note.
-
-        Example:
-            >>> from grafeas import grafeas_v1
-            >>> from grafeas.grafeas_v1.gapic.transports import grafeas_grpc_transport
-            >>> 
-            >>> address = "[SERVICE_ADDRESS]"
-            >>> scopes = ("[SCOPE]")
-            >>> transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
-            >>> client = grafeas_v1.GrafeasClient(transport)
-            >>>
-            >>> name = client.note_path('[PROJECT]', '[NOTE]')
-            >>>
-            >>> client.delete_note(name)
-
-        Args:
-            name (str): The name of the note in the form of
-                ``projects/[PROVIDER_ID]/notes/[NOTE_ID]``.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "delete_note" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "delete_note"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_note,
-                default_retry=self._method_configs["DeleteNote"].retry,
-                default_timeout=self._method_configs["DeleteNote"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = grafeas_pb2.DeleteNoteRequest(name=name,)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        self._inner_api_calls["delete_note"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
 
     def create_note(
         self,

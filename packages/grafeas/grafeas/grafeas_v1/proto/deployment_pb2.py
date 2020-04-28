@@ -269,8 +269,6 @@ DeploymentNote = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_DEPLOYMENTNOTE,
         __module__="grafeas_v1.proto.deployment_pb2",
         __doc__="""An artifact that can be deployed in some runtime.
-  
-  
   Attributes:
       resource_uri:
           Required. Resource URI for the artifact being deployed.
@@ -286,10 +284,7 @@ DeploymentOccurrence = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_DEPLOYMENTOCCURRENCE,
         __module__="grafeas_v1.proto.deployment_pb2",
-        __doc__="""The period during which some deployable was active in a
-  runtime.
-  
-  
+        __doc__="""The period during which some deployable was active in a runtime.
   Attributes:
       user_email:
           Identity of the user that triggered this deployment.

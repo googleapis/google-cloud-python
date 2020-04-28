@@ -104,6 +104,34 @@ class GrafeasGrpcTransport(object):
         return self._channel
 
     @property
+    def delete_occurrence(self):
+        """Return the gRPC stub for :meth:`GrafeasClient.delete_occurrence`.
+
+        Deletes the specified occurrence. For example, use this method to delete an
+        occurrence when the occurrence is no longer applicable for the given
+        resource.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["grafeas_stub"].DeleteOccurrence
+
+    @property
+    def delete_note(self):
+        """Return the gRPC stub for :meth:`GrafeasClient.delete_note`.
+
+        Deletes the specified note.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["grafeas_stub"].DeleteNote
+
+    @property
     def get_occurrence(self):
         """Return the gRPC stub for :meth:`GrafeasClient.get_occurrence`.
 
@@ -128,21 +156,6 @@ class GrafeasGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["grafeas_stub"].ListOccurrences
-
-    @property
-    def delete_occurrence(self):
-        """Return the gRPC stub for :meth:`GrafeasClient.delete_occurrence`.
-
-        Deletes the specified occurrence. For example, use this method to delete an
-        occurrence when the occurrence is no longer applicable for the given
-        resource.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["grafeas_stub"].DeleteOccurrence
 
     @property
     def create_occurrence(self):
@@ -222,19 +235,6 @@ class GrafeasGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["grafeas_stub"].ListNotes
-
-    @property
-    def delete_note(self):
-        """Return the gRPC stub for :meth:`GrafeasClient.delete_note`.
-
-        Deletes the specified note.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["grafeas_stub"].DeleteNote
 
     @property
     def create_note(self):

@@ -499,10 +499,8 @@ CVSSv3 = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_CVSSV3,
         __module__="grafeas_v1.proto.cvss_pb2",
-        __doc__="""Common Vulnerability Scoring System version 3. For
-  details, see https://www.first.org/cvss/specification-document
-  
-  
+        __doc__="""Common Vulnerability Scoring System version 3. For details, see
+  https://www.first.org/cvss/specification-document
   Attributes:
       base_score:
           The base score is a function of the base metric scores.

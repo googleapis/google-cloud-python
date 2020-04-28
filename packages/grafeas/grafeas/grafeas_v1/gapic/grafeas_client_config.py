@@ -17,17 +17,22 @@ config = {
                 }
             },
             "methods": {
+                "DeleteOccurrence": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "DeleteNote": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
                 "GetOccurrence": {
                     "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "ListOccurrences": {
-                    "timeout_millis": 30000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
-                },
-                "DeleteOccurrence": {
                     "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
@@ -58,11 +63,6 @@ config = {
                     "retry_params_name": "default",
                 },
                 "ListNotes": {
-                    "timeout_millis": 30000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
-                },
-                "DeleteNote": {
                     "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
