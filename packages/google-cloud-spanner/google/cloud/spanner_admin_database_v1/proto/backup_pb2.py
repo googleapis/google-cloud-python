@@ -36,7 +36,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         "\n$com.google.spanner.admin.database.v1B\013BackupProtoP\001ZHgoogle.golang.org/genproto/googleapis/spanner/admin/database/v1;database\252\002&Google.Cloud.Spanner.Admin.Database.V1\312\002&Google\\Cloud\\Spanner\\Admin\\Database\\V1"
     ),
     serialized_pb=_b(
-        '\n9google/cloud/spanner/admin/database_v1/proto/backup.proto\x12 google.spanner.admin.database.v1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a#google/longrunning/operations.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x39google/cloud/spanner/admin/database_v1/proto/common.proto\x1a\x1cgoogle/api/annotations.proto"\xa7\x03\n\x06\x42\x61\x63kup\x12\x10\n\x08\x64\x61tabase\x18\x02 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x34\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x17\n\nsize_bytes\x18\x05 \x01(\x03\x42\x03\xe0\x41\x03\x12\x42\n\x05state\x18\x06 \x01(\x0e\x32..google.spanner.admin.database.v1.Backup.StateB\x03\xe0\x41\x03\x12"\n\x15referencing_databases\x18\x07 \x03(\tB\x03\xe0\x41\x03"7\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\t\n\x05READY\x10\x02:\\\xea\x41Y\n\x1dspanner.googleapis.com/Backup\x12\x38projects/{project}/instances/{instance}/backups/{backup}"\xa5\x01\n\x13\x43reateBackupRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1fspanner.googleapis.com/Instance\x12\x16\n\tbackup_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12=\n\x06\x62\x61\x63kup\x18\x03 \x01(\x0b\x32(.google.spanner.admin.database.v1.BackupB\x03\xe0\x41\x02"\xae\x01\n\x14\x43reateBackupMetadata\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08\x64\x61tabase\x18\x02 \x01(\t\x12\x45\n\x08progress\x18\x03 \x01(\x0b\x32\x33.google.spanner.admin.database.v1.OperationProgress\x12/\n\x0b\x63\x61ncel_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x8a\x01\n\x13UpdateBackupRequest\x12=\n\x06\x62\x61\x63kup\x18\x01 \x01(\x0b\x32(.google.spanner.admin.database.v1.BackupB\x03\xe0\x41\x02\x12\x34\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x02"G\n\x10GetBackupRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1dspanner.googleapis.com/Backup"J\n\x13\x44\x65leteBackupRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1dspanner.googleapis.com/Backup"\x84\x01\n\x12ListBackupsRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1fspanner.googleapis.com/Instance\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"i\n\x13ListBackupsResponse\x12\x39\n\x07\x62\x61\x63kups\x18\x01 \x03(\x0b\x32(.google.spanner.admin.database.v1.Backup\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x8d\x01\n\x1bListBackupOperationsRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1fspanner.googleapis.com/Instance\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"j\n\x1cListBackupOperationsResponse\x12\x31\n\noperations\x18\x01 \x03(\x0b\x32\x1d.google.longrunning.Operation\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"f\n\nBackupInfo\x12\x0e\n\x06\x62\x61\x63kup\x18\x01 \x01(\t\x12/\n\x0b\x63reate_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x17\n\x0fsource_database\x18\x03 \x01(\tB\xd1\x01\n$com.google.spanner.admin.database.v1B\x0b\x42\x61\x63kupProtoP\x01ZHgoogle.golang.org/genproto/googleapis/spanner/admin/database/v1;database\xaa\x02&Google.Cloud.Spanner.Admin.Database.V1\xca\x02&Google\\Cloud\\Spanner\\Admin\\Database\\V1b\x06proto3'
+        '\n9google/cloud/spanner/admin/database_v1/proto/backup.proto\x12 google.spanner.admin.database.v1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a#google/longrunning/operations.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x39google/cloud/spanner/admin/database_v1/proto/common.proto\x1a\x1cgoogle/api/annotations.proto"\xcd\x03\n\x06\x42\x61\x63kup\x12\x36\n\x08\x64\x61tabase\x18\x02 \x01(\tB$\xfa\x41!\n\x1fspanner.googleapis.com/Database\x12/\n\x0b\x65xpire_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x34\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x17\n\nsize_bytes\x18\x05 \x01(\x03\x42\x03\xe0\x41\x03\x12\x42\n\x05state\x18\x06 \x01(\x0e\x32..google.spanner.admin.database.v1.Backup.StateB\x03\xe0\x41\x03\x12"\n\x15referencing_databases\x18\x07 \x03(\tB\x03\xe0\x41\x03"7\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\t\n\x05READY\x10\x02:\\\xea\x41Y\n\x1dspanner.googleapis.com/Backup\x12\x38projects/{project}/instances/{instance}/backups/{backup}"\xa5\x01\n\x13\x43reateBackupRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1fspanner.googleapis.com/Instance\x12\x16\n\tbackup_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12=\n\x06\x62\x61\x63kup\x18\x03 \x01(\x0b\x32(.google.spanner.admin.database.v1.BackupB\x03\xe0\x41\x02"\xae\x01\n\x14\x43reateBackupMetadata\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08\x64\x61tabase\x18\x02 \x01(\t\x12\x45\n\x08progress\x18\x03 \x01(\x0b\x32\x33.google.spanner.admin.database.v1.OperationProgress\x12/\n\x0b\x63\x61ncel_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x8a\x01\n\x13UpdateBackupRequest\x12=\n\x06\x62\x61\x63kup\x18\x01 \x01(\x0b\x32(.google.spanner.admin.database.v1.BackupB\x03\xe0\x41\x02\x12\x34\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x02"G\n\x10GetBackupRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1dspanner.googleapis.com/Backup"J\n\x13\x44\x65leteBackupRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1dspanner.googleapis.com/Backup"\x84\x01\n\x12ListBackupsRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1fspanner.googleapis.com/Instance\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"i\n\x13ListBackupsResponse\x12\x39\n\x07\x62\x61\x63kups\x18\x01 \x03(\x0b\x32(.google.spanner.admin.database.v1.Backup\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"\x8d\x01\n\x1bListBackupOperationsRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1fspanner.googleapis.com/Instance\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"j\n\x1cListBackupOperationsResponse\x12\x31\n\noperations\x18\x01 \x03(\x0b\x32\x1d.google.longrunning.Operation\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"f\n\nBackupInfo\x12\x0e\n\x06\x62\x61\x63kup\x18\x01 \x01(\t\x12/\n\x0b\x63reate_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x17\n\x0fsource_database\x18\x03 \x01(\tB\xd1\x01\n$com.google.spanner.admin.database.v1B\x0b\x42\x61\x63kupProtoP\x01ZHgoogle.golang.org/genproto/googleapis/spanner/admin/database/v1;database\xaa\x02&Google.Cloud.Spanner.Admin.Database.V1\xca\x02&Google\\Cloud\\Spanner\\Admin\\Database\\V1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
@@ -72,8 +72,8 @@ _BACKUP_STATE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=623,
-    serialized_end=678,
+    serialized_start=661,
+    serialized_end=716,
 )
 _sym_db.RegisterEnumDescriptor(_BACKUP_STATE)
 
@@ -100,7 +100,7 @@ _BACKUP = _descriptor.Descriptor(
             containing_type=None,
             is_extension=False,
             extension_scope=None,
-            serialized_options=None,
+            serialized_options=_b("\372A!\n\037spanner.googleapis.com/Database"),
             file=DESCRIPTOR,
         ),
         _descriptor.FieldDescriptor(
@@ -223,7 +223,7 @@ _BACKUP = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=349,
-    serialized_end=772,
+    serialized_end=810,
 )
 
 
@@ -299,8 +299,8 @@ _CREATEBACKUPREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=775,
-    serialized_end=940,
+    serialized_start=813,
+    serialized_end=978,
 )
 
 
@@ -392,8 +392,8 @@ _CREATEBACKUPMETADATA = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=943,
-    serialized_end=1117,
+    serialized_start=981,
+    serialized_end=1155,
 )
 
 
@@ -449,8 +449,8 @@ _UPDATEBACKUPREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1120,
-    serialized_end=1258,
+    serialized_start=1158,
+    serialized_end=1296,
 )
 
 
@@ -490,8 +490,8 @@ _GETBACKUPREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1260,
-    serialized_end=1331,
+    serialized_start=1298,
+    serialized_end=1369,
 )
 
 
@@ -531,8 +531,8 @@ _DELETEBACKUPREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1333,
-    serialized_end=1407,
+    serialized_start=1371,
+    serialized_end=1445,
 )
 
 
@@ -626,8 +626,8 @@ _LISTBACKUPSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1410,
-    serialized_end=1542,
+    serialized_start=1448,
+    serialized_end=1580,
 )
 
 
@@ -683,8 +683,8 @@ _LISTBACKUPSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1544,
-    serialized_end=1649,
+    serialized_start=1582,
+    serialized_end=1687,
 )
 
 
@@ -778,8 +778,8 @@ _LISTBACKUPOPERATIONSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1652,
-    serialized_end=1793,
+    serialized_start=1690,
+    serialized_end=1831,
 )
 
 
@@ -835,8 +835,8 @@ _LISTBACKUPOPERATIONSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1795,
-    serialized_end=1901,
+    serialized_start=1833,
+    serialized_end=1939,
 )
 
 
@@ -910,8 +910,8 @@ _BACKUPINFO = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1903,
-    serialized_end=2005,
+    serialized_start=1941,
+    serialized_end=2043,
 )
 
 _BACKUP.fields_by_name[
@@ -1362,6 +1362,7 @@ _sym_db.RegisterMessage(BackupInfo)
 
 
 DESCRIPTOR._options = None
+_BACKUP.fields_by_name["database"]._options = None
 _BACKUP.fields_by_name["create_time"]._options = None
 _BACKUP.fields_by_name["size_bytes"]._options = None
 _BACKUP.fields_by_name["state"]._options = None

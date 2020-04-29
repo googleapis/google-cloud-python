@@ -1,27 +1,32 @@
 {
-  "updateTime": "2020-03-24T12:17:04.474073Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "1.1.1",
-        "dockerImage": "googleapis/artman@sha256:5ef340c8d9334719bc5c6981d95f4a5d2737b0a6a24f2b9a0d430e96fff85c5b"
+        "version": "2.0.0",
+        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
+      }
+    },
+    {
+      "git": {
+        "name": ".",
+        "remote": "https://github.com/googleapis/python-spanner.git",
+        "sha": "1d4976634cb81dd11b0ddc4bfc9fe9c61a7e7041"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "36c0febd0fa7267ab66d14408eec2afd1b6bec4e",
-        "internalRef": "302639621",
-        "log": "36c0febd0fa7267ab66d14408eec2afd1b6bec4e\nUpdate GAPIC configurations to v2 .yaml.\n\nPiperOrigin-RevId: 302639621\n\n078f222366ed344509a48f2f084944ef61476613\nFix containeranalysis v1beta1 assembly target name\n\nPiperOrigin-RevId: 302529186\n\n0be7105dc52590fa9a24e784052298ae37ce53aa\nAdd BUILD.bazel file to asset/v1p1beta1\n\nPiperOrigin-RevId: 302154871\n\n6c248fd13e8543f8d22cbf118d978301a9fbe2a8\nAdd missing resource annotations and additional_bindings to dialogflow v2 API.\n\nPiperOrigin-RevId: 302063117\n\n9a3a7f33be9eeacf7b3e98435816b7022d206bd7\nChange the service name from \"chromeos-moblab.googleapis.com\" to \"chromeosmoblab.googleapis.com\"\n\nPiperOrigin-RevId: 302060989\n\n98a339237577e3de26cb4921f75fb5c57cc7a19f\nfeat: devtools/build/v1 publish client library config annotations\n\n* add details field to some of the BuildEvents\n* add final_invocation_id and build_tool_exit_code fields to BuildStatus\n\nPiperOrigin-RevId: 302044087\n\ncfabc98c6bbbb22d1aeaf7612179c0be193b3a13\nfeat: home/graph/v1 publish client library config annotations & comment updates\n\nThis change includes adding the client library configuration annotations, updated proto comments, and some client library configuration files.\n\nPiperOrigin-RevId: 302042647\n\nc8c8c0bd15d082db9546253dbaad1087c7a9782c\nchore: use latest gapic-generator in bazel WORKSPACE.\nincluding the following commits from gapic-generator:\n- feat: take source protos in all sub-packages (#3144)\n\nPiperOrigin-RevId: 301843591\n\ne4daf5202ea31cb2cb6916fdbfa9d6bd771aeb4c\nAdd bazel file for v1 client lib generation\n\nPiperOrigin-RevId: 301802926\n\n275fbcce2c900278d487c33293a3c7e1fbcd3a34\nfeat: pubsub/v1 add an experimental filter field to Subscription\n\nPiperOrigin-RevId: 301661567\n\nf2b18cec51d27c999ad30011dba17f3965677e9c\nFix: UpdateBackupRequest.backup is a resource, not a resource reference - remove annotation.\n\nPiperOrigin-RevId: 301636171\n\n800384063ac93a0cac3a510d41726fa4b2cd4a83\nCloud Billing Budget API v1beta1\nModified api documentation to include warnings about the new filter field.\n\nPiperOrigin-RevId: 301634389\n\n0cc6c146b660db21f04056c3d58a4b752ee445e3\nCloud Billing Budget API v1alpha1\nModified api documentation to include warnings about the new filter field.\n\nPiperOrigin-RevId: 301630018\n\nff2ea00f69065585c3ac0993c8b582af3b6fc215\nFix: Add resource definition for a parent of InspectTemplate which was otherwise missing.\n\nPiperOrigin-RevId: 301623052\n\n55fa441c9daf03173910760191646399338f2b7c\nAdd proto definition for AccessLevel, AccessPolicy, and ServicePerimeter.\n\nPiperOrigin-RevId: 301620844\n\ne7b10591c5408a67cf14ffafa267556f3290e262\nCloud Bigtable Managed Backup service and message proto files.\n\nPiperOrigin-RevId: 301585144\n\nd8e226f702f8ddf92915128c9f4693b63fb8685d\nfeat: Add time-to-live in a queue for builds\n\nPiperOrigin-RevId: 301579876\n\n430375af011f8c7a5174884f0d0e539c6ffa7675\ndocs: add missing closing backtick\n\nPiperOrigin-RevId: 301538851\n\n0e9f1f60ded9ad1c2e725e37719112f5b487ab65\nbazel: Use latest release of gax_java\n\nPiperOrigin-RevId: 301480457\n\n5058c1c96d0ece7f5301a154cf5a07b2ad03a571\nUpdate GAPIC v2 with batching parameters for Logging API\n\nPiperOrigin-RevId: 301443847\n\n64ab9744073de81fec1b3a6a931befc8a90edf90\nFix: Introduce location-based organization/folder/billing-account resources\nChore: Update copyright years\n\nPiperOrigin-RevId: 301373760\n\n23d5f09e670ebb0c1b36214acf78704e2ecfc2ac\nUpdate field_behavior annotations in V1 and V2.\n\nPiperOrigin-RevId: 301337970\n\nb2cf37e7fd62383a811aa4d54d013ecae638851d\nData Catalog V1 API\n\nPiperOrigin-RevId: 301282503\n\n1976b9981e2900c8172b7d34b4220bdb18c5db42\nCloud DLP api update. Adds missing fields to Finding and adds support for hybrid jobs.\n\nPiperOrigin-RevId: 301205325\n\nae78682c05e864d71223ce22532219813b0245ac\nfix: several sample code blocks in comments are now properly indented for markdown\n\nPiperOrigin-RevId: 301185150\n\ndcd171d04bda5b67db13049320f97eca3ace3731\nPublish Media Translation API V1Beta1\n\nPiperOrigin-RevId: 301180096\n\nff1713453b0fbc5a7544a1ef6828c26ad21a370e\nAdd protos and BUILD rules for v1 API.\n\nPiperOrigin-RevId: 301179394\n\n8386761d09819b665b6a6e1e6d6ff884bc8ff781\nfeat: chromeos/modlab publish protos and config for Chrome OS Moblab API.\n\nPiperOrigin-RevId: 300843960\n\nb2e2bc62fab90e6829e62d3d189906d9b79899e4\nUpdates to GCS gRPC API spec:\n\n1. Changed GetIamPolicy and TestBucketIamPermissions to use wrapper messages around google.iam.v1 IAM requests messages, and added CommonRequestParams. This lets us support RequesterPays buckets.\n2. Added a metadata field to GetObjectMediaResponse, to support resuming an object media read safely (by extracting the generation of the object being read, and using it in the resumed read request).\n\nPiperOrigin-RevId: 300817706\n\n7fd916ce12335cc9e784bb9452a8602d00b2516c\nAdd deprecated_collections field for backward-compatiblity in PHP and monolith-generated Python and Ruby clients.\n\nGenerate TopicName class in Java which covers the functionality of both ProjectTopicName and DeletedTopicName. Introduce breaking changes to be fixed by synth.py.\n\nDelete default retry parameters.\n\nRetry codes defs can be deleted once # https://github.com/googleapis/gapic-generator/issues/3137 is fixed.\n\nPiperOrigin-RevId: 300813135\n\n047d3a8ac7f75383855df0166144f891d7af08d9\nfix!: google/rpc refactor ErrorInfo.type to ErrorInfo.reason and comment updates.\n\nPiperOrigin-RevId: 300773211\n\nfae4bb6d5aac52aabe5f0bb4396466c2304ea6f6\nAdding RetryPolicy to pubsub.proto\n\nPiperOrigin-RevId: 300769420\n\n7d569be2928dbd72b4e261bf9e468f23afd2b950\nAdding additional protocol buffer annotations to v3.\n\nPiperOrigin-RevId: 300718800\n\n13942d1a85a337515040a03c5108993087dc0e4f\nAdd logging protos for Recommender v1.\n\nPiperOrigin-RevId: 300689896\n\na1a573c3eecfe2c404892bfa61a32dd0c9fb22b6\nfix: change go package to use cloud.google.com/go/maps\n\nPiperOrigin-RevId: 300661825\n\nc6fbac11afa0c7ab2972d9df181493875c566f77\nfeat: publish documentai/v1beta2 protos\n\nPiperOrigin-RevId: 300656808\n\n5202a9e0d9903f49e900f20fe5c7f4e42dd6588f\nProtos for v1beta1 release of Cloud Security Center Settings API\n\nPiperOrigin-RevId: 300580858\n\n83518e18655d9d4ac044acbda063cc6ecdb63ef8\nAdds gapic.yaml file and BUILD.bazel file.\n\nPiperOrigin-RevId: 300554200\n\n836c196dc8ef8354bbfb5f30696bd3477e8db5e2\nRegenerate recommender v1beta1 gRPC ServiceConfig file for Insights methods.\n\nPiperOrigin-RevId: 300549302\n\n"
+        "sha": "42ee97c1b93a0e3759bbba3013da309f670a90ab",
+        "internalRef": "307114445"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "6a17abc7652e2fe563e1288c6e8c23fc260dda97"
+        "sha": "f5e4c17dc78a966dbf29961dd01f9bbd63e20a04"
       }
     }
   ],
