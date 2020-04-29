@@ -111,7 +111,7 @@ Return sessions from pool in LIFO order. ([#9454](https://github.com/googleapis/
 - Allow kwargs to be passed to create_channel (via synth). ([#8403](https://github.com/googleapis/google-cloud-python/pull/8403))
 
 ### New Features
-- Add 'options_' argument to clients 'get_iam_policy'; pin black version (via synth). ([#8659](https://github.com/googleapis/google-cloud-python/pull/8659))
+- Add 'options\_' argument to clients' 'get_iam_policy'; pin black version (via synth). ([#8659](https://github.com/googleapis/google-cloud-python/pull/8659))
 - Add 'client_options' support, update list method docstrings (via synth). ([#8522](https://github.com/googleapis/google-cloud-python/pull/8522))
 
 ### Dependencies
