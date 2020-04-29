@@ -199,8 +199,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         super().add_index(model, index)
 
     def quote_value(self, value):
-        # TODO: a real implementation:
-        # https://github.com/orijtech/django-spanner/issues/227
+        # A more complete implementation isn't currently required.
         return str(value)
 
     def _alter_field(self, model, old_field, new_field, old_type, new_type,
