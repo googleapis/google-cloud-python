@@ -5265,6 +5265,7 @@ class Model(_NotEqualMixin):
         projection=None,
         distinct_on=None,
         group_by=None,
+        default_options=None,
     )
     def _query(cls, *filters, **kwargs):
         """Generate a query for this class.
@@ -5290,6 +5291,7 @@ class Model(_NotEqualMixin):
             distinct_on (list[str]): The field names used to group query
                 results.
             group_by (list[str]): Deprecated. Synonym for distinct_on.
+            default_options (QueryOptions): QueryOptions object.
         """
         # Validating distinct
         if kwargs["distinct"]:
@@ -5322,6 +5324,7 @@ class Model(_NotEqualMixin):
             projection=kwargs["projection"],
             distinct_on=kwargs["distinct_on"],
             group_by=kwargs["group_by"],
+            default_options=kwargs["default_options"],
         )
         query = query.filter(*cls._default_filters())
         query = query.filter(*filters)
