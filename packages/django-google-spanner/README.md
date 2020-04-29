@@ -150,6 +150,22 @@ Spanner has some limitations on schema changes which you must respect:
 * A table's primary key can't be altered.
 * Migrations aren't atomic since django-spanner doesn't support transactions.
 
+### `DurationField` arithmetic doesn't work with `DateField` values ([#253](https://github.com/googleapis/python-spanner-django/issues/253))
+
+Spanner requires using different functions for arithmetic depending on the
+column type:
+
+* `TIMESTAMP` columns (`DateTimeField`) require `TIMESTAMP_ADD` or
+  `TIMESTAMP_SUB`
+* `DATE` columns (`DateField`) require `DATE_ADD` or `DATE_SUB`
+
+Django doesn't provide a way to determine which database function to use.
+`DatabaseOperations.combine_duration_expression()` arbitrary uses
+`TIMESTAMP_ADD` and `TIMESTAMP_SUB`. Therefore, if you use a `DateField` in a
+`DurationField` expression, you'll see an error like: "No matching signature
+for function TIMESTAMP_ADD for argument types: DATE, INTERVAL INT64
+DATE_TIME_PART."
+
 ### Computations that yield FLOAT64 values can't be assigned to INT64 columns
 
 Spanner [doesn't support this](https://github.com/googleapis/python-spanner-django/issues/331).
