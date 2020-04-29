@@ -57,20 +57,23 @@ sudo apt-get update
 apt-get install -y libffi-dev libjpeg-dev zlib1g-dev libmemcached-dev
 cd $DJANGO_TESTS_DIR/django && pip3 install -e . && pip3 install -r tests/requirements/py3.txt; cd ../../
 
-
-if [[ $KOKORO_JOB_NAME == *"continuous"* ]]
+if [[ $USE_SPANNER_EMULATOR != 1 ]]
 then
-    # Disable continuous build as it creates too many Spanner instances
-    # ("Quota exceeded for quota metric 'Instance create requests' and
-    # limit 'Instance create requests per minute' of service
-    # 'spanner.googleapis.com').
-    export DJANGO_WORKER_COUNT=0
+    # Not using the emulator!
+    # Hardcode the max number of workers since Spanner has a very low
+    # QPS for administrative RPCs of 5QPS (averaged every 100 seconds)
+    if [[ $KOKORO_JOB_NAME == *"continuous"* ]]
+    then
+        # Disable continuous build as it creates too many Spanner instances
+        # ("Quota exceeded for quota metric 'Instance create requests' and
+        # limit 'Instance create requests per minute' of service
+        # 'spanner.googleapis.com').
+        export DJANGO_WORKER_COUNT=0
+    else
+        export DJANGO_WORKER_COUNT=6
+    fi
 else
     export DJANGO_WORKER_COUNT=$(ls .kokoro/presubmit/worker* | wc -l)
-fi
-
-if [[ $USE_SPANNER_EMULATOR == 1 ]]
-then
     # Install and start the Spanner emulator
     VERSION=0.7.3
     wget https://storage.googleapis.com/cloud-spanner-emulator/releases/${VERSION}/cloud-spanner-emulator_linux_amd64-${VERSION}.tar.gz 2&>/dev/null
