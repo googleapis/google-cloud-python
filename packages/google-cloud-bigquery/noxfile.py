@@ -36,14 +36,10 @@ def default(session):
     session.install("grpcio")
     session.install("-e", "test_utils")
 
-    coverage_fail_under = "--cov-fail-under=97"
-
     # fastparquet is not included in .[all] because, in general, it's redundant
     # with pyarrow. We still want to run some unit tests with fastparquet
     # serialization, though.
-    dev_install = ".[all,fastparquet]"
-
-    session.install("-e", dev_install)
+    session.install("-e", ".[all,fastparquet]")
 
     # IPython does not support Python 2 after version 5.x
     if session.python == "2.7":
@@ -60,7 +56,7 @@ def default(session):
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
-        coverage_fail_under,
+        "--cov-fail-under=0",
         os.path.join("tests", "unit"),
         *session.posargs,
     )
