@@ -36,7 +36,7 @@ s.move(library / "google/cloud/datastore_v1/gapic")
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=97, cov_level=99, system_test_dependencies=["test_utils"])
+templated_files = common.py_library(unit_cov_level=97, cov_level=99)
 s.move(templated_files, excludes=["docs/conf.py"])
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
