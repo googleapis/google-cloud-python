@@ -12,6 +12,7 @@ import pytest
 import pytz
 
 from pandas_gbq import gbq
+import pandas_gbq.schema
 
 
 TABLE_ID = "new_test"
@@ -1637,7 +1638,7 @@ def test_retrieve_schema(gbq_table, gbq_connector):
     }
 
     gbq_table.create(table_id, test_schema)
-    actual = gbq_connector._clean_schema_fields(
+    actual = pandas_gbq.schema._clean_schema_fields(
         gbq_connector.schema(gbq_table.dataset_id, table_id)
     )
     expected = [
@@ -1649,48 +1650,39 @@ def test_retrieve_schema(gbq_table, gbq_connector):
     assert expected == actual, "Expected schema used to create table"
 
 
-def test_schema_is_subset_passes_if_subset(gbq_table, gbq_connector):
-    # Issue #24 schema_is_subset indicates whether the schema of the
-    # dataframe is a subset of the schema of the bigquery table
-    table_id = "test_schema_is_subset_passes_if_subset"
+def test_to_gbq_does_not_override_mode(gbq_table, gbq_connector):
+    # See: https://github.com/pydata/pandas-gbq/issues/315
+    table_id = "test_to_gbq_does_not_override_mode"
     table_schema = {
         "fields": [
-            {"name": "A", "type": "FLOAT"},
-            {"name": "B", "type": "FLOAT"},
-            {"name": "C", "type": "STRING"},
-        ]
-    }
-    tested_schema = {
-        "fields": [
-            {"name": "A", "type": "FLOAT"},
-            {"name": "B", "type": "FLOAT"},
+            {
+                "mode": "REQUIRED",
+                "name": "A",
+                "type": "FLOAT",
+                "description": "A",
+            },
+            {
+                "mode": "NULLABLE",
+                "name": "B",
+                "type": "FLOAT",
+                "description": "B",
+            },
+            {
+                "mode": "NULLABLE",
+                "name": "C",
+                "type": "STRING",
+                "description": "C",
+            },
         ]
     }
 
     gbq_table.create(table_id, table_schema)
-    assert gbq_connector.schema_is_subset(
-        gbq_table.dataset_id, table_id, tested_schema
+    gbq.to_gbq(
+        pandas.DataFrame({"A": [1.0], "B": [2.0], "C": ["a"]}),
+        "{0}.{1}".format(gbq_table.dataset_id, table_id),
+        project_id=gbq_connector.project_id,
+        if_exists="append",
     )
 
-
-def test_schema_is_subset_fails_if_not_subset(gbq_table, gbq_connector):
-    # For pull request #24
-    table_id = "test_schema_is_subset_fails_if_not_subset"
-    table_schema = {
-        "fields": [
-            {"name": "A", "type": "FLOAT"},
-            {"name": "B", "type": "FLOAT"},
-            {"name": "C", "type": "STRING"},
-        ]
-    }
-    tested_schema = {
-        "fields": [
-            {"name": "A", "type": "FLOAT"},
-            {"name": "C", "type": "FLOAT"},
-        ]
-    }
-
-    gbq_table.create(table_id, table_schema)
-    assert not gbq_connector.schema_is_subset(
-        gbq_table.dataset_id, table_id, tested_schema
-    )
+    actual = gbq_connector.schema(gbq_table.dataset_id, table_id)
+    assert table_schema["fields"] == actual

@@ -1,6 +1,14 @@
 Changelog
 =========
 
+.. _changelog-0.13.2:
+
+0.13.2 / TBD
+------------
+
+- Fix ``Provided Schema does not match Table`` error when the existing table
+  contains required fields. (:issue:`315`)
+
 .. _changelog-0.13.1:
 
 0.13.1 / 2020-02-13
