@@ -39,11 +39,11 @@ def test_kind_metadata(dispose_of):
     class MyKind(ndb.Model):
         bar = ndb.StringProperty()
 
-    entity1 = AnyKind(foo=1, namespace="_test_namespace_")
+    entity1 = AnyKind(foo=1, id="x", namespace="_test_namespace_")
     entity1.put()
     dispose_of(entity1.key._key)
 
-    entity2 = MyKind(bar="x", namespace="_test_namespace_")
+    entity2 = MyKind(bar="x", id="x", namespace="_test_namespace_")
     entity2.put()
     dispose_of(entity2.key._key)
 

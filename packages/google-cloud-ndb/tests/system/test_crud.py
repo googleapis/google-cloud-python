@@ -19,6 +19,7 @@ import datetime
 import functools
 import operator
 import os
+import pickle
 import random
 import threading
 import zlib
@@ -1343,3 +1344,39 @@ def test_insert_structured_property_with_unindexed_subproperty_legacy_data(
 
         retrieved = key.get()
         assert isinstance(retrieved.entry, OtherKind)
+
+
+@pytest.mark.usefixtures("client_context")
+def test_serialization(dispose_of):
+    """Regression test for #384
+
+    https://github.com/googleapis/python-ndb/issues/384
+    """
+
+    # THis is needed because pickle can't serialize local objects
+    global SomeKind, OtherKind
+
+    class OtherKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+        @classmethod
+        def _get_kind(cls):
+            return "OtherKind"
+
+    class SomeKind(ndb.Model):
+        other = ndb.StructuredProperty(OtherKind)
+
+        @classmethod
+        def _get_kind(cls):
+            return "SomeKind"
+
+    entity = SomeKind(
+        other=OtherKind(foo=1, namespace="Test"), namespace="Test"
+    )
+    key = entity.put()
+    dispose_of(key._key)
+
+    retrieved = key.get()
+    assert retrieved.other.key is None or retrieved.other.key.id() is None
+    entity = pickle.loads(pickle.dumps(retrieved))
+    assert entity.other.foo == 1

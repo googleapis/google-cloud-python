@@ -4045,6 +4045,12 @@ class TestModel:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test_constructor_namespace_no_key_parts():
+        entity = model.Model(namespace="myspace")
+        assert entity.__dict__ == {"_values": {}}
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_app():
         entity = model.Model(app="thisproject")
         key = key_module.Key("Model", None, project="thisproject")
@@ -4069,6 +4075,13 @@ class TestModel:
         key = key_module.Key("Foo", "bar")
         with pytest.raises(exceptions.BadArgumentError):
             model.Model(key=key, id=124)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_key_and_key_parts_with_namespace():
+        key = key_module.Key("Foo", "bar")
+        with pytest.raises(exceptions.BadArgumentError):
+            model.Model(key=key, namespace="myspace")
 
     @staticmethod
     def test_constructor_user_property_collision():
@@ -5752,6 +5765,34 @@ def test_get_indexes_async():
 def test_get_indexes():
     with pytest.raises(NotImplementedError):
         model.get_indexes()
+
+
+@pytest.mark.usefixtures("in_context")
+def test_serialization():
+
+    # THis is needed because pickle can't serialize local objects
+    global SomeKind, OtherKind
+
+    class OtherKind(model.Model):
+        foo = model.IntegerProperty()
+
+        @classmethod
+        def _get_kind(cls):
+            return "OtherKind"
+
+    class SomeKind(model.Model):
+        other = model.StructuredProperty(OtherKind)
+
+        @classmethod
+        def _get_kind(cls):
+            return "SomeKind"
+
+    entity = SomeKind(
+        other=OtherKind(foo=1, namespace="Test"), namespace="Test"
+    )
+    assert entity.other.key is None or entity.other.key.id() is None
+    entity = pickle.loads(pickle.dumps(entity))
+    assert entity.other.foo == 1
 
 
 def ManyFieldsFactory():

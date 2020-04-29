@@ -284,11 +284,11 @@ def test_namespace(dispose_of, other_namespace):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
 
-    entity1 = SomeKind(foo=1, bar="a", namespace=other_namespace)
+    entity1 = SomeKind(foo=1, bar="a", id="x", namespace=other_namespace)
     entity1.put()
     dispose_of(entity1.key._key)
 
-    entity2 = SomeKind(foo=2, bar="b")
+    entity2 = SomeKind(foo=2, bar="b", id="x")
     entity2.put()
     dispose_of(entity2.key._key)
 
