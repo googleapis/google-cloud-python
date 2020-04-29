@@ -1,26 +1,25 @@
 {
-  "updateTime": "2020-04-21T20:52:59.570188Z",
   "sources": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "2.0.0",
-        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
+      "git": {
+        "name": ".",
+        "remote": "git@github.com:googleapis/python-monitoring",
+        "sha": "843fa976bd58079917d6278d85785bb5b2ad1352"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "2bf9f22da3f101aeb536e1e88fe036323b8e9188",
-        "internalRef": "307654927"
+        "sha": "3f5f8a2258c6a41f9fbf7b80acbca631dda0a952",
+        "internalRef": "308922843"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "21ce80f9d4785dc75aa36d26944bddd5a1b7e25b"
+        "sha": "01b6f23d24b27878b48667ce597876d66b59780e"
       }
     }
   ],
@@ -31,8 +30,7 @@
         "apiName": "monitoring",
         "apiVersion": "v3",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/monitoring/artman_monitoring.yaml"
+        "generator": "bazel"
       }
     }
   ]
