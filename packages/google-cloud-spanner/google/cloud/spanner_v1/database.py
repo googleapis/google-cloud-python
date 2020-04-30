@@ -17,16 +17,12 @@
 import copy
 import functools
 import grpc
-import os
 import re
 import threading
-import warnings
 
-from google.api_core.client_options import ClientOptions
 import google.auth.credentials
 from google.protobuf.struct_pb2 import Struct
 from google.cloud.exceptions import NotFound
-from google.api_core.exceptions import PermissionDenied
 import six
 
 # pylint: disable=ungrouped-imports
@@ -66,18 +62,6 @@ _DATABASE_NAME_RE = re.compile(
 )
 
 _DATABASE_METADATA_FILTER = "name:{0}/operations/"
-
-_RESOURCE_ROUTING_PERMISSIONS_WARNING = (
-    "The client library attempted to connect to an endpoint closer to your Cloud Spanner data "
-    "but was unable to do so. The client library will fall back and route requests to the endpoint "
-    "given in the client options, which may result in increased latency. "
-    "We recommend including the scope https://www.googleapis.com/auth/spanner.admin so that the "
-    "client library can get an instance-specific endpoint and efficiently route requests."
-)
-
-
-class ResourceRoutingPermissionsWarning(Warning):
-    pass
 
 
 class Database(object):
@@ -245,36 +229,6 @@ class Database(object):
             credentials = self._instance._client.credentials
             if isinstance(credentials, google.auth.credentials.Scoped):
                 credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))
-            if (
-                os.getenv("GOOGLE_CLOUD_SPANNER_ENABLE_RESOURCE_BASED_ROUTING")
-                == "true"
-            ):
-                endpoint_cache = self._instance._client._endpoint_cache
-                if self._instance.name in endpoint_cache:
-                    client_options = ClientOptions(
-                        api_endpoint=endpoint_cache[self._instance.name]
-                    )
-                else:
-                    try:
-                        api = self._instance._client.instance_admin_api
-                        resp = api.get_instance(
-                            self._instance.name,
-                            field_mask={"paths": ["endpoint_uris"]},
-                            metadata=_metadata_with_prefix(self.name),
-                        )
-                        endpoints = resp.endpoint_uris
-                        if endpoints:
-                            endpoint_cache[self._instance.name] = list(endpoints)[0]
-                            client_options = ClientOptions(
-                                api_endpoint=endpoint_cache[self._instance.name]
-                            )
-                        # If there are no endpoints, use default endpoint.
-                    except PermissionDenied:
-                        warnings.warn(
-                            _RESOURCE_ROUTING_PERMISSIONS_WARNING,
-                            ResourceRoutingPermissionsWarning,
-                            stacklevel=2,
-                        )
             self._spanner_api = SpannerClient(
                 credentials=credentials,
                 client_info=client_info,

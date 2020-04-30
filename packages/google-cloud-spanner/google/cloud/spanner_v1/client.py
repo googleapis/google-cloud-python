@@ -158,7 +158,6 @@ class Client(ClientWithProject):
 
     _instance_admin_api = None
     _database_admin_api = None
-    _endpoint_cache = {}
     user_agent = None
     _SET_PROJECT = True  # Used by from_service_account_json()
 
