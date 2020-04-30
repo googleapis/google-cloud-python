@@ -1,0 +1,25 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "sso://devrel/cloud/libraries/python/python-bigquery-reservation"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "7e1c7603c8cb2f05ef29842405654ff8a9d3d108",
+        "internalRef": "309058279"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "958a803ee0c43523fa3e6e0bb016276a69614c8e"
+      }
+    }
+  ]
+}

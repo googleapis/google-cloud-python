@@ -1,0 +1,258 @@
+# -*- coding: utf-8 -*-
+
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+from typing import Any, Callable, Iterable
+
+from google.cloud.bigquery.reservation_v1.types import reservation
+
+
+class ListReservationsPager:
+    """A pager for iterating through ``list_reservations`` requests.
+
+    This class thinly wraps an initial
+    :class:`~.reservation.ListReservationsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``reservations`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListReservations`` requests and continue to iterate
+    through the ``reservations`` field on the
+    corresponding responses.
+
+    All the usual :class:`~.reservation.ListReservationsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            [reservation.ListReservationsRequest], reservation.ListReservationsResponse
+        ],
+        request: reservation.ListReservationsRequest,
+        response: reservation.ListReservationsResponse,
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (:class:`~.reservation.ListReservationsRequest`):
+                The initial request object.
+            response (:class:`~.reservation.ListReservationsResponse`):
+                The initial response object.
+        """
+        self._method = method
+        self._request = reservation.ListReservationsRequest(request)
+        self._response = response
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterable[reservation.ListReservationsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request)
+            yield self._response
+
+    def __iter__(self) -> Iterable[reservation.Reservation]:
+        for page in self.pages:
+            yield from page.reservations
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListCapacityCommitmentsPager:
+    """A pager for iterating through ``list_capacity_commitments`` requests.
+
+    This class thinly wraps an initial
+    :class:`~.reservation.ListCapacityCommitmentsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``capacity_commitments`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListCapacityCommitments`` requests and continue to iterate
+    through the ``capacity_commitments`` field on the
+    corresponding responses.
+
+    All the usual :class:`~.reservation.ListCapacityCommitmentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            [reservation.ListCapacityCommitmentsRequest],
+            reservation.ListCapacityCommitmentsResponse,
+        ],
+        request: reservation.ListCapacityCommitmentsRequest,
+        response: reservation.ListCapacityCommitmentsResponse,
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (:class:`~.reservation.ListCapacityCommitmentsRequest`):
+                The initial request object.
+            response (:class:`~.reservation.ListCapacityCommitmentsResponse`):
+                The initial response object.
+        """
+        self._method = method
+        self._request = reservation.ListCapacityCommitmentsRequest(request)
+        self._response = response
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterable[reservation.ListCapacityCommitmentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request)
+            yield self._response
+
+    def __iter__(self) -> Iterable[reservation.CapacityCommitment]:
+        for page in self.pages:
+            yield from page.capacity_commitments
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAssignmentsPager:
+    """A pager for iterating through ``list_assignments`` requests.
+
+    This class thinly wraps an initial
+    :class:`~.reservation.ListAssignmentsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``assignments`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListAssignments`` requests and continue to iterate
+    through the ``assignments`` field on the
+    corresponding responses.
+
+    All the usual :class:`~.reservation.ListAssignmentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            [reservation.ListAssignmentsRequest], reservation.ListAssignmentsResponse
+        ],
+        request: reservation.ListAssignmentsRequest,
+        response: reservation.ListAssignmentsResponse,
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (:class:`~.reservation.ListAssignmentsRequest`):
+                The initial request object.
+            response (:class:`~.reservation.ListAssignmentsResponse`):
+                The initial response object.
+        """
+        self._method = method
+        self._request = reservation.ListAssignmentsRequest(request)
+        self._response = response
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterable[reservation.ListAssignmentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request)
+            yield self._response
+
+    def __iter__(self) -> Iterable[reservation.Assignment]:
+        for page in self.pages:
+            yield from page.assignments
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class SearchAssignmentsPager:
+    """A pager for iterating through ``search_assignments`` requests.
+
+    This class thinly wraps an initial
+    :class:`~.reservation.SearchAssignmentsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``assignments`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``SearchAssignments`` requests and continue to iterate
+    through the ``assignments`` field on the
+    corresponding responses.
+
+    All the usual :class:`~.reservation.SearchAssignmentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            [reservation.SearchAssignmentsRequest],
+            reservation.SearchAssignmentsResponse,
+        ],
+        request: reservation.SearchAssignmentsRequest,
+        response: reservation.SearchAssignmentsResponse,
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (:class:`~.reservation.SearchAssignmentsRequest`):
+                The initial request object.
+            response (:class:`~.reservation.SearchAssignmentsResponse`):
+                The initial response object.
+        """
+        self._method = method
+        self._request = reservation.SearchAssignmentsRequest(request)
+        self._response = response
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterable[reservation.SearchAssignmentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request)
+            yield self._response
+
+    def __iter__(self) -> Iterable[reservation.Assignment]:
+        for page in self.pages:
+            yield from page.assignments
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
