@@ -1389,15 +1389,15 @@ class Property(ModelAttribute):
             Any: The transformed ``value``, possibly modified in an idempotent
             way.
         """
-        if isinstance(value, _BaseValue):
-            return value
-
-        value = self._call_shallow_validation(value)
-
         if self._validator is not None:
             new_value = self._validator(self, value)
             if new_value is not None:
                 value = new_value
+
+        if isinstance(value, _BaseValue):
+            return value
+
+        value = self._call_shallow_validation(value)
 
         if self._choices is not None:
             if value not in self._choices:

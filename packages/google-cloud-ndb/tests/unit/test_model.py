@@ -2678,6 +2678,10 @@ class TestBlobKeyProperty:
 
 class TestDateTimeProperty:
     @staticmethod
+    def _string_validator(prop, value):
+        return datetime.datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
+
+    @staticmethod
     def test_constructor_defaults():
         prop = model.DateTimeProperty()
         # Check that none of the constructor defaults were used.
@@ -2695,7 +2699,7 @@ class TestDateTimeProperty:
             repeated=False,
             required=True,
             default=now,
-            validator=TestProperty._example_validator,
+            validator=TestDateTimeProperty._string_validator,
             verbose_name="VALUE FOR READING",
             write_empty_list=False,
         )
@@ -2708,7 +2712,7 @@ class TestDateTimeProperty:
         assert prop._required
         assert prop._default == now
         assert prop._choices is None
-        assert prop._validator is TestProperty._example_validator
+        assert prop._validator is TestDateTimeProperty._string_validator
         assert prop._verbose_name == "VALUE FOR READING"
         assert not prop._write_empty_list
 
@@ -2729,6 +2733,17 @@ class TestDateTimeProperty:
         prop = model.DateTimeProperty(name="dt_val")
         value = datetime.datetime.utcnow()
         assert prop._validate(value) is None
+
+    @staticmethod
+    def test__do_validate_with_validator():
+        prop = model.DateTimeProperty(
+            name="dt_val", validator=TestDateTimeProperty._string_validator
+        )
+        value = "2020-08-08 12:53:54"
+        # validator must be called first to convert to datetime
+        assert prop._do_validate(value) == datetime.datetime(
+            2020, 8, 8, 12, 53, 54
+        )
 
     @staticmethod
     def test__validate_invalid():

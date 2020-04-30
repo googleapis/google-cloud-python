@@ -1354,7 +1354,7 @@ def test_serialization(dispose_of):
     https://github.com/googleapis/python-ndb/issues/384
     """
 
-    # THis is needed because pickle can't serialize local objects
+    # This is needed because pickle can't serialize local objects
     global SomeKind, OtherKind
 
     class OtherKind(ndb.Model):
@@ -1381,3 +1381,24 @@ def test_serialization(dispose_of):
     assert retrieved.other.key is None or retrieved.other.key.id() is None
     entity = pickle.loads(pickle.dumps(retrieved))
     assert entity.other.foo == 1
+
+
+@pytest.mark.usefixtures("client_context")
+def test_custom_validator(dispose_of, ds_client):
+    """New feature test for #252
+
+    https://github.com/googleapis/python-ndb/issues/252
+    """
+
+    def date_validator(prop, value):
+        return datetime.datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
+
+    class SomeKind(ndb.Model):
+        foo = ndb.DateTimeProperty(validator=date_validator)
+
+    entity = SomeKind(foo="2020-08-08 1:02:03")
+    key = entity.put()
+    dispose_of(key._key)
+
+    retrieved = key.get()
+    assert retrieved.foo == datetime.datetime(2020, 8, 8, 1, 2, 3)
