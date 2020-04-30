@@ -128,7 +128,9 @@ def _transaction_async(context, callback, read_only=False):
 
     on_commit_callbacks = []
     tx_context = context.new(
-        transaction=transaction_id, on_commit_callbacks=on_commit_callbacks
+        transaction=transaction_id,
+        on_commit_callbacks=on_commit_callbacks,
+        cache=None,  # Use new, empty cache for transaction
     )
     with tx_context.use():
         try:

@@ -84,10 +84,13 @@ class Test_transaction_async:
     @pytest.mark.usefixtures("in_context")
     @mock.patch("google.cloud.ndb._datastore_api")
     def test_success(_datastore_api):
+        context_module.get_context().cache["foo"] = "bar"
         on_commit_callback = mock.Mock()
 
         def callback():
-            context_module.get_context().call_on_commit(on_commit_callback)
+            context = context_module.get_context()
+            assert not context.cache
+            context.call_on_commit(on_commit_callback)
             return "I tried, momma."
 
         begin_future = tasklets.Future("begin transaction")

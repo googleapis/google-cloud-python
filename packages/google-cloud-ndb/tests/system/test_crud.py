@@ -1173,6 +1173,7 @@ def test_repeated_empty_strings(dispose_of):
     assert retreived.foo == ["", ""]
 
 
+@pytest.mark.skipif(not USE_REDIS_CACHE, reason="Redis is not configured")
 @pytest.mark.usefixtures("redis_context")
 def test_multi_get_weirdness_with_redis(dispose_of):
     """Regression test for issue #294.
