@@ -34,7 +34,7 @@ def default(session):
     # Install all test dependencies, then install local packages in-place.
     session.install("mock", "pytest", "pytest-cov", "freezegun")
     session.install("grpcio")
-    session.install("-e", "test_utils")
+    session.install("git+https://github.com/googleapis/python-test-utils")
 
     # fastparquet is not included in .[all] because, in general, it's redundant
     # with pyarrow. We still want to run some unit tests with fastparquet
@@ -83,7 +83,7 @@ def system(session):
     session.install("mock", "pytest", "psutil")
     session.install("google-cloud-storage")
     session.install("fastavro")
-    session.install("-e", "test_utils")
+    session.install("git+https://github.com/googleapis/python-test-utils")
     session.install("-e", ".[all]")
 
     # IPython does not support Python 2 after version 5.x
@@ -110,7 +110,7 @@ def snippets(session):
     session.install("mock", "pytest")
     session.install("google-cloud-storage")
     session.install("grpcio")
-    session.install("-e", "test_utils")
+    session.install("git+https://github.com/googleapis/python-test-utils")
     session.install("-e", ".[all]")
 
     # Run py.test against the snippets tests.
