@@ -192,11 +192,4 @@ templated_files = gcp.CommonTemplates().py_library(
 )
 s.move(templated_files)
 
-# Temporary fix for the generated synth file (the test_utils path)
-s.replace(
-    "noxfile.py",
-    r'session\.install\("-e", "\.\./test_utils/"\)',
-    '# \g<0>',
-)
-
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
