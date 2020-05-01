@@ -16,23 +16,21 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate logging GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "logging",
-    "v2",
-    config_path="/google/logging/artman_logging.yaml",
-    artman_output_name="logging-v2",
+    service="logging",
+    version="v2",
+    bazel_target="//google/logging/v2:logging-v2-py",
     include_protos=True,
 )
 
 # the structure of the logging directory is a bit different, so manually copy the protos
-s.move(library / "google/cloud/logging_v2/proto/cloud/logging_v2/proto", "google/cloud/logging_v2/proto")
-s.move(library / "google/cloud/logging_v2/proto/*.proto")
+s.move(library / "google/cloud/logging_v2/proto", "google/cloud/logging_v2/proto")
 
 s.move(library / "google/cloud/logging_v2/gapic")
 s.move(library / "tests/unit/gapic/v2")
