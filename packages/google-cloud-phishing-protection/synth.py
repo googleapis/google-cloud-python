@@ -22,7 +22,7 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
@@ -31,11 +31,10 @@ common = gcp.CommonTemplates()
 versions = ["v1beta1"]
 for version in versions:
     library = gapic.py_library(
-        "phishingprotection",
-        version,
-        config_path=f"/google/cloud/phishingprotection/artman_phishingprotection_{version}.yaml",
+        service="phishingprotection",
+        version=version,
+        bazel_target=f"//google/cloud/phishingprotection/{version}:phishingprotection-{version}-py",
         include_protos=True,
-        generator_args=["--dev_samples"],
     )
 
     excludes = ["README.rst", "nox.py", "setup.py", "docs/index.rst"]
