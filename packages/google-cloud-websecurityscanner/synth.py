@@ -16,7 +16,7 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 
@@ -27,11 +27,9 @@ versions = ["v1alpha", "v1beta"]
 
 for version in versions:
 	library = gapic.py_library(
-	    "websecurityscanner",
-	    version,
-	    config_path=f"/google/cloud/websecurityscanner"
-	    f"/artman_websecurityscanner_{version}.yaml",
-	    artman_output_name=f"websecurityscanner-{version}",
+	    service="websecurityscanner",
+	    version=version,
+	    bazel_target=f"//google/cloud/websecurityscanner/{version}:websecurityscanner-{version}-py",
 	    include_protos=True,
 	)
 
