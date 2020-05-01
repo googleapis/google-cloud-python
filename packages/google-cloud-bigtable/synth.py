@@ -17,17 +17,16 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate bigtable and bigtable_admin GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "bigtable",
-    "v2",
-    config_path="/google/bigtable/artman_bigtable.yaml",
-    artman_output_name="bigtable-v2",
+    service="bigtable",
+    version="v2",
+    bazel_target="//google/bigtable/v2:bigtable-v2-py",
     include_protos=True,
 )
 
@@ -36,10 +35,9 @@ s.move(library / "tests")
 
 # Generate admin client
 library = gapic.py_library(
-    "bigtable_admin",
-    "v2",
-    config_path="/google/bigtable/admin/artman_bigtableadmin.yaml",
-    artman_output_name="bigtable-admin-v2",
+    service="bigtable_admin",
+    version="v2",
+    bazel_target="//google/bigtable/admin/v2:bigtable-admin-v2-py",
     include_protos=True,
 )
 
