@@ -16,7 +16,7 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 versions = ["v1p1beta1", "v1beta1", "v1"]
 
@@ -24,7 +24,12 @@ versions = ["v1p1beta1", "v1beta1", "v1"]
 # Generate securitycenter GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library("securitycenter", version, include_protos=True)
+    library = gapic.py_library(
+        service="securitycenter",
+        version=version,
+        bazel_target=f"//google/cloud/securitycenter/{version}:securitycenter-{version}-py",
+        include_protos=True
+    )
     s.move(library / f"google/cloud/securitycenter_{version}")
     s.move(library / f"tests/unit/gapic/{version}")
     s.move(library / f"docs/gapic/{version}")
