@@ -20,16 +20,16 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate dlp GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "dlp",
-    "v2",
-    config_path="/google/privacy/dlp/artman_dlp_v2.yaml",
+    service="dlp",
+    version="v2",
+    bazel_target="//google/privacy/dlp/v2:privacy-dlp-v2-py",
     include_protos=True,
 )
 
@@ -38,6 +38,12 @@ s.move(library, excludes=excludes)
 
 # Fix namespace
 s.replace("google/**/*.py", "google\.cloud\.privacy\.dlp_v2", "google.cloud.dlp_v2")
+
+s.replace(
+    "google/cloud/dlp_v2/gapic/dlp_service_client.py",
+    "google-cloud-privacy-dlp",
+    "google-cloud-dlp",
+)
 
 # Add missing utf-8 marker
 s.replace(
