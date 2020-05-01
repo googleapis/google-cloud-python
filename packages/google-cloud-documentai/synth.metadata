@@ -1,27 +1,25 @@
 {
-  "updateTime": "2020-03-23T22:13:00.832554Z",
   "sources": [
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-documentai",
-        "sha": "1d9adb1b77dbf11e09567e9fe7bf511c1d313231"
+        "remote": "https://github.com/googleapis/python-documentai.git",
+        "sha": "00f93cf5808b81e82b60493a674ed8b3b2184bf1"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "0be7105dc52590fa9a24e784052298ae37ce53aa",
-        "internalRef": "302154871",
-        "log": "0be7105dc52590fa9a24e784052298ae37ce53aa\nAdd BUILD.bazel file to asset/v1p1beta1\n\nPiperOrigin-RevId: 302154871\n\n6c248fd13e8543f8d22cbf118d978301a9fbe2a8\nAdd missing resource annotations and additional_bindings to dialogflow v2 API.\n\nPiperOrigin-RevId: 302063117\n\n9a3a7f33be9eeacf7b3e98435816b7022d206bd7\nChange the service name from \"chromeos-moblab.googleapis.com\" to \"chromeosmoblab.googleapis.com\"\n\nPiperOrigin-RevId: 302060989\n\n98a339237577e3de26cb4921f75fb5c57cc7a19f\nfeat: devtools/build/v1 publish client library config annotations\n\n* add details field to some of the BuildEvents\n* add final_invocation_id and build_tool_exit_code fields to BuildStatus\n\nPiperOrigin-RevId: 302044087\n\ncfabc98c6bbbb22d1aeaf7612179c0be193b3a13\nfeat: home/graph/v1 publish client library config annotations & comment updates\n\nThis change includes adding the client library configuration annotations, updated proto comments, and some client library configuration files.\n\nPiperOrigin-RevId: 302042647\n\nc8c8c0bd15d082db9546253dbaad1087c7a9782c\nchore: use latest gapic-generator in bazel WORKSPACE.\nincluding the following commits from gapic-generator:\n- feat: take source protos in all sub-packages (#3144)\n\nPiperOrigin-RevId: 301843591\n\ne4daf5202ea31cb2cb6916fdbfa9d6bd771aeb4c\nAdd bazel file for v1 client lib generation\n\nPiperOrigin-RevId: 301802926\n\n"
+        "sha": "42ee97c1b93a0e3759bbba3013da309f670a90ab",
+        "internalRef": "307114445"
       }
     },
     {
-      "template": {
-        "name": "python_library",
-        "origin": "synthtool.gcp",
-        "version": "2020.2.4"
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "f5e4c17dc78a966dbf29961dd01f9bbd63e20a04"
       }
     }
   ],
