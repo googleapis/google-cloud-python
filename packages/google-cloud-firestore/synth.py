@@ -16,26 +16,20 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = [
-    ("v1beta1", "artman_firestore.yaml"),
-    ("v1", "artman_firestore_v1.yaml"),
-]
-admin_versions = [
-    ("v1", "artman_firestore_v1.yaml"),
-]
+versions = ["v1beta1", "v1"]
+admin_versions = ["v1"]
 
 
 # ----------------------------------------------------------------------------
 # Generate firestore GAPIC layer
 # ----------------------------------------------------------------------------
-for version, artman_config in versions:
+for version in versions:
     library = gapic.py_library(
-        "firestore",
-        version,
-        config_path=f"/google/firestore/{artman_config}",
-        artman_output_name=f"firestore-{version}",
+        service="firestore",
+        version=version,
+        bazel_target=f"//google/firestore/{version}:firestore-{version}-py",
         include_protos=True,
     )
 
@@ -59,12 +53,11 @@ for version, artman_config in versions:
 # ----------------------------------------------------------------------------
 # Generate firestore admin GAPIC layer
 # ----------------------------------------------------------------------------
-for version, artman_config in admin_versions:
+for version in admin_versions:
     library = gapic.py_library(
-        "firestore_admin",
-        f"{version}",
-        config_path=f"/google/firestore/admin/{artman_config}",
-        artman_output_name=f"firestore-admin-{version}",
+        service="firestore_admin",
+        version=version,
+        bazel_target=f"//google/firestore/admin/{version}:firestore-admin-{version}-py",
         include_protos=True,
     )
     s.move(library / f"google/cloud/firestore_admin_{version}")
@@ -74,12 +67,6 @@ for version, artman_config in admin_versions:
         f"google/cloud/firestore_admin_{version}/gapic/firestore_admin_client.py",
         "'google-cloud-firestore-admin'",
         "'google-cloud-firestore'",
-    )
-
-    s.replace(
-        "google/**/*.py",
-        f"from google\.cloud\.firestore\.admin_{version}.proto",
-        f"from google.cloud.firestore_admin_{version}.proto",
     )
 
 # ----------------------------------------------------------------------------
