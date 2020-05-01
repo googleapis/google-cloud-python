@@ -50,7 +50,8 @@ s.replace("noxfile.py", """"3.5", """, "")
 # Expand flake errors permitted to accomodate the Microgenerator
 # TODO: remove extra error codes once issues below are resolved
 # F401: https://github.com/googleapis/gapic-generator-python/issues/324
-s.replace(".flake8", "ignore = .*", "ignore = E203, E266, E501, W503, F401")
+# F841: local variable 'client'/'response' is assigned to but never use
+s.replace(".flake8", "ignore = .*", "ignore = E203, E266, E501, W503, F401, F841")
 
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

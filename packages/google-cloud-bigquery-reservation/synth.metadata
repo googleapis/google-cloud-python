@@ -3,7 +3,8 @@
     {
       "git": {
         "name": ".",
-        "remote": "sso://devrel/cloud/libraries/python/python-bigquery-reservation"
+        "remote": "sso://devrel/cloud/libraries/python/python-bigquery-reservation",
+        "sha": "148f3ecf38291cde80512e801af4702e53cff158"
       }
     },
     {
@@ -19,6 +20,17 @@
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
         "sha": "958a803ee0c43523fa3e6e0bb016276a69614c8e"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "bigquery/reservation",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "gapic-generator-python"
       }
     }
   ]
