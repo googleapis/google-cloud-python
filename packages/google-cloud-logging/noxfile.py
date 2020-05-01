@@ -132,11 +132,11 @@ def system(session):
         'google-cloud-bigquery',
         'google-cloud-pubsub',
         'google-cloud-storage',
+        'google-cloud-testutils',
     ]
     for systest_dep in systest_deps:
         session.install(systest_dep)
 
-    session.install('-e', 'test_utils/')
     session.install('-e', '.')
 
     # Run py.test against the system tests.
@@ -165,7 +165,7 @@ def docs(session):
     """Build the docs for this library."""
 
     session.install("-e", ".")
-    session.install("sphinx", "alabaster", "recommonmark")
+    session.install("sphinx<3.0.0", "alabaster", "recommonmark")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(

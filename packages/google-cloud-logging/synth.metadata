@@ -1,27 +1,32 @@
 {
-  "updateTime": "2020-03-04T13:20:11.396458Z",
   "sources": [
     {
       "generator": {
         "name": "artman",
-        "version": "1.0.0",
-        "dockerImage": "googleapis/artman@sha256:f37f2464788cb551299209b4fcab4eb323533154488c2ef9ec0c75d7c2b4b482"
+        "version": "2.0.0",
+        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
+      }
+    },
+    {
+      "git": {
+        "name": ".",
+        "remote": "git@github.com:googleapis/python-logging",
+        "sha": "a22a3bfdd4c8a4d6e9cc0c7d7504322ff31ad7ea"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "541b1ded4abadcc38e8178680b0677f65594ea6f",
-        "internalRef": "298686266",
-        "log": "541b1ded4abadcc38e8178680b0677f65594ea6f\nUpdate cloud asset api v1p4beta1.\n\nPiperOrigin-RevId: 298686266\n\nc0d171acecb4f5b0bfd2c4ca34fc54716574e300\n  Updated to include the Notification v1 API.\n\nPiperOrigin-RevId: 298652775\n\n2346a9186c0bff2c9cc439f2459d558068637e05\nAdd Service Directory v1beta1 protos and configs\n\nPiperOrigin-RevId: 298625638\n\na78ed801b82a5c6d9c5368e24b1412212e541bb7\nPublishing v3 protos and configs.\n\nPiperOrigin-RevId: 298607357\n\n4a180bfff8a21645b3a935c2756e8d6ab18a74e0\nautoml/v1beta1 publish proto updates\n\nPiperOrigin-RevId: 298484782\n\n6de6e938b7df1cd62396563a067334abeedb9676\nchore: use the latest gapic-generator and protoc-java-resource-name-plugin in Bazel workspace.\n\nPiperOrigin-RevId: 298474513\n\n244ab2b83a82076a1fa7be63b7e0671af73f5c02\nAdds service config definition for bigqueryreservation v1\n\nPiperOrigin-RevId: 298455048\n\n83c6f84035ee0f80eaa44d8b688a010461cc4080\nUpdate google/api/auth.proto to make AuthProvider to have JwtLocation\n\nPiperOrigin-RevId: 297918498\n\ne9e90a787703ec5d388902e2cb796aaed3a385b4\nDialogflow weekly v2/v2beta1 library update:\n  - adding get validation result\n  - adding field mask override control for output audio config\nImportant updates are also posted at:\nhttps://cloud.google.com/dialogflow/docs/release-notes\n\nPiperOrigin-RevId: 297671458\n\n1a2b05cc3541a5f7714529c665aecc3ea042c646\nAdding .yaml and .json config files.\n\nPiperOrigin-RevId: 297570622\n\ndfe1cf7be44dee31d78f78e485d8c95430981d6e\nPublish `QueryOptions` proto.\n\nIntroduced a `query_options` input in `ExecuteSqlRequest`.\n\nPiperOrigin-RevId: 297497710\n\ndafc905f71e5d46f500b41ed715aad585be062c3\npubsub: revert pull init_rpc_timeout & max_rpc_timeout back to 25 seconds and reset multiplier to 1.0\n\nPiperOrigin-RevId: 297486523\n\nf077632ba7fee588922d9e8717ee272039be126d\nfirestore: add update_transform\n\nPiperOrigin-RevId: 297405063\n\n0aba1900ffef672ec5f0da677cf590ee5686e13b\ncluster: use square brace for cross-reference\n\nPiperOrigin-RevId: 297204568\n\n5dac2da18f6325cbaed54603c43f0667ecd50247\nRestore retry params in gapic config because securitycenter has non-standard default retry params.\nRestore a few retry codes for some idempotent methods.\n\nPiperOrigin-RevId: 297196720\n\n1eb61455530252bba8b2c8d4bc9832960e5a56f6\npubsub: v1 replace IAM HTTP rules\n\nPiperOrigin-RevId: 297188590\n\n80b2d25f8d43d9d47024ff06ead7f7166548a7ba\nDialogflow weekly v2/v2beta1 library update:\n  - updates to mega agent api\n  - adding field mask override control for output audio config\nImportant updates are also posted at:\nhttps://cloud.google.com/dialogflow/docs/release-notes\n\nPiperOrigin-RevId: 297187629\n\n"
+        "sha": "aaff764c185e18a6c73227357c3df5fa60fec85a",
+        "internalRef": "309426927"
       }
     },
     {
-      "template": {
-        "name": "python_library",
-        "origin": "synthtool.gcp",
-        "version": "2020.2.4"
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "cdddf139b36000b3a7c65fd2a7781e253262359a"
       }
     }
   ],
