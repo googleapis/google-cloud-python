@@ -1,11 +1,17 @@
 {
-  "updateTime": "2020-03-31T12:13:26.210653Z",
   "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "git@github.com:googleapis/python-dns",
+        "sha": "5bd85d2b856ed29da9b6a975673562ae40eb7283"
+      }
+    },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "a003d8655d3ebec2bbbd5fc3898e91e152265c67"
+        "sha": "cdddf139b36000b3a7c65fd2a7781e253262359a"
       }
     }
   ]
