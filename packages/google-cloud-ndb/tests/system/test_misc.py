@@ -231,3 +231,43 @@ def test_parallel_transactions_w_redis_cache(dispose_of):
 
     entity = SomeKind.get_by_id(id)
     assert entity.foo == 242
+
+
+def test_rollback_with_context_cache(client_context, dispose_of):
+    """Regression test for Issue #398
+
+    https://github.com/googleapis/python-ndb/issues/398
+    """
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    class SpuriousError(Exception):
+        pass
+
+    @ndb.transactional()
+    def update(id, add, fail=False):
+        entity = SomeKind.get_by_id(id)
+        entity.foo = entity.foo + add
+        entity.put()
+
+        if fail:
+            raise SpuriousError()
+
+    with client_context.new(cache_policy=None).use():
+        key = SomeKind(foo=42).put()
+        dispose_of(key._key)
+        id = key.id()
+
+        update(id, 100)
+
+        entity = SomeKind.get_by_id(id)
+        assert entity.foo == 142
+
+        try:
+            update(id, 100, fail=True)
+        except SpuriousError:
+            pass
+
+        entity = SomeKind.get_by_id(id)
+        assert entity.foo == 142

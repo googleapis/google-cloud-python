@@ -144,6 +144,7 @@ def _transaction_async(context, callback, read_only=False):
 
         # Rollback if there is an error
         except Exception as e:  # noqa: E722
+            tx_context.cache.clear()
             yield _datastore_api.rollback(transaction_id)
             raise e
 
