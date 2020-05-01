@@ -26,10 +26,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.phishingprotection.v1beta1",
     syntax="proto3",
     serialized_options=_b(
-        "\n%com.google.phishingprotection.v1beta1B\027PhishingProtectionProtoP\001ZYgoogle.golang.org/genproto/googleapis/cloud/phishingprotection/v1beta1;phishingprotection\242\002\004GCPP\252\002'Google.Cloud.PhishingProtection.V1Beta1\312\002'Google\\Cloud\\PhishingProtection\\V1beta1"
+        "\n%com.google.phishingprotection.v1beta1B\027PhishingProtectionProtoP\001ZYgoogle.golang.org/genproto/googleapis/cloud/phishingprotection/v1beta1;phishingprotection\242\002\004GCPP\252\002'Google.Cloud.PhishingProtection.V1Beta1\312\002'Google\\Cloud\\PhishingProtection\\V1beta1\352\002*Google::Cloud::PhishingProtection::V1beta1"
     ),
     serialized_pb=_b(
-        '\nFgoogle/cloud/phishingprotection_v1beta1/proto/phishingprotection.proto\x12\'google.cloud.phishingprotection.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto"n\n\x15ReportPhishingRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x10\n\x03uri\x18\x02 \x01(\tB\x03\xe0\x41\x02"\x18\n\x16ReportPhishingResponse2\xd3\x02\n PhishingProtectionServiceV1Beta1\x12\xd7\x01\n\x0eReportPhishing\x12>.google.cloud.phishingprotection.v1beta1.ReportPhishingRequest\x1a?.google.cloud.phishingprotection.v1beta1.ReportPhishingResponse"D\x82\xd3\xe4\x93\x02\x31",/v1beta1/{parent=projects/*}/phishing:report:\x01*\xda\x41\nparent,uri\x1aU\xca\x41!phishingprotection.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xf8\x01\n%com.google.phishingprotection.v1beta1B\x17PhishingProtectionProtoP\x01ZYgoogle.golang.org/genproto/googleapis/cloud/phishingprotection/v1beta1;phishingprotection\xa2\x02\x04GCPP\xaa\x02\'Google.Cloud.PhishingProtection.V1Beta1\xca\x02\'Google\\Cloud\\PhishingProtection\\V1beta1b\x06proto3'
+        '\nFgoogle/cloud/phishingprotection_v1beta1/proto/phishingprotection.proto\x12\'google.cloud.phishingprotection.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto"n\n\x15ReportPhishingRequest\x12\x43\n\x06parent\x18\x01 \x01(\tB3\xe0\x41\x02\xfa\x41-\n+cloudresourcemanager.googleapis.com/Project\x12\x10\n\x03uri\x18\x02 \x01(\tB\x03\xe0\x41\x02"\x18\n\x16ReportPhishingResponse2\xd3\x02\n PhishingProtectionServiceV1Beta1\x12\xd7\x01\n\x0eReportPhishing\x12>.google.cloud.phishingprotection.v1beta1.ReportPhishingRequest\x1a?.google.cloud.phishingprotection.v1beta1.ReportPhishingResponse"D\x82\xd3\xe4\x93\x02\x31",/v1beta1/{parent=projects/*}/phishing:report:\x01*\xda\x41\nparent,uri\x1aU\xca\x41!phishingprotection.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xa5\x02\n%com.google.phishingprotection.v1beta1B\x17PhishingProtectionProtoP\x01ZYgoogle.golang.org/genproto/googleapis/cloud/phishingprotection/v1beta1;phishingprotection\xa2\x02\x04GCPP\xaa\x02\'Google.Cloud.PhishingProtection.V1Beta1\xca\x02\'Google\\Cloud\\PhishingProtection\\V1beta1\xea\x02*Google::Cloud::PhishingProtection::V1beta1b\x06proto3'
     ),
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -129,8 +129,6 @@ ReportPhishingRequest = _reflection.GeneratedProtocolMessageType(
         DESCRIPTOR=_REPORTPHISHINGREQUEST,
         __module__="google.cloud.phishingprotection_v1beta1.proto.phishingprotection_pb2",
         __doc__="""The ReportPhishing request message.
-  
-  
   Attributes:
       parent:
           Required. The name of the project for which the report will be
@@ -150,9 +148,7 @@ ReportPhishingResponse = _reflection.GeneratedProtocolMessageType(
     dict(
         DESCRIPTOR=_REPORTPHISHINGRESPONSE,
         __module__="google.cloud.phishingprotection_v1beta1.proto.phishingprotection_pb2",
-        __doc__="""The ReportPhishing (empty) response message.
-  
-  """,
+        __doc__="""The ReportPhishing (empty) response message.""",
         # @@protoc_insertion_point(class_scope:google.cloud.phishingprotection.v1beta1.ReportPhishingResponse)
     ),
 )
