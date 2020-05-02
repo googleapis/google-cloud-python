@@ -27,8 +27,9 @@ common = gcp.CommonTemplates()
 versions = ['v1', 'v1beta1']
 for version in versions:
     library = gapic.py_library(
-        'datacatalog',
-        version,
+        service='datacatalog',
+        version=version,
+        bazel_target=f"//google/cloud/datacatalog/{version}:datacatalog-{version}-py",
     )
 
     s.move(
