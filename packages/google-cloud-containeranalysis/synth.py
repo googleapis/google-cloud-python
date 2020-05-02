@@ -20,16 +20,17 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate Container Analysis GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "containeranalysis",
-    "v1",
-    config_path="/google/devtools/containeranalysis/artman_containeranalysis_v1.yaml",
+    service="containeranalysis",
+    version="v1",
+    bazel_target="//google/devtools/containeranalysis/v1:devtools-containeranalysis-v1-py",
+    proto_output_path="google/cloud/devtools/containeranalysis_v1/proto",
     include_protos=True,
 )
 
@@ -43,17 +44,12 @@ excludes = [
 ]
 
 s.move(library, excludes=excludes)
-# .proto files end up in the wrong place by default
-s.move(
-    library / "google/cloud/containeranalysis_v1/proto",
-    "google/cloud/devtools/containeranalysis_v1/proto",
-)
 
 # Insert helper method to get grafeas client
 s.replace(
     "google/**/container_analysis_client.py",
     r"""_GAPIC_LIBRARY_VERSION = pkg_resources\.get_distribution\(
-    'google-cloud-containeranalysis',
+    'google-cloud-devtools-containeranalysis',
 \)\.version""",
     r"""from grafeas import grafeas_v1
 from grafeas.grafeas_v1.gapic.transports import grafeas_grpc_transport
