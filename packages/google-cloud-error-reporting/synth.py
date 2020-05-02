@@ -16,29 +16,40 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate error_reporting GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "errorreporting",
-    "v1beta1",
-    config_path="/google/devtools/clouderrorreporting" "/artman_errorreporting.yaml",
-    artman_output_name="error-reporting-v1beta1",
+    service="errorreporting",
+    version="v1beta1",
+    bazel_target="//google/devtools/clouderrorreporting/v1beta1:devtools-clouderrorreporting-v1beta1-py",
     include_protos=True,
 )
 
+s.move(library / "google/cloud/devtools/clouderrorreporting_v1beta1/proto",
+       "google/cloud/errorreporting_v1beta1/proto")
 s.move(library / "google/cloud/errorreporting_v1beta1/proto")
 s.move(library / "google/cloud/errorreporting_v1beta1/gapic")
 s.move(library / "tests/unit/gapic/v1beta1")
 s.move(library / "tests/system/gapic/v1beta1")
 
+s.replace(
+    [
+      "google/cloud/errorreporting_v1beta1/gapic/error_group_service_client.py",
+      "google/cloud/errorreporting_v1beta1/gapic/error_stats_service_client.py",
+      "google/cloud/errorreporting_v1beta1/gapic/ereport_errors_service_client.py",
+    ],
+    "google-cloud-devtools-clouderrorreporting",
+    "google-cloud-error-reporting",
+)
+
 # Fix up imports
 s.replace(
     "google/**/*.py",
-    r"from google.devtools.clouderrorreporting_v1beta1.proto import ",
+    r"from google.cloud.devtools.clouderrorreporting_v1beta1.proto import ",
     r"from google.cloud.errorreporting_v1beta1.proto import ",
 )
 
