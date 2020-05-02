@@ -20,16 +20,16 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate billing budgets GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "billingbudgets",
-    "v1beta1",
-    config_path="/google/cloud/billing/budgets/artman_billingbudgets_v1beta1.yaml",
+    service="billing_budgets",
+    version="v1beta1",
+    bazel_target="//google/cloud/billing/budgets/v1beta1:billing-budgets-v1beta1-py",
     include_protos=True,
 )
 
@@ -38,15 +38,9 @@ excludes = [
     "setup.py",
     "README.rst",
     library / "docs/index.rst",
-    library
-    / "google/cloud/billingbudgets_v1beta1/proto",  # proto files are copied to the wrong place
 ]
 
 s.move(library, excludes=excludes)
-s.move(
-    library / "google/cloud/billingbudgets_v1beta1/proto/*.proto",
-    "google/cloud/billing_budgets_v1beta1/proto",
-)
 
 # Fix namespace
 s.replace(
