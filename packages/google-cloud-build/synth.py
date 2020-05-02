@@ -17,7 +17,7 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 version = 'v1'
 
@@ -25,11 +25,11 @@ version = 'v1'
 # Generate cloudbuild GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    'cloudbuild',
-    version,
-    config_path='/google/devtools/cloudbuild/artman_cloudbuild.yaml',
-    generator_args=["--dev_samples"],
-    include_protos=True
+    service='cloudbuild',
+    version=version,
+    bazel_target=f"//google/devtools/cloudbuild/{version}:devtools-cloudbuild-{version}-py",
+    include_protos=True,
+    proto_output_path=f"google/cloud/devtools/cloudbuild_{version}/proto",
 )
 
 s.move(
@@ -40,26 +40,14 @@ s.move(
         'setup.py',
         'setup.cfg',
         'README.rst',
-        '**/*.proto',
         'google/cloud/devtools/__init__.py',  # declare this as a namespace package
     ],
 )
 
-# Move protos to the right directory
-s.move(library / "google/cloud/cloudbuild_v1/proto/*.proto", "google/cloud/devtools/cloudbuild_v1/proto")
-
-# Fix up imports
-s.replace(
-    ["google/**/*.py", "tests/unit/**/*.py"],
-    r"from google.devtools.cloudbuild_v1.proto import ",
-    r"from google.cloud.devtools.cloudbuild_v1.proto import ",
-)
-
-
 # Rename package to `google-cloud-build`
 s.replace(
     ["**/*.rst", "*/**/*.py", "**/*.md"],
-    "google-cloud-cloudbuild",
+    "google-cloud-devtools-cloudbuild",
     "google-cloud-build"
 )
 
