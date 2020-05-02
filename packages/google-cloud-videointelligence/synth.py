@@ -19,7 +19,7 @@ import synthtool as s
 from synthtool import gcp
 
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 versions = ["v1beta2", "v1p1beta1", "v1p2beta1", "v1p3beta1", "v1"]
 
@@ -29,9 +29,9 @@ versions = ["v1beta2", "v1p1beta1", "v1p2beta1", "v1p3beta1", "v1"]
 # ----------------------------------------------------------------------------
 for version in versions:
     library = gapic.py_library(
-        "videointelligence",
-        version,
-        artman_output_name=f"video-intelligence-{version}",
+        service="videointelligence",
+        version=version,
+        bazel_target=f"//google/cloud/videointelligence/{version}:videointelligence-{version}-py",
         include_protos=True,
     )
 
