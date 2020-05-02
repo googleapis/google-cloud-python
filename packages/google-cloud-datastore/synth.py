@@ -16,17 +16,16 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate datastore GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "datastore",
-    "v1",
-    config_path="/google/datastore/artman_datastore.yaml",
-    artman_output_name="datastore-v1",
+    service="datastore",
+    version="v1",
+    bazel_target="//google/datastore/v1:datastore-v1-py",
     include_protos=True,
 )
 
