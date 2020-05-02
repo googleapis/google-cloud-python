@@ -238,7 +238,7 @@ The following client libraries have **alpha** support:
 .. _Phishing Protection README: https://github.com/googleapis/python-phishingprotection
 .. _Phishing Protection Documentation: https://googleapis.dev/python/phishingprotection/latest
 
-.. _Google Cloud OS Login: https://pypi.org/project/google-cloud-oslogin/
+.. _Google Cloud OS Login: https://pypi.org/project/google-cloud-os-login/
 .. _OS Login README: https://github.com/googleapis/python-oslogin
 .. _OS Login Documentation: https://googleapis.dev/python/oslogin/latest
 
