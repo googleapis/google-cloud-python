@@ -21,8 +21,10 @@ import re
 import threading
 
 import google.auth.credentials
+from google.api_core.retry import if_exception_type
 from google.protobuf.struct_pb2 import Struct
 from google.cloud.exceptions import NotFound
+from google.api_core.exceptions import Aborted
 import six
 
 # pylint: disable=ungrouped-imports
@@ -394,29 +396,36 @@ class Database(object):
 
         metadata = _metadata_with_prefix(self.name)
 
-        with SessionCheckout(self._pool) as session:
+        def execute_pdml():
+            with SessionCheckout(self._pool) as session:
 
-            txn = api.begin_transaction(session.name, txn_options, metadata=metadata)
+                txn = api.begin_transaction(
+                    session.name, txn_options, metadata=metadata
+                )
 
-            txn_selector = TransactionSelector(id=txn.id)
+                txn_selector = TransactionSelector(id=txn.id)
 
-            restart = functools.partial(
-                api.execute_streaming_sql,
-                session.name,
-                dml,
-                transaction=txn_selector,
-                params=params_pb,
-                param_types=param_types,
-                query_options=query_options,
-                metadata=metadata,
-            )
+                restart = functools.partial(
+                    api.execute_streaming_sql,
+                    session.name,
+                    dml,
+                    transaction=txn_selector,
+                    params=params_pb,
+                    param_types=param_types,
+                    query_options=query_options,
+                    metadata=metadata,
+                )
 
-            iterator = _restart_on_unavailable(restart)
+                iterator = _restart_on_unavailable(restart)
 
-            result_set = StreamedResultSet(iterator)
-            list(result_set)  # consume all partials
+                result_set = StreamedResultSet(iterator)
+                list(result_set)  # consume all partials
 
-            return result_set.stats.row_count_lower_bound
+                return result_set.stats.row_count_lower_bound
+
+        retry_config = api._method_configs["ExecuteStreamingSql"].retry
+
+        return _retry_on_aborted(execute_pdml, retry_config)()
 
     def session(self, labels=None):
         """Factory to create a session for this database.
@@ -976,3 +985,19 @@ class RestoreInfo(object):
     @classmethod
     def from_pb(cls, pb):
         return cls(pb.source_type, pb.backup_info)
+
+
+def _retry_on_aborted(func, retry_config):
+    """Helper for :meth:`Database.execute_partitioned_dml`.
+
+    Wrap function in a Retry that will retry on Aborted exceptions
+    with the retry config specified.
+
+    :type func: callable
+    :param func: the function to be retried on Aborted exceptions
+
+    :type retry_config: Retry
+    :param retry_config: retry object with the settings to be used
+    """
+    retry = retry_config.with_predicate(if_exception_type(Aborted))
+    return retry(func)

@@ -53,6 +53,7 @@ class _BaseTest(unittest.TestCase):
     SESSION_ID = "session_id"
     SESSION_NAME = DATABASE_NAME + "/sessions/" + SESSION_ID
     TRANSACTION_ID = b"transaction_id"
+    RETRY_TRANSACTION_ID = b"transaction_id_retry"
     BACKUP_ID = "backup_id"
     BACKUP_NAME = INSTANCE_NAME + "/backups/" + BACKUP_ID
 
@@ -735,8 +736,10 @@ class TestDatabase(_BaseTest):
         )
 
     def _execute_partitioned_dml_helper(
-        self, dml, params=None, param_types=None, query_options=None
+        self, dml, params=None, param_types=None, query_options=None, retried=False
     ):
+        from google.api_core.exceptions import Aborted
+        from google.api_core.retry import Retry
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.spanner_v1.proto.result_set_pb2 import (
             PartialResultSet,
@@ -752,6 +755,10 @@ class TestDatabase(_BaseTest):
             _merge_query_options,
         )
 
+        import collections
+
+        MethodConfig = collections.namedtuple("MethodConfig", ["retry"])
+
         transaction_pb = TransactionPB(id=self.TRANSACTION_ID)
 
         stats_pb = ResultSetStats(row_count_lower_bound=2)
@@ -765,8 +772,14 @@ class TestDatabase(_BaseTest):
         pool.put(session)
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
         api = database._spanner_api = self._make_spanner_api()
-        api.begin_transaction.return_value = transaction_pb
-        api.execute_streaming_sql.return_value = iterator
+        api._method_configs = {"ExecuteStreamingSql": MethodConfig(retry=Retry())}
+        if retried:
+            retry_transaction_pb = TransactionPB(id=self.RETRY_TRANSACTION_ID)
+            api.begin_transaction.side_effect = [transaction_pb, retry_transaction_pb]
+            api.execute_streaming_sql.side_effect = [Aborted("test"), iterator]
+        else:
+            api.begin_transaction.return_value = transaction_pb
+            api.execute_streaming_sql.return_value = iterator
 
         row_count = database.execute_partitioned_dml(
             dml, params, param_types, query_options
@@ -778,11 +791,15 @@ class TestDatabase(_BaseTest):
             partitioned_dml=TransactionOptions.PartitionedDml()
         )
 
-        api.begin_transaction.assert_called_once_with(
+        api.begin_transaction.assert_called_with(
             session.name,
             txn_options,
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
+        if retried:
+            self.assertEqual(api.begin_transaction.call_count, 2)
+        else:
+            self.assertEqual(api.begin_transaction.call_count, 1)
 
         if params:
             expected_params = Struct(
@@ -798,7 +815,7 @@ class TestDatabase(_BaseTest):
                 expected_query_options, query_options
             )
 
-        api.execute_streaming_sql.assert_called_once_with(
+        api.execute_streaming_sql.assert_any_call(
             self.SESSION_NAME,
             dml,
             transaction=expected_transaction,
@@ -807,6 +824,22 @@ class TestDatabase(_BaseTest):
             query_options=expected_query_options,
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
+        if retried:
+            expected_retry_transaction = TransactionSelector(
+                id=self.RETRY_TRANSACTION_ID
+            )
+            api.execute_streaming_sql.assert_called_with(
+                self.SESSION_NAME,
+                dml,
+                transaction=expected_retry_transaction,
+                params=expected_params,
+                param_types=param_types,
+                query_options=expected_query_options,
+                metadata=[("google-cloud-resource-prefix", database.name)],
+            )
+            self.assertEqual(api.execute_streaming_sql.call_count, 2)
+        else:
+            self.assertEqual(api.execute_streaming_sql.call_count, 1)
 
     def test_execute_partitioned_dml_wo_params(self):
         self._execute_partitioned_dml_helper(dml=DML_WO_PARAM)
@@ -827,6 +860,9 @@ class TestDatabase(_BaseTest):
             dml=DML_W_PARAM,
             query_options=ExecuteSqlRequest.QueryOptions(optimizer_version="3"),
         )
+
+    def test_execute_partitioned_dml_wo_params_retry_aborted(self):
+        self._execute_partitioned_dml_helper(dml=DML_WO_PARAM, retried=True)
 
     def test_session_factory_defaults(self):
         from google.cloud.spanner_v1.session import Session
