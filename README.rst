@@ -104,6 +104,7 @@ against beta libraries are addressed with a higher priority.
 The following client libraries have **beta** support:
 
 -  `Google Cloud Asset`_ (`Asset README`_, `Asset Documentation`_)
+-  `Google Cloud Access Approval`_ (`Access Approval README`_, `Access Approval Documentation`_)
 -  `Google Cloud Billing Budgets`_ (`Billing Budgets README`_, `Billing Budgets Documentation`_)
 -  `Google Cloud Data Catalog`_ (`Data Catalog README`_, `Data Catalog Documentation`_)
 -  `Google Cloud Data Labeling`_ (`Data Labeling README`_, `Data Labeling Documentation`_)
@@ -115,6 +116,10 @@ The following client libraries have **beta** support:
 .. _Google Cloud Asset: https://pypi.org/project/google-cloud-asset/
 .. _Asset README: https://github.com/googleapis/python-asset
 .. _Asset Documentation: https://googleapis.dev/python/cloudasset/latest
+
+.. _Google Cloud Access Approval: https://pypi.org/project/google-cloud-access-approval/
+.. _Access Approval README: https://github.com/googleapis/python-access-approval
+.. _Access Approval Documentation: https://googleapis.dev/python/accessapproval/latest
 
 .. _Google Cloud Billing Budgets: https://pypi.org/project/google-cloud-billing-budgets/
 .. _Billing Budgets README: https://github.com/googleapis/python-billingbudgets
