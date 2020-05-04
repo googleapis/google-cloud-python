@@ -14,7 +14,7 @@
 
 load("@com_google_api_codegen//rules_gapic:gapic.bzl", "proto_custom_library")
 
-def py_gapic_library(name, srcs, **kwargs):
+def py_gapic_library(name, srcs, plugin_args = [], **kwargs):
     #    srcjar_target_name = "%s_srcjar" % name
     srcjar_target_name = name
     srcjar_output_suffix = ".srcjar"
@@ -23,7 +23,7 @@ def py_gapic_library(name, srcs, **kwargs):
         name = srcjar_target_name,
         deps = srcs,
         plugin = Label("@gapic_generator_python//:gapic_plugin"),
-        plugin_args = [],
+        plugin_args = plugin_args,
         plugin_file_args = {},
         output_type = "python_gapic",
         output_suffix = srcjar_output_suffix,

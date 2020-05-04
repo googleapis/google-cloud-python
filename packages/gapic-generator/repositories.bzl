@@ -1,6 +1,13 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@rules_python//python:pip.bzl", "pip_import")
 
+_PANDOC_BUILD_FILE = """
+filegroup(
+    name = "pandoc",
+    srcs = ["bin/pandoc"],
+    visibility = ["//visibility:public"],
+)"""
+
 def gapic_generator_python():
     _maybe(
         pip_import,
@@ -27,9 +34,38 @@ def gapic_generator_python():
 
     _maybe(
         http_archive,
+        name = "com_github_grpc_grpc",
+        strip_prefix = "grpc-8347f4753568b5b66e49111c60ae2841278d3f33",  # this is 1.25.0 with fixes
+        urls = ["https://github.com/grpc/grpc/archive/8347f4753568b5b66e49111c60ae2841278d3f33.zip"],
+    )
+
+    _maybe(
+        http_archive,
+        name = "pandoc_linux",
+        build_file_content = _PANDOC_BUILD_FILE,
+        strip_prefix = "pandoc-2.2.1",
+        url = "https://github.com/jgm/pandoc/releases/download/2.2.1/pandoc-2.2.1-linux.tar.gz",
+    )
+
+    _maybe(
+        http_archive,
+        name = "pandoc_macOS",
+        build_file_content = _PANDOC_BUILD_FILE,
+        strip_prefix = "pandoc-2.2.1",
+        url = "https://github.com/jgm/pandoc/releases/download/2.2.1/pandoc-2.2.1-macOS.zip",
+    )
+
+    _maybe(
+        http_archive,
         name = "com_google_api_codegen",
         strip_prefix = "gapic-generator-b32c73219d617f90de70bfa6ff0ea0b0dd638dfe",
         urls = ["https://github.com/googleapis/gapic-generator/archive/b32c73219d617f90de70bfa6ff0ea0b0dd638dfe.zip"],
+    )
+
+def gapic_generator_register_toolchains():
+    native.register_toolchains(
+        "@gapic_generator_python//:pandoc_toolchain_linux",
+        "@gapic_generator_python//:pandoc_toolchain_macOS",
     )
 
 def _maybe(repo_rule, name, strip_repo_prefix = "", **kwargs):
