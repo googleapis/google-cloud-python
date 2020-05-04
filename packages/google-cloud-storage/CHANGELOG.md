@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+### [1.28.1](https://www.github.com/googleapis/python-storage/compare/v1.28.0...v1.28.1) (2020-04-28)
+
+
+### Bug Fixes
+
+* **storage:** anonymous credentials for private bucket ([#107](https://www.github.com/googleapis/python-storage/issues/107)) ([6152ab4](https://www.github.com/googleapis/python-storage/commit/6152ab4067d39ba824f9b6a17b83859dd7236cec))
+* add bucket name into POST policy conditions ([#118](https://www.github.com/googleapis/python-storage/issues/118)) ([311ecab](https://www.github.com/googleapis/python-storage/commit/311ecabf8acc3018cef0697dd29483693f7722b9))
+
 ## [1.28.0](https://www.github.com/googleapis/python-storage/compare/v1.27.0...v1.28.0) (2020-04-22)
 
 
