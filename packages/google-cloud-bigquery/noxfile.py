@@ -107,10 +107,9 @@ def snippets(session):
         session.skip("Credentials must be set via environment variable.")
 
     # Install all test dependencies, then install local packages in place.
-    session.install("mock", "pytest")
+    session.install("mock", "pytest", "google-cloud-testutils")
     session.install("google-cloud-storage")
     session.install("grpcio")
-    session.install("git+https://github.com/googleapis/python-test-utils")
     session.install("-e", ".[all]")
 
     # Run py.test against the snippets tests.
