@@ -761,7 +761,7 @@ class TestUnicode(unittest.TestCase):
 
 class TestStorageListFiles(TestStorageFiles):
 
-    FILENAMES = ("CloudLogo1", "CloudLogo2", "CloudLogo3")
+    FILENAMES = ("CloudLogo1", "CloudLogo2", "CloudLogo3", "CloudLogo4")
 
     @classmethod
     def setUpClass(cls):
@@ -818,18 +818,49 @@ class TestStorageListFiles(TestStorageFiles):
         # Technically the iterator is exhausted.
         self.assertEqual(iterator.num_results, iterator.max_results)
         # But we modify the iterator to continue paging after
-        # articially stopping after ``count`` items.
+        # artificially stopping after ``count`` items.
         iterator.max_results = None
 
         page2 = six.next(page_iter)
         last_blobs = list(page2)
         self.assertEqual(len(last_blobs), truncation_size)
 
+    @RetryErrors(unittest.TestCase.failureException)
+    def test_paginate_files_with_offset(self):
+        truncation_size = 1
+        inclusive_start_offset = self.FILENAMES[1]
+        exclusive_end_offset = self.FILENAMES[-1]
+        desired_files = self.FILENAMES[1:-1]
+        count = len(desired_files) - truncation_size
+        iterator = self.bucket.list_blobs(
+            max_results=count,
+            start_offset=inclusive_start_offset,
+            end_offset=exclusive_end_offset,
+        )
+        page_iter = iterator.pages
+
+        page1 = six.next(page_iter)
+        blobs = list(page1)
+        self.assertEqual(len(blobs), count)
+        self.assertEqual(blobs[0].name, desired_files[0])
+        self.assertIsNotNone(iterator.next_page_token)
+        # Technically the iterator is exhausted.
+        self.assertEqual(iterator.num_results, iterator.max_results)
+        # But we modify the iterator to continue paging after
+        # artificially stopping after ``count`` items.
+        iterator.max_results = None
+
+        page2 = six.next(page_iter)
+        last_blobs = list(page2)
+        self.assertEqual(len(last_blobs), truncation_size)
+        self.assertEqual(last_blobs[-1].name, desired_files[-1])
+
 
 class TestStoragePseudoHierarchy(TestStorageFiles):
 
     FILENAMES = (
         "file01.txt",
+        "parent/",
         "parent/file11.txt",
         "parent/child/file21.txt",
         "parent/child/file22.txt",
@@ -877,7 +908,9 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         iterator = self.bucket.list_blobs(delimiter="/", prefix="parent/")
         page = six.next(iterator.pages)
         blobs = list(page)
-        self.assertEqual([blob.name for blob in blobs], ["parent/file11.txt"])
+        self.assertEqual(
+            [blob.name for blob in blobs], ["parent/", "parent/file11.txt"]
+        )
         self.assertIsNone(iterator.next_page_token)
         self.assertEqual(iterator.prefixes, set(["parent/child/"]))
 
@@ -908,6 +941,17 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         )
         self.assertIsNone(iterator.next_page_token)
         self.assertEqual(iterator.prefixes, set())
+
+    @RetryErrors(unittest.TestCase.failureException)
+    def test_include_trailing_delimiter(self):
+        iterator = self.bucket.list_blobs(
+            delimiter="/", include_trailing_delimiter=True
+        )
+        page = six.next(iterator.pages)
+        blobs = list(page)
+        self.assertEqual([blob.name for blob in blobs], ["file01.txt", "parent/"])
+        self.assertIsNone(iterator.next_page_token)
+        self.assertEqual(iterator.prefixes, set(["parent/"]))
 
 
 class TestStorageSignURLs(unittest.TestCase):

@@ -540,6 +540,9 @@ class Client(ClientWithProject):
         page_token=None,
         prefix=None,
         delimiter=None,
+        start_offset=None,
+        end_offset=None,
+        include_trailing_delimiter=None,
         versions=None,
         projection="noAcl",
         fields=None,
@@ -572,6 +575,24 @@ class Client(ClientWithProject):
             delimiter (str):
                 (Optional) Delimiter, used with ``prefix`` to
                 emulate hierarchy.
+
+            start_offset (str):
+                (Optional) Filter results to objects whose names are
+                lexicographically equal to or after ``startOffset``. If
+                ``endOffset`` is also set, the objects listed will have names
+                between ``startOffset`` (inclusive) and ``endOffset``
+                (exclusive).
+
+            end_offset (str):
+                (Optional) Filter results to objects whose names are
+                lexicographically before ``endOffset``. If ``startOffset`` is
+                also set, the objects listed will have names between
+                ``startOffset`` (inclusive) and ``endOffset`` (exclusive).
+
+            include_trailing_delimiter (boolean):
+                (Optional) If true, objects that end in exactly one instance of
+                ``delimiter`` will have their metadata included in ``items`` in
+                addition to ``prefixes``.
 
             versions (bool):
                 (Optional) Whether object versions should be returned
@@ -606,6 +627,9 @@ class Client(ClientWithProject):
             page_token=page_token,
             prefix=prefix,
             delimiter=delimiter,
+            start_offset=start_offset,
+            end_offset=end_offset,
+            include_trailing_delimiter=include_trailing_delimiter,
             versions=versions,
             projection=projection,
             fields=fields,

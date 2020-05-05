@@ -733,6 +733,9 @@ class Test_Bucket(unittest.TestCase):
         PAGE_TOKEN = "ABCD"
         PREFIX = "subfolder"
         DELIMITER = "/"
+        START_OFFSET = "c"
+        END_OFFSET = "g"
+        INCLUDE_TRAILING_DELIMITER = True
         VERSIONS = True
         PROJECTION = "full"
         FIELDS = "items/contentLanguage,nextPageToken"
@@ -741,6 +744,9 @@ class Test_Bucket(unittest.TestCase):
             "pageToken": PAGE_TOKEN,
             "prefix": PREFIX,
             "delimiter": DELIMITER,
+            "startOffset": START_OFFSET,
+            "endOffset": END_OFFSET,
+            "includeTrailingDelimiter": INCLUDE_TRAILING_DELIMITER,
             "versions": VERSIONS,
             "projection": PROJECTION,
             "fields": FIELDS,
@@ -754,6 +760,9 @@ class Test_Bucket(unittest.TestCase):
             page_token=PAGE_TOKEN,
             prefix=PREFIX,
             delimiter=DELIMITER,
+            start_offset=START_OFFSET,
+            end_offset=END_OFFSET,
+            include_trailing_delimiter=INCLUDE_TRAILING_DELIMITER,
             versions=VERSIONS,
             projection=PROJECTION,
             fields=FIELDS,
