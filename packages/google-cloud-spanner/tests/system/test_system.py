@@ -428,6 +428,288 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         self.assertEqual(len(rows), 2)
 
 
+@unittest.skipIf(USE_EMULATOR, "Skipping backup tests")
+class TestBackupAPI(unittest.TestCase, _TestData):
+    DATABASE_NAME = "test_database" + unique_resource_id("_")
+    DATABASE_NAME_2 = "test_database2" + unique_resource_id("_")
+
+    @classmethod
+    def setUpClass(cls):
+        pool = BurstyPool(labels={"testcase": "database_api"})
+        db1 = Config.INSTANCE.database(
+            cls.DATABASE_NAME, ddl_statements=DDL_STATEMENTS, pool=pool
+        )
+        db2 = Config.INSTANCE.database(cls.DATABASE_NAME_2, pool=pool)
+        cls._db = db1
+        cls._dbs = [db1, db2]
+        op1 = db1.create()
+        op2 = db2.create()
+        op1.result(30)  # raises on failure / timeout.
+        op2.result(30)  # raises on failure / timeout.
+
+        current_config = Config.INSTANCE.configuration_name
+        same_config_instance_id = "same-config" + unique_resource_id("-")
+        cls._same_config_instance = Config.CLIENT.instance(
+            same_config_instance_id, current_config
+        )
+        op = cls._same_config_instance.create()
+        op.result(30)
+        cls._instances = [cls._same_config_instance]
+
+        retry = RetryErrors(exceptions.ServiceUnavailable)
+        configs = list(retry(Config.CLIENT.list_instance_configs)())
+        diff_configs = [
+            config.name
+            for config in configs
+            if "-us-" in config.name and config.name is not current_config
+        ]
+        cls._diff_config_instance = None
+        if len(diff_configs) > 0:
+            diff_config_instance_id = "diff-config" + unique_resource_id("-")
+            cls._diff_config_instance = Config.CLIENT.instance(
+                diff_config_instance_id, diff_configs[0]
+            )
+            op = cls._diff_config_instance.create()
+            op.result(30)
+            cls._instances.append(cls._diff_config_instance)
+
+    @classmethod
+    def tearDownClass(cls):
+        for db in cls._dbs:
+            db.drop()
+        for instance in cls._instances:
+            instance.delete()
+
+    def setUp(self):
+        self.to_delete = []
+        self.to_drop = []
+
+    def tearDown(self):
+        for doomed in self.to_delete:
+            doomed.delete()
+        for doomed in self.to_drop:
+            doomed.drop()
+
+    def test_create_invalid(self):
+        from datetime import datetime
+        from pytz import UTC
+
+        backup_id = "backup_id" + unique_resource_id("_")
+        expire_time = datetime.utcnow()
+        expire_time = expire_time.replace(tzinfo=UTC)
+
+        backup = Config.INSTANCE.backup(
+            backup_id, database=self._db, expire_time=expire_time
+        )
+
+        with self.assertRaises(exceptions.InvalidArgument):
+            op = backup.create()
+            op.result()
+
+    def test_backup_workflow(self):
+        from datetime import datetime
+        from datetime import timedelta
+        from pytz import UTC
+
+        instance = Config.INSTANCE
+        backup_id = "backup_id" + unique_resource_id("_")
+        expire_time = datetime.utcnow() + timedelta(days=3)
+        expire_time = expire_time.replace(tzinfo=UTC)
+
+        # Create backup.
+        backup = instance.backup(backup_id, database=self._db, expire_time=expire_time)
+        operation = backup.create()
+        self.to_delete.append(backup)
+
+        # Check metadata.
+        metadata = operation.metadata
+        self.assertEqual(backup.name, metadata.name)
+        self.assertEqual(self._db.name, metadata.database)
+        operation.result()
+
+        # Check backup object.
+        backup.reload()
+        self.assertEqual(self._db.name, backup._database)
+        self.assertEqual(expire_time, backup.expire_time)
+        self.assertIsNotNone(backup.create_time)
+        self.assertIsNotNone(backup.size_bytes)
+        self.assertIsNotNone(backup.state)
+
+        # Update with valid argument.
+        valid_expire_time = datetime.utcnow() + timedelta(days=7)
+        valid_expire_time = valid_expire_time.replace(tzinfo=UTC)
+        backup.update_expire_time(valid_expire_time)
+        self.assertEqual(valid_expire_time, backup.expire_time)
+
+        # Restore database to same instance.
+        restored_id = "restored_db" + unique_resource_id("_")
+        database = instance.database(restored_id)
+        self.to_drop.append(database)
+        operation = database.restore(source=backup)
+        operation.result()
+
+        database.drop()
+        backup.delete()
+        self.assertFalse(backup.exists())
+
+    def test_restore_to_diff_instance(self):
+        from datetime import datetime
+        from datetime import timedelta
+        from pytz import UTC
+
+        backup_id = "backup_id" + unique_resource_id("_")
+        expire_time = datetime.utcnow() + timedelta(days=3)
+        expire_time = expire_time.replace(tzinfo=UTC)
+
+        # Create backup.
+        backup = Config.INSTANCE.backup(
+            backup_id, database=self._db, expire_time=expire_time
+        )
+        op = backup.create()
+        self.to_delete.append(backup)
+        op.result()
+
+        # Restore database to different instance with same config.
+        restored_id = "restored_db" + unique_resource_id("_")
+        database = self._same_config_instance.database(restored_id)
+        self.to_drop.append(database)
+        operation = database.restore(source=backup)
+        operation.result()
+
+        database.drop()
+        backup.delete()
+        self.assertFalse(backup.exists())
+
+    def test_multi_create_cancel_update_error_restore_errors(self):
+        from datetime import datetime
+        from datetime import timedelta
+        from pytz import UTC
+
+        backup_id_1 = "backup_id1" + unique_resource_id("_")
+        backup_id_2 = "backup_id2" + unique_resource_id("_")
+
+        instance = Config.INSTANCE
+        expire_time = datetime.utcnow() + timedelta(days=3)
+        expire_time = expire_time.replace(tzinfo=UTC)
+
+        backup1 = instance.backup(
+            backup_id_1, database=self._dbs[0], expire_time=expire_time
+        )
+        backup2 = instance.backup(
+            backup_id_2, database=self._dbs[1], expire_time=expire_time
+        )
+
+        # Create two backups.
+        op1 = backup1.create()
+        op2 = backup2.create()
+        self.to_delete.extend([backup1, backup2])
+
+        backup1.reload()
+        self.assertFalse(backup1.is_ready())
+        backup2.reload()
+        self.assertFalse(backup2.is_ready())
+
+        # Cancel a create operation.
+        op2.cancel()
+        self.assertTrue(op2.cancelled())
+
+        op1.result()
+        backup1.reload()
+        self.assertTrue(backup1.is_ready())
+
+        # Update expire time to invalid value.
+        invalid_expire_time = datetime.now() + timedelta(days=366)
+        invalid_expire_time = invalid_expire_time.replace(tzinfo=UTC)
+        with self.assertRaises(exceptions.InvalidArgument):
+            backup1.update_expire_time(invalid_expire_time)
+
+        # Restore to existing database.
+        with self.assertRaises(exceptions.AlreadyExists):
+            self._db.restore(source=backup1)
+
+        # Restore to instance with different config.
+        if self._diff_config_instance is not None:
+            return
+        new_db = self._diff_config_instance.database("diff_config")
+        op = new_db.create()
+        op.result(30)
+        self.to_drop.append(new_db)
+        with self.assertRaises(exceptions.InvalidArgument):
+            new_db.restore(source=backup1)
+
+    def test_list_backups(self):
+        from datetime import datetime
+        from datetime import timedelta
+        from pytz import UTC
+
+        backup_id_1 = "backup_id1" + unique_resource_id("_")
+        backup_id_2 = "backup_id2" + unique_resource_id("_")
+
+        instance = Config.INSTANCE
+        expire_time_1 = datetime.utcnow() + timedelta(days=21)
+        expire_time_1 = expire_time_1.replace(tzinfo=UTC)
+
+        backup1 = Config.INSTANCE.backup(
+            backup_id_1, database=self._dbs[0], expire_time=expire_time_1
+        )
+
+        expire_time_2 = datetime.utcnow() + timedelta(days=1)
+        expire_time_2 = expire_time_2.replace(tzinfo=UTC)
+        backup2 = Config.INSTANCE.backup(
+            backup_id_2, database=self._dbs[1], expire_time=expire_time_2
+        )
+
+        # Create two backups.
+        op1 = backup1.create()
+        op1.result()
+        backup1.reload()
+        create_time_compare = datetime.utcnow().replace(tzinfo=UTC)
+
+        backup2.create()
+        self.to_delete.extend([backup1, backup2])
+
+        # List backups filtered by state.
+        filter_ = "state:CREATING"
+        for backup in instance.list_backups(filter_=filter_):
+            self.assertEqual(backup.name, backup2.name)
+
+        # List backups filtered by backup name.
+        filter_ = "name:{0}".format(backup_id_1)
+        for backup in instance.list_backups(filter_=filter_):
+            self.assertEqual(backup.name, backup1.name)
+
+        # List backups filtered by database name.
+        filter_ = "database:{0}".format(self._dbs[0].name)
+        for backup in instance.list_backups(filter_=filter_):
+            self.assertEqual(backup.name, backup1.name)
+
+        # List backups filtered by create time.
+        filter_ = 'create_time > "{0}"'.format(
+            create_time_compare.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+        )
+        for backup in instance.list_backups(filter_=filter_):
+            self.assertEqual(backup.name, backup2.name)
+
+        # List backups filtered by expire time.
+        filter_ = 'expire_time > "{0}"'.format(
+            expire_time_1.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+        )
+        for backup in instance.list_backups(filter_=filter_):
+            self.assertEqual(backup.name, backup1.name)
+
+        # List backups filtered by size bytes.
+        filter_ = "size_bytes < {0}".format(backup1.size_bytes)
+        for backup in instance.list_backups(filter_=filter_):
+            self.assertEqual(backup.name, backup2.name)
+
+        # List backups using pagination.
+        for page in instance.list_backups(page_size=1).pages:
+            count = 0
+            for backup in page:
+                count += 1
+                self.assertEqual(count, 1)
+
+
 SOME_DATE = datetime.date(2011, 1, 17)
 SOME_TIME = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
 NANO_TIME = DatetimeWithNanoseconds(1995, 8, 31, nanosecond=987654321)
