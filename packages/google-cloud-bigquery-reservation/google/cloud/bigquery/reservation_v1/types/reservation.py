@@ -562,7 +562,7 @@ class SearchAssignmentsRequest(proto.Message):
             Please specify resource name as assignee in
             the query. e.g., "assignee=projects/myproject"
             "assignee=folders/123"
-            "assignee=organizations/456".
+                  "assignee=organizations/456".
         page_size (int):
             The maximum number of items to return.
         page_token (str):

@@ -147,22 +147,6 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
     from_service_account_json = from_service_account_file
 
     @staticmethod
-    def bi_reservation_path(project: str, location: str) -> str:
-        """Return a fully-qualified bi_reservation string."""
-        return "projects/{project}/locations/{location}/bireservation".format(
-            project=project, location=location
-        )
-
-    @staticmethod
-    def parse_bi_reservation_path(path: str) -> Dict[str, str]:
-        """Parse a bi_reservation path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/bireservation$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
     def capacity_commitment_path(
         project: str, location: str, capacity_commitment: str
     ) -> str:
@@ -176,6 +160,22 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         """Parse a capacity_commitment path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/capacityCommitments/(?P<capacity_commitment>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def bi_reservation_path(project: str, location: str) -> str:
+        """Return a fully-qualified bi_reservation string."""
+        return "projects/{project}/locations/{location}/bireservation".format(
+            project=project, location=location
+        )
+
+    @staticmethod
+    def parse_bi_reservation_path(path: str) -> Dict[str, str]:
+        """Parse a bi_reservation path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/bireservation$",
             path,
         )
         return m.groupdict() if m else {}
@@ -1341,8 +1341,8 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         Reservation res1 exists. CreateAssignment was invoked
         previously and following assignments were created
         explicitly:
-        <organizationA, res1>
-        <project1, res1>
+          <organizationA, res1>
+          <project1, res1>
         Then this API will just return the above two assignments
         for reservation res1, and no expansion/merge will
         happen. Wildcard "-" can be used for reservations in the
@@ -1437,8 +1437,8 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         Reservation res1 exists. CreateAssignment was invoked
         previously and following assignments were created
         explicitly:
-        <organizationA, res1>
-        <project1, res1>
+          <organizationA, res1>
+          <project1, res1>
         Then deletion of <organizationA, res1> won't affect
         <project1, res1>. After deletion of <organizationA,
         res1>, queries from project1 will still use res1, while
@@ -1539,7 +1539,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
                 assignee in the query. e.g.,
                 "assignee=projects/myproject"
                 "assignee=folders/123"
-                "assignee=organizations/456".
+                      "assignee=organizations/456".
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
