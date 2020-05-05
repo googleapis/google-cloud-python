@@ -153,6 +153,17 @@ class Session(object):
 
         api.delete_session(self.name, metadata=metadata)
 
+    def ping(self):
+        """Ping the session to keep it alive by executing "SELECT 1".
+
+        :raises: ValueError: if :attr:`session_id` is not already set.
+        """
+        if self._session_id is None:
+            raise ValueError("Session ID not set by back-end")
+        api = self._database.spanner_api
+        metadata = _metadata_with_prefix(self._database.name)
+        api.execute_sql(self.name, "SELECT 1", metadata=metadata)
+
     def snapshot(self, **kw):
         """Create a snapshot to perform a set of reads with shared staleness.
 

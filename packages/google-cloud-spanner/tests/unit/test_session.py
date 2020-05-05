@@ -210,6 +210,66 @@ class TestSession(unittest.TestCase):
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
+    def test_ping_wo_session_id(self):
+        database = self._make_database()
+        session = self._make_one(database)
+        with self.assertRaises(ValueError):
+            session.ping()
+
+    def test_ping_hit(self):
+        gax_api = self._make_spanner_api()
+        gax_api.execute_sql.return_value = "1"
+        database = self._make_database()
+        database.spanner_api = gax_api
+        session = self._make_one(database)
+        session._session_id = self.SESSION_ID
+
+        session.ping()
+
+        gax_api.execute_sql.assert_called_once_with(
+            self.SESSION_NAME,
+            "SELECT 1",
+            metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+
+    def test_ping_miss(self):
+        from google.api_core.exceptions import NotFound
+
+        gax_api = self._make_spanner_api()
+        gax_api.execute_sql.side_effect = NotFound("testing")
+        database = self._make_database()
+        database.spanner_api = gax_api
+        session = self._make_one(database)
+        session._session_id = self.SESSION_ID
+
+        with self.assertRaises(NotFound):
+            session.ping()
+
+        gax_api.execute_sql.assert_called_once_with(
+            self.SESSION_NAME,
+            "SELECT 1",
+            metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+
+    def test_ping_error(self):
+        from google.api_core.exceptions import Unknown
+
+        gax_api = self._make_spanner_api()
+        gax_api.execute_sql.side_effect = Unknown("testing")
+        database = self._make_database()
+        database.spanner_api = gax_api
+        session = self._make_one(database)
+        session._session_id = self.SESSION_ID
+
+        with self.assertRaises(Unknown):
+            session.ping()
+
+        gax_api.execute_sql.assert_called_once_with(
+            self.SESSION_NAME,
+            "SELECT 1",
+            metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+
     def test_delete_wo_session_id(self):
         database = self._make_database()
         session = self._make_one(database)

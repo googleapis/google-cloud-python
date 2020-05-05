@@ -314,7 +314,7 @@ class PingingPool(AbstractSessionPool):
     - Sessions are used in "round-robin" order (LRU first).
 
     - "Pings" existing sessions in the background after a specified interval
-      via an API call (``session.exists()``).
+      via an API call (``session.ping()``).
 
     - Blocks, with a timeout, when :meth:`get` is called on an empty pool.
       Raises after timing out.
@@ -387,6 +387,9 @@ class PingingPool(AbstractSessionPool):
         ping_after, session = self._sessions.get(block=True, timeout=timeout)
 
         if _NOW() > ping_after:
+            # Using session.exists() guarantees the returned session exists.
+            # session.ping() uses a cached result in the backend which could
+            # result in a recently deleted session being returned.
             if not session.exists():
                 session = self._new_session()
                 session.create()
@@ -430,7 +433,9 @@ class PingingPool(AbstractSessionPool):
                 # Re-add to queue with existing expiration
                 self._sessions.put((ping_after, session))
                 break
-            if not session.exists():  # stale
+            try:
+                session.ping()
+            except NotFound:
                 session = self._new_session()
                 session.create()
             # Re-add to queue with new expiration
