@@ -88,13 +88,17 @@ def _make_iam_token_request(request, principal, headers, body):
 
     response = request(url=iam_endpoint, method="POST", headers=headers, body=body)
 
-    response_body = response.data.decode("utf-8")
+    response_body = (
+        response.data.decode("utf-8")
+        if hasattr(response.data, "decode")
+        else response.data
+    )
 
     if response.status != http_client.OK:
         exceptions.RefreshError(_REFRESH_ERROR, response_body)
 
     try:
-        token_response = json.loads(response.data.decode("utf-8"))
+        token_response = json.loads(response_body)
         token = token_response["accessToken"]
         expiry = datetime.strptime(token_response["expireTime"], "%Y-%m-%dT%H:%M:%SZ")
 

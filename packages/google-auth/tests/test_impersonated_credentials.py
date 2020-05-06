@@ -132,10 +132,17 @@ class TestImpersonatedCredentials(object):
         assert not credentials.valid
         assert credentials.expired
 
-    def make_request(self, data, status=http_client.OK, headers=None, side_effect=None):
+    def make_request(
+        self,
+        data,
+        status=http_client.OK,
+        headers=None,
+        side_effect=None,
+        use_data_bytes=True,
+    ):
         response = mock.create_autospec(transport.Response, instance=False)
         response.status = status
-        response.data = _helpers.to_bytes(data)
+        response.data = _helpers.to_bytes(data) if use_data_bytes else data
         response.headers = headers or {}
 
         request = mock.create_autospec(transport.Request, instance=False)
@@ -144,7 +151,8 @@ class TestImpersonatedCredentials(object):
 
         return request
 
-    def test_refresh_success(self, mock_donor_credentials):
+    @pytest.mark.parametrize("use_data_bytes", [True, False])
+    def test_refresh_success(self, use_data_bytes, mock_donor_credentials):
         credentials = self.make_credentials(lifetime=None)
         token = "token"
 
@@ -154,7 +162,9 @@ class TestImpersonatedCredentials(object):
         response_body = {"accessToken": token, "expireTime": expire_time}
 
         request = self.make_request(
-            data=json.dumps(response_body), status=http_client.OK
+            data=json.dumps(response_body),
+            status=http_client.OK,
+            use_data_bytes=use_data_bytes,
         )
 
         credentials.refresh(request)
