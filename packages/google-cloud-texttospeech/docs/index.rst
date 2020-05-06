@@ -5,11 +5,11 @@ Api Reference
 .. toctree::
     :maxdepth: 2
 
-    api
-    gapic/v1/api
-    gapic/v1/types
-    gapic/v1beta1/api
-    gapic/v1beta1/types
+    Text-to-Speech Client API Reference <api>
+    Client for Cloud Text-to-Speech API (v1) <gapic/v1/api>
+    Types for Cloud Text-to-Speech API Client (v1) <gapic/v1/types>
+    Client for Cloud Text-to-Speech API (v1beta1) <gapic/v1beta1/api>
+    Types for Cloud Text-to-Speech API Client (v1beta1) <gapic/v1beta1/types>
 
 Changelog
 ---------
