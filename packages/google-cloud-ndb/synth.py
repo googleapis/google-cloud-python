@@ -1,6 +1,8 @@
 import synthtool as s
 from synthtool import gcp
 
+AUTOSYNTH_MULTIPLE_PRS = True
+
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
