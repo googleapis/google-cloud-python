@@ -36,7 +36,7 @@ def test_custom_template_directory():
     g = generator.Generator(opts)
 
     # Assert that the Jinja loader will pull from the correct location.
-    assert g._env.loader.searchpath == ['/templates/']
+    assert g._env.loader.searchpath == ['/templates']
 
 
 def test_get_response():

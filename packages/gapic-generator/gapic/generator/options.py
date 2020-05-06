@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from collections import defaultdict
+from os import path
 from typing import Any, DefaultDict, Dict, FrozenSet, List, Optional, Tuple
 
 import dataclasses
@@ -95,13 +96,19 @@ class Options:
         # may be our default; perform that replacement.
         default_token = 'DEFAULT'
         templates = opts.pop('templates', [default_token])
-        default_path = os.path.realpath(
-            os.path.join(os.path.dirname(__file__), '..', 'templates'),
-        )
-        templates = [
-            (default_path if path == default_token else path)
-            for path in templates
-        ]
+        pwd = path.join(path.dirname(__file__), '..')
+        default_path = path.realpath(path.join(pwd, 'templates'))
+
+        def tweak_path(p):
+            if p == default_token:
+                return default_path
+
+            if path.isabs(p):
+                return path.normpath(p)
+
+            return path.normpath(path.join(pwd, p))
+
+        templates = [tweak_path(p) for p in templates]
 
         retry_cfg = None
         retry_paths = opts.pop('retry-config', None)
@@ -121,7 +128,7 @@ class Options:
                 for s in sample_paths
                 for cfg_path in samplegen_utils.generate_all_sample_fpaths(s)
             ),
-            templates=tuple(os.path.expanduser(i) for i in templates),
+            templates=tuple(path.expanduser(i) for i in templates),
             lazy_import=bool(opts.pop('lazy-import', False)),
             old_naming=bool(opts.pop('old-naming', False)),
         )

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import pytest
 from unittest import mock
 import warnings
@@ -31,7 +32,14 @@ def test_options_empty():
 def test_options_replace_templates():
     opts = options.Options.build('python-gapic-templates=/foo/')
     assert len(opts.templates) == 1
-    assert opts.templates[0] == '/foo/'
+    assert opts.templates[0] == '/foo'
+
+
+def test_options_relative_templates():
+    opts = options.Options.build('python-gapic-templates=../../squid/clam')
+
+    expected = (os.path.abspath('../squid/clam'),)
+    assert opts.templates == expected
 
 
 def test_options_unrecognized():
