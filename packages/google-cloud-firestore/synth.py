@@ -16,6 +16,9 @@
 import synthtool as s
 from synthtool import gcp
 
+AUTOSYNTH_MULTIPLE_PRS = True
+AUTOSYNTH_MULTIPLE_COMMITS = True
+
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 versions = ["v1beta1", "v1"]
