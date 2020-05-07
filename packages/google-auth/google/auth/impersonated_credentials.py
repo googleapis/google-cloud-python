@@ -88,6 +88,7 @@ def _make_iam_token_request(request, principal, headers, body):
 
     response = request(url=iam_endpoint, method="POST", headers=headers, body=body)
 
+    # support both string and bytes type response.data
     response_body = (
         response.data.decode("utf-8")
         if hasattr(response.data, "decode")
