@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.2](https://www.github.com/googleapis/python-access-context-manager/compare/v0.1.1...v0.1.2) (2020-05-08)
+
+
+### Bug Fixes
+
+* add missing __init__.py ([5b0036f](https://www.github.com/googleapis/python-access-context-manager/commit/5b0036f6155ea90a7501076487cb048ce1640e0e))
+
 ### [0.1.1](https://www.github.com/googleapis/python-access-context-manager/compare/v0.1.0...v0.1.1) (2020-05-08)
 
 
