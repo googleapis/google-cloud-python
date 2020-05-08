@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [0.10.0](https://www.github.com/googleapis/python-asset/compare/v0.9.0...v0.10.0) (2020-05-08)
+
+
+### Features
+
+* add orgpolicy and accesscontextmanager (via synth) ([#26](https://www.github.com/googleapis/python-asset/issues/26)) ([c9d818e](https://www.github.com/googleapis/python-asset/commit/c9d818e4c53707d51395a33e6fc1b202126d6a29))
+
 ## [0.9.0](https://www.github.com/googleapis/python-asset/compare/v0.8.0...v0.9.0) (2020-03-17)
 
 
