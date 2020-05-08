@@ -268,7 +268,9 @@ class TestAuthorizedSession(object):
         assert adapter.requests[1].headers["authorization"] == "token1"
 
     def test_request_max_allowed_time_timeout_error(self, frozen_time):
-        tick_one_second = functools.partial(frozen_time.tick, delta=1.0)
+        tick_one_second = functools.partial(
+            frozen_time.tick, delta=datetime.timedelta(seconds=1.0)
+        )
 
         credentials = mock.Mock(
             wraps=TimeTickCredentialsStub(time_tick=tick_one_second)
@@ -286,7 +288,9 @@ class TestAuthorizedSession(object):
             authed_session.request("GET", self.TEST_URL, max_allowed_time=0.9)
 
     def test_request_max_allowed_time_w_transport_timeout_no_error(self, frozen_time):
-        tick_one_second = functools.partial(frozen_time.tick, delta=1.0)
+        tick_one_second = functools.partial(
+            frozen_time.tick, delta=datetime.timedelta(seconds=1.0)
+        )
 
         credentials = mock.Mock(
             wraps=TimeTickCredentialsStub(time_tick=tick_one_second)
@@ -308,7 +312,9 @@ class TestAuthorizedSession(object):
         authed_session.request("GET", self.TEST_URL, timeout=0.5, max_allowed_time=3.1)
 
     def test_request_max_allowed_time_w_refresh_timeout_no_error(self, frozen_time):
-        tick_one_second = functools.partial(frozen_time.tick, delta=1.0)
+        tick_one_second = functools.partial(
+            frozen_time.tick, delta=datetime.timedelta(seconds=1.0)
+        )
 
         credentials = mock.Mock(
             wraps=TimeTickCredentialsStub(time_tick=tick_one_second)
@@ -333,7 +339,9 @@ class TestAuthorizedSession(object):
         authed_session.request("GET", self.TEST_URL, timeout=60, max_allowed_time=3.1)
 
     def test_request_timeout_w_refresh_timeout_timeout_error(self, frozen_time):
-        tick_one_second = functools.partial(frozen_time.tick, delta=1.0)
+        tick_one_second = functools.partial(
+            frozen_time.tick, delta=datetime.timedelta(seconds=1.0)
+        )
 
         credentials = mock.Mock(
             wraps=TimeTickCredentialsStub(time_tick=tick_one_second)
