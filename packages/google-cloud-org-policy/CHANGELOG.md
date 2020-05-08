@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.2](https://www.github.com/googleapis/python-org-policy/compare/v0.1.1...v0.1.2) (2020-05-08)
+
+
+### Bug Fixes
+
+* add missing __init__.py ([b786474](https://www.github.com/googleapis/python-org-policy/commit/b78647490341488d3264346ef19d8c7a28f48a06))
+
 ### [0.1.1](https://www.github.com/googleapis/python-org-policy/compare/v0.1.0...v0.1.1) (2020-05-08)
 
 
