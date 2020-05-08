@@ -17,17 +17,15 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 versions = ["v1beta1", "v1beta2", "v1"]
 
 for version in versions:
-
     library = gapic.py_library(
-        "bigquery_storage",
-        version,
-        config_path="/google/cloud/bigquery/storage/" f"artman_bigquerystorage_{version}.yaml",
-        artman_output_name=f"bigquerystorage-{version}",
+        service="bigquery_storage",
+        version=version,
+        bazel_target=f"//google/cloud/bigquery/storage/{version}:bigquery-storage-{version}-py",
         include_protos=True,
     )
 
