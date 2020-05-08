@@ -31,6 +31,8 @@ dependencies = [
     "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
     'enum34; python_version < "3.4"',
     "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
+    "google-cloud-access-context-manager >= 0.1.2, < 0.2.0dev",
+    "google-cloud-org-policy >= 0.1.2, < 0.2.0dev",
 ]
 
 # Setup boilerplate below this line.

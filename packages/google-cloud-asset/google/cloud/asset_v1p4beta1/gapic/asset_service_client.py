@@ -184,87 +184,6 @@ class AssetServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def analyze_iam_policy(
-        self,
-        analysis_query,
-        options_=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        For extensions, this is the name of the type being extended. It is
-        resolved in the same manner as type_name.
-
-        Example:
-            >>> from google.cloud import asset_v1p4beta1
-            >>>
-            >>> client = asset_v1p4beta1.AssetServiceClient()
-            >>>
-            >>> # TODO: Initialize `analysis_query`:
-            >>> analysis_query = {}
-            >>>
-            >>> response = client.analyze_iam_policy(analysis_query)
-
-        Args:
-            analysis_query (Union[dict, ~google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisQuery]): Required. The request query.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisQuery`
-            options_ (Union[dict, ~google.cloud.asset_v1p4beta1.types.Options]): Optional. The request options.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.asset_v1p4beta1.types.Options`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.asset_v1p4beta1.types.AnalyzeIamPolicyResponse` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "analyze_iam_policy" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "analyze_iam_policy"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.analyze_iam_policy,
-                default_retry=self._method_configs["AnalyzeIamPolicy"].retry,
-                default_timeout=self._method_configs["AnalyzeIamPolicy"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = asset_service_pb2.AnalyzeIamPolicyRequest(
-            analysis_query=analysis_query, options=options_
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("analysis_query.parent", analysis_query.parent)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["analyze_iam_policy"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
     def export_iam_policy_analysis(
         self,
         analysis_query,
@@ -275,14 +194,10 @@ class AssetServiceClient(object):
         metadata=None,
     ):
         """
-        The normal response of the operation in case of success. If the
-        original method returns no data on success, such as ``Delete``, the
-        response is ``google.protobuf.Empty``. If the original method is
-        standard ``Get``/``Create``/``Update``, the response should be the
-        resource. For other methods, the response should have the type
-        ``XxxResponse``, where ``Xxx`` is the original method name. For example,
-        if the original method name is ``TakeSnapshot()``, the inferred response
-        type is ``TakeSnapshotResponse``.
+        Exports IAM policy analysis based on the specified request. This API
+        implements the ``google.longrunning.Operation`` API allowing you to keep
+        track of the export. The metadata contains the request to help callers
+        to map responses to requests.
 
         Example:
             >>> from google.cloud import asset_v1p4beta1
@@ -373,4 +288,85 @@ class AssetServiceClient(object):
             self.transport._operations_client,
             asset_service_pb2.ExportIamPolicyAnalysisResponse,
             metadata_type=asset_service_pb2.ExportIamPolicyAnalysisRequest,
+        )
+
+    def analyze_iam_policy(
+        self,
+        analysis_query,
+        options_=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Analyzes IAM policies based on the specified request. Returns a list
+        of ``IamPolicyAnalysisResult`` matching the request.
+
+        Example:
+            >>> from google.cloud import asset_v1p4beta1
+            >>>
+            >>> client = asset_v1p4beta1.AssetServiceClient()
+            >>>
+            >>> # TODO: Initialize `analysis_query`:
+            >>> analysis_query = {}
+            >>>
+            >>> response = client.analyze_iam_policy(analysis_query)
+
+        Args:
+            analysis_query (Union[dict, ~google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisQuery]): Required. The request query.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisQuery`
+            options_ (Union[dict, ~google.cloud.asset_v1p4beta1.types.Options]): Optional. The request options.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.asset_v1p4beta1.types.Options`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.asset_v1p4beta1.types.AnalyzeIamPolicyResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "analyze_iam_policy" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "analyze_iam_policy"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.analyze_iam_policy,
+                default_retry=self._method_configs["AnalyzeIamPolicy"].retry,
+                default_timeout=self._method_configs["AnalyzeIamPolicy"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = asset_service_pb2.AnalyzeIamPolicyRequest(
+            analysis_query=analysis_query, options=options_
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("analysis_query.parent", analysis_query.parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["analyze_iam_policy"](
+            request, retry=retry, timeout=timeout, metadata=metadata
         )

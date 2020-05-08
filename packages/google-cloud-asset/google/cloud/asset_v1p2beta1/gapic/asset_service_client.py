@@ -191,6 +191,76 @@ class AssetServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
+    def delete_feed(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes an asset feed.
+
+        Example:
+            >>> from google.cloud import asset_v1p2beta1
+            >>>
+            >>> client = asset_v1p2beta1.AssetServiceClient()
+            >>>
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
+            >>>
+            >>> client.delete_feed(name)
+
+        Args:
+            name (str): Required. The name of the feed and it must be in the format of:
+                projects/project_number/feeds/feed_id
+                folders/folder_number/feeds/feed_id
+                organizations/organization_number/feeds/feed_id
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_feed" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_feed"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_feed,
+                default_retry=self._method_configs["DeleteFeed"].retry,
+                default_timeout=self._method_configs["DeleteFeed"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = asset_service_pb2.DeleteFeedRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["delete_feed"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def create_feed(
         self,
         parent,
@@ -228,16 +298,11 @@ class AssetServiceClient(object):
                 "projects/12345").
             feed_id (str): Required. This is the client-assigned asset feed identifier and it needs to
                 be unique under a specific parent project/folder/organization.
-            feed (Union[dict, ~google.cloud.asset_v1p2beta1.types.Feed]): The resource type. It must be in the format of
-                {service_name}/{resource_type_kind}. The ``resource_type_kind`` must be
-                singular and must not include version numbers.
-
-                Example: ``storage.googleapis.com/Bucket``
-
-                The value of the resource_type_kind must follow the regular expression
-                /[A-Za-z][a-zA-Z0-9]+/. It should start with an upper case character and
-                should use PascalCase (UpperCamelCase). The maximum number of characters
-                allowed for the ``resource_type_kind`` is 100.
+            feed (Union[dict, ~google.cloud.asset_v1p2beta1.types.Feed]): Required. The feed details. The field ``name`` must be empty and it
+                will be generated in the format of:
+                projects/project_number/feeds/feed_id
+                folders/folder_number/feeds/feed_id
+                organizations/organization_number/feeds/feed_id
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.asset_v1p2beta1.types.Feed`
@@ -306,12 +371,16 @@ class AssetServiceClient(object):
             >>>
             >>> client = asset_v1p2beta1.AssetServiceClient()
             >>>
-            >>> name = client.feed_path('[PROJECT]', '[FEED]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> response = client.get_feed(name)
 
         Args:
-            name (str): See ``HttpRule``.
+            name (str): Required. The name of the Feed and it must be in the format of:
+                projects/project_number/feeds/feed_id
+                folders/folder_number/feeds/feed_id
+                organizations/organization_number/feeds/feed_id
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -457,39 +526,17 @@ class AssetServiceClient(object):
             >>> response = client.update_feed(feed, update_mask)
 
         Args:
-            feed (Union[dict, ~google.cloud.asset_v1p2beta1.types.Feed]): A URL/resource name that uniquely identifies the type of the
-                serialized protocol buffer message. This string must contain at least
-                one "/" character. The last segment of the URL's path must represent the
-                fully qualified name of the type (as in
-                ``path/google.protobuf.Duration``). The name should be in a canonical
-                form (e.g., leading "." is not accepted).
-
-                In practice, teams usually precompile into the binary all types that
-                they expect it to use in the context of Any. However, for URLs which use
-                the scheme ``http``, ``https``, or no scheme, one can optionally set up
-                a type server that maps type URLs to message definitions as follows:
-
-                -  If no scheme is provided, ``https`` is assumed.
-                -  An HTTP GET on the URL must yield a ``google.protobuf.Type`` value in
-                   binary format, or produce an error.
-                -  Applications are allowed to cache lookup results based on the URL, or
-                   have them precompiled into a binary to avoid any lookup. Therefore,
-                   binary compatibility needs to be preserved on changes to types. (Use
-                   versioned type names to manage breaking changes.)
-
-                Note: this functionality is not currently available in the official
-                protobuf release, and it is not used for type URLs beginning with
-                type.googleapis.com.
-
-                Schemes other than ``http``, ``https`` (or the empty scheme) might be
-                used with implementation specific semantics.
+            feed (Union[dict, ~google.cloud.asset_v1p2beta1.types.Feed]): Required. The new values of feed details. It must match an existing
+                feed and the field ``name`` must be in the format of:
+                projects/project_number/feeds/feed_id or
+                folders/folder_number/feeds/feed_id or
+                organizations/organization_number/feeds/feed_id.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.asset_v1p2beta1.types.Feed`
-            update_mask (Union[dict, ~google.cloud.asset_v1p2beta1.types.FieldMask]): The REST URL for accessing the resource. An HTTP GET operation using
-                this URL returns the resource itself. Example:
-                ``https://cloudresourcemanager.googleapis.com/v1/projects/my-project-123``.
-                It will be left unspecified for resources without a REST API.
+            update_mask (Union[dict, ~google.cloud.asset_v1p2beta1.types.FieldMask]): Required. Only updates the ``feed`` fields indicated by this mask.
+                The field mask must not be empty, and it must not contain fields that
+                are immutable or only set by the server.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.asset_v1p2beta1.types.FieldMask`
@@ -540,71 +587,5 @@ class AssetServiceClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls["update_feed"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def delete_feed(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Deletes an asset feed.
-
-        Example:
-            >>> from google.cloud import asset_v1p2beta1
-            >>>
-            >>> client = asset_v1p2beta1.AssetServiceClient()
-            >>>
-            >>> name = client.feed_path('[PROJECT]', '[FEED]')
-            >>>
-            >>> client.delete_feed(name)
-
-        Args:
-            name (str): Represents a repeated ``Value``.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "delete_feed" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "delete_feed"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_feed,
-                default_retry=self._method_configs["DeleteFeed"].retry,
-                default_timeout=self._method_configs["DeleteFeed"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = asset_service_pb2.DeleteFeedRequest(name=name)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        self._inner_api_calls["delete_feed"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

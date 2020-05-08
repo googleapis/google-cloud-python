@@ -17,14 +17,14 @@ config = {
                 }
             },
             "methods": {
-                "AnalyzeIamPolicy": {
-                    "timeout_millis": 600000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
-                },
                 "ExportIamPolicyAnalysis": {
                     "timeout_millis": 600000,
                     "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "AnalyzeIamPolicy": {
+                    "timeout_millis": 600000,
+                    "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
             },

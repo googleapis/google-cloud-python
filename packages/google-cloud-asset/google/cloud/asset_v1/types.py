@@ -20,8 +20,12 @@ import sys
 
 from google.api_core.protobuf_helpers import get_messages
 
+from google.identity.accesscontextmanager.v1 import access_level_pb2
+from google.identity.accesscontextmanager.v1 import access_policy_pb2
 from google.cloud.asset_v1.proto import asset_service_pb2
 from google.cloud.asset_v1.proto import assets_pb2
+from google.cloud.orgpolicy.v1 import orgpolicy_pb2
+from google.identity.accesscontextmanager.v1 import service_perimeter_pb2
 from google.iam.v1 import policy_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import any_pb2
@@ -34,6 +38,10 @@ from google.type import expr_pb2
 
 
 _shared_modules = [
+    access_level_pb2,
+    access_policy_pb2,
+    orgpolicy_pb2,
+    service_perimeter_pb2,
     policy_pb2,
     operations_pb2,
     any_pb2,

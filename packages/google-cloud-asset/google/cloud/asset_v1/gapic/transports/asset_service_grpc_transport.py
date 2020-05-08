@@ -116,15 +116,26 @@ class AssetServiceGrpcTransport(object):
         return self._channel
 
     @property
+    def delete_feed(self):
+        """Return the gRPC stub for :meth:`AssetServiceClient.delete_feed`.
+
+        Deletes an asset feed.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["asset_service_stub"].DeleteFeed
+
+    @property
     def export_assets(self):
         """Return the gRPC stub for :meth:`AssetServiceClient.export_assets`.
 
-        Additional information regarding long-running operations. In
-        particular, this specifies the types that are returned from long-running
-        operations.
-
-        Required for methods that return ``google.longrunning.Operation``;
-        invalid otherwise.
+        Exports assets with time and resource types to a given Cloud Storage
+        location. The output format is newline-delimited JSON. This API
+        implements the ``google.longrunning.Operation`` API allowing you to keep
+        track of the export.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -137,10 +148,12 @@ class AssetServiceGrpcTransport(object):
     def batch_get_assets_history(self):
         """Return the gRPC stub for :meth:`AssetServiceClient.batch_get_assets_history`.
 
-        JSON name of this field. The value is set by protocol compiler. If
-        the user has set a "json_name" option on this field, that option's value
-        will be used. Otherwise, it's deduced from the field's name by
-        converting it to camelCase.
+        Batch gets the update history of assets that overlap a time window.
+        For RESOURCE content, this API outputs history with asset in both
+        non-delete or deleted status. For IAM_POLICY content, this API outputs
+        history when the asset and its attached IAM POLICY both exist. This can
+        create gaps in the output history. If a specified asset does not exist,
+        this API returns an INVALID_ARGUMENT error.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -201,16 +214,3 @@ class AssetServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["asset_service_stub"].UpdateFeed
-
-    @property
-    def delete_feed(self):
-        """Return the gRPC stub for :meth:`AssetServiceClient.delete_feed`.
-
-        Deletes an asset feed.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["asset_service_stub"].DeleteFeed

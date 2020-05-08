@@ -22,9 +22,7 @@ import pytest
 from google.rpc import status_pb2
 
 from google.cloud import asset_v1beta1
-from google.cloud.asset_v1beta1 import enums
 from google.cloud.asset_v1beta1.proto import asset_service_pb2
-from google.cloud.asset_v1beta1.proto import assets_pb2
 from google.longrunning import operations_pb2
 
 
@@ -82,7 +80,7 @@ class TestAssetServiceClient(object):
             client = asset_v1beta1.AssetServiceClient()
 
         # Setup Request
-        parent = client.project_path("[PROJECT]")
+        parent = "parent-995424086"
         output_config = {}
 
         response = client.export_assets(parent, output_config)
@@ -112,7 +110,7 @@ class TestAssetServiceClient(object):
             client = asset_v1beta1.AssetServiceClient()
 
         # Setup Request
-        parent = client.project_path("[PROJECT]")
+        parent = "parent-995424086"
         output_config = {}
 
         response = client.export_assets(parent, output_config)
@@ -134,19 +132,13 @@ class TestAssetServiceClient(object):
             client = asset_v1beta1.AssetServiceClient()
 
         # Setup Request
-        parent = client.project_path("[PROJECT]")
-        content_type = enums.ContentType.CONTENT_TYPE_UNSPECIFIED
-        read_time_window = {}
+        parent = "parent-995424086"
 
-        response = client.batch_get_assets_history(
-            parent, content_type, read_time_window
-        )
+        response = client.batch_get_assets_history(parent)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = asset_service_pb2.BatchGetAssetsHistoryRequest(
-            parent=parent, content_type=content_type, read_time_window=read_time_window
-        )
+        expected_request = asset_service_pb2.BatchGetAssetsHistoryRequest(parent=parent)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -159,9 +151,7 @@ class TestAssetServiceClient(object):
             client = asset_v1beta1.AssetServiceClient()
 
         # Setup request
-        parent = client.project_path("[PROJECT]")
-        content_type = enums.ContentType.CONTENT_TYPE_UNSPECIFIED
-        read_time_window = {}
+        parent = "parent-995424086"
 
         with pytest.raises(CustomException):
-            client.batch_get_assets_history(parent, content_type, read_time_window)
+            client.batch_get_assets_history(parent)

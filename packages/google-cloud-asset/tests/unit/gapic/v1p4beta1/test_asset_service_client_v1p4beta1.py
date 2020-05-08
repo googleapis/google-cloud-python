@@ -63,48 +63,6 @@ class CustomException(Exception):
 
 
 class TestAssetServiceClient(object):
-    def test_analyze_iam_policy(self):
-        # Setup Expected Response
-        fully_explored = True
-        expected_response = {"fully_explored": fully_explored}
-        expected_response = asset_service_pb2.AnalyzeIamPolicyResponse(
-            **expected_response
-        )
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = asset_v1p4beta1.AssetServiceClient()
-
-        # Setup Request
-        analysis_query = {}
-
-        response = client.analyze_iam_policy(analysis_query)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = asset_service_pb2.AnalyzeIamPolicyRequest(
-            analysis_query=analysis_query
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_analyze_iam_policy_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = asset_v1p4beta1.AssetServiceClient()
-
-        # Setup request
-        analysis_query = {}
-
-        with pytest.raises(CustomException):
-            client.analyze_iam_policy(analysis_query)
-
     def test_export_iam_policy_analysis(self):
         # Setup Expected Response
         expected_response = {}
@@ -160,3 +118,45 @@ class TestAssetServiceClient(object):
         response = client.export_iam_policy_analysis(analysis_query, output_config)
         exception = response.exception()
         assert exception.errors[0] == error
+
+    def test_analyze_iam_policy(self):
+        # Setup Expected Response
+        fully_explored = True
+        expected_response = {"fully_explored": fully_explored}
+        expected_response = asset_service_pb2.AnalyzeIamPolicyResponse(
+            **expected_response
+        )
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = asset_v1p4beta1.AssetServiceClient()
+
+        # Setup Request
+        analysis_query = {}
+
+        response = client.analyze_iam_policy(analysis_query)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = asset_service_pb2.AnalyzeIamPolicyRequest(
+            analysis_query=analysis_query
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_analyze_iam_policy_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = asset_v1p4beta1.AssetServiceClient()
+
+        # Setup request
+        analysis_query = {}
+
+        with pytest.raises(CustomException):
+            client.analyze_iam_policy(analysis_query)

@@ -36,16 +36,10 @@ class ContentType(enum.IntEnum):
 
 class NullValue(enum.IntEnum):
     """
-    The resource type. It must be in the format of
-    {service_name}/{resource_type_kind}. The ``resource_type_kind`` must be
-    singular and must not include version numbers.
+    ``NullValue`` is a singleton enumeration to represent the null value
+    for the ``Value`` type union.
 
-    Example: ``storage.googleapis.com/Bucket``
-
-    The value of the resource_type_kind must follow the regular expression
-    /[A-Za-z][a-zA-Z0-9]+/. It should start with an upper case character and
-    should use PascalCase (UpperCamelCase). The maximum number of characters
-    allowed for the ``resource_type_kind`` is 100.
+    The JSON representation for ``NullValue`` is JSON ``null``.
 
     Attributes:
       NULL_VALUE (int): Null value.
