@@ -17,7 +17,7 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 versions = ["v3beta1", "v3"]
 
@@ -34,7 +34,12 @@ excludes = [
 # Generate asset GAPIC layer
 # ----------------------------------------------------------------------------
 for version in versions:
-    library = gapic.py_library("translate", version, include_protos=True)
+    library = gapic.py_library(
+        service="translate",
+        version=version,
+        bazel_target=f"//google/cloud/translate/{version}:translation-{version}-py",
+        include_protos=True,
+    )
 
     # s.move(library / f'google/cloud/translation_{version}', f'google/cloud/translate_{version}', excludes=excludes)
     s.move(library / f"google/cloud/translate_{version}", excludes=excludes)
@@ -46,6 +51,11 @@ for version in versions:
         "google/**/translation_service_pb2_grpc.py",
         f"google.cloud.translation_{version}.proto",
         f"google.cloud.translate_{version}.proto",
+    )
+    s.replace(
+        f"google/cloud/translate_{version}/gapic/translation_service_client.py",
+        "google-cloud-translation",
+        "google-cloud-translate",
     )
 
 # Use the highest version library to generate documentation import alias.
