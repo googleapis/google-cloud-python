@@ -7,8 +7,8 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 # Add protoc and our common protos.
-COPY --from=gcr.io/gapic-images/api-common-protos:0.1.0 /usr/local/bin/protoc /usr/local/bin/protoc
-COPY --from=gcr.io/gapic-images/api-common-protos:0.1.0 /protos/ /protos/
+COPY --from=gcr.io/gapic-images/api-common-protos:latest /usr/local/bin/protoc /usr/local/bin/protoc
+COPY --from=gcr.io/gapic-images/api-common-protos:latest /protos/ /protos/
 
 # Add our code to the Docker image.
 ADD . /usr/src/gapic-generator-python/
