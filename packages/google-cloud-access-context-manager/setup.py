@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,13 +16,22 @@ import io
 import os
 
 import setuptools
-from setuptools import setup, find_packages
+
+# Package metadata.
 
 name = "google-cloud-access-context-manager"
-description = "Google Access Context Manager Protos"
+description = "Google Cloud Access Context Manager Protobufs"
 version = "0.1.0"
+# Should be one of:
+# 'Development Status :: 3 - Alpha'
+# 'Development Status :: 4 - Beta'
+# 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 4 - Beta"
-dependencies = ["google-api-core[grpc] >= 1.14.0, < 2.0.0dev"]
+dependencies = [
+    "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
+]
+
+# Setup boilerplate below this line.
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
@@ -38,15 +47,17 @@ packages = [
 
 # Determine which namespaces are needed.
 namespaces = ["google"]
-if "google.identity" in packages:
-    namespaces.append("google.identity")
-
+namespaces.append("google.identity")
 
 setuptools.setup(
     name=name,
     version=version,
+    description=description,
+    long_description=readme,
     author="Google LLC",
     author_email="googleapis-packages@google.com",
+    license="Apache 2.0",
+    url="https://github.com/googleapis/python-access-context-manager",
     classifiers=[
         release_status,
         "Intended Audience :: Developers",
@@ -57,16 +68,14 @@ setuptools.setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: Implementation :: CPython",
+        "Operating System :: OS Independent",
+        "Topic :: Internet",
     ],
-    description=description,
-    long_description=readme,
-    long_description_content_type="text/markdown",
+    platforms="Posix; MacOS X; Windows",
+    packages=packages,
+    namespace_packages=namespaces,
     install_requires=dependencies,
-    license="Apache-2.0",
-    packages=find_packages(),
     python_requires=">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*",
-    namespace_packages=packages,
-    url="https://github.com/googleapis/python-access-context-manager",
     include_package_data=True,
+    zip_safe=False,
 )
