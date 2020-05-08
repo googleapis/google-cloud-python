@@ -14,12 +14,10 @@
 
 """This script is used to synthesize generated parts of this library."""
 
-import re
-
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICGenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 versions = ["v1p1beta1", "v1"]
 
@@ -29,10 +27,10 @@ versions = ["v1p1beta1", "v1"]
 # ----------------------------------------------------------------------------
 for version in versions:
     library = gapic.py_library(
-        "speech",
-        version,
+        service="speech",
+        version=version,
+        bazel_target=f"//google/cloud/speech/{version}:speech-{version}-py",
         include_protos=True,
-        include_samples=True
     )
 
     # Don't move over __init__.py, as we modify it to make the generated client
