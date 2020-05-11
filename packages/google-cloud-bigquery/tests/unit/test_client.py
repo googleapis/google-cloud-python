@@ -2884,6 +2884,21 @@ class TestClient(unittest.TestCase):
             configuration, "google.cloud.bigquery.client.Client.extract_table",
         )
 
+    def test_create_job_extract_config_for_model(self):
+        configuration = {
+            "extract": {
+                "sourceModel": {
+                    "projectId": self.PROJECT,
+                    "datasetId": self.DS_ID,
+                    "modelId": "source_model",
+                },
+                "destinationUris": ["gs://test_bucket/dst_object*"],
+            }
+        }
+        self._create_job_helper(
+            configuration, "google.cloud.bigquery.client.Client.extract_table",
+        )
+
     def test_create_job_query_config(self):
         configuration = {
             "query": {"query": "query", "destinationTable": {"tableId": "table_id"}}
@@ -4216,6 +4231,140 @@ class TestClient(unittest.TestCase):
         self.assertEqual(job.job_id, JOB)
         self.assertEqual(job.source, source)
         self.assertEqual(list(job.destination_uris), [DESTINATION1, DESTINATION2])
+
+    def test_extract_table_for_source_type_model(self):
+        from google.cloud.bigquery.job import ExtractJob
+
+        JOB = "job_id"
+        SOURCE = "source_model"
+        DESTINATION = "gs://bucket_name/object_name"
+        RESOURCE = {
+            "jobReference": {"projectId": self.PROJECT, "jobId": JOB},
+            "configuration": {
+                "extract": {
+                    "sourceModel": {
+                        "projectId": self.PROJECT,
+                        "datasetId": self.DS_ID,
+                        "modelId": SOURCE,
+                    },
+                    "destinationUris": [DESTINATION],
+                }
+            },
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection(RESOURCE)
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        source = dataset.model(SOURCE)
+
+        job = client.extract_table(
+            source, DESTINATION, job_id=JOB, timeout=7.5, source_type="Model"
+        )
+
+        # Check that extract_table actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method="POST", path="/projects/PROJECT/jobs", data=RESOURCE, timeout=7.5,
+        )
+
+        # Check the job resource.
+        self.assertIsInstance(job, ExtractJob)
+        self.assertIs(job._client, client)
+        self.assertEqual(job.job_id, JOB)
+        self.assertEqual(job.source, source)
+        self.assertEqual(list(job.destination_uris), [DESTINATION])
+
+    def test_extract_table_for_source_type_model_w_string_model_id(self):
+        JOB = "job_id"
+        source_id = "source_model"
+        DESTINATION = "gs://bucket_name/object_name"
+        RESOURCE = {
+            "jobReference": {"projectId": self.PROJECT, "jobId": JOB},
+            "configuration": {
+                "extract": {
+                    "sourceModel": {
+                        "projectId": self.PROJECT,
+                        "datasetId": self.DS_ID,
+                        "modelId": source_id,
+                    },
+                    "destinationUris": [DESTINATION],
+                }
+            },
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection(RESOURCE)
+
+        client.extract_table(
+            # Test with string for model ID.
+            "{}.{}".format(self.DS_ID, source_id),
+            DESTINATION,
+            job_id=JOB,
+            timeout=7.5,
+            source_type="Model",
+        )
+
+        # Check that extract_table actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method="POST", path="/projects/PROJECT/jobs", data=RESOURCE, timeout=7.5,
+        )
+
+    def test_extract_table_for_source_type_model_w_model_object(self):
+        from google.cloud.bigquery.model import Model
+
+        JOB = "job_id"
+        DESTINATION = "gs://bucket_name/object_name"
+        model_id = "{}.{}.{}".format(self.PROJECT, self.DS_ID, self.MODEL_ID)
+        model = Model(model_id)
+        RESOURCE = {
+            "jobReference": {"projectId": self.PROJECT, "jobId": JOB},
+            "configuration": {
+                "extract": {
+                    "sourceModel": {
+                        "projectId": self.PROJECT,
+                        "datasetId": self.DS_ID,
+                        "modelId": self.MODEL_ID,
+                    },
+                    "destinationUris": [DESTINATION],
+                }
+            },
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection(RESOURCE)
+
+        client.extract_table(
+            # Test with Model class object.
+            model,
+            DESTINATION,
+            job_id=JOB,
+            timeout=7.5,
+            source_type="Model",
+        )
+
+        # Check that extract_table actually starts the job.
+        conn.api_request.assert_called_once_with(
+            method="POST", path="/projects/PROJECT/jobs", data=RESOURCE, timeout=7.5,
+        )
+
+    def test_extract_table_for_invalid_source_type_model(self):
+        JOB = "job_id"
+        SOURCE = "source_model"
+        DESTINATION = "gs://bucket_name/object_name"
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        source = dataset.model(SOURCE)
+
+        with self.assertRaises(ValueError) as exc:
+            client.extract_table(
+                source, DESTINATION, job_id=JOB, timeout=7.5, source_type="foo"
+            )
+
+        self.assertIn("Cannot pass", exc.exception.args[0])
 
     def test_query_defaults(self):
         from google.cloud.bigquery.job import QueryJob

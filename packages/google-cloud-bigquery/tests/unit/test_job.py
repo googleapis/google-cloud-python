@@ -3176,10 +3176,16 @@ class TestExtractJob(unittest.TestCase, _Base):
 
         self.assertEqual(job.destination_uris, config["destinationUris"])
 
-        table_ref = config["sourceTable"]
-        self.assertEqual(job.source.project, table_ref["projectId"])
-        self.assertEqual(job.source.dataset_id, table_ref["datasetId"])
-        self.assertEqual(job.source.table_id, table_ref["tableId"])
+        if "sourceTable" in config:
+            table_ref = config["sourceTable"]
+            self.assertEqual(job.source.project, table_ref["projectId"])
+            self.assertEqual(job.source.dataset_id, table_ref["datasetId"])
+            self.assertEqual(job.source.table_id, table_ref["tableId"])
+        else:
+            model_ref = config["sourceModel"]
+            self.assertEqual(job.source.project, model_ref["projectId"])
+            self.assertEqual(job.source.dataset_id, model_ref["datasetId"])
+            self.assertEqual(job.source.model_id, model_ref["modelId"])
 
         if "compression" in config:
             self.assertEqual(job.compression, config["compression"])
@@ -3271,6 +3277,28 @@ class TestExtractJob(unittest.TestCase, _Base):
                         "projectId": self.PROJECT,
                         "datasetId": self.DS_ID,
                         "tableId": self.SOURCE_TABLE,
+                    },
+                    "destinationUris": [self.DESTINATION_URI],
+                }
+            },
+        }
+        klass = self._get_target_class()
+        job = klass.from_api_repr(RESOURCE, client=client)
+        self.assertIs(job._client, client)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_from_api_repr_for_model(self):
+        self._setUpConstants()
+        client = _make_client(project=self.PROJECT)
+        RESOURCE = {
+            "id": self.JOB_ID,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "configuration": {
+                "extract": {
+                    "sourceModel": {
+                        "projectId": self.PROJECT,
+                        "datasetId": self.DS_ID,
+                        "modelId": "model_id",
                     },
                     "destinationUris": [self.DESTINATION_URI],
                 }

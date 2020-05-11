@@ -433,3 +433,15 @@ class ModelReference(object):
         return "ModelReference(project_id='{}', dataset_id='{}', model_id='{}')".format(
             self.project, self.dataset_id, self.model_id
         )
+
+
+def _model_arg_to_model_ref(value, default_project=None):
+    """Helper to convert a string or Model to ModelReference.
+
+    This function keeps ModelReference and other kinds of objects unchanged.
+    """
+    if isinstance(value, six.string_types):
+        return ModelReference.from_string(value, default_project=default_project)
+    if isinstance(value, Model):
+        return value.reference
+    return value

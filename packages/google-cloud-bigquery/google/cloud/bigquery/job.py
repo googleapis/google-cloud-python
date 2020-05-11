@@ -1990,8 +1990,11 @@ class ExtractJob(_AsyncJob):
     Args:
         job_id (str): the job's ID.
 
-        source (google.cloud.bigquery.table.TableReference):
-            Table into which data is to be loaded.
+        source (Union[ \
+            google.cloud.bigquery.table.TableReference, \
+            google.cloud.bigquery.model.ModelReference \
+        ]):
+            Table or Model from which data is to be loaded or extracted.
 
         destination_uris (List[str]):
             URIs describing where the extracted data will be written in Cloud
@@ -2067,14 +2070,20 @@ class ExtractJob(_AsyncJob):
     def to_api_repr(self):
         """Generate a resource for :meth:`_begin`."""
 
+        configuration = self._configuration.to_api_repr()
         source_ref = {
             "projectId": self.source.project,
             "datasetId": self.source.dataset_id,
-            "tableId": self.source.table_id,
         }
 
-        configuration = self._configuration.to_api_repr()
-        _helpers._set_sub_prop(configuration, ["extract", "sourceTable"], source_ref)
+        source = "sourceTable"
+        if isinstance(self.source, TableReference):
+            source_ref["tableId"] = self.source.table_id
+        else:
+            source_ref["modelId"] = self.source.model_id
+            source = "sourceModel"
+
+        _helpers._set_sub_prop(configuration, ["extract", source], source_ref)
         _helpers._set_sub_prop(
             configuration, ["extract", "destinationUris"], self.destination_uris
         )
@@ -2112,10 +2121,20 @@ class ExtractJob(_AsyncJob):
         source_config = _helpers._get_sub_prop(
             config_resource, ["extract", "sourceTable"]
         )
-        dataset = DatasetReference(
-            source_config["projectId"], source_config["datasetId"]
-        )
-        source = dataset.table(source_config["tableId"])
+        if source_config:
+            dataset = DatasetReference(
+                source_config["projectId"], source_config["datasetId"]
+            )
+            source = dataset.table(source_config["tableId"])
+        else:
+            source_config = _helpers._get_sub_prop(
+                config_resource, ["extract", "sourceModel"]
+            )
+            dataset = DatasetReference(
+                source_config["projectId"], source_config["datasetId"]
+            )
+            source = dataset.model(source_config["modelId"])
+
         destination_uris = _helpers._get_sub_prop(
             config_resource, ["extract", "destinationUris"]
         )
