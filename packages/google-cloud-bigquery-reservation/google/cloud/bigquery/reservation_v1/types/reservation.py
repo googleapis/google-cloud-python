@@ -65,14 +65,17 @@ class Reservation(proto.Message):
     Attributes:
         name (str):
             The resource name of the reservation, e.g.,
-            "projects/*/locations/*/reservations/team1-prod".
+            ``projects/*/locations/*/reservations/team1-prod``.
         slot_capacity (int):
             Minimum slots available to this reservation. A slot is a
             unit of computational power in BigQuery, and serves as the
-            unit of parallelism. Queries using this reservation might
-            use more slots during runtime if ignore_idle_slots is set to
-            false. If the new reservation's slot capacity exceed the
-            parent's slot capacity or if total slot capacity of the new
+            unit of parallelism.
+
+            Queries using this reservation might use more slots during
+            runtime if ignore_idle_slots is set to false.
+
+            If the new reservation's slot capacity exceed the parent's
+            slot capacity or if total slot capacity of the new
             reservation and its siblings exceeds the parent's slot
             capacity, the request will fail with
             ``google.rpc.Code.RESOURCE_EXHAUSTED``.
@@ -93,18 +96,19 @@ class CapacityCommitment(proto.Message):
     r"""Capacity commitment is a way to purchase compute capacity for
     BigQuery jobs (in the form of slots) with some committed period
     of usage. Annual commitments renew by default. Commitments can
-    be removed after their commitment end time passes. In order to
-    remove annual commitment, its plan needs to be changed to
-    monthly or flex first.
+    be removed after their commitment end time passes.
+
+    In order to remove annual commitment, its plan needs to be
+    changed to monthly or flex first.
 
     A capacity commitment resource exists as a child resource of the
     admin project.
 
     Attributes:
         name (str):
-            Output only. The resource name of the
-            capacity commitment, e.g.,
-            projects/myproject/locations/US/capacityCommitments/123
+            Output only. The resource name of the capacity commitment,
+            e.g.,
+            ``projects/myproject/locations/US/capacityCommitments/123``
         slot_count (int):
             Number of slots in this commitment.
         plan (~.gcbr_reservation.CapacityCommitment.CommitmentPlan):
@@ -122,7 +126,7 @@ class CapacityCommitment(proto.Message):
             The plan this capacity commitment is converted to after
             commitment_end_time passes. Once the plan is changed,
             committed period is extended according to commitment plan.
-            Only applicable for ANNUAL commitments.
+            Only applicable for ANNUAL and TRIAL commitments.
     """
 
     class CommitmentPlan(proto.Enum):
@@ -132,6 +136,7 @@ class CapacityCommitment(proto.Message):
         """
         COMMITMENT_PLAN_UNSPECIFIED = 0
         FLEX = 3
+        TRIAL = 5
         MONTHLY = 2
         ANNUAL = 4
 
@@ -162,13 +167,13 @@ class CreateReservationRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Project, location. E.g.,
-            projects/myproject/locations/US
+            ``projects/myproject/locations/US``
         reservation_id (str):
             The reservation ID. This field must only
             contain lower case alphanumeric characters or
             dash. Max length is 64 characters.
         reservation (~.gcbr_reservation.Reservation):
-            Content of the new reservation to create.
+            Definition of the new reservation to create.
     """
 
     parent = proto.Field(proto.STRING, number=1)
@@ -186,7 +191,8 @@ class ListReservationsRequest(proto.Message):
             project and location, e.g.:
             "projects/myproject/locations/US".
         page_size (int):
-            The maximum number of items to return.
+            The maximum number of items to return per
+            page.
         page_token (str):
             The next_page_token value returned from a previous List
             request, if any.
@@ -224,9 +230,9 @@ class GetReservationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Resource name of the reservation to
-            retrieve. E.g.,
-            projects/myproject/locations/US/reservations/team1-prod
+            Required. Resource name of the reservation to retrieve.
+            E.g.,
+            ``projects/myproject/locations/US/reservations/team1-prod``
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -238,9 +244,9 @@ class DeleteReservationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Resource name of the reservation to
-            retrieve. E.g.,
-            projects/myproject/locations/US/reservations/team1-prod
+            Required. Resource name of the reservation to retrieve.
+            E.g.,
+            ``projects/myproject/locations/US/reservations/team1-prod``
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -436,11 +442,11 @@ class Assignment(proto.Message):
     Attributes:
         name (str):
             Output only. Name of the resource. E.g.:
-            projects/myproject/locations/US/reservations/team1-prod/assignments/123.
+            ``projects/myproject/locations/US/reservations/team1-prod/assignments/123``.
         assignee (str):
-            The resource which will use the reservation.
-            E.g. projects/myproject, folders/123,
-            organizations/456.
+            The resource which will use the reservation. E.g.
+            ``projects/myproject``, ``folders/123``, or
+            ``organizations/456``.
         job_type (~.gcbr_reservation.Assignment.JobType):
             Which type of jobs will use the reservation.
         state (~.gcbr_reservation.Assignment.State):
@@ -478,9 +484,8 @@ class CreateAssignmentRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource name of the
-            assignment E.g.:
-            projects/myproject/locations/US/reservations/team1-prod
+            Required. The parent resource name of the assignment E.g.
+            ``projects/myproject/locations/US/reservations/team1-prod``
         assignment (~.gcbr_reservation.Assignment):
             Assignment resource to create.
     """
@@ -496,11 +501,15 @@ class ListAssignmentsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent resource name e.g.:
-            projects/myproject/locations/US/reservations/team1-prod
+
+            ``projects/myproject/locations/US/reservations/team1-prod``
+
             Or:
-            projects/myproject/locations/US/reservations/-
+
+            ``projects/myproject/locations/US/reservations/-``
         page_size (int):
-            The maximum number of items to return.
+            The maximum number of items to return per
+            page.
         page_token (str):
             The next_page_token value returned from a previous List
             request, if any.
@@ -540,8 +549,8 @@ class DeleteAssignmentRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the resource, e.g.:
-            projects/myproject/locations/US/reservations/team1-prod/assignments/123
+            Required. Name of the resource, e.g.
+            ``projects/myproject/locations/US/reservations/team1-prod/assignments/123``
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -559,12 +568,16 @@ class SearchAssignmentsRequest(proto.Message):
             project(containing project and location), e.g.:
             "projects/myproject/locations/US".
         query (str):
-            Please specify resource name as assignee in
-            the query. e.g., "assignee=projects/myproject"
-            "assignee=folders/123"
-                  "assignee=organizations/456".
+            Please specify resource name as assignee in the query.
+
+            Examples:
+
+            -  ``assignee=projects/myproject``
+            -  ``assignee=folders/123``
+            -  ``assignee=organizations/456``
         page_size (int):
-            The maximum number of items to return.
+            The maximum number of items to return per
+            page.
         page_token (str):
             The next_page_token value returned from a previous List
             request, if any.
@@ -600,20 +613,21 @@ class SearchAssignmentsResponse(proto.Message):
 class MoveAssignmentRequest(proto.Message):
     r"""The request for
     [ReservationService.MoveAssignment][google.cloud.bigquery.reservation.v1.ReservationService.MoveAssignment].
-    Note: "bigquery.reservationAssignments.create" permission is
-    required on the destination_id. Note:
-    "bigquery.reservationAssignments.create" and
-    "bigquery.reservationAssignments.delete" permission is required on
+
+    **Note**: "bigquery.reservationAssignments.create" permission is
+    required on the destination_id.
+
+    **Note**: "bigquery.reservationAssignments.create" and
+    "bigquery.reservationAssignments.delete" permission are required on
     the related assignee.
 
     Attributes:
         name (str):
-            Required. The resource name of the
-            assignment, e.g.:
-            projects/myproject/locations/US/reservations/team1-prod/assignments/123
+            Required. The resource name of the assignment, e.g.
+            ``projects/myproject/locations/US/reservations/team1-prod/assignments/123``
         destination_id (str):
             The new reservation ID, e.g.:
-            projects/myotherproject/locations/US/reservations/team2-prod
+            ``projects/myotherproject/locations/US/reservations/team2-prod``
     """
 
     name = proto.Field(proto.STRING, number=1)

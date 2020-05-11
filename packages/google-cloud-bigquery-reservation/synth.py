@@ -46,6 +46,9 @@ s.move(
 # Remove 2.7 and 3.5 tests from noxfile.py
 s.replace("noxfile.py", """\["2\.7", """, "[")
 s.replace("noxfile.py", """"3.5", """, "")
+s.replace(
+    "google/cloud/bigquery/reservation_v1/services/reservation_service/client.py", 
+    "assignee=organizations/456``", "assignee=organizations/456``\n")
 
 # Expand flake errors permitted to accomodate the Microgenerator
 # TODO: remove extra error codes once issues below are resolved
