@@ -212,7 +212,7 @@ def fetch_id_token(request, audience):
         )
         credentials.refresh(request)
         return credentials.token
-    except (ImportError, exceptions.TransportError):
+    except (ImportError, exceptions.TransportError, exceptions.RefreshError):
         pass
 
     # 2. Try to use service account credentials to get ID token.
