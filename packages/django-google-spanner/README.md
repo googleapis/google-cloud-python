@@ -85,13 +85,13 @@ DATABASES = {
 ### Transaction management isn't supported
 
 django-spanner always works in Django's default transaction behavior,
-autocommit mode. There's no way to turn this off and control transactions
-manually such as with `django.db.transaction.atomic()`.
+`autocommit` mode. Transactions cannot be controlled manually with
+calls like `django.db.transaction.atomic()`.
 
 ### `AutoField` generates random IDs
 
-Spanner doesn't have a way to auto-generate primary key values. Instead,
-django-spanner monkeypatches `AutoField` to generate a random UUID4. It
+Spanner doesn't have support for auto-generating primary key values. Therefore,
+django-spanner monkey-patches `AutoField` to generate a random UUID4. It
 generates a default using `Field`'s `default` option which means `AutoField`s
 will have a value when a model instance is created. For example:
 
@@ -103,15 +103,16 @@ will have a value when a model instance is created. For example:
 
 To avoid [hotspotting](https://cloud.google.com/spanner/docs/schema-design#uuid_primary_key),
 these IDs are not monotonically increasing. This means that sorting models by
-id isn't guaranteed to return them in the order in which they were created.
+ID isn't guaranteed to return them in the order in which they were created.
 
 ### `ForeignKey` constraints aren't created
 
-django-spanner [doesn't create foreign key constraints](https://github.com/googleapis/python-spanner-django/issues/313).
+Spanner doesn't support `ON DELETE CASCADE` when creating foreign-key constraints so
+django-spanner [doesn't support foreign key constraints](https://github.com/googleapis/python-spanner-django/issues/313).
 
 ### Check constraints aren't supported
 
-Spanner doesn't support CHECK constraints so one isn't created for
+Spanner doesn't support `CHECK` constraints so one isn't created for
 [`PositiveIntegerField`](https://docs.djangoproject.com/en/stable/ref/models/fields/#positiveintegerfield)
 and [`CheckConstraint`](https://docs.djangoproject.com/en/stable/ref/models/constraints/#checkconstraint)
 can't be used.
@@ -123,7 +124,7 @@ decimal values without the possibility of data loss.
 
 ### `Variance` and `StdDev` database functions aren't supported
 
-Spanner doesn't have these functions.
+Spanner doesn't support these functions.
 
 ### `Meta.order_with_respect_to` model option isn't supported
 
