@@ -3,16 +3,16 @@
     {
       "git": {
         "name": ".",
-        "remote": "sso://devrel/cloud/libraries/python/python-bigquery-reservation",
-        "sha": "9be3850bcb33c279d49fb0b86e28b5be8659ace9"
+        "remote": "https://github.com/googleapis/python-bigquery-reservation.git",
+        "sha": "46176500f8911a3559db8f757502aa05018ea7f7"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "aed11c01e52921613b9ee469c2d85f5f33175fb7",
-        "internalRef": "310660461"
+        "sha": "edd3b80fb770548d6ad780105f1782de6ff73ea0",
+        "internalRef": "311053644"
       }
     },
     {
