@@ -153,9 +153,7 @@ def get_expiration_seconds_v4(expiration):
 
     if seconds > SEVEN_DAYS:
         raise ValueError(
-            "Max allowed expiration interval is seven days (%d seconds)".format(
-                SEVEN_DAYS
-            )
+            "Max allowed expiration interval is seven days {}".format(SEVEN_DAYS)
         )
 
     return seconds
