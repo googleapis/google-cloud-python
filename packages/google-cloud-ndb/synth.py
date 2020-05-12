@@ -21,6 +21,10 @@ sudo apt-get -y install dictionaries-common aspell aspell-en \\
 
 s.replace(".kokoro/build.sh", """(export PROJECT_ID=.*)""", """\g<1>
 
+# Configure Local Redis to be used
+export REDIS_CACHE_URL=redis://localhost
+redis-server &
+
 # Some system tests require indexes. Use gcloud to create them.
 gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$PROJECT_ID
 gcloud --quiet --verbosity=debug datastore indexes create tests/system/index.yaml
