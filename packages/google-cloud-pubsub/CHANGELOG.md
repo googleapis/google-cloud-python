@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## [1.5.0](https://www.github.com/googleapis/python-pubsub/compare/v1.4.3...v1.5.0) (2020-05-04)
+
+
+### Features
+
+* add methods for listing snapshots (via synth) ([#66](https://www.github.com/googleapis/python-pubsub/issues/66)) ([4ce898e](https://www.github.com/googleapis/python-pubsub/commit/4ce898e80eeb16b18d1ee29c678ade149804d186))
+* send client id with StreamingPullRequest ([#58](https://www.github.com/googleapis/python-pubsub/issues/58)) ([9f8acfa](https://www.github.com/googleapis/python-pubsub/commit/9f8acfacfbe93224f59439bb51a17fc28b06c22a)), closes [#62](https://www.github.com/googleapis/python-pubsub/issues/62)
+
 ## [1.4.3](https://www.github.com/googleapis/python-pubsub/compare/v1.4.2...v1.4.3) (2020-04-16)
 
 
