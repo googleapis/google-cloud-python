@@ -1,7 +1,7 @@
 Python Client for Google Cloud Memorystore for Redis API
 ========================================================
 
-|alpha| |pypi| |versions| 
+|ga| |pypi| |versions| 
 
 `Google Cloud Memorystore for Redis API`_: The Google Cloud Memorystore for
 Redis API is used for creating and managing Redis instances on the Google
@@ -10,8 +10,8 @@ Cloud Platform.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#alpha-support
+.. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-redis.svg
    :target: https://pypi.org/project/google-cloud-redis/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-redis.svg
