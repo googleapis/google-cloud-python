@@ -260,12 +260,12 @@ class GroupServiceClient(object):
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]
+                    projects/[PROJECT_ID_OR_NUMBER]
             children_of_group (str): A group name. The format is:
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+                    projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
 
                 Returns groups whose ``parent_name`` field contains the group name. If
                 no groups have this parent, the results are empty.
@@ -273,7 +273,7 @@ class GroupServiceClient(object):
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+                    projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
 
                 Returns groups that are ancestors of the specified group. The groups are
                 returned in order, starting with the immediate parent and ending with
@@ -283,7 +283,7 @@ class GroupServiceClient(object):
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+                    projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
 
                 Returns the descendants of the specified group. This is a superset of
                 the results returned by the ``children_of_group`` filter, and includes
@@ -396,7 +396,7 @@ class GroupServiceClient(object):
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+                    projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -477,7 +477,7 @@ class GroupServiceClient(object):
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]
+                    projects/[PROJECT_ID_OR_NUMBER]
             group (Union[dict, ~google.cloud.monitoring_v3.types.Group]): Required. A group definition. It is an error to define the ``name``
                 field because the system assigns the name.
 
@@ -546,8 +546,8 @@ class GroupServiceClient(object):
         metadata=None,
     ):
         """
-        Updates an existing group. You can change any group attributes except
-        ``name``.
+        Updates an existing group. You can change any group attributes
+        except ``name``.
 
         Example:
             >>> from google.cloud import monitoring_v3
@@ -560,9 +560,9 @@ class GroupServiceClient(object):
             >>> response = client.update_group(group)
 
         Args:
-            group (Union[dict, ~google.cloud.monitoring_v3.types.Group]): Required. The new definition of the group. All fields of the existing
-                group, excepting ``name``, are replaced with the corresponding fields of
-                this group.
+            group (Union[dict, ~google.cloud.monitoring_v3.types.Group]): Required. The new definition of the group. All fields of the
+                existing group, excepting ``name``, are replaced with the corresponding
+                fields of this group.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.Group`
@@ -645,7 +645,7 @@ class GroupServiceClient(object):
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+                    projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
             recursive (bool): If this field is true, then the request means to delete a group with all
                 its descendants. Otherwise, the request means to delete a group only when
                 it has no descendants. The default value is false.
@@ -736,7 +736,7 @@ class GroupServiceClient(object):
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+                    projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -751,7 +751,7 @@ class GroupServiceClient(object):
 
                 ::
 
-                     `resource.type = "gce_instance"`
+                    `resource.type = "gce_instance"`
             interval (Union[dict, ~google.cloud.monitoring_v3.types.TimeInterval]): An optional time interval for which results should be returned. Only
                 members that were part of the group during the specified interval are
                 included in the response.  If no interval is provided then the group

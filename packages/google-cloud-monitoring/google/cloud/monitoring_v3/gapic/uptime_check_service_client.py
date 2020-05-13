@@ -269,12 +269,12 @@ class UptimeCheckServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Required. The project whose Uptime check configurations are listed. The
-                format is:
+            parent (str): Required. The project whose Uptime check configurations are listed.
+                The format is:
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]
+                    projects/[PROJECT_ID_OR_NUMBER]
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -371,7 +371,7 @@ class UptimeCheckServiceClient(object):
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
+                    projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -447,12 +447,12 @@ class UptimeCheckServiceClient(object):
             >>> response = client.create_uptime_check_config(parent, uptime_check_config)
 
         Args:
-            parent (str): Required. The project in which to create the Uptime check. The format
-                is:
+            parent (str): Required. The project in which to create the Uptime check. The
+                format is:
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]
+                    projects/[PROJECT_ID_OR_NUMBER]
             uptime_check_config (Union[dict, ~google.cloud.monitoring_v3.types.UptimeCheckConfig]): Required. The new Uptime check configuration.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -519,9 +519,9 @@ class UptimeCheckServiceClient(object):
         metadata=None,
     ):
         """
-        Updates an Uptime check configuration. You can either replace the entire
-        configuration with a new one or replace only certain fields in the
-        current configuration by specifying the fields to be updated via
+        Updates an Uptime check configuration. You can either replace the
+        entire configuration with a new one or replace only certain fields in
+        the current configuration by specifying the fields to be updated via
         ``updateMask``. Returns the updated configuration.
 
         Example:
@@ -535,8 +535,8 @@ class UptimeCheckServiceClient(object):
             >>> response = client.update_uptime_check_config(uptime_check_config)
 
         Args:
-            uptime_check_config (Union[dict, ~google.cloud.monitoring_v3.types.UptimeCheckConfig]): Required. If an ``updateMask`` has been specified, this field gives the
-                values for the set of fields mentioned in the ``updateMask``. If an
+            uptime_check_config (Union[dict, ~google.cloud.monitoring_v3.types.UptimeCheckConfig]): Required. If an ``updateMask`` has been specified, this field gives
+                the values for the set of fields mentioned in the ``updateMask``. If an
                 ``updateMask`` has not been given, this Uptime check configuration
                 replaces the current configuration. If a field is mentioned in
                 ``updateMask`` but the corresonding field is omitted in this partial
@@ -635,7 +635,7 @@ class UptimeCheckServiceClient(object):
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
+                    projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.

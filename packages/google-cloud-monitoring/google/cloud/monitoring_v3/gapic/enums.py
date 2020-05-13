@@ -21,9 +21,9 @@ import enum
 
 class CalendarPeriod(enum.IntEnum):
     """
-    A ``CalendarPeriod`` represents the abstract concept of a time period
-    that has a canonical start. Grammatically, "the start of the current
-    ``CalendarPeriod``." All calendar times begin at midnight UTC.
+    A ``CalendarPeriod`` represents the abstract concept of a time
+    period that has a canonical start. Grammatically, "the start of the
+    current ``CalendarPeriod``." All calendar times begin at midnight UTC.
 
     Attributes:
       CALENDAR_PERIOD_UNSPECIFIED (int): Undefined period, raises an error.
@@ -52,8 +52,8 @@ class CalendarPeriod(enum.IntEnum):
 
 class ComparisonType(enum.IntEnum):
     """
-    Specifies an ordering relationship on two arguments, called ``left`` and
-    ``right``.
+    Specifies an ordering relationship on two arguments, called ``left``
+    and ``right``.
 
     Attributes:
       COMPARISON_UNSPECIFIED (int): No ordering relationship is specified.
@@ -122,8 +122,8 @@ class LaunchStage(enum.IntEnum):
       limited production use cases.
       GA (int): GA features are open to all developers and are considered stable and
       fully qualified for production use.
-      DEPRECATED (int): Deprecated features are scheduled to be shut down and removed. For more
-      information, see the “Deprecation Policy” section of our `Terms of
+      DEPRECATED (int): Deprecated features are scheduled to be shut down and removed. For
+      more information, see the “Deprecation Policy” section of our `Terms of
       Service <https://cloud.google.com/terms/>`__ and the `Google Cloud
       Platform Subject to the Deprecation
       Policy <https://cloud.google.com/terms/deprecation>`__ documentation.
@@ -139,8 +139,8 @@ class LaunchStage(enum.IntEnum):
 
 class NullValue(enum.IntEnum):
     """
-    ``NullValue`` is a singleton enumeration to represent the null value for
-    the ``Value`` type union.
+    ``NullValue`` is a singleton enumeration to represent the null value
+    for the ``Value`` type union.
 
     The JSON representation for ``NullValue`` is JSON ``null``.
 
@@ -160,13 +160,13 @@ class ServiceTier(enum.IntEnum):
     Attributes:
       SERVICE_TIER_UNSPECIFIED (int): An invalid sentinel value, used to indicate that a tier has not
       been provided explicitly.
-      SERVICE_TIER_BASIC (int): The Stackdriver Basic tier, a free tier of service that provides basic
-      features, a moderate allotment of logs, and access to built-in metrics.
-      A number of features are not available in this tier. For more details,
-      see `the service tiers
+      SERVICE_TIER_BASIC (int): The Stackdriver Basic tier, a free tier of service that provides
+      basic features, a moderate allotment of logs, and access to built-in
+      metrics. A number of features are not available in this tier. For more
+      details, see `the service tiers
       documentation <https://cloud.google.com/monitoring/workspaces/tiers>`__.
-      SERVICE_TIER_PREMIUM (int): The Stackdriver Premium tier, a higher, more expensive tier of service
-      that provides access to all Stackdriver features, lets you use
+      SERVICE_TIER_PREMIUM (int): The Stackdriver Premium tier, a higher, more expensive tier of
+      service that provides access to all Stackdriver features, lets you use
       Stackdriver with AWS accounts, and has a larger allotments for logs and
       metrics. For more details, see `the service tiers
       documentation <https://cloud.google.com/monitoring/workspaces/tiers>`__.
@@ -202,8 +202,8 @@ class UptimeCheckRegion(enum.IntEnum):
 class Aggregation(object):
     class Aligner(enum.IntEnum):
         """
-        The ``Aligner`` specifies the operation that will be applied to the data
-        points in each alignment period in a time series. Except for
+        The ``Aligner`` specifies the operation that will be applied to the
+        data points in each alignment period in a time series. Except for
         ``ALIGN_NONE``, which specifies that no operation be applied, each
         alignment operation replaces the set of data values in each alignment
         period with a single value: the result of applying the operation to the
@@ -216,9 +216,9 @@ class Aggregation(object):
         ``value_type`` in the aligned result is ``INT64``.
 
         Attributes:
-          ALIGN_NONE (int): No alignment. Raw data is returned. Not valid if cross-series reduction
-          is requested. The ``value_type`` of the result is the same as the
-          ``value_type`` of the input.
+          ALIGN_NONE (int): No alignment. Raw data is returned. Not valid if cross-series
+          reduction is requested. The ``value_type`` of the result is the same as
+          the ``value_type`` of the input.
           ALIGN_DELTA (int): Align and convert to ``DELTA``. The output is ``delta = y1 - y0``.
 
           This alignment is valid for ``CUMULATIVE`` and ``DELTA`` metrics. If the
@@ -247,14 +247,14 @@ class Aggregation(object):
           alignment period to the boundary at the end of the alignment period.
           This aligner is valid for ``GAUGE`` metrics. The ``value_type`` of the
           aligned result is the same as the ``value_type`` of the input.
-          ALIGN_MIN (int): Align the time series by returning the minimum value in each alignment
-          period. This aligner is valid for ``GAUGE`` and ``DELTA`` metrics with
-          numeric values. The ``value_type`` of the aligned result is the same as
-          the ``value_type`` of the input.
-          ALIGN_MAX (int): Align the time series by returning the maximum value in each alignment
-          period. This aligner is valid for ``GAUGE`` and ``DELTA`` metrics with
-          numeric values. The ``value_type`` of the aligned result is the same as
-          the ``value_type`` of the input.
+          ALIGN_MIN (int): Align the time series by returning the minimum value in each
+          alignment period. This aligner is valid for ``GAUGE`` and ``DELTA``
+          metrics with numeric values. The ``value_type`` of the aligned result is
+          the same as the ``value_type`` of the input.
+          ALIGN_MAX (int): Align the time series by returning the maximum value in each
+          alignment period. This aligner is valid for ``GAUGE`` and ``DELTA``
+          metrics with numeric values. The ``value_type`` of the aligned result is
+          the same as the ``value_type`` of the input.
           ALIGN_MEAN (int): Align the time series by returning the mean value in each alignment
           period. This aligner is valid for ``GAUGE`` and ``DELTA`` metrics with
           numeric values. The ``value_type`` of the aligned result is ``DOUBLE``.
@@ -266,20 +266,21 @@ class Aggregation(object):
           alignment period. This aligner is valid for ``GAUGE`` and ``DELTA``
           metrics with numeric and distribution values. The ``value_type`` of the
           aligned result is the same as the ``value_type`` of the input.
-          ALIGN_STDDEV (int): Align the time series by returning the standard deviation of the values
-          in each alignment period. This aligner is valid for ``GAUGE`` and
+          ALIGN_STDDEV (int): Align the time series by returning the standard deviation of the
+          values in each alignment period. This aligner is valid for ``GAUGE`` and
           ``DELTA`` metrics with numeric values. The ``value_type`` of the output
           is ``DOUBLE``.
-          ALIGN_COUNT_TRUE (int): Align the time series by returning the number of ``True`` values in each
-          alignment period. This aligner is valid for ``GAUGE`` metrics with
+          ALIGN_COUNT_TRUE (int): Align the time series by returning the number of ``True`` values in
+          each alignment period. This aligner is valid for ``GAUGE`` metrics with
           Boolean values. The ``value_type`` of the output is ``INT64``.
           ALIGN_COUNT_FALSE (int): Align the time series by returning the number of ``False`` values in
           each alignment period. This aligner is valid for ``GAUGE`` metrics with
           Boolean values. The ``value_type`` of the output is ``INT64``.
-          ALIGN_FRACTION_TRUE (int): Align the time series by returning the ratio of the number of ``True``
-          values to the total number of values in each alignment period. This
-          aligner is valid for ``GAUGE`` metrics with Boolean values. The output
-          value is in the range [0.0, 1.0] and has ``value_type`` ``DOUBLE``.
+          ALIGN_FRACTION_TRUE (int): Align the time series by returning the ratio of the number of
+          ``True`` values to the total number of values in each alignment period.
+          This aligner is valid for ``GAUGE`` metrics with Boolean values. The
+          output value is in the range [0.0, 1.0] and has ``value_type``
+          ``DOUBLE``.
           ALIGN_PERCENTILE_99 (int): Align the time series by using `percentile
           aggregation <https://en.wikipedia.org/wiki/Percentile>`__. The resulting
           data point in each alignment period is the 99th percentile of all data
@@ -353,10 +354,10 @@ class Aggregation(object):
         Attributes:
           REDUCE_NONE (int): No cross-time series reduction. The output of the ``Aligner`` is
           returned.
-          REDUCE_MEAN (int): Reduce by computing the mean value across time series for each alignment
-          period. This reducer is valid for ``DELTA`` and ``GAUGE`` metrics with
-          numeric or distribution values. The ``value_type`` of the output is
-          ``DOUBLE``.
+          REDUCE_MEAN (int): Reduce by computing the mean value across time series for each
+          alignment period. This reducer is valid for ``DELTA`` and ``GAUGE``
+          metrics with numeric or distribution values. The ``value_type`` of the
+          output is ``DOUBLE``.
           REDUCE_MIN (int): Reduce by computing the minimum value across time series for each
           alignment period. This reducer is valid for ``DELTA`` and ``GAUGE``
           metrics with numeric values. The ``value_type`` of the output is the
@@ -369,8 +370,8 @@ class Aggregation(object):
           period. This reducer is valid for ``DELTA`` and ``GAUGE`` metrics with
           numeric and distribution values. The ``value_type`` of the output is the
           same as the ``value_type`` of the input.
-          REDUCE_STDDEV (int): Reduce by computing the standard deviation across time series for each
-          alignment period. This reducer is valid for ``DELTA`` and ``GAUGE``
+          REDUCE_STDDEV (int): Reduce by computing the standard deviation across time series for
+          each alignment period. This reducer is valid for ``DELTA`` and ``GAUGE``
           metrics with numeric or distribution values. The ``value_type`` of the
           output is ``DOUBLE``.
           REDUCE_COUNT (int): Reduce by computing the number of data points across time series for
@@ -381,8 +382,8 @@ class Aggregation(object):
           time series for each alignment period. This reducer is valid for
           ``DELTA`` and ``GAUGE`` metrics of Boolean ``value_type``. The
           ``value_type`` of the output is ``INT64``.
-          REDUCE_COUNT_FALSE (int): Reduce by computing the number of ``False``-valued data points across
-          time series for each alignment period. This reducer is valid for
+          REDUCE_COUNT_FALSE (int): Reduce by computing the number of ``False``-valued data points
+          across time series for each alignment period. This reducer is valid for
           ``DELTA`` and ``GAUGE`` metrics of Boolean ``value_type``. The
           ``value_type`` of the output is ``INT64``.
           REDUCE_FRACTION_TRUE (int): Reduce by computing the ratio of the number of ``True``-valued data
@@ -435,9 +436,9 @@ class AlertPolicy(object):
 
         Attributes:
           COMBINE_UNSPECIFIED (int): An unspecified combiner.
-          AND (int): Combine conditions using the logical ``AND`` operator. An incident is
-          created only if all the conditions are met simultaneously. This combiner
-          is satisfied if all conditions are met, even if they are met on
+          AND (int): Combine conditions using the logical ``AND`` operator. An incident
+          is created only if all the conditions are met simultaneously. This
+          combiner is satisfied if all conditions are met, even if they are met on
           completely different resources.
           OR (int): Combine conditions using the logical ``OR`` operator. An incident is
           created if any of the listed conditions is met.
@@ -459,14 +460,14 @@ class InternalChecker(object):
 
         Attributes:
           UNSPECIFIED (int): An internal checker should never be in the unspecified state.
-          CREATING (int): The checker is being created, provisioned, and configured. A checker in
-          this state can be returned by ``ListInternalCheckers`` or
+          CREATING (int): The checker is being created, provisioned, and configured. A checker
+          in this state can be returned by ``ListInternalCheckers`` or
           ``GetInternalChecker``, as well as by examining the `long running
           Operation <https://cloud.google.com/apis/design/design_patterns#long_running_operations>`__
           that created it.
-          RUNNING (int): The checker is running and available for use. A checker in this state
-          can be returned by ``ListInternalCheckers`` or ``GetInternalChecker`` as
-          well as by examining the `long running
+          RUNNING (int): The checker is running and available for use. A checker in this
+          state can be returned by ``ListInternalCheckers`` or
+          ``GetInternalChecker`` as well as by examining the `long running
           Operation <https://cloud.google.com/apis/design/design_patterns#long_running_operations>`__
           that created it. If a checker is being torn down, it is neither visible
           nor usable, so there is no "deleting" or "down" state.
@@ -536,8 +537,8 @@ class MetricDescriptor(object):
 
         Attributes:
           VALUE_TYPE_UNSPECIFIED (int): Do not use this default value.
-          BOOL (int): The value is a boolean. This value type can be used only if the metric
-          kind is ``GAUGE``.
+          BOOL (int): The value is a boolean. This value type can be used only if the
+          metric kind is ``GAUGE``.
           INT64 (int): The value is a signed 64-bit integer.
           DOUBLE (int): The value is a double precision floating point number.
           STRING (int): The value is a text string. This value type can be used only if the
@@ -558,8 +559,8 @@ class MetricDescriptor(object):
 class NotificationChannel(object):
     class VerificationStatus(enum.IntEnum):
         """
-        Indicates whether the channel has been verified or not. It is illegal to
-        specify this field in a ``CreateNotificationChannel`` or an
+        Indicates whether the channel has been verified or not. It is
+        illegal to specify this field in a ``CreateNotificationChannel`` or an
         ``UpdateNotificationChannel`` operation.
 
         Attributes:
@@ -590,8 +591,8 @@ class ServiceLevelObjective(object):
 
         Attributes:
           VIEW_UNSPECIFIED (int): Same as FULL.
-          FULL (int): Return the embedded ``ServiceLevelIndicator`` in the form in which it
-          was defined. If it was defined using a ``BasicSli``, return that
+          FULL (int): Return the embedded ``ServiceLevelIndicator`` in the form in which
+          it was defined. If it was defined using a ``BasicSli``, return that
           ``BasicSli``.
           EXPLICIT (int): For ``ServiceLevelIndicator``\ s using ``BasicSli`` articulation,
           instead return the ``ServiceLevelIndicator`` with its mode of
@@ -648,16 +649,17 @@ class UptimeCheckConfig(object):
               CONTENT_MATCHER_OPTION_UNSPECIFIED (int): No content matcher type specified (maintained for backward
               compatibility, but deprecated for future use). Treated as
               ``CONTAINS_STRING``.
-              CONTAINS_STRING (int): Selects substring matching. The match succeeds if the output contains
-              the ``content`` string. This is the default value for checks without a
-              ``matcher`` option, or where the value of ``matcher`` is
+              CONTAINS_STRING (int): Selects substring matching. The match succeeds if the output
+              contains the ``content`` string. This is the default value for checks
+              without a ``matcher`` option, or where the value of ``matcher`` is
               ``CONTENT_MATCHER_OPTION_UNSPECIFIED``.
-              NOT_CONTAINS_STRING (int): Selects negation of substring matching. The match succeeds if the output
-              does *NOT* contain the ``content`` string.
-              MATCHES_REGEX (int): Selects regular-expression matching. The match succeeds of the output
-              matches the regular expression specified in the ``content`` string.
-              NOT_MATCHES_REGEX (int): Selects negation of regular-expression matching. The match succeeds if
-              the output does *NOT* match the regular expression specified in the
+              NOT_CONTAINS_STRING (int): Selects negation of substring matching. The match succeeds if the
+              output does *NOT* contain the ``content`` string.
+              MATCHES_REGEX (int): Selects regular-expression matching. The match succeeds of the
+              output matches the regular expression specified in the ``content``
+              string.
+              NOT_MATCHES_REGEX (int): Selects negation of regular-expression matching. The match succeeds
+              if the output does *NOT* match the regular expression specified in the
               ``content`` string.
             """
 

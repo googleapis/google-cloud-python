@@ -227,8 +227,9 @@ class NotificationChannelServiceGrpcTransport(object):
     def send_notification_channel_verification_code(self):
         """Return the gRPC stub for :meth:`NotificationChannelServiceClient.send_notification_channel_verification_code`.
 
-        Causes a verification code to be delivered to the channel. The code can
-        then be supplied in ``VerifyNotificationChannel`` to verify the channel.
+        Causes a verification code to be delivered to the channel. The code
+        can then be supplied in ``VerifyNotificationChannel`` to verify the
+        channel.
 
         Returns:
             Callable: A callable which accepts the appropriate

@@ -70,11 +70,28 @@ s.replace(
     "",
 )
 
+
 s.replace(
-    "google/cloud/monitoring_v3/proto/metric_service_pb2.py",
-    """(\s+)resource\.type
-          = starts_with\("gce_"\) AND resource\.label:id""",
-    """\n              resource.type = starts_with("gce_") AND resource.label:id"""
+    "google/cloud/**/service_pb2.py",
+    """is:  ::     projects/\[PROJECT_ID_OR_NUMBER\]/services/\[SERVICE_
+          ID\]/serviceLevelObjectives/\[SLO_NAME\]""",
+    """is:  ::     projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]/serviceLevelObjectives/[SLO_NAME]"""
+)
+
+s.replace(
+    "google/cloud/**/metric_service_pb2.py",
+    """::     resource\.type =
+          starts_with\("gce_"\) AND resource\.label:id""",
+    """::     
+          
+              resource.type = starts_with("gce_") AND resource.label:id"""
+)
+
+s.replace(
+    "google/cloud/**/alert_pb2.py",
+    """::     projects/\[PROJECT_ID_
+          OR_NUMBER\]/notificationChannels/\[CHANNEL_ID\]""",
+    """projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]"""
 )
 
 # Deal with long lines due to long proto name
@@ -91,10 +108,11 @@ s.replace(
     "notification_client.NotificationChannelServiceClient",
 )
 
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=92, system_test_dependencies=["test_utils"])
+templated_files = common.py_library(cov_level=92)
 s.move(templated_files)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

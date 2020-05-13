@@ -266,12 +266,12 @@ class NotificationChannelServiceClient(object):
             ...         pass
 
         Args:
-            name (str): Required. The REST resource name of the parent from which to retrieve
-                the notification channel descriptors. The expected syntax is:
+            name (str): Required. The REST resource name of the parent from which to
+                retrieve the notification channel descriptors. The expected syntax is:
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]
+                    projects/[PROJECT_ID_OR_NUMBER]
 
                 Note that this names the parent container in which to look for the
                 descriptors; to retrieve a single descriptor by name, use the
@@ -373,12 +373,12 @@ class NotificationChannelServiceClient(object):
             >>> response = client.get_notification_channel_descriptor(name)
 
         Args:
-            name (str): Required. The channel type for which to execute the request. The format
-                is:
+            name (str): Required. The channel type for which to execute the request. The
+                format is:
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]/notificationChannelDescriptors/[CHANNEL_TYPE]
+                    projects/[PROJECT_ID_OR_NUMBER]/notificationChannelDescriptors/[CHANNEL_TYPE]
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -471,11 +471,12 @@ class NotificationChannelServiceClient(object):
             ...         pass
 
         Args:
-            name (str): Required. The project on which to execute the request. The format is:
+            name (str): Required. The project on which to execute the request. The format
+                is:
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]
+                    projects/[PROJECT_ID_OR_NUMBER]
 
                 This names the container in which to look for the notification channels;
                 it does not name a specific channel. To query a specific channel by REST
@@ -485,9 +486,10 @@ class NotificationChannelServiceClient(object):
 
                 For more details, see `sorting and
                 filtering <https://cloud.google.com/monitoring/api/v3/sorting-and-filtering>`__.
-            order_by (str): A comma-separated list of fields by which to sort the result. Supports
-                the same set of fields as in ``filter``. Entries can be prefixed with a
-                minus sign to sort in descending rather than ascending order.
+            order_by (str): A comma-separated list of fields by which to sort the result.
+                Supports the same set of fields as in ``filter``. Entries can be
+                prefixed with a minus sign to sort in descending rather than ascending
+                order.
 
                 For more details, see `sorting and
                 filtering <https://cloud.google.com/monitoring/api/v3/sorting-and-filtering>`__.
@@ -589,11 +591,12 @@ class NotificationChannelServiceClient(object):
             >>> response = client.get_notification_channel(name)
 
         Args:
-            name (str): Required. The channel for which to execute the request. The format is:
+            name (str): Required. The channel for which to execute the request. The format
+                is:
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
+                    projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -670,11 +673,12 @@ class NotificationChannelServiceClient(object):
             >>> response = client.create_notification_channel(name, notification_channel)
 
         Args:
-            name (str): Required. The project on which to execute the request. The format is:
+            name (str): Required. The project on which to execute the request. The format
+                is:
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]
+                    projects/[PROJECT_ID_OR_NUMBER]
 
                 This names the container into which the channel will be written, this
                 does not name the newly created channel. The resulting channel's name
@@ -762,10 +766,10 @@ class NotificationChannelServiceClient(object):
             >>> response = client.update_notification_channel(notification_channel)
 
         Args:
-            notification_channel (Union[dict, ~google.cloud.monitoring_v3.types.NotificationChannel]): Required. A description of the changes to be applied to the specified
-                notification channel. The description must provide a definition for
-                fields to be updated; the names of these fields should also be included
-                in the ``update_mask``.
+            notification_channel (Union[dict, ~google.cloud.monitoring_v3.types.NotificationChannel]): Required. A description of the changes to be applied to the
+                specified notification channel. The description must provide a
+                definition for fields to be updated; the names of these fields should
+                also be included in the ``update_mask``.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.NotificationChannel`
@@ -849,11 +853,12 @@ class NotificationChannelServiceClient(object):
             >>> client.delete_notification_channel(name)
 
         Args:
-            name (str): Required. The channel for which to execute the request. The format is:
+            name (str): Required. The channel for which to execute the request. The format
+                is:
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
+                    projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
             force (bool): If true, the notification channel will be deleted regardless of its
                 use in alert policies (the policies will be updated to remove the
                 channel). If false, channels that are still referenced by an existing
@@ -918,8 +923,9 @@ class NotificationChannelServiceClient(object):
         metadata=None,
     ):
         """
-        Causes a verification code to be delivered to the channel. The code can
-        then be supplied in ``VerifyNotificationChannel`` to verify the channel.
+        Causes a verification code to be delivered to the channel. The code
+        can then be supplied in ``VerifyNotificationChannel`` to verify the
+        channel.
 
         Example:
             >>> from google.cloud import monitoring_v3
@@ -1126,8 +1132,8 @@ class NotificationChannelServiceClient(object):
 
         Args:
             name (str): Required. The notification channel to verify.
-            code (str): Required. The verification code that was delivered to the channel as a
-                result of invoking the ``SendNotificationChannelVerificationCode`` API
+            code (str): Required. The verification code that was delivered to the channel as
+                a result of invoking the ``SendNotificationChannelVerificationCode`` API
                 method or that was retrieved from a verified channel via
                 ``GetNotificationChannelVerificationCode``. For example, one might have
                 "G-123456" or "TKNZGhhd2EyN3I1MnRnMjRv" (in general, one is only

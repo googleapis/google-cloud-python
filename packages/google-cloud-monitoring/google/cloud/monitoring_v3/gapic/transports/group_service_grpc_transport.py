@@ -155,8 +155,8 @@ class GroupServiceGrpcTransport(object):
     def update_group(self):
         """Return the gRPC stub for :meth:`GroupServiceClient.update_group`.
 
-        Updates an existing group. You can change any group attributes except
-        ``name``.
+        Updates an existing group. You can change any group attributes
+        except ``name``.
 
         Returns:
             Callable: A callable which accepts the appropriate

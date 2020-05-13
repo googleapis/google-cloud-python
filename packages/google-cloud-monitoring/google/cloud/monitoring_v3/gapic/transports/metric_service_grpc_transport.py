@@ -168,8 +168,9 @@ class MetricServiceGrpcTransport(object):
     def create_metric_descriptor(self):
         """Return the gRPC stub for :meth:`MetricServiceClient.create_metric_descriptor`.
 
-        Creates a new metric descriptor. User-created metric descriptors define
-        `custom metrics <https://cloud.google.com/monitoring/custom-metrics>`__.
+        Creates a new metric descriptor. User-created metric descriptors
+        define `custom
+        metrics <https://cloud.google.com/monitoring/custom-metrics>`__.
 
         Returns:
             Callable: A callable which accepts the appropriate

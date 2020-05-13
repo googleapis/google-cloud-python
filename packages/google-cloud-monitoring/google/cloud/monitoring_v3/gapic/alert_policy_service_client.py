@@ -262,22 +262,23 @@ class AlertPolicyServiceClient(object):
             ...         pass
 
         Args:
-            name (str): Required. The project whose alert policies are to be listed. The format
-                is:
+            name (str): Required. The project whose alert policies are to be listed. The
+                format is:
 
-                     projects/[PROJECT_ID_OR_NUMBER]
+                    projects/[PROJECT_ID_OR_NUMBER]
 
                 Note that this field names the parent container in which the alerting
                 policies to be listed are stored. To retrieve a single alerting policy
                 by name, use the ``GetAlertPolicy`` operation, instead.
-            filter_ (str): If provided, this field specifies the criteria that must be met by alert
-                policies to be included in the response.
+            filter_ (str): If provided, this field specifies the criteria that must be met by
+                alert policies to be included in the response.
 
                 For more details, see `sorting and
                 filtering <https://cloud.google.com/monitoring/api/v3/sorting-and-filtering>`__.
-            order_by (str): A comma-separated list of fields by which to sort the result. Supports
-                the same set of field references as the ``filter`` field. Entries can be
-                prefixed with a minus sign to sort by the field in descending order.
+            order_by (str): A comma-separated list of fields by which to sort the result.
+                Supports the same set of field references as the ``filter`` field.
+                Entries can be prefixed with a minus sign to sort by the field in
+                descending order.
 
                 For more details, see `sorting and
                 filtering <https://cloud.google.com/monitoring/api/v3/sorting-and-filtering>`__.
@@ -375,7 +376,7 @@ class AlertPolicyServiceClient(object):
         Args:
             name (str): Required. The alerting policy to retrieve. The format is:
 
-                     projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
+                    projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -451,10 +452,10 @@ class AlertPolicyServiceClient(object):
             >>> response = client.create_alert_policy(name, alert_policy)
 
         Args:
-            name (str): Required. The project in which to create the alerting policy. The format
-                is:
+            name (str): Required. The project in which to create the alerting policy. The
+                format is:
 
-                     projects/[PROJECT_ID_OR_NUMBER]
+                    projects/[PROJECT_ID_OR_NUMBER]
 
                 Note that this field names the parent container in which the alerting
                 policy will be written, not the name of the created policy. The alerting
@@ -462,9 +463,9 @@ class AlertPolicyServiceClient(object):
                 representation of this name as a prefix but adds a suffix of the form
                 ``/alertPolicies/[ALERT_POLICY_ID]``, identifying the policy in the
                 container.
-            alert_policy (Union[dict, ~google.cloud.monitoring_v3.types.AlertPolicy]): Required. The requested alerting policy. You should omit the ``name``
-                field in this policy. The name will be returned in the new policy,
-                including a new ``[ALERT_POLICY_ID]`` value.
+            alert_policy (Union[dict, ~google.cloud.monitoring_v3.types.AlertPolicy]): Required. The requested alerting policy. You should omit the
+                ``name`` field in this policy. The name will be returned in the new
+                policy, including a new ``[ALERT_POLICY_ID]`` value.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.AlertPolicy`
@@ -543,7 +544,7 @@ class AlertPolicyServiceClient(object):
         Args:
             name (str): Required. The alerting policy to delete. The format is:
 
-                     projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
+                    projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
 
                 For more information, see ``AlertPolicy``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -625,9 +626,9 @@ class AlertPolicyServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.AlertPolicy`
-            update_mask (Union[dict, ~google.cloud.monitoring_v3.types.FieldMask]): Optional. A list of alerting policy field names. If this field is not
-                empty, each listed field in the existing alerting policy is set to the
-                value of the corresponding field in the supplied policy
+            update_mask (Union[dict, ~google.cloud.monitoring_v3.types.FieldMask]): Optional. A list of alerting policy field names. If this field is
+                not empty, each listed field in the existing alerting policy is set to
+                the value of the corresponding field in the supplied policy
                 (``alert_policy``), or to the field's default value if the field is not
                 in the supplied alerting policy. Fields not listed retain their previous
                 value.

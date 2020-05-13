@@ -260,11 +260,12 @@ class MetricServiceClient(object):
             ...         pass
 
         Args:
-            name (str): Required. The project on which to execute the request. The format is:
+            name (str): Required. The project on which to execute the request. The format
+                is:
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]
+                    projects/[PROJECT_ID_OR_NUMBER]
             filter_ (str): An optional
                 `filter <https://cloud.google.com/monitoring/api/v3/filters>`__
                 describing the descriptors to be returned. The filter can reference the
@@ -273,7 +274,7 @@ class MetricServiceClient(object):
 
                 ::
 
-                     resource.type = starts_with("gce_") AND resource.label:id
+                    resource.type = starts_with("gce_") AND resource.label:id
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -374,7 +375,7 @@ class MetricServiceClient(object):
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]/monitoredResourceDescriptors/[RESOURCE_TYPE]
+                    projects/[PROJECT_ID_OR_NUMBER]/monitoredResourceDescriptors/[RESOURCE_TYPE]
 
                 The ``[RESOURCE_TYPE]`` is a predefined type, such as
                 ``cloudsql_database``.
@@ -467,13 +468,14 @@ class MetricServiceClient(object):
             ...         pass
 
         Args:
-            name (str): Required. The project on which to execute the request. The format is:
+            name (str): Required. The project on which to execute the request. The format
+                is:
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]
-            filter_ (str): If this field is empty, all custom and system-defined metric descriptors
-                are returned. Otherwise, the
+                    projects/[PROJECT_ID_OR_NUMBER]
+            filter_ (str): If this field is empty, all custom and system-defined metric
+                descriptors are returned. Otherwise, the
                 `filter <https://cloud.google.com/monitoring/api/v3/filters>`__
                 specifies which metric descriptors are to be returned. For example, the
                 following filter matches all `custom
@@ -481,7 +483,7 @@ class MetricServiceClient(object):
 
                 ::
 
-                     metric.type = starts_with("custom.googleapis.com/")
+                    metric.type = starts_with("custom.googleapis.com/")
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -579,7 +581,7 @@ class MetricServiceClient(object):
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]/metricDescriptors/[METRIC_ID]
+                    projects/[PROJECT_ID_OR_NUMBER]/metricDescriptors/[METRIC_ID]
 
                 An example value of ``[METRIC_ID]`` is
                 ``"compute.googleapis.com/instance/disk/read_bytes_count"``.
@@ -643,8 +645,9 @@ class MetricServiceClient(object):
         metadata=None,
     ):
         """
-        Creates a new metric descriptor. User-created metric descriptors define
-        `custom metrics <https://cloud.google.com/monitoring/custom-metrics>`__.
+        Creates a new metric descriptor. User-created metric descriptors
+        define `custom
+        metrics <https://cloud.google.com/monitoring/custom-metrics>`__.
 
         Example:
             >>> from google.cloud import monitoring_v3
@@ -659,11 +662,12 @@ class MetricServiceClient(object):
             >>> response = client.create_metric_descriptor(name, metric_descriptor)
 
         Args:
-            name (str): Required. The project on which to execute the request. The format is:
+            name (str): Required. The project on which to execute the request. The format
+                is:
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]
+                    projects/[PROJECT_ID_OR_NUMBER]
             metric_descriptor (Union[dict, ~google.cloud.monitoring_v3.types.MetricDescriptor]): Required. The new `custom
                 metric <https://cloud.google.com/monitoring/custom-metrics>`__
                 descriptor.
@@ -750,7 +754,7 @@ class MetricServiceClient(object):
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]/metricDescriptors/[METRIC_ID]
+                    projects/[PROJECT_ID_OR_NUMBER]/metricDescriptors/[METRIC_ID]
 
                 An example of ``[METRIC_ID]`` is:
                 ``"custom.googleapis.com/my_test_metric"``.
@@ -850,11 +854,12 @@ class MetricServiceClient(object):
             ...         pass
 
         Args:
-            name (str): Required. The project on which to execute the request. The format is:
+            name (str): Required. The project on which to execute the request. The format
+                is:
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]
+                    projects/[PROJECT_ID_OR_NUMBER]
             filter_ (str): Required. A `monitoring
                 filter <https://cloud.google.com/monitoring/api/v3/filters>`__ that
                 specifies which time series should be returned. The filter must specify
@@ -863,8 +868,8 @@ class MetricServiceClient(object):
 
                 ::
 
-                     metric.type = "compute.googleapis.com/instance/cpu/usage_time" AND
-                         metric.labels.instance_name = "my-instance-name"
+                    metric.type = "compute.googleapis.com/instance/cpu/usage_time" AND
+                        metric.labels.instance_name = "my-instance-name"
             interval (Union[dict, ~google.cloud.monitoring_v3.types.TimeInterval]): Required. The time interval for which results should be returned. Only time series
                 that contain data points in the specified interval are included
                 in the response.
@@ -872,8 +877,9 @@ class MetricServiceClient(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.monitoring_v3.types.TimeInterval`
             view (~google.cloud.monitoring_v3.types.TimeSeriesView): Required. Specifies which information is returned about the time series.
-            aggregation (Union[dict, ~google.cloud.monitoring_v3.types.Aggregation]): Specifies the alignment of data points in individual time series as well
-                as how to combine the retrieved time series across specified labels.
+            aggregation (Union[dict, ~google.cloud.monitoring_v3.types.Aggregation]): Specifies the alignment of data points in individual time series as
+                well as how to combine the retrieved time series across specified
+                labels.
 
                 By default (if no ``aggregation`` is explicitly specified), the raw time
                 series data is returned.
@@ -987,11 +993,12 @@ class MetricServiceClient(object):
             >>> client.create_time_series(name, time_series)
 
         Args:
-            name (str): Required. The project on which to execute the request. The format is:
+            name (str): Required. The project on which to execute the request. The format
+                is:
 
                 ::
 
-                     projects/[PROJECT_ID_OR_NUMBER]
+                    projects/[PROJECT_ID_OR_NUMBER]
             time_series (list[Union[dict, ~google.cloud.monitoring_v3.types.TimeSeries]]): Required. The new data to be added to a list of time series. Adds at
                 most one data point to each of several time series. The new data point
                 must be more recent than any other point in its time series. Each
