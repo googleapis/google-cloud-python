@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-redis/compare/v0.4.0...v1.0.0) (2020-05-12)
+
+
+### Features
+
+* set release_status to production/stable ([#11](https://www.github.com/googleapis/python-redis/issues/11)) ([effc368](https://www.github.com/googleapis/python-redis/commit/effc368f6904cb6321ec9a8100460a0df36132ab))
+
 ## [0.4.0](https://www.github.com/googleapis/python-redis/compare/v0.3.0...v0.4.0) (2020-02-12)
 
 
