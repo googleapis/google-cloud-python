@@ -14,11 +14,19 @@
 # limitations under the License.
 
 
+# `-e` enables the script to automatically fail when a command fails
+# `-o pipefail` sets the exit code to the rightmost comment to exit with a non-zero
 set -eo pipefail
+# Enables `**` to include files nested inside sub-folders
+shopt -s globstar
 
 cd github/python-texttospeech
 
-# TODO(busunkim): Add logic to checkout library at latest release for periodic
+# Run periodic samples tests at latest release
+if [[ $KOKORO_BUILD_ARTIFACTS_SUBDIR = *"periodic"* ]]; then
+    LATEST_RELEASE=$(git describe --abbrev=0 --tags)
+    git checkout $LATEST_RELEASE
+fi
 
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
@@ -39,15 +47,13 @@ export GOOGLE_CLIENT_SECRETS=$(pwd)/testing/client-secrets.json
 
 echo -e "\n******************** TESTING PROJECTS ********************"
 
-cd samples
-
 # Switch to 'fail at end' to allow all tests to complete before exiting.
 set +e
 # Use RTN to return a non-zero value if the test fails.
 RTN=0
 ROOT=$(pwd)
-# Find all requirements.txt in the repository (may break on whitespace).
-for file in **/requirements.txt; do
+# Find all requirements.txt in the samples directory (may break on whitespace).
+for file in samples/**/requirements.txt; do
     cd "$ROOT"
     # Navigate to the project folder.
     file=$(dirname "$file")

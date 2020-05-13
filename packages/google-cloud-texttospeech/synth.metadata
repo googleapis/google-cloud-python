@@ -1,32 +1,18 @@
 {
   "sources": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "2.0.0",
-        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
-      }
-    },
-    {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-texttospeech.git",
-        "sha": "c93269003f18c39449592ebe2bfea298ec0815a8"
+        "remote": "git@github.com:googleapis/python-texttospeech",
+        "sha": "b54229fcc2bd1460c3f7f8207d125fd1379e56b1"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "42ee97c1b93a0e3759bbba3013da309f670a90ab",
-        "internalRef": "307114445"
-      }
-    },
-    {
-      "git": {
-        "name": "synthtool",
-        "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "f5e4c17dc78a966dbf29961dd01f9bbd63e20a04"
+        "sha": "89e89786896d256c70f43e68a975470c4f4f220e",
+        "internalRef": "311239362"
       }
     }
   ],
@@ -37,8 +23,7 @@
         "apiName": "texttospeech",
         "apiVersion": "v1beta1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/texttospeech/artman_texttospeech_v1beta1.yaml"
+        "generator": "bazel"
       }
     },
     {
@@ -47,8 +32,7 @@
         "apiName": "texttospeech",
         "apiVersion": "v1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/texttospeech/artman_texttospeech_v1.yaml"
+        "generator": "bazel"
       }
     }
   ]

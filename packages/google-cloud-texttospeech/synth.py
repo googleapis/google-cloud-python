@@ -17,6 +17,7 @@ import re
 
 import synthtool as s
 from synthtool import gcp
+from synthtool.languages import python
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
@@ -47,5 +48,10 @@ s.replace("**/gapic/*_client.py", r'\\"(.+?)-\*\\"', r'"\1-\\*"')
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(unit_cov_level=85, cov_level=85)
 s.move(templated_files)
+
+# ----------------------------------------------------------------------------
+# Samples templates
+# ----------------------------------------------------------------------------
+python.py_samples()
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
