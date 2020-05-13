@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+### [0.6.1](https://www.github.com/googleapis/python-talent/compare/v0.6.0...v0.6.1) (2020-04-28)
+
+
+### Bug Fixes
+
+* increase default timeout; update templates (via synth) ([#11](https://www.github.com/googleapis/python-talent/issues/11)) ([0bf35f5](https://www.github.com/googleapis/python-talent/commit/0bf35f54ce026613fc7c2a1772d983866291d09a))
+
 ## [0.6.0](https://www.github.com/googleapis/python-talent/compare/v0.5.0...v0.6.0) (2020-03-18)
 
 
