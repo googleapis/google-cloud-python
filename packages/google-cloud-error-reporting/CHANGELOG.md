@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [0.34.0](https://www.github.com/googleapis/python-error-reporting/compare/v0.33.0...v0.34.0) (2020-05-03)
+
+
+### Features
+
+* set release_status to beta ([#5](https://www.github.com/googleapis/python-error-reporting/issues/5)) ([e9361c5](https://www.github.com/googleapis/python-error-reporting/commit/e9361c5e0f427a4796974fd4a3da506324220e9e))
+
 ## 0.33.0
 
 10-22-2019 12:10 PDT
