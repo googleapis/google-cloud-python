@@ -39,3 +39,7 @@ class DefaultCredentialsError(GoogleAuthError):
 class MutualTLSChannelError(GoogleAuthError):
     """Used to indicate that mutual TLS channel creation is failed, or mutual
     TLS channel credentials is missing or invalid."""
+
+
+class ClientCertError(GoogleAuthError):
+    """Used to indicate that client certificate is missing or invalid."""

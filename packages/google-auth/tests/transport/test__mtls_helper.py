@@ -16,13 +16,33 @@ import os
 import re
 
 import mock
+from OpenSSL import crypto
 import pytest
 
+from google.auth import exceptions
 from google.auth.transport import _mtls_helper
 
 CONTEXT_AWARE_METADATA = {"cert_provider_command": ["some command"]}
 
 CONTEXT_AWARE_METADATA_NO_CERT_PROVIDER_COMMAND = {}
+
+ENCRYPTED_EC_PRIVATE_KEY = b"""-----BEGIN ENCRYPTED PRIVATE KEY-----
+MIHkME8GCSqGSIb3DQEFDTBCMCkGCSqGSIb3DQEFDDAcBAgl2/yVgs1h3QICCAAw
+DAYIKoZIhvcNAgkFADAVBgkrBgEEAZdVAQIECJk2GRrvxOaJBIGQXIBnMU4wmciT
+uA6yD8q0FxuIzjG7E2S6tc5VRgSbhRB00eBO3jWmO2pBybeQW+zVioDcn50zp2ts
+wYErWC+LCm1Zg3r+EGnT1E1GgNoODbVQ3AEHlKh1CGCYhEovxtn3G+Fjh7xOBrNB
+saVVeDb4tHD4tMkiVVUBrUcTZPndP73CtgyGHYEphasYPzEz3+AU
+-----END ENCRYPTED PRIVATE KEY-----"""
+
+EC_PUBLIC_KEY = b"""-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEvCNi1NoDY1oMqPHIgXI8RBbTYGi/
+brEjbre1nSiQW11xRTJbVeETdsuP0EAu2tG3PcRhhwDfeJ8zXREgTBurNw==
+-----END PUBLIC KEY-----"""
+
+PASSPHRASE = b"""-----BEGIN PASSPHRASE-----
+password
+-----END PASSPHRASE-----"""
+PASSPHRASE_VALUE = b"password"
 
 
 def check_cert_and_key(content, expected_cert, expected_key):
@@ -115,11 +135,11 @@ class TestReadMetadataFile(object):
     def test_file_not_json(self):
         # read a file which is not json format.
         metadata_path = os.path.join(pytest.data_dir, "privatekey.pem")
-        with pytest.raises(ValueError):
+        with pytest.raises(exceptions.ClientCertError):
             _mtls_helper._read_dca_metadata_file(metadata_path)
 
 
-class TestGetClientSslCredentials(object):
+class TestRunCertProviderCommand(object):
     def create_mock_process(self, output, error):
         # There are two steps to execute a script with subprocess.Popen.
         # (1) process = subprocess.Popen([comannds])
@@ -137,9 +157,20 @@ class TestGetClientSslCredentials(object):
         mock_popen.return_value = self.create_mock_process(
             pytest.public_cert_bytes + pytest.private_key_bytes, b""
         )
-        cert, key = _mtls_helper.get_client_ssl_credentials(CONTEXT_AWARE_METADATA)
+        cert, key, passphrase = _mtls_helper._run_cert_provider_command(["command"])
         assert cert == pytest.public_cert_bytes
         assert key == pytest.private_key_bytes
+        assert passphrase is None
+
+        mock_popen.return_value = self.create_mock_process(
+            pytest.public_cert_bytes + ENCRYPTED_EC_PRIVATE_KEY + PASSPHRASE, b""
+        )
+        cert, key, passphrase = _mtls_helper._run_cert_provider_command(
+            ["command"], expect_encrypted_key=True
+        )
+        assert cert == pytest.public_cert_bytes
+        assert key == ENCRYPTED_EC_PRIVATE_KEY
+        assert passphrase == PASSPHRASE_VALUE
 
     @mock.patch("subprocess.Popen", autospec=True)
     def test_success_with_cert_chain(self, mock_popen):
@@ -147,44 +178,185 @@ class TestGetClientSslCredentials(object):
         mock_popen.return_value = self.create_mock_process(
             PUBLIC_CERT_CHAIN_BYTES + pytest.private_key_bytes, b""
         )
-        cert, key = _mtls_helper.get_client_ssl_credentials(CONTEXT_AWARE_METADATA)
+        cert, key, passphrase = _mtls_helper._run_cert_provider_command(["command"])
         assert cert == PUBLIC_CERT_CHAIN_BYTES
         assert key == pytest.private_key_bytes
+        assert passphrase is None
 
-    def test_missing_cert_provider_command(self):
-        with pytest.raises(ValueError):
-            assert _mtls_helper.get_client_ssl_credentials(
-                CONTEXT_AWARE_METADATA_NO_CERT_PROVIDER_COMMAND
-            )
+        mock_popen.return_value = self.create_mock_process(
+            PUBLIC_CERT_CHAIN_BYTES + ENCRYPTED_EC_PRIVATE_KEY + PASSPHRASE, b""
+        )
+        cert, key, passphrase = _mtls_helper._run_cert_provider_command(
+            ["command"], expect_encrypted_key=True
+        )
+        assert cert == PUBLIC_CERT_CHAIN_BYTES
+        assert key == ENCRYPTED_EC_PRIVATE_KEY
+        assert passphrase == PASSPHRASE_VALUE
 
     @mock.patch("subprocess.Popen", autospec=True)
     def test_missing_cert(self, mock_popen):
         mock_popen.return_value = self.create_mock_process(
             pytest.private_key_bytes, b""
         )
-        with pytest.raises(ValueError):
-            assert _mtls_helper.get_client_ssl_credentials(CONTEXT_AWARE_METADATA)
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._run_cert_provider_command(["command"])
+
+        mock_popen.return_value = self.create_mock_process(
+            ENCRYPTED_EC_PRIVATE_KEY + PASSPHRASE, b""
+        )
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._run_cert_provider_command(
+                ["command"], expect_encrypted_key=True
+            )
 
     @mock.patch("subprocess.Popen", autospec=True)
     def test_missing_key(self, mock_popen):
         mock_popen.return_value = self.create_mock_process(
             pytest.public_cert_bytes, b""
         )
-        with pytest.raises(ValueError):
-            assert _mtls_helper.get_client_ssl_credentials(CONTEXT_AWARE_METADATA)
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._run_cert_provider_command(["command"])
+
+        mock_popen.return_value = self.create_mock_process(
+            pytest.public_cert_bytes + PASSPHRASE, b""
+        )
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._run_cert_provider_command(
+                ["command"], expect_encrypted_key=True
+            )
+
+    @mock.patch("subprocess.Popen", autospec=True)
+    def test_missing_passphrase(self, mock_popen):
+        mock_popen.return_value = self.create_mock_process(
+            pytest.public_cert_bytes + ENCRYPTED_EC_PRIVATE_KEY, b""
+        )
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._run_cert_provider_command(
+                ["command"], expect_encrypted_key=True
+            )
+
+    @mock.patch("subprocess.Popen", autospec=True)
+    def test_passphrase_not_expected(self, mock_popen):
+        mock_popen.return_value = self.create_mock_process(
+            pytest.public_cert_bytes + pytest.private_key_bytes + PASSPHRASE, b""
+        )
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._run_cert_provider_command(["command"])
+
+    @mock.patch("subprocess.Popen", autospec=True)
+    def test_encrypted_key_expected(self, mock_popen):
+        mock_popen.return_value = self.create_mock_process(
+            pytest.public_cert_bytes + pytest.private_key_bytes + PASSPHRASE, b""
+        )
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._run_cert_provider_command(
+                ["command"], expect_encrypted_key=True
+            )
+
+    @mock.patch("subprocess.Popen", autospec=True)
+    def test_unencrypted_key_expected(self, mock_popen):
+        mock_popen.return_value = self.create_mock_process(
+            pytest.public_cert_bytes + ENCRYPTED_EC_PRIVATE_KEY, b""
+        )
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._run_cert_provider_command(["command"])
 
     @mock.patch("subprocess.Popen", autospec=True)
     def test_cert_provider_returns_error(self, mock_popen):
         mock_popen.return_value = self.create_mock_process(b"", b"some error")
         mock_popen.return_value.returncode = 1
-        with pytest.raises(RuntimeError):
-            assert _mtls_helper.get_client_ssl_credentials(CONTEXT_AWARE_METADATA)
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._run_cert_provider_command(["command"])
 
     @mock.patch("subprocess.Popen", autospec=True)
     def test_popen_raise_exception(self, mock_popen):
         mock_popen.side_effect = OSError()
-        with pytest.raises(OSError):
-            assert _mtls_helper.get_client_ssl_credentials(CONTEXT_AWARE_METADATA)
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._run_cert_provider_command(["command"])
+
+
+class TestGetClientSslCredentials(object):
+    @mock.patch(
+        "google.auth.transport._mtls_helper._run_cert_provider_command", autospec=True
+    )
+    @mock.patch(
+        "google.auth.transport._mtls_helper._read_dca_metadata_file", autospec=True
+    )
+    @mock.patch(
+        "google.auth.transport._mtls_helper._check_dca_metadata_path", autospec=True
+    )
+    def test_success(
+        self,
+        mock_check_dca_metadata_path,
+        mock_read_dca_metadata_file,
+        mock_run_cert_provider_command,
+    ):
+        mock_check_dca_metadata_path.return_value = True
+        mock_read_dca_metadata_file.return_value = {
+            "cert_provider_command": ["command"]
+        }
+        mock_run_cert_provider_command.return_value = (b"cert", b"key", None)
+        has_cert, cert, key, passphrase = _mtls_helper.get_client_ssl_credentials()
+        assert has_cert
+        assert cert == b"cert"
+        assert key == b"key"
+        assert passphrase is None
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper._check_dca_metadata_path", autospec=True
+    )
+    def test_success_without_metadata(self, mock_check_dca_metadata_path):
+        mock_check_dca_metadata_path.return_value = False
+        has_cert, cert, key, passphrase = _mtls_helper.get_client_ssl_credentials()
+        assert not has_cert
+        assert cert is None
+        assert key is None
+        assert passphrase is None
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper._run_cert_provider_command", autospec=True
+    )
+    @mock.patch(
+        "google.auth.transport._mtls_helper._read_dca_metadata_file", autospec=True
+    )
+    @mock.patch(
+        "google.auth.transport._mtls_helper._check_dca_metadata_path", autospec=True
+    )
+    def test_success_with_encrypted_key(
+        self,
+        mock_check_dca_metadata_path,
+        mock_read_dca_metadata_file,
+        mock_run_cert_provider_command,
+    ):
+        mock_check_dca_metadata_path.return_value = True
+        mock_read_dca_metadata_file.return_value = {
+            "cert_provider_command": ["command"]
+        }
+        mock_run_cert_provider_command.return_value = (b"cert", b"key", b"passphrase")
+        has_cert, cert, key, passphrase = _mtls_helper.get_client_ssl_credentials(
+            generate_encrypted_key=True
+        )
+        assert has_cert
+        assert cert == b"cert"
+        assert key == b"key"
+        assert passphrase == b"passphrase"
+        mock_run_cert_provider_command.assert_called_once_with(
+            ["command", "--with_passphrase"], expect_encrypted_key=True
+        )
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper._read_dca_metadata_file", autospec=True
+    )
+    @mock.patch(
+        "google.auth.transport._mtls_helper._check_dca_metadata_path", autospec=True
+    )
+    def test_missing_cert_command(
+        self, mock_check_dca_metadata_path, mock_read_dca_metadata_file
+    ):
+        mock_check_dca_metadata_path.return_value = True
+        mock_read_dca_metadata_file.return_value = {}
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper.get_client_ssl_credentials()
 
 
 class TestGetClientCertAndKey(object):
@@ -198,32 +370,38 @@ class TestGetClientCertAndKey(object):
         assert key == pytest.private_key_bytes
 
     @mock.patch(
-        "google.auth.transport._mtls_helper._check_dca_metadata_path", autospec=True
-    )
-    def test_no_metadata(self, mock_check_dca_metadata_path):
-        mock_check_dca_metadata_path.return_value = None
-
-        found_cert_key, cert, key = _mtls_helper.get_client_cert_and_key()
-        assert not found_cert_key
-
-    @mock.patch(
         "google.auth.transport._mtls_helper.get_client_ssl_credentials", autospec=True
     )
-    @mock.patch(
-        "google.auth.transport._mtls_helper._check_dca_metadata_path", autospec=True
-    )
-    def test_use_metadata(
-        self, mock_check_dca_metadata_path, mock_get_client_ssl_credentials
-    ):
-        mock_check_dca_metadata_path.return_value = os.path.join(
-            pytest.data_dir, "context_aware_metadata.json"
-        )
+    def test_use_metadata(self, mock_get_client_ssl_credentials):
         mock_get_client_ssl_credentials.return_value = (
+            True,
             pytest.public_cert_bytes,
             pytest.private_key_bytes,
+            None,
         )
 
         found_cert_key, cert, key = _mtls_helper.get_client_cert_and_key()
         assert found_cert_key
         assert cert == pytest.public_cert_bytes
         assert key == pytest.private_key_bytes
+
+
+class TestDecryptPrivateKey(object):
+    def test_success(self):
+        decrypted_key = _mtls_helper.decrypt_private_key(
+            ENCRYPTED_EC_PRIVATE_KEY, PASSPHRASE_VALUE
+        )
+        private_key = crypto.load_privatekey(crypto.FILETYPE_PEM, decrypted_key)
+        public_key = crypto.load_publickey(crypto.FILETYPE_PEM, EC_PUBLIC_KEY)
+        x509 = crypto.X509()
+        x509.set_pubkey(public_key)
+
+        # Test the decrypted key works by signing and verification.
+        signature = crypto.sign(private_key, b"data", "sha256")
+        crypto.verify(x509, signature, b"data", "sha256")
+
+    def test_crypto_error(self):
+        with pytest.raises(crypto.Error):
+            _mtls_helper.decrypt_private_key(
+                ENCRYPTED_EC_PRIVATE_KEY, b"wrong_password"
+            )

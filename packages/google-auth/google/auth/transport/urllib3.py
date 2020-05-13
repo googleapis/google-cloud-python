@@ -316,11 +316,9 @@ class AuthorizedHttp(urllib3.request.RequestMethods):
             else:
                 self.http = _make_default_http()
         except (
+            exceptions.ClientCertError,
             ImportError,
             OpenSSL.crypto.Error,
-            OSError,
-            RuntimeError,
-            ValueError,
         ) as caught_exc:
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             six.raise_from(new_exc, caught_exc)

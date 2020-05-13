@@ -429,7 +429,7 @@ class TestAuthorizedSession(object):
         "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
     )
     def test_configure_mtls_channel_exceptions(self, mock_get_client_cert_and_key):
-        mock_get_client_cert_and_key.side_effect = ValueError()
+        mock_get_client_cert_and_key.side_effect = exceptions.ClientCertError()
 
         auth_session = google.auth.transport.requests.AuthorizedSession(
             credentials=mock.Mock()

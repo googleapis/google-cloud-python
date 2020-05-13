@@ -264,13 +264,10 @@ class SslCredentials:
 
     def __init__(self):
         # Load client SSL credentials.
-        self._context_aware_metadata_path = _mtls_helper._check_dca_metadata_path(
+        metadata_path = _mtls_helper._check_dca_metadata_path(
             _mtls_helper.CONTEXT_AWARE_METADATA_PATH
         )
-        if self._context_aware_metadata_path:
-            self._is_mtls = True
-        else:
-            self._is_mtls = False
+        self._is_mtls = metadata_path is not None
 
     @property
     def ssl_credentials(self):
@@ -288,16 +285,13 @@ class SslCredentials:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
                 creation failed for any reason.
         """
-        if self._context_aware_metadata_path:
+        if self._is_mtls:
             try:
-                metadata = _mtls_helper._read_dca_metadata_file(
-                    self._context_aware_metadata_path
-                )
-                cert, key = _mtls_helper.get_client_ssl_credentials(metadata)
+                _, cert, key, _ = _mtls_helper.get_client_ssl_credentials()
                 self._ssl_credentials = grpc.ssl_channel_credentials(
                     certificate_chain=cert, private_key=key
                 )
-            except (OSError, RuntimeError, ValueError) as caught_exc:
+            except exceptions.ClientCertError as caught_exc:
                 new_exc = exceptions.MutualTLSChannelError(caught_exc)
                 six.raise_from(new_exc, caught_exc)
         else:

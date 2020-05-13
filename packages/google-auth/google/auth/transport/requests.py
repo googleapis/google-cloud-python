@@ -373,11 +373,9 @@ class AuthorizedSession(requests.Session):
                 mtls_adapter = _MutualTlsAdapter(cert, key)
                 self.mount("https://", mtls_adapter)
         except (
+            exceptions.ClientCertError,
             ImportError,
             OpenSSL.crypto.Error,
-            OSError,
-            RuntimeError,
-            ValueError,
         ) as caught_exc:
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
             six.raise_from(new_exc, caught_exc)

@@ -129,7 +129,12 @@ class TestSecureAuthorizedChannel(object):
         read_dca_metadata_file.return_value = {
             "cert_provider_command": ["some command"]
         }
-        get_client_ssl_credentials.return_value = (PUBLIC_CERT_BYTES, PRIVATE_KEY_BYTES)
+        get_client_ssl_credentials.return_value = (
+            True,
+            PUBLIC_CERT_BYTES,
+            PRIVATE_KEY_BYTES,
+            None,
+        )
 
         channel = google.auth.transport.grpc.secure_authorized_channel(
             credentials, request, target, options=mock.sentinel.options
@@ -314,7 +319,7 @@ class TestSslCredentials(object):
         }
 
         # Mock that client cert and key are not loaded and exception is raised.
-        mock_get_client_ssl_credentials.side_effect = ValueError()
+        mock_get_client_ssl_credentials.side_effect = exceptions.ClientCertError()
 
         with pytest.raises(exceptions.MutualTLSChannelError):
             assert google.auth.transport.grpc.SslCredentials().ssl_credentials
@@ -331,8 +336,10 @@ class TestSslCredentials(object):
             "cert_provider_command": ["some command"]
         }
         mock_get_client_ssl_credentials.return_value = (
+            True,
             PUBLIC_CERT_BYTES,
             PRIVATE_KEY_BYTES,
+            None,
         )
 
         ssl_credentials = google.auth.transport.grpc.SslCredentials()

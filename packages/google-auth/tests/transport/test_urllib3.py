@@ -233,7 +233,7 @@ class TestAuthorizedHttp(object):
             credentials=mock.Mock()
         )
 
-        mock_get_client_cert_and_key.side_effect = ValueError()
+        mock_get_client_cert_and_key.side_effect = exceptions.ClientCertError()
         with pytest.raises(exceptions.MutualTLSChannelError):
             authed_http.configure_mtls_channel()
 
