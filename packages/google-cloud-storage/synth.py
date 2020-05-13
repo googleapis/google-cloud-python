@@ -19,6 +19,9 @@ import re
 import synthtool as s
 from synthtool import gcp
 
+AUTOSYNTH_MULTIPLE_PRS = True
+AUTOSYNTH_MULTIPLE_COMMITS = True
+
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
