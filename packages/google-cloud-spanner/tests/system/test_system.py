@@ -2330,7 +2330,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             # NaNs cannot be searched for by equality.
             self.assertTrue(math.isnan(float_array[2]))
 
-    @unittest.skipIf(USE_EMULATOR, "Skipping partitioned queries")
     def test_partition_query(self):
         row_count = 40
         sql = "SELECT * FROM {}".format(self.TABLE)
