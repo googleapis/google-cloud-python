@@ -30,6 +30,7 @@ import six
 from six.moves import http_client
 import pytest
 import pytz
+import pkg_resources
 
 try:
     import fastparquet
@@ -55,6 +56,9 @@ try:
 except (ImportError, AttributeError):  # pragma: NO COVER
     bigquery_storage_v1beta1 = None
 from tests.unit.helpers import make_connection
+
+PANDAS_MINIUM_VERSION = pkg_resources.parse_version("1.0.0")
+PANDAS_INSTALLED_VERSION = pkg_resources.get_distribution("pandas").parsed_version
 
 
 def _make_credentials():
@@ -6972,6 +6976,98 @@ class TestClientUpload(object):
             and "please provide a schema" in str(warning)
         ]
         assert matches, "A missing schema deprecation warning was not raised."
+
+    @unittest.skipIf(
+        pandas is None or PANDAS_INSTALLED_VERSION < PANDAS_MINIUM_VERSION,
+        "Only `pandas version >=1.0.0` supported",
+    )
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_w_nullable_int64_datatype(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery import job
+        from google.cloud.bigquery.schema import SchemaField
+
+        client = self._make_client()
+        dataframe = pandas.DataFrame({"x": [1, 2, None, 4]}, dtype="Int64")
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            return_value=mock.Mock(schema=[SchemaField("x", "INT64", "NULLABLE")]),
+        )
+
+        with load_patch as load_table_from_file, get_table_patch:
+            client.load_table_from_dataframe(
+                dataframe, self.TABLE_REF, location=self.LOCATION
+            )
+
+        load_table_from_file.assert_called_once_with(
+            client,
+            mock.ANY,
+            self.TABLE_REF,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True,
+            job_id=mock.ANY,
+            job_id_prefix=None,
+            location=self.LOCATION,
+            project=None,
+            job_config=mock.ANY,
+        )
+
+        sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
+        assert sent_config.source_format == job.SourceFormat.PARQUET
+        assert tuple(sent_config.schema) == (
+            SchemaField("x", "INT64", "NULLABLE", None),
+        )
+
+    @unittest.skipIf(
+        pandas is None or PANDAS_INSTALLED_VERSION < PANDAS_MINIUM_VERSION,
+        "Only `pandas version >=1.0.0` supported",
+    )
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_load_table_from_dataframe_w_nullable_int64_datatype_automatic_schema(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery import job
+        from google.cloud.bigquery.schema import SchemaField
+
+        client = self._make_client()
+        dataframe = pandas.DataFrame({"x": [1, 2, None, 4]}, dtype="Int64")
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            side_effect=google.api_core.exceptions.NotFound("Table not found"),
+        )
+
+        with load_patch as load_table_from_file, get_table_patch:
+            client.load_table_from_dataframe(
+                dataframe, self.TABLE_REF, location=self.LOCATION
+            )
+
+        load_table_from_file.assert_called_once_with(
+            client,
+            mock.ANY,
+            self.TABLE_REF,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True,
+            job_id=mock.ANY,
+            job_id_prefix=None,
+            location=self.LOCATION,
+            project=None,
+            job_config=mock.ANY,
+        )
+
+        sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
+        assert sent_config.source_format == job.SourceFormat.PARQUET
+        assert tuple(sent_config.schema) == (
+            SchemaField("x", "INT64", "NULLABLE", None),
+        )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
