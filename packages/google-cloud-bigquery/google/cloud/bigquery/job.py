@@ -3116,7 +3116,7 @@ class QueryJob(_AsyncJob):
         template = "\n\n(job ID: {job_id})\n\n{header}\n\n{ruler}\n{body}\n{ruler}"
 
         lines = query.splitlines()
-        max_line_len = max(len(l) for l in lines)
+        max_line_len = max(len(line) for line in lines)
 
         header = "-----Query Job SQL Follows-----"
         header = "{:^{total_width}}".format(header, total_width=max_line_len + 5)
