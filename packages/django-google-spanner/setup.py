@@ -6,6 +6,8 @@
 
 from setuptools import find_packages, setup
 
+version = '2.2a0'
+
 install_requires = [
     'sqlparse >= 0.3.0',
     'google-cloud >= 0.34.0',
@@ -17,7 +19,7 @@ setup(
         # Duplicate version here rather than using
         # __import__('django_spanner').__version__ because that file imports
         # django and google.cloud which may not be installed.
-        version='2.2a0',
+        version=version,
         author='Google LLC',
         author_email='cloud-spanner-developers@googlegroups.com',
         description=('Bridge to enable using Django with Spanner.'),
