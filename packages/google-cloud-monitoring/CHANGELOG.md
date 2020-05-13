@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [0.36.0](https://www.github.com/googleapis/python-monitoring/compare/v0.35.0...v0.36.0) (2020-05-13)
+
+
+### Features
+
+* BREAKING CHANGE: drop support for TimeSeriesQueryLanguageCondition as an alert condition type ([#22](https://www.github.com/googleapis/python-monitoring/issues/22)) ([e4bc568](https://www.github.com/googleapis/python-monitoring/commit/e4bc5682d39f7e5938868497496f5d49318cee43))
+
 ## [0.35.0](https://www.github.com/googleapis/python-monitoring/compare/v0.34.0...v0.35.0) (2020-04-21)
 
 
