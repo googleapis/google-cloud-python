@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [0.3.0](https://www.github.com/googleapis/python-oslogin/compare/v0.2.0...v1.0.0) (2020-04-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* **oslogin:** rename `fingerprint_path` to `ssh_public_key_path`; rename `project_path` to `posix_account_path`; add `OperatingSystemType` enum; make `ssh_public_key` optional param to `import_ssh_public_key`; annotate protos (via synth) (#9431)
+
+### Features
+
+* **oslogin:** rename `fingerprint_path` to `ssh_public_key_path`; rename `project_path` to `posix_account_path`; add `OperatingSystemType` enum; make `ssh_public_key` optional param to `import_ssh_public_key`; annotate protos (via synth) ([#9431](https://www.github.com/googleapis/python-oslogin/issues/9431)) ([f903af4](https://www.github.com/googleapis/python-oslogin/commit/f903af460761fd4e259e8ba122df9f1fcd38adb2))
+
+
+### Bug Fixes
+
+* **oslogin:** add py2 deprecation warning; bump copyright year to 2020; add 3.8 unit tests (via synth) ([#10071](https://www.github.com/googleapis/python-oslogin/issues/10071)) ([3085490](https://www.github.com/googleapis/python-oslogin/commit/30854901bde0a2dbe25872f8e332fee4d425bcab))
+
 ## 0.2.0
 
 07-24-2019 17:10 PDT
@@ -84,4 +100,3 @@
 ### Testing and internal changes
 
 - Normalize all setup.py files (#4909)
-
