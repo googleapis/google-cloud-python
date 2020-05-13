@@ -37,7 +37,7 @@ setuptools.setup(
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
-    url="https://github.com/dialogflow/dialogflow-python-client-v2",
+    url="https://github.com/googleapis/dialogflow-python-client-v2",
     classifiers=[
         release_status,
         "Intended Audience :: Developers",
