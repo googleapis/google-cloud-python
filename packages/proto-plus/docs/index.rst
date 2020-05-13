@@ -8,12 +8,6 @@ declaraing messages in `protocol buffers`_. It provides a wrapper around
 the official implementation, so that using messages feels natural while
 retaining the power and flexibility of protocol buffers.
 
-.. warning::
-
-  This tool is a proof of concept and is being iterated on rapidly.
-  Feedback is welcome, but please do not try to use this in some kind of
-  system where stability is an expectation.
-
 .. _protocol buffers: https://developers.google.com/protocol-buffers/
 
 
