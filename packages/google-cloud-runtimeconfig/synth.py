@@ -25,6 +25,7 @@ common = gcp.CommonTemplates()
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(cov_level=97)
-s.move(templated_files)
+# this is an http library, not grpc
+s.move(templated_files, excludes=["docs/multiprocessing.rst"])
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
