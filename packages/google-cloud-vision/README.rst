@@ -67,6 +67,9 @@ Deprecated Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 Python == 2.7. Python 2.7 support will be removed on January 1, 2020.
 
+RaspberryPi ARM devices 
+^^^^^^^^^^^^^^^^^^^^^^^
+Note: Raspberry Pi ARMv6 is not supported because there is an internal binary google that does not comply with armv6 processors.
 
 Mac/Linux
 ^^^^^^^^^
