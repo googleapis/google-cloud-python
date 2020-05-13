@@ -2298,6 +2298,36 @@ class TestQuery:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     @mock.patch("google.cloud.ndb._datastore_query")
+    def test_fetch_page_no_results(_datastore_query):
+        class DummyQueryIterator:
+            _more_results_after_limit = True
+
+            def __init__(self):
+                self.items = []
+
+            def has_next_async(self):
+                return utils.future_result(bool(self.items))
+
+        _datastore_query.iterate.return_value = DummyQueryIterator()
+        query = query_module.Query()
+        query.filters = mock.Mock(
+            _multiquery=False, _post_filters=mock.Mock(return_value=False),
+        )
+        results, cursor, more = query.fetch_page(5)
+        assert results == []
+        assert cursor is None
+        assert more is False
+
+        _datastore_query.iterate.assert_called_once_with(
+            query_module.QueryOptions(
+                filters=query.filters, project="testing", limit=5
+            ),
+            raw=True,
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_query")
     def test_fetch_page_async(_datastore_query):
         class DummyQueryIterator:
             _more_results_after_limit = True

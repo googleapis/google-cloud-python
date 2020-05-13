@@ -2372,7 +2372,7 @@ class Query(object):
             results.append(result.entity())
             cursor = result.cursor
 
-        more = results and (
+        more = bool(results) and (
             iterator._more_results_after_limit or iterator.probably_has_next()
         )
         raise tasklets.Return(results, cursor, more)
