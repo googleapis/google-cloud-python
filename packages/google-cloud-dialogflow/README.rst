@@ -68,17 +68,16 @@ Versioning
 
 This library follows `Semantic Versioning <http://semver.org/>`_.
 
-This library is considered to be in **beta**. This means it is expected to be
-mostly stable while we work toward a general availability release; however,
-complete stability is not guaranteed. We will address issues and requests
-against beta libraries with a high priority.
+This library is considered to be stable. This means and that the code surface will not change in backwards-incompatible
+ways unless either absolutely necessary (e.g. because of critical security issues) or with an extensive deprecation
+period. Issues and requests against GA libraries are addressed with the highest priority.
 
-More Information: `Google Cloud Platform Launch Stages <https://cloud.google.com/terms/launch-stages>`_
+More Information: `Google Cloud Python Library Support <https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability>`_
 
 Contributing
 ------------
 
-Contributions welcome! See the `Contributing Guide <https://github.com/googleapis/python-dialogflow/blob/master/.github/CONTRIBUTING.rst>`_.
+Contributions welcome! See the `Contributing Guide <https://github.com/googleapis/python-dialogflow/blob/master/.github/CONTRIBUTING.md>`_.
 
 License
 -------
@@ -88,5 +87,5 @@ Apache Version 2.0
 See `the LICENSE file <https://github.com/googleapis/python-dialogflow/blob/master/LICENSE>`_ for more information.
 
 
-.. |release level| image:: https://img.shields.io/badge/release%20level-beta-yellow.svg?style&#x3D;flat
-    :target: https://cloud.google.com/terms/launch-stages
+.. |release level| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
