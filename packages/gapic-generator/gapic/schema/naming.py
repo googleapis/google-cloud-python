@@ -25,6 +25,8 @@ from gapic.generator import options
 
 # See https://github.com/python/mypy/issues/5374 for details on the mypy false
 # positive.
+
+
 @dataclasses.dataclass(frozen=True)  # type: ignore
 class Naming(abc.ABC):
     """Naming data for an API.
