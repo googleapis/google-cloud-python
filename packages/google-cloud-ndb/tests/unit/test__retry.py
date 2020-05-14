@@ -142,8 +142,24 @@ class Test_is_transient_error:
 
     @staticmethod
     @mock.patch("google.cloud.ndb._retry.core_retry")
-    def test_core_says_no_we_say_no(core_retry):
+    def test_not_a_grpc_call(core_retry):
         error = object()
+        core_retry.if_transient_error.return_value = False
+        assert _retry.is_transient_error(error) is False
+        core_retry.if_transient_error.assert_called_once_with(error)
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._retry.core_retry")
+    def test_code_is_not_callable(core_retry):
+        error = mock.Mock(spec=grpc.Call, code=404)
+        core_retry.if_transient_error.return_value = False
+        assert _retry.is_transient_error(error) is False
+        core_retry.if_transient_error.assert_called_once_with(error)
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._retry.core_retry")
+    def test_code_is_not_transient(core_retry):
+        error = mock.Mock(spec=grpc.Call, code=mock.Mock(return_value=42))
         core_retry.if_transient_error.return_value = False
         assert _retry.is_transient_error(error) is False
         core_retry.if_transient_error.assert_called_once_with(error)
@@ -152,7 +168,8 @@ class Test_is_transient_error:
     @mock.patch("google.cloud.ndb._retry.core_retry")
     def test_unavailable(core_retry):
         error = mock.Mock(
-            code=mock.Mock(return_value=grpc.StatusCode.UNAVAILABLE)
+            spec=grpc.Call,
+            code=mock.Mock(return_value=grpc.StatusCode.UNAVAILABLE),
         )
         core_retry.if_transient_error.return_value = False
         assert _retry.is_transient_error(error) is True
@@ -162,7 +179,8 @@ class Test_is_transient_error:
     @mock.patch("google.cloud.ndb._retry.core_retry")
     def test_internal(core_retry):
         error = mock.Mock(
-            code=mock.Mock(return_value=grpc.StatusCode.INTERNAL)
+            spec=grpc.Call,
+            code=mock.Mock(return_value=grpc.StatusCode.INTERNAL),
         )
         core_retry.if_transient_error.return_value = False
         assert _retry.is_transient_error(error) is True
@@ -172,7 +190,8 @@ class Test_is_transient_error:
     @mock.patch("google.cloud.ndb._retry.core_retry")
     def test_unauthenticated(core_retry):
         error = mock.Mock(
-            code=mock.Mock(return_value=grpc.StatusCode.UNAUTHENTICATED)
+            spec=grpc.Call,
+            code=mock.Mock(return_value=grpc.StatusCode.UNAUTHENTICATED),
         )
         core_retry.if_transient_error.return_value = False
         assert _retry.is_transient_error(error) is False
@@ -181,7 +200,10 @@ class Test_is_transient_error:
     @staticmethod
     @mock.patch("google.cloud.ndb._retry.core_retry")
     def test_aborted(core_retry):
-        error = mock.Mock(code=mock.Mock(return_value=grpc.StatusCode.ABORTED))
+        error = mock.Mock(
+            spec=grpc.Call,
+            code=mock.Mock(return_value=grpc.StatusCode.ABORTED),
+        )
         core_retry.if_transient_error.return_value = False
         assert _retry.is_transient_error(error) is True
         core_retry.if_transient_error.assert_called_once_with(error)

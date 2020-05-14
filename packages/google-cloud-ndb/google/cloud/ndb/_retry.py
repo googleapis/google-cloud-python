@@ -115,9 +115,10 @@ def is_transient_error(error):
     if core_retry.if_transient_error(error):
         return True
 
-    method = getattr(error, "code", None)
-    if method is not None:
-        code = method()
-        return code in TRANSIENT_CODES
+    if isinstance(error, grpc.Call):
+        method = getattr(error, "code", None)
+        if callable(method):
+            code = method()
+            return code in TRANSIENT_CODES
 
     return False
