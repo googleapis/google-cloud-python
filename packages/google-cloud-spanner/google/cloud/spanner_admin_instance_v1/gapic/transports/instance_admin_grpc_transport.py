@@ -328,7 +328,7 @@ class InstanceAdminGrpcTransport(object):
         resource.
 
         Attempting this RPC on a non-existent Cloud Spanner instance resource
-        will result in a NOT\_FOUND error if the user has
+        will result in a NOT_FOUND error if the user has
         ``spanner.instances.list`` permission on the containing Google Cloud
         Project. Otherwise returns an empty set of permissions.
 

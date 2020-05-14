@@ -1,32 +1,25 @@
 {
   "sources": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "2.0.0",
-        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
-      }
-    },
-    {
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-spanner.git",
-        "sha": "1d4976634cb81dd11b0ddc4bfc9fe9c61a7e7041"
+        "sha": "b8c1a671fab4f08e6ba77628bdd3fa7b84c91e54"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "42ee97c1b93a0e3759bbba3013da309f670a90ab",
-        "internalRef": "307114445"
+        "sha": "89e89786896d256c70f43e68a975470c4f4f220e",
+        "internalRef": "311239362"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "f5e4c17dc78a966dbf29961dd01f9bbd63e20a04"
+        "sha": "84c4156c49be9dcabacc8fd7b0585b6fd789ae47"
       }
     }
   ],
@@ -37,8 +30,7 @@
         "apiName": "spanner",
         "apiVersion": "v1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/spanner/artman_spanner.yaml"
+        "generator": "bazel"
       }
     },
     {
@@ -47,8 +39,7 @@
         "apiName": "spanner_admin_instance",
         "apiVersion": "v1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/spanner/admin/instance/artman_spanner_admin_instance.yaml"
+        "generator": "bazel"
       }
     },
     {
@@ -57,8 +48,7 @@
         "apiName": "spanner_admin_database",
         "apiVersion": "v1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/spanner/admin/database/artman_spanner_admin_database.yaml"
+        "generator": "bazel"
       }
     }
   ]

@@ -39,8 +39,8 @@ class Backup(object):
 
         Attributes:
           STATE_UNSPECIFIED (int): Not specified.
-          CREATING (int): The pending backup is still being created. Operations on the backup may
-          fail with ``FAILED_PRECONDITION`` in this state.
+          CREATING (int): The pending backup is still being created. Operations on the backup
+          may fail with ``FAILED_PRECONDITION`` in this state.
           READY (int): The backup is complete and ready for use.
         """
 
@@ -56,8 +56,8 @@ class Database(object):
 
         Attributes:
           STATE_UNSPECIFIED (int): Not specified.
-          CREATING (int): The database is still being created. Operations on the database may fail
-          with ``FAILED_PRECONDITION`` in this state.
+          CREATING (int): The database is still being created. Operations on the database may
+          fail with ``FAILED_PRECONDITION`` in this state.
           READY (int): The database is fully created and ready for use.
           READY_OPTIMIZING (int): The database is fully created and ready for use, but is still being
           optimized for performance and cannot handle full load.

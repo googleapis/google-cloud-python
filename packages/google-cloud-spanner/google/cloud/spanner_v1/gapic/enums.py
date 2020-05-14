@@ -21,8 +21,8 @@ import enum
 
 class NullValue(enum.IntEnum):
     """
-    ``NullValue`` is a singleton enumeration to represent the null value for
-    the ``Value`` type union.
+    ``NullValue`` is a singleton enumeration to represent the null value
+    for the ``Value`` type union.
 
     The JSON representation for ``NullValue`` is JSON ``null``.
 
@@ -35,8 +35,8 @@ class NullValue(enum.IntEnum):
 
 class TypeCode(enum.IntEnum):
     """
-    ``TypeCode`` is used as part of ``Type`` to indicate the type of a Cloud
-    Spanner value.
+    ``TypeCode`` is used as part of ``Type`` to indicate the type of a
+    Cloud Spanner value.
 
     Each legal value of a type can be encoded to or decoded from a JSON
     value, using the encodings described below. All Cloud Spanner values can
@@ -49,8 +49,8 @@ class TypeCode(enum.IntEnum):
       INT64 (int): Encoded as ``string``, in decimal format.
       FLOAT64 (int): Encoded as ``number``, or the strings ``"NaN"``, ``"Infinity"``, or
       ``"-Infinity"``.
-      TIMESTAMP (int): Encoded as ``string`` in RFC 3339 timestamp format. The time zone must
-      be present, and must be ``"Z"``.
+      TIMESTAMP (int): Encoded as ``string`` in RFC 3339 timestamp format. The time zone
+      must be present, and must be ``"Z"``.
 
       If the schema has the column option ``allow_commit_timestamp=true``, the
       placeholder string ``"spanner.commit_timestamp()"`` can be used to
@@ -60,10 +60,11 @@ class TypeCode(enum.IntEnum):
       STRING (int): Encoded as ``string``.
       BYTES (int): Encoded as a base64-encoded ``string``, as described in RFC 4648,
       section 4.
-      ARRAY (int): Encoded as ``list``, where the list elements are represented according
-      to ``array_element_type``.
-      STRUCT (int): Encoded as ``list``, where list element ``i`` is represented according
-      to [struct\_type.fields[i]][google.spanner.v1.StructType.fields].
+      ARRAY (int): Encoded as ``list``, where the list elements are represented
+      according to ``array_element_type``.
+      STRUCT (int): Encoded as ``list``, where list element ``i`` is represented
+      according to
+      [struct_type.fields[i]][google.spanner.v1.StructType.fields].
     """
 
     TYPE_CODE_UNSPECIFIED = 0
@@ -99,14 +100,15 @@ class ExecuteSqlRequest(object):
 class PlanNode(object):
     class Kind(enum.IntEnum):
         """
-        The kind of ``PlanNode``. Distinguishes between the two different kinds
-        of nodes that can appear in a query plan.
+        The kind of ``PlanNode``. Distinguishes between the two different
+        kinds of nodes that can appear in a query plan.
 
         Attributes:
           KIND_UNSPECIFIED (int): Not specified.
-          RELATIONAL (int): Denotes a Relational operator node in the expression tree. Relational
-          operators represent iterative processing of rows during query execution.
-          For example, a ``TableScan`` operation that reads rows from a table.
+          RELATIONAL (int): Denotes a Relational operator node in the expression tree.
+          Relational operators represent iterative processing of rows during query
+          execution. For example, a ``TableScan`` operation that reads rows from a
+          table.
           SCALAR (int): Denotes a Scalar node in the expression tree. Scalar nodes represent
           non-iterable entities in the query plan. For example, constants or
           arithmetic operators appearing inside predicate expressions or references

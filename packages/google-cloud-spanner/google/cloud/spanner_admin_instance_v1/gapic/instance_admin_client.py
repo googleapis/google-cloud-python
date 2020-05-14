@@ -274,8 +274,8 @@ class InstanceAdminClient(object):
             ...         pass
 
         Args:
-            parent (str): Required. The name of the project for which a list of supported instance
-                configurations is requested. Values are of the form
+            parent (str): Required. The name of the project for which a list of supported
+                instance configurations is requested. Values are of the form
                 ``projects/<project>``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -366,8 +366,8 @@ class InstanceAdminClient(object):
             >>> response = client.get_instance_config(name)
 
         Args:
-            name (str): Required. The name of the requested instance configuration. Values are
-                of the form ``projects/<project>/instanceConfigs/<config>``.
+            name (str): Required. The name of the requested instance configuration. Values
+                are of the form ``projects/<project>/instanceConfigs/<config>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -457,8 +457,8 @@ class InstanceAdminClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            filter_ (str): An expression for filtering the results of the request. Filter rules are
-                case insensitive. The fields eligible for filtering are:
+            filter_ (str): An expression for filtering the results of the request. Filter rules
+                are case insensitive. The fields eligible for filtering are:
 
                 -  ``name``
                 -  ``display_name``
@@ -562,8 +562,8 @@ class InstanceAdminClient(object):
         Args:
             name (str): Required. The name of the requested instance. Values are of the form
                 ``projects/<project>/instances/<instance>``.
-            field_mask (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.FieldMask]): If field\_mask is present, specifies the subset of ``Instance`` fields
-                that should be returned. If absent, all ``Instance`` fields are
+            field_mask (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.FieldMask]): If field_mask is present, specifies the subset of ``Instance``
+                fields that should be returned. If absent, all ``Instance`` fields are
                 returned.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -687,9 +687,9 @@ class InstanceAdminClient(object):
         Args:
             parent (str): Required. The name of the project in which to create the instance.
                 Values are of the form ``projects/<project>``.
-            instance_id (str): Required. The ID of the instance to create. Valid identifiers are of the
-                form ``[a-z][-a-z0-9]*[a-z0-9]`` and must be between 2 and 64 characters
-                in length.
+            instance_id (str): Required. The ID of the instance to create. Valid identifiers are of
+                the form ``[a-z][-a-z0-9]*[a-z0-9]`` and must be between 2 and 64
+                characters in length.
             instance (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.Instance]): Required. The instance to create. The name may be omitted, but if
                 specified must be ``<parent>/instances/<instance_id>``.
 
@@ -820,9 +820,9 @@ class InstanceAdminClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            instance (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.Instance]): Required. The instance to update, which must always include the instance
-                name. Otherwise, only fields mentioned in ``field_mask`` need be
-                included.
+            instance (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.Instance]): Required. The instance to update, which must always include the
+                instance name. Otherwise, only fields mentioned in ``field_mask`` need
+                be included.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_admin_instance_v1.types.Instance`
@@ -919,8 +919,8 @@ class InstanceAdminClient(object):
             >>> client.delete_instance(name)
 
         Args:
-            name (str): Required. The name of the instance to be deleted. Values are of the form
-                ``projects/<project>/instances/<instance>``
+            name (str): Required. The name of the instance to be deleted. Values are of the
+                form ``projects/<project>/instances/<instance>``
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1148,7 +1148,7 @@ class InstanceAdminClient(object):
         resource.
 
         Attempting this RPC on a non-existent Cloud Spanner instance resource
-        will result in a NOT\_FOUND error if the user has
+        will result in a NOT_FOUND error if the user has
         ``spanner.instances.list`` permission on the containing Google Cloud
         Project. Otherwise returns an empty set of permissions.
 
@@ -1168,8 +1168,8 @@ class InstanceAdminClient(object):
         Args:
             resource (str): REQUIRED: The resource for which the policy detail is being requested.
                 See the operation documentation for the appropriate value for this field.
-            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with
-                wildcards (such as '*' or 'storage.*') are not allowed. For more
+            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions
+                with wildcards (such as '*' or 'storage.*') are not allowed. For more
                 information see `IAM
                 Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used

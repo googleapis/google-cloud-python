@@ -173,8 +173,8 @@ class DatabaseAdminGrpcTransport(object):
     def drop_database(self):
         """Return the gRPC stub for :meth:`DatabaseAdminClient.drop_database`.
 
-        Drops (aka deletes) a Cloud Spanner database. Completed backups for the
-        database will be retained according to their ``expire_time``.
+        Drops (aka deletes) a Cloud Spanner database. Completed backups for
+        the database will be retained according to their ``expire_time``.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -187,9 +187,9 @@ class DatabaseAdminGrpcTransport(object):
     def get_database_ddl(self):
         """Return the gRPC stub for :meth:`DatabaseAdminClient.get_database_ddl`.
 
-        Returns the schema of a Cloud Spanner database as a list of formatted
-        DDL statements. This method does not show pending schema updates, those
-        may be queried using the ``Operations`` API.
+        Returns the schema of a Cloud Spanner database as a list of
+        formatted DDL statements. This method does not show pending schema
+        updates, those may be queried using the ``Operations`` API.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -243,10 +243,10 @@ class DatabaseAdminGrpcTransport(object):
         backup resource.
 
         Attempting this RPC on a non-existent Cloud Spanner database will result
-        in a NOT\_FOUND error if the user has ``spanner.databases.list``
+        in a NOT_FOUND error if the user has ``spanner.databases.list``
         permission on the containing Cloud Spanner instance. Otherwise returns
         an empty set of permissions. Calling this method on a backup that does
-        not exist will result in a NOT\_FOUND error if the user has
+        not exist will result in a NOT_FOUND error if the user has
         ``spanner.backups.list`` permission on the containing instance.
 
         Returns:
@@ -360,8 +360,8 @@ class DatabaseAdminGrpcTransport(object):
     def list_database_operations(self):
         """Return the gRPC stub for :meth:`DatabaseAdminClient.list_database_operations`.
 
-        Lists database ``longrunning-operations``. A database operation has a
-        name of the form
+        Lists database ``longrunning-operations``. A database operation has
+        a name of the form
         ``projects/<project>/instances/<instance>/databases/<database>/operations/<operation>``.
         The long-running operation ``metadata`` field type ``metadata.type_url``
         describes the type of the metadata. Operations returned include those
@@ -379,8 +379,8 @@ class DatabaseAdminGrpcTransport(object):
     def list_backup_operations(self):
         """Return the gRPC stub for :meth:`DatabaseAdminClient.list_backup_operations`.
 
-        Lists the backup ``long-running operations`` in the given instance. A
-        backup operation has a name of the form
+        Lists the backup ``long-running operations`` in the given instance.
+        A backup operation has a name of the form
         ``projects/<project>/instances/<instance>/backups/<backup>/operations/<operation>``.
         The long-running operation ``metadata`` field type ``metadata.type_url``
         describes the type of the metadata. Operations returned include those

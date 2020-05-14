@@ -54,7 +54,8 @@ class ReplicaInfo(object):
           -  Can vote whether to commit a write.
           -  Participate in leadership election.
           -  Are eligible to become a leader.
-          READ_ONLY (int): Read-only replicas only support reads (not writes). Read-only replicas:
+          READ_ONLY (int): Read-only replicas only support reads (not writes). Read-only
+          replicas:
 
           -  Maintain a full copy of your data.
           -  Serve reads.

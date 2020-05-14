@@ -273,11 +273,11 @@ class DatabaseAdminClient(object):
         Args:
             parent (str): Required. The name of the instance that will serve the new database.
                 Values are of the form ``projects/<project>/instances/<instance>``.
-            create_statement (str): Required. A ``CREATE DATABASE`` statement, which specifies the ID of the
-                new database. The database ID must conform to the regular expression
+            create_statement (str): Required. A ``CREATE DATABASE`` statement, which specifies the ID of
+                the new database. The database ID must conform to the regular expression
                 ``[a-z][a-z0-9_\-]*[a-z0-9]`` and be between 2 and 30 characters in
                 length. If the database ID is a reserved word or if it contains a
-                hyphen, the database ID must be enclosed in backticks (`````).
+                hyphen, the database ID must be enclosed in backticks (:literal:`\``).
             extra_statements (list[str]): Optional. A list of DDL statements to run inside the newly created
                 database. Statements can create tables, indexes, etc. These
                 statements execute atomically with the creation of the database:
@@ -451,9 +451,9 @@ class DatabaseAdminClient(object):
         Args:
             database (str): Required. The database to update.
             statements (list[str]): Required. DDL statements to be applied to the database.
-            operation_id (str): If empty, the new update request is assigned an automatically-generated
-                operation ID. Otherwise, ``operation_id`` is used to construct the name
-                of the resulting ``Operation``.
+            operation_id (str): If empty, the new update request is assigned an
+                automatically-generated operation ID. Otherwise, ``operation_id`` is
+                used to construct the name of the resulting ``Operation``.
 
                 Specifying an explicit operation ID simplifies determining whether the
                 statements were executed in the event that the ``UpdateDatabaseDdl``
@@ -530,8 +530,8 @@ class DatabaseAdminClient(object):
         metadata=None,
     ):
         """
-        Drops (aka deletes) a Cloud Spanner database. Completed backups for the
-        database will be retained according to their ``expire_time``.
+        Drops (aka deletes) a Cloud Spanner database. Completed backups for
+        the database will be retained according to their ``expire_time``.
 
         Example:
             >>> from google.cloud import spanner_admin_database_v1
@@ -597,9 +597,9 @@ class DatabaseAdminClient(object):
         metadata=None,
     ):
         """
-        Returns the schema of a Cloud Spanner database as a list of formatted
-        DDL statements. This method does not show pending schema updates, those
-        may be queried using the ``Operations`` API.
+        Returns the schema of a Cloud Spanner database as a list of
+        formatted DDL statements. This method does not show pending schema
+        updates, those may be queried using the ``Operations`` API.
 
         Example:
             >>> from google.cloud import spanner_admin_database_v1
@@ -845,10 +845,10 @@ class DatabaseAdminClient(object):
         backup resource.
 
         Attempting this RPC on a non-existent Cloud Spanner database will result
-        in a NOT\_FOUND error if the user has ``spanner.databases.list``
+        in a NOT_FOUND error if the user has ``spanner.databases.list``
         permission on the containing Cloud Spanner instance. Otherwise returns
         an empty set of permissions. Calling this method on a backup that does
-        not exist will result in a NOT\_FOUND error if the user has
+        not exist will result in a NOT_FOUND error if the user has
         ``spanner.backups.list`` permission on the containing instance.
 
         Example:
@@ -867,8 +867,8 @@ class DatabaseAdminClient(object):
         Args:
             resource (str): REQUIRED: The resource for which the policy detail is being requested.
                 See the operation documentation for the appropriate value for this field.
-            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with
-                wildcards (such as '*' or 'storage.*') are not allowed. For more
+            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions
+                with wildcards (such as '*' or 'storage.*') are not allowed. For more
                 information see `IAM
                 Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -966,13 +966,13 @@ class DatabaseAdminClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            parent (str): Required. The name of the instance in which the backup will be created.
-                This must be the same instance that contains the database the backup
-                will be created from. The backup will be stored in the location(s)
-                specified in the instance configuration of this instance. Values are of
-                the form ``projects/<project>/instances/<instance>``.
-            backup_id (str): Required. The id of the backup to be created. The ``backup_id`` appended
-                to ``parent`` forms the full backup name of the form
+            parent (str): Required. The name of the instance in which the backup will be
+                created. This must be the same instance that contains the database the
+                backup will be created from. The backup will be stored in the
+                location(s) specified in the instance configuration of this instance.
+                Values are of the form ``projects/<project>/instances/<instance>``.
+            backup_id (str): Required. The id of the backup to be created. The ``backup_id``
+                appended to ``parent`` forms the full backup name of the form
                 ``projects/<project>/instances/<instance>/backups/<backup_id>``.
             backup (Union[dict, ~google.cloud.spanner_admin_database_v1.types.Backup]): Required. The backup to create.
 
@@ -1129,18 +1129,18 @@ class DatabaseAdminClient(object):
             >>> response = client.update_backup(backup, update_mask)
 
         Args:
-            backup (Union[dict, ~google.cloud.spanner_admin_database_v1.types.Backup]): Required. The backup to update. ``backup.name``, and the fields to be
-                updated as specified by ``update_mask`` are required. Other fields are
-                ignored. Update is only supported for the following fields:
+            backup (Union[dict, ~google.cloud.spanner_admin_database_v1.types.Backup]): Required. The backup to update. ``backup.name``, and the fields to
+                be updated as specified by ``update_mask`` are required. Other fields
+                are ignored. Update is only supported for the following fields:
 
                 -  ``backup.expire_time``.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_admin_database_v1.types.Backup`
-            update_mask (Union[dict, ~google.cloud.spanner_admin_database_v1.types.FieldMask]): Required. A mask specifying which fields (e.g. ``expire_time``) in the
-                Backup resource should be updated. This mask is relative to the Backup
-                resource, not to the request message. The field mask must always be
-                specified; this prevents any future fields from being erased
+            update_mask (Union[dict, ~google.cloud.spanner_admin_database_v1.types.FieldMask]): Required. A mask specifying which fields (e.g. ``expire_time``) in
+                the Backup resource should be updated. This mask is relative to the
+                Backup resource, not to the request message. The field mask must always
+                be specified; this prevents any future fields from being erased
                 accidentally by clients that do not know about them.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -1450,9 +1450,9 @@ class DatabaseAdminClient(object):
                 database. This instance must be in the same project and have the same
                 instance configuration as the instance containing the source backup.
                 Values are of the form ``projects/<project>/instances/<instance>``.
-            database_id (str): Required. The id of the database to create and restore to. This database
-                must not already exist. The ``database_id`` appended to ``parent`` forms
-                the full database name of the form
+            database_id (str): Required. The id of the database to create and restore to. This
+                database must not already exist. The ``database_id`` appended to
+                ``parent`` forms the full database name of the form
                 ``projects/<project>/instances/<instance>/databases/<database_id>``.
             backup (str): Name of the backup from which to restore. Values are of the form
                 ``projects/<project>/instances/<instance>/backups/<backup>``.
@@ -1526,8 +1526,8 @@ class DatabaseAdminClient(object):
         metadata=None,
     ):
         """
-        Lists database ``longrunning-operations``. A database operation has a
-        name of the form
+        Lists database ``longrunning-operations``. A database operation has
+        a name of the form
         ``projects/<project>/instances/<instance>/databases/<database>/operations/<operation>``.
         The long-running operation ``metadata`` field type ``metadata.type_url``
         describes the type of the metadata. Operations returned include those
@@ -1594,8 +1594,8 @@ class DatabaseAdminClient(object):
 
                    -  The operation's metadata type is ``RestoreDatabaseMetadata``.
                    -  The database is restored from a backup.
-                   -  The backup name contains "backup\_howl".
-                   -  The restored database's name contains "restored\_howl".
+                   -  The backup name contains "backup_howl".
+                   -  The restored database's name contains "restored_howl".
                    -  The operation started before 2018-03-28T14:50:00Z.
                    -  The operation resulted in an error.
             page_size (int): The maximum number of resources contained in the
@@ -1677,8 +1677,8 @@ class DatabaseAdminClient(object):
         metadata=None,
     ):
         """
-        Lists the backup ``long-running operations`` in the given instance. A
-        backup operation has a name of the form
+        Lists the backup ``long-running operations`` in the given instance.
+        A backup operation has a name of the form
         ``projects/<project>/instances/<instance>/backups/<backup>/operations/<operation>``.
         The long-running operation ``metadata`` field type ``metadata.type_url``
         describes the type of the metadata. Operations returned include those
@@ -1709,8 +1709,8 @@ class DatabaseAdminClient(object):
             ...         pass
 
         Args:
-            parent (str): Required. The instance of the backup operations. Values are of the form
-                ``projects/<project>/instances/<instance>``.
+            parent (str): Required. The instance of the backup operations. Values are of the
+                form ``projects/<project>/instances/<instance>``.
             filter_ (str): An expression that filters the list of returned backup operations.
 
                 A filter expression consists of a field name, a comparison operator, and
@@ -1851,8 +1851,8 @@ class DatabaseAdminClient(object):
             ...         pass
 
         Args:
-            parent (str): Required. The instance whose databases should be listed. Values are of
-                the form ``projects/<project>/instances/<instance>``.
+            parent (str): Required. The instance whose databases should be listed. Values are
+                of the form ``projects/<project>/instances/<instance>``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page

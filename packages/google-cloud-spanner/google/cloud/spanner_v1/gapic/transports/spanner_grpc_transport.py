@@ -214,9 +214,9 @@ class SpannerGrpcTransport(object):
     def execute_sql(self):
         """Return the gRPC stub for :meth:`SpannerClient.execute_sql`.
 
-        Executes an SQL statement, returning all results in a single reply. This
-        method cannot be used to return a result set larger than 10 MiB; if the
-        query yields more data than that, the query fails with a
+        Executes an SQL statement, returning all results in a single reply.
+        This method cannot be used to return a result set larger than 10 MiB; if
+        the query yields more data than that, the query fails with a
         ``FAILED_PRECONDITION`` error.
 
         Operations inside read-write transactions might return ``ABORTED``. If
@@ -237,10 +237,10 @@ class SpannerGrpcTransport(object):
     def execute_streaming_sql(self):
         """Return the gRPC stub for :meth:`SpannerClient.execute_streaming_sql`.
 
-        Like ``ExecuteSql``, except returns the result set as a stream. Unlike
-        ``ExecuteSql``, there is no limit on the size of the returned result
-        set. However, no individual row in the result set can exceed 100 MiB,
-        and no column value can exceed 10 MiB.
+        Like ``ExecuteSql``, except returns the result set as a stream.
+        Unlike ``ExecuteSql``, there is no limit on the size of the returned
+        result set. However, no individual row in the result set can exceed 100
+        MiB, and no column value can exceed 10 MiB.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -276,10 +276,11 @@ class SpannerGrpcTransport(object):
     def read(self):
         """Return the gRPC stub for :meth:`SpannerClient.read`.
 
-        Reads rows from the database using key lookups and scans, as a simple
-        key/value style alternative to ``ExecuteSql``. This method cannot be
-        used to return a result set larger than 10 MiB; if the read matches more
-        data than that, the read fails with a ``FAILED_PRECONDITION`` error.
+        Reads rows from the database using key lookups and scans, as a
+        simple key/value style alternative to ``ExecuteSql``. This method cannot
+        be used to return a result set larger than 10 MiB; if the read matches
+        more data than that, the read fails with a ``FAILED_PRECONDITION``
+        error.
 
         Reads inside read-write transactions might return ``ABORTED``. If this
         occurs, the application should restart the transaction from the
@@ -330,8 +331,8 @@ class SpannerGrpcTransport(object):
     def commit(self):
         """Return the gRPC stub for :meth:`SpannerClient.commit`.
 
-        Commits a transaction. The request includes the mutations to be applied
-        to rows in the database.
+        Commits a transaction. The request includes the mutations to be
+        applied to rows in the database.
 
         ``Commit`` might return an ``ABORTED`` error. This can occur at any
         time; commonly, the cause is conflicts with concurrent transactions.
@@ -369,11 +370,11 @@ class SpannerGrpcTransport(object):
     def partition_query(self):
         """Return the gRPC stub for :meth:`SpannerClient.partition_query`.
 
-        Creates a set of partition tokens that can be used to execute a query
-        operation in parallel. Each of the returned partition tokens can be used
-        by ``ExecuteStreamingSql`` to specify a subset of the query result to
-        read. The same session and read-only transaction must be used by the
-        PartitionQueryRequest used to create the partition tokens and the
+        Creates a set of partition tokens that can be used to execute a
+        query operation in parallel. Each of the returned partition tokens can
+        be used by ``ExecuteStreamingSql`` to specify a subset of the query
+        result to read. The same session and read-only transaction must be used
+        by the PartitionQueryRequest used to create the partition tokens and the
         ExecuteSqlRequests that use the partition tokens.
 
         Partition tokens become invalid when the session used to create them is
@@ -399,8 +400,7 @@ class SpannerGrpcTransport(object):
         PartitionReadRequest used to create the partition tokens and the
         ReadRequests that use the partition tokens. There are no ordering
         guarantees on rows returned among the returned partition tokens, or even
-        within each individual StreamingRead call issued with a
-        partition\_token.
+        within each individual StreamingRead call issued with a partition_token.
 
         Partition tokens become invalid when the session used to create them is
         deleted, is idle for too long, begins a new transaction, or becomes too
