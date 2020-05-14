@@ -1024,11 +1024,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         table = self._make_one(table_ref)
-        time_partitioning = TimePartitioning(type_=TimePartitioningType.DAY)
+        time_partitioning = TimePartitioning(type_=TimePartitioningType.HOUR)
 
         table.time_partitioning = time_partitioning
 
-        self.assertEqual(table.time_partitioning.type_, TimePartitioningType.DAY)
+        self.assertEqual(table.time_partitioning.type_, TimePartitioningType.HOUR)
         # Both objects point to the same properties dict
         self.assertIs(
             table._properties["timePartitioning"], time_partitioning._properties

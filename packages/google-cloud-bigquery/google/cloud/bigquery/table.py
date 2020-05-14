@@ -583,8 +583,6 @@ class Table(object):
         """Union[str, None]: Time partitioning of the table if it is
         partitioned (Defaults to :data:`None`).
 
-        The only partitioning type that is currently supported is
-        :attr:`~google.cloud.bigquery.table.TimePartitioningType.DAY`.
         """
         warnings.warn(
             "This method will be deprecated in future versions. Please use "
@@ -1979,6 +1977,9 @@ class TimePartitioningType(object):
 
     DAY = "DAY"
     """str: Generates one partition per day."""
+
+    HOUR = "HOUR"
+    """str: Generates one partition per hour."""
 
 
 class TimePartitioning(object):
