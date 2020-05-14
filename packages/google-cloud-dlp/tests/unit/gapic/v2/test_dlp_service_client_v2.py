@@ -73,14 +73,11 @@ class TestDlpServiceClient(object):
             create_channel.return_value = channel
             client = dlp_v2.DlpServiceClient()
 
-        # Setup Request
-        parent = client.project_path("[PROJECT]")
-
-        response = client.inspect_content(parent)
+        response = client.inspect_content()
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = dlp_pb2.InspectContentRequest(parent=parent)
+        expected_request = dlp_pb2.InspectContentRequest()
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -92,11 +89,8 @@ class TestDlpServiceClient(object):
             create_channel.return_value = channel
             client = dlp_v2.DlpServiceClient()
 
-        # Setup request
-        parent = client.project_path("[PROJECT]")
-
         with pytest.raises(CustomException):
-            client.inspect_content(parent)
+            client.inspect_content()
 
     def test_redact_image(self):
         # Setup Expected Response
@@ -115,14 +109,11 @@ class TestDlpServiceClient(object):
             create_channel.return_value = channel
             client = dlp_v2.DlpServiceClient()
 
-        # Setup Request
-        parent = client.project_path("[PROJECT]")
-
-        response = client.redact_image(parent)
+        response = client.redact_image()
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = dlp_pb2.RedactImageRequest(parent=parent)
+        expected_request = dlp_pb2.RedactImageRequest()
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -134,11 +125,8 @@ class TestDlpServiceClient(object):
             create_channel.return_value = channel
             client = dlp_v2.DlpServiceClient()
 
-        # Setup request
-        parent = client.project_path("[PROJECT]")
-
         with pytest.raises(CustomException):
-            client.redact_image(parent)
+            client.redact_image()
 
     def test_deidentify_content(self):
         # Setup Expected Response
@@ -152,14 +140,11 @@ class TestDlpServiceClient(object):
             create_channel.return_value = channel
             client = dlp_v2.DlpServiceClient()
 
-        # Setup Request
-        parent = client.project_path("[PROJECT]")
-
-        response = client.deidentify_content(parent)
+        response = client.deidentify_content()
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = dlp_pb2.DeidentifyContentRequest(parent=parent)
+        expected_request = dlp_pb2.DeidentifyContentRequest()
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -171,11 +156,8 @@ class TestDlpServiceClient(object):
             create_channel.return_value = channel
             client = dlp_v2.DlpServiceClient()
 
-        # Setup request
-        parent = client.project_path("[PROJECT]")
-
         with pytest.raises(CustomException):
-            client.deidentify_content(parent)
+            client.deidentify_content()
 
     def test_reidentify_content(self):
         # Setup Expected Response
@@ -265,13 +247,16 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup Request
-        parent = client.organization_path("[ORGANIZATION]")
+        parent = client.organization_location_path("[ORGANIZATION]", "[LOCATION]")
+        inspect_template = {}
 
-        response = client.create_inspect_template(parent)
+        response = client.create_inspect_template(parent, inspect_template)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = dlp_pb2.CreateInspectTemplateRequest(parent=parent)
+        expected_request = dlp_pb2.CreateInspectTemplateRequest(
+            parent=parent, inspect_template=inspect_template
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -284,10 +269,11 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup request
-        parent = client.organization_path("[ORGANIZATION]")
+        parent = client.organization_location_path("[ORGANIZATION]", "[LOCATION]")
+        inspect_template = {}
 
         with pytest.raises(CustomException):
-            client.create_inspect_template(parent)
+            client.create_inspect_template(parent, inspect_template)
 
     def test_update_inspect_template(self):
         # Setup Expected Response
@@ -339,11 +325,11 @@ class TestDlpServiceClient(object):
 
     def test_get_inspect_template(self):
         # Setup Expected Response
-        name = "name3373707"
+        name_2 = "name2-1052831874"
         display_name = "displayName1615086568"
         description = "description-1724546052"
         expected_response = {
-            "name": name,
+            "name": name_2,
             "display_name": display_name,
             "description": description,
         }
@@ -356,11 +342,16 @@ class TestDlpServiceClient(object):
             create_channel.return_value = channel
             client = dlp_v2.DlpServiceClient()
 
-        response = client.get_inspect_template()
+        # Setup Request
+        name = client.organization_inspect_template_path(
+            "[ORGANIZATION]", "[INSPECT_TEMPLATE]"
+        )
+
+        response = client.get_inspect_template(name)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = dlp_pb2.GetInspectTemplateRequest()
+        expected_request = dlp_pb2.GetInspectTemplateRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -372,8 +363,13 @@ class TestDlpServiceClient(object):
             create_channel.return_value = channel
             client = dlp_v2.DlpServiceClient()
 
+        # Setup request
+        name = client.organization_inspect_template_path(
+            "[ORGANIZATION]", "[INSPECT_TEMPLATE]"
+        )
+
         with pytest.raises(CustomException):
-            client.get_inspect_template()
+            client.get_inspect_template(name)
 
     def test_list_inspect_templates(self):
         # Setup Expected Response
@@ -394,7 +390,7 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup Request
-        parent = client.organization_path("[ORGANIZATION]")
+        parent = client.organization_location_path("[ORGANIZATION]", "[LOCATION]")
 
         paged_list_response = client.list_inspect_templates(parent)
         resources = list(paged_list_response)
@@ -415,7 +411,7 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup request
-        parent = client.organization_path("[ORGANIZATION]")
+        parent = client.organization_location_path("[ORGANIZATION]", "[LOCATION]")
 
         paged_list_response = client.list_inspect_templates(parent)
         with pytest.raises(CustomException):
@@ -476,13 +472,16 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup Request
-        parent = client.organization_path("[ORGANIZATION]")
+        parent = client.organization_location_path("[ORGANIZATION]", "[LOCATION]")
+        deidentify_template = {}
 
-        response = client.create_deidentify_template(parent)
+        response = client.create_deidentify_template(parent, deidentify_template)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = dlp_pb2.CreateDeidentifyTemplateRequest(parent=parent)
+        expected_request = dlp_pb2.CreateDeidentifyTemplateRequest(
+            parent=parent, deidentify_template=deidentify_template
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -495,10 +494,11 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup request
-        parent = client.organization_path("[ORGANIZATION]")
+        parent = client.organization_location_path("[ORGANIZATION]", "[LOCATION]")
+        deidentify_template = {}
 
         with pytest.raises(CustomException):
-            client.create_deidentify_template(parent)
+            client.create_deidentify_template(parent, deidentify_template)
 
     def test_update_deidentify_template(self):
         # Setup Expected Response
@@ -615,7 +615,7 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup Request
-        parent = client.organization_path("[ORGANIZATION]")
+        parent = client.organization_location_path("[ORGANIZATION]", "[LOCATION]")
 
         paged_list_response = client.list_deidentify_templates(parent)
         resources = list(paged_list_response)
@@ -636,7 +636,7 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup request
-        parent = client.organization_path("[ORGANIZATION]")
+        parent = client.organization_location_path("[ORGANIZATION]", "[LOCATION]")
 
         paged_list_response = client.list_deidentify_templates(parent)
         with pytest.raises(CustomException):
@@ -774,7 +774,7 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup Request
-        name = client.dlp_job_path("[PROJECT]", "[DLP_JOB]")
+        name = "name3373707"
 
         response = client.get_dlp_job(name)
         assert expected_response == response
@@ -793,7 +793,7 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup request
-        name = client.dlp_job_path("[PROJECT]", "[DLP_JOB]")
+        name = "name3373707"
 
         with pytest.raises(CustomException):
             client.get_dlp_job(name)
@@ -806,7 +806,7 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup Request
-        name = client.dlp_job_path("[PROJECT]", "[DLP_JOB]")
+        name = "name3373707"
 
         client.delete_dlp_job(name)
 
@@ -824,7 +824,7 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup request
-        name = client.dlp_job_path("[PROJECT]", "[DLP_JOB]")
+        name = "name3373707"
 
         with pytest.raises(CustomException):
             client.delete_dlp_job(name)
@@ -837,7 +837,7 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup Request
-        name = client.dlp_job_path("[PROJECT]", "[DLP_JOB]")
+        name = "name3373707"
 
         client.cancel_dlp_job(name)
 
@@ -855,7 +855,7 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup request
-        name = client.dlp_job_path("[PROJECT]", "[DLP_JOB]")
+        name = "name3373707"
 
         with pytest.raises(CustomException):
             client.cancel_dlp_job(name)
@@ -868,7 +868,7 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup Request
-        name = client.dlp_job_path("[PROJECT]", "[DLP_JOB]")
+        name = "name3373707"
 
         client.finish_dlp_job(name)
 
@@ -886,7 +886,7 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup request
-        name = client.dlp_job_path("[PROJECT]", "[DLP_JOB]")
+        name = "name3373707"
 
         with pytest.raises(CustomException):
             client.finish_dlp_job(name)
@@ -1026,7 +1026,7 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup Request
-        name = "name3373707"
+        name = client.project_job_trigger_path("[PROJECT]", "[JOB_TRIGGER]")
 
         client.delete_job_trigger(name)
 
@@ -1044,7 +1044,7 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup request
-        name = "name3373707"
+        name = client.project_job_trigger_path("[PROJECT]", "[JOB_TRIGGER]")
 
         with pytest.raises(CustomException):
             client.delete_job_trigger(name)
@@ -1062,7 +1062,7 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup Request
-        name = "name3373707"
+        name = client.project_job_trigger_path("[PROJECT]", "[JOB_TRIGGER]")
 
         response = client.hybrid_inspect_job_trigger(name)
         assert expected_response == response
@@ -1081,7 +1081,7 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup request
-        name = "name3373707"
+        name = client.project_job_trigger_path("[PROJECT]", "[JOB_TRIGGER]")
 
         with pytest.raises(CustomException):
             client.hybrid_inspect_job_trigger(name)
@@ -1151,12 +1151,15 @@ class TestDlpServiceClient(object):
 
         # Setup Request
         parent = client.project_path("[PROJECT]")
+        job_trigger = {}
 
-        response = client.create_job_trigger(parent)
+        response = client.create_job_trigger(parent, job_trigger)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = dlp_pb2.CreateJobTriggerRequest(parent=parent)
+        expected_request = dlp_pb2.CreateJobTriggerRequest(
+            parent=parent, job_trigger=job_trigger
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -1170,9 +1173,10 @@ class TestDlpServiceClient(object):
 
         # Setup request
         parent = client.project_path("[PROJECT]")
+        job_trigger = {}
 
         with pytest.raises(CustomException):
-            client.create_job_trigger(parent)
+            client.create_job_trigger(parent, job_trigger)
 
     def test_create_stored_info_type(self):
         # Setup Expected Response
@@ -1188,13 +1192,16 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup Request
-        parent = client.organization_path("[ORGANIZATION]")
+        parent = client.organization_location_path("[ORGANIZATION]", "[LOCATION]")
+        config = {}
 
-        response = client.create_stored_info_type(parent)
+        response = client.create_stored_info_type(parent, config)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = dlp_pb2.CreateStoredInfoTypeRequest(parent=parent)
+        expected_request = dlp_pb2.CreateStoredInfoTypeRequest(
+            parent=parent, config=config
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -1207,10 +1214,11 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup request
-        parent = client.organization_path("[ORGANIZATION]")
+        parent = client.organization_location_path("[ORGANIZATION]", "[LOCATION]")
+        config = {}
 
         with pytest.raises(CustomException):
-            client.create_stored_info_type(parent)
+            client.create_stored_info_type(parent, config)
 
     def test_update_stored_info_type(self):
         # Setup Expected Response
@@ -1315,7 +1323,7 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup Request
-        parent = client.organization_path("[ORGANIZATION]")
+        parent = client.organization_location_path("[ORGANIZATION]", "[LOCATION]")
 
         paged_list_response = client.list_stored_info_types(parent)
         resources = list(paged_list_response)
@@ -1336,7 +1344,7 @@ class TestDlpServiceClient(object):
             client = dlp_v2.DlpServiceClient()
 
         # Setup request
-        parent = client.organization_path("[ORGANIZATION]")
+        parent = client.organization_location_path("[ORGANIZATION]", "[LOCATION]")
 
         paged_list_response = client.list_stored_info_types(parent)
         with pytest.raises(CustomException):

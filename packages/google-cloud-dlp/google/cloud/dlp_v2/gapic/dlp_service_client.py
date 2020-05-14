@@ -85,10 +85,46 @@ class DlpServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def deidentify_template_path(cls, organization, deidentify_template):
+        """Return a fully-qualified deidentify_template string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}/deidentifyTemplates/{deidentify_template}",
+            organization=organization,
+            deidentify_template=deidentify_template,
+        )
+
+    @classmethod
     def dlp_job_path(cls, project, dlp_job):
         """Return a fully-qualified dlp_job string."""
         return google.api_core.path_template.expand(
             "projects/{project}/dlpJobs/{dlp_job}", project=project, dlp_job=dlp_job
+        )
+
+    @classmethod
+    def inspect_template_path(cls, organization, inspect_template):
+        """Return a fully-qualified inspect_template string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}/inspectTemplates/{inspect_template}",
+            organization=organization,
+            inspect_template=inspect_template,
+        )
+
+    @classmethod
+    def job_trigger_path(cls, project, job_trigger):
+        """Return a fully-qualified job_trigger string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/jobTriggers/{job_trigger}",
+            project=project,
+            job_trigger=job_trigger,
+        )
+
+    @classmethod
+    def location_path(cls, project, location):
+        """Return a fully-qualified location string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}",
+            project=project,
+            location=location,
         )
 
     @classmethod
@@ -114,6 +150,15 @@ class DlpServiceClient(object):
             "organizations/{organization}/inspectTemplates/{inspect_template}",
             organization=organization,
             inspect_template=inspect_template,
+        )
+
+    @classmethod
+    def organization_location_path(cls, organization, location):
+        """Return a fully-qualified organization_location string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}/locations/{location}",
+            organization=organization,
+            location=location,
         )
 
     @classmethod
@@ -165,6 +210,15 @@ class DlpServiceClient(object):
         return google.api_core.path_template.expand(
             "projects/{project}/storedInfoTypes/{stored_info_type}",
             project=project,
+            stored_info_type=stored_info_type,
+        )
+
+    @classmethod
+    def stored_info_type_path(cls, organization, stored_info_type):
+        """Return a fully-qualified stored_info_type string."""
+        return google.api_core.path_template.expand(
+            "organizations/{organization}/storedInfoTypes/{stored_info_type}",
+            organization=organization,
             stored_info_type=stored_info_type,
         )
 
@@ -283,7 +337,7 @@ class DlpServiceClient(object):
     # Service calls
     def inspect_content(
         self,
-        parent,
+        parent=None,
         inspect_config=None,
         item=None,
         inspect_template_name=None,
@@ -308,14 +362,13 @@ class DlpServiceClient(object):
             >>>
             >>> client = dlp_v2.DlpServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
-            >>>
-            >>> response = client.inspect_content(parent)
+            >>> response = client.inspect_content()
 
         Args:
-            parent (str): The parent resource name, for example projects/my-project-id.
-            inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector. What specified here will override the
-                template referenced by the inspect\_template\_name argument.
+            parent (str): The parent resource name, for example projects/my-project-id or
+                projects/my-project-id/locations/{location_id}
+            inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector. What specified here will override
+                the template referenced by the inspect_template_name argument.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.InspectConfig`
@@ -323,13 +376,12 @@ class DlpServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.ContentItem`
-            inspect_template_name (str): Template to use. Any configuration directly specified in inspect\_config
-                will override those set in the template. Singular fields that are set in
-                this request will replace their corresponding fields in the template.
-                Repeated fields are appended. Singular sub-messages and groups are
-                recursively merged.
-            location_id (str): The geographic location to process content inspection. Reserved for future
-                extensions.
+            inspect_template_name (str): Template to use. Any configuration directly specified in
+                inspect_config will override those set in the template. Singular fields
+                that are set in this request will replace their corresponding fields in
+                the template. Repeated fields are appended. Singular sub-messages and
+                groups are recursively merged.
+            location_id (str): Deprecated. This field has no effect.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -386,7 +438,7 @@ class DlpServiceClient(object):
 
     def redact_image(
         self,
-        parent,
+        parent=None,
         location_id=None,
         inspect_config=None,
         image_redaction_configs=None,
@@ -411,14 +463,12 @@ class DlpServiceClient(object):
             >>>
             >>> client = dlp_v2.DlpServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
-            >>>
-            >>> response = client.redact_image(parent)
+            >>> response = client.redact_image()
 
         Args:
-            parent (str): The parent resource name, for example projects/my-project-id.
-            location_id (str): The geographic location to process the request. Reserved for future
-                extensions.
+            parent (str): The parent resource name, for example projects/my-project-id or
+                projects/my-project-id/locations/{location_id}.
+            location_id (str): Deprecated. This field has no effect.
             inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -490,7 +540,7 @@ class DlpServiceClient(object):
 
     def deidentify_content(
         self,
-        parent,
+        parent=None,
         deidentify_config=None,
         inspect_config=None,
         item=None,
@@ -516,20 +566,19 @@ class DlpServiceClient(object):
             >>>
             >>> client = dlp_v2.DlpServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
-            >>>
-            >>> response = client.deidentify_content(parent)
+            >>> response = client.deidentify_content()
 
         Args:
-            parent (str): The parent resource name, for example projects/my-project-id.
+            parent (str): The parent resource name, for example projects/my-project-id or
+                projects/my-project-id/locations/{location_id}.
             deidentify_config (Union[dict, ~google.cloud.dlp_v2.types.DeidentifyConfig]): Configuration for the de-identification of the content item. Items
                 specified here will override the template referenced by the
-                deidentify\_template\_name argument.
+                deidentify_template_name argument.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.DeidentifyConfig`
-            inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector. Items specified here will override the
-                template referenced by the inspect\_template\_name argument.
+            inspect_config (Union[dict, ~google.cloud.dlp_v2.types.InspectConfig]): Configuration for the inspector. Items specified here will override
+                the template referenced by the inspect_template_name argument.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.InspectConfig`
@@ -537,18 +586,17 @@ class DlpServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.ContentItem`
-            inspect_template_name (str): Template to use. Any configuration directly specified in inspect\_config
-                will override those set in the template. Singular fields that are set in
-                this request will replace their corresponding fields in the template.
-                Repeated fields are appended. Singular sub-messages and groups are
-                recursively merged.
+            inspect_template_name (str): Template to use. Any configuration directly specified in
+                inspect_config will override those set in the template. Singular fields
+                that are set in this request will replace their corresponding fields in
+                the template. Repeated fields are appended. Singular sub-messages and
+                groups are recursively merged.
             deidentify_template_name (str): Template to use. Any configuration directly specified in
-                deidentify\_config will override those set in the template. Singular
+                deidentify_config will override those set in the template. Singular
                 fields that are set in this request will replace their corresponding
                 fields in the template. Repeated fields are appended. Singular
                 sub-messages and groups are recursively merged.
-            location_id (str): The geographic location to process de-identification. Reserved for future
-                extensions.
+            location_id (str): Deprecated. This field has no effect.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -620,7 +668,7 @@ class DlpServiceClient(object):
     ):
         """
         Re-identifies content that has been de-identified. See
-        https://cloud.google.com/dlp/docs/pseudonymization#re-identification\_in\_free\_text\_code\_example
+        https://cloud.google.com/dlp/docs/pseudonymization#re-identification_in_free_text_code_example
         to learn more.
 
         Example:
@@ -634,13 +682,13 @@ class DlpServiceClient(object):
 
         Args:
             parent (str): Required. The parent resource name.
-            reidentify_config (Union[dict, ~google.cloud.dlp_v2.types.DeidentifyConfig]): Configuration for the re-identification of the content item. This field
-                shares the same proto message type that is used for de-identification,
-                however its usage here is for the reversal of the previous
-                de-identification. Re-identification is performed by examining the
-                transformations used to de-identify the items and executing the reverse.
-                This requires that only reversible transformations be provided here. The
-                reversible transformations are:
+            reidentify_config (Union[dict, ~google.cloud.dlp_v2.types.DeidentifyConfig]): Configuration for the re-identification of the content item. This
+                field shares the same proto message type that is used for
+                de-identification, however its usage here is for the reversal of the
+                previous de-identification. Re-identification is performed by examining
+                the transformations used to de-identify the items and executing the
+                reverse. This requires that only reversible transformations be provided
+                here. The reversible transformations are:
 
                 -  ``CryptoDeterministicConfig``
                 -  ``CryptoReplaceFfxFpeConfig``
@@ -660,14 +708,13 @@ class DlpServiceClient(object):
                 fields that are set in this request will replace their corresponding
                 fields in the template. Repeated fields are appended. Singular
                 sub-messages and groups are recursively merged.
-            reidentify_template_name (str): Template to use. References an instance of ``DeidentifyTemplate``. Any
-                configuration directly specified in ``reidentify_config`` or
+            reidentify_template_name (str): Template to use. References an instance of ``DeidentifyTemplate``.
+                Any configuration directly specified in ``reidentify_config`` or
                 ``inspect_config`` will override those set in the template. Singular
                 fields that are set in this request will replace their corresponding
                 fields in the template. Repeated fields are appended. Singular
                 sub-messages and groups are recursively merged.
-            location_id (str): The geographic location to process content reidentification.  Reserved for
-                future extensions.
+            location_id (str): Deprecated. This field has no effect.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -726,6 +773,7 @@ class DlpServiceClient(object):
 
     def list_info_types(
         self,
+        parent=None,
         language_code=None,
         filter_=None,
         location_id=None,
@@ -746,13 +794,13 @@ class DlpServiceClient(object):
             >>> response = client.list_info_types()
 
         Args:
+            parent (str): The parent resource name, for example locations/{location_id}
             language_code (str): BCP-47 language code for localized infoType friendly
                 names. If omitted, or if localized strings are not available,
                 en-US strings will be returned.
-            filter_ (str): filter to only return infoTypes supported by certain parts of the API.
-                Defaults to supported\_by=INSPECT.
-            location_id (str): The geographic location to list info types. Reserved for future
-                extensions.
+            filter_ (str): filter to only return infoTypes supported by certain parts of the
+                API. Defaults to supported_by=INSPECT.
+            location_id (str): Deprecated. This field has no effect.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -784,13 +832,16 @@ class DlpServiceClient(object):
             )
 
         request = dlp_pb2.ListInfoTypesRequest(
-            language_code=language_code, filter=filter_, location_id=location_id
+            parent=parent,
+            language_code=language_code,
+            filter=filter_,
+            location_id=location_id,
         )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
         try:
-            routing_header = [("location_id", location_id)]
+            routing_header = [("parent", parent)]
         except AttributeError:
             pass
         else:
@@ -806,7 +857,7 @@ class DlpServiceClient(object):
     def create_inspect_template(
         self,
         parent,
-        inspect_template=None,
+        inspect_template,
         template_id=None,
         location_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
@@ -823,23 +874,25 @@ class DlpServiceClient(object):
             >>>
             >>> client = dlp_v2.DlpServiceClient()
             >>>
-            >>> parent = client.organization_path('[ORGANIZATION]')
+            >>> parent = client.organization_location_path('[ORGANIZATION]', '[LOCATION]')
             >>>
-            >>> response = client.create_inspect_template(parent)
+            >>> # TODO: Initialize `inspect_template`:
+            >>> inspect_template = {}
+            >>>
+            >>> response = client.create_inspect_template(parent, inspect_template)
 
         Args:
             parent (str): Required. The parent resource name, for example projects/my-project-id or
-                organizations/my-org-id.
+                organizations/my-org-id or projects/my-project-id/locations/{location-id}.
             inspect_template (Union[dict, ~google.cloud.dlp_v2.types.InspectTemplate]): Required. The InspectTemplate to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.InspectTemplate`
-            template_id (str): The template id can contain uppercase and lowercase letters, numbers,
-                and hyphens; that is, it must match the regular expression:
+            template_id (str): The template id can contain uppercase and lowercase letters,
+                numbers, and hyphens; that is, it must match the regular expression:
                 ``[a-zA-Z\\d-_]+``. The maximum length is 100 characters. Can be empty
                 to allow the system to generate one.
-            location_id (str): The geographic location to store the inspection template. Reserved for
-                future extensions.
+            location_id (str): Deprecated. This field has no effect.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -980,7 +1033,7 @@ class DlpServiceClient(object):
 
     def get_inspect_template(
         self,
-        name=None,
+        name,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -994,12 +1047,15 @@ class DlpServiceClient(object):
             >>>
             >>> client = dlp_v2.DlpServiceClient()
             >>>
-            >>> response = client.get_inspect_template()
+            >>> name = client.organization_inspect_template_path('[ORGANIZATION]', '[INSPECT_TEMPLATE]')
+            >>>
+            >>> response = client.get_inspect_template(name)
 
         Args:
-            name (str): Required. Resource name of the organization and inspectTemplate to be
-                read, for example ``organizations/433245324/inspectTemplates/432452342``
-                or projects/project-id/inspectTemplates/432452342.
+            name (str): Required. Resource name of the organization and inspectTemplate to
+                be read, for example
+                ``organizations/433245324/inspectTemplates/432452342`` or
+                projects/project-id/inspectTemplates/432452342.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1067,7 +1123,7 @@ class DlpServiceClient(object):
             >>>
             >>> client = dlp_v2.DlpServiceClient()
             >>>
-            >>> parent = client.organization_path('[ORGANIZATION]')
+            >>> parent = client.organization_location_path('[ORGANIZATION]', '[LOCATION]')
             >>>
             >>> # Iterate over all results
             >>> for element in client.list_inspect_templates(parent):
@@ -1084,8 +1140,9 @@ class DlpServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Required. The parent resource name, for example projects/my-project-id or
-                organizations/my-org-id.
+            parent (str): Required. The parent resource name, for example
+                projects/my-project-id or organizations/my-org-id or
+                projects/my-project-id/locations/{location_id}.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -1103,8 +1160,7 @@ class DlpServiceClient(object):
                 -  ``update_time``: corresponds to time the template was last updated.
                 -  ``name``: corresponds to template's name.
                 -  ``display_name``: corresponds to template's display name.
-            location_id (str): The geographic location where inspection templates will be retrieved
-                from. Use ``-`` for all locations. Reserved for future extensions.
+            location_id (str): Deprecated. This field has no effect.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1193,8 +1249,8 @@ class DlpServiceClient(object):
             >>> client.delete_inspect_template(name)
 
         Args:
-            name (str): Required. Resource name of the organization and inspectTemplate to be
-                deleted, for example
+            name (str): Required. Resource name of the organization and inspectTemplate to
+                be deleted, for example
                 ``organizations/433245324/inspectTemplates/432452342`` or
                 projects/project-id/inspectTemplates/432452342.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1245,7 +1301,7 @@ class DlpServiceClient(object):
     def create_deidentify_template(
         self,
         parent,
-        deidentify_template=None,
+        deidentify_template,
         template_id=None,
         location_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
@@ -1263,23 +1319,26 @@ class DlpServiceClient(object):
             >>>
             >>> client = dlp_v2.DlpServiceClient()
             >>>
-            >>> parent = client.organization_path('[ORGANIZATION]')
+            >>> parent = client.organization_location_path('[ORGANIZATION]', '[LOCATION]')
             >>>
-            >>> response = client.create_deidentify_template(parent)
+            >>> # TODO: Initialize `deidentify_template`:
+            >>> deidentify_template = {}
+            >>>
+            >>> response = client.create_deidentify_template(parent, deidentify_template)
 
         Args:
-            parent (str): Required. The parent resource name, for example projects/my-project-id or
-                organizations/my-org-id.
+            parent (str): Required. The parent resource name, for example
+                projects/my-project-id or organizations/my-org-id or
+                projects/my-project-id/locations/{location_id}.
             deidentify_template (Union[dict, ~google.cloud.dlp_v2.types.DeidentifyTemplate]): Required. The DeidentifyTemplate to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.DeidentifyTemplate`
-            template_id (str): The template id can contain uppercase and lowercase letters, numbers,
-                and hyphens; that is, it must match the regular expression:
+            template_id (str): The template id can contain uppercase and lowercase letters,
+                numbers, and hyphens; that is, it must match the regular expression:
                 ``[a-zA-Z\\d-_]+``. The maximum length is 100 characters. Can be empty
                 to allow the system to generate one.
-            location_id (str): The geographic location to store the deidentification template. Reserved
-                for future extensions.
+            location_id (str): Deprecated. This field has no effect.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1359,8 +1418,8 @@ class DlpServiceClient(object):
             >>> response = client.update_deidentify_template(name)
 
         Args:
-            name (str): Required. Resource name of organization and deidentify template to be
-                updated, for example
+            name (str): Required. Resource name of organization and deidentify template to
+                be updated, for example
                 ``organizations/433245324/deidentifyTemplates/432452342`` or
                 projects/project-id/deidentifyTemplates/432452342.
             deidentify_template (Union[dict, ~google.cloud.dlp_v2.types.DeidentifyTemplate]): New DeidentifyTemplate value.
@@ -1445,8 +1504,8 @@ class DlpServiceClient(object):
             >>> response = client.get_deidentify_template(name)
 
         Args:
-            name (str): Required. Resource name of the organization and deidentify template to
-                be read, for example
+            name (str): Required. Resource name of the organization and deidentify template
+                to be read, for example
                 ``organizations/433245324/deidentifyTemplates/432452342`` or
                 projects/project-id/deidentifyTemplates/432452342.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1517,7 +1576,7 @@ class DlpServiceClient(object):
             >>>
             >>> client = dlp_v2.DlpServiceClient()
             >>>
-            >>> parent = client.organization_path('[ORGANIZATION]')
+            >>> parent = client.organization_location_path('[ORGANIZATION]', '[LOCATION]')
             >>>
             >>> # Iterate over all results
             >>> for element in client.list_deidentify_templates(parent):
@@ -1534,8 +1593,9 @@ class DlpServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Required. The parent resource name, for example projects/my-project-id or
-                organizations/my-org-id.
+            parent (str): Required. The parent resource name, for example
+                projects/my-project-id or organizations/my-org-id or
+                projects/my-project-id/locations/{location_id}.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -1553,9 +1613,7 @@ class DlpServiceClient(object):
                 -  ``update_time``: corresponds to time the template was last updated.
                 -  ``name``: corresponds to template's name.
                 -  ``display_name``: corresponds to template's display name.
-            location_id (str): The geographic location where deidentifications templates will be
-                retrieved from. Use ``-`` for all locations. Reserved for future
-                extensions.
+            location_id (str): Deprecated. This field has no effect.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1645,8 +1703,8 @@ class DlpServiceClient(object):
             >>> client.delete_deidentify_template(name)
 
         Args:
-            name (str): Required. Resource name of the organization and deidentify template to
-                be deleted, for example
+            name (str): Required. Resource name of the organization and deidentify template
+                to be deleted, for example
                 ``organizations/433245324/deidentifyTemplates/432452342`` or
                 projects/project-id/deidentifyTemplates/432452342.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1726,7 +1784,9 @@ class DlpServiceClient(object):
             >>> response = client.create_dlp_job(parent)
 
         Args:
-            parent (str): Required. The parent resource name, for example projects/my-project-id.
+            parent (str): Required. The parent resource name, for example
+                projects/my-project-id or
+                projects/my-project-id/locations/{location_id}.
             inspect_job (Union[dict, ~google.cloud.dlp_v2.types.InspectJobConfig]): Set to control what and how to inspect.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -1739,8 +1799,7 @@ class DlpServiceClient(object):
                 hyphens; that is, it must match the regular expression:
                 ``[a-zA-Z\\d-_]+``. The maximum length is 100 characters. Can be empty
                 to allow the system to generate one.
-            location_id (str): The geographic location to store and process the job. Reserved for
-                future extensions.
+            location_id (str): Deprecated. This field has no effect.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1840,7 +1899,9 @@ class DlpServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Required. The parent resource name, for example projects/my-project-id.
+            parent (str): Required. The parent resource name, for example
+                projects/my-project-id or
+                projects/my-project-id/locations/{location_id}.
             filter_ (str): Allows filtering.
 
                 Supported syntax:
@@ -1851,28 +1912,28 @@ class DlpServiceClient(object):
                 -  A restriction has the form of ``{field} {operator} {value}``.
                 -  Supported fields/values for inspect jobs:
 
-                   -  ``state`` - PENDING\|RUNNING\|CANCELED\|FINISHED\|FAILED
-                   -  ``inspected_storage`` - DATASTORE\|CLOUD\_STORAGE\|BIGQUERY
+                   -  ``state`` - PENDING|RUNNING|CANCELED|FINISHED|FAILED
+                   -  ``inspected_storage`` - DATASTORE|CLOUD_STORAGE|BIGQUERY
                    -  ``trigger_name`` - The resource name of the trigger that created
                       job.
-                   -  'end\_time\` - Corresponds to time the job finished.
-                   -  'start\_time\` - Corresponds to time the job finished.
+                   -  'end_time\` - Corresponds to time the job finished.
+                   -  'start_time\` - Corresponds to time the job finished.
 
                 -  Supported fields for risk analysis jobs:
 
-                   -  ``state`` - RUNNING\|CANCELED\|FINISHED\|FAILED
-                   -  'end\_time\` - Corresponds to time the job finished.
-                   -  'start\_time\` - Corresponds to time the job finished.
+                   -  ``state`` - RUNNING|CANCELED|FINISHED|FAILED
+                   -  'end_time\` - Corresponds to time the job finished.
+                   -  'start_time\` - Corresponds to time the job finished.
 
                 -  The operator must be ``=`` or ``!=``.
 
                 Examples:
 
-                -  inspected\_storage = cloud\_storage AND state = done
-                -  inspected\_storage = cloud\_storage OR inspected\_storage = bigquery
-                -  inspected\_storage = cloud\_storage AND (state = done OR state =
+                -  inspected_storage = cloud_storage AND state = done
+                -  inspected_storage = cloud_storage OR inspected_storage = bigquery
+                -  inspected_storage = cloud_storage AND (state = done OR state =
                    canceled)
-                -  end\_time > "2017-12-12T00:00:00+00:00"
+                -  end_time > "2017-12-12T00:00:00+00:00"
 
                 The length of this field should be no more than 500 characters.
             page_size (int): The maximum number of resources contained in the
@@ -1893,8 +1954,7 @@ class DlpServiceClient(object):
                 -  ``end_time``: corresponds to time the job ended.
                 -  ``name``: corresponds to job's name.
                 -  ``state``: corresponds to ``state``
-            location_id (str): The geographic location where jobs will be retrieved from. Use ``-`` for
-                all locations. Reserved for future extensions.
+            location_id (str): Deprecated. This field has no effect.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1981,7 +2041,8 @@ class DlpServiceClient(object):
             >>>
             >>> client = dlp_v2.DlpServiceClient()
             >>>
-            >>> name = client.dlp_job_path('[PROJECT]', '[DLP_JOB]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> response = client.get_dlp_job(name)
 
@@ -2054,7 +2115,8 @@ class DlpServiceClient(object):
             >>>
             >>> client = dlp_v2.DlpServiceClient()
             >>>
-            >>> name = client.dlp_job_path('[PROJECT]', '[DLP_JOB]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> client.delete_dlp_job(name)
 
@@ -2124,7 +2186,8 @@ class DlpServiceClient(object):
             >>>
             >>> client = dlp_v2.DlpServiceClient()
             >>>
-            >>> name = client.dlp_job_path('[PROJECT]', '[DLP_JOB]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> client.cancel_dlp_job(name)
 
@@ -2194,7 +2257,8 @@ class DlpServiceClient(object):
             >>>
             >>> client = dlp_v2.DlpServiceClient()
             >>>
-            >>> name = client.dlp_job_path('[PROJECT]', '[DLP_JOB]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> client.finish_dlp_job(name)
 
@@ -2272,8 +2336,8 @@ class DlpServiceClient(object):
             >>> response = client.hybrid_inspect_dlp_job(name)
 
         Args:
-            name (str): Required. Resource name of the job to execute a hybrid inspect on, for
-                example ``projects/dlp-test-project/dlpJob/53234423``.
+            name (str): Required. Resource name of the job to execute a hybrid inspect on,
+                for example ``projects/dlp-test-project/dlpJob/53234423``.
             hybrid_item (Union[dict, ~google.cloud.dlp_v2.types.HybridContentItem]): The item to inspect.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -2364,7 +2428,8 @@ class DlpServiceClient(object):
 
         Args:
             parent (str): Required. The parent resource name, for example
-                ``projects/my-project-id``.
+                ``projects/my-project-id`` or
+                projects/my-project-id/locations/{location_id}.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -2395,27 +2460,25 @@ class DlpServiceClient(object):
                 -  A restriction has the form of ``{field} {operator} {value}``.
                 -  Supported fields/values for inspect jobs:
 
-                   -  ``status`` - HEALTHY\|PAUSED\|CANCELLED
-                   -  ``inspected_storage`` - DATASTORE\|CLOUD\_STORAGE\|BIGQUERY
-                   -  'last\_run\_time\` - RFC 3339 formatted timestamp, surrounded by
+                   -  ``status`` - HEALTHY|PAUSED|CANCELLED
+                   -  ``inspected_storage`` - DATASTORE|CLOUD_STORAGE|BIGQUERY
+                   -  'last_run_time\` - RFC 3339 formatted timestamp, surrounded by
                       quotation marks. Nanoseconds are ignored.
-                   -  'error\_count' - Number of errors that have occurred while
-                      running.
+                   -  'error_count' - Number of errors that have occurred while running.
 
                 -  The operator must be ``=`` or ``!=`` for status and
-                   inspected\_storage.
+                   inspected_storage.
 
                 Examples:
 
-                -  inspected\_storage = cloud\_storage AND status = HEALTHY
-                -  inspected\_storage = cloud\_storage OR inspected\_storage = bigquery
-                -  inspected\_storage = cloud\_storage AND (state = PAUSED OR state =
+                -  inspected_storage = cloud_storage AND status = HEALTHY
+                -  inspected_storage = cloud_storage OR inspected_storage = bigquery
+                -  inspected_storage = cloud_storage AND (state = PAUSED OR state =
                    HEALTHY)
-                -  last\_run\_time > "2017-12-12T00:00:00+00:00"
+                -  last_run_time > "2017-12-12T00:00:00+00:00"
 
                 The length of this field should be no more than 500 characters.
-            location_id (str): The geographic location where job triggers will be retrieved from. Use
-                ``-`` for all locations. Reserved for future extensions.
+            location_id (str): Deprecated. This field has no effect.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -2505,8 +2568,8 @@ class DlpServiceClient(object):
             >>> response = client.get_job_trigger(name)
 
         Args:
-            name (str): Required. Resource name of the project and the triggeredJob, for example
-                ``projects/dlp-test-project/jobTriggers/53234423``.
+            name (str): Required. Resource name of the project and the triggeredJob, for
+                example ``projects/dlp-test-project/jobTriggers/53234423``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -2571,14 +2634,13 @@ class DlpServiceClient(object):
             >>>
             >>> client = dlp_v2.DlpServiceClient()
             >>>
-            >>> # TODO: Initialize `name`:
-            >>> name = ''
+            >>> name = client.project_job_trigger_path('[PROJECT]', '[JOB_TRIGGER]')
             >>>
             >>> client.delete_job_trigger(name)
 
         Args:
-            name (str): Required. Resource name of the project and the triggeredJob, for example
-                ``projects/dlp-test-project/jobTriggers/53234423``.
+            name (str): Required. Resource name of the project and the triggeredJob, for
+                example ``projects/dlp-test-project/jobTriggers/53234423``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -2645,14 +2707,13 @@ class DlpServiceClient(object):
             >>>
             >>> client = dlp_v2.DlpServiceClient()
             >>>
-            >>> # TODO: Initialize `name`:
-            >>> name = ''
+            >>> name = client.project_job_trigger_path('[PROJECT]', '[JOB_TRIGGER]')
             >>>
             >>> response = client.hybrid_inspect_job_trigger(name)
 
         Args:
-            name (str): Required. Resource name of the trigger to execute a hybrid inspect on,
-                for example ``projects/dlp-test-project/jobTriggers/53234423``.
+            name (str): Required. Resource name of the trigger to execute a hybrid inspect
+                on, for example ``projects/dlp-test-project/jobTriggers/53234423``.
             hybrid_item (Union[dict, ~google.cloud.dlp_v2.types.HybridContentItem]): The item to inspect.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -2730,8 +2791,8 @@ class DlpServiceClient(object):
             >>> response = client.update_job_trigger(name)
 
         Args:
-            name (str): Required. Resource name of the project and the triggeredJob, for example
-                ``projects/dlp-test-project/jobTriggers/53234423``.
+            name (str): Required. Resource name of the project and the triggeredJob, for
+                example ``projects/dlp-test-project/jobTriggers/53234423``.
             job_trigger (Union[dict, ~google.cloud.dlp_v2.types.JobTrigger]): New JobTrigger value.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -2793,7 +2854,7 @@ class DlpServiceClient(object):
     def create_job_trigger(
         self,
         parent,
-        job_trigger=None,
+        job_trigger,
         trigger_id=None,
         location_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
@@ -2812,20 +2873,24 @@ class DlpServiceClient(object):
             >>>
             >>> parent = client.project_path('[PROJECT]')
             >>>
-            >>> response = client.create_job_trigger(parent)
+            >>> # TODO: Initialize `job_trigger`:
+            >>> job_trigger = {}
+            >>>
+            >>> response = client.create_job_trigger(parent, job_trigger)
 
         Args:
-            parent (str): Required. The parent resource name, for example projects/my-project-id.
+            parent (str): Required. The parent resource name, for example
+                projects/my-project-id or
+                projects/my-project-id/locations/{location_id}.
             job_trigger (Union[dict, ~google.cloud.dlp_v2.types.JobTrigger]): Required. The JobTrigger to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dlp_v2.types.JobTrigger`
-            trigger_id (str): The trigger id can contain uppercase and lowercase letters, numbers, and
-                hyphens; that is, it must match the regular expression:
+            trigger_id (str): The trigger id can contain uppercase and lowercase letters, numbers,
+                and hyphens; that is, it must match the regular expression:
                 ``[a-zA-Z\\d-_]+``. The maximum length is 100 characters. Can be empty
                 to allow the system to generate one.
-            location_id (str): The geographic location to store the job trigger. Reserved for
-                future extensions.
+            location_id (str): Deprecated. This field has no effect.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -2882,7 +2947,7 @@ class DlpServiceClient(object):
     def create_stored_info_type(
         self,
         parent,
-        config=None,
+        config,
         stored_info_type_id=None,
         location_id=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
@@ -2899,13 +2964,17 @@ class DlpServiceClient(object):
             >>>
             >>> client = dlp_v2.DlpServiceClient()
             >>>
-            >>> parent = client.organization_path('[ORGANIZATION]')
+            >>> parent = client.organization_location_path('[ORGANIZATION]', '[LOCATION]')
             >>>
-            >>> response = client.create_stored_info_type(parent)
+            >>> # TODO: Initialize `config`:
+            >>> config = {}
+            >>>
+            >>> response = client.create_stored_info_type(parent, config)
 
         Args:
-            parent (str): Required. The parent resource name, for example projects/my-project-id or
-                organizations/my-org-id.
+            parent (str): Required. The parent resource name, for example
+                projects/my-project-id or organizations/my-org-id or
+                projects/my-project-id/locations/{location_id}
             config (Union[dict, ~google.cloud.dlp_v2.types.StoredInfoTypeConfig]): Required. Configuration of the storedInfoType to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -2914,8 +2983,7 @@ class DlpServiceClient(object):
                 numbers, and hyphens; that is, it must match the regular expression:
                 ``[a-zA-Z\\d-_]+``. The maximum length is 100 characters. Can be empty
                 to allow the system to generate one.
-            location_id (str): The geographic location to store the stored infoType. Reserved for
-                future extensions.
+            location_id (str): Deprecated. This field has no effect.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -3151,7 +3219,7 @@ class DlpServiceClient(object):
             >>>
             >>> client = dlp_v2.DlpServiceClient()
             >>>
-            >>> parent = client.organization_path('[ORGANIZATION]')
+            >>> parent = client.organization_location_path('[ORGANIZATION]', '[LOCATION]')
             >>>
             >>> # Iterate over all results
             >>> for element in client.list_stored_info_types(parent):
@@ -3168,8 +3236,9 @@ class DlpServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Required. The parent resource name, for example projects/my-project-id or
-                organizations/my-org-id.
+            parent (str): Required. The parent resource name, for example
+                projects/my-project-id or organizations/my-org-id or
+                projects/my-project-id/locations/{location_id}.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -3188,8 +3257,7 @@ class DlpServiceClient(object):
                 -  ``state``: corresponds to the state of the resource.
                 -  ``name``: corresponds to resource name.
                 -  ``display_name``: corresponds to info type's display name.
-            location_id (str): The geographic location where stored infoTypes will be retrieved from.
-                Use ``-`` for all locations. Reserved for future extensions.
+            location_id (str): Deprecated. This field has no effect.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.

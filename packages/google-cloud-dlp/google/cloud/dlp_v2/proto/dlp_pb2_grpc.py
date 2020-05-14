@@ -2,7 +2,7 @@
 import grpc
 
 from google.cloud.dlp_v2.proto import (
-    dlp_pb2 as google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2,
+    dlp_pb2 as google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2,
 )
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
@@ -27,172 +27,172 @@ class DlpServiceStub(object):
     """
         self.InspectContent = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/InspectContent",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectContentRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectContentResponse.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectContentRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectContentResponse.FromString,
         )
         self.RedactImage = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/RedactImage",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.RedactImageRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.RedactImageResponse.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.RedactImageRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.RedactImageResponse.FromString,
         )
         self.DeidentifyContent = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/DeidentifyContent",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyContentRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyContentResponse.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyContentRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyContentResponse.FromString,
         )
         self.ReidentifyContent = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/ReidentifyContent",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ReidentifyContentRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ReidentifyContentResponse.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ReidentifyContentRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ReidentifyContentResponse.FromString,
         )
         self.ListInfoTypes = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/ListInfoTypes",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListInfoTypesRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListInfoTypesResponse.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListInfoTypesRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListInfoTypesResponse.FromString,
         )
         self.CreateInspectTemplate = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/CreateInspectTemplate",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateInspectTemplateRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectTemplate.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateInspectTemplateRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectTemplate.FromString,
         )
         self.UpdateInspectTemplate = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/UpdateInspectTemplate",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateInspectTemplateRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectTemplate.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateInspectTemplateRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectTemplate.FromString,
         )
         self.GetInspectTemplate = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/GetInspectTemplate",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetInspectTemplateRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectTemplate.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetInspectTemplateRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectTemplate.FromString,
         )
         self.ListInspectTemplates = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/ListInspectTemplates",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListInspectTemplatesRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListInspectTemplatesResponse.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListInspectTemplatesRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListInspectTemplatesResponse.FromString,
         )
         self.DeleteInspectTemplate = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/DeleteInspectTemplate",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteInspectTemplateRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteInspectTemplateRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
         self.CreateDeidentifyTemplate = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/CreateDeidentifyTemplate",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateDeidentifyTemplateRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyTemplate.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateDeidentifyTemplateRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyTemplate.FromString,
         )
         self.UpdateDeidentifyTemplate = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/UpdateDeidentifyTemplate",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateDeidentifyTemplateRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyTemplate.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateDeidentifyTemplateRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyTemplate.FromString,
         )
         self.GetDeidentifyTemplate = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/GetDeidentifyTemplate",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetDeidentifyTemplateRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyTemplate.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetDeidentifyTemplateRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyTemplate.FromString,
         )
         self.ListDeidentifyTemplates = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/ListDeidentifyTemplates",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListDeidentifyTemplatesRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListDeidentifyTemplatesResponse.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListDeidentifyTemplatesRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListDeidentifyTemplatesResponse.FromString,
         )
         self.DeleteDeidentifyTemplate = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/DeleteDeidentifyTemplate",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteDeidentifyTemplateRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteDeidentifyTemplateRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
         self.CreateJobTrigger = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/CreateJobTrigger",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateJobTriggerRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.JobTrigger.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateJobTriggerRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.JobTrigger.FromString,
         )
         self.UpdateJobTrigger = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/UpdateJobTrigger",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateJobTriggerRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.JobTrigger.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateJobTriggerRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.JobTrigger.FromString,
         )
         self.HybridInspectJobTrigger = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/HybridInspectJobTrigger",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectJobTriggerRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectResponse.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectJobTriggerRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectResponse.FromString,
         )
         self.GetJobTrigger = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/GetJobTrigger",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetJobTriggerRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.JobTrigger.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetJobTriggerRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.JobTrigger.FromString,
         )
         self.ListJobTriggers = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/ListJobTriggers",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListJobTriggersRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListJobTriggersResponse.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListJobTriggersRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListJobTriggersResponse.FromString,
         )
         self.DeleteJobTrigger = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/DeleteJobTrigger",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteJobTriggerRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteJobTriggerRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
         self.ActivateJobTrigger = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/ActivateJobTrigger",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ActivateJobTriggerRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DlpJob.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ActivateJobTriggerRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DlpJob.FromString,
         )
         self.CreateDlpJob = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/CreateDlpJob",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateDlpJobRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DlpJob.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateDlpJobRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DlpJob.FromString,
         )
         self.ListDlpJobs = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/ListDlpJobs",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListDlpJobsRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListDlpJobsResponse.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListDlpJobsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListDlpJobsResponse.FromString,
         )
         self.GetDlpJob = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/GetDlpJob",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetDlpJobRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DlpJob.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetDlpJobRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DlpJob.FromString,
         )
         self.DeleteDlpJob = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/DeleteDlpJob",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteDlpJobRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteDlpJobRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
         self.CancelDlpJob = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/CancelDlpJob",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.CancelDlpJobRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.CancelDlpJobRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
         self.CreateStoredInfoType = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/CreateStoredInfoType",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateStoredInfoTypeRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.StoredInfoType.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateStoredInfoTypeRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.StoredInfoType.FromString,
         )
         self.UpdateStoredInfoType = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/UpdateStoredInfoType",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateStoredInfoTypeRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.StoredInfoType.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateStoredInfoTypeRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.StoredInfoType.FromString,
         )
         self.GetStoredInfoType = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/GetStoredInfoType",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetStoredInfoTypeRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.StoredInfoType.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetStoredInfoTypeRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.StoredInfoType.FromString,
         )
         self.ListStoredInfoTypes = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/ListStoredInfoTypes",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListStoredInfoTypesRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListStoredInfoTypesResponse.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListStoredInfoTypesRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListStoredInfoTypesResponse.FromString,
         )
         self.DeleteStoredInfoType = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/DeleteStoredInfoType",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteStoredInfoTypeRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteStoredInfoTypeRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
         self.HybridInspectDlpJob = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/HybridInspectDlpJob",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectDlpJobRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectResponse.FromString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectDlpJobRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectResponse.FromString,
         )
         self.FinishDlpJob = channel.unary_unary(
             "/google.privacy.dlp.v2.DlpService/FinishDlpJob",
-            request_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.FinishDlpJobRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.FinishDlpJobRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
 
@@ -546,172 +546,172 @@ def add_DlpServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
         "InspectContent": grpc.unary_unary_rpc_method_handler(
             servicer.InspectContent,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectContentRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectContentResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectContentRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectContentResponse.SerializeToString,
         ),
         "RedactImage": grpc.unary_unary_rpc_method_handler(
             servicer.RedactImage,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.RedactImageRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.RedactImageResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.RedactImageRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.RedactImageResponse.SerializeToString,
         ),
         "DeidentifyContent": grpc.unary_unary_rpc_method_handler(
             servicer.DeidentifyContent,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyContentRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyContentResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyContentRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyContentResponse.SerializeToString,
         ),
         "ReidentifyContent": grpc.unary_unary_rpc_method_handler(
             servicer.ReidentifyContent,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ReidentifyContentRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ReidentifyContentResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ReidentifyContentRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ReidentifyContentResponse.SerializeToString,
         ),
         "ListInfoTypes": grpc.unary_unary_rpc_method_handler(
             servicer.ListInfoTypes,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListInfoTypesRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListInfoTypesResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListInfoTypesRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListInfoTypesResponse.SerializeToString,
         ),
         "CreateInspectTemplate": grpc.unary_unary_rpc_method_handler(
             servicer.CreateInspectTemplate,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateInspectTemplateRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectTemplate.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateInspectTemplateRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectTemplate.SerializeToString,
         ),
         "UpdateInspectTemplate": grpc.unary_unary_rpc_method_handler(
             servicer.UpdateInspectTemplate,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateInspectTemplateRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectTemplate.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateInspectTemplateRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectTemplate.SerializeToString,
         ),
         "GetInspectTemplate": grpc.unary_unary_rpc_method_handler(
             servicer.GetInspectTemplate,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetInspectTemplateRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectTemplate.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetInspectTemplateRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.InspectTemplate.SerializeToString,
         ),
         "ListInspectTemplates": grpc.unary_unary_rpc_method_handler(
             servicer.ListInspectTemplates,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListInspectTemplatesRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListInspectTemplatesResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListInspectTemplatesRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListInspectTemplatesResponse.SerializeToString,
         ),
         "DeleteInspectTemplate": grpc.unary_unary_rpc_method_handler(
             servicer.DeleteInspectTemplate,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteInspectTemplateRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteInspectTemplateRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         "CreateDeidentifyTemplate": grpc.unary_unary_rpc_method_handler(
             servicer.CreateDeidentifyTemplate,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateDeidentifyTemplateRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyTemplate.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateDeidentifyTemplateRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyTemplate.SerializeToString,
         ),
         "UpdateDeidentifyTemplate": grpc.unary_unary_rpc_method_handler(
             servicer.UpdateDeidentifyTemplate,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateDeidentifyTemplateRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyTemplate.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateDeidentifyTemplateRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyTemplate.SerializeToString,
         ),
         "GetDeidentifyTemplate": grpc.unary_unary_rpc_method_handler(
             servicer.GetDeidentifyTemplate,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetDeidentifyTemplateRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyTemplate.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetDeidentifyTemplateRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeidentifyTemplate.SerializeToString,
         ),
         "ListDeidentifyTemplates": grpc.unary_unary_rpc_method_handler(
             servicer.ListDeidentifyTemplates,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListDeidentifyTemplatesRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListDeidentifyTemplatesResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListDeidentifyTemplatesRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListDeidentifyTemplatesResponse.SerializeToString,
         ),
         "DeleteDeidentifyTemplate": grpc.unary_unary_rpc_method_handler(
             servicer.DeleteDeidentifyTemplate,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteDeidentifyTemplateRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteDeidentifyTemplateRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         "CreateJobTrigger": grpc.unary_unary_rpc_method_handler(
             servicer.CreateJobTrigger,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateJobTriggerRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.JobTrigger.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateJobTriggerRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.JobTrigger.SerializeToString,
         ),
         "UpdateJobTrigger": grpc.unary_unary_rpc_method_handler(
             servicer.UpdateJobTrigger,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateJobTriggerRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.JobTrigger.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateJobTriggerRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.JobTrigger.SerializeToString,
         ),
         "HybridInspectJobTrigger": grpc.unary_unary_rpc_method_handler(
             servicer.HybridInspectJobTrigger,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectJobTriggerRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectJobTriggerRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectResponse.SerializeToString,
         ),
         "GetJobTrigger": grpc.unary_unary_rpc_method_handler(
             servicer.GetJobTrigger,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetJobTriggerRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.JobTrigger.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetJobTriggerRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.JobTrigger.SerializeToString,
         ),
         "ListJobTriggers": grpc.unary_unary_rpc_method_handler(
             servicer.ListJobTriggers,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListJobTriggersRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListJobTriggersResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListJobTriggersRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListJobTriggersResponse.SerializeToString,
         ),
         "DeleteJobTrigger": grpc.unary_unary_rpc_method_handler(
             servicer.DeleteJobTrigger,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteJobTriggerRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteJobTriggerRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         "ActivateJobTrigger": grpc.unary_unary_rpc_method_handler(
             servicer.ActivateJobTrigger,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ActivateJobTriggerRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DlpJob.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ActivateJobTriggerRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DlpJob.SerializeToString,
         ),
         "CreateDlpJob": grpc.unary_unary_rpc_method_handler(
             servicer.CreateDlpJob,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateDlpJobRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DlpJob.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateDlpJobRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DlpJob.SerializeToString,
         ),
         "ListDlpJobs": grpc.unary_unary_rpc_method_handler(
             servicer.ListDlpJobs,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListDlpJobsRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListDlpJobsResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListDlpJobsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListDlpJobsResponse.SerializeToString,
         ),
         "GetDlpJob": grpc.unary_unary_rpc_method_handler(
             servicer.GetDlpJob,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetDlpJobRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DlpJob.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetDlpJobRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DlpJob.SerializeToString,
         ),
         "DeleteDlpJob": grpc.unary_unary_rpc_method_handler(
             servicer.DeleteDlpJob,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteDlpJobRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteDlpJobRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         "CancelDlpJob": grpc.unary_unary_rpc_method_handler(
             servicer.CancelDlpJob,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.CancelDlpJobRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.CancelDlpJobRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         "CreateStoredInfoType": grpc.unary_unary_rpc_method_handler(
             servicer.CreateStoredInfoType,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateStoredInfoTypeRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.StoredInfoType.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.CreateStoredInfoTypeRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.StoredInfoType.SerializeToString,
         ),
         "UpdateStoredInfoType": grpc.unary_unary_rpc_method_handler(
             servicer.UpdateStoredInfoType,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateStoredInfoTypeRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.StoredInfoType.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.UpdateStoredInfoTypeRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.StoredInfoType.SerializeToString,
         ),
         "GetStoredInfoType": grpc.unary_unary_rpc_method_handler(
             servicer.GetStoredInfoType,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetStoredInfoTypeRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.StoredInfoType.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.GetStoredInfoTypeRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.StoredInfoType.SerializeToString,
         ),
         "ListStoredInfoTypes": grpc.unary_unary_rpc_method_handler(
             servicer.ListStoredInfoTypes,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListStoredInfoTypesRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListStoredInfoTypesResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListStoredInfoTypesRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.ListStoredInfoTypesResponse.SerializeToString,
         ),
         "DeleteStoredInfoType": grpc.unary_unary_rpc_method_handler(
             servicer.DeleteStoredInfoType,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteStoredInfoTypeRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.DeleteStoredInfoTypeRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         "HybridInspectDlpJob": grpc.unary_unary_rpc_method_handler(
             servicer.HybridInspectDlpJob,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectDlpJobRequest.FromString,
-            response_serializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectDlpJobRequest.FromString,
+            response_serializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.HybridInspectResponse.SerializeToString,
         ),
         "FinishDlpJob": grpc.unary_unary_rpc_method_handler(
             servicer.FinishDlpJob,
-            request_deserializer=google_dot_cloud_dot_privacy_dot_dlp__v2_dot_proto_dot_dlp__pb2.FinishDlpJobRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_dlp__v2_dot_proto_dot_dlp__pb2.FinishDlpJobRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
     }

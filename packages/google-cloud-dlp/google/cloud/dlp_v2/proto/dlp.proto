@@ -36,6 +36,11 @@ option java_multiple_files = true;
 option java_outer_classname = "DlpProto";
 option java_package = "com.google.privacy.dlp.v2";
 option php_namespace = "Google\\Cloud\\Dlp\\V2";
+option ruby_package = "Google::Cloud::Dlp::V2";
+option (google.api.resource_definition) = {
+  type: "dlp.googleapis.com/OrganizationLocation"
+  pattern: "organizations/{organization}/locations/{location}"
+};
 
 // The Cloud Data Loss Prevention (DLP) API is a service that allows clients
 // to detect the presence of Personally Identifiable Information (PII) and other
@@ -48,8 +53,7 @@ option php_namespace = "Google\\Cloud\\Dlp\\V2";
 // https://cloud.google.com/dlp/docs/.
 service DlpService {
   option (google.api.default_host) = "dlp.googleapis.com";
-  option (google.api.oauth_scopes) =
-      "https://www.googleapis.com/auth/cloud-platform";
+  option (google.api.oauth_scopes) = "https://www.googleapis.com/auth/cloud-platform";
 
   // Finds potentially sensitive info in content.
   // This method has limits on input size, processing time, and output size.
@@ -65,7 +69,7 @@ service DlpService {
       post: "/v2/{parent=projects/*}/content:inspect"
       body: "*"
       additional_bindings {
-        post: "/v2/{parent=projects/*}/locations/{location_id}/content:inspect"
+        post: "/v2/{parent=projects/*/locations/*}/content:inspect"
         body: "*"
       }
     };
@@ -84,7 +88,7 @@ service DlpService {
       post: "/v2/{parent=projects/*}/image:redact"
       body: "*"
       additional_bindings {
-        post: "/v2/{parent=projects/*}/locations/{location_id}/image:redact"
+        post: "/v2/{parent=projects/*/locations/*}/image:redact"
         body: "*"
       }
     };
@@ -98,13 +102,12 @@ service DlpService {
   // When no InfoTypes or CustomInfoTypes are specified in this request, the
   // system will automatically choose what detectors to run. By default this may
   // be all types, but may change over time as detectors are updated.
-  rpc DeidentifyContent(DeidentifyContentRequest)
-      returns (DeidentifyContentResponse) {
+  rpc DeidentifyContent(DeidentifyContentRequest) returns (DeidentifyContentResponse) {
     option (google.api.http) = {
       post: "/v2/{parent=projects/*}/content:deidentify"
       body: "*"
       additional_bindings {
-        post: "/v2/{parent=projects/*}/locations/{location_id}/content:deidentify"
+        post: "/v2/{parent=projects/*/locations/*}/content:deidentify"
         body: "*"
       }
     };
@@ -114,13 +117,12 @@ service DlpService {
   // See
   // https://cloud.google.com/dlp/docs/pseudonymization#re-identification_in_free_text_code_example
   // to learn more.
-  rpc ReidentifyContent(ReidentifyContentRequest)
-      returns (ReidentifyContentResponse) {
+  rpc ReidentifyContent(ReidentifyContentRequest) returns (ReidentifyContentResponse) {
     option (google.api.http) = {
       post: "/v2/{parent=projects/*}/content:reidentify"
       body: "*"
       additional_bindings {
-        post: "/v2/{parent=projects/*}/locations/{location_id}/content:reidentify"
+        post: "/v2/{parent=projects/*/locations/*}/content:reidentify"
         body: "*"
       }
     };
@@ -132,21 +134,22 @@ service DlpService {
   rpc ListInfoTypes(ListInfoTypesRequest) returns (ListInfoTypesResponse) {
     option (google.api.http) = {
       get: "/v2/infoTypes"
-      additional_bindings { get: "/v2/locations/{location_id}/infoTypes" }
+      additional_bindings {
+        get: "/v2/{parent=locations/*}/infoTypes"
+      }
     };
-    option (google.api.method_signature) = "location_id";
+    option (google.api.method_signature) = "parent";
   }
 
   // Creates an InspectTemplate for re-using frequently used configuration
   // for inspecting content, images, and storage.
   // See https://cloud.google.com/dlp/docs/creating-templates to learn more.
-  rpc CreateInspectTemplate(CreateInspectTemplateRequest)
-      returns (InspectTemplate) {
+  rpc CreateInspectTemplate(CreateInspectTemplateRequest) returns (InspectTemplate) {
     option (google.api.http) = {
       post: "/v2/{parent=organizations/*}/inspectTemplates"
       body: "*"
       additional_bindings {
-        post: "/v2/{parent=organizations/*}/locations/{location_id}/inspectTemplates"
+        post: "/v2/{parent=organizations/*/locations/*}/inspectTemplates"
         body: "*"
       }
       additional_bindings {
@@ -154,19 +157,16 @@ service DlpService {
         body: "*"
       }
       additional_bindings {
-        post: "/v2/{parent=projects/*}/locations/{location_id}/inspectTemplates"
+        post: "/v2/{parent=projects/*/locations/*}/inspectTemplates"
         body: "*"
       }
     };
     option (google.api.method_signature) = "parent,inspect_template";
-    option (google.api.method_signature) =
-        "parent,inspect_template,location_id";
   }
 
   // Updates the InspectTemplate.
   // See https://cloud.google.com/dlp/docs/creating-templates to learn more.
-  rpc UpdateInspectTemplate(UpdateInspectTemplateRequest)
-      returns (InspectTemplate) {
+  rpc UpdateInspectTemplate(UpdateInspectTemplateRequest) returns (InspectTemplate) {
     option (google.api.http) = {
       patch: "/v2/{name=organizations/*/inspectTemplates/*}"
       body: "*"
@@ -194,7 +194,9 @@ service DlpService {
       additional_bindings {
         get: "/v2/{name=organizations/*/locations/*/inspectTemplates/*}"
       }
-      additional_bindings { get: "/v2/{name=projects/*/inspectTemplates/*}" }
+      additional_bindings {
+        get: "/v2/{name=projects/*/inspectTemplates/*}"
+      }
       additional_bindings {
         get: "/v2/{name=projects/*/locations/*/inspectTemplates/*}"
       }
@@ -204,16 +206,17 @@ service DlpService {
 
   // Lists InspectTemplates.
   // See https://cloud.google.com/dlp/docs/creating-templates to learn more.
-  rpc ListInspectTemplates(ListInspectTemplatesRequest)
-      returns (ListInspectTemplatesResponse) {
+  rpc ListInspectTemplates(ListInspectTemplatesRequest) returns (ListInspectTemplatesResponse) {
     option (google.api.http) = {
       get: "/v2/{parent=organizations/*}/inspectTemplates"
       additional_bindings {
-        get: "/v2/{parent=organizations/*}/locations/{location_id}/inspectTemplates"
+        get: "/v2/{parent=organizations/*/locations/*}/inspectTemplates"
       }
-      additional_bindings { get: "/v2/{parent=projects/*}/inspectTemplates" }
       additional_bindings {
-        get: "/v2/{parent=projects/*}/locations/{location_id}/inspectTemplates"
+        get: "/v2/{parent=projects/*}/inspectTemplates"
+      }
+      additional_bindings {
+        get: "/v2/{parent=projects/*/locations/*}/inspectTemplates"
       }
     };
     option (google.api.method_signature) = "parent";
@@ -221,14 +224,15 @@ service DlpService {
 
   // Deletes an InspectTemplate.
   // See https://cloud.google.com/dlp/docs/creating-templates to learn more.
-  rpc DeleteInspectTemplate(DeleteInspectTemplateRequest)
-      returns (google.protobuf.Empty) {
+  rpc DeleteInspectTemplate(DeleteInspectTemplateRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
       delete: "/v2/{name=organizations/*/inspectTemplates/*}"
       additional_bindings {
         delete: "/v2/{name=organizations/*/locations/*/inspectTemplates/*}"
       }
-      additional_bindings { delete: "/v2/{name=projects/*/inspectTemplates/*}" }
+      additional_bindings {
+        delete: "/v2/{name=projects/*/inspectTemplates/*}"
+      }
       additional_bindings {
         delete: "/v2/{name=projects/*/locations/*/inspectTemplates/*}"
       }
@@ -240,13 +244,12 @@ service DlpService {
   // for de-identifying content, images, and storage.
   // See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
   // more.
-  rpc CreateDeidentifyTemplate(CreateDeidentifyTemplateRequest)
-      returns (DeidentifyTemplate) {
+  rpc CreateDeidentifyTemplate(CreateDeidentifyTemplateRequest) returns (DeidentifyTemplate) {
     option (google.api.http) = {
       post: "/v2/{parent=organizations/*}/deidentifyTemplates"
       body: "*"
       additional_bindings {
-        post: "/v2/{parent=organizations/*}/locations/{location_id}/deidentifyTemplates"
+        post: "/v2/{parent=organizations/*/locations/*}/deidentifyTemplates"
         body: "*"
       }
       additional_bindings {
@@ -254,20 +257,17 @@ service DlpService {
         body: "*"
       }
       additional_bindings {
-        post: "/v2/{parent=projects/*}/locations/{location_id}/deidentifyTemplates"
+        post: "/v2/{parent=projects/*/locations/*}/deidentifyTemplates"
         body: "*"
       }
     };
     option (google.api.method_signature) = "parent,deidentify_template";
-    option (google.api.method_signature) =
-        "parent,deidentify_template,location_id";
   }
 
   // Updates the DeidentifyTemplate.
   // See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
   // more.
-  rpc UpdateDeidentifyTemplate(UpdateDeidentifyTemplateRequest)
-      returns (DeidentifyTemplate) {
+  rpc UpdateDeidentifyTemplate(UpdateDeidentifyTemplateRequest) returns (DeidentifyTemplate) {
     option (google.api.http) = {
       patch: "/v2/{name=organizations/*/deidentifyTemplates/*}"
       body: "*"
@@ -284,21 +284,21 @@ service DlpService {
         body: "*"
       }
     };
-    option (google.api.method_signature) =
-        "name,deidentify_template,update_mask";
+    option (google.api.method_signature) = "name,deidentify_template,update_mask";
   }
 
   // Gets a DeidentifyTemplate.
   // See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
   // more.
-  rpc GetDeidentifyTemplate(GetDeidentifyTemplateRequest)
-      returns (DeidentifyTemplate) {
+  rpc GetDeidentifyTemplate(GetDeidentifyTemplateRequest) returns (DeidentifyTemplate) {
     option (google.api.http) = {
       get: "/v2/{name=organizations/*/deidentifyTemplates/*}"
       additional_bindings {
         get: "/v2/{name=organizations/*/locations/*/deidentifyTemplates/*}"
       }
-      additional_bindings { get: "/v2/{name=projects/*/deidentifyTemplates/*}" }
+      additional_bindings {
+        get: "/v2/{name=projects/*/deidentifyTemplates/*}"
+      }
       additional_bindings {
         get: "/v2/{name=projects/*/locations/*/deidentifyTemplates/*}"
       }
@@ -309,16 +309,17 @@ service DlpService {
   // Lists DeidentifyTemplates.
   // See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
   // more.
-  rpc ListDeidentifyTemplates(ListDeidentifyTemplatesRequest)
-      returns (ListDeidentifyTemplatesResponse) {
+  rpc ListDeidentifyTemplates(ListDeidentifyTemplatesRequest) returns (ListDeidentifyTemplatesResponse) {
     option (google.api.http) = {
       get: "/v2/{parent=organizations/*}/deidentifyTemplates"
       additional_bindings {
-        get: "/v2/{parent=organizations/*}/locations/{location_id}/deidentifyTemplates"
+        get: "/v2/{parent=organizations/*/locations/*}/deidentifyTemplates"
       }
-      additional_bindings { get: "/v2/{parent=projects/*}/deidentifyTemplates" }
       additional_bindings {
-        get: "/v2/{parent=projects/*}/locations/{location_id}/deidentifyTemplates"
+        get: "/v2/{parent=projects/*}/deidentifyTemplates"
+      }
+      additional_bindings {
+        get: "/v2/{parent=projects/*/locations/*}/deidentifyTemplates"
       }
     };
     option (google.api.method_signature) = "parent";
@@ -327,8 +328,7 @@ service DlpService {
   // Deletes a DeidentifyTemplate.
   // See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
   // more.
-  rpc DeleteDeidentifyTemplate(DeleteDeidentifyTemplateRequest)
-      returns (google.protobuf.Empty) {
+  rpc DeleteDeidentifyTemplate(DeleteDeidentifyTemplateRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
       delete: "/v2/{name=organizations/*/deidentifyTemplates/*}"
       additional_bindings {
@@ -352,12 +352,11 @@ service DlpService {
       post: "/v2/{parent=projects/*}/jobTriggers"
       body: "*"
       additional_bindings {
-        post: "/v2/{parent=projects/*}/locations/{location_id}/jobTriggers"
+        post: "/v2/{parent=projects/*/locations/*}/jobTriggers"
         body: "*"
       }
     };
     option (google.api.method_signature) = "parent,job_trigger";
-    option (google.api.method_signature) = "parent,job_trigger,location_id";
   }
 
   // Updates a job trigger.
@@ -380,8 +379,7 @@ service DlpService {
   // Early access feature is in a pre-release state and might change or have
   // limited support. For more information, see
   // https://cloud.google.com/products#product-launch-stages.
-  rpc HybridInspectJobTrigger(HybridInspectJobTriggerRequest)
-      returns (HybridInspectResponse) {
+  rpc HybridInspectJobTrigger(HybridInspectJobTriggerRequest) returns (HybridInspectResponse) {
     option (google.api.http) = {
       post: "/v2/{name=projects/*/locations/*/jobTriggers/*}:hybridInspect"
       body: "*"
@@ -403,12 +401,11 @@ service DlpService {
 
   // Lists job triggers.
   // See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
-  rpc ListJobTriggers(ListJobTriggersRequest)
-      returns (ListJobTriggersResponse) {
+  rpc ListJobTriggers(ListJobTriggersRequest) returns (ListJobTriggersResponse) {
     option (google.api.http) = {
       get: "/v2/{parent=projects/*}/jobTriggers"
       additional_bindings {
-        get: "/v2/{parent=projects/*}/locations/{location_id}/jobTriggers"
+        get: "/v2/{parent=projects/*/locations/*}/jobTriggers"
       }
     };
     option (google.api.method_signature) = "parent";
@@ -416,8 +413,7 @@ service DlpService {
 
   // Deletes a job trigger.
   // See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
-  rpc DeleteJobTrigger(DeleteJobTriggerRequest)
-      returns (google.protobuf.Empty) {
+  rpc DeleteJobTrigger(DeleteJobTriggerRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
       delete: "/v2/{name=projects/*/jobTriggers/*}"
       additional_bindings {
@@ -452,14 +448,12 @@ service DlpService {
       post: "/v2/{parent=projects/*}/dlpJobs"
       body: "*"
       additional_bindings {
-        post: "/v2/{parent=projects/*}/locations/{location_id}/dlpJobs"
+        post: "/v2/{parent=projects/*/locations/*}/dlpJobs"
         body: "*"
       }
     };
     option (google.api.method_signature) = "parent,inspect_job";
-    option (google.api.method_signature) = "parent,inspect_job,location_id";
     option (google.api.method_signature) = "parent,risk_job";
-    option (google.api.method_signature) = "parent,risk_job,location_id";
   }
 
   // Lists DlpJobs that match the specified filter in the request.
@@ -469,7 +463,7 @@ service DlpService {
     option (google.api.http) = {
       get: "/v2/{parent=projects/*}/dlpJobs"
       additional_bindings {
-        get: "/v2/{parent=projects/*}/locations/{location_id}/dlpJobs"
+        get: "/v2/{parent=projects/*/locations/*}/dlpJobs"
       }
     };
     option (google.api.method_signature) = "parent";
@@ -481,7 +475,9 @@ service DlpService {
   rpc GetDlpJob(GetDlpJobRequest) returns (DlpJob) {
     option (google.api.http) = {
       get: "/v2/{name=projects/*/dlpJobs/*}"
-      additional_bindings { get: "/v2/{name=projects/*/locations/*/dlpJobs/*}" }
+      additional_bindings {
+        get: "/v2/{name=projects/*/locations/*/dlpJobs/*}"
+      }
     };
     option (google.api.method_signature) = "name";
   }
@@ -520,13 +516,12 @@ service DlpService {
   // Creates a pre-built stored infoType to be used for inspection.
   // See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
   // learn more.
-  rpc CreateStoredInfoType(CreateStoredInfoTypeRequest)
-      returns (StoredInfoType) {
+  rpc CreateStoredInfoType(CreateStoredInfoTypeRequest) returns (StoredInfoType) {
     option (google.api.http) = {
       post: "/v2/{parent=organizations/*}/storedInfoTypes"
       body: "*"
       additional_bindings {
-        post: "/v2/{parent=organizations/*}/locations/{location_id}/storedInfoTypes"
+        post: "/v2/{parent=organizations/*/locations/*}/storedInfoTypes"
         body: "*"
       }
       additional_bindings {
@@ -534,20 +529,18 @@ service DlpService {
         body: "*"
       }
       additional_bindings {
-        post: "/v2/{parent=projects/*}/locations/{location_id}/storedInfoTypes"
+        post: "/v2/{parent=projects/*/locations/*}/storedInfoTypes"
         body: "*"
       }
     };
     option (google.api.method_signature) = "parent,config";
-    option (google.api.method_signature) = "parent,config,location_id";
   }
 
   // Updates the stored infoType by creating a new version. The existing version
   // will continue to be used until the new version is ready.
   // See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
   // learn more.
-  rpc UpdateStoredInfoType(UpdateStoredInfoTypeRequest)
-      returns (StoredInfoType) {
+  rpc UpdateStoredInfoType(UpdateStoredInfoTypeRequest) returns (StoredInfoType) {
     option (google.api.http) = {
       patch: "/v2/{name=organizations/*/storedInfoTypes/*}"
       body: "*"
@@ -576,7 +569,9 @@ service DlpService {
       additional_bindings {
         get: "/v2/{name=organizations/*/locations/*/storedInfoTypes/*}"
       }
-      additional_bindings { get: "/v2/{name=projects/*/storedInfoTypes/*}" }
+      additional_bindings {
+        get: "/v2/{name=projects/*/storedInfoTypes/*}"
+      }
       additional_bindings {
         get: "/v2/{name=projects/*/locations/*/storedInfoTypes/*}"
       }
@@ -587,16 +582,17 @@ service DlpService {
   // Lists stored infoTypes.
   // See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
   // learn more.
-  rpc ListStoredInfoTypes(ListStoredInfoTypesRequest)
-      returns (ListStoredInfoTypesResponse) {
+  rpc ListStoredInfoTypes(ListStoredInfoTypesRequest) returns (ListStoredInfoTypesResponse) {
     option (google.api.http) = {
       get: "/v2/{parent=organizations/*}/storedInfoTypes"
       additional_bindings {
-        get: "/v2/{parent=organizations/*}/locations/{location_id}/storedInfoTypes"
+        get: "/v2/{parent=organizations/*/locations/*}/storedInfoTypes"
       }
-      additional_bindings { get: "/v2/{parent=projects/*}/storedInfoTypes" }
       additional_bindings {
-        get: "/v2/{parent=projects/*}/locations/{location_id}/storedInfoTypes"
+        get: "/v2/{parent=projects/*}/storedInfoTypes"
+      }
+      additional_bindings {
+        get: "/v2/{parent=projects/*/locations/*}/storedInfoTypes"
       }
     };
     option (google.api.method_signature) = "parent";
@@ -605,14 +601,15 @@ service DlpService {
   // Deletes a stored infoType.
   // See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
   // learn more.
-  rpc DeleteStoredInfoType(DeleteStoredInfoTypeRequest)
-      returns (google.protobuf.Empty) {
+  rpc DeleteStoredInfoType(DeleteStoredInfoTypeRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
       delete: "/v2/{name=organizations/*/storedInfoTypes/*}"
       additional_bindings {
         delete: "/v2/{name=organizations/*/locations/*/storedInfoTypes/*}"
       }
-      additional_bindings { delete: "/v2/{name=projects/*/storedInfoTypes/*}" }
+      additional_bindings {
+        delete: "/v2/{name=projects/*/storedInfoTypes/*}"
+      }
       additional_bindings {
         delete: "/v2/{name=projects/*/locations/*/storedInfoTypes/*}"
       }
@@ -626,8 +623,7 @@ service DlpService {
   // Early access feature is in a pre-release state and might change or have
   // limited support. For more information, see
   // https://cloud.google.com/products#product-launch-stages.
-  rpc HybridInspectDlpJob(HybridInspectDlpJobRequest)
-      returns (HybridInspectResponse) {
+  rpc HybridInspectDlpJob(HybridInspectDlpJobRequest) returns (HybridInspectResponse) {
     option (google.api.http) = {
       post: "/v2/{name=projects/*/locations/*/dlpJobs/*}:hybridInspect"
       body: "*"
@@ -781,7 +777,7 @@ message InspectConfig {
 
 // Container for bytes to inspect or redact.
 message ByteContentItem {
-  // The type of data being sent to in data.
+  // The type of data being sent for inspection.
   enum BytesType {
     // Unused
     BYTES_TYPE_UNSPECIFIED = 0;
@@ -803,6 +799,12 @@ message ByteContentItem {
 
     // plain text
     TEXT_UTF8 = 5;
+
+    // docx, docm, dotx, dotm
+    WORD_DOCUMENT = 7;
+
+    // pdf
+    PDF = 8;
 
     // avro
     AVRO = 11;
@@ -866,7 +868,7 @@ message InspectResult {
 // Represents a piece of potentially sensitive content.
 message Finding {
   option (google.api.resource) = {
-    type: "dlp.googleapis.com/InspectFinding"
+    type: "dlp.googleapis.com/Finding"
     pattern: "projects/{project}/locations/{location}/findings/{finding}"
   };
 
@@ -901,42 +903,37 @@ message Finding {
   QuoteInfo quote_info = 7;
 
   // The job that stored the finding.
-  string resource_name = 8
-      [(google.api.resource_reference) = { type: "dlp.googleapis.com/DlpJob" }];
+  string resource_name = 8 [(google.api.resource_reference) = {
+                              type: "dlp.googleapis.com/DlpJob"
+                            }];
 
   // Job trigger name, if applicable, for this finding.
-  // (-- api-linter: core::0122::name-suffix=disabled
-  //     aip.dev/not-precedent: AIP-122 discourages _name suffixes for
-  //     resource names, but this has existed as part of the bigquery schema
-  //     before this rule existed. --)
-  string trigger_name = 9 [
-    (google.api.resource_reference) = { type: "dlp.googleapis.com/JobTrigger" }
-  ];
+  string trigger_name = 9 [(google.api.resource_reference) = {
+                             type: "dlp.googleapis.com/JobTrigger"
+                           }];
 
-  // The labels associated with this `InspectFinding`.
+  // The labels associated with this `Finding`.
   //
   // Label keys must be between 1 and 63 characters long and must conform
-  // to the following regular expression: \[a-z\](\[-a-z0-9\]*\[a-z0-9\])?.
+  // to the following regular expression: `[a-z]([-a-z0-9]*[a-z0-9])?`.
   //
   // Label values must be between 0 and 63 characters long and must conform
-  // to the regular expression (\[a-z\](\[-a-z0-9\]*\[a-z0-9\])?)?.
+  // to the regular expression `([a-z]([-a-z0-9]*[a-z0-9])?)?`.
   //
   // No more than 10 labels can be associated with a given finding.
   //
-  // Example: <code>"environment" : "production"</code>
-  // Example: <code>"pipeline" : "etl"</code>
+  // Examples:
+  // * `"environment" : "production"`
+  // * `"pipeline" : "etl"`
   map<string, string> labels = 10;
 
   // Time the job started that produced this finding.
   google.protobuf.Timestamp job_create_time = 11;
 
   // The job that stored the finding.
-  // (-- api-linter: core::0122::name-suffix=disabled
-  //     aip.dev/not-precedent: AIP-122 discourages _name suffixes for
-  //     resource names, but this has existed as part of the bigquery schema
-  //     before this rule existed. --)
-  string job_name = 13
-      [(google.api.resource_reference) = { type: "dlp.googleapis.com/DlpJob" }];
+  string job_name = 13 [(google.api.resource_reference) = {
+                          type: "dlp.googleapis.com/DlpJob"
+                        }];
 }
 
 // Specifies the location of the finding.
@@ -986,6 +983,9 @@ message ContentLocation {
 
     // Location data for document files.
     DocumentLocation document_location = 5;
+
+    // Location within the metadata for inspected content.
+    MetadataLocation metadata_location = 8;
   }
 
   // Findings container modification timestamp, if applicable.
@@ -997,6 +997,24 @@ message ContentLocation {
   // Findings container version, if available
   // ("generation" for Google Cloud Storage).
   string container_version = 7;
+}
+
+// Metadata Location
+message MetadataLocation {
+  // Type of metadata containing the finding.
+  MetadataType type = 1;
+
+  // Label of the piece of metadata containing the finding, for example -
+  // latitude, author, caption.
+  oneof label {
+    // Storage metadata.
+    StorageMetadataLabel storage_label = 3;
+  }
+}
+
+// Storage metadata label to indicate which metadata entry contains findings.
+message StorageMetadataLabel {
+  string key = 1;
 }
 
 // Location of a finding within a document.
@@ -1020,7 +1038,12 @@ message RecordLocation {
 
 // Location of a finding within a table.
 message TableLocation {
-  // The zero-based index of the row where the finding is located.
+  // The zero-based index of the row where the finding is located. Only
+  // populated for resources that have a natural ordering, not BigQuery. In
+  // BigQuery, to identify the row a finding came from, populate
+  // BigQueryOptions.identifying_fields with your primary key column names and
+  // when you store the findings the value of those columns will be stored
+  // inside of Finding.
   int64 row_index = 1;
 }
 
@@ -1120,13 +1143,13 @@ message RedactImageRequest {
     Color redaction_color = 3;
   }
 
-  // The parent resource name, for example projects/my-project-id.
+  // The parent resource name, for example projects/my-project-id
+  // or projects/my-project-id/locations/{location_id}.
   string parent = 1 [(google.api.resource_reference) = {
     type: "cloudresourcemanager.googleapis.com/Project"
   }];
 
-  // The geographic location to process the request. Reserved for future
-  // extensions.
+  // Deprecated. This field has no effect.
   string location_id = 8;
 
   // Configuration for the inspector.
@@ -1171,7 +1194,8 @@ message RedactImageResponse {
 
 // Request to de-identify a list of items.
 message DeidentifyContentRequest {
-  // The parent resource name, for example projects/my-project-id.
+  // The parent resource name, for example projects/my-project-id
+  // or projects/my-project-id/locations/{location_id}.
   string parent = 1 [(google.api.resource_reference) = {
     type: "cloudresourcemanager.googleapis.com/Project"
   }];
@@ -1203,8 +1227,7 @@ message DeidentifyContentRequest {
   // are recursively merged.
   string deidentify_template_name = 6;
 
-  // The geographic location to process de-identification. Reserved for future
-  // extensions.
+  // Deprecated. This field has no effect.
   string location_id = 7;
 }
 
@@ -1260,8 +1283,7 @@ message ReidentifyContentRequest {
   // are recursively merged.
   string reidentify_template_name = 6;
 
-  // The geographic location to process content reidentification.  Reserved for
-  // future extensions.
+  // Deprecated. This field has no effect.
   string location_id = 7;
 }
 
@@ -1276,7 +1298,8 @@ message ReidentifyContentResponse {
 
 // Request to search for potentially sensitive info in a ContentItem.
 message InspectContentRequest {
-  // The parent resource name, for example projects/my-project-id.
+  // The parent resource name, for example projects/my-project-id
+  // or projects/my-project-id/locations/{location_id}
   string parent = 1 [(google.api.resource_reference) = {
     type: "cloudresourcemanager.googleapis.com/Project"
   }];
@@ -1295,8 +1318,7 @@ message InspectContentRequest {
   // are recursively merged.
   string inspect_template_name = 4;
 
-  // The geographic location to process content inspection. Reserved for future
-  // extensions.
+  // Deprecated. This field has no effect.
   string location_id = 5;
 }
 
@@ -1445,6 +1467,8 @@ message InfoTypeDescription {
 
 // Request for the list of infoTypes.
 message ListInfoTypesRequest {
+  // The parent resource name, for example locations/{location_id}
+  string parent = 4;
   // BCP-47 language code for localized infoType friendly
   // names. If omitted, or if localized strings are not available,
   // en-US strings will be returned.
@@ -1454,8 +1478,7 @@ message ListInfoTypesRequest {
   // API. Defaults to supported_by=INSPECT.
   string filter = 2;
 
-  // The geographic location to list info types. Reserved for future
-  // extensions.
+  // Deprecated. This field has no effect.
   string location_id = 3;
 }
 
@@ -1937,8 +1960,7 @@ message AnalyzeDataSourceRiskDetails {
     //   {min_probability: 0.3, max_probability: 0.4, frequency: 99}
     // mean that there are no record with an estimated probability in [0.1, 0.2)
     // nor larger or equal to 0.4.
-    repeated DeltaPresenceEstimationHistogramBucket
-        delta_presence_estimation_histogram = 1;
+    repeated DeltaPresenceEstimationHistogramBucket delta_presence_estimation_histogram = 1;
   }
 
   // Privacy metric to compute.
@@ -2074,13 +2096,17 @@ message DeidentifyConfig {
 // `TransformationOverviews`.
 message TransformationErrorHandling {
   // Throw an error and fail the request when a transformation error occurs.
-  message ThrowError {}
+  message ThrowError {
+
+  }
 
   // Skips the data without modifying it if the requested transformation would
   // cause an error. For example, if a `DateShift` transformation were applied
   // an an IP address, this mode would leave the IP address unchanged in the
   // response.
-  message LeaveUntransformed {}
+  message LeaveUntransformed {
+
+  }
 
   // How transformation errors should be handled.
   oneof mode {
@@ -2576,14 +2602,12 @@ message InfoTypeTransformations {
     repeated InfoType info_types = 1;
 
     // Required. Primitive transformation to apply to the infoType.
-    PrimitiveTransformation primitive_transformation = 2
-        [(google.api.field_behavior) = REQUIRED];
+    PrimitiveTransformation primitive_transformation = 2 [(google.api.field_behavior) = REQUIRED];
   }
 
   // Required. Transformation for each infoType. Cannot specify more than one
   // for a given infoType.
-  repeated InfoTypeTransformation transformations = 1
-      [(google.api.field_behavior) = REQUIRED];
+  repeated InfoTypeTransformation transformations = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 // The transformation to apply to the field.
@@ -2777,7 +2801,9 @@ message Schedule {
 
 // Job trigger option for hybrid jobs. Jobs must be manually created
 // and finished.
-message Manual {}
+message Manual {
+
+}
 
 // The inspectTemplate contains a configuration (set of types of sensitive data
 // to be detected) to be used anywhere you otherwise would normally specify
@@ -2806,12 +2832,10 @@ message InspectTemplate {
   string description = 3;
 
   // Output only. The creation timestamp of an inspectTemplate.
-  google.protobuf.Timestamp create_time = 4
-      [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp create_time = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // Output only. The last update timestamp of an inspectTemplate.
-  google.protobuf.Timestamp update_time = 5
-      [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp update_time = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // The core content of the template. Configuration of the scanning process.
   InspectConfig inspect_config = 6;
@@ -2842,12 +2866,10 @@ message DeidentifyTemplate {
   string description = 3;
 
   // Output only. The creation timestamp of an inspectTemplate.
-  google.protobuf.Timestamp create_time = 4
-      [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp create_time = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // Output only. The last update timestamp of an inspectTemplate.
-  google.protobuf.Timestamp update_time = 5
-      [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp update_time = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // ///////////// // The core content of the template  // ///////////////
   DeidentifyConfig deidentify_config = 6;
@@ -2926,23 +2948,20 @@ message JobTrigger {
   // a single Schedule trigger and must have at least one object.
   repeated Trigger triggers = 5;
 
-  // Output only. A stream of errors encountered when the trigger was activated.
-  // Repeated errors may result in the JobTrigger automatically being paused.
+  // Output only. A stream of errors encountered when the trigger was activated. Repeated
+  // errors may result in the JobTrigger automatically being paused.
   // Will return the last 100 errors. Whenever the JobTrigger is modified
   // this list will be cleared.
   repeated Error errors = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // Output only. The creation timestamp of a triggeredJob.
-  google.protobuf.Timestamp create_time = 7
-      [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp create_time = 7 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // Output only. The last update timestamp of a triggeredJob.
-  google.protobuf.Timestamp update_time = 8
-      [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp update_time = 8 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // Output only. The timestamp of the last time this trigger executed.
-  google.protobuf.Timestamp last_run_time = 9
-      [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp last_run_time = 9 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // Required. A status for this trigger.
   Status status = 10 [(google.api.field_behavior) = REQUIRED];
@@ -2983,7 +3002,9 @@ message Action {
   // service-specific policy, see https://cloud.google.com/terms/service-terms
   // Only a single instance of this action can be specified.
   // Compatible with: Inspect
-  message PublishSummaryToCscc {}
+  message PublishSummaryToCscc {
+
+  }
 
   // Publish findings of a DlpJob to Cloud Data Catalog. Labels summarizing the
   // results of the DlpJob will be applied to the entry for the resource scanned
@@ -2995,17 +3016,23 @@ message Action {
   // Only a single instance of this action can be specified and only allowed if
   // all resources being scanned are BigQuery tables.
   // Compatible with: Inspect
-  message PublishFindingsToCloudDataCatalog {}
+  message PublishFindingsToCloudDataCatalog {
+
+  }
 
   // Enable email notification to project owners and editors on jobs's
   // completion/failure.
-  message JobNotificationEmails {}
+  message JobNotificationEmails {
+
+  }
 
   // Enable Stackdriver metric dlp.googleapis.com/finding_count. This
   // will publish a metric to stack driver on each infotype requested and
   // how many findings were found for it. CustomDetectors will be bucketed
   // as 'Custom' under the Stackdriver label 'info_type'.
-  message PublishToStackdriver {}
+  message PublishToStackdriver {
+
+  }
 
   oneof action {
     // Save resulting findings in a provided location.
@@ -3018,8 +3045,7 @@ message Action {
     PublishSummaryToCscc publish_summary_to_cscc = 3;
 
     // Publish findings to Cloud Datahub.
-    PublishFindingsToCloudDataCatalog publish_findings_to_cloud_data_catalog =
-        5;
+    PublishFindingsToCloudDataCatalog publish_findings_to_cloud_data_catalog = 5;
 
     // Enable email notification for project owners and editors on job's
     // completion/failure.
@@ -3033,7 +3059,7 @@ message Action {
 // Request message for CreateInspectTemplate.
 message CreateInspectTemplateRequest {
   // Required. The parent resource name, for example projects/my-project-id or
-  // organizations/my-org-id.
+  // organizations/my-org-id or projects/my-project-id/locations/{location-id}.
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference) = {
@@ -3050,8 +3076,7 @@ message CreateInspectTemplateRequest {
   // characters. Can be empty to allow the system to generate one.
   string template_id = 3;
 
-  // The geographic location to store the inspection template. Reserved for
-  // future extensions.
+  // Deprecated. This field has no effect.
   string location_id = 4;
 }
 
@@ -3090,7 +3115,7 @@ message GetInspectTemplateRequest {
 // Request message for ListInspectTemplates.
 message ListInspectTemplatesRequest {
   // Required. The parent resource name, for example projects/my-project-id or
-  // organizations/my-org-id.
+  // organizations/my-org-id or projects/my-project-id/locations/{location_id}.
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference) = {
@@ -3121,8 +3146,7 @@ message ListInspectTemplatesRequest {
   // - `display_name`: corresponds to template's display name.
   string order_by = 4;
 
-  // The geographic location where inspection templates will be retrieved from.
-  // Use `-` for all locations. Reserved for future extensions.
+  // Deprecated. This field has no effect.
   string location_id = 5;
 }
 
@@ -3151,7 +3175,8 @@ message DeleteInspectTemplateRequest {
 
 // Request message for CreateJobTrigger.
 message CreateJobTriggerRequest {
-  // Required. The parent resource name, for example projects/my-project-id.
+  // Required. The parent resource name, for example projects/my-project-id
+  // or projects/my-project-id/locations/{location_id}.
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference) = {
@@ -3168,8 +3193,7 @@ message CreateJobTriggerRequest {
   // characters. Can be empty to allow the system to generate one.
   string trigger_id = 3;
 
-  // The geographic location to store the job trigger. Reserved for
-  // future extensions.
+  // Deprecated. This field has no effect.
   string location_id = 4;
 }
 
@@ -3213,7 +3237,8 @@ message GetJobTriggerRequest {
 // jobs such as calculating risk metrics or inspecting Google Cloud
 // Storage.
 message CreateDlpJobRequest {
-  // Required. The parent resource name, for example projects/my-project-id.
+  // Required. The parent resource name, for example projects/my-project-id
+  // or projects/my-project-id/locations/{location_id}.
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference) = {
@@ -3236,14 +3261,14 @@ message CreateDlpJobRequest {
   // characters. Can be empty to allow the system to generate one.
   string job_id = 4;
 
-  // The geographic location to store and process the job. Reserved for
-  // future extensions.
+  // Deprecated. This field has no effect.
   string location_id = 5;
 }
 
 // Request message for ListJobTriggers.
 message ListJobTriggersRequest {
-  // Required. The parent resource name, for example `projects/my-project-id`.
+  // Required. The parent resource name, for example `projects/my-project-id`
+  // or projects/my-project-id/locations/{location_id}.
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference) = {
@@ -3302,8 +3327,7 @@ message ListJobTriggersRequest {
   // The length of this field should be no more than 500 characters.
   string filter = 5;
 
-  // The geographic location where job triggers will be retrieved from.
-  // Use `-` for all locations. Reserved for future extensions.
+  // Deprecated. This field has no effect.
   string location_id = 7;
 }
 
@@ -3425,7 +3449,8 @@ message GetDlpJobRequest {
 
 // The request message for listing DLP jobs.
 message ListDlpJobsRequest {
-  // Required. The parent resource name, for example projects/my-project-id.
+  // Required. The parent resource name, for example projects/my-project-id
+  // or projects/my-project-id/locations/{location_id}.
   string parent = 4 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference) = {
@@ -3487,8 +3512,7 @@ message ListDlpJobsRequest {
   // - `state`: corresponds to `state`
   string order_by = 6;
 
-  // The geographic location where jobs will be retrieved from.
-  // Use `-` for all locations. Reserved for future extensions.
+  // Deprecated. This field has no effect.
   string location_id = 7;
 }
 
@@ -3531,7 +3555,7 @@ message DeleteDlpJobRequest {
 // Request message for CreateDeidentifyTemplate.
 message CreateDeidentifyTemplateRequest {
   // Required. The parent resource name, for example projects/my-project-id or
-  // organizations/my-org-id.
+  // organizations/my-org-id or projects/my-project-id/locations/{location_id}.
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference) = {
@@ -3549,8 +3573,7 @@ message CreateDeidentifyTemplateRequest {
   // characters. Can be empty to allow the system to generate one.
   string template_id = 3;
 
-  // The geographic location to store the deidentification template. Reserved
-  // for future extensions.
+  // Deprecated. This field has no effect.
   string location_id = 4;
 }
 
@@ -3590,7 +3613,7 @@ message GetDeidentifyTemplateRequest {
 // Request message for ListDeidentifyTemplates.
 message ListDeidentifyTemplatesRequest {
   // Required. The parent resource name, for example projects/my-project-id or
-  // organizations/my-org-id.
+  // organizations/my-org-id or projects/my-project-id/locations/{location_id}.
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference) = {
@@ -3621,8 +3644,7 @@ message ListDeidentifyTemplatesRequest {
   // - `display_name`: corresponds to template's display name.
   string order_by = 4;
 
-  // The geographic location where deidentifications templates will be retrieved
-  // from. Use `-` for all locations. Reserved for future extensions.
+  // Deprecated. This field has no effect.
   string location_id = 5;
 }
 
@@ -3769,7 +3791,7 @@ message StoredInfoType {
 // Request message for CreateStoredInfoType.
 message CreateStoredInfoTypeRequest {
   // Required. The parent resource name, for example projects/my-project-id or
-  // organizations/my-org-id.
+  // organizations/my-org-id or projects/my-project-id/locations/{location_id}
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference) = {
@@ -3786,15 +3808,14 @@ message CreateStoredInfoTypeRequest {
   // characters. Can be empty to allow the system to generate one.
   string stored_info_type_id = 3;
 
-  // The geographic location to store the stored infoType. Reserved for
-  // future extensions.
+  // Deprecated. This field has no effect.
   string location_id = 4;
 }
 
 // Request message for UpdateStoredInfoType.
 message UpdateStoredInfoTypeRequest {
-  // Required. Resource name of organization and storedInfoType to be updated,
-  // for example `organizations/433245324/storedInfoTypes/432452342` or
+  // Required. Resource name of organization and storedInfoType to be updated, for
+  // example `organizations/433245324/storedInfoTypes/432452342` or
   // projects/project-id/storedInfoTypes/432452342.
   string name = 1 [
     (google.api.field_behavior) = REQUIRED,
@@ -3828,7 +3849,7 @@ message GetStoredInfoTypeRequest {
 // Request message for ListStoredInfoTypes.
 message ListStoredInfoTypesRequest {
   // Required. The parent resource name, for example projects/my-project-id or
-  // organizations/my-org-id.
+  // organizations/my-org-id or projects/my-project-id/locations/{location_id}.
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference) = {
@@ -3860,8 +3881,7 @@ message ListStoredInfoTypesRequest {
   // - `display_name`: corresponds to info type's display name.
   string order_by = 4;
 
-  // The geographic location where stored infoTypes will be retrieved from.
-  // Use `-` for all locations. Reserved for future extensions.
+  // Deprecated. This field has no effect.
   string location_id = 5;
 }
 
@@ -3953,20 +3973,23 @@ message HybridFindingDetails {
   // inspection.
   //
   // Label keys must be between 1 and 63 characters long and must conform
-  // to the following regular expression: \[a-z\](\[-a-z0-9\]*\[a-z0-9\])?.
+  // to the following regular expression: `[a-z]([-a-z0-9]*[a-z0-9])?`.
   //
   // Label values must be between 0 and 63 characters long and must conform
-  // to the regular expression (\[a-z\](\[-a-z0-9\]*\[a-z0-9\])?)?.
+  // to the regular expression `([a-z]([-a-z0-9]*[a-z0-9])?)?`.
   //
   // No more than 10 labels can be associated with a given finding.
   //
-  // Example: <code>"environment" : "production"</code>
-  // Example: <code>"pipeline" : "etl"</code>
+  // Examples:
+  // * `"environment" : "production"`
+  // * `"pipeline" : "etl"`
   map<string, string> labels = 5;
 }
 
 // Quota exceeded errors will be thrown once quota has been met.
-message HybridInspectResponse {}
+message HybridInspectResponse {
+
+}
 
 // Operators available for comparing the value of fields.
 enum RelationalOperator {
@@ -4034,6 +4057,15 @@ enum ContentOption {
 
   // Images found in the data.
   CONTENT_IMAGE = 2;
+}
+
+// Type of metadata containing the finding.
+enum MetadataType {
+  // Unused
+  METADATATYPE_UNSPECIFIED = 0;
+
+  // General file metadata provided by GCS.
+  STORAGE_METADATA = 2;
 }
 
 // Parts of the APIs which use certain infoTypes.

@@ -88,7 +88,12 @@ class FileType(enum.IntEnum):
         rb, rbw, rs, rc, scala, sh, sql, tex, txt, text, tsv, vcard, vcs, wml,
         xml, xsl, xsd, yml, yaml.
       IMAGE (int): Included file extensions: bmp, gif, jpg, jpeg, jpe, png.
-      bytes\_limit\_per\_file has no effect on image files.
+      bytes_limit_per_file has no effect on image files. Image inspection is
+      restricted to 'global', 'us', 'asia', and 'europe'.
+      WORD (int): Included file extensions:
+        docx, dotx, docm, dotm
+      PDF (int): Included file extensions:
+        pdf
       AVRO (int): Included file extensions:
         avro
     """
@@ -97,6 +102,8 @@ class FileType(enum.IntEnum):
     BINARY_FILE = 1
     TEXT_FILE = 2
     IMAGE = 3
+    WORD = 5
+    PDF = 6
     AVRO = 7
 
 
@@ -168,6 +175,19 @@ class MatchingType(enum.IntEnum):
     MATCHING_TYPE_INVERSE_MATCH = 3
 
 
+class MetadataType(enum.IntEnum):
+    """
+    Type of metadata containing the finding.
+
+    Attributes:
+      METADATATYPE_UNSPECIFIED (int): Unused
+      STORAGE_METADATA (int): General file metadata provided by GCS.
+    """
+
+    METADATATYPE_UNSPECIFIED = 0
+    STORAGE_METADATA = 2
+
+
 class RelationalOperator(enum.IntEnum):
     """
     Operators available for comparing the value of fields.
@@ -201,8 +221,8 @@ class StoredInfoTypeState(enum.IntEnum):
       STORED_INFO_TYPE_STATE_UNSPECIFIED (int): Unused
       PENDING (int): StoredInfoType version is being created.
       READY (int): StoredInfoType version is ready for use.
-      FAILED (int): StoredInfoType creation failed. All relevant error messages are returned
-      in the ``StoredInfoTypeVersion`` message.
+      FAILED (int): StoredInfoType creation failed. All relevant error messages are
+      returned in the ``StoredInfoTypeVersion`` message.
       INVALID (int): StoredInfoType is no longer valid because artifacts stored in
       user-controlled storage were modified. To fix an invalid StoredInfoType,
       use the ``UpdateStoredInfoType`` method to create a new version.
@@ -219,8 +239,8 @@ class BigQueryOptions(object):
     class SampleMethod(enum.IntEnum):
         """
         How to sample rows if not all rows are scanned. Meaningful only when
-        used in conjunction with either rows\_limit or rows\_limit\_percent. If
-        not specified, scanning would start from the top.
+        used in conjunction with either rows_limit or rows_limit_percent. If not
+        specified, scanning would start from the top.
 
         Attributes:
           SAMPLE_METHOD_UNSPECIFIED (int)
@@ -236,7 +256,7 @@ class BigQueryOptions(object):
 class ByteContentItem(object):
     class BytesType(enum.IntEnum):
         """
-        The type of data being sent to in data.
+        The type of data being sent for inspection.
 
         Attributes:
           BYTES_TYPE_UNSPECIFIED (int): Unused
@@ -246,6 +266,8 @@ class ByteContentItem(object):
           IMAGE_PNG (int): png
           IMAGE_SVG (int): svg
           TEXT_UTF8 (int): plain text
+          WORD_DOCUMENT (int): docx, docm, dotx, dotm
+          PDF (int): pdf
           AVRO (int): avro
         """
 
@@ -256,6 +278,8 @@ class ByteContentItem(object):
         IMAGE_PNG = 3
         IMAGE_SVG = 4
         TEXT_UTF8 = 5
+        WORD_DOCUMENT = 7
+        PDF = 8
         AVRO = 11
 
 
@@ -269,7 +293,7 @@ class CharsToIgnore(object):
           NUMERIC (int): 0-9
           ALPHA_UPPER_CASE (int): A-Z
           ALPHA_LOWER_CASE (int): a-z
-          PUNCTUATION (int): US Punctuation, one of !"#$%&'()\*+,-./:;<=>?@[]^\_\`{\|}~
+          PUNCTUATION (int): US Punctuation, one of !"#$%&'()*+,-./:;<=>?@[]^_`{|}~
           WHITESPACE (int): Whitespace character
         """
 
@@ -284,14 +308,14 @@ class CharsToIgnore(object):
 class CloudStorageOptions(object):
     class SampleMethod(enum.IntEnum):
         """
-        How to sample bytes if not all bytes are scanned. Meaningful only when
-        used in conjunction with bytes\_limit\_per\_file. If not specified,
+        How to sample bytes if not all bytes are scanned. Meaningful only
+        when used in conjunction with bytes_limit_per_file. If not specified,
         scanning would start from the top.
 
         Attributes:
           SAMPLE_METHOD_UNSPECIFIED (int)
           TOP (int): Scan from the top (default).
-          RANDOM_START (int): For each file larger than bytes\_limit\_per\_file, randomly pick the
+          RANDOM_START (int): For each file larger than bytes_limit_per_file, randomly pick the
           offset to start scanning. The scanned bytes are contiguous.
         """
 
@@ -392,8 +416,8 @@ class OutputStorageConfig(object):
 
         Attributes:
           OUTPUT_SCHEMA_UNSPECIFIED (int): Unused.
-          BASIC_COLUMNS (int): Basic schema including only ``info_type``, ``quote``, ``certainty``, and
-          ``timestamp``.
+          BASIC_COLUMNS (int): Basic schema including only ``info_type``, ``quote``, ``certainty``,
+          and ``timestamp``.
           GCS_COLUMNS (int): Schema tailored to findings from scanning Google Cloud Storage.
           DATASTORE_COLUMNS (int): Schema tailored to findings from scanning Google Datastore.
           BIG_QUERY_COLUMNS (int): Schema tailored to findings from scanning Google BigQuery.

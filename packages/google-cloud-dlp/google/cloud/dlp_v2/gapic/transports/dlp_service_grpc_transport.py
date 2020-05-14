@@ -171,7 +171,7 @@ class DlpServiceGrpcTransport(object):
         """Return the gRPC stub for :meth:`DlpServiceClient.reidentify_content`.
 
         Re-identifies content that has been de-identified. See
-        https://cloud.google.com/dlp/docs/pseudonymization#re-identification\_in\_free\_text\_code\_example
+        https://cloud.google.com/dlp/docs/pseudonymization#re-identification_in_free_text_code_example
         to learn more.
 
         Returns:
