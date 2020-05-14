@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [0.15.0](https://www.github.com/googleapis/python-dlp/compare/v0.14.0...v0.15.0) (2020-05-14)
+
+
+### Features
+
+* add file types and metadata location enums (via synth) ([#16](https://www.github.com/googleapis/python-dlp/issues/16)) ([442bd9f](https://www.github.com/googleapis/python-dlp/commit/442bd9f57fdc7f186e34958ac422fa39eadf03c2))
+* add support for hybrid jobs (via synth) ([#10](https://www.github.com/googleapis/python-dlp/issues/10)) ([ffad36e](https://www.github.com/googleapis/python-dlp/commit/ffad36ec37e62648f81830ecabbccb1d57e49036))
+
 ## [0.14.0](https://www.github.com/googleapis/python-dlp/compare/v0.13.0...v0.14.0) (2020-02-21)
 
 
