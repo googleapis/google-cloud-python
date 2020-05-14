@@ -33,6 +33,8 @@ packages = setuptools.find_packages()
 
 setuptools.setup(
     name="dialogflow",
+    description=description,
+    long_description=readme,
     version=version,
     author="Google LLC",
     author_email="googleapis-packages@google.com",
