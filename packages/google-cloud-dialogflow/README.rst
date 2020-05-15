@@ -9,7 +9,7 @@ Dialogflow: Python Client
 developers to design and integrate conversational user interfaces into
 mobile apps, web applications, devices, and bots.
 
-* `Dialogflow Python Client API Reference <http://dialogflow-python-client-v2.readthedocs.io/en/latest/>`_
+* `Dialogflow Python Client API Reference <https://googleapis.dev/python/dialogflow/latest/index.html>`_
 * `Dialogflow Standard Edition Documentation <https://www.dialogflow.com>`_
 * `Dialogflow Enterprise Edition Documentation <https://cloud.google.com/dialogflow-enterprise/docs>`_
 
@@ -60,7 +60,7 @@ Python == 2.7. Python 2.7 support will be removed on January 1, 2020.
 Usage
 -----
 
-View `usage documentation <http://dialogflow-python-client-v2.readthedocs.io/en/latest/?#using-dialogflow>`_ on Read the Docs.
+View `usage documentation <https://googleapis.dev/python/dialogflow/latest/index.html>`_.
 
 
 Versioning
