@@ -84,6 +84,20 @@ class TestAccessEntry(unittest.TestCase):
         self.assertNotEqual(entry, object())
         self.assertEqual(entry, mock.ANY)
 
+    def test___hash__set_equality(self):
+        entry1 = self._make_one("OWNER", "userByEmail", "silly@example.com")
+        entry2 = self._make_one("OWNER", "userByEmail", "phred@example.com")
+        set_one = {entry1, entry2}
+        set_two = {entry1, entry2}
+        self.assertEqual(set_one, set_two)
+
+    def test___hash__not_equals(self):
+        entry1 = self._make_one("OWNER", "userByEmail", "silly@example.com")
+        entry2 = self._make_one("OWNER", "userByEmail", "phred@example.com")
+        set_one = {entry1}
+        set_two = {entry2}
+        self.assertNotEqual(set_one, set_two)
+
     def test_to_api_repr(self):
         entry = self._make_one("OWNER", "userByEmail", "salmon@example.com")
         resource = entry.to_api_repr()

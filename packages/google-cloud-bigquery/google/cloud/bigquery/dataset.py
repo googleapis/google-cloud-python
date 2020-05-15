@@ -20,6 +20,7 @@ import six
 import copy
 
 import google.cloud._helpers
+
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.model import ModelReference
 from google.cloud.bigquery.routine import RoutineReference
@@ -145,28 +146,50 @@ class AccessEntry(object):
                     "Role must be set for entity " "type %r" % (entity_type,)
                 )
 
-        self.role = role
-        self.entity_type = entity_type
-        self.entity_id = entity_id
+        self._role = role
+        self._entity_type = entity_type
+        self._entity_id = entity_id
+
+    @property
+    def role(self):
+        """str: The role of the entry."""
+        return self._role
+
+    @property
+    def entity_type(self):
+        """str: The entity_type of the entry."""
+        return self._entity_type
+
+    @property
+    def entity_id(self):
+        """str: The entity_id of the entry."""
+        return self._entity_id
 
     def __eq__(self, other):
         if not isinstance(other, AccessEntry):
             return NotImplemented
-        return (
-            self.role == other.role
-            and self.entity_type == other.entity_type
-            and self.entity_id == other.entity_id
-        )
+        return self._key() == other._key()
 
     def __ne__(self, other):
         return not self == other
 
     def __repr__(self):
         return "<AccessEntry: role=%s, %s=%s>" % (
-            self.role,
-            self.entity_type,
-            self.entity_id,
+            self._role,
+            self._entity_type,
+            self._entity_id,
         )
+
+    def _key(self):
+        """ A tuple key that uniquely describes this field.
+        Used to compute this instance's hashcode and evaluate equality.
+        Returns:
+            Tuple: The contents of this :class:`~google.cloud.bigquery.dataset.AccessEntry`.
+        """
+        return (self._role, self._entity_type, self._entity_id)
+
+    def __hash__(self):
+        return hash(self._key())
 
     def to_api_repr(self):
         """Construct the API resource representation of this access entry
@@ -174,9 +197,9 @@ class AccessEntry(object):
         Returns:
             Dict[str, object]: Access entry represented as an API resource
         """
-        resource = {self.entity_type: self.entity_id}
-        if self.role is not None:
-            resource["role"] = self.role
+        resource = {self._entity_type: self._entity_id}
+        if self._role is not None:
+            resource["role"] = self._role
         return resource
 
     @classmethod
