@@ -223,7 +223,8 @@ class Client(object):
                 inundated with too many messages at once.
             scheduler (~google.cloud.pubsub_v1.subscriber.scheduler.Scheduler): An optional
                 *scheduler* to use when executing the callback. This controls
-                how callbacks are executed concurrently.
+                how callbacks are executed concurrently. This object must not be shared
+                across multiple SubscriberClients.
 
         Returns:
             A :class:`~google.cloud.pubsub_v1.subscriber.futures.StreamingPullFuture`

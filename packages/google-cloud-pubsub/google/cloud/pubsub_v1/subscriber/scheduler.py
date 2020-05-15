@@ -74,7 +74,8 @@ def _make_default_thread_pool_executor():
 
 
 class ThreadScheduler(Scheduler):
-    """A thread pool-based scheduler.
+    """A thread pool-based scheduler. It must not be shared across
+       SubscriberClients.
 
     This scheduler is useful in typical I/O-bound message processing.
 
