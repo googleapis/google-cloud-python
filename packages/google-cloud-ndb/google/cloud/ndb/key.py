@@ -759,7 +759,7 @@ class Key(object):
         """
         return google.cloud.datastore.Key(
             self._key.kind,
-            self._key.id,
+            self._key.id or self._key.name,
             namespace=self._key.namespace,
             project=self._key.project,
         ).to_legacy_urlsafe(location_prefix=location_prefix)
