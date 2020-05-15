@@ -30,6 +30,18 @@ STORAGE_EMULATOR_ENV_VAR = "STORAGE_EMULATOR_HOST"
 
 _DEFAULT_STORAGE_HOST = u"https://storage.googleapis.com"
 
+# generation match parameters in camel and snake cases
+_GENERATION_MATCH_PARAMETERS = (
+    ("if_generation_match", "ifGenerationMatch"),
+    ("if_generation_not_match", "ifGenerationNotMatch"),
+    ("if_metageneration_match", "ifMetagenerationMatch"),
+    ("if_metageneration_not_match", "ifMetagenerationNotMatch"),
+    ("if_source_generation_match", "ifSourceGenerationMatch"),
+    ("if_source_generation_not_match", "ifSourceGenerationNotMatch"),
+    ("if_source_metageneration_match", "ifSourceMetagenerationMatch"),
+    ("if_source_metageneration_not_match", "ifSourceMetagenerationNotMatch"),
+)
+
 
 def _get_storage_host():
     return os.environ.get(STORAGE_EMULATOR_ENV_VAR, _DEFAULT_STORAGE_HOST)
@@ -121,27 +133,64 @@ class _PropertyMixin(object):
             params["userProject"] = self.user_project
         return params
 
-    def reload(self, client=None, timeout=_DEFAULT_TIMEOUT):
+    def reload(
+        self,
+        client=None,
+        timeout=_DEFAULT_TIMEOUT,
+        if_generation_match=None,
+        if_generation_not_match=None,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+    ):
         """Reload properties from Cloud Storage.
 
         If :attr:`user_project` is set, bills the API request to that project.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
+        :param client: the client to use. If not passed, falls back to the
                        ``client`` stored on the current object.
+
         :type timeout: float or tuple
         :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
+
+        :type if_generation_match: long
+        :param if_generation_match: (Optional) Make the operation conditional on whether
+                                    the blob's current generation matches the given value.
+                                    Setting to 0 makes the operation succeed only if there
+                                    are no live versions of the blob.
+
+        :type if_generation_not_match: long
+        :param if_generation_not_match: (Optional) Make the operation conditional on whether
+                                        the blob's current generation does not match the given
+                                        value. If no live blob exists, the precondition fails.
+                                        Setting to 0 makes the operation succeed only if there
+                                        is a live version of the blob.
+
+        :type if_metageneration_match: long
+        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
+                                        blob's current metageneration matches the given value.
+
+        :type if_metageneration_not_match: long
+        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
+                                            blob's current metageneration does not match the given value.
         """
         client = self._require_client(client)
         query_params = self._query_params
         # Pass only '?projection=noAcl' here because 'acl' and related
         # are handled via custom endpoints.
         query_params["projection"] = "noAcl"
+        _add_generation_match_parameters(
+            query_params,
+            if_generation_match=if_generation_match,
+            if_generation_not_match=if_generation_not_match,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+        )
         api_response = client._connection.api_request(
             method="GET",
             path=self.path,
@@ -180,7 +229,15 @@ class _PropertyMixin(object):
         # If the values are reset, the changes must as well.
         self._changes = set()
 
-    def patch(self, client=None, timeout=_DEFAULT_TIMEOUT):
+    def patch(
+        self,
+        client=None,
+        timeout=_DEFAULT_TIMEOUT,
+        if_generation_match=None,
+        if_generation_not_match=None,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+    ):
         """Sends all changed properties in a PATCH request.
 
         Updates the ``_properties`` with the response from the backend.
@@ -189,20 +246,49 @@ class _PropertyMixin(object):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
+        :param client: the client to use. If not passed, falls back to the
                        ``client`` stored on the current object.
+
         :type timeout: float or tuple
         :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
+
+        :type if_generation_match: long
+        :param if_generation_match: (Optional) Make the operation conditional on whether
+                                    the blob's current generation matches the given value.
+                                    Setting to 0 makes the operation succeed only if there
+                                    are no live versions of the blob.
+
+        :type if_generation_not_match: long
+        :param if_generation_not_match: (Optional) Make the operation conditional on whether
+                                        the blob's current generation does not match the given
+                                        value. If no live blob exists, the precondition fails.
+                                        Setting to 0 makes the operation succeed only if there
+                                        is a live version of the blob.
+
+        :type if_metageneration_match: long
+        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
+                                        blob's current metageneration matches the given value.
+
+        :type if_metageneration_not_match: long
+        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
+                                            blob's current metageneration does not match the given value.
         """
         client = self._require_client(client)
         query_params = self._query_params
         # Pass '?projection=full' here because 'PATCH' documented not
         # to work properly w/ 'noAcl'.
         query_params["projection"] = "full"
+        _add_generation_match_parameters(
+            query_params,
+            if_generation_match=if_generation_match,
+            if_generation_not_match=if_generation_not_match,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+        )
         update_properties = {key: self._properties[key] for key in self._changes}
 
         # Make the API call.
@@ -216,7 +302,15 @@ class _PropertyMixin(object):
         )
         self._set_properties(api_response)
 
-    def update(self, client=None, timeout=_DEFAULT_TIMEOUT):
+    def update(
+        self,
+        client=None,
+        timeout=_DEFAULT_TIMEOUT,
+        if_generation_match=None,
+        if_generation_not_match=None,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+    ):
         """Sends all properties in a PUT request.
 
         Updates the ``_properties`` with the response from the backend.
@@ -225,18 +319,46 @@ class _PropertyMixin(object):
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
+        :param client: the client to use. If not passed, falls back to the
                        ``client`` stored on the current object.
+
         :type timeout: float or tuple
         :param timeout: (Optional) The amount of time, in seconds, to wait
             for the server response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
+
+        :type if_generation_match: long
+        :param if_generation_match: (Optional) Make the operation conditional on whether
+                                    the blob's current generation matches the given value.
+                                    Setting to 0 makes the operation succeed only if there
+                                    are no live versions of the blob.
+
+        :type if_generation_not_match: long
+        :param if_generation_not_match: (Optional) Make the operation conditional on whether
+                                        the blob's current generation does not match the given
+                                        value. If no live blob exists, the precondition fails.
+                                        Setting to 0 makes the operation succeed only if there
+                                        is a live version of the blob.
+
+        :type if_metageneration_match: long
+        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
+                                        blob's current metageneration matches the given value.
+
+        :type if_metageneration_not_match: long
+        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
+                                            blob's current metageneration does not match the given value.
         """
         client = self._require_client(client)
+
         query_params = self._query_params
         query_params["projection"] = "full"
+        _add_generation_match_parameters(
+            query_params,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+        )
         api_response = client._connection.api_request(
             method="PUT",
             path=self.path,
@@ -312,3 +434,52 @@ def _convert_to_timestamp(value):
     utc_naive = value.replace(tzinfo=None) - value.utcoffset()
     mtime = (utc_naive - datetime(1970, 1, 1)).total_seconds()
     return mtime
+
+
+def _add_generation_match_parameters(parameters, **match_parameters):
+    """Add generation match parameters into the given parameters list.
+
+    :type parameters: list or dict
+    :param parameters: Parameters list or dict.
+
+    :type match_parameters: dict
+    :param match_parameters: if*generation*match parameters to add.
+
+    :raises: :exc:`ValueError` if ``parameters`` is not a ``list()``
+             or a ``dict()``.
+    """
+    for snakecase_name, camelcase_name in _GENERATION_MATCH_PARAMETERS:
+        value = match_parameters.get(snakecase_name)
+
+        if value is not None:
+            if isinstance(parameters, list):
+                parameters.append((camelcase_name, value))
+
+            elif isinstance(parameters, dict):
+                parameters[camelcase_name] = value
+
+            else:
+                raise ValueError(
+                    "`parameters` argument should be a dict() or a list()."
+                )
+
+
+def _raise_if_more_than_one_set(**kwargs):
+    """Raise ``ValueError`` exception if more than one parameter was set.
+
+    :type error: :exc:`ValueError`
+    :param error: Description of which fields were set
+
+    :raises: :class:`~ValueError` containing the fields that were set
+    """
+    if sum(arg is not None for arg in kwargs.values()) > 1:
+        escaped_keys = ["'%s'" % name for name in kwargs.keys()]
+
+        keys_but_last = ", ".join(escaped_keys[:-1])
+        last_key = escaped_keys[-1]
+
+        msg = "Pass at most one of {keys_but_last} and {last_key}".format(
+            keys_but_last=keys_but_last, last_key=last_key
+        )
+
+        raise ValueError(msg)

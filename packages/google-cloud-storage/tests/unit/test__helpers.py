@@ -126,6 +126,42 @@ class Test_PropertyMixin(unittest.TestCase):
         )
         self.assertEqual(derived._changes, set())
 
+    def test_reload_with_generation_match(self):
+        GENERATION_NUMBER = 9
+        METAGENERATION_NUMBER = 6
+
+        connection = _Connection({"foo": "Foo"})
+        client = _Client(connection)
+        derived = self._derivedClass("/path")()
+        # Make sure changes is not a set instance before calling reload
+        # (which will clear / replace it with an empty set), checked below.
+        derived._changes = object()
+        derived.reload(
+            client=client,
+            timeout=42,
+            if_generation_match=GENERATION_NUMBER,
+            if_metageneration_match=METAGENERATION_NUMBER,
+        )
+        self.assertEqual(derived._properties, {"foo": "Foo"})
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(
+            kw[0],
+            {
+                "method": "GET",
+                "path": "/path",
+                "query_params": {
+                    "projection": "noAcl",
+                    "ifGenerationMatch": GENERATION_NUMBER,
+                    "ifMetagenerationMatch": METAGENERATION_NUMBER,
+                },
+                "headers": {},
+                "_target_object": derived,
+                "timeout": 42,
+            },
+        )
+        self.assertEqual(derived._changes, set())
+
     def test_reload_w_user_project(self):
         user_project = "user-project-123"
         connection = _Connection({"foo": "Foo"})
@@ -191,6 +227,46 @@ class Test_PropertyMixin(unittest.TestCase):
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
 
+    def test_patch_with_metageneration_match(self):
+        GENERATION_NUMBER = 9
+        METAGENERATION_NUMBER = 6
+
+        connection = _Connection({"foo": "Foo"})
+        client = _Client(connection)
+        derived = self._derivedClass("/path")()
+        # Make sure changes is non-empty, so we can observe a change.
+        BAR = object()
+        BAZ = object()
+        derived._properties = {"bar": BAR, "baz": BAZ}
+        derived._changes = set(["bar"])  # Ignore baz.
+        derived.patch(
+            client=client,
+            timeout=42,
+            if_generation_match=GENERATION_NUMBER,
+            if_metageneration_match=METAGENERATION_NUMBER,
+        )
+        self.assertEqual(derived._properties, {"foo": "Foo"})
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(
+            kw[0],
+            {
+                "method": "PATCH",
+                "path": "/path",
+                "query_params": {
+                    "projection": "full",
+                    "ifGenerationMatch": GENERATION_NUMBER,
+                    "ifMetagenerationMatch": METAGENERATION_NUMBER,
+                },
+                # Since changes does not include `baz`, we don't see it sent.
+                "data": {"bar": BAR},
+                "_target_object": derived,
+                "timeout": 42,
+            },
+        )
+        # Make sure changes get reset by patch().
+        self.assertEqual(derived._changes, set())
+
     def test_patch_w_user_project(self):
         user_project = "user-project-123"
         connection = _Connection({"foo": "Foo"})
@@ -236,6 +312,34 @@ class Test_PropertyMixin(unittest.TestCase):
         self.assertEqual(kw[0]["method"], "PUT")
         self.assertEqual(kw[0]["path"], "/path")
         self.assertEqual(kw[0]["query_params"], {"projection": "full"})
+        self.assertEqual(kw[0]["data"], {"bar": BAR, "baz": BAZ})
+        self.assertEqual(kw[0]["timeout"], 42)
+        # Make sure changes get reset by patch().
+        self.assertEqual(derived._changes, set())
+
+    def test_update_with_metageneration_not_match(self):
+        GENERATION_NUMBER = 6
+
+        connection = _Connection({"foo": "Foo"})
+        client = _Client(connection)
+        derived = self._derivedClass("/path")()
+        # Make sure changes is non-empty, so we can observe a change.
+        BAR = object()
+        BAZ = object()
+        derived._properties = {"bar": BAR, "baz": BAZ}
+        derived._changes = set(["bar"])  # Update sends 'baz' anyway.
+        derived.update(
+            client=client, timeout=42, if_metageneration_not_match=GENERATION_NUMBER
+        )
+        self.assertEqual(derived._properties, {"foo": "Foo"})
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]["method"], "PUT")
+        self.assertEqual(kw[0]["path"], "/path")
+        self.assertEqual(
+            kw[0]["query_params"],
+            {"projection": "full", "ifMetagenerationNotMatch": GENERATION_NUMBER},
+        )
         self.assertEqual(kw[0]["data"], {"bar": BAR, "baz": BAZ})
         self.assertEqual(kw[0]["timeout"], 42)
         # Make sure changes get reset by patch().
@@ -341,6 +445,60 @@ class Test__base64_md5hash(unittest.TestCase):
         self.assertEqual(MD5._called, [None])
         self.assertEqual(MD5.hash_obj.num_digest_calls, 1)
         self.assertEqual(MD5.hash_obj._blocks, [BYTES_TO_SIGN])
+
+
+class Test__add_generation_match_parameters(unittest.TestCase):
+    def _call_fut(self, params, **match_params):
+        from google.cloud.storage._helpers import _add_generation_match_parameters
+
+        return _add_generation_match_parameters(params, **match_params)
+
+    def test_add_generation_match_parameters_list(self):
+        GENERATION_NUMBER = 9
+        METAGENERATION_NUMBER = 6
+        EXPECTED_PARAMS = [
+            ("param1", "value1"),
+            ("param2", "value2"),
+            ("ifGenerationMatch", GENERATION_NUMBER),
+            ("ifMetagenerationMatch", METAGENERATION_NUMBER),
+        ]
+        params = [("param1", "value1"), ("param2", "value2")]
+        self._call_fut(
+            params,
+            if_generation_match=GENERATION_NUMBER,
+            if_metageneration_match=METAGENERATION_NUMBER,
+        )
+        self.assertEqual(params, EXPECTED_PARAMS)
+
+    def test_add_generation_match_parameters_dict(self):
+        GENERATION_NUMBER = 9
+        METAGENERATION_NUMBER = 6
+        EXPECTED_PARAMS = {
+            "param1": "value1",
+            "param2": "value2",
+            "ifGenerationMatch": GENERATION_NUMBER,
+            "ifMetagenerationMatch": METAGENERATION_NUMBER,
+        }
+
+        params = {"param1": "value1", "param2": "value2"}
+        self._call_fut(
+            params,
+            if_generation_match=GENERATION_NUMBER,
+            if_metageneration_match=METAGENERATION_NUMBER,
+        )
+        self.assertEqual(params, EXPECTED_PARAMS)
+
+    def test_add_generation_match_parameters_tuple(self):
+        GENERATION_NUMBER = 9
+        METAGENERATION_NUMBER = 6
+
+        params = (("param1", "value1"), ("param2", "value2"))
+        with self.assertRaises(ValueError):
+            self._call_fut(
+                params,
+                if_generation_match=GENERATION_NUMBER,
+                if_metageneration_match=METAGENERATION_NUMBER,
+            )
 
 
 class _Connection(object):

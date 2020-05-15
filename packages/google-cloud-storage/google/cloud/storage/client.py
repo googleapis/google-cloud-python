@@ -281,7 +281,13 @@ class Client(ClientWithProject):
         """
         return Batch(client=self)
 
-    def get_bucket(self, bucket_or_name, timeout=_DEFAULT_TIMEOUT):
+    def get_bucket(
+        self,
+        bucket_or_name,
+        timeout=_DEFAULT_TIMEOUT,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+    ):
         """API call: retrieve a bucket via a GET request.
 
         See
@@ -299,6 +305,14 @@ class Client(ClientWithProject):
 
                 Can also be passed as a tuple (connect_timeout, read_timeout).
                 See :meth:`requests.Session.request` documentation for details.
+
+            if_metageneration_match (Optional[long]):
+                Make the operation conditional on whether the
+                blob's current metageneration matches the given value.
+
+            if_metageneration_not_match (Optional[long]):
+                Make the operation conditional on whether the blob's
+                current metageneration does not match the given value.
 
         Returns:
             google.cloud.storage.bucket.Bucket
@@ -329,11 +343,21 @@ class Client(ClientWithProject):
 
         """
         bucket = self._bucket_arg_to_bucket(bucket_or_name)
-
-        bucket.reload(client=self, timeout=timeout)
+        bucket.reload(
+            client=self,
+            timeout=timeout,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+        )
         return bucket
 
-    def lookup_bucket(self, bucket_name, timeout=_DEFAULT_TIMEOUT):
+    def lookup_bucket(
+        self,
+        bucket_name,
+        timeout=_DEFAULT_TIMEOUT,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+    ):
         """Get a bucket by name, returning None if not found.
 
         You can use this if you would rather check for a None value
@@ -353,11 +377,24 @@ class Client(ClientWithProject):
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
 
+        :type if_metageneration_match: long
+        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
+                                        blob's current metageneration matches the given value.
+
+        :type if_metageneration_not_match: long
+        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
+                                            blob's current metageneration does not match the given value.
+
         :rtype: :class:`google.cloud.storage.bucket.Bucket`
         :returns: The bucket matching the name provided or None if not found.
         """
         try:
-            return self.get_bucket(bucket_name, timeout=timeout)
+            return self.get_bucket(
+                bucket_name,
+                timeout=timeout,
+                if_metageneration_match=if_metageneration_match,
+                if_metageneration_not_match=if_metageneration_not_match,
+            )
         except NotFound:
             return None
 

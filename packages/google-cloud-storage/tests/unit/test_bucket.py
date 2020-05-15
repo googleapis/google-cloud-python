@@ -588,6 +588,40 @@ class Test_Bucket(unittest.TestCase):
         expected_cw = [((), expected_called_kwargs)]
         self.assertEqual(_FakeConnection._called_with, expected_cw)
 
+    def test_exists_with_metageneration_match(self):
+        class _FakeConnection(object):
+
+            _called_with = []
+
+            @classmethod
+            def api_request(cls, *args, **kwargs):
+                cls._called_with.append((args, kwargs))
+                # exists() does not use the return value
+                return object()
+
+        BUCKET_NAME = "bucket-name"
+        METAGENERATION_NUMBER = 6
+
+        bucket = self._make_one(name=BUCKET_NAME)
+        client = _Client(_FakeConnection)
+        self.assertTrue(
+            bucket.exists(
+                client=client, timeout=42, if_metageneration_match=METAGENERATION_NUMBER
+            )
+        )
+        expected_called_kwargs = {
+            "method": "GET",
+            "path": bucket.path,
+            "query_params": {
+                "fields": "name",
+                "ifMetagenerationMatch": METAGENERATION_NUMBER,
+            },
+            "_target_object": None,
+            "timeout": 42,
+        }
+        expected_cw = [((), expected_called_kwargs)]
+        self.assertEqual(_FakeConnection._called_with, expected_cw)
+
     def test_exists_hit_w_user_project(self):
         USER_PROJECT = "user-project-123"
 
@@ -683,6 +717,26 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(blob.generation, GENERATION)
         (kw,) = connection._requested
         expected_qp = {"generation": GENERATION, "projection": "noAcl"}
+        self.assertEqual(kw["method"], "GET")
+        self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
+        self.assertEqual(kw["query_params"], expected_qp)
+        self.assertEqual(kw["timeout"], self._get_default_timeout())
+
+    def test_get_blob_w_generation_match(self):
+        NAME = "name"
+        BLOB_NAME = "blob-name"
+        GENERATION = 1512565576797178
+
+        connection = _Connection({"name": BLOB_NAME, "generation": GENERATION})
+        client = _Client(connection)
+        bucket = self._make_one(name=NAME)
+        blob = bucket.get_blob(BLOB_NAME, client=client, if_generation_match=GENERATION)
+
+        self.assertIs(blob.bucket, bucket)
+        self.assertEqual(blob.name, BLOB_NAME)
+        self.assertEqual(blob.generation, GENERATION)
+        (kw,) = connection._requested
+        expected_qp = {"ifGenerationMatch": GENERATION, "projection": "noAcl"}
         self.assertEqual(kw["method"], "GET")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
         self.assertEqual(kw["query_params"], expected_qp)
@@ -937,6 +991,31 @@ class Test_Bucket(unittest.TestCase):
         ]
         self.assertEqual(connection._deleted_buckets, expected_cw)
 
+    def test_delete_with_metageneration_match(self):
+        NAME = "name"
+        BLOB_NAME1 = "blob-name1"
+        BLOB_NAME2 = "blob-name2"
+        GET_BLOBS_RESP = {"items": [{"name": BLOB_NAME1}, {"name": BLOB_NAME2}]}
+        DELETE_BLOB1_RESP = DELETE_BLOB2_RESP = {}
+        METAGENERATION_NUMBER = 6
+
+        connection = _Connection(GET_BLOBS_RESP, DELETE_BLOB1_RESP, DELETE_BLOB2_RESP)
+        connection._delete_bucket = True
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=NAME)
+        result = bucket.delete(if_metageneration_match=METAGENERATION_NUMBER)
+        self.assertIsNone(result)
+        expected_cw = [
+            {
+                "method": "DELETE",
+                "path": bucket.path,
+                "query_params": {"ifMetagenerationMatch": METAGENERATION_NUMBER},
+                "_target_object": None,
+                "timeout": self._get_default_timeout(),
+            }
+        ]
+        self.assertEqual(connection._deleted_buckets, expected_cw)
+
     def test_delete_force_miss_blobs(self):
         NAME = "name"
         BLOB_NAME = "blob-name1"
@@ -1017,6 +1096,31 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["method"], "DELETE")
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
         self.assertEqual(kw["query_params"], {"generation": GENERATION})
+        self.assertEqual(kw["timeout"], self._get_default_timeout())
+
+    def test_delete_blob_with_generation_match(self):
+        NAME = "name"
+        BLOB_NAME = "blob-name"
+        GENERATION = 6
+        METAGENERATION = 9
+
+        connection = _Connection({})
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=NAME)
+        result = bucket.delete_blob(
+            BLOB_NAME,
+            if_generation_match=GENERATION,
+            if_metageneration_match=METAGENERATION,
+        )
+
+        self.assertIsNone(result)
+        (kw,) = connection._requested
+        self.assertEqual(kw["method"], "DELETE")
+        self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
+        self.assertEqual(
+            kw["query_params"],
+            {"ifGenerationMatch": GENERATION, "ifMetagenerationMatch": METAGENERATION},
+        )
         self.assertEqual(kw["timeout"], self._get_default_timeout())
 
     def test_delete_blobs_empty(self):
@@ -1137,6 +1241,43 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["method"], "POST")
         self.assertEqual(kw["path"], COPY_PATH)
         self.assertEqual(kw["query_params"], {"sourceGeneration": GENERATION})
+        self.assertEqual(kw["timeout"], self._get_default_timeout())
+
+    def test_copy_blobs_w_generation_match(self):
+        SOURCE = "source"
+        DEST = "dest"
+        BLOB_NAME = "blob-name"
+        GENERATION_NUMBER = 6
+        SOURCE_GENERATION_NUMBER = 9
+
+        connection = _Connection({})
+        client = _Client(connection)
+        source = self._make_one(client=client, name=SOURCE)
+        dest = self._make_one(client=client, name=DEST)
+        blob = self._make_blob(SOURCE, BLOB_NAME)
+
+        new_blob = source.copy_blob(
+            blob,
+            dest,
+            if_generation_match=GENERATION_NUMBER,
+            if_source_generation_match=SOURCE_GENERATION_NUMBER,
+        )
+        self.assertIs(new_blob.bucket, dest)
+        self.assertEqual(new_blob.name, BLOB_NAME)
+
+        (kw,) = connection._requested
+        COPY_PATH = "/b/{}/o/{}/copyTo/b/{}/o/{}".format(
+            SOURCE, BLOB_NAME, DEST, BLOB_NAME
+        )
+        self.assertEqual(kw["method"], "POST")
+        self.assertEqual(kw["path"], COPY_PATH)
+        self.assertEqual(
+            kw["query_params"],
+            {
+                "ifGenerationMatch": GENERATION_NUMBER,
+                "ifSourceGenerationMatch": SOURCE_GENERATION_NUMBER,
+            },
+        )
         self.assertEqual(kw["timeout"], self._get_default_timeout())
 
     def test_copy_blobs_preserve_acl(self):
