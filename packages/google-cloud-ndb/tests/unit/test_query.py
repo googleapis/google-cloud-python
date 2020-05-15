@@ -1960,6 +1960,20 @@ class TestQuery:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_query")
+    def test_fetch_projection_of_unindexed_property(_datastore_query):
+        class SomeKind(model.Model):
+            foo = model.IntegerProperty(indexed=False)
+
+        future = tasklets.Future("fetch")
+        future.set_result("foo")
+        _datastore_query.fetch.return_value = future
+        query = query_module.Query(kind="SomeKind")
+        with pytest.raises(model.InvalidPropertyError):
+            query.fetch(projection=["foo"])
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_run_to_queue():
         query = query_module.Query()
         with pytest.raises(NotImplementedError):

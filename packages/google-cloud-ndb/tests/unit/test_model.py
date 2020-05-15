@@ -4714,6 +4714,14 @@ class TestModel:
             XModel.query(distinct=True, group_by=("x",))
 
     @staticmethod
+    def test_query_projection_of_unindexed_attribute():
+        class XModel(model.Model):
+            x = model.IntegerProperty(indexed=False)
+
+        with pytest.raises(model.InvalidPropertyError):
+            XModel.query(projection=["x"])
+
+    @staticmethod
     @pytest.mark.usefixtures("in_context")
     def test_gql():
         class Simple(model.Model):

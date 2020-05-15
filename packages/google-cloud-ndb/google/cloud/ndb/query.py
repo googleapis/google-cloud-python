@@ -1160,7 +1160,6 @@ def _query_options(wrapped):
         # Avoid circular import in Python 2.7
         from google.cloud.ndb import context as context_module
         from google.cloud.ndb import _datastore_api
-        from google.cloud.ndb import model
 
         # Maybe we already did this (in the case of X calling X_async)
         if "_options" in kwargs:
@@ -1184,6 +1183,12 @@ def _query_options(wrapped):
                 "deprecated. Please pass arguments directly."
             )
 
+        projection = kwargs.get("projection")
+        if projection:
+            projection = _to_property_names(projection)
+            _check_properties(self.kind, projection)
+            kwargs["projection"] = projection
+
         if kwargs.get("keys_only"):
             if kwargs.get("projection"):
                 raise TypeError(
@@ -1191,22 +1196,6 @@ def _query_options(wrapped):
                 )
             kwargs["projection"] = ["__key__"]
             del kwargs["keys_only"]
-
-        # When projection fields are passed as property objects, we need to
-        # convert them into property names. Fixes #295.
-        if kwargs.get("projection"):
-            property_names = []
-            for prop in kwargs["projection"]:
-                if isinstance(prop, six.string_types):
-                    property_names.append(prop)
-                elif isinstance(prop, model.Property):
-                    property_names.append(prop._name)
-                else:
-                    raise TypeError(
-                        "Unexpected projection value {}; "
-                        "should be string or Property".format(prop)
-                    )
-            kwargs["projection"] = property_names
 
         if kwargs.get("transaction"):
             read_consistency = kwargs.pop(
@@ -1451,8 +1440,8 @@ class Query(object):
                     "projection must be a tuple, list or None; "
                     "received {}".format(projection)
                 )
-            projection = self._to_property_names(projection)
-            self._check_properties(projection)
+            projection = _to_property_names(projection)
+            _check_properties(self.kind, projection)
             self.projection = tuple(projection)
 
         if distinct_on is not None and group_by is not None:
@@ -1472,8 +1461,8 @@ class Query(object):
                     "distinct_on must be a tuple, list or None; "
                     "received {}".format(distinct_on)
                 )
-            distinct_on = self._to_property_names(distinct_on)
-            self._check_properties(distinct_on)
+            distinct_on = _to_property_names(distinct_on)
+            _check_properties(self.kind, distinct_on)
             self.distinct_on = tuple(distinct_on)
 
     def __repr__(self):
@@ -1492,11 +1481,11 @@ class Query(object):
             args.append("order_by=%r" % self.order_by)
         if self.projection:
             args.append(
-                "projection=%r" % (self._to_property_names(self.projection))
+                "projection=%r" % (_to_property_names(self.projection))
             )
         if self.distinct_on:
             args.append(
-                "distinct_on=%r" % (self._to_property_names(self.distinct_on))
+                "distinct_on=%r" % (_to_property_names(self.distinct_on))
             )
         if self.default_options is not None:
             args.append("default_options=%r" % self.default_options)
@@ -1511,8 +1500,8 @@ class Query(object):
         """
         return bool(
             self.distinct_on
-            and set(self._to_property_names(self.distinct_on))
-            <= set(self._to_property_names(self.projection))
+            and set(_to_property_names(self.distinct_on))
+            <= set(_to_property_names(self.projection))
         )
 
     def filter(self, *filters):
@@ -1662,23 +1651,6 @@ class Query(object):
             distinct_on=self.distinct_on,
         )
 
-    def _to_property_names(self, properties):
-        # Avoid circular import in Python 2.7
-        from google.cloud.ndb import model
-
-        fixed = []
-        for prop in properties:
-            if isinstance(prop, six.string_types):
-                fixed.append(prop)
-            elif isinstance(prop, model.Property):
-                fixed.append(prop._name)
-            else:
-                raise TypeError(
-                    "Unexpected property {}; "
-                    "should be string or Property".format(prop)
-                )
-        return fixed
-
     def _to_property_orders(self, order_by):
         # Avoid circular import in Python 2.7
         from google.cloud.ndb import model
@@ -1702,14 +1674,6 @@ class Query(object):
             else:
                 raise TypeError("Order values must be properties or strings")
         return orders
-
-    def _check_properties(self, fixed, **kwargs):
-        # Avoid circular import in Python 2.7
-        from google.cloud.ndb import model
-
-        modelclass = model.Model._kind_map.get(self.kind)
-        if modelclass is not None:
-            modelclass._check_properties(fixed, **kwargs)
 
     @_query_options
     @utils.keyword_only(
@@ -2400,3 +2364,30 @@ def gql(query_string, *args, **kwds):
     if args or kwds:
         query = query.bind(*args, **kwds)
     return query
+
+
+def _to_property_names(properties):
+    # Avoid circular import in Python 2.7
+    from google.cloud.ndb import model
+
+    fixed = []
+    for prop in properties:
+        if isinstance(prop, six.string_types):
+            fixed.append(prop)
+        elif isinstance(prop, model.Property):
+            fixed.append(prop._name)
+        else:
+            raise TypeError(
+                "Unexpected property {}; "
+                "should be string or Property".format(prop)
+            )
+    return fixed
+
+
+def _check_properties(kind, fixed, **kwargs):
+    # Avoid circular import in Python 2.7
+    from google.cloud.ndb import model
+
+    modelclass = model.Model._kind_map.get(kind)
+    if modelclass is not None:
+        modelclass._check_properties(fixed, **kwargs)
