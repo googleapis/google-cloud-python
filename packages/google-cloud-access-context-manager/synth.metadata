@@ -4,14 +4,14 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-access-context-manager.git",
-        "sha": "381a71d2de9e2535a4021b46e5639481975fef18"
+        "sha": "ca8ab8f9d7d6a55018edff43b856ffb58468ad8c"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "4674113712c0c7ada19e6a8219d7963ff174b392"
+        "sha": "84c4156c49be9dcabacc8fd7b0585b6fd789ae47"
       }
     }
   ]
