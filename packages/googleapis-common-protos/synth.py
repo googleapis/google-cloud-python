@@ -36,9 +36,11 @@ s.copy(api_common_protos, excludes=["iam/**/*", "**/BUILD.bazel"])
 # ----------------------------------------------------------------------------
 common = gcp.CommonTemplates()
 templated_files = common.py_library()
+# TODO: use protoc-docs-plugin to add docstrings to protos
 s.move(templated_files / ".kokoro", excludes=["docs/**/*", "publish-docs.sh"])
 s.move(templated_files / "setup.cfg")
 s.move(templated_files / "LICENSE")
+s.move(templated_files  / ".github")
 
 # Generate _pb2.py files and format them
 s.shell.run(["nox", "-s", "generate_protos"], hide_output=False)
