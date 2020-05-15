@@ -33,7 +33,7 @@ for version in versions:
             "README.rst",
             "docs/index.rst",
             "docs/conf.py",
-            "nox.py",
+            "noxfile.py",
         ],
     )
     s.move(library / f"google/cloud/dialogflow_{version}", f"dialogflow_{version}")
