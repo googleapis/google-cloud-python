@@ -888,6 +888,18 @@ class TestStorageWriteFiles(TestStorageFiles):
             with open(file_data["path"], "rb") as file_obj:
                 blob.upload_from_file(file_obj, if_metageneration_match=3)
 
+    def test_upload_blob_owner(self):
+        blob = self.bucket.blob("MyBuffer")
+        file_contents = b"Hello World"
+        blob.upload_from_string(file_contents)
+        self.case_blobs_to_delete.append(blob)
+
+        same_blob = self.bucket.blob("MyBuffer")
+        same_blob.reload(projection="full")  # Initialize properties.
+        user_email = Config.CLIENT._credentials.service_account_email
+        owner = same_blob.owner
+        self.assertIn(user_email, owner["entity"])
+
 
 class TestUnicode(unittest.TestCase):
     @vpcsc_config.skip_if_inside_vpcsc

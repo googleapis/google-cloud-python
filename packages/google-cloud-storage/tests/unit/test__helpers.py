@@ -187,6 +187,30 @@ class Test_PropertyMixin(unittest.TestCase):
         )
         self.assertEqual(derived._changes, set())
 
+    def test_reload_w_projection(self):
+        connection = _Connection({"foo": "Foo"})
+        client = _Client(connection)
+        derived = self._derivedClass("/path")()
+        # Make sure changes is not a set instance before calling reload
+        # (which will clear / replace it with an empty set), checked below.
+        derived._changes = object()
+        derived.reload(projection="full", client=client, timeout=42)
+        self.assertEqual(derived._properties, {"foo": "Foo"})
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(
+            kw[0],
+            {
+                "method": "GET",
+                "path": "/path",
+                "query_params": {"projection": "full"},
+                "headers": {},
+                "_target_object": derived,
+                "timeout": 42,
+            },
+        )
+        self.assertEqual(derived._changes, set())
+
     def test__set_properties(self):
         mixin = self._make_one()
         self.assertEqual(mixin._properties, {})

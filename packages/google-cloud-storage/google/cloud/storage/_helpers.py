@@ -136,6 +136,7 @@ class _PropertyMixin(object):
     def reload(
         self,
         client=None,
+        projection="noAcl",
         timeout=_DEFAULT_TIMEOUT,
         if_generation_match=None,
         if_generation_not_match=None,
@@ -150,6 +151,11 @@ class _PropertyMixin(object):
                       ``NoneType``
         :param client: the client to use. If not passed, falls back to the
                        ``client`` stored on the current object.
+
+        :type projection: str
+        :param projection: (Optional) If used, must be 'full' or 'noAcl'.
+                           Defaults to ``'noAcl'``. Specifies the set of
+                           properties to return.
 
         :type timeout: float or tuple
         :param timeout: (Optional) The amount of time, in seconds, to wait
@@ -183,7 +189,7 @@ class _PropertyMixin(object):
         query_params = self._query_params
         # Pass only '?projection=noAcl' here because 'acl' and related
         # are handled via custom endpoints.
-        query_params["projection"] = "noAcl"
+        query_params["projection"] = projection
         _add_generation_match_parameters(
             query_params,
             if_generation_match=if_generation_match,
