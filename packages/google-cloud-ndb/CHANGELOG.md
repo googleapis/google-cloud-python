@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+### [1.2.1](https://www.github.com/googleapis/python-ndb/compare/v1.2.0...v1.2.1) (2020-05-15)
+
+
+### Features
+
+* Improve custom validators ([#408](https://www.github.com/googleapis/python-ndb/issues/408)) ([5b6cdd6](https://www.github.com/googleapis/python-ndb/commit/5b6cdd627dfce3e5b987c2ecd945d39b5056aa37)), closes [#252](https://www.github.com/googleapis/python-ndb/issues/252)
+
+
+### Bug Fixes
+
+* clear context cache on rollback ([#410](https://www.github.com/googleapis/python-ndb/issues/410)) ([aa17986](https://www.github.com/googleapis/python-ndb/commit/aa17986759f32ea16c340961d70fbc8fc123b244)), closes [#398](https://www.github.com/googleapis/python-ndb/issues/398)
+* do not allow empty key parts for key constructor in namespaced model ([#401](https://www.github.com/googleapis/python-ndb/issues/401)) ([f3528b3](https://www.github.com/googleapis/python-ndb/commit/f3528b3e51c93c762c4e31eed76a1b2f06be84e1)), closes [#384](https://www.github.com/googleapis/python-ndb/issues/384)
+* don't rely on duck typing for `_retry.is_transient_error` ([#425](https://www.github.com/googleapis/python-ndb/issues/425)) ([4524542](https://www.github.com/googleapis/python-ndb/commit/4524542e5f6da1af047d86fee3d48cf65ea75508)), closes [#415](https://www.github.com/googleapis/python-ndb/issues/415)
+* handle empty batches from Firestore ([#396](https://www.github.com/googleapis/python-ndb/issues/396)) ([1a054ca](https://www.github.com/googleapis/python-ndb/commit/1a054cadff07074de9395cb99ae2c40f987aed2e)), closes [#386](https://www.github.com/googleapis/python-ndb/issues/386)
+* make sure reads happen in transaction if there is a transaction ([#395](https://www.github.com/googleapis/python-ndb/issues/395)) ([f32644f](https://www.github.com/googleapis/python-ndb/commit/f32644fcf8c16dc0fd74e14108d7955effff1771)), closes [#394](https://www.github.com/googleapis/python-ndb/issues/394)
+* more should be boolean in fetch_page call ([#423](https://www.github.com/googleapis/python-ndb/issues/423)) ([a69ffd2](https://www.github.com/googleapis/python-ndb/commit/a69ffd21aaaa881f5e8e54339fd62a1b02d19c4b)), closes [#422](https://www.github.com/googleapis/python-ndb/issues/422)
+* support same options in model.query as query ([#407](https://www.github.com/googleapis/python-ndb/issues/407)) ([d08019f](https://www.github.com/googleapis/python-ndb/commit/d08019fbecb0f018987267b01929a21e97b418e2))
+* uniform handling of `projection` argument ([#428](https://www.github.com/googleapis/python-ndb/issues/428)) ([2b65c04](https://www.github.com/googleapis/python-ndb/commit/2b65c04e72a66062e2c792b5b1fb067fb935987f)), closes [#379](https://www.github.com/googleapis/python-ndb/issues/379)
+* use `skipped_results` from query results to adjust offset ([#399](https://www.github.com/googleapis/python-ndb/issues/399)) ([6d1452d](https://www.github.com/googleapis/python-ndb/commit/6d1452d977f3f030ff65d5cbb3e593c0789e6c14)), closes [#392](https://www.github.com/googleapis/python-ndb/issues/392)
+* use fresh context cache for each transaction ([#409](https://www.github.com/googleapis/python-ndb/issues/409)) ([5109b91](https://www.github.com/googleapis/python-ndb/commit/5109b91425e917727973079020dc51c2b8fddf53)), closes [#394](https://www.github.com/googleapis/python-ndb/issues/394)
+* use true `keys_only` query for `Query.count()` ([#405](https://www.github.com/googleapis/python-ndb/issues/405)) ([88184c3](https://www.github.com/googleapis/python-ndb/commit/88184c312dd7bdc7bd36ec58fd53e3fd5001d7ac)), closes [#400](https://www.github.com/googleapis/python-ndb/issues/400) [#404](https://www.github.com/googleapis/python-ndb/issues/404)
+
 ## [1.2.0](https://www.github.com/googleapis/python-ndb/compare/v1.1.2...v1.2.0) (2020-04-20)
 
 
