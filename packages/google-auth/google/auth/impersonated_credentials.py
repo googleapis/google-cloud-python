@@ -264,7 +264,10 @@ class Credentials(credentials.Credentials, credentials.Signing):
 
         iam_sign_endpoint = _IAM_SIGN_ENDPOINT.format(self._target_principal)
 
-        body = {"payload": base64.b64encode(message), "delegates": self._delegates}
+        body = {
+            "payload": base64.b64encode(message).decode("utf-8"),
+            "delegates": self._delegates,
+        }
 
         headers = {"Content-Type": "application/json"}
 
