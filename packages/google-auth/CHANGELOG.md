@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [1.15.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.14.3...v1.15.0) (2020-05-15)
+
+
+### Features
+
+* encrypted mtls private key support ([#496](https://www.github.com/googleapis/google-auth-library-python/issues/496)) ([9dc9e9f](https://www.github.com/googleapis/google-auth-library-python/commit/9dc9e9f4ca65780b4d7f24e2c36021d2300b4006))
+
+
+### Bug Fixes
+
+* signBytes for impersonated credentials ([#506](https://www.github.com/googleapis/google-auth-library-python/issues/506)) ([ca8d98a](https://www.github.com/googleapis/google-auth-library-python/commit/ca8d98ab2e5277e53ab8df78beb1e75cdf5321e3)), closes [#338](https://www.github.com/googleapis/google-auth-library-python/issues/338)
+
 ### [1.14.3](https://www.github.com/googleapis/google-auth-library-python/compare/v1.14.2...v1.14.3) (2020-05-11)
 
 
