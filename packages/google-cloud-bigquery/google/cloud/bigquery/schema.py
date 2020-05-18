@@ -62,14 +62,26 @@ class SchemaField(object):
 
         fields (Tuple[google.cloud.bigquery.schema.SchemaField]):
             subfields (requires ``field_type`` of 'RECORD').
+
+        policy_tags (Optional[PolicyTagList]): The policy tag list for the field.
+
     """
 
-    def __init__(self, name, field_type, mode="NULLABLE", description=None, fields=()):
+    def __init__(
+        self,
+        name,
+        field_type,
+        mode="NULLABLE",
+        description=None,
+        fields=(),
+        policy_tags=None,
+    ):
         self._name = name
         self._field_type = field_type
         self._mode = mode
         self._description = description
         self._fields = tuple(fields)
+        self._policy_tags = policy_tags
 
     @classmethod
     def from_api_repr(cls, api_repr):
@@ -87,12 +99,14 @@ class SchemaField(object):
         mode = api_repr.get("mode", "NULLABLE")
         description = api_repr.get("description")
         fields = api_repr.get("fields", ())
+
         return cls(
             field_type=api_repr["type"].upper(),
             fields=[cls.from_api_repr(f) for f in fields],
             mode=mode.upper(),
             description=description,
             name=api_repr["name"],
+            policy_tags=PolicyTagList.from_api_repr(api_repr.get("policyTags")),
         )
 
     @property
@@ -136,6 +150,13 @@ class SchemaField(object):
         """
         return self._fields
 
+    @property
+    def policy_tags(self):
+        """Optional[google.cloud.bigquery.schema.PolicyTagList]: Policy tag list
+        definition for this field.
+        """
+        return self._policy_tags
+
     def to_api_repr(self):
         """Return a dictionary representing this schema field.
 
@@ -155,6 +176,10 @@ class SchemaField(object):
         if self.field_type.upper() in _STRUCT_TYPES:
             answer["fields"] = [f.to_api_repr() for f in self.fields]
 
+        # If this contains a policy tag definition, include that as well:
+        if self.policy_tags is not None:
+            answer["policyTags"] = self.policy_tags.to_api_repr()
+
         # Done; return the serialized dictionary.
         return answer
 
@@ -172,6 +197,7 @@ class SchemaField(object):
             self._mode.upper(),
             self._description,
             self._fields,
+            self._policy_tags,
         )
 
     def to_standard_sql(self):
@@ -244,7 +270,10 @@ def _parse_schema_resource(info):
         mode = r_field.get("mode", "NULLABLE")
         description = r_field.get("description")
         sub_fields = _parse_schema_resource(r_field)
-        schema.append(SchemaField(name, field_type, mode, description, sub_fields))
+        policy_tags = PolicyTagList.from_api_repr(r_field.get("policyTags"))
+        schema.append(
+            SchemaField(name, field_type, mode, description, sub_fields, policy_tags)
+        )
     return schema
 
 
@@ -291,3 +320,88 @@ def _to_schema_fields(schema):
         field if isinstance(field, SchemaField) else SchemaField.from_api_repr(field)
         for field in schema
     ]
+
+
+class PolicyTagList(object):
+    """Define Policy Tags for a column.
+
+    Args:
+        names (
+            Optional[Tuple[str]]): list of policy tags to associate with
+            the column.  Policy tag identifiers are of the form
+            `projects/*/locations/*/taxonomies/*/policyTags/*`.
+    """
+
+    def __init__(self, names=()):
+        self._properties = {}
+        self._properties["names"] = tuple(names)
+
+    @property
+    def names(self):
+        """Tuple[str]: Policy tags associated with this definition.
+        """
+        return self._properties.get("names", ())
+
+    def _key(self):
+        """A tuple key that uniquely describes this PolicyTagList.
+
+        Used to compute this instance's hashcode and evaluate equality.
+
+        Returns:
+            Tuple: The contents of this :class:`~google.cloud.bigquery.schema.PolicyTagList`.
+        """
+        return tuple(sorted(self._properties.items()))
+
+    def __eq__(self, other):
+        if not isinstance(other, PolicyTagList):
+            return NotImplemented
+        return self._key() == other._key()
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash(self._key())
+
+    def __repr__(self):
+        return "PolicyTagList{}".format(self._key())
+
+    @classmethod
+    def from_api_repr(cls, api_repr):
+        """Return a :class:`PolicyTagList` object deserialized from a dict.
+
+        This method creates a new ``PolicyTagList`` instance that points to
+        the ``api_repr`` parameter as its internal properties dict. This means
+        that when a ``PolicyTagList`` instance is stored as a property of
+        another object, any changes made at the higher level will also appear
+        here.
+
+        Args:
+            api_repr (Mapping[str, str]):
+                The serialized representation of the PolicyTagList, such as
+                what is output by :meth:`to_api_repr`.
+
+        Returns:
+            Optional[google.cloud.bigquery.schema.PolicyTagList]:
+                The ``PolicyTagList`` object or None.
+        """
+        if api_repr is None:
+            return None
+        names = api_repr.get("names", ())
+        return cls(names=names)
+
+    def to_api_repr(self):
+        """Return a dictionary representing this object.
+
+        This method returns the properties dict of the ``PolicyTagList``
+        instance rather than making a copy. This means that when a
+        ``PolicyTagList`` instance is stored as a property of another
+        object, any changes made at the higher level will also appear here.
+
+        Returns:
+            dict:
+                A dictionary representing the PolicyTagList object in
+                serialized form.
+        """
+        answer = {"names": [name for name in self.names]}
+        return answer
