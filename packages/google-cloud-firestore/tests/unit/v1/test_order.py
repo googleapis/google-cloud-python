@@ -207,8 +207,8 @@ def _double_value(d):
     return encode_value(d)
 
 
-def _int_value(l):
-    return encode_value(l)
+def _int_value(value):
+    return encode_value(value)
 
 
 def _string_value(s):
