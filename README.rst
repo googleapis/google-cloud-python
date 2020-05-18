@@ -30,6 +30,7 @@ The following client libraries have **GA** support:
 
 -  `Google BigQuery`_ (`BigQuery README`_, `BigQuery Documentation`_)
 -  `Google Cloud Bigtable`_ (`Bigtable README`_, `Bigtable Documentation`_)
+-  `Google Cloud Billing`_ (`Billing README`_, `Billing Documentation`_)
 -  `Google Cloud Datastore`_ (`Datastore README`_, `Datastore Documentation`_)
 -  `Google Cloud KMS`_ (`KMS README`_, `KMS Documentation`_)
 -  `Google Cloud Natural Language`_ (`Natural Language README`_, `Natural Language Documentation`_)
@@ -49,6 +50,10 @@ The following client libraries have **GA** support:
 .. _Google Cloud Bigtable: https://pypi.org/project/google-cloud-bigtable/
 .. _Bigtable README: https://github.com/googleapis/python-bigtable
 .. _Bigtable Documentation: https://googleapis.dev/python/bigtable/latest
+
+.. _Google Cloud Billing: https://pypi.org/project/google-cloud-billing/
+.. _Billing README: https://github.com/googleapis/python-billing
+.. _Billing Documentation: https://googleapis.dev/python/cloudbilling/latest
 
 .. _Google Cloud Datastore: https://pypi.org/project/google-cloud-datastore/
 .. _Datastore README: https://github.com/googleapis/python-datastore
