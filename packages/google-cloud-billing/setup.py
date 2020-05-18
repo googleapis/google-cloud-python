@@ -50,7 +50,7 @@ setuptools.setup(
     setup_requires=["libcst >= 0.2.5"],
     scripts=["scripts/fixup_keywords.py"],
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3.6",
