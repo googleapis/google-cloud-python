@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-firestore"
 description = "Google Cloud Firestore API client library"
-version = "1.6.2"
+version = "1.7.0"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
