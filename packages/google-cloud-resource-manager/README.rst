@@ -116,7 +116,7 @@ Start by authenticating:
 
 .. code-block:: bash
 
-    $ gcloud auth login
+    $ gcloud auth application-default login
 
 And then simply create a client:
 
