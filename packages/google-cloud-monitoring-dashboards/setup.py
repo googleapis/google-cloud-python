@@ -23,7 +23,7 @@ import setuptools
 name = "google-cloud-monitoring-dashboards"
 description = "Monitoring Dashboards API client library"
 version = "0.1.0"
-release_status = "Development Status :: 4 - Beta"
+release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
     'enum34; python_version < "3.4"',
