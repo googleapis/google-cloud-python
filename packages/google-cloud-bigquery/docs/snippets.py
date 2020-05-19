@@ -132,7 +132,8 @@ def test_create_table_nested_repeated_schema(client, to_delete):
     # [START bigquery_nested_repeated_schema]
     # from google.cloud import bigquery
     # client = bigquery.Client()
-    # dataset_ref = client.dataset('my_dataset')
+    # project = client.project
+    # dataset_ref = bigquery.DatasetReference(project, 'my_dataset')
 
     schema = [
         bigquery.SchemaField("id", "STRING", mode="NULLABLE"),
@@ -202,7 +203,8 @@ def test_create_partitioned_table(client, to_delete):
     # [START bigquery_create_table_partitioned]
     # from google.cloud import bigquery
     # client = bigquery.Client()
-    # dataset_ref = client.dataset('my_dataset')
+    # project = client.project
+    # dataset_ref = bigquery.DatasetReference(project, 'my_dataset')
 
     table_ref = dataset_ref.table("my_partitioned_table")
     schema = [
@@ -240,7 +242,9 @@ def test_create_partitioned_table(client, to_delete):
 def test_manage_table_labels(client, to_delete):
     dataset_id = "label_table_dataset_{}".format(_millis())
     table_id = "label_table_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    project = client.project
+    dataset_ref = bigquery.DatasetReference(project, dataset_id)
+    dataset = bigquery.Dataset(dataset_ref)
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
@@ -250,7 +254,9 @@ def test_manage_table_labels(client, to_delete):
     # [START bigquery_label_table]
     # from google.cloud import bigquery
     # client = bigquery.Client()
-    # table_ref = client.dataset('my_dataset').table('my_table')
+    # project = client.project
+    # dataset_ref = bigquery.DatasetReference(project, dataset_id)
+    # table_ref = dataset_ref.table('my_table')
     # table = client.get_table(table_ref)  # API request
 
     assert table.labels == {}
@@ -268,7 +274,8 @@ def test_manage_table_labels(client, to_delete):
     # dataset_id = 'my_dataset'
     # table_id = 'my_table'
 
-    dataset_ref = client.dataset(dataset_id)
+    project = client.project
+    dataset_ref = bigquery.DatasetReference(project, dataset_id)
     table_ref = dataset_ref.table(table_id)
     table = client.get_table(table_ref)  # API Request
 
@@ -286,7 +293,9 @@ def test_manage_table_labels(client, to_delete):
     # [START bigquery_delete_label_table]
     # from google.cloud import bigquery
     # client = bigquery.Client()
-    # table_ref = client.dataset('my_dataset').table('my_table')
+    # project = client.project
+    # dataset_ref = bigquery.DatasetReference(project, dataset_id)
+    # table_ref = dataset_ref.table('my_table')
     # table = client.get_table(table_ref)  # API request
 
     # This example table starts with one label
@@ -310,7 +319,9 @@ def test_update_table_description(client, to_delete):
     """Update a table's description."""
     dataset_id = "update_table_description_dataset_{}".format(_millis())
     table_id = "update_table_description_table_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    project = client.project
+    dataset_ref = bigquery.DatasetReference(project, dataset_id)
+    dataset = bigquery.Dataset(dataset_ref)
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
@@ -321,7 +332,9 @@ def test_update_table_description(client, to_delete):
     # [START bigquery_update_table_description]
     # from google.cloud import bigquery
     # client = bigquery.Client()
-    # table_ref = client.dataset('my_dataset').table('my_table')
+    # project = client.project
+    # dataset_ref = bigquery.DatasetReference(project, dataset_id)
+    # table_ref = dataset_ref.table('my_table')
     # table = client.get_table(table_ref)  # API request
 
     assert table.description == "Original description."
@@ -343,7 +356,9 @@ def test_update_table_expiration(client, to_delete):
     """Update a table's expiration time."""
     dataset_id = "update_table_expiration_dataset_{}".format(_millis())
     table_id = "update_table_expiration_table_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    project = client.project
+    dataset_ref = bigquery.DatasetReference(project, dataset_id)
+    dataset = bigquery.Dataset(dataset_ref)
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
@@ -356,7 +371,9 @@ def test_update_table_expiration(client, to_delete):
 
     # from google.cloud import bigquery
     # client = bigquery.Client()
-    # table_ref = client.dataset('my_dataset').table('my_table')
+    # project = client.project
+    # dataset_ref = bigquery.DatasetReference(project, dataset_id)
+    # table_ref = dataset_ref.table('my_table')
     # table = client.get_table(table_ref)  # API request
 
     assert table.expires is None
@@ -382,7 +399,9 @@ def test_relax_column(client, to_delete):
     """Updates a schema field from required to nullable."""
     dataset_id = "relax_column_dataset_{}".format(_millis())
     table_id = "relax_column_table_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    project = client.project
+    dataset_ref = bigquery.DatasetReference(project, dataset_id)
+    dataset = bigquery.Dataset(dataset_ref)
     dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
 
@@ -396,7 +415,9 @@ def test_relax_column(client, to_delete):
         bigquery.SchemaField("full_name", "STRING", mode="REQUIRED"),
         bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
     ]
-    table_ref = client.dataset(dataset_id).table(table_id)
+
+    dataset_ref = bigquery.DatasetReference(project, dataset_id)
+    table_ref = dataset_ref.table(table_id)
     table = bigquery.Table(table_ref, schema=original_schema)
     table = client.create_table(table)
     assert all(field.mode == "REQUIRED" for field in table.schema)
@@ -424,7 +445,9 @@ def test_update_table_cmek(client, to_delete):
     """Patch a table's metadata."""
     dataset_id = "update_table_cmek_{}".format(_millis())
     table_id = "update_table_cmek_{}".format(_millis())
-    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    project = client.project
+    dataset_ref = bigquery.DatasetReference(project, dataset_id)
+    dataset = bigquery.Dataset(dataset_ref)
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
@@ -468,7 +491,7 @@ def test_update_table_cmek(client, to_delete):
 def test_manage_views(client, to_delete):
     project = client.project
     source_dataset_id = "source_dataset_{}".format(_millis())
-    source_dataset_ref = client.dataset(source_dataset_id)
+    source_dataset_ref = bigquery.DatasetReference(project, source_dataset_id)
     source_dataset = bigquery.Dataset(source_dataset_ref)
     source_dataset = client.create_dataset(source_dataset)
     to_delete.append(source_dataset)
@@ -487,7 +510,7 @@ def test_manage_views(client, to_delete):
     load_job.result()
 
     shared_dataset_id = "shared_dataset_{}".format(_millis())
-    shared_dataset_ref = client.dataset(shared_dataset_id)
+    shared_dataset_ref = bigquery.DatasetReference(project, shared_dataset_id)
     shared_dataset = bigquery.Dataset(shared_dataset_ref)
     shared_dataset = client.create_dataset(shared_dataset)
     to_delete.append(shared_dataset)
@@ -498,7 +521,7 @@ def test_manage_views(client, to_delete):
     # project = 'my-project'
     # source_dataset_id = 'my_source_dataset'
     # source_table_id = 'us_states'
-    # shared_dataset_ref = client.dataset('my_shared_dataset')
+    # shared_dataset_ref = bigquery.DatasetReference(project, 'my_shared_dataset')
 
     # This example shows how to create a shared view of a source table of
     # US States. The source table contains all 50 states, while the view will
@@ -518,7 +541,7 @@ def test_manage_views(client, to_delete):
     # project = 'my-project'
     # source_dataset_id = 'my_source_dataset'
     # source_table_id = 'us_states'
-    # shared_dataset_ref = client.dataset('my_shared_dataset')
+    # shared_dataset_ref = bigquery.DatasetReference(project, 'my_shared_dataset')
 
     # This example shows how to update a shared view of a source table of
     # US States. The view's query will be updated to contain only states with
@@ -534,8 +557,9 @@ def test_manage_views(client, to_delete):
     # from google.cloud import bigquery
     # client = bigquery.Client()
     # shared_dataset_id = 'my_shared_dataset'
-
-    view_ref = client.dataset(shared_dataset_id).table("my_shared_view")
+    project = client.project
+    shared_dataset_ref = bigquery.DatasetReference(project, shared_dataset_id)
+    view_ref = shared_dataset_ref.table("my_shared_view")
     view = client.get_table(view_ref)  # API Request
 
     # Display view properties
@@ -552,9 +576,9 @@ def test_manage_views(client, to_delete):
     # Assign access controls to the dataset containing the view
     # shared_dataset_id = 'my_shared_dataset'
     # analyst_group_email = 'data_analysts@example.com'
-    shared_dataset = client.get_dataset(
-        client.dataset(shared_dataset_id)
-    )  # API request
+    project = client.project
+    shared_dataset_ref = bigquery.DatasetReference(project, shared_dataset_id)
+    shared_dataset = client.get_dataset(shared_dataset_ref)  # API request
     access_entries = shared_dataset.access_entries
     access_entries.append(
         bigquery.AccessEntry("READER", "groupByEmail", analyst_group_email)
@@ -567,9 +591,9 @@ def test_manage_views(client, to_delete):
     # Authorize the view to access the source dataset
     # project = 'my-project'
     # source_dataset_id = 'my_source_dataset'
-    source_dataset = client.get_dataset(
-        client.dataset(source_dataset_id)
-    )  # API request
+    project = client.project
+    source_dataset_ref = bigquery.DatasetReference(project, source_dataset_id)
+    source_dataset = client.get_dataset(source_dataset_ref)  # API request
     view_reference = {
         "projectId": project,
         "datasetId": shared_dataset_id,
@@ -602,7 +626,8 @@ def test_load_table_add_column(client, to_delete):
     # [START bigquery_add_column_load_append]
     # from google.cloud import bigquery
     # client = bigquery.Client()
-    # dataset_ref = client.dataset('my_dataset')
+    # project = client.project
+    # dataset_ref = bigquery.DatasetReference(project, 'my_dataset')
     # filepath = 'path/to/your_file.csv'
 
     # Retrieves the destination table and checks the length of the schema
@@ -673,7 +698,8 @@ def test_load_table_relax_column(client, to_delete):
     # [START bigquery_relax_column_load_append]
     # from google.cloud import bigquery
     # client = bigquery.Client()
-    # dataset_ref = client.dataset('my_dataset')
+    # project = client.project
+    # dataset_ref = bigquery.DatasetReference(project, 'my_dataset')
     # filepath = 'path/to/your_file.csv'
 
     # Retrieves the destination table and checks the number of required fields
