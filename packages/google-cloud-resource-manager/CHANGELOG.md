@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+### [0.30.2](https://www.github.com/googleapis/python-resource-manager/compare/v0.30.1...v0.30.2) (2020-05-19)
+
+
+### Bug Fixes
+
+* fix list_projects behavior for multiple filter params ([#20](https://www.github.com/googleapis/python-resource-manager/issues/20)) ([26a708a](https://www.github.com/googleapis/python-resource-manager/commit/26a708a2628877e78b180ba3fae0b5d21f44fd7e))
+
 ### [0.30.1](https://www.github.com/googleapis/python-resource-manager/compare/v0.30.0...v0.30.1) (2020-02-20)
 
 
