@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/googleapis/python-service-directory/compare/v0.1.1...v0.2.0) (2020-05-19)
+
+
+### Features
+
+* add mTLS support (via synth) ([#4](https://www.github.com/googleapis/python-service-directory/issues/4)) ([25e0fcf](https://www.github.com/googleapis/python-service-directory/commit/25e0fcfb32d100be0cba3799d62543569dd2d2c6))
+
+
+### Bug Fixes
+
+* fix docs link ([#9](https://www.github.com/googleapis/python-service-directory/issues/9)) ([0f73da9](https://www.github.com/googleapis/python-service-directory/commit/0f73da9722e3e0c943b67063af4a7f9d0fc1f9e4))
+
 ### [0.1.1](https://www.github.com/googleapis/python-service-directory/compare/v0.1.0...v0.1.1) (2020-04-17)
 
 
