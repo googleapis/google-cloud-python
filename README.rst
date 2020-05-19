@@ -37,6 +37,7 @@ The following client libraries have **GA** support:
 -  `Google Cloud Natural Language`_ (`Natural Language README`_, `Natural Language Documentation`_)
 -  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_, `Pub/Sub Documentation`_)
 -  `Google Cloud Scheduler`_ (`Scheduler README`_, `Scheduler Documentation`_)
+-  `Google Cloud Secret Manager`_ (`Secret Manager README`_, `Secret Manager Documentation`_)
 -  `Google Cloud Spanner`_ (`Spanner README`_, `Spanner Documentation`_)
 -  `Google Cloud Speech to Text`_ (`Speech to Text README`_, `Speech to Text Documentation`_)
 -  `Google Cloud Storage`_ (`Storage README`_, `Storage Documentation`_)
@@ -75,6 +76,10 @@ The following client libraries have **GA** support:
 .. _Google Cloud Pub/Sub: https://pypi.org/project/google-cloud-pubsub/
 .. _Pub/Sub README: https://github.com/googleapis/python-pubsub
 .. _Pub/Sub Documentation: https://googleapis.dev/python/pubsub/latest
+
+.. _Google Cloud Secret Manager: https://pypi.org/project/google-cloud-secret-manager/
+.. _Secret Manager README: https://github.com/googleapis/python-secret-manager
+.. _Secret Manager Documentation: https://googleapis.dev/python/secretmanager/latest
 
 .. _Google Cloud Spanner: https://pypi.org/project/google-cloud-spanner
 .. _Spanner README: https://github.com/googleapis/python-spanner
