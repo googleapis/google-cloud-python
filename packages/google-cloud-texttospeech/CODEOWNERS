@@ -8,4 +8,4 @@
 # The python-samples-owners team is the default owner for samples
 *                               @googleapis/python-samples-owners
 
-/samples/                       @nnegrey @telpirion @sirtorry @googleapis/python-samples-owners
+/samples/                       @telpirion @sirtorry @googleapis/python-samples-owners
