@@ -319,7 +319,7 @@ class IAMConfiguration(dict):
     :params bucket_policy_only_enabled:
         (Optional) Whether the IAM-only policy is enabled for the bucket.
 
-    :type uniform_bucket_level_locked_time: :class:`datetime.datetime`
+    :type uniform_bucket_level_access_locked_time: :class:`datetime.datetime`
     :params uniform_bucket_level_locked_time:
         (Optional) When the bucket's IAM-only policy was enabled.
         This value should normally only be set by the back-end API.
@@ -1836,8 +1836,8 @@ class Bucket(_PropertyMixin):
         See https://cloud.google.com/storage/docs/lifecycle and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :type entries: list of dictionaries
-        :param entries: A sequence of mappings describing each lifecycle rule.
+        :type rules: list of dictionaries
+        :param rules: A sequence of mappings describing each lifecycle rule.
         """
         rules = [dict(rule) for rule in rules]  # Convert helpers if needed
         self._patch_property("lifecycle", {"rule": rules})
