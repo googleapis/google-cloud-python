@@ -45,6 +45,7 @@ The following client libraries have **GA** support:
 -  `Google Cloud Tasks`_ (`Tasks README`_, `Tasks Documentation`_)
 -  `Google Cloud Translation`_ (`Translation README`_, `Translation Documentation`_)
 -  `Stackdriver Logging`_ (`Logging README`_, `Logging Documentation`_)
+-  `Stackdriver Monitoring`_ (`Monitoring README`_, `Monitoring Documentation`_)
 
 .. _Google BigQuery: https://pypi.org/project/google-cloud-bigquery/
 .. _BigQuery README: https://github.com/googleapis/python-bigquery#python-client-for-google-bigquery
@@ -113,6 +114,10 @@ The following client libraries have **GA** support:
 .. _Stackdriver Logging: https://pypi.org/project/google-cloud-logging/
 .. _Logging README: https://github.com/googleapis/python-logging
 .. _Logging Documentation: https://googleapis.dev/python/logging/latest
+
+.. _Stackdriver Monitoring: https://pypi.org/project/google-cloud-monitoring/
+.. _Monitoring README: https://github.com/googleapis/python-monitoring
+.. _Monitoring Documentation: https://googleapis.dev/python/monitoring/latest
 
 Beta Support
 ------------
@@ -198,7 +203,6 @@ The following client libraries have **alpha** support:
 -  `Google Cloud Text-to-Speech`_ (`Text-to-Speech README`_, `Text-to-Speech Documentation`_)
 -  `Grafeas`_ (`Grafeas README`_, `Grafeas Documentation`_)
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_, `Error Reporting Documentation`_)
--  `Stackdriver Monitoring`_ (`Monitoring README`_, `Monitoring Documentation`_)
 -  `Webrisk`_ (`Webrisk README`_, `Webrisk Documentation`_)
 
 .. _Google Cloud AutoML: https://pypi.org/project/google-cloud-automl/
@@ -296,10 +300,6 @@ The following client libraries have **alpha** support:
 .. _Stackdriver Error Reporting: https://pypi.org/project/google-cloud-error-reporting/
 .. _Error Reporting README: https://github.com/googleapis/python-error-reporting#python-client-for-stackdriver-error-reporting
 .. _Error Reporting Documentation: https://googleapis.dev/python/clouderrorreporting/latest
-
-.. _Stackdriver Monitoring: https://pypi.org/project/google-cloud-monitoring/
-.. _Monitoring README: https://github.com/googleapis/python-monitoring
-.. _Monitoring Documentation: https://googleapis.dev/python/monitoring/latest
 
 .. _Webrisk: https://pypi.org/project/google-cloud-webrisk
 .. _Webrisk README: https://github.com/googleapis/python-webrisk#python-client-for-web-risk-api-alpha
