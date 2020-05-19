@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [0.8.0](https://www.github.com/googleapis/python-dataproc/compare/v0.7.0...v0.8.0) (2020-05-19)
+
+
+### Features
+
+* add SparkR and Presto jobs to WorkflowTemplates; add new optional components; add submit_job_as_operation to v1 (via synth) ([#21](https://www.github.com/googleapis/python-dataproc/issues/21)) ([1cf10b6](https://www.github.com/googleapis/python-dataproc/commit/1cf10b6b127a63dbeb34958771c2cc8d8cb37099))
+
 ## [0.7.0](https://www.github.com/googleapis/python-dataproc/compare/v0.6.1...v0.7.0) (2020-03-05)
 
 
