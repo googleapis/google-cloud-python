@@ -187,10 +187,12 @@ class Client(BaseClient):
             extra_params["pageSize"] = page_size
 
         if filter_params is not None:
-            extra_params["filter"] = [
-                "{}:{}".format(key, value)
-                for key, value in six.iteritems(filter_params)
-            ]
+            extra_params["filter"] = " ".join(
+                [
+                    "{}:{}".format(key, value)
+                    for key, value in six.iteritems(filter_params)
+                ]
+            )
 
         return page_iterator.HTTPIterator(
             client=self,
