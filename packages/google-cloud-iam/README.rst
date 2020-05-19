@@ -1,16 +1,24 @@
-Python Client for IAM API (`Alpha`_)
+Python Client for IAM API
 ================================================================
 
+|ga| |pypi| |versions|
 
-
-`IAM API`_: IAM API
+`IAM API`_: Manages identity and access control for Google Cloud Platform resources, including the
+creation of service accounts, which you can use to authenticate to Google and make API calls.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-iam.svg
+   :target: https://pypi.org/project/google-cloud-iam/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-iam.svg
+   :target: https://pypi.org/project/google-cloud-iam/
+
 .. _IAM API: https://cloud.google.com/iam
-.. _Client Library Documentation: https://googleapis.dev/python/iamcredentials/latest
+
+.. _Client Library Documentation: https://googleapis.dev/python/iam/latest
 .. _Product Documentation:  https://cloud.google.com/iam
 
 Quick Start
