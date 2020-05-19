@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-iam/compare/v0.3.0...v1.0.0) (2020-05-19)
+
+
+### Features
+
+* release as production/stable ([#14](https://www.github.com/googleapis/python-iam/issues/14)) ([4ccb185](https://www.github.com/googleapis/python-iam/commit/4ccb185e968ce1a35e8c7a9795d8e418bafc1dcb)), closes [#6](https://www.github.com/googleapis/python-iam/issues/6) [#13](https://www.github.com/googleapis/python-iam/issues/13)
+
 ## [0.3.0](https://www.github.com/googleapis/python-iam/compare/v0.2.1...v0.3.0) (2020-02-03)
 
 
