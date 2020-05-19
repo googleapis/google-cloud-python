@@ -32,6 +32,7 @@ The following client libraries have **GA** support:
 -  `Google Cloud Bigtable`_ (`Bigtable README`_, `Bigtable Documentation`_)
 -  `Google Cloud Billing`_ (`Billing README`_, `Billing Documentation`_)
 -  `Google Cloud Datastore`_ (`Datastore README`_, `Datastore Documentation`_)
+-  `Google Cloud IAM`_ (`IAM README`_, `IAM Documentation`_)
 -  `Google Cloud KMS`_ (`KMS README`_, `KMS Documentation`_)
 -  `Google Cloud Natural Language`_ (`Natural Language README`_, `Natural Language Documentation`_)
 -  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_, `Pub/Sub Documentation`_)
@@ -58,6 +59,10 @@ The following client libraries have **GA** support:
 .. _Google Cloud Datastore: https://pypi.org/project/google-cloud-datastore/
 .. _Datastore README: https://github.com/googleapis/python-datastore
 .. _Datastore Documentation: https://googleapis.dev/python/datastore/latest
+
+.. _Google Cloud IAM: https://pypi.org/project/google-cloud-iam/
+.. _IAM README: https://github.com/googleapis/python-iam
+.. _IAM Documentation: https://googleapis.dev/python/iam/latest
 
 .. _Google Cloud KMS: https://pypi.org/project/google-cloud-kms/
 .. _KMS README: https://github.com/googleapis/python-kms
@@ -174,7 +179,6 @@ The following client libraries have **alpha** support:
 -  `Google Cloud Dataproc`_ (`Dataproc README`_, `Dataproc Documentation`_)
 -  `Google Cloud DLP`_ (`DLP README`_, `DLP Documentation`_)
 -  `Google Cloud DNS`_ (`DNS README`_, `DNS Documentation`_)
--  `Google Cloud IAM`_ (`IAM README`_, `IAM Documentation`_)
 -  `Google Cloud IoT`_ (`IoT README`_, `IoT Documentation`_)
 -  `Google Cloud Memorystore for Redis`_ (`Redis README`_, `Redis Documentation`_)
 -  `Google Phishing Protection`_ (`Phishing Protection README`_, `Phishing Protection Documentation`_)
@@ -231,10 +235,6 @@ The following client libraries have **alpha** support:
 .. _Google Cloud DNS: https://pypi.org/project/google-cloud-dns/
 .. _DNS README: https://github.com/googleapis/python-dns#python-client-for-google-cloud-dns
 .. _DNS Documentation: https://googleapis.dev/python/dns/latest
-
-.. _Google Cloud IAM: https://pypi.org/project/google-cloud-IAM/
-.. _IAM README: https://github.com/googleapis/python-iam
-.. _IAM Documentation: https://googleapis.dev/python/iamcredentials/latest
 
 .. _Google Cloud IoT: https://pypi.org/project/google-cloud-iot/
 .. _IoT README: https://github.com/googleapis/python-iot/
