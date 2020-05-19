@@ -78,13 +78,22 @@ class AutoscalingPolicyServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def autoscaling_policy_path(cls, project, region, autoscaling_policy):
+    def autoscaling_policy_path(cls, project, location, autoscaling_policy):
         """Return a fully-qualified autoscaling_policy string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/regions/{region}/autoscalingPolicies/{autoscaling_policy}",
+            "projects/{project}/locations/{location}/autoscalingPolicies/{autoscaling_policy}",
             project=project,
-            region=region,
+            location=location,
             autoscaling_policy=autoscaling_policy,
+        )
+
+    @classmethod
+    def location_path(cls, project, location):
+        """Return a fully-qualified location string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}",
+            project=project,
+            location=location,
         )
 
     @classmethod
@@ -231,8 +240,8 @@ class AutoscalingPolicyServiceClient(object):
             >>> response = client.create_autoscaling_policy(parent, policy)
 
         Args:
-            parent (str): Required. The "resource name" of the region or location, as described in
-                https://cloud.google.com/apis/design/resource\_names.
+            parent (str): Required. The "resource name" of the region or location, as
+                described in https://cloud.google.com/apis/design/resource_names.
 
                 -  For ``projects.regions.autoscalingPolicies.create``, the resource
                    name has the following format:
@@ -305,7 +314,7 @@ class AutoscalingPolicyServiceClient(object):
         """
         Updates (replaces) autoscaling policy.
 
-        Disabled check for update\_mask, because all updates will be full
+        Disabled check for update_mask, because all updates will be full
         replacements.
 
         Example:
@@ -386,13 +395,14 @@ class AutoscalingPolicyServiceClient(object):
             >>>
             >>> client = dataproc_v1beta2.AutoscalingPolicyServiceClient()
             >>>
-            >>> name = client.autoscaling_policy_path('[PROJECT]', '[REGION]', '[AUTOSCALING_POLICY]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> response = client.get_autoscaling_policy(name)
 
         Args:
-            name (str): Required. The "resource name" of the autoscaling policy, as described in
-                https://cloud.google.com/apis/design/resource\_names.
+            name (str): Required. The "resource name" of the autoscaling policy, as
+                described in https://cloud.google.com/apis/design/resource_names.
 
                 -  For ``projects.regions.autoscalingPolicies.get``, the resource name
                    of the policy has the following format:
@@ -482,8 +492,8 @@ class AutoscalingPolicyServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Required. The "resource name" of the region or location, as described in
-                https://cloud.google.com/apis/design/resource\_names.
+            parent (str): Required. The "resource name" of the region or location, as
+                described in https://cloud.google.com/apis/design/resource_names.
 
                 -  For ``projects.regions.autoscalingPolicies.list``, the resource name
                    of the region has the following format:
@@ -577,13 +587,14 @@ class AutoscalingPolicyServiceClient(object):
             >>>
             >>> client = dataproc_v1beta2.AutoscalingPolicyServiceClient()
             >>>
-            >>> name = client.autoscaling_policy_path('[PROJECT]', '[REGION]', '[AUTOSCALING_POLICY]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> client.delete_autoscaling_policy(name)
 
         Args:
-            name (str): Required. The "resource name" of the autoscaling policy, as described in
-                https://cloud.google.com/apis/design/resource\_names.
+            name (str): Required. The "resource name" of the autoscaling policy, as
+                described in https://cloud.google.com/apis/design/resource_names.
 
                 -  For ``projects.regions.autoscalingPolicies.delete``, the resource
                    name of the policy has the following format:

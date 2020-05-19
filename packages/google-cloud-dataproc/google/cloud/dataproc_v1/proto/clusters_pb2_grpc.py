@@ -92,7 +92,7 @@ class ClusterControllerServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def ListClusters(self, request, context):
-        """Lists all regions/{region}/clusters in a project.
+        """Lists all regions/{region}/clusters in a project alphabetically.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

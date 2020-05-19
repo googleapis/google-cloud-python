@@ -1,5 +1,5 @@
-Client for Google Cloud Dataproc API
-====================================
+Client for Cloud Dataproc API
+=============================
 
 .. automodule:: google.cloud.dataproc_v1
     :members:

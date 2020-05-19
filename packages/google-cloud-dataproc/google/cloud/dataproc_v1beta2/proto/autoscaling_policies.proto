@@ -27,6 +27,10 @@ option go_package = "google.golang.org/genproto/googleapis/cloud/dataproc/v1beta
 option java_multiple_files = true;
 option java_outer_classname = "AutoscalingPoliciesProto";
 option java_package = "com.google.cloud.dataproc.v1beta2";
+option (google.api.resource_definition) = {
+  type: "dataproc.googleapis.com/Region"
+  pattern: "projects/{project}/regions/{region}"
+};
 
 // The API interface for managing autoscaling policies in the
 // Cloud Dataproc API.
@@ -102,8 +106,8 @@ service AutoscalingPolicyService {
 message AutoscalingPolicy {
   option (google.api.resource) = {
     type: "dataproc.googleapis.com/AutoscalingPolicy"
-    pattern: "projects/{project}/regions/{region}/autoscalingPolicies/{autoscaling_policy}"
     pattern: "projects/{project}/locations/{location}/autoscalingPolicies/{autoscaling_policy}"
+    pattern: "projects/{project}/regions/{region}/autoscalingPolicies/{autoscaling_policy}"
     history: ORIGINALLY_SINGLE_PATTERN
   };
 
@@ -281,12 +285,7 @@ message GetAutoscalingPolicyRequest {
 // A request to update an autoscaling policy.
 message UpdateAutoscalingPolicyRequest {
   // Required. The updated autoscaling policy.
-  AutoscalingPolicy policy = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference) = {
-      type: "dataproc.googleapis.com/AutoscalingPolicy"
-    }
-  ];
+  AutoscalingPolicy policy = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 // A request to delete an autoscaling policy.

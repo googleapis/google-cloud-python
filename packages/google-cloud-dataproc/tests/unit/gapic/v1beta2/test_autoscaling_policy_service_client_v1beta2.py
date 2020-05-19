@@ -166,9 +166,7 @@ class TestAutoscalingPolicyServiceClient(object):
             client = dataproc_v1beta2.AutoscalingPolicyServiceClient()
 
         # Setup Request
-        name = client.autoscaling_policy_path(
-            "[PROJECT]", "[REGION]", "[AUTOSCALING_POLICY]"
-        )
+        name = "name3373707"
 
         response = client.get_autoscaling_policy(name)
         assert expected_response == response
@@ -189,9 +187,7 @@ class TestAutoscalingPolicyServiceClient(object):
             client = dataproc_v1beta2.AutoscalingPolicyServiceClient()
 
         # Setup request
-        name = client.autoscaling_policy_path(
-            "[PROJECT]", "[REGION]", "[AUTOSCALING_POLICY]"
-        )
+        name = "name3373707"
 
         with pytest.raises(CustomException):
             client.get_autoscaling_policy(name)
@@ -251,9 +247,7 @@ class TestAutoscalingPolicyServiceClient(object):
             client = dataproc_v1beta2.AutoscalingPolicyServiceClient()
 
         # Setup Request
-        name = client.autoscaling_policy_path(
-            "[PROJECT]", "[REGION]", "[AUTOSCALING_POLICY]"
-        )
+        name = "name3373707"
 
         client.delete_autoscaling_policy(name)
 
@@ -273,9 +267,7 @@ class TestAutoscalingPolicyServiceClient(object):
             client = dataproc_v1beta2.AutoscalingPolicyServiceClient()
 
         # Setup request
-        name = client.autoscaling_policy_path(
-            "[PROJECT]", "[REGION]", "[AUTOSCALING_POLICY]"
-        )
+        name = "name3373707"
 
         with pytest.raises(CustomException):
             client.delete_autoscaling_policy(name)

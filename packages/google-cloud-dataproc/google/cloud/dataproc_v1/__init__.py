@@ -36,6 +36,13 @@ if sys.version_info[:2] == (2, 7):
     warnings.warn(message, DeprecationWarning)
 
 
+class AutoscalingPolicyServiceClient(
+    autoscaling_policy_service_client.AutoscalingPolicyServiceClient
+):
+    __doc__ = autoscaling_policy_service_client.AutoscalingPolicyServiceClient.__doc__
+    enums = enums
+
+
 class ClusterControllerClient(cluster_controller_client.ClusterControllerClient):
     __doc__ = cluster_controller_client.ClusterControllerClient.__doc__
     enums = enums
@@ -53,18 +60,11 @@ class WorkflowTemplateServiceClient(
     enums = enums
 
 
-class AutoscalingPolicyServiceClient(
-    autoscaling_policy_service_client.AutoscalingPolicyServiceClient
-):
-    __doc__ = autoscaling_policy_service_client.AutoscalingPolicyServiceClient.__doc__
-    enums = enums
-
-
 __all__ = (
     "enums",
     "types",
+    "AutoscalingPolicyServiceClient",
     "ClusterControllerClient",
     "JobControllerClient",
     "WorkflowTemplateServiceClient",
-    "AutoscalingPolicyServiceClient",
 )

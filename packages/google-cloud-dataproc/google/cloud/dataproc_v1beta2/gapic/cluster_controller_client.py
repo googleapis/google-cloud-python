@@ -207,8 +207,8 @@ class ClusterControllerClient(object):
         metadata=None,
     ):
         """
-        Creates a cluster in a project. The returned ``Operation.metadata`` will
-        be
+        Creates a cluster in a project. The returned ``Operation.metadata``
+        will be
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata>`__.
 
         Example:
@@ -254,7 +254,7 @@ class ClusterControllerClient(object):
                 `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
                 The id must contain only letters (a-z, A-Z), numbers (0-9), underscores
-                (\_), and hyphens (-). The maximum length is 40 characters.
+                (_), and hyphens (-). The maximum length is 40 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -312,8 +312,8 @@ class ClusterControllerClient(object):
         metadata=None,
     ):
         """
-        Updates a cluster in a project. The returned ``Operation.metadata`` will
-        be
+        Updates a cluster in a project. The returned ``Operation.metadata``
+        will be
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata>`__.
 
         Example:
@@ -356,21 +356,21 @@ class ClusterControllerClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dataproc_v1beta2.types.Cluster`
-            update_mask (Union[dict, ~google.cloud.dataproc_v1beta2.types.FieldMask]): Required. Specifies the path, relative to ``Cluster``, of the field to
-                update. For example, to change the number of workers in a cluster to 5,
-                the ``update_mask`` parameter would be specified as
+            update_mask (Union[dict, ~google.cloud.dataproc_v1beta2.types.FieldMask]): Required. Specifies the path, relative to ``Cluster``, of the field
+                to update. For example, to change the number of workers in a cluster to
+                5, the ``update_mask`` parameter would be specified as
                 ``config.worker_config.num_instances``, and the ``PATCH`` request body
                 would specify the new value, as follows:
 
                 ::
 
-                     {
-                       "config":{
-                         "workerConfig":{
-                           "numInstances":"5"
-                         }
-                       }
-                     }
+                    {
+                      "config":{
+                        "workerConfig":{
+                          "numInstances":"5"
+                        }
+                      }
+                    }
 
                 Similarly, to change the number of preemptible workers in a cluster to
                 5, the ``update_mask`` parameter would be
@@ -379,13 +379,13 @@ class ClusterControllerClient(object):
 
                 ::
 
-                     {
-                       "config":{
-                         "secondaryWorkerConfig":{
-                           "numInstances":"5"
-                         }
-                       }
-                     }
+                    {
+                      "config":{
+                        "secondaryWorkerConfig":{
+                          "numInstances":"5"
+                        }
+                      }
+                    }
 
                 Note: currently only the following fields can be updated:
 
@@ -449,7 +449,7 @@ class ClusterControllerClient(object):
                 `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
                 The id must contain only letters (a-z, A-Z), numbers (0-9), underscores
-                (\_), and hyphens (-). The maximum length is 40 characters.
+                (_), and hyphens (-). The maximum length is 40 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -511,8 +511,8 @@ class ClusterControllerClient(object):
         metadata=None,
     ):
         """
-        Deletes a cluster in a project. The returned ``Operation.metadata`` will
-        be
+        Deletes a cluster in a project. The returned ``Operation.metadata``
+        will be
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata>`__.
 
         Example:
@@ -546,7 +546,7 @@ class ClusterControllerClient(object):
             region (str): Required. The Dataproc region in which to handle the request.
             cluster_name (str): Required. The cluster name.
             cluster_uuid (str): Optional. Specifying the ``cluster_uuid`` means the RPC should fail
-                (with error NOT\_FOUND) if cluster with specified UUID does not exist.
+                (with error NOT_FOUND) if cluster with specified UUID does not exist.
             request_id (str): Optional. A unique id used to identify the request. If the server
                 receives two ``DeleteClusterRequest`` requests with the same id, then
                 the second request will be ignored and the first
@@ -557,7 +557,7 @@ class ClusterControllerClient(object):
                 `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
                 The id must contain only letters (a-z, A-Z), numbers (0-9), underscores
-                (\_), and hyphens (-). The maximum length is 40 characters.
+                (_), and hyphens (-). The maximum length is 40 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -686,7 +686,7 @@ class ClusterControllerClient(object):
         metadata=None,
     ):
         """
-        Lists all regions/{region}/clusters in a project.
+        Lists all regions/{region}/clusters in a project alphabetically.
 
         Example:
             >>> from google.cloud import dataproc_v1beta2
@@ -803,8 +803,8 @@ class ClusterControllerClient(object):
         metadata=None,
     ):
         """
-        Gets cluster diagnostic information. The returned ``Operation.metadata``
-        will be
+        Gets cluster diagnostic information. The returned
+        ``Operation.metadata`` will be
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata>`__.
         After the operation completes, ``Operation.response`` contains
         ``Empty``.
@@ -879,5 +879,5 @@ class ClusterControllerClient(object):
             operation,
             self.transport._operations_client,
             empty_pb2.Empty,
-            metadata_type=clusters_pb2.DiagnoseClusterResults,
+            metadata_type=proto_operations_pb2.ClusterOperationMetadata,
         )

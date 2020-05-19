@@ -322,7 +322,7 @@ message OrderedJob {
   // The id must contain only letters (a-z, A-Z), numbers (0-9),
   // underscores (_), and hyphens (-). Cannot begin or end with underscore
   // or hyphen. Must consist of between 3 and 50 characters.
-  string step_id = 1;
+  string step_id = 1 [(google.api.field_behavior) = REQUIRED];
 
   // Required. The job definition.
   oneof job_type {
@@ -336,7 +336,13 @@ message OrderedJob {
 
     PigJob pig_job = 6;
 
+    // Spark R job
+    SparkRJob spark_r_job = 11;
+
     SparkSqlJob spark_sql_job = 7;
+
+    // Presto job
+    PrestoJob presto_job = 12;
   }
 
   // Optional. The labels to associate with this job.
@@ -349,14 +355,14 @@ message OrderedJob {
   // the following regular expression: [\p{Ll}\p{Lo}\p{N}_-]{0,63}
   //
   // No more than 32 labels can be associated with a given job.
-  map<string, string> labels = 8;
+  map<string, string> labels = 8 [(google.api.field_behavior) = OPTIONAL];
 
   // Optional. Job scheduling configuration.
-  JobScheduling scheduling = 9;
+  JobScheduling scheduling = 9 [(google.api.field_behavior) = OPTIONAL];
 
   // Optional. The optional list of prerequisite job step_ids.
   // If not specified, the job will start at the beginning of workflow.
-  repeated string prerequisite_step_ids = 10;
+  repeated string prerequisite_step_ids = 10 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // A configurable parameter that replaces one or more fields in the template.
@@ -729,7 +735,12 @@ message ListWorkflowTemplatesRequest {
   // * For `projects.locations.workflowTemplates.list`, the
   //   resource name of the location has the following format:
   //   `projects/{project_id}/locations/{location}`
-  string parent = 1 [(google.api.field_behavior) = REQUIRED];
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      child_type: "dataproc.googleapis.com/WorkflowTemplate"
+    }
+  ];
 
   // Optional. The maximum number of results to return in each response.
   int32 page_size = 2;

@@ -3,6 +3,7 @@ config = {
         "google.cloud.dataproc.v1.JobController": {
             "retry_codes": {
                 "idempotent": ["DEADLINE_EXCEEDED", "INTERNAL", "UNAVAILABLE"],
+                "non_idempotent2": [],
                 "non_idempotent": ["UNAVAILABLE"],
             },
             "retry_params": {
@@ -18,33 +19,38 @@ config = {
             },
             "methods": {
                 "SubmitJob": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "GetJob": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "ListJobs": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "UpdateJob": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "CancelJob": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "DeleteJob": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "SubmitJobAsOperation": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent2",
                     "retry_params_name": "default",
                 },
             },

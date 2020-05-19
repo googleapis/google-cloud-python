@@ -28,14 +28,18 @@ class Component(enum.IntEnum):
       ANACONDA (int): The Anaconda python distribution.
       HIVE_WEBHCAT (int): The Hive Web HCatalog (the REST service for accessing HCatalog).
       JUPYTER (int): The Jupyter Notebook.
+      PRESTO (int): The Presto query engine.
       ZEPPELIN (int): The Zeppelin notebook.
+      ZOOKEEPER (int): The Zookeeper service.
     """
 
     COMPONENT_UNSPECIFIED = 0
     ANACONDA = 5
     HIVE_WEBHCAT = 3
     JUPYTER = 1
+    PRESTO = 6
     ZEPPELIN = 4
+    ZOOKEEPER = 8
 
 
 class ClusterOperationStatus(object):
@@ -168,7 +172,7 @@ class ListJobsRequest(object):
         Attributes:
           ALL (int): Match all jobs, regardless of state.
           ACTIVE (int): Only match jobs in non-terminal states: PENDING, RUNNING, or
-          CANCEL\_PENDING.
+          CANCEL_PENDING.
           NON_ACTIVE (int): Only match jobs in terminal states: CANCELLED, DONE, or ERROR.
         """
 
@@ -276,7 +280,7 @@ class YarnApplication(object):
         Attributes:
           STATE_UNSPECIFIED (int): Status is unspecified.
           NEW (int): Status is NEW.
-          NEW_SAVING (int): Status is NEW\_SAVING.
+          NEW_SAVING (int): Status is NEW_SAVING.
           SUBMITTED (int): Status is SUBMITTED.
           ACCEPTED (int): Status is ACCEPTED.
           RUNNING (int): Status is RUNNING.

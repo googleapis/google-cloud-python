@@ -128,7 +128,7 @@ class AutoscalingPolicyServiceGrpcTransport(object):
 
         Updates (replaces) autoscaling policy.
 
-        Disabled check for update\_mask, because all updates will be full
+        Disabled check for update_mask, because all updates will be full
         replacements.
 
         Returns:

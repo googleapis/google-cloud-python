@@ -90,6 +90,15 @@ class WorkflowTemplateServiceClient(object):
     from_service_account_json = from_service_account_file
 
     @classmethod
+    def location_path(cls, project, location):
+        """Return a fully-qualified location string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}",
+            project=project,
+            location=location,
+        )
+
+    @classmethod
     def region_path(cls, project, region):
         """Return a fully-qualified region string."""
         return google.api_core.path_template.expand(
@@ -243,8 +252,8 @@ class WorkflowTemplateServiceClient(object):
             >>> response = client.create_workflow_template(parent, template)
 
         Args:
-            parent (str): Required. The resource name of the region or location, as described in
-                https://cloud.google.com/apis/design/resource\_names.
+            parent (str): Required. The resource name of the region or location, as described
+                in https://cloud.google.com/apis/design/resource_names.
 
                 -  For ``projects.regions.workflowTemplates,create``, the resource name
                    of the region has the following format:
@@ -326,13 +335,14 @@ class WorkflowTemplateServiceClient(object):
             >>>
             >>> client = dataproc_v1beta2.WorkflowTemplateServiceClient()
             >>>
-            >>> name = client.workflow_template_path('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> response = client.get_workflow_template(name)
 
         Args:
-            name (str): Required. The resource name of the workflow template, as described in
-                https://cloud.google.com/apis/design/resource\_names.
+            name (str): Required. The resource name of the workflow template, as described
+                in https://cloud.google.com/apis/design/resource_names.
 
                 -  For ``projects.regions.workflowTemplates.get``, the resource name of
                    the template has the following format:
@@ -429,7 +439,8 @@ class WorkflowTemplateServiceClient(object):
             >>>
             >>> client = dataproc_v1beta2.WorkflowTemplateServiceClient()
             >>>
-            >>> name = client.workflow_template_path('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> response = client.instantiate_workflow_template(name)
             >>>
@@ -443,8 +454,8 @@ class WorkflowTemplateServiceClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            name (str): Required. The resource name of the workflow template, as described in
-                https://cloud.google.com/apis/design/resource\_names.
+            name (str): Required. The resource name of the workflow template, as described
+                in https://cloud.google.com/apis/design/resource_names.
 
                 -  For ``projects.regions.workflowTemplates.instantiate``, the resource
                    name of the template has the following format:
@@ -468,7 +479,7 @@ class WorkflowTemplateServiceClient(object):
                 `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
                 The tag must contain only letters (a-z, A-Z), numbers (0-9), underscores
-                (\_), and hyphens (-). The maximum length is 40 characters.
+                (_), and hyphens (-). The maximum length is 40 characters.
             parameters (dict[str -> str]): Optional. Map from parameter names to values that should be used for those
                 parameters. Values may not exceed 100 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -587,8 +598,8 @@ class WorkflowTemplateServiceClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            parent (str): Required. The resource name of the region or location, as described in
-                https://cloud.google.com/apis/design/resource\_names.
+            parent (str): Required. The resource name of the region or location, as described
+                in https://cloud.google.com/apis/design/resource_names.
 
                 -  For ``projects.regions.workflowTemplates,instantiateinline``, the
                    resource name of the region has the following format:
@@ -610,7 +621,7 @@ class WorkflowTemplateServiceClient(object):
                 `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
                 The tag must contain only letters (a-z, A-Z), numbers (0-9), underscores
-                (\_), and hyphens (-). The maximum length is 40 characters.
+                (_), and hyphens (-). The maximum length is 40 characters.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -785,8 +796,8 @@ class WorkflowTemplateServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Required. The resource name of the region or location, as described in
-                https://cloud.google.com/apis/design/resource\_names.
+            parent (str): Required. The resource name of the region or location, as described
+                in https://cloud.google.com/apis/design/resource_names.
 
                 -  For ``projects.regions.workflowTemplates,list``, the resource name of
                    the region has the following format:
@@ -880,13 +891,14 @@ class WorkflowTemplateServiceClient(object):
             >>>
             >>> client = dataproc_v1beta2.WorkflowTemplateServiceClient()
             >>>
-            >>> name = client.workflow_template_path('[PROJECT]', '[REGION]', '[WORKFLOW_TEMPLATE]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> client.delete_workflow_template(name)
 
         Args:
-            name (str): Required. The resource name of the workflow template, as described in
-                https://cloud.google.com/apis/design/resource\_names.
+            name (str): Required. The resource name of the workflow template, as described
+                in https://cloud.google.com/apis/design/resource_names.
 
                 -  For ``projects.regions.workflowTemplates.delete``, the resource name
                    of the template has the following format:

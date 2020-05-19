@@ -119,8 +119,8 @@ class ClusterControllerGrpcTransport(object):
     def create_cluster(self):
         """Return the gRPC stub for :meth:`ClusterControllerClient.create_cluster`.
 
-        Creates a cluster in a project. The returned ``Operation.metadata`` will
-        be
+        Creates a cluster in a project. The returned ``Operation.metadata``
+        will be
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata>`__.
 
         Returns:
@@ -134,8 +134,8 @@ class ClusterControllerGrpcTransport(object):
     def update_cluster(self):
         """Return the gRPC stub for :meth:`ClusterControllerClient.update_cluster`.
 
-        Updates a cluster in a project. The returned ``Operation.metadata`` will
-        be
+        Updates a cluster in a project. The returned ``Operation.metadata``
+        will be
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata>`__.
 
         Returns:
@@ -149,8 +149,8 @@ class ClusterControllerGrpcTransport(object):
     def delete_cluster(self):
         """Return the gRPC stub for :meth:`ClusterControllerClient.delete_cluster`.
 
-        Deletes a cluster in a project. The returned ``Operation.metadata`` will
-        be
+        Deletes a cluster in a project. The returned ``Operation.metadata``
+        will be
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata>`__.
 
         Returns:
@@ -177,7 +177,7 @@ class ClusterControllerGrpcTransport(object):
     def list_clusters(self):
         """Return the gRPC stub for :meth:`ClusterControllerClient.list_clusters`.
 
-        Lists all regions/{region}/clusters in a project.
+        Lists all regions/{region}/clusters in a project alphabetically.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -190,8 +190,8 @@ class ClusterControllerGrpcTransport(object):
     def diagnose_cluster(self):
         """Return the gRPC stub for :meth:`ClusterControllerClient.diagnose_cluster`.
 
-        Gets cluster diagnostic information. The returned ``Operation.metadata``
-        will be
+        Gets cluster diagnostic information. The returned
+        ``Operation.metadata`` will be
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata>`__.
         After the operation completes, ``Operation.response`` contains
         ``Empty``.

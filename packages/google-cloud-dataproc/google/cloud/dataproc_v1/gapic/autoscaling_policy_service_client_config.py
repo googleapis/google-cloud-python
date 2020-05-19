@@ -17,14 +17,14 @@ config = {
                 }
             },
             "methods": {
-                "CreateAutoscalingPolicy": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
-                },
                 "UpdateAutoscalingPolicy": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "CreateAutoscalingPolicy": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "GetAutoscalingPolicy": {

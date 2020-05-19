@@ -16,6 +16,7 @@
 
 
 import google.api_core.grpc_helpers
+import google.api_core.operations_v1
 
 from google.cloud.dataproc_v1.proto import jobs_pb2_grpc
 
@@ -72,6 +73,13 @@ class JobControllerGrpcTransport(object):
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {"job_controller_stub": jobs_pb2_grpc.JobControllerStub(channel)}
+
+        # Because this API includes a method that returns a
+        # long-running operation (proto: google.longrunning.Operation),
+        # instantiate an LRO client.
+        self._operations_client = google.api_core.operations_v1.OperationsClient(
+            channel
+        )
 
     @classmethod
     def create_channel(
@@ -187,3 +195,16 @@ class JobControllerGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["job_controller_stub"].DeleteJob
+
+    @property
+    def submit_job_as_operation(self):
+        """Return the gRPC stub for :meth:`JobControllerClient.submit_job_as_operation`.
+
+        Submits job to a cluster.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["job_controller_stub"].SubmitJobAsOperation

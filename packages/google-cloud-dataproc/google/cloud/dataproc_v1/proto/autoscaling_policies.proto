@@ -17,11 +17,11 @@ syntax = "proto3";
 package google.cloud.dataproc.v1;
 
 import "google/api/annotations.proto";
+import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/empty.proto";
-import "google/api/client.proto";
 
 option go_package = "google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataproc";
 option java_multiple_files = true;
@@ -48,6 +48,7 @@ service AutoscalingPolicyService {
         body: "policy"
       }
     };
+    option (google.api.method_signature) = "parent,policy";
   }
 
   // Updates (replaces) autoscaling policy.
@@ -63,6 +64,7 @@ service AutoscalingPolicyService {
         body: "policy"
       }
     };
+    option (google.api.method_signature) = "policy";
   }
 
   // Retrieves autoscaling policy.
@@ -73,6 +75,7 @@ service AutoscalingPolicyService {
         get: "/v1/{name=projects/*/regions/*/autoscalingPolicies/*}"
       }
     };
+    option (google.api.method_signature) = "name";
   }
 
   // Lists autoscaling policies in the project.
@@ -83,6 +86,7 @@ service AutoscalingPolicyService {
         get: "/v1/{parent=projects/*/regions/*}/autoscalingPolicies"
       }
     };
+    option (google.api.method_signature) = "parent";
   }
 
   // Deletes an autoscaling policy. It is an error to delete an autoscaling
@@ -94,6 +98,7 @@ service AutoscalingPolicyService {
         delete: "/v1/{name=projects/*/regions/*/autoscalingPolicies/*}"
       }
     };
+    option (google.api.method_signature) = "name";
   }
 }
 
@@ -253,8 +258,8 @@ message CreateAutoscalingPolicyRequest {
     }
   ];
 
-  // The autoscaling policy to create.
-  AutoscalingPolicy policy = 2;
+  // Required. The autoscaling policy to create.
+  AutoscalingPolicy policy = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 // A request to fetch an autoscaling policy.

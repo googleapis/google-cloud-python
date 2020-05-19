@@ -26,22 +26,30 @@ class Component(enum.IntEnum):
     Attributes:
       COMPONENT_UNSPECIFIED (int): Unspecified component.
       ANACONDA (int): The Anaconda python distribution.
+      DOCKER (int): Docker
       DRUID (int): The Druid query engine.
+      FLINK (int): Flink
       HIVE_WEBHCAT (int): The Hive Web HCatalog (the REST service for accessing HCatalog).
       JUPYTER (int): The Jupyter Notebook.
       KERBEROS (int): The Kerberos security feature.
       PRESTO (int): The Presto query engine.
+      RANGER (int): The Ranger service.
+      SOLR (int): The Solr service.
       ZEPPELIN (int): The Zeppelin notebook.
       ZOOKEEPER (int): The Zookeeper service.
     """
 
     COMPONENT_UNSPECIFIED = 0
     ANACONDA = 5
+    DOCKER = 13
     DRUID = 9
+    FLINK = 14
     HIVE_WEBHCAT = 3
     JUPYTER = 1
     KERBEROS = 7
     PRESTO = 6
+    RANGER = 12
+    SOLR = 10
     ZEPPELIN = 4
     ZOOKEEPER = 8
 
@@ -76,6 +84,9 @@ class ClusterStatus(object):
           ERROR (int): The cluster encountered an error. It is not ready for use.
           DELETING (int): The cluster is being deleted. It cannot be used.
           UPDATING (int): The cluster is being updated. It continues to accept and process jobs.
+          STOPPING (int): The cluster is being stopped. It cannot be used.
+          STOPPED (int): The cluster is currently stopped. It is not ready for use.
+          STARTING (int): The cluster is being started. It is not ready for use.
         """
 
         UNKNOWN = 0
@@ -84,6 +95,9 @@ class ClusterStatus(object):
         ERROR = 3
         DELETING = 4
         UPDATING = 5
+        STOPPING = 6
+        STOPPED = 7
+        STARTING = 8
 
     class Substate(enum.IntEnum):
         """
@@ -176,7 +190,7 @@ class ListJobsRequest(object):
         Attributes:
           ALL (int): Match all jobs, regardless of state.
           ACTIVE (int): Only match jobs in non-terminal states: PENDING, RUNNING, or
-          CANCEL\_PENDING.
+          CANCEL_PENDING.
           NON_ACTIVE (int): Only match jobs in terminal states: CANCELLED, DONE, or ERROR.
         """
 
@@ -284,7 +298,7 @@ class YarnApplication(object):
         Attributes:
           STATE_UNSPECIFIED (int): Status is unspecified.
           NEW (int): Status is NEW.
-          NEW_SAVING (int): Status is NEW\_SAVING.
+          NEW_SAVING (int): Status is NEW_SAVING.
           SUBMITTED (int): Status is SUBMITTED.
           ACCEPTED (int): Status is ACCEPTED.
           RUNNING (int): Status is RUNNING.

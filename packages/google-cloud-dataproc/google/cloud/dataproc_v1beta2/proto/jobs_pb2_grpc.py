@@ -4,6 +4,9 @@ import grpc
 from google.cloud.dataproc_v1beta2.proto import (
     jobs_pb2 as google_dot_cloud_dot_dataproc__v1beta2_dot_proto_dot_jobs__pb2,
 )
+from google.longrunning import (
+    operations_pb2 as google_dot_longrunning_dot_operations__pb2,
+)
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
@@ -21,6 +24,11 @@ class JobControllerStub(object):
             "/google.cloud.dataproc.v1beta2.JobController/SubmitJob",
             request_serializer=google_dot_cloud_dot_dataproc__v1beta2_dot_proto_dot_jobs__pb2.SubmitJobRequest.SerializeToString,
             response_deserializer=google_dot_cloud_dot_dataproc__v1beta2_dot_proto_dot_jobs__pb2.Job.FromString,
+        )
+        self.SubmitJobAsOperation = channel.unary_unary(
+            "/google.cloud.dataproc.v1beta2.JobController/SubmitJobAsOperation",
+            request_serializer=google_dot_cloud_dot_dataproc__v1beta2_dot_proto_dot_jobs__pb2.SubmitJobRequest.SerializeToString,
+            response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
         self.GetJob = channel.unary_unary(
             "/google.cloud.dataproc.v1beta2.JobController/GetJob",
@@ -55,6 +63,13 @@ class JobControllerServicer(object):
 
     def SubmitJob(self, request, context):
         """Submits a job to a cluster.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def SubmitJobAsOperation(self, request, context):
+        """Submits job to a cluster.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -107,6 +122,11 @@ def add_JobControllerServicer_to_server(servicer, server):
             servicer.SubmitJob,
             request_deserializer=google_dot_cloud_dot_dataproc__v1beta2_dot_proto_dot_jobs__pb2.SubmitJobRequest.FromString,
             response_serializer=google_dot_cloud_dot_dataproc__v1beta2_dot_proto_dot_jobs__pb2.Job.SerializeToString,
+        ),
+        "SubmitJobAsOperation": grpc.unary_unary_rpc_method_handler(
+            servicer.SubmitJobAsOperation,
+            request_deserializer=google_dot_cloud_dot_dataproc__v1beta2_dot_proto_dot_jobs__pb2.SubmitJobRequest.FromString,
+            response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
         "GetJob": grpc.unary_unary_rpc_method_handler(
             servicer.GetJob,

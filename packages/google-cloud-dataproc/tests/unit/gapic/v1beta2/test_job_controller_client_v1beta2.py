@@ -19,8 +19,11 @@
 import mock
 import pytest
 
+from google.rpc import status_pb2
+
 from google.cloud import dataproc_v1beta2
 from google.cloud.dataproc_v1beta2.proto import jobs_pb2
+from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
@@ -68,11 +71,13 @@ class TestJobControllerClient(object):
         driver_output_resource_uri = "driverOutputResourceUri-542229086"
         driver_control_files_uri = "driverControlFilesUri207057643"
         job_uuid = "jobUuid-1615012099"
+        done = True
         expected_response = {
             "submitted_by": submitted_by,
             "driver_output_resource_uri": driver_output_resource_uri,
             "driver_control_files_uri": driver_control_files_uri,
             "job_uuid": job_uuid,
+            "done": done,
         }
         expected_response = jobs_pb2.Job(**expected_response)
 
@@ -120,11 +125,13 @@ class TestJobControllerClient(object):
         driver_output_resource_uri = "driverOutputResourceUri-542229086"
         driver_control_files_uri = "driverControlFilesUri207057643"
         job_uuid = "jobUuid-1615012099"
+        done = True
         expected_response = {
             "submitted_by": submitted_by,
             "driver_output_resource_uri": driver_output_resource_uri,
             "driver_control_files_uri": driver_control_files_uri,
             "job_uuid": job_uuid,
+            "done": done,
         }
         expected_response = jobs_pb2.Job(**expected_response)
 
@@ -219,11 +226,13 @@ class TestJobControllerClient(object):
         driver_output_resource_uri = "driverOutputResourceUri-542229086"
         driver_control_files_uri = "driverControlFilesUri207057643"
         job_uuid = "jobUuid-1615012099"
+        done = True
         expected_response = {
             "submitted_by": submitted_by,
             "driver_output_resource_uri": driver_output_resource_uri,
             "driver_control_files_uri": driver_control_files_uri,
             "job_uuid": job_uuid,
+            "done": done,
         }
         expected_response = jobs_pb2.Job(**expected_response)
 
@@ -279,11 +288,13 @@ class TestJobControllerClient(object):
         driver_output_resource_uri = "driverOutputResourceUri-542229086"
         driver_control_files_uri = "driverControlFilesUri207057643"
         job_uuid = "jobUuid-1615012099"
+        done = True
         expected_response = {
             "submitted_by": submitted_by,
             "driver_output_resource_uri": driver_output_resource_uri,
             "driver_control_files_uri": driver_control_files_uri,
             "job_uuid": job_uuid,
+            "done": done,
         }
         expected_response = jobs_pb2.Job(**expected_response)
 
@@ -361,3 +372,70 @@ class TestJobControllerClient(object):
 
         with pytest.raises(CustomException):
             client.delete_job(project_id, region, job_id)
+
+    def test_submit_job_as_operation(self):
+        # Setup Expected Response
+        submitted_by = "submittedBy-2047729125"
+        driver_output_resource_uri = "driverOutputResourceUri-542229086"
+        driver_control_files_uri = "driverControlFilesUri207057643"
+        job_uuid = "jobUuid-1615012099"
+        done = True
+        expected_response = {
+            "submitted_by": submitted_by,
+            "driver_output_resource_uri": driver_output_resource_uri,
+            "driver_control_files_uri": driver_control_files_uri,
+            "job_uuid": job_uuid,
+            "done": done,
+        }
+        expected_response = jobs_pb2.Job(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_submit_job_as_operation", done=True
+        )
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.JobControllerClient()
+
+        # Setup Request
+        project_id = "projectId-1969970175"
+        region = "region-934795532"
+        job = {}
+
+        response = client.submit_job_as_operation(project_id, region, job)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = jobs_pb2.SubmitJobRequest(
+            project_id=project_id, region=region, job=job
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_submit_job_as_operation_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_submit_job_as_operation_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = dataproc_v1beta2.JobControllerClient()
+
+        # Setup Request
+        project_id = "projectId-1969970175"
+        region = "region-934795532"
+        job = {}
+
+        response = client.submit_job_as_operation(project_id, region, job)
+        exception = response.exception()
+        assert exception.errors[0] == error
