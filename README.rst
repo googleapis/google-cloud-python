@@ -38,6 +38,7 @@ The following client libraries have **GA** support:
 -  `Google Cloud Monitoring Dashboards`_ (`Monitoring Dashboards README`_, `Monitoring Dashboards Documentation`_)
 -  `Google Cloud Natural Language`_ (`Natural Language README`_, `Natural Language Documentation`_)
 -  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_, `Pub/Sub Documentation`_)
+-  `Google Cloud Recommender`_ (`Recommender README`_, `Recommender Documentation`_)
 -  `Google Cloud Scheduler`_ (`Scheduler README`_, `Scheduler Documentation`_)
 -  `Google Cloud Secret Manager`_ (`Secret Manager README`_, `Secret Manager Documentation`_)
 -  `Google Cloud Spanner`_ (`Spanner README`_, `Spanner Documentation`_)
@@ -88,6 +89,14 @@ The following client libraries have **GA** support:
 .. _Pub/Sub README: https://github.com/googleapis/python-pubsub
 .. _Pub/Sub Documentation: https://googleapis.dev/python/pubsub/latest
 
+.. _Google Cloud Recommender: https://pypi.org/project/google-cloud-recommender/
+.. _Recommender README: https://github.com/googleapis/python-recommender
+.. _Recommender Documentation: https://googleapis.dev/python/recommender/latest
+
+.. _Google Cloud Scheduler: https://pypi.org/project/google-cloud-scheduler/
+.. _Scheduler README: https://github.com/googleapis/python-scheduler
+.. _Scheduler Documentation: https://googleapis.dev/python/cloudscheduler/latest
+
 .. _Google Cloud Secret Manager: https://pypi.org/project/google-cloud-secret-manager/
 .. _Secret Manager README: https://github.com/googleapis/python-secret-manager
 .. _Secret Manager Documentation: https://googleapis.dev/python/secretmanager/latest
@@ -111,10 +120,6 @@ The following client libraries have **GA** support:
 .. _Google Cloud Translation: https://pypi.org/project/google-cloud-translate/
 .. _Translation README: https://github.com/googleapis/python-translate#python-client-for-google-cloud-translation
 .. _Translation Documentation: https://googleapis.dev/python/translation/latest
-
-.. _Google Cloud Scheduler: https://pypi.org/project/google-cloud-scheduler/
-.. _Scheduler README: https://github.com/googleapis/python-scheduler
-.. _Scheduler Documentation: https://googleapis.dev/python/cloudscheduler/latest
 
 .. _Stackdriver Logging: https://pypi.org/project/google-cloud-logging/
 .. _Logging README: https://github.com/googleapis/python-logging
@@ -193,7 +198,6 @@ The following client libraries have **alpha** support:
 -  `Google Cloud Memorystore for Redis`_ (`Redis README`_, `Redis Documentation`_)
 -  `Google Phishing Protection`_ (`Phishing Protection README`_, `Phishing Protection Documentation`_)
 -  `Google Cloud OS Login`_ (`OS Login README`_, `OS Login Documentation`_)
--  `Google Cloud Recommender`_ (`Recommender README`_, `Recommender Documentation`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_, `Resource Manager Documentation`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_, `Runtime Config Documentation`_)
 -  `Google Cloud Security Command Center`_ (`Security Center README`_, `Security Center Documentation`_)
@@ -260,10 +264,6 @@ The following client libraries have **alpha** support:
 .. _Google Cloud OS Login: https://pypi.org/project/google-cloud-os-login/
 .. _OS Login README: https://github.com/googleapis/python-oslogin
 .. _OS Login Documentation: https://googleapis.dev/python/oslogin/latest
-
-.. _Google Cloud Recommender: https://pypi.org/project/google-cloud-recommender/
-.. _Recommender README: https://github.com/googleapis/python-recommender
-.. _Recommender Documentation: https://googleapis.dev/python/recommender/latest
 
 .. _Google Cloud Resource Manager: https://pypi.org/project/google-cloud-resource-manager/
 .. _Resource Manager README: https://github.com/googleapis/python-resource-manager
