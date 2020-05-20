@@ -657,6 +657,13 @@ class TestTableAdminAPI(unittest.TestCase):
         for table in self.tables_to_delete:
             table.delete()
 
+    def _skip_if_emulated(self, message):
+        # NOTE: This method is necessary because ``Config.IN_EMULATOR``
+        #       is set at runtime rather than import time, which means we
+        #       can't use the @unittest.skipIf decorator.
+        if Config.IN_EMULATOR:
+            self.skipTest(message)
+
     def test_list_tables(self):
         # Since `Config.INSTANCE_DATA` is newly created in `setUpModule`, the
         # table created in `setUpClass` here will be the only one.
@@ -691,6 +698,7 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertEqual(sorted_tables, expected_tables)
 
     def test_test_iam_permissions(self):
+        self._skip_if_emulated("Method not implemented in bigtable emulator")
         temp_table_id = "test-test-iam-policy-table"
         temp_table = Config.INSTANCE_DATA.table(temp_table_id)
         temp_table.create()
@@ -701,6 +709,7 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertEqual(permissions, permissions_allowed)
 
     def test_get_iam_policy(self):
+        self._skip_if_emulated("Method not implemented in bigtable emulator")
         temp_table_id = "test-get-iam-policy-table"
         temp_table = Config.INSTANCE_DATA.table(temp_table_id)
         temp_table.create()
@@ -711,6 +720,7 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertEqual(policy["version"], 0)
 
     def test_set_iam_policy(self):
+        self._skip_if_emulated("Method not implemented in bigtable emulator")
         temp_table_id = "test-set-iam-policy-table"
         temp_table = Config.INSTANCE_DATA.table(temp_table_id)
         temp_table.create()
@@ -742,6 +752,7 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertEqual(retrieved_col_fam.gc_rule, gc_rule)
 
     def test_create_table_with_split_keys(self):
+        self._skip_if_emulated("Split keys are not supported by Bigtable emulator")
         temp_table_id = "foo-bar-baz-split-table"
         initial_split_keys = [b"split_key_1", b"split_key_10", b"split_key_20"]
         temp_table = Config.INSTANCE_DATA.table(temp_table_id)
@@ -1014,6 +1025,9 @@ class TestDataAPI(unittest.TestCase):
         self.assertEqual(found_row_keys, expected_row_keys)
 
     def test_read_large_cell_limit(self):
+        self._maybe_emulator_skip(
+            "Maximum gRPC received message size for emulator is 4194304 bytes."
+        )
         row = self._table.row(ROW_KEY)
         self.rows_to_delete.append(row)
 
