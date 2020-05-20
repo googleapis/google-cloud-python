@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-secret-manager/compare/v0.2.0...v1.0.0) (2020-05-20)
+
+
+### Features
+
+* release as production/stable ([#24](https://www.github.com/googleapis/python-secret-manager/issues/24)) ([39a8cc8](https://www.github.com/googleapis/python-secret-manager/commit/39a8cc8f631569c82d1cbffc6a9bbb440d380683))
+
 ## [0.2.0](https://www.github.com/googleapis/python-secret-manager/compare/v0.1.1...v0.2.0) (2020-03-06)
 
 
