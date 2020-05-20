@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [0.8.0](https://www.github.com/googleapis/python-datacatalog/compare/v0.7.0...v0.8.0) (2020-05-20)
+
+
+### Features
+
+* add `restricted_locations` to v1; add `order` to `TagField` and `TagTemplateField` in v1beta1; rename `field_path` to `tag_template_field_path` in v1beta1; add pagination support to `list_taxonomies` in v1beta1 ([#20](https://www.github.com/googleapis/python-datacatalog/issues/20)) ([7a890c2](https://www.github.com/googleapis/python-datacatalog/commit/7a890c2f87ff37f610c7246bcbf369314d87b93d))
+
 ## [0.7.0](https://www.github.com/googleapis/python-datacatalog/compare/v0.6.0...v0.7.0) (2020-04-09)
 
 
