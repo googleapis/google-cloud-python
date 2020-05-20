@@ -74,11 +74,16 @@ class TestPolicyTagManagerSerializationClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerSerializationClient()
 
-        response = client.import_taxonomies()
+        # Setup Request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+
+        response = client.import_taxonomies(parent)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = policytagmanagerserialization_pb2.ImportTaxonomiesRequest()
+        expected_request = policytagmanagerserialization_pb2.ImportTaxonomiesRequest(
+            parent=parent
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -90,8 +95,11 @@ class TestPolicyTagManagerSerializationClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerSerializationClient()
 
+        # Setup request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+
         with pytest.raises(CustomException):
-            client.import_taxonomies()
+            client.import_taxonomies(parent)
 
     def test_export_taxonomies(self):
         # Setup Expected Response
@@ -107,11 +115,17 @@ class TestPolicyTagManagerSerializationClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerSerializationClient()
 
-        response = client.export_taxonomies()
+        # Setup Request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+        taxonomies = []
+
+        response = client.export_taxonomies(parent, taxonomies)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = policytagmanagerserialization_pb2.ExportTaxonomiesRequest()
+        expected_request = policytagmanagerserialization_pb2.ExportTaxonomiesRequest(
+            parent=parent, taxonomies=taxonomies
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -123,5 +137,9 @@ class TestPolicyTagManagerSerializationClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerSerializationClient()
 
+        # Setup request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+        taxonomies = []
+
         with pytest.raises(CustomException):
-            client.export_taxonomies()
+            client.export_taxonomies(parent, taxonomies)

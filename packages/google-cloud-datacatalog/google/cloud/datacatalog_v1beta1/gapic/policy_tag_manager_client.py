@@ -16,6 +16,7 @@
 
 """Accesses the google.cloud.datacatalog.v1beta1 PolicyTagManager API."""
 
+import functools
 import pkg_resources
 import warnings
 
@@ -26,6 +27,8 @@ import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
 import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
+import google.api_core.page_iterator
+import google.api_core.path_template
 import grpc
 
 from google.cloud.datacatalog_v1beta1.gapic import enums
@@ -82,6 +85,36 @@ class PolicyTagManagerClient(object):
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
+
+    @classmethod
+    def location_path(cls, project, location):
+        """Return a fully-qualified location string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}",
+            project=project,
+            location=location,
+        )
+
+    @classmethod
+    def policy_tag_path(cls, project, location, taxonomy, policy_tag):
+        """Return a fully-qualified policy_tag string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/taxonomies/{taxonomy}/policyTags/{policy_tag}",
+            project=project,
+            location=location,
+            taxonomy=taxonomy,
+            policy_tag=policy_tag,
+        )
+
+    @classmethod
+    def taxonomy_path(cls, project, location, taxonomy):
+        """Return a fully-qualified taxonomy string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/taxonomies/{taxonomy}",
+            project=project,
+            location=location,
+            taxonomy=taxonomy,
+        )
 
     def __init__(
         self,
@@ -198,7 +231,7 @@ class PolicyTagManagerClient(object):
     # Service calls
     def create_taxonomy(
         self,
-        parent=None,
+        parent,
         taxonomy=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -212,7 +245,9 @@ class PolicyTagManagerClient(object):
             >>>
             >>> client = datacatalog_v1beta1.PolicyTagManagerClient()
             >>>
-            >>> response = client.create_taxonomy()
+            >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
+            >>>
+            >>> response = client.create_taxonomy(parent)
 
         Args:
             parent (str): Required. Resource name of the project that the taxonomy will belong to.
@@ -272,7 +307,7 @@ class PolicyTagManagerClient(object):
 
     def delete_taxonomy(
         self,
-        name=None,
+        name,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -286,7 +321,9 @@ class PolicyTagManagerClient(object):
             >>>
             >>> client = datacatalog_v1beta1.PolicyTagManagerClient()
             >>>
-            >>> client.delete_taxonomy()
+            >>> name = client.taxonomy_path('[PROJECT]', '[LOCATION]', '[TAXONOMY]')
+            >>>
+            >>> client.delete_taxonomy(name)
 
         Args:
             name (str): Required. Resource name of the taxonomy to be deleted. All policy tags in
@@ -355,16 +392,15 @@ class PolicyTagManagerClient(object):
             >>> response = client.update_taxonomy()
 
         Args:
-            taxonomy (Union[dict, ~google.cloud.datacatalog_v1beta1.types.Taxonomy]): Request message for ``CreateEntryGroup``.
+            taxonomy (Union[dict, ~google.cloud.datacatalog_v1beta1.types.Taxonomy]): The taxonomy to update. Only description, display_name, and
+                activated policy types can be updated.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.Taxonomy`
-            update_mask (Union[dict, ~google.cloud.datacatalog_v1beta1.types.FieldMask]): Required. The name of the project this entry group is in. Example:
-
-                -  projects/{project_id}/locations/{location}
-
-                Note that this EntryGroup and its child resources may not actually be
-                stored in the location in this name.
+            update_mask (Union[dict, ~google.cloud.datacatalog_v1beta1.types.FieldMask]): The update mask applies to the resource. For the ``FieldMask``
+                definition, see
+                https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+                If not set, defaults to all of the fields that are allowed to update.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.FieldMask`
@@ -420,9 +456,8 @@ class PolicyTagManagerClient(object):
 
     def list_taxonomies(
         self,
-        parent=None,
+        parent,
         page_size=None,
-        page_token=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -436,14 +471,29 @@ class PolicyTagManagerClient(object):
             >>>
             >>> client = datacatalog_v1beta1.PolicyTagManagerClient()
             >>>
-            >>> response = client.list_taxonomies()
+            >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
+            >>>
+            >>> # Iterate over all results
+            >>> for element in client.list_taxonomies(parent):
+            ...     # process element
+            ...     pass
+            >>>
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
+            >>> for page in client.list_taxonomies(parent).pages:
+            ...     for element in page:
+            ...         # process element
+            ...         pass
 
         Args:
             parent (str): Required. Resource name of the project to list the taxonomies of.
-            page_size (int): The maximum number of items to return. Must be a value between 1 and 1000.
-                If not set, defaults to 50.
-            page_token (str): Input and output type names. These are resolved in the same way as
-                FieldDescriptorProto.type_name, but must refer to a message type.
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -454,7 +504,10 @@ class PolicyTagManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.datacatalog_v1beta1.types.ListTaxonomiesResponse` instance.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.datacatalog_v1beta1.types.Taxonomy` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -475,7 +528,7 @@ class PolicyTagManagerClient(object):
             )
 
         request = policytagmanager_pb2.ListTaxonomiesRequest(
-            parent=parent, page_size=page_size, page_token=page_token
+            parent=parent, page_size=page_size
         )
         if metadata is None:
             metadata = []
@@ -490,13 +543,24 @@ class PolicyTagManagerClient(object):
             )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["list_taxonomies"](
-            request, retry=retry, timeout=timeout, metadata=metadata
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._inner_api_calls["list_taxonomies"],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            ),
+            request=request,
+            items_field="taxonomies",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
         )
+        return iterator
 
     def get_taxonomy(
         self,
-        name=None,
+        name,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -509,7 +573,9 @@ class PolicyTagManagerClient(object):
             >>>
             >>> client = datacatalog_v1beta1.PolicyTagManagerClient()
             >>>
-            >>> response = client.get_taxonomy()
+            >>> name = client.taxonomy_path('[PROJECT]', '[LOCATION]', '[TAXONOMY]')
+            >>>
+            >>> response = client.get_taxonomy(name)
 
         Args:
             name (str): Required. Resource name of the requested taxonomy.
@@ -563,7 +629,7 @@ class PolicyTagManagerClient(object):
 
     def create_policy_tag(
         self,
-        parent=None,
+        parent,
         policy_tag=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -577,7 +643,9 @@ class PolicyTagManagerClient(object):
             >>>
             >>> client = datacatalog_v1beta1.PolicyTagManagerClient()
             >>>
-            >>> response = client.create_policy_tag()
+            >>> parent = client.taxonomy_path('[PROJECT]', '[LOCATION]', '[TAXONOMY]')
+            >>>
+            >>> response = client.create_policy_tag(parent)
 
         Args:
             parent (str): Required. Resource name of the taxonomy that the policy tag will belong to.
@@ -637,7 +705,7 @@ class PolicyTagManagerClient(object):
 
     def delete_policy_tag(
         self,
-        name=None,
+        name,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -650,7 +718,9 @@ class PolicyTagManagerClient(object):
             >>>
             >>> client = datacatalog_v1beta1.PolicyTagManagerClient()
             >>>
-            >>> client.delete_policy_tag()
+            >>> name = client.policy_tag_path('[PROJECT]', '[LOCATION]', '[TAXONOMY]', '[POLICY_TAG]')
+            >>>
+            >>> client.delete_policy_tag(name)
 
         Args:
             name (str): Required. Resource name of the policy tag to be deleted. All of its descendant
@@ -719,18 +789,18 @@ class PolicyTagManagerClient(object):
             >>> response = client.update_policy_tag()
 
         Args:
-            policy_tag (Union[dict, ~google.cloud.datacatalog_v1beta1.types.PolicyTag]): Resources like Entry can have schemas associated with them. This
-                scope allows users to attach tags to an individual column based on that
-                schema.
-
-                For attaching a tag to a nested column, use ``.`` to separate the column
-                names. Example:
-
-                -  ``outer_column.inner_column``
+            policy_tag (Union[dict, ~google.cloud.datacatalog_v1beta1.types.PolicyTag]): The policy tag to update. Only the description, display_name, and
+                parent_policy_tag fields can be updated.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.PolicyTag`
-            update_mask (Union[dict, ~google.cloud.datacatalog_v1beta1.types.FieldMask]): Associates ``members`` with a ``role``.
+            update_mask (Union[dict, ~google.cloud.datacatalog_v1beta1.types.FieldMask]): The update mask applies to the resource. Only display_name,
+                description and parent_policy_tag can be updated and thus can be listed
+                in the mask. If update_mask is not provided, all allowed fields (i.e.
+                display_name, description and parent) will be updated. For more
+                information including the ``FieldMask`` definition, see
+                https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+                If not set, defaults to all of the fields that are allowed to update.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.FieldMask`
@@ -786,9 +856,8 @@ class PolicyTagManagerClient(object):
 
     def list_policy_tags(
         self,
-        parent=None,
+        parent,
         page_size=None,
-        page_token=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -801,28 +870,29 @@ class PolicyTagManagerClient(object):
             >>>
             >>> client = datacatalog_v1beta1.PolicyTagManagerClient()
             >>>
-            >>> response = client.list_policy_tags()
+            >>> parent = client.taxonomy_path('[PROJECT]', '[LOCATION]', '[TAXONOMY]')
+            >>>
+            >>> # Iterate over all results
+            >>> for element in client.list_policy_tags(parent):
+            ...     # process element
+            ...     pass
+            >>>
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
+            >>> for page in client.list_policy_tags(parent).pages:
+            ...     for element in page:
+            ...         # process element
+            ...         pass
 
         Args:
             parent (str): Required. Resource name of the taxonomy to list the policy tags of.
-            page_size (int): The maximum number of items to return. Must be a value between 1 and 1000.
-                If not set, defaults to 50.
-            page_token (str): Sets the access control policy for a resource. Replaces any existing
-                policy. Supported resources are:
-
-                -  Tag templates.
-                -  Entries.
-                -  Entry groups. Note, this method cannot be used to manage policies for
-                   BigQuery, Cloud Pub/Sub and any external Google Cloud Platform
-                   resources synced to Cloud Data Catalog.
-
-                Callers must have following Google IAM permission
-
-                -  ``datacatalog.tagTemplates.setIamPolicy`` to set policies on tag
-                   templates.
-                -  ``datacatalog.entries.setIamPolicy`` to set policies on entries.
-                -  ``datacatalog.entryGroups.setIamPolicy`` to set policies on entry
-                   groups.
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -833,7 +903,10 @@ class PolicyTagManagerClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.datacatalog_v1beta1.types.ListPolicyTagsResponse` instance.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.datacatalog_v1beta1.types.PolicyTag` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -854,7 +927,7 @@ class PolicyTagManagerClient(object):
             )
 
         request = policytagmanager_pb2.ListPolicyTagsRequest(
-            parent=parent, page_size=page_size, page_token=page_token
+            parent=parent, page_size=page_size
         )
         if metadata is None:
             metadata = []
@@ -869,13 +942,24 @@ class PolicyTagManagerClient(object):
             )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["list_policy_tags"](
-            request, retry=retry, timeout=timeout, metadata=metadata
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._inner_api_calls["list_policy_tags"],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            ),
+            request=request,
+            items_field="policy_tags",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
         )
+        return iterator
 
     def get_policy_tag(
         self,
-        name=None,
+        name,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -888,7 +972,9 @@ class PolicyTagManagerClient(object):
             >>>
             >>> client = datacatalog_v1beta1.PolicyTagManagerClient()
             >>>
-            >>> response = client.get_policy_tag()
+            >>> name = client.policy_tag_path('[PROJECT]', '[LOCATION]', '[TAXONOMY]', '[POLICY_TAG]')
+            >>>
+            >>> response = client.get_policy_tag(name)
 
         Args:
             name (str): Required. Resource name of the requested policy tag.
@@ -942,7 +1028,7 @@ class PolicyTagManagerClient(object):
 
     def get_iam_policy(
         self,
-        resource=None,
+        resource,
         options_=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -956,16 +1042,16 @@ class PolicyTagManagerClient(object):
             >>>
             >>> client = datacatalog_v1beta1.PolicyTagManagerClient()
             >>>
-            >>> response = client.get_iam_policy()
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
+            >>>
+            >>> response = client.get_iam_policy(resource)
 
         Args:
             resource (str): REQUIRED: The resource for which the policy is being requested.
                 See the operation documentation for the appropriate value for this field.
-            options_ (Union[dict, ~google.cloud.datacatalog_v1beta1.types.GetPolicyOptions]): Renames a field in a tag template. The user should enable the Data
-                Catalog API in the project identified by the ``name`` parameter (see
-                `Data Catalog Resource
-                Project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__
-                for more information).
+            options_ (Union[dict, ~google.cloud.datacatalog_v1beta1.types.GetPolicyOptions]): OPTIONAL: A ``GetPolicyOptions`` object for specifying options to
+                ``GetIamPolicy``. This field is only used by Cloud IAM.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.GetPolicyOptions`
@@ -1021,8 +1107,8 @@ class PolicyTagManagerClient(object):
 
     def set_iam_policy(
         self,
-        resource=None,
-        policy=None,
+        resource,
+        policy,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1035,13 +1121,21 @@ class PolicyTagManagerClient(object):
             >>>
             >>> client = datacatalog_v1beta1.PolicyTagManagerClient()
             >>>
-            >>> response = client.set_iam_policy()
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
+            >>>
+            >>> # TODO: Initialize `policy`:
+            >>> policy = {}
+            >>>
+            >>> response = client.set_iam_policy(resource, policy)
 
         Args:
             resource (str): REQUIRED: The resource for which the policy is being specified.
                 See the operation documentation for the appropriate value for this field.
-            policy (Union[dict, ~google.cloud.datacatalog_v1beta1.types.Policy]): Required. The name of the entry group. For example,
-                ``projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}``.
+            policy (Union[dict, ~google.cloud.datacatalog_v1beta1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The
+                size of the policy is limited to a few 10s of KB. An empty policy is a
+                valid policy but certain Cloud Platform services (such as Projects)
+                might reject them.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datacatalog_v1beta1.types.Policy`
@@ -1095,8 +1189,8 @@ class PolicyTagManagerClient(object):
 
     def test_iam_permissions(
         self,
-        resource=None,
-        permissions=None,
+        resource,
+        permissions,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1110,13 +1204,21 @@ class PolicyTagManagerClient(object):
             >>>
             >>> client = datacatalog_v1beta1.PolicyTagManagerClient()
             >>>
-            >>> response = client.test_iam_permissions()
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
+            >>>
+            >>> # TODO: Initialize `permissions`:
+            >>> permissions = []
+            >>>
+            >>> response = client.test_iam_permissions(resource, permissions)
 
         Args:
             resource (str): REQUIRED: The resource for which the policy detail is being requested.
                 See the operation documentation for the appropriate value for this field.
-            permissions (list[str]): An annotation that describes a resource reference, see
-                ``ResourceReference``.
+            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions
+                with wildcards (such as '*' or 'storage.*') are not allowed. For more
+                information see `IAM
+                Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.

@@ -111,7 +111,22 @@ class DataCatalogGrpcTransport(object):
     def search_catalog(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.search_catalog`.
 
-        Request message for ``CreateEntry``.
+        Searches Data Catalog for multiple resources like entries, tags that
+        match a query.
+
+        This is a custom method
+        (https://cloud.google.com/apis/design/custom_methods) and does not
+        return the complete resource, only the resource identifier and high
+        level fields. Clients can subsequentally call ``Get`` methods.
+
+        Note that Data Catalog search queries do not guarantee full recall.
+        Query results that match your query may not be returned, even in
+        subsequent result pages. Also note that results returned (and not
+        returned) can vary across repeated search queries.
+
+        See `Data Catalog Search
+        Syntax <https://cloud.google.com/data-catalog/docs/how-to/search-reference>`__
+        for more information.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -124,12 +139,25 @@ class DataCatalogGrpcTransport(object):
     def create_entry_group(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.create_entry_group`.
 
-        Required. The name of the entry group this entry is in. Example:
+        Creates an EntryGroup.
 
-        -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
+        An entry group contains logically related entries together with Cloud
+        Identity and Access Management policies that specify the users who can
+        create, edit, and view entries within the entry group.
 
-        Note that this Entry and its child resources may not actually be stored
-        in the location in this name.
+        Data Catalog automatically creates an entry group for BigQuery entries
+        ("@bigquery") and Pub/Sub topics ("@pubsub"). Users create their own
+        entry group to contain Cloud Storage fileset entries or custom type
+        entries, and the IAM policies associated with those entries. Entry
+        groups, like entries, can be searched.
+
+        A maximum of 10,000 entry groups may be created per organization across
+        all locations.
+
+        Users should enable the Data Catalog API in the project identified by
+        the ``parent`` parameter (see [Data Catalog Resource Project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
+        for more information).
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -155,11 +183,11 @@ class DataCatalogGrpcTransport(object):
     def update_entry_group(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.update_entry_group`.
 
-        The full name of the cloud resource the entry belongs to. See:
-        https://cloud.google.com/apis/design/resource_names#full_resource_name.
-        Example:
-
-        -  ``//bigquery.googleapis.com/projects/projectId/datasets/datasetId/tables/tableId``
+        Updates an EntryGroup. The user should enable the Data Catalog API
+        in the project identified by the ``entry_group.name`` parameter (see
+        [Data Catalog Resource Project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
+        for more information).
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -172,10 +200,12 @@ class DataCatalogGrpcTransport(object):
     def delete_entry_group(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.delete_entry_group`.
 
-        JSON name of this field. The value is set by protocol compiler. If
-        the user has set a "json_name" option on this field, that option's value
-        will be used. Otherwise, it's deduced from the field's name by
-        converting it to camelCase.
+        Deletes an EntryGroup. Only entry groups that do not contain entries
+        can be deleted. Users should enable the Data Catalog API in the project
+        identified by the ``name`` parameter (see [Data Catalog Resource
+        Project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
+        for more information).
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -201,11 +231,15 @@ class DataCatalogGrpcTransport(object):
     def create_entry(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.create_entry`.
 
-        The name of the uninterpreted option. Each string represents a
-        segment in a dot-separated name. is_extension is true iff a segment
-        represents an extension (denoted with parentheses in options specs in
-        .proto files). E.g.,{ ["foo", false], ["bar.baz", true], ["qux", false]
-        } represents "foo.(bar.baz).qux".
+        Creates an entry. Only entries of 'FILESET' type or user-specified
+        type can be created.
+
+        Users should enable the Data Catalog API in the project identified by
+        the ``parent`` parameter (see [Data Catalog Resource Project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
+        for more information).
+
+        A maximum of 100,000 entries may be created per entry group.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -218,13 +252,11 @@ class DataCatalogGrpcTransport(object):
     def update_entry(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.update_entry`.
 
-        Updates a tag template. This method cannot be used to update the
-        fields of a template. The tag template fields are represented as
-        separate resources and should be updated using their own
-        create/update/delete methods. Users should enable the Data Catalog API
-        in the project identified by the ``tag_template.name`` parameter (see
-        [Data Catalog Resource Project]
-        (/data-catalog/docs/concepts/resource-project) for more information).
+        Updates an existing entry. Users should enable the Data Catalog API
+        in the project identified by the ``entry.name`` parameter (see [Data
+        Catalog Resource Project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
+        for more information).
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -237,8 +269,12 @@ class DataCatalogGrpcTransport(object):
     def delete_entry(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.delete_entry`.
 
-        The source system of the entry. Only applicable when
-        ``search_result_type`` is ENTRY.
+        Deletes an existing entry. Only entries created through
+        ``CreateEntry`` method can be deleted. Users should enable the Data
+        Catalog API in the project identified by the ``name`` parameter (see
+        [Data Catalog Resource Project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
+        for more information).
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -292,9 +328,11 @@ class DataCatalogGrpcTransport(object):
     def create_tag_template(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.create_tag_template`.
 
-        The resource has one pattern, but the API owner expects to add more
-        later. (This is the inverse of ORIGINALLY_SINGLE_PATTERN, and prevents
-        that from being necessary once there are multiple patterns.)
+        Creates a tag template. The user should enable the Data Catalog API
+        in the project identified by the ``parent`` parameter (see `Data Catalog
+        Resource
+        Project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__
+        for more information).
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -320,7 +358,14 @@ class DataCatalogGrpcTransport(object):
     def update_tag_template(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.update_tag_template`.
 
-        Request message for ``UpdateTagTemplateField``.
+        Updates a tag template. This method cannot be used to update the
+        fields of a template. The tag template fields are represented as
+        separate resources and should be updated using their own
+        create/update/delete methods. Users should enable the Data Catalog API
+        in the project identified by the ``tag_template.name`` parameter (see
+        [Data Catalog Resource Project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
+        for more information).
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -333,16 +378,11 @@ class DataCatalogGrpcTransport(object):
     def delete_tag_template(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.delete_tag_template`.
 
-        The resource type. It must be in the format of
-        {service_name}/{resource_type_kind}. The ``resource_type_kind`` must be
-        singular and must not include version numbers.
-
-        Example: ``storage.googleapis.com/Bucket``
-
-        The value of the resource_type_kind must follow the regular expression
-        /[A-Za-z][a-zA-Z0-9]+/. It should start with an upper case character and
-        should use PascalCase (UpperCamelCase). The maximum number of characters
-        allowed for the ``resource_type_kind`` is 100.
+        Deletes a tag template and all tags using the template. Users should
+        enable the Data Catalog API in the project identified by the ``name``
+        parameter (see [Data Catalog Resource Project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
+        for more information).
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -355,9 +395,11 @@ class DataCatalogGrpcTransport(object):
     def create_tag_template_field(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.create_tag_template_field`.
 
-        Required. The name of the tag template field. Example:
-
-        -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
+        Creates a field in a tag template. The user should enable the Data
+        Catalog API in the project identified by the ``parent`` parameter (see
+        `Data Catalog Resource
+        Project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__
+        for more information).
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -370,7 +412,12 @@ class DataCatalogGrpcTransport(object):
     def update_tag_template_field(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.update_tag_template_field`.
 
-        Request message for ``SetIamPolicy`` method.
+        Updates a field in a tag template. This method cannot be used to
+        update the field type. Users should enable the Data Catalog API in the
+        project identified by the ``name`` parameter (see [Data Catalog Resource
+        Project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
+        for more information).
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -383,12 +430,11 @@ class DataCatalogGrpcTransport(object):
     def rename_tag_template_field(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.rename_tag_template_field`.
 
-        The resource name of the tag in URL format. Example:
-
-        -  projects/{project_id}/locations/{location}/entrygroups/{entry_group_id}/entries/{entry_id}/tags/{tag_id}
-
-        where ``tag_id`` is a system-generated identifier. Note that this Tag
-        may not actually be stored in the location in this name.
+        Renames a field in a tag template. The user should enable the Data
+        Catalog API in the project identified by the ``name`` parameter (see
+        `Data Catalog Resource
+        Project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__
+        for more information).
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -401,30 +447,11 @@ class DataCatalogGrpcTransport(object):
     def delete_tag_template_field(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.delete_tag_template_field`.
 
-        Optional. The relative resource name pattern associated with this
-        resource type. The DNS prefix of the full resource name shouldn't be
-        specified here.
-
-        The path pattern must follow the syntax, which aligns with HTTP binding
-        syntax:
-
-        ::
-
-            Template = Segment { "/" Segment } ;
-            Segment = LITERAL | Variable ;
-            Variable = "{" LITERAL "}" ;
-
-        Examples:
-
-        ::
-
-            - "projects/{project}/topics/{topic}"
-            - "projects/{project}/knowledgeBases/{knowledge_base}"
-
-        The components in braces correspond to the IDs for each resource in the
-        hierarchy. It is expected that, if multiple patterns are provided, the
-        same component name (e.g. "project") refers to IDs of the same type of
-        resource.
+        Deletes a field in a tag template and all uses of that field. Users
+        should enable the Data Catalog API in the project identified by the
+        ``name`` parameter (see [Data Catalog Resource Project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
+        for more information).
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -437,10 +464,12 @@ class DataCatalogGrpcTransport(object):
     def create_tag(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.create_tag`.
 
-        Deletes a tag template and all tags using the template. Users should
-        enable the Data Catalog API in the project identified by the ``name``
-        parameter (see [Data Catalog Resource Project]
-        (/data-catalog/docs/concepts/resource-project) for more information).
+        Creates a tag on an ``Entry``. Note: The project identified by the
+        ``parent`` parameter for the
+        `tag <https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.entryGroups.entries.tags/create#path-parameters>`__
+        and the `tag
+        template <https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.tagTemplates/create#path-parameters>`__
+        used to create the tag must be from the same organization.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -479,18 +508,7 @@ class DataCatalogGrpcTransport(object):
     def list_tags(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.list_tags`.
 
-        The SQL name of the entry. SQL names are case-sensitive.
-
-        Examples:
-
-        -  ``cloud_pubsub.project_id.topic_id``
-        -  :literal:`pubsub.project_id.`topic.id.with.dots\``
-        -  ``bigquery.table.project_id.dataset_id.table_id``
-        -  ``bigquery.dataset.project_id.dataset_id``
-        -  ``datacatalog.entry.project_id.location_id.entry_group_id.entry_id``
-
-        ``*_id``\ s shoud satisfy the standard SQL rules for identifiers.
-        https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical.
+        Lists the tags on an ``Entry``.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -503,7 +521,22 @@ class DataCatalogGrpcTransport(object):
     def set_iam_policy(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.set_iam_policy`.
 
-        ``Tag`` details.
+        Sets the access control policy for a resource. Replaces any existing
+        policy. Supported resources are:
+
+        -  Tag templates.
+        -  Entries.
+        -  Entry groups. Note, this method cannot be used to manage policies for
+           BigQuery, Pub/Sub and any external Google Cloud Platform resources
+           synced to Data Catalog.
+
+        Callers must have following Google IAM permission
+
+        -  ``datacatalog.tagTemplates.setIamPolicy`` to set policies on tag
+           templates.
+        -  ``datacatalog.entries.setIamPolicy`` to set policies on entries.
+        -  ``datacatalog.entryGroups.setIamPolicy`` to set policies on entry
+           groups.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -516,7 +549,25 @@ class DataCatalogGrpcTransport(object):
     def get_iam_policy(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.get_iam_policy`.
 
-        Request message for ``UpdateEntry``.
+        Gets the access control policy for a resource. A ``NOT_FOUND`` error
+        is returned if the resource does not exist. An empty policy is returned
+        if the resource exists but does not have a policy set on it.
+
+        Supported resources are:
+
+        -  Tag templates.
+        -  Entries.
+        -  Entry groups. Note, this method cannot be used to manage policies for
+           BigQuery, Pub/Sub and any external Google Cloud Platform resources
+           synced to Data Catalog.
+
+        Callers must have following Google IAM permission
+
+        -  ``datacatalog.tagTemplates.getIamPolicy`` to get policies on tag
+           templates.
+        -  ``datacatalog.entries.getIamPolicy`` to get policies on entries.
+        -  ``datacatalog.entryGroups.getIamPolicy`` to get policies on entry
+           groups.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -529,10 +580,20 @@ class DataCatalogGrpcTransport(object):
     def test_iam_permissions(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.test_iam_permissions`.
 
-        REQUIRED: The complete policy to be applied to the ``resource``. The
-        size of the policy is limited to a few 10s of KB. An empty policy is a
-        valid policy but certain Cloud Platform services (such as Projects)
-        might reject them.
+        Returns the caller's permissions on a resource. If the resource does
+        not exist, an empty set of permissions is returned (We don't return a
+        ``NOT_FOUND`` error).
+
+        Supported resources are:
+
+        -  Tag templates.
+        -  Entries.
+        -  Entry groups. Note, this method cannot be used to manage policies for
+           BigQuery, Pub/Sub and any external Google Cloud Platform resources
+           synced to Data Catalog.
+
+        A caller is not required to have Google IAM permission to make this
+        request.
 
         Returns:
             Callable: A callable which accepts the appropriate

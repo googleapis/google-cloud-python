@@ -82,11 +82,14 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
-        response = client.create_taxonomy()
+        # Setup Request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+
+        response = client.create_taxonomy(parent)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = policytagmanager_pb2.CreateTaxonomyRequest()
+        expected_request = policytagmanager_pb2.CreateTaxonomyRequest(parent=parent)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -98,8 +101,11 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
+        # Setup request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+
         with pytest.raises(CustomException):
-            client.create_taxonomy()
+            client.create_taxonomy(parent)
 
     def test_delete_taxonomy(self):
         channel = ChannelStub()
@@ -108,10 +114,13 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
-        client.delete_taxonomy()
+        # Setup Request
+        name = client.taxonomy_path("[PROJECT]", "[LOCATION]", "[TAXONOMY]")
+
+        client.delete_taxonomy(name)
 
         assert len(channel.requests) == 1
-        expected_request = policytagmanager_pb2.DeleteTaxonomyRequest()
+        expected_request = policytagmanager_pb2.DeleteTaxonomyRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -123,8 +132,11 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
+        # Setup request
+        name = client.taxonomy_path("[PROJECT]", "[LOCATION]", "[TAXONOMY]")
+
         with pytest.raises(CustomException):
-            client.delete_taxonomy()
+            client.delete_taxonomy(name)
 
     def test_update_taxonomy(self):
         # Setup Expected Response
@@ -166,8 +178,13 @@ class TestPolicyTagManagerClient(object):
 
     def test_list_taxonomies(self):
         # Setup Expected Response
-        next_page_token = "nextPageToken-1530815211"
-        expected_response = {"next_page_token": next_page_token}
+        next_page_token = ""
+        taxonomies_element = {}
+        taxonomies = [taxonomies_element]
+        expected_response = {
+            "next_page_token": next_page_token,
+            "taxonomies": taxonomies,
+        }
         expected_response = policytagmanager_pb2.ListTaxonomiesResponse(
             **expected_response
         )
@@ -179,32 +196,41 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
-        response = client.list_taxonomies()
-        assert expected_response == response
+        # Setup Request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+
+        paged_list_response = client.list_taxonomies(parent)
+        resources = list(paged_list_response)
+        assert len(resources) == 1
+
+        assert expected_response.taxonomies[0] == resources[0]
 
         assert len(channel.requests) == 1
-        expected_request = policytagmanager_pb2.ListTaxonomiesRequest()
+        expected_request = policytagmanager_pb2.ListTaxonomiesRequest(parent=parent)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_list_taxonomies_exception(self):
-        # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
+        # Setup request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+
+        paged_list_response = client.list_taxonomies(parent)
         with pytest.raises(CustomException):
-            client.list_taxonomies()
+            list(paged_list_response)
 
     def test_get_taxonomy(self):
         # Setup Expected Response
-        name = "name3373707"
+        name_2 = "name2-1052831874"
         display_name = "displayName1615086568"
         description = "description-1724546052"
         expected_response = {
-            "name": name,
+            "name": name_2,
             "display_name": display_name,
             "description": description,
         }
@@ -217,11 +243,14 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
-        response = client.get_taxonomy()
+        # Setup Request
+        name = client.taxonomy_path("[PROJECT]", "[LOCATION]", "[TAXONOMY]")
+
+        response = client.get_taxonomy(name)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = policytagmanager_pb2.GetTaxonomyRequest()
+        expected_request = policytagmanager_pb2.GetTaxonomyRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -233,8 +262,11 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
+        # Setup request
+        name = client.taxonomy_path("[PROJECT]", "[LOCATION]", "[TAXONOMY]")
+
         with pytest.raises(CustomException):
-            client.get_taxonomy()
+            client.get_taxonomy(name)
 
     def test_create_policy_tag(self):
         # Setup Expected Response
@@ -257,11 +289,14 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
-        response = client.create_policy_tag()
+        # Setup Request
+        parent = client.taxonomy_path("[PROJECT]", "[LOCATION]", "[TAXONOMY]")
+
+        response = client.create_policy_tag(parent)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = policytagmanager_pb2.CreatePolicyTagRequest()
+        expected_request = policytagmanager_pb2.CreatePolicyTagRequest(parent=parent)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -273,8 +308,11 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
+        # Setup request
+        parent = client.taxonomy_path("[PROJECT]", "[LOCATION]", "[TAXONOMY]")
+
         with pytest.raises(CustomException):
-            client.create_policy_tag()
+            client.create_policy_tag(parent)
 
     def test_delete_policy_tag(self):
         channel = ChannelStub()
@@ -283,10 +321,15 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
-        client.delete_policy_tag()
+        # Setup Request
+        name = client.policy_tag_path(
+            "[PROJECT]", "[LOCATION]", "[TAXONOMY]", "[POLICY_TAG]"
+        )
+
+        client.delete_policy_tag(name)
 
         assert len(channel.requests) == 1
-        expected_request = policytagmanager_pb2.DeletePolicyTagRequest()
+        expected_request = policytagmanager_pb2.DeletePolicyTagRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -298,8 +341,13 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
+        # Setup request
+        name = client.policy_tag_path(
+            "[PROJECT]", "[LOCATION]", "[TAXONOMY]", "[POLICY_TAG]"
+        )
+
         with pytest.raises(CustomException):
-            client.delete_policy_tag()
+            client.delete_policy_tag(name)
 
     def test_update_policy_tag(self):
         # Setup Expected Response
@@ -343,8 +391,13 @@ class TestPolicyTagManagerClient(object):
 
     def test_list_policy_tags(self):
         # Setup Expected Response
-        next_page_token = "nextPageToken-1530815211"
-        expected_response = {"next_page_token": next_page_token}
+        next_page_token = ""
+        policy_tags_element = {}
+        policy_tags = [policy_tags_element]
+        expected_response = {
+            "next_page_token": next_page_token,
+            "policy_tags": policy_tags,
+        }
         expected_response = policytagmanager_pb2.ListPolicyTagsResponse(
             **expected_response
         )
@@ -356,33 +409,42 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
-        response = client.list_policy_tags()
-        assert expected_response == response
+        # Setup Request
+        parent = client.taxonomy_path("[PROJECT]", "[LOCATION]", "[TAXONOMY]")
+
+        paged_list_response = client.list_policy_tags(parent)
+        resources = list(paged_list_response)
+        assert len(resources) == 1
+
+        assert expected_response.policy_tags[0] == resources[0]
 
         assert len(channel.requests) == 1
-        expected_request = policytagmanager_pb2.ListPolicyTagsRequest()
+        expected_request = policytagmanager_pb2.ListPolicyTagsRequest(parent=parent)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_list_policy_tags_exception(self):
-        # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
+        # Setup request
+        parent = client.taxonomy_path("[PROJECT]", "[LOCATION]", "[TAXONOMY]")
+
+        paged_list_response = client.list_policy_tags(parent)
         with pytest.raises(CustomException):
-            client.list_policy_tags()
+            list(paged_list_response)
 
     def test_get_policy_tag(self):
         # Setup Expected Response
-        name = "name3373707"
+        name_2 = "name2-1052831874"
         display_name = "displayName1615086568"
         description = "description-1724546052"
         parent_policy_tag = "parentPolicyTag2071382466"
         expected_response = {
-            "name": name,
+            "name": name_2,
             "display_name": display_name,
             "description": description,
             "parent_policy_tag": parent_policy_tag,
@@ -396,11 +458,16 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
-        response = client.get_policy_tag()
+        # Setup Request
+        name = client.policy_tag_path(
+            "[PROJECT]", "[LOCATION]", "[TAXONOMY]", "[POLICY_TAG]"
+        )
+
+        response = client.get_policy_tag(name)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = policytagmanager_pb2.GetPolicyTagRequest()
+        expected_request = policytagmanager_pb2.GetPolicyTagRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -412,8 +479,13 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
+        # Setup request
+        name = client.policy_tag_path(
+            "[PROJECT]", "[LOCATION]", "[TAXONOMY]", "[POLICY_TAG]"
+        )
+
         with pytest.raises(CustomException):
-            client.get_policy_tag()
+            client.get_policy_tag(name)
 
     def test_get_iam_policy(self):
         # Setup Expected Response
@@ -429,11 +501,14 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
-        response = client.get_iam_policy()
+        # Setup Request
+        resource = "resource-341064690"
+
+        response = client.get_iam_policy(resource)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = iam_policy_pb2.GetIamPolicyRequest()
+        expected_request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -445,8 +520,11 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
+        # Setup request
+        resource = "resource-341064690"
+
         with pytest.raises(CustomException):
-            client.get_iam_policy()
+            client.get_iam_policy(resource)
 
     def test_set_iam_policy(self):
         # Setup Expected Response
@@ -462,11 +540,17 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
-        response = client.set_iam_policy()
+        # Setup Request
+        resource = "resource-341064690"
+        policy = {}
+
+        response = client.set_iam_policy(resource, policy)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = iam_policy_pb2.SetIamPolicyRequest()
+        expected_request = iam_policy_pb2.SetIamPolicyRequest(
+            resource=resource, policy=policy
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -478,8 +562,12 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
+        # Setup request
+        resource = "resource-341064690"
+        policy = {}
+
         with pytest.raises(CustomException):
-            client.set_iam_policy()
+            client.set_iam_policy(resource, policy)
 
     def test_test_iam_permissions(self):
         # Setup Expected Response
@@ -495,11 +583,17 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
-        response = client.test_iam_permissions()
+        # Setup Request
+        resource = "resource-341064690"
+        permissions = []
+
+        response = client.test_iam_permissions(resource, permissions)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = iam_policy_pb2.TestIamPermissionsRequest()
+        expected_request = iam_policy_pb2.TestIamPermissionsRequest(
+            resource=resource, permissions=permissions
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -511,5 +605,9 @@ class TestPolicyTagManagerClient(object):
             create_channel.return_value = channel
             client = datacatalog_v1beta1.PolicyTagManagerClient()
 
+        # Setup request
+        resource = "resource-341064690"
+        permissions = []
+
         with pytest.raises(CustomException):
-            client.test_iam_permissions()
+            client.test_iam_permissions(resource, permissions)

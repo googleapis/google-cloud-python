@@ -21,45 +21,18 @@ import enum
 
 class EntryType(enum.IntEnum):
     """
-    Protocol Buffers - Google's data interchange format Copyright 2008
-    Google Inc. All rights reserved.
-    https://developers.google.com/protocol-buffers/
-
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are
-    met:
-
-    ::
-
-        * Redistributions of source code must retain the above copyright
-
-    notice, this list of conditions and the following disclaimer. \*
-    Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in the
-    documentation and/or other materials provided with the distribution. \*
-    Neither the name of Google Inc. nor the names of its contributors may be
-    used to endorse or promote products derived from this software without
-    specific prior written permission.
-
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
-    IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
-    TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-    PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
-    OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    Entry resources in Data Catalog can be of different types e.g. a
+    BigQuery Table entry is of type ``TABLE``. This enum describes all the
+    possible types Data Catalog contains.
 
     Attributes:
-      ENTRY_TYPE_UNSPECIFIED (int): Default unknown type
+      ENTRY_TYPE_UNSPECIFIED (int): Default unknown type.
       TABLE (int): Output only. The type of entry that has a GoogleSQL schema, including
       logical views.
       MODEL (int): Output only. The type of models.
+      https://cloud.google.com/bigquery-ml/docs/bigqueryml-intro
       DATA_STREAM (int): Output only. An entry type which is used for streaming entries. Example:
-      Cloud Pub/Sub topic.
+      Pub/Sub topic.
       FILESET (int): An entry type which is a set of files or objects. Example:
       Cloud Storage fileset.
     """
@@ -93,20 +66,9 @@ class SearchResultType(enum.IntEnum):
 
     Attributes:
       SEARCH_RESULT_TYPE_UNSPECIFIED (int): Default unknown type.
-      ENTRY (int): A designation of a specific field behavior (required, output only,
-      etc.) in protobuf messages.
-
-      Examples:
-
-      string name = 1 [(google.api.field_behavior) = REQUIRED]; State state =
-      1 [(google.api.field_behavior) = OUTPUT_ONLY]; google.protobuf.Duration
-      ttl = 1 [(google.api.field_behavior) = INPUT_ONLY];
-      google.protobuf.Timestamp expire_time = 1 [(google.api.field_behavior) =
-      OUTPUT_ONLY, (google.api.field_behavior) = IMMUTABLE];
-      TAG_TEMPLATE (int): Request message for ``CreateEntry``.
-      ENTRY_GROUP (int): Optional. A column's mode indicates whether the values in this
-      column are required, nullable, etc. Only ``NULLABLE``, ``REQUIRED`` and
-      ``REPEATED`` are supported. Default mode is ``NULLABLE``.
+      ENTRY (int): An ``Entry``.
+      TAG_TEMPLATE (int): A ``TagTemplate``.
+      ENTRY_GROUP (int): An ``EntryGroup``.
     """
 
     SEARCH_RESULT_TYPE_UNSPECIFIED = 0

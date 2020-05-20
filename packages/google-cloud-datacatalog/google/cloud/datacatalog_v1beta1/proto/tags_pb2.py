@@ -21,8 +21,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/datacatalog_v1beta1/proto/tags.proto",
     package="google.cloud.datacatalog.v1beta1",
     syntax="proto3",
-    serialized_options=b"\n$com.google.cloud.datacatalog.v1beta1P\001ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\370\001\001",
-    serialized_pb=b'\n1google/cloud/datacatalog_v1beta1/proto/tags.proto\x12 google.cloud.datacatalog.v1beta1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x90\x03\n\x03Tag\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x15\n\x08template\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12"\n\x15template_display_name\x18\x05 \x01(\tB\x03\xe0\x41\x03\x12\x10\n\x06\x63olumn\x18\x04 \x01(\tH\x00\x12\x46\n\x06\x66ields\x18\x03 \x03(\x0b\x32\x31.google.cloud.datacatalog.v1beta1.Tag.FieldsEntryB\x03\xe0\x41\x02\x1aY\n\x0b\x46ieldsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x39\n\x05value\x18\x02 \x01(\x0b\x32*.google.cloud.datacatalog.v1beta1.TagField:\x02\x38\x01:\x81\x01\xea\x41~\n\x1e\x64\x61tacatalog.googleapis.com/Tag\x12\\projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}/tags/{tag}B\x07\n\x05scope"\x99\x02\n\x08TagField\x12\x19\n\x0c\x64isplay_name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x16\n\x0c\x64ouble_value\x18\x02 \x01(\x01H\x00\x12\x16\n\x0cstring_value\x18\x03 \x01(\tH\x00\x12\x14\n\nbool_value\x18\x04 \x01(\x08H\x00\x12\x35\n\x0ftimestamp_value\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12J\n\nenum_value\x18\x06 \x01(\x0b\x32\x34.google.cloud.datacatalog.v1beta1.TagField.EnumValueH\x00\x1a!\n\tEnumValue\x12\x14\n\x0c\x64isplay_name\x18\x01 \x01(\tB\x06\n\x04kind"\xd6\x02\n\x0bTagTemplate\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12N\n\x06\x66ields\x18\x03 \x03(\x0b\x32\x39.google.cloud.datacatalog.v1beta1.TagTemplate.FieldsEntryB\x03\xe0\x41\x02\x1a\x61\n\x0b\x46ieldsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x41\n\x05value\x18\x02 \x01(\x0b\x32\x32.google.cloud.datacatalog.v1beta1.TagTemplateField:\x02\x38\x01:p\xea\x41m\n&datacatalog.googleapis.com/TagTemplate\x12\x43projects/{project}/locations/{location}/tagTemplates/{tag_template}"\x98\x02\n\x10TagTemplateField\x12\x11\n\x04name\x18\x06 \x01(\tB\x03\xe0\x41\x03\x12\x14\n\x0c\x64isplay_name\x18\x01 \x01(\t\x12>\n\x04type\x18\x02 \x01(\x0b\x32+.google.cloud.datacatalog.v1beta1.FieldTypeB\x03\xe0\x41\x02\x12\x13\n\x0bis_required\x18\x03 \x01(\x08:\x85\x01\xea\x41\x81\x01\n+datacatalog.googleapis.com/TagTemplateField\x12Rprojects/{project}/locations/{location}/tagTemplates/{tag_template}/fields/{field}"\xa7\x03\n\tFieldType\x12S\n\x0eprimitive_type\x18\x01 \x01(\x0e\x32\x39.google.cloud.datacatalog.v1beta1.FieldType.PrimitiveTypeH\x00\x12I\n\tenum_type\x18\x02 \x01(\x0b\x32\x34.google.cloud.datacatalog.v1beta1.FieldType.EnumTypeH\x00\x1a\x8a\x01\n\x08\x45numType\x12V\n\x0e\x61llowed_values\x18\x01 \x03(\x0b\x32>.google.cloud.datacatalog.v1beta1.FieldType.EnumType.EnumValue\x1a&\n\tEnumValue\x12\x19\n\x0c\x64isplay_name\x18\x01 \x01(\tB\x03\xe0\x41\x02"`\n\rPrimitiveType\x12\x1e\n\x1aPRIMITIVE_TYPE_UNSPECIFIED\x10\x00\x12\n\n\x06\x44OUBLE\x10\x01\x12\n\n\x06STRING\x10\x02\x12\x08\n\x04\x42OOL\x10\x03\x12\r\n\tTIMESTAMP\x10\x04\x42\x0b\n\ttype_declBx\n$com.google.cloud.datacatalog.v1beta1P\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\x62\x06proto3',
+    serialized_options=b"\n$com.google.cloud.datacatalog.v1beta1P\001ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\370\001\001\252\002 Google.Cloud.DataCatalog.V1Beta1\312\002 Google\\Cloud\\DataCatalog\\V1beta1\352\002#Google::Cloud::DataCatalog::V1beta1",
+    serialized_pb=b'\n1google/cloud/datacatalog_v1beta1/proto/tags.proto\x12 google.cloud.datacatalog.v1beta1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x90\x03\n\x03Tag\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x15\n\x08template\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12"\n\x15template_display_name\x18\x05 \x01(\tB\x03\xe0\x41\x03\x12\x10\n\x06\x63olumn\x18\x04 \x01(\tH\x00\x12\x46\n\x06\x66ields\x18\x03 \x03(\x0b\x32\x31.google.cloud.datacatalog.v1beta1.Tag.FieldsEntryB\x03\xe0\x41\x02\x1aY\n\x0b\x46ieldsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x39\n\x05value\x18\x02 \x01(\x0b\x32*.google.cloud.datacatalog.v1beta1.TagField:\x02\x38\x01:\x81\x01\xea\x41~\n\x1e\x64\x61tacatalog.googleapis.com/Tag\x12\\projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}/tags/{tag}B\x07\n\x05scope"\xad\x02\n\x08TagField\x12\x19\n\x0c\x64isplay_name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x16\n\x0c\x64ouble_value\x18\x02 \x01(\x01H\x00\x12\x16\n\x0cstring_value\x18\x03 \x01(\tH\x00\x12\x14\n\nbool_value\x18\x04 \x01(\x08H\x00\x12\x35\n\x0ftimestamp_value\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12J\n\nenum_value\x18\x06 \x01(\x0b\x32\x34.google.cloud.datacatalog.v1beta1.TagField.EnumValueH\x00\x12\x12\n\x05order\x18\x07 \x01(\x05\x42\x03\xe0\x41\x03\x1a!\n\tEnumValue\x12\x14\n\x0c\x64isplay_name\x18\x01 \x01(\tB\x06\n\x04kind"\xd6\x02\n\x0bTagTemplate\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12N\n\x06\x66ields\x18\x03 \x03(\x0b\x32\x39.google.cloud.datacatalog.v1beta1.TagTemplate.FieldsEntryB\x03\xe0\x41\x02\x1a\x61\n\x0b\x46ieldsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x41\n\x05value\x18\x02 \x01(\x0b\x32\x32.google.cloud.datacatalog.v1beta1.TagTemplateField:\x02\x38\x01:p\xea\x41m\n&datacatalog.googleapis.com/TagTemplate\x12\x43projects/{project}/locations/{location}/tagTemplates/{tag_template}"\xa7\x02\n\x10TagTemplateField\x12\x11\n\x04name\x18\x06 \x01(\tB\x03\xe0\x41\x03\x12\x14\n\x0c\x64isplay_name\x18\x01 \x01(\t\x12>\n\x04type\x18\x02 \x01(\x0b\x32+.google.cloud.datacatalog.v1beta1.FieldTypeB\x03\xe0\x41\x02\x12\x13\n\x0bis_required\x18\x03 \x01(\x08\x12\r\n\x05order\x18\x05 \x01(\x05:\x85\x01\xea\x41\x81\x01\n+datacatalog.googleapis.com/TagTemplateField\x12Rprojects/{project}/locations/{location}/tagTemplates/{tag_template}/fields/{field}"\xa7\x03\n\tFieldType\x12S\n\x0eprimitive_type\x18\x01 \x01(\x0e\x32\x39.google.cloud.datacatalog.v1beta1.FieldType.PrimitiveTypeH\x00\x12I\n\tenum_type\x18\x02 \x01(\x0b\x32\x34.google.cloud.datacatalog.v1beta1.FieldType.EnumTypeH\x00\x1a\x8a\x01\n\x08\x45numType\x12V\n\x0e\x61llowed_values\x18\x01 \x03(\x0b\x32>.google.cloud.datacatalog.v1beta1.FieldType.EnumType.EnumValue\x1a&\n\tEnumValue\x12\x19\n\x0c\x64isplay_name\x18\x01 \x01(\tB\x03\xe0\x41\x02"`\n\rPrimitiveType\x12\x1e\n\x1aPRIMITIVE_TYPE_UNSPECIFIED\x10\x00\x12\n\n\x06\x44OUBLE\x10\x01\x12\n\n\x06STRING\x10\x02\x12\x08\n\x04\x42OOL\x10\x03\x12\r\n\tTIMESTAMP\x10\x04\x42\x0b\n\ttype_declB\xe4\x01\n$com.google.cloud.datacatalog.v1beta1P\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\xaa\x02 Google.Cloud.DataCatalog.V1Beta1\xca\x02 Google\\Cloud\\DataCatalog\\V1beta1\xea\x02#Google::Cloud::DataCatalog::V1beta1b\x06proto3',
     dependencies=[
         google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_api_dot_resource__pb2.DESCRIPTOR,
@@ -59,8 +59,8 @@ _FIELDTYPE_PRIMITIVETYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     serialized_options=None,
-    serialized_start=1810,
-    serialized_end=1906,
+    serialized_start=1845,
+    serialized_end=1941,
 )
 _sym_db.RegisterEnumDescriptor(_FIELDTYPE_PRIMITIVETYPE)
 
@@ -274,8 +274,8 @@ _TAGFIELD_ENUMVALUE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=824,
-    serialized_end=857,
+    serialized_start=844,
+    serialized_end=877,
 )
 
 _TAGFIELD = _descriptor.Descriptor(
@@ -393,6 +393,24 @@ _TAGFIELD = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="order",
+            full_name="google.cloud.datacatalog.v1beta1.TagField.order",
+            index=6,
+            number=7,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=b"\340A\003",
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[_TAGFIELD_ENUMVALUE],
@@ -411,7 +429,7 @@ _TAGFIELD = _descriptor.Descriptor(
         )
     ],
     serialized_start=584,
-    serialized_end=865,
+    serialized_end=885,
 )
 
 
@@ -467,8 +485,8 @@ _TAGTEMPLATE_FIELDSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=999,
-    serialized_end=1096,
+    serialized_start=1019,
+    serialized_end=1116,
 )
 
 _TAGTEMPLATE = _descriptor.Descriptor(
@@ -541,8 +559,8 @@ _TAGTEMPLATE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=868,
-    serialized_end=1210,
+    serialized_start=888,
+    serialized_end=1230,
 )
 
 
@@ -625,6 +643,24 @@ _TAGTEMPLATEFIELD = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="order",
+            full_name="google.cloud.datacatalog.v1beta1.TagTemplateField.order",
+            index=4,
+            number=5,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -634,8 +670,8 @@ _TAGTEMPLATEFIELD = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1213,
-    serialized_end=1493,
+    serialized_start=1233,
+    serialized_end=1528,
 )
 
 
@@ -673,8 +709,8 @@ _FIELDTYPE_ENUMTYPE_ENUMVALUE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1770,
-    serialized_end=1808,
+    serialized_start=1805,
+    serialized_end=1843,
 )
 
 _FIELDTYPE_ENUMTYPE = _descriptor.Descriptor(
@@ -711,8 +747,8 @@ _FIELDTYPE_ENUMTYPE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1670,
-    serialized_end=1808,
+    serialized_start=1705,
+    serialized_end=1843,
 )
 
 _FIELDTYPE = _descriptor.Descriptor(
@@ -775,8 +811,8 @@ _FIELDTYPE = _descriptor.Descriptor(
             fields=[],
         )
     ],
-    serialized_start=1496,
-    serialized_end=1919,
+    serialized_start=1531,
+    serialized_end=1954,
 )
 
 _TAG_FIELDSENTRY.fields_by_name["value"].message_type = _TAGFIELD
@@ -860,7 +896,8 @@ Tag = _reflection.GeneratedProtocolMessageType(
         "__doc__": """Tags are used to attach custom metadata to Data Catalog
   resources. Tags conform to the specifications within their tag template.
   
-  See `Data Catalog IAM </data-catalog/docs/concepts/iam>`__ for
+  See `Data Catalog
+  IAM <https://cloud.google.com/data-catalog/docs/concepts/iam>`__ for
   information on the permissions needed to create or view tags.
   
   
@@ -945,6 +982,13 @@ TagField = _reflection.GeneratedProtocolMessageType(
           Holds the value for a tag field with enum type. This value
           must be one of the allowed values in the definition of this
           enum.
+      order:
+          Output only. The order of this field with respect to other
+          fields in this tag. It can be set in [Tag][google.cloud.dataca
+          talog.v1beta1.TagTemplateField.order]. For example, a higher
+          value can indicate a more important field. The value can be
+          negative. Multiple fields can have the same order, and field
+          orders within a tag do not have to be sequential.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1beta1.TagField)
     },
@@ -970,10 +1014,12 @@ TagTemplate = _reflection.GeneratedProtocolMessageType(
         "__doc__": """A tag template defines a tag, which can have one or more
   typed fields. The template is used to create and attach the tag to GCP
   resources. `Tag template
-  roles </iam/docs/understanding-roles#data-catalog-roles>`__ provide
-  permissions to create, edit, and use the template (see, for example, the
-  `TagTemplate User </data-catalog/docs/how-to/template-user>`__ role,
-  which includes permission to use the tag template to tag resources.
+  roles <https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles>`__
+  provide permissions to create, edit, and use the template. See, for
+  example, the `TagTemplate
+  User <https://cloud.google.com/data-catalog/docs/how-to/template-user>`__
+  role, which includes permission to use the tag template to tag
+  resources.
   
   
   Attributes:
@@ -1025,6 +1071,12 @@ TagTemplateField = _reflection.GeneratedProtocolMessageType(
           Required. The type of value this tag field can contain.
       is_required:
           Whether this is a required field. Defaults to false.
+      order:
+          The order of this field with respect to other fields in this
+          tag template. A higher value indicates a more important field.
+          The value can be negative. Multiple fields can have the same
+          order, and field orders within a tag do not have to be
+          sequential.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.datacatalog.v1beta1.TagTemplateField)
     },
@@ -1096,6 +1148,7 @@ _TAG.fields_by_name["template_display_name"]._options = None
 _TAG.fields_by_name["fields"]._options = None
 _TAG._options = None
 _TAGFIELD.fields_by_name["display_name"]._options = None
+_TAGFIELD.fields_by_name["order"]._options = None
 _TAGTEMPLATE_FIELDSENTRY._options = None
 _TAGTEMPLATE.fields_by_name["fields"]._options = None
 _TAGTEMPLATE._options = None

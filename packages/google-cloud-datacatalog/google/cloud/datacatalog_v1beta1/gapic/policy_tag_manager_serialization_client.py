@@ -26,6 +26,7 @@ import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
 import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
+import google.api_core.path_template
 import google.api_core.protobuf_helpers
 import grpc
 
@@ -89,6 +90,25 @@ class PolicyTagManagerSerializationClient(object):
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
+
+    @classmethod
+    def location_path(cls, project, location):
+        """Return a fully-qualified location string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}",
+            project=project,
+            location=location,
+        )
+
+    @classmethod
+    def taxonomy_path(cls, project, location, taxonomy):
+        """Return a fully-qualified taxonomy string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/taxonomies/{taxonomy}",
+            project=project,
+            location=location,
+            taxonomy=taxonomy,
+        )
 
     def __init__(
         self,
@@ -205,7 +225,7 @@ class PolicyTagManagerSerializationClient(object):
     # Service calls
     def import_taxonomies(
         self,
-        parent=None,
+        parent,
         inline_source=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -223,7 +243,9 @@ class PolicyTagManagerSerializationClient(object):
             >>>
             >>> client = datacatalog_v1beta1.PolicyTagManagerSerializationClient()
             >>>
-            >>> response = client.import_taxonomies()
+            >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
+            >>>
+            >>> response = client.import_taxonomies(parent)
 
         Args:
             parent (str): Required. Resource name of project that the newly created taxonomies will
@@ -288,8 +310,8 @@ class PolicyTagManagerSerializationClient(object):
 
     def export_taxonomies(
         self,
-        parent=None,
-        taxonomies=None,
+        parent,
+        taxonomies,
         serialized_taxonomies=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -306,7 +328,12 @@ class PolicyTagManagerSerializationClient(object):
             >>>
             >>> client = datacatalog_v1beta1.PolicyTagManagerSerializationClient()
             >>>
-            >>> response = client.export_taxonomies()
+            >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
+            >>>
+            >>> # TODO: Initialize `taxonomies`:
+            >>> taxonomies = []
+            >>>
+            >>> response = client.export_taxonomies(parent, taxonomies)
 
         Args:
             parent (str): Required. Resource name of the project that taxonomies to be exported
