@@ -1,12 +1,20 @@
-Python Client for Secret Manager API (`Beta`_)
-==============================================
+Python Client for Secret Manager API
+====================================
+
+|ga| |pypi| |versions|
 
 `Secret Manager API`_: Stores, manages, and secures access to application secrets.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Beta: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-secret-manager.svg
+   :target: https://pypi.org/project/google-cloud-secret-manager/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-secret-manager.svg
+   :target: https://pypi.org/project/google-cloud-secret-manager/
+
 .. _Secret Manager API: https://cloud.google.com/secret-manager
 .. _Client Library Documentation: https://googleapis.dev/python/secretmanager/latest
 .. _Product Documentation:  https://cloud.google.com/secret-manager
