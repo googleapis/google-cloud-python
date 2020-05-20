@@ -26,7 +26,7 @@ version = "0.8.0"
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
-release_status = "Development Status :: 4 - Beta"
+release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
     "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
