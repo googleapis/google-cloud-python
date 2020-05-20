@@ -887,8 +887,8 @@ InstanceGroupAutoscalingPolicyConfig = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _INSTANCEGROUPAUTOSCALINGPOLICYCONFIG,
         "__module__": "google.cloud.dataproc_v1.proto.autoscaling_policies_pb2",
-        "__doc__": """Configuration for the size bounds of an instance group,
-  including its proportional size to other groups.
+        "__doc__": """Configuration for the size bounds of an instance group, including its
+  proportional size to other groups.
   
   
   Attributes:
