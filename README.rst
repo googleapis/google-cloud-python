@@ -31,6 +31,7 @@ The following client libraries have **GA** support:
 -  `Google BigQuery`_ (`BigQuery README`_, `BigQuery Documentation`_)
 -  `Google Cloud Bigtable`_ (`Bigtable README`_, `Bigtable Documentation`_)
 -  `Google Cloud Billing`_ (`Billing README`_, `Billing Documentation`_)
+-  `Google Cloud Data Catalog`_ (`Data Catalog README`_, `Data Catalog Documentation`_)
 -  `Google Cloud Datastore`_ (`Datastore README`_, `Datastore Documentation`_)
 -  `Google Cloud IAM`_ (`IAM README`_, `IAM Documentation`_)
 -  `Google Cloud KMS`_ (`KMS README`_, `KMS Documentation`_)
@@ -58,6 +59,10 @@ The following client libraries have **GA** support:
 .. _Google Cloud Billing: https://pypi.org/project/google-cloud-billing/
 .. _Billing README: https://github.com/googleapis/python-billing
 .. _Billing Documentation: https://googleapis.dev/python/cloudbilling/latest
+
+.. _Google Cloud Data Catalog: https://pypi.org/project/google-cloud-datacatalog/
+.. _Data Catalog README: https://github.com/googleapis/python-datacatalog
+.. _Data Catalog Documentation: https://googleapis.dev/python/datacatalog/latest
 
 .. _Google Cloud Datastore: https://pypi.org/project/google-cloud-datastore/
 .. _Datastore README: https://github.com/googleapis/python-datastore
@@ -131,7 +136,6 @@ The following client libraries have **beta** support:
 -  `Google Cloud Asset`_ (`Asset README`_, `Asset Documentation`_)
 -  `Google Cloud Access Approval`_ (`Access Approval README`_, `Access Approval Documentation`_)
 -  `Google Cloud Billing Budgets`_ (`Billing Budgets README`_, `Billing Budgets Documentation`_)
--  `Google Cloud Data Catalog`_ (`Data Catalog README`_, `Data Catalog Documentation`_)
 -  `Google Cloud Data Labeling`_ (`Data Labeling README`_, `Data Labeling Documentation`_)
 -  `Google Cloud Firestore`_ (`Firestore README`_, `Firestore Documentation`_)
 -  `Google Cloud Video Intelligence`_ (`Video Intelligence README`_, `Video Intelligence Documentation`_)
@@ -148,10 +152,6 @@ The following client libraries have **beta** support:
 .. _Google Cloud Billing Budgets: https://pypi.org/project/google-cloud-billing-budgets/
 .. _Billing Budgets README: https://github.com/googleapis/python-billingbudgets
 .. _Billing Budgets Documentation: https://googleapis.dev/python/billingbudgets/latest
-
-.. _Google Cloud Data Catalog: https://pypi.org/project/google-cloud-datacatalog/
-.. _Data Catalog README: https://github.com/googleapis/python-datacatalog
-.. _Data Catalog Documentation: https://googleapis.dev/python/datacatalog/latest
 
 .. _Google Cloud Data Labeling: https://pypi.org/project/google-cloud-datalabeling/
 .. _Data Labeling README: https://github.com/googleapis/python-datalabeling#python-client-for-data-labeling-api-beta
