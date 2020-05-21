@@ -1,12 +1,21 @@
-Python Client for Recommender API (`Alpha`_)
-============================================
+Python Client for Recommender API
+=================================
 
-`Recommender API`_:
+|ga| |pypi| |versions|
+
+`Recommender API`_: Recommender provides recommendations for using resources on Google Cloud.
+These recommendations are per-product or per-service, and are generated based on heuristic methods,
+machine learning, and current resource usage.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-recommender.svg
+   :target: https://pypi.org/project/google-cloud-recommender/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-recommender.svg
+   :target: https://pypi.org/project/google-cloud-recommender/
 .. _Recommender API: https://cloud.google.com/recommender
 .. _Client Library Documentation: https://googleapis.dev/python/recommender/latest
 .. _Product Documentation:  https://cloud.google.com/recommender/docs
