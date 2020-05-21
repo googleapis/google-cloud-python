@@ -247,12 +247,14 @@ class TestBigQuery(unittest.TestCase):
     def test_get_dataset(self):
         dataset_id = _make_dataset_id("get_dataset")
         client = Config.CLIENT
-        dataset_arg = Dataset(client.dataset(dataset_id))
+        project = client.project
+        dataset_ref = bigquery.DatasetReference(project, dataset_id)
+        dataset_arg = Dataset(dataset_ref)
         dataset_arg.friendly_name = "Friendly"
         dataset_arg.description = "Description"
         dataset = retry_403(client.create_dataset)(dataset_arg)
         self.to_delete.append(dataset)
-        dataset_ref = client.dataset(dataset_id)
+        dataset_ref = bigquery.DatasetReference(project, dataset_id)
 
         # Get with a reference.
         got = client.get_dataset(dataset_ref)
@@ -416,7 +418,8 @@ class TestBigQuery(unittest.TestCase):
 
     def test_delete_dataset_with_string(self):
         dataset_id = _make_dataset_id("delete_table_true")
-        dataset_ref = Config.CLIENT.dataset(dataset_id)
+        project = Config.CLIENT.project
+        dataset_ref = bigquery.DatasetReference(project, dataset_id)
         retry_403(Config.CLIENT.create_dataset)(Dataset(dataset_ref))
         self.assertTrue(_dataset_exists(dataset_ref))
         Config.CLIENT.delete_dataset(dataset_id)
@@ -424,9 +427,9 @@ class TestBigQuery(unittest.TestCase):
 
     def test_delete_dataset_delete_contents_true(self):
         dataset_id = _make_dataset_id("delete_table_true")
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(Config.CLIENT.dataset(dataset_id))
-        )
+        project = Config.CLIENT.project
+        dataset_ref = bigquery.DatasetReference(project, dataset_id)
+        dataset = retry_403(Config.CLIENT.create_dataset)(Dataset(dataset_ref))
 
         table_id = "test_table"
         table_arg = Table(dataset.table(table_id), schema=SCHEMA)
@@ -1363,7 +1366,9 @@ class TestBigQuery(unittest.TestCase):
         source_blob_name = "person_ages.csv"
         dataset_id = _make_dataset_id("load_gcs_then_extract")
         table_id = "test_table"
-        table_ref = Config.CLIENT.dataset(dataset_id).table(table_id)
+        project = Config.CLIENT.project
+        dataset_ref = bigquery.DatasetReference(project, dataset_id)
+        table_ref = dataset_ref.table(table_id)
         table = Table(table_ref)
         self.to_delete.insert(0, table)
         bucket = self._create_bucket(bucket_name)
@@ -1546,8 +1551,10 @@ class TestBigQuery(unittest.TestCase):
         rows = list(Config.CLIENT.query("SELECT 1;").result())
         assert rows[0][0] == 1
 
+        project = Config.CLIENT.project
+        dataset_ref = bigquery.DatasetReference(project, "dset")
         bad_config = LoadJobConfig()
-        bad_config.destination = Config.CLIENT.dataset("dset").table("tbl")
+        bad_config.destination = dataset_ref.table("tbl")
         with self.assertRaises(Exception):
             Config.CLIENT.query(good_query, job_config=bad_config).result()
 
@@ -2678,7 +2685,9 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(len(dataframe.index), 100)
 
     def temp_dataset(self, dataset_id, location=None):
-        dataset = Dataset(Config.CLIENT.dataset(dataset_id))
+        project = Config.CLIENT.project
+        dataset_ref = bigquery.DatasetReference(project, dataset_id)
+        dataset = Dataset(dataset_ref)
         if location:
             dataset.location = location
         dataset = retry_403(Config.CLIENT.create_dataset)(dataset)
