@@ -362,6 +362,8 @@ class _PropertyMixin(object):
         query_params["projection"] = "full"
         _add_generation_match_parameters(
             query_params,
+            if_generation_match=if_generation_match,
+            if_generation_not_match=if_generation_not_match,
             if_metageneration_match=if_metageneration_match,
             if_metageneration_not_match=if_metageneration_not_match,
         )
