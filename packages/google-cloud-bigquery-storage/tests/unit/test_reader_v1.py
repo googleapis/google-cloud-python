@@ -233,12 +233,14 @@ def _bq_to_avro_schema(bq_columns):
 
 def _bq_to_arrow_schema(bq_columns):
     def bq_col_as_field(column):
-        doc = column.get("description")
+        metadata = None
+        if column.get("description") is not None:
+            metadata = {"description": column.get("description")}
         name = column["name"]
         type_ = BQ_TO_ARROW_TYPES[column["type"]]
         mode = column.get("mode", "nullable").lower()
 
-        return pyarrow.field(name, type_, mode == "nullable", {"description": doc})
+        return pyarrow.field(name, type_, mode == "nullable", metadata)
 
     return pyarrow.schema(bq_col_as_field(c) for c in bq_columns)
 
