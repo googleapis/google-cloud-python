@@ -1184,6 +1184,62 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[1]["path"], "/b/%s/o/%s" % (NAME, NONESUCH))
         self.assertEqual(kw[1]["timeout"], self._get_default_timeout())
 
+    def test_reload_bucket_w_metageneration_match(self):
+        NAME = "name"
+        METAGENERATION_NUMBER = 9
+
+        connection = _Connection({})
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=NAME)
+
+        bucket.reload(if_metageneration_match=METAGENERATION_NUMBER)
+
+        self.assertEqual(len(connection._requested), 1)
+        req = connection._requested[0]
+        self.assertEqual(req["method"], "GET")
+        self.assertEqual(req["path"], "/b/%s" % NAME)
+        self.assertEqual(req["timeout"], self._get_default_timeout())
+        self.assertEqual(
+            req["query_params"],
+            {"projection": "noAcl", "ifMetagenerationMatch": METAGENERATION_NUMBER},
+        )
+
+    def test_reload_bucket_w_generation_match(self):
+        connection = _Connection({})
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name="name")
+
+        with self.assertRaises(TypeError):
+            bucket.reload(if_generation_match=6)
+
+    def test_update_bucket_w_metageneration_match(self):
+        NAME = "name"
+        METAGENERATION_NUMBER = 9
+
+        connection = _Connection({})
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=NAME)
+
+        bucket.update(if_metageneration_match=METAGENERATION_NUMBER)
+
+        self.assertEqual(len(connection._requested), 1)
+        req = connection._requested[0]
+        self.assertEqual(req["method"], "PUT")
+        self.assertEqual(req["path"], "/b/%s" % NAME)
+        self.assertEqual(req["timeout"], self._get_default_timeout())
+        self.assertEqual(
+            req["query_params"],
+            {"projection": "full", "ifMetagenerationMatch": METAGENERATION_NUMBER},
+        )
+
+    def test_update_bucket_w_generation_match(self):
+        connection = _Connection({})
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name="name")
+
+        with self.assertRaises(TypeError):
+            bucket.update(if_generation_match=6)
+
     @staticmethod
     def _make_blob(bucket_name, blob_name):
         from google.cloud.storage.blob import Blob
