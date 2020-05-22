@@ -1966,6 +1966,30 @@ class TestKMSIntegration(TestStorageFiles):
 
         self.assertEqual(dest.download_as_string(), source_data)
 
+    def test_upload_new_blob_w_bucket_cmek_enabled(self):
+        blob_name = "test-blob"
+        payload = b"DEADBEEF"
+        alt_payload = b"NEWDEADBEEF"
+
+        kms_key_name = self._kms_key_name()
+        self.bucket.default_kms_key_name = kms_key_name
+        self.bucket.patch()
+        self.assertEqual(self.bucket.default_kms_key_name, kms_key_name)
+
+        blob = self.bucket.blob(blob_name)
+        blob.upload_from_string(payload)
+        # We don't know the current version of the key.
+        self.assertTrue(blob.kms_key_name.startswith(kms_key_name))
+
+        blob.upload_from_string(alt_payload, if_generation_match=blob.generation)
+        self.case_blobs_to_delete.append(blob)
+
+        self.assertEqual(blob.download_as_string(), alt_payload)
+
+        self.bucket.default_kms_key_name = None
+        self.bucket.patch()
+        self.assertIsNone(self.bucket.default_kms_key_name)
+
 
 class TestRetentionPolicy(unittest.TestCase):
     def setUp(self):

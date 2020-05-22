@@ -1280,7 +1280,15 @@ class Blob(_PropertyMixin):
         if self.user_project is not None:
             name_value_pairs.append(("userProject", self.user_project))
 
-        if self.kms_key_name is not None:
+        # When a Customer Managed Encryption Key is used to encrypt Cloud Storage object
+        # at rest, object resource metadata will store the version of the Key Management
+        # Service cryptographic material. If a Blob instance with KMS Key metadata set is
+        # used to upload a new version of the object then the existing kmsKeyName version
+        # value can't be used in the upload request and the client instead ignores it.
+        if (
+            self.kms_key_name is not None
+            and "cryptoKeyVersions" not in self.kms_key_name
+        ):
             name_value_pairs.append(("kmsKeyName", self.kms_key_name))
 
         if predefined_acl is not None:
@@ -1417,7 +1425,15 @@ class Blob(_PropertyMixin):
         if self.user_project is not None:
             name_value_pairs.append(("userProject", self.user_project))
 
-        if self.kms_key_name is not None:
+        # When a Customer Managed Encryption Key is used to encrypt Cloud Storage object
+        # at rest, object resource metadata will store the version of the Key Management
+        # Service cryptographic material. If a Blob instance with KMS Key metadata set is
+        # used to upload a new version of the object then the existing kmsKeyName version
+        # value can't be used in the upload request and the client instead ignores it.
+        if (
+            self.kms_key_name is not None
+            and "cryptoKeyVersions" not in self.kms_key_name
+        ):
             name_value_pairs.append(("kmsKeyName", self.kms_key_name))
 
         if predefined_acl is not None:
