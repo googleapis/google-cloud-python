@@ -14,8 +14,6 @@
 
 """Support for batching operations."""
 
-from google.cloud.ndb import _eventloop
-
 
 def get_batch(batch_cls, options=None):
     """Gets a data structure for storing batched calls to Datastore Lookup.
@@ -68,5 +66,5 @@ def get_batch(batch_cls, options=None):
         return idle
 
     batches[options_key] = batch = batch_cls(options)
-    _eventloop.add_idle(idler(batch))
+    context.eventloop.add_idle(idler(batch))
     return batch

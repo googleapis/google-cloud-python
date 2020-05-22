@@ -130,14 +130,35 @@ def _transaction_async(context, callback, read_only=False):
     tx_context = context.new(
         transaction=transaction_id,
         on_commit_callbacks=on_commit_callbacks,
-        cache=None,  # Use new, empty cache for transaction
+        batches=None,
+        commit_batches=None,
+        cache=None,
+        # We could just pass `None` here and let the `Context` constructor
+        # instantiate a new event loop, but our unit tests inject a subclass of
+        # `EventLoop` that makes testing a little easier. This makes sure the
+        # new event loop is of the same type as the current one, to propagate
+        # the event loop class used for testing.
+        eventloop=type(context.eventloop)(),
     )
+
+    # The outer loop is dependent on the inner loop
+    def run_inner_loop(inner_context):
+        with inner_context.use():
+            if inner_context.eventloop.run1():
+                return True  # schedule again
+
+    context.eventloop.add_idle(run_inner_loop, tx_context)
+
     with tx_context.use():
         try:
             # Run the callback
             result = callback()
             if isinstance(result, tasklets.Future):
                 result = yield result
+
+            # Make sure we've run everything we can run before calling commit
+            _datastore_api.prepare_to_commit(transaction_id)
+            tx_context.eventloop.run()
 
             # Commit the transaction
             yield _datastore_api.commit(transaction_id, retries=0)

@@ -17,7 +17,6 @@ System tests for queries.
 """
 
 import datetime
-import functools
 import operator
 
 import grpc
@@ -29,18 +28,7 @@ import test_utils.system
 from google.cloud import ndb
 from google.cloud.datastore import key as ds_key_module
 
-from tests.system import KIND, eventually
-
-
-def _length_equals(n):
-    def predicate(sequence):
-        return len(sequence) == n
-
-    return predicate
-
-
-def _equals(n):
-    return functools.partial(operator.eq, n)
+from tests.system import KIND, eventually, equals, length_equals
 
 
 @pytest.mark.usefixtures("client_context")
@@ -53,7 +41,7 @@ def test_fetch_all_of_a_kind(ds_entity):
         foo = ndb.IntegerProperty()
 
     query = SomeKind.query()
-    results = eventually(query.fetch, _length_equals(5))
+    results = eventually(query.fetch, length_equals(5))
 
     results = sorted(results, key=operator.attrgetter("foo"))
     assert [entity.foo for entity in results] == [0, 1, 2, 3, 4]
@@ -93,7 +81,7 @@ def test_fetch_lots_of_a_kind(dispose_of):
         dispose_of(key._key)
 
     query = SomeKind.query()
-    results = eventually(query.fetch, _length_equals(n_entities))
+    results = eventually(query.fetch, length_equals(n_entities))
 
     results = sorted(results, key=operator.attrgetter("foo"))
     assert [entity.foo for entity in results][:5] == [0, 1, 2, 3, 4]
@@ -120,7 +108,7 @@ def test_high_limit(dispose_of):
         dispose_of(key._key)
 
     query = SomeKind.query()
-    eventually(query.fetch, _length_equals(n_entities))
+    eventually(query.fetch, length_equals(n_entities))
     results = query.fetch(limit=400)
 
     assert len(results) == 400
@@ -166,7 +154,7 @@ def test_ancestor_query(ds_entity):
         foo = ndb.IntegerProperty()
 
     query = SomeKind.query(ancestor=ndb.Key(KIND, root_id))
-    results = eventually(query.fetch, _length_equals(6))
+    results = eventually(query.fetch, length_equals(6))
 
     results = sorted(results, key=operator.attrgetter("foo"))
     assert [entity.foo for entity in results] == [-1, 0, 1, 2, 3, 4]
@@ -184,7 +172,7 @@ def test_projection(ds_entity):
         bar = ndb.StringProperty()
 
     query = SomeKind.query(projection=("foo",))
-    results = eventually(query.fetch, _length_equals(2))
+    results = eventually(query.fetch, length_equals(2))
 
     results = sorted(results, key=operator.attrgetter("foo"))
 
@@ -221,7 +209,7 @@ def test_projection_datetime(ds_entity):
         bar = ndb.StringProperty()
 
     query = SomeKind.query(projection=("foo",))
-    results = eventually(query.fetch, _length_equals(2))
+    results = eventually(query.fetch, length_equals(2))
 
     results = sorted(results, key=operator.attrgetter("foo"))
 
@@ -241,7 +229,7 @@ def test_projection_with_fetch_and_property(ds_entity):
         bar = ndb.StringProperty()
 
     query = SomeKind.query()
-    eventually(query.fetch, _length_equals(2))
+    eventually(query.fetch, length_equals(2))
 
     results = query.fetch(projection=(SomeKind.foo,))
     results = sorted(results, key=operator.attrgetter("foo"))
@@ -266,7 +254,7 @@ def test_distinct_on(ds_entity):
         bar = ndb.StringProperty()
 
     query = SomeKind.query(distinct_on=("foo",))
-    eventually(SomeKind.query().fetch, _length_equals(6))
+    eventually(SomeKind.query().fetch, length_equals(6))
 
     results = query.fetch()
     results = sorted(results, key=operator.attrgetter("foo"))
@@ -292,10 +280,10 @@ def test_namespace(dispose_of, other_namespace):
     entity2.put()
     dispose_of(entity2.key._key)
 
-    eventually(SomeKind.query().fetch, _length_equals(1))
+    eventually(SomeKind.query().fetch, length_equals(1))
 
     query = SomeKind.query(namespace=other_namespace)
-    results = eventually(query.fetch, _length_equals(1))
+    results = eventually(query.fetch, length_equals(1))
 
     assert results[0].foo == 1
     assert results[0].bar == "a"
@@ -320,7 +308,7 @@ def test_namespace_set_on_client_with_id(dispose_of, other_namespace):
         dispose_of(key._key)
         assert key.namespace() == other_namespace
 
-        results = eventually(SomeKind.query().fetch, _length_equals(1))
+        results = eventually(SomeKind.query().fetch, length_equals(1))
 
         assert results[0].foo == 1
         assert results[0].bar == "a"
@@ -336,7 +324,7 @@ def test_filter_equal(ds_entity):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
 
-    eventually(SomeKind.query().fetch, _length_equals(5))
+    eventually(SomeKind.query().fetch, length_equals(5))
 
     query = SomeKind.query(SomeKind.foo == 2)
     results = query.fetch()
@@ -352,7 +340,7 @@ def test_filter_not_equal(ds_entity):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
 
-    eventually(SomeKind.query().fetch, _length_equals(5))
+    eventually(SomeKind.query().fetch, length_equals(5))
 
     query = SomeKind.query(SomeKind.foo != 2)
     results = query.fetch()
@@ -377,7 +365,7 @@ def test_filter_or(dispose_of):
             dispose_of(key._key)
 
     make_entities()
-    eventually(SomeKind.query().fetch, _length_equals(3))
+    eventually(SomeKind.query().fetch, length_equals(3))
 
     query = SomeKind.query(ndb.OR(SomeKind.foo == 1, SomeKind.bar == "c"))
     results = query.fetch()
@@ -395,7 +383,7 @@ def test_order_by_ascending(ds_entity):
         foo = ndb.IntegerProperty()
 
     query = SomeKind.query().order(SomeKind.foo)
-    results = eventually(query.fetch, _length_equals(5))
+    results = eventually(query.fetch, length_equals(5))
 
     assert [entity.foo for entity in results] == [0, 1, 2, 3, 4]
 
@@ -411,7 +399,7 @@ def test_order_by_descending(ds_entity):
 
     # query = SomeKind.query()  # Not implemented yet
     query = SomeKind.query().order(-SomeKind.foo)
-    results = eventually(query.fetch, _length_equals(5))
+    results = eventually(query.fetch, length_equals(5))
     assert len(results) == 5
 
     assert [entity.foo for entity in results] == [4, 3, 2, 1, 0]
@@ -442,7 +430,7 @@ def test_order_by_with_or_filter(dispose_of):
     make_entities()
     query = SomeKind.query(ndb.OR(SomeKind.bar == "a", SomeKind.bar == "b"))
     query = query.order(SomeKind.foo)
-    results = eventually(query.fetch, _length_equals(4))
+    results = eventually(query.fetch, length_equals(4))
 
     assert [entity.foo for entity in results] == [0, 1, 2, 3]
 
@@ -461,9 +449,7 @@ def test_keys_only(ds_entity):
         bar = ndb.StringProperty()
 
     query = SomeKind.query().order(SomeKind.key)
-    results = eventually(
-        lambda: query.fetch(keys_only=True), _length_equals(2)
-    )
+    results = eventually(lambda: query.fetch(keys_only=True), length_equals(2))
 
     assert results[0] == ndb.Key("SomeKind", entity_id1)
     assert results[1] == ndb.Key("SomeKind", entity_id2)
@@ -478,7 +464,7 @@ def test_offset_and_limit(ds_entity):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
 
-    eventually(SomeKind.query().fetch, _length_equals(5))
+    eventually(SomeKind.query().fetch, length_equals(5))
 
     query = SomeKind.query(order_by=["foo"])
     results = query.fetch(offset=2, limit=2)
@@ -505,7 +491,7 @@ def test_offset_and_limit_with_or_filter(dispose_of):
             dispose_of(key._key)
 
     make_entities()
-    eventually(SomeKind.query().fetch, _length_equals(6))
+    eventually(SomeKind.query().fetch, length_equals(6))
 
     query = SomeKind.query(ndb.OR(SomeKind.bar == "a", SomeKind.bar == "b"))
     query = query.order(SomeKind.foo)
@@ -524,7 +510,7 @@ def test_iter_all_of_a_kind(ds_entity):
         foo = ndb.IntegerProperty()
 
     query = SomeKind.query().order("foo")
-    results = eventually(lambda: list(query), _length_equals(5))
+    results = eventually(lambda: list(query), length_equals(5))
     assert [entity.foo for entity in results] == [0, 1, 2, 3, 4]
 
 
@@ -538,7 +524,7 @@ def test_get_first(ds_entity):
         foo = ndb.IntegerProperty()
 
     query = SomeKind.query().order(SomeKind.foo)
-    eventually(query.fetch, _length_equals(5))
+    eventually(query.fetch, length_equals(5))
     assert query.get().foo == 0
 
 
@@ -552,7 +538,7 @@ def test_get_only(ds_entity):
         foo = ndb.IntegerProperty()
 
     query = SomeKind.query().order(SomeKind.foo)
-    eventually(query.fetch, _length_equals(5))
+    eventually(query.fetch, length_equals(5))
     assert query.filter(SomeKind.foo == 2).get().foo == 2
 
 
@@ -566,7 +552,7 @@ def test_get_none(ds_entity):
         foo = ndb.IntegerProperty()
 
     query = SomeKind.query().order(SomeKind.foo)
-    eventually(query.fetch, _length_equals(5))
+    eventually(query.fetch, length_equals(5))
     assert query.filter(SomeKind.foo == -1).get() is None
 
 
@@ -580,7 +566,7 @@ def test_count_all(ds_entity):
         foo = ndb.IntegerProperty()
 
     query = SomeKind.query()
-    eventually(query.count, _equals(5))
+    eventually(query.count, equals(5))
 
 
 @pytest.mark.usefixtures("client_context")
@@ -593,7 +579,7 @@ def test_count_with_limit(ds_entity):
         foo = ndb.IntegerProperty()
 
     query = SomeKind.query()
-    eventually(query.count, _equals(5))
+    eventually(query.count, equals(5))
 
     assert query.count(3) == 3
 
@@ -608,7 +594,7 @@ def test_count_with_filter(ds_entity):
         foo = ndb.IntegerProperty()
 
     query = SomeKind.query()
-    eventually(query.count, _equals(5))
+    eventually(query.count, equals(5))
 
     assert query.filter(SomeKind.foo == 2).count() == 1
 
@@ -623,7 +609,7 @@ def test_count_with_multi_query(ds_entity):
         foo = ndb.IntegerProperty()
 
     query = SomeKind.query()
-    eventually(query.count, _equals(5))
+    eventually(query.count, equals(5))
 
     assert query.filter(SomeKind.foo != 2).count() == 4
 
@@ -646,7 +632,7 @@ def test_fetch_page(dispose_of):
         dispose_of(key._key)
 
     query = SomeKind.query().order(SomeKind.foo)
-    eventually(query.fetch, _length_equals(n_entities))
+    eventually(query.fetch, length_equals(n_entities))
 
     results, cursor, more = query.fetch_page(page_size)
     assert [entity.foo for entity in results] == [0, 1, 2, 3, 4]
@@ -678,7 +664,7 @@ def test_polymodel_query(ds_entity):
     cat.put()
 
     query = Animal.query()
-    results = eventually(query.fetch, _length_equals(2))
+    results = eventually(query.fetch, length_equals(2))
 
     results = sorted(results, key=operator.attrgetter("foo"))
     assert isinstance(results[0], Animal)
@@ -687,7 +673,7 @@ def test_polymodel_query(ds_entity):
     assert isinstance(results[1], Cat)
 
     query = Cat.query()
-    results = eventually(query.fetch, _length_equals(1))
+    results = eventually(query.fetch, length_equals(1))
 
     assert isinstance(results[0], Animal)
     assert isinstance(results[0], Cat)
@@ -712,7 +698,7 @@ def test_polymodel_query_class_projection(ds_entity):
     cat.put()
 
     query = Animal.query(projection=["class", "foo"])
-    results = eventually(query.fetch, _length_equals(3))
+    results = eventually(query.fetch, length_equals(3))
 
     # Mostly reproduces odd behavior of legacy code
     results = sorted(results, key=operator.attrgetter("foo"))
@@ -748,7 +734,7 @@ def test_query_repeated_property(ds_entity):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty(repeated=True)
 
-    eventually(SomeKind.query().fetch, _length_equals(3))
+    eventually(SomeKind.query().fetch, length_equals(3))
 
     query = SomeKind.query().filter(SomeKind.bar == "c").order(SomeKind.foo)
     results = query.fetch()
@@ -793,7 +779,7 @@ def test_query_structured_property(dispose_of):
     for key in keys:
         dispose_of(key._key)
 
-    eventually(SomeKind.query().fetch, _length_equals(3))
+    eventually(SomeKind.query().fetch, length_equals(3))
 
     query = (
         SomeKind.query()
@@ -842,7 +828,7 @@ def test_query_structured_property_legacy_data(client_context, dispose_of):
         for key in keys:
             dispose_of(key._key)
 
-        eventually(SomeKind.query().fetch, _length_equals(3))
+        eventually(SomeKind.query().fetch, length_equals(3))
         query = (
             SomeKind.query()
             .filter(SomeKind.bar.one == "pish", SomeKind.bar.two == "posh")
@@ -892,7 +878,7 @@ def test_query_legacy_structured_property(ds_entity):
         }
     )
 
-    eventually(SomeKind.query().fetch, _length_equals(3))
+    eventually(SomeKind.query().fetch, length_equals(3))
 
     query = (
         SomeKind.query()
@@ -941,7 +927,7 @@ def test_query_structured_property_with_projection(dispose_of):
     for key in keys:
         dispose_of(key._key)
 
-    eventually(SomeKind.query().fetch, _length_equals(3))
+    eventually(SomeKind.query().fetch, length_equals(3))
     query = (
         SomeKind.query(projection=("foo", "bar.one", "bar.two"))
         .filter(SomeKind.foo < 3)
@@ -1010,7 +996,7 @@ def test_query_repeated_structured_property_with_properties(dispose_of):
     for key in keys:
         dispose_of(key._key)
 
-    eventually(SomeKind.query().fetch, _length_equals(3))
+    eventually(SomeKind.query().fetch, length_equals(3))
     query = (
         SomeKind.query()
         .filter(SomeKind.bar.one == "pish", SomeKind.bar.two == "posh")
@@ -1071,7 +1057,7 @@ def test_query_repeated_structured_property_with_properties_legacy_data(
         for key in keys:
             dispose_of(key._key)
 
-        eventually(SomeKind.query().fetch, _length_equals(3))
+        eventually(SomeKind.query().fetch, length_equals(3))
         query = (
             SomeKind.query()
             .filter(SomeKind.bar.one == "pish", SomeKind.bar.two == "posh")
@@ -1130,7 +1116,7 @@ def test_query_repeated_structured_property_with_entity_twice(dispose_of):
     for key in keys:
         dispose_of(key._key)
 
-    eventually(SomeKind.query().fetch, _length_equals(3))
+    eventually(SomeKind.query().fetch, length_equals(3))
     query = (
         SomeKind.query()
         .filter(
@@ -1193,7 +1179,7 @@ def test_query_repeated_structured_property_with_entity_twice_legacy_data(
         for key in keys:
             dispose_of(key._key)
 
-        eventually(SomeKind.query().fetch, _length_equals(3))
+        eventually(SomeKind.query().fetch, length_equals(3))
         query = (
             SomeKind.query()
             .filter(
@@ -1254,7 +1240,7 @@ def test_query_repeated_structured_property_with_projection(dispose_of):
     for key in keys:
         dispose_of(key._key)
 
-    eventually(SomeKind.query().fetch, _length_equals(3))
+    eventually(SomeKind.query().fetch, length_equals(3))
     query = SomeKind.query(projection=("bar.one", "bar.two")).filter(
         SomeKind.foo < 2
     )
@@ -1342,7 +1328,7 @@ def test_query_repeated_structured_property_with_projection_legacy_data(
         for key in keys:
             dispose_of(key._key)
 
-        eventually(SomeKind.query().fetch, _length_equals(3))
+        eventually(SomeKind.query().fetch, length_equals(3))
         query = SomeKind.query(projection=("bar.one", "bar.two")).filter(
             SomeKind.foo < 2
         )
@@ -1429,7 +1415,7 @@ def test_query_legacy_repeated_structured_property(ds_entity):
         }
     )
 
-    eventually(SomeKind.query().fetch, _length_equals(3))
+    eventually(SomeKind.query().fetch, length_equals(3))
 
     query = (
         SomeKind.query()
@@ -1468,7 +1454,7 @@ def test_query_legacy_repeated_structured_property_with_name(ds_entity):
         }
     )
 
-    eventually(SomeKind.query().fetch, _length_equals(1))
+    eventually(SomeKind.query().fetch, length_equals(1))
 
     query = SomeKind.query()
 
@@ -1528,7 +1514,7 @@ def test_fetch_page_with_repeated_structured_property(dispose_of):
     for key in keys:
         dispose_of(key._key)
 
-    eventually(SomeKind.query().fetch, _length_equals(3))
+    eventually(SomeKind.query().fetch, length_equals(3))
     query = (
         SomeKind.query()
         .filter(
@@ -1562,8 +1548,8 @@ def test_map(dispose_of):
     for key in keys:
         dispose_of(key._key)
 
-    eventually(SomeKind.query().fetch, _length_equals(5))
-    eventually(OtherKind.query().fetch, _length_equals(5))
+    eventually(SomeKind.query().fetch, length_equals(5))
+    eventually(OtherKind.query().fetch, length_equals(5))
 
     @ndb.tasklet
     def get_other_foo(thing):
@@ -1595,7 +1581,7 @@ def test_gql(ds_entity):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
 
-    eventually(SomeKind.query().fetch, _length_equals(5))
+    eventually(SomeKind.query().fetch, length_equals(5))
 
     query = ndb.gql("SELECT * FROM SomeKind WHERE foo = :1", 2)
     results = query.fetch()
@@ -1615,7 +1601,7 @@ def test_IN(ds_entity):
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
 
-    eventually(SomeKind.query().fetch, _length_equals(5))
+    eventually(SomeKind.query().fetch, length_equals(5))
 
     query = SomeKind.gql("where foo in (2, 3)").order(SomeKind.foo)
     results = query.fetch()
@@ -1643,7 +1629,7 @@ def test_projection_with_json_property(dispose_of):
     key = SomeKind(foo={"hi": "mom!"}).put()
     dispose_of(key._key)
 
-    eventually(SomeKind.query().fetch, _length_equals(1))
+    eventually(SomeKind.query().fetch, length_equals(1))
 
     results = SomeKind.query().fetch(projection=[SomeKind.foo])
     assert results[0].foo == {"hi": "mom!"}
@@ -1660,7 +1646,7 @@ def test_DateTime(ds_entity):
     class SomeKind(ndb.Model):
         foo = ndb.DateTimeProperty()
 
-    eventually(SomeKind.query().fetch, _length_equals(5))
+    eventually(SomeKind.query().fetch, length_equals(5))
 
     query = SomeKind.gql("where foo > DateTime(2020, 4, 1, 11, 0, 0)").order(
         SomeKind.foo
@@ -1680,7 +1666,7 @@ def test_Date(ds_entity):
     class SomeKind(ndb.Model):
         foo = ndb.DateProperty()
 
-    eventually(SomeKind.query().fetch, _length_equals(5))
+    eventually(SomeKind.query().fetch, length_equals(5))
 
     query = SomeKind.gql("where foo > Date(2020, 3, 1)").order(SomeKind.foo)
     results = query.fetch()
@@ -1700,7 +1686,7 @@ def test_Time(ds_entity):
     class SomeKind(ndb.Model):
         foo = ndb.TimeProperty()
 
-    eventually(SomeKind.query().fetch, _length_equals(5))
+    eventually(SomeKind.query().fetch, length_equals(5))
 
     query = SomeKind.gql("where foo > Time(3, 0, 0)").order(SomeKind.foo)
     results = query.fetch()
@@ -1718,7 +1704,7 @@ def test_GeoPt(ds_entity):
     class SomeKind(ndb.Model):
         foo = ndb.GeoPtProperty()
 
-    eventually(SomeKind.query().fetch, _length_equals(5))
+    eventually(SomeKind.query().fetch, length_equals(5))
 
     query = SomeKind.gql("where foo > GeoPt(20, 40)").order(SomeKind.foo)
     results = query.fetch()
@@ -1744,7 +1730,7 @@ def test_Key(ds_entity, client_context):
     class SomeKind(ndb.Model):
         foo = ndb.KeyProperty()
 
-    eventually(SomeKind.query().fetch, _length_equals(5))
+    eventually(SomeKind.query().fetch, length_equals(5))
 
     query = SomeKind.gql("where foo = Key('test_key', 3)")
     results = query.fetch()
@@ -1770,7 +1756,7 @@ def test_high_offset(dispose_of):
     for key in keys:
         dispose_of(key._key)
 
-    eventually(SomeKind.query().fetch, _length_equals(n_entities))
+    eventually(SomeKind.query().fetch, length_equals(n_entities))
     query = SomeKind.query(order_by=[SomeKind.foo])
     index = n_entities - 5
     result = query.fetch(offset=index, limit=1)[0]

@@ -123,7 +123,10 @@ class Future(object):
         after a call to this method.
         """
         while not self._done:
-            _eventloop.run1()
+            if not _eventloop.run1():
+                raise RuntimeError(
+                    "Eventloop is exhausted with unfinished futures."
+                )
 
     def check_success(self):
         """Check whether a future has completed without raising an exception.
@@ -348,16 +351,20 @@ class _TaskletFuture(Future):
 
             error = yielded.exception()
             if error:
-                _eventloop.call_soon(self._advance_tasklet, error=error)
+                self.context.eventloop.call_soon(
+                    self._advance_tasklet, error=error
+                )
             else:
-                _eventloop.call_soon(self._advance_tasklet, yielded.result())
+                self.context.eventloop.call_soon(
+                    self._advance_tasklet, yielded.result()
+                )
 
         if isinstance(yielded, Future):
             yielded.add_done_callback(done_callback)
             self.waiting_on = yielded
 
         elif isinstance(yielded, _remote.RemoteCall):
-            _eventloop.queue_rpc(yielded, done_callback)
+            self.context.eventloop.queue_rpc(yielded, done_callback)
             self.waiting_on = yielded
 
         elif isinstance(yielded, (list, tuple)):
@@ -515,7 +522,10 @@ def wait_any(futures):
             if future.done():
                 return future
 
-        _eventloop.run1()
+        if not _eventloop.run1():
+            raise RuntimeError(
+                "Eventloop is exhausted with unfinished futures."
+            )
 
 
 def wait_all(futures):

@@ -22,6 +22,8 @@ import pytest
 
 from google.cloud import ndb
 
+from tests.system import eventually, length_equals
+
 USE_REDIS_CACHE = bool(os.environ.get("REDIS_CACHE_URL"))
 
 
@@ -271,3 +273,25 @@ def test_rollback_with_context_cache(client_context, dispose_of):
 
         entity = SomeKind.get_by_id(id)
         assert entity.foo == 142
+
+
+@pytest.mark.usefixtures("client_context")
+def test_insert_entity_in_transaction_without_preallocating_id(dispose_of):
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    def save_entity():
+        # By not waiting on the Future, we don't force a call to AllocateIds
+        # before the transaction is committed.
+        SomeKind(foo=42, bar="none").put_async()
+
+    ndb.transaction(save_entity)
+
+    query = SomeKind.query()
+    eventually(query.fetch, length_equals(1))
+    retrieved = query.fetch()[0]
+    dispose_of(retrieved._key._key)
+
+    assert retrieved.foo == 42
+    assert retrieved.bar == "none"

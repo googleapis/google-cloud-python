@@ -360,13 +360,6 @@ def test_run(context):
         loop.run.assert_called_once_with()
 
 
-def test_run0(context):
-    loop = mock.Mock(spec=("run", "run0"))
-    with context.new(eventloop=loop).use():
-        _eventloop.run0()
-        loop.run0.assert_called_once_with()
-
-
 def test_run1(context):
     loop = mock.Mock(spec=("run", "run1"))
     with context.new(eventloop=loop).use():

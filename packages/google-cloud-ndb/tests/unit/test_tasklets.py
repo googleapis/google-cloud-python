@@ -131,10 +131,10 @@ class TestFuture:
     @mock.patch("google.cloud.ndb.tasklets._eventloop")
     def test_wait(_eventloop):
         def side_effects(future):
-            yield
-            yield
+            yield True
+            yield True
             future.set_result(42)
-            yield
+            yield True
 
         future = tasklets.Future()
         _eventloop.run1.side_effect = side_effects(future)
@@ -144,12 +144,20 @@ class TestFuture:
 
     @staticmethod
     @mock.patch("google.cloud.ndb.tasklets._eventloop")
+    def test_wait_loop_exhausted(_eventloop):
+        future = tasklets.Future()
+        _eventloop.run1.return_value = False
+        with pytest.raises(RuntimeError):
+            future.wait()
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb.tasklets._eventloop")
     def test_check_success(_eventloop):
         def side_effects(future):
-            yield
-            yield
+            yield True
+            yield True
             future.set_result(42)
-            yield
+            yield True
 
         future = tasklets.Future()
         _eventloop.run1.side_effect = side_effects(future)
@@ -163,10 +171,10 @@ class TestFuture:
         error = Exception("Spurious error")
 
         def side_effects(future):
-            yield
-            yield
+            yield True
+            yield True
             future.set_exception(error)
-            yield
+            yield True
 
         future = tasklets.Future()
         _eventloop.run1.side_effect = side_effects(future)
@@ -179,10 +187,10 @@ class TestFuture:
     @mock.patch("google.cloud.ndb.tasklets._eventloop")
     def test_result_block_for_result(_eventloop):
         def side_effects(future):
-            yield
-            yield
+            yield True
+            yield True
             future.set_result(42)
-            yield
+            yield True
 
         future = tasklets.Future()
         _eventloop.run1.side_effect = side_effects(future)
@@ -241,6 +249,14 @@ class TestFuture:
         future = tasklets.Future.wait_any(futures)
         assert future is futures[1]
         assert future.result() == 42
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_wait_any_loop_exhausted():
+        futures = [tasklets.Future() for _ in range(3)]
+
+        with pytest.raises(RuntimeError):
+            tasklets.Future.wait_any(futures)
 
     @staticmethod
     def test_wait_any_no_futures():

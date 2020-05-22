@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import functools
+import operator
 import time
 
 KIND = "SomeKind"
@@ -61,3 +63,23 @@ def eventually(f, predicate, timeout=120, interval=2):
         time.sleep(interval)
 
     assert predicate(value)
+
+
+def length_equals(n):
+    """Returns predicate that returns True if passed a sequence of length `n`.
+
+    For use with `eventually`.
+    """
+
+    def predicate(sequence):
+        return len(sequence) == n
+
+    return predicate
+
+
+def equals(n):
+    """Returns predicate that returns True if passed `n`.
+
+    For use with `eventually`.
+    """
+    return functools.partial(operator.eq, n)

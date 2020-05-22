@@ -16,8 +16,6 @@
 System tests for Create, Update, Delete. (CRUD)
 """
 import datetime
-import functools
-import operator
 import os
 import pickle
 import random
@@ -37,13 +35,9 @@ from google.cloud import ndb
 from google.cloud.ndb import _cache
 from google.cloud.ndb import global_cache as global_cache_module
 
-from tests.system import KIND, eventually
+from tests.system import KIND, eventually, equals
 
 USE_REDIS_CACHE = bool(os.environ.get("REDIS_CACHE_URL"))
-
-
-def _equals(n):
-    return functools.partial(operator.eq, n)
 
 
 @pytest.mark.usefixtures("client_context")
@@ -526,7 +520,7 @@ def test_insert_entity_with_caching(client_context):
         # Sneaky. Delete entity out from under cache so we know we're getting
         # cached copy.
         key.delete()
-        eventually(key.get, _equals(None))
+        eventually(key.get, equals(None))
 
     retrieved = key.get()
     assert retrieved.foo == 42
@@ -770,6 +764,29 @@ def test_delete_entity_in_transaction(ds_entity):
 
     ndb.transaction(delete_entity)
     assert key.get() is None
+
+
+def test_delete_entity_in_transaction_with_global_cache(
+    client_context, ds_entity
+):
+    """Regression test for #426
+
+    https://github.com/googleapis/python-ndb/issues/426
+    """
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id, foo=42)
+
+    global_cache = global_cache_module._InProcessGlobalCache()
+    with client_context.new(global_cache=global_cache).use():
+        key = ndb.Key(KIND, entity_id)
+        assert key.get().foo == 42
+
+        ndb.transaction(key.delete)
+        assert key.get() is None
 
 
 @pytest.mark.usefixtures("client_context")

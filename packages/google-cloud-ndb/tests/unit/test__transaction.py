@@ -192,6 +192,56 @@ class Test_transaction_async:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     @mock.patch("google.cloud.ndb._datastore_api")
+    def test_run_inner_loop(_datastore_api):
+        begin_futures = [
+            tasklets.Future("begin transaction 1"),
+            tasklets.Future("begin transaction 2"),
+        ]
+        _datastore_api.begin_transaction.side_effect = begin_futures
+
+        commit_futures = [
+            tasklets.Future("commit transaction 1"),
+            tasklets.Future("commit transaction 2"),
+        ]
+        _datastore_api.commit.side_effect = commit_futures
+
+        @tasklets.tasklet
+        def callback():
+            # Scheduling the sleep call here causes control to go back up to
+            # the main loop before this tasklet, running in the transaction
+            # loop, has finished, forcing a call to run_inner_loop via the idle
+            # handler.
+            yield tasklets.sleep(0)
+
+        @tasklets.tasklet
+        def some_tasklet():
+            # This tasklet runs in the main loop. In order to get results back
+            # from the transaction_async calls, the run_inner_loop idle handler
+            # will have to be run.
+            yield [
+                _transaction.transaction_async(callback),
+                _transaction.transaction_async(callback),
+            ]
+
+            # Scheduling this sleep call forces the run_inner_loop idle handler
+            # to be run again so we can run it in the case when there is no
+            # more work to be done in the transaction. (Branch coverage.)
+            yield tasklets.sleep(0)
+
+            raise tasklets.Return("I tried, momma.")
+
+        future = some_tasklet()
+
+        begin_futures[0].set_result(b"tx123")
+        begin_futures[1].set_result(b"tx234")
+        commit_futures[0].set_result(None)
+        commit_futures[1].set_result(None)
+
+        assert future.result() == "I tried, momma."
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_api")
     def test_error(_datastore_api):
         error = Exception("Spurious error.")
 

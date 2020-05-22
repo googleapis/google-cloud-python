@@ -519,6 +519,19 @@ class _NonTransactionalCommitBatch(object):
         rpc.add_done_callback(commit_callback)
 
 
+def prepare_to_commit(transaction):
+    """Signal that we're ready to commit a transaction.
+
+    Currently just used to signal to the commit batch that we're not going to
+    need to call `AllocateIds`, because we're ready to commit now.
+
+    Args:
+        transaction (bytes): The transaction id about to be committed.
+    """
+    batch = _get_commit_batch(transaction, _options.Options())
+    batch.preparing_to_commit = True
+
+
 def commit(transaction, retries=None, timeout=None):
     """Commit a transaction.
 
@@ -605,6 +618,7 @@ class _TransactionalCommitBatch(_NonTransactionalCommitBatch):
         self.allocating_ids = []
         self.incomplete_mutations = []
         self.incomplete_futures = []
+        self.preparing_to_commit = False
 
     def put(self, entity_pb):
         """Add an entity to batch to be stored.
@@ -657,8 +671,9 @@ class _TransactionalCommitBatch(_NonTransactionalCommitBatch):
 
     def idle_callback(self):
         """Call AllocateIds on any incomplete keys in the batch."""
-        if not self.incomplete_mutations:
-            # This will happen if `commit` is called first.
+        # If there are no incomplete mutations, or if we're already preparing
+        # to commit, there's no need to allocate ids.
+        if self.preparing_to_commit or not self.incomplete_mutations:
             return
 
         # Signal to a future commit that there is an id allocation in
@@ -727,11 +742,6 @@ class _TransactionalCommitBatch(_NonTransactionalCommitBatch):
         for future in self.allocating_ids:
             if not future.done():
                 yield future
-
-        # Head off making any more AllocateId calls. Any remaining incomplete
-        # keys will get ids as part of the Commit call.
-        self.incomplete_mutations = []
-        self.incomplete_futures = []
 
         future = tasklets.Future("Commit")
         futures = self.futures

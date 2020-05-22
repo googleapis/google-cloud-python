@@ -848,6 +848,14 @@ class Test_NonTransactionalCommitBatch:
 
 
 @mock.patch("google.cloud.ndb._datastore_api._get_commit_batch")
+def test_prepare_to_commit(get_commit_batch):
+    _api.prepare_to_commit(b"123")
+    get_commit_batch.assert_called_once_with(b"123", _options.Options())
+    batch = get_commit_batch.return_value
+    assert batch.preparing_to_commit is True
+
+
+@mock.patch("google.cloud.ndb._datastore_api._get_commit_batch")
 def test_commit(get_commit_batch):
     _api.commit(b"123")
     get_commit_batch.assert_called_once_with(b"123", _options.Options())

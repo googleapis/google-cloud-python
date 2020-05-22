@@ -34,7 +34,6 @@ __all__ = [
     "queue_call",
     "queue_rpc",
     "run",
-    "run0",
     "run1",
 ]
 
@@ -396,13 +395,7 @@ def run():
     loop.run()
 
 
-def run0():
-    """Calls :method:`EventLoop.run0` on current event loop."""
-    loop = get_event_loop()
-    loop.run0()
-
-
 def run1():
     """Calls :method:`EventLoop.run1` on current event loop."""
     loop = get_event_loop()
-    loop.run1()
+    return loop.run1()
