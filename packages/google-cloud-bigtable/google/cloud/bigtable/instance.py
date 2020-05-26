@@ -537,9 +537,6 @@ class Instance(object):
         :type cluster_id: str
         :param cluster_id: The ID of the cluster.
 
-        :type instance: :class:`~google.cloud.bigtable.instance.Instance`
-        :param instance: The instance where the cluster resides.
-
         :type location_id: str
         :param location_id: (Creation Only) The location where this cluster's
                             nodes and storage reside. For best performance,

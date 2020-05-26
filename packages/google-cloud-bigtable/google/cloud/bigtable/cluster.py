@@ -286,18 +286,6 @@ class Cluster(object):
 
             before calling :meth:`update`.
 
-        :type location: :str:``CreationOnly``
-        :param location: The location where this cluster's nodes and storage
-                reside. For best performance, clients should be located as
-                close as possible to this cluster. Currently only zones are
-                supported, so values should be of the form
-                ``projects/<project>/locations/<zone>``.
-
-        :type serve_nodes: :int
-        :param serve_nodes: The number of nodes allocated to this cluster.
-                More nodes enable higher throughput and more consistent
-                performance.
-
         :rtype: :class:`Operation`
         :returns: The long-running operation corresponding to the
                   update operation.

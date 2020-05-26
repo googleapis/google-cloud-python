@@ -359,7 +359,7 @@ class Table(object):
                                    into several tablets.
 
         :type column_families: dict
-        :param column_failies: (Optional) A map columns to create.  The key is
+        :param column_families: (Optional) A map columns to create.  The key is
                                the column_id str and the value is a
                                :class:`GarbageCollectionRule`
         """
@@ -734,8 +734,8 @@ class Table(object):
             :start-after: [START bigtable_drop_by_prefix]
             :end-before: [END bigtable_drop_by_prefix]
 
-        :type row_prefix: bytes
-        :param row_prefix: Delete all rows that start with this row key
+        :type row_key_prefix: bytes
+        :param row_key_prefix: Delete all rows that start with this row key
                             prefix. Prefix cannot be zero length.
 
         :type timeout: float
@@ -767,9 +767,6 @@ class Table(object):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_mutations_batcher]
             :end-before: [END bigtable_mutations_batcher]
-
-        :type table: class
-        :param table: class:`~google.cloud.bigtable.table.Table`.
 
         :type flush_count: int
         :param flush_count: (Optional) Maximum number of rows per batch. If it
