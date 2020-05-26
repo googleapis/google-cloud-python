@@ -33,7 +33,7 @@ def snippet(func):
 
 
 @snippet
-def storage_get_started(client, to_delete):
+def storage_get_started(to_delete):
     # [START storage_get_started]
     client = storage.Client()
     bucket = client.get_bucket("bucket-id-here")
@@ -85,7 +85,7 @@ def client_bucket_acl(client, to_delete):
 
 
 @snippet
-def download_to_file(client, to_delete):
+def download_to_file(to_delete):
     # [START download_to_file]
     from google.cloud.storage import Blob
 
@@ -102,7 +102,7 @@ def download_to_file(client, to_delete):
 
 
 @snippet
-def upload_from_file(client, to_delete):
+def upload_from_file(to_delete):
     # [START upload_from_file]
     from google.cloud.storage import Blob
 
@@ -118,7 +118,7 @@ def upload_from_file(client, to_delete):
 
 
 @snippet
-def get_blob(client, to_delete):
+def get_blob(to_delete):
     from google.cloud.storage.blob import Blob
 
     # [START get_blob]
@@ -134,7 +134,7 @@ def get_blob(client, to_delete):
 
 
 @snippet
-def delete_blob(client, to_delete):
+def delete_blob(to_delete):
     # [START delete_blob]
     from google.cloud.exceptions import NotFound
 
@@ -159,7 +159,7 @@ def delete_blob(client, to_delete):
 
 
 @snippet
-def configure_website(client, to_delete):
+def configure_website(to_delete):
     bucket_name = "test-bucket"
     # [START configure_website]
     client = storage.Client()
@@ -191,7 +191,7 @@ def get_bucket(client, to_delete):
 def add_lifecycle_delete_rule(client, to_delete):
     # [START add_lifecycle_delete_rule]
     bucket = client.get_bucket("my-bucket")
-    bucket.add_lifecycle_rule_delete(age=2)
+    bucket.add_lifecycle_delete_rule(age=2)
     bucket.patch()
     # [END add_lifecycle_delete_rule]
     to_delete.append(bucket)
@@ -201,7 +201,7 @@ def add_lifecycle_delete_rule(client, to_delete):
 def add_lifecycle_set_storage_class_rule(client, to_delete):
     # [START add_lifecycle_set_storage_class_rule]
     bucket = client.get_bucket("my-bucket")
-    bucket.add_lifecycle_rule_set_storage_class(
+    bucket.add_lifecycle_set_storage_class_rule(
         "COLD_LINE", matches_storage_class=["NEARLINE"]
     )
     bucket.patch()
@@ -250,7 +250,7 @@ def list_buckets(client, to_delete):
 
 
 @snippet
-def policy_document(client, to_delete):
+def policy_document(client):
     # pylint: disable=unused-argument
     # [START policy_document]
     bucket = client.bucket("my-bucket")
