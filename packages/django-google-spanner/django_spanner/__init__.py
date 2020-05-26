@@ -9,6 +9,7 @@ import datetime
 # do that.
 from uuid import uuid4
 
+import pkg_resources
 from django.db.models.fields import AutoField, Field
 # Monkey-patch google.DatetimeWithNanoseconds's __eq__ compare against datetime.datetime.
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
@@ -18,7 +19,7 @@ from .functions import register_functions
 from .lookups import register_lookups
 from .utils import check_django_compatability
 
-__version__ = '2.2a0'
+__version__ = pkg_resources.get_distribution("django-google-spanner").version
 
 check_django_compatability()
 register_expressions()
