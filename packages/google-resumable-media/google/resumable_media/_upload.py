@@ -835,11 +835,12 @@ def get_next_chunk(stream, chunk_size, total_bytes):
         ValueError: If there is no data left to consume. This corresponds
             exactly to the case ``end_byte < start_byte``, which can only
             occur if ``end_byte == start_byte - 1``.
-        ValueError: If the stream has been read past ``total_bytes`` (this
-            is in the case that ``total_bytes`` is not :data:`None`).
     """
     start_byte = stream.tell()
-    payload = stream.read(chunk_size)
+    if total_bytes is not None and start_byte + chunk_size >= total_bytes > 0:
+        payload = stream.read(total_bytes - start_byte)
+    else:
+        payload = stream.read(chunk_size)
     end_byte = stream.tell() - 1
 
     num_bytes_read = len(payload)
@@ -860,10 +861,6 @@ def get_next_chunk(stream, chunk_size, total_bytes):
             raise ValueError(
                 u"Stream is already exhausted. There is no content remaining."
             )
-
-        if end_byte >= total_bytes:
-            msg = _STREAM_READ_PAST_TEMPLATE.format(end_byte + 1, total_bytes)
-            raise ValueError(msg)
 
     content_range = get_content_range(start_byte, end_byte, total_bytes)
     return start_byte, payload, content_range

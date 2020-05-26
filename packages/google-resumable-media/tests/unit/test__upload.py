@@ -859,20 +859,22 @@ class Test_get_next_chunk(object):
         stream = io.BytesIO(b"not empty WAT!")
         with pytest.raises(ValueError) as exc_info:
             _upload.get_next_chunk(stream, 1, 0)
-
         exc_info.match(u"Stream specified as empty, but produced non-empty content.")
 
-    def test_read_past_known_size(self):
-        data = b"more content than we expected"
+    def test_success_known_size_lt_stream_size(self):
+        data = b"0123456789"
         stream = io.BytesIO(data)
-        chunk_size = len(data)
-        total_bytes = chunk_size - 3
+        chunk_size = 3
+        total_bytes = len(data) - 2
 
-        with pytest.raises(ValueError) as exc_info:
-            _upload.get_next_chunk(stream, chunk_size, total_bytes)
+        # Splits into 3 chunks: 012, 345, 67
+        result0 = _upload.get_next_chunk(stream, chunk_size, total_bytes)
+        result1 = _upload.get_next_chunk(stream, chunk_size, total_bytes)
+        result2 = _upload.get_next_chunk(stream, chunk_size, total_bytes)
 
-        exc_info.match(u"bytes have been read from the stream")
-        exc_info.match(u"exceeds the expected total")
+        assert result0 == (0, b"012", u"bytes 0-2/8")
+        assert result1 == (3, b"345", u"bytes 3-5/8")
+        assert result2 == (6, b"67", u"bytes 6-7/8")
 
     def test_success_known_size(self):
         data = b"0123456789"
