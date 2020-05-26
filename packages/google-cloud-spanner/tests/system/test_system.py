@@ -1359,12 +1359,12 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     @staticmethod
     def _row_data(max_index):
         for index in range(max_index):
-            yield [
+            yield (
                 index,
                 "First%09d" % (index,),
                 "Last%09d" % (max_index - index),
                 "test-%09d@example.com" % (index,),
-            ]
+            )
 
     def _set_up_table(self, row_count, database=None):
         if database is None:
@@ -1895,18 +1895,17 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
     def test_multiuse_snapshot_execute_sql_isolation_strong(self):
         ROW_COUNT = 40
-        SQL = "SELECT * FROM {}".format(self.TABLE)
         self._set_up_table(ROW_COUNT)
         all_data_rows = list(self._row_data(ROW_COUNT))
         with self._db.snapshot(multi_use=True) as strong:
 
-            before = list(strong.execute_sql(SQL))
+            before = list(strong.execute_sql(self.SQL))
             self._check_row_data(before, all_data_rows)
 
             with self._db.batch() as batch:
                 batch.delete(self.TABLE, self.ALL)
 
-            after = list(strong.execute_sql(SQL))
+            after = list(strong.execute_sql(self.SQL))
             self._check_row_data(after, all_data_rows)
 
     def test_execute_sql_returning_array_of_struct(self):
@@ -2334,13 +2333,16 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         row_count = 40
         sql = "SELECT * FROM {}".format(self.TABLE)
         committed = self._set_up_table(row_count)
-        all_data_rows = list(self._row_data(row_count))
 
-        union = []
+        # Paritioned query does not support ORDER BY
+        all_data_rows = set(self._row_data(row_count))
+        union = set()
         batch_txn = self._db.batch_snapshot(read_timestamp=committed)
         for batch in batch_txn.generate_query_batches(sql):
             p_results_iter = batch_txn.process(batch)
-            union.extend(list(p_results_iter))
+            # Lists aren't hashable so the results need to be converted
+            rows = [tuple(result) for result in p_results_iter]
+            union.update(set(rows))
 
         self.assertEqual(union, all_data_rows)
         batch_txn.close()
