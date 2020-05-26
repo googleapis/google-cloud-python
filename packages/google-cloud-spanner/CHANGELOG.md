@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [1.17.0](https://www.github.com/googleapis/python-spanner/compare/v1.16.0...v1.17.0) (2020-05-26)
+
+
+### Features
+
+* add support for using the emulator programatically ([#87](https://www.github.com/googleapis/python-spanner/issues/87)) ([b22630b](https://www.github.com/googleapis/python-spanner/commit/b22630b8e2b543207c6f4d9a13e2925e8692c8c5))
+
+
+### Bug Fixes
+
+* update backup timeouts (via synth) ([#82](https://www.github.com/googleapis/python-spanner/issues/82)) ([f5d74a0](https://www.github.com/googleapis/python-spanner/commit/f5d74a03d5cc84befa3817f83ad2655af6fe5741))
+
 ## [1.16.0](https://www.github.com/googleapis/python-spanner/compare/v1.15.1...v1.16.0) (2020-05-05)
 
 
