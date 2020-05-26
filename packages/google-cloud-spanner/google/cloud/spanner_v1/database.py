@@ -223,9 +223,7 @@ class Database(object):
                     channel=grpc.insecure_channel(self._instance.emulator_host)
                 )
                 self._spanner_api = SpannerClient(
-                    client_info=client_info,
-                    client_options=client_options,
-                    transport=transport,
+                    client_info=client_info, transport=transport
                 )
                 return self._spanner_api
             credentials = self._instance._client.credentials

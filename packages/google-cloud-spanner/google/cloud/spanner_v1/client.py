@@ -28,6 +28,7 @@ import os
 import warnings
 
 from google.api_core.gapic_v1 import client_info
+from google.auth.credentials import AnonymousCredentials
 import google.api_core.client_options
 
 from google.cloud.spanner_admin_instance_v1.gapic.transports import (
@@ -173,6 +174,20 @@ class Client(ClientWithProject):
         client_options=None,
         query_options=None,
     ):
+        self._emulator_host = _get_spanner_emulator_host()
+
+        if client_options and type(client_options) == dict:
+            self._client_options = google.api_core.client_options.from_dict(
+                client_options
+            )
+        else:
+            self._client_options = client_options
+
+        if self._emulator_host:
+            credentials = AnonymousCredentials()
+        elif isinstance(credentials, AnonymousCredentials):
+            self._emulator_host = self._client_options.api_endpoint
+
         # NOTE: This API has no use for the _http argument, but sending it
         #       will have no impact since the _http() @property only lazily
         #       creates a working HTTP object.
@@ -180,12 +195,6 @@ class Client(ClientWithProject):
             project=project, credentials=credentials, _http=None
         )
         self._client_info = client_info
-        if client_options and type(client_options) == dict:
-            self._client_options = google.api_core.client_options.from_dict(
-                client_options
-            )
-        else:
-            self._client_options = client_options
 
         env_query_options = ExecuteSqlRequest.QueryOptions(
             optimizer_version=_get_spanner_optimizer_version()
@@ -198,9 +207,8 @@ class Client(ClientWithProject):
             warnings.warn(_USER_AGENT_DEPRECATED, DeprecationWarning, stacklevel=2)
             self.user_agent = user_agent
 
-        if _get_spanner_emulator_host() is not None and (
-            "http://" in _get_spanner_emulator_host()
-            or "https://" in _get_spanner_emulator_host()
+        if self._emulator_host is not None and (
+            "http://" in self._emulator_host or "https://" in self._emulator_host
         ):
             warnings.warn(_EMULATOR_HOST_HTTP_SCHEME)
 
@@ -237,9 +245,9 @@ class Client(ClientWithProject):
     def instance_admin_api(self):
         """Helper for session-related API calls."""
         if self._instance_admin_api is None:
-            if _get_spanner_emulator_host() is not None:
+            if self._emulator_host is not None:
                 transport = instance_admin_grpc_transport.InstanceAdminGrpcTransport(
-                    channel=grpc.insecure_channel(_get_spanner_emulator_host())
+                    channel=grpc.insecure_channel(target=self._emulator_host)
                 )
                 self._instance_admin_api = InstanceAdminClient(
                     client_info=self._client_info,
@@ -258,9 +266,9 @@ class Client(ClientWithProject):
     def database_admin_api(self):
         """Helper for session-related API calls."""
         if self._database_admin_api is None:
-            if _get_spanner_emulator_host() is not None:
+            if self._emulator_host is not None:
                 transport = database_admin_grpc_transport.DatabaseAdminGrpcTransport(
-                    channel=grpc.insecure_channel(_get_spanner_emulator_host())
+                    channel=grpc.insecure_channel(target=self._emulator_host)
                 )
                 self._database_admin_api = DatabaseAdminClient(
                     client_info=self._client_info,
@@ -363,7 +371,7 @@ class Client(ClientWithProject):
             configuration_name,
             node_count,
             display_name,
-            _get_spanner_emulator_host(),
+            self._emulator_host,
         )
 
     def list_instances(self, filter_="", page_size=None, page_token=None):
