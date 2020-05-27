@@ -21,6 +21,10 @@ def get_client_cert():
     return b"cert", b"key"
 
 
+def get_client_encrypted_cert():
+    return "cert_path", "key_path", b"passphrase"
+
+
 def test_constructor():
 
     options = client_options.ClientOptions(
@@ -29,6 +33,30 @@ def test_constructor():
 
     assert options.api_endpoint == "foo.googleapis.com"
     assert options.client_cert_source() == (b"cert", b"key")
+
+
+def test_constructor_with_encrypted_cert_source():
+
+    options = client_options.ClientOptions(
+        api_endpoint="foo.googleapis.com",
+        client_encrypted_cert_source=get_client_encrypted_cert,
+    )
+
+    assert options.api_endpoint == "foo.googleapis.com"
+    assert options.client_encrypted_cert_source() == (
+        "cert_path",
+        "key_path",
+        b"passphrase",
+    )
+
+
+def test_constructor_with_both_cert_sources():
+    with pytest.raises(ValueError):
+        client_options.ClientOptions(
+            api_endpoint="foo.googleapis.com",
+            client_cert_source=get_client_cert,
+            client_encrypted_cert_source=get_client_encrypted_cert,
+        )
 
 
 def test_from_dict():
@@ -57,6 +85,6 @@ def test_repr():
 
     assert (
         repr(options)
-        == "ClientOptions: {'api_endpoint': 'foo.googleapis.com', 'client_cert_source': None}"
-        or "ClientOptions: {'client_cert_source': None, 'api_endpoint': 'foo.googleapis.com'}"
+        == "ClientOptions: {'api_endpoint': 'foo.googleapis.com', 'client_cert_source': None, 'client_encrypted_cert_source': None}"
+        or "ClientOptions: {'client_encrypted_cert_source': None, 'client_cert_source': None, 'api_endpoint': 'foo.googleapis.com'}"
     )

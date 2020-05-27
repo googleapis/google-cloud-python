@@ -56,12 +56,31 @@ class ClientOptions(object):
         api_endpoint (str): The desired API endpoint, e.g., compute.googleapis.com
         client_cert_source (Callable[[], (bytes, bytes)]): An optional callback
             which returns client certificate bytes and private key bytes both in
-            PEM format.
+            PEM format. ``client_cert_source`` and ``client_encrypted_cert_source``
+            are mutually exclusive.
+        client_encrypted_cert_source (Callable[[], (str, str, bytes)]): An optional
+            callback which returns client certificate file path, encrypted private
+            key file path, and the passphrase bytes.``client_cert_source`` and
+            ``client_encrypted_cert_source`` are mutually exclusive.
+
+    Raises:
+        ValueError: If both ``client_cert_source`` and ``client_encrypted_cert_source``
+            are provided.
     """
 
-    def __init__(self, api_endpoint=None, client_cert_source=None):
+    def __init__(
+        self,
+        api_endpoint=None,
+        client_cert_source=None,
+        client_encrypted_cert_source=None,
+    ):
+        if client_cert_source and client_encrypted_cert_source:
+            raise ValueError(
+                "client_cert_source and client_encrypted_cert_source are mutually exclusive"
+            )
         self.api_endpoint = api_endpoint
         self.client_cert_source = client_cert_source
+        self.client_encrypted_cert_source = client_encrypted_cert_source
 
     def __repr__(self):
         return "ClientOptions: " + repr(self.__dict__)
