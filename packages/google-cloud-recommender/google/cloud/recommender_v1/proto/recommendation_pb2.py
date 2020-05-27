@@ -1258,7 +1258,8 @@ ValueMatcher = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _VALUEMATCHER,
         "__module__": "google.cloud.recommender_v1.proto.recommendation_pb2",
-        "__doc__": """Contains various matching options for values for a GCP resource field.
+        "__doc__": """Contains various matching options for values for a GCP
+  resource field.
   
   
   Attributes:
@@ -1279,8 +1280,8 @@ CostProjection = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _COSTPROJECTION,
         "__module__": "google.cloud.recommender_v1.proto.recommendation_pb2",
-        "__doc__": """Contains metadata about how much money a recommendation
-  can save or incur.
+        "__doc__": """Contains metadata about how much money a recommendation can save or
+  incur.
   
   
   Attributes:
