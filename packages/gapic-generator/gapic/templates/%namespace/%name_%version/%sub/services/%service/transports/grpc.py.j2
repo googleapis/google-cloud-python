@@ -7,6 +7,7 @@ from google.api_core import grpc_helpers   # type: ignore
 {%- if service.has_lro %}
 from google.api_core import operations_v1  # type: ignore
 {%- endif %}
+from google import auth                    # type: ignore
 from google.auth import credentials        # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
@@ -63,7 +64,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                 is None.
 
         Raises:
-          google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
               creation failed for any reason.
         """
         if channel:
@@ -75,6 +76,9 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
             self._grpc_channel = channel
         elif api_mtls_endpoint:
             host = api_mtls_endpoint if ":" in api_mtls_endpoint else api_mtls_endpoint + ":443"
+
+            if credentials is None:
+                credentials, _ = auth.default(scopes=self.AUTH_SCOPES)
 
             # Create SSL credentials with client_cert_source or application
             # default SSL credentials.
