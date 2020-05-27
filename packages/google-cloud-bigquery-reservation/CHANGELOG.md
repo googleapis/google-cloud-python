@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/googleapis/python-bigquery-reservation/compare/v0.1.0...v0.2.0) (2020-05-27)
+
+
+### Features
+
+* add helper methods to parse resource paths (via synth) ([#7](https://www.github.com/googleapis/python-bigquery-reservation/issues/7)) ([8fc54cb](https://www.github.com/googleapis/python-bigquery-reservation/commit/8fc54cb70be698f6d265f60d7b8ee4561d12d2c9))
+
 ## 0.1.0 (2020-05-12)
 
 
