@@ -865,18 +865,28 @@ def test_get_or_insert_insert(dispose_of):
 
 
 @pytest.mark.usefixtures("client_context")
-def test_get_or_insert_get_in_transaction(ds_entity):
+def test_get_or_insert_in_transaction(dispose_of):
+    """Regression test for #433
+
+    https://github.com/googleapis/python-ndb/issues/433
+    """
+
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
 
     name = "Inigo Montoya"
     assert SomeKind.get_by_id(name) is None
 
-    def do_the_thing():
-        ds_entity(KIND, name, foo=42)
-        return SomeKind.get_or_insert(name, foo=21)
+    @ndb.transactional()
+    def do_the_thing(foo):
+        entity = SomeKind.get_or_insert(name, foo=foo)
+        return entity
 
-    entity = ndb.transaction(do_the_thing)
+    entity = do_the_thing(42)
+    dispose_of(entity._key._key)
+    assert entity.foo == 42
+
+    entity = do_the_thing(21)
     assert entity.foo == 42
 
 

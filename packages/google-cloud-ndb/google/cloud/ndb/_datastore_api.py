@@ -568,7 +568,7 @@ def _get_commit_batch(transaction, options):
     # call would all need to be identical. For now, no options are supported
     # here.
     for key, value in options.items():
-        if value:
+        if key != "transaction" and value:
             raise NotImplementedError("Passed bad option: {!r}".format(key))
 
     # Since we're in a transaction, we need to hang on to the batch until
