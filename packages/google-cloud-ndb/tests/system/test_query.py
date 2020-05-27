@@ -600,6 +600,25 @@ def test_count_with_filter(ds_entity):
 
 
 @pytest.mark.usefixtures("client_context")
+def test_count_with_order_by_and_multiquery(ds_entity):
+    """Regression test for #447
+
+    https://github.com/googleapis/python-ndb/issues/447
+    """
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=i)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    query = SomeKind.query(order_by=[SomeKind.foo]).filter(
+        ndb.OR(SomeKind.foo < 100, SomeKind.foo > -1)
+    )
+    eventually(query.count, equals(5))
+
+
+@pytest.mark.usefixtures("client_context")
 def test_count_with_multi_query(ds_entity):
     for i in range(5):
         entity_id = test_utils.system.unique_resource_id()

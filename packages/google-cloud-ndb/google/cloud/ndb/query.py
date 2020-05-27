@@ -2197,7 +2197,7 @@ class Query(object):
         from google.cloud.ndb import _datastore_query
 
         _options = kwargs["_options"]
-        options = _options.copy(projection=["__key__"])
+        options = _options.copy(projection=["__key__"], order_by=None)
         results = _datastore_query.iterate(options, raw=True)
         count = 0
         limit = options.limit
