@@ -15,9 +15,22 @@
 from __future__ import absolute_import
 import os
 import shutil
+import sys
 
 # https://github.com/google/importlab/issues/25
 import nox  # pytype: disable=import-error
+
+_MINIMAL_ASYNCIO_SUPPORT_PYTHON_VERSION = [3, 6]
+
+
+def _greater_or_equal_than_36(version_string):
+    tokens = version_string.split('.')
+    for i, token in enumerate(tokens):
+        try:
+            tokens[i] = int(token)
+        except ValueError:
+            pass
+    return tokens >= [3, 6]
 
 
 def default(session):
@@ -32,8 +45,9 @@ def default(session):
     session.install("mock", "pytest", "pytest-cov", "grpcio >= 1.0.2")
     session.install("-e", ".")
 
-    # Run py.test against the unit tests.
-    session.run(
+    pytest_args = [
+        "python",
+        "-m",
         "py.test",
         "--quiet",
         "--cov=google.api_core",
@@ -43,8 +57,19 @@ def default(session):
         "--cov-report=",
         "--cov-fail-under=0",
         os.path.join("tests", "unit"),
-        *session.posargs
-    )
+    ]
+    pytest_args.extend(session.posargs)
+
+    # Inject AsyncIO content, if version >= 3.6.
+    if _greater_or_equal_than_36(session.python):
+        session.install("asyncmock", "pytest-asyncio")
+
+        pytest_args.append("--cov=tests.asyncio")
+        pytest_args.append(os.path.join("tests", "asyncio"))
+        session.run(*pytest_args)
+    else:
+        # Run py.test against the unit tests.
+        session.run(*pytest_args)
 
 
 @nox.session(python=["2.7", "3.5", "3.6", "3.7", "3.8"])

@@ -45,7 +45,7 @@ def _exception_class_for_grpc_status_name(name):
     return exceptions.exception_class_for_grpc_status(getattr(grpc.StatusCode, name))
 
 
-def _retry_from_retry_config(retry_params, retry_codes):
+def _retry_from_retry_config(retry_params, retry_codes, retry_impl=retry.Retry):
     """Creates a Retry object given a gapic retry configuration.
 
     Args:
@@ -70,7 +70,7 @@ def _retry_from_retry_config(retry_params, retry_codes):
     exception_classes = [
         _exception_class_for_grpc_status_name(code) for code in retry_codes
     ]
-    return retry.Retry(
+    return retry_impl(
         retry.if_exception_type(*exception_classes),
         initial=(retry_params["initial_retry_delay_millis"] / _MILLIS_PER_SECOND),
         maximum=(retry_params["max_retry_delay_millis"] / _MILLIS_PER_SECOND),
@@ -110,7 +110,7 @@ def _timeout_from_retry_config(retry_params):
 MethodConfig = collections.namedtuple("MethodConfig", ["retry", "timeout"])
 
 
-def parse_method_configs(interface_config):
+def parse_method_configs(interface_config, retry_impl=retry.Retry):
     """Creates default retry and timeout objects for each method in a gapic
     interface config.
 
@@ -120,6 +120,8 @@ def parse_method_configs(interface_config):
             an interface named ``google.example.v1.ExampleService`` you would
             pass in just that interface's configuration, for example
             ``gapic_config['interfaces']['google.example.v1.ExampleService']``.
+        retry_impl (Callable): The constructor that creates a retry decorator
+            that will be applied to the method based on method configs.
 
     Returns:
         Mapping[str, MethodConfig]: A mapping of RPC method names to their
@@ -151,7 +153,7 @@ def parse_method_configs(interface_config):
         if retry_params_name is not None:
             retry_params = retry_params_map[retry_params_name]
             retry_ = _retry_from_retry_config(
-                retry_params, retry_codes_map[method_params["retry_codes_name"]]
+                retry_params, retry_codes_map[method_params["retry_codes_name"]], retry_impl
             )
             timeout_ = _timeout_from_retry_config(retry_params)
 
