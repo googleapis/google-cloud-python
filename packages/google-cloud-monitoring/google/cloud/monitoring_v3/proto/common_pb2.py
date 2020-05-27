@@ -716,9 +716,9 @@ Aggregation = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _AGGREGATION,
         "__module__": "google.cloud.monitoring_v3.proto.common_pb2",
-        "__doc__": """Describes how to combine multiple time series to provide a different
-  view of the data. Aggregation of time series is done in two steps.
-  First, each time series in the set is *aligned* to the same time
+        "__doc__": """Describes how to combine multiple time series to provide a
+  different view of the data. Aggregation of time series is done in two
+  steps. First, each time series in the set is *aligned* to the same time
   interval boundaries, then the set of time series is optionally *reduced*
   in number.
   
@@ -815,4 +815,3 @@ _sym_db.RegisterMessage(Aggregation)
 DESCRIPTOR._options = None
 _SERVICETIER._options = None
 # @@protoc_insertion_point(module_scope)
-# -*- coding: utf-8 -*-
