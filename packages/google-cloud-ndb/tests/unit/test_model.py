@@ -4062,7 +4062,8 @@ class TestModel:
     @pytest.mark.usefixtures("in_context")
     def test_constructor_namespace_no_key_parts():
         entity = model.Model(namespace="myspace")
-        assert entity.__dict__ == {"_values": {}}
+        key = key_module.Key("Model", None, namespace="myspace")
+        assert entity.__dict__ == {"_entity_key": key, "_values": {}}
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

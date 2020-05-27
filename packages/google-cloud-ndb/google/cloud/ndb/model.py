@@ -4751,13 +4751,13 @@ class Model(_NotEqualMixin):
             project = app
 
         key_parts_unspecified = (
-            id_ is None and parent is None and project is None
+            id_ is None
+            and parent is None
+            and project is None
+            and namespace is key_module.UNDEFINED
         )
         if key is not None:
-            if (
-                not key_parts_unspecified
-                or namespace is not key_module.UNDEFINED
-            ):
+            if not key_parts_unspecified:
                 raise exceptions.BadArgumentError(
                     "Model constructor given 'key' does not accept "
                     "'id', 'project', 'app', 'namespace', or 'parent'."

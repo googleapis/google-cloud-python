@@ -461,6 +461,7 @@ class Key(object):
             )
 
         flat = _get_path(None, kwargs["pairs"])
+        _clean_flat_path(flat)
         project = _project_from_app(kwargs["app"])
         self._key = _key_module.Key(
             *flat, project=project, namespace=kwargs["namespace"]
