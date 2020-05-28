@@ -831,8 +831,8 @@ IamPolicyAnalysisResult = _reflection.GeneratedProtocolMessageType(
         ),
         "DESCRIPTOR": _IAMPOLICYANALYSISRESULT,
         "__module__": "google.cloud.asset_v1p4beta1.proto.assets_pb2",
-        "__doc__": """IAM Policy analysis result, consisting of one IAM policy
-  binding and derived access control lists.
+        "__doc__": """IAM Policy analysis result, consisting of one IAM policy binding and
+  derived access control lists.
   
   
   Attributes:
