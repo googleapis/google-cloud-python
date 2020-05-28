@@ -3,15 +3,15 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-test-utils.git",
-        "sha": "db6a704119c62ae7d56b5028b4d754efb0a31969"
+        "remote": "https://github.com/googleapis/python-test-utils.git",
+        "sha": "9e454e34f6785bda65e2fc5310396f9e149d7b41"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "716f741f2d307b48cbe8a5bc3bc883571212344a"
+        "sha": "d2364eb80b840a36136c8ce12f1c6efabcc9600e"
       }
     }
   ]
