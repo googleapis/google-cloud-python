@@ -346,7 +346,7 @@ def test_{{ method.name|snake_case }}_flattened():
         {% endif %}
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.{{ method.name|snake_case }}(
+        client.{{ method.name|snake_case }}(
             {%- for field in method.flattened_fields.values() %}
             {{ field.name }}={{ field.mock_value }},
             {%- endfor %}
