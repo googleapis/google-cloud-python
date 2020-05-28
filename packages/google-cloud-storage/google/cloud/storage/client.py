@@ -30,6 +30,7 @@ from google.cloud._helpers import _LocalStack, _NOW
 from google.cloud.client import ClientWithProject
 from google.cloud.exceptions import NotFound
 from google.cloud.storage._helpers import _get_storage_host
+from google.cloud.storage._helpers import _bucket_bound_hostname_url
 from google.cloud.storage._http import Connection
 from google.cloud.storage._signing import (
     get_expiration_seconds_v4,
@@ -1079,15 +1080,8 @@ class Client(ClientWithProject):
         # designate URL
         if virtual_hosted_style:
             url = "https://{}.storage.googleapis.com/".format(bucket_name)
-
         elif bucket_bound_hostname:
-            if ":" in bucket_bound_hostname:  # URL includes scheme
-                url = bucket_bound_hostname
-
-            else:  # scheme is given separately
-                url = "{scheme}://{host}/".format(
-                    scheme=scheme, host=bucket_bound_hostname
-                )
+            url = _bucket_bound_hostname_url(bucket_bound_hostname, scheme)
         else:
             url = "https://storage.googleapis.com/{}/".format(bucket_name)
 

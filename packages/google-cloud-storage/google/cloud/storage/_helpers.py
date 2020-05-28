@@ -22,6 +22,7 @@ from hashlib import md5
 from datetime import datetime
 import os
 
+from six.moves.urllib.parse import urlsplit
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 
 
@@ -491,3 +492,23 @@ def _raise_if_more_than_one_set(**kwargs):
         )
 
         raise ValueError(msg)
+
+
+def _bucket_bound_hostname_url(host, scheme=None):
+    """Helper to build bucket bound hostname URL.
+
+    :type host: str
+    :param host: Host name.
+
+    :type scheme: str
+    :param scheme: (Optional) Web scheme. If passed, use it
+                   as a scheme in the result URL.
+
+    :rtype: str
+    :returns: A bucket bound hostname URL.
+    """
+    url_parts = urlsplit(host)
+    if url_parts.scheme and url_parts.netloc:
+        return host
+
+    return "{scheme}://{host}/".format(scheme=scheme, host=host)

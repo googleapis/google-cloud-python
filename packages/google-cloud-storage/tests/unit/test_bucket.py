@@ -2990,6 +2990,7 @@ class Test_Bucket(unittest.TestCase):
     ):
         from six.moves.urllib import parse
         from google.cloud._helpers import UTC
+        from google.cloud.storage._helpers import _bucket_bound_hostname_url
         from google.cloud.storage.blob import _API_ACCESS_ENDPOINT
 
         api_access_endpoint = api_access_endpoint or _API_ACCESS_ENDPOINT
@@ -3037,12 +3038,9 @@ class Test_Bucket(unittest.TestCase):
                 bucket_name
             )
         elif bucket_bound_hostname:
-            if ":" in bucket_bound_hostname:
-                expected_api_access_endpoint = bucket_bound_hostname
-            else:
-                expected_api_access_endpoint = "{scheme}://{bucket_bound_hostname}".format(
-                    scheme=scheme, bucket_bound_hostname=bucket_bound_hostname
-                )
+            expected_api_access_endpoint = _bucket_bound_hostname_url(
+                bucket_bound_hostname, scheme
+            )
         else:
             expected_api_access_endpoint = api_access_endpoint
             expected_resource = "/{}".format(parse.quote(bucket_name))

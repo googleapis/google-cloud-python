@@ -525,6 +525,24 @@ class Test__add_generation_match_parameters(unittest.TestCase):
             )
 
 
+class Test__bucket_bound_hostname_url(unittest.TestCase):
+    def _call_fut(self, **args):
+        from google.cloud.storage._helpers import _bucket_bound_hostname_url
+
+        return _bucket_bound_hostname_url(**args)
+
+    def test_full_hostname(self):
+        HOST = "scheme://domain.tcl/"
+        self.assertEqual(self._call_fut(host=HOST), HOST)
+
+    def test_hostname_and_scheme(self):
+        HOST = "domain.tcl"
+        SCHEME = "scheme"
+        EXPECTED_URL = SCHEME + "://" + HOST + "/"
+
+        self.assertEqual(self._call_fut(host=HOST, scheme=SCHEME), EXPECTED_URL)
+
+
 class _Connection(object):
     def __init__(self, *responses):
         self._responses = responses
