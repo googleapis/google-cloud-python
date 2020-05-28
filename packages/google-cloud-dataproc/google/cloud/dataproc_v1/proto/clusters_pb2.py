@@ -3145,11 +3145,11 @@ ClusterConfig = _reflection.GeneratedProtocolMessageType(
           completed. By default, executables are run on master and all
           worker nodes. You can test a node’s ``role`` metadata to run
           an executable on a master or worker node, as shown below using
-          ``curl`` (you can also use ``wget``):  ROLE=\ :math:`(curl -H
-          Metadata-Flavor:Google  http://metadata/computeMetadata/v1/ins
-          tance/attributes/dataproc-role)  if [[ "`\ {ROLE}" == ‘Master’
-          ]]; then … master specific actions … else … worker specific
-          actions … fi
+          ``curl`` (you can also use ``wget``):  ::     ROLE=$(curl -H
+          Metadata-Flavor:Google    http://metadata/computeMetadata/v1/i
+          nstance/attributes/dataproc-role)    if [[ "${ROLE}" ==
+          'Master' ]]; then      ... master specific actions ...    else
+          ... worker specific actions ...    fi
       encryption_config:
           Optional. Encryption settings for the cluster.
       autoscaling_config:
