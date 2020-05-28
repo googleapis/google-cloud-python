@@ -1,11 +1,17 @@
 {
-  "updateTime": "2020-02-07T01:57:42.278757Z",
   "sources": [
     {
-      "template": {
-        "name": "python_split_library",
-        "origin": "synthtool.gcp",
-        "version": "2019.10.17"
+      "git": {
+        "name": ".",
+        "remote": "https://github.com/googleapis/python-cloud-core.git",
+        "sha": "557a7cd408d75d69e11790eafa8beb03174cbee9"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "470789cee75ce93c41348ad6aa4c49363a80399b"
       }
     }
   ]
