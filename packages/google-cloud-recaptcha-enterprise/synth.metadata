@@ -3,7 +3,8 @@
     {
       "git": {
         "name": ".",
-        "remote": "sso://devrel/cloud/libraries/python/python-recaptcha-enterprise"
+        "remote": "https://github.com/googleapis/python-recaptcha-enterprise.git",
+        "sha": "4292038216cb9e2cf20194189f49f22e0c06cb41"
       }
     },
     {
