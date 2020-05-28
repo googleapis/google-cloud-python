@@ -3,15 +3,15 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-dns",
-        "sha": "5bd85d2b856ed29da9b6a975673562ae40eb7283"
+        "remote": "https://github.com/googleapis/python-dns.git",
+        "sha": "a280ad292a6c10ecf29812ade5d404cb15eba9b1"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "cdddf139b36000b3a7c65fd2a7781e253262359a"
+        "sha": "d2364eb80b840a36136c8ce12f1c6efabcc9600e"
       }
     }
   ]
