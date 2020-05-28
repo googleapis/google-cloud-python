@@ -399,8 +399,6 @@ ClusterOperationStatus = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _CLUSTEROPERATIONSTATUS,
         "__module__": "google.cloud.dataproc_v1.proto.operations_pb2",
         "__doc__": """The status of the operation.
-  
-  
   Attributes:
       state:
           Output only. A message containing the operation state.
@@ -434,8 +432,6 @@ ClusterOperationMetadata = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _CLUSTEROPERATIONMETADATA,
         "__module__": "google.cloud.dataproc_v1.proto.operations_pb2",
         "__doc__": """Metadata describing the operation.
-  
-  
   Attributes:
       cluster_name:
           Output only. Name of the cluster for the operation.

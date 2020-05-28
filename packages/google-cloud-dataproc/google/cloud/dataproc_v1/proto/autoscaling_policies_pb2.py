@@ -773,10 +773,7 @@ AutoscalingPolicy = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _AUTOSCALINGPOLICY,
         "__module__": "google.cloud.dataproc_v1.proto.autoscaling_policies_pb2",
-        "__doc__": """Describes an autoscaling policy for Dataproc cluster
-  autoscaler.
-  
-  
+        "__doc__": """Describes an autoscaling policy for Dataproc cluster autoscaler.
   Attributes:
       id:
           Required. The policy id.  The id must contain only letters
@@ -814,8 +811,6 @@ BasicAutoscalingAlgorithm = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _BASICAUTOSCALINGALGORITHM,
         "__module__": "google.cloud.dataproc_v1.proto.autoscaling_policies_pb2",
         "__doc__": """Basic algorithm for autoscaling.
-  
-  
   Attributes:
       yarn_config:
           Required. YARN autoscaling configuration.
@@ -836,8 +831,6 @@ BasicYarnAutoscalingConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _BASICYARNAUTOSCALINGCONFIG,
         "__module__": "google.cloud.dataproc_v1.proto.autoscaling_policies_pb2",
         "__doc__": """Basic autoscaling configurations for YARN.
-  
-  
   Attributes:
       graceful_decommission_timeout:
           Required. Timeout for YARN graceful decommissioning of Node
@@ -889,8 +882,6 @@ InstanceGroupAutoscalingPolicyConfig = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.dataproc_v1.proto.autoscaling_policies_pb2",
         "__doc__": """Configuration for the size bounds of an instance group, including its
   proportional size to other groups.
-  
-  
   Attributes:
       min_instances:
           Optional. Minimum number of instances for this group.  Primary
@@ -935,8 +926,6 @@ CreateAutoscalingPolicyRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _CREATEAUTOSCALINGPOLICYREQUEST,
         "__module__": "google.cloud.dataproc_v1.proto.autoscaling_policies_pb2",
         "__doc__": """A request to create an autoscaling policy.
-  
-  
   Attributes:
       parent:
           Required. The “resource name” of the region or location, as
@@ -963,8 +952,6 @@ GetAutoscalingPolicyRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _GETAUTOSCALINGPOLICYREQUEST,
         "__module__": "google.cloud.dataproc_v1.proto.autoscaling_policies_pb2",
         "__doc__": """A request to fetch an autoscaling policy.
-  
-  
   Attributes:
       name:
           Required. The “resource name” of the autoscaling policy, as
@@ -990,8 +977,6 @@ UpdateAutoscalingPolicyRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _UPDATEAUTOSCALINGPOLICYREQUEST,
         "__module__": "google.cloud.dataproc_v1.proto.autoscaling_policies_pb2",
         "__doc__": """A request to update an autoscaling policy.
-  
-  
   Attributes:
       policy:
           Required. The updated autoscaling policy.
@@ -1007,11 +992,8 @@ DeleteAutoscalingPolicyRequest = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _DELETEAUTOSCALINGPOLICYREQUEST,
         "__module__": "google.cloud.dataproc_v1.proto.autoscaling_policies_pb2",
-        "__doc__": """A request to delete an autoscaling policy.
-  
-  Autoscaling policies in use by one or more clusters will not be deleted.
-  
-  
+        "__doc__": """A request to delete an autoscaling policy.  Autoscaling policies in
+  use by one or more clusters will not be deleted.
   Attributes:
       name:
           Required. The “resource name” of the autoscaling policy, as
@@ -1037,8 +1019,6 @@ ListAutoscalingPoliciesRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTAUTOSCALINGPOLICIESREQUEST,
         "__module__": "google.cloud.dataproc_v1.proto.autoscaling_policies_pb2",
         "__doc__": """A request to list autoscaling policies in a project.
-  
-  
   Attributes:
       parent:
           Required. The “resource name” of the region or location, as
@@ -1068,10 +1048,7 @@ ListAutoscalingPoliciesResponse = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _LISTAUTOSCALINGPOLICIESRESPONSE,
         "__module__": "google.cloud.dataproc_v1.proto.autoscaling_policies_pb2",
-        "__doc__": """A response to a request to list autoscaling policies in a
-  project.
-  
-  
+        "__doc__": """A response to a request to list autoscaling policies in a project.
   Attributes:
       policies:
           Output only. Autoscaling policies list.
