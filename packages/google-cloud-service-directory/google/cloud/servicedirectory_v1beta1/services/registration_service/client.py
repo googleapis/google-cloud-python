@@ -151,6 +151,22 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
     from_service_account_json = from_service_account_file
 
     @staticmethod
+    def service_path(project: str, location: str, namespace: str, service: str) -> str:
+        """Return a fully-qualified service string."""
+        return "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
+            project=project, location=location, namespace=namespace, service=service
+        )
+
+    @staticmethod
+    def parse_service_path(path: str) -> Dict[str, str]:
+        """Parse a service path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/namespaces/(?P<namespace>.+?)/services/(?P<service>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def endpoint_path(
         project: str, location: str, namespace: str, service: str, endpoint: str
     ) -> str:
@@ -168,22 +184,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         """Parse a endpoint path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/namespaces/(?P<namespace>.+?)/services/(?P<service>.+?)/endpoints/(?P<endpoint>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def service_path(project: str, location: str, namespace: str, service: str) -> str:
-        """Return a fully-qualified service string."""
-        return "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
-            project=project, location=location, namespace=namespace, service=service
-        )
-
-    @staticmethod
-    def parse_service_path(path: str) -> Dict[str, str]:
-        """Parse a service path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/namespaces/(?P<namespace>.+?)/services/(?P<service>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -1444,36 +1444,67 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 It is used to specify access control policies for Cloud
                 Platform resources.
 
-                A ``Policy`` consists of a list of ``bindings``. A
-                ``Binding`` binds a list of ``members`` to a ``role``,
-                where the members can be user accounts, Google groups,
-                Google domains, and service accounts. A ``role`` is a
-                named list of permissions defined by IAM.
+                A ``Policy`` is a collection of ``bindings``. A
+                ``binding`` binds one or more ``members`` to a single
+                ``role``. Members can be user accounts, service
+                accounts, Google groups, and domains (such as G Suite).
+                A ``role`` is a named list of permissions (defined by
+                IAM or configured by users). A ``binding`` can
+                optionally specify a ``condition``, which is a logic
+                expression that further constrains the role binding
+                based on attributes about the request and/or target
+                resource.
 
-                **Example**
+                **JSON Example**
 
                 ::
 
                     {
                       "bindings": [
                         {
-                          "role": "roles/owner",
+                          "role": "roles/resourcemanager.organizationAdmin",
                           "members": [
                             "user:mike@example.com",
                             "group:admins@example.com",
                             "domain:google.com",
-                            "serviceAccount:my-other-app@appspot.gserviceaccount.com",
+                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
                           ]
                         },
                         {
-                          "role": "roles/viewer",
-                          "members": ["user:sean@example.com"]
+                          "role": "roles/resourcemanager.organizationViewer",
+                          "members": ["user:eve@example.com"],
+                          "condition": {
+                            "title": "expirable access",
+                            "description": "Does not grant access after Sep 2020",
+                            "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')",
+                          }
                         }
                       ]
                     }
 
+                **YAML Example**
+
+                ::
+
+                    bindings:
+                    - members:
+                      - user:mike@example.com
+                      - group:admins@example.com
+                      - domain:google.com
+                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin
+                    - members:
+                      - user:eve@example.com
+                      role: roles/resourcemanager.organizationViewer
+                      condition:
+                        title: expirable access
+                        description: Does not grant access after Sep 2020
+                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+
                 For a description of IAM and its features, see the `IAM
-                developer's guide <https://cloud.google.com/iam>`__.
+                developer's
+                guide <https://cloud.google.com/iam/docs>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1525,36 +1556,67 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 It is used to specify access control policies for Cloud
                 Platform resources.
 
-                A ``Policy`` consists of a list of ``bindings``. A
-                ``Binding`` binds a list of ``members`` to a ``role``,
-                where the members can be user accounts, Google groups,
-                Google domains, and service accounts. A ``role`` is a
-                named list of permissions defined by IAM.
+                A ``Policy`` is a collection of ``bindings``. A
+                ``binding`` binds one or more ``members`` to a single
+                ``role``. Members can be user accounts, service
+                accounts, Google groups, and domains (such as G Suite).
+                A ``role`` is a named list of permissions (defined by
+                IAM or configured by users). A ``binding`` can
+                optionally specify a ``condition``, which is a logic
+                expression that further constrains the role binding
+                based on attributes about the request and/or target
+                resource.
 
-                **Example**
+                **JSON Example**
 
                 ::
 
                     {
                       "bindings": [
                         {
-                          "role": "roles/owner",
+                          "role": "roles/resourcemanager.organizationAdmin",
                           "members": [
                             "user:mike@example.com",
                             "group:admins@example.com",
                             "domain:google.com",
-                            "serviceAccount:my-other-app@appspot.gserviceaccount.com",
+                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
                           ]
                         },
                         {
-                          "role": "roles/viewer",
-                          "members": ["user:sean@example.com"]
+                          "role": "roles/resourcemanager.organizationViewer",
+                          "members": ["user:eve@example.com"],
+                          "condition": {
+                            "title": "expirable access",
+                            "description": "Does not grant access after Sep 2020",
+                            "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')",
+                          }
                         }
                       ]
                     }
 
+                **YAML Example**
+
+                ::
+
+                    bindings:
+                    - members:
+                      - user:mike@example.com
+                      - group:admins@example.com
+                      - domain:google.com
+                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin
+                    - members:
+                      - user:eve@example.com
+                      role: roles/resourcemanager.organizationViewer
+                      condition:
+                        title: expirable access
+                        description: Does not grant access after Sep 2020
+                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+
                 For a description of IAM and its features, see the `IAM
-                developer's guide <https://cloud.google.com/iam>`__.
+                developer's
+                guide <https://cloud.google.com/iam/docs>`__.
 
         """
         # Create or coerce a protobuf request object.

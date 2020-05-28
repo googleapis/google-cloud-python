@@ -40,9 +40,11 @@ from google.cloud.servicedirectory_v1beta1.types import registration_service
 from google.cloud.servicedirectory_v1beta1.types import service
 from google.cloud.servicedirectory_v1beta1.types import service as gcs_service
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
+from google.iam.v1 import options_pb2 as options  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+from google.type import expr_pb2 as expr  # type: ignore
 
 
 def client_cert_source_callback():
@@ -1454,7 +1456,12 @@ def test_get_iam_policy_from_dict():
         # Designate an appropriate return value for the call.
         call.return_value = policy.Policy()
 
-        response = client.get_iam_policy(request={"resource": "resource_value"})
+        response = client.get_iam_policy(
+            request={
+                "resource": "resource_value",
+                "options": options.GetPolicyOptions(requested_policy_version=2598),
+            }
+        )
         call.assert_called()
 
 
@@ -1721,6 +1728,35 @@ def test_registration_service_grpc_transport_channel_mtls_with_adc(
         assert transport.grpc_channel == mock_grpc_channel
 
 
+def test_service_path():
+    project = "squid"
+    location = "clam"
+    namespace = "whelk"
+    service = "octopus"
+
+    expected = "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
+        project=project, location=location, namespace=namespace, service=service
+    )
+    actual = RegistrationServiceClient.service_path(
+        project, location, namespace, service
+    )
+    assert expected == actual
+
+
+def test_parse_service_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "namespace": "cuttlefish",
+        "service": "mussel",
+    }
+    path = RegistrationServiceClient.service_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RegistrationServiceClient.parse_service_path(path)
+    assert expected == actual
+
+
 def test_endpoint_path():
     project = "squid"
     location = "clam"
@@ -1753,35 +1789,6 @@ def test_parse_endpoint_path():
 
     # Check that the path construction is reversible.
     actual = RegistrationServiceClient.parse_endpoint_path(path)
-    assert expected == actual
-
-
-def test_service_path():
-    project = "squid"
-    location = "clam"
-    namespace = "whelk"
-    service = "octopus"
-
-    expected = "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
-        project=project, location=location, namespace=namespace, service=service
-    )
-    actual = RegistrationServiceClient.service_path(
-        project, location, namespace, service
-    )
-    assert expected == actual
-
-
-def test_parse_service_path():
-    expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "namespace": "cuttlefish",
-        "service": "mussel",
-    }
-    path = RegistrationServiceClient.service_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = RegistrationServiceClient.parse_service_path(path)
     assert expected == actual
 
 

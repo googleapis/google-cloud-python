@@ -47,7 +47,7 @@ class servicedirectoryCallTransformer(cst.CSTTransformer):
     'delete_namespace': ('name', ),
     'delete_service': ('name', ),
     'get_endpoint': ('name', ),
-    'get_iam_policy': ('resource', ),
+    'get_iam_policy': ('resource', 'options', ),
     'get_namespace': ('name', ),
     'get_service': ('name', ),
     'list_endpoints': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
