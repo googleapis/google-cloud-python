@@ -4,22 +4,22 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-recaptcha-enterprise.git",
-        "sha": "4292038216cb9e2cf20194189f49f22e0c06cb41"
+        "sha": "7c33a9920ae55449bc2759cedf39c2d7f572ef48"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "c3f3cdeda70f60d808eaaae8fea44d306b6d5cc2",
-        "internalRef": "306746093"
+        "sha": "eafa840ceec23b44a5c21670288107c661252711",
+        "internalRef": "313488995"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "274dd49554809834287c24b6dd324a85283f1182"
+        "sha": "71b8a272549c06b5768d00fa48d3ae990e871bec"
       }
     }
   ],
