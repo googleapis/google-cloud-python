@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [1.16.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.15.0...v1.16.0) (2020-05-28)
+
+
+### Features
+
+* add helper func to for default encrypted cert ([#514](https://www.github.com/googleapis/google-auth-library-python/issues/514)) ([f282aa4](https://www.github.com/googleapis/google-auth-library-python/commit/f282aa4acc73d5b56aa7d4bb745d286c3cf1fc39))
+
+
+### Bug Fixes
+
+* fix impersonated cred for gcloud ([#516](https://www.github.com/googleapis/google-auth-library-python/issues/516)) ([eb7be3f](https://www.github.com/googleapis/google-auth-library-python/commit/eb7be3fa98ace42b3e949a8af90bbb978ae7e455))
+
 ## [1.15.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.14.3...v1.15.0) (2020-05-15)
 
 
