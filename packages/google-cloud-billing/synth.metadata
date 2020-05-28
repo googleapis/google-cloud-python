@@ -4,22 +4,22 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-billing.git",
-        "sha": "137538dd6a5e08194acdc1324c8e9e55309168e4"
+        "sha": "fef622a0dddf005d8af329ee001ec41f03850427"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "e9e90a787703ec5d388902e2cb796aaed3a385b4",
-        "internalRef": "297671458"
+        "sha": "eafa840ceec23b44a5c21670288107c661252711",
+        "internalRef": "313488995"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "470789cee75ce93c41348ad6aa4c49363a80399b"
+        "sha": "71b8a272549c06b5768d00fa48d3ae990e871bec"
       }
     }
   ],
