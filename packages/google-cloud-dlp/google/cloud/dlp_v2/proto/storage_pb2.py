@@ -2695,8 +2695,6 @@ InfoType = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _INFOTYPE,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
         "__doc__": """Type of information detected by the API.
-  
-  
   Attributes:
       name:
           Name of the information type. Either a name of your choosing
@@ -2717,8 +2715,6 @@ StoredType = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _STOREDTYPE,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
         "__doc__": """A reference to a StoredInfoType to use with scanning.
-  
-  
   Attributes:
       name:
           Resource name of the requested ``StoredInfoType``, for example
@@ -2748,10 +2744,7 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType(
                     {
                         "DESCRIPTOR": _CUSTOMINFOTYPE_DICTIONARY_WORDLIST,
                         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-                        "__doc__": """Message defining a list of words or phrases to search for
-      in the data.
-      
-      
+                        "__doc__": """Message defining a list of words or phrases to search for in the data.
       Attributes:
           words:
               Words or phrases defining the dictionary. The dictionary must
@@ -2763,31 +2756,26 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType(
                 ),
                 "DESCRIPTOR": _CUSTOMINFOTYPE_DICTIONARY,
                 "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-                "__doc__": """Custom information type based on a dictionary of words or
-    phrases. This can be used to match sensitive information specific to the
-    data, such as a list of employee IDs or job titles.
-    
-    Dictionary words are case-insensitive and all characters other than
-    letters and digits in the unicode `Basic Multilingual
-    Plane <https://en.wikipedia.org/wiki/Plane_%28Unicode%29#Basic_Multilingual_Plane>`__
-    will be replaced with whitespace when scanning for matches, so the
-    dictionary phrase “Sam Johnson” will match all three phrases “sam
-    johnson”, “Sam, Johnson”, and “Sam (Johnson)”. Additionally, the
-    characters surrounding any match must be of a different type than the
-    adjacent characters within the word, so letters must be next to
-    non-letters and digits next to non-digits. For example, the dictionary
-    word “jen” will match the first three letters of the text “jen123” but
-    will return no matches for “jennifer”.
-    
-    Dictionary words containing a large number of characters that are not
-    letters or digits may result in unexpected findings because such
-    characters are treated as whitespace. The
+                "__doc__": """Custom information type based on a dictionary of words or phrases.
+    This can be used to match sensitive information specific to the data,
+    such as a list of employee IDs or job titles.  Dictionary words are
+    case-insensitive and all characters other than letters and digits in
+    the unicode `Basic Multilingual Plane <https://en.wikipedia.org/wiki/P
+    lane_%28Unicode%29#Basic_Multilingual_Plane>`__ will be replaced with
+    whitespace when scanning for matches, so the dictionary phrase “Sam
+    Johnson” will match all three phrases “sam johnson”, “Sam, Johnson”,
+    and “Sam (Johnson)”. Additionally, the characters surrounding any
+    match must be of a different type than the adjacent characters within
+    the word, so letters must be next to non-letters and digits next to
+    non-digits. For example, the dictionary word “jen” will match the
+    first three letters of the text “jen123” but will return no matches
+    for “jennifer”.  Dictionary words containing a large number of
+    characters that are not letters or digits may result in unexpected
+    findings because such characters are treated as whitespace. The
     `limits <https://cloud.google.com/dlp/limits>`__ page contains details
-    about the size limits of dictionaries. For dictionaries that do not fit
-    within these constraints, consider using ``LargeCustomDictionaryConfig``
-    in the ``StoredInfoType`` API.
-    
-    
+    about the size limits of dictionaries. For dictionaries that do not
+    fit within these constraints, consider using
+    ``LargeCustomDictionaryConfig`` in the ``StoredInfoType`` API.
     Attributes:
         word_list:
             List of words or phrases to search for.
@@ -2805,8 +2793,6 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _CUSTOMINFOTYPE_REGEX,
                 "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
                 "__doc__": """Message defining a custom regular expression.
-    
-    
     Attributes:
         pattern:
             Pattern defining the regular expression. Its syntax
@@ -2826,16 +2812,14 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _CUSTOMINFOTYPE_SURROGATETYPE,
                 "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-                "__doc__": """Message for detecting output from deidentification
-    transformations such as
-    ```CryptoReplaceFfxFpeConfig`` </dlp/docs/reference/rest/v2/organizations.deidentifyTemplates#cryptoreplaceffxfpeconfig>`__.
-    These types of transformations are those that perform pseudonymization,
+                "__doc__": """Message for detecting output from deidentification transformations
+    such as ```CryptoReplaceFfxFpeConfig`` </dlp/docs/reference/rest/v2/or
+    ganizations.deidentifyTemplates#cryptoreplaceffxfpeconfig>`__. These
+    types of transformations are those that perform pseudonymization,
     thereby producing a “surrogate” as output. This should be used in
     conjunction with a field on the transformation such as
-    ``surrogate_info_type``. This CustomInfoType does not support the use of
-    ``detection_rules``.
-    
-    """,
+    ``surrogate_info_type``. This CustomInfoType does not support the use
+    of ``detection_rules``.""",
                 # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.CustomInfoType.SurrogateType)
             },
         ),
@@ -2849,10 +2833,8 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType(
                     {
                         "DESCRIPTOR": _CUSTOMINFOTYPE_DETECTIONRULE_PROXIMITY,
                         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-                        "__doc__": """Message for specifying a window around a finding to apply
-      a detection rule.
-      
-      
+                        "__doc__": """Message for specifying a window around a finding to apply a detection
+      rule.
       Attributes:
           window_before:
               Number of characters before the finding to consider.
@@ -2868,10 +2850,8 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType(
                     {
                         "DESCRIPTOR": _CUSTOMINFOTYPE_DETECTIONRULE_LIKELIHOODADJUSTMENT,
                         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-                        "__doc__": """Message for specifying an adjustment to the likelihood of
-      a finding as part of a detection rule.
-      
-      
+                        "__doc__": """Message for specifying an adjustment to the likelihood of a finding as
+      part of a detection rule.
       Attributes:
           fixed_likelihood:
               Set the likelihood of a finding to a fixed value.
@@ -2895,10 +2875,9 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType(
                     {
                         "DESCRIPTOR": _CUSTOMINFOTYPE_DETECTIONRULE_HOTWORDRULE,
                         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-                        "__doc__": """The rule that adjusts the likelihood of findings within a
-      certain proximity of hotwords.
-      
-      
+                        "__doc__": """The rule that adjusts the likelihood of findings within a certain
+      proximity of hotwords.
+
       Attributes:
           hotword_regex: \
               Regular expression pattern defining what qualifies as a \
@@ -2922,12 +2901,10 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType(
                 ),
                 "DESCRIPTOR": _CUSTOMINFOTYPE_DETECTIONRULE,
                 "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-                "__doc__": """Deprecated; use ``InspectionRuleSet`` instead. Rule for
-    modifying a ``CustomInfoType`` to alter behavior under certain
-    circumstances, depending on the specific details of the rule. Not
-    supported for the ``surrogate_type`` custom infoType.
-    
-    
+                "__doc__": """Deprecated; use ``InspectionRuleSet`` instead. Rule for modifying a
+    ``CustomInfoType`` to alter behavior under certain circumstances,
+    depending on the specific details of the rule. Not supported for the
+    ``surrogate_type`` custom infoType.
     Attributes:
         hotword_rule:
             Hotword-based detection rule.
@@ -2937,11 +2914,8 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType(
         ),
         "DESCRIPTOR": _CUSTOMINFOTYPE,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-        "__doc__": """Custom information type provided by the user. Used to find
-  domain-specific sensitive information configurable to the data in
-  question.
-  
-  
+        "__doc__": """Custom information type provided by the user. Used to find domain-
+  specific sensitive information configurable to the data in question.
   Attributes:
       info_type:
           CustomInfoType can either be a new infoType, or an extension
@@ -2997,8 +2971,6 @@ FieldId = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _FIELDID,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
         "__doc__": """General identifier of a data field in a storage service.
-  
-  
   Attributes:
       name:
           Name describing the field.
@@ -3014,13 +2986,10 @@ PartitionId = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _PARTITIONID,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-        "__doc__": """Datastore partition ID. A partition ID identifies a
-  grouping of entities. The grouping is always by project and namespace,
-  however the namespace ID may be empty.
-  
-  A partition ID contains several dimensions: project ID and namespace ID.
-  
-  
+        "__doc__": """Datastore partition ID. A partition ID identifies a grouping of
+  entities. The grouping is always by project and namespace, however the
+  namespace ID may be empty.  A partition ID contains several
+  dimensions: project ID and namespace ID.
   Attributes:
       project_id:
           The ID of the project to which the entities belong.
@@ -3040,8 +3009,6 @@ KindExpression = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _KINDEXPRESSION,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
         "__doc__": """A representation of a Datastore kind.
-  
-  
   Attributes:
       name:
           The name of the kind.
@@ -3058,8 +3025,6 @@ DatastoreOptions = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _DATASTOREOPTIONS,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
         "__doc__": """Options defining a data set within Google Cloud Datastore.
-  
-  
   Attributes:
       partition_id:
           A partition ID identifies a grouping of entities. The grouping
@@ -3079,39 +3044,29 @@ CloudStorageRegexFileSet = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _CLOUDSTORAGEREGEXFILESET,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-        "__doc__": """Message representing a set of files in a Cloud Storage
-  bucket. Regular expressions are used to allow fine-grained control over
-  which files in the bucket to include.
-  
-  Included files are those that match at least one item in
-  ``include_regex`` and do not match any items in ``exclude_regex``. Note
-  that a file that matches items from both lists will *not* be included.
-  For a match to occur, the entire file path (i.e., everything in the url
-  after the bucket name) must match the regular expression.
-  
-  For example, given the input
-  ``{bucket_name: "mybucket", include_regex: ["directory1/.*"], exclude_regex: ["directory1/excluded.*"]}``:
-  
-  -  ``gs://mybucket/directory1/myfile`` will be included
-  -  ``gs://mybucket/directory1/directory2/myfile`` will be included
-     (``.*`` matches across ``/``)
-  -  ``gs://mybucket/directory0/directory1/myfile`` will *not* be included
-     (the full path doesn’t match any items in ``include_regex``)
-  -  ``gs://mybucket/directory1/excludedfile`` will *not* be included (the
-     path matches an item in ``exclude_regex``)
-  
-  If ``include_regex`` is left empty, it will match all files by default
-  (this is equivalent to setting ``include_regex: [".*"]``).
-  
-  Some other common use cases:
-  
-  -  ``{bucket_name: "mybucket", exclude_regex: [".*\.pdf"]}`` will
-     include all files in ``mybucket`` except for .pdf files
-  -  ``{bucket_name: "mybucket", include_regex: ["directory/[^/]+"]}``
-     will include all files directly under ``gs://mybucket/directory/``,
-     without matching across ``/``
-  
-  
+        "__doc__": """Message representing a set of files in a Cloud Storage bucket. Regular
+  expressions are used to allow fine-grained control over which files in
+  the bucket to include.  Included files are those that match at least
+  one item in ``include_regex`` and do not match any items in
+  ``exclude_regex``. Note that a file that matches items from both lists
+  will *not* be included. For a match to occur, the entire file path
+  (i.e., everything in the url after the bucket name) must match the
+  regular expression.  For example, given the input ``{bucket_name:
+  "mybucket", include_regex: ["directory1/.*"], exclude_regex:
+  ["directory1/excluded.*"]}``:  -  ``gs://mybucket/directory1/myfile``
+  will be included -  ``gs://mybucket/directory1/directory2/myfile``
+  will be included    (``.*`` matches across ``/``) -
+  ``gs://mybucket/directory0/directory1/myfile`` will *not* be included
+  (the full path doesn’t match any items in ``include_regex``) -
+  ``gs://mybucket/directory1/excludedfile`` will *not* be included (the
+  path matches an item in ``exclude_regex``)  If ``include_regex`` is
+  left empty, it will match all files by default (this is equivalent to
+  setting ``include_regex: [".*"]``).  Some other common use cases:  -
+  ``{bucket_name: "mybucket", exclude_regex: [".*\.pdf"]}`` will
+  include all files in ``mybucket`` except for .pdf files -
+  ``{bucket_name: "mybucket", include_regex: ["directory/[^/]+"]}``
+  will include all files directly under ``gs://mybucket/directory/``,
+  without matching across ``/``
   Attributes:
       bucket_name:
           The name of a Cloud Storage bucket. Required.
@@ -3149,8 +3104,6 @@ CloudStorageOptions = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _CLOUDSTORAGEOPTIONS_FILESET,
                 "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
                 "__doc__": """Set of files to scan.
-    
-    
     Attributes:
         url:
             The Cloud Storage url of the file(s) to scan, in the format
@@ -3171,10 +3124,8 @@ CloudStorageOptions = _reflection.GeneratedProtocolMessageType(
         ),
         "DESCRIPTOR": _CLOUDSTORAGEOPTIONS,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-        "__doc__": """Options defining a file or a set of files within a Google
-  Cloud Storage bucket.
-  
-  
+        "__doc__": """Options defining a file or a set of files within a Google Cloud
+  Storage bucket.
   Attributes:
       file_set:
           The set of one or more files to scan.
@@ -3216,8 +3167,6 @@ CloudStorageFileSet = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _CLOUDSTORAGEFILESET,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
         "__doc__": """Message representing a set of files in Cloud Storage.
-  
-  
   Attributes:
       url:
           The url, in the format ``gs://<bucket>/<path>``. Trailing
@@ -3234,10 +3183,7 @@ CloudStoragePath = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _CLOUDSTORAGEPATH,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-        "__doc__": """Message representing a single file or path in Cloud
-  Storage.
-  
-  
+        "__doc__": """Message representing a single file or path in Cloud Storage.
   Attributes:
       path:
           A url representing a file or path (no wildcards) in Cloud
@@ -3255,8 +3201,6 @@ BigQueryOptions = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _BIGQUERYOPTIONS,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
         "__doc__": """Options defining BigQuery table and row identifiers.
-  
-  
   Attributes:
       table_reference:
           Complete BigQuery table reference.
@@ -3299,11 +3243,9 @@ StorageConfig = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _STORAGECONFIG_TIMESPANCONFIG,
                 "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-                "__doc__": """Configuration of the timespan of the items to include in
-    scanning. Currently only supported when inspecting Google Cloud Storage
-    and BigQuery.
-    
-    
+                "__doc__": """Configuration of the timespan of the items to include in scanning.
+    Currently only supported when inspecting Google Cloud Storage and
+    BigQuery.
     Attributes:
         start_time:
             Exclude files or rows older than this value.
@@ -3335,8 +3277,6 @@ StorageConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _STORAGECONFIG,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
         "__doc__": """Shared message indicating Cloud storage type.
-  
-  
   Attributes:
       datastore_options:
           Google Cloud Datastore options.
@@ -3371,10 +3311,8 @@ HybridOptions = _reflection.GeneratedProtocolMessageType(
         ),
         "DESCRIPTOR": _HYBRIDOPTIONS,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-        "__doc__": """Configuration to control jobs where the content being
-  inspected is outside of Google Cloud Platform.
-  
-  
+        "__doc__": """Configuration to control jobs where the content being inspected is
+  outside of Google Cloud Platform.
   Attributes:
       description:
           A short description of where the data is coming from. Will be
@@ -3413,8 +3351,6 @@ BigQueryKey = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _BIGQUERYKEY,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
         "__doc__": """Row key for identifying a record in BigQuery table.
-  
-  
   Attributes:
       table_reference:
           Complete BigQuery table reference.
@@ -3437,8 +3373,6 @@ DatastoreKey = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _DATASTOREKEY,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
         "__doc__": """Record key for a finding in Cloud Datastore.
-  
-  
   Attributes:
       entity_key:
           Datastore entity key.
@@ -3458,12 +3392,9 @@ Key = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _KEY_PATHELEMENT,
                 "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-                "__doc__": """A (kind, ID/name) pair used to construct a key path.
-    
-    If either name or ID is set, the element is complete. If neither is set,
-    the element is incomplete.
-    
-    
+                "__doc__": """A (kind, ID/name) pair used to construct a key path.  If either name
+    or ID is set, the element is complete. If neither is set, the element
+    is incomplete.
     Attributes:
         kind:
             The kind of the entity. A kind matching regex ``__.*__`` is
@@ -3485,12 +3416,10 @@ Key = _reflection.GeneratedProtocolMessageType(
         ),
         "DESCRIPTOR": _KEY,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-        "__doc__": """A unique identifier for a Datastore entity. If a key’s
-  partition ID or any of its path kinds or names are reserved/read-only,
-  the key is reserved/read-only. A reserved/read-only key is forbidden in
-  certain documented contexts.
-  
-  
+        "__doc__": """A unique identifier for a Datastore entity. If a key’s partition ID or
+  any of its path kinds or names are reserved/read-only, the key is
+  reserved/read-only. A reserved/read-only key is forbidden in certain
+  documented contexts.
   Attributes:
       partition_id:
           Entities are partitioned into subsets, currently identified by
@@ -3519,10 +3448,7 @@ RecordKey = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _RECORDKEY,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-        "__doc__": """Message for a unique key indicating a record that contains
-  a finding.
-  
-  
+        "__doc__": """Message for a unique key indicating a record that contains a finding.
   Attributes:
       id_values:
           Values of identifying columns in the given row. Order of
@@ -3540,13 +3466,11 @@ BigQueryTable = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _BIGQUERYTABLE,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-        "__doc__": """Message defining the location of a BigQuery table. A table
-  is uniquely identified by its project_id, dataset_id, and table_name.
-  Within a query a table is often referenced with a string in the format
-  of: ``<project_id>:<dataset_id>.<table_id>`` or
+        "__doc__": """Message defining the location of a BigQuery table. A table is uniquely
+  identified by its project_id, dataset_id, and table_name. Within a
+  query a table is often referenced with a string in the format of:
+  ``<project_id>:<dataset_id>.<table_id>`` or
   ``<project_id>.<dataset_id>.<table_id>``.
-  
-  
   Attributes:
       project_id:
           The Google Cloud Platform project ID of the project containing
@@ -3569,8 +3493,6 @@ BigQueryField = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _BIGQUERYFIELD,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
         "__doc__": """Message defining a field of a BigQuery table.
-  
-  
   Attributes:
       table:
           Source table of the field.
@@ -3588,14 +3510,12 @@ EntityId = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _ENTITYID,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-        "__doc__": """An entity in a dataset is a field or set of fields that
-  correspond to a single person. For example, in medical records the
-  ``EntityId`` might be a patient identifier, or for financial records it
-  might be an account identifier. This message is used when
-  generalizations or analysis must take into account that multiple rows
-  correspond to the same entity.
-  
-  
+        "__doc__": """An entity in a dataset is a field or set of fields that correspond to
+  a single person. For example, in medical records the ``EntityId``
+  might be a patient identifier, or for financial records it might be an
+  account identifier. This message is used when generalizations or
+  analysis must take into account that multiple rows correspond to the
+  same entity.
   Attributes:
       field:
           Composite key indicating which field contains the entity
@@ -3613,8 +3533,6 @@ TableOptions = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _TABLEOPTIONS,
         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
         "__doc__": """Instructions regarding the table content being inspected.
-  
-  
   Attributes:
       identifying_fields:
           The columns that are the primary keys for table objects

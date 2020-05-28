@@ -14888,8 +14888,6 @@ ExcludeInfoTypes = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _EXCLUDEINFOTYPES,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """List of exclude infoTypes.
-  
-  
   Attributes:
       info_types:
           InfoType list in ExclusionRule rule drops a finding when it
@@ -14913,10 +14911,8 @@ ExclusionRule = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _EXCLUSIONRULE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """The rule that specifies conditions when findings of
-  infoTypes specified in ``InspectionRuleSet`` are removed from results.
-  
-  
+        "__doc__": """The rule that specifies conditions when findings of infoTypes
+  specified in ``InspectionRuleSet`` are removed from results.
   Attributes:
       type:
           Exclusion rule types.
@@ -14941,10 +14937,8 @@ InspectionRule = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _INSPECTIONRULE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """A single inspection rule to be applied to infoTypes,
-  specified in ``InspectionRuleSet``.
-  
-  
+        "__doc__": """A single inspection rule to be applied to infoTypes, specified in
+  ``InspectionRuleSet``.
   Attributes:
       type:
           Inspection rule types.
@@ -14964,11 +14958,9 @@ InspectionRuleSet = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _INSPECTIONRULESET,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Rule set for modifying a set of infoTypes to alter
-  behavior under certain circumstances, depending on the specific details
-  of the rules within the set.
-  
-  
+        "__doc__": """Rule set for modifying a set of infoTypes to alter behavior under
+  certain circumstances, depending on the specific details of the rules
+  within the set.
   Attributes:
       info_types:
           List of infoTypes this rule set is applied to.
@@ -14995,10 +14987,8 @@ InspectConfig = _reflection.GeneratedProtocolMessageType(
                     {
                         "DESCRIPTOR": _INSPECTCONFIG_FINDINGLIMITS_INFOTYPELIMIT,
                         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                        "__doc__": """Max findings configuration per infoType, per content item
-      or long running DlpJob.
-      
-      
+                        "__doc__": """Max findings configuration per infoType, per content item or long
+      running DlpJob.
       Attributes:
           info_type:
               Type of information the findings limit applies to. Only one
@@ -15015,8 +15005,6 @@ InspectConfig = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _INSPECTCONFIG_FINDINGLIMITS,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
                 "__doc__": """Configuration to control the number of findings returned.
-    
-    
     Attributes:
         max_findings_per_item:
             Max number of findings that will be returned for each item
@@ -15035,11 +15023,8 @@ InspectConfig = _reflection.GeneratedProtocolMessageType(
         ),
         "DESCRIPTOR": _INSPECTCONFIG,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Configuration description of the scanning process. When
-  used with redactContent only info_types and min_likelihood are currently
-  used.
-  
-  
+        "__doc__": """Configuration description of the scanning process. When used with
+  redactContent only info_types and min_likelihood are currently used.
   Attributes:
       info_types:
           Restricts what info_types to look for. The values must
@@ -15091,8 +15076,6 @@ ByteContentItem = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _BYTECONTENTITEM,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Container for bytes to inspect or redact.
-  
-  
   Attributes:
       type:
           The type of data stored in the bytes string. Default will be
@@ -15112,8 +15095,6 @@ ContentItem = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _CONTENTITEM,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Container structure for the content to inspect.
-  
-  
   Attributes:
       data_item:
           Data of the item either in the byte array or UTF-8 string
@@ -15144,8 +15125,6 @@ Table = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _TABLE_ROW,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
                 "__doc__": """Values of the row.
-    
-    
     Attributes:
         values:
             Individual cells.
@@ -15155,12 +15134,9 @@ Table = _reflection.GeneratedProtocolMessageType(
         ),
         "DESCRIPTOR": _TABLE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Structured content to inspect. Up to 50,000 ``Value``\ s
-  per request allowed. See
-  https://cloud.google.com/dlp/docs/inspecting-text#inspecting_a_table to
-  learn more.
-  
-  
+        "__doc__": """Structured content to inspect. Up to 50,000 ``Value``\ s per request
+  allowed. See https://cloud.google.com/dlp/docs/inspecting-
+  text#inspecting_a_table to learn more.
   Attributes:
       headers:
           Headers of the table.
@@ -15180,8 +15156,6 @@ InspectResult = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _INSPECTRESULT,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """All the findings for a single scanned item.
-  
-  
   Attributes:
       findings:
           List of findings for an item.
@@ -15214,8 +15188,6 @@ Finding = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _FINDING,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Represents a piece of potentially sensitive content.
-  
-  
   Attributes:
       name:
           Resource name in format
@@ -15273,8 +15245,6 @@ Location = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LOCATION,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Specifies the location of the finding.
-  
-  
   Attributes:
       byte_range:
           Zero-based byte offsets delimiting the finding. These are
@@ -15304,10 +15274,8 @@ ContentLocation = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _CONTENTLOCATION,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Precise location of the finding within a document, record,
-  image, or metadata container.
-  
-  
+        "__doc__": """Precise location of the finding within a document, record, image, or
+  metadata container.
   Attributes:
       container_name:
           Name of the container where the finding is located. The top
@@ -15350,8 +15318,6 @@ MetadataLocation = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _METADATALOCATION,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Metadata Location
-  
-  
   Attributes:
       type:
           Type of metadata containing the finding.
@@ -15372,10 +15338,8 @@ StorageMetadataLabel = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _STORAGEMETADATALABEL,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Storage metadata label to indicate which metadata entry
-  contains findings.
-  
-  """,
+        "__doc__": """Storage metadata label to indicate which metadata entry contains
+  findings.""",
         # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.StorageMetadataLabel)
     },
 )
@@ -15388,8 +15352,6 @@ DocumentLocation = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _DOCUMENTLOCATION,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Location of a finding within a document.
-  
-  
   Attributes:
       file_offset:
           Offset of the line, from the beginning of the file, where the
@@ -15407,8 +15369,6 @@ RecordLocation = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _RECORDLOCATION,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Location of a finding within a row or record.
-  
-  
   Attributes:
       record_key:
           Key of the finding.
@@ -15429,8 +15389,6 @@ TableLocation = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _TABLELOCATION,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Location of a finding within a table.
-  
-  
   Attributes:
       row_index:
           The zero-based index of the row where the finding is located.
@@ -15451,10 +15409,8 @@ Container = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _CONTAINER,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Represents a container that may contain DLP findings.
-  Examples of a container include a file, table, or database record.
-  
-  
+        "__doc__": """Represents a container that may contain DLP findings. Examples of a
+  container include a file, table, or database record.
   Attributes:
       type:
           Container type, for example BigQuery or Google Cloud Storage.
@@ -15498,8 +15454,6 @@ Range = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _RANGE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Generic half-open interval [start, end)
-  
-  
   Attributes:
       start:
           Index of the first character of the range (inclusive).
@@ -15518,8 +15472,6 @@ ImageLocation = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _IMAGELOCATION,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Location of the finding within an image.
-  
-  
   Attributes:
       bounding_boxes:
           Bounding boxes locating the pixels within the image containing
@@ -15537,8 +15489,6 @@ BoundingBox = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _BOUNDINGBOX,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Bounding box encompassing detected text within an image.
-  
-  
   Attributes:
       top:
           Top coordinate of the bounding box. (0,0) is upper left.
@@ -15564,10 +15514,7 @@ RedactImageRequest = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _REDACTIMAGEREQUEST_IMAGEREDACTIONCONFIG,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """Configuration for determining how redaction of images
-    should occur.
-    
-    
+                "__doc__": """Configuration for determining how redaction of images should occur.
     Attributes:
         target:
             Type of information to redact from images.
@@ -15589,10 +15536,8 @@ RedactImageRequest = _reflection.GeneratedProtocolMessageType(
         ),
         "DESCRIPTOR": _REDACTIMAGEREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Request to search for potentially sensitive info in an
-  image and redact it by covering it with a colored rectangle.
-  
-  
+        "__doc__": """Request to search for potentially sensitive info in an image and
+  redact it by covering it with a colored rectangle.
   Attributes:
       parent:
           The parent resource name, for example projects/my-project-id
@@ -15623,8 +15568,6 @@ Color = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _COLOR,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Represents a color in the RGB color space.
-  
-  
   Attributes:
       red:
           The amount of red in the color as a value in the interval [0,
@@ -15648,8 +15591,6 @@ RedactImageResponse = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _REDACTIMAGERESPONSE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Results of redacting an image.
-  
-  
   Attributes:
       redacted_image:
           The redacted image. The type will be the same as the original
@@ -15674,8 +15615,6 @@ DeidentifyContentRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _DEIDENTIFYCONTENTREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request to de-identify a list of items.
-  
-  
   Attributes:
       parent:
           The parent resource name, for example projects/my-project-id
@@ -15719,8 +15658,6 @@ DeidentifyContentResponse = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _DEIDENTIFYCONTENTRESPONSE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Results of de-identifying a ContentItem.
-  
-  
   Attributes:
       item:
           The de-identified item.
@@ -15739,8 +15676,6 @@ ReidentifyContentRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _REIDENTIFYCONTENTREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request to re-identify an item.
-  
-  
   Attributes:
       parent:
           Required. The parent resource name.
@@ -15788,8 +15723,6 @@ ReidentifyContentResponse = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _REIDENTIFYCONTENTRESPONSE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Results of re-identifying a item.
-  
-  
   Attributes:
       item:
           The re-identified item.
@@ -15807,10 +15740,7 @@ InspectContentRequest = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _INSPECTCONTENTREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Request to search for potentially sensitive info in a
-  ContentItem.
-  
-  
+        "__doc__": """Request to search for potentially sensitive info in a ContentItem.
   Attributes:
       parent:
           The parent resource name, for example projects/my-project-id
@@ -15843,8 +15773,6 @@ InspectContentResponse = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _INSPECTCONTENTRESPONSE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Results of inspecting an item.
-  
-  
   Attributes:
       result:
           The findings.
@@ -15861,8 +15789,6 @@ OutputStorageConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _OUTPUTSTORAGECONFIG,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Cloud repository for storing output.
-  
-  
   Attributes:
       type:
           Output storage types.
@@ -15904,8 +15830,6 @@ InfoTypeStats = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _INFOTYPESTATS,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Statistics regarding a specific InfoType.
-  
-  
   Attributes:
       info_type:
           The type of finding this stat is for.
@@ -15928,8 +15852,6 @@ InspectDataSourceDetails = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _INSPECTDATASOURCEDETAILS_REQUESTEDOPTIONS,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
                 "__doc__": """Snapshot of the inspection configuration.
-    
-    
     Attributes:
         snapshot_inspect_template: \
             If run with an InspectTemplate, a snapshot of its state at the \
@@ -15946,10 +15868,8 @@ InspectDataSourceDetails = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _INSPECTDATASOURCEDETAILS_RESULT,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """All result fields mentioned below are updated while the
-    job is processing.
-    
-    
+                "__doc__": """All result fields mentioned below are updated while the job is
+    processing.
     Attributes:
         processed_bytes: \
             Total size in bytes that were processed.
@@ -15970,8 +15890,6 @@ InspectDataSourceDetails = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _INSPECTDATASOURCEDETAILS,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """The results of an inspect DataSource job.
-  
-  
   Attributes:
       requested_options: \
           The configuration used for this job.
@@ -15992,8 +15910,6 @@ HybridInspectStatistics = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _HYBRIDINSPECTSTATISTICS,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Statistics related to processing hybrid inspect requests.s
-  
-  
   Attributes:
       processed_count:
           The number of hybrid inspection requests processed within this
@@ -16022,8 +15938,6 @@ InfoTypeDescription = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _INFOTYPEDESCRIPTION,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """InfoType description.
-  
-  
   Attributes:
       name:
           Internal name of the infoType.
@@ -16047,8 +15961,6 @@ ListInfoTypesRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTINFOTYPESREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request for the list of infoTypes.
-  
-  
   Attributes:
       parent:
           The parent resource name, for example locations/{location_id}
@@ -16074,8 +15986,6 @@ ListInfoTypesResponse = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTINFOTYPESRESPONSE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Response to the ListInfoTypes request.
-  
-  
   Attributes:
       info_types:
           Set of sensitive infoTypes.
@@ -16092,9 +16002,8 @@ RiskAnalysisJobConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _RISKANALYSISJOBCONFIG,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Configuration for a risk analysis job. See
-  https://cloud.google.com/dlp/docs/concepts-risk-analysis to learn more.
-  
-  
+  https://cloud.google.com/dlp/docs/concepts-risk-analysis to learn
+  more.
   Attributes:
       privacy_metric:
           Privacy metric to compute.
@@ -16116,8 +16025,6 @@ QuasiId = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _QUASIID,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """A column with a semantic tag attached.
-  
-  
   Attributes:
       field:
           Required. Identifies the column.
@@ -16156,11 +16063,8 @@ StatisticalTable = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _STATISTICALTABLE_QUASIIDENTIFIERFIELD,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """A quasi-identifier column has a custom_tag, used to know
-    which column in the data corresponds to which column in the statistical
-    model.
-    
-    
+                "__doc__": """A quasi-identifier column has a custom_tag, used to know which column
+    in the data corresponds to which column in the statistical model.
     Attributes:
         field:
             Identifies the column.
@@ -16175,15 +16079,13 @@ StatisticalTable = _reflection.GeneratedProtocolMessageType(
         ),
         "DESCRIPTOR": _STATISTICALTABLE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """An auxiliary table containing statistical information on
-  the relative frequency of different quasi-identifiers values. It has one
-  or several quasi-identifiers columns, and one column that indicates the
-  relative frequency of each quasi-identifier tuple. If a tuple is present
-  in the data but not in the auxiliary table, the corresponding relative
+        "__doc__": """An auxiliary table containing statistical information on the relative
+  frequency of different quasi-identifiers values. It has one or several
+  quasi-identifiers columns, and one column that indicates the relative
+  frequency of each quasi-identifier tuple. If a tuple is present in the
+  data but not in the auxiliary table, the corresponding relative
   frequency is assumed to be zero (and thus, the tuple is highly
   reidentifiable).
-  
-  
   Attributes:
       table:
           Required. Auxiliary table location.
@@ -16210,10 +16112,8 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _PRIVACYMETRIC_NUMERICALSTATSCONFIG,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """Compute numerical stats over an individual column,
-    including min, max, and quantiles.
-    
-    
+                "__doc__": """Compute numerical stats over an individual column, including min, max,
+    and quantiles.
     Attributes:
         field:
             Field to compute numerical stats on. Supported types are
@@ -16228,10 +16128,8 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _PRIVACYMETRIC_CATEGORICALSTATSCONFIG,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """Compute numerical stats over an individual column,
-    including number of distinct values and value count distribution.
-    
-    
+                "__doc__": """Compute numerical stats over an individual column, including number of
+    distinct values and value count distribution.
     Attributes:
         field:
             Field to compute categorical stats on. All column types are
@@ -16248,10 +16146,7 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _PRIVACYMETRIC_KANONYMITYCONFIG,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """k-anonymity metric, used for analysis of reidentification
-    risk.
-    
-    
+                "__doc__": """k-anonymity metric, used for analysis of reidentification risk.
     Attributes:
         quasi_ids:
             Set of fields to compute k-anonymity over. When multiple
@@ -16280,10 +16175,7 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _PRIVACYMETRIC_LDIVERSITYCONFIG,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """l-diversity metric, used for analysis of reidentification
-    risk.
-    
-    
+                "__doc__": """l-diversity metric, used for analysis of reidentification risk.
     Attributes:
         quasi_ids:
             Set of quasi-identifiers indicating how equivalence classes
@@ -16307,8 +16199,6 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType(
                         "DESCRIPTOR": _PRIVACYMETRIC_KMAPESTIMATIONCONFIG_TAGGEDFIELD,
                         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
                         "__doc__": """A column with a semantic tag attached.
-      
-      
       Attributes:
           field:
               Required. Identifies the column.
@@ -16345,11 +16235,8 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType(
                             {
                                 "DESCRIPTOR": _PRIVACYMETRIC_KMAPESTIMATIONCONFIG_AUXILIARYTABLE_QUASIIDFIELD,
                                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                                "__doc__": """A quasi-identifier column has a custom_tag, used to know
-        which column in the data corresponds to which column in the statistical
-        model.
-        
-        
+                                "__doc__": """A quasi-identifier column has a custom_tag, used to know which column
+        in the data corresponds to which column in the statistical model.
         Attributes:
             field:
                 Identifies the column.
@@ -16361,15 +16248,13 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType(
                         ),
                         "DESCRIPTOR": _PRIVACYMETRIC_KMAPESTIMATIONCONFIG_AUXILIARYTABLE,
                         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                        "__doc__": """An auxiliary table contains statistical information on the
-      relative frequency of different quasi-identifiers values. It has one or
-      several quasi-identifiers columns, and one column that indicates the
-      relative frequency of each quasi-identifier tuple. If a tuple is present
-      in the data but not in the auxiliary table, the corresponding relative
+                        "__doc__": """An auxiliary table contains statistical information on the relative
+      frequency of different quasi-identifiers values. It has one or several
+      quasi-identifiers columns, and one column that indicates the relative
+      frequency of each quasi-identifier tuple. If a tuple is present in the
+      data but not in the auxiliary table, the corresponding relative
       frequency is assumed to be zero (and thus, the tuple is highly
       reidentifiable).
-      
-      
       Attributes:
           table:
               Required. Auxiliary table location.
@@ -16385,15 +16270,13 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType(
                 ),
                 "DESCRIPTOR": _PRIVACYMETRIC_KMAPESTIMATIONCONFIG,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """Reidentifiability metric. This corresponds to a risk model
-    similar to what is called “journalist risk” in the literature, except
-    the attack dataset is statistically modeled instead of being perfectly
-    known. This can be done using publicly available data (like the US
-    Census), or using a custom statistical model (indicated as one or
-    several BigQuery tables), or by extrapolating from the distribution of
-    values in the input dataset.
-    
-    
+                "__doc__": """Reidentifiability metric. This corresponds to a risk model similar to
+    what is called “journalist risk” in the literature, except the attack
+    dataset is statistically modeled instead of being perfectly known.
+    This can be done using publicly available data (like the US Census),
+    or using a custom statistical model (indicated as one or several
+    BigQuery tables), or by extrapolating from the distribution of values
+    in the input dataset.
     Attributes:
         quasi_ids:
             Required. Fields considered to be quasi-identifiers. No two
@@ -16416,13 +16299,11 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _PRIVACYMETRIC_DELTAPRESENCEESTIMATIONCONFIG,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """δ-presence metric, used to estimate how likely it is for
-    an attacker to figure out that one given individual appears in a
-    de-identified dataset. Similarly to the k-map metric, we cannot compute
-    δ-presence exactly without knowing the attack dataset, so we use a
-    statistical model instead.
-    
-    
+                "__doc__": """δ-presence metric, used to estimate how likely it is for an attacker
+    to figure out that one given individual appears in a de-identified
+    dataset. Similarly to the k-map metric, we cannot compute δ-presence
+    exactly without knowing the attack dataset, so we use a statistical
+    model instead.
     Attributes:
         quasi_ids:
             Required. Fields considered to be quasi-identifiers. No two
@@ -16441,10 +16322,7 @@ PrivacyMetric = _reflection.GeneratedProtocolMessageType(
         ),
         "DESCRIPTOR": _PRIVACYMETRIC,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Privacy metric to compute for reidentification risk
-  analysis.
-  
-  
+        "__doc__": """Privacy metric to compute for reidentification risk analysis.
   Attributes:
       type:
           Types of analysis.
@@ -16486,8 +16364,6 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _ANALYZEDATASOURCERISKDETAILS_NUMERICALSTATSRESULT,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
                 "__doc__": """Result of the numerical stats computation.
-    
-    
     Attributes:
         min_value:
             Minimum value appearing in the column.
@@ -16511,8 +16387,6 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType(
                         "DESCRIPTOR": _ANALYZEDATASOURCERISKDETAILS_CATEGORICALSTATSRESULT_CATEGORICALSTATSHISTOGRAMBUCKET,
                         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
                         "__doc__": """Histogram of value frequencies in the column.
-      
-      
       Attributes:
           value_frequency_lower_bound: Lower bound on the value frequency of the values in this bucket.
           value_frequency_upper_bound: Upper bound on the value frequency of the values in this bucket.
@@ -16526,8 +16400,6 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _ANALYZEDATASOURCERISKDETAILS_CATEGORICALSTATSRESULT,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
                 "__doc__": """Result of the categorical stats computation.
-    
-    
     Attributes:
         value_frequency_histogram_buckets:
             Histogram of value frequencies in the column.
@@ -16545,10 +16417,7 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType(
                     {
                         "DESCRIPTOR": _ANALYZEDATASOURCERISKDETAILS_KANONYMITYRESULT_KANONYMITYEQUIVALENCECLASS,
                         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                        "__doc__": """The set of columns’ values that share the same ldiversity
-      value
-      
-      
+                        "__doc__": """The set of columns’ values that share the same ldiversity value
       Attributes:
           quasi_ids_values:
           Set of values defining the equivalence class. One value per \
@@ -16568,8 +16437,6 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType(
                         "DESCRIPTOR": _ANALYZEDATASOURCERISKDETAILS_KANONYMITYRESULT_KANONYMITYHISTOGRAMBUCKET,
                         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
                         "__doc__": """Histogram of k-anonymity equivalence classes.
-      
-      
       Attributes:
           equivalence_class_size_lower_bound: \
               Lower bound on the size of the equivalence classes in this \
@@ -16591,8 +16458,6 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _ANALYZEDATASOURCERISKDETAILS_KANONYMITYRESULT,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
                 "__doc__": """Result of the k-anonymity computation.
-    
-    
     Attributes:
         equivalence_class_histogram_buckets:
             Histogram of k-anonymity equivalence classes.
@@ -16610,10 +16475,7 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType(
                     {
                         "DESCRIPTOR": _ANALYZEDATASOURCERISKDETAILS_LDIVERSITYRESULT_LDIVERSITYEQUIVALENCECLASS,
                         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                        "__doc__": """The set of columns’ values that share the same ldiversity
-      value.
-      
-      
+                        "__doc__": """The set of columns’ values that share the same ldiversity value.
       Attributes:
           quasi_ids_values:
               Quasi-identifier values defining the k-anonymity equivalence
@@ -16636,8 +16498,6 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType(
                         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
                         "__doc__": """Histogram of l-diversity equivalence class sensitive value
       frequencies.
-      
-      
       Attributes:
           sensitive_value_frequency_lower_bound: \
               Lower bound on the sensitive value frequencies of the \
@@ -16659,8 +16519,6 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _ANALYZEDATASOURCERISKDETAILS_LDIVERSITYRESULT,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
                 "__doc__": """Result of the l-diversity computation.
-    
-    
     Attributes:
         sensitive_value_frequency_histogram_buckets:
             Histogram of l-diversity equivalence class sensitive value
@@ -16680,8 +16538,6 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType(
                         "DESCRIPTOR": _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT_KMAPESTIMATIONQUASIIDVALUES,
                         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
                         "__doc__": """A tuple of values for the quasi-identifier columns.
-      
-      
       Attributes:
           quasi_ids_values:
               The quasi-identifier values.
@@ -16697,14 +16553,12 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType(
                     {
                         "DESCRIPTOR": _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT_KMAPESTIMATIONHISTOGRAMBUCKET,
                         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                        "__doc__": """A KMapEstimationHistogramBucket message with the following
-      values: min_anonymity: 3 max_anonymity: 5 frequency: 42 means that there
-      are 42 records whose quasi-identifier values correspond to 3, 4 or 5
-      people in the overlying population. An important particular case is when
-      min_anonymity = max_anonymity = 1: the frequency field then corresponds
-      to the number of uniquely identifiable records.
-      
-      
+                        "__doc__": """A KMapEstimationHistogramBucket message with the following values:
+      min_anonymity: 3 max_anonymity: 5 frequency: 42 means that there are
+      42 records whose quasi-identifier values correspond to 3, 4 or 5
+      people in the overlying population. An important particular case is
+      when min_anonymity = max_anonymity = 1: the frequency field then
+      corresponds to the number of uniquely identifiable records.
       Attributes:
           min_anonymity:
               Always positive.
@@ -16724,10 +16578,8 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType(
                 ),
                 "DESCRIPTOR": _ANALYZEDATASOURCERISKDETAILS_KMAPESTIMATIONRESULT,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """Result of the reidentifiability analysis. Note that these
-    results are an estimation, not exact values.
-    
-    
+                "__doc__": """Result of the reidentifiability analysis. Note that these results are
+    an estimation, not exact values.
     Attributes:
         k_map_estimation_histogram:
             The intervals [min_anonymity, max_anonymity] do not overlap.
@@ -16753,8 +16605,6 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType(
                         "DESCRIPTOR": _ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT_DELTAPRESENCEESTIMATIONQUASIIDVALUES,
                         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
                         "__doc__": """A tuple of values for the quasi-identifier columns.
-      
-      
       Attributes:
           quasi_ids_values:
               The quasi-identifier values.
@@ -16778,14 +16628,12 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType(
                     {
                         "DESCRIPTOR": _ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT_DELTAPRESENCEESTIMATIONHISTOGRAMBUCKET,
                         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                        "__doc__": """A DeltaPresenceEstimationHistogramBucket message with the
-      following values: min_probability: 0.1 max_probability: 0.2 frequency:
-      42 means that there are 42 records for which δ is in [0.1, 0.2). An
-      important particular case is when min_probability = max_probability = 1:
-      then, every individual who shares this quasi-identifier combination is
-      in the dataset.
-      
-      
+                        "__doc__": """A DeltaPresenceEstimationHistogramBucket message with the following
+      values: min_probability: 0.1 max_probability: 0.2 frequency: 42 means
+      that there are 42 records for which δ is in [0.1, 0.2). An important
+      particular case is when min_probability = max_probability = 1: then,
+      every individual who shares this quasi-identifier combination is in
+      the dataset.
       Attributes:
           min_probability:
               Between 0 and 1.
@@ -16805,10 +16653,8 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType(
                 ),
                 "DESCRIPTOR": _ANALYZEDATASOURCERISKDETAILS_DELTAPRESENCEESTIMATIONRESULT,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """Result of the δ-presence computation. Note that these
-    results are an estimation, not exact values.
-    
-    
+                "__doc__": """Result of the δ-presence computation. Note that these results are an
+    estimation, not exact values.
     Attributes:
         delta_presence_estimation_histogram:
             The intervals [min_probability, max_probability) do not
@@ -16826,8 +16672,6 @@ AnalyzeDataSourceRiskDetails = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _ANALYZEDATASOURCERISKDETAILS,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Result of a risk analysis operation request.
-  
-  
   Attributes:
       requested_privacy_metric:
           Privacy metric to compute.
@@ -16893,8 +16737,6 @@ ValueFrequency = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _VALUEFREQUENCY,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """A value of a field, including its frequency.
-  
-  
   Attributes:
       value:
           A value contained in the field in question.
@@ -16912,14 +16754,12 @@ Value = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _VALUE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Set of primitive values supported by the system. Note that
-  for the purposes of inspection or transformation, the number of bytes
+        "__doc__": """Set of primitive values supported by the system. Note that for the
+  purposes of inspection or transformation, the number of bytes
   considered to comprise a ‘Value’ is based on its representation as a
   UTF-8 encoded string. For example, if ‘integer_value’ is set to
   123456789, the number of bytes would be counted as 9, even though an
   int64 only holds up to 8 bytes of data.
-  
-  
   Attributes:
       type:
           Value types
@@ -16952,8 +16792,6 @@ QuoteInfo = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _QUOTEINFO,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Message for infoType-dependent details parsed from quote.
-  
-  
   Attributes:
       parsed_quote:
           Object representation of the quote.
@@ -16976,8 +16814,6 @@ DateTime = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _DATETIME_TIMEZONE,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
                 "__doc__": """Time zone of the date time object.
-    
-    
     Attributes:
         offset_minutes: \
             Set only if the offset can be determined. Positive for time \
@@ -16988,10 +16824,7 @@ DateTime = _reflection.GeneratedProtocolMessageType(
         ),
         "DESCRIPTOR": _DATETIME,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Message for a date time object. e.g. 2018-01-01, 5th
-  August.
-  
-  
+        "__doc__": """Message for a date time object. e.g. 2018-01-01, 5th August.
   Attributes:
       date:
           One or more of the following must be set. Must be a valid date
@@ -17016,8 +16849,6 @@ DeidentifyConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _DEIDENTIFYCONFIG,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """The configuration that controls how the data will change.
-  
-  
   Attributes:
       info_type_transformations:
           Treat the dataset as free-form text and apply the same free
@@ -17046,10 +16877,8 @@ TransformationErrorHandling = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _TRANSFORMATIONERRORHANDLING_THROWERROR,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """Throw an error and fail the request when a transformation
-    error occurs.
-    
-    """,
+                "__doc__": """Throw an error and fail the request when a transformation error
+    occurs.""",
                 # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.TransformationErrorHandling.ThrowError)
             },
         ),
@@ -17059,27 +16888,23 @@ TransformationErrorHandling = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _TRANSFORMATIONERRORHANDLING_LEAVEUNTRANSFORMED,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """Skips the data without modifying it if the requested
-    transformation would cause an error. For example, if a ``DateShift``
-    transformation were applied an an IP address, this mode would leave the
-    IP address unchanged in the response.
-    
-    """,
+                "__doc__": """Skips the data without modifying it if the requested transformation
+    would cause an error. For example, if a ``DateShift`` transformation
+    were applied an an IP address, this mode would leave the IP address
+    unchanged in the response.""",
                 # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.TransformationErrorHandling.LeaveUntransformed)
             },
         ),
         "DESCRIPTOR": _TRANSFORMATIONERRORHANDLING,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """How to handle transformation errors during
-  de-identification. A transformation error occurs when the requested
-  transformation is incompatible with the data. For example, trying to
-  de-identify an IP address using a ``DateShift`` transformation would
-  result in a transformation error, since date info cannot be extracted
-  from an IP address. Information about any incompatible transformations,
-  and how they were handled, is returned in the response as part of the
+        "__doc__": """How to handle transformation errors during de-identification. A
+  transformation error occurs when the requested transformation is
+  incompatible with the data. For example, trying to de-identify an IP
+  address using a ``DateShift`` transformation would result in a
+  transformation error, since date info cannot be extracted from an IP
+  address. Information about any incompatible transformations, and how
+  they were handled, is returned in the response as part of the
   ``TransformationOverviews``.
-  
-  
   Attributes:
       mode:
           How transformation errors should be handled.
@@ -17102,8 +16927,6 @@ PrimitiveTransformation = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _PRIMITIVETRANSFORMATION,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """A rule for transforming a value.
-  
-  
   Attributes:
       replace_config:
           Replace
@@ -17139,10 +16962,8 @@ TimePartConfig = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _TIMEPARTCONFIG,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """For use with ``Date``, ``Timestamp``, and ``TimeOfDay``,
-  extract or preserve a portion of the value.
-  
-  
+        "__doc__": """For use with ``Date``, ``Timestamp``, and ``TimeOfDay``, extract or
+  preserve a portion of the value.
   Attributes:
       part_to_extract:
           The part of the time to keep.
@@ -17158,14 +16979,12 @@ CryptoHashConfig = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _CRYPTOHASHCONFIG,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Pseudonymization method that generates surrogates via
-  cryptographic hashing. Uses SHA-256. The key size must be either 32 or
-  64 bytes. Outputs a base64 encoded representation of the hashed output
-  (for example, L7k0BHmF1ha5U3NfGykjro4xWi1MPVQPjhMAZbSV9mM=). Currently,
+        "__doc__": """Pseudonymization method that generates surrogates via cryptographic
+  hashing. Uses SHA-256. The key size must be either 32 or 64 bytes.
+  Outputs a base64 encoded representation of the hashed output (for
+  example, L7k0BHmF1ha5U3NfGykjro4xWi1MPVQPjhMAZbSV9mM=). Currently,
   only string and integer values can be hashed. See
   https://cloud.google.com/dlp/docs/pseudonymization to learn more.
-  
-  
   Attributes:
       crypto_key:
           The key used by the hash function.
@@ -17181,12 +17000,10 @@ CryptoDeterministicConfig = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _CRYPTODETERMINISTICCONFIG,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Pseudonymization method that generates deterministic
-  encryption for the given input. Outputs a base64 encoded representation
-  of the encrypted output. Uses AES-SIV based on the RFC
+        "__doc__": """Pseudonymization method that generates deterministic encryption for
+  the given input. Outputs a base64 encoded representation of the
+  encrypted output. Uses AES-SIV based on the RFC
   https://tools.ietf.org/html/rfc5297.
-  
-  
   Attributes:
       crypto_key:
           The key used by the encryption function.
@@ -17246,8 +17063,6 @@ ReplaceValueConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _REPLACEVALUECONFIG,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Replace each input value with a given ``Value``.
-  
-  
   Attributes:
       new_value:
           Value to replace it with.
@@ -17263,10 +17078,7 @@ ReplaceWithInfoTypeConfig = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _REPLACEWITHINFOTYPECONFIG,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Replace each matching finding with the name of the
-  info_type.
-  
-  """,
+        "__doc__": """Replace each matching finding with the name of the info_type.""",
         # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.ReplaceWithInfoTypeConfig)
     },
 )
@@ -17280,9 +17092,8 @@ RedactConfig = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Redact a given value. For example, if used with an
   ``InfoTypeTransformation`` transforming PHONE_NUMBER, and input ‘My
-  phone number is 206-555-0123’, the output would be ‘My phone number is’.
-  
-  """,
+  phone number is 206-555-0123’, the output would be ‘My phone number
+  is’.""",
         # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.RedactConfig)
     },
 )
@@ -17294,10 +17105,8 @@ CharsToIgnore = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _CHARSTOIGNORE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Characters to skip when doing deidentification of a value.
-  These will be left alone and skipped.
-  
-  
+        "__doc__": """Characters to skip when doing deidentification of a value. These will
+  be left alone and skipped.
   Attributes:
       characters_to_skip:
           Characters to not transform when masking.
@@ -17316,14 +17125,12 @@ CharacterMaskConfig = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _CHARACTERMASKCONFIG,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Partially mask a string by replacing a given number of
-  characters with a fixed character. Masking can start from the beginning
-  or end of the string. This can be used on data of any type (numbers,
-  longs, and so on) and when de-identifying structured data we’ll attempt
-  to preserve the original data’s type. (This allows you to take a long
-  like 123 and modify it to a string like \**3.
-  
-  
+        "__doc__": """Partially mask a string by replacing a given number of characters with
+  a fixed character. Masking can start from the beginning or end of the
+  string. This can be used on data of any type (numbers, longs, and so
+  on) and when de-identifying structured data we’ll attempt to preserve
+  the original data’s type. (This allows you to take a long like 123 and
+  modify it to a string like \**3.
   Attributes:
       masking_character:
           Character to use to mask the sensitive values—for example,
@@ -17362,23 +17169,16 @@ FixedSizeBucketingConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _FIXEDSIZEBUCKETINGCONFIG,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Buckets values based on fixed size ranges. The Bucketing
-  transformation can provide all of this functionality, but requires more
-  configuration. This message is provided as a convenience to the user for
-  simple bucketing strategies.
-  
-  The transformed value will be a hyphenated string of
-  {lower_bound}-{upper_bound}, i.e if lower_bound = 10 and upper_bound =
-  20 all values that are within this bucket will be replaced with “10-20”.
-  
-  This can be used on data of type: double, long.
-  
-  If the bound Value type differs from the type of data being transformed,
-  we will first attempt converting the type of the data to be transformed
-  to match the type of the bound before comparing.
-  
-  See https://cloud.google.com/dlp/docs/concepts-bucketing to learn more.
-  
-  
+  transformation can provide all of this functionality, but requires
+  more configuration. This message is provided as a convenience to the
+  user for simple bucketing strategies.  The transformed value will be a
+  hyphenated string of {lower_bound}-{upper_bound}, i.e if lower_bound =
+  10 and upper_bound = 20 all values that are within this bucket will be
+  replaced with “10-20”.  This can be used on data of type: double,
+  long.  If the bound Value type differs from the type of data being
+  transformed, we will first attempt converting the type of the data to
+  be transformed to match the type of the bound before comparing.  See
+  https://cloud.google.com/dlp/docs/concepts-bucketing to learn more.
   Attributes:
       lower_bound:
           Required. Lower bound value of buckets. All values less than
@@ -17412,10 +17212,7 @@ BucketingConfig = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _BUCKETINGCONFIG_BUCKET,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """Bucket is represented as a range, along with replacement
-    values.
-    
-    
+                "__doc__": """Bucket is represented as a range, along with replacement values.
     Attributes:
         min:
             Lower bound of the range, inclusive. Type should be the same
@@ -17431,16 +17228,14 @@ BucketingConfig = _reflection.GeneratedProtocolMessageType(
         ),
         "DESCRIPTOR": _BUCKETINGCONFIG,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Generalization function that buckets values based on
-  ranges. The ranges and replacement values are dynamically provided by
-  the user for custom behavior, such as 1-30 -> LOW 31-65 -> MEDIUM 66-100
-  -> HIGH This can be used on data of type: number, long, string,
-  timestamp. If the bound ``Value`` type differs from the type of data
-  being transformed, we will first attempt converting the type of the data
-  to be transformed to match the type of the bound before comparing. See
+        "__doc__": """Generalization function that buckets values based on ranges. The
+  ranges and replacement values are dynamically provided by the user for
+  custom behavior, such as 1-30 -> LOW 31-65 -> MEDIUM 66-100 -> HIGH
+  This can be used on data of type: number, long, string, timestamp. If
+  the bound ``Value`` type differs from the type of data being
+  transformed, we will first attempt converting the type of the data to
+  be transformed to match the type of the bound before comparing. See
   https://cloud.google.com/dlp/docs/concepts-bucketing to learn more.
-  
-  
   Attributes:
       buckets:
           Set of buckets. Ranges must be non-overlapping.
@@ -17457,21 +17252,18 @@ CryptoReplaceFfxFpeConfig = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _CRYPTOREPLACEFFXFPECONFIG,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Replaces an identifier with a surrogate using Format
-  Preserving Encryption (FPE) with the FFX mode of operation; however when
-  used in the ``ReidentifyContent`` API method, it serves the opposite
-  function by reversing the surrogate back into the original identifier.
-  The identifier must be encoded as ASCII. For a given crypto key and
+        "__doc__": """Replaces an identifier with a surrogate using Format Preserving
+  Encryption (FPE) with the FFX mode of operation; however when used in
+  the ``ReidentifyContent`` API method, it serves the opposite function
+  by reversing the surrogate back into the original identifier. The
+  identifier must be encoded as ASCII. For a given crypto key and
   context, the same identifier will be replaced with the same surrogate.
   Identifiers must be at least two characters long. In the case that the
   identifier is the empty string, it will be skipped. See
   https://cloud.google.com/dlp/docs/pseudonymization to learn more.
-  
   Note: We recommend using CryptoDeterministicConfig for all use cases
-  which do not require preserving the input alphabet space and size, plus
-  warrant referential integrity.
-  
-  
+  which do not require preserving the input alphabet space and size,
+  plus warrant referential integrity.
   Attributes:
       crypto_key:
           Required. The key used by the encryption algorithm.
@@ -17542,12 +17334,10 @@ CryptoKey = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _CRYPTOKEY,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """This is a data encryption key (DEK) (as opposed to a key
-  encryption key (KEK) stored by KMS). When using KMS to wrap/unwrap DEKs,
-  be sure to set an appropriate IAM policy on the KMS CryptoKey (KEK) to
-  ensure an attacker cannot unwrap the data crypto key.
-  
-  
+        "__doc__": """This is a data encryption key (DEK) (as opposed to a key encryption
+  key (KEK) stored by KMS). When using KMS to wrap/unwrap DEKs, be sure
+  to set an appropriate IAM policy on the KMS CryptoKey (KEK) to ensure
+  an attacker cannot unwrap the data crypto key.
   Attributes:
       source:
           Sources of crypto keys.
@@ -17569,10 +17359,8 @@ TransientCryptoKey = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _TRANSIENTCRYPTOKEY,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Use this to have a random data crypto key generated. It
-  will be discarded after the request finishes.
-  
-  
+        "__doc__": """Use this to have a random data crypto key generated. It will be
+  discarded after the request finishes.
   Attributes:
       name:
           Required. Name of the key. This is an arbitrary string used to
@@ -17594,10 +17382,8 @@ UnwrappedCryptoKey = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _UNWRAPPEDCRYPTOKEY,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Using raw keys is prone to security risks due to
-  accidentally leaking the key. Choose another type of key if possible.
-  
-  
+        "__doc__": """Using raw keys is prone to security risks due to accidentally leaking
+  the key. Choose another type of key if possible.
   Attributes:
       key:
           Required. A 128/192/256 bit key.
@@ -17613,12 +17399,10 @@ KmsWrappedCryptoKey = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _KMSWRAPPEDCRYPTOKEY,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Include to use an existing data crypto key wrapped by KMS.
-  The wrapped key must be a 128/192/256 bit key. Authorization requires
-  the following IAM permissions when sending a request to perform a crypto
+        "__doc__": """Include to use an existing data crypto key wrapped by KMS. The wrapped
+  key must be a 128/192/256 bit key. Authorization requires the
+  following IAM permissions when sending a request to perform a crypto
   transformation using a kms-wrapped crypto key: dlp.kms.encrypt
-  
-  
   Attributes:
       wrapped_key:
           Required. The wrapped data crypto key.
@@ -17637,11 +17421,9 @@ DateShiftConfig = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _DATESHIFTCONFIG,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Shifts dates by random number of days, with option to be
-  consistent for the same context. See
-  https://cloud.google.com/dlp/docs/concepts-date-shifting to learn more.
-  
-  
+        "__doc__": """Shifts dates by random number of days, with option to be consistent
+  for the same context. See https://cloud.google.com/dlp/docs/concepts-
+  date-shifting to learn more.
   Attributes:
       upper_bound_days:
           Required. Range of shift in days. Actual shift will be
@@ -17681,10 +17463,8 @@ InfoTypeTransformations = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _INFOTYPETRANSFORMATIONS_INFOTYPETRANSFORMATION,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """A transformation to apply to text that is identified as a
-    specific info_type.
-    
-    
+                "__doc__": """A transformation to apply to text that is identified as a specific
+    info_type.
     Attributes:
         info_types:
             InfoTypes to apply the transformation to. An empty list will
@@ -17699,12 +17479,10 @@ InfoTypeTransformations = _reflection.GeneratedProtocolMessageType(
         ),
         "DESCRIPTOR": _INFOTYPETRANSFORMATIONS,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """A type of transformation that will scan unstructured text
-  and apply various ``PrimitiveTransformation``\ s to each finding, where
-  the transformation is applied to only values that were identified as a
+        "__doc__": """A type of transformation that will scan unstructured text and apply
+  various ``PrimitiveTransformation``\ s to each finding, where the
+  transformation is applied to only values that were identified as a
   specific info_type.
-  
-  
   Attributes:
       transformations:
           Required. Transformation for each infoType. Cannot specify
@@ -17723,8 +17501,6 @@ FieldTransformation = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _FIELDTRANSFORMATION,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """The transformation to apply to the field.
-  
-  
   Attributes:
       fields:
           Required. Input field(s) to apply the transformation to.
@@ -17755,10 +17531,8 @@ RecordTransformations = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _RECORDTRANSFORMATIONS,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """A type of transformation that is applied over structured
-  data such as a table.
-  
-  
+        "__doc__": """A type of transformation that is applied over structured data such as
+  a table.
   Attributes:
       field_transformations:
           Transform the record by applying various field
@@ -17779,10 +17553,8 @@ RecordSuppression = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _RECORDSUPPRESSION,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Configuration to suppress records whose suppression
-  conditions evaluate to true.
-  
-  
+        "__doc__": """Configuration to suppress records whose suppression conditions
+  evaluate to true.
   Attributes:
       condition:
           A condition that when it evaluates to true will result in the
@@ -17814,8 +17586,6 @@ RecordCondition = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _RECORDCONDITION_CONDITIONS,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
                 "__doc__": """A collection of conditions.
-    
-    
     Attributes:
         conditions:
             A collection of conditions.
@@ -17830,8 +17600,6 @@ RecordCondition = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _RECORDCONDITION_EXPRESSIONS,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
                 "__doc__": """An expression, consisting or an operator and conditions.
-    
-    
     Attributes:
         logical_operator:
             The operator to apply to the result of conditions. Default and
@@ -17846,27 +17614,20 @@ RecordCondition = _reflection.GeneratedProtocolMessageType(
         ),
         "DESCRIPTOR": _RECORDCONDITION,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """The field type of ``value`` and ``field`` do not need to
-  match to be considered equal, but not all comparisons are possible.
-  EQUAL_TO and NOT_EQUAL_TO attempt to compare even with incompatible
-  types, but all other comparisons are invalid with incompatible types. A
-  ``value`` of type:
-  
-  -  ``string`` can be compared against all other types
-  -  ``boolean`` can only be compared against other booleans
-  -  ``integer`` can be compared against doubles or a string if the string
-     value can be parsed as an integer.
-  -  ``double`` can be compared against integers or a string if the string
-     can be parsed as a double.
-  -  ``Timestamp`` can be compared against strings in RFC 3339 date string
-     format.
-  -  ``TimeOfDay`` can be compared against timestamps and strings in the
-     format of ‘HH:mm:ss’.
-  
-  If we fail to compare do to type mismatch, a warning will be given and
-  the condition will evaluate to false.
-  
-  
+        "__doc__": """The field type of ``value`` and ``field`` do not need to match to be
+  considered equal, but not all comparisons are possible. EQUAL_TO and
+  NOT_EQUAL_TO attempt to compare even with incompatible types, but all
+  other comparisons are invalid with incompatible types. A ``value`` of
+  type:  -  ``string`` can be compared against all other types -
+  ``boolean`` can only be compared against other booleans -  ``integer``
+  can be compared against doubles or a string if the string    value can
+  be parsed as an integer. -  ``double`` can be compared against
+  integers or a string if the string    can be parsed as a double. -
+  ``Timestamp`` can be compared against strings in RFC 3339 date string
+  format. -  ``TimeOfDay`` can be compared against timestamps and
+  strings in the    format of ‘HH:mm:ss’.  If we fail to compare do to
+  type mismatch, a warning will be given and the condition will evaluate
+  to false.
   Attributes:
       field:
           Required. Field within the record this condition is evaluated
@@ -17895,8 +17656,6 @@ TransformationOverview = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _TRANSFORMATIONOVERVIEW,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Overview of the modifications that occurred.
-  
-  
   Attributes:
       transformed_bytes:
           Total size in bytes that were transformed in some way.
@@ -17918,10 +17677,8 @@ TransformationSummary = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _TRANSFORMATIONSUMMARY_SUMMARYRESULT,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """A collection that informs the user the number of times a
-    particular ``TransformationResultCode`` and error details occurred.
-    
-    
+                "__doc__": """A collection that informs the user the number of times a particular
+    ``TransformationResultCode`` and error details occurred.
     Attributes:
         count:
             Number of transformations counted by this result.
@@ -17936,11 +17693,8 @@ TransformationSummary = _reflection.GeneratedProtocolMessageType(
         ),
         "DESCRIPTOR": _TRANSFORMATIONSUMMARY,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Summary of a single transformation. Only one of
-  ‘transformation’, ‘field_transformation’, or ‘record_suppress’ will be
-  set.
-  
-  
+        "__doc__": """Summary of a single transformation. Only one of ‘transformation’,
+  ‘field_transformation’, or ‘record_suppress’ will be set.
   Attributes:
       info_type:
           Set if the transformation was limited to a specific InfoType.
@@ -17973,8 +17727,6 @@ Schedule = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _SCHEDULE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Schedule for triggeredJobs.
-  
-  
   Attributes:
       recurrence_period_duration:
           With this option a job is started a regular periodic basis.
@@ -17995,10 +17747,8 @@ Manual = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _MANUAL,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Job trigger option for hybrid jobs. Jobs must be manually
-  created and finished.
-  
-  """,
+        "__doc__": """Job trigger option for hybrid jobs. Jobs must be manually created and
+  finished.""",
         # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.Manual)
     },
 )
@@ -18010,12 +17760,10 @@ InspectTemplate = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _INSPECTTEMPLATE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """The inspectTemplate contains a configuration (set of types
-  of sensitive data to be detected) to be used anywhere you otherwise
-  would normally specify InspectConfig. See
+        "__doc__": """The inspectTemplate contains a configuration (set of types of
+  sensitive data to be detected) to be used anywhere you otherwise would
+  normally specify InspectConfig. See
   https://cloud.google.com/dlp/docs/concepts-templates to learn more.
-  
-  
   Attributes:
       name:
           Output only. The template name.  The template will have one of
@@ -18045,11 +17793,9 @@ DeidentifyTemplate = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _DEIDENTIFYTEMPLATE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """DeidentifyTemplates contains instructions on how to
-  de-identify content. See
-  https://cloud.google.com/dlp/docs/concepts-templates to learn more.
-  
-  
+        "__doc__": """DeidentifyTemplates contains instructions on how to de-identify
+  content. See https://cloud.google.com/dlp/docs/concepts-templates to
+  learn more.
   Attributes:
       name:
           Output only. The template name.  The template will have one of
@@ -18078,11 +17824,8 @@ Error = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _ERROR,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Details information about an error encountered during job
-  execution or the results of an unsuccessful activation of the
-  JobTrigger.
-  
-  
+        "__doc__": """Details information about an error encountered during job execution or
+  the results of an unsuccessful activation of the JobTrigger.
   Attributes:
       details:
           Detailed error codes and messages.
@@ -18110,8 +17853,6 @@ JobTrigger = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _JOBTRIGGER,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """What event needs to occur for a new job to be started.
-  
-  
   Attributes:
       schedule:
           Create a job on a repeating basis based on the elapse of time.
@@ -18168,11 +17909,9 @@ Action = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _ACTION_SAVEFINDINGS,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """If set, the detailed findings will be persisted to the
-    specified OutputStorageConfig. Only a single instance of this action can
-    be specified. Compatible with: Inspect, Risk
-    
-    
+                "__doc__": """If set, the detailed findings will be persisted to the specified
+    OutputStorageConfig. Only a single instance of this action can be
+    specified. Compatible with: Inspect, Risk
     Attributes:
         output_config:
             Location to store findings outside of DLP.
@@ -18186,13 +17925,11 @@ Action = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _ACTION_PUBLISHTOPUBSUB,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """Publish a message into given Pub/Sub topic when DlpJob has
-    completed. The message contains a single field, ``DlpJobName``, which is
-    equal to the finished job’s
-    ```DlpJob.name`` </dlp/docs/reference/rest/v2/projects.dlpJobs#DlpJob>`__.
-    Compatible with: Inspect, Risk
-    
-    
+                "__doc__": """Publish a message into given Pub/Sub topic when DlpJob has completed.
+    The message contains a single field, ``DlpJobName``, which is equal to
+    the finished job’s ```DlpJob.name``
+    </dlp/docs/reference/rest/v2/projects.dlpJobs#DlpJob>`__. Compatible
+    with: Inspect, Risk
     Attributes:
         topic:
             Cloud Pub/Sub topic to send notifications to. The topic must
@@ -18209,16 +17946,14 @@ Action = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _ACTION_PUBLISHSUMMARYTOCSCC,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """Publish the result summary of a DlpJob to the Cloud
-    Security Command Center (CSCC Alpha). This action is only available for
-    projects which are parts of an organization and whitelisted for the
-    alpha Cloud Security Command Center. The action will publish count of
-    finding instances and their info types. The summary of findings will be
-    persisted in CSCC and are governed by CSCC service-specific policy, see
-    https://cloud.google.com/terms/service-terms Only a single instance of
-    this action can be specified. Compatible with: Inspect
-    
-    """,
+                "__doc__": """Publish the result summary of a DlpJob to the Cloud Security Command
+    Center (CSCC Alpha). This action is only available for projects which
+    are parts of an organization and whitelisted for the alpha Cloud
+    Security Command Center. The action will publish count of finding
+    instances and their info types. The summary of findings will be
+    persisted in CSCC and are governed by CSCC service-specific policy,
+    see https://cloud.google.com/terms/service-terms Only a single
+    instance of this action can be specified. Compatible with: Inspect""",
                 # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.Action.PublishSummaryToCscc)
             },
         ),
@@ -18228,18 +17963,16 @@ Action = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _ACTION_PUBLISHFINDINGSTOCLOUDDATACATALOG,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """Publish findings of a DlpJob to Cloud Data Catalog. Labels
-    summarizing the results of the DlpJob will be applied to the entry for
-    the resource scanned in Cloud Data Catalog. Any labels previously
-    written by another DlpJob will be deleted. InfoType naming patterns are
+                "__doc__": """Publish findings of a DlpJob to Cloud Data Catalog. Labels summarizing
+    the results of the DlpJob will be applied to the entry for the
+    resource scanned in Cloud Data Catalog. Any labels previously written
+    by another DlpJob will be deleted. InfoType naming patterns are
     strictly enforced when using this feature. Note that the findings will
     be persisted in Cloud Data Catalog storage and are governed by Data
     Catalog service-specific policy, see
     https://cloud.google.com/terms/service-terms Only a single instance of
     this action can be specified and only allowed if all resources being
-    scanned are BigQuery tables. Compatible with: Inspect
-    
-    """,
+    scanned are BigQuery tables. Compatible with: Inspect""",
                 # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.Action.PublishFindingsToCloudDataCatalog)
             },
         ),
@@ -18249,10 +17982,8 @@ Action = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _ACTION_JOBNOTIFICATIONEMAILS,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """Enable email notification to project owners and editors on
-    jobs’s completion/failure.
-    
-    """,
+                "__doc__": """Enable email notification to project owners and editors on jobs’s
+    completion/failure.""",
                 # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.Action.JobNotificationEmails)
             },
         ),
@@ -18262,13 +17993,10 @@ Action = _reflection.GeneratedProtocolMessageType(
             {
                 "DESCRIPTOR": _ACTION_PUBLISHTOSTACKDRIVER,
                 "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-                "__doc__": """Enable Stackdriver metric
-    dlp.googleapis.com/finding_count. This will publish a metric to stack
-    driver on each infotype requested and how many findings were found for
-    it. CustomDetectors will be bucketed as ‘Custom’ under the Stackdriver
-    label ‘info_type’.
-    
-    """,
+                "__doc__": """Enable Stackdriver metric dlp.googleapis.com/finding_count. This will
+    publish a metric to stack driver on each infotype requested and how
+    many findings were found for it. CustomDetectors will be bucketed as
+    ‘Custom’ under the Stackdriver label ‘info_type’.""",
                 # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.Action.PublishToStackdriver)
             },
         ),
@@ -18276,8 +18004,6 @@ Action = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """A task to execute on the completion of a job. See
   https://cloud.google.com/dlp/docs/concepts-actions to learn more.
-  
-  
   Attributes:
       save_findings:
           Save resulting findings in a provided location.
@@ -18311,8 +18037,6 @@ CreateInspectTemplateRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _CREATEINSPECTTEMPLATEREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for CreateInspectTemplate.
-  
-  
   Attributes:
       parent:
           Required. The parent resource name, for example projects/my-
@@ -18340,8 +18064,6 @@ UpdateInspectTemplateRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _UPDATEINSPECTTEMPLATEREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for UpdateInspectTemplate.
-  
-  
   Attributes:
       name:
           Required. Resource name of organization and inspectTemplate to
@@ -18365,8 +18087,6 @@ GetInspectTemplateRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _GETINSPECTTEMPLATEREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for GetInspectTemplate.
-  
-  
   Attributes:
       name:
           Required. Resource name of the organization and
@@ -18386,8 +18106,6 @@ ListInspectTemplatesRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTINSPECTTEMPLATESREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for ListInspectTemplates.
-  
-  
   Attributes:
       parent:
           Required. The parent resource name, for example projects/my-
@@ -18424,8 +18142,6 @@ ListInspectTemplatesResponse = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTINSPECTTEMPLATESRESPONSE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Response message for ListInspectTemplates.
-  
-  
   Attributes:
       inspect_templates:
           List of inspectTemplates, up to page_size in
@@ -18446,8 +18162,6 @@ DeleteInspectTemplateRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _DELETEINSPECTTEMPLATEREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for DeleteInspectTemplate.
-  
-  
   Attributes:
       name:
           Required. Resource name of the organization and
@@ -18467,8 +18181,6 @@ CreateJobTriggerRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _CREATEJOBTRIGGERREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for CreateJobTrigger.
-  
-  
   Attributes:
       parent:
           Required. The parent resource name, for example projects/my-
@@ -18495,8 +18207,6 @@ ActivateJobTriggerRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _ACTIVATEJOBTRIGGERREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for ActivateJobTrigger.
-  
-  
   Attributes:
       name:
           Required. Resource name of the trigger to activate, for
@@ -18514,8 +18224,6 @@ UpdateJobTriggerRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _UPDATEJOBTRIGGERREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for UpdateJobTrigger.
-  
-  
   Attributes:
       name:
           Required. Resource name of the project and the triggeredJob,
@@ -18538,8 +18246,6 @@ GetJobTriggerRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _GETJOBTRIGGERREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for GetJobTrigger.
-  
-  
   Attributes:
       name:
           Required. Resource name of the project and the triggeredJob,
@@ -18557,11 +18263,9 @@ CreateDlpJobRequest = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _CREATEDLPJOBREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Request message for CreateDlpJobRequest. Used to initiate
-  long running jobs such as calculating risk metrics or inspecting Google
-  Cloud Storage.
-  
-  
+        "__doc__": """Request message for CreateDlpJobRequest. Used to initiate long running
+  jobs such as calculating risk metrics or inspecting Google Cloud
+  Storage.
   Attributes:
       parent:
           Required. The parent resource name, for example projects/my-
@@ -18592,8 +18296,6 @@ ListJobTriggersRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTJOBTRIGGERSREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for ListJobTriggers.
-  
-  
   Attributes:
       parent:
           Required. The parent resource name, for example ``projects/my-
@@ -18652,8 +18354,6 @@ ListJobTriggersResponse = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTJOBTRIGGERSRESPONSE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Response message for ListJobTriggers.
-  
-  
   Attributes:
       job_triggers:
           List of triggeredJobs, up to page_size in
@@ -18674,8 +18374,6 @@ DeleteJobTriggerRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _DELETEJOBTRIGGERREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for DeleteJobTrigger.
-  
-  
   Attributes:
       name:
           Required. Resource name of the project and the triggeredJob,
@@ -18694,8 +18392,6 @@ InspectJobConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _INSPECTJOBCONFIG,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Controls what and how to inspect for findings.
-  
-  
   Attributes:
       storage_config: \
           The data to scan.
@@ -18720,8 +18416,6 @@ DlpJob = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _DLPJOB,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Combines all of the information about a DLP job.
-  
-  
   Attributes:
       name:
           The server-assigned name.
@@ -18757,8 +18451,6 @@ GetDlpJobRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _GETDLPJOBREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """The request message for [DlpJobs.GetDlpJob][].
-  
-  
   Attributes:
       name:
           Required. The name of the DlpJob resource.
@@ -18775,8 +18467,6 @@ ListDlpJobsRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTDLPJOBSREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """The request message for listing DLP jobs.
-  
-  
   Attributes:
       parent:
           Required. The parent resource name, for example projects/my-
@@ -18834,8 +18524,6 @@ ListDlpJobsResponse = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTDLPJOBSRESPONSE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """The response message for listing DLP jobs.
-  
-  
   Attributes:
       jobs:
           A list of DlpJobs that matches the specified filter in the
@@ -18855,8 +18543,6 @@ CancelDlpJobRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _CANCELDLPJOBREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """The request message for canceling a DLP job.
-  
-  
   Attributes:
       name:
           Required. The name of the DlpJob resource to be cancelled.
@@ -18873,8 +18559,6 @@ FinishDlpJobRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _FINISHDLPJOBREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """The request message for finishing a DLP hybrid job.
-  
-  
   Attributes:
       name:
           Required. The name of the DlpJob resource to be cancelled.
@@ -18891,8 +18575,6 @@ DeleteDlpJobRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _DELETEDLPJOBREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """The request message for deleting a DLP job.
-  
-  
   Attributes:
       name:
           Required. The name of the DlpJob resource to be deleted.
@@ -18909,8 +18591,6 @@ CreateDeidentifyTemplateRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _CREATEDEIDENTIFYTEMPLATEREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for CreateDeidentifyTemplate.
-  
-  
   Attributes:
       parent:
           Required. The parent resource name, for example projects/my-
@@ -18938,8 +18618,6 @@ UpdateDeidentifyTemplateRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _UPDATEDEIDENTIFYTEMPLATEREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for UpdateDeidentifyTemplate.
-  
-  
   Attributes:
       name:
           Required. Resource name of organization and deidentify
@@ -18963,8 +18641,6 @@ GetDeidentifyTemplateRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _GETDEIDENTIFYTEMPLATEREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for GetDeidentifyTemplate.
-  
-  
   Attributes:
       name:
           Required. Resource name of the organization and deidentify
@@ -18984,8 +18660,6 @@ ListDeidentifyTemplatesRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTDEIDENTIFYTEMPLATESREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for ListDeidentifyTemplates.
-  
-  
   Attributes:
       parent:
           Required. The parent resource name, for example projects/my-
@@ -19022,8 +18696,6 @@ ListDeidentifyTemplatesResponse = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTDEIDENTIFYTEMPLATESRESPONSE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Response message for ListDeidentifyTemplates.
-  
-  
   Attributes:
       deidentify_templates:
           List of deidentify templates, up to page_size in
@@ -19044,8 +18716,6 @@ DeleteDeidentifyTemplateRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _DELETEDEIDENTIFYTEMPLATEREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for DeleteDeidentifyTemplate.
-  
-  
   Attributes:
       name:
           Required. Resource name of the organization and deidentify
@@ -19064,14 +18734,12 @@ LargeCustomDictionaryConfig = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _LARGECUSTOMDICTIONARYCONFIG,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Configuration for a custom dictionary created from a data
-  source of any size up to the maximum size defined in the
-  `limits <https://cloud.google.com/dlp/limits>`__ page. The artifacts of
+        "__doc__": """Configuration for a custom dictionary created from a data source of
+  any size up to the maximum size defined in the `limits
+  <https://cloud.google.com/dlp/limits>`__ page. The artifacts of
   dictionary creation are stored in the specified Google Cloud Storage
   location. Consider using ``CustomInfoType.Dictionary`` for smaller
   dictionaries that satisfy the size requirements.
-  
-  
   Attributes:
       output_path:
           Location to store dictionary artifacts in Google Cloud
@@ -19097,8 +18765,6 @@ LargeCustomDictionaryStats = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LARGECUSTOMDICTIONARYSTATS,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Summary statistics of a custom dictionary.
-  
-  
   Attributes:
       approx_num_phrases:
           Approximate number of distinct phrases in the dictionary.
@@ -19114,11 +18780,9 @@ StoredInfoTypeConfig = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _STOREDINFOTYPECONFIG,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Configuration for stored infoTypes. All fields and
-  subfield are provided by the user. For more information, see
+        "__doc__": """Configuration for stored infoTypes. All fields and subfield are
+  provided by the user. For more information, see
   https://cloud.google.com/dlp/docs/creating-custom-infotypes.
-  
-  
   Attributes:
       display_name:
           Display name of the StoredInfoType (max 256 characters).
@@ -19146,8 +18810,6 @@ StoredInfoTypeStats = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _STOREDINFOTYPESTATS,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Statistics for a StoredInfoType.
-  
-  
   Attributes:
       type:
           Stat types
@@ -19166,10 +18828,8 @@ StoredInfoTypeVersion = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _STOREDINFOTYPEVERSION,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Version of a StoredInfoType, including the configuration
-  used to build it, create timestamp, and current state.
-  
-  
+        "__doc__": """Version of a StoredInfoType, including the configuration used to build
+  it, create timestamp, and current state.
   Attributes:
       config:
           StoredInfoType configuration.
@@ -19206,10 +18866,8 @@ StoredInfoType = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _STOREDINFOTYPE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """StoredInfoType resource message that contains information
-  about the current version and any pending updates.
-  
-  
+        "__doc__": """StoredInfoType resource message that contains information about the
+  current version and any pending updates.
   Attributes:
       name:
           Resource name.
@@ -19231,8 +18889,6 @@ CreateStoredInfoTypeRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _CREATESTOREDINFOTYPEREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for CreateStoredInfoType.
-  
-  
   Attributes:
       parent:
           Required. The parent resource name, for example projects/my-
@@ -19261,8 +18917,6 @@ UpdateStoredInfoTypeRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _UPDATESTOREDINFOTYPEREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for UpdateStoredInfoType.
-  
-  
   Attributes:
       name:
           Required. Resource name of organization and storedInfoType to
@@ -19288,8 +18942,6 @@ GetStoredInfoTypeRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _GETSTOREDINFOTYPEREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for GetStoredInfoType.
-  
-  
   Attributes:
       name:
           Required. Resource name of the organization and storedInfoType
@@ -19309,8 +18961,6 @@ ListStoredInfoTypesRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTSTOREDINFOTYPESREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for ListStoredInfoTypes.
-  
-  
   Attributes:
       parent:
           Required. The parent resource name, for example projects/my-
@@ -19347,8 +18997,6 @@ ListStoredInfoTypesResponse = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTSTOREDINFOTYPESRESPONSE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Response message for ListStoredInfoTypes.
-  
-  
   Attributes:
       stored_info_types:
           List of storedInfoTypes, up to page_size in
@@ -19369,8 +19017,6 @@ DeleteStoredInfoTypeRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _DELETESTOREDINFOTYPEREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Request message for DeleteStoredInfoType.
-  
-  
   Attributes:
       name:
           Required. Resource name of the organization and storedInfoType
@@ -19389,10 +19035,7 @@ HybridInspectJobTriggerRequest = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _HYBRIDINSPECTJOBTRIGGERREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Request to search for potentially sensitive info in a
-  custom location.
-  
-  
+        "__doc__": """Request to search for potentially sensitive info in a custom location.
   Attributes:
       name:
           Required. Resource name of the trigger to execute a hybrid
@@ -19412,10 +19055,7 @@ HybridInspectDlpJobRequest = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _HYBRIDINSPECTDLPJOBREQUEST,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Request to search for potentially sensitive info in a
-  custom location.
-  
-  
+        "__doc__": """Request to search for potentially sensitive info in a custom location.
   Attributes:
       name:
           Required. Resource name of the job to execute a hybrid inspect
@@ -19434,10 +19074,8 @@ HybridContentItem = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _HYBRIDCONTENTITEM,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """An individual hybrid item to inspect. Will be stored
-  temporarily during processing.
-  
-  
+        "__doc__": """An individual hybrid item to inspect. Will be stored temporarily
+  during processing.
   Attributes:
       item:
           The item to inspect.
@@ -19465,8 +19103,6 @@ HybridFindingDetails = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _HYBRIDFINDINGDETAILS,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
         "__doc__": """Populate to associate additional data with each finding.
-  
-  
   Attributes:
       container_details:
           Details about the container where the content being inspected
@@ -19513,10 +19149,7 @@ HybridInspectResponse = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _HYBRIDINSPECTRESPONSE,
         "__module__": "google.cloud.dlp_v2.proto.dlp_pb2",
-        "__doc__": """Quota exceeded errors will be thrown once quota has been
-  met.
-  
-  """,
+        "__doc__": """Quota exceeded errors will be thrown once quota has been met.""",
         # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2.HybridInspectResponse)
     },
 )
