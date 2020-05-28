@@ -3,15 +3,15 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-runtimeconfig",
-        "sha": "3256918855326b4975f9e5136b21e005c122f611"
+        "remote": "https://github.com/googleapis/python-runtimeconfig.git",
+        "sha": "a91620b0b343063865d5e22748e8cefcb85a3e7e"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "c585ac3b5eff5cd2097a5315ffd9cf4823cc1ed2"
+        "sha": "274dd49554809834287c24b6dd324a85283f1182"
       }
     }
   ]
