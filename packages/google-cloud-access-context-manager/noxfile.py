@@ -156,10 +156,10 @@ def system(session):
         session.run("py.test", "--verbose", system_test_folder_path, *session.posargs)
 
 
+@nox.session(python=["2.7", "3.5", "3.6", "3.7", "3.8"])
 @nox.parametrize(
     "library", ["python-asset"], ids=["asset"],
 )
-@nox.session(python=["2.7", "3.5", "3.6", "3.7", "3.8"])
 def test(session, library):
     """Run tests from a downstream libraries.
     To verify that any changes we make here will not break downstream libraries, clone
