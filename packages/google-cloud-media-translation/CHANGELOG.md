@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/googleapis/python-media-translation/compare/v0.1.1...v0.2.0) (2020-05-28)
+
+
+### Features
+
+* add mtls support ([#7](https://www.github.com/googleapis/python-media-translation/issues/7)) ([1560ad8](https://www.github.com/googleapis/python-media-translation/commit/1560ad88713766dae0112fbe96663a873fb099df))
+
 ### [0.1.1](https://www.github.com/googleapis/python-media-translation/compare/v0.1.0...v0.1.1) (2020-03-23)
 
 
