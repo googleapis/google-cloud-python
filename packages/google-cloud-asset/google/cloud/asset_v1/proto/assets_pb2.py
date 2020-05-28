@@ -569,8 +569,9 @@ TemporalAsset = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _TEMPORALASSET,
         "__module__": "google.cloud.asset_v1.proto.assets_pb2",
-        "__doc__": """An asset in Google Cloud and its temporal metadata, including the time
-  window when it was observed and its status during that window.
+        "__doc__": """An asset in Google Cloud and its temporal metadata,
+  including the time window when it was observed and its status during
+  that window.
   
   
   Attributes:
@@ -614,8 +615,8 @@ Asset = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _ASSET,
         "__module__": "google.cloud.asset_v1.proto.assets_pb2",
-        "__doc__": """An asset in Google Cloud. An asset can be any resource in
-  the Google Cloud `resource
+        "__doc__": """An asset in Google Cloud. An asset can be any resource in the Google
+  Cloud `resource
   hierarchy <https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>`__,
   a resource outside the Google Cloud resource hierarchy (such as Google
   Kubernetes Engine clusters and objects), or a Cloud IAM policy.
