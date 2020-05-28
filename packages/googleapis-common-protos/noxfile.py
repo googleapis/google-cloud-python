@@ -121,13 +121,12 @@ def system(session):
     if system_test_folder_exists:
         session.run("py.test", "--verbose", system_test_folder_path, *session.posargs)
 
-
+@nox.session(python=["2.7", "3.5", "3.6", "3.7", "3.8"])
 @nox.parametrize(
     "library",
     ["python-pubsub", "python-firestore", "python-storage", "python-texttospeech"],
     ids=["pubsub", "firestore", "storage", "texttospeech"],
 )
-@nox.session(python=["2.7", "3.5", "3.6", "3.7", "3.8"])
 def test(session, library):
     """Run tests from a downstream libraries.
 
