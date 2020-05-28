@@ -326,8 +326,6 @@ BigQueryTableSpec = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _BIGQUERYTABLESPEC,
         "__module__": "google.cloud.datacatalog_v1beta1.proto.table_spec_pb2",
         "__doc__": """Describes a BigQuery table.
-  
-  
   Attributes:
       table_source_type:
           Output only. The table source type.
@@ -352,8 +350,6 @@ ViewSpec = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _VIEWSPEC,
         "__module__": "google.cloud.datacatalog_v1beta1.proto.table_spec_pb2",
         "__doc__": """Table view specification.
-  
-  
   Attributes:
       view_query:
           Output only. The query that defines the table view.
@@ -370,8 +366,6 @@ TableSpec = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _TABLESPEC,
         "__module__": "google.cloud.datacatalog_v1beta1.proto.table_spec_pb2",
         "__doc__": """Normal BigQuery table spec.
-  
-  
   Attributes:
       grouped_entry:
           Output only. If the table is a dated shard, i.e., with name
@@ -394,9 +388,8 @@ BigQueryDateShardedSpec = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.table_spec_pb2",
         "__doc__": """Spec for a group of BigQuery tables with name pattern
   ``[prefix]YYYYMMDD``. Context:
-  https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding
-  
-  
+  https://cloud.google.com/bigquery/docs/partitioned-
+  tables#partitioning_versus_sharding
   Attributes:
       dataset:
           Output only. The Data Catalog resource name of the dataset

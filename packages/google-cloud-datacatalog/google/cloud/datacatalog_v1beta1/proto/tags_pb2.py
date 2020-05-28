@@ -893,14 +893,11 @@ Tag = _reflection.GeneratedProtocolMessageType(
         ),
         "DESCRIPTOR": _TAG,
         "__module__": "google.cloud.datacatalog_v1beta1.proto.tags_pb2",
-        "__doc__": """Tags are used to attach custom metadata to Data Catalog
-  resources. Tags conform to the specifications within their tag template.
-  
-  See `Data Catalog
-  IAM <https://cloud.google.com/data-catalog/docs/concepts/iam>`__ for
-  information on the permissions needed to create or view tags.
-  
-  
+        "__doc__": """Tags are used to attach custom metadata to Data Catalog resources.
+  Tags conform to the specifications within their tag template.  See
+  `Data Catalog IAM <https://cloud.google.com/data-
+  catalog/docs/concepts/iam>`__ for information on the permissions
+  needed to create or view tags.
   Attributes:
       name:
           The resource name of the tag in URL format. Example:  -  proje
@@ -950,8 +947,6 @@ TagField = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _TAGFIELD_ENUMVALUE,
                 "__module__": "google.cloud.datacatalog_v1beta1.proto.tags_pb2",
                 "__doc__": """Holds an enum value.
-    
-    
     Attributes:
         display_name:
             The display name of the enum value.
@@ -961,10 +956,8 @@ TagField = _reflection.GeneratedProtocolMessageType(
         ),
         "DESCRIPTOR": _TAGFIELD,
         "__module__": "google.cloud.datacatalog_v1beta1.proto.tags_pb2",
-        "__doc__": """Contains the value and supporting information for a field
-  within a [Tag][google.cloud.datacatalog.v1beta1.Tag].
-  
-  
+        "__doc__": """Contains the value and supporting information for a field within a
+  [Tag][google.cloud.datacatalog.v1beta1.Tag].
   Attributes:
       display_name:
           Output only. The display name of this field.
@@ -1011,17 +1004,14 @@ TagTemplate = _reflection.GeneratedProtocolMessageType(
         ),
         "DESCRIPTOR": _TAGTEMPLATE,
         "__module__": "google.cloud.datacatalog_v1beta1.proto.tags_pb2",
-        "__doc__": """A tag template defines a tag, which can have one or more
-  typed fields. The template is used to create and attach the tag to GCP
-  resources. `Tag template
-  roles <https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles>`__
-  provide permissions to create, edit, and use the template. See, for
-  example, the `TagTemplate
-  User <https://cloud.google.com/data-catalog/docs/how-to/template-user>`__
+        "__doc__": """A tag template defines a tag, which can have one or more typed fields.
+  The template is used to create and attach the tag to GCP resources.
+  `Tag template roles <https://cloud.google.com/iam/docs/understanding-
+  roles#data-catalog-roles>`__ provide permissions to create, edit, and
+  use the template. See, for example, the `TagTemplate User
+  <https://cloud.google.com/data-catalog/docs/how-to/template-user>`__
   role, which includes permission to use the tag template to tag
   resources.
-  
-  
   Attributes:
       name:
           The resource name of the tag template in URL format. Example:
@@ -1054,10 +1044,7 @@ TagTemplateField = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _TAGTEMPLATEFIELD,
         "__module__": "google.cloud.datacatalog_v1beta1.proto.tags_pb2",
-        "__doc__": """The template for an individual field within a tag
-  template.
-  
-  
+        "__doc__": """The template for an individual field within a tag template.
   Attributes:
       name:
           Output only. The resource name of the tag template field in

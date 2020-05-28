@@ -173,10 +173,8 @@ SearchCatalogResult = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _SEARCHCATALOGRESULT,
         "__module__": "google.cloud.datacatalog_v1beta1.proto.search_pb2",
-        "__doc__": """A result that appears in the response of a search request.
-  Each result captures details of one entry that matches the search.
-  
-  
+        "__doc__": """A result that appears in the response of a search request. Each result
+  captures details of one entry that matches the search.
   Attributes:
       search_result_type:
           Type of the search result. This field can be used to determine
