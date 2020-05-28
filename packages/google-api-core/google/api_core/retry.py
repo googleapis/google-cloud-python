@@ -288,6 +288,10 @@ class Retry(object):
 
         return retry_wrapped_func
 
+    @property
+    def deadline(self):
+        return self._deadline
+
     def with_deadline(self, deadline):
         """Return a copy of this retry with the given deadline.
 

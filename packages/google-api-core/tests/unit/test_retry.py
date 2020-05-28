@@ -162,6 +162,7 @@ class TestRetry(object):
         assert retry_._multiplier == 2
         assert retry_._deadline == 120
         assert retry_._on_error is None
+        assert retry_.deadline == 120
 
     def test_constructor_options(self):
         _some_function = mock.Mock()
