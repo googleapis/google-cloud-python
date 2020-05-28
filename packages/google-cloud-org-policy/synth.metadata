@@ -3,8 +3,8 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-org-policy.git",
-        "sha": "316d35f8985e2239acdce078aec24780bebdd14e"
+        "remote": "https://github.com/googleapis/python-org-policy.git",
+        "sha": "8ca951559161e00421e4e6f05ac62ec6d1c781b0"
       }
     },
     {
