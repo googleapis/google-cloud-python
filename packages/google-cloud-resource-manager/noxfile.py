@@ -72,6 +72,7 @@ def default(session):
     session.run(
         "py.test",
         "--quiet",
+        "--cov=google.cloud.cloudresourcemanager",
         "--cov=google.cloud",
         "--cov=tests.unit",
         "--cov-append",
@@ -109,8 +110,7 @@ def system(session):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install("mock", "pytest")
-
+    session.install("mock", "pytest", "google-cloud-testutils")
     session.install("-e", ".")
 
     # Run py.test against the system tests.
