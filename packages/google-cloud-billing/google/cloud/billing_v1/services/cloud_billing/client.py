@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019  Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,8 @@
 #
 
 from collections import OrderedDict
-from typing import Dict, Iterable, Iterator, Sequence, Tuple, Type, Union
+import re
+from typing import Callable, Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
@@ -70,8 +71,38 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
     with projects.
     """
 
-    DEFAULT_OPTIONS = ClientOptions.ClientOptions(
-        api_endpoint="cloudbilling.googleapis.com"
+    @staticmethod
+    def _get_default_mtls_endpoint(api_endpoint):
+        """Convert api endpoint to mTLS endpoint.
+        Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
+        "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
+        Args:
+            api_endpoint (Optional[str]): the api endpoint to convert.
+        Returns:
+            str: converted mTLS api endpoint.
+        """
+        if not api_endpoint:
+            return api_endpoint
+
+        mtls_endpoint_re = re.compile(
+            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
+        )
+
+        m = mtls_endpoint_re.match(api_endpoint)
+        name, mtls, sandbox, googledomain = m.groups()
+        if mtls or not googledomain:
+            return api_endpoint
+
+        if sandbox:
+            return api_endpoint.replace(
+                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
+            )
+
+        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
+
+    DEFAULT_ENDPOINT = "cloudbilling.googleapis.com"
+    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
+        DEFAULT_ENDPOINT
     )
 
     @classmethod
@@ -99,7 +130,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         *,
         credentials: credentials.Credentials = None,
         transport: Union[str, CloudBillingTransport] = None,
-        client_options: ClientOptions = DEFAULT_OPTIONS,
+        client_options: ClientOptions = None,
     ) -> None:
         """Instantiate the cloud billing client.
 
@@ -113,6 +144,17 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (ClientOptions): Custom options for the client.
+                (1) The ``api_endpoint`` property can be used to override the
+                default endpoint provided by the client.
+                (2) If ``transport`` argument is None, ``client_options`` can be
+                used to create a mutual TLS transport. If ``client_cert_source``
+                is provided, mutual TLS transport will be created with the given
+                ``api_endpoint`` or the default mTLS endpoint, and the client
+                SSL credentials obtained from ``client_cert_source``.
+
+        Raises:
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+                creation failed for any reason.
         """
         if isinstance(client_options, dict):
             client_options = ClientOptions.from_dict(client_options)
@@ -121,17 +163,46 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
         if isinstance(transport, CloudBillingTransport):
+            # transport is a CloudBillingTransport instance.
             if credentials:
                 raise ValueError(
                     "When providing a transport instance, "
                     "provide its credentials directly."
                 )
             self._transport = transport
-        else:
+        elif client_options is None or (
+            client_options.api_endpoint is None
+            and client_options.client_cert_source is None
+        ):
+            # Don't trigger mTLS if we get an empty ClientOptions.
             Transport = type(self).get_transport_class(transport)
             self._transport = Transport(
+                credentials=credentials, host=self.DEFAULT_ENDPOINT
+            )
+        else:
+            # We have a non-empty ClientOptions. If client_cert_source is
+            # provided, trigger mTLS with user provided endpoint or the default
+            # mTLS endpoint.
+            if client_options.client_cert_source:
+                api_mtls_endpoint = (
+                    client_options.api_endpoint
+                    if client_options.api_endpoint
+                    else self.DEFAULT_MTLS_ENDPOINT
+                )
+            else:
+                api_mtls_endpoint = None
+
+            api_endpoint = (
+                client_options.api_endpoint
+                if client_options.api_endpoint
+                else self.DEFAULT_ENDPOINT
+            )
+
+            self._transport = CloudBillingGrpcTransport(
                 credentials=credentials,
-                host=client_options.api_endpoint or "cloudbilling.googleapis.com",
+                host=api_endpoint,
+                api_mtls_endpoint=api_mtls_endpoint,
+                client_cert_source=client_options.client_cert_source,
             )
 
     def get_billing_account(
@@ -185,6 +256,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
+
         if name is not None:
             request.name = name
 
@@ -242,9 +314,6 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # Create or coerce a protobuf request object.
 
         request = cloud_billing.ListBillingAccountsRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -327,6 +396,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
+
         if name is not None:
             request.name = name
         if account is not None:
@@ -407,6 +477,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
+
         if billing_account is not None:
             request.billing_account = billing_account
 
@@ -478,6 +549,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
+
         if name is not None:
             request.name = name
 
@@ -560,6 +632,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
+
         if name is not None:
             request.name = name
 
@@ -677,6 +750,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
+
         if name is not None:
             request.name = name
         if project_billing_info is not None:
@@ -715,10 +789,10 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (:class:`str`):
-                REQUIRED: The resource for which the policy is being
-                requested. ``resource`` is usually specified as a path.
-                For example, a Project resource is specified as
-                ``projects/{project}``.
+                REQUIRED: The resource for which the
+                policy is being requested. See the
+                operation documentation for the
+                appropriate value for this field.
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -735,36 +809,67 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 It is used to specify access control policies for Cloud
                 Platform resources.
 
-                A ``Policy`` consists of a list of ``bindings``. A
-                ``Binding`` binds a list of ``members`` to a ``role``,
-                where the members can be user accounts, Google groups,
-                Google domains, and service accounts. A ``role`` is a
-                named list of permissions defined by IAM.
+                A ``Policy`` is a collection of ``bindings``. A
+                ``binding`` binds one or more ``members`` to a single
+                ``role``. Members can be user accounts, service
+                accounts, Google groups, and domains (such as G Suite).
+                A ``role`` is a named list of permissions (defined by
+                IAM or configured by users). A ``binding`` can
+                optionally specify a ``condition``, which is a logic
+                expression that further constrains the role binding
+                based on attributes about the request and/or target
+                resource.
 
-                **Example**
+                **JSON Example**
 
                 ::
 
                     {
                       "bindings": [
                         {
-                          "role": "roles/owner",
+                          "role": "roles/resourcemanager.organizationAdmin",
                           "members": [
                             "user:mike@example.com",
                             "group:admins@example.com",
                             "domain:google.com",
-                            "serviceAccount:my-other-app@appspot.gserviceaccount.com",
+                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
                           ]
                         },
                         {
-                          "role": "roles/viewer",
-                          "members": ["user:sean@example.com"]
+                          "role": "roles/resourcemanager.organizationViewer",
+                          "members": ["user:eve@example.com"],
+                          "condition": {
+                            "title": "expirable access",
+                            "description": "Does not grant access after Sep 2020",
+                            "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')",
+                          }
                         }
                       ]
                     }
 
+                **YAML Example**
+
+                ::
+
+                    bindings:
+                    - members:
+                      - user:mike@example.com
+                      - group:admins@example.com
+                      - domain:google.com
+                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin
+                    - members:
+                      - user:eve@example.com
+                      role: roles/resourcemanager.organizationViewer
+                      condition:
+                        title: expirable access
+                        description: Does not grant access after Sep 2020
+                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+
                 For a description of IAM and its features, see the `IAM
-                developer's guide <https://cloud.google.com/iam>`__.
+                developer's
+                guide <https://cloud.google.com/iam/docs>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -780,11 +885,13 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy.GetIamPolicyRequest(**request)
+
         elif not request:
             request = iam_policy.GetIamPolicyRequest()
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
+
         if resource is not None:
             request.resource = resource
 
@@ -828,10 +935,10 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (:class:`str`):
-                REQUIRED: The resource for which the policy is being
-                specified. ``resource`` is usually specified as a path.
-                For example, a Project resource is specified as
-                ``projects/{project}``.
+                REQUIRED: The resource for which the
+                policy is being specified. See the
+                operation documentation for the
+                appropriate value for this field.
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -848,36 +955,67 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 It is used to specify access control policies for Cloud
                 Platform resources.
 
-                A ``Policy`` consists of a list of ``bindings``. A
-                ``Binding`` binds a list of ``members`` to a ``role``,
-                where the members can be user accounts, Google groups,
-                Google domains, and service accounts. A ``role`` is a
-                named list of permissions defined by IAM.
+                A ``Policy`` is a collection of ``bindings``. A
+                ``binding`` binds one or more ``members`` to a single
+                ``role``. Members can be user accounts, service
+                accounts, Google groups, and domains (such as G Suite).
+                A ``role`` is a named list of permissions (defined by
+                IAM or configured by users). A ``binding`` can
+                optionally specify a ``condition``, which is a logic
+                expression that further constrains the role binding
+                based on attributes about the request and/or target
+                resource.
 
-                **Example**
+                **JSON Example**
 
                 ::
 
                     {
                       "bindings": [
                         {
-                          "role": "roles/owner",
+                          "role": "roles/resourcemanager.organizationAdmin",
                           "members": [
                             "user:mike@example.com",
                             "group:admins@example.com",
                             "domain:google.com",
-                            "serviceAccount:my-other-app@appspot.gserviceaccount.com",
+                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
                           ]
                         },
                         {
-                          "role": "roles/viewer",
-                          "members": ["user:sean@example.com"]
+                          "role": "roles/resourcemanager.organizationViewer",
+                          "members": ["user:eve@example.com"],
+                          "condition": {
+                            "title": "expirable access",
+                            "description": "Does not grant access after Sep 2020",
+                            "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')",
+                          }
                         }
                       ]
                     }
 
+                **YAML Example**
+
+                ::
+
+                    bindings:
+                    - members:
+                      - user:mike@example.com
+                      - group:admins@example.com
+                      - domain:google.com
+                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin
+                    - members:
+                      - user:eve@example.com
+                      role: roles/resourcemanager.organizationViewer
+                      condition:
+                        title: expirable access
+                        description: Does not grant access after Sep 2020
+                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+
                 For a description of IAM and its features, see the `IAM
-                developer's guide <https://cloud.google.com/iam>`__.
+                developer's
+                guide <https://cloud.google.com/iam/docs>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -893,11 +1031,13 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy.SetIamPolicyRequest(**request)
+
         elif not request:
             request = iam_policy.SetIamPolicyRequest()
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
+
         if resource is not None:
             request.resource = resource
 
@@ -936,10 +1076,10 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 The request object. Request message for
                 `TestIamPermissions` method.
             resource (:class:`str`):
-                REQUIRED: The resource for which the policy detail is
-                being requested. ``resource`` is usually specified as a
-                path. For example, a Project resource is specified as
-                ``projects/{project}``.
+                REQUIRED: The resource for which the
+                policy detail is being requested. See
+                the operation documentation for the
+                appropriate value for this field.
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -975,11 +1115,13 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy.TestIamPermissionsRequest(**request)
+
         elif not request:
             request = iam_policy.TestIamPermissionsRequest()
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
+
         if resource is not None:
             request.resource = resource
 

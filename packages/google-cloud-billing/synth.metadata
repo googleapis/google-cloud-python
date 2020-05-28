@@ -1,20 +1,25 @@
 {
-  "updateTime": "2020-02-27T22:14:39.297369Z",
   "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "https://github.com/googleapis/python-billing.git",
+        "sha": "137538dd6a5e08194acdc1324c8e9e55309168e4"
+      }
+    },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
         "sha": "e9e90a787703ec5d388902e2cb796aaed3a385b4",
-        "internalRef": "297671458",
-        "log": "e9e90a787703ec5d388902e2cb796aaed3a385b4\nDialogflow weekly v2/v2beta1 library update:\n  - adding get validation result\n  - adding field mask override control for output audio config\nImportant updates are also posted at:\nhttps://cloud.google.com/dialogflow/docs/release-notes\n\nPiperOrigin-RevId: 297671458\n\n1a2b05cc3541a5f7714529c665aecc3ea042c646\nAdding .yaml and .json config files.\n\nPiperOrigin-RevId: 297570622\n\ndfe1cf7be44dee31d78f78e485d8c95430981d6e\nPublish `QueryOptions` proto.\n\nIntroduced a `query_options` input in `ExecuteSqlRequest`.\n\nPiperOrigin-RevId: 297497710\n\ndafc905f71e5d46f500b41ed715aad585be062c3\npubsub: revert pull init_rpc_timeout & max_rpc_timeout back to 25 seconds and reset multiplier to 1.0\n\nPiperOrigin-RevId: 297486523\n\n"
+        "internalRef": "297671458"
       }
     },
     {
-      "template": {
-        "name": "python_split_library",
-        "origin": "synthtool.gcp",
-        "version": "2020.2.4"
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "470789cee75ce93c41348ad6aa4c49363a80399b"
       }
     }
   ],

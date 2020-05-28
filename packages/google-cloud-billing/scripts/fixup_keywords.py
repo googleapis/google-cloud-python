@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019  Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ class billingCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
     'create_billing_account': ('billing_account', ),
     'get_billing_account': ('name', ),
-    'get_iam_policy': ('resource', ),
+    'get_iam_policy': ('resource', 'options', ),
     'get_project_billing_info': ('name', ),
     'list_billing_accounts': ('page_size', 'page_token', 'filter', ),
     'list_project_billing_info': ('name', 'page_size', 'page_token', ),
