@@ -65,7 +65,7 @@ class CloudRedisClient(object):
     -  As such, Redis instances are resources of the form:
        ``/projects/{project_id}/locations/{location_id}/instances/{instance_id}``
 
-    Note that location\_id must be referring to a GCP ``region``; for
+    Note that location_id must be referring to a GCP ``region``; for
     example:
 
     -  ``projects/redpepper-1290/locations/us-central1/instances/my-redis``
@@ -424,7 +424,8 @@ class CloudRedisClient(object):
         metadata=None,
     ):
         """
-        Creates a Redis instance based on the specified tier and memory size.
+        Creates a Redis instance based on the specified tier and memory
+        size.
 
         By default, the instance is accessible from the project's `default
         network <https://cloud.google.com/compute/docs/networks-and-firewalls#networks>`__.
@@ -465,8 +466,8 @@ class CloudRedisClient(object):
             parent (str): Required. The resource name of the instance location using the form:
                 ``projects/{project_id}/locations/{location_id}`` where ``location_id``
                 refers to a GCP region.
-            instance_id (str): Required. The logical name of the Redis instance in the customer project
-                with the following restrictions:
+            instance_id (str): Required. The logical name of the Redis instance in the customer
+                project with the following restrictions:
 
                 -  Must contain only lowercase letters, numbers, and hyphens.
                 -  Must start with a letter.
@@ -574,9 +575,9 @@ class CloudRedisClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            update_mask (Union[dict, ~google.cloud.redis_v1.types.FieldMask]): Required. Mask of fields to update. At least one path must be supplied
-                in this field. The elements of the repeated paths field may only include
-                these fields from ``Instance``:
+            update_mask (Union[dict, ~google.cloud.redis_v1.types.FieldMask]): Required. Mask of fields to update. At least one path must be
+                supplied in this field. The elements of the repeated paths field may
+                only include these fields from ``Instance``:
 
                 -  ``displayName``
                 -  ``labels``
@@ -585,8 +586,8 @@ class CloudRedisClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.redis_v1.types.FieldMask`
-            instance (Union[dict, ~google.cloud.redis_v1.types.Instance]): Required. Update description. Only fields specified in update\_mask are
-                updated.
+            instance (Union[dict, ~google.cloud.redis_v1.types.Instance]): Required. Update description. Only fields specified in update_mask
+                are updated.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.redis_v1.types.Instance`
@@ -886,8 +887,8 @@ class CloudRedisClient(object):
             name (str): Required. Redis instance resource name using the form:
                 ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
                 where ``location_id`` refers to a GCP region.
-            data_protection_mode (~google.cloud.redis_v1.types.DataProtectionMode): Optional. Available data protection modes that the user can choose. If
-                it's unspecified, data protection mode will be LIMITED\_DATA\_LOSS by
+            data_protection_mode (~google.cloud.redis_v1.types.DataProtectionMode): Optional. Available data protection modes that the user can choose.
+                If it's unspecified, data protection mode will be LIMITED_DATA_LOSS by
                 default.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will

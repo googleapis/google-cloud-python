@@ -25,7 +25,7 @@ class FailoverInstanceRequest(object):
         Specifies different modes of operation in relation to the data retention.
 
         Attributes:
-          DATA_PROTECTION_MODE_UNSPECIFIED (int): Defaults to LIMITED\_DATA\_LOSS if a data protection mode is not
+          DATA_PROTECTION_MODE_UNSPECIFIED (int): Defaults to LIMITED_DATA_LOSS if a data protection mode is not
           specified.
           LIMITED_DATA_LOSS (int): Instance failover will be protected with data loss control. More
           specifically, the failover will only be performed if the current
@@ -90,7 +90,7 @@ class Instance(object):
         Attributes:
           TIER_UNSPECIFIED (int): Not set.
           BASIC (int): BASIC tier: standalone instance
-          STANDARD_HA (int): STANDARD\_HA tier: highly available primary/replica instances
+          STANDARD_HA (int): STANDARD_HA tier: highly available primary/replica instances
         """
 
         TIER_UNSPECIFIED = 0

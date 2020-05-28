@@ -151,7 +151,8 @@ class CloudRedisGrpcTransport(object):
     def create_instance(self):
         """Return the gRPC stub for :meth:`CloudRedisClient.create_instance`.
 
-        Creates a Redis instance based on the specified tier and memory size.
+        Creates a Redis instance based on the specified tier and memory
+        size.
 
         By default, the instance is accessible from the project's `default
         network <https://cloud.google.com/compute/docs/networks-and-firewalls#networks>`__.
