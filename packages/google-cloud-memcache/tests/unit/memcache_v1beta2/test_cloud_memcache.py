@@ -24,6 +24,7 @@ import pytest
 from google import auth
 from google.api_core import client_options
 from google.api_core import future
+from google.api_core import grpc_helpers
 from google.api_core import operations_v1
 from google.auth import credentials
 from google.cloud.memcache_v1beta2.services.cloud_memcache import CloudMemcacheClient
@@ -34,6 +35,39 @@ from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+
+
+def client_cert_source_callback():
+    return b"cert bytes", b"key bytes"
+
+
+def test__get_default_mtls_endpoint():
+    api_endpoint = "example.googleapis.com"
+    api_mtls_endpoint = "example.mtls.googleapis.com"
+    sandbox_endpoint = "example.sandbox.googleapis.com"
+    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
+    non_googleapi = "api.example.com"
+
+    assert CloudMemcacheClient._get_default_mtls_endpoint(None) is None
+    assert (
+        CloudMemcacheClient._get_default_mtls_endpoint(api_endpoint)
+        == api_mtls_endpoint
+    )
+    assert (
+        CloudMemcacheClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        == api_mtls_endpoint
+    )
+    assert (
+        CloudMemcacheClient._get_default_mtls_endpoint(sandbox_endpoint)
+        == sandbox_mtls_endpoint
+    )
+    assert (
+        CloudMemcacheClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        == sandbox_mtls_endpoint
+    )
+    assert (
+        CloudMemcacheClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    )
 
 
 def test_cloud_memcache_client_from_service_account_file():
@@ -52,28 +86,89 @@ def test_cloud_memcache_client_from_service_account_file():
 
 
 def test_cloud_memcache_client_client_options():
-    # Check the default options have their expected values.
-    assert CloudMemcacheClient.DEFAULT_OPTIONS.api_endpoint == "memcache.googleapis.com"
+    # Check that if channel is provided we won't create a new one.
+    with mock.patch(
+        "google.cloud.memcache_v1beta2.services.cloud_memcache.CloudMemcacheClient.get_transport_class"
+    ) as gtc:
+        transport = transports.CloudMemcacheGrpcTransport(
+            credentials=credentials.AnonymousCredentials()
+        )
+        client = CloudMemcacheClient(transport=transport)
+        gtc.assert_not_called()
 
-    # Check that options can be customized.
-    options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
+    # Check mTLS is not triggered with empty client options.
+    options = client_options.ClientOptions()
     with mock.patch(
         "google.cloud.memcache_v1beta2.services.cloud_memcache.CloudMemcacheClient.get_transport_class"
     ) as gtc:
         transport = gtc.return_value = mock.MagicMock()
         client = CloudMemcacheClient(client_options=options)
-        transport.assert_called_once_with(credentials=None, host="squid.clam.whelk")
+        transport.assert_called_once_with(
+            credentials=None, host=client.DEFAULT_ENDPOINT
+        )
+
+    # Check mTLS is not triggered if api_endpoint is provided but
+    # client_cert_source is None.
+    options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
+    with mock.patch(
+        "google.cloud.memcache_v1beta2.services.cloud_memcache.transports.CloudMemcacheGrpcTransport.__init__"
+    ) as grpc_transport:
+        grpc_transport.return_value = None
+        client = CloudMemcacheClient(client_options=options)
+        grpc_transport.assert_called_once_with(
+            api_mtls_endpoint=None,
+            client_cert_source=None,
+            credentials=None,
+            host="squid.clam.whelk",
+        )
+
+    # Check mTLS is triggered if client_cert_source is provided.
+    options = client_options.ClientOptions(
+        client_cert_source=client_cert_source_callback
+    )
+    with mock.patch(
+        "google.cloud.memcache_v1beta2.services.cloud_memcache.transports.CloudMemcacheGrpcTransport.__init__"
+    ) as grpc_transport:
+        grpc_transport.return_value = None
+        client = CloudMemcacheClient(client_options=options)
+        grpc_transport.assert_called_once_with(
+            api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
+            client_cert_source=client_cert_source_callback,
+            credentials=None,
+            host=client.DEFAULT_ENDPOINT,
+        )
+
+    # Check mTLS is triggered if api_endpoint and client_cert_source are provided.
+    options = client_options.ClientOptions(
+        api_endpoint="squid.clam.whelk", client_cert_source=client_cert_source_callback
+    )
+    with mock.patch(
+        "google.cloud.memcache_v1beta2.services.cloud_memcache.transports.CloudMemcacheGrpcTransport.__init__"
+    ) as grpc_transport:
+        grpc_transport.return_value = None
+        client = CloudMemcacheClient(client_options=options)
+        grpc_transport.assert_called_once_with(
+            api_mtls_endpoint="squid.clam.whelk",
+            client_cert_source=client_cert_source_callback,
+            credentials=None,
+            host="squid.clam.whelk",
+        )
 
 
 def test_cloud_memcache_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.memcache_v1beta2.services.cloud_memcache.CloudMemcacheClient.get_transport_class"
-    ) as gtc:
-        transport = gtc.return_value = mock.MagicMock()
+        "google.cloud.memcache_v1beta2.services.cloud_memcache.transports.CloudMemcacheGrpcTransport.__init__"
+    ) as grpc_transport:
+        grpc_transport.return_value = None
         client = CloudMemcacheClient(
             client_options={"api_endpoint": "squid.clam.whelk"}
         )
-        transport.assert_called_once_with(credentials=None, host="squid.clam.whelk")
+        grpc_transport.assert_called_once_with(
+            api_mtls_endpoint=None,
+            client_cert_source=None,
+            credentials=None,
+            host="squid.clam.whelk",
+        )
 
 
 def test_list_instances(transport: str = "grpc"):
@@ -717,8 +812,87 @@ def test_cloud_memcache_host_with_port():
 
 def test_cloud_memcache_grpc_transport_channel():
     channel = grpc.insecure_channel("http://localhost/")
-    transport = transports.CloudMemcacheGrpcTransport(channel=channel)
-    assert transport.grpc_channel is channel
+
+    # Check that if channel is provided, mtls endpoint and client_cert_source
+    # won't be used.
+    callback = mock.MagicMock()
+    transport = transports.CloudMemcacheGrpcTransport(
+        host="squid.clam.whelk",
+        channel=channel,
+        api_mtls_endpoint="mtls.squid.clam.whelk",
+        client_cert_source=callback,
+    )
+    assert transport.grpc_channel == channel
+    assert transport._host == "squid.clam.whelk:443"
+    assert not callback.called
+
+
+@mock.patch("grpc.ssl_channel_credentials", autospec=True)
+@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
+def test_cloud_memcache_grpc_transport_channel_mtls_with_client_cert_source(
+    grpc_create_channel, grpc_ssl_channel_cred
+):
+    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
+    # are provided, then a mTLS channel will be created.
+    mock_cred = mock.Mock()
+
+    mock_ssl_cred = mock.Mock()
+    grpc_ssl_channel_cred.return_value = mock_ssl_cred
+
+    mock_grpc_channel = mock.Mock()
+    grpc_create_channel.return_value = mock_grpc_channel
+
+    transport = transports.CloudMemcacheGrpcTransport(
+        host="squid.clam.whelk",
+        credentials=mock_cred,
+        api_mtls_endpoint="mtls.squid.clam.whelk",
+        client_cert_source=client_cert_source_callback,
+    )
+    grpc_ssl_channel_cred.assert_called_once_with(
+        certificate_chain=b"cert bytes", private_key=b"key bytes"
+    )
+    grpc_create_channel.assert_called_once_with(
+        "mtls.squid.clam.whelk:443",
+        credentials=mock_cred,
+        ssl_credentials=mock_ssl_cred,
+        scopes=("https://www.googleapis.com/auth/cloud-platform",),
+    )
+    assert transport.grpc_channel == mock_grpc_channel
+
+
+@pytest.mark.parametrize(
+    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
+)
+@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
+def test_cloud_memcache_grpc_transport_channel_mtls_with_adc(
+    grpc_create_channel, api_mtls_endpoint
+):
+    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
+    # is provided, then a mTLS channel will be created with SSL ADC.
+    mock_grpc_channel = mock.Mock()
+    grpc_create_channel.return_value = mock_grpc_channel
+
+    # Mock google.auth.transport.grpc.SslCredentials class.
+    mock_ssl_cred = mock.Mock()
+    with mock.patch.multiple(
+        "google.auth.transport.grpc.SslCredentials",
+        __init__=mock.Mock(return_value=None),
+        ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
+    ):
+        mock_cred = mock.Mock()
+        transport = transports.CloudMemcacheGrpcTransport(
+            host="squid.clam.whelk",
+            credentials=mock_cred,
+            api_mtls_endpoint=api_mtls_endpoint,
+            client_cert_source=None,
+        )
+        grpc_create_channel.assert_called_once_with(
+            "mtls.squid.clam.whelk:443",
+            credentials=mock_cred,
+            ssl_credentials=mock_ssl_cred,
+            scopes=("https://www.googleapis.com/auth/cloud-platform",),
+        )
+        assert transport.grpc_channel == mock_grpc_channel
 
 
 def test_cloud_memcache_grpc_lro_client():
@@ -743,4 +917,13 @@ def test_instance_path():
         project=project, location=location, instance=instance
     )
     actual = CloudMemcacheClient.instance_path(project, location, instance)
+    assert expected == actual
+
+
+def test_parse_instance_path():
+    expected = {"project": "octopus", "location": "oyster", "instance": "nudibranch"}
+    path = CloudMemcacheClient.instance_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudMemcacheClient.parse_instance_path(path)
     assert expected == actual
