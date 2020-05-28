@@ -1063,11 +1063,8 @@ Recommendation = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _RECOMMENDATION,
         "__module__": "google.cloud.recommender_v1.proto.recommendation_pb2",
-        "__doc__": """A recommendation along with a suggested action. E.g., a
-  rightsizing recommendation for an underutilized VM, IAM role
-  recommendations, etc
-  
-  
+        "__doc__": """A recommendation along with a suggested action. E.g., a rightsizing
+  recommendation for an underutilized VM, IAM role recommendations, etc
   Attributes:
       name:
           Name of recommendation.
@@ -1114,10 +1111,7 @@ RecommendationContent = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _RECOMMENDATIONCONTENT,
         "__module__": "google.cloud.recommender_v1.proto.recommendation_pb2",
-        "__doc__": """Contains what resources are changing and how they are
-  changing.
-  
-  
+        "__doc__": """Contains what resources are changing and how they are changing.
   Attributes:
       operation_groups:
           Operations to one or more Google Cloud resources grouped in
@@ -1136,8 +1130,6 @@ OperationGroup = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _OPERATIONGROUP,
         "__module__": "google.cloud.recommender_v1.proto.recommendation_pb2",
         "__doc__": """Group of operations that need to be performed atomically.
-  
-  
   Attributes:
       operations:
           List of operations across one or more resources that belong to
@@ -1173,18 +1165,13 @@ Operation = _reflection.GeneratedProtocolMessageType(
         ),
         "DESCRIPTOR": _OPERATION,
         "__module__": "google.cloud.recommender_v1.proto.recommendation_pb2",
-        "__doc__": """Contains an operation for a resource loosely based on the
-  JSON-PATCH format with support for:
-  
-  -  Custom filters for describing partial array patch.
-  -  Extended path values for describing nested arrays.
-  -  Custom fields for describing the resource for which the operation is
-     being described.
-  -  Allows extension to custom operations not natively supported by
-     RFC6902. See https://tools.ietf.org/html/rfc6902 for details on the
-     original RFC.
-  
-  
+        "__doc__": """Contains an operation for a resource loosely based on the JSON-PATCH
+  format with support for:  -  Custom filters for describing partial
+  array patch. -  Extended path values for describing nested arrays. -
+  Custom fields for describing the resource for which the operation is
+  being described. -  Allows extension to custom operations not natively
+  supported by    RFC6902. See https://tools.ietf.org/html/rfc6902 for
+  details on the    original RFC.
   Attributes:
       action:
           Type of this operation. Contains one of ‘and’, ‘remove’,
@@ -1258,10 +1245,7 @@ ValueMatcher = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _VALUEMATCHER,
         "__module__": "google.cloud.recommender_v1.proto.recommendation_pb2",
-        "__doc__": """Contains various matching options for values for a GCP
-  resource field.
-  
-  
+        "__doc__": """Contains various matching options for values for a GCP resource field.
   Attributes:
       matches_pattern:
           To be used for full regex matching. The regular expression is
@@ -1282,8 +1266,7 @@ CostProjection = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.recommender_v1.proto.recommendation_pb2",
         "__doc__": """Contains metadata about how much money a recommendation can save or
   incur.
-  
-  
+
   Attributes:
       cost:
           An approximate projection on amount saved or amount incurred.
@@ -1304,10 +1287,7 @@ Impact = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _IMPACT,
         "__module__": "google.cloud.recommender_v1.proto.recommendation_pb2",
-        "__doc__": """Contains the impact a recommendation can have for a given
-  category.
-  
-  
+        "__doc__": """Contains the impact a recommendation can have for a given category.
   Attributes:
       category:
           Category that is being targeted.
@@ -1337,8 +1317,6 @@ RecommendationStateInfo = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _RECOMMENDATIONSTATEINFO,
         "__module__": "google.cloud.recommender_v1.proto.recommendation_pb2",
         "__doc__": """Information for state. Contains state and metadata.
-  
-  
   Attributes:
       state:
           The state of the recommendation, Eg ACTIVE, SUCCEEDED, FAILED.
