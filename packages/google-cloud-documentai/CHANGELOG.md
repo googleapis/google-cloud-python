@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/googleapis/python-documentai/compare/v0.1.0...v0.2.0) (2020-05-28)
+
+
+### Features
+
+* add mtls support ([#18](https://www.github.com/googleapis/python-documentai/issues/18)) ([50814b4](https://www.github.com/googleapis/python-documentai/commit/50814b448fba6c3f1da5e5ebf446bd91abff6811))
+
 ## 0.1.0 (2020-04-01)
 
 
