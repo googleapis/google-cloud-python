@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-documentai.git",
-        "sha": "00f93cf5808b81e82b60493a674ed8b3b2184bf1"
+        "sha": "75374500a3c1e22d0d9ab74323b142f972edd78c"
       }
     },
     {
