@@ -2895,8 +2895,8 @@ CustomInfoType = _reflection.GeneratedProtocolMessageType(
                     {
                         "DESCRIPTOR": _CUSTOMINFOTYPE_DETECTIONRULE_HOTWORDRULE,
                         "__module__": "google.cloud.dlp_v2.proto.storage_pb2",
-                        "__doc__": """The rule that adjusts the likelihood of findings within a certain
-      proximity of hotwords.
+                        "__doc__": """The rule that adjusts the likelihood of findings within a
+      certain proximity of hotwords.
       
       
       Attributes:
