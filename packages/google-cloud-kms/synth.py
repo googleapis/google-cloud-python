@@ -16,6 +16,7 @@
 
 import synthtool as s
 import synthtool.gcp as gcp
+from synthtool.languages import python
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
@@ -71,7 +72,13 @@ if count != 1:
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=70)
+templated_files = common.py_library(cov_level=70, samples=True)
 s.move(templated_files)
+
+# ----------------------------------------------------------------------------
+# Samples templates
+# ----------------------------------------------------------------------------
+
+python.py_samples()
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
