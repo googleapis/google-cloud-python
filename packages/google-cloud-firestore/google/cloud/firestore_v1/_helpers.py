@@ -186,8 +186,8 @@ def encode_value(value):
     if isinstance(value, GeoPoint):
         return document_pb2.Value(geo_point_value=value.to_protobuf())
 
-    if isinstance(value, list):
-        value_list = [encode_value(element) for element in value]
+    if isinstance(value, (list, tuple, set, frozenset)):
+        value_list = tuple(encode_value(element) for element in value)
         value_pb = document_pb2.ArrayValue(values=value_list)
         return document_pb2.Value(array_value=value_pb)
 
