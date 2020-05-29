@@ -30,17 +30,23 @@ The following client libraries have **GA** support:
 
 -  `Google BigQuery`_ (`BigQuery README`_, `BigQuery Documentation`_)
 -  `Google Cloud Bigtable`_ (`Bigtable README`_, `Bigtable Documentation`_)
+-  `Google Cloud Billing`_ (`Billing README`_, `Billing Documentation`_)
 -  `Google Cloud Datastore`_ (`Datastore README`_, `Datastore Documentation`_)
+-  `Google Cloud IAM`_ (`IAM README`_, `IAM Documentation`_)
 -  `Google Cloud KMS`_ (`KMS README`_, `KMS Documentation`_)
+-  `Google Cloud Monitoring Dashboards`_ (`Monitoring Dashboards README`_, `Monitoring Dashboards Documentation`_)
 -  `Google Cloud Natural Language`_ (`Natural Language README`_, `Natural Language Documentation`_)
 -  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_, `Pub/Sub Documentation`_)
+-  `Google Cloud Recommender`_ (`Recommender README`_, `Recommender Documentation`_)
 -  `Google Cloud Scheduler`_ (`Scheduler README`_, `Scheduler Documentation`_)
+-  `Google Cloud Secret Manager`_ (`Secret Manager README`_, `Secret Manager Documentation`_)
 -  `Google Cloud Spanner`_ (`Spanner README`_, `Spanner Documentation`_)
 -  `Google Cloud Speech to Text`_ (`Speech to Text README`_, `Speech to Text Documentation`_)
 -  `Google Cloud Storage`_ (`Storage README`_, `Storage Documentation`_)
 -  `Google Cloud Tasks`_ (`Tasks README`_, `Tasks Documentation`_)
 -  `Google Cloud Translation`_ (`Translation README`_, `Translation Documentation`_)
 -  `Stackdriver Logging`_ (`Logging README`_, `Logging Documentation`_)
+-  `Stackdriver Monitoring`_ (`Monitoring README`_, `Monitoring Documentation`_)
 
 .. _Google BigQuery: https://pypi.org/project/google-cloud-bigquery/
 .. _BigQuery README: https://github.com/googleapis/python-bigquery#python-client-for-google-bigquery
@@ -50,13 +56,25 @@ The following client libraries have **GA** support:
 .. _Bigtable README: https://github.com/googleapis/python-bigtable
 .. _Bigtable Documentation: https://googleapis.dev/python/bigtable/latest
 
+.. _Google Cloud Billing: https://pypi.org/project/google-cloud-billing/
+.. _Billing README: https://github.com/googleapis/python-billing
+.. _Billing Documentation: https://googleapis.dev/python/cloudbilling/latest
+
 .. _Google Cloud Datastore: https://pypi.org/project/google-cloud-datastore/
 .. _Datastore README: https://github.com/googleapis/python-datastore
 .. _Datastore Documentation: https://googleapis.dev/python/datastore/latest
 
+.. _Google Cloud IAM: https://pypi.org/project/google-cloud-iam/
+.. _IAM README: https://github.com/googleapis/python-iam
+.. _IAM Documentation: https://googleapis.dev/python/iam/latest
+
 .. _Google Cloud KMS: https://pypi.org/project/google-cloud-kms/
 .. _KMS README: https://github.com/googleapis/python-kms
 .. _KMS Documentation: https://googleapis.dev/python/cloudkms/latest
+
+.. _Google Cloud Monitoring Dashboards: https://pypi.org/project/google-cloud-monitoring-dashboards/
+.. _Monitoring Dashboards README: https://github.com/googleapis/python-monitoring-dashboards
+.. _Monitoring Dashboards Documentation: https://googleapis.dev/python/monitoring-dashboards/latest
 
 .. _Google Cloud Natural Language: https://pypi.org/project/google-cloud-language/
 .. _Natural Language README: https://github.com/googleapis/python-language
@@ -65,6 +83,18 @@ The following client libraries have **GA** support:
 .. _Google Cloud Pub/Sub: https://pypi.org/project/google-cloud-pubsub/
 .. _Pub/Sub README: https://github.com/googleapis/python-pubsub
 .. _Pub/Sub Documentation: https://googleapis.dev/python/pubsub/latest
+
+.. _Google Cloud Recommender: https://pypi.org/project/google-cloud-recommender/
+.. _Recommender README: https://github.com/googleapis/python-recommender
+.. _Recommender Documentation: https://googleapis.dev/python/recommender/latest
+
+.. _Google Cloud Scheduler: https://pypi.org/project/google-cloud-scheduler/
+.. _Scheduler README: https://github.com/googleapis/python-scheduler
+.. _Scheduler Documentation: https://googleapis.dev/python/cloudscheduler/latest
+
+.. _Google Cloud Secret Manager: https://pypi.org/project/google-cloud-secret-manager/
+.. _Secret Manager README: https://github.com/googleapis/python-secret-manager
+.. _Secret Manager Documentation: https://googleapis.dev/python/secretmanager/latest
 
 .. _Google Cloud Spanner: https://pypi.org/project/google-cloud-spanner
 .. _Spanner README: https://github.com/googleapis/python-spanner
@@ -86,13 +116,13 @@ The following client libraries have **GA** support:
 .. _Translation README: https://github.com/googleapis/python-translate#python-client-for-google-cloud-translation
 .. _Translation Documentation: https://googleapis.dev/python/translation/latest
 
-.. _Google Cloud Scheduler: https://pypi.org/project/google-cloud-scheduler/
-.. _Scheduler README: https://github.com/googleapis/python-scheduler
-.. _Scheduler Documentation: https://googleapis.dev/python/cloudscheduler/latest
-
 .. _Stackdriver Logging: https://pypi.org/project/google-cloud-logging/
 .. _Logging README: https://github.com/googleapis/python-logging
 .. _Logging Documentation: https://googleapis.dev/python/logging/latest
+
+.. _Stackdriver Monitoring: https://pypi.org/project/google-cloud-monitoring/
+.. _Monitoring README: https://github.com/googleapis/python-monitoring
+.. _Monitoring Documentation: https://googleapis.dev/python/monitoring/latest
 
 Beta Support
 ------------
@@ -109,7 +139,6 @@ The following client libraries have **beta** support:
 -  `Google Cloud Data Catalog`_ (`Data Catalog README`_, `Data Catalog Documentation`_)
 -  `Google Cloud Data Labeling`_ (`Data Labeling README`_, `Data Labeling Documentation`_)
 -  `Google Cloud Firestore`_ (`Firestore README`_, `Firestore Documentation`_)
--  `Google Cloud Monitoring Dashboards`_ (`Monitoring Dashboards README`_, `Monitoring Dashboards Documentation`_)
 -  `Google Cloud Video Intelligence`_ (`Video Intelligence README`_, `Video Intelligence Documentation`_)
 -  `Google Cloud Vision`_ (`Vision README`_, `Vision Documentation`_)
 
@@ -136,10 +165,6 @@ The following client libraries have **beta** support:
 .. _Google Cloud Firestore: https://pypi.org/project/google-cloud-firestore/
 .. _Firestore README: https://github.com/googleapis/python-firestore
 .. _Firestore Documentation: https://googleapis.dev/python/firestore/latest
-
-.. _Google Cloud Monitoring Dashboards: https://pypi.org/project/google-cloud-monitoring-dashboards/
-.. _Monitoring Dashboards README: https://github.com/googleapis/python-monitoring-dashboards
-.. _Monitoring Dashboards Documentation: https://googleapis.dev/python/monitoring-dashboards/latest
 
 .. _Google Cloud Video Intelligence: https://pypi.org/project/google-cloud-videointelligence
 .. _Video Intelligence README: https://github.com/googleapis/python-videointelligence
@@ -169,12 +194,10 @@ The following client libraries have **alpha** support:
 -  `Google Cloud Dataproc`_ (`Dataproc README`_, `Dataproc Documentation`_)
 -  `Google Cloud DLP`_ (`DLP README`_, `DLP Documentation`_)
 -  `Google Cloud DNS`_ (`DNS README`_, `DNS Documentation`_)
--  `Google Cloud IAM`_ (`IAM README`_, `IAM Documentation`_)
 -  `Google Cloud IoT`_ (`IoT README`_, `IoT Documentation`_)
 -  `Google Cloud Memorystore for Redis`_ (`Redis README`_, `Redis Documentation`_)
 -  `Google Phishing Protection`_ (`Phishing Protection README`_, `Phishing Protection Documentation`_)
 -  `Google Cloud OS Login`_ (`OS Login README`_, `OS Login Documentation`_)
--  `Google Cloud Recommender`_ (`Recommender README`_, `Recommender Documentation`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_, `Resource Manager Documentation`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_, `Runtime Config Documentation`_)
 -  `Google Cloud Security Command Center`_ (`Security Center README`_, `Security Center Documentation`_)
@@ -184,7 +207,6 @@ The following client libraries have **alpha** support:
 -  `Google Cloud Text-to-Speech`_ (`Text-to-Speech README`_, `Text-to-Speech Documentation`_)
 -  `Grafeas`_ (`Grafeas README`_, `Grafeas Documentation`_)
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_, `Error Reporting Documentation`_)
--  `Stackdriver Monitoring`_ (`Monitoring README`_, `Monitoring Documentation`_)
 -  `Webrisk`_ (`Webrisk README`_, `Webrisk Documentation`_)
 
 .. _Google Cloud AutoML: https://pypi.org/project/google-cloud-automl/
@@ -227,10 +249,6 @@ The following client libraries have **alpha** support:
 .. _DNS README: https://github.com/googleapis/python-dns#python-client-for-google-cloud-dns
 .. _DNS Documentation: https://googleapis.dev/python/dns/latest
 
-.. _Google Cloud IAM: https://pypi.org/project/google-cloud-IAM/
-.. _IAM README: https://github.com/googleapis/python-iam
-.. _IAM Documentation: https://googleapis.dev/python/iamcredentials/latest
-
 .. _Google Cloud IoT: https://pypi.org/project/google-cloud-iot/
 .. _IoT README: https://github.com/googleapis/python-iot/
 .. _IoT Documentation: https://googleapis.dev/python/cloudiot/latest
@@ -246,10 +264,6 @@ The following client libraries have **alpha** support:
 .. _Google Cloud OS Login: https://pypi.org/project/google-cloud-os-login/
 .. _OS Login README: https://github.com/googleapis/python-oslogin
 .. _OS Login Documentation: https://googleapis.dev/python/oslogin/latest
-
-.. _Google Cloud Recommender: https://pypi.org/project/google-cloud-recommender/
-.. _Recommender README: https://github.com/googleapis/python-recommender
-.. _Recommender Documentation: https://googleapis.dev/python/recommender/latest
 
 .. _Google Cloud Resource Manager: https://pypi.org/project/google-cloud-resource-manager/
 .. _Resource Manager README: https://github.com/googleapis/python-resource-manager
@@ -286,10 +300,6 @@ The following client libraries have **alpha** support:
 .. _Stackdriver Error Reporting: https://pypi.org/project/google-cloud-error-reporting/
 .. _Error Reporting README: https://github.com/googleapis/python-error-reporting#python-client-for-stackdriver-error-reporting
 .. _Error Reporting Documentation: https://googleapis.dev/python/clouderrorreporting/latest
-
-.. _Stackdriver Monitoring: https://pypi.org/project/google-cloud-monitoring/
-.. _Monitoring README: https://github.com/googleapis/python-monitoring
-.. _Monitoring Documentation: https://googleapis.dev/python/monitoring/latest
 
 .. _Webrisk: https://pypi.org/project/google-cloud-webrisk
 .. _Webrisk README: https://github.com/googleapis/python-webrisk#python-client-for-web-risk-api-alpha
