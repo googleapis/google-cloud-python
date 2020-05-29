@@ -970,6 +970,30 @@ def test_query_structured_property_with_projection(dispose_of):
 
 
 @pytest.mark.usefixtures("client_context")
+def test_query_structured_property_rename_subproperty(dispose_of):
+    """Regression test for #449
+
+    https://github.com/googleapis/python-ndb/issues/449
+    """
+
+    class OtherKind(ndb.Model):
+        one = ndb.StringProperty("a_different_name")
+
+    class SomeKind(ndb.Model):
+        bar = ndb.StructuredProperty(OtherKind)
+
+    key = SomeKind(bar=OtherKind(one="pish")).put()
+    dispose_of(key._key)
+
+    eventually(SomeKind.query().fetch, length_equals(1))
+
+    query = SomeKind.query().filter(SomeKind.bar.one == "pish")
+    results = query.fetch()
+    assert len(results) == 1
+    assert results[0].bar.one == "pish"
+
+
+@pytest.mark.usefixtures("client_context")
 def test_query_repeated_structured_property_with_properties(dispose_of):
     class OtherKind(ndb.Model):
         one = ndb.StringProperty()

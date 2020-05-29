@@ -3990,17 +3990,29 @@ class StructuredProperty(Property):
         """Dynamically get a subproperty."""
         # Optimistically try to use the dict key.
         prop = self._model_class._properties.get(attrname)
+
+        # We're done if we have a hit and _code_name matches.
+        if prop is None or prop._code_name != attrname:
+            # Otherwise, use linear search looking for a matching _code_name.
+            for candidate in self._model_class._properties.values():
+                if candidate._code_name == attrname:
+                    prop = candidate
+                    break
+
         if prop is None:
             raise AttributeError(
                 "Model subclass %s has no attribute %s"
                 % (self._model_class.__name__, attrname)
             )
+
         prop_copy = copy.copy(prop)
         prop_copy._name = self._name + "." + prop_copy._name
+
         # Cache the outcome, so subsequent requests for the same attribute
         # name will get the copied property directly rather than going
         # through the above motions all over again.
         setattr(self, attrname, prop_copy)
+
         return prop_copy
 
     def _comparison(self, op, value):

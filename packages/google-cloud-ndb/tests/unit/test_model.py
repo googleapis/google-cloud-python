@@ -3059,6 +3059,16 @@ class TestStructuredProperty:
         assert prop.foo._name == "bar.foo"
 
     @staticmethod
+    def test___getattr__use_codename():
+        class Mine(model.Model):
+            foo = model.StringProperty("notfoo")
+
+        prop = model.StructuredProperty(Mine)
+        prop._name = "bar"
+        assert isinstance(prop.foo, model.StringProperty)
+        assert prop.foo._name == "bar.notfoo"
+
+    @staticmethod
     def test___getattr___bad_prop():
         class Mine(model.Model):
             foo = model.StringProperty()
