@@ -25,6 +25,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.dataproc.v1",
     syntax="proto3",
     serialized_options=b"\n\034com.google.cloud.dataproc.v1B\030AutoscalingPoliciesProtoP\001Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataproc\352AE\n\036dataproc.googleapis.com/Region\022#projects/{project}/regions/{region}",
+    create_key=_descriptor._internal_create_key,
     serialized_pb=b'\n9google/cloud/dataproc_v1/proto/autoscaling_policies.proto\x12\x18google.cloud.dataproc.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto"\xa8\x04\n\x11\x41utoscalingPolicy\x12\n\n\x02id\x18\x01 \x01(\t\x12\x11\n\x04name\x18\x02 \x01(\tB\x03\xe0\x41\x03\x12S\n\x0f\x62\x61sic_algorithm\x18\x03 \x01(\x0b\x32\x33.google.cloud.dataproc.v1.BasicAutoscalingAlgorithmB\x03\xe0\x41\x02H\x00\x12Z\n\rworker_config\x18\x04 \x01(\x0b\x32>.google.cloud.dataproc.v1.InstanceGroupAutoscalingPolicyConfigB\x03\xe0\x41\x02\x12\x64\n\x17secondary_worker_config\x18\x05 \x01(\x0b\x32>.google.cloud.dataproc.v1.InstanceGroupAutoscalingPolicyConfigB\x03\xe0\x41\x01:\xcf\x01\xea\x41\xcb\x01\n)dataproc.googleapis.com/AutoscalingPolicy\x12Pprojects/{project}/locations/{location}/autoscalingPolicies/{autoscaling_policy}\x12Lprojects/{project}/regions/{region}/autoscalingPolicies/{autoscaling_policy}B\x0b\n\talgorithm"\xa4\x01\n\x19\x42\x61sicAutoscalingAlgorithm\x12N\n\x0byarn_config\x18\x01 \x01(\x0b\x32\x34.google.cloud.dataproc.v1.BasicYarnAutoscalingConfigB\x03\xe0\x41\x02\x12\x37\n\x0f\x63ooldown_period\x18\x02 \x01(\x0b\x32\x19.google.protobuf.DurationB\x03\xe0\x41\x01"\xf9\x01\n\x1a\x42\x61sicYarnAutoscalingConfig\x12\x45\n\x1dgraceful_decommission_timeout\x18\x05 \x01(\x0b\x32\x19.google.protobuf.DurationB\x03\xe0\x41\x02\x12\x1c\n\x0fscale_up_factor\x18\x01 \x01(\x01\x42\x03\xe0\x41\x02\x12\x1e\n\x11scale_down_factor\x18\x02 \x01(\x01\x42\x03\xe0\x41\x02\x12)\n\x1cscale_up_min_worker_fraction\x18\x03 \x01(\x01\x42\x03\xe0\x41\x01\x12+\n\x1escale_down_min_worker_fraction\x18\x04 \x01(\x01\x42\x03\xe0\x41\x01"s\n$InstanceGroupAutoscalingPolicyConfig\x12\x1a\n\rmin_instances\x18\x01 \x01(\x05\x42\x03\xe0\x41\x01\x12\x1a\n\rmax_instances\x18\x02 \x01(\x05\x42\x03\xe0\x41\x02\x12\x13\n\x06weight\x18\x03 \x01(\x05\x42\x03\xe0\x41\x01"\xa5\x01\n\x1e\x43reateAutoscalingPolicyRequest\x12\x41\n\x06parent\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\x12)dataproc.googleapis.com/AutoscalingPolicy\x12@\n\x06policy\x18\x02 \x01(\x0b\x32+.google.cloud.dataproc.v1.AutoscalingPolicyB\x03\xe0\x41\x02"^\n\x1bGetAutoscalingPolicyRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)dataproc.googleapis.com/AutoscalingPolicy"b\n\x1eUpdateAutoscalingPolicyRequest\x12@\n\x06policy\x18\x01 \x01(\x0b\x32+.google.cloud.dataproc.v1.AutoscalingPolicyB\x03\xe0\x41\x02"a\n\x1e\x44\x65leteAutoscalingPolicyRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)dataproc.googleapis.com/AutoscalingPolicy"\x94\x01\n\x1eListAutoscalingPoliciesRequest\x12\x41\n\x06parent\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\x12)dataproc.googleapis.com/AutoscalingPolicy\x12\x16\n\tpage_size\x18\x02 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x03 \x01(\tB\x03\xe0\x41\x01"\x83\x01\n\x1fListAutoscalingPoliciesResponse\x12\x42\n\x08policies\x18\x01 \x03(\x0b\x32+.google.cloud.dataproc.v1.AutoscalingPolicyB\x03\xe0\x41\x03\x12\x1c\n\x0fnext_page_token\x18\x02 \x01(\tB\x03\xe0\x41\x03\x32\xae\x0b\n\x18\x41utoscalingPolicyService\x12\x9c\x02\n\x17\x43reateAutoscalingPolicy\x12\x38.google.cloud.dataproc.v1.CreateAutoscalingPolicyRequest\x1a+.google.cloud.dataproc.v1.AutoscalingPolicy"\x99\x01\x82\xd3\xe4\x93\x02\x82\x01"7/v1/{parent=projects/*/locations/*}/autoscalingPolicies:\x06policyZ?"5/v1/{parent=projects/*/regions/*}/autoscalingPolicies:\x06policy\xda\x41\rparent,policy\x12\xa3\x02\n\x17UpdateAutoscalingPolicy\x12\x38.google.cloud.dataproc.v1.UpdateAutoscalingPolicyRequest\x1a+.google.cloud.dataproc.v1.AutoscalingPolicy"\xa0\x01\x82\xd3\xe4\x93\x02\x90\x01\x1a>/v1/{policy.name=projects/*/locations/*/autoscalingPolicies/*}:\x06policyZF\x1a</v1/{policy.name=projects/*/regions/*/autoscalingPolicies/*}:\x06policy\xda\x41\x06policy\x12\xfb\x01\n\x14GetAutoscalingPolicy\x12\x35.google.cloud.dataproc.v1.GetAutoscalingPolicyRequest\x1a+.google.cloud.dataproc.v1.AutoscalingPolicy"\x7f\x82\xd3\xe4\x93\x02r\x12\x37/v1/{name=projects/*/locations/*/autoscalingPolicies/*}Z7\x12\x35/v1/{name=projects/*/regions/*/autoscalingPolicies/*}\xda\x41\x04name\x12\x92\x02\n\x17ListAutoscalingPolicies\x12\x38.google.cloud.dataproc.v1.ListAutoscalingPoliciesRequest\x1a\x39.google.cloud.dataproc.v1.ListAutoscalingPoliciesResponse"\x81\x01\x82\xd3\xe4\x93\x02r\x12\x37/v1/{parent=projects/*/locations/*}/autoscalingPoliciesZ7\x12\x35/v1/{parent=projects/*/regions/*}/autoscalingPolicies\xda\x41\x06parent\x12\xec\x01\n\x17\x44\x65leteAutoscalingPolicy\x12\x38.google.cloud.dataproc.v1.DeleteAutoscalingPolicyRequest\x1a\x16.google.protobuf.Empty"\x7f\x82\xd3\xe4\x93\x02r*7/v1/{name=projects/*/locations/*/autoscalingPolicies/*}Z7*5/v1/{name=projects/*/regions/*/autoscalingPolicies/*}\xda\x41\x04name\x1aK\xca\x41\x17\x64\x61taproc.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xc4\x01\n\x1c\x63om.google.cloud.dataproc.v1B\x18\x41utoscalingPoliciesProtoP\x01Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataproc\xea\x41\x45\n\x1e\x64\x61taproc.googleapis.com/Region\x12#projects/{project}/regions/{region}b\x06proto3',
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -43,6 +44,7 @@ _AUTOSCALINGPOLICY = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="id",
@@ -61,6 +63,7 @@ _AUTOSCALINGPOLICY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="name",
@@ -79,6 +82,7 @@ _AUTOSCALINGPOLICY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="basic_algorithm",
@@ -97,6 +101,7 @@ _AUTOSCALINGPOLICY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="worker_config",
@@ -115,6 +120,7 @@ _AUTOSCALINGPOLICY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="secondary_worker_config",
@@ -133,6 +139,7 @@ _AUTOSCALINGPOLICY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -148,6 +155,7 @@ _AUTOSCALINGPOLICY = _descriptor.Descriptor(
             full_name="google.cloud.dataproc.v1.AutoscalingPolicy.algorithm",
             index=0,
             containing_type=None,
+            create_key=_descriptor._internal_create_key,
             fields=[],
         )
     ],
@@ -162,6 +170,7 @@ _BASICAUTOSCALINGALGORITHM = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="yarn_config",
@@ -180,6 +189,7 @@ _BASICAUTOSCALINGALGORITHM = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="cooldown_period",
@@ -198,6 +208,7 @@ _BASICAUTOSCALINGALGORITHM = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -219,6 +230,7 @@ _BASICYARNAUTOSCALINGCONFIG = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="graceful_decommission_timeout",
@@ -237,6 +249,7 @@ _BASICYARNAUTOSCALINGCONFIG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="scale_up_factor",
@@ -255,6 +268,7 @@ _BASICYARNAUTOSCALINGCONFIG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="scale_down_factor",
@@ -273,6 +287,7 @@ _BASICYARNAUTOSCALINGCONFIG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="scale_up_min_worker_fraction",
@@ -291,6 +306,7 @@ _BASICYARNAUTOSCALINGCONFIG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="scale_down_min_worker_fraction",
@@ -309,6 +325,7 @@ _BASICYARNAUTOSCALINGCONFIG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -330,6 +347,7 @@ _INSTANCEGROUPAUTOSCALINGPOLICYCONFIG = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="min_instances",
@@ -348,6 +366,7 @@ _INSTANCEGROUPAUTOSCALINGPOLICYCONFIG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="max_instances",
@@ -366,6 +385,7 @@ _INSTANCEGROUPAUTOSCALINGPOLICYCONFIG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="weight",
@@ -384,6 +404,7 @@ _INSTANCEGROUPAUTOSCALINGPOLICYCONFIG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -405,6 +426,7 @@ _CREATEAUTOSCALINGPOLICYREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="parent",
@@ -423,6 +445,7 @@ _CREATEAUTOSCALINGPOLICYREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A+\022)dataproc.googleapis.com/AutoscalingPolicy",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="policy",
@@ -441,6 +464,7 @@ _CREATEAUTOSCALINGPOLICYREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -462,6 +486,7 @@ _GETAUTOSCALINGPOLICYREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -480,6 +505,7 @@ _GETAUTOSCALINGPOLICYREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A+\n)dataproc.googleapis.com/AutoscalingPolicy",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -501,6 +527,7 @@ _UPDATEAUTOSCALINGPOLICYREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="policy",
@@ -519,6 +546,7 @@ _UPDATEAUTOSCALINGPOLICYREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -540,6 +568,7 @@ _DELETEAUTOSCALINGPOLICYREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -558,6 +587,7 @@ _DELETEAUTOSCALINGPOLICYREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A+\n)dataproc.googleapis.com/AutoscalingPolicy",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -579,6 +609,7 @@ _LISTAUTOSCALINGPOLICIESREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="parent",
@@ -597,6 +628,7 @@ _LISTAUTOSCALINGPOLICIESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A+\022)dataproc.googleapis.com/AutoscalingPolicy",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="page_size",
@@ -615,6 +647,7 @@ _LISTAUTOSCALINGPOLICIESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="page_token",
@@ -633,6 +666,7 @@ _LISTAUTOSCALINGPOLICIESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -654,6 +688,7 @@ _LISTAUTOSCALINGPOLICIESRESPONSE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="policies",
@@ -672,6 +707,7 @@ _LISTAUTOSCALINGPOLICIESRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="next_page_token",
@@ -690,6 +726,7 @@ _LISTAUTOSCALINGPOLICIESRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -880,11 +917,8 @@ InstanceGroupAutoscalingPolicyConfig = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _INSTANCEGROUPAUTOSCALINGPOLICYCONFIG,
         "__module__": "google.cloud.dataproc_v1.proto.autoscaling_policies_pb2",
-        "__doc__": """Configuration for the size bounds of an instance group,
-  including its proportional size to other groups.
-  
-  
-
+        "__doc__": """Configuration for the size bounds of an instance group, including its
+  proportional size to other groups.
   Attributes:
       min_instances:
           Optional. Minimum number of instances for this group.  Primary
@@ -1104,6 +1138,7 @@ _AUTOSCALINGPOLICYSERVICE = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     serialized_options=b"\312A\027dataproc.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform",
+    create_key=_descriptor._internal_create_key,
     serialized_start=2103,
     serialized_end=3557,
     methods=[
@@ -1115,6 +1150,7 @@ _AUTOSCALINGPOLICYSERVICE = _descriptor.ServiceDescriptor(
             input_type=_CREATEAUTOSCALINGPOLICYREQUEST,
             output_type=_AUTOSCALINGPOLICY,
             serialized_options=b'\202\323\344\223\002\202\001"7/v1/{parent=projects/*/locations/*}/autoscalingPolicies:\006policyZ?"5/v1/{parent=projects/*/regions/*}/autoscalingPolicies:\006policy\332A\rparent,policy',
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="UpdateAutoscalingPolicy",
@@ -1124,6 +1160,7 @@ _AUTOSCALINGPOLICYSERVICE = _descriptor.ServiceDescriptor(
             input_type=_UPDATEAUTOSCALINGPOLICYREQUEST,
             output_type=_AUTOSCALINGPOLICY,
             serialized_options=b"\202\323\344\223\002\220\001\032>/v1/{policy.name=projects/*/locations/*/autoscalingPolicies/*}:\006policyZF\032</v1/{policy.name=projects/*/regions/*/autoscalingPolicies/*}:\006policy\332A\006policy",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="GetAutoscalingPolicy",
@@ -1133,6 +1170,7 @@ _AUTOSCALINGPOLICYSERVICE = _descriptor.ServiceDescriptor(
             input_type=_GETAUTOSCALINGPOLICYREQUEST,
             output_type=_AUTOSCALINGPOLICY,
             serialized_options=b"\202\323\344\223\002r\0227/v1/{name=projects/*/locations/*/autoscalingPolicies/*}Z7\0225/v1/{name=projects/*/regions/*/autoscalingPolicies/*}\332A\004name",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="ListAutoscalingPolicies",
@@ -1142,6 +1180,7 @@ _AUTOSCALINGPOLICYSERVICE = _descriptor.ServiceDescriptor(
             input_type=_LISTAUTOSCALINGPOLICIESREQUEST,
             output_type=_LISTAUTOSCALINGPOLICIESRESPONSE,
             serialized_options=b"\202\323\344\223\002r\0227/v1/{parent=projects/*/locations/*}/autoscalingPoliciesZ7\0225/v1/{parent=projects/*/regions/*}/autoscalingPolicies\332A\006parent",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="DeleteAutoscalingPolicy",
@@ -1151,6 +1190,7 @@ _AUTOSCALINGPOLICYSERVICE = _descriptor.ServiceDescriptor(
             input_type=_DELETEAUTOSCALINGPOLICYREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=b"\202\323\344\223\002r*7/v1/{name=projects/*/locations/*/autoscalingPolicies/*}Z7*5/v1/{name=projects/*/regions/*/autoscalingPolicies/*}\332A\004name",
+            create_key=_descriptor._internal_create_key,
         ),
     ],
 )

@@ -21,6 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.dataproc.v1",
     syntax="proto3",
     serialized_options=b"\n\034com.google.cloud.dataproc.v1B\013SharedProtoP\001Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataproc",
+    create_key=_descriptor._internal_create_key,
     serialized_pb=b"\n+google/cloud/dataproc_v1/proto/shared.proto\x12\x18google.cloud.dataproc.v1\x1a\x1cgoogle/api/annotations.proto*|\n\tComponent\x12\x19\n\x15\x43OMPONENT_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x41NACONDA\x10\x05\x12\x10\n\x0cHIVE_WEBHCAT\x10\x03\x12\x0b\n\x07JUPYTER\x10\x01\x12\n\n\x06PRESTO\x10\x06\x12\x0c\n\x08ZEPPELIN\x10\x04\x12\r\n\tZOOKEEPER\x10\x08\x42o\n\x1c\x63om.google.cloud.dataproc.v1B\x0bSharedProtoP\x01Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataprocb\x06proto3",
     dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
 )
@@ -30,6 +31,7 @@ _COMPONENT = _descriptor.EnumDescriptor(
     full_name="google.cloud.dataproc.v1.Component",
     filename=None,
     file=DESCRIPTOR,
+    create_key=_descriptor._internal_create_key,
     values=[
         _descriptor.EnumValueDescriptor(
             name="COMPONENT_UNSPECIFIED",
@@ -37,24 +39,55 @@ _COMPONENT = _descriptor.EnumDescriptor(
             number=0,
             serialized_options=None,
             type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ANACONDA", index=1, number=5, serialized_options=None, type=None
+            name="ANACONDA",
+            index=1,
+            number=5,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="HIVE_WEBHCAT", index=2, number=3, serialized_options=None, type=None
+            name="HIVE_WEBHCAT",
+            index=2,
+            number=3,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="JUPYTER", index=3, number=1, serialized_options=None, type=None
+            name="JUPYTER",
+            index=3,
+            number=1,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="PRESTO", index=4, number=6, serialized_options=None, type=None
+            name="PRESTO",
+            index=4,
+            number=6,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ZEPPELIN", index=5, number=4, serialized_options=None, type=None
+            name="ZEPPELIN",
+            index=5,
+            number=4,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ZOOKEEPER", index=6, number=8, serialized_options=None, type=None
+            name="ZOOKEEPER",
+            index=6,
+            number=8,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     containing_type=None,

@@ -22,6 +22,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.dataproc.v1",
     syntax="proto3",
     serialized_options=b"\n\034com.google.cloud.dataproc.v1B\017OperationsProtoP\001Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataproc",
+    create_key=_descriptor._internal_create_key,
     serialized_pb=b'\n/google/cloud/dataproc_v1/proto/operations.proto\x12\x18google.cloud.dataproc.v1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\x89\x02\n\x16\x43lusterOperationStatus\x12J\n\x05state\x18\x01 \x01(\x0e\x32\x36.google.cloud.dataproc.v1.ClusterOperationStatus.StateB\x03\xe0\x41\x03\x12\x18\n\x0binner_state\x18\x02 \x01(\tB\x03\xe0\x41\x03\x12\x14\n\x07\x64\x65tails\x18\x03 \x01(\tB\x03\xe0\x41\x03\x12\x39\n\x10state_start_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03"8\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03"\xb8\x03\n\x18\x43lusterOperationMetadata\x12\x19\n\x0c\x63luster_name\x18\x07 \x01(\tB\x03\xe0\x41\x03\x12\x19\n\x0c\x63luster_uuid\x18\x08 \x01(\tB\x03\xe0\x41\x03\x12\x45\n\x06status\x18\t \x01(\x0b\x32\x30.google.cloud.dataproc.v1.ClusterOperationStatusB\x03\xe0\x41\x03\x12M\n\x0estatus_history\x18\n \x03(\x0b\x32\x30.google.cloud.dataproc.v1.ClusterOperationStatusB\x03\xe0\x41\x03\x12\x1b\n\x0eoperation_type\x18\x0b \x01(\tB\x03\xe0\x41\x03\x12\x18\n\x0b\x64\x65scription\x18\x0c \x01(\tB\x03\xe0\x41\x03\x12S\n\x06labels\x18\r \x03(\x0b\x32>.google.cloud.dataproc.v1.ClusterOperationMetadata.LabelsEntryB\x03\xe0\x41\x03\x12\x15\n\x08warnings\x18\x0e \x03(\tB\x03\xe0\x41\x03\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42s\n\x1c\x63om.google.cloud.dataproc.v1B\x0fOperationsProtoP\x01Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataprocb\x06proto3',
     dependencies=[
         google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
@@ -36,18 +37,39 @@ _CLUSTEROPERATIONSTATUS_STATE = _descriptor.EnumDescriptor(
     full_name="google.cloud.dataproc.v1.ClusterOperationStatus.State",
     filename=None,
     file=DESCRIPTOR,
+    create_key=_descriptor._internal_create_key,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="UNKNOWN", index=0, number=0, serialized_options=None, type=None
+            name="UNKNOWN",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="PENDING", index=1, number=1, serialized_options=None, type=None
+            name="PENDING",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="RUNNING", index=2, number=2, serialized_options=None, type=None
+            name="RUNNING",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="DONE", index=3, number=3, serialized_options=None, type=None
+            name="DONE",
+            index=3,
+            number=3,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     containing_type=None,
@@ -64,6 +86,7 @@ _CLUSTEROPERATIONSTATUS = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="state",
@@ -82,6 +105,7 @@ _CLUSTEROPERATIONSTATUS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="inner_state",
@@ -100,6 +124,7 @@ _CLUSTEROPERATIONSTATUS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="details",
@@ -118,6 +143,7 @@ _CLUSTEROPERATIONSTATUS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="state_start_time",
@@ -136,6 +162,7 @@ _CLUSTEROPERATIONSTATUS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -157,6 +184,7 @@ _CLUSTEROPERATIONMETADATA_LABELSENTRY = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="key",
@@ -175,6 +203,7 @@ _CLUSTEROPERATIONMETADATA_LABELSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="value",
@@ -193,6 +222,7 @@ _CLUSTEROPERATIONMETADATA_LABELSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -213,6 +243,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="cluster_name",
@@ -231,6 +262,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="cluster_uuid",
@@ -249,6 +281,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="status",
@@ -267,6 +300,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="status_history",
@@ -285,6 +319,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="operation_type",
@@ -303,6 +338,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="description",
@@ -321,6 +357,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="labels",
@@ -339,6 +376,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="warnings",
@@ -357,6 +395,7 @@ _CLUSTEROPERATIONMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],

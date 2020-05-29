@@ -34,6 +34,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.dataproc.v1beta2",
     syntax="proto3",
     serialized_options=b"\n!com.google.cloud.dataproc.v1beta2B\026WorkflowTemplatesProtoP\001ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataproc",
+    create_key=_descriptor._internal_create_key,
     serialized_pb=b'\n<google/cloud/dataproc_v1beta2/proto/workflow_templates.proto\x12\x1dgoogle.cloud.dataproc.v1beta2\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x32google/cloud/dataproc_v1beta2/proto/clusters.proto\x1a.google/cloud/dataproc_v1beta2/proto/jobs.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xd7\x05\n\x10WorkflowTemplate\x12\x0f\n\x02id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x14\n\x07version\x18\x03 \x01(\x05\x42\x03\xe0\x41\x01\x12\x34\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x34\n\x0bupdate_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12P\n\x06labels\x18\x06 \x03(\x0b\x32;.google.cloud.dataproc.v1beta2.WorkflowTemplate.LabelsEntryB\x03\xe0\x41\x01\x12K\n\tplacement\x18\x07 \x01(\x0b\x32\x38.google.cloud.dataproc.v1beta2.WorkflowTemplatePlacement\x12\x37\n\x04jobs\x18\x08 \x03(\x0b\x32).google.cloud.dataproc.v1beta2.OrderedJob\x12I\n\nparameters\x18\t \x03(\x0b\x32\x30.google.cloud.dataproc.v1beta2.TemplateParameterB\x03\xe0\x41\x01\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01:\xca\x01\xea\x41\xc6\x01\n(dataproc.googleapis.com/WorkflowTemplate\x12Iprojects/{project}/regions/{region}/workflowTemplates/{workflow_template}\x12Mprojects/{project}/locations/{location}/workflowTemplates/{workflow_template} \x01"\xbe\x01\n\x19WorkflowTemplatePlacement\x12H\n\x0fmanaged_cluster\x18\x01 \x01(\x0b\x32-.google.cloud.dataproc.v1beta2.ManagedClusterH\x00\x12J\n\x10\x63luster_selector\x18\x02 \x01(\x0b\x32..google.cloud.dataproc.v1beta2.ClusterSelectorH\x00\x42\x0b\n\tplacement"\xde\x01\n\x0eManagedCluster\x12\x14\n\x0c\x63luster_name\x18\x02 \x01(\t\x12<\n\x06\x63onfig\x18\x03 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.ClusterConfig\x12I\n\x06labels\x18\x04 \x03(\x0b\x32\x39.google.cloud.dataproc.v1beta2.ManagedCluster.LabelsEntry\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xb0\x01\n\x0f\x43lusterSelector\x12\x0c\n\x04zone\x18\x01 \x01(\t\x12Y\n\x0e\x63luster_labels\x18\x02 \x03(\x0b\x32\x41.google.cloud.dataproc.v1beta2.ClusterSelector.ClusterLabelsEntry\x1a\x34\n\x12\x43lusterLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x90\x06\n\nOrderedJob\x12\x14\n\x07step_id\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12>\n\nhadoop_job\x18\x02 \x01(\x0b\x32(.google.cloud.dataproc.v1beta2.HadoopJobH\x00\x12<\n\tspark_job\x18\x03 \x01(\x0b\x32\'.google.cloud.dataproc.v1beta2.SparkJobH\x00\x12@\n\x0bpyspark_job\x18\x04 \x01(\x0b\x32).google.cloud.dataproc.v1beta2.PySparkJobH\x00\x12:\n\x08hive_job\x18\x05 \x01(\x0b\x32&.google.cloud.dataproc.v1beta2.HiveJobH\x00\x12\x38\n\x07pig_job\x18\x06 \x01(\x0b\x32%.google.cloud.dataproc.v1beta2.PigJobH\x00\x12?\n\x0bspark_r_job\x18\x0b \x01(\x0b\x32(.google.cloud.dataproc.v1beta2.SparkRJobH\x00\x12\x43\n\rspark_sql_job\x18\x07 \x01(\x0b\x32*.google.cloud.dataproc.v1beta2.SparkSqlJobH\x00\x12>\n\npresto_job\x18\x0c \x01(\x0b\x32(.google.cloud.dataproc.v1beta2.PrestoJobH\x00\x12J\n\x06labels\x18\x08 \x03(\x0b\x32\x35.google.cloud.dataproc.v1beta2.OrderedJob.LabelsEntryB\x03\xe0\x41\x01\x12\x45\n\nscheduling\x18\t \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.JobSchedulingB\x03\xe0\x41\x01\x12"\n\x15prerequisite_step_ids\x18\n \x03(\tB\x03\xe0\x41\x01\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\n\n\x08job_type"\x8e\x01\n\x11TemplateParameter\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06\x66ields\x18\x02 \x03(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x46\n\nvalidation\x18\x04 \x01(\x0b\x32\x32.google.cloud.dataproc.v1beta2.ParameterValidation"\xab\x01\n\x13ParameterValidation\x12?\n\x05regex\x18\x01 \x01(\x0b\x32..google.cloud.dataproc.v1beta2.RegexValidationH\x00\x12@\n\x06values\x18\x02 \x01(\x0b\x32..google.cloud.dataproc.v1beta2.ValueValidationH\x00\x42\x11\n\x0fvalidation_type""\n\x0fRegexValidation\x12\x0f\n\x07regexes\x18\x01 \x03(\t"!\n\x0fValueValidation\x12\x0e\n\x06values\x18\x01 \x03(\t"\xc8\x05\n\x10WorkflowMetadata\x12\x15\n\x08template\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x14\n\x07version\x18\x02 \x01(\x05\x42\x03\xe0\x41\x03\x12L\n\x0e\x63reate_cluster\x18\x03 \x01(\x0b\x32/.google.cloud.dataproc.v1beta2.ClusterOperationB\x03\xe0\x41\x03\x12@\n\x05graph\x18\x04 \x01(\x0b\x32,.google.cloud.dataproc.v1beta2.WorkflowGraphB\x03\xe0\x41\x03\x12L\n\x0e\x64\x65lete_cluster\x18\x05 \x01(\x0b\x32/.google.cloud.dataproc.v1beta2.ClusterOperationB\x03\xe0\x41\x03\x12I\n\x05state\x18\x06 \x01(\x0e\x32\x35.google.cloud.dataproc.v1beta2.WorkflowMetadata.StateB\x03\xe0\x41\x03\x12\x19\n\x0c\x63luster_name\x18\x07 \x01(\tB\x03\xe0\x41\x03\x12S\n\nparameters\x18\x08 \x03(\x0b\x32?.google.cloud.dataproc.v1beta2.WorkflowMetadata.ParametersEntry\x12\x33\n\nstart_time\x18\t \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x31\n\x08\x65nd_time\x18\n \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x19\n\x0c\x63luster_uuid\x18\x0b \x01(\tB\x03\xe0\x41\x03\x1a\x31\n\x0fParametersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"8\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07PENDING\x10\x01\x12\x0b\n\x07RUNNING\x10\x02\x12\x08\n\x04\x44ONE\x10\x03"T\n\x10\x43lusterOperation\x12\x19\n\x0coperation_id\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x12\n\x05\x65rror\x18\x02 \x01(\tB\x03\xe0\x41\x03\x12\x11\n\x04\x64one\x18\x03 \x01(\x08\x42\x03\xe0\x41\x03"P\n\rWorkflowGraph\x12?\n\x05nodes\x18\x01 \x03(\x0b\x32+.google.cloud.dataproc.v1beta2.WorkflowNodeB\x03\xe0\x41\x03"\xa9\x02\n\x0cWorkflowNode\x12\x14\n\x07step_id\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12"\n\x15prerequisite_step_ids\x18\x02 \x03(\tB\x03\xe0\x41\x03\x12\x13\n\x06job_id\x18\x03 \x01(\tB\x03\xe0\x41\x03\x12I\n\x05state\x18\x05 \x01(\x0e\x32\x35.google.cloud.dataproc.v1beta2.WorkflowNode.NodeStateB\x03\xe0\x41\x03\x12\x12\n\x05\x65rror\x18\x06 \x01(\tB\x03\xe0\x41\x03"k\n\tNodeState\x12\x1b\n\x17NODE_STATUS_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x42LOCKED\x10\x01\x12\x0c\n\x08RUNNABLE\x10\x02\x12\x0b\n\x07RUNNING\x10\x03\x12\r\n\tCOMPLETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05"\xa9\x01\n\x1d\x43reateWorkflowTemplateRequest\x12@\n\x06parent\x18\x01 \x01(\tB0\xe0\x41\x02\xfa\x41*\x12(dataproc.googleapis.com/WorkflowTemplate\x12\x46\n\x08template\x18\x02 \x01(\x0b\x32/.google.cloud.dataproc.v1beta2.WorkflowTemplateB\x03\xe0\x41\x02"m\n\x1aGetWorkflowTemplateRequest\x12>\n\x04name\x18\x01 \x01(\tB0\xe0\x41\x02\xfa\x41*\n(dataproc.googleapis.com/WorkflowTemplate\x12\x0f\n\x07version\x18\x02 \x01(\x05"\xbc\x02\n"InstantiateWorkflowTemplateRequest\x12>\n\x04name\x18\x01 \x01(\tB0\xe0\x41\x02\xfa\x41*\n(dataproc.googleapis.com/WorkflowTemplate\x12\x0f\n\x07version\x18\x02 \x01(\x05\x12\x17\n\x0binstance_id\x18\x03 \x01(\tB\x02\x18\x01\x12\x12\n\nrequest_id\x18\x05 \x01(\t\x12\x65\n\nparameters\x18\x04 \x03(\x0b\x32Q.google.cloud.dataproc.v1beta2.InstantiateWorkflowTemplateRequest.ParametersEntry\x1a\x31\n\x0fParametersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xdd\x01\n(InstantiateInlineWorkflowTemplateRequest\x12@\n\x06parent\x18\x01 \x01(\tB0\xe0\x41\x02\xfa\x41*\x12(dataproc.googleapis.com/WorkflowTemplate\x12\x46\n\x08template\x18\x02 \x01(\x0b\x32/.google.cloud.dataproc.v1beta2.WorkflowTemplateB\x03\xe0\x41\x02\x12\x13\n\x0binstance_id\x18\x03 \x01(\t\x12\x12\n\nrequest_id\x18\x04 \x01(\t"g\n\x1dUpdateWorkflowTemplateRequest\x12\x46\n\x08template\x18\x01 \x01(\x0b\x32/.google.cloud.dataproc.v1beta2.WorkflowTemplateB\x03\xe0\x41\x02"\x87\x01\n\x1cListWorkflowTemplatesRequest\x12@\n\x06parent\x18\x01 \x01(\tB0\xe0\x41\x02\xfa\x41*\x12(dataproc.googleapis.com/WorkflowTemplate\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"\x86\x01\n\x1dListWorkflowTemplatesResponse\x12G\n\ttemplates\x18\x01 \x03(\x0b\x32/.google.cloud.dataproc.v1beta2.WorkflowTemplateB\x03\xe0\x41\x03\x12\x1c\n\x0fnext_page_token\x18\x02 \x01(\tB\x03\xe0\x41\x03"p\n\x1d\x44\x65leteWorkflowTemplateRequest\x12>\n\x04name\x18\x01 \x01(\tB0\xe0\x41\x02\xfa\x41*\n(dataproc.googleapis.com/WorkflowTemplate\x12\x0f\n\x07version\x18\x02 \x01(\x05\x32\xe9\x11\n\x17WorkflowTemplateService\x12\xb0\x02\n\x16\x43reateWorkflowTemplate\x12<.google.cloud.dataproc.v1beta2.CreateWorkflowTemplateRequest\x1a/.google.cloud.dataproc.v1beta2.WorkflowTemplate"\xa6\x01\x82\xd3\xe4\x93\x02\x8c\x01"8/v1beta2/{parent=projects/*/regions/*}/workflowTemplates:\x08templateZF":/v1beta2/{parent=projects/*/locations/*}/workflowTemplates:\x08template\xda\x41\x10parent, template\x12\x89\x02\n\x13GetWorkflowTemplate\x12\x39.google.cloud.dataproc.v1beta2.GetWorkflowTemplateRequest\x1a/.google.cloud.dataproc.v1beta2.WorkflowTemplate"\x85\x01\x82\xd3\xe4\x93\x02x\x12\x38/v1beta2/{name=projects/*/regions/*/workflowTemplates/*}Z<\x12:/v1beta2/{name=projects/*/locations/*/workflowTemplates/*}\xda\x41\x04name\x12\xe5\x02\n\x1bInstantiateWorkflowTemplate\x12\x41.google.cloud.dataproc.v1beta2.InstantiateWorkflowTemplateRequest\x1a\x1d.google.longrunning.Operation"\xe3\x01\x82\xd3\xe4\x93\x02\x96\x01"D/v1beta2/{name=projects/*/regions/*/workflowTemplates/*}:instantiate:\x01*ZK"F/v1beta2/{name=projects/*/locations/*/workflowTemplates/*}:instantiate:\x01*\xda\x41\x04name\xda\x41\x10name, parameters\xca\x41)\n\x15google.protobuf.Empty\x12\x10WorkflowMetadata\x12\x84\x03\n!InstantiateInlineWorkflowTemplate\x12G.google.cloud.dataproc.v1beta2.InstantiateInlineWorkflowTemplateRequest\x1a\x1d.google.longrunning.Operation"\xf6\x01\x82\xd3\xe4\x93\x02\xb0\x01"L/v1beta2/{parent=projects/*/locations/*}/workflowTemplates:instantiateInline:\x08templateZV"J/v1beta2/{parent=projects/*/regions/*}/workflowTemplates:instantiateInline:\x08template\xda\x41\x10parent, template\xca\x41)\n\x15google.protobuf.Empty\x12\x10WorkflowMetadata\x12\xba\x02\n\x16UpdateWorkflowTemplate\x12<.google.cloud.dataproc.v1beta2.UpdateWorkflowTemplateRequest\x1a/.google.cloud.dataproc.v1beta2.WorkflowTemplate"\xb0\x01\x82\xd3\xe4\x93\x02\x9e\x01\x1a\x41/v1beta2/{template.name=projects/*/regions/*/workflowTemplates/*}:\x08templateZO\x1a\x43/v1beta2/{template.name=projects/*/locations/*/workflowTemplates/*}:\x08template\xda\x41\x08template\x12\x9c\x02\n\x15ListWorkflowTemplates\x12;.google.cloud.dataproc.v1beta2.ListWorkflowTemplatesRequest\x1a<.google.cloud.dataproc.v1beta2.ListWorkflowTemplatesResponse"\x87\x01\x82\xd3\xe4\x93\x02x\x12\x38/v1beta2/{parent=projects/*/regions/*}/workflowTemplatesZ<\x12:/v1beta2/{parent=projects/*/locations/*}/workflowTemplates\xda\x41\x06parent\x12\xf6\x01\n\x16\x44\x65leteWorkflowTemplate\x12<.google.cloud.dataproc.v1beta2.DeleteWorkflowTemplateRequest\x1a\x16.google.protobuf.Empty"\x85\x01\x82\xd3\xe4\x93\x02x*8/v1beta2/{name=projects/*/regions/*/workflowTemplates/*}Z<*:/v1beta2/{name=projects/*/locations/*/workflowTemplates/*}\xda\x41\x04name\x1aK\xca\x41\x17\x64\x61taproc.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\x84\x01\n!com.google.cloud.dataproc.v1beta2B\x16WorkflowTemplatesProtoP\x01ZEgoogle.golang.org/genproto/googleapis/cloud/dataproc/v1beta2;dataprocb\x06proto3',
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -54,18 +55,39 @@ _WORKFLOWMETADATA_STATE = _descriptor.EnumDescriptor(
     full_name="google.cloud.dataproc.v1beta2.WorkflowMetadata.State",
     filename=None,
     file=DESCRIPTOR,
+    create_key=_descriptor._internal_create_key,
     values=[
         _descriptor.EnumValueDescriptor(
-            name="UNKNOWN", index=0, number=0, serialized_options=None, type=None
+            name="UNKNOWN",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="PENDING", index=1, number=1, serialized_options=None, type=None
+            name="PENDING",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="RUNNING", index=2, number=2, serialized_options=None, type=None
+            name="RUNNING",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="DONE", index=3, number=3, serialized_options=None, type=None
+            name="DONE",
+            index=3,
+            number=3,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     containing_type=None,
@@ -80,6 +102,7 @@ _WORKFLOWNODE_NODESTATE = _descriptor.EnumDescriptor(
     full_name="google.cloud.dataproc.v1beta2.WorkflowNode.NodeState",
     filename=None,
     file=DESCRIPTOR,
+    create_key=_descriptor._internal_create_key,
     values=[
         _descriptor.EnumValueDescriptor(
             name="NODE_STATUS_UNSPECIFIED",
@@ -87,21 +110,47 @@ _WORKFLOWNODE_NODESTATE = _descriptor.EnumDescriptor(
             number=0,
             serialized_options=None,
             type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="BLOCKED", index=1, number=1, serialized_options=None, type=None
+            name="BLOCKED",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="RUNNABLE", index=2, number=2, serialized_options=None, type=None
+            name="RUNNABLE",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="RUNNING", index=3, number=3, serialized_options=None, type=None
+            name="RUNNING",
+            index=3,
+            number=3,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="COMPLETED", index=4, number=4, serialized_options=None, type=None
+            name="COMPLETED",
+            index=4,
+            number=4,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="FAILED", index=5, number=5, serialized_options=None, type=None
+            name="FAILED",
+            index=5,
+            number=5,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     containing_type=None,
@@ -118,6 +167,7 @@ _WORKFLOWTEMPLATE_LABELSENTRY = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="key",
@@ -136,6 +186,7 @@ _WORKFLOWTEMPLATE_LABELSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="value",
@@ -154,6 +205,7 @@ _WORKFLOWTEMPLATE_LABELSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -174,6 +226,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="id",
@@ -192,6 +245,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="name",
@@ -210,6 +264,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="version",
@@ -228,6 +283,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="create_time",
@@ -246,6 +302,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="update_time",
@@ -264,6 +321,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="labels",
@@ -282,6 +340,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="placement",
@@ -300,6 +359,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="jobs",
@@ -318,6 +378,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="parameters",
@@ -336,6 +397,7 @@ _WORKFLOWTEMPLATE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -357,6 +419,7 @@ _WORKFLOWTEMPLATEPLACEMENT = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="managed_cluster",
@@ -375,6 +438,7 @@ _WORKFLOWTEMPLATEPLACEMENT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="cluster_selector",
@@ -393,6 +457,7 @@ _WORKFLOWTEMPLATEPLACEMENT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -408,6 +473,7 @@ _WORKFLOWTEMPLATEPLACEMENT = _descriptor.Descriptor(
             full_name="google.cloud.dataproc.v1beta2.WorkflowTemplatePlacement.placement",
             index=0,
             containing_type=None,
+            create_key=_descriptor._internal_create_key,
             fields=[],
         )
     ],
@@ -422,6 +488,7 @@ _MANAGEDCLUSTER_LABELSENTRY = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="key",
@@ -440,6 +507,7 @@ _MANAGEDCLUSTER_LABELSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="value",
@@ -458,6 +526,7 @@ _MANAGEDCLUSTER_LABELSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -478,6 +547,7 @@ _MANAGEDCLUSTER = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="cluster_name",
@@ -496,6 +566,7 @@ _MANAGEDCLUSTER = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="config",
@@ -514,6 +585,7 @@ _MANAGEDCLUSTER = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="labels",
@@ -532,6 +604,7 @@ _MANAGEDCLUSTER = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -553,6 +626,7 @@ _CLUSTERSELECTOR_CLUSTERLABELSENTRY = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="key",
@@ -571,6 +645,7 @@ _CLUSTERSELECTOR_CLUSTERLABELSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="value",
@@ -589,6 +664,7 @@ _CLUSTERSELECTOR_CLUSTERLABELSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -609,6 +685,7 @@ _CLUSTERSELECTOR = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="zone",
@@ -627,6 +704,7 @@ _CLUSTERSELECTOR = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="cluster_labels",
@@ -645,6 +723,7 @@ _CLUSTERSELECTOR = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -666,6 +745,7 @@ _ORDEREDJOB_LABELSENTRY = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="key",
@@ -684,6 +764,7 @@ _ORDEREDJOB_LABELSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="value",
@@ -702,6 +783,7 @@ _ORDEREDJOB_LABELSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -722,6 +804,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="step_id",
@@ -740,6 +823,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="hadoop_job",
@@ -758,6 +842,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="spark_job",
@@ -776,6 +861,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="pyspark_job",
@@ -794,6 +880,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="hive_job",
@@ -812,6 +899,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="pig_job",
@@ -830,6 +918,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="spark_r_job",
@@ -848,6 +937,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="spark_sql_job",
@@ -866,6 +956,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="presto_job",
@@ -884,6 +975,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="labels",
@@ -902,6 +994,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="scheduling",
@@ -920,6 +1013,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="prerequisite_step_ids",
@@ -938,6 +1032,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -953,6 +1048,7 @@ _ORDEREDJOB = _descriptor.Descriptor(
             full_name="google.cloud.dataproc.v1beta2.OrderedJob.job_type",
             index=0,
             containing_type=None,
+            create_key=_descriptor._internal_create_key,
             fields=[],
         )
     ],
@@ -967,6 +1063,7 @@ _TEMPLATEPARAMETER = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -985,6 +1082,7 @@ _TEMPLATEPARAMETER = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="fields",
@@ -1003,6 +1101,7 @@ _TEMPLATEPARAMETER = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="description",
@@ -1021,6 +1120,7 @@ _TEMPLATEPARAMETER = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="validation",
@@ -1039,6 +1139,7 @@ _TEMPLATEPARAMETER = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -1060,6 +1161,7 @@ _PARAMETERVALIDATION = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="regex",
@@ -1078,6 +1180,7 @@ _PARAMETERVALIDATION = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="values",
@@ -1096,6 +1199,7 @@ _PARAMETERVALIDATION = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -1111,6 +1215,7 @@ _PARAMETERVALIDATION = _descriptor.Descriptor(
             full_name="google.cloud.dataproc.v1beta2.ParameterValidation.validation_type",
             index=0,
             containing_type=None,
+            create_key=_descriptor._internal_create_key,
             fields=[],
         )
     ],
@@ -1125,6 +1230,7 @@ _REGEXVALIDATION = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="regexes",
@@ -1143,6 +1249,7 @@ _REGEXVALIDATION = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -1164,6 +1271,7 @@ _VALUEVALIDATION = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="values",
@@ -1182,6 +1290,7 @@ _VALUEVALIDATION = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -1203,6 +1312,7 @@ _WORKFLOWMETADATA_PARAMETERSENTRY = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="key",
@@ -1221,6 +1331,7 @@ _WORKFLOWMETADATA_PARAMETERSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="value",
@@ -1239,6 +1350,7 @@ _WORKFLOWMETADATA_PARAMETERSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -1259,6 +1371,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="template",
@@ -1277,6 +1390,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="version",
@@ -1295,6 +1409,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="create_cluster",
@@ -1313,6 +1428,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="graph",
@@ -1331,6 +1447,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="delete_cluster",
@@ -1349,6 +1466,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="state",
@@ -1367,6 +1485,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="cluster_name",
@@ -1385,6 +1504,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="parameters",
@@ -1403,6 +1523,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="start_time",
@@ -1421,6 +1542,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="end_time",
@@ -1439,6 +1561,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="cluster_uuid",
@@ -1457,6 +1580,7 @@ _WORKFLOWMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -1478,6 +1602,7 @@ _CLUSTEROPERATION = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="operation_id",
@@ -1496,6 +1621,7 @@ _CLUSTEROPERATION = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="error",
@@ -1514,6 +1640,7 @@ _CLUSTEROPERATION = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="done",
@@ -1532,6 +1659,7 @@ _CLUSTEROPERATION = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -1553,6 +1681,7 @@ _WORKFLOWGRAPH = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="nodes",
@@ -1571,6 +1700,7 @@ _WORKFLOWGRAPH = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -1592,6 +1722,7 @@ _WORKFLOWNODE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="step_id",
@@ -1610,6 +1741,7 @@ _WORKFLOWNODE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="prerequisite_step_ids",
@@ -1628,6 +1760,7 @@ _WORKFLOWNODE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="job_id",
@@ -1646,6 +1779,7 @@ _WORKFLOWNODE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="state",
@@ -1664,6 +1798,7 @@ _WORKFLOWNODE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="error",
@@ -1682,6 +1817,7 @@ _WORKFLOWNODE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -1703,6 +1839,7 @@ _CREATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="parent",
@@ -1721,6 +1858,7 @@ _CREATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A*\022(dataproc.googleapis.com/WorkflowTemplate",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="template",
@@ -1739,6 +1877,7 @@ _CREATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -1760,6 +1899,7 @@ _GETWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -1778,6 +1918,7 @@ _GETWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A*\n(dataproc.googleapis.com/WorkflowTemplate",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="version",
@@ -1796,6 +1937,7 @@ _GETWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -1817,6 +1959,7 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST_PARAMETERSENTRY = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="key",
@@ -1835,6 +1978,7 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST_PARAMETERSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="value",
@@ -1853,6 +1997,7 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST_PARAMETERSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -1873,6 +2018,7 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -1891,6 +2037,7 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A*\n(dataproc.googleapis.com/WorkflowTemplate",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="version",
@@ -1909,6 +2056,7 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="instance_id",
@@ -1927,6 +2075,7 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\030\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="request_id",
@@ -1945,6 +2094,7 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="parameters",
@@ -1963,6 +2113,7 @@ _INSTANTIATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -1984,6 +2135,7 @@ _INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="parent",
@@ -2002,6 +2154,7 @@ _INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A*\022(dataproc.googleapis.com/WorkflowTemplate",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="template",
@@ -2020,6 +2173,7 @@ _INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="instance_id",
@@ -2038,6 +2192,7 @@ _INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="request_id",
@@ -2056,6 +2211,7 @@ _INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -2077,6 +2233,7 @@ _UPDATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="template",
@@ -2095,6 +2252,7 @@ _UPDATEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -2116,6 +2274,7 @@ _LISTWORKFLOWTEMPLATESREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="parent",
@@ -2134,6 +2293,7 @@ _LISTWORKFLOWTEMPLATESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A*\022(dataproc.googleapis.com/WorkflowTemplate",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="page_size",
@@ -2152,6 +2312,7 @@ _LISTWORKFLOWTEMPLATESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="page_token",
@@ -2170,6 +2331,7 @@ _LISTWORKFLOWTEMPLATESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -2191,6 +2353,7 @@ _LISTWORKFLOWTEMPLATESRESPONSE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="templates",
@@ -2209,6 +2372,7 @@ _LISTWORKFLOWTEMPLATESRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="next_page_token",
@@ -2227,6 +2391,7 @@ _LISTWORKFLOWTEMPLATESRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -2248,6 +2413,7 @@ _DELETEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -2266,6 +2432,7 @@ _DELETEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A*\n(dataproc.googleapis.com/WorkflowTemplate",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="version",
@@ -2284,6 +2451,7 @@ _DELETEWORKFLOWTEMPLATEREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -3279,6 +3447,7 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     serialized_options=b"\312A\027dataproc.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform",
+    create_key=_descriptor._internal_create_key,
     serialized_start=5417,
     serialized_end=7698,
     methods=[
@@ -3290,6 +3459,7 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             input_type=_CREATEWORKFLOWTEMPLATEREQUEST,
             output_type=_WORKFLOWTEMPLATE,
             serialized_options=b'\202\323\344\223\002\214\001"8/v1beta2/{parent=projects/*/regions/*}/workflowTemplates:\010templateZF":/v1beta2/{parent=projects/*/locations/*}/workflowTemplates:\010template\332A\020parent, template',
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="GetWorkflowTemplate",
@@ -3299,6 +3469,7 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             input_type=_GETWORKFLOWTEMPLATEREQUEST,
             output_type=_WORKFLOWTEMPLATE,
             serialized_options=b"\202\323\344\223\002x\0228/v1beta2/{name=projects/*/regions/*/workflowTemplates/*}Z<\022:/v1beta2/{name=projects/*/locations/*/workflowTemplates/*}\332A\004name",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="InstantiateWorkflowTemplate",
@@ -3308,6 +3479,7 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             input_type=_INSTANTIATEWORKFLOWTEMPLATEREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=b'\202\323\344\223\002\226\001"D/v1beta2/{name=projects/*/regions/*/workflowTemplates/*}:instantiate:\001*ZK"F/v1beta2/{name=projects/*/locations/*/workflowTemplates/*}:instantiate:\001*\332A\004name\332A\020name, parameters\312A)\n\025google.protobuf.Empty\022\020WorkflowMetadata',
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="InstantiateInlineWorkflowTemplate",
@@ -3317,6 +3489,7 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             input_type=_INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=b'\202\323\344\223\002\260\001"L/v1beta2/{parent=projects/*/locations/*}/workflowTemplates:instantiateInline:\010templateZV"J/v1beta2/{parent=projects/*/regions/*}/workflowTemplates:instantiateInline:\010template\332A\020parent, template\312A)\n\025google.protobuf.Empty\022\020WorkflowMetadata',
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="UpdateWorkflowTemplate",
@@ -3326,6 +3499,7 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             input_type=_UPDATEWORKFLOWTEMPLATEREQUEST,
             output_type=_WORKFLOWTEMPLATE,
             serialized_options=b"\202\323\344\223\002\236\001\032A/v1beta2/{template.name=projects/*/regions/*/workflowTemplates/*}:\010templateZO\032C/v1beta2/{template.name=projects/*/locations/*/workflowTemplates/*}:\010template\332A\010template",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="ListWorkflowTemplates",
@@ -3335,6 +3509,7 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             input_type=_LISTWORKFLOWTEMPLATESREQUEST,
             output_type=_LISTWORKFLOWTEMPLATESRESPONSE,
             serialized_options=b"\202\323\344\223\002x\0228/v1beta2/{parent=projects/*/regions/*}/workflowTemplatesZ<\022:/v1beta2/{parent=projects/*/locations/*}/workflowTemplates\332A\006parent",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="DeleteWorkflowTemplate",
@@ -3344,6 +3519,7 @@ _WORKFLOWTEMPLATESERVICE = _descriptor.ServiceDescriptor(
             input_type=_DELETEWORKFLOWTEMPLATEREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=b"\202\323\344\223\002x*8/v1beta2/{name=projects/*/regions/*/workflowTemplates/*}Z<*:/v1beta2/{name=projects/*/locations/*/workflowTemplates/*}\332A\004name",
+            create_key=_descriptor._internal_create_key,
         ),
     ],
 )
