@@ -41,6 +41,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.accessapproval.v1",
     syntax="proto3",
     serialized_options=b'\n"com.google.cloud.accessapproval.v1B\023AccessApprovalProtoP\001ZLgoogle.golang.org/genproto/googleapis/cloud/accessapproval/v1;accessapproval\352\002!Google::Cloud::AccessApproval::V1',
+    create_key=_descriptor._internal_create_key,
     serialized_pb=b'\n9google/cloud/accessapproval_v1/proto/accessapproval.proto\x12\x1egoogle.cloud.accessapproval.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"`\n\x0f\x41\x63\x63\x65ssLocations\x12 \n\x18principal_office_country\x18\x01 \x01(\t\x12+\n#principal_physical_location_country\x18\x02 \x01(\t"\xd8\x01\n\x0c\x41\x63\x63\x65ssReason\x12?\n\x04type\x18\x01 \x01(\x0e\x32\x31.google.cloud.accessapproval.v1.AccessReason.Type\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t"w\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x1e\n\x1a\x43USTOMER_INITIATED_SUPPORT\x10\x01\x12\x1c\n\x18GOOGLE_INITIATED_SERVICE\x10\x02\x12\x1b\n\x17GOOGLE_INITIATED_REVIEW\x10\x03"t\n\x0f\x41pproveDecision\x12\x30\n\x0c\x61pprove_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x65xpire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"C\n\x0f\x44ismissDecision\x12\x30\n\x0c\x64ismiss_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"2\n\x12ResourceProperties\x12\x1c\n\x14\x65xcludes_descendants\x18\x01 \x01(\x08"\xb1\x04\n\x0f\x41pprovalRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1f\n\x17requested_resource_name\x18\x02 \x01(\t\x12Y\n\x1drequested_resource_properties\x18\t \x01(\x0b\x32\x32.google.cloud.accessapproval.v1.ResourceProperties\x12\x46\n\x10requested_reason\x18\x03 \x01(\x0b\x32,.google.cloud.accessapproval.v1.AccessReason\x12L\n\x13requested_locations\x18\x04 \x01(\x0b\x32/.google.cloud.accessapproval.v1.AccessLocations\x12\x30\n\x0crequest_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x38\n\x14requested_expiration\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x42\n\x07\x61pprove\x18\x07 \x01(\x0b\x32/.google.cloud.accessapproval.v1.ApproveDecisionH\x00\x12\x42\n\x07\x64ismiss\x18\x08 \x01(\x0b\x32/.google.cloud.accessapproval.v1.DismissDecisionH\x00\x42\n\n\x08\x64\x65\x63ision"s\n\x0f\x45nrolledService\x12\x15\n\rcloud_product\x18\x01 \x01(\t\x12I\n\x10\x65nrollment_level\x18\x02 \x01(\x0e\x32/.google.cloud.accessapproval.v1.EnrollmentLevel"\xaf\x01\n\x16\x41\x63\x63\x65ssApprovalSettings\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1b\n\x13notification_emails\x18\x02 \x03(\t\x12J\n\x11\x65nrolled_services\x18\x03 \x03(\x0b\x32/.google.cloud.accessapproval.v1.EnrolledService\x12\x1e\n\x11\x65nrolled_ancestor\x18\x04 \x01(\x08\x42\x03\xe0\x41\x03"d\n\x1bListApprovalRequestsMessage\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x11\n\tpage_size\x18\x03 \x01(\x05\x12\x12\n\npage_token\x18\x04 \x01(\t"\x83\x01\n\x1cListApprovalRequestsResponse\x12J\n\x11\x61pproval_requests\x18\x01 \x03(\x0b\x32/.google.cloud.accessapproval.v1.ApprovalRequest\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t")\n\x19GetApprovalRequestMessage\x12\x0c\n\x04name\x18\x01 \x01(\t"^\n\x1d\x41pproveApprovalRequestMessage\x12\x0c\n\x04name\x18\x01 \x01(\t\x12/\n\x0b\x65xpire_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"-\n\x1d\x44ismissApprovalRequestMessage\x12\x0c\n\x04name\x18\x01 \x01(\t"0\n GetAccessApprovalSettingsMessage\x12\x0c\n\x04name\x18\x01 \x01(\t"\xa0\x01\n#UpdateAccessApprovalSettingsMessage\x12H\n\x08settings\x18\x01 \x01(\x0b\x32\x36.google.cloud.accessapproval.v1.AccessApprovalSettings\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"3\n#DeleteAccessApprovalSettingsMessage\x12\x0c\n\x04name\x18\x01 \x01(\t*B\n\x0f\x45nrollmentLevel\x12 \n\x1c\x45NROLLMENT_LEVEL_UNSPECIFIED\x10\x00\x12\r\n\tBLOCK_ALL\x10\x01\x32\x88\x12\n\x0e\x41\x63\x63\x65ssApproval\x12\xaa\x02\n\x14ListApprovalRequests\x12;.google.cloud.accessapproval.v1.ListApprovalRequestsMessage\x1a<.google.cloud.accessapproval.v1.ListApprovalRequestsResponse"\x96\x01\x82\xd3\xe4\x93\x02\x86\x01\x12(/v1/{parent=projects/*}/approvalRequestsZ)\x12\'/v1/{parent=folders/*}/approvalRequestsZ/\x12-/v1/{parent=organizations/*}/approvalRequests\xda\x41\x06parent\x12\x97\x02\n\x12GetApprovalRequest\x12\x39.google.cloud.accessapproval.v1.GetApprovalRequestMessage\x1a/.google.cloud.accessapproval.v1.ApprovalRequest"\x94\x01\x82\xd3\xe4\x93\x02\x86\x01\x12(/v1/{name=projects/*/approvalRequests/*}Z)\x12\'/v1/{name=folders/*/approvalRequests/*}Z/\x12-/v1/{name=organizations/*/approvalRequests/*}\xda\x41\x04name\x12\xb9\x02\n\x16\x41pproveApprovalRequest\x12=.google.cloud.accessapproval.v1.ApproveApprovalRequestMessage\x1a/.google.cloud.accessapproval.v1.ApprovalRequest"\xae\x01\x82\xd3\xe4\x93\x02\xa7\x01"0/v1/{name=projects/*/approvalRequests/*}:approve:\x01*Z4"//v1/{name=folders/*/approvalRequests/*}:approve:\x01*Z:"5/v1/{name=organizations/*/approvalRequests/*}:approve:\x01*\x12\xb9\x02\n\x16\x44ismissApprovalRequest\x12=.google.cloud.accessapproval.v1.DismissApprovalRequestMessage\x1a/.google.cloud.accessapproval.v1.ApprovalRequest"\xae\x01\x82\xd3\xe4\x93\x02\xa7\x01"0/v1/{name=projects/*/approvalRequests/*}:dismiss:\x01*Z4"//v1/{name=folders/*/approvalRequests/*}:dismiss:\x01*Z:"5/v1/{name=organizations/*/approvalRequests/*}:dismiss:\x01*\x12\xb8\x02\n\x19GetAccessApprovalSettings\x12@.google.cloud.accessapproval.v1.GetAccessApprovalSettingsMessage\x1a\x36.google.cloud.accessapproval.v1.AccessApprovalSettings"\xa0\x01\x82\xd3\xe4\x93\x02\x92\x01\x12,/v1/{name=projects/*/accessApprovalSettings}Z-\x12+/v1/{name=folders/*/accessApprovalSettings}Z3\x12\x31/v1/{name=organizations/*/accessApprovalSettings}\xda\x41\x04name\x12\x87\x03\n\x1cUpdateAccessApprovalSettings\x12\x43.google.cloud.accessapproval.v1.UpdateAccessApprovalSettingsMessage\x1a\x36.google.cloud.accessapproval.v1.AccessApprovalSettings"\xe9\x01\x82\xd3\xe4\x93\x02\xcb\x01\x32\x35/v1/{settings.name=projects/*/accessApprovalSettings}:\x08settingsZ@24/v1/{settings.name=folders/*/accessApprovalSettings}:\x08settingsZF2:/v1/{settings.name=organizations/*/accessApprovalSettings}:\x08settings\xda\x41\x14settings,update_mask\x12\x9e\x02\n\x1c\x44\x65leteAccessApprovalSettings\x12\x43.google.cloud.accessapproval.v1.DeleteAccessApprovalSettingsMessage\x1a\x16.google.protobuf.Empty"\xa0\x01\x82\xd3\xe4\x93\x02\x92\x01*,/v1/{name=projects/*/accessApprovalSettings}Z-*+/v1/{name=folders/*/accessApprovalSettings}Z3*1/v1/{name=organizations/*/accessApprovalSettings}\xda\x41\x04name\x1aQ\xca\x41\x1d\x61\x63\x63\x65ssapproval.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xad\x01\n"com.google.cloud.accessapproval.v1B\x13\x41\x63\x63\x65ssApprovalProtoP\x01ZLgoogle.golang.org/genproto/googleapis/cloud/accessapproval/v1;accessapproval\xea\x02!Google::Cloud::AccessApproval::V1b\x06proto3',
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -57,6 +58,7 @@ _ENROLLMENTLEVEL = _descriptor.EnumDescriptor(
     full_name="google.cloud.accessapproval.v1.EnrollmentLevel",
     filename=None,
     file=DESCRIPTOR,
+    create_key=_descriptor._internal_create_key,
     values=[
         _descriptor.EnumValueDescriptor(
             name="ENROLLMENT_LEVEL_UNSPECIFIED",
@@ -64,9 +66,15 @@ _ENROLLMENTLEVEL = _descriptor.EnumDescriptor(
             number=0,
             serialized_options=None,
             type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="BLOCK_ALL", index=1, number=1, serialized_options=None, type=None
+            name="BLOCK_ALL",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     containing_type=None,
@@ -86,6 +94,7 @@ _ACCESSREASON_TYPE = _descriptor.EnumDescriptor(
     full_name="google.cloud.accessapproval.v1.AccessReason.Type",
     filename=None,
     file=DESCRIPTOR,
+    create_key=_descriptor._internal_create_key,
     values=[
         _descriptor.EnumValueDescriptor(
             name="TYPE_UNSPECIFIED",
@@ -93,6 +102,7 @@ _ACCESSREASON_TYPE = _descriptor.EnumDescriptor(
             number=0,
             serialized_options=None,
             type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
             name="CUSTOMER_INITIATED_SUPPORT",
@@ -100,6 +110,7 @@ _ACCESSREASON_TYPE = _descriptor.EnumDescriptor(
             number=1,
             serialized_options=None,
             type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
             name="GOOGLE_INITIATED_SERVICE",
@@ -107,6 +118,7 @@ _ACCESSREASON_TYPE = _descriptor.EnumDescriptor(
             number=2,
             serialized_options=None,
             type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
             name="GOOGLE_INITIATED_REVIEW",
@@ -114,6 +126,7 @@ _ACCESSREASON_TYPE = _descriptor.EnumDescriptor(
             number=3,
             serialized_options=None,
             type=None,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     containing_type=None,
@@ -130,6 +143,7 @@ _ACCESSLOCATIONS = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="principal_office_country",
@@ -148,6 +162,7 @@ _ACCESSLOCATIONS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="principal_physical_location_country",
@@ -166,6 +181,7 @@ _ACCESSLOCATIONS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -187,6 +203,7 @@ _ACCESSREASON = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="type",
@@ -205,6 +222,7 @@ _ACCESSREASON = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="detail",
@@ -223,6 +241,7 @@ _ACCESSREASON = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -244,6 +263,7 @@ _APPROVEDECISION = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="approve_time",
@@ -262,6 +282,7 @@ _APPROVEDECISION = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="expire_time",
@@ -280,6 +301,7 @@ _APPROVEDECISION = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -301,6 +323,7 @@ _DISMISSDECISION = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="dismiss_time",
@@ -319,6 +342,7 @@ _DISMISSDECISION = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -340,6 +364,7 @@ _RESOURCEPROPERTIES = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="excludes_descendants",
@@ -358,6 +383,7 @@ _RESOURCEPROPERTIES = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -379,6 +405,7 @@ _APPROVALREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -397,6 +424,7 @@ _APPROVALREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="requested_resource_name",
@@ -415,6 +443,7 @@ _APPROVALREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="requested_resource_properties",
@@ -433,6 +462,7 @@ _APPROVALREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="requested_reason",
@@ -451,6 +481,7 @@ _APPROVALREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="requested_locations",
@@ -469,6 +500,7 @@ _APPROVALREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="request_time",
@@ -487,6 +519,7 @@ _APPROVALREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="requested_expiration",
@@ -505,6 +538,7 @@ _APPROVALREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="approve",
@@ -523,6 +557,7 @@ _APPROVALREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="dismiss",
@@ -541,6 +576,7 @@ _APPROVALREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -556,6 +592,7 @@ _APPROVALREQUEST = _descriptor.Descriptor(
             full_name="google.cloud.accessapproval.v1.ApprovalRequest.decision",
             index=0,
             containing_type=None,
+            create_key=_descriptor._internal_create_key,
             fields=[],
         )
     ],
@@ -570,6 +607,7 @@ _ENROLLEDSERVICE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="cloud_product",
@@ -588,6 +626,7 @@ _ENROLLEDSERVICE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="enrollment_level",
@@ -606,6 +645,7 @@ _ENROLLEDSERVICE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -627,6 +667,7 @@ _ACCESSAPPROVALSETTINGS = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -645,6 +686,7 @@ _ACCESSAPPROVALSETTINGS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="notification_emails",
@@ -663,6 +705,7 @@ _ACCESSAPPROVALSETTINGS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="enrolled_services",
@@ -681,6 +724,7 @@ _ACCESSAPPROVALSETTINGS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="enrolled_ancestor",
@@ -699,6 +743,7 @@ _ACCESSAPPROVALSETTINGS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -720,6 +765,7 @@ _LISTAPPROVALREQUESTSMESSAGE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="parent",
@@ -738,6 +784,7 @@ _LISTAPPROVALREQUESTSMESSAGE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="filter",
@@ -756,6 +803,7 @@ _LISTAPPROVALREQUESTSMESSAGE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="page_size",
@@ -774,6 +822,7 @@ _LISTAPPROVALREQUESTSMESSAGE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="page_token",
@@ -792,6 +841,7 @@ _LISTAPPROVALREQUESTSMESSAGE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -813,6 +863,7 @@ _LISTAPPROVALREQUESTSRESPONSE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="approval_requests",
@@ -831,6 +882,7 @@ _LISTAPPROVALREQUESTSRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="next_page_token",
@@ -849,6 +901,7 @@ _LISTAPPROVALREQUESTSRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -870,6 +923,7 @@ _GETAPPROVALREQUESTMESSAGE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -888,6 +942,7 @@ _GETAPPROVALREQUESTMESSAGE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -909,6 +964,7 @@ _APPROVEAPPROVALREQUESTMESSAGE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -927,6 +983,7 @@ _APPROVEAPPROVALREQUESTMESSAGE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="expire_time",
@@ -945,6 +1002,7 @@ _APPROVEAPPROVALREQUESTMESSAGE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -966,6 +1024,7 @@ _DISMISSAPPROVALREQUESTMESSAGE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -984,6 +1043,7 @@ _DISMISSAPPROVALREQUESTMESSAGE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -1005,6 +1065,7 @@ _GETACCESSAPPROVALSETTINGSMESSAGE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -1023,6 +1084,7 @@ _GETACCESSAPPROVALSETTINGSMESSAGE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -1044,6 +1106,7 @@ _UPDATEACCESSAPPROVALSETTINGSMESSAGE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="settings",
@@ -1062,6 +1125,7 @@ _UPDATEACCESSAPPROVALSETTINGSMESSAGE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="update_mask",
@@ -1080,6 +1144,7 @@ _UPDATEACCESSAPPROVALSETTINGSMESSAGE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -1101,6 +1166,7 @@ _DELETEACCESSAPPROVALSETTINGSMESSAGE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -1119,6 +1185,7 @@ _DELETEACCESSAPPROVALSETTINGSMESSAGE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -1341,7 +1408,6 @@ ApprovalRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _APPROVALREQUEST,
         "__module__": "google.cloud.accessapproval_v1.proto.accessapproval_pb2",
         "__doc__": """A request for the customer to approve access to a resource.
-
   Attributes:
       name:
           The resource name of the request. Format is "``{projects|folders
@@ -1420,7 +1486,6 @@ AccessApprovalSettings = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _ACCESSAPPROVALSETTINGS,
         "__module__": "google.cloud.accessapproval_v1.proto.accessapproval_pb2",
         "__doc__": """Settings on a Project/Folder/Organization related to Access Approval.
-
   Attributes:
       name:
           The resource name of the settings. Format is one of:  .. raw::
@@ -1631,6 +1696,7 @@ _ACCESSAPPROVAL = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     serialized_options=b"\312A\035accessapproval.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform",
+    create_key=_descriptor._internal_create_key,
     serialized_start=2449,
     serialized_end=4761,
     methods=[
@@ -1642,6 +1708,7 @@ _ACCESSAPPROVAL = _descriptor.ServiceDescriptor(
             input_type=_LISTAPPROVALREQUESTSMESSAGE,
             output_type=_LISTAPPROVALREQUESTSRESPONSE,
             serialized_options=b"\202\323\344\223\002\206\001\022(/v1/{parent=projects/*}/approvalRequestsZ)\022'/v1/{parent=folders/*}/approvalRequestsZ/\022-/v1/{parent=organizations/*}/approvalRequests\332A\006parent",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="GetApprovalRequest",
@@ -1651,6 +1718,7 @@ _ACCESSAPPROVAL = _descriptor.ServiceDescriptor(
             input_type=_GETAPPROVALREQUESTMESSAGE,
             output_type=_APPROVALREQUEST,
             serialized_options=b"\202\323\344\223\002\206\001\022(/v1/{name=projects/*/approvalRequests/*}Z)\022'/v1/{name=folders/*/approvalRequests/*}Z/\022-/v1/{name=organizations/*/approvalRequests/*}\332A\004name",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="ApproveApprovalRequest",
@@ -1660,6 +1728,7 @@ _ACCESSAPPROVAL = _descriptor.ServiceDescriptor(
             input_type=_APPROVEAPPROVALREQUESTMESSAGE,
             output_type=_APPROVALREQUEST,
             serialized_options=b'\202\323\344\223\002\247\001"0/v1/{name=projects/*/approvalRequests/*}:approve:\001*Z4"//v1/{name=folders/*/approvalRequests/*}:approve:\001*Z:"5/v1/{name=organizations/*/approvalRequests/*}:approve:\001*',
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="DismissApprovalRequest",
@@ -1669,6 +1738,7 @@ _ACCESSAPPROVAL = _descriptor.ServiceDescriptor(
             input_type=_DISMISSAPPROVALREQUESTMESSAGE,
             output_type=_APPROVALREQUEST,
             serialized_options=b'\202\323\344\223\002\247\001"0/v1/{name=projects/*/approvalRequests/*}:dismiss:\001*Z4"//v1/{name=folders/*/approvalRequests/*}:dismiss:\001*Z:"5/v1/{name=organizations/*/approvalRequests/*}:dismiss:\001*',
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="GetAccessApprovalSettings",
@@ -1678,6 +1748,7 @@ _ACCESSAPPROVAL = _descriptor.ServiceDescriptor(
             input_type=_GETACCESSAPPROVALSETTINGSMESSAGE,
             output_type=_ACCESSAPPROVALSETTINGS,
             serialized_options=b"\202\323\344\223\002\222\001\022,/v1/{name=projects/*/accessApprovalSettings}Z-\022+/v1/{name=folders/*/accessApprovalSettings}Z3\0221/v1/{name=organizations/*/accessApprovalSettings}\332A\004name",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="UpdateAccessApprovalSettings",
@@ -1687,6 +1758,7 @@ _ACCESSAPPROVAL = _descriptor.ServiceDescriptor(
             input_type=_UPDATEACCESSAPPROVALSETTINGSMESSAGE,
             output_type=_ACCESSAPPROVALSETTINGS,
             serialized_options=b"\202\323\344\223\002\313\00125/v1/{settings.name=projects/*/accessApprovalSettings}:\010settingsZ@24/v1/{settings.name=folders/*/accessApprovalSettings}:\010settingsZF2:/v1/{settings.name=organizations/*/accessApprovalSettings}:\010settings\332A\024settings,update_mask",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="DeleteAccessApprovalSettings",
@@ -1696,6 +1768,7 @@ _ACCESSAPPROVAL = _descriptor.ServiceDescriptor(
             input_type=_DELETEACCESSAPPROVALSETTINGSMESSAGE,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=b"\202\323\344\223\002\222\001*,/v1/{name=projects/*/accessApprovalSettings}Z-*+/v1/{name=folders/*/accessApprovalSettings}Z3*1/v1/{name=organizations/*/accessApprovalSettings}\332A\004name",
+            create_key=_descriptor._internal_create_key,
         ),
     ],
 )
