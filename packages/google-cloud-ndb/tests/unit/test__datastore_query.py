@@ -26,6 +26,7 @@ from google.cloud.datastore_v1.proto import entity_pb2
 from google.cloud.datastore_v1.proto import query_pb2
 
 from google.cloud.ndb import _datastore_query
+from google.cloud.ndb import context as context_module
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
@@ -1052,16 +1053,64 @@ class Test_Result:
             result.entity()
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     @mock.patch("google.cloud.ndb._datastore_query.model")
     def test_entity_full_entity(model):
-        model._entity_from_protobuf.return_value = "bar"
+        key_pb = entity_pb2.Key(
+            partition_id=entity_pb2.PartitionId(project_id="testing"),
+            path=[entity_pb2.Key.PathElement(kind="ThisKind", id=42)],
+        )
+        entity = mock.Mock(key=key_pb)
+        model._entity_from_protobuf.return_value = entity
         result = _datastore_query._Result(
             _datastore_query.RESULT_TYPE_FULL,
-            mock.Mock(entity="foo", cursor=b"123", spec=("entity", "cursor")),
+            mock.Mock(entity=entity, cursor=b"123", spec=("entity", "cursor")),
         )
 
-        assert result.entity() == "bar"
-        model._entity_from_protobuf.assert_called_once_with("foo")
+        assert result.entity() is entity
+        model._entity_from_protobuf.assert_called_once_with(entity)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_query.model")
+    def test_entity_full_entity_cached(model):
+        key = key_module.Key("ThisKind", 42)
+        key_pb = entity_pb2.Key(
+            partition_id=entity_pb2.PartitionId(project_id="testing"),
+            path=[entity_pb2.Key.PathElement(kind="ThisKind", id=42)],
+        )
+        entity = mock.Mock(key=key_pb)
+        cached_entity = mock.Mock(key=key_pb, _key=key)
+        context = context_module.get_context()
+        context.cache.data[key] = cached_entity
+        model._entity_from_protobuf.return_value = entity
+        result = _datastore_query._Result(
+            _datastore_query.RESULT_TYPE_FULL,
+            mock.Mock(entity=entity, cursor=b"123", spec=("entity", "cursor")),
+        )
+
+        assert result.entity() is not entity
+        assert result.entity() is cached_entity
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_query.model")
+    def test_entity_full_entity_no_cache(model):
+        context = context_module.get_context()
+        with context.new(cache_policy=False).use():
+            key_pb = entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="ThisKind", id=42)],
+            )
+            entity = mock.Mock(key=key_pb)
+            model._entity_from_protobuf.return_value = entity
+            result = _datastore_query._Result(
+                _datastore_query.RESULT_TYPE_FULL,
+                mock.Mock(
+                    entity=entity, cursor=b"123", spec=("entity", "cursor")
+                ),
+            )
+            assert result.entity() is entity
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

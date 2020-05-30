@@ -24,6 +24,7 @@ from google.cloud.datastore_v1.proto import entity_pb2
 from google.cloud.datastore_v1.proto import query_pb2
 from google.cloud.datastore import helpers
 
+from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _datastore_api
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
@@ -51,6 +52,8 @@ FILTER_OPERATORS = {
     ">": query_pb2.PropertyFilter.GREATER_THAN,
     ">=": query_pb2.PropertyFilter.GREATER_THAN_OR_EQUAL,
 }
+
+_KEY_NOT_IN_CACHE = object()
 
 
 def make_filter(name, op, value):
@@ -698,7 +701,7 @@ class _Result(object):
         return 0
 
     def entity(self):
-        """Get an entity for an entity result.
+        """Get an entity for an entity result. Use the cache if available.
 
         Args:
             projection (Optional[Sequence[str]]): Sequence of property names to
@@ -709,7 +712,21 @@ class _Result(object):
         """
 
         if self.result_type == RESULT_TYPE_FULL:
-            entity = model._entity_from_protobuf(self.result_pb.entity)
+            # First check the cache.
+            context = context_module.get_context()
+            key_pb = self.result_pb.entity.key
+            ds_key = helpers.key_from_protobuf(key_pb)
+            key = key_module.Key._from_ds_key(ds_key)
+            entity = _KEY_NOT_IN_CACHE
+            use_cache = context._use_cache(key)
+            if use_cache:
+                try:
+                    entity = context.cache.get_and_validate(key)
+                except KeyError:
+                    pass
+            if entity is _KEY_NOT_IN_CACHE:
+                # entity not in cache, create one.
+                entity = model._entity_from_protobuf(self.result_pb.entity)
             return entity
 
         elif self.result_type == RESULT_TYPE_PROJECTION:
