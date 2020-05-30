@@ -4,14 +4,14 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-ndb.git",
-        "sha": "7590be8233fe58f9c45076eb38c1995363f02362"
+        "sha": "69b3a0ae49ab446a9ed903646ae6e01690411d3e"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "65f8c647c0bc0c6b38211b969a2a003e271a5ef1"
+        "sha": "ffe10407ee2f261c799fb0d01bf32a8abc67ed1e"
       }
     }
   ]
