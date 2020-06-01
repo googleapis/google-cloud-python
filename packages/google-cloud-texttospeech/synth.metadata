@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "git@github.com:googleapis/python-texttospeech",
-        "sha": "b54229fcc2bd1460c3f7f8207d125fd1379e56b1"
+        "sha": "b265df8e43ac71d22ee3bbdf96b5e3a457b9f956"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "89e89786896d256c70f43e68a975470c4f4f220e",
-        "internalRef": "311239362"
+        "sha": "eafa840ceec23b44a5c21670288107c661252711",
+        "internalRef": "313488995"
       }
     }
   ],
@@ -23,7 +23,7 @@
         "apiName": "texttospeech",
         "apiVersion": "v1beta1",
         "language": "python",
-        "generator": "bazel"
+        "generator": "gapic-generator-python"
       }
     },
     {
@@ -32,7 +32,7 @@
         "apiName": "texttospeech",
         "apiVersion": "v1",
         "language": "python",
-        "generator": "bazel"
+        "generator": "gapic-generator-python"
       }
     }
   ]

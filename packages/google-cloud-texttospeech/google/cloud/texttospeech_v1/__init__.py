@@ -1,41 +1,44 @@
 # -*- coding: utf-8 -*-
-#
+
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
 
-from __future__ import absolute_import
-import sys
-import warnings
-
-from google.cloud.texttospeech_v1 import types
-from google.cloud.texttospeech_v1.gapic import enums
-from google.cloud.texttospeech_v1.gapic import text_to_speech_client
-
-
-if sys.version_info[:2] == (2, 7):
-    message = (
-        "A future version of this library will drop support for Python 2.7."
-        "More details about Python 2 support for Google Cloud Client Libraries"
-        "can be found at https://cloud.google.com/python/docs/python2-sunset/"
-    )
-    warnings.warn(message, DeprecationWarning)
+from .services.text_to_speech import TextToSpeechClient
+from .types.cloud_tts import AudioConfig
+from .types.cloud_tts import AudioEncoding
+from .types.cloud_tts import ListVoicesRequest
+from .types.cloud_tts import ListVoicesResponse
+from .types.cloud_tts import SsmlVoiceGender
+from .types.cloud_tts import SynthesisInput
+from .types.cloud_tts import SynthesizeSpeechRequest
+from .types.cloud_tts import SynthesizeSpeechResponse
+from .types.cloud_tts import Voice
+from .types.cloud_tts import VoiceSelectionParams
 
 
-class TextToSpeechClient(text_to_speech_client.TextToSpeechClient):
-    __doc__ = text_to_speech_client.TextToSpeechClient.__doc__
-    enums = enums
-
-
-__all__ = ("enums", "types", "TextToSpeechClient")
+__all__ = (
+    "AudioConfig",
+    "AudioEncoding",
+    "ListVoicesRequest",
+    "ListVoicesResponse",
+    "SsmlVoiceGender",
+    "SynthesisInput",
+    "SynthesizeSpeechRequest",
+    "SynthesizeSpeechResponse",
+    "Voice",
+    "VoiceSelectionParams",
+    "TextToSpeechClient",
+)

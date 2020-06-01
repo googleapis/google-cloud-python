@@ -37,12 +37,26 @@ env | grep KOKORO
 # Install nox
 python3.6 -m pip install --upgrade --quiet nox
 
-# Unencrypt and extract secrets
-SECRETS_PASSWORD=$(cat "${KOKORO_GFILE_DIR}/secrets-password.txt")
-./scripts/decrypt-secrets.sh "${SECRETS_PASSWORD}"
+# Use secrets acessor service account to get secrets
+if [[ -f "${KOKORO_GFILE_DIR}/secrets_viewer_service_account.json" ]]; then
+    gcloud auth activate-service-account \
+	   --key-file="${KOKORO_GFILE_DIR}/secrets_viewer_service_account.json" \
+	   --project="cloud-devrel-kokoro-resources"
+fi
+
+# This script will create 3 files:
+# - testing/test-env.sh
+# - testing/service-account.json
+# - testing/client-secrets.json
+./scripts/decrypt-secrets.sh
 
 source ./testing/test-env.sh
 export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/testing/service-account.json
+
+# For cloud-run session, we activate the service account for gcloud sdk.
+gcloud auth activate-service-account \
+       --key-file "${GOOGLE_APPLICATION_CREDENTIALS}"
+
 export GOOGLE_CLIENT_SECRETS=$(pwd)/testing/client-secrets.json
 
 echo -e "\n******************** TESTING PROJECTS ********************"
