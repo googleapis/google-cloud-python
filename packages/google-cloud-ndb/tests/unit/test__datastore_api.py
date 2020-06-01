@@ -17,9 +17,11 @@ try:
 except ImportError:  # pragma: NO PY3 COVER
     import mock
 
+import grpc
 import pytest
 
 from google.api_core import client_info
+from google.api_core import exceptions as core_exceptions
 from google.cloud.datastore import entity
 from google.cloud.datastore import helpers
 from google.cloud.datastore import key as ds_key_module
@@ -131,6 +133,50 @@ class Test_make_call:
         call = _api.make_call("foo", request, retries=0, timeout=20)
         assert call.result() == "bar"
         api.foo.future.assert_called_once_with(request, timeout=20)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_api.stub")
+    def test_grpc_error(stub):
+        api = stub.return_value
+        future = tasklets.Future()
+        api.foo.future.return_value = future
+
+        class DummyError(grpc.Call, Exception):
+            def code(self):
+                return grpc.StatusCode.UNAVAILABLE
+
+            def details(self):
+                return "Where is the devil in?"
+
+        try:
+            raise DummyError("Have to raise in order to get traceback")
+        except Exception as error:
+            future.set_exception(error)
+
+        request = object()
+        with pytest.raises(core_exceptions.ServiceUnavailable):
+            _api.make_call("foo", request, retries=0).result()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_api.stub")
+    def test_other_error(stub):
+        api = stub.return_value
+        future = tasklets.Future()
+        api.foo.future.return_value = future
+
+        class DummyException(Exception):
+            pass
+
+        try:
+            raise DummyException("Have to raise in order to get traceback")
+        except Exception as error:
+            future.set_exception(error)
+
+        request = object()
+        with pytest.raises(DummyException):
+            _api.make_call("foo", request, retries=0).result()
 
 
 def _mock_key(key_str):

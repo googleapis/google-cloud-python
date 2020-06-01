@@ -14,9 +14,11 @@
 
 """Functions that interact with Datastore backend."""
 
+import grpc
 import itertools
 import logging
 
+from google.api_core import exceptions as core_exceptions
 from google.cloud.datastore import helpers
 from google.cloud.datastore_v1.proto import datastore_pb2
 from google.cloud.datastore_v1.proto import entity_pb2
@@ -85,7 +87,13 @@ def make_call(rpc_name, request, retries=None, timeout=None):
         log.debug(rpc)
         log.debug("timeout={}".format(timeout))
 
-        result = yield rpc
+        try:
+            result = yield rpc
+        except Exception as error:
+            if isinstance(error, grpc.Call):
+                error = core_exceptions.from_grpc_error(error)
+            raise error
+
         raise tasklets.Return(result)
 
     if retries:

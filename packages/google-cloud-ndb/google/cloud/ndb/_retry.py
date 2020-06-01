@@ -15,7 +15,6 @@
 """Retry functions."""
 
 import functools
-import grpc
 import itertools
 
 from google.api_core import retry as core_retry
@@ -91,18 +90,18 @@ def retry_async(callback, retries=_DEFAULT_RETRIES):
     return retry_wrapper
 
 
-# Possibly we should include DEADLINE_EXCEEDED. The caveat is that I think the
+# Possibly we should include DeadlineExceeded. The caveat is that I think the
 # timeout is enforced on the client side, so it might be possible that a Commit
 # request times out on the client side, but still writes data on the server
 # side, in which case we don't want to retry, since we can't commit the same
 # transaction more than once. Some more research is needed here. If we discover
-# that a DEADLINE_EXCEEDED status code guarantees the operation was cancelled,
-# then we can add DEADLINE_EXCEEDED to our retryable status codes. Not knowing
-# the answer, it's best not to take that risk.
-TRANSIENT_CODES = (
-    grpc.StatusCode.UNAVAILABLE,
-    grpc.StatusCode.INTERNAL,
-    grpc.StatusCode.ABORTED,
+# that a DeadlineExceeded error guarantees the operation was cancelled, then we
+# can add DeadlineExceeded to our retryable errors. Not knowing the answer,
+# it's best not to take that risk.
+TRANSIENT_ERRORS = (
+    core_exceptions.ServiceUnavailable,
+    core_exceptions.InternalServerError,
+    core_exceptions.Aborted,
 )
 
 
@@ -115,10 +114,4 @@ def is_transient_error(error):
     if core_retry.if_transient_error(error):
         return True
 
-    if isinstance(error, grpc.Call):
-        method = getattr(error, "code", None)
-        if callable(method):
-            code = method()
-            return code in TRANSIENT_CODES
-
-    return False
+    return isinstance(error, TRANSIENT_ERRORS)

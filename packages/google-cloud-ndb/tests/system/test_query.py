@@ -19,12 +19,12 @@ System tests for queries.
 import datetime
 import operator
 
-import grpc
 import pytest
 import pytz
 
 import test_utils.system
 
+from google.api_core import exceptions as core_exceptions
 from google.cloud import ndb
 from google.cloud.datastore import key as ds_key_module
 
@@ -61,7 +61,7 @@ def test_fetch_w_absurdly_short_timeout(ds_entity):
     with pytest.raises(Exception) as error_context:
         query.fetch(timeout=timeout)
 
-    assert error_context.value.code() == grpc.StatusCode.DEADLINE_EXCEEDED
+    assert isinstance(error_context.value, core_exceptions.DeadlineExceeded)
 
 
 @pytest.mark.usefixtures("client_context")
