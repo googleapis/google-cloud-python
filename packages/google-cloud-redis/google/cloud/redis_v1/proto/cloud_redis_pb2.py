@@ -1887,8 +1887,7 @@ GetInstanceRequest = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _GETINSTANCEREQUEST,
         "__module__": "google.cloud.redis_v1.proto.cloud_redis_pb2",
-        "__doc__": """Request for
-  [GetInstance][google.cloud.redis.v1.CloudRedis.GetInstance].
+        "__doc__": """Request for [GetInstance][google.cloud.redis.v1.CloudRedis.GetInstance].
   
   
   Attributes:
