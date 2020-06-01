@@ -3,8 +3,8 @@ Python Client for reCAPTCHA Enterprise
 
 |beta| |pypi| |versions|
 
-`reCAPTCHA Enterprise`_: Ship performant and highly available key value store, 
-compatible with OSS Memcached protocol.
+`reCAPTCHA Enterprise`_: protect your website from fraudulent activity like scraping, credential stuffing,
+and automated account creation.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -16,7 +16,7 @@ compatible with OSS Memcached protocol.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-recaptcha-enterprise.svg
    :target: https://pypi.org/project/google-cloud-recaptcha-enterprise/
 .. _reCAPTCHA Enterprise: https://cloud.google.com/recaptcha-enterprise/
-.. _Client Library Documentation: https://googleapis.dev/python/memcache/latest
+.. _Client Library Documentation: https://googleapis.dev/python/recaptchaenterprise/latest
 .. _Product Documentation:  https://cloud.google.com/recaptcha-enterprise/
 
 Quick Start
