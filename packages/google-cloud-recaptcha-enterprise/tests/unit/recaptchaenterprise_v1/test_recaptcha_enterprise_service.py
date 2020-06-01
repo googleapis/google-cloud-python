@@ -749,24 +749,6 @@ def test_recaptcha_enterprise_service_grpc_transport_channel_mtls_with_adc(
         assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_key_path():
-    project = "squid"
-    key = "clam"
-
-    expected = "projects/{project}/keys/{key}".format(project=project, key=key)
-    actual = RecaptchaEnterpriseServiceClient.key_path(project, key)
-    assert expected == actual
-
-
-def test_parse_key_path():
-    expected = {"project": "whelk", "key": "octopus"}
-    path = RecaptchaEnterpriseServiceClient.key_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = RecaptchaEnterpriseServiceClient.parse_key_path(path)
-    assert expected == actual
-
-
 def test_assessment_path():
     project = "squid"
     assessment = "clam"
@@ -784,4 +766,22 @@ def test_parse_assessment_path():
 
     # Check that the path construction is reversible.
     actual = RecaptchaEnterpriseServiceClient.parse_assessment_path(path)
+    assert expected == actual
+
+
+def test_key_path():
+    project = "squid"
+    key = "clam"
+
+    expected = "projects/{project}/keys/{key}".format(project=project, key=key)
+    actual = RecaptchaEnterpriseServiceClient.key_path(project, key)
+    assert expected == actual
+
+
+def test_parse_key_path():
+    expected = {"project": "whelk", "key": "octopus"}
+    path = RecaptchaEnterpriseServiceClient.key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecaptchaEnterpriseServiceClient.parse_key_path(path)
     assert expected == actual

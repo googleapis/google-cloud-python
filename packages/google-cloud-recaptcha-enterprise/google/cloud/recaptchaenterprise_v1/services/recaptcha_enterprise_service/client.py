@@ -129,17 +129,6 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
     from_service_account_json = from_service_account_file
 
     @staticmethod
-    def key_path(project: str, key: str) -> str:
-        """Return a fully-qualified key string."""
-        return "projects/{project}/keys/{key}".format(project=project, key=key)
-
-    @staticmethod
-    def parse_key_path(path: str) -> Dict[str, str]:
-        """Parse a key path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/keys/(?P<key>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
     def assessment_path(project: str, assessment: str) -> str:
         """Return a fully-qualified assessment string."""
         return "projects/{project}/assessments/{assessment}".format(
@@ -152,6 +141,17 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         m = re.match(
             r"^projects/(?P<project>.+?)/assessments/(?P<assessment>.+?)$", path
         )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def key_path(project: str, key: str) -> str:
+        """Return a fully-qualified key string."""
+        return "projects/{project}/keys/{key}".format(project=project, key=key)
+
+    @staticmethod
+    def parse_key_path(path: str) -> Dict[str, str]:
+        """Parse a key path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/keys/(?P<key>.+?)$", path)
         return m.groupdict() if m else {}
 
     def __init__(
