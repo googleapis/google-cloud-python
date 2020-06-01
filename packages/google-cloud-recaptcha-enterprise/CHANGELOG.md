@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.2.0...v0.2.1) (2020-06-01)
+
+
+### Bug Fixes
+
+* corrects link to client library documentation ([#13](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/13)) ([1ea5be7](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/1ea5be722147a7386afa5320eef7266b3eb9d984)), closes [#12](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/12)
+
 ## [0.2.0](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.1.0...v0.2.0) (2020-05-28)
 
 
