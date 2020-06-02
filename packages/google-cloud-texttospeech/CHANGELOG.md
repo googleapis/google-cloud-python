@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-texttospeech/compare/v1.0.1...v2.0.0) (2020-06-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release has breaking changes. See the [2.0.0 Migration Guide](https://github.com/googleapis/python-texttospeech/blob/master/UPGRADING.md#200-migration-guide) for details.
+
+### Features
+
+* regenerate with microgenerator ([#30](https://www.github.com/googleapis/python-texttospeech/issues/30)) ([3181b55](https://www.github.com/googleapis/python-texttospeech/commit/3181b55733da7aecde37009a0dd77117434deceb))
+
+
+### Bug Fixes
+
+* address PR comments ([65f903b](https://www.github.com/googleapis/python-texttospeech/commit/65f903b00395716fad272ca4fc973755735e1e20))
+
 ### [1.0.1](https://www.github.com/googleapis/python-texttospeech/compare/v1.0.0...v1.0.1) (2020-02-28)
 
 
