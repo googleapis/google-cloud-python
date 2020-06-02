@@ -25,6 +25,7 @@ from google.cloud.pubsub_v1.gapic import publisher_client
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
 
+from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher._sequencer import ordered_sequencer
 
 
@@ -125,11 +126,17 @@ def test_publish():
     creds = mock.Mock(spec=credentials.Credentials)
     client = publisher.Client(credentials=creds)
 
+    future1 = mock.sentinel.future1
+    future2 = mock.sentinel.future2
+    future1.add_done_callback = mock.Mock(spec=["__call__"])
+    future2.add_done_callback = mock.Mock(spec=["__call__"])
+
     # Use a mock in lieu of the actual batch class.
     batch = mock.Mock(spec=client._batch_class)
+
     # Set the mock up to claim indiscriminately that it accepts all messages.
     batch.will_accept.return_value = True
-    batch.publish.side_effect = (mock.sentinel.future1, mock.sentinel.future2)
+    batch.publish.side_effect = (future1, future2)
 
     topic = "topic/path"
     client._set_batch(topic, batch)
@@ -148,6 +155,30 @@ def test_publish():
             mock.call(types.PubsubMessage(data=b"foo", attributes={"bar": "baz"})),
         ]
     )
+
+
+def test_publish_error_exceeding_flow_control_limits():
+    creds = mock.Mock(spec=credentials.Credentials)
+    publisher_options = types.PublisherOptions(
+        flow_control=types.PublishFlowControl(
+            message_limit=10,
+            byte_limit=150,
+            limit_exceeded_behavior=types.LimitExceededBehavior.ERROR,
+        )
+    )
+    client = publisher.Client(credentials=creds, publisher_options=publisher_options)
+
+    mock_batch = mock.Mock(spec=client._batch_class)
+    mock_batch.will_accept.return_value = True
+    topic = "topic/path"
+    client._set_batch(topic, mock_batch)
+
+    future1 = client.publish(topic, b"a" * 100)
+    future2 = client.publish(topic, b"b" * 100)
+
+    future1.result()  # no error, still within flow control limits
+    with pytest.raises(exceptions.FlowControlLimitError):
+        future2.result()
 
 
 def test_publish_data_not_bytestring_error():
@@ -208,10 +239,13 @@ def test_publish_new_batch_needed():
     # Use mocks in lieu of the actual batch class.
     batch1 = mock.Mock(spec=client._batch_class)
     batch2 = mock.Mock(spec=client._batch_class)
+
     # Set the first mock up to claim indiscriminately that it rejects all
     # messages and the second accepts all.
+    future = mock.sentinel.future
+    future.add_done_callback = mock.Mock(spec=["__call__"])
     batch1.publish.return_value = None
-    batch2.publish.return_value = mock.sentinel.future
+    batch2.publish.return_value = future
 
     topic = "topic/path"
     client._set_batch(topic, batch1)
@@ -390,9 +424,15 @@ def test_publish_with_ordering_key():
 
     # Use a mock in lieu of the actual batch class.
     batch = mock.Mock(spec=client._batch_class)
+
     # Set the mock up to claim indiscriminately that it accepts all messages.
+    future1 = mock.sentinel.future1
+    future2 = mock.sentinel.future2
+    future1.add_done_callback = mock.Mock(spec=["__call__"])
+    future2.add_done_callback = mock.Mock(spec=["__call__"])
+
     batch.will_accept.return_value = True
-    batch.publish.side_effect = (mock.sentinel.future1, mock.sentinel.future2)
+    batch.publish.side_effect = (future1, future2)
 
     topic = "topic/path"
     ordering_key = "k1"

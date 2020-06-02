@@ -13,7 +13,9 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+
 import collections
+import enum
 import sys
 
 from google.api import http_pb2
@@ -28,25 +30,6 @@ from google.protobuf import timestamp_pb2
 
 from google.api_core.protobuf_helpers import get_messages
 from google.cloud.pubsub_v1.proto import pubsub_pb2
-
-
-# Define the default publisher options.
-#
-# This class is used when creating a publisher client to pass in options
-# to enable/disable features.
-PublisherOptions = collections.namedtuple(
-    "PublisherConfig", ["enable_message_ordering"]
-)
-PublisherOptions.__new__.__defaults__ = (False,)  # enable_message_ordering: False
-
-if sys.version_info >= (3, 5):
-    PublisherOptions.__doc__ = "The options for the publisher client."
-    PublisherOptions.enable_message_ordering.__doc__ = (
-        "Whether to order messages in a batch by a supplied ordering key."
-        "EXPERIMENTAL: Message ordering is an alpha feature that requires "
-        "special permissions to use. Please contact the Cloud Pub/Sub team for "
-        "more information."
-    )
 
 
 # Define the default values for batching.
@@ -78,6 +61,63 @@ if sys.version_info >= (3, 5):
     BatchSettings.max_messages.__doc__ = (
         "The maximum number of messages to collect before automatically "
         "publishing the batch."
+    )
+
+
+class LimitExceededBehavior(str, enum.Enum):
+    """The possible actions when exceeding the publish flow control limits."""
+
+    IGNORE = "ignore"
+    BLOCK = "block"
+    ERROR = "error"
+
+
+PublishFlowControl = collections.namedtuple(
+    "PublishFlowControl", ["message_limit", "byte_limit", "limit_exceeded_behavior"]
+)
+PublishFlowControl.__new__.__defaults__ = (
+    10 * BatchSettings.__new__.__defaults__[2],  # message limit
+    10 * BatchSettings.__new__.__defaults__[0],  # byte limit
+    LimitExceededBehavior.IGNORE,  # desired behavior
+)
+
+if sys.version_info >= (3, 5):
+    PublishFlowControl.__doc__ = (
+        "The client flow control settings for message publishing."
+    )
+    PublishFlowControl.message_limit.__doc__ = (
+        "The maximum number of messages awaiting to be published."
+    )
+    PublishFlowControl.byte_limit.__doc__ = (
+        "The maximum total size of messages awaiting to be published."
+    )
+    PublishFlowControl.limit_exceeded_behavior.__doc__ = (
+        "The action to take when publish flow control limits are exceeded."
+    )
+
+# Define the default publisher options.
+#
+# This class is used when creating a publisher client to pass in options
+# to enable/disable features.
+PublisherOptions = collections.namedtuple(
+    "PublisherConfig", ["enable_message_ordering", "flow_control"]
+)
+PublisherOptions.__new__.__defaults__ = (
+    False,  # enable_message_ordering: False
+    PublishFlowControl(),  # default flow control settings
+)
+
+if sys.version_info >= (3, 5):
+    PublisherOptions.__doc__ = "The options for the publisher client."
+    PublisherOptions.enable_message_ordering.__doc__ = (
+        "Whether to order messages in a batch by a supplied ordering key."
+        "EXPERIMENTAL: Message ordering is an alpha feature that requires "
+        "special permissions to use. Please contact the Cloud Pub/Sub team for "
+        "more information."
+    )
+    PublisherOptions.flow_control.__doc__ = (
+        "Flow control settings for message publishing by the client. By default "
+        "the publisher client does not do any throttling."
     )
 
 

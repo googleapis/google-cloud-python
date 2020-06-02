@@ -38,7 +38,12 @@ class PublishToPausedOrderingKeyException(Exception):
         super(PublishToPausedOrderingKeyException, self).__init__()
 
 
+class FlowControlLimitError(Exception):
+    """An action resulted in exceeding the flow control limits."""
+
+
 __all__ = (
+    "FlowControlLimitError",
     "MessageTooLargeError",
     "PublishError",
     "TimeoutError",
