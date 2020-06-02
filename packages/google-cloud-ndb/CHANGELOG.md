@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [1.3.0](https://www.github.com/googleapis/python-ndb/compare/v1.2.1...v1.3.0) (2020-06-01)
+
+
+### Features
+
+* add templates for python samples projects ([#506](https://www.github.com/googleapis/python-ndb/issues/506)) ([#455](https://www.github.com/googleapis/python-ndb/issues/455)) ([e329276](https://www.github.com/googleapis/python-ndb/commit/e32927623645112513675fbbfe5884a63eac24e1))
+* convert grpc errors to api core exceptions ([#457](https://www.github.com/googleapis/python-ndb/issues/457)) ([042cf6c](https://www.github.com/googleapis/python-ndb/commit/042cf6ceabe2a47b2fe77501ccd618e64877886a)), closes [#416](https://www.github.com/googleapis/python-ndb/issues/416)
+
+
+### Bug Fixes
+
+* Add support for 'name' Key instances to to_legacy_urlsafe ([#420](https://www.github.com/googleapis/python-ndb/issues/420)) ([59fc5af](https://www.github.com/googleapis/python-ndb/commit/59fc5afc36d01b72ad4b53befa593803b55df8b3))
+* all query types should use cache if available ([#454](https://www.github.com/googleapis/python-ndb/issues/454)) ([69b3a0a](https://www.github.com/googleapis/python-ndb/commit/69b3a0ae49ab446a9ed903646ae6e01690411d3e)), closes [#441](https://www.github.com/googleapis/python-ndb/issues/441)
+* fix `NotImplementedError` for `get_or_insert` inside a transaction ([#451](https://www.github.com/googleapis/python-ndb/issues/451)) ([99aa403](https://www.github.com/googleapis/python-ndb/commit/99aa40358b469be1c8486c84ba5873929715f25e)), closes [#433](https://www.github.com/googleapis/python-ndb/issues/433)
+* make sure datastore key constructor never gets None in a pair ([#446](https://www.github.com/googleapis/python-ndb/issues/446)) ([e6173cf](https://www.github.com/googleapis/python-ndb/commit/e6173cf8feec866c365d35e7cb461f72d19544fa)), closes [#384](https://www.github.com/googleapis/python-ndb/issues/384) [#439](https://www.github.com/googleapis/python-ndb/issues/439)
+* refactor transactions to use their own event loops ([#443](https://www.github.com/googleapis/python-ndb/issues/443)) ([7590be8](https://www.github.com/googleapis/python-ndb/commit/7590be8233fe58f9c45076eb38c1995363f02362)), closes [#426](https://www.github.com/googleapis/python-ndb/issues/426) [#426](https://www.github.com/googleapis/python-ndb/issues/426)
+* respect `_code_name` in `StructuredProperty.__getattr__` ([#453](https://www.github.com/googleapis/python-ndb/issues/453)) ([4f54dfc](https://www.github.com/googleapis/python-ndb/commit/4f54dfcee91b15d45cc6046f6b9933d1593d0956)), closes [#449](https://www.github.com/googleapis/python-ndb/issues/449)
+* strip `order_by` option from query when using `count()` ([#452](https://www.github.com/googleapis/python-ndb/issues/452)) ([9d20a2d](https://www.github.com/googleapis/python-ndb/commit/9d20a2d5d75cc0590c4326019ea94159bb4aebe2)), closes [#447](https://www.github.com/googleapis/python-ndb/issues/447)
+
 ### [1.2.1](https://www.github.com/googleapis/python-ndb/compare/v1.2.0...v1.2.1) (2020-05-15)
 
 
