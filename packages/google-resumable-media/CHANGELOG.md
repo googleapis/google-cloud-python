@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+### [0.5.1](https://www.github.com/googleapis/google-resumable-media-python/compare/v0.5.0...v0.5.1) (2020-05-26)
+
+
+### Bug Fixes
+
+* **resumable-media:** fix failing unit tests by dropping Python 3.4, add Python 3.8 ([#118](https://www.github.com/googleapis/google-resumable-media-python/issues/118)) ([1edb974](https://www.github.com/googleapis/google-resumable-media-python/commit/1edb974175d16c9f542fe84dd6bbfa2d70115d48))
+* **resumable-media:** fix upload_from_file size greater than multipart ([#129](https://www.github.com/googleapis/google-resumable-media-python/issues/129)) ([07dd9c2](https://www.github.com/googleapis/google-resumable-media-python/commit/07dd9c26a7eff9b2b43d32636faf9a5aa151fed5))
+* Generated file update for docs and testing templates. ([#127](https://www.github.com/googleapis/google-resumable-media-python/issues/127)) ([bc7a5a9](https://www.github.com/googleapis/google-resumable-media-python/commit/bc7a5a9b66e16d08778ace96845bb429b94ddbce))
+
 ## 0.5.0
 
 10-28-2019 09:16 PDT
@@ -243,4 +252,3 @@ might break the hypothetical usecase of downloading a blob marked with
 2017-04-21
 
 - Initial public release.
-
