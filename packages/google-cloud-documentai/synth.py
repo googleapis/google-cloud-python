@@ -20,12 +20,18 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-gapic = gcp.GAPICMicrogenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate document AI GAPIC layer
 # ----------------------------------------------------------------------------
+library = gapic.py_library(
+    service="documentai",
+    version="v1beta2",
+    bazel_target="//google/cloud/documentai/v1beta2:documentai-v1beta2-py",
+)
+
 library = gapic.py_library("documentai", "v1beta2")
 
 excludes = ["README.rst", "nox.py", "docs/index.rst", "setup.py"]
