@@ -1,5 +1,5 @@
-Types for {{ api.naming.long_name }} API
-{{ '=' * (14 + api.naming.long_name|length) }}
+Types for {{ api.naming.long_name }} {{ api.naming.version }} API
+{{ '=' * (15 + api.naming.long_name|length + api.naming.version|length) }}
 
 .. automodule:: {{ api.naming.namespace|join('.')|lower }}.{{ api.naming.versioned_module_name }}.types
     :members:
