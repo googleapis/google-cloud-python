@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-monitoring/compare/v0.36.0...v1.0.0) (2020-06-03)
+
+
+### Features
+
+* set release_status to Production/Stable ([#8](https://www.github.com/googleapis/python-monitoring/issues/8)) ([a99d67a](https://www.github.com/googleapis/python-monitoring/commit/a99d67a4f1399b9a74f189c6332cd85e56149fac))
+
 ## [0.36.0](https://www.github.com/googleapis/python-monitoring/compare/v0.35.0...v0.36.0) (2020-05-13)
 
 
