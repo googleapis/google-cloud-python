@@ -24,13 +24,17 @@ common = gcp.CommonTemplates()
 # Generate monitoring dashboards GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "monitoring-dashboard", "v1", proto_path="/google/monitoring/dashboard/v1"
+    service="monitoring_dashboard",
+    version="v1",
+    bazel_target="//google/monitoring/dashboard/v1:monitoring-dashboard-v1-py",
+    include_protos=True,
+    proto_output_path="google/cloud/monitoring_dashboard/v1/proto",
 )
 
 s.move(
     library,
     excludes=[
-        "google/cloud/monitoring/dashboard_v1/proto",  # Protos (pb2s) are copied to the incorrect location
+        "google/cloud/monitoring_dashboard_v1/proto",  # Protos (pb2s) are copied to the incorrect location
         "nox.py",
         "README.rst",
         "setup.py",
@@ -39,7 +43,7 @@ s.move(
 )
 
 s.move(
-    library / "google/cloud/monitoring/dashboard_v1/proto",
+    library / "google/cloud/monitoring_dashboard_v1/proto",
     "google/cloud/monitoring_dashboard/v1/proto",
 )
 
@@ -50,8 +54,8 @@ python.fix_pb2_grpc_headers()
 # Fix imports
 s.replace(
     "google/cloud/**/proto/*_pb2*.py",
-    "from google\.cloud\.monitoring\.dashboard\_v1\.proto",
-    "from google.cloud.monitoring_dashboard.v1.proto",
+    "google\.cloud\.monitoring\_dashboard\_v1\.proto",
+    "google.cloud.monitoring_dashboard.v1.proto",
 )
 
 # Fix docstring with trailing backticks
@@ -65,7 +69,7 @@ s.replace(
 
 # Keep cloud in package names for consistency
 s.replace(
-    "google/**/*.py", "google-monitoring-dashboard", "google-cloud-monitoring-dashboards"
+    "google/**/*.py", "google-cloud-monitoring-dashboard", "google-cloud-monitoring-dashboards"
 )
 # ----------------------------------------------------------------------------
 # Add templated files
