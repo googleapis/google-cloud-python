@@ -24,3 +24,4 @@ and this approach is fully supported.
 
    docker
    local
+   bazel
