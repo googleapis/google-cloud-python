@@ -1,7 +1,7 @@
-Python Client for Stackdriver Monitoring API (`Alpha`_)
+Python Client for Stackdriver Monitoring API
 =======================================================
 
-|pypi| |versions| 
+|ga| |pypi| |versions| 
 
 `Stackdriver Monitoring API`_: Manages your Stackdriver Monitoring data and
 configurations. Most projects must be associated with a Stackdriver account,
@@ -10,7 +10,8 @@ with a few exceptions as noted on the individual method pages.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-monitoring.svg
    :target: https://pypi.org/project/google-cloud-monitoring/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-monitoring.svg
