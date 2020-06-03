@@ -124,8 +124,8 @@ def system(session):
 @nox.session(python=["3.6", "3.7", "3.8"])
 @nox.parametrize(
     "library",
-    ["python-pubsub", "python-storage", "python-texttospeech"],
-    ids=["pubsub", "storage", "texttospeech"],
+    ["python-pubsub", "python-texttospeech"],
+    ids=["pubsub", "texttospeech"],
 )
 def test(session, library):
     """Run tests from a downstream libraries.
@@ -137,7 +137,6 @@ def test(session, library):
     They will need to be updated when the templates change.
 
     * Pub/Sub: GAPIC with handwritten layer.
-    * Storage: Fully handwritten.
     * Text-to-Speech: Full GAPIC.
     """
     try:
@@ -159,8 +158,4 @@ def test(session, library):
     if session.python == "3.7":
         if library == "python-pubsub":
             session.install("psutil")
-        if library == "python-storage":
-            session.install(
-                "google-cloud-iam", "google-cloud-pubsub", "google-cloud-kms"
-            )
         system(session)
