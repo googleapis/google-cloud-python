@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-oslogin/compare/v0.3.0...v1.0.0) (2020-06-03)
+
+
+### Features
+
+* set release_status to production/stable ([#11](https://www.github.com/googleapis/python-oslogin/issues/11)) ([b695e81](https://www.github.com/googleapis/python-oslogin/commit/b695e81b4f9a45af162d04d68a1c588ea0aa3de7))
+
 ## [0.3.0](https://www.github.com/googleapis/python-oslogin/compare/v0.2.0...v1.0.0) (2020-04-21)
 
 
