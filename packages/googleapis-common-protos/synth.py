@@ -11,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import os
+
 
 import synthtool as s
 import synthtool.gcp as gcp
@@ -29,21 +31,11 @@ api_common_protos = git.clone(api_common_protos_url) / "google"
 
 
 excludes = [
-    # Operations proto directory is non-standard for backwards compatibility
-    # See comments in files for details
-    "google/longrunning/operations_pb2.py",
     # Exclude iam protos (they are released in a separate package)
     "iam/**/*",
     "**/BUILD.bazel",
 ]
 s.copy(api_common_protos, excludes=excludes)
-
-
-s.copy(
-    api_common_protos / "google/longrunning/operations_pb2.py",
-    "google/longrunning/operations_proto_pb2.py",
-)
-
 
 # ----------------------------------------------------------------------------
 #  Add templated files
@@ -56,8 +48,23 @@ s.move(templated_files / "setup.cfg")
 s.move(templated_files / "LICENSE")
 s.move(templated_files / ".github")
 
+# longrunning operations directory is non-standard for backwards compatibility
+# see comments in directory for details
+# Temporarily rename the operations_pb2.py to keep it from getting overwritten
+os.replace("google/longrunning/operations_pb2.py", "google/longrunning/operations_pb2-COPY.py")
+
 # Generate _pb2.py files and format them
 s.shell.run(["nox", "-s", "generate_protos"], hide_output=False)
+
+# Clean up LRO directory
+os.replace(
+    "google/longrunning/operations_pb2.py", "google/longrunning/operations_proto_pb2.py.py"
+)
+os.replace(
+    "google/longrunning/operations_pb2-COPY.py", "google/longrunning/operations_pb2.py"
+)
+
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 
 # Add license headers
