@@ -26,9 +26,23 @@ API_COMMON_PROTOS_REPO = "googleapis/api-common-protos"
 # Use api-common-protos as a proper synthtool git source
 api_common_protos_url = git.make_repo_clone_url(API_COMMON_PROTOS_REPO)
 api_common_protos = git.clone(api_common_protos_url) / "google"
-# Exclude iam protos (they are released in a separate package)
-s.copy(api_common_protos, excludes=["iam/**/*", "**/BUILD.bazel"])
 
+
+excludes = [
+    # Operations proto directory is non-standard for backwards compatibility
+    # See comments in files for details
+    "google/longrunning/operations_pb2.py",
+    # Exclude iam protos (they are released in a separate package)
+    "iam/**/*",
+    "**/BUILD.bazel",
+]
+s.copy(api_common_protos, excludes=excludes)
+
+
+s.copy(
+    api_common_protos / "google/longrunning/operations_pb2.py",
+    "google/longrunning/operations_proto_pb2.py",
+)
 
 
 # ----------------------------------------------------------------------------
@@ -40,7 +54,7 @@ templated_files = common.py_library()
 s.move(templated_files / ".kokoro", excludes=["docs/**/*", "publish-docs.sh"])
 s.move(templated_files / "setup.cfg")
 s.move(templated_files / "LICENSE")
-s.move(templated_files  / ".github")
+s.move(templated_files / ".github")
 
 # Generate _pb2.py files and format them
 s.shell.run(["nox", "-s", "generate_protos"], hide_output=False)

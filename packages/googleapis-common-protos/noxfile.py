@@ -124,8 +124,8 @@ def system(session):
 @nox.session(python=["3.6", "3.7", "3.8"])
 @nox.parametrize(
     "library",
-    ["python-pubsub", "python-texttospeech"],
-    ids=["pubsub", "texttospeech"],
+    ["python-pubsub", "python-texttospeech", "python-speech"],
+    ids=["pubsub", "texttospeech", "speech"],
 )
 def test(session, library):
     """Run tests from a downstream libraries.
@@ -138,6 +138,7 @@ def test(session, library):
 
     * Pub/Sub: GAPIC with handwritten layer.
     * Text-to-Speech: Full GAPIC.
+    * Speech: Full GAPIC, has long running operations.
     """
     try:
         session.run("git", "-C", library, "pull", external=True)
