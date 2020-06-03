@@ -75,12 +75,12 @@ def _make_iam_token_request(request, principal, headers, body):
             API call.
 
     Raises:
-        TransportError: Raised if there is an underlying HTTP connection
-        Error
-        DefaultCredentialsError: Raised if the impersonated credentials
-        are not available.  Common reasons are
-        `iamcredentials.googleapis.com` is not enabled or the
-        `Service Account Token Creator` is not assigned
+        google.auth.exceptions.TransportError: Raised if there is an underlying
+            HTTP connection error
+        google.auth.exceptions.RefreshError: Raised if the impersonated
+            credentials are not available.  Common reasons are
+            `iamcredentials.googleapis.com` is not enabled or the
+            `Service Account Token Creator` is not assigned
     """
     iam_endpoint = _IAM_ENDPOINT.format(principal)
 
