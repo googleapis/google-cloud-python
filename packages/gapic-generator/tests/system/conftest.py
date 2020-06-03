@@ -22,6 +22,7 @@ from google import showcase
 from google.auth import credentials
 from google.showcase import EchoClient
 from google.showcase import IdentityClient
+from google.showcase import MessagingClient
 
 import grpc
 
@@ -51,6 +52,25 @@ def pytest_addoption(parser):
     )
 
 
+def construct_client(client_class, use_mtls):
+    if use_mtls:
+        with mock.patch("grpc.ssl_channel_credentials", autospec=True) as mock_ssl_cred:
+            mock_ssl_cred.return_value = ssl_credentials
+            client = client_class(
+                credentials=credentials.AnonymousCredentials(),
+                client_options=client_options,
+            )
+            mock_ssl_cred.assert_called_once_with(
+                certificate_chain=cert, private_key=key
+            )
+            return client
+    else:
+        transport = client_class.get_transport_class("grpc")(
+            channel=grpc.insecure_channel("localhost:7469")
+        )
+        return client_class(transport=transport)
+
+
 @pytest.fixture
 def use_mtls(request):
     return request.config.getoption("--mtls")
@@ -58,42 +78,17 @@ def use_mtls(request):
 
 @pytest.fixture
 def echo(use_mtls):
-    if use_mtls:
-        with mock.patch("grpc.ssl_channel_credentials", autospec=True) as mock_ssl_cred:
-            mock_ssl_cred.return_value = ssl_credentials
-            client = EchoClient(
-                credentials=credentials.AnonymousCredentials(),
-                client_options=client_options,
-            )
-            mock_ssl_cred.assert_called_once_with(
-                certificate_chain=cert, private_key=key
-            )
-            return client
-    else:
-        transport = EchoClient.get_transport_class("grpc")(
-            channel=grpc.insecure_channel("localhost:7469")
-        )
-        return EchoClient(transport=transport)
+    return construct_client(EchoClient, use_mtls)
 
 
 @pytest.fixture
 def identity(use_mtls):
-    if use_mtls:
-        with mock.patch("grpc.ssl_channel_credentials", autospec=True) as mock_ssl_cred:
-            mock_ssl_cred.return_value = ssl_credentials
-            client = IdentityClient(
-                credentials=credentials.AnonymousCredentials(),
-                client_options=client_options,
-            )
-            mock_ssl_cred.assert_called_once_with(
-                certificate_chain=cert, private_key=key
-            )
-            return client
-    else:
-        transport = IdentityClient.get_transport_class("grpc")(
-            channel=grpc.insecure_channel("localhost:7469")
-        )
-        return IdentityClient(transport=transport)
+    return construct_client(IdentityClient, use_mtls)
+
+
+@pytest.fixture
+def messaging(use_mtls):
+    return construct_client(MessagingClient, use_mtls)
 
 
 class MetadataClientInterceptor(

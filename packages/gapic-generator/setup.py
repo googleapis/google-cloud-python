@@ -20,52 +20,48 @@ from setuptools import find_packages, setup  # type: ignore
 
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-with io.open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
+with io.open(os.path.join(PACKAGE_ROOT, "README.rst")) as file_obj:
     README = file_obj.read()
 
 setup(
-    name='gapic-generator',
-    version='0.23.0',
-    license='Apache 2.0',
-    author='Dov Shlachter',
-    author_email='dovs@google.com',
-    url='https://github.com/googleapis/gapic-generator-python.git',
-    packages=find_packages(exclude=['docs', 'tests']),
-    description='Python client library generator for APIs defined by protocol'
-                'buffers',
+    name="gapic-generator",
+    version="0.23.0",
+    license="Apache 2.0",
+    author="Dov Shlachter",
+    author_email="dovs@google.com",
+    url="https://github.com/googleapis/gapic-generator-python.git",
+    packages=find_packages(exclude=["docs", "tests"]),
+    description="Python client library generator for APIs defined by protocol"
+    "buffers",
     long_description=README,
     entry_points="""[console_scripts]
         protoc-gen-dump=gapic.cli.dump:dump
         protoc-gen-python_gapic=gapic.cli.generate:generate
     """,
-    platforms='Posix; MacOS X',
+    platforms="Posix; MacOS X",
     include_package_data=True,
     install_requires=(
-        'click >= 6.7',
-        'google-api-core >= 1.17.0',
-        'googleapis-common-protos >= 1.6.0',
-        'grpcio >= 1.24.3',
-        'jinja2 >= 2.10',
-        'protobuf >= 3.7.1',
-        'pypandoc >= 1.4',
-        'PyYAML >= 5.1.1',
+        "click >= 6.7",
+        "google-api-core >= 1.17.0",
+        "googleapis-common-protos >= 1.6.0",
+        "grpcio >= 1.24.3",
+        "jinja2 >= 2.10",
+        "protobuf >= 3.12.0",
+        "pypandoc >= 1.4",
+        "PyYAML >= 5.1.1",
     ),
-    extras_require={
-        ':python_version<"3.7"': ('dataclasses >= 0.4',),
-    },
-    tests_require=(
-        'pyfakefs >= 3.6',
-    ),
+    extras_require={':python_version<"3.7"': ("dataclasses >= 0.4",),},
+    tests_require=("pyfakefs >= 3.6",),
     classifiers=(
-        'Development Status :: 4 - Beta',
-        'Environment :: Console',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
-        'Operating System :: POSIX',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Topic :: Software Development :: Code Generators',
-        'Topic :: Software Development :: Libraries :: Python Modules',
+        "Development Status :: 4 - Beta",
+        "Environment :: Console",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Operating System :: POSIX",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Topic :: Software Development :: Code Generators",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ),
     zip_safe=False,
 )
