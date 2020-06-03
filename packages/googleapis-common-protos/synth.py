@@ -58,7 +58,7 @@ s.shell.run(["nox", "-s", "generate_protos"], hide_output=False)
 
 # Clean up LRO directory
 os.replace(
-    "google/longrunning/operations_pb2.py", "google/longrunning/operations_proto_pb2.py.py"
+    "google/longrunning/operations_pb2.py", "google/longrunning/operations_proto_pb2.py"
 )
 os.replace(
     "google/longrunning/operations_pb2-COPY.py", "google/longrunning/operations_pb2.py"
