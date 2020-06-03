@@ -40,17 +40,15 @@ s.move(library, excludes=excludes)
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=73)
-s.move(templated_files)
+templated_files = common.py_library(
+    cov_level=100,
+    unit_test_python_versions=["3.6", "3.7", "3.8"],
+    system_test_python_versions=["3.7"],
+)
+s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
-# Remove 2.7 and 3.5 tests from noxfile.py
-s.replace("noxfile.py", '''\["2\.7", ''', '[')
-s.replace("noxfile.py", '''"3.5", ''', '')
-
-# Expand flake errors permitted to accomodate the Microgenerator
-# TODO: remove extra error codes once issues below are resolved
-# F401: https://github.com/googleapis/gapic-generator-python/issues/324
-# F841: local variable 'client'/'response' is assigned to but never use
-s.replace(".flake8", "ignore = .*", "ignore = E203, E266, E501, W503, F401, F841")
+# Extra lint ignores for microgenerator tests
+# TODO: Remove when https://github.com/googleapis/gapic-generator-python/issues/425 is closed
+s.replace(".flake8", "(ignore = .*)", "\g<1>, F401, F841")
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
