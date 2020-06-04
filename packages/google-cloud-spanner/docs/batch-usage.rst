@@ -1,36 +1,64 @@
 Batching Modifications
 ######################
 
-A :class:`~google.cloud.spanner.batch.Batch` represents a set of data
+A :class:`~google.cloud.spanner_v1.batch.Batch` represents a set of data
 modification operations to be performed on tables in a database.  Use of a
 ``Batch`` does not require creating an explicit
-:class:`~google.cloud.spanner.snapshot.Snapshot` or
-:class:`~google.cloud.spanner.transaction.Transaction`.  Until
-:meth:`~google.cloud.spanner.batch.Batch.commit` is called on a ``Batch``,
+:class:`~google.cloud.spanner_v1.snapshot.Snapshot` or
+:class:`~google.cloud.spanner_v1.transaction.Transaction`.  Until
+:meth:`~google.cloud.spanner_v1.batch.Batch.commit` is called on a ``Batch``,
 no changes are propagated to the back-end.
 
 
-Starting a Batch
-----------------
+Use Batch via BatchCheckout
+--------------------------------
 
-Construct a :class:`~google.cloud.spanner.batch.Batch` object from a :class:`~google.cloud.spanner.database.Database` object:
+:meth:`Database.batch` creates a :class:`~google.cloud.spanner_v1.database.BatchCheckout`
+instance to use as a context manager to handle creating and committing a
+:class:`~google.cloud.spanner_v1.batch.Batch`. The
+:class:`BatchCheckout` will automatically call
+:meth:`~google.cloud.spanner_v1.batch.Batch.commit` if the ``with`` block exits
+without raising an exception.
 
 .. code:: python
 
-    from google.cloud import spanner
+    from google.cloud.spanner import KeySet
 
     client = spanner.Client()
     instance = client.instance(INSTANCE_NAME)
     database = instance.database(DATABASE_NAME)
 
-    batch = database.batch()
+    to_delete = KeySet(keys=[
+        ('bharney@example.com',)
+        ('nonesuch@example.com',)
+    ])
+
+    with database.batch() as batch:
+
+        batch.insert(
+            'citizens', columns=['email', 'first_name', 'last_name', 'age'],
+            values=[
+                ['phred@exammple.com', 'Phred', 'Phlyntstone', 32],
+                ['bharney@example.com', 'Bharney', 'Rhubble', 31],
+            ])
+
+        batch.update(
+            'citizens', columns=['email', 'age'],
+            values=[
+                ['phred@exammple.com', 33],
+                ['bharney@example.com', 32],
+            ])
+
+        ...
+
+        batch.delete('citizens', to_delete)
 
 
 Inserting records using a Batch
 -------------------------------
 
-:meth:`Batch.insert` adds one or more new records to a table.  Fails if
-any of the records already exists.
+:meth:`Batch.insert` adds one or more new records to a table.  This fails if
+any of the records already exist.
 
 .. code:: python
 
@@ -53,8 +81,8 @@ any of the records already exists.
 Update records using a Batch
 -------------------------------
 
-:meth:`Batch.update` updates one or more existing records in a table.  Fails
-if any of the records does not already exist.
+:meth:`Batch.update` updates one or more existing records in a table.  This fails
+if any of the records do not already exist.
 
 .. code:: python
 
@@ -127,8 +155,8 @@ column values are set to null.
 Delete records using a Batch
 ----------------------------
 
-:meth:`Batch.delete` removes one or more records from a table.  Non-existent
-rows do not cause errors.
+:meth:`Batch.delete` removes one or more records from a table. Attempting to delete
+rows that do not exist will not cause errors.
 
 .. code:: python
 
@@ -151,50 +179,13 @@ After describing the modifications to be made to table data via the
 the back-end by calling :meth:`Batch.commit`, which makes the ``Commit``
 API call.
 
+You do not need to call this yourself as
+:class:`~google.cloud.spanner_v1.database.BatchCheckout` will call
+this method automatically upon exiting the ``with`` block.
+
 .. code:: python
 
     batch.commit()
-
-
-Use a Batch as a Context Manager
---------------------------------
-
-Rather than calling :meth:`Batch.commit` manually, you can use the
-:class:`Batch` instance as a context manager, and have it called automatically
-if the ``with`` block exits without raising an exception.
-
-.. code:: python
-
-    from google.cloud.spanner import KeySet
-
-    client = spanner.Client()
-    instance = client.instance(INSTANCE_NAME)
-    database = instance.database(DATABASE_NAME)
-
-    to_delete = KeySet(keys=[
-        ('bharney@example.com',)
-        ('nonesuch@example.com',)
-    ])
-
-    with database.batch() as batch:
-
-        batch.insert(
-            'citizens', columns=['email', 'first_name', 'last_name', 'age'],
-            values=[
-                ['phred@exammple.com', 'Phred', 'Phlyntstone', 32],
-                ['bharney@example.com', 'Bharney', 'Rhubble', 31],
-            ])
-
-        batch.update(
-            'citizens', columns=['email', 'age'],
-            values=[
-                ['phred@exammple.com', 33],
-                ['bharney@example.com', 32],
-            ])
-
-        ...
-
-        batch.delete('citizens', to_delete)
 
 
 Next Step
