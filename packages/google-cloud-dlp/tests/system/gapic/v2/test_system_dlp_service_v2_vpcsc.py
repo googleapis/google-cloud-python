@@ -124,16 +124,21 @@ def inspect_template_path_outside(client):
     )
 
 
+@pytest.fixture(scope="module")
+def inspect_template():
+    return dlp_pb2.InspectTemplate()
+
+
 @vpcsc_config.skip_unless_inside_vpcsc
 class TestCRUDInspectTemplate(object):
     @staticmethod
-    def test_create_inspect_template_inside(client, name_inside):
-        client.create_inspect_template(name_inside)  # no perms issue
+    def test_create_inspect_template_inside(client, name_inside, inspect_template):
+        client.create_inspect_template(name_inside, inspect_template)  # no perms issue
 
     @staticmethod
-    def test_create_inspect_template_outside(client, name_outside):
+    def test_create_inspect_template_outside(client, name_outside, inspect_template):
         with pytest.raises(exceptions.PermissionDenied) as exc:
-            client.create_inspect_template(name_outside)
+            client.create_inspect_template(name_outside, inspect_template)
 
         assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
@@ -201,16 +206,25 @@ def deidentify_template_path_outside(client):
     )
 
 
+@pytest.fixture(scope="module")
+def deidentify_template():
+    return dlp_pb2.DeidentifyTemplate()
+
+
 @vpcsc_config.skip_unless_inside_vpcsc
 class TestCRUDDeidentifyTemplate(object):
     @staticmethod
-    def test_create_deidentify_template_inside(client, name_inside):
-        client.create_deidentify_template(name_inside)
+    def test_create_deidentify_template_inside(
+        client, name_inside, deidentify_template
+    ):
+        client.create_deidentify_template(name_inside, deidentify_template)
 
     @staticmethod
-    def test_create_deidentify_template_outside(client, name_outside):
+    def test_create_deidentify_template_outside(
+        client, name_outside, deidentify_template
+    ):
         with pytest.raises(exceptions.PermissionDenied) as exc:
-            client.create_deidentify_template(name_outside)
+            client.create_deidentify_template(name_outside, deidentify_template)
 
         assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
@@ -280,9 +294,7 @@ def job_path_outside(name_outside):
 
 @pytest.fixture(scope="module")
 def inspect_job():
-    from google.cloud.dlp_v2.proto.dlp_pb2 import InspectJobConfig
-
-    return InspectJobConfig()
+    return dlp_pb2.InspectJobConfig()
 
 
 @vpcsc_config.skip_unless_inside_vpcsc
@@ -359,17 +371,22 @@ def job_trigger_path_outside(client):
     return client.project_job_trigger_path(vpcsc_config.project_outside, job_trigger_id)
 
 
+@pytest.fixture(scope="module")
+def job_trigger():
+    return dlp_pb2.JobTrigger()
+
+
 @vpcsc_config.skip_unless_inside_vpcsc
 class TestCRUDJobTrigger(object):
     @staticmethod
-    def test_create_job_trigger_inside(client, name_inside):
+    def test_create_job_trigger_inside(client, name_inside, job_trigger):
         with pytest.raises(exceptions.InvalidArgument):  # no perms issue
-            client.create_job_trigger(name_inside)
+            client.create_job_trigger(name_inside, job_trigger)
 
     @staticmethod
-    def test_create_job_trigger_outside(client, name_outside):
+    def test_create_job_trigger_outside(client, name_outside, job_trigger):
         with pytest.raises(exceptions.PermissionDenied) as exc:
-            client.create_job_trigger(name_outside)
+            client.create_job_trigger(name_outside, job_trigger)
 
         assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
@@ -437,17 +454,26 @@ def stored_info_type_path_outside(client):
     )
 
 
+@pytest.fixture(scope="module")
+def stored_info_type_config(client):
+    return dlp_pb2.StoredInfoTypeConfig()
+
+
 @vpcsc_config.skip_unless_inside_vpcsc
 class TestCRUDStoredInfoType(object):
     @staticmethod
-    def test_create_stored_info_type_inside(client, name_inside):
+    def test_create_stored_info_type_inside(
+        client, name_inside, stored_info_type_config
+    ):
         with pytest.raises(exceptions.InvalidArgument):  # no perms issue
-            client.create_stored_info_type(name_inside)
+            client.create_stored_info_type(name_inside, stored_info_type_config)
 
     @staticmethod
-    def test_create_stored_info_type_outside(client, name_outside):
+    def test_create_stored_info_type_outside(
+        client, name_outside, stored_info_type_config
+    ):
         with pytest.raises(exceptions.PermissionDenied) as exc:
-            client.create_stored_info_type(name_outside)
+            client.create_stored_info_type(name_outside, stored_info_type_config)
 
         assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
