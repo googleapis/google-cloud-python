@@ -117,16 +117,13 @@ Example
 
 .. include:: _example.rst
 
-You will also need the common protos, currently in experimental status,
-which define certain client-specific annotations. These are in the
-`api-common-protos`_ repository. Clone this from GitHub also:
+You will also need the common protos, which define certain client-specific annotations.
+These are in the `api-common-protos`_ repository.
+Clone this from GitHub also:
 
 .. code-block:: shell
 
   $ git clone https://github.com/googleapis/api-common-protos.git
-  $ cd api-common-protos
-  $ git checkout --track -b input-contract origin/input-contract
-  $ cd ..
 
 .. _api-common-protos: https://github.com/googleapis/api-common-protos/tree/input-contract
 
