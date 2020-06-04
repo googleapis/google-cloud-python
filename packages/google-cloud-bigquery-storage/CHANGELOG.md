@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-bigquery-storage/compare/v0.8.0...v1.0.0) (2020-06-04)
+
+
+### Bug Fixes
+
+* handle consuming streams with no data ([#29](https://www.github.com/googleapis/python-bigquery-storage/issues/29)) ([56d1b1f](https://www.github.com/googleapis/python-bigquery-storage/commit/56d1b1fd75965669f5a4d10e5b00671c276eda88))
+* update pyarrow references that are warning ([#31](https://www.github.com/googleapis/python-bigquery-storage/issues/31)) ([5302481](https://www.github.com/googleapis/python-bigquery-storage/commit/5302481d9f0ee07630ae62ed7268e510bcaa5d84))
+
 ## [0.8.0](https://www.github.com/googleapis/python-bigquery-storage/compare/v0.7.0...v0.8.0) (2020-03-03)
 
 
