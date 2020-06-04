@@ -155,7 +155,27 @@ def test_get_success_text():
     assert result == data
 
 
-def test_get_success_custom_root():
+def test_get_success_custom_root_new_variable():
+    request = make_request("{}", headers={"content-type": "application/json"})
+
+    fake_root = "another.metadata.service"
+    os.environ[environment_vars.GCE_METADATA_HOST] = fake_root
+    reload_module(_metadata)
+
+    try:
+        _metadata.get(request, PATH)
+    finally:
+        del os.environ[environment_vars.GCE_METADATA_HOST]
+        reload_module(_metadata)
+
+    request.assert_called_once_with(
+        method="GET",
+        url="http://{}/computeMetadata/v1/{}".format(fake_root, PATH),
+        headers=_metadata._METADATA_HEADERS,
+    )
+
+
+def test_get_success_custom_root_old_variable():
     request = make_request("{}", headers={"content-type": "application/json"})
 
     fake_root = "another.metadata.service"

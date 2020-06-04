@@ -32,9 +32,16 @@ from google.auth import exceptions
 
 _LOGGER = logging.getLogger(__name__)
 
-_METADATA_ROOT = "http://{}/computeMetadata/v1/".format(
-    os.getenv(environment_vars.GCE_METADATA_ROOT, "metadata.google.internal")
-)
+# Environment variable GCE_METADATA_HOST is originally named
+# GCE_METADATA_ROOT. For compatiblity reasons, here it checks
+# the new variable first; if not set, the system falls back
+# to the old variable.
+_GCE_METADATA_HOST = os.getenv(environment_vars.GCE_METADATA_HOST, None)
+if not _GCE_METADATA_HOST:
+    _GCE_METADATA_HOST = os.getenv(
+        environment_vars.GCE_METADATA_ROOT, "metadata.google.internal"
+    )
+_METADATA_ROOT = "http://{}/computeMetadata/v1/".format(_GCE_METADATA_HOST)
 
 # This is used to ping the metadata server, it avoids the cost of a DNS
 # lookup.

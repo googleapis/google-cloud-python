@@ -40,9 +40,15 @@ files."""
 
 # These two variables allow for customization of the addresses used when
 # contacting the GCE metadata service.
+GCE_METADATA_HOST = "GCE_METADATA_HOST"
 GCE_METADATA_ROOT = "GCE_METADATA_ROOT"
 """Environment variable providing an alternate hostname or host:port to be
-used for GCE metadata requests."""
+used for GCE metadata requests.
+
+This environment variable is originally named GCE_METADATA_ROOT. System will
+check the new variable first; should there be no value present,
+the system falls back to the old variable.
+"""
 
 GCE_METADATA_IP = "GCE_METADATA_IP"
 """Environment variable providing an alternate ip:port to be used for ip-only
