@@ -287,7 +287,13 @@ class ReadRowsIterable(object):
         record_batches = []
         for page in self.pages:
             record_batches.append(page.to_arrow())
-        return pyarrow.Table.from_batches(record_batches)
+
+        if record_batches:
+            return pyarrow.Table.from_batches(record_batches)
+
+        # No data, return an empty Table.
+        self._stream_parser._parse_arrow_schema()
+        return pyarrow.Table.from_batches([], schema=self._stream_parser._schema)
 
     def to_dataframe(self, dtypes=None):
         """Create a :class:`pandas.DataFrame` of all rows in the stream.
@@ -323,6 +329,7 @@ class ReadRowsIterable(object):
         # rarely no-copy, whereas pyarrow.Table.from_batches + to_pandas is
         # usually no-copy.
         schema_type = self._read_session.WhichOneof("schema")
+
         if schema_type == "arrow_schema":
             record_batch = self.to_arrow()
             df = record_batch.to_pandas()
@@ -330,10 +337,58 @@ class ReadRowsIterable(object):
                 df[column] = pandas.Series(df[column], dtype=dtypes[column])
             return df
 
-        frames = []
-        for page in self.pages:
-            frames.append(page.to_dataframe(dtypes=dtypes))
-        return pandas.concat(frames)
+        frames = [page.to_dataframe(dtypes=dtypes) for page in self.pages]
+
+        if frames:
+            return pandas.concat(frames)
+
+        # No data, construct an empty dataframe with columns matching the schema.
+        # The result should be consistent with what an empty ARROW stream would produce.
+        self._stream_parser._parse_avro_schema()
+        schema = self._stream_parser._avro_schema_json
+
+        column_dtypes = self._dtypes_from_avro(schema["fields"])
+        column_dtypes.update(dtypes)
+
+        df = pandas.DataFrame(columns=column_dtypes.keys())
+        for column in df:
+            df[column] = pandas.Series([], dtype=column_dtypes[column])
+
+        return df
+
+    def _dtypes_from_avro(self, avro_fields):
+        """Determine Pandas dtypes for columns in Avro schema.
+
+        Args:
+            avro_fields (Iterable[Mapping[str, Any]]):
+                Avro fields' metadata.
+
+        Returns:
+            colelctions.OrderedDict[str, str]:
+                Column names with their corresponding Pandas dtypes.
+        """
+        result = collections.OrderedDict()
+
+        type_map = {"long": "int64", "double": "float64", "boolean": "bool"}
+
+        for field_info in avro_fields:
+            # If a type is an union of multiple types, pick the first type
+            # that is not "null".
+            if isinstance(field_info["type"], list):
+                type_info = next(item for item in field_info["type"] if item != "null")
+
+            if isinstance(type_info, six.string_types):
+                field_dtype = type_map.get(type_info, "object")
+            else:
+                logical_type = type_info.get("logicalType")
+                if logical_type == "timestamp-micros":
+                    field_dtype = "datetime64[ns, UTC]"
+                else:
+                    field_dtype = "object"
+
+            result[field_info["name"]] = field_dtype
+
+        return result
 
 
 class ReadRowsPage(object):
