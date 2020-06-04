@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.16.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.16.0...v1.16.1) (2020-06-04)
+
+
+### Bug Fixes
+
+* fix impersonated cred exception doc ([#521](https://www.github.com/googleapis/google-auth-library-python/issues/521)) ([9d5a9a9](https://www.github.com/googleapis/google-auth-library-python/commit/9d5a9a9884fecbd698a602d2a9fd9bec6b987de7))
+* replace environment variable GCE_METADATA_ROOT with GCE_METADATA_HOST ([#433](https://www.github.com/googleapis/google-auth-library-python/issues/433)) ([8ffb4d3](https://www.github.com/googleapis/google-auth-library-python/commit/8ffb4d3e832607869026444e5a071c5f3e225fd2)), closes [#339](https://www.github.com/googleapis/google-auth-library-python/issues/339)
+
 ## [1.16.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.15.0...v1.16.0) (2020-05-28)
 
 
