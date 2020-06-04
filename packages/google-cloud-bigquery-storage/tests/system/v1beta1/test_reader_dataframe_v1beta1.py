@@ -48,12 +48,12 @@ def test_read_rows_to_arrow(client, project_id):
 
     assert tbl.num_columns == 4
     schema = tbl.schema
-    # Use field_by_name because the order doesn't currently match that of
-    # selected_fields.
-    assert pyarrow.types.is_int64(schema.field_by_name("station_id").type)
-    assert pyarrow.types.is_float64(schema.field_by_name("latitude").type)
-    assert pyarrow.types.is_float64(schema.field_by_name("longitude").type)
-    assert pyarrow.types.is_string(schema.field_by_name("name").type)
+    # Use field with a name specifier as there may be ordering differences
+    # when selected_fields is used
+    assert pyarrow.types.is_int64(schema.field("station_id").type)
+    assert pyarrow.types.is_float64(schema.field("latitude").type)
+    assert pyarrow.types.is_float64(schema.field("longitude").type)
+    assert pyarrow.types.is_string(schema.field("name").type)
 
 
 @pytest.mark.parametrize(

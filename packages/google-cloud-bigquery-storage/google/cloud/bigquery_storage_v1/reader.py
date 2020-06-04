@@ -649,7 +649,7 @@ class _ArrowStreamParser(_StreamParser):
     def _parse_arrow_message(self, message):
         self._parse_arrow_schema()
 
-        return pyarrow.read_record_batch(
+        return pyarrow.ipc.read_record_batch(
             pyarrow.py_buffer(message.arrow_record_batch.serialized_record_batch),
             self._schema,
         )
@@ -658,7 +658,7 @@ class _ArrowStreamParser(_StreamParser):
         if self._schema:
             return
 
-        self._schema = pyarrow.read_schema(
+        self._schema = pyarrow.ipc.read_schema(
             pyarrow.py_buffer(self._read_session.arrow_schema.serialized_schema)
         )
         self._column_names = [field.name for field in self._schema]
