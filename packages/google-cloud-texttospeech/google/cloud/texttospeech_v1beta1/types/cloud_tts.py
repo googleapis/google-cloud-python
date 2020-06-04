@@ -146,7 +146,7 @@ class SynthesisInput(proto.Message):
             be valid and well-formed. Otherwise the RPC will fail and
             return [google.rpc.Code.INVALID_ARGUMENT][]. For more
             information, see
-            `SSML </speech/text-to-speech/docs/ssml>`__.
+            `SSML <https://cloud.google.com/text-to-speech/docs/ssml>`__.
     """
 
     text = proto.Field(proto.STRING, number=1)
