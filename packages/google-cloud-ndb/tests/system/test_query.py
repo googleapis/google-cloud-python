@@ -1516,59 +1516,49 @@ def test_fetch_page_with_repeated_structured_property(dispose_of):
     class OtherKind(ndb.Model):
         one = ndb.StringProperty()
         two = ndb.StringProperty()
-        three = ndb.StringProperty()
+        three = ndb.IntegerProperty()
 
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
         bar = ndb.StructuredProperty(OtherKind, repeated=True)
 
+    N = 30
+
     @ndb.synctasklet
     def make_entities():
-        entity1 = SomeKind(
-            foo=1,
-            bar=[
-                OtherKind(one="pish", two="posh", three="pash"),
-                OtherKind(one="bish", two="bosh", three="bash"),
-            ],
-        )
-        entity2 = SomeKind(
-            foo=2,
-            bar=[
-                OtherKind(one="bish", two="bosh", three="bass"),
-                OtherKind(one="pish", two="posh", three="pass"),
-            ],
-        )
-        entity3 = SomeKind(
-            foo=3,
-            bar=[
-                OtherKind(one="pish", two="fosh", three="fash"),
-                OtherKind(one="bish", two="posh", three="bash"),
-            ],
-        )
+        futures = [
+            SomeKind(
+                foo=i,
+                bar=[
+                    OtherKind(one="pish", two="posh", three=i % 2),
+                    OtherKind(one="bish", two="bosh", three=i % 2),
+                ],
+            ).put_async()
+            for i in range(N)
+        ]
 
-        keys = yield (
-            entity1.put_async(),
-            entity2.put_async(),
-            entity3.put_async(),
-        )
+        keys = yield futures
         raise ndb.Return(keys)
 
     keys = make_entities()
     for key in keys:
         dispose_of(key._key)
 
-    eventually(SomeKind.query().fetch, length_equals(3))
+    eventually(SomeKind.query().fetch, length_equals(N))
     query = (
         SomeKind.query()
         .filter(
             SomeKind.bar == OtherKind(one="pish", two="posh"),
-            SomeKind.bar == OtherKind(two="posh", three="pash"),
+            SomeKind.bar == OtherKind(two="bosh", three=0),
         )
         .order(SomeKind.foo)
     )
 
-    with pytest.raises(TypeError):
-        query.fetch_page(page_size=10)
+    results, cursor, more = query.fetch_page(page_size=5)
+    assert [entity.foo for entity in results] == [0, 2, 4, 6, 8]
+
+    results, cursor, more = query.fetch_page(page_size=5, start_cursor=cursor)
+    assert [entity.foo for entity in results] == [10, 12, 14, 16, 18]
 
 
 @pytest.mark.usefixtures("client_context")

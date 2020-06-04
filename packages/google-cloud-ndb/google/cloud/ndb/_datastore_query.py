@@ -494,6 +494,10 @@ class _PostFilterQueryIteratorImpl(QueryIterator):
 
         return self._cursor_after
 
+    @property
+    def _more_results_after_limit(self):
+        return self._result_set._more_results_after_limit
+
 
 class _MultiQueryIteratorImpl(QueryIterator):
     """Multiple Query Iterator

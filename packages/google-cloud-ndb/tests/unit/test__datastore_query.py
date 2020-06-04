@@ -680,6 +680,29 @@ class Test_PostFilterQueryIteratorImpl:
         with pytest.raises(exceptions.BadArgumentError):
             iterator.cursor_after()
 
+    @staticmethod
+    def test__more_results_after_limit():
+        foo = model.StringProperty("foo")
+        query = query_module.QueryOptions(
+            offset=20, limit=10, filters=foo == u"this"
+        )
+        predicate = object()
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(
+            query, predicate
+        )
+        assert iterator._result_set._query == query_module.QueryOptions(
+            filters=foo == u"this"
+        )
+        assert iterator._offset == 20
+        assert iterator._limit == 10
+        assert iterator._predicate is predicate
+
+        iterator._result_set._more_results_after_limit = False
+        assert iterator._more_results_after_limit is False
+
+        iterator._result_set._more_results_after_limit = True
+        assert iterator._more_results_after_limit is True
+
 
 class Test_MultiQueryIteratorImpl:
     @staticmethod
