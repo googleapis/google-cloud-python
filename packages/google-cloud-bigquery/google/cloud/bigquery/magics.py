@@ -65,6 +65,14 @@
           serializable. The variable reference is indicated by a ``$`` before
           the variable name (ex. ``$my_dict_var``). See ``In[6]`` and ``In[7]``
           in the Examples section below.
+
+        .. note::
+
+            Due to the way IPython argument parser works, negative numbers in
+            dictionaries are incorrectly "recognized" as additional arguments,
+            resulting in an error ("unrecognized arguments"). To get around this,
+            pass such dictionary as a JSON string variable.
+
     * ``<query>`` (required, cell argument):
         SQL query to run. If the query does not contain any whitespace (aside
         from leading and trailing whitespace), it is assumed to represent a
