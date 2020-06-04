@@ -8,3 +8,4 @@
 # The bigtable-dpe team is the default owner for anything not
 # explicitly taken by someone else.
 *                               @googleapis/bigtable-dpe
+/samples/                       @googleapis/bigtable-dpe @googleapis/python-samples-owners
