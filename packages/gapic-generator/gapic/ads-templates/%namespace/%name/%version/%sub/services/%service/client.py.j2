@@ -117,7 +117,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     from_service_account_json = from_service_account_file
 
 
-    {% for message in service.resource_messages -%}
+    {% for message in service.resource_messages|sort(attribute="resource_type") -%}
     @staticmethod
     def {{ message.resource_type|snake_case }}_path({% for arg in message.resource_path_args %}{{ arg }}: str,{% endfor %}) -> str:
         """Return a fully-qualified {{ message.resource_type|snake_case }} string."""
