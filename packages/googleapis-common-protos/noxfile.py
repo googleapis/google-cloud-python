@@ -39,25 +39,6 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--strict")
 
 
-@nox.session(python="3.8")
-def generate_protos(session):
-    """Generates the protos using protoc.
-    
-    Some notes on the `google` directory:
-    1. The `_pb2.py` files are produced by protoc. 
-    2. The .proto files are non-functional but are left in the repository
-       to make it easier to understand diffs.
-    3. The `google` directory also has `__init__.py` files to create proper modules. 
-       If a new subdirectory is added, you will need to create more `__init__.py`
-       files.
-    """
-    session.install("grpcio-tools")
-    protos = [str(p) for p in (Path(".").glob("google/**/*.proto"))]
-    session.run(
-        "python", "-m", "grpc_tools.protoc", "--proto_path=.", "--python_out=.", *protos
-    )
-
-
 def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install("mock", "pytest", "pytest-cov")
@@ -65,7 +46,7 @@ def default(session):
 
     # Install googleapis-api-common-protos
     # This *must* be the last install command to get the package from source.
-    session.install("..")
+    session.install("e", "..")
 
     # Run py.test against the unit tests.
     session.run(
@@ -112,7 +93,7 @@ def system(session):
 
     # Install googleapis-api-common-protos
     # This *must* be the last install command to get the package from source.
-    session.install("..")
+    session.install("e", "..")
 
     # Run py.test against the system tests.
     if system_test_exists:
@@ -150,7 +131,7 @@ def test(session, library):
             f"https://github.com/googleapis/{library}",
             external=True,
         )
-    
+
     session.cd(library)
 
     unit(session)
@@ -160,3 +141,42 @@ def test(session, library):
         if library == "python-pubsub":
             session.install("psutil")
         system(session)
+
+
+@nox.session(python="3.8")
+def generate_protos(session):
+    """Generates the protos using protoc.
+
+    This session but be last to avoid overwriting the protos used in CI runs.
+    
+    Some notes on the `google` directory:
+    1. The `_pb2.py` files are produced by protoc. 
+    2. The .proto files are non-functional but are left in the repository
+       to make it easier to understand diffs.
+    3. The `google` directory also has `__init__.py` files to create proper modules. 
+       If a new subdirectory is added, you will need to create more `__init__.py`
+       files.
+    """
+    # longrunning operations directory is non-standard for backwards compatibility
+    # see comments in directory for details
+    # Temporarily rename the operations_pb2.py to keep it from getting overwritten
+    os.replace(
+        "google/longrunning/operations_pb2.py",
+        "google/longrunning/operations_pb2-COPY.py",
+    )
+
+    session.install("grpcio-tools")
+    protos = [str(p) for p in (Path(".").glob("google/**/*.proto"))]
+    session.run(
+        "python", "-m", "grpc_tools.protoc", "--proto_path=.", "--python_out=.", *protos
+    )
+
+    # Clean up LRO directory
+    os.replace(
+        "google/longrunning/operations_pb2.py",
+        "google/longrunning/operations_proto_pb2.py",
+    )
+    os.replace(
+        "google/longrunning/operations_pb2-COPY.py",
+        "google/longrunning/operations_pb2.py",
+    )

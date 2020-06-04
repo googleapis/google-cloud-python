@@ -48,22 +48,8 @@ s.move(templated_files / "setup.cfg")
 s.move(templated_files / "LICENSE")
 s.move(templated_files / ".github")
 
-# longrunning operations directory is non-standard for backwards compatibility
-# see comments in directory for details
-# Temporarily rename the operations_pb2.py to keep it from getting overwritten
-os.replace("google/longrunning/operations_pb2.py", "google/longrunning/operations_pb2-COPY.py")
-
 # Generate _pb2.py files and format them
 s.shell.run(["nox", "-s", "generate_protos"], hide_output=False)
-
-# Clean up LRO directory
-os.replace(
-    "google/longrunning/operations_pb2.py", "google/longrunning/operations_proto_pb2.py"
-)
-os.replace(
-    "google/longrunning/operations_pb2-COPY.py", "google/longrunning/operations_pb2.py"
-)
-
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 
