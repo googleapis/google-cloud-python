@@ -23,4 +23,6 @@ __all__ = ["client_info", "config", "method", "routing_header"]
 
 if sys.version_info >= (3, 6):
     from google.api_core.gapic_v1 import config_async  # noqa: F401
+    from google.api_core.gapic_v1 import method_async  # noqa: F401
     __all__.append("config_async")
+    __all__.append("method_async")

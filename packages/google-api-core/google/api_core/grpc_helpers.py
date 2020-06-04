@@ -170,13 +170,10 @@ def wrap_errors(callable_):
         return _wrap_unary_errors(callable_)
 
 
-def create_channel(
-    target, credentials=None, scopes=None, ssl_credentials=None, **kwargs
-):
-    """Create a secure channel with credentials.
+def _create_composite_credentials(credentials=None, scopes=None, ssl_credentials=None):
+    """Create the composite credentials for secure channels.
 
     Args:
-        target (str): The target service address in the format 'hostname:port'.
         credentials (google.auth.credentials.Credentials): The credentials. If
             not specified, then this function will attempt to ascertain the
             credentials from the environment using :func:`google.auth.default`.
@@ -185,11 +182,9 @@ def create_channel(
             are passed to :func:`google.auth.default`.
         ssl_credentials (grpc.ChannelCredentials): Optional SSL channel
             credentials. This can be used to specify different certificates.
-        kwargs: Additional key-word args passed to
-            :func:`grpc_gcp.secure_channel` or :func:`grpc.secure_channel`.
 
     Returns:
-        grpc.Channel: The created channel.
+        grpc.ChannelCredentials: The composed channel credentials object.
     """
     if credentials is None:
         credentials, _ = google.auth.default(scopes=scopes)
@@ -212,8 +207,32 @@ def create_channel(
         ssl_credentials = grpc.ssl_channel_credentials()
 
     # Combine the ssl credentials and the authorization credentials.
-    composite_credentials = grpc.composite_channel_credentials(
+    return grpc.composite_channel_credentials(
         ssl_credentials, google_auth_credentials
+    )
+
+
+def create_channel(target, credentials=None, scopes=None, ssl_credentials=None, **kwargs):
+    """Create a secure channel with credentials.
+
+    Args:
+        target (str): The target service address in the format 'hostname:port'.
+        credentials (google.auth.credentials.Credentials): The credentials. If
+            not specified, then this function will attempt to ascertain the
+            credentials from the environment using :func:`google.auth.default`.
+        scopes (Sequence[str]): A optional list of scopes needed for this
+            service. These are only used when credentials are not specified and
+            are passed to :func:`google.auth.default`.
+        ssl_credentials (grpc.ChannelCredentials): Optional SSL channel
+            credentials. This can be used to specify different certificates.
+        kwargs: Additional key-word args passed to
+            :func:`grpc_gcp.secure_channel` or :func:`grpc.secure_channel`.
+
+    Returns:
+        grpc.Channel: The created channel.
+    """
+    composite_credentials = _create_composite_credentials(
+        credentials, scopes, ssl_credentials
     )
 
     if HAS_GRPC_GCP:
