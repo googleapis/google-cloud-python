@@ -1,7 +1,7 @@
 Database Admin
 ==============
 
-After creating a :class:`~google.cloud.spanner.instance.Instance`, you can
+After creating an :class:`~google.cloud.spanner_v1.instance.Instance`, you can
 interact with individual databases for that instance.
 
 
@@ -9,30 +9,31 @@ List Databases
 --------------
 
 To iterate over all existing databases for an instance, use its
-:meth:`~google.cloud.spanner.instance.Instance.list_databases` method:
+:meth:`~google.cloud.spanner_v1.instance.Instance.list_databases` method:
 
 .. code:: python
 
     for database in instance.list_databases():
         # `database` is a `Database` object.
 
-This method yields :class:`~.spanner_admin_database_v1.types.Database`
+This method yields :class:`~google.cloud.spanner_v1.database.Database`
 objects.
 
 
 Database Factory
 ----------------
 
-To create a :class:`~google.cloud.spanner.database.Database` object:
+To create a :class:`~google.cloud.spanner_v1.database.Database` object:
 
 .. code:: python
 
     database = instance.database(database_id, ddl_statements)
 
-- ``ddl_statements`` is a list of strings containing DDL for the new database.
+- ``ddl_statements`` is a list of strings containing DDL statements for the new database.
 
-You can also use :meth:`Instance.database` to create a local wrapper for
-a database that has already been created:
+You can also use the :meth:`~google.cloud.spanner_v1.instance.Instance.database` method
+on an :class:`~google.cloud.spanner_v1.instance.Instance` object to create a local wrapper
+for a database that has already been created:
 
 .. code:: python
 
@@ -43,7 +44,7 @@ Create a new Database
 ---------------------
 
 After creating the database object, use its
-:meth:`~google.cloud.spanner.database.Database.create` method to
+:meth:`~google.cloud.spanner_v1.database.Database.create` method to
 trigger its creation on the server:
 
 .. code:: python
@@ -52,8 +53,8 @@ trigger its creation on the server:
 
 .. note::
 
-    Creating an instance triggers a "long-running operation" and
-    returns an :class:`~concurrent.futures.Future`-like object. Use
+    Creating a database triggers a "long-running operation" and
+    returns a :class:`~concurrent.futures.Future`-like object. Use
     the :meth:`~concurrent.futures.Future.result` method to wait for
     and inspect the result.
 
@@ -62,21 +63,21 @@ Update an existing Database
 ---------------------------
 
 After creating the database object, you can apply additional DDL statements
-via its :meth:`~google.cloud.spanner.database.Database.update_ddl` method:
+via its :meth:`~google.cloud.spanner_v1.database.Database.update_ddl` method:
 
 .. code:: python
 
     operation = database.update_ddl(ddl_statements, operation_id)
 
-- ``ddl_statements`` is a list of strings containing DDL to be applied to
-  the database.
+- ``ddl_statements`` is a list of strings containing DDL statements to be
+  applied to the database.
 
 - ``operation_id`` is a string ID for the long-running operation.
 
 .. note::
 
-    Update an instance triggers a "long-running operation" and
-    returns a :class:`google.cloud.spanner.database.Operation`
+    Updating a database triggers a "long-running operation" and
+    returns an :class:`~google.cloud.spanner_v1.database.Operation`
     object.  See :ref:`check-on-current-database-operation` for polling
     to find out if the operation is completed.
 
@@ -85,7 +86,7 @@ Drop a Database
 ---------------
 
 Drop a database using its
-:meth:`~google.cloud.spanner.database.Database.drop` method:
+:meth:`~google.cloud.spanner_v1.database.Database.drop` method:
 
 .. code:: python
 
@@ -97,14 +98,15 @@ Drop a database using its
 Check on Current Database Operation
 -----------------------------------
 
-The :meth:`~google.cloud.spanner.database.Database.create` and
-:meth:`~google.cloud.spanner.database.Database.update` methods of instance
-object trigger long-running operations on the server, and return instances
+The :meth:`~google.cloud.spanner_v1.database.Database.create` and
+:meth:`~google.cloud.spanner_v1.database.Database.update_ddl` methods of the
+:class:`~google.cloud.spanner_v1.database.Database` object trigger
+long-running operations on the server, and return operations
 conforming to the :class:`~.concurrent.futures.Future` class.
 
 .. code:: python
 
-    >>> operation = instance.create()
+    >>> operation = database.create()
     >>> operation.result()
 
 
@@ -116,7 +118,7 @@ Use a Snapshot to Read / Query the Database
 
 A snapshot represents a read-only point-in-time view of the database.
 
-Calling :meth:`~google.cloud.spanner.database.Database.snapshot` with
+Calling :meth:`~google.cloud.spanner_v1.database.Database.snapshot` with
 no arguments creates a snapshot with strong concurrency:
 
 .. code:: python
@@ -124,16 +126,17 @@ no arguments creates a snapshot with strong concurrency:
    with database.snapshot() as snapshot:
        do_something_with(snapshot)
 
-See :class:`~google.cloud.spanner.snapshot.Snapshot` for the other options
+See :class:`~google.cloud.spanner_v1.snapshot.Snapshot` for the other options
 which can be passed.
 
 .. note::
 
-   :meth:`~google.cloud.spanner.database.Database.snapshot` returns an
+   :meth:`~google.cloud.spanner_v1.database.Database.snapshot` returns an
    object intended to be used as a Python context manager (i.e., as the
-   target of a ``with`` statement).  Use the instance, and any result
-   sets returned by its ``read`` or ``execute_sql`` methods, only inside
-   the block created by the ``with`` statement.
+   target of a ``with`` statement).  Perform all iterations within the
+   context of the ``with database.snapshot()`` block.
+
+
 
 See :doc:`snapshot-usage` for more complete examples of snapshot usage.
 
@@ -151,7 +154,7 @@ on the rows of tables in the database.
 
 .. note::
 
-   :meth:`~google.cloud.spanner.database.Database.batch` returns an
+   :meth:`~google.cloud.spanner_v1.database.Database.batch` returns an
    object intended to be used as a Python context manager (i.e., as the
    target of a ``with`` statement).  It applies any changes made inside
    the block of its ``with`` statement when exiting the block, unless an
@@ -187,15 +190,15 @@ transaction as a required argument:
 
 .. note::
 
-   :meth:`~google.cloud.spanner.database.Database.run_in_transaction`
+   :meth:`~google.cloud.spanner_v1.database.Database.run_in_transaction`
    commits the transaction automatically if the "unit of work" function
    returns without raising an exception.
 
 .. note::
 
-   :meth:`~google.cloud.spanner.database.Database.run_in_transaction`
-   retries the "unit of work" function if the read / query operatoins
-   or the commit are aborted due to concurrent updates
+   :meth:`~google.cloud.spanner_v1.database.Database.run_in_transaction`
+   retries the "unit of work" function if the read / query operations
+   or the commit are aborted due to concurrent updates.
 
 See :doc:`transaction-usage` for more complete examples of transaction usage.
 
@@ -203,10 +206,10 @@ Configuring a session pool for a database
 -----------------------------------------
 
 Under the covers, the ``snapshot``, ``batch``, and ``run_in_transaction``
-methods use a pool of :class:`~google.cloud.spanner.session.Session` objects
+methods use a pool of :class:`~google.cloud.spanner_v1.session.Session` objects
 to manage their communication with the back-end.  You can configure
 one of the pools manually to control the number of sessions, timeouts, etc.,
-and then passing it to the :class:`~google.cloud.spanner.database.Database`
+and then pass it to the :class:`~google.cloud.spanner_v1.database.Database`
 constructor:
 
 .. code-block:: python
@@ -221,12 +224,12 @@ constructor:
     pool = spanner.FixedSizePool(size=10, default_timeout=5)
     database = instance.database(DATABASE_NAME, pool=pool)
 
-Note that creating a database with a pool may presume that its database
-already exists, as it may need to pre-create sessions (rather than creating
-them on demand, as the default implementation does).
+Note that creating a database with a pool will require the database to
+already exist if the pool implementation needs to pre-create sessions
+(rather than creating them on demand, as the default implementation does).
 
 You can supply your own pool implementation, which must satisfy the
-contract laid out in :class:`~google.cloud.spanner.pool.AbstractSessionPool`:
+contract laid out in :class:`~google.cloud.spanner_v1.pool.AbstractSessionPool`:
 
 .. code-block:: python
 
