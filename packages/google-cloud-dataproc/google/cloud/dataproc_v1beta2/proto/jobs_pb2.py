@@ -4735,8 +4735,9 @@ PrestoJob = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.dataproc_v1beta2.proto.jobs_pb2",
         "__doc__": """A Dataproc job for running `Presto <https://prestosql.io/>`__ queries.
   **IMPORTANT**: The `Dataproc Presto Optional Component
-  </dataproc/docs/concepts/components/presto>`__ must be enabled when
-  the cluster is created to submit a Presto job to the cluster.
+  <https://cloud.google.com/dataproc/docs/concepts/components/presto>`__
+  must be enabled when the cluster is created to submit a Presto job to
+  the cluster.
   Attributes:
       queries:
           Required. The sequence of Presto queries to execute, specified
