@@ -16,17 +16,6 @@ and creating other objects:
     from google.cloud import spanner
     client = spanner.Client()
 
-Long-lived Defaults
--------------------
-
-When creating a :class:`~google.cloud.spanner_v1.client.Client`, the
-``user_agent`` and ``timeout_seconds`` arguments have sensible
-defaults
-(:data:`~google.cloud.spanner_v1.client.DEFAULT_USER_AGENT` and
-:data:`~google.cloud.spanner_v1.client.DEFAULT_TIMEOUT_SECONDS`).
-However, you may over-ride them and these will be used throughout all API
-requests made with the ``client`` you create.
-
 Configuration
 -------------
 
@@ -61,18 +50,6 @@ Configuration
 
     Be sure to use the **Project ID**, not the **Project Number**.
 
-
-Warnings about Multiprocessing
-------------------------------
-
-.. warning::
-   When using multiprocessing, the application may hang if a
-   :class:`Client <google.cloud.spanner_v1.client.Client>` instance is created
-   before :class:`multiprocessing.Pool` or :class:`multiprocessing.Process`
-   invokes :func:`os.fork`.  The issue is under investigation, but may be only
-   happening on Macintosh and not Linux.  See `GRPC/GRPC#12455
-   <https://github.com/grpc/grpc/issues/12455#issuecomment-348578950>`_ for
-   more information.
 
 Next Step
 ---------
