@@ -53,15 +53,20 @@ class ClientOptions(object):
     """Client Options used to set options on clients.
 
     Args:
-        api_endpoint (str): The desired API endpoint, e.g., compute.googleapis.com
-        client_cert_source (Callable[[], (bytes, bytes)]): An optional callback
+        api_endpoint (Optional[str]): The desired API endpoint, e.g.,
+            compute.googleapis.com
+        client_cert_source (Optional[Callable[[], (bytes, bytes)]]): A callback
             which returns client certificate bytes and private key bytes both in
             PEM format. ``client_cert_source`` and ``client_encrypted_cert_source``
             are mutually exclusive.
-        client_encrypted_cert_source (Callable[[], (str, str, bytes)]): An optional
-            callback which returns client certificate file path, encrypted private
-            key file path, and the passphrase bytes.``client_cert_source`` and
-            ``client_encrypted_cert_source`` are mutually exclusive.
+        client_encrypted_cert_source (Optional[Callable[[], (str, str, bytes)]]):
+            A callback which returns client certificate file path, encrypted
+            private key file path, and the passphrase bytes.``client_cert_source``
+            and ``client_encrypted_cert_source`` are mutually exclusive.
+        quota_project_id (Optional[str]): A project name that a client's
+            quota belongs to.
+        credentials_file (Optional[str]): A path to a file storing credentials.
+        scopes (Optional[Sequence[str]]): OAuth access token override scopes.
 
     Raises:
         ValueError: If both ``client_cert_source`` and ``client_encrypted_cert_source``
@@ -73,6 +78,9 @@ class ClientOptions(object):
         api_endpoint=None,
         client_cert_source=None,
         client_encrypted_cert_source=None,
+        quota_project_id=None,
+        credentials_file=None,
+        scopes=None,
     ):
         if client_cert_source and client_encrypted_cert_source:
             raise ValueError(
@@ -81,6 +89,9 @@ class ClientOptions(object):
         self.api_endpoint = api_endpoint
         self.client_cert_source = client_cert_source
         self.client_encrypted_cert_source = client_encrypted_cert_source
+        self.quota_project_id = quota_project_id
+        self.credentials_file = credentials_file
+        self.scopes = scopes
 
     def __repr__(self):
         return "ClientOptions: " + repr(self.__dict__)
@@ -90,7 +101,8 @@ def from_dict(options):
     """Construct a client options object from a dictionary.
 
     Args:
-        options (dict): A dictionary with client options.
+        options (Dict[str, Any]): A dictionary with client options.
+            See the docstring for ClientOptions for details on valid arguments.
     """
 
     client_options = ClientOptions()
