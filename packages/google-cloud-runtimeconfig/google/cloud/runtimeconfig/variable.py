@@ -41,8 +41,9 @@ import datetime
 import pytz
 
 from google.api_core import datetime_helpers
-from google.cloud.exceptions import NotFound
+from google.cloud.exceptions import Conflict, NotFound
 from google.cloud.runtimeconfig._helpers import variable_name_from_full_name
+from google.cloud.runtimeconfig.exceptions import Error
 
 
 STATE_UNSPECIFIED = "VARIABLE_STATE_UNSPECIFIED"
@@ -118,6 +119,34 @@ class Variable(object):
         return self.config.client
 
     @property
+    def text(self):
+        """Text of the variable, as string.
+
+        See
+        https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables
+
+        :rtype: str or ``NoneType``
+        :returns: The text of the variable or ``None`` if the property
+                  is not set locally.
+        """
+        return self._properties.get("text")
+
+    @text.setter
+    def text(self, value):
+        """Set text property.
+
+        If the variable is already using value, this will raise
+        exceptions.Error since text and value are mutually exclusive.
+        To persist the change, call create() or update().
+
+        :type value: str
+        :param value: The new value for the text property.
+        """
+        if "value" in self._properties:
+            raise Error("Value and text are mutually exclusive.")
+        self._properties["text"] = value
+
+    @property
     def value(self):
         """Value of the variable, as bytes.
 
@@ -132,6 +161,21 @@ class Variable(object):
         if value is not None:
             value = base64.b64decode(value)
         return value
+
+    @value.setter
+    def value(self, value):
+        """Set value property.
+
+        If the variable is already using text, this will raise exceptions.Error
+        since text and value are mutually exclusive.
+        To persist the change, call create() or update().
+
+        :type value: bytes
+        :param value: The new value for the value property.
+        """
+        if "text" in self._properties:
+            raise Error("Value and text are mutually exclusive.")
+        self._properties["value"] = value
 
     @property
     def state(self):
@@ -203,6 +247,71 @@ class Variable(object):
         if "name" in cleaned:
             self.name = variable_name_from_full_name(cleaned.pop("name"))
         self._properties.update(cleaned)
+
+    def _get_payload(self):
+        """Return the payload for create and update operations
+
+        :rtype: dict
+        :returns: payload for API call with name and text or value attributes
+        """
+        data = {"name": self.full_name}
+        if "text" in self._properties:
+            data["text"] = self._properties["text"]
+        elif "value" in self._properties:
+            value = self._properties["value"]
+            data["value"] = base64.b64encode(value).decode("utf-8")
+        else:
+            raise Error("No text or value set.")
+        return data
+
+    def create(self, client=None):
+        """API call:  create the variable via a POST request
+
+        See
+        https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables/create
+
+        :type client: :class:`~google.cloud.runtimeconfig.client.Client`
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the variable's config.
+
+        :rtype: bool
+        :returns: True if the variable has been created, False on error.
+        """
+        client = self._require_client(client)
+        path = "%s/variables" % self.config.path
+        data = self._get_payload()
+        try:
+            resp = client._connection.api_request(method="POST", path=path, data=data)
+        except Conflict:
+            return False
+        self._set_properties(resp)
+        return True
+
+    def update(self, client=None):
+        """API call:  update the variable via a PUT request
+
+        See
+        https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables/update
+
+        :type client: :class:`~google.cloud.runtimeconfig.client.Client`
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the variable's config.
+
+        :rtype: bool
+        :returns: True if the variable has been created, False on error.
+        """
+        client = self._require_client(client)
+        data = self._get_payload()
+        try:
+            resp = client._connection.api_request(
+                method="PUT", path=self.path, data=data
+            )
+        except NotFound:
+            return False
+        self._set_properties(resp)
+        return True
 
     def exists(self, client=None):
         """API call:  test for the existence of the variable via a GET request

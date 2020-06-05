@@ -42,6 +42,11 @@ class TestVariable(unittest.TestCase):
         else:
             self.assertIsNone(variable.value)
 
+        if "text" in resource:
+            self.assertEqual(variable.text, resource["text"])
+        else:
+            self.assertIsNone(variable.text)
+
         if "state" in resource:
             self.assertEqual(variable.state, resource["state"])
 
@@ -111,6 +116,154 @@ class TestVariable(unittest.TestCase):
         self.assertEqual(req["method"], "GET")
         self.assertEqual(req["path"], "/%s" % (self.PATH,))
         self.assertEqual(req["query_params"], {"fields": "name"})
+
+    def test_create_no_data(self):
+        from google.cloud.runtimeconfig.config import Config
+        from google.cloud.runtimeconfig.exceptions import Error
+
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = config.variable(self.VARIABLE_NAME)
+        with self.assertRaises(Error) as ctx:
+            variable.create()
+        self.assertEqual("No text or value set.", str(ctx.exception))
+
+    def test_create_conflict(self):
+        from google.cloud.exceptions import Conflict
+        from google.cloud.runtimeconfig.config import Config
+
+        conn = _Connection(Conflict("test"))
+        client = _Client(project=self.PROJECT, connection=conn)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = config.variable(self.VARIABLE_NAME)
+        variable.text = "foo"
+        self.assertFalse(variable.create())
+
+    def test_create_text(self):
+        from google.cloud.runtimeconfig.config import Config
+
+        RESOURCE = {
+            "name": self.PATH,
+            "text": "foo",
+            "updateTime": "2016-04-14T21:21:54.5000Z",
+            "state": "UPDATED",
+        }
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = config.variable(self.VARIABLE_NAME)
+        variable.text = "foo"
+        result = variable.create()
+        self.assertTrue(result)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req["method"], "POST")
+        self.assertEqual(
+            req["path"],
+            "/projects/%s/configs/%s/variables" % (self.PROJECT, self.CONFIG_NAME),
+        )
+        self._verifyResourceProperties(variable, RESOURCE)
+
+    def test_create_value(self):
+        from google.cloud.runtimeconfig.config import Config
+
+        RESOURCE = {
+            "name": self.PATH,
+            "value": "bXktdmFyaWFibGUtdmFsdWU=",  # base64 my-variable-value
+            "updateTime": "2016-04-14T21:21:54.5000Z",
+            "state": "UPDATED",
+        }
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = config.variable(self.VARIABLE_NAME)
+        variable.value = b"my-variable-value"
+        result = variable.create()
+        self.assertTrue(result)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req["method"], "POST")
+        self.assertEqual(
+            req["path"],
+            "/projects/%s/configs/%s/variables" % (self.PROJECT, self.CONFIG_NAME),
+        )
+        self._verifyResourceProperties(variable, RESOURCE)
+
+    def test_update_text_conflict(self):
+        from google.cloud.runtimeconfig.config import Config
+        from google.cloud.runtimeconfig.exceptions import Error
+
+        RESOURCE = {
+            "name": self.PATH,
+            "value": "bXktdmFyaWFibGUtdmFsdWU=",  # base64 my-variable-value
+            "updateTime": "2016-04-14T21:21:54.5000Z",
+            "state": "UPDATED",
+        }
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = config.get_variable(self.VARIABLE_NAME)
+        with self.assertRaises(Error) as ctx:
+            variable.text = "bar"
+        self.assertEqual("Value and text are mutually exclusive.", str(ctx.exception))
+
+    def test_update_value_conflict(self):
+        from google.cloud.runtimeconfig.config import Config
+        from google.cloud.runtimeconfig.exceptions import Error
+
+        RESOURCE = {
+            "name": self.PATH,
+            "text": "foo",
+            "updateTime": "2016-04-14T21:21:54.5000Z",
+            "state": "UPDATED",
+        }
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = config.get_variable(self.VARIABLE_NAME)
+        with self.assertRaises(Error) as ctx:
+            variable.value = b"bar"
+        self.assertEqual("Value and text are mutually exclusive.", str(ctx.exception))
+
+    def test_update_not_found(self):
+        from google.cloud.runtimeconfig.config import Config
+
+        RESOURCE = {
+            "name": self.PATH,
+            "text": "foo",
+            "updateTime": "2016-04-14T21:21:54.5000Z",
+            "state": "UPDATED",
+        }
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = config.get_variable(self.VARIABLE_NAME)
+        self.assertFalse(variable.update())
+
+    def test_update_text(self):
+        from google.cloud.runtimeconfig.config import Config
+
+        RESOURCE = {
+            "name": self.PATH,
+            "text": "foo",
+            "updateTime": "2016-04-14T21:21:54.5000Z",
+            "state": "UPDATED",
+        }
+        RESOURCE_UPD = RESOURCE.copy()
+        RESOURCE_UPD["text"] = "bar"
+        conn = _Connection(RESOURCE, RESOURCE_UPD)
+        client = _Client(project=self.PROJECT, connection=conn)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = config.get_variable(self.VARIABLE_NAME)
+        variable.text = "bar"
+        result = variable.update()
+        self.assertTrue(result)
+        self.assertEqual(len(conn._requested), 2)
+        req = conn._requested[1]
+        self.assertEqual(req["method"], "PUT")
+        self.assertEqual(req["path"], "/%s" % self.PATH)
+        self._verifyResourceProperties(variable, RESOURCE_UPD)
 
     def test_reload_w_bound_client(self):
         from google.cloud.runtimeconfig.config import Config
@@ -226,4 +379,6 @@ class _Connection(object):
         except IndexError:
             raise NotFound("miss")
         else:
+            if issubclass(type(response), Exception):
+                raise response
             return response
