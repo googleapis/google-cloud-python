@@ -39,7 +39,7 @@ dependencies = [
     'futures >= 3.2.0; python_version < "3.2"',
 ]
 extras = {
-    "grpc": "grpcio >= 1.8.2, < 2.0dev",
+    "grpc": "grpcio >= 1.29.0, < 2.0dev",
     "grpcgcp": "grpcio-gcp >= 0.2.2",
     "grpcio-gcp": "grpcio-gcp >= 0.2.2",
 }
