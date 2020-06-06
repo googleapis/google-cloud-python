@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+### [1.19.1](https://www.github.com/googleapis/python-api-core/compare/v1.19.0...v1.19.1) (2020-06-06)
+
+
+### Bug Fixes
+
+* bump up grpcio minimum version to 1.29.0 ([#41](https://www.github.com/googleapis/python-api-core/issues/41)) ([4b11422](https://www.github.com/googleapis/python-api-core/commit/4b114221b3ae01eee540bedf47381c3b7c214b0c))
+
 ## [1.19.0](https://www.github.com/googleapis/python-api-core/compare/v1.18.0...v1.19.0) (2020-06-05)
 
 
