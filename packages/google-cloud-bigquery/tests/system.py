@@ -1577,6 +1577,18 @@ class TestBigQuery(unittest.TestCase):
         iterator = query_job.result(page_size=page_size)
         self.assertEqual(next(iterator.pages).num_items, page_size)
 
+    def test_query_w_start_index(self):
+        start_index = 164652
+        query_job = Config.CLIENT.query(
+            "SELECT word FROM `bigquery-public-data.samples.shakespeare`;",
+            job_id_prefix="test_query_w_start_index_",
+        )
+        result1 = query_job.result(start_index=start_index)
+        total_rows = result1.total_rows
+
+        self.assertEqual(result1.extra_params["startIndex"], start_index)
+        self.assertEqual(len(list(result1)), total_rows - start_index)
+
     def test_query_statistics(self):
         """
         A system test to exercise some of the extended query statistics.

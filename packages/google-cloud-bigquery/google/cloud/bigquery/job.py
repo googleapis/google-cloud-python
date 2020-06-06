@@ -3160,7 +3160,12 @@ class QueryJob(_AsyncJob):
             raise
 
     def result(
-        self, page_size=None, max_results=None, retry=DEFAULT_RETRY, timeout=None
+        self,
+        page_size=None,
+        max_results=None,
+        retry=DEFAULT_RETRY,
+        timeout=None,
+        start_index=None,
     ):
         """Start the job and wait for it to complete and get the result.
 
@@ -3177,6 +3182,8 @@ class QueryJob(_AsyncJob):
                 before using ``retry``.
                 If multiple requests are made under the hood, ``timeout``
                 applies to each individual request.
+            start_index (Optional[int]):
+                The zero-based index of the starting row to read.
 
         Returns:
             google.cloud.bigquery.table.RowIterator:
@@ -3230,6 +3237,7 @@ class QueryJob(_AsyncJob):
             dest_table,
             page_size=page_size,
             max_results=max_results,
+            start_index=start_index,
             retry=retry,
             timeout=timeout,
         )
