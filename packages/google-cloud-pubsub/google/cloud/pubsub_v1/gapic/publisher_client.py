@@ -349,11 +349,13 @@ class PublisherClient(object):
             >>>
             >>> client = pubsub_v1.PublisherClient()
             >>>
-            >>> # TODO: Initialize `topic`:
-            >>> topic = {}
+            >>> topic_name = 'projects/my-project/topics/my-topic'
+            >>> topic_labels = {'source': 'external'}
+            >>> topic = {'name': topic_name, 'labels': topic_labels}
             >>>
-            >>> # TODO: Initialize `update_mask`:
-            >>> update_mask = {}
+            >>> paths_element = 'labels'
+            >>> paths = [paths_element]
+            >>> update_mask = {'paths': paths}
             >>>
             >>> response = client.update_topic(topic, update_mask)
 

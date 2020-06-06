@@ -525,7 +525,11 @@ class SubscriberClient(object):
             >>> client = pubsub_v1.SubscriberClient()
             >>>
             >>> ack_deadline_seconds = 42
-            >>> subscription = {'ack_deadline_seconds': ack_deadline_seconds}
+            >>> subscription_name = 'projects/my-project/subscriptions/my-subscription'
+            >>> subscription = {
+            ...    'name': subscription_name,
+            ...    'ack_deadline_seconds': ack_deadline_seconds,
+            ... }
             >>> paths_element = 'ack_deadline_seconds'
             >>> paths = [paths_element]
             >>> update_mask = {'paths': paths}
@@ -1493,7 +1497,11 @@ class SubscriberClient(object):
             >>>
             >>> seconds = 123456
             >>> expire_time = {'seconds': seconds}
-            >>> snapshot = {'expire_time': expire_time}
+            >>> snapshot_name = 'projects/my-project/snapshots/my-snapshot'
+            >>> snapshot = {
+            ...    'name': snapshot_name,
+            ...    'expire_time': expire_time,
+            ... }
             >>> paths_element = 'expire_time'
             >>> paths = [paths_element]
             >>> update_mask = {'paths': paths}

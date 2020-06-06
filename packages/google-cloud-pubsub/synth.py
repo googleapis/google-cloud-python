@@ -14,6 +14,8 @@
 
 """This script is used to synthesize generated parts of this library."""
 
+import textwrap
+
 import synthtool as s
 from synthtool import gcp
 
@@ -183,6 +185,60 @@ s.replace(
     "from google.iam.v1 import iam_policy_pb2_grpc as iam_policy_pb2",
 )
 
+# Fix incomplete docstring examples.
+s.replace(
+    "google/cloud/pubsub_v1/gapic/subscriber_client.py",
+    r"\s+>>> subscription = \{'ack_deadline_seconds': ack_deadline_seconds\}",
+    textwrap.indent(
+        """
+>>> subscription_name = 'projects/my-project/subscriptions/my-subscription'
+>>> subscription = {
+...    'name': subscription_name,
+...    'ack_deadline_seconds': ack_deadline_seconds,
+... }""",
+        prefix=" " * 12,
+    )
+)
+
+s.replace(
+    "google/cloud/pubsub_v1/gapic/subscriber_client.py",
+    r"\s+>>> snapshot = \{'expire_time': expire_time\}",
+    textwrap.indent(
+        """
+>>> snapshot_name = 'projects/my-project/snapshots/my-snapshot'
+>>> snapshot = {
+...    'name': snapshot_name,
+...    'expire_time': expire_time,
+... }""",
+        prefix=" " * 12,
+    )
+)
+
+s.replace(
+    "google/cloud/pubsub_v1/gapic/publisher_client.py",
+    r"\s+>>> # TODO: Initialize `topic`:\n\s+>>> topic = \{\}\n",
+    textwrap.indent(
+        """
+>>> topic_name = 'projects/my-project/topics/my-topic'
+>>> topic_labels = {'source': 'external'}
+>>> topic = {'name': topic_name, 'labels': topic_labels}
+""",
+        prefix=" " * 12,
+    ),
+)
+
+s.replace(
+    "google/cloud/pubsub_v1/gapic/publisher_client.py",
+    r"\s+>>> # TODO: Initialize `update_mask`:\n\s+>>> update_mask = \{\}\n",
+    textwrap.indent(
+        """
+>>> paths_element = 'labels'
+>>> paths = [paths_element]
+>>> update_mask = {'paths': paths}
+""",
+        prefix=" " * 12,
+    ),
+)
 
 # ----------------------------------------------------------------------------
 # Add templated files
