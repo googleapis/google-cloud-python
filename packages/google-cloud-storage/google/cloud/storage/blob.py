@@ -882,6 +882,10 @@ class Blob(_PropertyMixin):
         The ``encryption_key`` should be a str or bytes with a length of at
         least 32.
 
+        If the :attr:`chunk_size` of a current blob is `None`, will download data
+        in single download request otherwise it will download the :attr:`chunk_size`
+        of data in each request.
+
         For more fine-grained control over the download process, check out
         `google-resumable-media`_. For example, this library allows
         downloading **parts** of a blob rather than the whole thing.
@@ -1574,7 +1578,7 @@ class Blob(_PropertyMixin):
     ):
         """Determine an upload strategy and then perform the upload.
 
-        If the size of the data to be uploaded exceeds 5 MB a resumable media
+        If the size of the data to be uploaded exceeds 8 MB a resumable media
         request will be used, otherwise the content and the metadata will be
         uploaded in a single multipart upload request.
 
@@ -1703,6 +1707,10 @@ class Blob(_PropertyMixin):
 
         The ``encryption_key`` should be a str or bytes with a length of at
         least 32.
+
+        If the size of the data to be uploaded exceeds 8 MB a resumable media
+        request will be used, otherwise the content and the metadata will be
+        uploaded in a single multipart upload request.
 
         For more fine-grained over the upload process, check out
         `google-resumable-media`_.
