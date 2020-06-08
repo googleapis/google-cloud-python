@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-runtimeconfig/#history
 
+## [0.32.0](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.31.0...v0.32.0) (2020-06-05)
+
+
+### Features
+
+* support variable create / update methods and text attribute ([#17](https://www.github.com/googleapis/python-runtimeconfig/issues/17)) ([84a50ad](https://www.github.com/googleapis/python-runtimeconfig/commit/84a50ad6cd0765bd86a4ed7c338aec2612e5e91c)), closes [#1](https://www.github.com/googleapis/python-runtimeconfig/issues/1)
+
 ## [0.31.0](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.30.0...v0.31.0) (2020-05-01)
 
 
