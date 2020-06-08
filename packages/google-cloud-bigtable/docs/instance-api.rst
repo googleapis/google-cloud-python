@@ -103,7 +103,7 @@ with :meth:`update() <google.cloud.bigtable.instance.Instance.update>`:
 
 .. code:: python
 
-    client.display_name = 'New display_name'
+    instance.display_name = 'New display_name'
     instance.update()
 
 Delete an existing Instance
