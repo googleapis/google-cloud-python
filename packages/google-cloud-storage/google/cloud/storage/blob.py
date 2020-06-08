@@ -1377,7 +1377,9 @@ class Blob(_PropertyMixin):
             (Optional) Chunk size to use when creating a
             :class:`~google.resumable_media.requests.ResumableUpload`.
             If not passed, will fall back to the chunk size on the
-            current blob.
+            current blob, if the chunk size of a current blob is also
+            `None`, will set the default value.
+            The default value of ``chunk_size`` is 100 MB.
 
         :type if_generation_match: long
         :param if_generation_match: (Optional) Make the operation conditional on whether
@@ -1490,6 +1492,7 @@ class Blob(_PropertyMixin):
         """Perform a resumable upload.
 
         Assumes ``chunk_size`` is not :data:`None` on the current blob.
+        The default value of ``chunk_size`` is 100 MB.
 
         The content type of the upload will be determined in order
         of precedence:
