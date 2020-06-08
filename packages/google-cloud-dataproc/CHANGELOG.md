@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+### [0.8.1](https://www.github.com/googleapis/python-dataproc/compare/v0.8.0...v0.8.1) (2020-06-05)
+
+
+### Bug Fixes
+
+* increase timeout for `ClusterController` in v1 ([#36](https://www.github.com/googleapis/python-dataproc/issues/36)) ([3137bee](https://www.github.com/googleapis/python-dataproc/commit/3137bee846002fe6c1e40d410ed0310e3fe86c0c))
+
 ## [0.8.0](https://www.github.com/googleapis/python-dataproc/compare/v0.7.0...v0.8.0) (2020-05-19)
 
 
