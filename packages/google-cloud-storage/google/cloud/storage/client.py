@@ -928,7 +928,7 @@ class Client(ClientWithProject):
         credentials=None,
         virtual_hosted_style=False,
         bucket_bound_hostname=None,
-        scheme=None,
+        scheme="http",
         service_account_email=None,
         access_token=None,
     ):
