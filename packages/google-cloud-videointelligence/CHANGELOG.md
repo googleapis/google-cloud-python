@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [1.15.0](https://www.github.com/googleapis/python-videointelligence/compare/v1.14.0...v1.15.0) (2020-06-09)
+
+
+### Features
+
+* add support for streaming automl action recognition in v1p3beta1; make 'features' a positional param for annotate_video in betas ([#31](https://www.github.com/googleapis/python-videointelligence/issues/31)) ([586f920](https://www.github.com/googleapis/python-videointelligence/commit/586f920a1932e1a813adfed500502fba0ff5edb7)), closes [#517](https://www.github.com/googleapis/python-videointelligence/issues/517) [#538](https://www.github.com/googleapis/python-videointelligence/issues/538) [#565](https://www.github.com/googleapis/python-videointelligence/issues/565) [#576](https://www.github.com/googleapis/python-videointelligence/issues/576) [#506](https://www.github.com/googleapis/python-videointelligence/issues/506) [#586](https://www.github.com/googleapis/python-videointelligence/issues/586) [#585](https://www.github.com/googleapis/python-videointelligence/issues/585)
+
 ## [1.14.0](https://www.github.com/googleapis/python-videointelligence/compare/v1.13.0...v1.14.0) (2020-03-12)
 
 
