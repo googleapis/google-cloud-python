@@ -62,14 +62,15 @@ def _wrap_unary_errors(callable_):
 
 
 class _StreamingResponseIterator(grpc.Call):
-    def __init__(self, wrapped):
+    def __init__(self, wrapped, prefetch_first_result=True):
         self._wrapped = wrapped
 
         # This iterator is used in a retry context, and returned outside after init.
         # gRPC will not throw an exception until the stream is consumed, so we need
         # to retrieve the first result, in order to fail, in order to trigger a retry.
         try:
-            self._stored_first_result = six.next(self._wrapped)
+            if prefetch_first_result:
+                self._stored_first_result = six.next(self._wrapped)
         except TypeError:
             # It is possible the wrapped method isn't an iterable (a grpc.Call
             # for instance). If this happens don't store the first result.
@@ -141,7 +142,12 @@ def _wrap_stream_errors(callable_):
     def error_remapped_callable(*args, **kwargs):
         try:
             result = callable_(*args, **kwargs)
-            return _StreamingResponseIterator(result)
+            # Auto-fetching the first result causes PubSub client's streaming pull
+            # to hang when re-opening the stream, thus we need examine the hacky
+            # hidden flag to see if pre-fetching is disabled.
+            # https://github.com/googleapis/python-pubsub/issues/93#issuecomment-630762257
+            prefetch_first = getattr(callable_, "_prefetch_first_result_", True)
+            return _StreamingResponseIterator(result, prefetch_first_result=prefetch_first)
         except grpc.RpcError as exc:
             six.raise_from(exceptions.from_grpc_error(exc), exc)
 

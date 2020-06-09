@@ -80,6 +80,19 @@ def test_wrap_stream_okay():
     assert responses == expected_responses
 
 
+def test_wrap_stream_prefetch_disabled():
+    responses = [1, 2, 3]
+    iter_responses = iter(responses)
+    callable_ = mock.Mock(spec=["__call__"], return_value=iter_responses)
+    callable_._prefetch_first_result_ = False
+
+    wrapped_callable = grpc_helpers._wrap_stream_errors(callable_)
+    wrapped_callable(1, 2, three="four")
+
+    assert list(iter_responses) == responses  # no items should have been pre-fetched
+    callable_.assert_called_once_with(1, 2, three="four")
+
+
 def test_wrap_stream_iterable_iterface():
     response_iter = mock.create_autospec(grpc.Call, instance=True)
     callable_ = mock.Mock(spec=["__call__"], return_value=response_iter)
