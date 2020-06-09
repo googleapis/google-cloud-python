@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [1.20.0](https://www.github.com/googleapis/python-api-core/compare/v1.19.1...v1.20.0) (2020-06-09)
+
+
+### Features
+
+* allow disabling response stream pre-fetch ([#30](https://www.github.com/googleapis/python-api-core/issues/30)) ([74e0b0f](https://www.github.com/googleapis/python-api-core/commit/74e0b0f8387207933c120af15b2bb5d175dd8f84)), closes [#25](https://www.github.com/googleapis/python-api-core/issues/25)
+
 ### [1.19.1](https://www.github.com/googleapis/python-api-core/compare/v1.19.0...v1.19.1) (2020-06-06)
 
 
