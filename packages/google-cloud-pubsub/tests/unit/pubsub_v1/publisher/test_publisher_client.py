@@ -135,7 +135,6 @@ def test_publish():
     batch = mock.Mock(spec=client._batch_class)
 
     # Set the mock up to claim indiscriminately that it accepts all messages.
-    batch.will_accept.return_value = True
     batch.publish.side_effect = (future1, future2)
 
     topic = "topic/path"
@@ -169,7 +168,6 @@ def test_publish_error_exceeding_flow_control_limits():
     client = publisher.Client(credentials=creds, publisher_options=publisher_options)
 
     mock_batch = mock.Mock(spec=client._batch_class)
-    mock_batch.will_accept.return_value = True
     topic = "topic/path"
     client._set_batch(topic, mock_batch)
 
@@ -216,7 +214,6 @@ def test_publish_attrs_bytestring():
     # Use a mock in lieu of the actual batch class.
     batch = mock.Mock(spec=client._batch_class)
     # Set the mock up to claim indiscriminately that it accepts all messages.
-    batch.will_accept.return_value = True
 
     topic = "topic/path"
     client._set_batch(topic, batch)
@@ -431,7 +428,6 @@ def test_publish_with_ordering_key():
     future1.add_done_callback = mock.Mock(spec=["__call__"])
     future2.add_done_callback = mock.Mock(spec=["__call__"])
 
-    batch.will_accept.return_value = True
     batch.publish.side_effect = (future1, future2)
 
     topic = "topic/path"

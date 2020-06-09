@@ -333,8 +333,8 @@ class Batch(base.Batch):
                 self._status != base.BatchStatus.ERROR
             ), "Publish after stop() or publish error."
 
-            if not self.will_accept(message):
-                return future
+            if self.status != base.BatchStatus.ACCEPTING_MESSAGES:
+                return
 
             size_increase = types.PublishRequest(messages=[message]).ByteSize()
 

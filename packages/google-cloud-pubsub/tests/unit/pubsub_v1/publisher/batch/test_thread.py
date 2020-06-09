@@ -287,18 +287,56 @@ def test_publish_updating_batch_size():
     assert batch.size > 0  # I do not always trust protobuf.
 
 
-def test_publish_not_will_accept():
-    batch = create_batch(topic="topic_foo", max_messages=0)
-    base_request_size = types.PublishRequest(topic="topic_foo").ByteSize()
-
-    # Publish the message.
-    message = types.PubsubMessage(data=b"foobarbaz")
+def test_publish():
+    batch = create_batch()
+    message = types.PubsubMessage()
     future = batch.publish(message)
 
-    assert future is None
-    assert batch.size == base_request_size
-    assert batch.messages == []
-    assert batch._futures == []
+    assert len(batch.messages) == 1
+    assert batch._futures == [future]
+
+
+def test_publish_max_messages_zero():
+    batch = create_batch(topic="topic_foo", max_messages=0)
+
+    message = types.PubsubMessage(data=b"foobarbaz")
+    with mock.patch.object(batch, "commit") as commit:
+        future = batch.publish(message)
+
+    assert future is not None
+    assert len(batch.messages) == 1
+    assert batch._futures == [future]
+    commit.assert_called_once()
+
+
+def test_publish_max_messages_enforced():
+    batch = create_batch(topic="topic_foo", max_messages=1)
+
+    message = types.PubsubMessage(data=b"foobarbaz")
+    message2 = types.PubsubMessage(data=b"foobarbaz2")
+
+    future = batch.publish(message)
+    future2 = batch.publish(message2)
+
+    assert future is not None
+    assert future2 is None
+    assert len(batch.messages) == 1
+    assert len(batch._futures) == 1
+
+
+def test_publish_max_bytes_enforced():
+    batch = create_batch(topic="topic_foo", max_bytes=15)
+
+    message = types.PubsubMessage(data=b"foobarbaz")
+    message2 = types.PubsubMessage(data=b"foobarbaz2")
+
+    future = batch.publish(message)
+    future2 = batch.publish(message2)
+
+    assert future is not None
+    assert future2 is None
+    assert len(batch.messages) == 1
+    assert len(batch._futures) == 1
 
 
 def test_publish_exceed_max_messages():

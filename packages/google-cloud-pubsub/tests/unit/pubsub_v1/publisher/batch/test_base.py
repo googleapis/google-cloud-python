@@ -46,33 +46,3 @@ def test_len():
     assert len(batch) == 0
     batch.publish(types.PubsubMessage(data=b"foo"))
     assert len(batch) == 1
-
-
-def test_will_accept():
-    batch = create_batch(status=BatchStatus.ACCEPTING_MESSAGES)
-    message = types.PubsubMessage()
-    assert batch.will_accept(message) is True
-
-
-def test_will_accept_oversize():
-    batch = create_batch(
-        settings=types.BatchSettings(max_bytes=10),
-        status=BatchStatus.ACCEPTING_MESSAGES,
-    )
-    message = types.PubsubMessage(data=b"abcdefghijklmnopqrstuvwxyz")
-    assert batch.will_accept(message) is True
-
-
-def test_will_not_accept_status():
-    batch = create_batch(status="talk to the hand")
-    message = types.PubsubMessage()
-    assert batch.will_accept(message) is False
-
-
-def test_will_not_accept_number():
-    batch = create_batch(
-        settings=types.BatchSettings(max_messages=-1),
-        status=BatchStatus.ACCEPTING_MESSAGES,
-    )
-    message = types.PubsubMessage(data=b"abc")
-    assert batch.will_accept(message) is False
