@@ -111,6 +111,23 @@ s.replace("tests/**/test_video_intelligence_service_client_v1.py",
 "response = client\.annotate_video\(features, input_uri=input_uri\)",
 "response = client.annotate_video(input_uri=input_uri, features=features)")
 
+# Add missing blank line before Attributes: in generated docstrings
+# Remove after 
+# https://github.com/googleapis/protoc-docs-plugin/pull/31
+s.replace(
+    "google/cloud/**/*_pb2.py",
+    "(\s+)Attributes:",
+    "\n\g<1>Attributes:"
+)
+
+# Add noindex to types docs to silence warnings about duplicates
+# TODO: Remove during microgenerator transition
+s.replace(
+    "docs/gapic/**/types.rst",
+    "(\s+):members:",
+    "\g<1>:members:\g<1>:noindex:"
+)
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------

@@ -83,17 +83,17 @@ class TestVideoIntelligenceServiceClient(object):
             client = videointelligence_v1p3beta1.VideoIntelligenceServiceClient()
 
         # Setup Request
-        input_uri = "gs://cloud-samples-data/video/cat.mp4"
         features_element = enums.Feature.LABEL_DETECTION
         features = [features_element]
+        input_uri = "gs://cloud-samples-data/video/cat.mp4"
 
-        response = client.annotate_video(input_uri=input_uri, features=features)
+        response = client.annotate_video(features, input_uri=input_uri)
         result = response.result()
         assert expected_response == result
 
         assert len(channel.requests) == 1
         expected_request = video_intelligence_pb2.AnnotateVideoRequest(
-            input_uri=input_uri, features=features
+            features=features, input_uri=input_uri
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -114,10 +114,10 @@ class TestVideoIntelligenceServiceClient(object):
             client = videointelligence_v1p3beta1.VideoIntelligenceServiceClient()
 
         # Setup Request
-        input_uri = "gs://cloud-samples-data/video/cat.mp4"
         features_element = enums.Feature.LABEL_DETECTION
         features = [features_element]
+        input_uri = "gs://cloud-samples-data/video/cat.mp4"
 
-        response = client.annotate_video(input_uri=input_uri, features=features)
+        response = client.annotate_video(features, input_uri=input_uri)
         exception = response.exception()
         assert exception.errors[0] == error

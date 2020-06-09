@@ -18,7 +18,7 @@ config = {
             },
             "methods": {
                 "StreamingAnnotateVideo": {
-                    "timeout_millis": 10800000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 }

@@ -10,7 +10,7 @@ from google.longrunning import (
 
 
 class VideoIntelligenceServiceStub(object):
-    """Service that implements Google Cloud Video Intelligence API.
+    """Service that implements the Video Intelligence API.
   """
 
     def __init__(self, channel):
@@ -27,7 +27,7 @@ class VideoIntelligenceServiceStub(object):
 
 
 class VideoIntelligenceServiceServicer(object):
-    """Service that implements Google Cloud Video Intelligence API.
+    """Service that implements the Video Intelligence API.
   """
 
     def AnnotateVideo(self, request, context):
@@ -57,7 +57,7 @@ def add_VideoIntelligenceServiceServicer_to_server(servicer, server):
 
 
 class StreamingVideoIntelligenceServiceStub(object):
-    """Service that implements streaming Google Cloud Video Intelligence API.
+    """Service that implements streaming Video Intelligence API.
   """
 
     def __init__(self, channel):
@@ -74,7 +74,7 @@ class StreamingVideoIntelligenceServiceStub(object):
 
 
 class StreamingVideoIntelligenceServiceServicer(object):
-    """Service that implements streaming Google Cloud Video Intelligence API.
+    """Service that implements streaming Video Intelligence API.
   """
 
     def StreamingAnnotateVideo(self, request_iterator, context):

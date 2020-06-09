@@ -46,7 +46,7 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 
 
 class StreamingVideoIntelligenceServiceClient(object):
-    """Service that implements streaming Google Cloud Video Intelligence API."""
+    """Service that implements streaming Video Intelligence API."""
 
     SERVICE_ADDRESS = "videointelligence.googleapis.com:443"
     """The default address of the service."""

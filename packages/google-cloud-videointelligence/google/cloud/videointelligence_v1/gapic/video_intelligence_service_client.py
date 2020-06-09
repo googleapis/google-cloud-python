@@ -232,6 +232,7 @@ class VideoIntelligenceServiceClient(object):
             >>> metadata = response.metadata()
 
         Args:
+            features (list[~google.cloud.videointelligence_v1.types.Feature]): Required. Requested video annotation features.
             input_uri (str): Input video location. Currently, only `Google Cloud
                 Storage <https://cloud.google.com/storage/>`__ URIs are supported, which
                 must be specified in the following format: ``gs://bucket-id/object-id``
@@ -239,19 +240,18 @@ class VideoIntelligenceServiceClient(object):
                 more information, see `Request
                 URIs <https://cloud.google.com/storage/docs/request-endpoints>`__. A
                 video URI may include wildcards in ``object-id``, and thus identify
-                multiple videos. Supported wildcards: '\*' to match 0 or more
-                characters; '?' to match 1 character. If unset, the input video should
-                be embedded in the request as ``input_content``. If set,
-                ``input_content`` should be unset.
-            input_content (bytes): The video data bytes. If unset, the input video(s) should be specified
-                via ``input_uri``. If set, ``input_uri`` should be unset.
-            features (list[~google.cloud.videointelligence_v1.types.Feature]): Required. Requested video annotation features.
+                multiple videos. Supported wildcards: '*' to match 0 or more characters;
+                '?' to match 1 character. If unset, the input video should be embedded
+                in the request as ``input_content``. If set, ``input_content`` should be
+                unset.
+            input_content (bytes): The video data bytes. If unset, the input video(s) should be
+                specified via ``input_uri``. If set, ``input_uri`` should be unset.
             video_context (Union[dict, ~google.cloud.videointelligence_v1.types.VideoContext]): Additional video context and/or feature-specific parameters.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.videointelligence_v1.types.VideoContext`
-            output_uri (str): Optional. Location where the output (in JSON format) should be stored.
-                Currently, only `Google Cloud
+            output_uri (str): Optional. Location where the output (in JSON format) should be
+                stored. Currently, only `Google Cloud
                 Storage <https://cloud.google.com/storage/>`__ URIs are supported, which
                 must be specified in the following format: ``gs://bucket-id/object-id``
                 (other URI formats return ``google.rpc.Code.INVALID_ARGUMENT``). For
