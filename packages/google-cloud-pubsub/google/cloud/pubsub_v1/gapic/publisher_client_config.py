@@ -3,6 +3,7 @@ config = {
         "google.pubsub.v1.Publisher": {
             "retry_codes": {
                 "idempotent": ["ABORTED", "UNAVAILABLE", "UNKNOWN"],
+                "non_idempotent2": [],
                 "non_idempotent": ["UNAVAILABLE"],
                 "idempotent2": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
                 "none": [],
@@ -97,6 +98,11 @@ config = {
                 "TestIamPermissions": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "DetachSubscription": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent2",
                     "retry_params_name": "default",
                 },
             },

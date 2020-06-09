@@ -120,6 +120,15 @@ class PublisherClient(object):
         )
 
     @classmethod
+    def subscription_path(cls, project, subscription):
+        """Return a fully-qualified subscription string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/subscriptions/{subscription}",
+            project=project,
+            subscription=subscription,
+        )
+
+    @classmethod
     def topic_path(cls, project, topic):
         """Return a fully-qualified topic string."""
         return google.api_core.path_template.expand(
@@ -364,9 +373,9 @@ class PublisherClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.Topic`
-            update_mask (Union[dict, ~google.cloud.pubsub_v1.types.FieldMask]): Required. Indicates which fields in the provided topic to update. Must
-                be specified and non-empty. Note that if ``update_mask`` contains
-                "message\_storage\_policy" but the ``message_storage_policy`` is not set
+            update_mask (Union[dict, ~google.cloud.pubsub_v1.types.FieldMask]): Required. Indicates which fields in the provided topic to update.
+                Must be specified and non-empty. Note that if ``update_mask`` contains
+                "message_storage_policy" but the ``message_storage_policy`` is not set
                 in the ``topic`` provided above, then the updated value is determined by
                 the policy configured at the project or organization level.
 
@@ -445,8 +454,8 @@ class PublisherClient(object):
             >>> response = client.publish(topic, messages)
 
         Args:
-            topic (str): Required. The messages in the request will be published on this topic.
-                Format is ``projects/{project}/topics/{topic}``.
+            topic (str): Required. The messages in the request will be published on this
+                topic. Format is ``projects/{project}/topics/{topic}``.
             messages (list[Union[dict, ~google.cloud.pubsub_v1.types.PubsubMessage]]): Required. The messages to publish.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -680,7 +689,7 @@ class PublisherClient(object):
         metadata=None,
     ):
         """
-        Lists the names of the subscriptions on this topic.
+        Lists the names of the attached subscriptions on this topic.
 
         Example:
             >>> from google.cloud import pubsub_v1
@@ -813,8 +822,8 @@ class PublisherClient(object):
             ...         pass
 
         Args:
-            topic (str): Required. The name of the topic that snapshots are attached to. Format
-                is ``projects/{project}/topics/{topic}``.
+            topic (str): Required. The name of the topic that snapshots are attached to.
+                Format is ``projects/{project}/topics/{topic}``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -1153,8 +1162,8 @@ class PublisherClient(object):
         Args:
             resource (str): REQUIRED: The resource for which the policy detail is being requested.
                 See the operation documentation for the appropriate value for this field.
-            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with
-                wildcards (such as '*' or 'storage.*') are not allowed. For more
+            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions
+                with wildcards (such as '*' or 'storage.*') are not allowed. For more
                 information see `IAM
                 Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1204,5 +1213,78 @@ class PublisherClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls["test_iam_permissions"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def detach_subscription(
+        self,
+        subscription,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Detaches a subscription from this topic. All messages retained in
+        the subscription are dropped. Subsequent ``Pull`` and ``StreamingPull``
+        requests will return FAILED_PRECONDITION. If the subscription is a push
+        subscription, pushes to the endpoint will stop.
+
+        Example:
+            >>> from google.cloud import pubsub_v1
+            >>>
+            >>> client = pubsub_v1.PublisherClient()
+            >>>
+            >>> subscription = client.subscription_path('[PROJECT]', '[SUBSCRIPTION]')
+            >>>
+            >>> response = client.detach_subscription(subscription)
+
+        Args:
+            subscription (str): Required. The subscription to detach. Format is
+                ``projects/{project}/subscriptions/{subscription}``.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.pubsub_v1.types.DetachSubscriptionResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "detach_subscription" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "detach_subscription"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.detach_subscription,
+                default_retry=self._method_configs["DetachSubscription"].retry,
+                default_timeout=self._method_configs["DetachSubscription"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = pubsub_pb2.DetachSubscriptionRequest(subscription=subscription)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("subscription", subscription)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["detach_subscription"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

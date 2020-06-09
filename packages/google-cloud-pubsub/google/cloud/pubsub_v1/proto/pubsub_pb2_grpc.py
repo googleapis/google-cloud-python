@@ -58,6 +58,11 @@ class PublisherStub(object):
             request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.DeleteTopicRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
+        self.DetachSubscription = channel.unary_unary(
+            "/google.pubsub.v1.Publisher/DetachSubscription",
+            request_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.DetachSubscriptionRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.DetachSubscriptionResponse.FromString,
+        )
 
 
 class PublisherServicer(object):
@@ -105,7 +110,7 @@ class PublisherServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def ListTopicSubscriptions(self, request, context):
-        """Lists the names of the subscriptions on this topic.
+        """Lists the names of the attached subscriptions on this topic.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -129,6 +134,16 @@ class PublisherServicer(object):
     the same name; this is an entirely new topic with none of the old
     configuration or subscriptions. Existing subscriptions to this topic are
     not deleted, but their `topic` field is set to `_deleted-topic_`.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def DetachSubscription(self, request, context):
+        """Detaches a subscription from this topic. All messages retained in the
+    subscription are dropped. Subsequent `Pull` and `StreamingPull` requests
+    will return FAILED_PRECONDITION. If the subscription is a push
+    subscription, pushes to the endpoint will stop.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -176,6 +191,11 @@ def add_PublisherServicer_to_server(servicer, server):
             servicer.DeleteTopic,
             request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.DeleteTopicRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        ),
+        "DetachSubscription": grpc.unary_unary_rpc_method_handler(
+            servicer.DetachSubscription,
+            request_deserializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.DetachSubscriptionRequest.FromString,
+            response_serializer=google_dot_cloud_dot_pubsub__v1_dot_proto_dot_pubsub__pb2.DetachSubscriptionResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

@@ -519,3 +519,42 @@ class TestPublisherClient(object):
 
         with pytest.raises(CustomException):
             client.test_iam_permissions(resource, permissions)
+
+    def test_detach_subscription(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = pubsub_pb2.DetachSubscriptionResponse(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = publisher_client.PublisherClient()
+
+        # Setup Request
+        subscription = client.subscription_path("[PROJECT]", "[SUBSCRIPTION]")
+
+        response = client.detach_subscription(subscription)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = pubsub_pb2.DetachSubscriptionRequest(
+            subscription=subscription
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_detach_subscription_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = publisher_client.PublisherClient()
+
+        # Setup request
+        subscription = client.subscription_path("[PROJECT]", "[SUBSCRIPTION]")
+
+        with pytest.raises(CustomException):
+            client.detach_subscription(subscription)

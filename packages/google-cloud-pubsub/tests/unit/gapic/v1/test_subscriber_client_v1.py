@@ -78,6 +78,7 @@ class TestSubscriberClient(object):
         retain_acked_messages = False
         enable_message_ordering = True
         filter_ = "filter-1274492040"
+        detached = True
         expected_response = {
             "name": name_2,
             "topic": topic_2,
@@ -85,6 +86,7 @@ class TestSubscriberClient(object):
             "retain_acked_messages": retain_acked_messages,
             "enable_message_ordering": enable_message_ordering,
             "filter": filter_,
+            "detached": detached,
         }
         expected_response = pubsub_pb2.Subscription(**expected_response)
 
@@ -130,6 +132,7 @@ class TestSubscriberClient(object):
         retain_acked_messages = False
         enable_message_ordering = True
         filter_ = "filter-1274492040"
+        detached = True
         expected_response = {
             "name": name,
             "topic": topic,
@@ -137,6 +140,7 @@ class TestSubscriberClient(object):
             "retain_acked_messages": retain_acked_messages,
             "enable_message_ordering": enable_message_ordering,
             "filter": filter_,
+            "detached": detached,
         }
         expected_response = pubsub_pb2.Subscription(**expected_response)
 
@@ -180,6 +184,7 @@ class TestSubscriberClient(object):
         retain_acked_messages = False
         enable_message_ordering = True
         filter_ = "filter-1274492040"
+        detached = True
         expected_response = {
             "name": name,
             "topic": topic,
@@ -187,6 +192,7 @@ class TestSubscriberClient(object):
             "retain_acked_messages": retain_acked_messages,
             "enable_message_ordering": enable_message_ordering,
             "filter": filter_,
+            "detached": detached,
         }
         expected_response = pubsub_pb2.Subscription(**expected_response)
 

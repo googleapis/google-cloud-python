@@ -116,9 +116,9 @@ class SubscriberGrpcTransport(object):
     def create_subscription(self):
         """Return the gRPC stub for :meth:`SubscriberClient.create_subscription`.
 
-        Creates a subscription to a given topic. See the resource name rules. If
-        the subscription already exists, returns ``ALREADY_EXISTS``. If the
-        corresponding topic doesn't exist, returns ``NOT_FOUND``.
+        Creates a subscription to a given topic. See the resource name
+        rules. If the subscription already exists, returns ``ALREADY_EXISTS``.
+        If the corresponding topic doesn't exist, returns ``NOT_FOUND``.
 
         If the name is not provided in the request, the server will assign a
         random name for this subscription on the same project as the topic,
@@ -213,8 +213,8 @@ class SubscriberGrpcTransport(object):
     def modify_ack_deadline(self):
         """Return the gRPC stub for :meth:`SubscriberClient.modify_ack_deadline`.
 
-        Modifies the ack deadline for a specific message. This method is useful
-        to indicate that more time is needed to process a message by the
+        Modifies the ack deadline for a specific message. This method is
+        useful to indicate that more time is needed to process a message by the
         subscriber, or to make the message available for redelivery if the
         processing was interrupted. Note that this does not modify the
         subscription-level ``ackDeadlineSeconds`` used for subsequent messages.
@@ -249,9 +249,9 @@ class SubscriberGrpcTransport(object):
     def pull(self):
         """Return the gRPC stub for :meth:`SubscriberClient.pull`.
 
-        Pulls messages from the server. The server may return ``UNAVAILABLE`` if
-        there are too many concurrent pull requests pending for the given
-        subscription.
+        Pulls messages from the server. The server may return
+        ``UNAVAILABLE`` if there are too many concurrent pull requests pending
+        for the given subscription.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -264,8 +264,8 @@ class SubscriberGrpcTransport(object):
     def streaming_pull(self):
         """Return the gRPC stub for :meth:`SubscriberClient.streaming_pull`.
 
-        Establishes a stream with the server, which sends messages down to the
-        client. The client streams acknowledgements and ack deadline
+        Establishes a stream with the server, which sends messages down to
+        the client. The client streams acknowledgements and ack deadline
         modifications back to the server. The server will close the stream and
         return the status on any error. The server may close the stream with
         status ``UNAVAILABLE`` to reassign server-side resources, in which case,
@@ -320,17 +320,18 @@ class SubscriberGrpcTransport(object):
     def create_snapshot(self):
         """Return the gRPC stub for :meth:`SubscriberClient.create_snapshot`.
 
-        Creates a snapshot from the requested subscription. Snapshots are used
-        in Seek operations, which allow you to manage message acknowledgments in
-        bulk. That is, you can set the acknowledgment state of messages in an
-        existing subscription to the state captured by a snapshot. If the
-        snapshot already exists, returns ``ALREADY_EXISTS``. If the requested
-        subscription doesn't exist, returns ``NOT_FOUND``. If the backlog in the
-        subscription is too old -- and the resulting snapshot would expire in
-        less than 1 hour -- then ``FAILED_PRECONDITION`` is returned. See also
-        the ``Snapshot.expire_time`` field. If the name is not provided in the
-        request, the server will assign a random name for this snapshot on the
-        same project as the subscription, conforming to the `resource name
+        Creates a snapshot from the requested subscription. Snapshots are
+        used in Seek operations, which allow you to manage message
+        acknowledgments in bulk. That is, you can set the acknowledgment state
+        of messages in an existing subscription to the state captured by a
+        snapshot. If the snapshot already exists, returns ``ALREADY_EXISTS``. If
+        the requested subscription doesn't exist, returns ``NOT_FOUND``. If the
+        backlog in the subscription is too old -- and the resulting snapshot
+        would expire in less than 1 hour -- then ``FAILED_PRECONDITION`` is
+        returned. See also the ``Snapshot.expire_time`` field. If the name is
+        not provided in the request, the server will assign a random name for
+        this snapshot on the same project as the subscription, conforming to the
+        `resource name
         format <https://cloud.google.com/pubsub/docs/admin#resource_names>`__.
         The generated name is populated in the returned Snapshot object. Note
         that for REST API requests, you must specify a name in the request.

@@ -1,39 +1,32 @@
 {
   "sources": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "2.0.0",
-        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
-      }
-    },
-    {
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-pubsub.git",
-        "sha": "4ce898e80eeb16b18d1ee29c678ade149804d186"
+        "sha": "06085c4083b9dccdd50383257799904510bbf3a0"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "42ee97c1b93a0e3759bbba3013da309f670a90ab",
-        "internalRef": "307114445"
+        "sha": "86285bbd54fbf9708838219e3422aa47fb8fc0b0",
+        "internalRef": "314795690"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "f5e4c17dc78a966dbf29961dd01f9bbd63e20a04"
+        "sha": "973fec811e9203b4c147121a26f1484841c465fd"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "f5e4c17dc78a966dbf29961dd01f9bbd63e20a04"
+        "sha": "973fec811e9203b4c147121a26f1484841c465fd"
       }
     }
   ],
@@ -44,8 +37,7 @@
         "apiName": "pubsub",
         "apiVersion": "v1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/pubsub/artman_pubsub.yaml"
+        "generator": "bazel"
       }
     }
   ]

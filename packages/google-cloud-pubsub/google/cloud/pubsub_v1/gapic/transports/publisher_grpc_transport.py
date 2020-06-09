@@ -184,7 +184,7 @@ class PublisherGrpcTransport(object):
     def list_topic_subscriptions(self):
         """Return the gRPC stub for :meth:`PublisherClient.list_topic_subscriptions`.
 
-        Lists the names of the subscriptions on this topic.
+        Lists the names of the attached subscriptions on this topic.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -278,3 +278,19 @@ class PublisherGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["iam_policy_stub"].TestIamPermissions
+
+    @property
+    def detach_subscription(self):
+        """Return the gRPC stub for :meth:`PublisherClient.detach_subscription`.
+
+        Detaches a subscription from this topic. All messages retained in
+        the subscription are dropped. Subsequent ``Pull`` and ``StreamingPull``
+        requests will return FAILED_PRECONDITION. If the subscription is a push
+        subscription, pushes to the endpoint will stop.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["publisher_stub"].DetachSubscription
