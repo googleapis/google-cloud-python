@@ -1,8 +1,8 @@
 Read-only Transactions via Snapshots
 ####################################
 
-A :class:`~google.cloud.spanner.snapshot.Snapshot` represents a read-only
-transaction:  when multiple read operations are peformed via a Snapshot,
+A :class:`~google.cloud.spanner_v1.snapshot.Snapshot` represents a read-only
+transaction:  when multiple read operations are performed via a Snapshot,
 the results are consistent as of a particular point in time.
 
 
@@ -15,7 +15,8 @@ transactions are visible:
 
 .. code:: python
 
-    snapshot = database.snapshot()
+    with database.snapshot() as snapshot:
+        ...
 
 You can also specify a weaker bound, which can either be to perform all
 reads as of a given timestamp:
@@ -25,7 +26,9 @@ reads as of a given timestamp:
     import datetime
     from pytz import UTC
     TIMESTAMP = datetime.datetime.utcnow().replace(tzinfo=UTC)
-    snapshot = database.snapshot(read_timestamp=TIMESTAMP)
+
+    with database.snapshot(read_timestamp=TIMESTAMP) as snapshot:
+        ...
 
 or as of a given duration in the past:
 
@@ -33,7 +36,9 @@ or as of a given duration in the past:
 
     import datetime
     DURATION = datetime.timedelta(seconds=5)
-    snapshot = database.snapshot(exact_staleness=DURATION)
+
+    with database.snapshot(exact_staleness=DURATION) as snapshot:
+        ...
 
 Single Use and Multiple Use Snapshots
 -------------------------------------
@@ -48,18 +53,19 @@ reused.
 
 .. code:: python
 
-    snapshot = database.snapshot(multi_use=True)
+    with database.snapshot(multi_use=True) as snapshot:
+        ...
 
-:meth:`~.spanner_v1.snapshot.Snapshot.begin` can only be used on a
+:meth:`~google.cloud.spanner_v1.snapshot.Snapshot.begin` can only be used on a
 snapshot with ``multi_use=True``.  In which case it is also necessary
 to call if you need to have multiple pending operations.
 
 Read Table Data
 ---------------
 
-Read data for selected rows from a table in the database.  Calls
-the ``Read`` API, which returns all rows specified in ``key_set``, or else
-fails if the result set is too large,
+To read data for selected rows from a table in the database, call
+:meth:`~google.cloud.spanner_v1.snapshot.Snapshot.read` which will return
+all rows specified in ``key_set``, or fail if the result set is too large,
 
 .. code:: python
 
@@ -73,16 +79,17 @@ fails if the result set is too large,
 
 .. note::
 
-   Perform all iteration within the context of the ``with database.snapshot()``
+   Perform all iterations within the context of the ``with database.snapshot()``
    block.
 
 
 Execute a SQL Select Statement
 ------------------------------
 
-Read data from a query against tables in the database.  Calls
-the ``ExecuteSql`` API, which returns all rows matching the query, or else
-fails if the result set is too large,
+To read data from tables in the database using a query, call
+:meth:`~google.cloud.spanner_v1.snapshot.Snapshot.execute_sql`
+which will return all rows matching the query, or fail if the
+result set is too large,
 
 .. code:: python
 
