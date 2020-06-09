@@ -1426,7 +1426,63 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["query_params"], {})
         self.assertEqual(kw["timeout"], 42)
 
-        blob.delete.assert_called_once_with(client=client, timeout=42)
+        blob.delete.assert_called_once_with(
+            client=client,
+            timeout=42,
+            if_generation_match=None,
+            if_generation_not_match=None,
+            if_metageneration_match=None,
+            if_metageneration_not_match=None,
+        )
+
+    def test_rename_blob_with_generation_match(self):
+        BUCKET_NAME = "BUCKET_NAME"
+        BLOB_NAME = "blob-name"
+        NEW_BLOB_NAME = "new-blob-name"
+        DATA = {"name": NEW_BLOB_NAME}
+        GENERATION_NUMBER = 6
+        METAGENERATION_NUMBER = 9
+
+        connection = _Connection(DATA)
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=BUCKET_NAME)
+        blob = self._make_blob(BUCKET_NAME, BLOB_NAME)
+
+        renamed_blob = bucket.rename_blob(
+            blob,
+            NEW_BLOB_NAME,
+            client=client,
+            timeout=42,
+            if_generation_match=GENERATION_NUMBER,
+            if_source_metageneration_not_match=METAGENERATION_NUMBER,
+        )
+
+        self.assertIs(renamed_blob.bucket, bucket)
+        self.assertEqual(renamed_blob.name, NEW_BLOB_NAME)
+
+        COPY_PATH = "/b/{}/o/{}/copyTo/b/{}/o/{}".format(
+            BUCKET_NAME, BLOB_NAME, BUCKET_NAME, NEW_BLOB_NAME
+        )
+        (kw,) = connection._requested
+        self.assertEqual(kw["method"], "POST")
+        self.assertEqual(kw["path"], COPY_PATH)
+        self.assertEqual(
+            kw["query_params"],
+            {
+                "ifGenerationMatch": GENERATION_NUMBER,
+                "ifSourceMetagenerationNotMatch": METAGENERATION_NUMBER,
+            },
+        )
+        self.assertEqual(kw["timeout"], 42)
+
+        blob.delete.assert_called_once_with(
+            client=client,
+            timeout=42,
+            if_generation_match=GENERATION_NUMBER,
+            if_generation_not_match=None,
+            if_metageneration_match=None,
+            if_metageneration_not_match=None,
+        )
 
     def test_rename_blob_to_itself(self):
         BUCKET_NAME = "BUCKET_NAME"
