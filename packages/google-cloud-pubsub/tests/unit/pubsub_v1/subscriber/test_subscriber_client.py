@@ -154,3 +154,15 @@ def test_closes_channel_as_context_manager():
         pass
 
     mock_transport.channel.close.assert_called()
+
+
+def test_streaming_pull_gapic_monkeypatch():
+    transport = mock.NonCallableMock(spec=["streaming_pull"])
+    transport.streaming_pull = mock.Mock(spec=[])
+    client = subscriber.Client(transport=transport)
+
+    client.streaming_pull(requests=iter([]))
+
+    assert client.api.transport is transport
+    assert hasattr(transport.streaming_pull, "_prefetch_first_result_")
+    assert not transport.streaming_pull._prefetch_first_result_

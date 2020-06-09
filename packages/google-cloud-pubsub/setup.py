@@ -29,10 +29,10 @@ version = "1.5.0"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    # google-api-core[grpc] 1.17.0 causes problems, thus restricting its
-    # version until the issue gets fixed.
+    # google-api-core[grpc] 1.17.0 up to 1.19.1 causes problems with stream
+    # recovery, thus those versions should not be used.
     # https://github.com/googleapis/python-pubsub/issues/74
-    "google-api-core[grpc] >= 1.14.0, < 1.17.0",
+    "google-api-core[grpc] >= 1.14.0, != 1.17.*, != 1.18.*, != 1.19.*",
     "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
     'enum34; python_version < "3.4"',
 ]
