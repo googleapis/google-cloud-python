@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [1.25.0](https://www.github.com/googleapis/python-bigquery/compare/v1.24.0...v1.25.0) (2020-06-06)
+
+
+### Features
+
+* add BigQuery storage client support to DB API ([#36](https://www.github.com/googleapis/python-bigquery/issues/36)) ([ba9b2f8](https://www.github.com/googleapis/python-bigquery/commit/ba9b2f87e36320d80f6f6460b77e6daddb0fa214))
+* **bigquery:** add create job method ([#32](https://www.github.com/googleapis/python-bigquery/issues/32)) ([2abdef8](https://www.github.com/googleapis/python-bigquery/commit/2abdef82bed31601d1ca1aa92a10fea1e09f5297))
+* **bigquery:** add support of model for extract job ([#71](https://www.github.com/googleapis/python-bigquery/issues/71)) ([4a7a514](https://www.github.com/googleapis/python-bigquery/commit/4a7a514659a9f6f9bbd8af46bab3f8782d6b4b98))
+* add HOUR support for time partitioning interval ([#91](https://www.github.com/googleapis/python-bigquery/issues/91)) ([0dd90b9](https://www.github.com/googleapis/python-bigquery/commit/0dd90b90e3714c1d18f8a404917a9454870e338a))
+* add support for policy tags ([#77](https://www.github.com/googleapis/python-bigquery/issues/77)) ([38a5c01](https://www.github.com/googleapis/python-bigquery/commit/38a5c01ca830daf165592357c45f2fb4016aad23))
+* make AccessEntry objects hashable ([#93](https://www.github.com/googleapis/python-bigquery/issues/93)) ([23a173b](https://www.github.com/googleapis/python-bigquery/commit/23a173bc5a25c0c8200adc5af62eb05624c9099e))
+* **bigquery:** expose start index parameter for query result ([#121](https://www.github.com/googleapis/python-bigquery/issues/121)) ([be86de3](https://www.github.com/googleapis/python-bigquery/commit/be86de330a3c3801653a0ccef90e3d9bdb3eee7a))
+* **bigquery:** unit and system test for dataframe with int column with Nan values  ([#39](https://www.github.com/googleapis/python-bigquery/issues/39)) ([5fd840e](https://www.github.com/googleapis/python-bigquery/commit/5fd840e9d4c592c4f736f2fd4792c9670ba6795e))
+
+
+### Bug Fixes
+
+* allow partial streaming_buffer statistics ([#37](https://www.github.com/googleapis/python-bigquery/issues/37)) ([645f0fd](https://www.github.com/googleapis/python-bigquery/commit/645f0fdb35ee0e81ee70f7459e796a42a1f03210))
+* distinguish server timeouts from transport timeouts ([#43](https://www.github.com/googleapis/python-bigquery/issues/43)) ([a17be5f](https://www.github.com/googleapis/python-bigquery/commit/a17be5f01043f32d9fbfb2ddf456031ea9205c8f))
+* improve cell magic error message on missing query ([#58](https://www.github.com/googleapis/python-bigquery/issues/58)) ([6182cf4](https://www.github.com/googleapis/python-bigquery/commit/6182cf48aef8f463bb96891cfc44a96768121dbc))
+* **bigquery:** fix repr of model reference ([#66](https://www.github.com/googleapis/python-bigquery/issues/66)) ([26c6204](https://www.github.com/googleapis/python-bigquery/commit/26c62046f4ec8880cf6561cc90a8b821dcc84ec5))
+* **bigquery:** fix start index with page size for list rows ([#27](https://www.github.com/googleapis/python-bigquery/issues/27)) ([400673b](https://www.github.com/googleapis/python-bigquery/commit/400673b5d0f2a6a3d828fdaad9d222ca967ffeff))
+
 ## 1.24.0
 
 02-03-2020 01:38 PST
