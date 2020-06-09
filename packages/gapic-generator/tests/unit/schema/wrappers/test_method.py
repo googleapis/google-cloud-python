@@ -205,9 +205,18 @@ def test_method_field_headers_none():
 
 
 def test_method_field_headers_present():
-    http_rule = http_pb2.HttpRule(get='/v1/{parent=projects/*}/topics')
-    method = make_method('DoSomething', http_rule=http_rule)
-    assert method.field_headers == ('parent',)
+    verbs = [
+        'get',
+        'put',
+        'post',
+        'delete',
+        'patch',
+    ]
+
+    for v in verbs:
+        rule = http_pb2.HttpRule(**{v: '/v1/{parent=projects/*}/topics'})
+        method = make_method('DoSomething', http_rule=rule)
+        assert method.field_headers == ('parent',)
 
 
 def test_method_idempotent_yes():

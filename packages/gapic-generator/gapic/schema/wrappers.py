@@ -625,9 +625,19 @@ class Method:
     def field_headers(self) -> Sequence[str]:
         """Return the field headers defined for this method."""
         http = self.options.Extensions[annotations_pb2.http]
-        if http.get:
-            return tuple(re.findall(r'\{([a-z][\w\d_.]+)=', http.get))
-        return ()
+
+        pattern = re.compile(r'\{([a-z][\w\d_.]+)=')
+
+        potential_verbs = [
+            http.get,
+            http.put,
+            http.post,
+            http.delete,
+            http.patch,
+            http.custom.path,
+        ]
+
+        return next((tuple(pattern.findall(verb)) for verb in potential_verbs if verb), ())
 
     @utils.cached_property
     def flattened_fields(self) -> Mapping[str, Field]:
