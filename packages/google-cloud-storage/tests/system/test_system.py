@@ -1441,6 +1441,34 @@ class TestStorageCompose(TestStorageFiles):
         composed = original.download_as_string()
         self.assertEqual(composed, BEFORE + TO_APPEND)
 
+    def test_compose_with_generation_match(self):
+        BEFORE = b"AAA\n"
+        original = self.bucket.blob("original")
+        original.content_type = "text/plain"
+        original.upload_from_string(BEFORE)
+        self.case_blobs_to_delete.append(original)
+
+        TO_APPEND = b"BBB\n"
+        to_append = self.bucket.blob("to_append")
+        to_append.upload_from_string(TO_APPEND)
+        self.case_blobs_to_delete.append(to_append)
+
+        with self.assertRaises(google.api_core.exceptions.PreconditionFailed):
+            original.compose(
+                [original, to_append],
+                if_generation_match=[6, 7],
+                if_metageneration_match=[8, 9],
+            )
+
+        original.compose(
+            [original, to_append],
+            if_generation_match=[original.generation, to_append.generation],
+            if_metageneration_match=[original.metageneration, to_append.metageneration],
+        )
+
+        composed = original.download_as_string()
+        self.assertEqual(composed, BEFORE + TO_APPEND)
+
     @unittest.skipUnless(USER_PROJECT, "USER_PROJECT not set in environment.")
     def test_compose_with_user_project(self):
         new_bucket_name = "compose-user-project" + unique_resource_id("-")
