@@ -10,6 +10,7 @@
 dist
 build
 eggs
+.eggs
 parts
 bin
 var
@@ -49,6 +50,7 @@ bigquery/docs/generated
 # Virtual environment
 env/
 coverage.xml
+sponge_log.xml
 
 # System test environment variables.
 system_tests/local_test_setup

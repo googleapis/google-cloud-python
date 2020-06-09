@@ -3,6 +3,8 @@ The ``google-cloud-core`` package contains helpers common to all
 much of the functionality has been split out into this package,
 ``google-api-core``.
 
+.. include:: multiprocessing.rst
+
 Core
 ====
 
