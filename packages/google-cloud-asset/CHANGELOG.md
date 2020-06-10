@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-asset/compare/v0.10.0...v1.0.0) (2020-06-10)
+
+
+### Features
+
+* release to GA ([#17](https://www.github.com/googleapis/python-asset/issues/17)) ([731e350](https://www.github.com/googleapis/python-asset/commit/731e350f6321a1b29b482ad360172754a2a255c6))
+
 ## [0.10.0](https://www.github.com/googleapis/python-asset/compare/v0.9.0...v0.10.0) (2020-05-08)
 
 
