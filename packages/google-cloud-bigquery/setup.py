@@ -39,7 +39,7 @@ dependencies = [
 ]
 extras = {
     "bqstorage": [
-        "google-cloud-bigquery-storage >= 0.6.0, <2.0.0dev",
+        "google-cloud-bigquery-storage >= 1.0.0, <2.0.0dev",
         # Due to an issue in pip's dependency resolver, the `grpc` extra is not
         # installed, even though `google-cloud-bigquery-storage` specifies it
         # as `google-api-core[grpc]`. We thus need to explicitly specify it here.

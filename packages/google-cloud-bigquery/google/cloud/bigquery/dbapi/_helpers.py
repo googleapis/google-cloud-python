@@ -19,6 +19,7 @@ except ImportError:  # Python 2.7
 
 import datetime
 import decimal
+import functools
 import numbers
 
 import six
@@ -233,8 +234,52 @@ def to_bq_table_rows(rows_iterable):
     """
 
     def to_table_row(row):
-        values = tuple(row.values())
+        # NOTE: We fetch ARROW values, thus we need to convert them to Python
+        # objects with as_py().
+        values = tuple(value.as_py() for value in row.values())
         keys_to_index = {key: i for i, key in enumerate(row.keys())}
         return table.Row(values, keys_to_index)
 
     return (to_table_row(row_data) for row_data in rows_iterable)
+
+
+def raise_on_closed(
+    exc_msg, exc_class=exceptions.ProgrammingError, closed_attr_name="_closed"
+):
+    """Make public instance methods raise an error if the instance is closed."""
+
+    def _raise_on_closed(method):
+        """Make a non-static method raise an error if its containing instance is closed.
+        """
+
+        def with_closed_check(self, *args, **kwargs):
+            if getattr(self, closed_attr_name):
+                raise exc_class(exc_msg)
+            return method(self, *args, **kwargs)
+
+        functools.update_wrapper(with_closed_check, method)
+        return with_closed_check
+
+    def decorate_public_methods(klass):
+        """Apply ``_raise_on_closed()`` decorator to public instance methods.
+        """
+        for name in dir(klass):
+            if name.startswith("_"):
+                continue
+
+            member = getattr(klass, name)
+            if not callable(member):
+                continue
+
+            # We need to check for class/static methods directly in the instance
+            # __dict__, not via the retrieved attribute (`member`), as the
+            # latter is already a callable *produced* by one of these descriptors.
+            if isinstance(klass.__dict__[name], (staticmethod, classmethod)):
+                continue
+
+            member = _raise_on_closed(member)
+            setattr(klass, name, member)
+
+        return klass
+
+    return decorate_public_methods

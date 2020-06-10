@@ -3250,7 +3250,7 @@ class QueryJob(_AsyncJob):
         self,
         progress_bar_type=None,
         bqstorage_client=None,
-        create_bqstorage_client=False,
+        create_bqstorage_client=True,
     ):
         """[Beta] Create a class:`pyarrow.Table` by loading all pages of a
         table or query.
@@ -3274,10 +3274,10 @@ class QueryJob(_AsyncJob):
                 ``'tqdm_gui'``
                   Use the :func:`tqdm.tqdm_gui` function to display a
                   progress bar as a graphical dialog box.
-            bqstorage_client (google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient):
-                **Beta Feature** Optional. A BigQuery Storage API client. If
-                supplied, use the faster BigQuery Storage API to fetch rows
-                from BigQuery. This API is a billable API.
+            bqstorage_client (google.cloud.bigquery_storage_v1.BigQueryReadClient):
+                Optional. A BigQuery Storage API client. If supplied, use the
+                faster BigQuery Storage API to fetch rows from BigQuery.
+                This API is a billable API.
 
                 This method requires the ``pyarrow`` and
                 ``google-cloud-bigquery-storage`` libraries.
@@ -3285,11 +3285,10 @@ class QueryJob(_AsyncJob):
                 Reading from a specific partition or snapshot is not
                 currently supported by this method.
             create_bqstorage_client (bool):
-                **Beta Feature** Optional. If ``True``, create a BigQuery
-                Storage API client using the default API settings. The
-                BigQuery Storage API is a faster way to fetch rows from
-                BigQuery. See the ``bqstorage_client`` parameter for more
-                information.
+                Optional. If ``True`` (default), create a BigQuery Storage API
+                client using the default API settings. The BigQuery Storage API
+                is a faster way to fetch rows from BigQuery. See the
+                ``bqstorage_client`` parameter for more information.
 
                 This argument does nothing if ``bqstorage_client`` is supplied.
 
@@ -3320,15 +3319,15 @@ class QueryJob(_AsyncJob):
         bqstorage_client=None,
         dtypes=None,
         progress_bar_type=None,
-        create_bqstorage_client=False,
+        create_bqstorage_client=True,
     ):
         """Return a pandas DataFrame from a QueryJob
 
         Args:
-            bqstorage_client (google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient):
-                **Alpha Feature** Optional. A BigQuery Storage API client. If
-                supplied, use the faster BigQuery Storage API to fetch rows
-                from BigQuery. This API is a billable API.
+            bqstorage_client (google.cloud.bigquery_storage_v1.BigQueryReadClient):
+                Optional. A BigQuery Storage API client. If supplied, use the
+                faster BigQuery Storage API to fetch rows from BigQuery. This
+                API is a billable API.
 
                 This method requires the ``fastavro`` and
                 ``google-cloud-bigquery-storage`` libraries.
@@ -3355,11 +3354,10 @@ class QueryJob(_AsyncJob):
 
                 ..versionadded:: 1.11.0
             create_bqstorage_client (bool):
-                **Beta Feature** Optional. If ``True``, create a BigQuery
-                Storage API client using the default API settings. The
-                BigQuery Storage API is a faster way to fetch rows from
-                BigQuery. See the ``bqstorage_client`` parameter for more
-                information.
+                Optional. If ``True`` (default), create a BigQuery Storage API
+                client using the default API settings. The BigQuery Storage API
+                is a faster way to fetch rows from BigQuery. See the
+                ``bqstorage_client`` parameter for more information.
 
                 This argument does nothing if ``bqstorage_client`` is supplied.
 

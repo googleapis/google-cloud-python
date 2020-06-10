@@ -22,3 +22,10 @@ def make_connection(*responses):
     mock_conn.user_agent = "testing 1.2.3"
     mock_conn.api_request.side_effect = list(responses) + [NotFound("miss")]
     return mock_conn
+
+
+def _to_pyarrow(value):
+    """Convert Python value to pyarrow value."""
+    import pyarrow
+
+    return pyarrow.array([value])[0]

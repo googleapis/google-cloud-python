@@ -26,6 +26,7 @@ import warnings
 import six
 
 try:
+    # Needed for the to_bqstorage() method.
     from google.cloud import bigquery_storage_v1beta1
 except ImportError:  # pragma: NO COVER
     bigquery_storage_v1beta1 = None
@@ -226,7 +227,7 @@ class TableReference(object):
             "tableId": self._table_id,
         }
 
-    def to_bqstorage(self):
+    def to_bqstorage(self, v1beta1=False):
         """Construct a BigQuery Storage API representation of this table.
 
         Install the ``google-cloud-bigquery-storage`` package to use this
@@ -235,35 +236,41 @@ class TableReference(object):
         If the ``table_id`` contains a partition identifier (e.g.
         ``my_table$201812``) or a snapshot identifier (e.g.
         ``mytable@1234567890``), it is ignored. Use
-        :class:`google.cloud.bigquery_storage_v1beta1.types.TableReadOptions`
+        :class:`google.cloud.bigquery_storage_v1.types.ReadSession.TableReadOptions`
         to filter rows by partition. Use
-        :class:`google.cloud.bigquery_storage_v1beta1.types.TableModifiers`
+        :class:`google.cloud.bigquery_storage_v1.types.ReadSession.TableModifiers`
         to select a specific snapshot to read from.
 
+        Args:
+            v1beta1 (Optiona[bool]):
+                If :data:`True`, return representation compatible with BigQuery
+                Storage ``v1beta1`` version. Defaults to :data:`False`.
+
         Returns:
-            google.cloud.bigquery_storage_v1beta1.types.TableReference:
+            Union[str, google.cloud.bigquery_storage_v1beta1.types.TableReference:]:
                 A reference to this table in the BigQuery Storage API.
 
         Raises:
             ValueError:
-                If the :mod:`google.cloud.bigquery_storage_v1beta1` module
-                cannot be imported.
+                If ``v1beta1`` compatibility is requested, but the
+                :mod:`google.cloud.bigquery_storage_v1beta1` module	cannot be imported.
         """
-        if bigquery_storage_v1beta1 is None:
+        if v1beta1 and bigquery_storage_v1beta1 is None:
             raise ValueError(_NO_BQSTORAGE_ERROR)
 
-        table_ref = bigquery_storage_v1beta1.types.TableReference()
-        table_ref.project_id = self._project
-        table_ref.dataset_id = self._dataset_id
-        table_id = self._table_id
+        table_id, _, _ = self._table_id.partition("@")
+        table_id, _, _ = table_id.partition("$")
 
-        if "@" in table_id:
-            table_id = table_id.split("@")[0]
-
-        if "$" in table_id:
-            table_id = table_id.split("$")[0]
-
-        table_ref.table_id = table_id
+        if v1beta1:
+            table_ref = bigquery_storage_v1beta1.types.TableReference(
+                project_id=self._project,
+                dataset_id=self._dataset_id,
+                table_id=table_id,
+            )
+        else:
+            table_ref = "projects/{}/datasets/{}/tables/{}".format(
+                self._project, self._dataset_id, table_id,
+            )
 
         return table_ref
 
@@ -868,14 +875,19 @@ class Table(object):
         """
         return copy.deepcopy(self._properties)
 
-    def to_bqstorage(self):
+    def to_bqstorage(self, v1beta1=False):
         """Construct a BigQuery Storage API representation of this table.
 
+        Args:
+            v1beta1 (Optiona[bool]):
+                If :data:`True`, return representation compatible with BigQuery
+                Storage ``v1beta1`` version. Defaults to :data:`False`.
+
         Returns:
-            google.cloud.bigquery_storage_v1beta1.types.TableReference:
+            Union[str, google.cloud.bigquery_storage_v1beta1.types.TableReference:]:
                 A reference to this table in the BigQuery Storage API.
         """
-        return self.reference.to_bqstorage()
+        return self.reference.to_bqstorage(v1beta1=v1beta1)
 
     def _build_resource(self, filter_fields):
         """Generate a resource for ``update``."""
@@ -1083,14 +1095,19 @@ class TableListItem(object):
             {"tableReference": TableReference.from_string(full_table_id).to_api_repr()}
         )
 
-    def to_bqstorage(self):
+    def to_bqstorage(self, v1beta1=False):
         """Construct a BigQuery Storage API representation of this table.
 
+        Args:
+            v1beta1 (Optiona[bool]):
+                If :data:`True`, return representation compatible with BigQuery
+                Storage ``v1beta1`` version. Defaults to :data:`False`.
+
         Returns:
-            google.cloud.bigquery_storage_v1beta1.types.TableReference:
+            Union[str, google.cloud.bigquery_storage_v1beta1.types.TableReference:]:
                 A reference to this table in the BigQuery Storage API.
         """
-        return self.reference.to_bqstorage()
+        return self.reference.to_bqstorage(v1beta1=v1beta1)
 
 
 def _row_from_mapping(mapping, schema):
@@ -1466,7 +1483,7 @@ class RowIterator(HTTPIterator):
         self,
         progress_bar_type=None,
         bqstorage_client=None,
-        create_bqstorage_client=False,
+        create_bqstorage_client=True,
     ):
         """[Beta] Create a class:`pyarrow.Table` by loading all pages of a
         table or query.
@@ -1490,10 +1507,10 @@ class RowIterator(HTTPIterator):
                 ``'tqdm_gui'``
                   Use the :func:`tqdm.tqdm_gui` function to display a
                   progress bar as a graphical dialog box.
-            bqstorage_client (google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient):
-                **Beta Feature** Optional. A BigQuery Storage API client. If
-                supplied, use the faster BigQuery Storage API to fetch rows
-                from BigQuery. This API is a billable API.
+            bqstorage_client (google.cloud.bigquery_storage_v1.BigQueryReadClient):
+                Optional. A BigQuery Storage API client. If supplied, use the
+                faster BigQuery Storage API to fetch rows from BigQuery. This
+                API is a billable API.
 
                 This method requires the ``pyarrow`` and
                 ``google-cloud-bigquery-storage`` libraries.
@@ -1501,11 +1518,10 @@ class RowIterator(HTTPIterator):
                 Reading from a specific partition or snapshot is not
                 currently supported by this method.
             create_bqstorage_client (bool):
-                **Beta Feature** Optional. If ``True``, create a BigQuery
-                Storage API client using the default API settings. The
-                BigQuery Storage API is a faster way to fetch rows from
-                BigQuery. See the ``bqstorage_client`` parameter for more
-                information.
+                Optional. If ``True`` (default), create a BigQuery Storage API
+                client using the default API settings. The BigQuery Storage API
+                is a faster way to fetch rows from BigQuery. See the
+                ``bqstorage_client`` parameter for more information.
 
                 This argument does nothing if ``bqstorage_client`` is supplied.
 
@@ -1575,10 +1591,9 @@ class RowIterator(HTTPIterator):
         """Create an iterable of pandas DataFrames, to process the table as a stream.
 
         Args:
-            bqstorage_client (google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient):
-                **Beta Feature** Optional. A BigQuery Storage API client. If
-                supplied, use the faster BigQuery Storage API to fetch rows
-                from BigQuery.
+            bqstorage_client (google.cloud.bigquery_storage_v1.BigQueryReadClient):
+                Optional. A BigQuery Storage API client. If supplied, use the
+                faster BigQuery Storage API to fetch rows from BigQuery.
 
                 This method requires the ``pyarrow`` and
                 ``google-cloud-bigquery-storage`` libraries.
@@ -1639,15 +1654,14 @@ class RowIterator(HTTPIterator):
         bqstorage_client=None,
         dtypes=None,
         progress_bar_type=None,
-        create_bqstorage_client=False,
+        create_bqstorage_client=True,
     ):
         """Create a pandas DataFrame by loading all pages of a query.
 
         Args:
-            bqstorage_client (google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient):
-                **Beta Feature** Optional. A BigQuery Storage API client. If
-                supplied, use the faster BigQuery Storage API to fetch rows
-                from BigQuery.
+            bqstorage_client (google.cloud.bigquery_storage_v1.BigQueryReadClient):
+                Optional. A BigQuery Storage API client. If supplied, use the
+                faster BigQuery Storage API to fetch rows from BigQuery.
 
                 This method requires the ``pyarrow`` and
                 ``google-cloud-bigquery-storage`` libraries.
@@ -1685,11 +1699,10 @@ class RowIterator(HTTPIterator):
 
                 ..versionadded:: 1.11.0
             create_bqstorage_client (bool):
-                **Beta Feature** Optional. If ``True``, create a BigQuery
-                Storage API client using the default API settings. The
-                BigQuery Storage API is a faster way to fetch rows from
-                BigQuery. See the ``bqstorage_client`` parameter for more
-                information.
+                Optional. If ``True`` (default), create a BigQuery Storage API
+                client using the default API settings. The BigQuery Storage API
+                is a faster way to fetch rows from BigQuery. See the
+                ``bqstorage_client`` parameter for more information.
 
                 This argument does nothing if ``bqstorage_client`` is supplied.
 
@@ -1704,7 +1717,7 @@ class RowIterator(HTTPIterator):
         Raises:
             ValueError:
                 If the :mod:`pandas` library cannot be imported, or the
-                :mod:`google.cloud.bigquery_storage_v1beta1` module is
+                :mod:`google.cloud.bigquery_storage_v1` module is
                 required but cannot be imported.
 
         """
@@ -1789,7 +1802,7 @@ class _EmptyRowIterator(object):
         self,
         progress_bar_type=None,
         bqstorage_client=None,
-        create_bqstorage_client=False,
+        create_bqstorage_client=True,
     ):
         """[Beta] Create an empty class:`pyarrow.Table`.
 
@@ -1810,7 +1823,7 @@ class _EmptyRowIterator(object):
         bqstorage_client=None,
         dtypes=None,
         progress_bar_type=None,
-        create_bqstorage_client=False,
+        create_bqstorage_client=True,
     ):
         """Create an empty dataframe.
 

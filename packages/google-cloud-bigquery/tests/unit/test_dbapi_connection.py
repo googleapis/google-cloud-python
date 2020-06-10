@@ -12,14 +12,16 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+import gc
 import unittest
 
 import mock
+import six
 
 try:
-    from google.cloud import bigquery_storage_v1beta1
+    from google.cloud import bigquery_storage_v1
 except ImportError:  # pragma: NO COVER
-    bigquery_storage_v1beta1 = None
+    bigquery_storage_v1 = None
 
 
 class TestConnection(unittest.TestCase):
@@ -39,22 +41,27 @@ class TestConnection(unittest.TestCase):
         return mock_client
 
     def _mock_bqstorage_client(self):
-        from google.cloud.bigquery_storage_v1beta1 import client
+        from google.cloud.bigquery_storage_v1 import client
 
-        mock_client = mock.create_autospec(client.BigQueryStorageClient)
+        mock_client = mock.create_autospec(client.BigQueryReadClient)
+        mock_client.transport = mock.Mock(spec=["channel"])
+        mock_client.transport.channel = mock.Mock(spec=["close"])
         return mock_client
 
     def test_ctor_wo_bqstorage_client(self):
         from google.cloud.bigquery.dbapi import Connection
 
         mock_client = self._mock_client()
+        mock_bqstorage_client = self._mock_bqstorage_client()
+        mock_client._create_bqstorage_client.return_value = mock_bqstorage_client
+
         connection = self._make_one(client=mock_client)
         self.assertIsInstance(connection, Connection)
         self.assertIs(connection._client, mock_client)
-        self.assertIsNone(connection._bqstorage_client)
+        self.assertIs(connection._bqstorage_client, mock_bqstorage_client)
 
     @unittest.skipIf(
-        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+        bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
     )
     def test_ctor_w_bqstorage_client(self):
         from google.cloud.bigquery.dbapi import Connection
@@ -76,20 +83,23 @@ class TestConnection(unittest.TestCase):
         connection = connect()
         self.assertIsInstance(connection, Connection)
         self.assertIsNotNone(connection._client)
-        self.assertIsNone(connection._bqstorage_client)
+        self.assertIsNotNone(connection._bqstorage_client)
 
     def test_connect_w_client(self):
         from google.cloud.bigquery.dbapi import connect
         from google.cloud.bigquery.dbapi import Connection
 
         mock_client = self._mock_client()
+        mock_bqstorage_client = self._mock_bqstorage_client()
+        mock_client._create_bqstorage_client.return_value = mock_bqstorage_client
+
         connection = connect(client=mock_client)
         self.assertIsInstance(connection, Connection)
         self.assertIs(connection._client, mock_client)
-        self.assertIsNone(connection._bqstorage_client)
+        self.assertIs(connection._bqstorage_client, mock_bqstorage_client)
 
     @unittest.skipIf(
-        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
+        bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
     )
     def test_connect_w_both_clients(self):
         from google.cloud.bigquery.dbapi import connect
@@ -104,10 +114,76 @@ class TestConnection(unittest.TestCase):
         self.assertIs(connection._client, mock_client)
         self.assertIs(connection._bqstorage_client, mock_bqstorage_client)
 
-    def test_close(self):
+    def test_raises_error_if_closed(self):
+        from google.cloud.bigquery.dbapi.exceptions import ProgrammingError
+
         connection = self._make_one(client=self._mock_client())
-        # close() is a no-op, there is nothing to test.
+
         connection.close()
+
+        for method in ("close", "commit", "cursor"):
+            with six.assertRaisesRegex(
+                self, ProgrammingError, r"Operating on a closed connection\."
+            ):
+                getattr(connection, method)()
+
+    def test_close_closes_all_created_bigquery_clients(self):
+        client = self._mock_client()
+        bqstorage_client = self._mock_bqstorage_client()
+
+        client_patcher = mock.patch(
+            "google.cloud.bigquery.dbapi.connection.bigquery.Client",
+            return_value=client,
+        )
+        bqstorage_client_patcher = mock.patch.object(
+            client, "_create_bqstorage_client", return_value=bqstorage_client,
+        )
+
+        with client_patcher, bqstorage_client_patcher:
+            connection = self._make_one(client=None, bqstorage_client=None)
+
+        connection.close()
+
+        self.assertTrue(client.close.called)
+        self.assertTrue(bqstorage_client.transport.channel.close.called)
+
+    def test_close_does_not_close_bigquery_clients_passed_to_it(self):
+        client = self._mock_client()
+        bqstorage_client = self._mock_bqstorage_client()
+        connection = self._make_one(client=client, bqstorage_client=bqstorage_client)
+
+        connection.close()
+
+        self.assertFalse(client.close.called)
+        self.assertFalse(bqstorage_client.transport.channel.called)
+
+    def test_close_closes_all_created_cursors(self):
+        connection = self._make_one(client=self._mock_client())
+        cursor_1 = connection.cursor()
+        cursor_2 = connection.cursor()
+        self.assertFalse(cursor_1._closed)
+        self.assertFalse(cursor_2._closed)
+
+        connection.close()
+
+        self.assertTrue(cursor_1._closed)
+        self.assertTrue(cursor_2._closed)
+
+    def test_does_not_keep_cursor_instances_alive(self):
+        from google.cloud.bigquery.dbapi import Cursor
+
+        connection = self._make_one(client=self._mock_client())
+        cursor_1 = connection.cursor()  # noqa
+        cursor_2 = connection.cursor()
+        cursor_3 = connection.cursor()  # noqa
+
+        del cursor_2
+
+        # Connections should not hold strong references to the Cursor instances
+        # they created, unnecessarily keeping them alive.
+        gc.collect()
+        cursors = [obj for obj in gc.get_objects() if isinstance(obj, Cursor)]
+        self.assertEqual(len(cursors), 2)
 
     def test_commit(self):
         connection = self._make_one(client=self._mock_client())

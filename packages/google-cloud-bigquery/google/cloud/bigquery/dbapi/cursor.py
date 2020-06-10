@@ -15,6 +15,7 @@
 """Cursor for the Google BigQuery DB-API."""
 
 import collections
+import warnings
 
 try:
     from collections import abc as collections_abc
@@ -51,6 +52,7 @@ Column = collections.namedtuple(
 )
 
 
+@_helpers.raise_on_closed("Operating on a closed cursor.")
 class Cursor(object):
     """DB-API Cursor to Google BigQuery.
 
@@ -73,9 +75,11 @@ class Cursor(object):
         self.arraysize = None
         self._query_data = None
         self._query_job = None
+        self._closed = False
 
     def close(self):
-        """No-op."""
+        """Mark the cursor as closed, preventing its further use."""
+        self._closed = True
 
     def _set_description(self, schema):
         """Set description from schema.
@@ -256,7 +260,7 @@ class Cursor(object):
 
         Args:
             bqstorage_client(\
-                google.cloud.bigquery_storage_v1beta1.BigQueryStorageClient \
+                google.cloud.bigquery_storage_v1.BigQueryReadClient \
             ):
                 A client tha know how to talk to the BigQuery Storage API.
 
@@ -264,26 +268,56 @@ class Cursor(object):
             Iterable[Mapping]:
                 A sequence of rows, represented as dictionaries.
         """
-        # NOTE: Given that BQ storage client instance is passed in, it means
-        # that bigquery_storage_v1beta1 library is available (no ImportError).
+        # Hitting this code path with a BQ Storage client instance implies that
+        # bigquery_storage_v1* can indeed be imported here without errors.
+        from google.cloud import bigquery_storage_v1
         from google.cloud import bigquery_storage_v1beta1
 
         table_reference = self._query_job.destination
 
-        read_session = bqstorage_client.create_read_session(
-            table_reference.to_bqstorage(),
-            "projects/{}".format(table_reference.project),
-            # a single stream only, as DB API is not well-suited for multithreading
-            requested_streams=1,
+        is_v1beta1_client = isinstance(
+            bqstorage_client, bigquery_storage_v1beta1.BigQueryStorageClient
         )
+
+        # We want to preserve compatibility with the v1beta1 BQ Storage clients,
+        # thus adjust the session creation if needed.
+        if is_v1beta1_client:
+            warnings.warn(
+                "Support for BigQuery Storage v1beta1 clients is deprecated, please "
+                "consider upgrading the client to BigQuery Storage v1 stable version.",
+                category=DeprecationWarning,
+            )
+            read_session = bqstorage_client.create_read_session(
+                table_reference.to_bqstorage(v1beta1=True),
+                "projects/{}".format(table_reference.project),
+                # a single stream only, as DB API is not well-suited for multithreading
+                requested_streams=1,
+                format_=bigquery_storage_v1beta1.enums.DataFormat.ARROW,
+            )
+        else:
+            requested_session = bigquery_storage_v1.types.ReadSession(
+                table=table_reference.to_bqstorage(),
+                data_format=bigquery_storage_v1.enums.DataFormat.ARROW,
+            )
+            read_session = bqstorage_client.create_read_session(
+                parent="projects/{}".format(table_reference.project),
+                read_session=requested_session,
+                # a single stream only, as DB API is not well-suited for multithreading
+                max_stream_count=1,
+            )
 
         if not read_session.streams:
             return iter([])  # empty table, nothing to read
 
-        read_position = bigquery_storage_v1beta1.types.StreamPosition(
-            stream=read_session.streams[0],
-        )
-        read_rows_stream = bqstorage_client.read_rows(read_position)
+        if is_v1beta1_client:
+            read_position = bigquery_storage_v1beta1.types.StreamPosition(
+                stream=read_session.streams[0],
+            )
+            read_rows_stream = bqstorage_client.read_rows(read_position)
+        else:
+            stream_name = read_session.streams[0].name
+            read_rows_stream = bqstorage_client.read_rows(stream_name)
+
         rows_iterable = read_rows_stream.rows(read_session)
         return rows_iterable
 
@@ -353,10 +387,10 @@ class Cursor(object):
         return list(self._query_data)
 
     def setinputsizes(self, sizes):
-        """No-op."""
+        """No-op, but for consistency raise an error if cursor is closed."""
 
     def setoutputsize(self, size, column=None):
-        """No-op."""
+        """No-op, but for consistency raise an error if cursor is closed."""
 
 
 def _format_operation_list(operation, parameters):

@@ -18,10 +18,18 @@ import math
 import operator as op
 import unittest
 
+try:
+    import pyarrow
+except ImportError:  # pragma: NO COVER
+    pyarrow = None
+
+import six
+
 import google.cloud._helpers
 from google.cloud.bigquery import table
 from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.dbapi import exceptions
+from tests.unit.helpers import _to_pyarrow
 
 
 class TestQueryParameters(unittest.TestCase):
@@ -195,10 +203,21 @@ class TestToBqTableRows(unittest.TestCase):
         result = _helpers.to_bq_table_rows(rows_iterable)
         self.assertEqual(list(result), [])
 
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_non_empty_iterable(self):
         rows_iterable = [
-            dict(one=1.1, four=1.4, two=1.2, three=1.3),
-            dict(one=2.1, four=2.4, two=2.2, three=2.3),
+            dict(
+                one=_to_pyarrow(1.1),
+                four=_to_pyarrow(1.4),
+                two=_to_pyarrow(1.2),
+                three=_to_pyarrow(1.3),
+            ),
+            dict(
+                one=_to_pyarrow(2.1),
+                four=_to_pyarrow(2.4),
+                two=_to_pyarrow(2.2),
+                three=_to_pyarrow(2.3),
+            ),
         ]
 
         result = _helpers.to_bq_table_rows(rows_iterable)
@@ -219,3 +238,94 @@ class TestToBqTableRows(unittest.TestCase):
         items = sorted(row_2.items(), key=field_value)
         expected_items = [("one", 2.1), ("two", 2.2), ("three", 2.3), ("four", 2.4)]
         self.assertEqual(items, expected_items)
+
+
+class TestRaiseOnClosedDecorator(unittest.TestCase):
+    def _make_class(self):
+        class Foo(object):
+
+            class_member = "class member"
+
+            def __init__(self):
+                self._closed = False
+                self.instance_member = "instance member"
+
+            def instance_method(self):
+                return self.instance_member
+
+            @classmethod
+            def class_method(cls):  # pragma: NO COVER
+                return cls.class_member
+
+            @staticmethod
+            def static_method():  # pragma: NO COVER
+                return "static return value"
+
+            def _private_method(self):
+                return self.instance_member
+
+        return Foo
+
+    def test_preserves_method_names(self):
+        klass = self._make_class()
+        decorated_class = _helpers.raise_on_closed("I'm closed!")(klass)
+        instance = decorated_class()
+
+        self.assertEqual(instance.instance_method.__name__, "instance_method")
+        self.assertEqual(instance.class_method.__name__, "class_method")
+        self.assertEqual(instance.static_method.__name__, "static_method")
+        self.assertEqual(instance._private_method.__name__, "_private_method")
+
+    def test_methods_on_not_closed_instance(self):
+        klass = self._make_class()
+        decorated_class = _helpers.raise_on_closed("I'm closed!")(klass)
+        instance = decorated_class()
+        instance._closed = False
+
+        self.assertEqual(instance.instance_method(), "instance member")
+        self.assertEqual(instance.class_method(), "class member")
+        self.assertEqual(instance.static_method(), "static return value")
+        self.assertEqual(instance._private_method(), "instance member")
+
+    def test_public_instance_methods_on_closed_instance(self):
+        klass = self._make_class()
+        decorated_class = _helpers.raise_on_closed("I'm closed!")(klass)
+        instance = decorated_class()
+        instance._closed = True
+
+        with six.assertRaisesRegex(self, exceptions.ProgrammingError, "I'm closed!"):
+            instance.instance_method()
+
+    def test_methods_wo_public_instance_methods_on_closed_instance(self):
+        klass = self._make_class()
+        decorated_class = _helpers.raise_on_closed("I'm closed!")(klass)
+        instance = decorated_class()
+        instance._closed = True
+
+        # no errors expected
+        self.assertEqual(instance.class_method(), "class member")
+        self.assertEqual(instance.static_method(), "static return value")
+        self.assertEqual(instance._private_method(), "instance member")
+
+    def test_custom_class_closed_attribute(self):
+        klass = self._make_class()
+        decorated_class = _helpers.raise_on_closed(
+            "I'm closed!", closed_attr_name="_really_closed"
+        )(klass)
+        instance = decorated_class()
+        instance._closed = False
+        instance._really_closed = True
+
+        with six.assertRaisesRegex(self, exceptions.ProgrammingError, "I'm closed!"):
+            instance.instance_method()
+
+    def test_custom_on_closed_error_type(self):
+        klass = self._make_class()
+        decorated_class = _helpers.raise_on_closed(
+            "I'm closed!", exc_class=RuntimeError
+        )(klass)
+        instance = decorated_class()
+        instance._closed = True
+
+        with six.assertRaisesRegex(self, RuntimeError, "I'm closed!"):
+            instance.instance_method()
