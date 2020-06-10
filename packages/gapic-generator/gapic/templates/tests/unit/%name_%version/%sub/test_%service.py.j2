@@ -100,8 +100,8 @@ def test_{{ service.client_name|snake_case }}_client_options():
         )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
-    # "Never".
-    os.environ["GOOGLE_API_USE_MTLS"] = "Never"
+    # "never".
+    os.environ["GOOGLE_API_USE_MTLS"] = "never"
     with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}GrpcTransport.__init__') as grpc_transport:
         grpc_transport.return_value = None
         client = {{ service.client_name }}()
@@ -113,8 +113,8 @@ def test_{{ service.client_name|snake_case }}_client_options():
         )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
-    # "Always".
-    os.environ["GOOGLE_API_USE_MTLS"] = "Always"
+    # "always".
+    os.environ["GOOGLE_API_USE_MTLS"] = "always"
     with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}GrpcTransport.__init__') as grpc_transport:
         grpc_transport.return_value = None
         client = {{ service.client_name }}()
@@ -126,8 +126,8 @@ def test_{{ service.client_name|snake_case }}_client_options():
         )
 
     # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "Auto", and client_cert_source is provided.
-    os.environ["GOOGLE_API_USE_MTLS"] = "Auto"
+    # "auto", and client_cert_source is provided.
+    os.environ["GOOGLE_API_USE_MTLS"] = "auto"
     options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
     with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}GrpcTransport.__init__') as grpc_transport:
         grpc_transport.return_value = None
@@ -140,8 +140,8 @@ def test_{{ service.client_name|snake_case }}_client_options():
         )
 
     # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "Auto", and default_client_cert_source is provided.
-    os.environ["GOOGLE_API_USE_MTLS"] = "Auto"
+    # "auto", and default_client_cert_source is provided.
+    os.environ["GOOGLE_API_USE_MTLS"] = "auto"
     with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}GrpcTransport.__init__') as grpc_transport:
         with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
             grpc_transport.return_value = None
@@ -154,8 +154,8 @@ def test_{{ service.client_name|snake_case }}_client_options():
             )
 
     # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "Auto", but client_cert_source and default_client_cert_source are None.
-    os.environ["GOOGLE_API_USE_MTLS"] = "Auto"
+    # "auto", but client_cert_source and default_client_cert_source are None.
+    os.environ["GOOGLE_API_USE_MTLS"] = "auto"
     with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}GrpcTransport.__init__') as grpc_transport:
         with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=False):
             grpc_transport.return_value = None
