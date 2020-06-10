@@ -4,6 +4,12 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [1.1.0](https://www.github.com/googleapis/python-asset/compare/v1.0.0...v1.1.0) (2020-06-10)
+
+### Features
+
+* add `search_all_resources` and `search_all_iam_policies` (via synth) ([#32](https://www.github.com/googleapis/python-asset/issues/32)) ([24a0827](https://www.github.com/googleapis/python-asset/commit/24a0827913dfa7563ea08cdf2e329626eadca4a3)), closes [#541](https://www.github.com/googleapis/python-asset/issues/541)
+
 ## [1.0.0](https://www.github.com/googleapis/python-asset/compare/v0.10.0...v1.0.0) (2020-06-10)
 
 
