@@ -1,7 +1,7 @@
 Python Client for Cloud Data Loss Prevention (DLP) API
 ======================================================
 
-|alpha| |pypi| |versions| 
+|GA| |pypi| |versions| 
 
 `Cloud Data Loss Prevention (DLP) API`_: Provides methods for detection, risk analysis, and de-identification of
 privacy-sensitive fragments in text, images, and Google Cloud Platform
@@ -10,8 +10,8 @@ storage repositories.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#alpha-support
+.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-dlp.svg
    :target: https://pypi.org/project/google-cloud-dlp/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dlp.svg
