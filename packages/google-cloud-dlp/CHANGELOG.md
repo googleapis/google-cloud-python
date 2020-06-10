@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-dlp/compare/v0.15.0...v1.0.0) (2020-06-10)
+
+
+### Features
+
+* set release_status to production/stable ([#9](https://www.github.com/googleapis/python-dlp/issues/9)) ([a7f22a5](https://www.github.com/googleapis/python-dlp/commit/a7f22a5c29d2393ed89a65c3423c590f4454d1c9))
+
 ## [0.15.0](https://www.github.com/googleapis/python-dlp/compare/v0.14.0...v0.15.0) (2020-05-14)
 
 
