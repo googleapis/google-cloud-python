@@ -214,3 +214,35 @@ class AssetServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["asset_service_stub"].UpdateFeed
+
+    @property
+    def search_all_resources(self):
+        """Return the gRPC stub for :meth:`AssetServiceClient.search_all_resources`.
+
+        Searches all the resources within the given accessible scope (e.g., a
+        project, a folder or an organization). Callers should have
+        cloud.assets.SearchAllResources permission upon the requested scope,
+        otherwise the request will be rejected.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["asset_service_stub"].SearchAllResources
+
+    @property
+    def search_all_iam_policies(self):
+        """Return the gRPC stub for :meth:`AssetServiceClient.search_all_iam_policies`.
+
+        Searches all the IAM policies within the given accessible scope (e.g., a
+        project, a folder or an organization). Callers should have
+        cloud.assets.SearchAllIamPolicies permission upon the requested scope,
+        otherwise the request will be rejected.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["asset_service_stub"].SearchAllIamPolicies

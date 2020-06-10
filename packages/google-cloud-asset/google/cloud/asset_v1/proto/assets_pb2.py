@@ -12,6 +12,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.orgpolicy.v1 import (
     orgpolicy_pb2 as google_dot_cloud_dot_orgpolicy_dot_v1_dot_orgpolicy__pb2,
@@ -29,7 +30,6 @@ from google.identity.accesscontextmanager.v1 import (
 from google.protobuf import any_pb2 as google_dot_protobuf_dot_any__pb2
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
-from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -37,8 +37,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.asset.v1",
     syntax="proto3",
     serialized_options=b"\n\031com.google.cloud.asset.v1B\nAssetProtoP\001Z:google.golang.org/genproto/googleapis/cloud/asset/v1;asset\370\001\001\252\002\025Google.Cloud.Asset.V1\312\002\025Google\\Cloud\\Asset\\V1",
-    serialized_pb=b'\n(google/cloud/asset_v1/proto/assets.proto\x12\x15google.cloud.asset.v1\x1a\x19google/api/resource.proto\x1a)google/cloud/orgpolicy/v1/orgpolicy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a:google/identity/accesscontextmanager/v1/access_level.proto\x1a;google/identity/accesscontextmanager/v1/access_policy.proto\x1a?google/identity/accesscontextmanager/v1/service_perimeter.proto\x1a\x19google/protobuf/any.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto"\x80\x01\n\rTemporalAsset\x12\x31\n\x06window\x18\x01 \x01(\x0b\x32!.google.cloud.asset.v1.TimeWindow\x12\x0f\n\x07\x64\x65leted\x18\x02 \x01(\x08\x12+\n\x05\x61sset\x18\x03 \x01(\x0b\x32\x1c.google.cloud.asset.v1.Asset"j\n\nTimeWindow\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x89\x04\n\x05\x41sset\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nasset_type\x18\x02 \x01(\t\x12\x31\n\x08resource\x18\x03 \x01(\x0b\x32\x1f.google.cloud.asset.v1.Resource\x12)\n\niam_policy\x18\x04 \x01(\x0b\x32\x15.google.iam.v1.Policy\x12\x35\n\norg_policy\x18\x06 \x03(\x0b\x32!.google.cloud.orgpolicy.v1.Policy\x12N\n\raccess_policy\x18\x07 \x01(\x0b\x32\x35.google.identity.accesscontextmanager.v1.AccessPolicyH\x00\x12L\n\x0c\x61\x63\x63\x65ss_level\x18\x08 \x01(\x0b\x32\x34.google.identity.accesscontextmanager.v1.AccessLevelH\x00\x12V\n\x11service_perimeter\x18\t \x01(\x0b\x32\x39.google.identity.accesscontextmanager.v1.ServicePerimeterH\x00\x12\x11\n\tancestors\x18\n \x03(\t:\'\xea\x41$\n\x1f\x63loudasset.googleapis.com/Asset\x12\x01*B\x17\n\x15\x61\x63\x63\x65ss_context_policy"\xa0\x01\n\x08Resource\x12\x0f\n\x07version\x18\x01 \x01(\t\x12\x1e\n\x16\x64iscovery_document_uri\x18\x02 \x01(\t\x12\x16\n\x0e\x64iscovery_name\x18\x03 \x01(\t\x12\x14\n\x0cresource_url\x18\x04 \x01(\t\x12\x0e\n\x06parent\x18\x05 \x01(\t\x12%\n\x04\x64\x61ta\x18\x06 \x01(\x0b\x32\x17.google.protobuf.StructB\x98\x01\n\x19\x63om.google.cloud.asset.v1B\nAssetProtoP\x01Z:google.golang.org/genproto/googleapis/cloud/asset/v1;asset\xf8\x01\x01\xaa\x02\x15Google.Cloud.Asset.V1\xca\x02\x15Google\\Cloud\\Asset\\V1b\x06proto3',
+    serialized_pb=b'\n(google/cloud/asset_v1/proto/assets.proto\x12\x15google.cloud.asset.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a)google/cloud/orgpolicy/v1/orgpolicy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a:google/identity/accesscontextmanager/v1/access_level.proto\x1a;google/identity/accesscontextmanager/v1/access_policy.proto\x1a?google/identity/accesscontextmanager/v1/service_perimeter.proto\x1a\x19google/protobuf/any.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x80\x01\n\rTemporalAsset\x12\x31\n\x06window\x18\x01 \x01(\x0b\x32!.google.cloud.asset.v1.TimeWindow\x12\x0f\n\x07\x64\x65leted\x18\x02 \x01(\x08\x12+\n\x05\x61sset\x18\x03 \x01(\x0b\x32\x1c.google.cloud.asset.v1.Asset"j\n\nTimeWindow\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x89\x04\n\x05\x41sset\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nasset_type\x18\x02 \x01(\t\x12\x31\n\x08resource\x18\x03 \x01(\x0b\x32\x1f.google.cloud.asset.v1.Resource\x12)\n\niam_policy\x18\x04 \x01(\x0b\x32\x15.google.iam.v1.Policy\x12\x35\n\norg_policy\x18\x06 \x03(\x0b\x32!.google.cloud.orgpolicy.v1.Policy\x12N\n\raccess_policy\x18\x07 \x01(\x0b\x32\x35.google.identity.accesscontextmanager.v1.AccessPolicyH\x00\x12L\n\x0c\x61\x63\x63\x65ss_level\x18\x08 \x01(\x0b\x32\x34.google.identity.accesscontextmanager.v1.AccessLevelH\x00\x12V\n\x11service_perimeter\x18\t \x01(\x0b\x32\x39.google.identity.accesscontextmanager.v1.ServicePerimeterH\x00\x12\x11\n\tancestors\x18\n \x03(\t:\'\xea\x41$\n\x1f\x63loudasset.googleapis.com/Asset\x12\x01*B\x17\n\x15\x61\x63\x63\x65ss_context_policy"\xb2\x01\n\x08Resource\x12\x0f\n\x07version\x18\x01 \x01(\t\x12\x1e\n\x16\x64iscovery_document_uri\x18\x02 \x01(\t\x12\x16\n\x0e\x64iscovery_name\x18\x03 \x01(\t\x12\x14\n\x0cresource_url\x18\x04 \x01(\t\x12\x0e\n\x06parent\x18\x05 \x01(\t\x12%\n\x04\x64\x61ta\x18\x06 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x10\n\x08location\x18\x08 \x01(\t"\xcc\x02\n\x14ResourceSearchResult\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nasset_type\x18\x02 \x01(\t\x12\x0f\n\x07project\x18\x03 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x04 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t\x12\x10\n\x08location\x18\x06 \x01(\t\x12G\n\x06labels\x18\x07 \x03(\x0b\x32\x37.google.cloud.asset.v1.ResourceSearchResult.LabelsEntry\x12\x14\n\x0cnetwork_tags\x18\x08 \x03(\t\x12\x36\n\x15\x61\x64\x64itional_attributes\x18\t \x01(\x0b\x32\x17.google.protobuf.Struct\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xd4\x03\n\x15IamPolicySearchResult\x12\x10\n\x08resource\x18\x01 \x01(\t\x12\x0f\n\x07project\x18\x02 \x01(\t\x12%\n\x06policy\x18\x03 \x01(\x0b\x32\x15.google.iam.v1.Policy\x12M\n\x0b\x65xplanation\x18\x04 \x01(\x0b\x32\x38.google.cloud.asset.v1.IamPolicySearchResult.Explanation\x1a\xa1\x02\n\x0b\x45xplanation\x12m\n\x13matched_permissions\x18\x01 \x03(\x0b\x32P.google.cloud.asset.v1.IamPolicySearchResult.Explanation.MatchedPermissionsEntry\x1a"\n\x0bPermissions\x12\x13\n\x0bpermissions\x18\x01 \x03(\t\x1a\x7f\n\x17MatchedPermissionsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12S\n\x05value\x18\x02 \x01(\x0b\x32\x44.google.cloud.asset.v1.IamPolicySearchResult.Explanation.Permissions:\x02\x38\x01\x42\x98\x01\n\x19\x63om.google.cloud.asset.v1B\nAssetProtoP\x01Z:google.golang.org/genproto/googleapis/cloud/asset/v1;asset\xf8\x01\x01\xaa\x02\x15Google.Cloud.Asset.V1\xca\x02\x15Google\\Cloud\\Asset\\V1b\x06proto3',
     dependencies=[
+        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_api_dot_resource__pb2.DESCRIPTOR,
         google_dot_cloud_dot_orgpolicy_dot_v1_dot_orgpolicy__pb2.DESCRIPTOR,
         google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,
@@ -48,7 +49,6 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         google_dot_protobuf_dot_any__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
-        google_dot_api_dot_annotations__pb2.DESCRIPTOR,
     ],
 )
 
@@ -491,6 +491,24 @@ _RESOURCE = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
         ),
+        _descriptor.FieldDescriptor(
+            name="location",
+            full_name="google.cloud.asset.v1.Resource.location",
+            index=6,
+            number=8,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -501,7 +519,474 @@ _RESOURCE = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[],
     serialized_start=1235,
-    serialized_end=1395,
+    serialized_end=1413,
+)
+
+
+_RESOURCESEARCHRESULT_LABELSENTRY = _descriptor.Descriptor(
+    name="LabelsEntry",
+    full_name="google.cloud.asset.v1.ResourceSearchResult.LabelsEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.cloud.asset.v1.ResourceSearchResult.LabelsEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.cloud.asset.v1.ResourceSearchResult.LabelsEntry.value",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=b"8\001",
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1703,
+    serialized_end=1748,
+)
+
+_RESOURCESEARCHRESULT = _descriptor.Descriptor(
+    name="ResourceSearchResult",
+    full_name="google.cloud.asset.v1.ResourceSearchResult",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.asset.v1.ResourceSearchResult.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="asset_type",
+            full_name="google.cloud.asset.v1.ResourceSearchResult.asset_type",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="project",
+            full_name="google.cloud.asset.v1.ResourceSearchResult.project",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="display_name",
+            full_name="google.cloud.asset.v1.ResourceSearchResult.display_name",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="description",
+            full_name="google.cloud.asset.v1.ResourceSearchResult.description",
+            index=4,
+            number=5,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="location",
+            full_name="google.cloud.asset.v1.ResourceSearchResult.location",
+            index=5,
+            number=6,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="labels",
+            full_name="google.cloud.asset.v1.ResourceSearchResult.labels",
+            index=6,
+            number=7,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="network_tags",
+            full_name="google.cloud.asset.v1.ResourceSearchResult.network_tags",
+            index=7,
+            number=8,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="additional_attributes",
+            full_name="google.cloud.asset.v1.ResourceSearchResult.additional_attributes",
+            index=8,
+            number=9,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_RESOURCESEARCHRESULT_LABELSENTRY],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1416,
+    serialized_end=1748,
+)
+
+
+_IAMPOLICYSEARCHRESULT_EXPLANATION_PERMISSIONS = _descriptor.Descriptor(
+    name="Permissions",
+    full_name="google.cloud.asset.v1.IamPolicySearchResult.Explanation.Permissions",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="permissions",
+            full_name="google.cloud.asset.v1.IamPolicySearchResult.Explanation.Permissions.permissions",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2056,
+    serialized_end=2090,
+)
+
+_IAMPOLICYSEARCHRESULT_EXPLANATION_MATCHEDPERMISSIONSENTRY = _descriptor.Descriptor(
+    name="MatchedPermissionsEntry",
+    full_name="google.cloud.asset.v1.IamPolicySearchResult.Explanation.MatchedPermissionsEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.cloud.asset.v1.IamPolicySearchResult.Explanation.MatchedPermissionsEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.cloud.asset.v1.IamPolicySearchResult.Explanation.MatchedPermissionsEntry.value",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=b"8\001",
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=2092,
+    serialized_end=2219,
+)
+
+_IAMPOLICYSEARCHRESULT_EXPLANATION = _descriptor.Descriptor(
+    name="Explanation",
+    full_name="google.cloud.asset.v1.IamPolicySearchResult.Explanation",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="matched_permissions",
+            full_name="google.cloud.asset.v1.IamPolicySearchResult.Explanation.matched_permissions",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        )
+    ],
+    extensions=[],
+    nested_types=[
+        _IAMPOLICYSEARCHRESULT_EXPLANATION_PERMISSIONS,
+        _IAMPOLICYSEARCHRESULT_EXPLANATION_MATCHEDPERMISSIONSENTRY,
+    ],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1930,
+    serialized_end=2219,
+)
+
+_IAMPOLICYSEARCHRESULT = _descriptor.Descriptor(
+    name="IamPolicySearchResult",
+    full_name="google.cloud.asset.v1.IamPolicySearchResult",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="resource",
+            full_name="google.cloud.asset.v1.IamPolicySearchResult.resource",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="project",
+            full_name="google.cloud.asset.v1.IamPolicySearchResult.project",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="policy",
+            full_name="google.cloud.asset.v1.IamPolicySearchResult.policy",
+            index=2,
+            number=3,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+        _descriptor.FieldDescriptor(
+            name="explanation",
+            full_name="google.cloud.asset.v1.IamPolicySearchResult.explanation",
+            index=3,
+            number=4,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_IAMPOLICYSEARCHRESULT_EXPLANATION],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=1751,
+    serialized_end=2219,
 )
 
 _TEMPORALASSET.fields_by_name["window"].message_type = _TIMEWINDOW
@@ -557,10 +1042,40 @@ _ASSET.fields_by_name["service_perimeter"].containing_oneof = _ASSET.oneofs_by_n
 _RESOURCE.fields_by_name[
     "data"
 ].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
+_RESOURCESEARCHRESULT_LABELSENTRY.containing_type = _RESOURCESEARCHRESULT
+_RESOURCESEARCHRESULT.fields_by_name[
+    "labels"
+].message_type = _RESOURCESEARCHRESULT_LABELSENTRY
+_RESOURCESEARCHRESULT.fields_by_name[
+    "additional_attributes"
+].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
+_IAMPOLICYSEARCHRESULT_EXPLANATION_PERMISSIONS.containing_type = (
+    _IAMPOLICYSEARCHRESULT_EXPLANATION
+)
+_IAMPOLICYSEARCHRESULT_EXPLANATION_MATCHEDPERMISSIONSENTRY.fields_by_name[
+    "value"
+].message_type = _IAMPOLICYSEARCHRESULT_EXPLANATION_PERMISSIONS
+_IAMPOLICYSEARCHRESULT_EXPLANATION_MATCHEDPERMISSIONSENTRY.containing_type = (
+    _IAMPOLICYSEARCHRESULT_EXPLANATION
+)
+_IAMPOLICYSEARCHRESULT_EXPLANATION.fields_by_name[
+    "matched_permissions"
+].message_type = _IAMPOLICYSEARCHRESULT_EXPLANATION_MATCHEDPERMISSIONSENTRY
+_IAMPOLICYSEARCHRESULT_EXPLANATION.containing_type = _IAMPOLICYSEARCHRESULT
+_IAMPOLICYSEARCHRESULT.fields_by_name[
+    "policy"
+].message_type = (
+    google_dot_iam_dot_v1_dot_policy__pb2.google_dot_iam_dot_v1_dot_policy__pb2._POLICY
+)
+_IAMPOLICYSEARCHRESULT.fields_by_name[
+    "explanation"
+].message_type = _IAMPOLICYSEARCHRESULT_EXPLANATION
 DESCRIPTOR.message_types_by_name["TemporalAsset"] = _TEMPORALASSET
 DESCRIPTOR.message_types_by_name["TimeWindow"] = _TIMEWINDOW
 DESCRIPTOR.message_types_by_name["Asset"] = _ASSET
 DESCRIPTOR.message_types_by_name["Resource"] = _RESOURCE
+DESCRIPTOR.message_types_by_name["ResourceSearchResult"] = _RESOURCESEARCHRESULT
+DESCRIPTOR.message_types_by_name["IamPolicySearchResult"] = _IAMPOLICYSEARCHRESULT
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 TemporalAsset = _reflection.GeneratedProtocolMessageType(
@@ -569,11 +1084,9 @@ TemporalAsset = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _TEMPORALASSET,
         "__module__": "google.cloud.asset_v1.proto.assets_pb2",
-        "__doc__": """An asset in Google Cloud and its temporal metadata,
-  including the time window when it was observed and its status during
-  that window.
-  
-  
+        "__doc__": """An asset in Google Cloud and its temporal metadata, including the time
+  window when it was observed and its status during that window.
+
   Attributes:
       window:
           The time window when the asset data and state was observed.
@@ -593,10 +1106,7 @@ TimeWindow = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _TIMEWINDOW,
         "__module__": "google.cloud.asset_v1.proto.assets_pb2",
-        "__doc__": """A time window specified by its “start_time” and
-  “end_time”.
-  
-  
+        "__doc__": """A time window specified by its ``start_time`` and ``end_time``.
   Attributes:
       start_time:
           Start time of the time window (exclusive).
@@ -616,23 +1126,21 @@ Asset = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _ASSET,
         "__module__": "google.cloud.asset_v1.proto.assets_pb2",
         "__doc__": """An asset in Google Cloud. An asset can be any resource in the Google
-  Cloud `resource
-  hierarchy <https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>`__,
-  a resource outside the Google Cloud resource hierarchy (such as Google
-  Kubernetes Engine clusters and objects), or a Cloud IAM policy.
-  
-  
+
+  Cloud `resource hierarchy <https://cloud.google.com/resource-
+  manager/docs/cloud-platform-resource-hierarchy>`__, a resource outside
+  the Google Cloud resource hierarchy (such as Google Kubernetes Engine
+  clusters and objects), or a Cloud IAM policy.
+
   Attributes:
       name:
-          The full name of the asset. For example: “//compute.googleapis
-          .com/projects/my_project_123/zones/zone1/instances/instance1”
-          See `Resource names <https://cloud.google.com/apis/design/reso
-          urce_names#full_resource_name>`__ for more information.
+          The full name of the asset. For example: 
+          ``//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1``
+          See `Resource names <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__ for more information.
       asset_type:
           The type of the asset. For example:
-          “compute.googleapis.com/Disk”  See `Supported asset types
-          <https://cloud.google.com/asset-inventory/docs/supported-
-          asset-types>`__ for more information.
+          ``compute.googleapis.com/Disk``  See `Supported asset types
+          <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__ for more information.
       resource:
           A representation of the resource.
       iam_policy:
@@ -654,18 +1162,15 @@ Asset = _reflection.GeneratedProtocolMessageType(
           a given resource.
       access_context_policy:
           A representation of an `access policy
-          <https://cloud.google.com/access-context-
-          manager/docs/overview#access-policies>`__.
+          <https://cloud.google.com/access-context-manager/docs/overview#access-policies>`__.
       ancestors:
           The ancestry path of an asset in Google Cloud `resource
-          hierarchy <https://cloud.google.com/resource-
-          manager/docs/cloud-platform-resource-hierarchy>`__,
+          hierarchy <https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>`__,
           represented as a list of relative resource names. An ancestry
           path starts with the closest ancestor in the hierarchy and
           ends at root. If the asset is a project, folder, or
           organization, the ancestry path starts from the asset itself.
-          For example: ``["projects/123456789", "folders/5432",
-          "organizations/1234"]``
+          For example: ``["projects/123456789", "folders/5432", "organizations/1234"]``
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.Asset)
     },
@@ -679,28 +1184,26 @@ Resource = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _RESOURCE,
         "__module__": "google.cloud.asset_v1.proto.assets_pb2",
         "__doc__": """A representation of a Google Cloud resource.
-  
-  
   Attributes:
       version:
-          The API version. For example: “v1”
+          The API version. For example: ``v1``
       discovery_document_uri:
           The URL of the discovery document containing the resource’s
-          JSON schema. For example:
-          “https://www.googleapis.com/discovery/v1/apis/compute/v1/rest”
-          This value is unspecified for resources that do not have an
-          API based on a discovery document, such as Cloud Bigtable.
+          JSON schema. For example: ``https://www.googleapis.com/discove
+          ry/v1/apis/compute/v1/rest``  This value is unspecified for
+          resources that do not have an API based on a discovery
+          document, such as Cloud Bigtable.
       discovery_name:
           The JSON schema name listed in the discovery document. For
-          example: “Project”  This value is unspecified for resources
+          example: ``Project``  This value is unspecified for resources
           that do not have an API based on a discovery document, such as
           Cloud Bigtable.
       resource_url:
           The REST URL for accessing the resource. An HTTP ``GET``
           request using this URL returns the resource itself. For
           example:
-          “https://cloudresourcemanager.googleapis.com/v1/projects/my-
-          project-123”  This value is unspecified for resources without
+          ``https://cloudresourcemanager.googleapis.com/v1/projects/my-
+          project-123``  This value is unspecified for resources without
           a REST API.
       parent:
           The full name of the immediate parent of this resource. See
@@ -708,19 +1211,212 @@ Resource = _reflection.GeneratedProtocolMessageType(
           _names#full_resource_name>`__ for more information.  For
           Google Cloud assets, this value is the parent resource defined
           in the `Cloud IAM policy hierarchy <https://cloud.google.com/i
-          am/docs/overview#policy_hierarchy>`__. For example: “//cloudre
-          sourcemanager.googleapis.com/projects/my_project_123”  For
+          am/docs/overview#policy_hierarchy>`__. For example: ``//cloudr
+          esourcemanager.googleapis.com/projects/my_project_123``  For
           third-party assets, this field may be set differently.
       data:
           The content of the resource, in which some sensitive fields
           are removed and may not be present.
+      location:
+          The location of the resource in Google Cloud, such as its zone
+          and region. For more information, see
+          https://cloud.google.com/about/locations/.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.Resource)
     },
 )
 _sym_db.RegisterMessage(Resource)
 
+ResourceSearchResult = _reflection.GeneratedProtocolMessageType(
+    "ResourceSearchResult",
+    (_message.Message,),
+    {
+        "LabelsEntry": _reflection.GeneratedProtocolMessageType(
+            "LabelsEntry",
+            (_message.Message,),
+            {
+                "DESCRIPTOR": _RESOURCESEARCHRESULT_LABELSENTRY,
+                "__module__": "google.cloud.asset_v1.proto.assets_pb2"
+                # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.ResourceSearchResult.LabelsEntry)
+            },
+        ),
+        "DESCRIPTOR": _RESOURCESEARCHRESULT,
+        "__module__": "google.cloud.asset_v1.proto.assets_pb2",
+        "__doc__": """A result of Resource Search, containing information of a cloud
+  resoure.
+  Attributes:
+      name:
+          The full resource name of this resource. Example: ``//compute.
+          googleapis.com/projects/my_project_123/zones/zone1/instances/i
+          nstance1``. See `Cloud Asset Inventory Resource Name Format
+          <https://cloud.google.com/asset-inventory/docs/resource-name-
+          format>`__ for more information.  To search against the
+          ``name``:  -  use a field query. Example: ``name :
+          "instance1"`` -  use a free text query. Example:
+          ``"instance1"``
+      asset_type:
+          The type of this resource. Example:
+          ``compute.googleapis.com/Disk``.  To search against the
+          ``asset_type``:  -  specify the ``asset_type`` field in your
+          search request.
+      project:
+          The project that this resource belongs to, in the form of
+          projects/{PROJECT_NUMBER}.  To search against the ``project``:
+          -  specify the ``scope`` field as this project in your search
+          request.
+      display_name:
+          The display name of this resource.  To search against the
+          ``display_name``:  -  use a field query. Example:
+          ``displayName : "My Instance"`` -  use a free text query.
+          Example: ``"My Instance"``
+      description:
+          One or more paragraphs of text description of this resource.
+          Maximum length could be up to 1M bytes.  To search against the
+          ``description``:  -  use a field query. Example: ``description
+          : "*important instance*"`` -  use a free text query. Example:
+          ``"*important instance*"``
+      location:
+          Location can be ``global``, regional like ``us-east1``, or
+          zonal like ``us-west1-b``.  To search against the
+          ``location``:  -  use a field query. Example: ``location :
+          "us-west*"`` -  use a free text query. Example: ``"us-west*"``
+      labels:
+          Labels associated with this resource. See `Labelling and
+          grouping GCP resources
+          <https://cloud.google.com/blog/products/gcp/labelling-and-
+          grouping-your-google-cloud-platform-resources>`__ for more
+          information.  To search against the ``labels``:  -  use a
+          field query, as following:     -  query on any label’s key or
+          value. Example: ``labels : "prod"``    -  query by a given
+          label. Example: ``labels.env : "prod"``    -  query by a given
+          label’sexistence. Example: ``labels.env : *``  -  use a free
+          text query. Example: ``"prod"``
+      network_tags:
+          Network tags associated with this resource. Like labels,
+          network tags are a type of annotations used to group GCP
+          resources. See `Labelling GCP resources
+          <https://cloud.google.com/blog/products/gcp/labelling-and-
+          grouping-your-google-cloud-platform-resources>`__ for more
+          information.  To search against the ``network_tags``:  -  use
+          a field query. Example: ``networkTags : "internal"`` -  use a
+          free text query. Example: ``"internal"``
+      additional_attributes:
+          The additional attributes of this resource. The attributes may
+          vary from one resource type to another. Examples:
+          ``projectId`` for Project, ``dnsName`` for DNS ManagedZone.
+          To search against the ``additional_attributes``:  -  use a
+          free text query to match the attributes values. Example: to
+          search ``additional_attributes = { dnsName: "foobar" }``, you
+          can    issue a query ``"foobar"``.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.ResourceSearchResult)
+    },
+)
+_sym_db.RegisterMessage(ResourceSearchResult)
+_sym_db.RegisterMessage(ResourceSearchResult.LabelsEntry)
+
+IamPolicySearchResult = _reflection.GeneratedProtocolMessageType(
+    "IamPolicySearchResult",
+    (_message.Message,),
+    {
+        "Explanation": _reflection.GeneratedProtocolMessageType(
+            "Explanation",
+            (_message.Message,),
+            {
+                "Permissions": _reflection.GeneratedProtocolMessageType(
+                    "Permissions",
+                    (_message.Message,),
+                    {
+                        "DESCRIPTOR": _IAMPOLICYSEARCHRESULT_EXPLANATION_PERMISSIONS,
+                        "__module__": "google.cloud.asset_v1.proto.assets_pb2",
+                        "__doc__": """IAM permissions
+      Attributes:
+          permissions:
+              A list of permissions. A sample permission string:
+              ``compute.disk.get``.
+      """,
+                        # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.IamPolicySearchResult.Explanation.Permissions)
+                    },
+                ),
+                "MatchedPermissionsEntry": _reflection.GeneratedProtocolMessageType(
+                    "MatchedPermissionsEntry",
+                    (_message.Message,),
+                    {
+                        "DESCRIPTOR": _IAMPOLICYSEARCHRESULT_EXPLANATION_MATCHEDPERMISSIONSENTRY,
+                        "__module__": "google.cloud.asset_v1.proto.assets_pb2"
+                        # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.IamPolicySearchResult.Explanation.MatchedPermissionsEntry)
+                    },
+                ),
+                "DESCRIPTOR": _IAMPOLICYSEARCHRESULT_EXPLANATION,
+                "__module__": "google.cloud.asset_v1.proto.assets_pb2",
+                "__doc__": """Explanation about the IAM policy search result.
+    Attributes:
+        matched_permissions:
+            The map from roles to their included permissions that match
+            the permission query (i.e., a query containing
+            ``policy.role.permissions:``). Example: if query
+            ``policy.role.permissions : "compute.disk.get"`` matches a
+            policy binding that contains owner role, the
+            matched_permissions will be ``{"roles/owner":
+            ["compute.disk.get"]}``. The roles can also be found in the
+            returned ``policy`` bindings. Note that the map is populated
+            only for requests with permission queries.
+    """,
+                # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.IamPolicySearchResult.Explanation)
+            },
+        ),
+        "DESCRIPTOR": _IAMPOLICYSEARCHRESULT,
+        "__module__": "google.cloud.asset_v1.proto.assets_pb2",
+        "__doc__": """A result of IAM Policy search, containing information of an IAM
+  policy.
+  Attributes:
+      resource:
+          The full resource name of the resource associated with this
+          IAM policy. Example: ``//compute.googleapis.com/projects/my_pr
+          oject_123/zones/zone1/instances/instance1``. See `Cloud Asset
+          Inventory Resource Name Format
+          <https://cloud.google.com/asset-inventory/docs/resource-name-
+          format>`__ for more information.  To search against the
+          ``resource``:  -  use a field query. Example: ``resource :
+          "organizations/123"``
+      project:
+          The project that the associated GCP resource belongs to, in
+          the form of projects/{PROJECT_NUMBER}. If an IAM policy is set
+          on a resource (like VM instance, Cloud Storage bucket), the
+          project field will indicate the project that contains the
+          resource. If an IAM policy is set on a folder or orgnization,
+          the project field will be empty.  To search against the
+          ``project``:  -  specify the ``scope`` field as this project
+          in your search request.
+      policy:
+          The IAM policy directly set on the given resource. Note that
+          the original IAM policy can contain multiple bindings. This
+          only contains the bindings that match the given query. For
+          queries that don’t contain a constrain on policies (e.g., an
+          empty query), this contains all the bindings.  To search
+          against the ``policy`` bindings:  -  use a field query, as
+          following:     -  query by the policy contained members.
+          Example:       ``policy : "amy@gmail.com"``    -  query by the
+          policy contained roles. Example:       ``policy :
+          "roles/compute.admin"``    -  query by the policy contained
+          roles’ implied permissions. Example:
+          ``policy.role.permissions : "compute.instances.create"``
+      explanation:
+          Explanation about the IAM policy search result. It contains
+          additional information to explain why the search result
+          matches the query.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.IamPolicySearchResult)
+    },
+)
+_sym_db.RegisterMessage(IamPolicySearchResult)
+_sym_db.RegisterMessage(IamPolicySearchResult.Explanation)
+_sym_db.RegisterMessage(IamPolicySearchResult.Explanation.Permissions)
+_sym_db.RegisterMessage(IamPolicySearchResult.Explanation.MatchedPermissionsEntry)
+
 
 DESCRIPTOR._options = None
 _ASSET._options = None
+_RESOURCESEARCHRESULT_LABELSENTRY._options = None
+_IAMPOLICYSEARCHRESULT_EXPLANATION_MATCHEDPERMISSIONSENTRY._options = None
 # @@protoc_insertion_point(module_scope)

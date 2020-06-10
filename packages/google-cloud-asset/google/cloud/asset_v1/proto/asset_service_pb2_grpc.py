@@ -55,6 +55,16 @@ class AssetServiceStub(object):
             request_serializer=google_dot_cloud_dot_asset__v1_dot_proto_dot_asset__service__pb2.DeleteFeedRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
+        self.SearchAllResources = channel.unary_unary(
+            "/google.cloud.asset.v1.AssetService/SearchAllResources",
+            request_serializer=google_dot_cloud_dot_asset__v1_dot_proto_dot_asset__service__pb2.SearchAllResourcesRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_asset__v1_dot_proto_dot_asset__service__pb2.SearchAllResourcesResponse.FromString,
+        )
+        self.SearchAllIamPolicies = channel.unary_unary(
+            "/google.cloud.asset.v1.AssetService/SearchAllIamPolicies",
+            request_serializer=google_dot_cloud_dot_asset__v1_dot_proto_dot_asset__service__pb2.SearchAllIamPoliciesRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_asset__v1_dot_proto_dot_asset__service__pb2.SearchAllIamPoliciesResponse.FromString,
+        )
 
 
 class AssetServiceServicer(object):
@@ -64,8 +74,9 @@ class AssetServiceServicer(object):
     def ExportAssets(self, request, context):
         """Exports assets with time and resource types to a given Cloud Storage
     location. The output format is newline-delimited JSON.
-    This API implements the [google.longrunning.Operation][google.longrunning.Operation] API allowing you
-    to keep track of the export.
+    This API implements the
+    [google.longrunning.Operation][google.longrunning.Operation] API allowing
+    you to keep track of the export.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -120,6 +131,26 @@ class AssetServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def SearchAllResources(self, request, context):
+        """Searches all the resources within the given accessible scope (e.g., a
+    project, a folder or an organization). Callers should have
+    cloud.assets.SearchAllResources permission upon the requested scope,
+    otherwise the request will be rejected.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def SearchAllIamPolicies(self, request, context):
+        """Searches all the IAM policies within the given accessible scope (e.g., a
+    project, a folder or an organization). Callers should have
+    cloud.assets.SearchAllIamPolicies permission upon the requested scope,
+    otherwise the request will be rejected.
+    """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_AssetServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -157,6 +188,16 @@ def add_AssetServiceServicer_to_server(servicer, server):
             servicer.DeleteFeed,
             request_deserializer=google_dot_cloud_dot_asset__v1_dot_proto_dot_asset__service__pb2.DeleteFeedRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        ),
+        "SearchAllResources": grpc.unary_unary_rpc_method_handler(
+            servicer.SearchAllResources,
+            request_deserializer=google_dot_cloud_dot_asset__v1_dot_proto_dot_asset__service__pb2.SearchAllResourcesRequest.FromString,
+            response_serializer=google_dot_cloud_dot_asset__v1_dot_proto_dot_asset__service__pb2.SearchAllResourcesResponse.SerializeToString,
+        ),
+        "SearchAllIamPolicies": grpc.unary_unary_rpc_method_handler(
+            servicer.SearchAllIamPolicies,
+            request_deserializer=google_dot_cloud_dot_asset__v1_dot_proto_dot_asset__service__pb2.SearchAllIamPoliciesRequest.FromString,
+            response_serializer=google_dot_cloud_dot_asset__v1_dot_proto_dot_asset__service__pb2.SearchAllIamPoliciesResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

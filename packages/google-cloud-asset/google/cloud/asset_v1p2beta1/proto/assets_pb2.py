@@ -437,8 +437,7 @@ TemporalAsset = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.asset_v1p2beta1.proto.assets_pb2",
         "__doc__": """Temporal asset. In addition to the asset, the temporal asset includes
   the status of the asset and valid from and to time of it.
-  
-  
+
   Attributes:
       window:
           The time window when the asset data and state was observed.
@@ -459,8 +458,6 @@ TimeWindow = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _TIMEWINDOW,
         "__module__": "google.cloud.asset_v1p2beta1.proto.assets_pb2",
         "__doc__": """A time window of (start_time, end_time].
-  
-  
   Attributes:
       start_time:
           Start time of the time window (exclusive).
@@ -479,10 +476,8 @@ Asset = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _ASSET,
         "__module__": "google.cloud.asset_v1p2beta1.proto.assets_pb2",
-        "__doc__": """Cloud asset. This includes all Google Cloud Platform
-  resources, Cloud IAM policies, and other non-GCP assets.
-  
-  
+        "__doc__": """Cloud asset. This includes all Google Cloud Platform resources, Cloud
+  IAM policies, and other non-GCP assets.
   Attributes:
       name:
 
@@ -518,8 +513,6 @@ Resource = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _RESOURCE,
         "__module__": "google.cloud.asset_v1p2beta1.proto.assets_pb2",
         "__doc__": """Representation of a cloud resource.
-  
-  
   Attributes:
       version:
           The API version. Example: “v1”.

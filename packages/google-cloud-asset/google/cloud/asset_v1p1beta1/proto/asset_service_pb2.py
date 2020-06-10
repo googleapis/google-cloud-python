@@ -401,8 +401,6 @@ SearchAllResourcesRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _SEARCHALLRESOURCESREQUEST,
         "__module__": "google.cloud.asset_v1p1beta1.proto.asset_service_pb2",
         "__doc__": """Search all resources request.
-  
-  
   Attributes:
       scope:
           Required. The relative name of an asset. The search is limited
@@ -447,8 +445,6 @@ SearchAllResourcesResponse = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _SEARCHALLRESOURCESRESPONSE,
         "__module__": "google.cloud.asset_v1p1beta1.proto.asset_service_pb2",
         "__doc__": """Search all resources response.
-  
-  
   Attributes:
       results:
           A list of resource that match the search query.
@@ -470,8 +466,6 @@ SearchAllIamPoliciesRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _SEARCHALLIAMPOLICIESREQUEST,
         "__module__": "google.cloud.asset_v1p1beta1.proto.asset_service_pb2",
         "__doc__": """Search all IAM policies request.
-  
-  
   Attributes:
       scope:
           Required. The relative name of an asset. The search is limited
@@ -509,8 +503,6 @@ SearchAllIamPoliciesResponse = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _SEARCHALLIAMPOLICIESRESPONSE,
         "__module__": "google.cloud.asset_v1p1beta1.proto.asset_service_pb2",
         "__doc__": """Search all IAM policies response.
-  
-  
   Attributes:
       results:
           A list of IamPolicy that match the search query. Related

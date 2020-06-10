@@ -16,6 +16,7 @@
 
 """Accesses the google.cloud.asset.v1 AssetService API."""
 
+import functools
 import pkg_resources
 import warnings
 
@@ -28,6 +29,7 @@ import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
 import google.api_core.operation
 import google.api_core.operations_v1
+import google.api_core.page_iterator
 import google.api_core.path_template
 import grpc
 
@@ -830,3 +832,305 @@ class AssetServiceClient(object):
         return self._inner_api_calls["update_feed"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
+
+    def search_all_resources(
+        self,
+        scope,
+        query=None,
+        asset_types=None,
+        page_size=None,
+        order_by=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Searches all the resources within the given accessible scope (e.g., a
+        project, a folder or an organization). Callers should have
+        cloud.assets.SearchAllResources permission upon the requested scope,
+        otherwise the request will be rejected.
+
+        Example:
+            >>> from google.cloud import asset_v1
+            >>>
+            >>> client = asset_v1.AssetServiceClient()
+            >>>
+            >>> # TODO: Initialize `scope`:
+            >>> scope = ''
+            >>>
+            >>> # Iterate over all results
+            >>> for element in client.search_all_resources(scope):
+            ...     # process element
+            ...     pass
+            >>>
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
+            >>> for page in client.search_all_resources(scope).pages:
+            ...     for element in page:
+            ...         # process element
+            ...         pass
+
+        Args:
+            scope (str): Required. A scope can be a project, a folder or an organization. The
+                search is limited to the resources within the ``scope``.
+
+                The allowed values are:
+
+                -  projects/{PROJECT_ID}
+                -  projects/{PROJECT_NUMBER}
+                -  folders/{FOLDER_NUMBER}
+                -  organizations/{ORGANIZATION_NUMBER}
+            query (str): Optional. The query statement. An empty query can be specified to
+                search all the resources of certain ``asset_types`` within the given
+                ``scope``.
+
+                Examples:
+
+                -  ``name : "Important"`` to find Cloud resources whose name contains
+                   "Important" as a word.
+                -  ``displayName : "Impor*"`` to find Cloud resources whose display name
+                   contains "Impor" as a word prefix.
+                -  ``description : "*por*"`` to find Cloud resources whose description
+                   contains "por" as a substring.
+                -  ``location : "us-west*"`` to find Cloud resources whose location is
+                   prefixed with "us-west".
+                -  ``labels : "prod"`` to find Cloud resources whose labels contain
+                   "prod" as a key or value.
+                -  ``labels.env : "prod"`` to find Cloud resources which have a label
+                   "env" and its value is "prod".
+                -  ``labels.env : *`` to find Cloud resources which have a label "env".
+                -  ``"Important"`` to find Cloud resources which contain "Important" as
+                   a word in any of the searchable fields.
+                -  ``"Impor*"`` to find Cloud resources which contain "Impor" as a word
+                   prefix in any of the searchable fields.
+                -  ``"*por*"`` to find Cloud resources which contain "por" as a
+                   substring in any of the searchable fields.
+                -  ``("Important" AND location : ("us-west1" OR "global"))`` to find
+                   Cloud resources which contain "Important" as a word in any of the
+                   searchable fields and are also located in the "us-west1" region or
+                   the "global" location.
+
+                See `how to construct a
+                query <https://cloud.google.com/asset-inventory/docs/searching-resources#how_to_construct_a_query>`__
+                for more details.
+            asset_types (list[str]): Optional. A list of asset types that this request searches for. If
+                empty, it will search all the `searchable asset
+                types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__.
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
+            order_by (str): Optional. A comma separated list of fields specifying the sorting
+                order of the results. The default order is ascending. Add " DESC" after
+                the field name to indicate descending order. Redundant space characters
+                are ignored. Example: "location DESC, name". See `supported resource
+                metadata
+                fields <https://cloud.google.com/asset-inventory/docs/searching-resources#query_on_resource_metadata_fields>`__
+                for more details.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.asset_v1.types.ResourceSearchResult` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "search_all_resources" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "search_all_resources"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.search_all_resources,
+                default_retry=self._method_configs["SearchAllResources"].retry,
+                default_timeout=self._method_configs["SearchAllResources"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = asset_service_pb2.SearchAllResourcesRequest(
+            scope=scope,
+            query=query,
+            asset_types=asset_types,
+            page_size=page_size,
+            order_by=order_by,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("scope", scope)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._inner_api_calls["search_all_resources"],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            ),
+            request=request,
+            items_field="results",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
+        )
+        return iterator
+
+    def search_all_iam_policies(
+        self,
+        scope,
+        query=None,
+        page_size=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Searches all the IAM policies within the given accessible scope (e.g., a
+        project, a folder or an organization). Callers should have
+        cloud.assets.SearchAllIamPolicies permission upon the requested scope,
+        otherwise the request will be rejected.
+
+        Example:
+            >>> from google.cloud import asset_v1
+            >>>
+            >>> client = asset_v1.AssetServiceClient()
+            >>>
+            >>> # TODO: Initialize `scope`:
+            >>> scope = ''
+            >>>
+            >>> # Iterate over all results
+            >>> for element in client.search_all_iam_policies(scope):
+            ...     # process element
+            ...     pass
+            >>>
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
+            >>> for page in client.search_all_iam_policies(scope).pages:
+            ...     for element in page:
+            ...         # process element
+            ...         pass
+
+        Args:
+            scope (str): Required. A scope can be a project, a folder or an organization. The
+                search is limited to the IAM policies within the ``scope``.
+
+                The allowed values are:
+
+                -  projects/{PROJECT_ID}
+                -  projects/{PROJECT_NUMBER}
+                -  folders/{FOLDER_NUMBER}
+                -  organizations/{ORGANIZATION_NUMBER}
+            query (str): Optional. The query statement. An empty query can be specified to
+                search all the IAM policies within the given ``scope``.
+
+                Examples:
+
+                -  ``policy : "amy@gmail.com"`` to find Cloud IAM policy bindings that
+                   specify user "amy@gmail.com".
+                -  ``policy : "roles/compute.admin"`` to find Cloud IAM policy bindings
+                   that specify the Compute Admin role.
+                -  ``policy.role.permissions : "storage.buckets.update"`` to find Cloud
+                   IAM policy bindings that specify a role containing
+                   "storage.buckets.update" permission.
+                -  ``resource : "organizations/123"`` to find Cloud IAM policy bindings
+                   that are set on "organizations/123".
+                -  ``(resource : ("organizations/123" OR "folders/1234") AND policy : "amy")``
+                   to find Cloud IAM policy bindings that are set on "organizations/123"
+                   or "folders/1234", and also specify user "amy".
+
+                See `how to construct a
+                query <https://cloud.google.com/asset-inventory/docs/searching-iam-policies#how_to_construct_a_query>`__
+                for more details.
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.asset_v1.types.IamPolicySearchResult` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "search_all_iam_policies" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "search_all_iam_policies"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.search_all_iam_policies,
+                default_retry=self._method_configs["SearchAllIamPolicies"].retry,
+                default_timeout=self._method_configs["SearchAllIamPolicies"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = asset_service_pb2.SearchAllIamPoliciesRequest(
+            scope=scope, query=query, page_size=page_size
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("scope", scope)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._inner_api_calls["search_all_iam_policies"],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            ),
+            request=request,
+            items_field="results",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
+        )
+        return iterator
