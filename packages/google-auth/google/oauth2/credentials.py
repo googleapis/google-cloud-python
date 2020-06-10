@@ -48,7 +48,13 @@ _GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
 
 
 class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
-    """Credentials using OAuth 2.0 access and refresh tokens."""
+    """Credentials using OAuth 2.0 access and refresh tokens.
+
+    The credentials are considered immutable. If you want to modify the
+    quota project, use :meth:`with_quota_project` or ::
+
+        credentials = credentials.with_quota_project('myproject-123)
+    """
 
     def __init__(
         self,
@@ -159,6 +165,27 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
         """False: OAuth 2.0 credentials have their scopes set when
         the initial token is requested and can not be changed."""
         return False
+
+    def with_quota_project(self, quota_project_id):
+        """Returns a copy of these credentials with a modified quota project
+
+        Args:
+            quota_project_id (str): The project to use for quota and
+            billing purposes
+
+        Returns:
+            google.oauth2.credentials.Credentials: A new credentials instance.
+        """
+        return self.__class__(
+            self.token,
+            refresh_token=self.refresh_token,
+            id_token=self.id_token,
+            token_uri=self.token_uri,
+            client_id=self.client_id,
+            client_secret=self.client_secret,
+            scopes=self.scopes,
+            quota_project_id=quota_project_id,
+        )
 
     @_helpers.copy_docstring(credentials.Credentials)
     def refresh(self, request):

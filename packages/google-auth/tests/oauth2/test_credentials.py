@@ -323,6 +323,22 @@ class TestCredentials(object):
         creds.apply(headers)
         assert "x-goog-user-project" not in headers
 
+    def test_with_quota_project(self):
+        creds = credentials.Credentials(
+            token="token",
+            refresh_token=self.REFRESH_TOKEN,
+            token_uri=self.TOKEN_URI,
+            client_id=self.CLIENT_ID,
+            client_secret=self.CLIENT_SECRET,
+            quota_project_id="quota-project-123",
+        )
+
+        new_creds = creds.with_quota_project("new-project-456")
+        assert new_creds.quota_project_id == "new-project-456"
+        headers = {}
+        creds.apply(headers)
+        assert "x-goog-user-project" in headers
+
     def test_from_authorized_user_info(self):
         info = AUTH_USER_INFO.copy()
 

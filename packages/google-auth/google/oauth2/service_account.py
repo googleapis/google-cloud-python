@@ -112,6 +112,10 @@ class Credentials(credentials.Signing, credentials.Scoped, credentials.Credentia
 
         scoped_credentials = credentials.with_scopes(['email'])
         delegated_credentials = credentials.with_subject(subject)
+
+    To add a quota project, use :meth:`with_quota_project`::
+
+        credentials = credentials.with_quota_project('myproject-123')
     """
 
     def __init__(
@@ -122,6 +126,7 @@ class Credentials(credentials.Signing, credentials.Scoped, credentials.Credentia
         scopes=None,
         subject=None,
         project_id=None,
+        quota_project_id=None,
         additional_claims=None,
     ):
         """
@@ -135,6 +140,8 @@ class Credentials(credentials.Signing, credentials.Scoped, credentials.Credentia
                 user to for which to request delegated access.
             project_id  (str): Project ID associated with the service account
                 credential.
+            quota_project_id (Optional[str]): The project ID used for quota and
+                billing.
             additional_claims (Mapping[str, str]): Any additional claims for
                 the JWT assertion used in the authorization grant.
 
@@ -150,6 +157,7 @@ class Credentials(credentials.Signing, credentials.Scoped, credentials.Credentia
         self._service_account_email = service_account_email
         self._subject = subject
         self._project_id = project_id
+        self._quota_project_id = quota_project_id
         self._token_uri = token_uri
 
         if additional_claims is not None:
@@ -230,6 +238,11 @@ class Credentials(credentials.Signing, credentials.Scoped, credentials.Credentia
         return self._project_id
 
     @property
+    def quota_project_id(self):
+        """Project ID to use for quota and billing purposes."""
+        return self._quota_project_id
+
+    @property
     def requires_scopes(self):
         """Checks if the credentials requires scopes.
 
@@ -247,6 +260,7 @@ class Credentials(credentials.Signing, credentials.Scoped, credentials.Credentia
             token_uri=self._token_uri,
             subject=self._subject,
             project_id=self._project_id,
+            quota_project_id=self._quota_project_id,
             additional_claims=self._additional_claims.copy(),
         )
 
@@ -267,6 +281,7 @@ class Credentials(credentials.Signing, credentials.Scoped, credentials.Credentia
             token_uri=self._token_uri,
             subject=subject,
             project_id=self._project_id,
+            quota_project_id=self._quota_project_id,
             additional_claims=self._additional_claims.copy(),
         )
 
@@ -292,7 +307,30 @@ class Credentials(credentials.Signing, credentials.Scoped, credentials.Credentia
             token_uri=self._token_uri,
             subject=self._subject,
             project_id=self._project_id,
+            quota_project_id=self._quota_project_id,
             additional_claims=new_additional_claims,
+        )
+
+    def with_quota_project(self, quota_project_id):
+        """Returns a copy of these credentials with a modified quota project.
+
+        Args:
+            quota_project_id (str): The project to use for quota and
+            billing purposes
+
+        Returns:
+            google.auth.service_account.Credentials: A new credentials
+                instance.
+        """
+        return self.__class__(
+            self._signer,
+            service_account_email=self._service_account_email,
+            scopes=self._scopes,
+            token_uri=self._token_uri,
+            subject=self._subject,
+            project_id=self._project_id,
+            quota_project_id=quota_project_id,
+            additional_claims=self._additional_claims.copy(),
         )
 
     def _make_authorization_grant_assertion(self):
@@ -334,6 +372,12 @@ class Credentials(credentials.Signing, credentials.Scoped, credentials.Credentia
         access_token, expiry, _ = _client.jwt_grant(request, self._token_uri, assertion)
         self.token = access_token
         self.expiry = expiry
+
+    @_helpers.copy_docstring(credentials.Credentials)
+    def apply(self, headers, token=None):
+        super(Credentials, self).apply(headers, token=token)
+        if self.quota_project_id is not None:
+            headers["x-goog-user-project"] = self.quota_project_id
 
     @_helpers.copy_docstring(credentials.Signing)
     def sign_bytes(self, message):
