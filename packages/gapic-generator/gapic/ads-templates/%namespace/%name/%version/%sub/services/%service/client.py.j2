@@ -186,7 +186,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 )
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS value. Accepted values: Never, Auto, Always"
+                    "Unsupported GOOGLE_API_USE_MTLS value. Accepted values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
