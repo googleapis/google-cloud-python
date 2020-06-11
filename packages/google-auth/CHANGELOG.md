@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.17.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.17.0...v1.17.1) (2020-06-11)
+
+
+### Bug Fixes
+
+* narrow acceptable RSA versions to maintain Python 2 compatability ([#528](https://www.github.com/googleapis/google-auth-library-python/issues/528)) ([9434868](https://www.github.com/googleapis/google-auth-library-python/commit/9434868a6789464549af1d4562f62d8a899b6809))
+
 ## [1.17.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.16.1...v1.17.0) (2020-06-10)
 
 
