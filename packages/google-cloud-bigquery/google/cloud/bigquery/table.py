@@ -1515,8 +1515,9 @@ class RowIterator(HTTPIterator):
                 This method requires the ``pyarrow`` and
                 ``google-cloud-bigquery-storage`` libraries.
 
-                Reading from a specific partition or snapshot is not
-                currently supported by this method.
+                This method only  exposes a subset of the capabilities of the
+                BigQuery Storage API.  For full access to all features
+                (projections, filters, snapshots) use the Storage API directly.
             create_bqstorage_client (bool):
                 Optional. If ``True`` (default), create a BigQuery Storage API
                 client using the default API settings. The BigQuery Storage API
@@ -1598,8 +1599,9 @@ class RowIterator(HTTPIterator):
                 This method requires the ``pyarrow`` and
                 ``google-cloud-bigquery-storage`` libraries.
 
-                Reading from a specific partition or snapshot is not
-                currently supported by this method.
+                This method only  exposes a subset of the capabilities of the
+                BigQuery Storage API.  For full access to all features
+                (projections, filters, snapshots) use the Storage API directly.
 
                 **Caution**: There is a known issue reading small anonymous
                 query result tables with the BQ Storage API. When a problem
@@ -1666,8 +1668,9 @@ class RowIterator(HTTPIterator):
                 This method requires the ``pyarrow`` and
                 ``google-cloud-bigquery-storage`` libraries.
 
-                Reading from a specific partition or snapshot is not
-                currently supported by this method.
+                This method only  exposes a subset of the capabilities of the
+                BigQuery Storage API.  For full access to all features
+                (projections, filters, snapshots) use the Storage API directly.
 
                 **Caution**: There is a known issue reading small anonymous
                 query result tables with the BQ Storage API. When a problem
