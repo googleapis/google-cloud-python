@@ -15,9 +15,9 @@ patch compliance, and configuration management on VM instances.
    :target: https://pypi.org/project/google-cloud-os-config/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-os-config.svg
    :target: https://pypi.org/project/google-cloud-os-config/
-.. _Cloud OS Config API: https://cloud.google.com/compute/docs/osconfig/
-.. _Client Library Documentation: https://googleapis.dev/python/memcache/latest
-.. _Product Documentation:  https://cloud.google.com/compute/docs/osconfig/
+.. _Cloud OS Config API: https://cloud.google.com/compute/docs/manage-os
+.. _Client Library Documentation: https://googleapis.dev/python/osconfig/latest
+.. _Product Documentation:  https://cloud.google.com/compute/docs/manage-os
 
 Quick Start
 -----------
