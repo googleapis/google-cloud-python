@@ -15,7 +15,6 @@
 # limitations under the License.
 #
 
-
 from .services.lookup_service import LookupServiceClient
 from .services.registration_service import RegistrationServiceClient
 from .types.endpoint import Endpoint

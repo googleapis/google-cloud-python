@@ -15,6 +15,7 @@
 # limitations under the License.
 #
 
+import os
 from unittest import mock
 
 import grpc
@@ -25,6 +26,7 @@ from google import auth
 from google.api_core import client_options
 from google.api_core import grpc_helpers
 from google.auth import credentials
+from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.servicedirectory_v1beta1.services.registration_service import (
     RegistrationServiceClient,
 )
@@ -100,6 +102,14 @@ def test_registration_service_client_from_service_account_file():
         assert client._transport._host == "servicedirectory.googleapis.com:443"
 
 
+def test_registration_service_client_get_transport_class():
+    transport = RegistrationServiceClient.get_transport_class()
+    assert transport == transports.RegistrationServiceGrpcTransport
+
+    transport = RegistrationServiceClient.get_transport_class("grpc")
+    assert transport == transports.RegistrationServiceGrpcTransport
+
+
 def test_registration_service_client_client_options():
     # Check that if channel is provided we won't create a new one.
     with mock.patch(
@@ -111,19 +121,14 @@ def test_registration_service_client_client_options():
         client = RegistrationServiceClient(transport=transport)
         gtc.assert_not_called()
 
-    # Check mTLS is not triggered with empty client options.
-    options = client_options.ClientOptions()
+    # Check that if channel is provided via str we will create a new one.
     with mock.patch(
         "google.cloud.servicedirectory_v1beta1.services.registration_service.RegistrationServiceClient.get_transport_class"
     ) as gtc:
-        transport = gtc.return_value = mock.MagicMock()
-        client = RegistrationServiceClient(client_options=options)
-        transport.assert_called_once_with(
-            credentials=None, host=client.DEFAULT_ENDPOINT
-        )
+        client = RegistrationServiceClient(transport="grpc")
+        gtc.assert_called()
 
-    # Check mTLS is not triggered if api_endpoint is provided but
-    # client_cert_source is None.
+    # Check the case api_endpoint is provided.
     options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
     with mock.patch(
         "google.cloud.servicedirectory_v1beta1.services.registration_service.transports.RegistrationServiceGrpcTransport.__init__"
@@ -131,13 +136,45 @@ def test_registration_service_client_client_options():
         grpc_transport.return_value = None
         client = RegistrationServiceClient(client_options=options)
         grpc_transport.assert_called_once_with(
-            api_mtls_endpoint=None,
+            api_mtls_endpoint="squid.clam.whelk",
             client_cert_source=None,
             credentials=None,
             host="squid.clam.whelk",
         )
 
-    # Check mTLS is triggered if client_cert_source is provided.
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # "never".
+    os.environ["GOOGLE_API_USE_MTLS"] = "never"
+    with mock.patch(
+        "google.cloud.servicedirectory_v1beta1.services.registration_service.transports.RegistrationServiceGrpcTransport.__init__"
+    ) as grpc_transport:
+        grpc_transport.return_value = None
+        client = RegistrationServiceClient()
+        grpc_transport.assert_called_once_with(
+            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
+            client_cert_source=None,
+            credentials=None,
+            host=client.DEFAULT_ENDPOINT,
+        )
+
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # "always".
+    os.environ["GOOGLE_API_USE_MTLS"] = "always"
+    with mock.patch(
+        "google.cloud.servicedirectory_v1beta1.services.registration_service.transports.RegistrationServiceGrpcTransport.__init__"
+    ) as grpc_transport:
+        grpc_transport.return_value = None
+        client = RegistrationServiceClient()
+        grpc_transport.assert_called_once_with(
+            api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
+            client_cert_source=None,
+            credentials=None,
+            host=client.DEFAULT_MTLS_ENDPOINT,
+        )
+
+    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
+    # "auto", and client_cert_source is provided.
+    os.environ["GOOGLE_API_USE_MTLS"] = "auto"
     options = client_options.ClientOptions(
         client_cert_source=client_cert_source_callback
     )
@@ -150,24 +187,54 @@ def test_registration_service_client_client_options():
             api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
             client_cert_source=client_cert_source_callback,
             credentials=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client.DEFAULT_MTLS_ENDPOINT,
         )
 
-    # Check mTLS is triggered if api_endpoint and client_cert_source are provided.
-    options = client_options.ClientOptions(
-        api_endpoint="squid.clam.whelk", client_cert_source=client_cert_source_callback
-    )
+    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
+    # "auto", and default_client_cert_source is provided.
+    os.environ["GOOGLE_API_USE_MTLS"] = "auto"
     with mock.patch(
         "google.cloud.servicedirectory_v1beta1.services.registration_service.transports.RegistrationServiceGrpcTransport.__init__"
     ) as grpc_transport:
-        grpc_transport.return_value = None
-        client = RegistrationServiceClient(client_options=options)
-        grpc_transport.assert_called_once_with(
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=client_cert_source_callback,
-            credentials=None,
-            host="squid.clam.whelk",
-        )
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=True,
+        ):
+            grpc_transport.return_value = None
+            client = RegistrationServiceClient()
+            grpc_transport.assert_called_once_with(
+                api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
+                client_cert_source=None,
+                credentials=None,
+                host=client.DEFAULT_MTLS_ENDPOINT,
+            )
+
+    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
+    # "auto", but client_cert_source and default_client_cert_source are None.
+    os.environ["GOOGLE_API_USE_MTLS"] = "auto"
+    with mock.patch(
+        "google.cloud.servicedirectory_v1beta1.services.registration_service.transports.RegistrationServiceGrpcTransport.__init__"
+    ) as grpc_transport:
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=False,
+        ):
+            grpc_transport.return_value = None
+            client = RegistrationServiceClient()
+            grpc_transport.assert_called_once_with(
+                api_mtls_endpoint=client.DEFAULT_ENDPOINT,
+                client_cert_source=None,
+                credentials=None,
+                host=client.DEFAULT_ENDPOINT,
+            )
+
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS has
+    # unsupported value.
+    os.environ["GOOGLE_API_USE_MTLS"] = "Unsupported"
+    with pytest.raises(MutualTLSChannelError):
+        client = RegistrationServiceClient()
+
+    del os.environ["GOOGLE_API_USE_MTLS"]
 
 
 def test_registration_service_client_client_options_from_dict():
@@ -179,7 +246,7 @@ def test_registration_service_client_client_options_from_dict():
             client_options={"api_endpoint": "squid.clam.whelk"}
         )
         grpc_transport.assert_called_once_with(
-            api_mtls_endpoint=None,
+            api_mtls_endpoint="squid.clam.whelk",
             client_cert_source=None,
             credentials=None,
             host="squid.clam.whelk",
@@ -215,6 +282,32 @@ def test_create_namespace(transport: str = "grpc"):
     assert response.name == "name_value"
 
 
+def test_create_namespace_field_headers():
+    client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = registration_service.CreateNamespaceRequest()
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client._transport.create_namespace), "__call__"
+    ) as call:
+        call.return_value = gcs_namespace.Namespace()
+
+        client.create_namespace(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value") in kw["metadata"]
+
+
 def test_create_namespace_flattened():
     client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
 
@@ -227,7 +320,7 @@ def test_create_namespace_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.create_namespace(
+        client.create_namespace(
             parent="parent_value",
             namespace=gcs_namespace.Namespace(name="name_value"),
             namespace_id="namespace_id_value",
@@ -290,11 +383,13 @@ def test_list_namespaces_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = registration_service.ListNamespacesRequest(parent="parent/value")
+    request = registration_service.ListNamespacesRequest()
+    request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.list_namespaces), "__call__") as call:
         call.return_value = registration_service.ListNamespacesResponse()
+
         client.list_namespaces(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -317,7 +412,7 @@ def test_list_namespaces_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.list_namespaces(parent="parent_value")
+        client.list_namespaces(parent="parent_value")
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -431,11 +526,13 @@ def test_get_namespace_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = registration_service.GetNamespaceRequest(name="name/value")
+    request = registration_service.GetNamespaceRequest()
+    request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.get_namespace), "__call__") as call:
         call.return_value = namespace.Namespace()
+
         client.get_namespace(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -458,7 +555,7 @@ def test_get_namespace_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.get_namespace(name="name_value")
+        client.get_namespace(name="name_value")
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -507,6 +604,34 @@ def test_update_namespace(transport: str = "grpc"):
     assert response.name == "name_value"
 
 
+def test_update_namespace_field_headers():
+    client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = registration_service.UpdateNamespaceRequest()
+    request.namespace.name = "namespace.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client._transport.update_namespace), "__call__"
+    ) as call:
+        call.return_value = gcs_namespace.Namespace()
+
+        client.update_namespace(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "namespace.name=namespace.name/value") in kw[
+        "metadata"
+    ]
+
+
 def test_update_namespace_flattened():
     client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
 
@@ -519,7 +644,7 @@ def test_update_namespace_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.update_namespace(
+        client.update_namespace(
             namespace=gcs_namespace.Namespace(name="name_value"),
             update_mask=field_mask.FieldMask(paths=["paths_value"]),
         )
@@ -573,6 +698,32 @@ def test_delete_namespace(transport: str = "grpc"):
     assert response is None
 
 
+def test_delete_namespace_field_headers():
+    client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = registration_service.DeleteNamespaceRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client._transport.delete_namespace), "__call__"
+    ) as call:
+        call.return_value = None
+
+        client.delete_namespace(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value") in kw["metadata"]
+
+
 def test_delete_namespace_flattened():
     client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
 
@@ -585,7 +736,7 @@ def test_delete_namespace_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.delete_namespace(name="name_value")
+        client.delete_namespace(name="name_value")
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -632,6 +783,30 @@ def test_create_service(transport: str = "grpc"):
     assert response.name == "name_value"
 
 
+def test_create_service_field_headers():
+    client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = registration_service.CreateServiceRequest()
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client._transport.create_service), "__call__") as call:
+        call.return_value = gcs_service.Service()
+
+        client.create_service(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value") in kw["metadata"]
+
+
 def test_create_service_flattened():
     client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
 
@@ -642,7 +817,7 @@ def test_create_service_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.create_service(
+        client.create_service(
             parent="parent_value",
             service=gcs_service.Service(name="name_value"),
             service_id="service_id_value",
@@ -705,11 +880,13 @@ def test_list_services_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = registration_service.ListServicesRequest(parent="parent/value")
+    request = registration_service.ListServicesRequest()
+    request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.list_services), "__call__") as call:
         call.return_value = registration_service.ListServicesResponse()
+
         client.list_services(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -732,7 +909,7 @@ def test_list_services_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.list_services(parent="parent_value")
+        client.list_services(parent="parent_value")
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -838,11 +1015,13 @@ def test_get_service_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = registration_service.GetServiceRequest(name="name/value")
+    request = registration_service.GetServiceRequest()
+    request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.get_service), "__call__") as call:
         call.return_value = service.Service()
+
         client.get_service(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -865,7 +1044,7 @@ def test_get_service_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.get_service(name="name_value")
+        client.get_service(name="name_value")
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -910,6 +1089,32 @@ def test_update_service(transport: str = "grpc"):
     assert response.name == "name_value"
 
 
+def test_update_service_field_headers():
+    client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = registration_service.UpdateServiceRequest()
+    request.service.name = "service.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client._transport.update_service), "__call__") as call:
+        call.return_value = gcs_service.Service()
+
+        client.update_service(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "service.name=service.name/value") in kw[
+        "metadata"
+    ]
+
+
 def test_update_service_flattened():
     client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
 
@@ -920,7 +1125,7 @@ def test_update_service_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.update_service(
+        client.update_service(
             service=gcs_service.Service(name="name_value"),
             update_mask=field_mask.FieldMask(paths=["paths_value"]),
         )
@@ -972,6 +1177,30 @@ def test_delete_service(transport: str = "grpc"):
     assert response is None
 
 
+def test_delete_service_field_headers():
+    client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = registration_service.DeleteServiceRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client._transport.delete_service), "__call__") as call:
+        call.return_value = None
+
+        client.delete_service(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value") in kw["metadata"]
+
+
 def test_delete_service_flattened():
     client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
 
@@ -982,7 +1211,7 @@ def test_delete_service_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.delete_service(name="name_value")
+        client.delete_service(name="name_value")
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1033,6 +1262,30 @@ def test_create_endpoint(transport: str = "grpc"):
     assert response.port == 453
 
 
+def test_create_endpoint_field_headers():
+    client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = registration_service.CreateEndpointRequest()
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client._transport.create_endpoint), "__call__") as call:
+        call.return_value = gcs_endpoint.Endpoint()
+
+        client.create_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value") in kw["metadata"]
+
+
 def test_create_endpoint_flattened():
     client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
 
@@ -1043,7 +1296,7 @@ def test_create_endpoint_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.create_endpoint(
+        client.create_endpoint(
             parent="parent_value",
             endpoint=gcs_endpoint.Endpoint(name="name_value"),
             endpoint_id="endpoint_id_value",
@@ -1106,11 +1359,13 @@ def test_list_endpoints_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = registration_service.ListEndpointsRequest(parent="parent/value")
+    request = registration_service.ListEndpointsRequest()
+    request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.list_endpoints), "__call__") as call:
         call.return_value = registration_service.ListEndpointsResponse()
+
         client.list_endpoints(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1133,7 +1388,7 @@ def test_list_endpoints_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.list_endpoints(parent="parent_value")
+        client.list_endpoints(parent="parent_value")
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1251,11 +1506,13 @@ def test_get_endpoint_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = registration_service.GetEndpointRequest(name="name/value")
+    request = registration_service.GetEndpointRequest()
+    request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.get_endpoint), "__call__") as call:
         call.return_value = endpoint.Endpoint()
+
         client.get_endpoint(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1278,7 +1535,7 @@ def test_get_endpoint_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.get_endpoint(name="name_value")
+        client.get_endpoint(name="name_value")
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1329,6 +1586,32 @@ def test_update_endpoint(transport: str = "grpc"):
     assert response.port == 453
 
 
+def test_update_endpoint_field_headers():
+    client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = registration_service.UpdateEndpointRequest()
+    request.endpoint.name = "endpoint.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client._transport.update_endpoint), "__call__") as call:
+        call.return_value = gcs_endpoint.Endpoint()
+
+        client.update_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "endpoint.name=endpoint.name/value") in kw[
+        "metadata"
+    ]
+
+
 def test_update_endpoint_flattened():
     client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
 
@@ -1339,7 +1622,7 @@ def test_update_endpoint_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.update_endpoint(
+        client.update_endpoint(
             endpoint=gcs_endpoint.Endpoint(name="name_value"),
             update_mask=field_mask.FieldMask(paths=["paths_value"]),
         )
@@ -1391,6 +1674,30 @@ def test_delete_endpoint(transport: str = "grpc"):
     assert response is None
 
 
+def test_delete_endpoint_field_headers():
+    client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = registration_service.DeleteEndpointRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client._transport.delete_endpoint), "__call__") as call:
+        call.return_value = None
+
+        client.delete_endpoint(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value") in kw["metadata"]
+
+
 def test_delete_endpoint_flattened():
     client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
 
@@ -1401,7 +1708,7 @@ def test_delete_endpoint_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.delete_endpoint(name="name_value")
+        client.delete_endpoint(name="name_value")
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1449,6 +1756,30 @@ def test_get_iam_policy(transport: str = "grpc"):
     assert response.etag == b"etag_blob"
 
 
+def test_get_iam_policy_field_headers():
+    client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy.GetIamPolicyRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client._transport.get_iam_policy), "__call__") as call:
+        call.return_value = policy.Policy()
+
+        client.get_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "resource=resource/value") in kw["metadata"]
+
+
 def test_get_iam_policy_from_dict():
     client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1493,6 +1824,30 @@ def test_set_iam_policy(transport: str = "grpc"):
     assert response.etag == b"etag_blob"
 
 
+def test_set_iam_policy_field_headers():
+    client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy.SetIamPolicyRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client._transport.set_iam_policy), "__call__") as call:
+        call.return_value = policy.Policy()
+
+        client.set_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "resource=resource/value") in kw["metadata"]
+
+
 def test_set_iam_policy_from_dict():
     client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1535,6 +1890,32 @@ def test_test_iam_permissions(transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
+
+
+def test_test_iam_permissions_field_headers():
+    client = RegistrationServiceClient(credentials=credentials.AnonymousCredentials())
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy.TestIamPermissionsRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client._transport.test_iam_permissions), "__call__"
+    ) as call:
+        call.return_value = iam_policy.TestIamPermissionsResponse()
+
+        client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "resource=resource/value") in kw["metadata"]
 
 
 def test_test_iam_permissions_from_dict():
@@ -1621,13 +2002,23 @@ def test_registration_service_auth_adc():
         )
 
 
+def test_registration_service_transport_auth_adc():
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(auth, "default") as adc:
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transports.RegistrationServiceGrpcTransport(host="squid.clam.whelk")
+        adc.assert_called_once_with(
+            scopes=("https://www.googleapis.com/auth/cloud-platform",)
+        )
+
+
 def test_registration_service_host_no_port():
     client = RegistrationServiceClient(
         credentials=credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="servicedirectory.googleapis.com"
         ),
-        transport="grpc",
     )
     assert client._transport._host == "servicedirectory.googleapis.com:443"
 
@@ -1638,7 +2029,6 @@ def test_registration_service_host_with_port():
         client_options=client_options.ClientOptions(
             api_endpoint="servicedirectory.googleapis.com:8000"
         ),
-        transport="grpc",
     )
     assert client._transport._host == "servicedirectory.googleapis.com:8000"
 

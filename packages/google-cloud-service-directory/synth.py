@@ -31,10 +31,6 @@ library = gapic.py_library(
 
 s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 
-# correct license headers
-python.fix_pb2_headers()
-python.fix_pb2_grpc_headers()
-
 # rename library to google-cloud-service-directory
 s.replace(["google/**/*.py", "tests/**/*.py"], "google-cloud-servicedirectory", "google-cloud-service-directory")
 
@@ -44,18 +40,17 @@ s.replace("google/**/*.py", '''["'](projects/\*/.*)["']\.''', "``\g<1>``" )
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=100)
+templated_files = common.py_library(
+    cov_level=100,
+    samples=False,
+    unit_test_python_versions=["3.6", "3.7", "3.8"],
+    system_test_python_versions=["3.7"],
+)
+
 s.move(templated_files, excludes=[".coveragerc"])  # the microgenerator has a good coveragerc file
-s.replace(".gitignore", "bigquery/docs/generated", "htmlcov")  # temporary hack to ignore htmlcov
 
-# Remove 2.7 and 3.5 tests from noxfile.py
-s.replace("noxfile.py", '''\["2\.7", ''', '[')
-s.replace("noxfile.py", '''"3.5", ''', '')
-
-# Expand flake errors permitted to accomodate the Microgenerator
-# TODO: remove extra error codes once issues below are resolved
-# F401: https://github.com/googleapis/gapic-generator-python/issues/324
-# F841: local variable 'client'/'response' is assigned to but never use
-s.replace(".flake8", "ignore = .*", "ignore = E203, E266, E501, W503, F401, F841")
+# Extra lint ignores for microgenerator tests
+# TODO: Remove when https://github.com/googleapis/gapic-generator-python/issues/425 is closed
+s.replace(".flake8", "(ignore = .*)", "\g<1>, F401, F841")
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

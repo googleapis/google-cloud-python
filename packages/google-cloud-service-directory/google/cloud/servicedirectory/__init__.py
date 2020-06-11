@@ -15,7 +15,6 @@
 # limitations under the License.
 #
 
-
 from google.cloud.servicedirectory_v1beta1.services.lookup_service.client import (
     LookupServiceClient,
 )

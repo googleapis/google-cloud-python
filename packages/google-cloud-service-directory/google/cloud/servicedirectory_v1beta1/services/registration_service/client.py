@@ -16,6 +16,7 @@
 #
 
 from collections import OrderedDict
+import os
 import re
 from typing import Callable, Dict, Sequence, Tuple, Type, Union
 import pkg_resources
@@ -25,6 +26,8 @@ from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
+from google.auth.transport import mtls  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.servicedirectory_v1beta1.services.registration_service import pagers
@@ -151,22 +154,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
     from_service_account_json = from_service_account_file
 
     @staticmethod
-    def service_path(project: str, location: str, namespace: str, service: str) -> str:
-        """Return a fully-qualified service string."""
-        return "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
-            project=project, location=location, namespace=namespace, service=service
-        )
-
-    @staticmethod
-    def parse_service_path(path: str) -> Dict[str, str]:
-        """Parse a service path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/namespaces/(?P<namespace>.+?)/services/(?P<service>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
     def endpoint_path(
         project: str, location: str, namespace: str, service: str, endpoint: str
     ) -> str:
@@ -204,6 +191,22 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         )
         return m.groupdict() if m else {}
 
+    @staticmethod
+    def service_path(project: str, location: str, namespace: str, service: str) -> str:
+        """Return a fully-qualified service string."""
+        return "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
+            project=project, location=location, namespace=namespace, service=service
+        )
+
+    @staticmethod
+    def parse_service_path(path: str) -> Dict[str, str]:
+        """Parse a service path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/namespaces/(?P<namespace>.+?)/services/(?P<service>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
     def __init__(
         self,
         *,
@@ -222,21 +225,49 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             transport (Union[str, ~.RegistrationServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (ClientOptions): Custom options for the client.
+            client_options (ClientOptions): Custom options for the client. It
+                won't take effect unless ``transport`` is None.
                 (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client.
-                (2) If ``transport`` argument is None, ``client_options`` can be
-                used to create a mutual TLS transport. If ``client_cert_source``
-                is provided, mutual TLS transport will be created with the given
-                ``api_endpoint`` or the default mTLS endpoint, and the client
-                SSL credentials obtained from ``client_cert_source``.
+                default endpoint provided by the client. GOOGLE_API_USE_MTLS
+                environment variable can also be used to override the endpoint:
+                "always" (always use the default mTLS endpoint), "never" (always
+                use the default regular endpoint, this is the default value for
+                the environment variable) and "auto" (auto switch to the default
+                mTLS endpoint if client SSL credentials is present). However,
+                the ``api_endpoint`` property takes precedence if provided.
+                (2) The ``client_cert_source`` property is used to provide client
+                SSL credentials for mutual TLS transport. If not provided, the
+                default SSL credentials will be used if present.
 
         Raises:
-            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
         if isinstance(client_options, dict):
             client_options = ClientOptions.from_dict(client_options)
+        if client_options is None:
+            client_options = ClientOptions.ClientOptions()
+
+        if transport is None and client_options.api_endpoint is None:
+            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS", "never")
+            if use_mtls_env == "never":
+                client_options.api_endpoint = self.DEFAULT_ENDPOINT
+            elif use_mtls_env == "always":
+                client_options.api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+            elif use_mtls_env == "auto":
+                has_client_cert_source = (
+                    client_options.client_cert_source is not None
+                    or mtls.has_default_client_cert_source()
+                )
+                client_options.api_endpoint = (
+                    self.DEFAULT_MTLS_ENDPOINT
+                    if has_client_cert_source
+                    else self.DEFAULT_ENDPOINT
+                )
+            else:
+                raise MutualTLSChannelError(
+                    "Unsupported GOOGLE_API_USE_MTLS value. Accepted values: Never, Auto, Always"
+                )
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
@@ -249,38 +280,16 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                     "provide its credentials directly."
                 )
             self._transport = transport
-        elif client_options is None or (
-            client_options.api_endpoint is None
-            and client_options.client_cert_source is None
-        ):
-            # Don't trigger mTLS if we get an empty ClientOptions.
+        elif isinstance(transport, str):
             Transport = type(self).get_transport_class(transport)
             self._transport = Transport(
                 credentials=credentials, host=self.DEFAULT_ENDPOINT
             )
         else:
-            # We have a non-empty ClientOptions. If client_cert_source is
-            # provided, trigger mTLS with user provided endpoint or the default
-            # mTLS endpoint.
-            if client_options.client_cert_source:
-                api_mtls_endpoint = (
-                    client_options.api_endpoint
-                    if client_options.api_endpoint
-                    else self.DEFAULT_MTLS_ENDPOINT
-                )
-            else:
-                api_mtls_endpoint = None
-
-            api_endpoint = (
-                client_options.api_endpoint
-                if client_options.api_endpoint
-                else self.DEFAULT_ENDPOINT
-            )
-
             self._transport = RegistrationServiceGrpcTransport(
                 credentials=credentials,
-                host=api_endpoint,
-                api_mtls_endpoint=api_mtls_endpoint,
+                host=client_options.api_endpoint,
+                api_mtls_endpoint=client_options.api_endpoint,
                 client_cert_source=client_options.client_cert_source,
             )
 
@@ -369,6 +378,12 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             self._transport.create_namespace,
             default_timeout=None,
             client_info=_client_info,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
@@ -602,6 +617,14 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             client_info=_client_info,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("namespace.name", request.namespace.name),)
+            ),
+        )
+
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -660,6 +683,12 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             self._transport.delete_namespace,
             default_timeout=None,
             client_info=_client_info,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
@@ -748,6 +777,12 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             self._transport.create_service,
             default_timeout=None,
             client_info=_client_info,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
@@ -980,6 +1015,14 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             client_info=_client_info,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("service.name", request.service.name),)
+            ),
+        )
+
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -1038,6 +1081,12 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             self._transport.delete_service,
             default_timeout=None,
             client_info=_client_info,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
@@ -1125,6 +1174,12 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             self._transport.create_endpoint,
             default_timeout=None,
             client_info=_client_info,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
@@ -1354,6 +1409,14 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             client_info=_client_info,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("endpoint.name", request.endpoint.name),)
+            ),
+        )
+
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -1411,6 +1474,12 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             self._transport.delete_endpoint,
             default_timeout=None,
             client_info=_client_info,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
@@ -1520,6 +1589,12 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             self._transport.get_iam_policy,
             default_timeout=None,
             client_info=_client_info,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
         )
 
         # Send the request.
@@ -1634,6 +1709,12 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             client_info=_client_info,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
@@ -1679,6 +1760,12 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             self._transport.test_iam_permissions,
             default_timeout=None,
             client_info=_client_info,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
         )
 
         # Send the request.
