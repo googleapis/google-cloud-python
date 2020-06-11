@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [1.29.0](https://www.github.com/googleapis/python-storage/compare/v1.28.1...v1.29.0) (2020-06-09)
+
+
+### Features
+
+* add *generation*match args into Blob.compose() ([#122](https://www.github.com/googleapis/python-storage/issues/122)) ([dc01c59](https://www.github.com/googleapis/python-storage/commit/dc01c59e036164326aeeea164098cf2e6e0dc12c))
+* add Bucket.reload() and Bucket.update() wrappers to restrict generation match args ([#153](https://www.github.com/googleapis/python-storage/issues/153)) ([76dd9ac](https://www.github.com/googleapis/python-storage/commit/76dd9ac7e8b7765defc5b521cfe059e08e33c65c)), closes [#127](https://www.github.com/googleapis/python-storage/issues/127)
+* add helper for bucket bound hostname URLs ([#137](https://www.github.com/googleapis/python-storage/issues/137)) ([b26f9fa](https://www.github.com/googleapis/python-storage/commit/b26f9fa8a767b7d5affea8d2c4b87163ce979fd2)), closes [#121](https://www.github.com/googleapis/python-storage/issues/121)
+* add if*generation*match support for Bucket.rename_blob() ([#141](https://www.github.com/googleapis/python-storage/issues/141)) ([f52efc8](https://www.github.com/googleapis/python-storage/commit/f52efc807355c82aa3ea621cdadcc316175f0abf))
+* add if*generation*Match support, pt1 ([#123](https://www.github.com/googleapis/python-storage/issues/123)) ([0944442](https://www.github.com/googleapis/python-storage/commit/094444280dd7b7735e24071e5381508cbd392260))
+* add offset and includeTrailingPrefix options to list_blobs ([#125](https://www.github.com/googleapis/python-storage/issues/125)) ([d84c0dd](https://www.github.com/googleapis/python-storage/commit/d84c0ddfd00fa731acfe9899c668041456b08ab7))
+* Create CODEOWNERS ([#135](https://www.github.com/googleapis/python-storage/issues/135)) ([32a8d55](https://www.github.com/googleapis/python-storage/commit/32a8d55b6ec56a9f7c0a3502fbe23c1ba1cc8ad2))
+
+
+### Bug Fixes
+
+* **storage:** add documentaion of list_blobs with user project ([#147](https://www.github.com/googleapis/python-storage/issues/147)) ([792b21f](https://www.github.com/googleapis/python-storage/commit/792b21fd2263b518d56f79cab6a4a1bb06c6e4e7))
+* **storage:** add projection parameter to blob.reload method ([#146](https://www.github.com/googleapis/python-storage/issues/146)) ([ddad20b](https://www.github.com/googleapis/python-storage/commit/ddad20b3c3d2e6bf482e34dad85fa4b0ff90e1b1))
+* **storage:** add unused variables to method generation match ([#152](https://www.github.com/googleapis/python-storage/issues/152)) ([f6574bb](https://www.github.com/googleapis/python-storage/commit/f6574bb84c60c30989d05dba97b423579360cdb2))
+* **storage:** change the method names in snippets file ([#161](https://www.github.com/googleapis/python-storage/issues/161)) ([e516ed9](https://www.github.com/googleapis/python-storage/commit/e516ed9be518e30df4e201d3242f979c0b081086))
+* **storage:** fix upload object with bucket cmek enabled ([#158](https://www.github.com/googleapis/python-storage/issues/158)) ([5f27ffa](https://www.github.com/googleapis/python-storage/commit/5f27ffa3b1b55681453b594a0ef9e2811fc5f0c8))
+* set default POST policy scheme to "http" ([#172](https://www.github.com/googleapis/python-storage/issues/172)) ([90c020d](https://www.github.com/googleapis/python-storage/commit/90c020d69a69ebc396416e4086a2e0838932130c))
+
 ### [1.28.1](https://www.github.com/googleapis/python-storage/compare/v1.28.0...v1.28.1) (2020-04-28)
 
 
