@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [1.17.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.16.1...v1.17.0) (2020-06-10)
+
+
+### Features
+
+* add quota_project_id to service accounts; add with_quota_project methods ([#519](https://www.github.com/googleapis/google-auth-library-python/issues/519)) ([b12488c](https://www.github.com/googleapis/google-auth-library-python/commit/b12488cf552888299425c8009ea075511627cf08))
+
 ### [1.16.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.16.0...v1.16.1) (2020-06-04)
 
 
