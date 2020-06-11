@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-service-directory/compare/v0.2.0...v0.3.0) (2020-06-11)
+
+
+### Features
+
+* add mTLS support, fix missing routing header issue  ([#15](https://www.github.com/googleapis/python-service-directory/issues/15)) ([b983735](https://www.github.com/googleapis/python-service-directory/commit/b98373544181ecc55104230fc1e53b206c2e23ac))
+
 ## [0.2.0](https://www.github.com/googleapis/python-service-directory/compare/v0.1.1...v0.2.0) (2020-05-19)
 
 
