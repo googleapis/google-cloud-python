@@ -300,8 +300,9 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
                                    generated JSON.
 
         Returns:
-            str: A JSON representation of this instance, suitable to pass to
-                 from_json().
+            str: A JSON representation of this instance. When converted into
+            a dictionary, it can be passed to from_authorized_user_info()
+            to create a new credential instance.
         """
         prep = {
             "token": self.token,
