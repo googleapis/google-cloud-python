@@ -37,7 +37,6 @@ dependencies = [
 ]
 extras = {}
 
-version = "0.1.0"
 
 # Setup boilerplate below this line.
 
