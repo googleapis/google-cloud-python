@@ -57,6 +57,7 @@ setuptools.setup(
     extras_require=extras_require,
     license="Apache-2.0",
     packages=find_packages(),
+    package_data={"": ["*.proto"]},
     python_requires=">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*",
     namespace_packages=["google", "google.logging"],
     url="https://github.com/googleapis/python-api-common-protos",
