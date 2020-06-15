@@ -1146,6 +1146,82 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]["query_params"], {"userProject": USER_PROJECT})
         self.assertEqual(kw[0]["timeout"], 42)
 
+    def test_delete_blobs_w_generation_match(self):
+        NAME = "name"
+        BLOB_NAME = "blob-name"
+        BLOB_NAME2 = "blob-name2"
+        GENERATION_NUMBER = 6
+        GENERATION_NUMBER2 = 9
+
+        connection = _Connection({}, {})
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=NAME)
+        bucket.delete_blobs(
+            [BLOB_NAME, BLOB_NAME2],
+            timeout=42,
+            if_generation_match=[GENERATION_NUMBER, GENERATION_NUMBER2],
+        )
+        kw = connection._requested
+        self.assertEqual(len(kw), 2)
+
+        self.assertEqual(kw[0]["method"], "DELETE")
+        self.assertEqual(kw[0]["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
+        self.assertEqual(kw[0]["timeout"], 42)
+        self.assertEqual(
+            kw[0]["query_params"], {"ifGenerationMatch": GENERATION_NUMBER}
+        )
+        self.assertEqual(kw[1]["method"], "DELETE")
+        self.assertEqual(kw[1]["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME2))
+        self.assertEqual(kw[1]["timeout"], 42)
+        self.assertEqual(
+            kw[1]["query_params"], {"ifGenerationMatch": GENERATION_NUMBER2}
+        )
+
+    def test_delete_blobs_w_generation_match_wrong_len(self):
+        NAME = "name"
+        BLOB_NAME = "blob-name"
+        BLOB_NAME2 = "blob-name2"
+        GENERATION_NUMBER = 6
+
+        connection = _Connection()
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=NAME)
+        with self.assertRaises(ValueError):
+            bucket.delete_blobs(
+                [BLOB_NAME, BLOB_NAME2],
+                timeout=42,
+                if_generation_not_match=[GENERATION_NUMBER],
+            )
+
+    def test_delete_blobs_w_generation_match_none(self):
+        NAME = "name"
+        BLOB_NAME = "blob-name"
+        BLOB_NAME2 = "blob-name2"
+        GENERATION_NUMBER = 6
+        GENERATION_NUMBER2 = None
+
+        connection = _Connection({}, {})
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=NAME)
+        bucket.delete_blobs(
+            [BLOB_NAME, BLOB_NAME2],
+            timeout=42,
+            if_generation_match=[GENERATION_NUMBER, GENERATION_NUMBER2],
+        )
+        kw = connection._requested
+        self.assertEqual(len(kw), 2)
+
+        self.assertEqual(kw[0]["method"], "DELETE")
+        self.assertEqual(kw[0]["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
+        self.assertEqual(kw[0]["timeout"], 42)
+        self.assertEqual(
+            kw[0]["query_params"], {"ifGenerationMatch": GENERATION_NUMBER}
+        )
+        self.assertEqual(kw[1]["method"], "DELETE")
+        self.assertEqual(kw[1]["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME2))
+        self.assertEqual(kw[1]["timeout"], 42)
+        self.assertEqual(kw[1]["query_params"], {})
+
     def test_delete_blobs_miss_no_on_error(self):
         from google.cloud.exceptions import NotFound
 
