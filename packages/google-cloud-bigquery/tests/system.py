@@ -1693,50 +1693,6 @@ class TestBigQuery(unittest.TestCase):
     @unittest.skipIf(
         bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
     )
-    def test_dbapi_fetch_w_bqstorage_client_small_result_set(self):
-        bqstorage_client = bigquery_storage_v1.BigQueryReadClient(
-            credentials=Config.CLIENT._credentials
-        )
-        cursor = dbapi.connect(Config.CLIENT, bqstorage_client).cursor()
-
-        # Reading small result sets causes an issue with BQ storage client,
-        # and the DB API should transparently fall back to the default client.
-        cursor.execute(
-            """
-            SELECT id, `by`, time_ts
-            FROM `bigquery-public-data.hacker_news.comments`
-            ORDER BY `id` ASC
-            LIMIT 10
-        """
-        )
-
-        result_rows = [cursor.fetchone(), cursor.fetchone(), cursor.fetchone()]
-
-        field_name = operator.itemgetter(0)
-        fetched_data = [sorted(row.items(), key=field_name) for row in result_rows]
-
-        expected_data = [
-            [
-                ("by", "sama"),
-                ("id", 15),
-                ("time_ts", datetime.datetime(2006, 10, 9, 19, 51, 1, tzinfo=UTC)),
-            ],
-            [
-                ("by", "pg"),
-                ("id", 17),
-                ("time_ts", datetime.datetime(2006, 10, 9, 19, 52, 45, tzinfo=UTC)),
-            ],
-            [
-                ("by", "pg"),
-                ("id", 22),
-                ("time_ts", datetime.datetime(2006, 10, 10, 2, 18, 22, tzinfo=UTC)),
-            ],
-        ]
-        self.assertEqual(fetched_data, expected_data)
-
-    @unittest.skipIf(
-        bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
-    )
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_dbapi_fetch_w_bqstorage_client_large_result_set(self):
         bqstorage_client = bigquery_storage_v1.BigQueryReadClient(
@@ -1744,10 +1700,6 @@ class TestBigQuery(unittest.TestCase):
         )
         cursor = dbapi.connect(Config.CLIENT, bqstorage_client).cursor()
 
-        # Pick a large enough LIMIT value to assure that the fallback to the
-        # default client is not needed due to the result set being too small
-        # (a known issue that causes problems when reading such result sets with
-        # BQ storage client).
         cursor.execute(
             """
             SELECT id, `by`, time_ts
@@ -1794,10 +1746,6 @@ class TestBigQuery(unittest.TestCase):
         )
         cursor = dbapi.connect(Config.CLIENT, bqstorage_client).cursor()
 
-        # Pick a large enouhg LIMIT value to assure that the fallback to the
-        # default client is not needed due to the result set being too small
-        # (a known issue that causes problems when reding such result sets with
-        # BQ storage client).
         cursor.execute(
             """
             SELECT id, `by`, time_ts
@@ -1845,10 +1793,6 @@ class TestBigQuery(unittest.TestCase):
         connection = dbapi.connect()
         cursor = connection.cursor()
 
-        # Pick a large enough LIMIT value to assure that the fallback to the
-        # default client is not needed due to the result set being too small
-        # (a known issue that causes problems when reding such result sets with
-        # BQ storage client).
         cursor.execute(
             """
             SELECT id, `by`, time_ts
@@ -2272,9 +2216,6 @@ class TestBigQuery(unittest.TestCase):
         bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
     )
     def test_query_results_to_dataframe_w_bqstorage(self):
-        dest_dataset = self.temp_dataset(_make_dataset_id("bqstorage_to_dataframe_"))
-        dest_ref = dest_dataset.table("query_results")
-
         query = """
             SELECT id, author, time_ts, dead
             FROM `bigquery-public-data.hacker_news.comments`
@@ -2285,50 +2226,29 @@ class TestBigQuery(unittest.TestCase):
             credentials=Config.CLIENT._credentials
         )
 
-        job_configs = (
-            # There is a known issue reading small anonymous query result
-            # tables with the BQ Storage API. Writing to a destination
-            # table works around this issue.
-            bigquery.QueryJobConfig(
-                destination=dest_ref, write_disposition="WRITE_TRUNCATE"
-            ),
-            # Check that the client is able to work around the issue with
-            # reading small anonymous query result tables by falling back to
-            # the tabledata.list API.
-            None,
-        )
+        df = Config.CLIENT.query(query).result().to_dataframe(bqstorage_client)
 
-        for job_config in job_configs:
-            df = (
-                Config.CLIENT.query(query, job_config=job_config)
-                .result()
-                .to_dataframe(bqstorage_client)
-            )
-
-            self.assertIsInstance(df, pandas.DataFrame)
-            self.assertEqual(len(df), 10)  # verify the number of rows
-            column_names = ["id", "author", "time_ts", "dead"]
-            self.assertEqual(list(df), column_names)
-            exp_datatypes = {
-                "id": int,
-                "author": six.text_type,
-                "time_ts": pandas.Timestamp,
-                "dead": bool,
-            }
-            for index, row in df.iterrows():
-                for col in column_names:
-                    # all the schema fields are nullable, so None is acceptable
-                    if not row[col] is None:
-                        self.assertIsInstance(row[col], exp_datatypes[col])
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 10)  # verify the number of rows
+        column_names = ["id", "author", "time_ts", "dead"]
+        self.assertEqual(list(df), column_names)
+        exp_datatypes = {
+            "id": int,
+            "author": six.text_type,
+            "time_ts": pandas.Timestamp,
+            "dead": bool,
+        }
+        for index, row in df.iterrows():
+            for col in column_names:
+                # all the schema fields are nullable, so None is acceptable
+                if not row[col] is None:
+                    self.assertIsInstance(row[col], exp_datatypes[col])
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(
         bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
     )
     def test_query_results_to_dataframe_w_bqstorage_v1beta1(self):
-        dest_dataset = self.temp_dataset(_make_dataset_id("bqstorage_to_dataframe_"))
-        dest_ref = dest_dataset.table("query_results")
-
         query = """
             SELECT id, author, time_ts, dead
             FROM `bigquery-public-data.hacker_news.comments`
@@ -2339,41 +2259,23 @@ class TestBigQuery(unittest.TestCase):
             credentials=Config.CLIENT._credentials
         )
 
-        job_configs = (
-            # There is a known issue reading small anonymous query result
-            # tables with the BQ Storage API. Writing to a destination
-            # table works around this issue.
-            bigquery.QueryJobConfig(
-                destination=dest_ref, write_disposition="WRITE_TRUNCATE"
-            ),
-            # Check that the client is able to work around the issue with
-            # reading small anonymous query result tables by falling back to
-            # the tabledata.list API.
-            None,
-        )
+        df = Config.CLIENT.query(query).result().to_dataframe(bqstorage_client)
 
-        for job_config in job_configs:
-            df = (
-                Config.CLIENT.query(query, job_config=job_config)
-                .result()
-                .to_dataframe(bqstorage_client)
-            )
-
-            self.assertIsInstance(df, pandas.DataFrame)
-            self.assertEqual(len(df), 10)  # verify the number of rows
-            column_names = ["id", "author", "time_ts", "dead"]
-            self.assertEqual(list(df), column_names)
-            exp_datatypes = {
-                "id": int,
-                "author": six.text_type,
-                "time_ts": pandas.Timestamp,
-                "dead": bool,
-            }
-            for index, row in df.iterrows():
-                for col in column_names:
-                    # all the schema fields are nullable, so None is acceptable
-                    if not row[col] is None:
-                        self.assertIsInstance(row[col], exp_datatypes[col])
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 10)  # verify the number of rows
+        column_names = ["id", "author", "time_ts", "dead"]
+        self.assertEqual(list(df), column_names)
+        exp_datatypes = {
+            "id": int,
+            "author": six.text_type,
+            "time_ts": pandas.Timestamp,
+            "dead": bool,
+        }
+        for index, row in df.iterrows():
+            for col in column_names:
+                # all the schema fields are nullable, so None is acceptable
+                if not row[col] is None:
+                    self.assertIsInstance(row[col], exp_datatypes[col])
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_insert_rows_from_dataframe(self):

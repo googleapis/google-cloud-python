@@ -1431,30 +1431,10 @@ class RowIterator(HTTPIterator):
         self, bqstorage_download, tabledata_list_download, bqstorage_client=None
     ):
         if bqstorage_client is not None:
-            try:
-                # Iterate over the stream so that read errors are raised (and
-                # the method can then fallback to tabledata.list).
-                for item in bqstorage_download():
-                    yield item
-                return
-            except google.api_core.exceptions.Forbidden:
-                # Don't hide errors such as insufficient permissions to create
-                # a read session, or the API is not enabled. Both of those are
-                # clearly problems if the developer has explicitly asked for
-                # BigQuery Storage API support.
-                raise
-            except google.api_core.exceptions.GoogleAPICallError:
-                # There is a known issue with reading from small anonymous
-                # query results tables, so some errors are expected. Rather
-                # than throw those errors, try reading the DataFrame again, but
-                # with the tabledata.list API.
-                pass
+            for item in bqstorage_download():
+                yield item
+            return
 
-        _LOGGER.debug(
-            "Started reading table '{}.{}.{}' with tabledata.list.".format(
-                self._table.project, self._table.dataset_id, self._table.table_id
-            )
-        )
         for item in tabledata_list_download():
             yield item
 
@@ -1599,14 +1579,10 @@ class RowIterator(HTTPIterator):
                 This method requires the ``pyarrow`` and
                 ``google-cloud-bigquery-storage`` libraries.
 
-                This method only  exposes a subset of the capabilities of the
-                BigQuery Storage API.  For full access to all features
+                This method only exposes a subset of the capabilities of the
+                BigQuery Storage API. For full access to all features
                 (projections, filters, snapshots) use the Storage API directly.
 
-                **Caution**: There is a known issue reading small anonymous
-                query result tables with the BQ Storage API. When a problem
-                is encountered reading a table, the tabledata.list method
-                from the BigQuery API is used, instead.
             dtypes (Map[str, Union[str, pandas.Series.dtype]]):
                 Optional. A dictionary of column names pandas ``dtype``s. The
                 provided ``dtype`` is used when constructing the series for
@@ -1668,14 +1644,10 @@ class RowIterator(HTTPIterator):
                 This method requires the ``pyarrow`` and
                 ``google-cloud-bigquery-storage`` libraries.
 
-                This method only  exposes a subset of the capabilities of the
-                BigQuery Storage API.  For full access to all features
+                This method only exposes a subset of the capabilities of the
+                BigQuery Storage API. For full access to all features
                 (projections, filters, snapshots) use the Storage API directly.
 
-                **Caution**: There is a known issue reading small anonymous
-                query result tables with the BQ Storage API. When a problem
-                is encountered reading a table, the tabledata.list method
-                from the BigQuery API is used, instead.
             dtypes (Map[str, Union[str, pandas.Series.dtype]]):
                 Optional. A dictionary of column names pandas ``dtype``s. The
                 provided ``dtype`` is used when constructing the series for

@@ -5344,7 +5344,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         client = _make_client(project=self.PROJECT, connection=connection)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
 
-        tbl = job.to_arrow()
+        tbl = job.to_arrow(create_bqstorage_client=False)
 
         self.assertIsInstance(tbl, pyarrow.Table)
         self.assertEqual(tbl.num_rows, 2)
@@ -5412,7 +5412,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         client = _make_client(project=self.PROJECT, connection=connection)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
 
-        df = job.to_dataframe()
+        df = job.to_dataframe(create_bqstorage_client=False)
 
         self.assertIsInstance(df, pandas.DataFrame)
         self.assertEqual(len(df), 4)  # verify the number of rows
@@ -5518,7 +5518,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         client = _make_client(project=self.PROJECT, connection=connection)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
 
-        df = job.to_dataframe(dtypes={"km": "float16"})
+        df = job.to_dataframe(dtypes={"km": "float16"}, create_bqstorage_client=False)
 
         self.assertIsInstance(df, pandas.DataFrame)
         self.assertEqual(len(df), 3)  # verify the number of rows
@@ -5558,10 +5558,10 @@ class TestQueryJob(unittest.TestCase, _Base):
         client = _make_client(project=self.PROJECT, connection=connection)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
 
-        job.to_dataframe(progress_bar_type=None)
+        job.to_dataframe(progress_bar_type=None, create_bqstorage_client=False)
         tqdm_mock.assert_not_called()
 
-        job.to_dataframe(progress_bar_type="tqdm")
+        job.to_dataframe(progress_bar_type="tqdm", create_bqstorage_client=False)
         tqdm_mock.assert_called()
 
     def test_iter(self):

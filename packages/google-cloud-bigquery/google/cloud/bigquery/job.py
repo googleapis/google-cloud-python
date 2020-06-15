@@ -3335,9 +3335,6 @@ class QueryJob(_AsyncJob):
                 Reading from a specific partition or snapshot is not
                 currently supported by this method.
 
-                **Caution**: There is a known issue reading small anonymous
-                query result tables with the BQ Storage API. Write your query
-                results to a destination table to work around this issue.
             dtypes (Map[str, Union[str, pandas.Series.dtype]]):
                 Optional. A dictionary of column names pandas ``dtype``s. The
                 provided ``dtype`` is used when constructing the series for

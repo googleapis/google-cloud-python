@@ -224,26 +224,9 @@ class Cursor(object):
             bqstorage_client = self.connection._bqstorage_client
 
             if bqstorage_client is not None:
-                try:
-                    rows_iterable = self._bqstorage_fetch(bqstorage_client)
-                    self._query_data = _helpers.to_bq_table_rows(rows_iterable)
-                    return
-                except google.api_core.exceptions.GoogleAPICallError as exc:
-                    # NOTE: Forbidden is a subclass of GoogleAPICallError
-                    if isinstance(exc, google.api_core.exceptions.Forbidden):
-                        # Don't hide errors such as insufficient permissions to create
-                        # a read session, or the API is not enabled. Both of those are
-                        # clearly problems if the developer has explicitly asked for
-                        # BigQuery Storage API support.
-                        raise
-
-                    # There is an issue with reading from small anonymous
-                    # query results tables. If such an error occurs, we silence
-                    # it in order to try again with the tabledata.list API.
-                    _LOGGER.debug(
-                        "Error fetching data with BigQuery Storage API, "
-                        "falling back to tabledata.list API."
-                    )
+                rows_iterable = self._bqstorage_fetch(bqstorage_client)
+                self._query_data = _helpers.to_bq_table_rows(rows_iterable)
+                return
 
             rows_iter = client.list_rows(
                 self._query_job.destination,

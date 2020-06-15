@@ -434,62 +434,6 @@ class TestCursor(unittest.TestCase):
         # the default client was not used
         mock_client.list_rows.assert_not_called()
 
-    @unittest.skipIf(
-        bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
-    )
-    def test_fetchall_w_bqstorage_client_fetch_error_fallback_on_client(self):
-        from google.cloud.bigquery import dbapi
-        from google.cloud.bigquery import table
-
-        # use unordered data to also test any non-determenistic key order in dicts
-        row_data = [
-            table.Row([1.4, 1.1, 1.3, 1.2], {"bar": 3, "baz": 2, "foo": 1, "quux": 0}),
-            table.Row([2.4, 2.1, 2.3, 2.2], {"bar": 3, "baz": 2, "foo": 1, "quux": 0}),
-        ]
-        bqstorage_streamed_rows = [
-            {"bar": 1.2, "foo": 1.1, "quux": 1.4, "baz": 1.3},
-            {"bar": 2.2, "foo": 2.1, "quux": 2.4, "baz": 2.3},
-        ]
-
-        mock_client = self._mock_client(rows=row_data)
-        mock_bqstorage_client = self._mock_bqstorage_client(
-            stream_count=1, rows=bqstorage_streamed_rows,
-        )
-        request_error = exceptions.BadRequest("BQ storage what??")
-        mock_bqstorage_client.create_read_session.side_effect = request_error
-
-        connection = dbapi.connect(
-            client=mock_client, bqstorage_client=mock_bqstorage_client,
-        )
-        cursor = connection.cursor()
-        cursor.execute("SELECT foo, bar FROM some_table")
-
-        logger_patcher = mock.patch("google.cloud.bigquery.dbapi.cursor._LOGGER")
-        with logger_patcher as mock_logger:
-            rows = cursor.fetchall()
-
-        # both client were used
-        mock_bqstorage_client.create_read_session.assert_called()
-        mock_client.list_rows.assert_called()
-
-        # fallback to default API should have been logged
-        relevant_calls = [
-            call
-            for call in mock_logger.debug.call_args_list
-            if call.args and "tabledata.list API" in call.args[0]
-        ]
-        self.assertTrue(relevant_calls)
-
-        # check the data returned
-        field_value = op.itemgetter(1)
-        sorted_row_data = [sorted(row.items(), key=field_value) for row in rows]
-        expected_row_data = [
-            [("foo", 1.1), ("bar", 1.2), ("baz", 1.3), ("quux", 1.4)],
-            [("foo", 2.1), ("bar", 2.2), ("baz", 2.3), ("quux", 2.4)],
-        ]
-
-        self.assertEqual(sorted_row_data, expected_row_data)
-
     def test_execute_custom_job_id(self):
         from google.cloud.bigquery.dbapi import connect
 

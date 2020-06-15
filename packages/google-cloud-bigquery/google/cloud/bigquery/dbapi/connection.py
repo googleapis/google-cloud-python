@@ -34,16 +34,10 @@ class Connection(object):
         ):
             A client that uses the faster BigQuery Storage API to fetch rows from
             BigQuery. If not passed, it is created using the same credentials
-            as ``client``.
+            as ``client`` (provided that BigQuery Storage dependencies are installed).
 
-            When fetching query results, ``bqstorage_client`` is used first, with
-            a fallback on ``client``, if necessary.
-
-            .. note::
-                There is a known issue with the BigQuery Storage API with small
-                anonymous result sets, which results in such fallback.
-
-                https://github.com/googleapis/python-bigquery-storage/issues/2
+            If both clients are available, ``bqstorage_client`` is used for
+            fetching query results.
     """
 
     def __init__(self, client=None, bqstorage_client=None):
@@ -110,16 +104,10 @@ def connect(client=None, bqstorage_client=None):
         ):
             A client that uses the faster BigQuery Storage API to fetch rows from
             BigQuery. If not passed, it is created using the same credentials
-            as ``client``.
+            as ``client`` (provided that BigQuery Storage dependencies are installed).
 
-            When fetching query results, ``bqstorage_client`` is used first, with
-            a fallback on ``client``, if necessary.
-
-            .. note::
-                There is a known issue with the BigQuery Storage API with small
-                anonymous result sets, which results in such fallback.
-
-                https://github.com/googleapis/python-bigquery-storage/issues/2
+            If both clients are available, ``bqstorage_client`` is used for
+            fetching query results.
 
     Returns:
         google.cloud.bigquery.dbapi.Connection: A new DB-API connection to BigQuery.

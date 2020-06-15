@@ -2502,23 +2502,6 @@ class TestRowIterator(unittest.TestCase):
             self.assertEqual(list(df), ["name", "age"])  # verify the column names
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    def test_to_dataframe_logs_tabledata_list(self):
-        from google.cloud.bigquery.table import Table
-
-        mock_logger = mock.create_autospec(logging.Logger)
-        api_request = mock.Mock(return_value={"rows": []})
-        row_iterator = self._make_one(
-            _mock_client(), api_request, table=Table("debug-proj.debug_dset.debug_tbl")
-        )
-
-        with mock.patch("google.cloud.bigquery.table._LOGGER", mock_logger):
-            row_iterator.to_dataframe(create_bqstorage_client=False)
-
-        mock_logger.debug.assert_any_call(
-            "Started reading table 'debug-proj.debug_dset.debug_tbl' with tabledata.list."
-        )
-
-    @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_w_various_types_nullable(self):
         import datetime
         from google.cloud.bigquery.schema import SchemaField
@@ -3254,46 +3237,6 @@ class TestRowIterator(unittest.TestCase):
         # Should not have fetched the third page of results because exit_early
         # should have been set.
         self.assertLessEqual(mock_page.to_dataframe.call_count, 2)
-
-    @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(
-        bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
-    )
-    def test_to_dataframe_w_bqstorage_fallback_to_tabledata_list(self):
-        from google.cloud.bigquery import schema
-        from google.cloud.bigquery import table as mut
-
-        bqstorage_client = mock.create_autospec(bigquery_storage_v1.BigQueryReadClient)
-        bqstorage_client.create_read_session.side_effect = google.api_core.exceptions.InternalServerError(
-            "can't read with bqstorage_client"
-        )
-        iterator_schema = [
-            schema.SchemaField("name", "STRING", mode="REQUIRED"),
-            schema.SchemaField("age", "INTEGER", mode="REQUIRED"),
-        ]
-        rows = [
-            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
-            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
-            {"f": [{"v": "Wylma Phlyntstone"}, {"v": "29"}]},
-            {"f": [{"v": "Bhettye Rhubble"}, {"v": "27"}]},
-        ]
-        path = "/foo"
-        api_request = mock.Mock(return_value={"rows": rows})
-        row_iterator = mut.RowIterator(
-            _mock_client(),
-            api_request,
-            path,
-            iterator_schema,
-            table=mut.Table("proj.dset.tbl"),
-        )
-
-        df = row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
-
-        self.assertIsInstance(df, pandas.DataFrame)
-        self.assertEqual(len(df), 4)  # verify the number of rows
-        self.assertEqual(list(df), ["name", "age"])  # verify the column names
-        self.assertEqual(df.name.dtype.name, "object")
-        self.assertEqual(df.age.dtype.name, "int64")
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_tabledata_list_w_multiple_pages_return_unique_index(self):
