@@ -124,6 +124,36 @@ config = {
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "non_idempotent_params",
                 },
+                "CreateBackup": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "non_idempotent_params",
+                },
+                "GetBackup": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "idempotent_params",
+                },
+                "ListBackups": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "idempotent_params",
+                },
+                "UpdateBackup": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "non_idempotent_params",
+                },
+                "DeleteBackup": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "non_idempotent_params",
+                },
+                "RestoreTable": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "non_idempotent_params",
+                },
             },
         }
     }

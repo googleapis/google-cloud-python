@@ -3,16 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-bigtable.git",
-        "sha": "e12ffc55933cfd6b40bd2fc6cef899ce78c543b5"
+        "remote": "https://github.com/googleapis/python-bigtable.git",
+        "sha": "1ac60be05521b69c924118d40f88e07728a2f75e"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "eafa840ceec23b44a5c21670288107c661252711",
-        "internalRef": "313488995"
+        "sha": "3a4894c4f0da3e763aca2c67bd280ae915177450",
+        "internalRef": "314363155"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "f13864cd532f98a4682cec48105580fa9a5c9978"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "f13864cd532f98a4682cec48105580fa9a5c9978"
       }
     }
   ],

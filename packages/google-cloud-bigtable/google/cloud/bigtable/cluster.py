@@ -291,11 +291,11 @@ class Cluster(object):
                   update operation.
         """
         client = self._instance._client
-        # We are passing `None` for second argument location.
+        # We are passing `None` for third argument location.
         # Location is set only at the time of creation of a cluster
         # and can not be changed after cluster has been created.
         return client.instance_admin_client.update_cluster(
-            self.name, self.serve_nodes, None
+            name=self.name, serve_nodes=self.serve_nodes, location=None
         )
 
     def delete(self):

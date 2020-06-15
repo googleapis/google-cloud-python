@@ -170,7 +170,9 @@ class BigtableInstanceAdminGrpcTransport(object):
     def update_instance(self):
         """Return the gRPC stub for :meth:`BigtableInstanceAdminClient.update_instance`.
 
-        Updates an instance within a project.
+        Updates an instance within a project. This method updates only the display
+        name and type for an Instance. To update other Instance properties, such as
+        labels, use PartialUpdateInstance.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -183,7 +185,8 @@ class BigtableInstanceAdminGrpcTransport(object):
     def partial_update_instance(self):
         """Return the gRPC stub for :meth:`BigtableInstanceAdminClient.partial_update_instance`.
 
-        Partially updates an instance within a project.
+        Partially updates an instance within a project. This method can modify all
+        fields of an Instance and is the preferred way to update an Instance.
 
         Returns:
             Callable: A callable which accepts the appropriate

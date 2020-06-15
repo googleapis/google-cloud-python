@@ -22,7 +22,6 @@ import pytest
 from google.rpc import status_pb2
 
 from google.cloud import bigtable_admin_v2
-from google.cloud.bigtable_admin_v2 import enums
 from google.cloud.bigtable_admin_v2.proto import bigtable_instance_admin_pb2
 from google.cloud.bigtable_admin_v2.proto import instance_pb2
 from google.iam.v1 import iam_policy_pb2
@@ -212,9 +211,9 @@ class TestBigtableInstanceAdminClient(object):
 
     def test_update_instance(self):
         # Setup Expected Response
-        name_2 = "name2-1052831874"
+        name = "name3373707"
         display_name_2 = "displayName21615000987"
-        expected_response = {"name": name_2, "display_name": display_name_2}
+        expected_response = {"name": name, "display_name": display_name_2}
         expected_response = instance_pb2.Instance(**expected_response)
 
         # Mock the API response
@@ -225,18 +224,13 @@ class TestBigtableInstanceAdminClient(object):
             client = bigtable_admin_v2.BigtableInstanceAdminClient()
 
         # Setup Request
-        name = client.instance_path("[PROJECT]", "[INSTANCE]")
         display_name = "displayName1615086568"
-        type_ = enums.Instance.Type.TYPE_UNSPECIFIED
-        labels = {}
 
-        response = client.update_instance(name, display_name, type_, labels)
+        response = client.update_instance(display_name)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = instance_pb2.Instance(
-            name=name, display_name=display_name, type=type_, labels=labels
-        )
+        expected_request = instance_pb2.Instance(display_name=display_name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -249,13 +243,10 @@ class TestBigtableInstanceAdminClient(object):
             client = bigtable_admin_v2.BigtableInstanceAdminClient()
 
         # Setup request
-        name = client.instance_path("[PROJECT]", "[INSTANCE]")
         display_name = "displayName1615086568"
-        type_ = enums.Instance.Type.TYPE_UNSPECIFIED
-        labels = {}
 
         with pytest.raises(CustomException):
-            client.update_instance(name, display_name, type_, labels)
+            client.update_instance(display_name)
 
     def test_partial_update_instance(self):
         # Setup Expected Response
@@ -495,11 +486,11 @@ class TestBigtableInstanceAdminClient(object):
 
     def test_update_cluster(self):
         # Setup Expected Response
-        name_2 = "name2-1052831874"
+        name = "name3373707"
         location = "location1901043637"
         serve_nodes_2 = 1623486220
         expected_response = {
-            "name": name_2,
+            "name": name,
             "location": location,
             "serve_nodes": serve_nodes_2,
         }
@@ -517,15 +508,14 @@ class TestBigtableInstanceAdminClient(object):
             client = bigtable_admin_v2.BigtableInstanceAdminClient()
 
         # Setup Request
-        name = client.cluster_path("[PROJECT]", "[INSTANCE]", "[CLUSTER]")
         serve_nodes = 1288838783
 
-        response = client.update_cluster(name, serve_nodes)
+        response = client.update_cluster(serve_nodes)
         result = response.result()
         assert expected_response == result
 
         assert len(channel.requests) == 1
-        expected_request = instance_pb2.Cluster(name=name, serve_nodes=serve_nodes)
+        expected_request = instance_pb2.Cluster(serve_nodes=serve_nodes)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -545,10 +535,9 @@ class TestBigtableInstanceAdminClient(object):
             client = bigtable_admin_v2.BigtableInstanceAdminClient()
 
         # Setup Request
-        name = client.cluster_path("[PROJECT]", "[INSTANCE]", "[CLUSTER]")
         serve_nodes = 1288838783
 
-        response = client.update_cluster(name, serve_nodes)
+        response = client.update_cluster(serve_nodes)
         exception = response.exception()
         assert exception.errors[0] == error
 
@@ -785,13 +774,12 @@ class TestBigtableInstanceAdminClient(object):
 
         # Setup Request
         name = client.app_profile_path("[PROJECT]", "[INSTANCE]", "[APP_PROFILE]")
-        ignore_warnings = True
 
-        client.delete_app_profile(name, ignore_warnings)
+        client.delete_app_profile(name)
 
         assert len(channel.requests) == 1
         expected_request = bigtable_instance_admin_pb2.DeleteAppProfileRequest(
-            name=name, ignore_warnings=ignore_warnings
+            name=name
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -806,10 +794,9 @@ class TestBigtableInstanceAdminClient(object):
 
         # Setup request
         name = client.app_profile_path("[PROJECT]", "[INSTANCE]", "[APP_PROFILE]")
-        ignore_warnings = True
 
         with pytest.raises(CustomException):
-            client.delete_app_profile(name, ignore_warnings)
+            client.delete_app_profile(name)
 
     def test_get_iam_policy(self):
         # Setup Expected Response
@@ -826,7 +813,7 @@ class TestBigtableInstanceAdminClient(object):
             client = bigtable_admin_v2.BigtableInstanceAdminClient()
 
         # Setup Request
-        resource = client.instance_path("[PROJECT]", "[INSTANCE]")
+        resource = "resource-341064690"
 
         response = client.get_iam_policy(resource)
         assert expected_response == response
@@ -845,7 +832,7 @@ class TestBigtableInstanceAdminClient(object):
             client = bigtable_admin_v2.BigtableInstanceAdminClient()
 
         # Setup request
-        resource = client.instance_path("[PROJECT]", "[INSTANCE]")
+        resource = "resource-341064690"
 
         with pytest.raises(CustomException):
             client.get_iam_policy(resource)
@@ -865,7 +852,7 @@ class TestBigtableInstanceAdminClient(object):
             client = bigtable_admin_v2.BigtableInstanceAdminClient()
 
         # Setup Request
-        resource = client.instance_path("[PROJECT]", "[INSTANCE]")
+        resource = "resource-341064690"
         policy = {}
 
         response = client.set_iam_policy(resource, policy)
@@ -887,7 +874,7 @@ class TestBigtableInstanceAdminClient(object):
             client = bigtable_admin_v2.BigtableInstanceAdminClient()
 
         # Setup request
-        resource = client.instance_path("[PROJECT]", "[INSTANCE]")
+        resource = "resource-341064690"
         policy = {}
 
         with pytest.raises(CustomException):
@@ -908,7 +895,7 @@ class TestBigtableInstanceAdminClient(object):
             client = bigtable_admin_v2.BigtableInstanceAdminClient()
 
         # Setup Request
-        resource = client.instance_path("[PROJECT]", "[INSTANCE]")
+        resource = "resource-341064690"
         permissions = []
 
         response = client.test_iam_permissions(resource, permissions)
@@ -930,7 +917,7 @@ class TestBigtableInstanceAdminClient(object):
             client = bigtable_admin_v2.BigtableInstanceAdminClient()
 
         # Setup request
-        resource = client.instance_path("[PROJECT]", "[INSTANCE]")
+        resource = "resource-341064690"
         permissions = []
 
         with pytest.raises(CustomException):

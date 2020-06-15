@@ -46,22 +46,22 @@ config = {
             "methods": {
                 "ReadRows": {
                     "timeout_millis": 43200000,
-                    "retry_codes_name": "idempotent",
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "read_rows_params",
                 },
                 "SampleRowKeys": {
-                    "timeout_millis": 20000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "idempotent_params",
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "non_idempotent_params",
                 },
                 "MutateRow": {
-                    "timeout_millis": 20000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "idempotent_params",
                 },
                 "MutateRows": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
+                    "timeout_millis": 600000,
+                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "mutate_rows_params",
                 },
                 "CheckAndMutateRow": {

@@ -287,19 +287,20 @@ class BigtableInstanceAdminClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            parent (str): The unique name of the project in which to create the new instance.
-                Values are of the form ``projects/<project>``.
-            instance_id (str): The ID to be used when referring to the new instance within its project,
-                e.g., just ``myinstance`` rather than
+            parent (str): Required. The unique name of the project in which to create the new
+                instance. Values are of the form ``projects/{project}``.
+            instance_id (str): Required. The ID to be used when referring to the new instance
+                within its project, e.g., just ``myinstance`` rather than
                 ``projects/myproject/instances/myinstance``.
-            instance (Union[dict, ~google.cloud.bigtable_admin_v2.types.Instance]): The instance to create. Fields marked ``OutputOnly`` must be left blank.
+            instance (Union[dict, ~google.cloud.bigtable_admin_v2.types.Instance]): Required. The instance to create. Fields marked ``OutputOnly`` must
+                be left blank.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_admin_v2.types.Instance`
-            clusters (dict[str -> Union[dict, ~google.cloud.bigtable_admin_v2.types.Cluster]]): The clusters to be created within the instance, mapped by desired
-                cluster ID, e.g., just ``mycluster`` rather than
+            clusters (dict[str -> Union[dict, ~google.cloud.bigtable_admin_v2.types.Cluster]]): Required. The clusters to be created within the instance, mapped by
+                desired cluster ID, e.g., just ``mycluster`` rather than
                 ``projects/myproject/instances/myinstance/clusters/mycluster``. Fields
-                marked ``OutputOnly`` must be left blank. Currently, at most two
+                marked ``OutputOnly`` must be left blank. Currently, at most four
                 clusters can be specified.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -383,8 +384,8 @@ class BigtableInstanceAdminClient(object):
             >>> response = client.get_instance(name)
 
         Args:
-            name (str): The unique name of the requested instance. Values are of the form
-                ``projects/<project>/instances/<instance>``.
+            name (str): Required. The unique name of the requested instance. Values are of
+                the form ``projects/{project}/instances/{instance}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -454,8 +455,8 @@ class BigtableInstanceAdminClient(object):
             >>> response = client.list_instances(parent)
 
         Args:
-            parent (str): The unique name of the project for which a list of instances is
-                requested. Values are of the form ``projects/<project>``.
+            parent (str): Required. The unique name of the project for which a list of
+                instances is requested. Values are of the form ``projects/{project}``.
             page_token (str): DEPRECATED: This field is unused and ignored.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -509,43 +510,37 @@ class BigtableInstanceAdminClient(object):
 
     def update_instance(
         self,
-        name,
         display_name,
-        type_,
-        labels,
+        name=None,
         state=None,
+        type_=None,
+        labels=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """
-        Updates an instance within a project.
+        Updates an instance within a project. This method updates only the display
+        name and type for an Instance. To update other Instance properties, such as
+        labels, use PartialUpdateInstance.
 
         Example:
             >>> from google.cloud import bigtable_admin_v2
-            >>> from google.cloud.bigtable_admin_v2 import enums
             >>>
             >>> client = bigtable_admin_v2.BigtableInstanceAdminClient()
-            >>>
-            >>> name = client.instance_path('[PROJECT]', '[INSTANCE]')
             >>>
             >>> # TODO: Initialize `display_name`:
             >>> display_name = ''
             >>>
-            >>> # TODO: Initialize `type_`:
-            >>> type_ = enums.Instance.Type.TYPE_UNSPECIFIED
-            >>>
-            >>> # TODO: Initialize `labels`:
-            >>> labels = {}
-            >>>
-            >>> response = client.update_instance(name, display_name, type_, labels)
+            >>> response = client.update_instance(display_name)
 
         Args:
-            name (str): (``OutputOnly``) The unique name of the instance. Values are of the form
-                ``projects/<project>/instances/[a-z][a-z0-9\\-]+[a-z0-9]``.
-            display_name (str): The descriptive name for this instance as it appears in UIs.
+            display_name (str): Required. The descriptive name for this instance as it appears in UIs.
                 Can be changed at any time, but should be kept globally unique
                 to avoid confusion.
+            name (str): The unique name of the instance. Values are of the form
+                ``projects/{project}/instances/[a-z][a-z0-9\\-]+[a-z0-9]``.
+            state (~google.cloud.bigtable_admin_v2.types.State): (``OutputOnly``) The current state of the instance.
             type_ (~google.cloud.bigtable_admin_v2.types.Type): The type of the instance. Defaults to ``PRODUCTION``.
             labels (dict[str -> str]): Labels are a flexible and lightweight mechanism for organizing cloud
                 resources into groups that reflect a customer's organizational needs and
@@ -559,7 +554,6 @@ class BigtableInstanceAdminClient(object):
                    conform to the regular expression: ``[\p{Ll}\p{Lo}\p{N}_-]{0,63}``.
                 -  No more than 64 labels can be associated with a given resource.
                 -  Keys and values must both be under 128 bytes.
-            state (~google.cloud.bigtable_admin_v2.types.State): (``OutputOnly``) The current state of the instance.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -591,11 +585,11 @@ class BigtableInstanceAdminClient(object):
             )
 
         request = instance_pb2.Instance(
-            name=name,
             display_name=display_name,
+            name=name,
+            state=state,
             type=type_,
             labels=labels,
-            state=state,
         )
         if metadata is None:
             metadata = []
@@ -623,7 +617,8 @@ class BigtableInstanceAdminClient(object):
         metadata=None,
     ):
         """
-        Partially updates an instance within a project.
+        Partially updates an instance within a project. This method can modify all
+        fields of an Instance and is the preferred way to update an Instance.
 
         Example:
             >>> from google.cloud import bigtable_admin_v2
@@ -648,11 +643,11 @@ class BigtableInstanceAdminClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            instance (Union[dict, ~google.cloud.bigtable_admin_v2.types.Instance]): The Instance which will (partially) replace the current value.
+            instance (Union[dict, ~google.cloud.bigtable_admin_v2.types.Instance]): Required. The Instance which will (partially) replace the current value.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_admin_v2.types.Instance`
-            update_mask (Union[dict, ~google.cloud.bigtable_admin_v2.types.FieldMask]): The subset of Instance fields which should be replaced.
+            update_mask (Union[dict, ~google.cloud.bigtable_admin_v2.types.FieldMask]): Required. The subset of Instance fields which should be replaced.
                 Must be explicitly set.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -733,8 +728,8 @@ class BigtableInstanceAdminClient(object):
             >>> client.delete_instance(name)
 
         Args:
-            name (str): The unique name of the instance to be deleted. Values are of the form
-                ``projects/<project>/instances/<instance>``.
+            name (str): Required. The unique name of the instance to be deleted. Values are
+                of the form ``projects/{project}/instances/{instance}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -817,13 +812,14 @@ class BigtableInstanceAdminClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            parent (str): The unique name of the instance in which to create the new cluster.
-                Values are of the form ``projects/<project>/instances/<instance>``.
-            cluster_id (str): The ID to be used when referring to the new cluster within its instance,
-                e.g., just ``mycluster`` rather than
+            parent (str): Required. The unique name of the instance in which to create the new
+                cluster. Values are of the form
+                ``projects/{project}/instances/{instance}``.
+            cluster_id (str): Required. The ID to be used when referring to the new cluster within
+                its instance, e.g., just ``mycluster`` rather than
                 ``projects/myproject/instances/myinstance/clusters/mycluster``.
-            cluster (Union[dict, ~google.cloud.bigtable_admin_v2.types.Cluster]): The cluster to be created. Fields marked ``OutputOnly`` must be left
-                blank.
+            cluster (Union[dict, ~google.cloud.bigtable_admin_v2.types.Cluster]): Required. The cluster to be created. Fields marked ``OutputOnly``
+                must be left blank.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_admin_v2.types.Cluster`
@@ -903,8 +899,8 @@ class BigtableInstanceAdminClient(object):
             >>> response = client.get_cluster(name)
 
         Args:
-            name (str): The unique name of the requested cluster. Values are of the form
-                ``projects/<project>/instances/<instance>/clusters/<cluster>``.
+            name (str): Required. The unique name of the requested cluster. Values are of
+                the form ``projects/{project}/instances/{instance}/clusters/{cluster}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -974,9 +970,9 @@ class BigtableInstanceAdminClient(object):
             >>> response = client.list_clusters(parent)
 
         Args:
-            parent (str): The unique name of the instance for which a list of clusters is
-                requested. Values are of the form
-                ``projects/<project>/instances/<instance>``. Use ``<instance> = '-'`` to
+            parent (str): Required. The unique name of the instance for which a list of
+                clusters is requested. Values are of the form
+                ``projects/{project}/instances/{instance}``. Use ``{instance} = '-'`` to
                 list Clusters for all Instances in a project, e.g.,
                 ``projects/myproject/instances/-``.
             page_token (str): DEPRECATED: This field is unused and ignored.
@@ -1032,8 +1028,8 @@ class BigtableInstanceAdminClient(object):
 
     def update_cluster(
         self,
-        name,
         serve_nodes,
+        name=None,
         location=None,
         state=None,
         default_storage_type=None,
@@ -1049,12 +1045,10 @@ class BigtableInstanceAdminClient(object):
             >>>
             >>> client = bigtable_admin_v2.BigtableInstanceAdminClient()
             >>>
-            >>> name = client.cluster_path('[PROJECT]', '[INSTANCE]', '[CLUSTER]')
-            >>>
             >>> # TODO: Initialize `serve_nodes`:
             >>> serve_nodes = 0
             >>>
-            >>> response = client.update_cluster(name, serve_nodes)
+            >>> response = client.update_cluster(serve_nodes)
             >>>
             >>> def callback(operation_future):
             ...     # Handle result.
@@ -1066,17 +1060,17 @@ class BigtableInstanceAdminClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            name (str): (``OutputOnly``) The unique name of the cluster. Values are of the form
-                ``projects/<project>/instances/<instance>/clusters/[a-z][-a-z0-9]*``.
-            serve_nodes (int): The number of nodes allocated to this cluster. More nodes enable higher
-                throughput and more consistent performance.
-            location (str): (``CreationOnly``) The location where this cluster's nodes and storage
-                reside. For best performance, clients should be located as close as
-                possible to this cluster. Currently only zones are supported, so values
-                should be of the form ``projects/<project>/locations/<zone>``.
-            state (~google.cloud.bigtable_admin_v2.types.State): (``OutputOnly``) The current state of the cluster.
-            default_storage_type (~google.cloud.bigtable_admin_v2.types.StorageType): (``CreationOnly``) The type of storage used by this cluster to serve its
-                parent instance's tables, unless explicitly overridden.
+            serve_nodes (int): Required. The number of nodes allocated to this cluster. More nodes enable
+                higher throughput and more consistent performance.
+            name (str): The unique name of the cluster. Values are of the form
+                ``projects/{project}/instances/{instance}/clusters/[a-z][-a-z0-9]*``.
+            location (str): (``CreationOnly``) The location where this cluster's nodes and
+                storage reside. For best performance, clients should be located as close
+                as possible to this cluster. Currently only zones are supported, so
+                values should be of the form ``projects/{project}/locations/{zone}``.
+            state (~google.cloud.bigtable_admin_v2.types.State): The current state of the cluster.
+            default_storage_type (~google.cloud.bigtable_admin_v2.types.StorageType): (``CreationOnly``) The type of storage used by this cluster to serve
+                its parent instance's tables, unless explicitly overridden.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1108,8 +1102,8 @@ class BigtableInstanceAdminClient(object):
             )
 
         request = instance_pb2.Cluster(
-            name=name,
             serve_nodes=serve_nodes,
+            name=name,
             location=location,
             state=state,
             default_storage_type=default_storage_type,
@@ -1157,8 +1151,9 @@ class BigtableInstanceAdminClient(object):
             >>> client.delete_cluster(name)
 
         Args:
-            name (str): The unique name of the cluster to be deleted. Values are of the form
-                ``projects/<project>/instances/<instance>/clusters/<cluster>``.
+            name (str): Required. The unique name of the cluster to be deleted. Values are
+                of the form
+                ``projects/{project}/instances/{instance}/clusters/{cluster}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1233,13 +1228,14 @@ class BigtableInstanceAdminClient(object):
             >>> response = client.create_app_profile(parent, app_profile_id, app_profile)
 
         Args:
-            parent (str): The unique name of the instance in which to create the new app profile.
-                Values are of the form ``projects/<project>/instances/<instance>``.
-            app_profile_id (str): The ID to be used when referring to the new app profile within its
-                instance, e.g., just ``myprofile`` rather than
+            parent (str): Required. The unique name of the instance in which to create the new
+                app profile. Values are of the form
+                ``projects/{project}/instances/{instance}``.
+            app_profile_id (str): Required. The ID to be used when referring to the new app profile
+                within its instance, e.g., just ``myprofile`` rather than
                 ``projects/myproject/instances/myinstance/appProfiles/myprofile``.
-            app_profile (Union[dict, ~google.cloud.bigtable_admin_v2.types.AppProfile]): The app profile to be created. Fields marked ``OutputOnly`` will be
-                ignored.
+            app_profile (Union[dict, ~google.cloud.bigtable_admin_v2.types.AppProfile]): Required. The app profile to be created. Fields marked
+                ``OutputOnly`` will be ignored.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
@@ -1317,8 +1313,9 @@ class BigtableInstanceAdminClient(object):
             >>> response = client.get_app_profile(name)
 
         Args:
-            name (str): The unique name of the requested app profile. Values are of the form
-                ``projects/<project>/instances/<instance>/appProfiles/<app_profile>``.
+            name (str): Required. The unique name of the requested app profile. Values are
+                of the form
+                ``projects/{project}/instances/{instance}/appProfiles/{app_profile}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1400,13 +1397,16 @@ class BigtableInstanceAdminClient(object):
             ...         pass
 
         Args:
-            parent (str): The unique name of the instance for which a list of app profiles is
-                requested. Values are of the form
-                ``projects/<project>/instances/<instance>``. Use ``<instance> = '-'`` to
+            parent (str): Required. The unique name of the instance for which a list of app
+                profiles is requested. Values are of the form
+                ``projects/{project}/instances/{instance}``. Use ``{instance} = '-'`` to
                 list AppProfiles for all Instances in a project, e.g.,
                 ``projects/myproject/instances/-``.
-            page_size (int): Maximum number of results per page.
-                CURRENTLY UNIMPLEMENTED AND IGNORED.
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1506,11 +1506,11 @@ class BigtableInstanceAdminClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            app_profile (Union[dict, ~google.cloud.bigtable_admin_v2.types.AppProfile]): The app profile which will (partially) replace the current value.
+            app_profile (Union[dict, ~google.cloud.bigtable_admin_v2.types.AppProfile]): Required. The app profile which will (partially) replace the current value.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_admin_v2.types.AppProfile`
-            update_mask (Union[dict, ~google.cloud.bigtable_admin_v2.types.FieldMask]): The subset of app profile fields which should be replaced.
+            update_mask (Union[dict, ~google.cloud.bigtable_admin_v2.types.FieldMask]): Required. The subset of app profile fields which should be replaced.
                 If unset, all fields will be replaced.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -1577,7 +1577,7 @@ class BigtableInstanceAdminClient(object):
     def delete_app_profile(
         self,
         name,
-        ignore_warnings,
+        ignore_warnings=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -1592,14 +1592,12 @@ class BigtableInstanceAdminClient(object):
             >>>
             >>> name = client.app_profile_path('[PROJECT]', '[INSTANCE]', '[APP_PROFILE]')
             >>>
-            >>> # TODO: Initialize `ignore_warnings`:
-            >>> ignore_warnings = False
-            >>>
-            >>> client.delete_app_profile(name, ignore_warnings)
+            >>> client.delete_app_profile(name)
 
         Args:
-            name (str): The unique name of the app profile to be deleted. Values are of the form
-                ``projects/<project>/instances/<instance>/appProfiles/<app_profile>``.
+            name (str): Required. The unique name of the app profile to be deleted. Values
+                are of the form
+                ``projects/{project}/instances/{instance}/appProfiles/{app_profile}``.
             ignore_warnings (bool): If true, ignore safety checks when deleting the app profile.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -1665,7 +1663,8 @@ class BigtableInstanceAdminClient(object):
             >>>
             >>> client = bigtable_admin_v2.BigtableInstanceAdminClient()
             >>>
-            >>> resource = client.instance_path('[PROJECT]', '[INSTANCE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> response = client.get_iam_policy(resource)
 
@@ -1744,7 +1743,8 @@ class BigtableInstanceAdminClient(object):
             >>>
             >>> client = bigtable_admin_v2.BigtableInstanceAdminClient()
             >>>
-            >>> resource = client.instance_path('[PROJECT]', '[INSTANCE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> # TODO: Initialize `policy`:
             >>> policy = {}
@@ -1825,7 +1825,8 @@ class BigtableInstanceAdminClient(object):
             >>>
             >>> client = bigtable_admin_v2.BigtableInstanceAdminClient()
             >>>
-            >>> resource = client.instance_path('[PROJECT]', '[INSTANCE]')
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
             >>>
             >>> # TODO: Initialize `permissions`:
             >>> permissions = []
@@ -1835,8 +1836,8 @@ class BigtableInstanceAdminClient(object):
         Args:
             resource (str): REQUIRED: The resource for which the policy detail is being requested.
                 See the operation documentation for the appropriate value for this field.
-            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with
-                wildcards (such as '*' or 'storage.*') are not allowed. For more
+            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions
+                with wildcards (such as '*' or 'storage.*') are not allowed. For more
                 information see `IAM
                 Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used

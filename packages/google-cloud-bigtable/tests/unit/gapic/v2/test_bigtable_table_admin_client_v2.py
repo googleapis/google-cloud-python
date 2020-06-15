@@ -28,6 +28,7 @@ from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
+from google.protobuf import field_mask_pb2
 
 
 class MultiCallableStub(object):
@@ -131,7 +132,9 @@ class TestBigtableTableAdminClient(object):
         # Setup Request
         parent = client.instance_path("[PROJECT]", "[INSTANCE]")
         table_id = "tableId-895419604"
-        source_snapshot = "sourceSnapshot-947679896"
+        source_snapshot = client.snapshot_path(
+            "[PROJECT]", "[INSTANCE]", "[CLUSTER]", "[SNAPSHOT]"
+        )
 
         response = client.create_table_from_snapshot(parent, table_id, source_snapshot)
         result = response.result()
@@ -162,7 +165,9 @@ class TestBigtableTableAdminClient(object):
         # Setup Request
         parent = client.instance_path("[PROJECT]", "[INSTANCE]")
         table_id = "tableId-895419604"
-        source_snapshot = "sourceSnapshot-947679896"
+        source_snapshot = client.snapshot_path(
+            "[PROJECT]", "[INSTANCE]", "[CLUSTER]", "[SNAPSHOT]"
+        )
 
         response = client.create_table_from_snapshot(parent, table_id, source_snapshot)
         exception = response.exception()
@@ -456,7 +461,7 @@ class TestBigtableTableAdminClient(object):
             client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup Request
-        resource = client.table_path("[PROJECT]", "[INSTANCE]", "[TABLE]")
+        resource = "resource-341064690"
 
         response = client.get_iam_policy(resource)
         assert expected_response == response
@@ -475,7 +480,7 @@ class TestBigtableTableAdminClient(object):
             client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup request
-        resource = client.table_path("[PROJECT]", "[INSTANCE]", "[TABLE]")
+        resource = "resource-341064690"
 
         with pytest.raises(CustomException):
             client.get_iam_policy(resource)
@@ -495,7 +500,7 @@ class TestBigtableTableAdminClient(object):
             client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup Request
-        resource = client.table_path("[PROJECT]", "[INSTANCE]", "[TABLE]")
+        resource = "resource-341064690"
         policy = {}
 
         response = client.set_iam_policy(resource, policy)
@@ -517,7 +522,7 @@ class TestBigtableTableAdminClient(object):
             client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup request
-        resource = client.table_path("[PROJECT]", "[INSTANCE]", "[TABLE]")
+        resource = "resource-341064690"
         policy = {}
 
         with pytest.raises(CustomException):
@@ -538,7 +543,7 @@ class TestBigtableTableAdminClient(object):
             client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup Request
-        resource = client.table_path("[PROJECT]", "[INSTANCE]", "[TABLE]")
+        resource = "resource-341064690"
         permissions = []
 
         response = client.test_iam_permissions(resource, permissions)
@@ -560,7 +565,7 @@ class TestBigtableTableAdminClient(object):
             client = bigtable_admin_v2.BigtableTableAdminClient()
 
         # Setup request
-        resource = client.table_path("[PROJECT]", "[INSTANCE]", "[TABLE]")
+        resource = "resource-341064690"
         permissions = []
 
         with pytest.raises(CustomException):
@@ -570,11 +575,11 @@ class TestBigtableTableAdminClient(object):
         # Setup Expected Response
         name_2 = "name2-1052831874"
         data_size_bytes = 2110122398
-        description_2 = "description2568623279"
+        description = "description-1724546052"
         expected_response = {
             "name": name_2,
             "data_size_bytes": data_size_bytes,
-            "description": description_2,
+            "description": description,
         }
         expected_response = table_pb2.Snapshot(**expected_response)
         operation = operations_pb2.Operation(
@@ -591,17 +596,16 @@ class TestBigtableTableAdminClient(object):
 
         # Setup Request
         name = client.table_path("[PROJECT]", "[INSTANCE]", "[TABLE]")
-        cluster = "cluster872092154"
+        cluster = client.cluster_path("[PROJECT]", "[INSTANCE]", "[CLUSTER]")
         snapshot_id = "snapshotId-168585866"
-        description = "description-1724546052"
 
-        response = client.snapshot_table(name, cluster, snapshot_id, description)
+        response = client.snapshot_table(name, cluster, snapshot_id)
         result = response.result()
         assert expected_response == result
 
         assert len(channel.requests) == 1
         expected_request = bigtable_table_admin_pb2.SnapshotTableRequest(
-            name=name, cluster=cluster, snapshot_id=snapshot_id, description=description
+            name=name, cluster=cluster, snapshot_id=snapshot_id
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -623,11 +627,10 @@ class TestBigtableTableAdminClient(object):
 
         # Setup Request
         name = client.table_path("[PROJECT]", "[INSTANCE]", "[TABLE]")
-        cluster = "cluster872092154"
+        cluster = client.cluster_path("[PROJECT]", "[INSTANCE]", "[CLUSTER]")
         snapshot_id = "snapshotId-168585866"
-        description = "description-1724546052"
 
-        response = client.snapshot_table(name, cluster, snapshot_id, description)
+        response = client.snapshot_table(name, cluster, snapshot_id)
         exception = response.exception()
         assert exception.errors[0] == error
 
@@ -758,3 +761,279 @@ class TestBigtableTableAdminClient(object):
 
         with pytest.raises(CustomException):
             client.delete_snapshot(name)
+
+    def test_create_backup(self):
+        # Setup Expected Response
+        name = "name3373707"
+        source_table = "sourceTable1670858410"
+        size_bytes = 1796325715
+        expected_response = {
+            "name": name,
+            "source_table": source_table,
+            "size_bytes": size_bytes,
+        }
+        expected_response = table_pb2.Backup(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_create_backup", done=True
+        )
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
+
+        # Setup Request
+        parent = client.cluster_path("[PROJECT]", "[INSTANCE]", "[CLUSTER]")
+        backup_id = "backupId1355353272"
+        backup = {}
+
+        response = client.create_backup(parent, backup_id, backup)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = bigtable_table_admin_pb2.CreateBackupRequest(
+            parent=parent, backup_id=backup_id, backup=backup
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_create_backup_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_create_backup_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
+
+        # Setup Request
+        parent = client.cluster_path("[PROJECT]", "[INSTANCE]", "[CLUSTER]")
+        backup_id = "backupId1355353272"
+        backup = {}
+
+        response = client.create_backup(parent, backup_id, backup)
+        exception = response.exception()
+        assert exception.errors[0] == error
+
+    def test_get_backup(self):
+        # Setup Expected Response
+        name_2 = "name2-1052831874"
+        source_table = "sourceTable1670858410"
+        size_bytes = 1796325715
+        expected_response = {
+            "name": name_2,
+            "source_table": source_table,
+            "size_bytes": size_bytes,
+        }
+        expected_response = table_pb2.Backup(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
+
+        # Setup Request
+        name = client.backup_path("[PROJECT]", "[INSTANCE]", "[CLUSTER]", "[BACKUP]")
+
+        response = client.get_backup(name)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = bigtable_table_admin_pb2.GetBackupRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_get_backup_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
+
+        # Setup request
+        name = client.backup_path("[PROJECT]", "[INSTANCE]", "[CLUSTER]", "[BACKUP]")
+
+        with pytest.raises(CustomException):
+            client.get_backup(name)
+
+    def test_list_backups(self):
+        # Setup Expected Response
+        next_page_token = ""
+        backups_element = {}
+        backups = [backups_element]
+        expected_response = {"next_page_token": next_page_token, "backups": backups}
+        expected_response = bigtable_table_admin_pb2.ListBackupsResponse(
+            **expected_response
+        )
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
+
+        # Setup Request
+        parent = client.cluster_path("[PROJECT]", "[INSTANCE]", "[CLUSTER]")
+
+        paged_list_response = client.list_backups(parent)
+        resources = list(paged_list_response)
+        assert len(resources) == 1
+
+        assert expected_response.backups[0] == resources[0]
+
+        assert len(channel.requests) == 1
+        expected_request = bigtable_table_admin_pb2.ListBackupsRequest(parent=parent)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_list_backups_exception(self):
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
+
+        # Setup request
+        parent = client.cluster_path("[PROJECT]", "[INSTANCE]", "[CLUSTER]")
+
+        paged_list_response = client.list_backups(parent)
+        with pytest.raises(CustomException):
+            list(paged_list_response)
+
+    def test_update_backup(self):
+        # Setup Expected Response
+        name = "name3373707"
+        source_table = "sourceTable1670858410"
+        size_bytes = 1796325715
+        expected_response = {
+            "name": name,
+            "source_table": source_table,
+            "size_bytes": size_bytes,
+        }
+        expected_response = table_pb2.Backup(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
+
+        # Setup Request
+        backup = {}
+        update_mask = {}
+
+        response = client.update_backup(backup, update_mask)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = bigtable_table_admin_pb2.UpdateBackupRequest(
+            backup=backup, update_mask=update_mask
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_update_backup_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
+
+        # Setup request
+        backup = {}
+        update_mask = {}
+
+        with pytest.raises(CustomException):
+            client.update_backup(backup, update_mask)
+
+    def test_delete_backup(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
+
+        # Setup Request
+        name = client.backup_path("[PROJECT]", "[INSTANCE]", "[CLUSTER]", "[BACKUP]")
+
+        client.delete_backup(name)
+
+        assert len(channel.requests) == 1
+        expected_request = bigtable_table_admin_pb2.DeleteBackupRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_backup_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
+
+        # Setup request
+        name = client.backup_path("[PROJECT]", "[INSTANCE]", "[CLUSTER]", "[BACKUP]")
+
+        with pytest.raises(CustomException):
+            client.delete_backup(name)
+
+    def test_restore_table(self):
+        # Setup Expected Response
+        name = "name3373707"
+        expected_response = {"name": name}
+        expected_response = table_pb2.Table(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_restore_table", done=True
+        )
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
+
+        response = client.restore_table()
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = bigtable_table_admin_pb2.RestoreTableRequest()
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_restore_table_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_restore_table_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigtable_admin_v2.BigtableTableAdminClient()
+
+        response = client.restore_table()
+        exception = response.exception()
+        assert exception.errors[0] == error

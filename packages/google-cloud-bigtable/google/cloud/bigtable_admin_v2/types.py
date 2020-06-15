@@ -22,6 +22,7 @@ from google.api_core.protobuf_helpers import get_messages
 
 from google.cloud.bigtable_admin_v2.proto import bigtable_instance_admin_pb2
 from google.cloud.bigtable_admin_v2.proto import bigtable_table_admin_pb2
+from google.cloud.bigtable_admin_v2.proto import common_pb2
 from google.cloud.bigtable_admin_v2.proto import instance_pb2
 from google.cloud.bigtable_admin_v2.proto import table_pb2
 from google.iam.v1 import iam_policy_pb2
@@ -54,6 +55,7 @@ _shared_modules = [
 _local_modules = [
     bigtable_instance_admin_pb2,
     bigtable_table_admin_pb2,
+    common_pb2,
     instance_pb2,
     table_pb2,
 ]

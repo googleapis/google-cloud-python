@@ -224,8 +224,9 @@ class BigtableClient(object):
             ...     pass
 
         Args:
-            table_name (str): Required. The unique name of the table from which to read. Values are of
-                the form ``projects/<project>/instances/<instance>/tables/<table>``.
+            table_name (str): Required. The unique name of the table from which to read. Values
+                are of the form
+                ``projects/<project>/instances/<instance>/tables/<table>``.
             app_profile_id (str): This value specifies routing for replication. If not specified, the
                 "default" application profile will be used.
             rows (Union[dict, ~google.cloud.bigtable_v2.types.RowSet]): The row keys and/or ranges to read. If not specified, reads from all rows.
@@ -319,8 +320,8 @@ class BigtableClient(object):
             ...     pass
 
         Args:
-            table_name (str): Required. The unique name of the table from which to sample row keys.
-                Values are of the form
+            table_name (str): Required. The unique name of the table from which to sample row
+                keys. Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
             app_profile_id (str): This value specifies routing for replication. If not specified, the
                 "default" application profile will be used.
@@ -404,8 +405,8 @@ class BigtableClient(object):
             >>> response = client.mutate_row(table_name, row_key, mutations)
 
         Args:
-            table_name (str): Required. The unique name of the table to which the mutation should be
-                applied. Values are of the form
+            table_name (str): Required. The unique name of the table to which the mutation should
+                be applied. Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
             row_key (bytes): Required. The key of the row to which the mutation should be applied.
             mutations (list[Union[dict, ~google.cloud.bigtable_v2.types.Mutation]]): Required. Changes to be atomically applied to the specified row. Entries are applied
@@ -587,16 +588,16 @@ class BigtableClient(object):
             >>> response = client.check_and_mutate_row(table_name, row_key)
 
         Args:
-            table_name (str): Required. The unique name of the table to which the conditional mutation
-                should be applied. Values are of the form
+            table_name (str): Required. The unique name of the table to which the conditional
+                mutation should be applied. Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
             row_key (bytes): Required. The key of the row to which the conditional mutation should be applied.
             app_profile_id (str): This value specifies routing for replication. If not specified, the
                 "default" application profile will be used.
-            predicate_filter (Union[dict, ~google.cloud.bigtable_v2.types.RowFilter]): The filter to be applied to the contents of the specified row. Depending
-                on whether or not any results are yielded, either ``true_mutations`` or
-                ``false_mutations`` will be executed. If unset, checks that the row
-                contains any values at all.
+            predicate_filter (Union[dict, ~google.cloud.bigtable_v2.types.RowFilter]): The filter to be applied to the contents of the specified row.
+                Depending on whether or not any results are yielded, either
+                ``true_mutations`` or ``false_mutations`` will be executed. If unset,
+                checks that the row contains any values at all.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigtable_v2.types.RowFilter`
@@ -704,8 +705,8 @@ class BigtableClient(object):
             >>> response = client.read_modify_write_row(table_name, row_key, rules)
 
         Args:
-            table_name (str): Required. The unique name of the table to which the read/modify/write
-                rules should be applied. Values are of the form
+            table_name (str): Required. The unique name of the table to which the
+                read/modify/write rules should be applied. Values are of the form
                 ``projects/<project>/instances/<instance>/tables/<table>``.
             row_key (bytes): Required. The key of the row to which the read/modify/write rules should be applied.
             rules (list[Union[dict, ~google.cloud.bigtable_v2.types.ReadModifyWriteRule]]): Required. Rules specifying how the specified row's contents are to be transformed
