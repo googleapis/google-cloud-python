@@ -329,6 +329,7 @@ class Client(ClientWithProject):
             .. literalinclude:: snippets.py
                 :start-after: [START get_bucket]
                 :end-before: [END get_bucket]
+                :dedent: 4
 
             Get a bucket using a resource.
 
@@ -367,6 +368,7 @@ class Client(ClientWithProject):
         .. literalinclude:: snippets.py
             :start-after: [START lookup_bucket]
             :end-before: [END lookup_bucket]
+            :dedent: 4
 
         :type bucket_name: str
         :param bucket_name: The name of the bucket to get.
@@ -461,6 +463,7 @@ class Client(ClientWithProject):
             .. literalinclude:: snippets.py
                 :start-after: [START create_bucket]
                 :end-before: [END create_bucket]
+                :dedent: 4
 
             Create a bucket using a resource.
 
@@ -702,6 +705,7 @@ class Client(ClientWithProject):
         .. literalinclude:: snippets.py
             :start-after: [START list_buckets]
             :end-before: [END list_buckets]
+            :dedent: 4
 
         This implements "storage.buckets.list".
 

@@ -21,6 +21,7 @@ an ACL object under the hood, and you can interact with that using
 .. literalinclude:: snippets.py
     :start-after: [START client_bucket_acl]
     :end-before: [END client_bucket_acl]
+    :dedent: 4
 
 
 Adding and removing permissions can be done with the following methods
@@ -52,6 +53,7 @@ be :class:`_ACLEntity` factories):
 .. literalinclude:: snippets.py
    :start-after: [START acl_user_settings]
    :end-before: [END acl_user_settings]
+   :dedent: 4
 
 After that, you can save any changes you make with the
 :func:`google.cloud.storage.acl.ACL.save` method:
@@ -59,6 +61,7 @@ After that, you can save any changes you make with the
 .. literalinclude:: snippets.py
    :start-after: [START acl_save]
    :end-before: [END acl_save]
+   :dedent: 4
 
 You can alternatively save any existing :class:`google.cloud.storage.acl.ACL`
 object (whether it was created by a factory method or not) from a
@@ -67,6 +70,7 @@ object (whether it was created by a factory method or not) from a
 .. literalinclude:: snippets.py
    :start-after: [START acl_save_bucket]
    :end-before: [END acl_save_bucket]
+   :dedent: 4
 
 To get the list of ``entity`` and ``role`` for each unique pair, the
 :class:`ACL` class is iterable:
@@ -74,6 +78,7 @@ To get the list of ``entity`` and ``role`` for each unique pair, the
 .. literalinclude:: snippets.py
    :start-after: [START acl_print]
    :end-before: [END acl_print]
+   :dedent: 4
 
 This list of tuples can be used as the ``entity`` and ``role`` fields
 when sending metadata for ACLs to the API.
