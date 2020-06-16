@@ -23,7 +23,7 @@ import setuptools
 name = "google-cloud-containeranalysis"
 description = "Container Analysis API API client library"
 version = "1.0.0"
-release_status = "Development Status :: 5 - Production/stable"
+release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
     "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
