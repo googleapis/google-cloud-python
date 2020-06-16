@@ -1,5 +1,7 @@
-Python Client for Container Analysis API (`Alpha`_)
-===================================================
+Python Client for Container Analysis API
+========================================
+
+|ga| |pypi| |versions|
 
 `Container Analysis API`_: An implementation of the Grafeas API, which stores, and enables querying
 and retrieval of critical metadata about all of your software artifacts.
@@ -7,7 +9,12 @@ and retrieval of critical metadata about all of your software artifacts.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-containeranalysis.svg
+   :target: https://pypi.org/project/google-cloud-containeranalysis/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-containeranalysis.svg
+   :target: https://pypi.org/project/google-cloud-containeranalysis/
 .. _Container Analysis API: https://cloud.google.com/container-registry/docs/container-analysis
 .. _Client Library Documentation: https://googleapis.dev/python/containeranalysis/latest
 .. _Product Documentation:  https://cloud.google.com/container-registry/docs/container-analysis
