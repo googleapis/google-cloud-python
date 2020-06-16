@@ -18,6 +18,7 @@ import pathlib
 import subprocess
 
 import ci_diff_helper
+import requests
 
 
 def print_environment(environment):
@@ -39,10 +40,25 @@ def get_base(environment):
         return 'HEAD~1'
 
 
-def get_changed_files(base):
+def get_changed_files_from_base(base):
     return subprocess.check_output([
         'git', 'diff', '--name-only', f'{base}..HEAD',
     ], stderr=subprocess.DEVNULL).decode('utf8').strip().split('\n')
+
+
+_URL_TEMPLATE = (
+    'https://api.github.com/repos/googleapis/google-cloud-python/pulls/'
+    '{}/files'
+)
+
+
+def get_changed_files_from_pr(pr):
+    url = _URL_TEMPLATE.format(pr)
+    while url is not None:
+        response = requests.get(url)
+        for info in response.json():
+            yield info['filename']
+        url = response.links.get('next', {}).get('url')
 
 
 def determine_changed_packages(changed_files):
@@ -64,7 +80,12 @@ def main():
     environment = ci_diff_helper.get_config()
     print_environment(environment)
     base = get_base(environment)
-    changed_files = get_changed_files(base)
+
+    if environment.in_pr:
+        changed_files = list(get_changed_files_from_pr(environment.pr))
+    else:
+        changed_files = get_changed_files_from_base(base)
+
     packages = determine_changed_packages(changed_files)
 
     print(f"Comparing against {base}.")

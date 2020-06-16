@@ -49,7 +49,7 @@ You'll have to create a development environment to hack on
    $ cd hack-on-google-cloud-python
    # Configure remotes such that you can pull changes from the google-cloud-python
    # repository into your local repository.
-   $ git remote add upstream git@github.com:GoogleCloudPlatform/google-cloud-python.git
+   $ git remote add upstream git@github.com:googleapis/google-cloud-python.git
    # fetch and merge changes from upstream into master
    $ git fetch upstream
    $ git merge upstream/master
@@ -60,23 +60,25 @@ repo, from which you can submit a pull request.
 To work on the codebase and run the tests, we recommend using ``nox``,
 but you can also use a ``virtualenv`` of your own creation.
 
-.. _repo: https://github.com/GoogleCloudPlatform/google-cloud-python
+.. _repo: https://github.com/googleapis/google-cloud-python
 
 Using ``nox``
 =============
 
 We use `nox <https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 
-- To test your changes, run unit tests with ``nox``::
+You must install nox using Python 3.
 
-    $ nox -f datastore/noxfile.py -s unit-2.7
-    $ nox -f datastore/noxfile.py -s unit-3.6
+- To test your changes, go to the package directory and run ``nox``::
+
+    $ nox -s unit-2.7
+    $ nox -s unit-3.7
     $ ...
 
   .. note::
 
     The unit tests and system tests are contained in the individual
-    ``nox.py`` files in each directory; substitute ``datastore`` in the
+    ``noxfile.py`` files in each directory; substitute ``datastore`` in the
     example above with the package of your choice.
 
 
@@ -85,7 +87,7 @@ We use `nox <https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 
     $ export GIT_ROOT=$(pwd)
     $ cd ${GIT_ROOT}/datastore/
-    $ nox -s "unit(py='3.6')"
+    $ nox -s unit-3.7
 
 .. nox: https://pypi.org/project/nox-automation/
 
@@ -122,9 +124,13 @@ On Debian/Ubuntu::
 Coding Style
 ************
 
-- PEP8 compliance, with exceptions defined in the linter configuration.
-  If you have ``nox`` installed, you can test that you have not introduced
-  any non-compliant code via::
+- We use the automatic code formatter ``black``. You can run it using
+  the nox session ``blacken``. This will eliminate many lint errors.
+
+   $ nox -s blacken
+
+- PEP8 compliance is required, with exceptions defined in the linter configuration.
+  You can test for non-compliant code via::
 
    $ nox -s lint
 
@@ -135,8 +141,8 @@ Coding Style
    export GOOGLE_CLOUD_TESTING_BRANCH="master"
 
   By doing this, you are specifying the location of the most up-to-date
-  version of ``google-cloud-python``. The the suggested remote name ``upstream``
-  should point to the official ``GoogleCloudPlatform`` checkout and the
+  version of ``google-cloud-python``. The suggested remote name ``upstream``
+  should point to the official ``googleapis`` checkout and the
   the branch should be the main branch on that remote (``master``).
 
 Exceptions to PEP8:
@@ -145,19 +151,29 @@ Exceptions to PEP8:
   "Function-Under-Test"), which is PEP8-incompliant, but more readable.
   Some also use a local variable, ``MUT`` (short for "Module-Under-Test").
 
+*************************
+Commit Message Convention
+*************************
+
+We use `Conventional Commits`_ as a convention for writing commit messages.
+It provides an easy set of rules for creating an explicit commit history.
+
+.. _Conventional Commits: https://www.conventionalcommits.org/
+
 ********************
 Running System Tests
 ********************
 
-- To run system tests for a given package, you can execute::
+- To run system tests for a given package, go to the package directory
+  and execute::
 
-   $ nox -f datastore/noxfile.py -s system-3.6
-   $ nox -f datastore/noxfile.py -s system-2.7
+   $ nox -s system-3.7
+   $ nox -s system-2.7
 
   .. note::
 
       System tests are only configured to run under Python 2.7 and
-      Python 3.6. For expediency, we do not run them in older versions
+      Python 3.7. For expediency, we do not run them in older versions
       of Python 3.
 
   This alone will not run the tests. You'll need to change some local
@@ -169,8 +185,7 @@ Running System Tests
   authentication to your project:
 
   - ``GOOGLE_APPLICATION_CREDENTIALS``: The path to a JSON key file;
-    see ``system_tests/app_credentials.json.sample`` as an example. Such a file
-    can be downloaded directly from the developer's console by clicking
+    Such a file can be downloaded directly from the developer's console by clicking
     "Generate new JSON key". See private key
     `docs <https://cloud.google.com/storage/docs/authentication#generating-a-private-key>`__
     for more details.
@@ -180,11 +195,10 @@ Running System Tests
     "IAM & Admin". Additionally, ``cloud-logs@google.com`` must be given
     ``Editor`` permissions on the project.
 
-- Examples of these can be found in ``system_tests/local_test_setup.sample``. We
-  recommend copying this to ``system_tests/local_test_setup``, editing the
-  values and sourcing them into your environment::
+- Once you have downloaded your json keys, set the environment variable 
+  ``GOOGLE_APPLICATION_CREDENTIALS`` to the absolute path of the json file::
 
-   $ source system_tests/local_test_setup
+   $ export GOOGLE_APPLICATION_CREDENTIALS="/Users/<your_username>/path/to/app_credentials.json"
 
 - For datastore tests, you'll need to create composite
   `indexes <https://cloud.google.com/datastore/docs/tools/indexconfig>`__
@@ -200,7 +214,7 @@ Running System Tests
    > --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
 
    # Create the indexes
-   $ gcloud datastore create-indexes system_tests/data/index.yaml
+   $ gcloud datastore indexes create datastore/tests/system/index.yaml
 
 - For datastore query tests, you'll need stored data in your dataset.
   To populate this data, run::
@@ -212,6 +226,25 @@ Running System Tests
   datastore instance via::
 
    $ python datastore/tests/system/utils/clear_datastore.py
+
+
+******************************
+Running Generated Sample Tests
+******************************
+
+- To run system tests for a given package, go to the package directory 
+  and execute::
+
+   $ nox -s samples
+
+  .. note::
+
+      Generated sample tests require the ``sample-tester`` commamd line
+      `tool <https://sample-tester.readthedocs.io>`.
+
+- Generated sample tests will be run against an actual project and
+  so you'll need to provide some environment variables to facilitate
+  authentication to your project (See: Running System Tests)
 
 
 *************
@@ -230,32 +263,12 @@ documentation in this package which references that API or behavior must be
 changed to reflect the bug fix, ideally in the same commit that fixes the bug
 or adds the feature.
 
-To build and review docs (where ``${VENV}`` refers to the virtualenv you're
-using to develop ``google-cloud-python``):
+To build and review docs go to the package directory and execute::
 
-#. After following the steps above in "Using a Development Checkout", install
-   Sphinx and all development requirements in your virtualenv::
-
-     $ cd ${HOME}/hack-on-google-cloud-python
-     $ ${VENV}/bin/pip install Sphinx
-
-#. Change into the ``docs`` directory within your ``google-cloud-python`` checkout and
-   execute the ``make`` command with some flags::
-
-     $ cd ${HOME}/hack-on-google-cloud-python/google-cloud-python/docs
-     $ make clean html SPHINXBUILD=${VENV}/bin/sphinx-build
-
-   The ``SPHINXBUILD=...`` argument tells Sphinx to use the virtualenv Python,
-   which will have both Sphinx and ``google-cloud-python`` (for API documentation
-   generation) installed.
+$ nox -s docs
 
 #. Open the ``docs/_build/html/index.html`` file to see the resulting HTML
    rendering.
-
-As an alternative to 1. and 2. above, if you have ``nox`` installed, you
-can build the docs via::
-
-   $ nox -s docs
 
 ********************************************
 Note About ``README`` as it pertains to PyPI
@@ -271,13 +284,10 @@ may cause problems creating links or rendering the description.
 .. _description on PyPI: https://pypi.org/project/google-cloud/
 
 **********************
-CircleCI Configuration
+Kokoro Configuration
 **********************
 
-All build scripts in the ``.circleci/config.yml`` configuration file which have
-Python dependencies are specified in the ``nox.py`` configuration.
-They are executed in the Travis build via ``nox -s ${ENV}`` where
-``${ENV}`` is the environment being tested.
+Build scripts and configurations are in the ``.kokoro`` directory.
 
 
 *************************
