@@ -37,9 +37,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto",
     package="google.bigtable.admin.v2",
     syntax="proto3",
-    serialized_options=b"\n\034com.google.bigtable.admin.v2B\027BigtableTableAdminProtoP\001Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\252\002\036Google.Cloud.Bigtable.Admin.V2\312\002\036Google\\Cloud\\Bigtable\\Admin\\V2",
+    serialized_options=b'\n\034com.google.bigtable.admin.v2B\027BigtableTableAdminProtoP\001Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\252\002\036Google.Cloud.Bigtable.Admin.V2\312\002\036Google\\Cloud\\Bigtable\\Admin\\V2\352\002"Google::Cloud::Bigtable::Admin::V2',
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n?google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto\x12\x18google.bigtable.admin.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x31google/cloud/bigtable_admin_v2/proto/common.proto\x1a\x30google/cloud/bigtable_admin_v2/proto/table.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xfc\x01\n\x12\x43reateTableRequest\x12\x38\n\x06parent\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n bigtable.googleapis.com/Instance\x12\x15\n\x08table_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x33\n\x05table\x18\x03 \x01(\x0b\x32\x1f.google.bigtable.admin.v2.TableB\x03\xe0\x41\x02\x12J\n\x0einitial_splits\x18\x04 \x03(\x0b\x32\x32.google.bigtable.admin.v2.CreateTableRequest.Split\x1a\x14\n\x05Split\x12\x0b\n\x03key\x18\x01 \x01(\x0c"\xb4\x01\n\x1e\x43reateTableFromSnapshotRequest\x12\x38\n\x06parent\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n bigtable.googleapis.com/Instance\x12\x15\n\x08table_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x41\n\x0fsource_snapshot\x18\x03 \x01(\tB(\xe0\x41\x02\xfa\x41"\n bigtable.googleapis.com/Snapshot"\x94\x01\n\x13\x44ropRowRangeRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table\x12\x18\n\x0erow_key_prefix\x18\x02 \x01(\x0cH\x00\x12$\n\x1a\x64\x65lete_all_data_from_table\x18\x03 \x01(\x08H\x00\x42\x08\n\x06target"\xa8\x01\n\x11ListTablesRequest\x12\x38\n\x06parent\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n bigtable.googleapis.com/Instance\x12\x32\n\x04view\x18\x02 \x01(\x0e\x32$.google.bigtable.admin.v2.Table.View\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"^\n\x12ListTablesResponse\x12/\n\x06tables\x18\x01 \x03(\x0b\x32\x1f.google.bigtable.admin.v2.Table\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"z\n\x0fGetTableRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table\x12\x32\n\x04view\x18\x02 \x01(\x0e\x32$.google.bigtable.admin.v2.Table.View"I\n\x12\x44\x65leteTableRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table"\xda\x02\n\x1bModifyColumnFamiliesRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table\x12^\n\rmodifications\x18\x02 \x03(\x0b\x32\x42.google.bigtable.admin.v2.ModifyColumnFamiliesRequest.ModificationB\x03\xe0\x41\x02\x1a\xa5\x01\n\x0cModification\x12\n\n\x02id\x18\x01 \x01(\t\x12\x38\n\x06\x63reate\x18\x02 \x01(\x0b\x32&.google.bigtable.admin.v2.ColumnFamilyH\x00\x12\x38\n\x06update\x18\x03 \x01(\x0b\x32&.google.bigtable.admin.v2.ColumnFamilyH\x00\x12\x0e\n\x04\x64rop\x18\x04 \x01(\x08H\x00\x42\x05\n\x03mod"V\n\x1fGenerateConsistencyTokenRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table"=\n GenerateConsistencyTokenResponse\x12\x19\n\x11\x63onsistency_token\x18\x01 \x01(\t"n\n\x17\x43heckConsistencyRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table\x12\x1e\n\x11\x63onsistency_token\x18\x02 \x01(\tB\x03\xe0\x41\x02".\n\x18\x43heckConsistencyResponse\x12\x12\n\nconsistent\x18\x01 \x01(\x08"\xdc\x01\n\x14SnapshotTableRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table\x12\x38\n\x07\x63luster\x18\x02 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1f\x62igtable.googleapis.com/Cluster\x12\x18\n\x0bsnapshot_id\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12&\n\x03ttl\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t"L\n\x12GetSnapshotRequest\x12\x36\n\x04name\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n bigtable.googleapis.com/Snapshot"v\n\x14ListSnapshotsRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1f\x62igtable.googleapis.com/Cluster\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"g\n\x15ListSnapshotsResponse\x12\x35\n\tsnapshots\x18\x01 \x03(\x0b\x32".google.bigtable.admin.v2.Snapshot\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"O\n\x15\x44\x65leteSnapshotRequest\x12\x36\n\x04name\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n bigtable.googleapis.com/Snapshot"\xc4\x01\n\x15SnapshotTableMetadata\x12H\n\x10original_request\x18\x01 \x01(\x0b\x32..google.bigtable.admin.v2.SnapshotTableRequest\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xd8\x01\n\x1f\x43reateTableFromSnapshotMetadata\x12R\n\x10original_request\x18\x01 \x01(\x0b\x32\x38.google.bigtable.admin.v2.CreateTableFromSnapshotRequest\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x9d\x01\n\x13\x43reateBackupRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1f\x62igtable.googleapis.com/Cluster\x12\x16\n\tbackup_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x35\n\x06\x62\x61\x63kup\x18\x03 \x01(\x0b\x32 .google.bigtable.admin.v2.BackupB\x03\xe0\x41\x02"\x98\x01\n\x14\x43reateBackupMetadata\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0csource_table\x18\x02 \x01(\t\x12.\n\nstart_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"H\n\x10GetBackupRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x62igtable.googleapis.com/Backup"\x82\x01\n\x13UpdateBackupRequest\x12\x35\n\x06\x62\x61\x63kup\x18\x01 \x01(\x0b\x32 .google.bigtable.admin.v2.BackupB\x03\xe0\x41\x02\x12\x34\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x02"K\n\x13\x44\x65leteBackupRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x62igtable.googleapis.com/Backup"\x96\x01\n\x12ListBackupsRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1f\x62igtable.googleapis.com/Cluster\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x10\n\x08order_by\x18\x03 \x01(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x12\n\npage_token\x18\x05 \x01(\t"a\n\x13ListBackupsResponse\x12\x31\n\x07\x62\x61\x63kups\x18\x01 \x03(\x0b\x32 .google.bigtable.admin.v2.Backup\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"S\n\x13RestoreTableRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x10\n\x08table_id\x18\x02 \x01(\t\x12\x10\n\x06\x62\x61\x63kup\x18\x03 \x01(\tH\x00\x42\x08\n\x06source"\x98\x02\n\x14RestoreTableMetadata\x12\x0c\n\x04name\x18\x01 \x01(\t\x12@\n\x0bsource_type\x18\x02 \x01(\x0e\x32+.google.bigtable.admin.v2.RestoreSourceType\x12;\n\x0b\x62\x61\x63kup_info\x18\x03 \x01(\x0b\x32$.google.bigtable.admin.v2.BackupInfoH\x00\x12%\n\x1doptimize_table_operation_name\x18\x04 \x01(\t\x12=\n\x08progress\x18\x05 \x01(\x0b\x32+.google.bigtable.admin.v2.OperationProgressB\r\n\x0bsource_info"l\n\x1dOptimizeRestoredTableMetadata\x12\x0c\n\x04name\x18\x01 \x01(\t\x12=\n\x08progress\x18\x02 \x01(\x0b\x32+.google.bigtable.admin.v2.OperationProgress2\xc8$\n\x12\x42igtableTableAdmin\x12\xab\x01\n\x0b\x43reateTable\x12,.google.bigtable.admin.v2.CreateTableRequest\x1a\x1f.google.bigtable.admin.v2.Table"M\x82\xd3\xe4\x93\x02/"*/v2/{parent=projects/*/instances/*}/tables:\x01*\xda\x41\x15parent,table_id,table\x12\x8a\x02\n\x17\x43reateTableFromSnapshot\x12\x38.google.bigtable.admin.v2.CreateTableFromSnapshotRequest\x1a\x1d.google.longrunning.Operation"\x95\x01\x82\xd3\xe4\x93\x02\x42"=/v2/{parent=projects/*/instances/*}/tables:createFromSnapshot:\x01*\xda\x41\x1fparent,table_id,source_snapshot\xca\x41(\n\x05Table\x12\x1f\x43reateTableFromSnapshotMetadata\x12\xa4\x01\n\nListTables\x12+.google.bigtable.admin.v2.ListTablesRequest\x1a,.google.bigtable.admin.v2.ListTablesResponse";\x82\xd3\xe4\x93\x02,\x12*/v2/{parent=projects/*/instances/*}/tables\xda\x41\x06parent\x12\x91\x01\n\x08GetTable\x12).google.bigtable.admin.v2.GetTableRequest\x1a\x1f.google.bigtable.admin.v2.Table"9\x82\xd3\xe4\x93\x02,\x12*/v2/{name=projects/*/instances/*/tables/*}\xda\x41\x04name\x12\x8e\x01\n\x0b\x44\x65leteTable\x12,.google.bigtable.admin.v2.DeleteTableRequest\x1a\x16.google.protobuf.Empty"9\x82\xd3\xe4\x93\x02,**/v2/{name=projects/*/instances/*/tables/*}\xda\x41\x04name\x12\xcf\x01\n\x14ModifyColumnFamilies\x12\x35.google.bigtable.admin.v2.ModifyColumnFamiliesRequest\x1a\x1f.google.bigtable.admin.v2.Table"_\x82\xd3\xe4\x93\x02\x44"?/v2/{name=projects/*/instances/*/tables/*}:modifyColumnFamilies:\x01*\xda\x41\x12name,modifications\x12\x99\x01\n\x0c\x44ropRowRange\x12-.google.bigtable.admin.v2.DropRowRangeRequest\x1a\x16.google.protobuf.Empty"B\x82\xd3\xe4\x93\x02<"7/v2/{name=projects/*/instances/*/tables/*}:dropRowRange:\x01*\x12\xe8\x01\n\x18GenerateConsistencyToken\x12\x39.google.bigtable.admin.v2.GenerateConsistencyTokenRequest\x1a:.google.bigtable.admin.v2.GenerateConsistencyTokenResponse"U\x82\xd3\xe4\x93\x02H"C/v2/{name=projects/*/instances/*/tables/*}:generateConsistencyToken:\x01*\xda\x41\x04name\x12\xda\x01\n\x10\x43heckConsistency\x12\x31.google.bigtable.admin.v2.CheckConsistencyRequest\x1a\x32.google.bigtable.admin.v2.CheckConsistencyResponse"_\x82\xd3\xe4\x93\x02@";/v2/{name=projects/*/instances/*/tables/*}:checkConsistency:\x01*\xda\x41\x16name,consistency_token\x12\xea\x01\n\rSnapshotTable\x12..google.bigtable.admin.v2.SnapshotTableRequest\x1a\x1d.google.longrunning.Operation"\x89\x01\x82\xd3\xe4\x93\x02\x38"3/v2/{name=projects/*/instances/*/tables/*}:snapshot:\x01*\xda\x41$name,cluster,snapshot_id,description\xca\x41!\n\x08Snapshot\x12\x15SnapshotTableMetadata\x12\xa8\x01\n\x0bGetSnapshot\x12,.google.bigtable.admin.v2.GetSnapshotRequest\x1a".google.bigtable.admin.v2.Snapshot"G\x82\xd3\xe4\x93\x02:\x12\x38/v2/{name=projects/*/instances/*/clusters/*/snapshots/*}\xda\x41\x04name\x12\xbb\x01\n\rListSnapshots\x12..google.bigtable.admin.v2.ListSnapshotsRequest\x1a/.google.bigtable.admin.v2.ListSnapshotsResponse"I\x82\xd3\xe4\x93\x02:\x12\x38/v2/{parent=projects/*/instances/*/clusters/*}/snapshots\xda\x41\x06parent\x12\xa2\x01\n\x0e\x44\x65leteSnapshot\x12/.google.bigtable.admin.v2.DeleteSnapshotRequest\x1a\x16.google.protobuf.Empty"G\x82\xd3\xe4\x93\x02:*8/v2/{name=projects/*/instances/*/clusters/*/snapshots/*}\xda\x41\x04name\x12\xe0\x01\n\x0c\x43reateBackup\x12-.google.bigtable.admin.v2.CreateBackupRequest\x1a\x1d.google.longrunning.Operation"\x81\x01\x82\xd3\xe4\x93\x02@"6/v2/{parent=projects/*/instances/*/clusters/*}/backups:\x06\x62\x61\x63kup\xca\x41\x1e\n\x06\x42\x61\x63kup\x12\x14\x43reateBackupMetadata\xda\x41\x17parent,backup_id,backup\x12\xa0\x01\n\tGetBackup\x12*.google.bigtable.admin.v2.GetBackupRequest\x1a .google.bigtable.admin.v2.Backup"E\x82\xd3\xe4\x93\x02\x38\x12\x36/v2/{name=projects/*/instances/*/clusters/*/backups/*}\xda\x41\x04name\x12\xc3\x01\n\x0cUpdateBackup\x12-.google.bigtable.admin.v2.UpdateBackupRequest\x1a .google.bigtable.admin.v2.Backup"b\x82\xd3\xe4\x93\x02G2=/v2/{backup.name=projects/*/instances/*/clusters/*/backups/*}:\x06\x62\x61\x63kup\xda\x41\x12\x62\x61\x63kup,update_mask\x12\x9c\x01\n\x0c\x44\x65leteBackup\x12-.google.bigtable.admin.v2.DeleteBackupRequest\x1a\x16.google.protobuf.Empty"E\x82\xd3\xe4\x93\x02\x38*6/v2/{name=projects/*/instances/*/clusters/*/backups/*}\xda\x41\x04name\x12\xb3\x01\n\x0bListBackups\x12,.google.bigtable.admin.v2.ListBackupsRequest\x1a-.google.bigtable.admin.v2.ListBackupsResponse"G\x82\xd3\xe4\x93\x02\x38\x12\x36/v2/{parent=projects/*/instances/*/clusters/*}/backups\xda\x41\x06parent\x12\xbb\x01\n\x0cRestoreTable\x12-.google.bigtable.admin.v2.RestoreTableRequest\x1a\x1d.google.longrunning.Operation"]\x82\xd3\xe4\x93\x02\x37"2/v2/{parent=projects/*/instances/*}/tables:restore:\x01*\xca\x41\x1d\n\x05Table\x12\x14RestoreTableMetadata\x12\x9c\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"Q\x82\xd3\xe4\x93\x02@";/v2/{resource=projects/*/instances/*/tables/*}:getIamPolicy:\x01*\xda\x41\x08resource\x12\xf3\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"\xa7\x01\x82\xd3\xe4\x93\x02\x8e\x01";/v2/{resource=projects/*/instances/*/tables/*}:setIamPolicy:\x01*ZL"G/v2/{resource=projects/*/instances/*/clusters/*/backups/*}:setIamPolicy:\x01*\xda\x41\x0fresource,policy\x12\xa4\x02\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"\xb8\x01\x82\xd3\xe4\x93\x02\x9a\x01"A/v2/{resource=projects/*/instances/*/tables/*}:testIamPermissions:\x01*ZR"M/v2/{resource=projects/*/instances/*/clusters/*/backups/*}:testIamPermissions:\x01*\xda\x41\x14resource,permissions\x1a\xde\x02\xca\x41\x1c\x62igtableadmin.googleapis.com\xd2\x41\xbb\x02https://www.googleapis.com/auth/bigtable.admin,https://www.googleapis.com/auth/bigtable.admin.table,https://www.googleapis.com/auth/cloud-bigtable.admin,https://www.googleapis.com/auth/cloud-bigtable.admin.table,https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/cloud-platform.read-onlyB\xba\x01\n\x1c\x63om.google.bigtable.admin.v2B\x17\x42igtableTableAdminProtoP\x01Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\xaa\x02\x1eGoogle.Cloud.Bigtable.Admin.V2\xca\x02\x1eGoogle\\Cloud\\Bigtable\\Admin\\V2b\x06proto3',
+    serialized_pb=b'\n?google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto\x12\x18google.bigtable.admin.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x31google/cloud/bigtable_admin_v2/proto/common.proto\x1a\x30google/cloud/bigtable_admin_v2/proto/table.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xfc\x01\n\x12\x43reateTableRequest\x12\x38\n\x06parent\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n bigtable.googleapis.com/Instance\x12\x15\n\x08table_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x33\n\x05table\x18\x03 \x01(\x0b\x32\x1f.google.bigtable.admin.v2.TableB\x03\xe0\x41\x02\x12J\n\x0einitial_splits\x18\x04 \x03(\x0b\x32\x32.google.bigtable.admin.v2.CreateTableRequest.Split\x1a\x14\n\x05Split\x12\x0b\n\x03key\x18\x01 \x01(\x0c"\xb4\x01\n\x1e\x43reateTableFromSnapshotRequest\x12\x38\n\x06parent\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n bigtable.googleapis.com/Instance\x12\x15\n\x08table_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x41\n\x0fsource_snapshot\x18\x03 \x01(\tB(\xe0\x41\x02\xfa\x41"\n bigtable.googleapis.com/Snapshot"\x94\x01\n\x13\x44ropRowRangeRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table\x12\x18\n\x0erow_key_prefix\x18\x02 \x01(\x0cH\x00\x12$\n\x1a\x64\x65lete_all_data_from_table\x18\x03 \x01(\x08H\x00\x42\x08\n\x06target"\xa8\x01\n\x11ListTablesRequest\x12\x38\n\x06parent\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n bigtable.googleapis.com/Instance\x12\x32\n\x04view\x18\x02 \x01(\x0e\x32$.google.bigtable.admin.v2.Table.View\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"^\n\x12ListTablesResponse\x12/\n\x06tables\x18\x01 \x03(\x0b\x32\x1f.google.bigtable.admin.v2.Table\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"z\n\x0fGetTableRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table\x12\x32\n\x04view\x18\x02 \x01(\x0e\x32$.google.bigtable.admin.v2.Table.View"I\n\x12\x44\x65leteTableRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table"\xda\x02\n\x1bModifyColumnFamiliesRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table\x12^\n\rmodifications\x18\x02 \x03(\x0b\x32\x42.google.bigtable.admin.v2.ModifyColumnFamiliesRequest.ModificationB\x03\xe0\x41\x02\x1a\xa5\x01\n\x0cModification\x12\n\n\x02id\x18\x01 \x01(\t\x12\x38\n\x06\x63reate\x18\x02 \x01(\x0b\x32&.google.bigtable.admin.v2.ColumnFamilyH\x00\x12\x38\n\x06update\x18\x03 \x01(\x0b\x32&.google.bigtable.admin.v2.ColumnFamilyH\x00\x12\x0e\n\x04\x64rop\x18\x04 \x01(\x08H\x00\x42\x05\n\x03mod"V\n\x1fGenerateConsistencyTokenRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table"=\n GenerateConsistencyTokenResponse\x12\x19\n\x11\x63onsistency_token\x18\x01 \x01(\t"n\n\x17\x43heckConsistencyRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table\x12\x1e\n\x11\x63onsistency_token\x18\x02 \x01(\tB\x03\xe0\x41\x02".\n\x18\x43heckConsistencyResponse\x12\x12\n\nconsistent\x18\x01 \x01(\x08"\xdc\x01\n\x14SnapshotTableRequest\x12\x33\n\x04name\x18\x01 \x01(\tB%\xe0\x41\x02\xfa\x41\x1f\n\x1d\x62igtable.googleapis.com/Table\x12\x38\n\x07\x63luster\x18\x02 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1f\x62igtable.googleapis.com/Cluster\x12\x18\n\x0bsnapshot_id\x18\x03 \x01(\tB\x03\xe0\x41\x02\x12&\n\x03ttl\x18\x04 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t"L\n\x12GetSnapshotRequest\x12\x36\n\x04name\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n bigtable.googleapis.com/Snapshot"v\n\x14ListSnapshotsRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1f\x62igtable.googleapis.com/Cluster\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"g\n\x15ListSnapshotsResponse\x12\x35\n\tsnapshots\x18\x01 \x03(\x0b\x32".google.bigtable.admin.v2.Snapshot\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"O\n\x15\x44\x65leteSnapshotRequest\x12\x36\n\x04name\x18\x01 \x01(\tB(\xe0\x41\x02\xfa\x41"\n bigtable.googleapis.com/Snapshot"\xc4\x01\n\x15SnapshotTableMetadata\x12H\n\x10original_request\x18\x01 \x01(\x0b\x32..google.bigtable.admin.v2.SnapshotTableRequest\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xd8\x01\n\x1f\x43reateTableFromSnapshotMetadata\x12R\n\x10original_request\x18\x01 \x01(\x0b\x32\x38.google.bigtable.admin.v2.CreateTableFromSnapshotRequest\x12\x30\n\x0crequest_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x66inish_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x9d\x01\n\x13\x43reateBackupRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1f\x62igtable.googleapis.com/Cluster\x12\x16\n\tbackup_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x35\n\x06\x62\x61\x63kup\x18\x03 \x01(\x0b\x32 .google.bigtable.admin.v2.BackupB\x03\xe0\x41\x02"\x98\x01\n\x14\x43reateBackupMetadata\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0csource_table\x18\x02 \x01(\t\x12.\n\nstart_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"H\n\x10GetBackupRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x62igtable.googleapis.com/Backup"\x82\x01\n\x13UpdateBackupRequest\x12\x35\n\x06\x62\x61\x63kup\x18\x01 \x01(\x0b\x32 .google.bigtable.admin.v2.BackupB\x03\xe0\x41\x02\x12\x34\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x02"K\n\x13\x44\x65leteBackupRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x62igtable.googleapis.com/Backup"\x96\x01\n\x12ListBackupsRequest\x12\x37\n\x06parent\x18\x01 \x01(\tB\'\xe0\x41\x02\xfa\x41!\n\x1f\x62igtable.googleapis.com/Cluster\x12\x0e\n\x06\x66ilter\x18\x02 \x01(\t\x12\x10\n\x08order_by\x18\x03 \x01(\t\x12\x11\n\tpage_size\x18\x04 \x01(\x05\x12\x12\n\npage_token\x18\x05 \x01(\t"a\n\x13ListBackupsResponse\x12\x31\n\x07\x62\x61\x63kups\x18\x01 \x03(\x0b\x32 .google.bigtable.admin.v2.Backup\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"S\n\x13RestoreTableRequest\x12\x0e\n\x06parent\x18\x01 \x01(\t\x12\x10\n\x08table_id\x18\x02 \x01(\t\x12\x10\n\x06\x62\x61\x63kup\x18\x03 \x01(\tH\x00\x42\x08\n\x06source"\x98\x02\n\x14RestoreTableMetadata\x12\x0c\n\x04name\x18\x01 \x01(\t\x12@\n\x0bsource_type\x18\x02 \x01(\x0e\x32+.google.bigtable.admin.v2.RestoreSourceType\x12;\n\x0b\x62\x61\x63kup_info\x18\x03 \x01(\x0b\x32$.google.bigtable.admin.v2.BackupInfoH\x00\x12%\n\x1doptimize_table_operation_name\x18\x04 \x01(\t\x12=\n\x08progress\x18\x05 \x01(\x0b\x32+.google.bigtable.admin.v2.OperationProgressB\r\n\x0bsource_info"l\n\x1dOptimizeRestoredTableMetadata\x12\x0c\n\x04name\x18\x01 \x01(\t\x12=\n\x08progress\x18\x02 \x01(\x0b\x32+.google.bigtable.admin.v2.OperationProgress2\xc8$\n\x12\x42igtableTableAdmin\x12\xab\x01\n\x0b\x43reateTable\x12,.google.bigtable.admin.v2.CreateTableRequest\x1a\x1f.google.bigtable.admin.v2.Table"M\x82\xd3\xe4\x93\x02/"*/v2/{parent=projects/*/instances/*}/tables:\x01*\xda\x41\x15parent,table_id,table\x12\x8a\x02\n\x17\x43reateTableFromSnapshot\x12\x38.google.bigtable.admin.v2.CreateTableFromSnapshotRequest\x1a\x1d.google.longrunning.Operation"\x95\x01\x82\xd3\xe4\x93\x02\x42"=/v2/{parent=projects/*/instances/*}/tables:createFromSnapshot:\x01*\xda\x41\x1fparent,table_id,source_snapshot\xca\x41(\n\x05Table\x12\x1f\x43reateTableFromSnapshotMetadata\x12\xa4\x01\n\nListTables\x12+.google.bigtable.admin.v2.ListTablesRequest\x1a,.google.bigtable.admin.v2.ListTablesResponse";\x82\xd3\xe4\x93\x02,\x12*/v2/{parent=projects/*/instances/*}/tables\xda\x41\x06parent\x12\x91\x01\n\x08GetTable\x12).google.bigtable.admin.v2.GetTableRequest\x1a\x1f.google.bigtable.admin.v2.Table"9\x82\xd3\xe4\x93\x02,\x12*/v2/{name=projects/*/instances/*/tables/*}\xda\x41\x04name\x12\x8e\x01\n\x0b\x44\x65leteTable\x12,.google.bigtable.admin.v2.DeleteTableRequest\x1a\x16.google.protobuf.Empty"9\x82\xd3\xe4\x93\x02,**/v2/{name=projects/*/instances/*/tables/*}\xda\x41\x04name\x12\xcf\x01\n\x14ModifyColumnFamilies\x12\x35.google.bigtable.admin.v2.ModifyColumnFamiliesRequest\x1a\x1f.google.bigtable.admin.v2.Table"_\x82\xd3\xe4\x93\x02\x44"?/v2/{name=projects/*/instances/*/tables/*}:modifyColumnFamilies:\x01*\xda\x41\x12name,modifications\x12\x99\x01\n\x0c\x44ropRowRange\x12-.google.bigtable.admin.v2.DropRowRangeRequest\x1a\x16.google.protobuf.Empty"B\x82\xd3\xe4\x93\x02<"7/v2/{name=projects/*/instances/*/tables/*}:dropRowRange:\x01*\x12\xe8\x01\n\x18GenerateConsistencyToken\x12\x39.google.bigtable.admin.v2.GenerateConsistencyTokenRequest\x1a:.google.bigtable.admin.v2.GenerateConsistencyTokenResponse"U\x82\xd3\xe4\x93\x02H"C/v2/{name=projects/*/instances/*/tables/*}:generateConsistencyToken:\x01*\xda\x41\x04name\x12\xda\x01\n\x10\x43heckConsistency\x12\x31.google.bigtable.admin.v2.CheckConsistencyRequest\x1a\x32.google.bigtable.admin.v2.CheckConsistencyResponse"_\x82\xd3\xe4\x93\x02@";/v2/{name=projects/*/instances/*/tables/*}:checkConsistency:\x01*\xda\x41\x16name,consistency_token\x12\xea\x01\n\rSnapshotTable\x12..google.bigtable.admin.v2.SnapshotTableRequest\x1a\x1d.google.longrunning.Operation"\x89\x01\x82\xd3\xe4\x93\x02\x38"3/v2/{name=projects/*/instances/*/tables/*}:snapshot:\x01*\xda\x41$name,cluster,snapshot_id,description\xca\x41!\n\x08Snapshot\x12\x15SnapshotTableMetadata\x12\xa8\x01\n\x0bGetSnapshot\x12,.google.bigtable.admin.v2.GetSnapshotRequest\x1a".google.bigtable.admin.v2.Snapshot"G\x82\xd3\xe4\x93\x02:\x12\x38/v2/{name=projects/*/instances/*/clusters/*/snapshots/*}\xda\x41\x04name\x12\xbb\x01\n\rListSnapshots\x12..google.bigtable.admin.v2.ListSnapshotsRequest\x1a/.google.bigtable.admin.v2.ListSnapshotsResponse"I\x82\xd3\xe4\x93\x02:\x12\x38/v2/{parent=projects/*/instances/*/clusters/*}/snapshots\xda\x41\x06parent\x12\xa2\x01\n\x0e\x44\x65leteSnapshot\x12/.google.bigtable.admin.v2.DeleteSnapshotRequest\x1a\x16.google.protobuf.Empty"G\x82\xd3\xe4\x93\x02:*8/v2/{name=projects/*/instances/*/clusters/*/snapshots/*}\xda\x41\x04name\x12\xe0\x01\n\x0c\x43reateBackup\x12-.google.bigtable.admin.v2.CreateBackupRequest\x1a\x1d.google.longrunning.Operation"\x81\x01\x82\xd3\xe4\x93\x02@"6/v2/{parent=projects/*/instances/*/clusters/*}/backups:\x06\x62\x61\x63kup\xca\x41\x1e\n\x06\x42\x61\x63kup\x12\x14\x43reateBackupMetadata\xda\x41\x17parent,backup_id,backup\x12\xa0\x01\n\tGetBackup\x12*.google.bigtable.admin.v2.GetBackupRequest\x1a .google.bigtable.admin.v2.Backup"E\x82\xd3\xe4\x93\x02\x38\x12\x36/v2/{name=projects/*/instances/*/clusters/*/backups/*}\xda\x41\x04name\x12\xc3\x01\n\x0cUpdateBackup\x12-.google.bigtable.admin.v2.UpdateBackupRequest\x1a .google.bigtable.admin.v2.Backup"b\x82\xd3\xe4\x93\x02G2=/v2/{backup.name=projects/*/instances/*/clusters/*/backups/*}:\x06\x62\x61\x63kup\xda\x41\x12\x62\x61\x63kup,update_mask\x12\x9c\x01\n\x0c\x44\x65leteBackup\x12-.google.bigtable.admin.v2.DeleteBackupRequest\x1a\x16.google.protobuf.Empty"E\x82\xd3\xe4\x93\x02\x38*6/v2/{name=projects/*/instances/*/clusters/*/backups/*}\xda\x41\x04name\x12\xb3\x01\n\x0bListBackups\x12,.google.bigtable.admin.v2.ListBackupsRequest\x1a-.google.bigtable.admin.v2.ListBackupsResponse"G\x82\xd3\xe4\x93\x02\x38\x12\x36/v2/{parent=projects/*/instances/*/clusters/*}/backups\xda\x41\x06parent\x12\xbb\x01\n\x0cRestoreTable\x12-.google.bigtable.admin.v2.RestoreTableRequest\x1a\x1d.google.longrunning.Operation"]\x82\xd3\xe4\x93\x02\x37"2/v2/{parent=projects/*/instances/*}/tables:restore:\x01*\xca\x41\x1d\n\x05Table\x12\x14RestoreTableMetadata\x12\x9c\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"Q\x82\xd3\xe4\x93\x02@";/v2/{resource=projects/*/instances/*/tables/*}:getIamPolicy:\x01*\xda\x41\x08resource\x12\xf3\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"\xa7\x01\x82\xd3\xe4\x93\x02\x8e\x01";/v2/{resource=projects/*/instances/*/tables/*}:setIamPolicy:\x01*ZL"G/v2/{resource=projects/*/instances/*/clusters/*/backups/*}:setIamPolicy:\x01*\xda\x41\x0fresource,policy\x12\xa4\x02\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"\xb8\x01\x82\xd3\xe4\x93\x02\x9a\x01"A/v2/{resource=projects/*/instances/*/tables/*}:testIamPermissions:\x01*ZR"M/v2/{resource=projects/*/instances/*/clusters/*/backups/*}:testIamPermissions:\x01*\xda\x41\x14resource,permissions\x1a\xde\x02\xca\x41\x1c\x62igtableadmin.googleapis.com\xd2\x41\xbb\x02https://www.googleapis.com/auth/bigtable.admin,https://www.googleapis.com/auth/bigtable.admin.table,https://www.googleapis.com/auth/cloud-bigtable.admin,https://www.googleapis.com/auth/cloud-bigtable.admin.table,https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/cloud-platform.read-onlyB\xdf\x01\n\x1c\x63om.google.bigtable.admin.v2B\x17\x42igtableTableAdminProtoP\x01Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\xaa\x02\x1eGoogle.Cloud.Bigtable.Admin.V2\xca\x02\x1eGoogle\\Cloud\\Bigtable\\Admin\\V2\xea\x02"Google::Cloud::Bigtable::Admin::V2b\x06proto3',
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_api_dot_client__pb2.DESCRIPTOR,
@@ -2440,6 +2440,7 @@ CreateTableRequest = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _CREATETABLEREQUEST_SPLIT,
                 "__module__": "google.cloud.bigtable_admin_v2.proto.bigtable_table_admin_pb2",
                 "__doc__": """An initial split point for a newly created table.
+    
     Attributes:
         key:
             Row key to use as an initial tablet boundary.
@@ -2451,6 +2452,7 @@ CreateTableRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_admin_v2.proto.bigtable_table_admin_pb2",
         "__doc__": """Request message for [google.bigtable.admin.v2.BigtableTableAdmin.Creat
   eTable][google.bigtable.admin.v2.BigtableTableAdmin.CreateTable]
+  
   Attributes:
       parent:
           Required. The unique name of the instance in which to create
@@ -2496,6 +2498,7 @@ CreateTableFromSnapshotRequest = _reflection.GeneratedProtocolMessageType(
   Cloud Bigtable customers. This feature might be changed in backward-
   incompatible ways and is not recommended for production use. It is not
   subject to any SLA or deprecation policy.
+  
   Attributes:
       parent:
           Required. The unique name of the instance in which to create
@@ -2524,6 +2527,7 @@ DropRowRangeRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_admin_v2.proto.bigtable_table_admin_pb2",
         "__doc__": """Request message for [google.bigtable.admin.v2.BigtableTableAdmin.DropR
   owRange][google.bigtable.admin.v2.BigtableTableAdmin.DropRowRange]
+  
   Attributes:
       name:
           Required. The unique name of the table on which to drop a
@@ -2551,6 +2555,7 @@ ListTablesRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_admin_v2.proto.bigtable_table_admin_pb2",
         "__doc__": """Request message for [google.bigtable.admin.v2.BigtableTableAdmin.ListT
   ables][google.bigtable.admin.v2.BigtableTableAdmin.ListTables]
+  
   Attributes:
       parent:
           Required. The unique name of the instance for which tables
@@ -2583,6 +2588,7 @@ ListTablesResponse = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_admin_v2.proto.bigtable_table_admin_pb2",
         "__doc__": """Response message for [google.bigtable.admin.v2.BigtableTableAdmin.List
   Tables][google.bigtable.admin.v2.BigtableTableAdmin.ListTables]
+  
   Attributes:
       tables:
           The tables present in the requested instance.
@@ -2604,6 +2610,7 @@ GetTableRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_admin_v2.proto.bigtable_table_admin_pb2",
         "__doc__": """Request message for [google.bigtable.admin.v2.BigtableTableAdmin.GetTa
   ble][google.bigtable.admin.v2.BigtableTableAdmin.GetTable]
+  
   Attributes:
       name:
           Required. The unique name of the requested table. Values are
@@ -2626,6 +2633,7 @@ DeleteTableRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_admin_v2.proto.bigtable_table_admin_pb2",
         "__doc__": """Request message for [google.bigtable.admin.v2.BigtableTableAdmin.Delet
   eTable][google.bigtable.admin.v2.BigtableTableAdmin.DeleteTable]
+  
   Attributes:
       name:
           Required. The unique name of the table to be deleted. Values
@@ -2648,6 +2656,7 @@ ModifyColumnFamiliesRequest = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _MODIFYCOLUMNFAMILIESREQUEST_MODIFICATION,
                 "__module__": "google.cloud.bigtable_admin_v2.proto.bigtable_table_admin_pb2",
                 "__doc__": """A create, update, or delete of a particular column family.
+    
     Attributes:
         id:
             The ID of the column family to be modified.
@@ -2671,6 +2680,7 @@ ModifyColumnFamiliesRequest = _reflection.GeneratedProtocolMessageType(
         "__doc__": """Request message for [google.bigtable.admin.v2.BigtableTableAdmin.Modif
   yColumnFamilies][google.bigtable.admin.v2.BigtableTableAdmin.ModifyCol
   umnFamilies]
+  
   Attributes:
       name:
           Required. The unique name of the table whose families should
@@ -2698,6 +2708,7 @@ GenerateConsistencyTokenRequest = _reflection.GeneratedProtocolMessageType(
         "__doc__": """Request message for [google.bigtable.admin.v2.BigtableTableAdmin.Gener
   ateConsistencyToken][google.bigtable.admin.v2.BigtableTableAdmin.Gener
   ateConsistencyToken]
+  
   Attributes:
       name:
           Required. The unique name of the Table for which to create a
@@ -2718,6 +2729,7 @@ GenerateConsistencyTokenResponse = _reflection.GeneratedProtocolMessageType(
         "__doc__": """Response message for [google.bigtable.admin.v2.BigtableTableAdmin.Gene
   rateConsistencyToken][google.bigtable.admin.v2.BigtableTableAdmin.Gene
   rateConsistencyToken]
+  
   Attributes:
       consistency_token:
           The generated consistency token.
@@ -2736,6 +2748,7 @@ CheckConsistencyRequest = _reflection.GeneratedProtocolMessageType(
         "__doc__": """Request message for [google.bigtable.admin.v2.BigtableTableAdmin.Check
   Consistency][google.bigtable.admin.v2.BigtableTableAdmin.CheckConsiste
   ncy]
+  
   Attributes:
       name:
           Required. The unique name of the Table for which to check
@@ -2759,6 +2772,7 @@ CheckConsistencyResponse = _reflection.GeneratedProtocolMessageType(
         "__doc__": """Response message for [google.bigtable.admin.v2.BigtableTableAdmin.Chec
   kConsistency][google.bigtable.admin.v2.BigtableTableAdmin.CheckConsist
   ency]
+  
   Attributes:
       consistent:
           True only if the token is consistent. A token is consistent if
@@ -2783,6 +2797,7 @@ SnapshotTableRequest = _reflection.GeneratedProtocolMessageType(
   customers. This feature might be changed in backward-incompatible ways
   and is not recommended for production use. It is not subject to any
   SLA or deprecation policy.
+  
   Attributes:
       name:
           Required. The unique name of the table to have the snapshot
@@ -2825,6 +2840,7 @@ GetSnapshotRequest = _reflection.GeneratedProtocolMessageType(
   customers. This feature might be changed in backward-incompatible ways
   and is not recommended for production use. It is not subject to any
   SLA or deprecation policy.
+  
   Attributes:
       name:
           Required. The unique name of the requested snapshot. Values
@@ -2849,6 +2865,7 @@ ListSnapshotsRequest = _reflection.GeneratedProtocolMessageType(
   customers. This feature might be changed in backward-incompatible ways
   and is not recommended for production use. It is not subject to any
   SLA or deprecation policy.
+  
   Attributes:
       parent:
           Required. The unique name of the cluster for which snapshots
@@ -2880,6 +2897,7 @@ ListSnapshotsResponse = _reflection.GeneratedProtocolMessageType(
   customers. This feature might be changed in backward-incompatible ways
   and is not recommended for production use. It is not subject to any
   SLA or deprecation policy.
+  
   Attributes:
       snapshots:
           The snapshots present in the requested cluster.
@@ -2906,6 +2924,7 @@ DeleteSnapshotRequest = _reflection.GeneratedProtocolMessageType(
   customers. This feature might be changed in backward-incompatible ways
   and is not recommended for production use. It is not subject to any
   SLA or deprecation policy.
+  
   Attributes:
       name:
           Required. The unique name of the snapshot to be deleted.
@@ -2929,6 +2948,7 @@ SnapshotTableMetadata = _reflection.GeneratedProtocolMessageType(
   feature might be changed in backward-incompatible ways and is not
   recommended for production use. It is not subject to any SLA or
   deprecation policy.
+  
   Attributes:
       original_request:
           The request that prompted the initiation of this SnapshotTable
@@ -2956,6 +2976,7 @@ CreateTableFromSnapshotMetadata = _reflection.GeneratedProtocolMessageType(
   customers. This feature might be changed in backward-incompatible ways
   and is not recommended for production use. It is not subject to any
   SLA or deprecation policy.
+  
   Attributes:
       original_request:
           The request that prompted the initiation of this
@@ -2979,6 +3000,7 @@ CreateBackupRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_admin_v2.proto.bigtable_table_admin_pb2",
         "__doc__": """The request for [CreateBackup][google.bigtable.admin.v2.BigtableTableA
   dmin.CreateBackup].
+  
   Attributes:
       parent:
           Required. This must be one of the clusters in the instance in
@@ -3009,6 +3031,7 @@ CreateBackupMetadata = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_admin_v2.proto.bigtable_table_admin_pb2",
         "__doc__": """Metadata type for the operation returned by [CreateBackup][google.bigt
   able.admin.v2.BigtableTableAdmin.CreateBackup].
+  
   Attributes:
       name:
           The name of the backup being created.
@@ -3033,6 +3056,7 @@ GetBackupRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_admin_v2.proto.bigtable_table_admin_pb2",
         "__doc__": """The request for
   [GetBackup][google.bigtable.admin.v2.BigtableTableAdmin.GetBackup].
+  
   Attributes:
       name:
           Required. Name of the backup. Values are of the form ``project
@@ -3052,6 +3076,7 @@ UpdateBackupRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_admin_v2.proto.bigtable_table_admin_pb2",
         "__doc__": """The request for [UpdateBackup][google.bigtable.admin.v2.BigtableTableA
   dmin.UpdateBackup].
+  
   Attributes:
       backup:
           Required. The backup to update. ``backup.name``, and the
@@ -3079,6 +3104,7 @@ DeleteBackupRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_admin_v2.proto.bigtable_table_admin_pb2",
         "__doc__": """The request for [DeleteBackup][google.bigtable.admin.v2.BigtableTableA
   dmin.DeleteBackup].
+  
   Attributes:
       name:
           Required. Name of the backup to delete. Values are of the form
@@ -3098,6 +3124,7 @@ ListBackupsRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_admin_v2.proto.bigtable_table_admin_pb2",
         "__doc__": """The request for [ListBackups][google.bigtable.admin.v2.BigtableTableAd
   min.ListBackups].
+  
   Attributes:
       parent:
           Required. The cluster to list backups from. Values are of the
@@ -3170,6 +3197,7 @@ ListBackupsResponse = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_admin_v2.proto.bigtable_table_admin_pb2",
         "__doc__": """The response for [ListBackups][google.bigtable.admin.v2.BigtableTableA
   dmin.ListBackups].
+  
   Attributes:
       backups:
           The list of matching backups.
@@ -3191,6 +3219,7 @@ RestoreTableRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_admin_v2.proto.bigtable_table_admin_pb2",
         "__doc__": """The request for [RestoreTable][google.bigtable.admin.v2.BigtableTableA
   dmin.RestoreTable].
+  
   Attributes:
       parent:
           Required. The name of the instance in which to create the
@@ -3222,6 +3251,7 @@ RestoreTableMetadata = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_admin_v2.proto.bigtable_table_admin_pb2",
         "__doc__": """Metadata type for the long-running operation returned by [RestoreTable
   ][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable].
+  
   Attributes:
       name:
           Name of the table being created and restored to.
@@ -3261,6 +3291,7 @@ OptimizeRestoredTableMetadata = _reflection.GeneratedProtocolMessageType(
   progress of optimizations performed on a newly restored table. This
   long-running operation is automatically created by the system after
   the successful completion of a table restore, and cannot be cancelled.
+  
   Attributes:
       name:
           Name of the restored table being optimized.

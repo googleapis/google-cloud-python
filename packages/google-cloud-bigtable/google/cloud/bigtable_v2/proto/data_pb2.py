@@ -16,9 +16,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/bigtable_v2/proto/data.proto",
     package="google.bigtable.v2",
     syntax="proto3",
-    serialized_options=b"\n\026com.google.bigtable.v2B\tDataProtoP\001Z:google.golang.org/genproto/googleapis/bigtable/v2;bigtable\252\002\030Google.Cloud.Bigtable.V2\312\002\030Google\\Cloud\\Bigtable\\V2",
+    serialized_options=b"\n\026com.google.bigtable.v2B\tDataProtoP\001Z:google.golang.org/genproto/googleapis/bigtable/v2;bigtable\252\002\030Google.Cloud.Bigtable.V2\312\002\030Google\\Cloud\\Bigtable\\V2\352\002\033Google::Cloud::Bigtable::V2",
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n)google/cloud/bigtable_v2/proto/data.proto\x12\x12google.bigtable.v2"@\n\x03Row\x12\x0b\n\x03key\x18\x01 \x01(\x0c\x12,\n\x08\x66\x61milies\x18\x02 \x03(\x0b\x32\x1a.google.bigtable.v2.Family"C\n\x06\x46\x61mily\x12\x0c\n\x04name\x18\x01 \x01(\t\x12+\n\x07\x63olumns\x18\x02 \x03(\x0b\x32\x1a.google.bigtable.v2.Column"D\n\x06\x43olumn\x12\x11\n\tqualifier\x18\x01 \x01(\x0c\x12\'\n\x05\x63\x65lls\x18\x02 \x03(\x0b\x32\x18.google.bigtable.v2.Cell"?\n\x04\x43\x65ll\x12\x18\n\x10timestamp_micros\x18\x01 \x01(\x03\x12\r\n\x05value\x18\x02 \x01(\x0c\x12\x0e\n\x06labels\x18\x03 \x03(\t"\x8a\x01\n\x08RowRange\x12\x1a\n\x10start_key_closed\x18\x01 \x01(\x0cH\x00\x12\x18\n\x0estart_key_open\x18\x02 \x01(\x0cH\x00\x12\x16\n\x0c\x65nd_key_open\x18\x03 \x01(\x0cH\x01\x12\x18\n\x0e\x65nd_key_closed\x18\x04 \x01(\x0cH\x01\x42\x0b\n\tstart_keyB\t\n\x07\x65nd_key"L\n\x06RowSet\x12\x10\n\x08row_keys\x18\x01 \x03(\x0c\x12\x30\n\nrow_ranges\x18\x02 \x03(\x0b\x32\x1c.google.bigtable.v2.RowRange"\xc6\x01\n\x0b\x43olumnRange\x12\x13\n\x0b\x66\x61mily_name\x18\x01 \x01(\t\x12 \n\x16start_qualifier_closed\x18\x02 \x01(\x0cH\x00\x12\x1e\n\x14start_qualifier_open\x18\x03 \x01(\x0cH\x00\x12\x1e\n\x14\x65nd_qualifier_closed\x18\x04 \x01(\x0cH\x01\x12\x1c\n\x12\x65nd_qualifier_open\x18\x05 \x01(\x0cH\x01\x42\x11\n\x0fstart_qualifierB\x0f\n\rend_qualifier"N\n\x0eTimestampRange\x12\x1e\n\x16start_timestamp_micros\x18\x01 \x01(\x03\x12\x1c\n\x14\x65nd_timestamp_micros\x18\x02 \x01(\x03"\x98\x01\n\nValueRange\x12\x1c\n\x12start_value_closed\x18\x01 \x01(\x0cH\x00\x12\x1a\n\x10start_value_open\x18\x02 \x01(\x0cH\x00\x12\x1a\n\x10\x65nd_value_closed\x18\x03 \x01(\x0cH\x01\x12\x18\n\x0e\x65nd_value_open\x18\x04 \x01(\x0cH\x01\x42\r\n\x0bstart_valueB\x0b\n\tend_value"\xdf\x08\n\tRowFilter\x12\x34\n\x05\x63hain\x18\x01 \x01(\x0b\x32#.google.bigtable.v2.RowFilter.ChainH\x00\x12>\n\ninterleave\x18\x02 \x01(\x0b\x32(.google.bigtable.v2.RowFilter.InterleaveH\x00\x12<\n\tcondition\x18\x03 \x01(\x0b\x32\'.google.bigtable.v2.RowFilter.ConditionH\x00\x12\x0e\n\x04sink\x18\x10 \x01(\x08H\x00\x12\x19\n\x0fpass_all_filter\x18\x11 \x01(\x08H\x00\x12\x1a\n\x10\x62lock_all_filter\x18\x12 \x01(\x08H\x00\x12\x1e\n\x14row_key_regex_filter\x18\x04 \x01(\x0cH\x00\x12\x1b\n\x11row_sample_filter\x18\x0e \x01(\x01H\x00\x12"\n\x18\x66\x61mily_name_regex_filter\x18\x05 \x01(\tH\x00\x12\'\n\x1d\x63olumn_qualifier_regex_filter\x18\x06 \x01(\x0cH\x00\x12>\n\x13\x63olumn_range_filter\x18\x07 \x01(\x0b\x32\x1f.google.bigtable.v2.ColumnRangeH\x00\x12\x44\n\x16timestamp_range_filter\x18\x08 \x01(\x0b\x32".google.bigtable.v2.TimestampRangeH\x00\x12\x1c\n\x12value_regex_filter\x18\t \x01(\x0cH\x00\x12<\n\x12value_range_filter\x18\x0f \x01(\x0b\x32\x1e.google.bigtable.v2.ValueRangeH\x00\x12%\n\x1b\x63\x65lls_per_row_offset_filter\x18\n \x01(\x05H\x00\x12$\n\x1a\x63\x65lls_per_row_limit_filter\x18\x0b \x01(\x05H\x00\x12\'\n\x1d\x63\x65lls_per_column_limit_filter\x18\x0c \x01(\x05H\x00\x12!\n\x17strip_value_transformer\x18\r \x01(\x08H\x00\x12!\n\x17\x61pply_label_transformer\x18\x13 \x01(\tH\x00\x1a\x37\n\x05\x43hain\x12.\n\x07\x66ilters\x18\x01 \x03(\x0b\x32\x1d.google.bigtable.v2.RowFilter\x1a<\n\nInterleave\x12.\n\x07\x66ilters\x18\x01 \x03(\x0b\x32\x1d.google.bigtable.v2.RowFilter\x1a\xad\x01\n\tCondition\x12\x37\n\x10predicate_filter\x18\x01 \x01(\x0b\x32\x1d.google.bigtable.v2.RowFilter\x12\x32\n\x0btrue_filter\x18\x02 \x01(\x0b\x32\x1d.google.bigtable.v2.RowFilter\x12\x33\n\x0c\x66\x61lse_filter\x18\x03 \x01(\x0b\x32\x1d.google.bigtable.v2.RowFilterB\x08\n\x06\x66ilter"\xc9\x04\n\x08Mutation\x12\x38\n\x08set_cell\x18\x01 \x01(\x0b\x32$.google.bigtable.v2.Mutation.SetCellH\x00\x12K\n\x12\x64\x65lete_from_column\x18\x02 \x01(\x0b\x32-.google.bigtable.v2.Mutation.DeleteFromColumnH\x00\x12K\n\x12\x64\x65lete_from_family\x18\x03 \x01(\x0b\x32-.google.bigtable.v2.Mutation.DeleteFromFamilyH\x00\x12\x45\n\x0f\x64\x65lete_from_row\x18\x04 \x01(\x0b\x32*.google.bigtable.v2.Mutation.DeleteFromRowH\x00\x1a\x61\n\x07SetCell\x12\x13\n\x0b\x66\x61mily_name\x18\x01 \x01(\t\x12\x18\n\x10\x63olumn_qualifier\x18\x02 \x01(\x0c\x12\x18\n\x10timestamp_micros\x18\x03 \x01(\x03\x12\r\n\x05value\x18\x04 \x01(\x0c\x1ay\n\x10\x44\x65leteFromColumn\x12\x13\n\x0b\x66\x61mily_name\x18\x01 \x01(\t\x12\x18\n\x10\x63olumn_qualifier\x18\x02 \x01(\x0c\x12\x36\n\ntime_range\x18\x03 \x01(\x0b\x32".google.bigtable.v2.TimestampRange\x1a\'\n\x10\x44\x65leteFromFamily\x12\x13\n\x0b\x66\x61mily_name\x18\x01 \x01(\t\x1a\x0f\n\rDeleteFromRowB\n\n\x08mutation"\x80\x01\n\x13ReadModifyWriteRule\x12\x13\n\x0b\x66\x61mily_name\x18\x01 \x01(\t\x12\x18\n\x10\x63olumn_qualifier\x18\x02 \x01(\x0c\x12\x16\n\x0c\x61ppend_value\x18\x03 \x01(\x0cH\x00\x12\x1a\n\x10increment_amount\x18\x04 \x01(\x03H\x00\x42\x06\n\x04ruleB\x97\x01\n\x16\x63om.google.bigtable.v2B\tDataProtoP\x01Z:google.golang.org/genproto/googleapis/bigtable/v2;bigtable\xaa\x02\x18Google.Cloud.Bigtable.V2\xca\x02\x18Google\\Cloud\\Bigtable\\V2b\x06proto3',
+    serialized_pb=b'\n)google/cloud/bigtable_v2/proto/data.proto\x12\x12google.bigtable.v2"@\n\x03Row\x12\x0b\n\x03key\x18\x01 \x01(\x0c\x12,\n\x08\x66\x61milies\x18\x02 \x03(\x0b\x32\x1a.google.bigtable.v2.Family"C\n\x06\x46\x61mily\x12\x0c\n\x04name\x18\x01 \x01(\t\x12+\n\x07\x63olumns\x18\x02 \x03(\x0b\x32\x1a.google.bigtable.v2.Column"D\n\x06\x43olumn\x12\x11\n\tqualifier\x18\x01 \x01(\x0c\x12\'\n\x05\x63\x65lls\x18\x02 \x03(\x0b\x32\x18.google.bigtable.v2.Cell"?\n\x04\x43\x65ll\x12\x18\n\x10timestamp_micros\x18\x01 \x01(\x03\x12\r\n\x05value\x18\x02 \x01(\x0c\x12\x0e\n\x06labels\x18\x03 \x03(\t"\x8a\x01\n\x08RowRange\x12\x1a\n\x10start_key_closed\x18\x01 \x01(\x0cH\x00\x12\x18\n\x0estart_key_open\x18\x02 \x01(\x0cH\x00\x12\x16\n\x0c\x65nd_key_open\x18\x03 \x01(\x0cH\x01\x12\x18\n\x0e\x65nd_key_closed\x18\x04 \x01(\x0cH\x01\x42\x0b\n\tstart_keyB\t\n\x07\x65nd_key"L\n\x06RowSet\x12\x10\n\x08row_keys\x18\x01 \x03(\x0c\x12\x30\n\nrow_ranges\x18\x02 \x03(\x0b\x32\x1c.google.bigtable.v2.RowRange"\xc6\x01\n\x0b\x43olumnRange\x12\x13\n\x0b\x66\x61mily_name\x18\x01 \x01(\t\x12 \n\x16start_qualifier_closed\x18\x02 \x01(\x0cH\x00\x12\x1e\n\x14start_qualifier_open\x18\x03 \x01(\x0cH\x00\x12\x1e\n\x14\x65nd_qualifier_closed\x18\x04 \x01(\x0cH\x01\x12\x1c\n\x12\x65nd_qualifier_open\x18\x05 \x01(\x0cH\x01\x42\x11\n\x0fstart_qualifierB\x0f\n\rend_qualifier"N\n\x0eTimestampRange\x12\x1e\n\x16start_timestamp_micros\x18\x01 \x01(\x03\x12\x1c\n\x14\x65nd_timestamp_micros\x18\x02 \x01(\x03"\x98\x01\n\nValueRange\x12\x1c\n\x12start_value_closed\x18\x01 \x01(\x0cH\x00\x12\x1a\n\x10start_value_open\x18\x02 \x01(\x0cH\x00\x12\x1a\n\x10\x65nd_value_closed\x18\x03 \x01(\x0cH\x01\x12\x18\n\x0e\x65nd_value_open\x18\x04 \x01(\x0cH\x01\x42\r\n\x0bstart_valueB\x0b\n\tend_value"\xdf\x08\n\tRowFilter\x12\x34\n\x05\x63hain\x18\x01 \x01(\x0b\x32#.google.bigtable.v2.RowFilter.ChainH\x00\x12>\n\ninterleave\x18\x02 \x01(\x0b\x32(.google.bigtable.v2.RowFilter.InterleaveH\x00\x12<\n\tcondition\x18\x03 \x01(\x0b\x32\'.google.bigtable.v2.RowFilter.ConditionH\x00\x12\x0e\n\x04sink\x18\x10 \x01(\x08H\x00\x12\x19\n\x0fpass_all_filter\x18\x11 \x01(\x08H\x00\x12\x1a\n\x10\x62lock_all_filter\x18\x12 \x01(\x08H\x00\x12\x1e\n\x14row_key_regex_filter\x18\x04 \x01(\x0cH\x00\x12\x1b\n\x11row_sample_filter\x18\x0e \x01(\x01H\x00\x12"\n\x18\x66\x61mily_name_regex_filter\x18\x05 \x01(\tH\x00\x12\'\n\x1d\x63olumn_qualifier_regex_filter\x18\x06 \x01(\x0cH\x00\x12>\n\x13\x63olumn_range_filter\x18\x07 \x01(\x0b\x32\x1f.google.bigtable.v2.ColumnRangeH\x00\x12\x44\n\x16timestamp_range_filter\x18\x08 \x01(\x0b\x32".google.bigtable.v2.TimestampRangeH\x00\x12\x1c\n\x12value_regex_filter\x18\t \x01(\x0cH\x00\x12<\n\x12value_range_filter\x18\x0f \x01(\x0b\x32\x1e.google.bigtable.v2.ValueRangeH\x00\x12%\n\x1b\x63\x65lls_per_row_offset_filter\x18\n \x01(\x05H\x00\x12$\n\x1a\x63\x65lls_per_row_limit_filter\x18\x0b \x01(\x05H\x00\x12\'\n\x1d\x63\x65lls_per_column_limit_filter\x18\x0c \x01(\x05H\x00\x12!\n\x17strip_value_transformer\x18\r \x01(\x08H\x00\x12!\n\x17\x61pply_label_transformer\x18\x13 \x01(\tH\x00\x1a\x37\n\x05\x43hain\x12.\n\x07\x66ilters\x18\x01 \x03(\x0b\x32\x1d.google.bigtable.v2.RowFilter\x1a<\n\nInterleave\x12.\n\x07\x66ilters\x18\x01 \x03(\x0b\x32\x1d.google.bigtable.v2.RowFilter\x1a\xad\x01\n\tCondition\x12\x37\n\x10predicate_filter\x18\x01 \x01(\x0b\x32\x1d.google.bigtable.v2.RowFilter\x12\x32\n\x0btrue_filter\x18\x02 \x01(\x0b\x32\x1d.google.bigtable.v2.RowFilter\x12\x33\n\x0c\x66\x61lse_filter\x18\x03 \x01(\x0b\x32\x1d.google.bigtable.v2.RowFilterB\x08\n\x06\x66ilter"\xc9\x04\n\x08Mutation\x12\x38\n\x08set_cell\x18\x01 \x01(\x0b\x32$.google.bigtable.v2.Mutation.SetCellH\x00\x12K\n\x12\x64\x65lete_from_column\x18\x02 \x01(\x0b\x32-.google.bigtable.v2.Mutation.DeleteFromColumnH\x00\x12K\n\x12\x64\x65lete_from_family\x18\x03 \x01(\x0b\x32-.google.bigtable.v2.Mutation.DeleteFromFamilyH\x00\x12\x45\n\x0f\x64\x65lete_from_row\x18\x04 \x01(\x0b\x32*.google.bigtable.v2.Mutation.DeleteFromRowH\x00\x1a\x61\n\x07SetCell\x12\x13\n\x0b\x66\x61mily_name\x18\x01 \x01(\t\x12\x18\n\x10\x63olumn_qualifier\x18\x02 \x01(\x0c\x12\x18\n\x10timestamp_micros\x18\x03 \x01(\x03\x12\r\n\x05value\x18\x04 \x01(\x0c\x1ay\n\x10\x44\x65leteFromColumn\x12\x13\n\x0b\x66\x61mily_name\x18\x01 \x01(\t\x12\x18\n\x10\x63olumn_qualifier\x18\x02 \x01(\x0c\x12\x36\n\ntime_range\x18\x03 \x01(\x0b\x32".google.bigtable.v2.TimestampRange\x1a\'\n\x10\x44\x65leteFromFamily\x12\x13\n\x0b\x66\x61mily_name\x18\x01 \x01(\t\x1a\x0f\n\rDeleteFromRowB\n\n\x08mutation"\x80\x01\n\x13ReadModifyWriteRule\x12\x13\n\x0b\x66\x61mily_name\x18\x01 \x01(\t\x12\x18\n\x10\x63olumn_qualifier\x18\x02 \x01(\x0c\x12\x16\n\x0c\x61ppend_value\x18\x03 \x01(\x0cH\x00\x12\x1a\n\x10increment_amount\x18\x04 \x01(\x03H\x00\x42\x06\n\x04ruleB\xb5\x01\n\x16\x63om.google.bigtable.v2B\tDataProtoP\x01Z:google.golang.org/genproto/googleapis/bigtable/v2;bigtable\xaa\x02\x18Google.Cloud.Bigtable.V2\xca\x02\x18Google\\Cloud\\Bigtable\\V2\xea\x02\x1bGoogle::Cloud::Bigtable::V2b\x06proto3',
 )
 
 
@@ -2031,6 +2031,7 @@ Row = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_v2.proto.data_pb2",
         "__doc__": """Specifies the complete (requested) contents of a single row of a
   table. Rows which exceed 256MiB in size cannot be read in full.
+  
   Attributes:
       key:
           The unique key which identifies this row within its table.
@@ -2054,6 +2055,7 @@ Family = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_v2.proto.data_pb2",
         "__doc__": """Specifies (some of) the contents of a single row/column family
   intersection of a table.
+  
   Attributes:
       name:
           The unique key which identifies this family within its row.
@@ -2079,6 +2081,7 @@ Column = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_v2.proto.data_pb2",
         "__doc__": """Specifies (some of) the contents of a single row/column intersection
   of a table.
+  
   Attributes:
       qualifier:
           The unique key which identifies this column within its family.
@@ -2103,6 +2106,7 @@ Cell = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_v2.proto.data_pb2",
         "__doc__": """Specifies (some of) the contents of a single row/column/timestamp of a
   table.
+  
   Attributes:
       timestamp_micros:
           The cell’s stored timestamp, which also uniquely identifies it
@@ -2131,6 +2135,7 @@ RowRange = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _ROWRANGE,
         "__module__": "google.cloud.bigtable_v2.proto.data_pb2",
         "__doc__": """Specifies a contiguous range of rows.
+  
   Attributes:
       start_key:
           The row key at which to start the range. If neither field is
@@ -2159,6 +2164,7 @@ RowSet = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _ROWSET,
         "__module__": "google.cloud.bigtable_v2.proto.data_pb2",
         "__doc__": """Specifies a non-contiguous set of rows.
+  
   Attributes:
       row_keys:
           Single rows included in the set.
@@ -2180,6 +2186,7 @@ ColumnRange = _reflection.GeneratedProtocolMessageType(
   The range spans from <column_family>:<start_qualifier> to
   <column_family>:<end_qualifier>, where both bounds can be either
   inclusive or exclusive.
+  
   Attributes:
       family_name:
           The name of the column family within which this range falls.
@@ -2212,6 +2219,7 @@ TimestampRange = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _TIMESTAMPRANGE,
         "__module__": "google.cloud.bigtable_v2.proto.data_pb2",
         "__doc__": """Specified a contiguous range of microsecond timestamps.
+  
   Attributes:
       start_timestamp_micros:
           Inclusive lower bound. If left empty, interpreted as 0.
@@ -2230,6 +2238,7 @@ ValueRange = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _VALUERANGE,
         "__module__": "google.cloud.bigtable_v2.proto.data_pb2",
         "__doc__": """Specifies a contiguous range of raw byte values.
+  
   Attributes:
       start_value:
           The value at which to start the range. If neither field is
@@ -2262,6 +2271,7 @@ RowFilter = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _ROWFILTER_CHAIN,
                 "__module__": "google.cloud.bigtable_v2.proto.data_pb2",
                 "__doc__": """A RowFilter which sends rows through several RowFilters in sequence.
+    
     Attributes:
         filters:
             The elements of “filters” are chained together to process the
@@ -2279,6 +2289,7 @@ RowFilter = _reflection.GeneratedProtocolMessageType(
                 "__module__": "google.cloud.bigtable_v2.proto.data_pb2",
                 "__doc__": """A RowFilter which sends each row to each of several component
     RowFilters and interleaves the results.
+    
     Attributes:
         filters:
             The elements of “filters” all process a copy of the input row,
@@ -2321,6 +2332,7 @@ RowFilter = _reflection.GeneratedProtocolMessageType(
     inconsistent or unexpected results. Additionally, Condition filters
     have poor performance, especially when filters are set for the false
     condition.
+    
     Attributes:
         predicate_filter:
             If ``predicate_filter`` outputs any cells, then
@@ -2370,6 +2382,7 @@ RowFilter = _reflection.GeneratedProtocolMessageType(
   RowFilter message must not exceed 4096 bytes, and RowFilters may not
   be nested within each other (in Chains or Interleaves) to a depth of
   more than 20.
+  
   Attributes:
       filter:
           Which of the possible RowFilter types to apply. If none are
@@ -2520,6 +2533,7 @@ Mutation = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _MUTATION_SETCELL,
                 "__module__": "google.cloud.bigtable_v2.proto.data_pb2",
                 "__doc__": """A Mutation which sets the value of the specified cell.
+    
     Attributes:
         family_name:
             The name of the family into which new data should be written.
@@ -2548,6 +2562,7 @@ Mutation = _reflection.GeneratedProtocolMessageType(
                 "__module__": "google.cloud.bigtable_v2.proto.data_pb2",
                 "__doc__": """A Mutation which deletes cells from the specified column, optionally
     restricting the deletions to a given timestamp range.
+    
     Attributes:
         family_name:
             The name of the family from which cells should be deleted.
@@ -2568,6 +2583,7 @@ Mutation = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _MUTATION_DELETEFROMFAMILY,
                 "__module__": "google.cloud.bigtable_v2.proto.data_pb2",
                 "__doc__": """A Mutation which deletes all cells from the specified column family.
+    
     Attributes:
         family_name:
             The name of the family from which cells should be deleted.
@@ -2589,6 +2605,7 @@ Mutation = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _MUTATION,
         "__module__": "google.cloud.bigtable_v2.proto.data_pb2",
         "__doc__": """Specifies a particular change to be made to the contents of a row.
+  
   Attributes:
       mutation:
           Which of the possible Mutation types to apply.
@@ -2618,6 +2635,7 @@ ReadModifyWriteRule = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_v2.proto.data_pb2",
         "__doc__": """Specifies an atomic read/modify/write operation on the latest value of
   the specified column.
+  
   Attributes:
       family_name:
           The name of the family to which the read/modify/write should

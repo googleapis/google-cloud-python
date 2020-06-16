@@ -23,9 +23,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     name="google/cloud/bigtable_admin_v2/proto/table.proto",
     package="google.bigtable.admin.v2",
     syntax="proto3",
-    serialized_options=b"\n\034com.google.bigtable.admin.v2B\nTableProtoP\001Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\252\002\036Google.Cloud.Bigtable.Admin.V2\312\002\036Google\\Cloud\\Bigtable\\Admin\\V2",
+    serialized_options=b'\n\034com.google.bigtable.admin.v2B\nTableProtoP\001Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\252\002\036Google.Cloud.Bigtable.Admin.V2\312\002\036Google\\Cloud\\Bigtable\\Admin\\V2\352\002"Google::Cloud::Bigtable::Admin::V2',
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n0google/cloud/bigtable_admin_v2/proto/table.proto\x12\x18google.bigtable.admin.v2\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x9b\x01\n\x0bRestoreInfo\x12@\n\x0bsource_type\x18\x01 \x01(\x0e\x32+.google.bigtable.admin.v2.RestoreSourceType\x12;\n\x0b\x62\x61\x63kup_info\x18\x02 \x01(\x0b\x32$.google.bigtable.admin.v2.BackupInfoH\x00\x42\r\n\x0bsource_info"\xfb\x07\n\x05Table\x12\x0c\n\x04name\x18\x01 \x01(\t\x12J\n\x0e\x63luster_states\x18\x02 \x03(\x0b\x32\x32.google.bigtable.admin.v2.Table.ClusterStatesEntry\x12L\n\x0f\x63olumn_families\x18\x03 \x03(\x0b\x32\x33.google.bigtable.admin.v2.Table.ColumnFamiliesEntry\x12I\n\x0bgranularity\x18\x04 \x01(\x0e\x32\x34.google.bigtable.admin.v2.Table.TimestampGranularity\x12;\n\x0crestore_info\x18\x06 \x01(\x0b\x32%.google.bigtable.admin.v2.RestoreInfo\x1a\xf9\x01\n\x0c\x43lusterState\x12X\n\x11replication_state\x18\x01 \x01(\x0e\x32=.google.bigtable.admin.v2.Table.ClusterState.ReplicationState"\x8e\x01\n\x10ReplicationState\x12\x13\n\x0fSTATE_NOT_KNOWN\x10\x00\x12\x10\n\x0cINITIALIZING\x10\x01\x12\x17\n\x13PLANNED_MAINTENANCE\x10\x02\x12\x19\n\x15UNPLANNED_MAINTENANCE\x10\x03\x12\t\n\x05READY\x10\x04\x12\x14\n\x10READY_OPTIMIZING\x10\x05\x1a\x62\n\x12\x43lusterStatesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12;\n\x05value\x18\x02 \x01(\x0b\x32,.google.bigtable.admin.v2.Table.ClusterState:\x02\x38\x01\x1a]\n\x13\x43olumnFamiliesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x35\n\x05value\x18\x02 \x01(\x0b\x32&.google.bigtable.admin.v2.ColumnFamily:\x02\x38\x01"I\n\x14TimestampGranularity\x12%\n!TIMESTAMP_GRANULARITY_UNSPECIFIED\x10\x00\x12\n\n\x06MILLIS\x10\x01"\\\n\x04View\x12\x14\n\x10VIEW_UNSPECIFIED\x10\x00\x12\r\n\tNAME_ONLY\x10\x01\x12\x0f\n\x0bSCHEMA_VIEW\x10\x02\x12\x14\n\x10REPLICATION_VIEW\x10\x03\x12\x08\n\x04\x46ULL\x10\x04:Z\xea\x41W\n\x1d\x62igtable.googleapis.com/Table\x12\x36projects/{project}/instances/{instance}/tables/{table}"A\n\x0c\x43olumnFamily\x12\x31\n\x07gc_rule\x18\x01 \x01(\x0b\x32 .google.bigtable.admin.v2.GcRule"\xd5\x02\n\x06GcRule\x12\x1a\n\x10max_num_versions\x18\x01 \x01(\x05H\x00\x12,\n\x07max_age\x18\x02 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12\x45\n\x0cintersection\x18\x03 \x01(\x0b\x32-.google.bigtable.admin.v2.GcRule.IntersectionH\x00\x12\x37\n\x05union\x18\x04 \x01(\x0b\x32&.google.bigtable.admin.v2.GcRule.UnionH\x00\x1a?\n\x0cIntersection\x12/\n\x05rules\x18\x01 \x03(\x0b\x32 .google.bigtable.admin.v2.GcRule\x1a\x38\n\x05Union\x12/\n\x05rules\x18\x01 \x03(\x0b\x32 .google.bigtable.admin.v2.GcRuleB\x06\n\x04rule"\xc7\x03\n\x08Snapshot\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x35\n\x0csource_table\x18\x02 \x01(\x0b\x32\x1f.google.bigtable.admin.v2.Table\x12\x17\n\x0f\x64\x61ta_size_bytes\x18\x03 \x01(\x03\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x64\x65lete_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x05state\x18\x06 \x01(\x0e\x32(.google.bigtable.admin.v2.Snapshot.State\x12\x13\n\x0b\x64\x65scription\x18\x07 \x01(\t"5\n\x05State\x12\x13\n\x0fSTATE_NOT_KNOWN\x10\x00\x12\t\n\x05READY\x10\x01\x12\x0c\n\x08\x43REATING\x10\x02:v\xea\x41s\n bigtable.googleapis.com/Snapshot\x12Oprojects/{project}/instances/{instance}/clusters/{cluster}/snapshots/{snapshot}"\xd7\x03\n\x06\x42\x61\x63kup\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x1c\n\x0csource_table\x18\x02 \x01(\tB\x06\xe0\x41\x05\xe0\x41\x02\x12\x34\n\x0b\x65xpire_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x02\x12\x33\n\nstart_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x31\n\x08\x65nd_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x17\n\nsize_bytes\x18\x06 \x01(\x03\x42\x03\xe0\x41\x03\x12:\n\x05state\x18\x07 \x01(\x0e\x32&.google.bigtable.admin.v2.Backup.StateB\x03\xe0\x41\x03"7\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\t\n\x05READY\x10\x02:p\xea\x41m\n\x1e\x62igtable.googleapis.com/Backup\x12Kprojects/{project}/instances/{instance}/clusters/{cluster}/backups/{backup}"\xa4\x01\n\nBackupInfo\x12\x13\n\x06\x62\x61\x63kup\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x33\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x31\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x19\n\x0csource_table\x18\x04 \x01(\tB\x03\xe0\x41\x03*D\n\x11RestoreSourceType\x12#\n\x1fRESTORE_SOURCE_TYPE_UNSPECIFIED\x10\x00\x12\n\n\x06\x42\x41\x43KUP\x10\x01\x42\xad\x01\n\x1c\x63om.google.bigtable.admin.v2B\nTableProtoP\x01Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\xaa\x02\x1eGoogle.Cloud.Bigtable.Admin.V2\xca\x02\x1eGoogle\\Cloud\\Bigtable\\Admin\\V2b\x06proto3',
+    serialized_pb=b'\n0google/cloud/bigtable_admin_v2/proto/table.proto\x12\x18google.bigtable.admin.v2\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x9b\x01\n\x0bRestoreInfo\x12@\n\x0bsource_type\x18\x01 \x01(\x0e\x32+.google.bigtable.admin.v2.RestoreSourceType\x12;\n\x0b\x62\x61\x63kup_info\x18\x02 \x01(\x0b\x32$.google.bigtable.admin.v2.BackupInfoH\x00\x42\r\n\x0bsource_info"\xfb\x07\n\x05Table\x12\x0c\n\x04name\x18\x01 \x01(\t\x12J\n\x0e\x63luster_states\x18\x02 \x03(\x0b\x32\x32.google.bigtable.admin.v2.Table.ClusterStatesEntry\x12L\n\x0f\x63olumn_families\x18\x03 \x03(\x0b\x32\x33.google.bigtable.admin.v2.Table.ColumnFamiliesEntry\x12I\n\x0bgranularity\x18\x04 \x01(\x0e\x32\x34.google.bigtable.admin.v2.Table.TimestampGranularity\x12;\n\x0crestore_info\x18\x06 \x01(\x0b\x32%.google.bigtable.admin.v2.RestoreInfo\x1a\xf9\x01\n\x0c\x43lusterState\x12X\n\x11replication_state\x18\x01 \x01(\x0e\x32=.google.bigtable.admin.v2.Table.ClusterState.ReplicationState"\x8e\x01\n\x10ReplicationState\x12\x13\n\x0fSTATE_NOT_KNOWN\x10\x00\x12\x10\n\x0cINITIALIZING\x10\x01\x12\x17\n\x13PLANNED_MAINTENANCE\x10\x02\x12\x19\n\x15UNPLANNED_MAINTENANCE\x10\x03\x12\t\n\x05READY\x10\x04\x12\x14\n\x10READY_OPTIMIZING\x10\x05\x1a\x62\n\x12\x43lusterStatesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12;\n\x05value\x18\x02 \x01(\x0b\x32,.google.bigtable.admin.v2.Table.ClusterState:\x02\x38\x01\x1a]\n\x13\x43olumnFamiliesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x35\n\x05value\x18\x02 \x01(\x0b\x32&.google.bigtable.admin.v2.ColumnFamily:\x02\x38\x01"I\n\x14TimestampGranularity\x12%\n!TIMESTAMP_GRANULARITY_UNSPECIFIED\x10\x00\x12\n\n\x06MILLIS\x10\x01"\\\n\x04View\x12\x14\n\x10VIEW_UNSPECIFIED\x10\x00\x12\r\n\tNAME_ONLY\x10\x01\x12\x0f\n\x0bSCHEMA_VIEW\x10\x02\x12\x14\n\x10REPLICATION_VIEW\x10\x03\x12\x08\n\x04\x46ULL\x10\x04:Z\xea\x41W\n\x1d\x62igtable.googleapis.com/Table\x12\x36projects/{project}/instances/{instance}/tables/{table}"A\n\x0c\x43olumnFamily\x12\x31\n\x07gc_rule\x18\x01 \x01(\x0b\x32 .google.bigtable.admin.v2.GcRule"\xd5\x02\n\x06GcRule\x12\x1a\n\x10max_num_versions\x18\x01 \x01(\x05H\x00\x12,\n\x07max_age\x18\x02 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12\x45\n\x0cintersection\x18\x03 \x01(\x0b\x32-.google.bigtable.admin.v2.GcRule.IntersectionH\x00\x12\x37\n\x05union\x18\x04 \x01(\x0b\x32&.google.bigtable.admin.v2.GcRule.UnionH\x00\x1a?\n\x0cIntersection\x12/\n\x05rules\x18\x01 \x03(\x0b\x32 .google.bigtable.admin.v2.GcRule\x1a\x38\n\x05Union\x12/\n\x05rules\x18\x01 \x03(\x0b\x32 .google.bigtable.admin.v2.GcRuleB\x06\n\x04rule"\xc7\x03\n\x08Snapshot\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x35\n\x0csource_table\x18\x02 \x01(\x0b\x32\x1f.google.bigtable.admin.v2.Table\x12\x17\n\x0f\x64\x61ta_size_bytes\x18\x03 \x01(\x03\x12/\n\x0b\x63reate_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0b\x64\x65lete_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x37\n\x05state\x18\x06 \x01(\x0e\x32(.google.bigtable.admin.v2.Snapshot.State\x12\x13\n\x0b\x64\x65scription\x18\x07 \x01(\t"5\n\x05State\x12\x13\n\x0fSTATE_NOT_KNOWN\x10\x00\x12\t\n\x05READY\x10\x01\x12\x0c\n\x08\x43REATING\x10\x02:v\xea\x41s\n bigtable.googleapis.com/Snapshot\x12Oprojects/{project}/instances/{instance}/clusters/{cluster}/snapshots/{snapshot}"\xd7\x03\n\x06\x42\x61\x63kup\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x1c\n\x0csource_table\x18\x02 \x01(\tB\x06\xe0\x41\x05\xe0\x41\x02\x12\x34\n\x0b\x65xpire_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x02\x12\x33\n\nstart_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x31\n\x08\x65nd_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x17\n\nsize_bytes\x18\x06 \x01(\x03\x42\x03\xe0\x41\x03\x12:\n\x05state\x18\x07 \x01(\x0e\x32&.google.bigtable.admin.v2.Backup.StateB\x03\xe0\x41\x03"7\n\x05State\x12\x15\n\x11STATE_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x43REATING\x10\x01\x12\t\n\x05READY\x10\x02:p\xea\x41m\n\x1e\x62igtable.googleapis.com/Backup\x12Kprojects/{project}/instances/{instance}/clusters/{cluster}/backups/{backup}"\xa4\x01\n\nBackupInfo\x12\x13\n\x06\x62\x61\x63kup\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x33\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x31\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampB\x03\xe0\x41\x03\x12\x19\n\x0csource_table\x18\x04 \x01(\tB\x03\xe0\x41\x03*D\n\x11RestoreSourceType\x12#\n\x1fRESTORE_SOURCE_TYPE_UNSPECIFIED\x10\x00\x12\n\n\x06\x42\x41\x43KUP\x10\x01\x42\xd2\x01\n\x1c\x63om.google.bigtable.admin.v2B\nTableProtoP\x01Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\xaa\x02\x1eGoogle.Cloud.Bigtable.Admin.V2\xca\x02\x1eGoogle\\Cloud\\Bigtable\\Admin\\V2\xea\x02"Google::Cloud::Bigtable::Admin::V2b\x06proto3',
     dependencies=[
         google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_api_dot_resource__pb2.DESCRIPTOR,
@@ -1367,6 +1367,7 @@ RestoreInfo = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _RESTOREINFO,
         "__module__": "google.cloud.bigtable_admin_v2.proto.table_pb2",
         "__doc__": """Information about a table restore.
+  
   Attributes:
       source_type:
           The type of the restore source.
@@ -1392,6 +1393,7 @@ Table = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _TABLE_CLUSTERSTATE,
                 "__module__": "google.cloud.bigtable_admin_v2.proto.table_pb2",
                 "__doc__": """The state of a table’s data in a particular cluster.
+    
     Attributes:
         replication_state:
             Output only. The state of replication for the table in this
@@ -1422,6 +1424,7 @@ Table = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.bigtable_admin_v2.proto.table_pb2",
         "__doc__": """A collection of user data indexed by row, column, and timestamp. Each
   table is served using the resources of its parent cluster.
+  
   Attributes:
       name:
           Output only. The unique name of the table. Values are of the
@@ -1465,6 +1468,7 @@ ColumnFamily = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _COLUMNFAMILY,
         "__module__": "google.cloud.bigtable_admin_v2.proto.table_pb2",
         "__doc__": """A set of columns within a table which share a common configuration.
+  
   Attributes:
       gc_rule:
           Garbage collection rule specified as a protobuf. Must
@@ -1489,6 +1493,7 @@ GcRule = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _GCRULE_INTERSECTION,
                 "__module__": "google.cloud.bigtable_admin_v2.proto.table_pb2",
                 "__doc__": """A GcRule which deletes cells matching all of the given rules.
+    
     Attributes:
         rules:
             Only delete cells which would be deleted by every element of
@@ -1504,6 +1509,7 @@ GcRule = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _GCRULE_UNION,
                 "__module__": "google.cloud.bigtable_admin_v2.proto.table_pb2",
                 "__doc__": """A GcRule which deletes cells matching any of the given rules.
+    
     Attributes:
         rules:
             Delete cells which would be deleted by any element of
@@ -1515,6 +1521,7 @@ GcRule = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _GCRULE,
         "__module__": "google.cloud.bigtable_admin_v2.proto.table_pb2",
         "__doc__": """Rule for determining which cells to delete during garbage collection.
+  
   Attributes:
       rule:
           Garbage collection rules.
@@ -1549,6 +1556,7 @@ Snapshot = _reflection.GeneratedProtocolMessageType(
   customers. This feature might be changed in backward-incompatible ways
   and is not recommended for production use. It is not subject to any
   SLA or deprecation policy.
+  
   Attributes:
       name:
           Output only. The unique name of the snapshot. Values are of
@@ -1586,6 +1594,7 @@ Backup = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _BACKUP,
         "__module__": "google.cloud.bigtable_admin_v2.proto.table_pb2",
         "__doc__": """A backup of a Cloud Bigtable table.
+  
   Attributes:
       name:
           Output only. A globally unique identifier for the backup which
@@ -1634,6 +1643,7 @@ BackupInfo = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _BACKUPINFO,
         "__module__": "google.cloud.bigtable_admin_v2.proto.table_pb2",
         "__doc__": """Information about a backup.
+  
   Attributes:
       backup:
           Output only. Name of the backup.
