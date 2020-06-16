@@ -15,7 +15,8 @@
 import datetime
 
 from google.cloud.ndb import stats
-import tests.unit.utils
+
+from . import utils
 
 
 DEFAULTS = {
@@ -26,7 +27,7 @@ DEFAULTS = {
 
 
 def test___all__():
-    tests.unit.utils.verify___all__(stats)
+    utils.verify___all__(stats)
 
 
 class TestBaseStatistic:

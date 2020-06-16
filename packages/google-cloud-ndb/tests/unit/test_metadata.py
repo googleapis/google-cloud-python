@@ -23,11 +23,12 @@ from google.cloud.ndb import exceptions
 from google.cloud.ndb import metadata
 from google.cloud.ndb import key as key_module
 from google.cloud.ndb import tasklets
-import tests.unit.utils
+
+from . import utils
 
 
 def test___all__():
-    tests.unit.utils.verify___all__(metadata)
+    utils.verify___all__(metadata)
 
 
 class Test_BaseMetadata:

@@ -22,7 +22,7 @@ import pytest
 
 from google.cloud import ndb
 
-from tests.system import eventually, length_equals
+from . import eventually, length_equals
 
 USE_REDIS_CACHE = bool(os.environ.get("REDIS_CACHE_URL"))
 

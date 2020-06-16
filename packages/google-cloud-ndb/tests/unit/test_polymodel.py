@@ -24,11 +24,12 @@ from google.cloud.datastore import helpers
 from google.cloud.ndb import model
 from google.cloud.ndb import polymodel
 from google.cloud.ndb import query
-import tests.unit.utils
+
+from . import utils
 
 
 def test___all__():
-    tests.unit.utils.verify___all__(polymodel)
+    utils.verify___all__(polymodel)
 
 
 class Test_ClassKeyProperty:

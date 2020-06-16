@@ -42,7 +42,7 @@ from google.cloud.ndb import query as query_module
 from google.cloud.ndb import tasklets
 from google.cloud.ndb import utils as ndb_utils
 
-from tests.unit import utils
+from . import utils
 
 
 class timezone(datetime.tzinfo):

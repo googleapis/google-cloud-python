@@ -25,11 +25,11 @@ from google.cloud.ndb import exceptions
 from google.cloud.ndb import _remote
 from google.cloud.ndb import tasklets
 
-import tests.unit.utils
+from . import utils
 
 
 def test___all__():
-    tests.unit.utils.verify___all__(tasklets)
+    utils.verify___all__(tasklets)
 
 
 def test_add_flow_exception():

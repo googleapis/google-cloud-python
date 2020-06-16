@@ -27,11 +27,12 @@ from google.cloud.ndb import global_cache
 from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
 from google.cloud.ndb import _options
-import tests.unit.utils
+
+from . import utils
 
 
 def test___all__():
-    tests.unit.utils.verify___all__(context_module)
+    utils.verify___all__(context_module)
 
 
 class TestContext:

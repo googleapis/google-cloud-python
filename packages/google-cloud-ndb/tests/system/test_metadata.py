@@ -19,7 +19,7 @@ import pytest
 
 from google.cloud import ndb
 
-from tests.system import eventually
+from . import eventually
 
 
 def _length_at_least(n):

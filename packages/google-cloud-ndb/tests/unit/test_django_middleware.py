@@ -15,11 +15,12 @@
 import pytest
 
 from google.cloud.ndb import django_middleware
-import tests.unit.utils
+
+from . import utils
 
 
 def test___all__():
-    tests.unit.utils.verify___all__(django_middleware)
+    utils.verify___all__(django_middleware)
 
 
 class TestNdbDjangoMiddleware:

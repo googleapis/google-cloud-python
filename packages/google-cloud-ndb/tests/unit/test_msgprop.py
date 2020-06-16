@@ -15,11 +15,12 @@
 import pytest
 
 from google.cloud.ndb import msgprop
-import tests.unit.utils
+
+from . import utils
 
 
 def test___all__():
-    tests.unit.utils.verify___all__(msgprop)
+    utils.verify___all__(msgprop)
 
 
 class TestEnumProperty:

@@ -28,7 +28,7 @@ from google.api_core import exceptions as core_exceptions
 from google.cloud import ndb
 from google.cloud.datastore import key as ds_key_module
 
-from tests.system import KIND, eventually, equals, length_equals
+from . import KIND, eventually, equals, length_equals
 
 
 @pytest.mark.usefixtures("client_context")

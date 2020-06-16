@@ -22,14 +22,14 @@ except ImportError:  # pragma: NO PY3 COVER
 import grpc
 import pytest
 
-import tests.unit.utils
+from . import utils
 
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import _eventloop
 
 
 def test___all__():
-    tests.unit.utils.verify___all__(_eventloop)
+    utils.verify___all__(_eventloop)
 
 
 def _Event(when=0, what="foo", args=(), kw={}):

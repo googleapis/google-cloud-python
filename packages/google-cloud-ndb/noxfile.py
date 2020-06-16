@@ -50,7 +50,7 @@ def unit(session):
         run_args.extend(
             [
                 "--cov=google.cloud.ndb",
-                "--cov=tests.unit",
+                "--cov=unit",
                 "--cov-config",
                 get_path(".coveragerc"),
                 "--cov-report=term-missing",

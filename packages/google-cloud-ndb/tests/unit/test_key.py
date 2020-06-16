@@ -29,11 +29,12 @@ from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
 from google.cloud.ndb import _options
 from google.cloud.ndb import tasklets
-import tests.unit.utils
+
+from . import utils
 
 
 def test___all__():
-    tests.unit.utils.verify___all__(key_module)
+    utils.verify___all__(key_module)
 
 
 class TestKey:

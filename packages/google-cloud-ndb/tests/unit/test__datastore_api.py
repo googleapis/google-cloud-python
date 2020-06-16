@@ -37,7 +37,7 @@ from google.cloud.ndb import _options
 from google.cloud.ndb import tasklets
 from google.cloud.ndb import __version__
 
-from tests.unit import utils
+from . import utils
 
 
 def future_result(result):

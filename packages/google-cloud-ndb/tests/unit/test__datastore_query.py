@@ -33,7 +33,7 @@ from google.cloud.ndb import model
 from google.cloud.ndb import query as query_module
 from google.cloud.ndb import tasklets
 
-from tests.unit import utils
+from . import utils
 
 
 def test_make_filter():

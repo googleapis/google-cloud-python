@@ -35,7 +35,7 @@ from google.cloud import ndb
 from google.cloud.ndb import _cache
 from google.cloud.ndb import global_cache as global_cache_module
 
-from tests.system import KIND, eventually, equals
+from . import KIND, eventually, equals
 
 USE_REDIS_CACHE = bool(os.environ.get("REDIS_CACHE_URL"))
 

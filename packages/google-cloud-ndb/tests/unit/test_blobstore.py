@@ -17,11 +17,12 @@ import pytest
 from google.cloud.ndb import _datastore_types
 from google.cloud.ndb import blobstore
 from google.cloud.ndb import model
-import tests.unit.utils
+
+from . import utils
 
 
 def test___all__():
-    tests.unit.utils.verify___all__(blobstore)
+    utils.verify___all__(blobstore)
 
 
 def test_BlobKey():
