@@ -20,9 +20,11 @@ import pickle
 
 import pytest
 
+import test_utils.system
+
 from google.cloud import ndb
 
-from . import eventually, length_equals
+from . import eventually, length_equals, KIND
 
 USE_REDIS_CACHE = bool(os.environ.get("REDIS_CACHE_URL"))
 
@@ -295,3 +297,21 @@ def test_insert_entity_in_transaction_without_preallocating_id(dispose_of):
 
     assert retrieved.foo == 42
     assert retrieved.bar == "none"
+
+
+@pytest.mark.usefixtures("client_context")
+def test_crosswired_property_names(ds_entity):
+    """Regression test for #461.
+
+    https://github.com/googleapis/python-ndb/issues/461
+    """
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id, foo=42, bar=43)
+
+    class SomeKind(ndb.Model):
+        bar = ndb.IntegerProperty(name="foo")
+
+    key = ndb.Key(KIND, entity_id)
+    entity = key.get()
+
+    assert entity.bar == 42

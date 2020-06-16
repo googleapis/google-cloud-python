@@ -5964,8 +5964,27 @@ class Model(_NotEqualMixin):
         """Return the code name from a property when it's different from the
         stored name. Used in deserialization from datastore."""
         if name in cls._properties:
-            if name != cls._properties[name]._code_name:
-                name = cls._properties[name]._code_name
+            return cls._properties[name]._code_name
+
+        # If name isn't in cls._properties but there is a property with that
+        # name, it means that property has a different codename, and returning
+        # this name will potentially clobber the real property.  Take for
+        # example:
+        #
+        # class SomeKind(ndb.Model):
+        #     foo = ndb.IntegerProperty(name="bar")
+        #
+        # If we are passed "bar", we know to translate that to "foo", becasue
+        # the datastore property, "bar", is the NDB property, "foo". But if we
+        # are passed "foo", here, then that must be the datastore property,
+        # "foo", which isn't even mapped to anything in the NDB model.
+        #
+        prop = getattr(cls, name, None)
+        if prop:
+            # Won't map to a property, so this datastore property will be
+            # effectively ignored.
+            return " "
+
         return name
 
     @classmethod
