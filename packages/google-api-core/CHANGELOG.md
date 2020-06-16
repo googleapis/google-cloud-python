@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+### [1.20.1](https://www.github.com/googleapis/python-api-core/compare/v1.20.0...v1.20.1) (2020-06-16)
+
+
+### Bug Fixes
+
+* **dependencies:** increase protobuf version ([#49](https://www.github.com/googleapis/python-api-core/issues/49)) ([1ba6095](https://www.github.com/googleapis/python-api-core/commit/1ba609592968c9d828449b89a3ade3bcaf5edd7f)), closes [#48](https://www.github.com/googleapis/python-api-core/issues/48)
+
 ## [1.20.0](https://www.github.com/googleapis/python-api-core/compare/v1.19.1...v1.20.0) (2020-06-09)
 
 
