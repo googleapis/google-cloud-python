@@ -33,6 +33,19 @@ s.move(library / "google/cloud/datastore_v1/proto")
 s.move(library / "google/cloud/datastore_v1/gapic")
 
 # ----------------------------------------------------------------------------
+# Generate datastore admin GAPIC layer
+# ----------------------------------------------------------------------------
+library = gapic.py_library(
+    service="datastore_admin",
+    version="v1",
+    bazel_target="//google/datastore/admin/v1:datastore-admin-v1-py",
+    include_protos=True,
+)
+
+s.move(library / "google/cloud/datastore_admin_v1/proto")
+s.move(library / "google/cloud/datastore_admin_v1/gapic")
+
+# ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(unit_cov_level=97, cov_level=99)
