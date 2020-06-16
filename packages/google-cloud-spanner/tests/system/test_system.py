@@ -93,7 +93,15 @@ def _list_instances():
 
 
 def setUpModule():
-    Config.CLIENT = Client()
+    if USE_EMULATOR:
+        from google.auth.credentials import AnonymousCredentials
+
+        emulator_project = os.getenv("GCLOUD_PROJECT", "emulator-test-project")
+        Config.CLIENT = Client(
+            project=emulator_project, credentials=AnonymousCredentials()
+        )
+    else:
+        Config.CLIENT = Client()
     retry = RetryErrors(exceptions.ServiceUnavailable)
 
     configs = list(retry(Config.CLIENT.list_instance_configs)())
@@ -1215,7 +1223,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             with self.assertRaises(InvalidArgument):
                 transaction.batch_update([])
 
-    @unittest.skipIf(USE_EMULATOR, "Skipping partitioned DML")
     def test_execute_partitioned_dml(self):
         # [START spanner_test_dml_partioned_dml_update]
         retry = RetryInstanceState(_has_all_ddl)
@@ -1329,6 +1336,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         PKEY = "query_w_concurrent_updates"
         self._transaction_concurrency_helper(self._query_w_concurrent_update, PKEY)
 
+    @unittest.skipIf(USE_EMULATOR, "Skipping concurrent transactions")
     def test_transaction_read_w_abort(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
@@ -1848,7 +1856,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             expected = [data[keyrow]] + data[start + 1 : end]
             self.assertEqual(rows, expected)
 
-    @unittest.skipIf(USE_EMULATOR, "Skipping partitioned reads")
     def test_partition_read_w_index(self):
         row_count = 10
         columns = self.COLUMNS[1], self.COLUMNS[2]
