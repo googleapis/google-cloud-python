@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-container/compare/v0.5.0...v1.0.0) (2020-06-16)
+
+
+### Features
+
+* release as production/stable ([#24](https://www.github.com/googleapis/python-container/issues/24)) ([0e0095d](https://www.github.com/googleapis/python-container/commit/0e0095d8fad004d8098af62c6c27a40aa96d6257))
+
 ## [0.5.0](https://www.github.com/googleapis/python-container/compare/v0.4.0...v0.5.0) (2020-04-14)
 
 
