@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-dataproc/compare/v0.8.1...v1.0.0) (2020-06-17)
+
+
+### Features
+
+* release as production/stable ([#44](https://www.github.com/googleapis/python-dataproc/issues/44)) ([58f8c87](https://www.github.com/googleapis/python-dataproc/commit/58f8c87acc826e56b2e6271306c7a2078eed59ef))
+
 ### [0.8.1](https://www.github.com/googleapis/python-dataproc/compare/v0.8.0...v0.8.1) (2020-06-05)
 
 
