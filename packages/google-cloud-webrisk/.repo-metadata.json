@@ -4,7 +4,7 @@
   "product_documentation": "https://cloud.google.com/web-risk/docs/",
   "client_documentation": "https://googleapis.dev/python/webrisk/latest",
   "issue_tracker": "",
-  "release_level": "ga",
+  "release_level": "alpha",
   "language": "python",
   "repo": "googleapis/python-webrisk",
   "distribution_name": "google-cloud-webrisk",
