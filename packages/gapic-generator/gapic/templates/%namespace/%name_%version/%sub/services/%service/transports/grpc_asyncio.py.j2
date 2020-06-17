@@ -1,18 +1,17 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import grpc_helpers   # type: ignore
+from google.api_core import grpc_helpers_async         # type: ignore
 {%- if service.has_lro %}
-from google.api_core import operations_v1  # type: ignore
+from google.api_core import operations_v1              # type: ignore
 {%- endif %}
-from google import auth                    # type: ignore
-from google.auth import credentials        # type: ignore
+from google.auth import credentials                    # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
-
-import grpc  # type: ignore
+import grpc                        # type: ignore
+from grpc.experimental import aio  # type: ignore
 
 {% filter sort_lines -%}
 {% for method in service.methods.values() -%}
@@ -21,10 +20,11 @@ import grpc  # type: ignore
 {% endfor -%}
 {% endfilter %}
 from .base import {{ service.name }}Transport
+from .grpc import {{ service.name }}GrpcTransport
 
 
-class {{ service.name }}GrpcTransport({{ service.name }}Transport):
-    """gRPC backend transport for {{ service.name }}.
+class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
+    """gRPC AsyncIO backend transport for {{ service.name }}.
 
     {{ service.meta.doc|rst(width=72, indent=4) }}
 
@@ -35,12 +35,44 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
     It sends protocol buffers over the wire using gRPC (which is built on
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
-    _stubs: Dict[str, Callable]
+
+    _grpc_channel: aio.Channel
+    _stubs: Dict[str, Callable] = {}
+
+    @classmethod
+    def create_channel(cls,
+                       host: str{% if service.host %} = '{{ service.host }}'{% endif %},
+                       credentials: credentials.Credentials = None,
+                       scopes: Optional[Sequence[str]] = None,
+                       **kwargs) -> aio.Channel:
+        """Create and return a gRPC AsyncIO channel object.
+        Args:
+            address (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            aio.Channel: A gRPC AsyncIO channel object.
+        """
+        scopes = scopes or cls.AUTH_SCOPES
+        return grpc_helpers_async.create_channel(
+            host,
+            credentials=credentials,
+            scopes=scopes,
+            **kwargs
+        )
 
     def __init__(self, *,
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
             credentials: credentials.Credentials = None,
-            channel: grpc.Channel = None,
+            channel: aio.Channel = None,
             api_mtls_endpoint: str = None,
             client_cert_source: Callable[[], Tuple[bytes, bytes]] = None) -> None:
         """Instantiate the transport.
@@ -54,7 +86,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
                 This argument is ignored if ``channel`` is provided.
-            channel (Optional[grpc.Channel]): A ``Channel`` instance through
+            channel (Optional[aio.Channel]): A ``Channel`` instance through
                 which to make calls.
             api_mtls_endpoint (Optional[str]): The mutual TLS endpoint. If
                 provided, it overrides the ``host`` argument and tries to create
@@ -66,8 +98,8 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                 is None.
 
         Raises:
-            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
-                creation failed for any reason.
+          google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+              creation failed for any reason.
         """
         if channel:
             # Sanity check: Ensure that channel and credentials are not both
@@ -78,9 +110,6 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
             self._grpc_channel = channel
         elif api_mtls_endpoint:
             host = api_mtls_endpoint if ":" in api_mtls_endpoint else api_mtls_endpoint + ":443"
-
-            if credentials is None:
-                credentials, _ = auth.default(scopes=self.AUTH_SCOPES)
 
             # Create SSL credentials with client_cert_source or application
             # default SSL credentials.
@@ -102,40 +131,10 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
 
         # Run the base constructor.
         super().__init__(host=host, credentials=credentials)
-        self._stubs = {}  # type: Dict[str, Callable]
-
-    @classmethod
-    def create_channel(cls,
-                       host: str{% if service.host %} = '{{ service.host }}'{% endif %},
-                       credentials: credentials.Credentials = None,
-                       scopes: Optional[Sequence[str]] = None,
-                       **kwargs) -> grpc.Channel:
-        """Create and return a gRPC channel object.
-        Args:
-            address (Optionsl[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            grpc.Channel: A gRPC channel object.
-        """
-        scopes = scopes or cls.AUTH_SCOPES
-        return grpc_helpers.create_channel(
-            host,
-            credentials=credentials,
-            scopes=scopes,
-            **kwargs
-        )
+        self._stubs = {}
 
     @property
-    def grpc_channel(self) -> grpc.Channel:
+    def grpc_channel(self) -> aio.Channel:
         """Create the channel designed to connect to this service.
 
         This property caches on the instance; repeated calls return
@@ -154,7 +153,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
     {%- if service.has_lro %}
 
     @property
-    def operations_client(self) -> operations_v1.OperationsClient:
+    def operations_client(self) -> operations_v1.OperationsAsyncClient:
         """Create the client designed to process long-running operations.
 
         This property caches on the instance; repeated calls return the same
@@ -162,7 +161,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         """
         # Sanity check: Only create a new client if we do not already have one.
         if 'operations_client' not in self.__dict__:
-            self.__dict__['operations_client'] = operations_v1.OperationsClient(
+            self.__dict__['operations_client'] = operations_v1.OperationsAsyncClient(
                 self.grpc_channel
             )
 
@@ -174,7 +173,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
     @property
     def {{ method.name|snake_case }}(self) -> Callable[
             [{{ method.input.ident }}],
-            {{ method.output.ident }}]:
+            Awaitable[{{ method.output.ident }}]]:
         r"""Return a callable for the {{- ' ' -}}
         {{ (method.name|snake_case).replace('_',' ')|wrap(
                 width=70, offset=40, indent=8) }}
@@ -184,7 +183,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
 
         Returns:
             Callable[[~.{{ method.input.name }}],
-                    ~.{{ method.output.name }}]:
+                    Awaitable[~.{{ method.output.name }}]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -203,6 +202,6 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
 
 
 __all__ = (
-    '{{ service.name }}GrpcTransport',
+    '{{ service.name }}GrpcAsyncIOTransport',
 )
 {%- endblock -%}

@@ -6,15 +6,18 @@ from typing import Dict, Type
 
 from .base import {{ service.name }}Transport
 from .grpc import {{ service.name }}GrpcTransport
+from .grpc_asyncio import {{ service.name }}GrpcAsyncIOTransport
 
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[{{ service.name }}Transport]]
 _transport_registry['grpc'] = {{ service.name }}GrpcTransport
+_transport_registry['grpc_asyncio'] = {{ service.name }}GrpcAsyncIOTransport
 
 
 __all__ = (
     '{{ service.name }}Transport',
     '{{ service.name }}GrpcTransport',
+    '{{ service.name }}GrpcAsyncIOTransport',
 )
 {% endblock %}

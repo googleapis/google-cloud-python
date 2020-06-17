@@ -12,6 +12,8 @@ from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.'
         if service.meta.address.subpackage == api.subpackage_view -%}
 from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.') }}.{% endif -%}
     {{ api.naming.versioned_module_name }}.services.{{ service.name|snake_case }}.client import {{ service.client_name }}
+from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.') }}.{% endif -%}
+    {{ api.naming.versioned_module_name }}.services.{{ service.name|snake_case }}.async_client import {{ service.async_client_name }}
 {% endfor -%}
 
 {#  Import messages and enums from each proto.
@@ -48,6 +50,7 @@ __all__ = (
 {% for service in api.services.values()|sort(attribute='name')
    if service.meta.address.subpackage == api.subpackage_view -%}
 '{{ service.client_name }}',
+'{{ service.async_client_name }}',
 {% endfor -%}
 {% for proto in api.protos.values()|sort(attribute='module_name')
    if proto.meta.address.subpackage == api.subpackage_view -%}

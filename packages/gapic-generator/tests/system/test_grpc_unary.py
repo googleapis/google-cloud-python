@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import pytest
+import asyncio
 
 from google.api_core import exceptions
 from google.rpc import code_pb2
@@ -38,6 +39,36 @@ def test_unary_error(echo):
     message = 'Bad things! Bad things!'
     with pytest.raises(exceptions.InvalidArgument) as exc:
         echo.echo({
+            'error': {
+                'code': code_pb2.Code.Value('INVALID_ARGUMENT'),
+                'message': message,
+            },
+        })
+        assert exc.value.code == 400
+        assert exc.value.message == message
+
+
+@pytest.mark.asyncio
+async def test_async_unary_with_request_object(async_echo):
+    response = await async_echo.echo(showcase.EchoRequest(
+        content='The hail in Wales falls mainly on the snails.',
+    ), timeout=1)
+    assert response.content == 'The hail in Wales falls mainly on the snails.'
+
+
+@pytest.mark.asyncio
+async def test_async_unary_with_dict(async_echo):
+    response = await async_echo.echo({
+        'content': 'The hail in Wales falls mainly on the snails.',
+    })
+    assert response.content == 'The hail in Wales falls mainly on the snails.'
+
+
+@pytest.mark.asyncio
+async def test_async_unary_error(async_echo):
+    message = 'Bad things! Bad things!'
+    with pytest.raises(exceptions.InvalidArgument) as exc:
+        await async_echo.echo({
             'error': {
                 'code': code_pb2.Code.Value('INVALID_ARGUMENT'),
                 'message': message,

@@ -16,15 +16,26 @@ import collections
 import mock
 import os
 import pytest
+import asyncio
 
 import google.api_core.client_options as ClientOptions
-from google import showcase
 from google.auth import credentials
-from google.showcase import EchoClient
-from google.showcase import IdentityClient
+from google.showcase import EchoClient, EchoAsyncClient
+from google.showcase import IdentityClient, IdentityAsyncClient
 from google.showcase import MessagingClient
 
 import grpc
+from grpc.experimental import aio
+
+
+# NOTE(lidiz) We must override the default event_loop fixture from
+# pytest-asyncio. pytest fixture frees resources once there isn't any reference
+# to it. So, the event loop might close before tests finishes. In the
+# customized version, we don't close the event loop.
+@pytest.fixture
+def event_loop():
+    loop = asyncio.get_event_loop()
+    return loop
 
 
 dir = os.path.dirname(__file__)
@@ -52,7 +63,10 @@ def pytest_addoption(parser):
     )
 
 
-def construct_client(client_class, use_mtls):
+def construct_client(client_class,
+                     use_mtls,
+                     transport="grpc",
+                     channel_creator=grpc.insecure_channel):
     if use_mtls:
         with mock.patch("grpc.ssl_channel_credentials", autospec=True) as mock_ssl_cred:
             mock_ssl_cred.return_value = ssl_credentials
@@ -65,8 +79,8 @@ def construct_client(client_class, use_mtls):
             )
             return client
     else:
-        transport = client_class.get_transport_class("grpc")(
-            channel=grpc.insecure_channel("localhost:7469")
+        transport = client_class.get_transport_class(transport)(
+            channel=channel_creator("localhost:7469")
         )
         return client_class(transport=transport)
 
@@ -79,6 +93,34 @@ def use_mtls(request):
 @pytest.fixture
 def echo(use_mtls):
     return construct_client(EchoClient, use_mtls)
+
+
+@pytest.fixture
+def async_echo(use_mtls, event_loop):
+    return construct_client(
+        EchoAsyncClient,
+        use_mtls,
+        transport="grpc_asyncio",
+        channel_creator=aio.insecure_channel
+    )
+
+
+@pytest.fixture
+def identity():
+    transport = IdentityClient.get_transport_class('grpc')(
+        channel=grpc.insecure_channel('localhost:7469'),
+    )
+    return IdentityClient(transport=transport)
+
+
+@pytest.fixture
+def async_identity(use_mtls, event_loop):
+    return construct_client(
+        IdentityAsyncClient,
+        use_mtls,
+        transport="grpc_asyncio",
+        channel_creator=aio.insecure_channel
+    )
 
 
 @pytest.fixture

@@ -26,3 +26,14 @@ def test_retry_bubble(echo):
                 'message': 'This took longer than you said it should.',
             },
         })
+
+
+@pytest.mark.asyncio
+async def test_retry_bubble_async(async_echo):
+    with pytest.raises(exceptions.DeadlineExceeded):
+        await async_echo.echo({
+            'error': {
+                'code': code_pb2.Code.Value('DEADLINE_EXCEEDED'),
+                'message': 'This took longer than you said it should.',
+            },
+        })

@@ -17,7 +17,7 @@ from google.auth import credentials  # type: ignore
 {% endfor -%}
 {% endfilter %}
 
-class {{ service.name }}Transport(metaclass=abc.ABCMeta):
+class {{ service.name }}Transport(abc.ABC):
     """Abstract transport class for {{ service.name }}."""
 
     AUTH_SCOPES = (
@@ -30,6 +30,7 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
             self, *,
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
             credentials: credentials.Credentials = None,
+            **kwargs,
             ) -> None:
         """Instantiate the transport.
 
@@ -59,15 +60,18 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
     @property
     def operations_client(self) -> operations_v1.OperationsClient:
         """Return the client designed to process long-running operations."""
-        raise NotImplementedError
+        raise NotImplementedError()
     {%- endif %}
     {%- for method in service.methods.values() %}
 
     @property
     def {{ method.name|snake_case }}(self) -> typing.Callable[
             [{{ method.input.ident }}],
-            {{ method.output.ident }}]:
-        raise NotImplementedError
+            typing.Union[
+                {{ method.output.ident }},
+                typing.Awaitable[{{ method.output.ident }}]
+            ]]:
+        raise NotImplementedError()
     {%- endfor %}
 
 

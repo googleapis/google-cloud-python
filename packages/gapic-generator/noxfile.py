@@ -63,6 +63,7 @@ def showcase(
     # Install pytest and gapic-generator-python
     session.install("mock")
     session.install("pytest")
+    session.install("pytest-asyncio")
     session.install("-e", ".")
 
     # Install a client library for Showcase.
@@ -121,6 +122,7 @@ def showcase_mtls(
     # Install pytest and gapic-generator-python
     session.install("mock")
     session.install("pytest")
+    session.install("pytest-asyncio")
     session.install("-e", ".")
 
     # Install a client library for Showcase.
@@ -182,15 +184,13 @@ def showcase_unit(
 ):
     """Run the generated unit tests against the Showcase library."""
 
-    # Install pytest and gapic-generator-python
     session.install(
-        "coverage", "pytest", "pytest-cov", "pytest-xdist",
+        "coverage", "pytest", "pytest-cov", "pytest-xdist", 'asyncmock', 'pytest-asyncio'
     )
     session.install(".")
 
     # Install a client library for Showcase.
     with tempfile.TemporaryDirectory() as tmp_dir:
-
         # Download the Showcase descriptor.
         session.run(
             "curl",

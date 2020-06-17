@@ -566,6 +566,13 @@ class Method:
 
     @utils.cached_property
     def client_output(self):
+        return self._client_output(enable_asyncio=False)
+
+    @utils.cached_property
+    def client_output_async(self):
+        return self._client_output(enable_asyncio=True)
+
+    def _client_output(self, enable_asyncio: bool):
         """Return the output from the client layer.
 
         This takes into account transformations made by the outer GAPIC
@@ -584,8 +591,8 @@ class Method:
         if self.lro:
             return PythonType(meta=metadata.Metadata(
                 address=metadata.Address(
-                    name='Operation',
-                    module='operation',
+                    name='AsyncOperation' if enable_asyncio else 'Operation',
+                    module='operation_async' if enable_asyncio else 'operation',
                     package=('google', 'api_core'),
                     collisions=self.lro.response_type.ident.collisions,
                 ),
@@ -603,7 +610,7 @@ class Method:
         if self.paged_result_field:
             return PythonType(meta=metadata.Metadata(
                 address=metadata.Address(
-                    name=f'{self.name}Pager',
+                    name=f'{self.name}AsyncPager' if enable_asyncio else f'{self.name}Pager',
                     package=self.ident.api_naming.module_namespace + (self.ident.api_naming.versioned_module_name,) + self.ident.subpackage + (
                         'services',
                         utils.to_snake_case(self.ident.parent[-1]),
@@ -744,6 +751,8 @@ class Method:
         if not self.void:
             answer.append(self.client_output)
             answer.extend(self.client_output.field_types)
+            answer.append(self.client_output_async)
+            answer.extend(self.client_output_async.field_types)
 
         # If this method has LRO, it is possible (albeit unlikely) that
         # the LRO messages reside in a different module.
@@ -802,12 +811,21 @@ class Service:
         return self.name + "Client"
 
     @property
+    def async_client_name(self) -> str:
+        """Returns the name of the generated AsyncIO client class"""
+        return self.name + "AsyncClient"
+
+    @property
     def transport_name(self):
         return self.name + "Transport"
 
     @property
     def grpc_transport_name(self):
         return self.name + "GrpcTransport"
+
+    @property
+    def grpc_asyncio_transport_name(self):
+        return self.name + "GrpcAsyncIOTransport"
 
     @property
     def has_lro(self) -> bool:
@@ -856,7 +874,7 @@ class Service:
         used for imports.
         """
         # Put together a set of the service and method names.
-        answer = {self.name, self.client_name}
+        answer = {self.name, self.client_name, self.async_client_name}
         answer.update(
             utils.to_snake_case(i.name) for i in self.methods.values()
         )

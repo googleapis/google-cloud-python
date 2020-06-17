@@ -364,6 +364,7 @@ def test_proto_names_import_collision_flattening():
             module='squid',
         ),
         imp.Import(package=('google', 'api_core'), module='operation',),
+        imp.Import(package=('google', 'api_core'), module='operation_async',),
     }
 
     assert expected_imports == actual_imports

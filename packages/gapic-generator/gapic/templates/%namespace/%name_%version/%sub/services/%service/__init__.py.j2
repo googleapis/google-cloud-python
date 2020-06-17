@@ -2,8 +2,10 @@
 
 {% block content %}
 from .client import {{ service.client_name }}
+from .async_client import {{ service.async_client_name }}
 
 __all__ = (
     '{{ service.client_name }}',
+    '{{ service.async_client_name }}',
 )
 {% endblock %}
