@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-containeranalysis/compare/v1.0.0...v1.0.1) (2020-06-16)
+
+
+### Bug Fixes
+
+* fix `release_status` in `setup.py` ([#17](https://www.github.com/googleapis/python-containeranalysis/issues/17)) ([2de847c](https://www.github.com/googleapis/python-containeranalysis/commit/2de847c1cf0e3e9a4f09f35d7abb5004dcee6bad))
+
 ## [1.0.0](https://www.github.com/googleapis/python-containeranalysis/compare/v0.3.1...v1.0.0) (2020-06-16)
 
 
