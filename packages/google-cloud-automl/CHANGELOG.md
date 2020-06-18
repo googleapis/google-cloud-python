@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+### [1.0.1](https://www.github.com/googleapis/python-automl/compare/v1.0.0...v1.0.1) (2020-06-18)
+
+
+### Bug Fixes
+
+* fixes release status trove classifier ([#39](https://www.github.com/googleapis/python-automl/issues/39)) ([5b5d6c3](https://www.github.com/googleapis/python-automl/commit/5b5d6c33178f4f052cba01cc08cf3023d4303d7a))
+
 ## [1.0.0](https://www.github.com/googleapis/python-automl/compare/v0.10.0...v1.0.0) (2020-06-18)
 
 
