@@ -16,10 +16,10 @@
 
 import logging
 
-from google.auth._default import default
+from google.auth._default import default, load_credentials_from_file
 
 
-__all__ = ["default"]
+__all__ = ["default", "load_credentials_from_file"]
 
 
 # Set default logging handler to avoid "No handler found" warnings.

@@ -69,14 +69,17 @@ def _warn_about_problematic_credentials(credentials):
         warnings.warn(_CLOUD_SDK_CREDENTIALS_WARNING)
 
 
-def _load_credentials_from_file(filename):
-    """Loads credentials from a file.
+def load_credentials_from_file(filename, scopes=None):
+    """Loads Google credentials from a file.
 
     The credentials file must be a service account key or stored authorized
     user credentials.
 
     Args:
         filename (str): The full path to the credentials file.
+        scopes (Optional[Sequence[str]]): The list of scopes for the credentials. If
+            specified, the credentials will automatically be scoped if
+            necessary.
 
     Returns:
         Tuple[google.auth.credentials.Credentials, Optional[str]]: Loaded
@@ -109,7 +112,9 @@ def _load_credentials_from_file(filename):
         from google.oauth2 import credentials
 
         try:
-            credentials = credentials.Credentials.from_authorized_user_info(info)
+            credentials = credentials.Credentials.from_authorized_user_info(
+                info, scopes=scopes
+            )
         except ValueError as caught_exc:
             msg = "Failed to load authorized user credentials from {}".format(filename)
             new_exc = exceptions.DefaultCredentialsError(msg, caught_exc)
@@ -122,7 +127,9 @@ def _load_credentials_from_file(filename):
         from google.oauth2 import service_account
 
         try:
-            credentials = service_account.Credentials.from_service_account_info(info)
+            credentials = service_account.Credentials.from_service_account_info(
+                info, scopes=scopes
+            )
         except ValueError as caught_exc:
             msg = "Failed to load service account credentials from {}".format(filename)
             new_exc = exceptions.DefaultCredentialsError(msg, caught_exc)
@@ -148,7 +155,7 @@ def _get_gcloud_sdk_credentials():
     if not os.path.isfile(credentials_filename):
         return None, None
 
-    credentials, project_id = _load_credentials_from_file(credentials_filename)
+    credentials, project_id = load_credentials_from_file(credentials_filename)
 
     if not project_id:
         project_id = _cloud_sdk.get_project_id()
@@ -162,7 +169,7 @@ def _get_explicit_environ_credentials():
     explicit_file = os.environ.get(environment_vars.CREDENTIALS)
 
     if explicit_file is not None:
-        credentials, project_id = _load_credentials_from_file(
+        credentials, project_id = load_credentials_from_file(
             os.environ[environment_vars.CREDENTIALS]
         )
 

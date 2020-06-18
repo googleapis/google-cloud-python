@@ -43,88 +43,120 @@ AUTHORIZED_USER_CLOUD_SDK_WITH_QUOTA_PROJECT_ID_FILE = os.path.join(
 
 SERVICE_ACCOUNT_FILE = os.path.join(DATA_DIR, "service_account.json")
 
+CLIENT_SECRETS_FILE = os.path.join(DATA_DIR, "client_secrets.json")
+
 with open(SERVICE_ACCOUNT_FILE) as fh:
     SERVICE_ACCOUNT_FILE_DATA = json.load(fh)
 
 LOAD_FILE_PATCH = mock.patch(
-    "google.auth._default._load_credentials_from_file",
+    "google.auth._default.load_credentials_from_file",
     return_value=(mock.sentinel.credentials, mock.sentinel.project_id),
     autospec=True,
 )
 
 
-def test__load_credentials_from_missing_file():
+def test_load_credentials_from_missing_file():
     with pytest.raises(exceptions.DefaultCredentialsError) as excinfo:
-        _default._load_credentials_from_file("")
+        _default.load_credentials_from_file("")
 
     assert excinfo.match(r"not found")
 
 
-def test__load_credentials_from_file_invalid_json(tmpdir):
+def test_load_credentials_from_file_invalid_json(tmpdir):
     jsonfile = tmpdir.join("invalid.json")
     jsonfile.write("{")
 
     with pytest.raises(exceptions.DefaultCredentialsError) as excinfo:
-        _default._load_credentials_from_file(str(jsonfile))
+        _default.load_credentials_from_file(str(jsonfile))
 
     assert excinfo.match(r"not a valid json file")
 
 
-def test__load_credentials_from_file_invalid_type(tmpdir):
+def test_load_credentials_from_file_invalid_type(tmpdir):
     jsonfile = tmpdir.join("invalid.json")
     jsonfile.write(json.dumps({"type": "not-a-real-type"}))
 
     with pytest.raises(exceptions.DefaultCredentialsError) as excinfo:
-        _default._load_credentials_from_file(str(jsonfile))
+        _default.load_credentials_from_file(str(jsonfile))
 
     assert excinfo.match(r"does not have a valid type")
 
 
-def test__load_credentials_from_file_authorized_user():
-    credentials, project_id = _default._load_credentials_from_file(AUTHORIZED_USER_FILE)
+def test_load_credentials_from_file_authorized_user():
+    credentials, project_id = _default.load_credentials_from_file(AUTHORIZED_USER_FILE)
     assert isinstance(credentials, google.oauth2.credentials.Credentials)
     assert project_id is None
 
 
-def test__load_credentials_from_file_authorized_user_bad_format(tmpdir):
+def test_load_credentials_from_file_no_type(tmpdir):
+    # use the client_secrets.json, which is valid json but not a
+    # loadable credentials type
+    with pytest.raises(exceptions.DefaultCredentialsError) as excinfo:
+        _default.load_credentials_from_file(CLIENT_SECRETS_FILE)
+
+    assert excinfo.match(r"does not have a valid type")
+    assert excinfo.match(r"Type is None")
+
+
+def test_load_credentials_from_file_authorized_user_bad_format(tmpdir):
     filename = tmpdir.join("authorized_user_bad.json")
     filename.write(json.dumps({"type": "authorized_user"}))
 
     with pytest.raises(exceptions.DefaultCredentialsError) as excinfo:
-        _default._load_credentials_from_file(str(filename))
+        _default.load_credentials_from_file(str(filename))
 
     assert excinfo.match(r"Failed to load authorized user")
     assert excinfo.match(r"missing fields")
 
 
-def test__load_credentials_from_file_authorized_user_cloud_sdk():
+def test_load_credentials_from_file_authorized_user_cloud_sdk():
     with pytest.warns(UserWarning, match="Cloud SDK"):
-        credentials, project_id = _default._load_credentials_from_file(
+        credentials, project_id = _default.load_credentials_from_file(
             AUTHORIZED_USER_CLOUD_SDK_FILE
         )
     assert isinstance(credentials, google.oauth2.credentials.Credentials)
     assert project_id is None
 
     # No warning if the json file has quota project id.
-    credentials, project_id = _default._load_credentials_from_file(
+    credentials, project_id = _default.load_credentials_from_file(
         AUTHORIZED_USER_CLOUD_SDK_WITH_QUOTA_PROJECT_ID_FILE
     )
     assert isinstance(credentials, google.oauth2.credentials.Credentials)
     assert project_id is None
 
 
-def test__load_credentials_from_file_service_account():
-    credentials, project_id = _default._load_credentials_from_file(SERVICE_ACCOUNT_FILE)
+def test_load_credentials_from_file_authorized_user_cloud_sdk_with_scopes():
+    with pytest.warns(UserWarning, match="Cloud SDK"):
+        credentials, project_id = _default.load_credentials_from_file(
+            AUTHORIZED_USER_CLOUD_SDK_FILE,
+            scopes=["https://www.google.com/calendar/feeds"],
+        )
+    assert isinstance(credentials, google.oauth2.credentials.Credentials)
+    assert project_id is None
+    assert credentials.scopes == ["https://www.google.com/calendar/feeds"]
+
+
+def test_load_credentials_from_file_service_account():
+    credentials, project_id = _default.load_credentials_from_file(SERVICE_ACCOUNT_FILE)
     assert isinstance(credentials, service_account.Credentials)
     assert project_id == SERVICE_ACCOUNT_FILE_DATA["project_id"]
 
 
-def test__load_credentials_from_file_service_account_bad_format(tmpdir):
+def test_load_credentials_from_file_service_account_with_scopes():
+    credentials, project_id = _default.load_credentials_from_file(
+        SERVICE_ACCOUNT_FILE, scopes=["https://www.google.com/calendar/feeds"]
+    )
+    assert isinstance(credentials, service_account.Credentials)
+    assert project_id == SERVICE_ACCOUNT_FILE_DATA["project_id"]
+    assert credentials.scopes == ["https://www.google.com/calendar/feeds"]
+
+
+def test_load_credentials_from_file_service_account_bad_format(tmpdir):
     filename = tmpdir.join("serivce_account_bad.json")
     filename.write(json.dumps({"type": "service_account"}))
 
     with pytest.raises(exceptions.DefaultCredentialsError) as excinfo:
-        _default._load_credentials_from_file(str(filename))
+        _default.load_credentials_from_file(str(filename))
 
     assert excinfo.match(r"Failed to load service account")
     assert excinfo.match(r"missing fields")
