@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [1.21.0](https://www.github.com/googleapis/python-api-core/compare/v1.20.1...v1.21.0) (2020-06-18)
+
+
+### Features
+
+* allow credentials files to be passed for channel creation ([#50](https://www.github.com/googleapis/python-api-core/issues/50)) ([ded92d0](https://www.github.com/googleapis/python-api-core/commit/ded92d0acdcde4295d0e5df05fda0d83783a3991))
+
 ### [1.20.1](https://www.github.com/googleapis/python-api-core/compare/v1.20.0...v1.20.1) (2020-06-16)
 
 
