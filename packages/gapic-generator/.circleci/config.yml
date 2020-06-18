@@ -7,19 +7,19 @@ workflows:
       - style-check:
           filters:
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - unit-3.6:
           filters:
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - unit-3.7:
           filters:
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - unit-3.8:
           filters:
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - showcase-unit-3.6:
           requires:
             - unit-3.6
@@ -27,7 +27,7 @@ workflows:
             - unit-3.8
           filters:
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - showcase-unit-3.7:
           requires:
             - unit-3.6
@@ -35,7 +35,7 @@ workflows:
             - unit-3.8
           filters:
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - showcase-unit-3.8:
           requires:
             - unit-3.6
@@ -43,7 +43,7 @@ workflows:
             - unit-3.8
           filters:
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - showcase-unit-alternative-templates-3.6:
           requires:
             - unit-3.6
@@ -51,7 +51,7 @@ workflows:
             - unit-3.8
           filters:
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - showcase-unit-alternative-templates-3.7:
           requires:
             - unit-3.6
@@ -59,7 +59,7 @@ workflows:
             - unit-3.8
           filters:
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - showcase-unit-alternative-templates-3.8:
           requires:
             - unit-3.6
@@ -67,19 +67,19 @@ workflows:
             - unit-3.8
           filters:
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - showcase-mypy:
           requires:
             - mypy
           filters:
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - showcase-mypy-alternative-templates:
           requires:
             - mypy
           filters:
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - showcase:
           requires:
             - docs
@@ -90,7 +90,7 @@ workflows:
             - showcase-mypy
           filters:
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - showcase-mtls:
           requires:
             - docs
@@ -101,7 +101,7 @@ workflows:
             - showcase-mypy
           filters:
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - showcase-alternative-templates:
           requires:
             - docs
@@ -112,7 +112,7 @@ workflows:
             - showcase-mypy-alternative-templates
           filters:
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - showcase-mtls-alternative-templates:
           requires:
             - docs
@@ -123,15 +123,15 @@ workflows:
             - showcase-mypy-alternative-templates
           filters:
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - docs:
           filters:
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - mypy:
           filters:
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - publish_package:
           requires:
             - showcase
@@ -140,7 +140,7 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
       - publish_image:
           requires:
             - showcase
@@ -149,7 +149,7 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+$/
 jobs:
   docs:
     docker:
