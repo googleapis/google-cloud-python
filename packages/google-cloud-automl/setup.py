@@ -20,7 +20,7 @@ import setuptools
 name = "google-cloud-automl"
 description = "Cloud AutoML API client library"
 version = "1.0.0"
-release_status = "Development Status :: 5 - Production/stable"
+release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
     'enum34; python_version < "3.4"',
