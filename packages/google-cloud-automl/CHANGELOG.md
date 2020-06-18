@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-automl/compare/v0.10.0...v1.0.0) (2020-06-18)
+
+
+### Features
+
+* release as production/stable ([#37](https://www.github.com/googleapis/python-automl/issues/37)) ([915c502](https://www.github.com/googleapis/python-automl/commit/915c5029a8c342871738b24395534fdaebb681bc))
+
+
+### Bug Fixes
+
+* make TablesClient.predict permissive to input data types ([#13](https://www.github.com/googleapis/python-automl/issues/13)) ([ddc9f71](https://www.github.com/googleapis/python-automl/commit/ddc9f7106eab91d4adea2db65e69e3a870a7cd46))
+
 ## [0.10.0](https://www.github.com/googleapis/python-automl/compare/v0.9.0...v0.10.0) (2020-01-31)
 
 
