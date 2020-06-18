@@ -41,6 +41,12 @@ class GoogleAPIError(Exception):
     pass
 
 
+class DuplicateCredentialArgs(GoogleAPIError):
+    """Raised when multiple credentials are passed."""
+
+    pass
+
+
 @six.python_2_unicode_compatible
 class RetryError(GoogleAPIError):
     """Raised when a function has exhausted all of its available retries.

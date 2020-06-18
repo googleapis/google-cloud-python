@@ -206,7 +206,7 @@ def wrap_errors(callable_):
         return _wrap_stream_errors(callable_)
 
 
-def create_channel(target, credentials=None, scopes=None, ssl_credentials=None, **kwargs):
+def create_channel(target, credentials=None, scopes=None, ssl_credentials=None, credentials_file=None, **kwargs):
     """Create an AsyncIO secure channel with credentials.
 
     Args:
@@ -219,13 +219,23 @@ def create_channel(target, credentials=None, scopes=None, ssl_credentials=None, 
             are passed to :func:`google.auth.default`.
         ssl_credentials (grpc.ChannelCredentials): Optional SSL channel
             credentials. This can be used to specify different certificates.
+        credentials_file (str): A file with credentials that can be loaded with
+            :func:`google.auth.load_credentials_from_file`. This argument is
+            mutually exclusive with credentials.
         kwargs: Additional key-word args passed to :func:`aio.secure_channel`.
 
     Returns:
         aio.Channel: The created channel.
+
+    Raises:
+        google.api_core.DuplicateCredentialArgs: If both a credentials object and credentials_file are passed.
     """
+
     composite_credentials = grpc_helpers._create_composite_credentials(
-        credentials, scopes, ssl_credentials
+        credentials=credentials,
+        credentials_file=credentials_file,
+        scopes=scopes,
+        ssl_credentials=ssl_credentials
     )
 
     return aio.secure_channel(target, composite_credentials, **kwargs)

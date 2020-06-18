@@ -317,6 +317,19 @@ def test_create_channel_implicit_with_scopes(
     grpc_secure_channel.assert_called_once_with(target, composite_creds)
 
 
+def test_create_channel_explicit_with_duplicate_credentials():
+    target = "example:443"
+
+    with pytest.raises(exceptions.DuplicateCredentialArgs) as excinfo:
+        grpc_helpers_async.create_channel(
+            target,
+            credentials_file="credentials.json",
+            credentials=mock.sentinel.credentials
+        )
+
+    assert "mutually exclusive" in str(excinfo.value)
+
+
 @mock.patch("grpc.composite_channel_credentials")
 @mock.patch("google.auth.credentials.with_scopes_if_required")
 @mock.patch("grpc.experimental.aio.secure_channel")
@@ -346,6 +359,49 @@ def test_create_channel_explicit_scoped(grpc_secure_channel, composite_creds_cal
     )
 
     credentials.with_scopes.assert_called_once_with(scopes)
+    assert channel is grpc_secure_channel.return_value
+    grpc_secure_channel.assert_called_once_with(target, composite_creds)
+
+
+@mock.patch("grpc.composite_channel_credentials")
+@mock.patch("grpc.experimental.aio.secure_channel")
+@mock.patch(
+    "google.auth.load_credentials_from_file",
+    return_value=(mock.sentinel.credentials, mock.sentinel.project)
+)
+def test_create_channnel_with_credentials_file(load_credentials_from_file, grpc_secure_channel, composite_creds_call):
+    target = "example.com:443"
+
+    credentials_file = "/path/to/credentials/file.json"
+    composite_creds = composite_creds_call.return_value
+
+    channel = grpc_helpers_async.create_channel(
+        target, credentials_file=credentials_file
+    )
+
+    google.auth.load_credentials_from_file.assert_called_once_with(credentials_file, scopes=None)
+    assert channel is grpc_secure_channel.return_value
+    grpc_secure_channel.assert_called_once_with(target, composite_creds)
+
+
+@mock.patch("grpc.composite_channel_credentials")
+@mock.patch("grpc.experimental.aio.secure_channel")
+@mock.patch(
+    "google.auth.load_credentials_from_file",
+    return_value=(mock.sentinel.credentials, mock.sentinel.project)
+)
+def test_create_channel_with_credentials_file_and_scopes(load_credentials_from_file, grpc_secure_channel, composite_creds_call):
+    target = "example.com:443"
+    scopes = ["1", "2"]
+
+    credentials_file = "/path/to/credentials/file.json"
+    composite_creds = composite_creds_call.return_value
+
+    channel = grpc_helpers_async.create_channel(
+        target, credentials_file=credentials_file, scopes=scopes
+    )
+
+    google.auth.load_credentials_from_file.assert_called_once_with(credentials_file, scopes=scopes)
     assert channel is grpc_secure_channel.return_value
     grpc_secure_channel.assert_called_once_with(target, composite_creds)
 
