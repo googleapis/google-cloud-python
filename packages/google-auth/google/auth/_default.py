@@ -49,11 +49,11 @@ https://cloud.google.com/docs/authentication/getting-started
 # Warning when using Cloud SDK user credentials
 _CLOUD_SDK_CREDENTIALS_WARNING = """\
 Your application has authenticated using end user credentials from Google \
-Cloud SDK. We recommend that most server applications use service accounts \
-instead. If your application continues to use end user credentials from Cloud \
-SDK, you might receive a "quota exceeded" or "API not enabled" error. For \
-more information about service accounts, see \
-https://cloud.google.com/docs/authentication/"""
+Cloud SDK without a quota project. You might receive a "quota exceeded" \
+or "API not enabled" error. We recommend you rerun \
+`gcloud auth application-default login` and make sure a quota project is \
+added. Or you can use service accounts instead. For more information \
+about service accounts, see https://cloud.google.com/docs/authentication/"""
 
 
 def _warn_about_problematic_credentials(credentials):
@@ -114,8 +114,8 @@ def _load_credentials_from_file(filename):
             msg = "Failed to load authorized user credentials from {}".format(filename)
             new_exc = exceptions.DefaultCredentialsError(msg, caught_exc)
             six.raise_from(new_exc, caught_exc)
-        # Authorized user credentials do not contain the project ID.
-        _warn_about_problematic_credentials(credentials)
+        if not credentials.quota_project_id:
+            _warn_about_problematic_credentials(credentials)
         return credentials, None
 
     elif credential_type == _SERVICE_ACCOUNT_TYPE:

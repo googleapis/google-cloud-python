@@ -37,6 +37,10 @@ AUTHORIZED_USER_CLOUD_SDK_FILE = os.path.join(
     DATA_DIR, "authorized_user_cloud_sdk.json"
 )
 
+AUTHORIZED_USER_CLOUD_SDK_WITH_QUOTA_PROJECT_ID_FILE = os.path.join(
+    DATA_DIR, "authorized_user_cloud_sdk_with_quota_project_id.json"
+)
+
 SERVICE_ACCOUNT_FILE = os.path.join(DATA_DIR, "service_account.json")
 
 with open(SERVICE_ACCOUNT_FILE) as fh:
@@ -98,6 +102,13 @@ def test__load_credentials_from_file_authorized_user_cloud_sdk():
         credentials, project_id = _default._load_credentials_from_file(
             AUTHORIZED_USER_CLOUD_SDK_FILE
         )
+    assert isinstance(credentials, google.oauth2.credentials.Credentials)
+    assert project_id is None
+
+    # No warning if the json file has quota project id.
+    credentials, project_id = _default._load_credentials_from_file(
+        AUTHORIZED_USER_CLOUD_SDK_WITH_QUOTA_PROJECT_ID_FILE
+    )
     assert isinstance(credentials, google.oauth2.credentials.Credentials)
     assert project_id is None
 
