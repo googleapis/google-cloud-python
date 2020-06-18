@@ -4,7 +4,7 @@
   "product_documentation": "https://cloud.google.com/automl/docs/",
   "client_documentation": "https://googleapis.dev/python/automl/latest",
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559744",
-  "release_level": "alpha",
+  "release_level": "ga",
   "language": "python",
   "repo": "googleapis/python-automl",
   "distribution_name": "google-cloud-automl",
