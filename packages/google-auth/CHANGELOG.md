@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [1.18.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.17.2...v1.18.0) (2020-06-18)
+
+
+### Features
+
+* make ``load_credentials_from_file`` a public method ([#530](https://www.github.com/googleapis/google-auth-library-python/issues/530)) ([15d5fa9](https://www.github.com/googleapis/google-auth-library-python/commit/15d5fa946177581b52a5a9eb3ca285c088f5c45d))
+
+
+### Bug Fixes
+
+* no warning if quota_project_id is given ([#537](https://www.github.com/googleapis/google-auth-library-python/issues/537)) ([f30b45a](https://www.github.com/googleapis/google-auth-library-python/commit/f30b45a9b2f824c494724548732c5ce838218c30))
+
 ### [1.17.2](https://www.github.com/googleapis/google-auth-library-python/compare/v1.17.1...v1.17.2) (2020-06-12)
 
 
