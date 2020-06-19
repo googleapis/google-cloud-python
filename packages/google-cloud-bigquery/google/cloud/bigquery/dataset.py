@@ -84,7 +84,7 @@ class AccessEntry(object):
 
     See https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets.
 
-    Attributes:
+    Args:
         role (str):
             Role granted to the entity. The following string values are
             supported: `'READER'`, `'WRITER'`, `'OWNER'`. It may also be

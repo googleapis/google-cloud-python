@@ -61,4 +61,10 @@ s.replace("google/cloud/bigquery_v2/proto/*.py", "[“”]", '``')
 templated_files = common.py_library(cov_level=100)
 s.move(templated_files, excludes=["noxfile.py"])
 
+s.replace(
+    "docs/conf.py",
+    r'\{"members": True\}',
+    '{"members": True, "inherited-members": True}'
+)
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
