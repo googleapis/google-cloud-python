@@ -29,6 +29,7 @@ priority.
 The following client libraries have **GA** support:
 
 -  `Google Cloud Asset`_ (`Asset README`_, `Asset Documentation`_)
+-  `Google Cloud AutoML`_ (`AutoML README`_, `AutoML Documentation`_)
 -  `Google BigQuery`_ (`BigQuery README`_, `BigQuery Documentation`_)
 -  `Google BigQuery Data Transfer`_ (`BigQuery Data Transfer README`_, `BigQuery Data Transfer Documentation`_)
 -  `Google BigQuery Storage`_ (`BigQuery Storage README`_, `BigQuery Storage Documentation`_)
@@ -66,6 +67,10 @@ The following client libraries have **GA** support:
 .. _Google Cloud Asset: https://pypi.org/project/google-cloud-asset/
 .. _Asset README: https://github.com/googleapis/python-asset
 .. _Asset Documentation: https://googleapis.dev/python/cloudasset/latest
+
+.. _Google Cloud AutoML: https://pypi.org/project/google-cloud-automl/
+.. _AutoML README: https://github.com/googleapis/python-automl
+.. _AutoML Documentation: https://googleapis.dev/python/automl/latest
 
 .. _Google BigQuery: https://pypi.org/project/google-cloud-bigquery/
 .. _BigQuery README: https://github.com/googleapis/python-bigquery#python-client-for-google-bigquery
@@ -255,7 +260,6 @@ updates. See `versioning`_ for more details.
 
 The following client libraries have **alpha** support:
 
--  `Google Cloud AutoML`_ (`AutoML README`_, `AutoML Documentation`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_, `HappyBase Documentation`_)
 -  `Google Cloud DNS`_ (`DNS README`_, `DNS Documentation`_)
 -  `Google Phishing Protection`_ (`Phishing Protection README`_, `Phishing Protection Documentation`_)
@@ -265,10 +269,6 @@ The following client libraries have **alpha** support:
 -  `Google Cloud Trace`_ (`Trace README`_, `Trace Documentation`_)
 -  `Grafeas`_ (`Grafeas README`_, `Grafeas Documentation`_)
 -  `Webrisk`_ (`Webrisk README`_, `Webrisk Documentation`_)
-
-.. _Google Cloud AutoML: https://pypi.org/project/google-cloud-automl/
-.. _AutoML README: https://github.com/googleapis/python-automl
-.. _AutoML Documentation: https://googleapis.dev/python/automl/latest
 
 .. _Google Cloud Bigtable - HappyBase: https://pypi.org/project/google-cloud-happybase/
 .. _HappyBase README: https://github.com/googleapis/google-cloud-python-happybase
