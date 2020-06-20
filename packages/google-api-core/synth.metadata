@@ -3,15 +3,15 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-api-core",
-        "sha": "8212bb7f54ca08a498faddaca513580a1f890dbd"
+        "remote": "https://github.com/googleapis/python-api-core.git",
+        "sha": "98f03c8dc6f47379bdc8ded8efd24b577e95326d"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "f13864cd532f98a4682cec48105580fa9a5c9978"
+        "sha": "cd522c3b4dde821766d95c80ae5aeb43d7a41170"
       }
     }
   ]
