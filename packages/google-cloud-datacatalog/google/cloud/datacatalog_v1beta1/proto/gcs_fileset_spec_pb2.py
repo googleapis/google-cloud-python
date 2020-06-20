@@ -23,6 +23,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.datacatalog.v1beta1",
     syntax="proto3",
     serialized_options=b"\n$com.google.cloud.datacatalog.v1beta1P\001ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\370\001\001\252\002 Google.Cloud.DataCatalog.V1Beta1\312\002 Google\\Cloud\\DataCatalog\\V1beta1\352\002#Google::Cloud::DataCatalog::V1beta1",
+    create_key=_descriptor._internal_create_key,
     serialized_pb=b'\n=google/cloud/datacatalog_v1beta1/proto/gcs_fileset_spec.proto\x12 google.cloud.datacatalog.v1beta1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x37google/cloud/datacatalog_v1beta1/proto/timestamps.proto"\x7f\n\x0eGcsFilesetSpec\x12\x1a\n\rfile_patterns\x18\x01 \x03(\tB\x03\xe0\x41\x02\x12Q\n\x15sample_gcs_file_specs\x18\x02 \x03(\x0b\x32-.google.cloud.datacatalog.v1beta1.GcsFileSpecB\x03\xe0\x41\x03"\x8f\x01\n\x0bGcsFileSpec\x12\x16\n\tfile_path\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12O\n\x0egcs_timestamps\x18\x02 \x01(\x0b\x32\x32.google.cloud.datacatalog.v1beta1.SystemTimestampsB\x03\xe0\x41\x03\x12\x17\n\nsize_bytes\x18\x04 \x01(\x03\x42\x03\xe0\x41\x03\x42\xe4\x01\n$com.google.cloud.datacatalog.v1beta1P\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\xaa\x02 Google.Cloud.DataCatalog.V1Beta1\xca\x02 Google\\Cloud\\DataCatalog\\V1beta1\xea\x02#Google::Cloud::DataCatalog::V1beta1b\x06proto3',
     dependencies=[
         google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
@@ -37,6 +38,7 @@ _GCSFILESETSPEC = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="file_patterns",
@@ -55,6 +57,7 @@ _GCSFILESETSPEC = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="sample_gcs_file_specs",
@@ -73,6 +76,7 @@ _GCSFILESETSPEC = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -94,6 +98,7 @@ _GCSFILESPEC = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="file_path",
@@ -112,6 +117,7 @@ _GCSFILESPEC = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="gcs_timestamps",
@@ -130,6 +136,7 @@ _GCSFILESPEC = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="size_bytes",
@@ -148,6 +155,7 @@ _GCSFILESPEC = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],

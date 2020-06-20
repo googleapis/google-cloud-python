@@ -27,6 +27,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.datacatalog.v1beta1",
     syntax="proto3",
     serialized_options=b'\n$com.google.cloud.datacatalog.v1beta1B"PolicyTagManagerSerializationProtoP\001ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\370\001\001\252\002 Google.Cloud.DataCatalog.V1Beta1\312\002 Google\\Cloud\\DataCatalog\\V1beta1\352\002#Google::Cloud::DataCatalog::V1beta1',
+    create_key=_descriptor._internal_create_key,
     serialized_pb=b'\nJgoogle/cloud/datacatalog_v1beta1/proto/policytagmanagerserialization.proto\x12 google.cloud.datacatalog.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a=google/cloud/datacatalog_v1beta1/proto/policytagmanager.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a\x17google/api/client.proto"\x90\x01\n\x12SerializedTaxonomy\x12\x19\n\x0c\x64isplay_name\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12J\n\x0bpolicy_tags\x18\x03 \x03(\x0b\x32\x35.google.cloud.datacatalog.v1beta1.SerializedPolicyTag"\x97\x01\n\x13SerializedPolicyTag\x12\x19\n\x0c\x64isplay_name\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12P\n\x11\x63hild_policy_tags\x18\x04 \x03(\x0b\x32\x35.google.cloud.datacatalog.v1beta1.SerializedPolicyTag"\xa9\x01\n\x17ImportTaxonomiesRequest\x12;\n\x06parent\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\x12#datacatalog.googleapis.com/Taxonomy\x12G\n\rinline_source\x18\x02 \x01(\x0b\x32..google.cloud.datacatalog.v1beta1.InlineSourceH\x00\x42\x08\n\x06source"]\n\x0cInlineSource\x12M\n\ntaxonomies\x18\x01 \x03(\x0b\x32\x34.google.cloud.datacatalog.v1beta1.SerializedTaxonomyB\x03\xe0\x41\x02"Z\n\x18ImportTaxonomiesResponse\x12>\n\ntaxonomies\x18\x01 \x03(\x0b\x32*.google.cloud.datacatalog.v1beta1.Taxonomy"\xc7\x01\n\x17\x45xportTaxonomiesRequest\x12;\n\x06parent\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\x12#datacatalog.googleapis.com/Taxonomy\x12?\n\ntaxonomies\x18\x02 \x03(\tB+\xe0\x41\x02\xfa\x41%\n#datacatalog.googleapis.com/Taxonomy\x12\x1f\n\x15serialized_taxonomies\x18\x03 \x01(\x08H\x00\x42\r\n\x0b\x64\x65stination"d\n\x18\x45xportTaxonomiesResponse\x12H\n\ntaxonomies\x18\x01 \x03(\x0b\x32\x34.google.cloud.datacatalog.v1beta1.SerializedTaxonomy2\x92\x04\n\x1dPolicyTagManagerSerialization\x12\xd0\x01\n\x10ImportTaxonomies\x12\x39.google.cloud.datacatalog.v1beta1.ImportTaxonomiesRequest\x1a:.google.cloud.datacatalog.v1beta1.ImportTaxonomiesResponse"E\x82\xd3\xe4\x93\x02?":/v1beta1/{parent=projects/*/locations/*}/taxonomies:import:\x01*\x12\xcd\x01\n\x10\x45xportTaxonomies\x12\x39.google.cloud.datacatalog.v1beta1.ExportTaxonomiesRequest\x1a:.google.cloud.datacatalog.v1beta1.ExportTaxonomiesResponse"B\x82\xd3\xe4\x93\x02<\x12:/v1beta1/{parent=projects/*/locations/*}/taxonomies:export\x1aN\xca\x41\x1a\x64\x61tacatalog.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\x88\x02\n$com.google.cloud.datacatalog.v1beta1B"PolicyTagManagerSerializationProtoP\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\xaa\x02 Google.Cloud.DataCatalog.V1Beta1\xca\x02 Google\\Cloud\\DataCatalog\\V1beta1\xea\x02#Google::Cloud::DataCatalog::V1beta1b\x06proto3',
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -45,6 +46,7 @@ _SERIALIZEDTAXONOMY = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="display_name",
@@ -63,6 +65,7 @@ _SERIALIZEDTAXONOMY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="description",
@@ -81,6 +84,7 @@ _SERIALIZEDTAXONOMY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="policy_tags",
@@ -99,6 +103,7 @@ _SERIALIZEDTAXONOMY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -120,6 +125,7 @@ _SERIALIZEDPOLICYTAG = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="display_name",
@@ -138,6 +144,7 @@ _SERIALIZEDPOLICYTAG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="description",
@@ -156,6 +163,7 @@ _SERIALIZEDPOLICYTAG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="child_policy_tags",
@@ -174,6 +182,7 @@ _SERIALIZEDPOLICYTAG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -195,6 +204,7 @@ _IMPORTTAXONOMIESREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="parent",
@@ -213,6 +223,7 @@ _IMPORTTAXONOMIESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A%\022#datacatalog.googleapis.com/Taxonomy",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="inline_source",
@@ -231,6 +242,7 @@ _IMPORTTAXONOMIESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -246,6 +258,7 @@ _IMPORTTAXONOMIESREQUEST = _descriptor.Descriptor(
             full_name="google.cloud.datacatalog.v1beta1.ImportTaxonomiesRequest.source",
             index=0,
             containing_type=None,
+            create_key=_descriptor._internal_create_key,
             fields=[],
         )
     ],
@@ -260,6 +273,7 @@ _INLINESOURCE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="taxonomies",
@@ -278,6 +292,7 @@ _INLINESOURCE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -299,6 +314,7 @@ _IMPORTTAXONOMIESRESPONSE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="taxonomies",
@@ -317,6 +333,7 @@ _IMPORTTAXONOMIESRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -338,6 +355,7 @@ _EXPORTTAXONOMIESREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="parent",
@@ -356,6 +374,7 @@ _EXPORTTAXONOMIESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A%\022#datacatalog.googleapis.com/Taxonomy",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="taxonomies",
@@ -374,6 +393,7 @@ _EXPORTTAXONOMIESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A%\n#datacatalog.googleapis.com/Taxonomy",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="serialized_taxonomies",
@@ -392,6 +412,7 @@ _EXPORTTAXONOMIESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -407,6 +428,7 @@ _EXPORTTAXONOMIESREQUEST = _descriptor.Descriptor(
             full_name="google.cloud.datacatalog.v1beta1.ExportTaxonomiesRequest.destination",
             index=0,
             containing_type=None,
+            create_key=_descriptor._internal_create_key,
             fields=[],
         )
     ],
@@ -421,6 +443,7 @@ _EXPORTTAXONOMIESRESPONSE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="taxonomies",
@@ -439,6 +462,7 @@ _EXPORTTAXONOMIESRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -647,6 +671,7 @@ _POLICYTAGMANAGERSERIALIZATION = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     serialized_options=b"\312A\032datacatalog.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform",
+    create_key=_descriptor._internal_create_key,
     serialized_start=1283,
     serialized_end=1813,
     methods=[
@@ -658,6 +683,7 @@ _POLICYTAGMANAGERSERIALIZATION = _descriptor.ServiceDescriptor(
             input_type=_IMPORTTAXONOMIESREQUEST,
             output_type=_IMPORTTAXONOMIESRESPONSE,
             serialized_options=b'\202\323\344\223\002?":/v1beta1/{parent=projects/*/locations/*}/taxonomies:import:\001*',
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="ExportTaxonomies",
@@ -667,6 +693,7 @@ _POLICYTAGMANAGERSERIALIZATION = _descriptor.ServiceDescriptor(
             input_type=_EXPORTTAXONOMIESREQUEST,
             output_type=_EXPORTTAXONOMIESRESPONSE,
             serialized_options=b"\202\323\344\223\002<\022:/v1beta1/{parent=projects/*/locations/*}/taxonomies:export",
+            create_key=_descriptor._internal_create_key,
         ),
     ],
 )

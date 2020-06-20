@@ -30,6 +30,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.datacatalog.v1beta1",
     syntax="proto3",
     serialized_options=b"\n$com.google.cloud.datacatalog.v1beta1B\025PolicyTagManagerProtoP\001ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\370\001\001\252\002 Google.Cloud.DataCatalog.V1Beta1\312\002 Google\\Cloud\\DataCatalog\\V1beta1\352\002#Google::Cloud::DataCatalog::V1beta1",
+    create_key=_descriptor._internal_create_key,
     serialized_pb=b'\n=google/cloud/datacatalog_v1beta1/proto/policytagmanager.proto\x12 google.cloud.datacatalog.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x37google/cloud/datacatalog_v1beta1/proto/timestamps.proto\x1a\x1egoogle/iam/v1/iam_policy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto"\xe3\x02\n\x08Taxonomy\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x19\n\x0c\x64isplay_name\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x18\n\x0b\x64\x65scription\x18\x03 \x01(\tB\x03\xe0\x41\x01\x12Z\n\x16\x61\x63tivated_policy_types\x18\x06 \x03(\x0e\x32\x35.google.cloud.datacatalog.v1beta1.Taxonomy.PolicyTypeB\x03\xe0\x41\x01"J\n\nPolicyType\x12\x1b\n\x17POLICY_TYPE_UNSPECIFIED\x10\x00\x12\x1f\n\x1b\x46INE_GRAINED_ACCESS_CONTROL\x10\x01:g\xea\x41\x64\n#datacatalog.googleapis.com/Taxonomy\x12=projects/{project}/locations/{location}/taxonomies/{taxonomy}"\x8c\x02\n\tPolicyTag\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x19\n\x0c\x64isplay_name\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x19\n\x11parent_policy_tag\x18\x04 \x01(\t\x12\x1e\n\x11\x63hild_policy_tags\x18\x05 \x03(\tB\x03\xe0\x41\x03:\x80\x01\xea\x41}\n$datacatalog.googleapis.com/PolicyTag\x12Uprojects/{project}/locations/{location}/taxonomies/{taxonomy}/policyTags/{policy_tag}"\x92\x01\n\x15\x43reateTaxonomyRequest\x12;\n\x06parent\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\x12#datacatalog.googleapis.com/Taxonomy\x12<\n\x08taxonomy\x18\x02 \x01(\x0b\x32*.google.cloud.datacatalog.v1beta1.Taxonomy"R\n\x15\x44\x65leteTaxonomyRequest\x12\x39\n\x04name\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\n#datacatalog.googleapis.com/Taxonomy"\x86\x01\n\x15UpdateTaxonomyRequest\x12<\n\x08taxonomy\x18\x01 \x01(\x0b\x32*.google.cloud.datacatalog.v1beta1.Taxonomy\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"{\n\x15ListTaxonomiesRequest\x12;\n\x06parent\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\x12#datacatalog.googleapis.com/Taxonomy\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"q\n\x16ListTaxonomiesResponse\x12>\n\ntaxonomies\x18\x01 \x03(\x0b\x32*.google.cloud.datacatalog.v1beta1.Taxonomy\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"O\n\x12GetTaxonomyRequest\x12\x39\n\x04name\x18\x01 \x01(\tB+\xe0\x41\x02\xfa\x41%\n#datacatalog.googleapis.com/Taxonomy"\x97\x01\n\x16\x43reatePolicyTagRequest\x12<\n\x06parent\x18\x01 \x01(\tB,\xe0\x41\x02\xfa\x41&\x12$datacatalog.googleapis.com/PolicyTag\x12?\n\npolicy_tag\x18\x02 \x01(\x0b\x32+.google.cloud.datacatalog.v1beta1.PolicyTag"T\n\x16\x44\x65letePolicyTagRequest\x12:\n\x04name\x18\x01 \x01(\tB,\xe0\x41\x02\xfa\x41&\n$datacatalog.googleapis.com/PolicyTag"\x8a\x01\n\x16UpdatePolicyTagRequest\x12?\n\npolicy_tag\x18\x01 \x01(\x0b\x32+.google.cloud.datacatalog.v1beta1.PolicyTag\x12/\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMask"|\n\x15ListPolicyTagsRequest\x12<\n\x06parent\x18\x01 \x01(\tB,\xe0\x41\x02\xfa\x41&\x12$datacatalog.googleapis.com/PolicyTag\x12\x11\n\tpage_size\x18\x02 \x01(\x05\x12\x12\n\npage_token\x18\x03 \x01(\t"s\n\x16ListPolicyTagsResponse\x12@\n\x0bpolicy_tags\x18\x01 \x03(\x0b\x32+.google.cloud.datacatalog.v1beta1.PolicyTag\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"Q\n\x13GetPolicyTagRequest\x12:\n\x04name\x18\x01 \x01(\tB,\xe0\x41\x02\xfa\x41&\n$datacatalog.googleapis.com/PolicyTag2\xe5\x16\n\x10PolicyTagManager\x12\xce\x01\n\x0e\x43reateTaxonomy\x12\x37.google.cloud.datacatalog.v1beta1.CreateTaxonomyRequest\x1a*.google.cloud.datacatalog.v1beta1.Taxonomy"W\x82\xd3\xe4\x93\x02?"3/v1beta1/{parent=projects/*/locations/*}/taxonomies:\x08taxonomy\xda\x41\x0fparent,taxonomy\x12\xa5\x01\n\x0e\x44\x65leteTaxonomy\x12\x37.google.cloud.datacatalog.v1beta1.DeleteTaxonomyRequest\x1a\x16.google.protobuf.Empty"B\x82\xd3\xe4\x93\x02\x35*3/v1beta1/{name=projects/*/locations/*/taxonomies/*}\xda\x41\x04name\x12\xd0\x01\n\x0eUpdateTaxonomy\x12\x37.google.cloud.datacatalog.v1beta1.UpdateTaxonomyRequest\x1a*.google.cloud.datacatalog.v1beta1.Taxonomy"Y\x82\xd3\xe4\x93\x02H2</v1beta1/{taxonomy.name=projects/*/locations/*/taxonomies/*}:\x08taxonomy\xda\x41\x08taxonomy\x12\xc9\x01\n\x0eListTaxonomies\x12\x37.google.cloud.datacatalog.v1beta1.ListTaxonomiesRequest\x1a\x38.google.cloud.datacatalog.v1beta1.ListTaxonomiesResponse"D\x82\xd3\xe4\x93\x02\x35\x12\x33/v1beta1/{parent=projects/*/locations/*}/taxonomies\xda\x41\x06parent\x12\xb3\x01\n\x0bGetTaxonomy\x12\x34.google.cloud.datacatalog.v1beta1.GetTaxonomyRequest\x1a*.google.cloud.datacatalog.v1beta1.Taxonomy"B\x82\xd3\xe4\x93\x02\x35\x12\x33/v1beta1/{name=projects/*/locations/*/taxonomies/*}\xda\x41\x04name\x12\xe2\x01\n\x0f\x43reatePolicyTag\x12\x38.google.cloud.datacatalog.v1beta1.CreatePolicyTagRequest\x1a+.google.cloud.datacatalog.v1beta1.PolicyTag"h\x82\xd3\xe4\x93\x02N"@/v1beta1/{parent=projects/*/locations/*/taxonomies/*}/policyTags:\npolicy_tag\xda\x41\x11parent,policy_tag\x12\xb4\x01\n\x0f\x44\x65letePolicyTag\x12\x38.google.cloud.datacatalog.v1beta1.DeletePolicyTagRequest\x1a\x16.google.protobuf.Empty"O\x82\xd3\xe4\x93\x02\x42*@/v1beta1/{name=projects/*/locations/*/taxonomies/*/policyTags/*}\xda\x41\x04name\x12\xe6\x01\n\x0fUpdatePolicyTag\x12\x38.google.cloud.datacatalog.v1beta1.UpdatePolicyTagRequest\x1a+.google.cloud.datacatalog.v1beta1.PolicyTag"l\x82\xd3\xe4\x93\x02Y2K/v1beta1/{policy_tag.name=projects/*/locations/*/taxonomies/*/policyTags/*}:\npolicy_tag\xda\x41\npolicy_tag\x12\xd6\x01\n\x0eListPolicyTags\x12\x37.google.cloud.datacatalog.v1beta1.ListPolicyTagsRequest\x1a\x38.google.cloud.datacatalog.v1beta1.ListPolicyTagsResponse"Q\x82\xd3\xe4\x93\x02\x42\x12@/v1beta1/{parent=projects/*/locations/*/taxonomies/*}/policyTags\xda\x41\x06parent\x12\xc3\x01\n\x0cGetPolicyTag\x12\x35.google.cloud.datacatalog.v1beta1.GetPolicyTagRequest\x1a+.google.cloud.datacatalog.v1beta1.PolicyTag"O\x82\xd3\xe4\x93\x02\x42\x12@/v1beta1/{name=projects/*/locations/*/taxonomies/*/policyTags/*}\xda\x41\x04name\x12\xf4\x01\n\x0cGetIamPolicy\x12".google.iam.v1.GetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"\xa8\x01\x82\xd3\xe4\x93\x02\xa1\x01"D/v1beta1/{resource=projects/*/locations/*/taxonomies/*}:getIamPolicy:\x01*ZV"Q/v1beta1/{resource=projects/*/locations/*/taxonomies/*/policyTags/*}:getIamPolicy:\x01*\x12\xf4\x01\n\x0cSetIamPolicy\x12".google.iam.v1.SetIamPolicyRequest\x1a\x15.google.iam.v1.Policy"\xa8\x01\x82\xd3\xe4\x93\x02\xa1\x01"D/v1beta1/{resource=projects/*/locations/*/taxonomies/*}:setIamPolicy:\x01*ZV"Q/v1beta1/{resource=projects/*/locations/*/taxonomies/*/policyTags/*}:setIamPolicy:\x01*\x12\xa0\x02\n\x12TestIamPermissions\x12(.google.iam.v1.TestIamPermissionsRequest\x1a).google.iam.v1.TestIamPermissionsResponse"\xb4\x01\x82\xd3\xe4\x93\x02\xad\x01"J/v1beta1/{resource=projects/*/locations/*/taxonomies/*}:testIamPermissions:\x01*Z\\"W/v1beta1/{resource=projects/*/locations/*/taxonomies/*/policyTags/*}:testIamPermissions:\x01*\x1aN\xca\x41\x1a\x64\x61tacatalog.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xfb\x01\n$com.google.cloud.datacatalog.v1beta1B\x15PolicyTagManagerProtoP\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\xaa\x02 Google.Cloud.DataCatalog.V1Beta1\xca\x02 Google\\Cloud\\DataCatalog\\V1beta1\xea\x02#Google::Cloud::DataCatalog::V1beta1b\x06proto3',
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -50,6 +51,7 @@ _TAXONOMY_POLICYTYPE = _descriptor.EnumDescriptor(
     full_name="google.cloud.datacatalog.v1beta1.Taxonomy.PolicyType",
     filename=None,
     file=DESCRIPTOR,
+    create_key=_descriptor._internal_create_key,
     values=[
         _descriptor.EnumValueDescriptor(
             name="POLICY_TYPE_UNSPECIFIED",
@@ -57,6 +59,7 @@ _TAXONOMY_POLICYTYPE = _descriptor.EnumDescriptor(
             number=0,
             serialized_options=None,
             type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
             name="FINE_GRAINED_ACCESS_CONTROL",
@@ -64,6 +67,7 @@ _TAXONOMY_POLICYTYPE = _descriptor.EnumDescriptor(
             number=1,
             serialized_options=None,
             type=None,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     containing_type=None,
@@ -80,6 +84,7 @@ _TAXONOMY = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -98,6 +103,7 @@ _TAXONOMY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="display_name",
@@ -116,6 +122,7 @@ _TAXONOMY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="description",
@@ -134,6 +141,7 @@ _TAXONOMY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="activated_policy_types",
@@ -152,6 +160,7 @@ _TAXONOMY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -173,6 +182,7 @@ _POLICYTAG = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -191,6 +201,7 @@ _POLICYTAG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="display_name",
@@ -209,6 +220,7 @@ _POLICYTAG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="description",
@@ -227,6 +239,7 @@ _POLICYTAG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="parent_policy_tag",
@@ -245,6 +258,7 @@ _POLICYTAG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="child_policy_tags",
@@ -263,6 +277,7 @@ _POLICYTAG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -284,6 +299,7 @@ _CREATETAXONOMYREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="parent",
@@ -302,6 +318,7 @@ _CREATETAXONOMYREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A%\022#datacatalog.googleapis.com/Taxonomy",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="taxonomy",
@@ -320,6 +337,7 @@ _CREATETAXONOMYREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -341,6 +359,7 @@ _DELETETAXONOMYREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -359,6 +378,7 @@ _DELETETAXONOMYREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A%\n#datacatalog.googleapis.com/Taxonomy",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -380,6 +400,7 @@ _UPDATETAXONOMYREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="taxonomy",
@@ -398,6 +419,7 @@ _UPDATETAXONOMYREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="update_mask",
@@ -416,6 +438,7 @@ _UPDATETAXONOMYREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -437,6 +460,7 @@ _LISTTAXONOMIESREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="parent",
@@ -455,6 +479,7 @@ _LISTTAXONOMIESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A%\022#datacatalog.googleapis.com/Taxonomy",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="page_size",
@@ -473,6 +498,7 @@ _LISTTAXONOMIESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="page_token",
@@ -491,6 +517,7 @@ _LISTTAXONOMIESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -512,6 +539,7 @@ _LISTTAXONOMIESRESPONSE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="taxonomies",
@@ -530,6 +558,7 @@ _LISTTAXONOMIESRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="next_page_token",
@@ -548,6 +577,7 @@ _LISTTAXONOMIESRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -569,6 +599,7 @@ _GETTAXONOMYREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -587,6 +618,7 @@ _GETTAXONOMYREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A%\n#datacatalog.googleapis.com/Taxonomy",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -608,6 +640,7 @@ _CREATEPOLICYTAGREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="parent",
@@ -626,6 +659,7 @@ _CREATEPOLICYTAGREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A&\022$datacatalog.googleapis.com/PolicyTag",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="policy_tag",
@@ -644,6 +678,7 @@ _CREATEPOLICYTAGREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -665,6 +700,7 @@ _DELETEPOLICYTAGREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -683,6 +719,7 @@ _DELETEPOLICYTAGREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A&\n$datacatalog.googleapis.com/PolicyTag",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -704,6 +741,7 @@ _UPDATEPOLICYTAGREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="policy_tag",
@@ -722,6 +760,7 @@ _UPDATEPOLICYTAGREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="update_mask",
@@ -740,6 +779,7 @@ _UPDATEPOLICYTAGREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -761,6 +801,7 @@ _LISTPOLICYTAGSREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="parent",
@@ -779,6 +820,7 @@ _LISTPOLICYTAGSREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A&\022$datacatalog.googleapis.com/PolicyTag",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="page_size",
@@ -797,6 +839,7 @@ _LISTPOLICYTAGSREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="page_token",
@@ -815,6 +858,7 @@ _LISTPOLICYTAGSREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -836,6 +880,7 @@ _LISTPOLICYTAGSRESPONSE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="policy_tags",
@@ -854,6 +899,7 @@ _LISTPOLICYTAGSRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="next_page_token",
@@ -872,6 +918,7 @@ _LISTPOLICYTAGSRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -893,6 +940,7 @@ _GETPOLICYTAGREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -911,6 +959,7 @@ _GETPOLICYTAGREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A&\n$datacatalog.googleapis.com/PolicyTag",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -1308,6 +1357,7 @@ _POLICYTAGMANAGER = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     serialized_options=b"\312A\032datacatalog.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform",
+    create_key=_descriptor._internal_create_key,
     serialized_start=2422,
     serialized_end=5339,
     methods=[
@@ -1319,6 +1369,7 @@ _POLICYTAGMANAGER = _descriptor.ServiceDescriptor(
             input_type=_CREATETAXONOMYREQUEST,
             output_type=_TAXONOMY,
             serialized_options=b'\202\323\344\223\002?"3/v1beta1/{parent=projects/*/locations/*}/taxonomies:\010taxonomy\332A\017parent,taxonomy',
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="DeleteTaxonomy",
@@ -1328,6 +1379,7 @@ _POLICYTAGMANAGER = _descriptor.ServiceDescriptor(
             input_type=_DELETETAXONOMYREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=b"\202\323\344\223\0025*3/v1beta1/{name=projects/*/locations/*/taxonomies/*}\332A\004name",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="UpdateTaxonomy",
@@ -1337,6 +1389,7 @@ _POLICYTAGMANAGER = _descriptor.ServiceDescriptor(
             input_type=_UPDATETAXONOMYREQUEST,
             output_type=_TAXONOMY,
             serialized_options=b"\202\323\344\223\002H2</v1beta1/{taxonomy.name=projects/*/locations/*/taxonomies/*}:\010taxonomy\332A\010taxonomy",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="ListTaxonomies",
@@ -1346,6 +1399,7 @@ _POLICYTAGMANAGER = _descriptor.ServiceDescriptor(
             input_type=_LISTTAXONOMIESREQUEST,
             output_type=_LISTTAXONOMIESRESPONSE,
             serialized_options=b"\202\323\344\223\0025\0223/v1beta1/{parent=projects/*/locations/*}/taxonomies\332A\006parent",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="GetTaxonomy",
@@ -1355,6 +1409,7 @@ _POLICYTAGMANAGER = _descriptor.ServiceDescriptor(
             input_type=_GETTAXONOMYREQUEST,
             output_type=_TAXONOMY,
             serialized_options=b"\202\323\344\223\0025\0223/v1beta1/{name=projects/*/locations/*/taxonomies/*}\332A\004name",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="CreatePolicyTag",
@@ -1364,6 +1419,7 @@ _POLICYTAGMANAGER = _descriptor.ServiceDescriptor(
             input_type=_CREATEPOLICYTAGREQUEST,
             output_type=_POLICYTAG,
             serialized_options=b'\202\323\344\223\002N"@/v1beta1/{parent=projects/*/locations/*/taxonomies/*}/policyTags:\npolicy_tag\332A\021parent,policy_tag',
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="DeletePolicyTag",
@@ -1373,6 +1429,7 @@ _POLICYTAGMANAGER = _descriptor.ServiceDescriptor(
             input_type=_DELETEPOLICYTAGREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=b"\202\323\344\223\002B*@/v1beta1/{name=projects/*/locations/*/taxonomies/*/policyTags/*}\332A\004name",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="UpdatePolicyTag",
@@ -1382,6 +1439,7 @@ _POLICYTAGMANAGER = _descriptor.ServiceDescriptor(
             input_type=_UPDATEPOLICYTAGREQUEST,
             output_type=_POLICYTAG,
             serialized_options=b"\202\323\344\223\002Y2K/v1beta1/{policy_tag.name=projects/*/locations/*/taxonomies/*/policyTags/*}:\npolicy_tag\332A\npolicy_tag",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="ListPolicyTags",
@@ -1391,6 +1449,7 @@ _POLICYTAGMANAGER = _descriptor.ServiceDescriptor(
             input_type=_LISTPOLICYTAGSREQUEST,
             output_type=_LISTPOLICYTAGSRESPONSE,
             serialized_options=b"\202\323\344\223\002B\022@/v1beta1/{parent=projects/*/locations/*/taxonomies/*}/policyTags\332A\006parent",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="GetPolicyTag",
@@ -1400,6 +1459,7 @@ _POLICYTAGMANAGER = _descriptor.ServiceDescriptor(
             input_type=_GETPOLICYTAGREQUEST,
             output_type=_POLICYTAG,
             serialized_options=b"\202\323\344\223\002B\022@/v1beta1/{name=projects/*/locations/*/taxonomies/*/policyTags/*}\332A\004name",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="GetIamPolicy",
@@ -1409,6 +1469,7 @@ _POLICYTAGMANAGER = _descriptor.ServiceDescriptor(
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._GETIAMPOLICYREQUEST,
             output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
             serialized_options=b'\202\323\344\223\002\241\001"D/v1beta1/{resource=projects/*/locations/*/taxonomies/*}:getIamPolicy:\001*ZV"Q/v1beta1/{resource=projects/*/locations/*/taxonomies/*/policyTags/*}:getIamPolicy:\001*',
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="SetIamPolicy",
@@ -1418,6 +1479,7 @@ _POLICYTAGMANAGER = _descriptor.ServiceDescriptor(
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._SETIAMPOLICYREQUEST,
             output_type=google_dot_iam_dot_v1_dot_policy__pb2._POLICY,
             serialized_options=b'\202\323\344\223\002\241\001"D/v1beta1/{resource=projects/*/locations/*/taxonomies/*}:setIamPolicy:\001*ZV"Q/v1beta1/{resource=projects/*/locations/*/taxonomies/*/policyTags/*}:setIamPolicy:\001*',
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="TestIamPermissions",
@@ -1427,6 +1489,7 @@ _POLICYTAGMANAGER = _descriptor.ServiceDescriptor(
             input_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSREQUEST,
             output_type=google_dot_iam_dot_v1_dot_iam__policy__pb2._TESTIAMPERMISSIONSRESPONSE,
             serialized_options=b'\202\323\344\223\002\255\001"J/v1beta1/{resource=projects/*/locations/*/taxonomies/*}:testIamPermissions:\001*Z\\"W/v1beta1/{resource=projects/*/locations/*/taxonomies/*/policyTags/*}:testIamPermissions:\001*',
+            create_key=_descriptor._internal_create_key,
         ),
     ],
 )

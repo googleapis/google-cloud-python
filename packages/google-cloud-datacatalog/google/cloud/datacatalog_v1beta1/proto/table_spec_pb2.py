@@ -22,6 +22,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.datacatalog.v1beta1",
     syntax="proto3",
     serialized_options=b"\n$com.google.cloud.datacatalog.v1beta1P\001ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\370\001\001\252\002 Google.Cloud.DataCatalog.V1Beta1\312\002 Google\\Cloud\\DataCatalog\\V1beta1\352\002#Google::Cloud::DataCatalog::V1beta1",
+    create_key=_descriptor._internal_create_key,
     serialized_pb=b'\n7google/cloud/datacatalog_v1beta1/proto/table_spec.proto\x12 google.cloud.datacatalog.v1beta1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto"\xf7\x01\n\x11\x42igQueryTableSpec\x12Q\n\x11table_source_type\x18\x01 \x01(\x0e\x32\x31.google.cloud.datacatalog.v1beta1.TableSourceTypeB\x03\xe0\x41\x03\x12?\n\tview_spec\x18\x02 \x01(\x0b\x32*.google.cloud.datacatalog.v1beta1.ViewSpecH\x00\x12\x41\n\ntable_spec\x18\x03 \x01(\x0b\x32+.google.cloud.datacatalog.v1beta1.TableSpecH\x00\x42\x0b\n\ttype_spec"#\n\x08ViewSpec\x12\x17\n\nview_query\x18\x01 \x01(\tB\x03\xe0\x41\x03"L\n\tTableSpec\x12?\n\rgrouped_entry\x18\x01 \x01(\tB(\xe0\x41\x03\xfa\x41"\n datacatalog.googleapis.com/Entry"\x89\x01\n\x17\x42igQueryDateShardedSpec\x12\x39\n\x07\x64\x61taset\x18\x01 \x01(\tB(\xe0\x41\x03\xfa\x41"\n datacatalog.googleapis.com/Entry\x12\x19\n\x0ctable_prefix\x18\x02 \x01(\tB\x03\xe0\x41\x03\x12\x18\n\x0bshard_count\x18\x03 \x01(\x03\x42\x03\xe0\x41\x03*[\n\x0fTableSourceType\x12!\n\x1dTABLE_SOURCE_TYPE_UNSPECIFIED\x10\x00\x12\x11\n\rBIGQUERY_VIEW\x10\x02\x12\x12\n\x0e\x42IGQUERY_TABLE\x10\x05\x42\xe4\x01\n$com.google.cloud.datacatalog.v1beta1P\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\xaa\x02 Google.Cloud.DataCatalog.V1Beta1\xca\x02 Google\\Cloud\\DataCatalog\\V1beta1\xea\x02#Google::Cloud::DataCatalog::V1beta1b\x06proto3',
     dependencies=[
         google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
@@ -34,6 +35,7 @@ _TABLESOURCETYPE = _descriptor.EnumDescriptor(
     full_name="google.cloud.datacatalog.v1beta1.TableSourceType",
     filename=None,
     file=DESCRIPTOR,
+    create_key=_descriptor._internal_create_key,
     values=[
         _descriptor.EnumValueDescriptor(
             name="TABLE_SOURCE_TYPE_UNSPECIFIED",
@@ -41,12 +43,23 @@ _TABLESOURCETYPE = _descriptor.EnumDescriptor(
             number=0,
             serialized_options=None,
             type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="BIGQUERY_VIEW", index=1, number=2, serialized_options=None, type=None
+            name="BIGQUERY_VIEW",
+            index=1,
+            number=2,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="BIGQUERY_TABLE", index=2, number=5, serialized_options=None, type=None
+            name="BIGQUERY_TABLE",
+            index=2,
+            number=5,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     containing_type=None,
@@ -68,6 +81,7 @@ _BIGQUERYTABLESPEC = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="table_source_type",
@@ -86,6 +100,7 @@ _BIGQUERYTABLESPEC = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="view_spec",
@@ -104,6 +119,7 @@ _BIGQUERYTABLESPEC = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="table_spec",
@@ -122,6 +138,7 @@ _BIGQUERYTABLESPEC = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -137,6 +154,7 @@ _BIGQUERYTABLESPEC = _descriptor.Descriptor(
             full_name="google.cloud.datacatalog.v1beta1.BigQueryTableSpec.type_spec",
             index=0,
             containing_type=None,
+            create_key=_descriptor._internal_create_key,
             fields=[],
         )
     ],
@@ -151,6 +169,7 @@ _VIEWSPEC = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="view_query",
@@ -169,6 +188,7 @@ _VIEWSPEC = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -190,6 +210,7 @@ _TABLESPEC = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="grouped_entry",
@@ -208,6 +229,7 @@ _TABLESPEC = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b'\340A\003\372A"\n datacatalog.googleapis.com/Entry',
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -229,6 +251,7 @@ _BIGQUERYDATESHARDEDSPEC = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="dataset",
@@ -247,6 +270,7 @@ _BIGQUERYDATESHARDEDSPEC = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b'\340A\003\372A"\n datacatalog.googleapis.com/Entry',
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="table_prefix",
@@ -265,6 +289,7 @@ _BIGQUERYDATESHARDEDSPEC = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="shard_count",
@@ -283,6 +308,7 @@ _BIGQUERYDATESHARDEDSPEC = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],

@@ -22,6 +22,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.datacatalog.v1",
     syntax="proto3",
     serialized_options=b"\n\037com.google.cloud.datacatalog.v1P\001ZFgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1;datacatalog\370\001\001\252\002\033Google.Cloud.DataCatalog.V1\312\002\033Google\\Cloud\\DataCatalog\\V1\352\002\036Google::Cloud::DataCatalog::V1",
+    create_key=_descriptor._internal_create_key,
     serialized_pb=b'\n,google/cloud/datacatalog_v1/proto/tags.proto\x12\x1bgoogle.cloud.datacatalog.v1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x86\x03\n\x03Tag\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x15\n\x08template\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12"\n\x15template_display_name\x18\x05 \x01(\tB\x03\xe0\x41\x03\x12\x10\n\x06\x63olumn\x18\x04 \x01(\tH\x00\x12\x41\n\x06\x66ields\x18\x03 \x03(\x0b\x32,.google.cloud.datacatalog.v1.Tag.FieldsEntryB\x03\xe0\x41\x02\x1aT\n\x0b\x46ieldsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x34\n\x05value\x18\x02 \x01(\x0b\x32%.google.cloud.datacatalog.v1.TagField:\x02\x38\x01:\x81\x01\xea\x41~\n\x1e\x64\x61tacatalog.googleapis.com/Tag\x12\\projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}/tags/{tag}B\x07\n\x05scope"\xa8\x02\n\x08TagField\x12\x19\n\x0c\x64isplay_name\x18\x01 \x01(\tB\x03\xe0\x41\x03\x12\x16\n\x0c\x64ouble_value\x18\x02 \x01(\x01H\x00\x12\x16\n\x0cstring_value\x18\x03 \x01(\tH\x00\x12\x14\n\nbool_value\x18\x04 \x01(\x08H\x00\x12\x35\n\x0ftimestamp_value\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12\x45\n\nenum_value\x18\x06 \x01(\x0b\x32/.google.cloud.datacatalog.v1.TagField.EnumValueH\x00\x12\x12\n\x05order\x18\x07 \x01(\x05\x42\x03\xe0\x41\x03\x1a!\n\tEnumValue\x12\x14\n\x0c\x64isplay_name\x18\x01 \x01(\tB\x06\n\x04kind"\xcc\x02\n\x0bTagTemplate\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x02 \x01(\t\x12I\n\x06\x66ields\x18\x03 \x03(\x0b\x32\x34.google.cloud.datacatalog.v1.TagTemplate.FieldsEntryB\x03\xe0\x41\x02\x1a\\\n\x0b\x46ieldsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12<\n\x05value\x18\x02 \x01(\x0b\x32-.google.cloud.datacatalog.v1.TagTemplateField:\x02\x38\x01:p\xea\x41m\n&datacatalog.googleapis.com/TagTemplate\x12\x43projects/{project}/locations/{location}/tagTemplates/{tag_template}"\xa2\x02\n\x10TagTemplateField\x12\x11\n\x04name\x18\x06 \x01(\tB\x03\xe0\x41\x03\x12\x14\n\x0c\x64isplay_name\x18\x01 \x01(\t\x12\x39\n\x04type\x18\x02 \x01(\x0b\x32&.google.cloud.datacatalog.v1.FieldTypeB\x03\xe0\x41\x02\x12\x13\n\x0bis_required\x18\x03 \x01(\x08\x12\r\n\x05order\x18\x05 \x01(\x05:\x85\x01\xea\x41\x81\x01\n+datacatalog.googleapis.com/TagTemplateField\x12Rprojects/{project}/locations/{location}/tagTemplates/{tag_template}/fields/{field}"\x98\x03\n\tFieldType\x12N\n\x0eprimitive_type\x18\x01 \x01(\x0e\x32\x34.google.cloud.datacatalog.v1.FieldType.PrimitiveTypeH\x00\x12\x44\n\tenum_type\x18\x02 \x01(\x0b\x32/.google.cloud.datacatalog.v1.FieldType.EnumTypeH\x00\x1a\x85\x01\n\x08\x45numType\x12Q\n\x0e\x61llowed_values\x18\x01 \x03(\x0b\x32\x39.google.cloud.datacatalog.v1.FieldType.EnumType.EnumValue\x1a&\n\tEnumValue\x12\x19\n\x0c\x64isplay_name\x18\x01 \x01(\tB\x03\xe0\x41\x02"`\n\rPrimitiveType\x12\x1e\n\x1aPRIMITIVE_TYPE_UNSPECIFIED\x10\x00\x12\n\n\x06\x44OUBLE\x10\x01\x12\n\n\x06STRING\x10\x02\x12\x08\n\x04\x42OOL\x10\x03\x12\r\n\tTIMESTAMP\x10\x04\x42\x0b\n\ttype_declB\xcb\x01\n\x1f\x63om.google.cloud.datacatalog.v1P\x01ZFgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1;datacatalog\xf8\x01\x01\xaa\x02\x1bGoogle.Cloud.DataCatalog.V1\xca\x02\x1bGoogle\\Cloud\\DataCatalog\\V1\xea\x02\x1eGoogle::Cloud::DataCatalog::V1b\x06proto3',
     dependencies=[
         google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
@@ -36,6 +37,7 @@ _FIELDTYPE_PRIMITIVETYPE = _descriptor.EnumDescriptor(
     full_name="google.cloud.datacatalog.v1.FieldType.PrimitiveType",
     filename=None,
     file=DESCRIPTOR,
+    create_key=_descriptor._internal_create_key,
     values=[
         _descriptor.EnumValueDescriptor(
             name="PRIMITIVE_TYPE_UNSPECIFIED",
@@ -43,18 +45,39 @@ _FIELDTYPE_PRIMITIVETYPE = _descriptor.EnumDescriptor(
             number=0,
             serialized_options=None,
             type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="DOUBLE", index=1, number=1, serialized_options=None, type=None
+            name="DOUBLE",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="STRING", index=2, number=2, serialized_options=None, type=None
+            name="STRING",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="BOOL", index=3, number=3, serialized_options=None, type=None
+            name="BOOL",
+            index=3,
+            number=3,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="TIMESTAMP", index=4, number=4, serialized_options=None, type=None
+            name="TIMESTAMP",
+            index=4,
+            number=4,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     containing_type=None,
@@ -71,6 +94,7 @@ _TAG_FIELDSENTRY = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="key",
@@ -89,6 +113,7 @@ _TAG_FIELDSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="value",
@@ -107,6 +132,7 @@ _TAG_FIELDSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -127,6 +153,7 @@ _TAG = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -145,6 +172,7 @@ _TAG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="template",
@@ -163,6 +191,7 @@ _TAG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="template_display_name",
@@ -181,6 +210,7 @@ _TAG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="column",
@@ -199,6 +229,7 @@ _TAG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="fields",
@@ -217,6 +248,7 @@ _TAG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -232,6 +264,7 @@ _TAG = _descriptor.Descriptor(
             full_name="google.cloud.datacatalog.v1.Tag.scope",
             index=0,
             containing_type=None,
+            create_key=_descriptor._internal_create_key,
             fields=[],
         )
     ],
@@ -246,6 +279,7 @@ _TAGFIELD_ENUMVALUE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="display_name",
@@ -264,6 +298,7 @@ _TAGFIELD_ENUMVALUE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -284,6 +319,7 @@ _TAGFIELD = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="display_name",
@@ -302,6 +338,7 @@ _TAGFIELD = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="double_value",
@@ -320,6 +357,7 @@ _TAGFIELD = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="string_value",
@@ -338,6 +376,7 @@ _TAGFIELD = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="bool_value",
@@ -356,6 +395,7 @@ _TAGFIELD = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="timestamp_value",
@@ -374,6 +414,7 @@ _TAGFIELD = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="enum_value",
@@ -392,6 +433,7 @@ _TAGFIELD = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="order",
@@ -410,6 +452,7 @@ _TAGFIELD = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -425,6 +468,7 @@ _TAGFIELD = _descriptor.Descriptor(
             full_name="google.cloud.datacatalog.v1.TagField.kind",
             index=0,
             containing_type=None,
+            create_key=_descriptor._internal_create_key,
             fields=[],
         )
     ],
@@ -439,6 +483,7 @@ _TAGTEMPLATE_FIELDSENTRY = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="key",
@@ -457,6 +502,7 @@ _TAGTEMPLATE_FIELDSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="value",
@@ -475,6 +521,7 @@ _TAGTEMPLATE_FIELDSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -495,6 +542,7 @@ _TAGTEMPLATE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -513,6 +561,7 @@ _TAGTEMPLATE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="display_name",
@@ -531,6 +580,7 @@ _TAGTEMPLATE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="fields",
@@ -549,6 +599,7 @@ _TAGTEMPLATE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -570,6 +621,7 @@ _TAGTEMPLATEFIELD = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -588,6 +640,7 @@ _TAGTEMPLATEFIELD = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\003",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="display_name",
@@ -606,6 +659,7 @@ _TAGTEMPLATEFIELD = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="type",
@@ -624,6 +678,7 @@ _TAGTEMPLATEFIELD = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="is_required",
@@ -642,6 +697,7 @@ _TAGTEMPLATEFIELD = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="order",
@@ -660,6 +716,7 @@ _TAGTEMPLATEFIELD = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -681,6 +738,7 @@ _FIELDTYPE_ENUMTYPE_ENUMVALUE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="display_name",
@@ -699,6 +757,7 @@ _FIELDTYPE_ENUMTYPE_ENUMVALUE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -719,6 +778,7 @@ _FIELDTYPE_ENUMTYPE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="allowed_values",
@@ -737,6 +797,7 @@ _FIELDTYPE_ENUMTYPE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -757,6 +818,7 @@ _FIELDTYPE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="primitive_type",
@@ -775,6 +837,7 @@ _FIELDTYPE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="enum_type",
@@ -793,6 +856,7 @@ _FIELDTYPE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -808,6 +872,7 @@ _FIELDTYPE = _descriptor.Descriptor(
             full_name="google.cloud.datacatalog.v1.FieldType.type_decl",
             index=0,
             containing_type=None,
+            create_key=_descriptor._internal_create_key,
             fields=[],
         )
     ],

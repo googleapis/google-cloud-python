@@ -18,6 +18,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.datacatalog.v1beta1",
     syntax="proto3",
     serialized_options=b"\n$com.google.cloud.datacatalog.v1beta1P\001ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\370\001\001\252\002 Google.Cloud.DataCatalog.V1Beta1\312\002 Google\\Cloud\\DataCatalog\\V1beta1\352\002#Google::Cloud::DataCatalog::V1beta1",
+    create_key=_descriptor._internal_create_key,
     serialized_pb=b"\n3google/cloud/datacatalog_v1beta1/proto/common.proto\x12 google.cloud.datacatalog.v1beta1*U\n\x10IntegratedSystem\x12!\n\x1dINTEGRATED_SYSTEM_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x42IGQUERY\x10\x01\x12\x10\n\x0c\x43LOUD_PUBSUB\x10\x02\x42\xe4\x01\n$com.google.cloud.datacatalog.v1beta1P\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\xaa\x02 Google.Cloud.DataCatalog.V1Beta1\xca\x02 Google\\Cloud\\DataCatalog\\V1beta1\xea\x02#Google::Cloud::DataCatalog::V1beta1b\x06proto3",
 )
 
@@ -26,6 +27,7 @@ _INTEGRATEDSYSTEM = _descriptor.EnumDescriptor(
     full_name="google.cloud.datacatalog.v1beta1.IntegratedSystem",
     filename=None,
     file=DESCRIPTOR,
+    create_key=_descriptor._internal_create_key,
     values=[
         _descriptor.EnumValueDescriptor(
             name="INTEGRATED_SYSTEM_UNSPECIFIED",
@@ -33,12 +35,23 @@ _INTEGRATEDSYSTEM = _descriptor.EnumDescriptor(
             number=0,
             serialized_options=None,
             type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="BIGQUERY", index=1, number=1, serialized_options=None, type=None
+            name="BIGQUERY",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="CLOUD_PUBSUB", index=2, number=2, serialized_options=None, type=None
+            name="CLOUD_PUBSUB",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     containing_type=None,

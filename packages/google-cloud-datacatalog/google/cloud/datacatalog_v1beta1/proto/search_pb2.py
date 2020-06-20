@@ -25,6 +25,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.datacatalog.v1beta1",
     syntax="proto3",
     serialized_options=b"\n$com.google.cloud.datacatalog.v1beta1P\001ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\370\001\001\252\002 Google.Cloud.DataCatalog.V1Beta1\312\002 Google\\Cloud\\DataCatalog\\V1beta1\352\002#Google::Cloud::DataCatalog::V1beta1",
+    create_key=_descriptor._internal_create_key,
     serialized_pb=b'\n3google/cloud/datacatalog_v1beta1/proto/search.proto\x12 google.cloud.datacatalog.v1beta1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x33google/cloud/datacatalog_v1beta1/proto/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xbd\x01\n\x13SearchCatalogResult\x12N\n\x12search_result_type\x18\x01 \x01(\x0e\x32\x32.google.cloud.datacatalog.v1beta1.SearchResultType\x12\x1d\n\x15search_result_subtype\x18\x02 \x01(\t\x12\x1e\n\x16relative_resource_name\x18\x03 \x01(\t\x12\x17\n\x0flinked_resource\x18\x04 \x01(\t*d\n\x10SearchResultType\x12"\n\x1eSEARCH_RESULT_TYPE_UNSPECIFIED\x10\x00\x12\t\n\x05\x45NTRY\x10\x01\x12\x10\n\x0cTAG_TEMPLATE\x10\x02\x12\x0f\n\x0b\x45NTRY_GROUP\x10\x03\x42\xe4\x01\n$com.google.cloud.datacatalog.v1beta1P\x01ZKgoogle.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog\xf8\x01\x01\xaa\x02 Google.Cloud.DataCatalog.V1Beta1\xca\x02 Google\\Cloud\\DataCatalog\\V1beta1\xea\x02#Google::Cloud::DataCatalog::V1beta1b\x06proto3',
     dependencies=[
         google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
@@ -38,6 +39,7 @@ _SEARCHRESULTTYPE = _descriptor.EnumDescriptor(
     full_name="google.cloud.datacatalog.v1beta1.SearchResultType",
     filename=None,
     file=DESCRIPTOR,
+    create_key=_descriptor._internal_create_key,
     values=[
         _descriptor.EnumValueDescriptor(
             name="SEARCH_RESULT_TYPE_UNSPECIFIED",
@@ -45,15 +47,31 @@ _SEARCHRESULTTYPE = _descriptor.EnumDescriptor(
             number=0,
             serialized_options=None,
             type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ENTRY", index=1, number=1, serialized_options=None, type=None
+            name="ENTRY",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="TAG_TEMPLATE", index=2, number=2, serialized_options=None, type=None
+            name="TAG_TEMPLATE",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="ENTRY_GROUP", index=3, number=3, serialized_options=None, type=None
+            name="ENTRY_GROUP",
+            index=3,
+            number=3,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     containing_type=None,
@@ -76,6 +94,7 @@ _SEARCHCATALOGRESULT = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="search_result_type",
@@ -94,6 +113,7 @@ _SEARCHCATALOGRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="search_result_subtype",
@@ -112,6 +132,7 @@ _SEARCHCATALOGRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="relative_resource_name",
@@ -130,6 +151,7 @@ _SEARCHCATALOGRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="linked_resource",
@@ -148,6 +170,7 @@ _SEARCHCATALOGRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
