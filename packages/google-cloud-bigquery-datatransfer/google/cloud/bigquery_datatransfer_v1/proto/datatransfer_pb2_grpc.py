@@ -2,10 +2,10 @@
 import grpc
 
 from google.cloud.bigquery_datatransfer_v1.proto import (
-    datatransfer_pb2 as google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2,
+    datatransfer_pb2 as google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2,
 )
 from google.cloud.bigquery_datatransfer_v1.proto import (
-    transfer_pb2 as google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_transfer__pb2,
+    transfer_pb2 as google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_transfer__pb2,
 )
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
@@ -25,73 +25,73 @@ class DataTransferServiceStub(object):
     """
         self.GetDataSource = channel.unary_unary(
             "/google.cloud.bigquery.datatransfer.v1.DataTransferService/GetDataSource",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.GetDataSourceRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.DataSource.FromString,
+            request_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.GetDataSourceRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.DataSource.FromString,
         )
         self.ListDataSources = channel.unary_unary(
             "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ListDataSources",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListDataSourcesRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListDataSourcesResponse.FromString,
+            request_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListDataSourcesRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListDataSourcesResponse.FromString,
         )
         self.CreateTransferConfig = channel.unary_unary(
             "/google.cloud.bigquery.datatransfer.v1.DataTransferService/CreateTransferConfig",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.CreateTransferConfigRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_transfer__pb2.TransferConfig.FromString,
+            request_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.CreateTransferConfigRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_transfer__pb2.TransferConfig.FromString,
         )
         self.UpdateTransferConfig = channel.unary_unary(
             "/google.cloud.bigquery.datatransfer.v1.DataTransferService/UpdateTransferConfig",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.UpdateTransferConfigRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_transfer__pb2.TransferConfig.FromString,
+            request_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.UpdateTransferConfigRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_transfer__pb2.TransferConfig.FromString,
         )
         self.DeleteTransferConfig = channel.unary_unary(
             "/google.cloud.bigquery.datatransfer.v1.DataTransferService/DeleteTransferConfig",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.DeleteTransferConfigRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.DeleteTransferConfigRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
         self.GetTransferConfig = channel.unary_unary(
             "/google.cloud.bigquery.datatransfer.v1.DataTransferService/GetTransferConfig",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.GetTransferConfigRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_transfer__pb2.TransferConfig.FromString,
+            request_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.GetTransferConfigRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_transfer__pb2.TransferConfig.FromString,
         )
         self.ListTransferConfigs = channel.unary_unary(
             "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ListTransferConfigs",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferConfigsRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferConfigsResponse.FromString,
+            request_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferConfigsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferConfigsResponse.FromString,
         )
         self.ScheduleTransferRuns = channel.unary_unary(
             "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ScheduleTransferRuns",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ScheduleTransferRunsRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ScheduleTransferRunsResponse.FromString,
+            request_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ScheduleTransferRunsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ScheduleTransferRunsResponse.FromString,
         )
         self.StartManualTransferRuns = channel.unary_unary(
             "/google.cloud.bigquery.datatransfer.v1.DataTransferService/StartManualTransferRuns",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.StartManualTransferRunsRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.StartManualTransferRunsResponse.FromString,
+            request_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.StartManualTransferRunsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.StartManualTransferRunsResponse.FromString,
         )
         self.GetTransferRun = channel.unary_unary(
             "/google.cloud.bigquery.datatransfer.v1.DataTransferService/GetTransferRun",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.GetTransferRunRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_transfer__pb2.TransferRun.FromString,
+            request_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.GetTransferRunRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_transfer__pb2.TransferRun.FromString,
         )
         self.DeleteTransferRun = channel.unary_unary(
             "/google.cloud.bigquery.datatransfer.v1.DataTransferService/DeleteTransferRun",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.DeleteTransferRunRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.DeleteTransferRunRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
         self.ListTransferRuns = channel.unary_unary(
             "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ListTransferRuns",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferRunsRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferRunsResponse.FromString,
+            request_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferRunsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferRunsResponse.FromString,
         )
         self.ListTransferLogs = channel.unary_unary(
             "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ListTransferLogs",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferLogsRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferLogsResponse.FromString,
+            request_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferLogsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferLogsResponse.FromString,
         )
         self.CheckValidCreds = channel.unary_unary(
             "/google.cloud.bigquery.datatransfer.v1.DataTransferService/CheckValidCreds",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.CheckValidCredsRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.CheckValidCredsResponse.FromString,
+            request_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.CheckValidCredsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.CheckValidCredsResponse.FromString,
         )
 
 
@@ -221,73 +221,73 @@ def add_DataTransferServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
         "GetDataSource": grpc.unary_unary_rpc_method_handler(
             servicer.GetDataSource,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.GetDataSourceRequest.FromString,
-            response_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.DataSource.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.GetDataSourceRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.DataSource.SerializeToString,
         ),
         "ListDataSources": grpc.unary_unary_rpc_method_handler(
             servicer.ListDataSources,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListDataSourcesRequest.FromString,
-            response_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListDataSourcesResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListDataSourcesRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListDataSourcesResponse.SerializeToString,
         ),
         "CreateTransferConfig": grpc.unary_unary_rpc_method_handler(
             servicer.CreateTransferConfig,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.CreateTransferConfigRequest.FromString,
-            response_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_transfer__pb2.TransferConfig.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.CreateTransferConfigRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_transfer__pb2.TransferConfig.SerializeToString,
         ),
         "UpdateTransferConfig": grpc.unary_unary_rpc_method_handler(
             servicer.UpdateTransferConfig,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.UpdateTransferConfigRequest.FromString,
-            response_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_transfer__pb2.TransferConfig.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.UpdateTransferConfigRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_transfer__pb2.TransferConfig.SerializeToString,
         ),
         "DeleteTransferConfig": grpc.unary_unary_rpc_method_handler(
             servicer.DeleteTransferConfig,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.DeleteTransferConfigRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.DeleteTransferConfigRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         "GetTransferConfig": grpc.unary_unary_rpc_method_handler(
             servicer.GetTransferConfig,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.GetTransferConfigRequest.FromString,
-            response_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_transfer__pb2.TransferConfig.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.GetTransferConfigRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_transfer__pb2.TransferConfig.SerializeToString,
         ),
         "ListTransferConfigs": grpc.unary_unary_rpc_method_handler(
             servicer.ListTransferConfigs,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferConfigsRequest.FromString,
-            response_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferConfigsResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferConfigsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferConfigsResponse.SerializeToString,
         ),
         "ScheduleTransferRuns": grpc.unary_unary_rpc_method_handler(
             servicer.ScheduleTransferRuns,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ScheduleTransferRunsRequest.FromString,
-            response_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ScheduleTransferRunsResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ScheduleTransferRunsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ScheduleTransferRunsResponse.SerializeToString,
         ),
         "StartManualTransferRuns": grpc.unary_unary_rpc_method_handler(
             servicer.StartManualTransferRuns,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.StartManualTransferRunsRequest.FromString,
-            response_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.StartManualTransferRunsResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.StartManualTransferRunsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.StartManualTransferRunsResponse.SerializeToString,
         ),
         "GetTransferRun": grpc.unary_unary_rpc_method_handler(
             servicer.GetTransferRun,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.GetTransferRunRequest.FromString,
-            response_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_transfer__pb2.TransferRun.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.GetTransferRunRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_transfer__pb2.TransferRun.SerializeToString,
         ),
         "DeleteTransferRun": grpc.unary_unary_rpc_method_handler(
             servicer.DeleteTransferRun,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.DeleteTransferRunRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.DeleteTransferRunRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         "ListTransferRuns": grpc.unary_unary_rpc_method_handler(
             servicer.ListTransferRuns,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferRunsRequest.FromString,
-            response_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferRunsResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferRunsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferRunsResponse.SerializeToString,
         ),
         "ListTransferLogs": grpc.unary_unary_rpc_method_handler(
             servicer.ListTransferLogs,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferLogsRequest.FromString,
-            response_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferLogsResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferLogsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.ListTransferLogsResponse.SerializeToString,
         ),
         "CheckValidCreds": grpc.unary_unary_rpc_method_handler(
             servicer.CheckValidCreds,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.CheckValidCredsRequest.FromString,
-            response_serializer=google_dot_cloud_dot_bigquery_dot_datatransfer__v1_dot_proto_dot_datatransfer__pb2.CheckValidCredsResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.CheckValidCredsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery__datatransfer__v1_dot_proto_dot_datatransfer__pb2.CheckValidCredsResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

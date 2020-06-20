@@ -64,6 +64,108 @@ class CustomException(Exception):
 
 
 class TestDataTransferServiceClient(object):
+    def test_delete_transfer_config(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+        # Setup Request
+        name = client.project_transfer_config_path("[PROJECT]", "[TRANSFER_CONFIG]")
+
+        client.delete_transfer_config(name)
+
+        assert len(channel.requests) == 1
+        expected_request = datatransfer_pb2.DeleteTransferConfigRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_transfer_config_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+        # Setup request
+        name = client.project_transfer_config_path("[PROJECT]", "[TRANSFER_CONFIG]")
+
+        with pytest.raises(CustomException):
+            client.delete_transfer_config(name)
+
+    def test_delete_transfer_run(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+        # Setup Request
+        name = client.project_run_path("[PROJECT]", "[TRANSFER_CONFIG]", "[RUN]")
+
+        client.delete_transfer_run(name)
+
+        assert len(channel.requests) == 1
+        expected_request = datatransfer_pb2.DeleteTransferRunRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_transfer_run_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+        # Setup request
+        name = client.project_run_path("[PROJECT]", "[TRANSFER_CONFIG]", "[RUN]")
+
+        with pytest.raises(CustomException):
+            client.delete_transfer_run(name)
+
+    def test_check_valid_creds(self):
+        # Setup Expected Response
+        has_valid_creds = False
+        expected_response = {"has_valid_creds": has_valid_creds}
+        expected_response = datatransfer_pb2.CheckValidCredsResponse(
+            **expected_response
+        )
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+        # Setup Request
+        name = client.project_data_source_path("[PROJECT]", "[DATA_SOURCE]")
+
+        response = client.check_valid_creds(name)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = datatransfer_pb2.CheckValidCredsRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_check_valid_creds_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+        # Setup request
+        name = client.project_data_source_path("[PROJECT]", "[DATA_SOURCE]")
+
+        with pytest.raises(CustomException):
+            client.check_valid_creds(name)
+
     def test_get_data_source(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
@@ -297,37 +399,6 @@ class TestDataTransferServiceClient(object):
 
         with pytest.raises(CustomException):
             client.update_transfer_config(transfer_config, update_mask)
-
-    def test_delete_transfer_config(self):
-        channel = ChannelStub()
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = bigquery_datatransfer_v1.DataTransferServiceClient()
-
-        # Setup Request
-        name = client.project_transfer_config_path("[PROJECT]", "[TRANSFER_CONFIG]")
-
-        client.delete_transfer_config(name)
-
-        assert len(channel.requests) == 1
-        expected_request = datatransfer_pb2.DeleteTransferConfigRequest(name=name)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_transfer_config_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = bigquery_datatransfer_v1.DataTransferServiceClient()
-
-        # Setup request
-        name = client.project_transfer_config_path("[PROJECT]", "[TRANSFER_CONFIG]")
-
-        with pytest.raises(CustomException):
-            client.delete_transfer_config(name)
 
     def test_get_transfer_config(self):
         # Setup Expected Response
@@ -563,37 +634,6 @@ class TestDataTransferServiceClient(object):
         with pytest.raises(CustomException):
             client.get_transfer_run(name)
 
-    def test_delete_transfer_run(self):
-        channel = ChannelStub()
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = bigquery_datatransfer_v1.DataTransferServiceClient()
-
-        # Setup Request
-        name = client.project_run_path("[PROJECT]", "[TRANSFER_CONFIG]", "[RUN]")
-
-        client.delete_transfer_run(name)
-
-        assert len(channel.requests) == 1
-        expected_request = datatransfer_pb2.DeleteTransferRunRequest(name=name)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_transfer_run_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = bigquery_datatransfer_v1.DataTransferServiceClient()
-
-        # Setup request
-        name = client.project_run_path("[PROJECT]", "[TRANSFER_CONFIG]", "[RUN]")
-
-        with pytest.raises(CustomException):
-            client.delete_transfer_run(name)
-
     def test_list_transfer_runs(self):
         # Setup Expected Response
         next_page_token = ""
@@ -689,43 +729,3 @@ class TestDataTransferServiceClient(object):
         paged_list_response = client.list_transfer_logs(parent)
         with pytest.raises(CustomException):
             list(paged_list_response)
-
-    def test_check_valid_creds(self):
-        # Setup Expected Response
-        has_valid_creds = False
-        expected_response = {"has_valid_creds": has_valid_creds}
-        expected_response = datatransfer_pb2.CheckValidCredsResponse(
-            **expected_response
-        )
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = bigquery_datatransfer_v1.DataTransferServiceClient()
-
-        # Setup Request
-        name = client.project_data_source_path("[PROJECT]", "[DATA_SOURCE]")
-
-        response = client.check_valid_creds(name)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = datatransfer_pb2.CheckValidCredsRequest(name=name)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_check_valid_creds_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = bigquery_datatransfer_v1.DataTransferServiceClient()
-
-        # Setup request
-        name = client.project_data_source_path("[PROJECT]", "[DATA_SOURCE]")
-
-        with pytest.raises(CustomException):
-            client.check_valid_creds(name)

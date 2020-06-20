@@ -17,6 +17,21 @@ config = {
                 }
             },
             "methods": {
+                "DeleteTransferConfig": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "DeleteTransferRun": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "CheckValidCreds": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
                 "GetDataSource": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
@@ -33,11 +48,6 @@ config = {
                     "retry_params_name": "default",
                 },
                 "UpdateTransferConfig": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
-                },
-                "DeleteTransferConfig": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
@@ -67,11 +77,6 @@ config = {
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
-                "DeleteTransferRun": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
-                },
                 "ListTransferRuns": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
@@ -80,11 +85,6 @@ config = {
                 "ListTransferLogs": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
-                },
-                "CheckValidCreds": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
             },

@@ -1,5 +1,6 @@
 .. include:: README.rst
 
+.. include:: multiprocessing.rst
 
 API Reference
 -------------
