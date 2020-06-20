@@ -29,6 +29,7 @@ priority.
 The following client libraries have **GA** support:
 
 -  `Google Cloud Asset`_ (`Asset README`_, `Asset Documentation`_)
+-  `Google Cloud AutoML`_ (`AutoML README`_, `AutoML Documentation`_)
 -  `Google BigQuery`_ (`BigQuery README`_, `BigQuery Documentation`_)
 -  `Google BigQuery Data Transfer`_ (`BigQuery Data Transfer README`_, `BigQuery Data Transfer Documentation`_)
 -  `Google BigQuery Storage`_ (`BigQuery Storage README`_, `BigQuery Storage Documentation`_)
@@ -66,6 +67,10 @@ The following client libraries have **GA** support:
 .. _Google Cloud Asset: https://pypi.org/project/google-cloud-asset/
 .. _Asset README: https://github.com/googleapis/python-asset
 .. _Asset Documentation: https://googleapis.dev/python/cloudasset/latest
+
+.. _Google Cloud AutoML: https://pypi.org/project/google-cloud-automl/
+.. _AutoML README: https://github.com/googleapis/python-automl
+.. _AutoML Documentation: https://googleapis.dev/python/automl/latest
 
 .. _Google BigQuery: https://pypi.org/project/google-cloud-bigquery/
 .. _BigQuery README: https://github.com/googleapis/python-bigquery#python-client-for-google-bigquery
@@ -213,6 +218,7 @@ The following client libraries have **beta** support:
 -  `Google Cloud Billing Budgets`_ (`Billing Budgets README`_, `Billing Budgets Documentation`_)
 -  `Google Cloud Data Catalog`_ (`Data Catalog README`_, `Data Catalog Documentation`_)
 -  `Google Cloud Data Labeling`_ (`Data Labeling README`_, `Data Labeling Documentation`_)
+-  `Google Phishing Protection`_ (`Phishing Protection README`_, `Phishing Protection Documentation`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_, `Runtime Config Documentation`_)
 -  `Google Cloud Talent`_ (`Talent README`_, `Talent Documentation`_)
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_, `Error Reporting Documentation`_)
@@ -232,6 +238,10 @@ The following client libraries have **beta** support:
 .. _Google Cloud Data Labeling: https://pypi.org/project/google-cloud-datalabeling/
 .. _Data Labeling README: https://github.com/googleapis/python-datalabeling#python-client-for-data-labeling-api-beta
 .. _Data Labeling Documentation: https://googleapis.dev/python/datalabeling/latest
+
+.. _Google Phishing Protection: https://pypi.org/project/google-cloud-phishing-protection/
+.. _Phishing Protection README: https://github.com/googleapis/python-phishingprotection
+.. _Phishing Protection Documentation: https://googleapis.dev/python/phishingprotection/latest
 
 .. _Google Cloud Runtime Configuration: https://pypi.org/project/google-cloud-runtimeconfig/
 .. _Runtime Config README: https://github.com/googleapis/python-runtimeconfig
@@ -255,20 +265,14 @@ updates. See `versioning`_ for more details.
 
 The following client libraries have **alpha** support:
 
--  `Google Cloud AutoML`_ (`AutoML README`_, `AutoML Documentation`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_, `HappyBase Documentation`_)
 -  `Google Cloud DNS`_ (`DNS README`_, `DNS Documentation`_)
--  `Google Phishing Protection`_ (`Phishing Protection README`_, `Phishing Protection Documentation`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_, `Resource Manager Documentation`_)
 -  `Google Cloud Security Command Center`_ (`Security Center README`_, `Security Center Documentation`_)
 -  `Google Cloud Security Scanner`_ (`Security Scanner README`_ , `Security Scanner Documentation`_)
 -  `Google Cloud Trace`_ (`Trace README`_, `Trace Documentation`_)
 -  `Grafeas`_ (`Grafeas README`_, `Grafeas Documentation`_)
 -  `Webrisk`_ (`Webrisk README`_, `Webrisk Documentation`_)
-
-.. _Google Cloud AutoML: https://pypi.org/project/google-cloud-automl/
-.. _AutoML README: https://github.com/googleapis/python-automl
-.. _AutoML Documentation: https://googleapis.dev/python/automl/latest
 
 .. _Google Cloud Bigtable - HappyBase: https://pypi.org/project/google-cloud-happybase/
 .. _HappyBase README: https://github.com/googleapis/google-cloud-python-happybase
@@ -277,10 +281,6 @@ The following client libraries have **alpha** support:
 .. _Google Cloud DNS: https://pypi.org/project/google-cloud-dns/
 .. _DNS README: https://github.com/googleapis/python-dns#python-client-for-google-cloud-dns
 .. _DNS Documentation: https://googleapis.dev/python/dns/latest
-
-.. _Google Phishing Protection: https://pypi.org/project/google-cloud-phishing-protection/
-.. _Phishing Protection README: https://github.com/googleapis/python-phishingprotection
-.. _Phishing Protection Documentation: https://googleapis.dev/python/phishingprotection/latest
 
 .. _Google Cloud Resource Manager: https://pypi.org/project/google-cloud-resource-manager/
 .. _Resource Manager README: https://github.com/googleapis/python-resource-manager
