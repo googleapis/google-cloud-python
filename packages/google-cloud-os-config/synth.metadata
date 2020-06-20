@@ -3,8 +3,8 @@
     {
       "git": {
         "name": ".",
-        "remote": "sso://devrel/cloud/libraries/python/python-os-config",
-        "sha": "143b9270390ff38775e2fbcd2288e8bfe4a82797"
+        "remote": "https://github.com/googleapis/python-os-config.git",
+        "sha": "b43ea51c28470874fdf5da026970202009d48651"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "88645a8f6e1b1c90fed625158960ffec565b023a"
+        "sha": "cd522c3b4dde821766d95c80ae5aeb43d7a41170"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "88645a8f6e1b1c90fed625158960ffec565b023a"
+        "sha": "cd522c3b4dde821766d95c80ae5aeb43d7a41170"
       }
     }
   ],

@@ -15,7 +15,9 @@
 # limitations under the License.
 #
 
-
+from google.cloud.osconfig_v1.services.os_config_service.async_client import (
+    OsConfigServiceAsyncClient,
+)
 from google.cloud.osconfig_v1.services.os_config_service.client import (
     OsConfigServiceClient,
 )
@@ -80,6 +82,7 @@ __all__ = (
     "ListPatchJobsResponse",
     "MonthlySchedule",
     "OneTimeSchedule",
+    "OsConfigServiceAsyncClient",
     "OsConfigServiceClient",
     "PatchConfig",
     "PatchDeployment",

@@ -16,9 +16,9 @@
 #
 
 from collections import OrderedDict
-import os
+import functools
 import re
-from typing import Callable, Dict, Sequence, Tuple, Type, Union
+from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
@@ -26,8 +26,6 @@ from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
-from google.auth.transport import mtls  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.osconfig_v1.services.os_config_service import pagers
@@ -37,125 +35,36 @@ from google.protobuf import duration_pb2 as duration  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
 from .transports.base import OsConfigServiceTransport
-from .transports.grpc import OsConfigServiceGrpcTransport
 from .transports.grpc_asyncio import OsConfigServiceGrpcAsyncIOTransport
+from .client import OsConfigServiceClient
 
 
-class OsConfigServiceClientMeta(type):
-    """Metaclass for the OsConfigService client.
-
-    This provides class-level methods for building and retrieving
-    support objects (e.g. transport) without polluting the client instance
-    objects.
-    """
-
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[OsConfigServiceTransport]]
-    _transport_registry["grpc"] = OsConfigServiceGrpcTransport
-    _transport_registry["grpc_asyncio"] = OsConfigServiceGrpcAsyncIOTransport
-
-    def get_transport_class(cls, label: str = None) -> Type[OsConfigServiceTransport]:
-        """Return an appropriate transport class.
-
-        Args:
-            label: The name of the desired transport. If none is
-                provided, then the first transport in the registry is used.
-
-        Returns:
-            The transport class to use.
-        """
-        # If a specific transport is requested, return that one.
-        if label:
-            return cls._transport_registry[label]
-
-        # No transport is requested; return the default (that is, the first one
-        # in the dictionary).
-        return next(iter(cls._transport_registry.values()))
-
-
-class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
+class OsConfigServiceAsyncClient:
     """OS Config API
     The OS Config service is a server-side component that you can
     use to manage package installations and patch jobs for virtual
     machine instances.
     """
 
-    @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
-        Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
-        "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
-        Args:
-            api_endpoint (Optional[str]): the api endpoint to convert.
-        Returns:
-            str: converted mTLS api endpoint.
-        """
-        if not api_endpoint:
-            return api_endpoint
+    _client: OsConfigServiceClient
 
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
+    DEFAULT_ENDPOINT = OsConfigServiceClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = OsConfigServiceClient.DEFAULT_MTLS_ENDPOINT
 
-        m = mtls_endpoint_re.match(api_endpoint)
-        name, mtls, sandbox, googledomain = m.groups()
-        if mtls or not googledomain:
-            return api_endpoint
+    patch_deployment_path = staticmethod(OsConfigServiceClient.patch_deployment_path)
 
-        if sandbox:
-            return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
-            )
-
-        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
-
-    DEFAULT_ENDPOINT = "osconfig.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
-        DEFAULT_ENDPOINT
-    )
-
-    @classmethod
-    def from_service_account_file(cls, filename: str, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials
-        file.
-
-        Args:
-            filename (str): The path to the service account private key json
-                file.
-            args: Additional arguments to pass to the constructor.
-            kwargs: Additional arguments to pass to the constructor.
-
-        Returns:
-            {@api.name}: The constructed client.
-        """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
-        return cls(*args, **kwargs)
-
+    from_service_account_file = OsConfigServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
-    @staticmethod
-    def patch_deployment_path(project: str, patch_deployment: str) -> str:
-        """Return a fully-qualified patch_deployment string."""
-        return "projects/{project}/patchDeployments/{patch_deployment}".format(
-            project=project, patch_deployment=patch_deployment
-        )
-
-    @staticmethod
-    def parse_patch_deployment_path(path: str) -> Dict[str, str]:
-        """Parse a patch_deployment path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/patchDeployments/(?P<patch_deployment>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
+    get_transport_class = functools.partial(
+        type(OsConfigServiceClient).get_transport_class, type(OsConfigServiceClient)
+    )
 
     def __init__(
         self,
         *,
         credentials: credentials.Credentials = None,
-        transport: Union[str, OsConfigServiceTransport] = None,
+        transport: Union[str, OsConfigServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
     ) -> None:
         """Instantiate the os config service client.
@@ -184,56 +93,15 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 default SSL credentials will be used if present.
 
         Raises:
-            google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        if isinstance(client_options, dict):
-            client_options = ClientOptions.from_dict(client_options)
-        if client_options is None:
-            client_options = ClientOptions.ClientOptions()
 
-        if client_options.api_endpoint is None:
-            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS", "never")
-            if use_mtls_env == "never":
-                client_options.api_endpoint = self.DEFAULT_ENDPOINT
-            elif use_mtls_env == "always":
-                client_options.api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-            elif use_mtls_env == "auto":
-                has_client_cert_source = (
-                    client_options.client_cert_source is not None
-                    or mtls.has_default_client_cert_source()
-                )
-                client_options.api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT
-                    if has_client_cert_source
-                    else self.DEFAULT_ENDPOINT
-                )
-            else:
-                raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS value. Accepted values: never, auto, always"
-                )
+        self._client = OsConfigServiceClient(
+            credentials=credentials, transport=transport, client_options=client_options
+        )
 
-        # Save or instantiate the transport.
-        # Ordinarily, we provide the transport, but allowing a custom transport
-        # instance provides an extensibility point for unusual situations.
-        if isinstance(transport, OsConfigServiceTransport):
-            # transport is a OsConfigServiceTransport instance.
-            if credentials:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its credentials directly."
-                )
-            self._transport = transport
-        else:
-            Transport = type(self).get_transport_class(transport)
-            self._transport = Transport(
-                credentials=credentials,
-                host=client_options.api_endpoint,
-                api_mtls_endpoint=client_options.api_endpoint,
-                client_cert_source=client_options.client_cert_source,
-            )
-
-    def execute_patch_job(
+    async def execute_patch_job(
         self,
         request: patch_jobs.ExecutePatchJobRequest = None,
         *,
@@ -275,8 +143,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.execute_patch_job,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.execute_patch_job,
             default_timeout=None,
             client_info=_client_info,
         )
@@ -288,12 +156,12 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
         # Done; return the response.
         return response
 
-    def get_patch_job(
+    async def get_patch_job(
         self,
         request: patch_jobs.GetPatchJobRequest = None,
         *,
@@ -356,8 +224,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_patch_job,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_patch_job,
             default_timeout=None,
             client_info=_client_info,
         )
@@ -369,12 +237,12 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
         # Done; return the response.
         return response
 
-    def cancel_patch_job(
+    async def cancel_patch_job(
         self,
         request: patch_jobs.CancelPatchJobRequest = None,
         *,
@@ -415,8 +283,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.cancel_patch_job,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.cancel_patch_job,
             default_timeout=None,
             client_info=_client_info,
         )
@@ -428,12 +296,12 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
         # Done; return the response.
         return response
 
-    def list_patch_jobs(
+    async def list_patch_jobs(
         self,
         request: patch_jobs.ListPatchJobsRequest = None,
         *,
@@ -441,7 +309,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListPatchJobsPager:
+    ) -> pagers.ListPatchJobsAsyncPager:
         r"""Get a list of patch jobs.
 
         Args:
@@ -461,7 +329,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListPatchJobsPager:
+            ~.pagers.ListPatchJobsAsyncPager:
                 A response message for listing patch
                 jobs.
                 Iterating over this object will yield
@@ -488,8 +356,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_patch_jobs,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_patch_jobs,
             default_timeout=None,
             client_info=_client_info,
         )
@@ -501,18 +369,18 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListPatchJobsPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListPatchJobsAsyncPager(
             method=rpc, request=request, response=response
         )
 
         # Done; return the response.
         return response
 
-    def list_patch_job_instance_details(
+    async def list_patch_job_instance_details(
         self,
         request: patch_jobs.ListPatchJobInstanceDetailsRequest = None,
         *,
@@ -520,7 +388,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListPatchJobInstanceDetailsPager:
+    ) -> pagers.ListPatchJobInstanceDetailsAsyncPager:
         r"""Get a list of instance details for a given patch job.
 
         Args:
@@ -541,7 +409,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListPatchJobInstanceDetailsPager:
+            ~.pagers.ListPatchJobInstanceDetailsAsyncPager:
                 A response message for listing the
                 instances details for a patch job.
                 Iterating over this object will yield
@@ -568,8 +436,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_patch_job_instance_details,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_patch_job_instance_details,
             default_timeout=None,
             client_info=_client_info,
         )
@@ -581,18 +449,18 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListPatchJobInstanceDetailsPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListPatchJobInstanceDetailsAsyncPager(
             method=rpc, request=request, response=response
         )
 
         # Done; return the response.
         return response
 
-    def create_patch_deployment(
+    async def create_patch_deployment(
         self,
         request: patch_deployments.CreatePatchDeploymentRequest = None,
         *,
@@ -675,8 +543,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.create_patch_deployment,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_patch_deployment,
             default_timeout=None,
             client_info=_client_info,
         )
@@ -688,12 +556,12 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
         # Done; return the response.
         return response
 
-    def get_patch_deployment(
+    async def get_patch_deployment(
         self,
         request: patch_deployments.GetPatchDeploymentRequest = None,
         *,
@@ -750,8 +618,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_patch_deployment,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_patch_deployment,
             default_timeout=None,
             client_info=_client_info,
         )
@@ -763,12 +631,12 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
         # Done; return the response.
         return response
 
-    def list_patch_deployments(
+    async def list_patch_deployments(
         self,
         request: patch_deployments.ListPatchDeploymentsRequest = None,
         *,
@@ -776,7 +644,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListPatchDeploymentsPager:
+    ) -> pagers.ListPatchDeploymentsAsyncPager:
         r"""Get a page of OS Config patch deployments.
 
         Args:
@@ -797,7 +665,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListPatchDeploymentsPager:
+            ~.pagers.ListPatchDeploymentsAsyncPager:
                 A response message for listing patch
                 deployments.
                 Iterating over this object will yield
@@ -824,8 +692,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_patch_deployments,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_patch_deployments,
             default_timeout=None,
             client_info=_client_info,
         )
@@ -837,18 +705,18 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListPatchDeploymentsPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListPatchDeploymentsAsyncPager(
             method=rpc, request=request, response=response
         )
 
         # Done; return the response.
         return response
 
-    def delete_patch_deployment(
+    async def delete_patch_deployment(
         self,
         request: patch_deployments.DeletePatchDeploymentRequest = None,
         *,
@@ -895,8 +763,8 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.delete_patch_deployment,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_patch_deployment,
             default_timeout=None,
             client_info=_client_info,
         )
@@ -908,7 +776,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         )
 
         # Send the request.
-        rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
 
 try:
@@ -919,4 +787,4 @@ except pkg_resources.DistributionNotFound:
     _client_info = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("OsConfigServiceClient",)
+__all__ = ("OsConfigServiceAsyncClient",)

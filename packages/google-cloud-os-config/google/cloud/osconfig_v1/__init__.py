@@ -15,7 +15,6 @@
 # limitations under the License.
 #
 
-
 from .services.os_config_service import OsConfigServiceClient
 from .types.patch_deployments import CreatePatchDeploymentRequest
 from .types.patch_deployments import DeletePatchDeploymentRequest

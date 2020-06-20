@@ -15,25 +15,25 @@
 # limitations under the License.
 #
 
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import grpc_helpers  # type: ignore
-from google import auth  # type: ignore
+from google.api_core import grpc_helpers_async  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
-
 import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
 
 from google.cloud.osconfig_v1.types import patch_deployments
 from google.cloud.osconfig_v1.types import patch_jobs
 from google.protobuf import empty_pb2 as empty  # type: ignore
 
 from .base import OsConfigServiceTransport
+from .grpc import OsConfigServiceGrpcTransport
 
 
-class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
-    """gRPC backend transport for OsConfigService.
+class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
+    """gRPC AsyncIO backend transport for OsConfigService.
 
     OS Config API
     The OS Config service is a server-side component that you can
@@ -48,14 +48,44 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _stubs: Dict[str, Callable]
+    _grpc_channel: aio.Channel
+    _stubs: Dict[str, Callable] = {}
+
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "osconfig.googleapis.com",
+        credentials: credentials.Credentials = None,
+        scopes: Optional[Sequence[str]] = None,
+        **kwargs
+    ) -> aio.Channel:
+        """Create and return a gRPC AsyncIO channel object.
+        Args:
+            address (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            aio.Channel: A gRPC AsyncIO channel object.
+        """
+        scopes = scopes or cls.AUTH_SCOPES
+        return grpc_helpers_async.create_channel(
+            host, credentials=credentials, scopes=scopes, **kwargs
+        )
 
     def __init__(
         self,
         *,
         host: str = "osconfig.googleapis.com",
         credentials: credentials.Credentials = None,
-        channel: grpc.Channel = None,
+        channel: aio.Channel = None,
         api_mtls_endpoint: str = None,
         client_cert_source: Callable[[], Tuple[bytes, bytes]] = None
     ) -> None:
@@ -69,7 +99,7 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
                 This argument is ignored if ``channel`` is provided.
-            channel (Optional[grpc.Channel]): A ``Channel`` instance through
+            channel (Optional[aio.Channel]): A ``Channel`` instance through
                 which to make calls.
             api_mtls_endpoint (Optional[str]): The mutual TLS endpoint. If
                 provided, it overrides the ``host`` argument and tries to create
@@ -81,8 +111,8 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
                 is None.
 
         Raises:
-            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
-                creation failed for any reason.
+          google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+              creation failed for any reason.
         """
         if channel:
             # Sanity check: Ensure that channel and credentials are not both
@@ -97,9 +127,6 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
                 if ":" in api_mtls_endpoint
                 else api_mtls_endpoint + ":443"
             )
-
-            if credentials is None:
-                credentials, _ = auth.default(scopes=self.AUTH_SCOPES)
 
             # Create SSL credentials with client_cert_source or application
             # default SSL credentials.
@@ -121,39 +148,10 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
 
         # Run the base constructor.
         super().__init__(host=host, credentials=credentials)
-        self._stubs = {}  # type: Dict[str, Callable]
-
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "osconfig.googleapis.com",
-        credentials: credentials.Credentials = None,
-        scopes: Optional[Sequence[str]] = None,
-        **kwargs
-    ) -> grpc.Channel:
-        """Create and return a gRPC channel object.
-        Args:
-            address (Optionsl[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            grpc.Channel: A gRPC channel object.
-        """
-        scopes = scopes or cls.AUTH_SCOPES
-        return grpc_helpers.create_channel(
-            host, credentials=credentials, scopes=scopes, **kwargs
-        )
+        self._stubs = {}
 
     @property
-    def grpc_channel(self) -> grpc.Channel:
+    def grpc_channel(self) -> aio.Channel:
         """Create the channel designed to connect to this service.
 
         This property caches on the instance; repeated calls return
@@ -172,7 +170,7 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
     @property
     def execute_patch_job(
         self
-    ) -> Callable[[patch_jobs.ExecutePatchJobRequest], patch_jobs.PatchJob]:
+    ) -> Callable[[patch_jobs.ExecutePatchJobRequest], Awaitable[patch_jobs.PatchJob]]:
         r"""Return a callable for the execute patch job method over gRPC.
 
         Patch VM instances by creating and running a patch
@@ -180,7 +178,7 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
 
         Returns:
             Callable[[~.ExecutePatchJobRequest],
-                    ~.PatchJob]:
+                    Awaitable[~.PatchJob]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -199,7 +197,7 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
     @property
     def get_patch_job(
         self
-    ) -> Callable[[patch_jobs.GetPatchJobRequest], patch_jobs.PatchJob]:
+    ) -> Callable[[patch_jobs.GetPatchJobRequest], Awaitable[patch_jobs.PatchJob]]:
         r"""Return a callable for the get patch job method over gRPC.
 
         Get the patch job. This can be used to track the
@@ -208,7 +206,7 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
 
         Returns:
             Callable[[~.GetPatchJobRequest],
-                    ~.PatchJob]:
+                    Awaitable[~.PatchJob]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -227,7 +225,7 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
     @property
     def cancel_patch_job(
         self
-    ) -> Callable[[patch_jobs.CancelPatchJobRequest], patch_jobs.PatchJob]:
+    ) -> Callable[[patch_jobs.CancelPatchJobRequest], Awaitable[patch_jobs.PatchJob]]:
         r"""Return a callable for the cancel patch job method over gRPC.
 
         Cancel a patch job. The patch job must be active.
@@ -235,7 +233,7 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
 
         Returns:
             Callable[[~.CancelPatchJobRequest],
-                    ~.PatchJob]:
+                    Awaitable[~.PatchJob]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -254,14 +252,16 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
     @property
     def list_patch_jobs(
         self
-    ) -> Callable[[patch_jobs.ListPatchJobsRequest], patch_jobs.ListPatchJobsResponse]:
+    ) -> Callable[
+        [patch_jobs.ListPatchJobsRequest], Awaitable[patch_jobs.ListPatchJobsResponse]
+    ]:
         r"""Return a callable for the list patch jobs method over gRPC.
 
         Get a list of patch jobs.
 
         Returns:
             Callable[[~.ListPatchJobsRequest],
-                    ~.ListPatchJobsResponse]:
+                    Awaitable[~.ListPatchJobsResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -282,7 +282,7 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
         self
     ) -> Callable[
         [patch_jobs.ListPatchJobInstanceDetailsRequest],
-        patch_jobs.ListPatchJobInstanceDetailsResponse,
+        Awaitable[patch_jobs.ListPatchJobInstanceDetailsResponse],
     ]:
         r"""Return a callable for the list patch job instance
         details method over gRPC.
@@ -291,7 +291,7 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
 
         Returns:
             Callable[[~.ListPatchJobInstanceDetailsRequest],
-                    ~.ListPatchJobInstanceDetailsResponse]:
+                    Awaitable[~.ListPatchJobInstanceDetailsResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -314,7 +314,7 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
         self
     ) -> Callable[
         [patch_deployments.CreatePatchDeploymentRequest],
-        patch_deployments.PatchDeployment,
+        Awaitable[patch_deployments.PatchDeployment],
     ]:
         r"""Return a callable for the create patch deployment method over gRPC.
 
@@ -322,7 +322,7 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
 
         Returns:
             Callable[[~.CreatePatchDeploymentRequest],
-                    ~.PatchDeployment]:
+                    Awaitable[~.PatchDeployment]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -342,7 +342,8 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
     def get_patch_deployment(
         self
     ) -> Callable[
-        [patch_deployments.GetPatchDeploymentRequest], patch_deployments.PatchDeployment
+        [patch_deployments.GetPatchDeploymentRequest],
+        Awaitable[patch_deployments.PatchDeployment],
     ]:
         r"""Return a callable for the get patch deployment method over gRPC.
 
@@ -350,7 +351,7 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
 
         Returns:
             Callable[[~.GetPatchDeploymentRequest],
-                    ~.PatchDeployment]:
+                    Awaitable[~.PatchDeployment]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -371,7 +372,7 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
         self
     ) -> Callable[
         [patch_deployments.ListPatchDeploymentsRequest],
-        patch_deployments.ListPatchDeploymentsResponse,
+        Awaitable[patch_deployments.ListPatchDeploymentsResponse],
     ]:
         r"""Return a callable for the list patch deployments method over gRPC.
 
@@ -379,7 +380,7 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
 
         Returns:
             Callable[[~.ListPatchDeploymentsRequest],
-                    ~.ListPatchDeploymentsResponse]:
+                    Awaitable[~.ListPatchDeploymentsResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -398,14 +399,16 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
     @property
     def delete_patch_deployment(
         self
-    ) -> Callable[[patch_deployments.DeletePatchDeploymentRequest], empty.Empty]:
+    ) -> Callable[
+        [patch_deployments.DeletePatchDeploymentRequest], Awaitable[empty.Empty]
+    ]:
         r"""Return a callable for the delete patch deployment method over gRPC.
 
         Delete an OS Config patch deployment.
 
         Returns:
             Callable[[~.DeletePatchDeploymentRequest],
-                    ~.Empty]:
+                    Awaitable[~.Empty]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -422,4 +425,4 @@ class OsConfigServiceGrpcTransport(OsConfigServiceTransport):
         return self._stubs["delete_patch_deployment"]
 
 
-__all__ = ("OsConfigServiceGrpcTransport",)
+__all__ = ("OsConfigServiceGrpcAsyncIOTransport",)

@@ -26,7 +26,7 @@ from google.cloud.osconfig_v1.types import patch_jobs
 from google.protobuf import empty_pb2 as empty  # type: ignore
 
 
-class OsConfigServiceTransport(metaclass=abc.ABCMeta):
+class OsConfigServiceTransport(abc.ABC):
     """Abstract transport class for OsConfigService."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
@@ -36,6 +36,7 @@ class OsConfigServiceTransport(metaclass=abc.ABCMeta):
         *,
         host: str = "osconfig.googleapis.com",
         credentials: credentials.Credentials = None,
+        **kwargs,
     ) -> None:
         """Instantiate the transport.
 
@@ -63,69 +64,98 @@ class OsConfigServiceTransport(metaclass=abc.ABCMeta):
     @property
     def execute_patch_job(
         self
-    ) -> typing.Callable[[patch_jobs.ExecutePatchJobRequest], patch_jobs.PatchJob]:
-        raise NotImplementedError
+    ) -> typing.Callable[
+        [patch_jobs.ExecutePatchJobRequest],
+        typing.Union[patch_jobs.PatchJob, typing.Awaitable[patch_jobs.PatchJob]],
+    ]:
+        raise NotImplementedError()
 
     @property
     def get_patch_job(
         self
-    ) -> typing.Callable[[patch_jobs.GetPatchJobRequest], patch_jobs.PatchJob]:
-        raise NotImplementedError
+    ) -> typing.Callable[
+        [patch_jobs.GetPatchJobRequest],
+        typing.Union[patch_jobs.PatchJob, typing.Awaitable[patch_jobs.PatchJob]],
+    ]:
+        raise NotImplementedError()
 
     @property
     def cancel_patch_job(
         self
-    ) -> typing.Callable[[patch_jobs.CancelPatchJobRequest], patch_jobs.PatchJob]:
-        raise NotImplementedError
+    ) -> typing.Callable[
+        [patch_jobs.CancelPatchJobRequest],
+        typing.Union[patch_jobs.PatchJob, typing.Awaitable[patch_jobs.PatchJob]],
+    ]:
+        raise NotImplementedError()
 
     @property
     def list_patch_jobs(
         self
     ) -> typing.Callable[
-        [patch_jobs.ListPatchJobsRequest], patch_jobs.ListPatchJobsResponse
+        [patch_jobs.ListPatchJobsRequest],
+        typing.Union[
+            patch_jobs.ListPatchJobsResponse,
+            typing.Awaitable[patch_jobs.ListPatchJobsResponse],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def list_patch_job_instance_details(
         self
     ) -> typing.Callable[
         [patch_jobs.ListPatchJobInstanceDetailsRequest],
-        patch_jobs.ListPatchJobInstanceDetailsResponse,
+        typing.Union[
+            patch_jobs.ListPatchJobInstanceDetailsResponse,
+            typing.Awaitable[patch_jobs.ListPatchJobInstanceDetailsResponse],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def create_patch_deployment(
         self
     ) -> typing.Callable[
         [patch_deployments.CreatePatchDeploymentRequest],
-        patch_deployments.PatchDeployment,
+        typing.Union[
+            patch_deployments.PatchDeployment,
+            typing.Awaitable[patch_deployments.PatchDeployment],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def get_patch_deployment(
         self
     ) -> typing.Callable[
-        [patch_deployments.GetPatchDeploymentRequest], patch_deployments.PatchDeployment
+        [patch_deployments.GetPatchDeploymentRequest],
+        typing.Union[
+            patch_deployments.PatchDeployment,
+            typing.Awaitable[patch_deployments.PatchDeployment],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def list_patch_deployments(
         self
     ) -> typing.Callable[
         [patch_deployments.ListPatchDeploymentsRequest],
-        patch_deployments.ListPatchDeploymentsResponse,
+        typing.Union[
+            patch_deployments.ListPatchDeploymentsResponse,
+            typing.Awaitable[patch_deployments.ListPatchDeploymentsResponse],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def delete_patch_deployment(
         self
-    ) -> typing.Callable[[patch_deployments.DeletePatchDeploymentRequest], empty.Empty]:
-        raise NotImplementedError
+    ) -> typing.Callable[
+        [patch_deployments.DeletePatchDeploymentRequest],
+        typing.Union[empty.Empty, typing.Awaitable[empty.Empty]],
+    ]:
+        raise NotImplementedError()
 
 
 __all__ = ("OsConfigServiceTransport",)
