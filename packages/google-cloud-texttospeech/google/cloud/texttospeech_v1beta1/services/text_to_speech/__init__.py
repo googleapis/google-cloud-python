@@ -16,5 +16,6 @@
 #
 
 from .client import TextToSpeechClient
+from .async_client import TextToSpeechAsyncClient
 
-__all__ = ("TextToSpeechClient",)
+__all__ = ("TextToSpeechClient", "TextToSpeechAsyncClient")

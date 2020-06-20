@@ -24,7 +24,7 @@ from google.auth import credentials  # type: ignore
 from google.cloud.texttospeech_v1.types import cloud_tts
 
 
-class TextToSpeechTransport(metaclass=abc.ABCMeta):
+class TextToSpeechTransport(abc.ABC):
     """Abstract transport class for TextToSpeech."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
@@ -34,6 +34,7 @@ class TextToSpeechTransport(metaclass=abc.ABCMeta):
         *,
         host: str = "texttospeech.googleapis.com",
         credentials: credentials.Credentials = None,
+        **kwargs,
     ) -> None:
         """Instantiate the transport.
 
@@ -61,16 +62,25 @@ class TextToSpeechTransport(metaclass=abc.ABCMeta):
     @property
     def list_voices(
         self
-    ) -> typing.Callable[[cloud_tts.ListVoicesRequest], cloud_tts.ListVoicesResponse]:
-        raise NotImplementedError
+    ) -> typing.Callable[
+        [cloud_tts.ListVoicesRequest],
+        typing.Union[
+            cloud_tts.ListVoicesResponse, typing.Awaitable[cloud_tts.ListVoicesResponse]
+        ],
+    ]:
+        raise NotImplementedError()
 
     @property
     def synthesize_speech(
         self
     ) -> typing.Callable[
-        [cloud_tts.SynthesizeSpeechRequest], cloud_tts.SynthesizeSpeechResponse
+        [cloud_tts.SynthesizeSpeechRequest],
+        typing.Union[
+            cloud_tts.SynthesizeSpeechResponse,
+            typing.Awaitable[cloud_tts.SynthesizeSpeechResponse],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
 
 __all__ = ("TextToSpeechTransport",)

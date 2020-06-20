@@ -15,7 +15,9 @@
 # limitations under the License.
 #
 
-
+from google.cloud.texttospeech_v1.services.text_to_speech.async_client import (
+    TextToSpeechAsyncClient,
+)
 from google.cloud.texttospeech_v1.services.text_to_speech.client import (
     TextToSpeechClient,
 )
@@ -39,6 +41,7 @@ __all__ = (
     "SynthesisInput",
     "SynthesizeSpeechRequest",
     "SynthesizeSpeechResponse",
+    "TextToSpeechAsyncClient",
     "TextToSpeechClient",
     "Voice",
     "VoiceSelectionParams",

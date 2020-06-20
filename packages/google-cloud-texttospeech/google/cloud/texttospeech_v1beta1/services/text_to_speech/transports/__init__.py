@@ -20,11 +20,17 @@ from typing import Dict, Type
 
 from .base import TextToSpeechTransport
 from .grpc import TextToSpeechGrpcTransport
+from .grpc_asyncio import TextToSpeechGrpcAsyncIOTransport
 
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[TextToSpeechTransport]]
 _transport_registry["grpc"] = TextToSpeechGrpcTransport
+_transport_registry["grpc_asyncio"] = TextToSpeechGrpcAsyncIOTransport
 
 
-__all__ = ("TextToSpeechTransport", "TextToSpeechGrpcTransport")
+__all__ = (
+    "TextToSpeechTransport",
+    "TextToSpeechGrpcTransport",
+    "TextToSpeechGrpcAsyncIOTransport",
+)

@@ -15,7 +15,6 @@
 # limitations under the License.
 #
 
-
 from .services.text_to_speech import TextToSpeechClient
 from .types.cloud_tts import AudioConfig
 from .types.cloud_tts import AudioEncoding

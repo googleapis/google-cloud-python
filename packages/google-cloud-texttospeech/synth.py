@@ -32,7 +32,7 @@ for version in versions:
 
 # Sphinx interprets `*` as emphasis
 s.replace(
-    ["google/cloud/**/client.py", "google/cloud/**/cloud_tts.py"],
+    ["google/cloud/**/*_client.py", "google/cloud/**/cloud_tts.py"],
     "((en)|(no)|(nb)(cmn)|(yue))-\*",
     "\g<1>-\*",
 )
@@ -41,8 +41,8 @@ s.replace(
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-    cov_level=100,
     samples=True,
+    microgenerator=True,
     unit_test_python_versions=["3.6", "3.7", "3.8"],
     system_test_python_versions=["3.7"],
 )
@@ -52,9 +52,5 @@ s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .
 # Samples templates
 # ----------------------------------------------------------------------------
 python.py_samples(skip_readmes=True)
-
-# Extra lint ignores for microgenerator tests
-# TODO: Remove when https://github.com/googleapis/gapic-generator-python/issues/425 is closed
-s.replace(".flake8", "(ignore = .*)", "\g<1>, F401, F841")
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

@@ -15,9 +15,10 @@
 # limitations under the License.
 #
 
-from typing import Callable, Dict, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple
 
 from google.api_core import grpc_helpers  # type: ignore
+from google import auth  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
@@ -41,6 +42,8 @@ class TextToSpeechGrpcTransport(TextToSpeechTransport):
     It sends protocol buffers over the wire using gRPC (which is built on
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
+
+    _stubs: Dict[str, Callable]
 
     def __init__(
         self,
@@ -73,8 +76,8 @@ class TextToSpeechGrpcTransport(TextToSpeechTransport):
                 is None.
 
         Raises:
-          google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
-              creation failed for any reason.
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+                creation failed for any reason.
         """
         if channel:
             # Sanity check: Ensure that channel and credentials are not both
@@ -90,6 +93,9 @@ class TextToSpeechGrpcTransport(TextToSpeechTransport):
                 else api_mtls_endpoint + ":443"
             )
 
+            if credentials is None:
+                credentials, _ = auth.default(scopes=self.AUTH_SCOPES)
+
             # Create SSL credentials with client_cert_source or application
             # default SSL credentials.
             if client_cert_source:
@@ -101,7 +107,7 @@ class TextToSpeechGrpcTransport(TextToSpeechTransport):
                 ssl_credentials = SslCredentials().ssl_credentials
 
             # create a new channel. The provided one is ignored.
-            self._grpc_channel = grpc_helpers.create_channel(
+            self._grpc_channel = type(self).create_channel(
                 host,
                 credentials=credentials,
                 ssl_credentials=ssl_credentials,
@@ -117,6 +123,7 @@ class TextToSpeechGrpcTransport(TextToSpeechTransport):
         cls,
         host: str = "texttospeech.googleapis.com",
         credentials: credentials.Credentials = None,
+        scopes: Optional[Sequence[str]] = None,
         **kwargs
     ) -> grpc.Channel:
         """Create and return a gRPC channel object.
@@ -127,13 +134,17 @@ class TextToSpeechGrpcTransport(TextToSpeechTransport):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
             kwargs (Optional[dict]): Keyword arguments, which are passed to the
                 channel creation.
         Returns:
             grpc.Channel: A gRPC channel object.
         """
+        scopes = scopes or cls.AUTH_SCOPES
         return grpc_helpers.create_channel(
-            host, credentials=credentials, scopes=cls.AUTH_SCOPES, **kwargs
+            host, credentials=credentials, scopes=scopes, **kwargs
         )
 
     @property
