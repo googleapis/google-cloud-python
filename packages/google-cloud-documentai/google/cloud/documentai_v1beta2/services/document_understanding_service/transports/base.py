@@ -27,7 +27,7 @@ from google.cloud.documentai_v1beta2.types import document_understanding
 from google.longrunning import operations_pb2 as operations  # type: ignore
 
 
-class DocumentUnderstandingServiceTransport(metaclass=abc.ABCMeta):
+class DocumentUnderstandingServiceTransport(abc.ABC):
     """Abstract transport class for DocumentUnderstandingService."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
@@ -37,6 +37,7 @@ class DocumentUnderstandingServiceTransport(metaclass=abc.ABCMeta):
         *,
         host: str = "us-documentai.googleapis.com",
         credentials: credentials.Credentials = None,
+        **kwargs,
     ) -> None:
         """Instantiate the transport.
 
@@ -64,23 +65,25 @@ class DocumentUnderstandingServiceTransport(metaclass=abc.ABCMeta):
     @property
     def operations_client(self) -> operations_v1.OperationsClient:
         """Return the client designed to process long-running operations."""
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def batch_process_documents(
         self
     ) -> typing.Callable[
-        [document_understanding.BatchProcessDocumentsRequest], operations.Operation
+        [document_understanding.BatchProcessDocumentsRequest],
+        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def process_document(
         self
     ) -> typing.Callable[
-        [document_understanding.ProcessDocumentRequest], document.Document
+        [document_understanding.ProcessDocumentRequest],
+        typing.Union[document.Document, typing.Awaitable[document.Document]],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
 
 __all__ = ("DocumentUnderstandingServiceTransport",)

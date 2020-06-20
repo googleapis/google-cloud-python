@@ -15,26 +15,28 @@
 # limitations under the License.
 #
 
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import grpc_helpers  # type: ignore
+from google.api_core import grpc_helpers_async  # type: ignore
 from google.api_core import operations_v1  # type: ignore
-from google import auth  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
-
 import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
 
 from google.cloud.documentai_v1beta2.types import document
 from google.cloud.documentai_v1beta2.types import document_understanding
 from google.longrunning import operations_pb2 as operations  # type: ignore
 
 from .base import DocumentUnderstandingServiceTransport
+from .grpc import DocumentUnderstandingServiceGrpcTransport
 
 
-class DocumentUnderstandingServiceGrpcTransport(DocumentUnderstandingServiceTransport):
-    """gRPC backend transport for DocumentUnderstandingService.
+class DocumentUnderstandingServiceGrpcAsyncIOTransport(
+    DocumentUnderstandingServiceTransport
+):
+    """gRPC AsyncIO backend transport for DocumentUnderstandingService.
 
     Service to parse structured information from unstructured or
     semi-structured documents using state-of-the-art Google AI such
@@ -48,14 +50,44 @@ class DocumentUnderstandingServiceGrpcTransport(DocumentUnderstandingServiceTran
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _stubs: Dict[str, Callable]
+    _grpc_channel: aio.Channel
+    _stubs: Dict[str, Callable] = {}
+
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "us-documentai.googleapis.com",
+        credentials: credentials.Credentials = None,
+        scopes: Optional[Sequence[str]] = None,
+        **kwargs
+    ) -> aio.Channel:
+        """Create and return a gRPC AsyncIO channel object.
+        Args:
+            address (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            aio.Channel: A gRPC AsyncIO channel object.
+        """
+        scopes = scopes or cls.AUTH_SCOPES
+        return grpc_helpers_async.create_channel(
+            host, credentials=credentials, scopes=scopes, **kwargs
+        )
 
     def __init__(
         self,
         *,
         host: str = "us-documentai.googleapis.com",
         credentials: credentials.Credentials = None,
-        channel: grpc.Channel = None,
+        channel: aio.Channel = None,
         api_mtls_endpoint: str = None,
         client_cert_source: Callable[[], Tuple[bytes, bytes]] = None
     ) -> None:
@@ -69,7 +101,7 @@ class DocumentUnderstandingServiceGrpcTransport(DocumentUnderstandingServiceTran
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
                 This argument is ignored if ``channel`` is provided.
-            channel (Optional[grpc.Channel]): A ``Channel`` instance through
+            channel (Optional[aio.Channel]): A ``Channel`` instance through
                 which to make calls.
             api_mtls_endpoint (Optional[str]): The mutual TLS endpoint. If
                 provided, it overrides the ``host`` argument and tries to create
@@ -81,8 +113,8 @@ class DocumentUnderstandingServiceGrpcTransport(DocumentUnderstandingServiceTran
                 is None.
 
         Raises:
-            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
-                creation failed for any reason.
+          google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+              creation failed for any reason.
         """
         if channel:
             # Sanity check: Ensure that channel and credentials are not both
@@ -97,9 +129,6 @@ class DocumentUnderstandingServiceGrpcTransport(DocumentUnderstandingServiceTran
                 if ":" in api_mtls_endpoint
                 else api_mtls_endpoint + ":443"
             )
-
-            if credentials is None:
-                credentials, _ = auth.default(scopes=self.AUTH_SCOPES)
 
             # Create SSL credentials with client_cert_source or application
             # default SSL credentials.
@@ -121,39 +150,10 @@ class DocumentUnderstandingServiceGrpcTransport(DocumentUnderstandingServiceTran
 
         # Run the base constructor.
         super().__init__(host=host, credentials=credentials)
-        self._stubs = {}  # type: Dict[str, Callable]
-
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "us-documentai.googleapis.com",
-        credentials: credentials.Credentials = None,
-        scopes: Optional[Sequence[str]] = None,
-        **kwargs
-    ) -> grpc.Channel:
-        """Create and return a gRPC channel object.
-        Args:
-            address (Optionsl[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            grpc.Channel: A gRPC channel object.
-        """
-        scopes = scopes or cls.AUTH_SCOPES
-        return grpc_helpers.create_channel(
-            host, credentials=credentials, scopes=scopes, **kwargs
-        )
+        self._stubs = {}
 
     @property
-    def grpc_channel(self) -> grpc.Channel:
+    def grpc_channel(self) -> aio.Channel:
         """Create the channel designed to connect to this service.
 
         This property caches on the instance; repeated calls return
@@ -170,7 +170,7 @@ class DocumentUnderstandingServiceGrpcTransport(DocumentUnderstandingServiceTran
         return self._grpc_channel
 
     @property
-    def operations_client(self) -> operations_v1.OperationsClient:
+    def operations_client(self) -> operations_v1.OperationsAsyncClient:
         """Create the client designed to process long-running operations.
 
         This property caches on the instance; repeated calls return the same
@@ -178,7 +178,7 @@ class DocumentUnderstandingServiceGrpcTransport(DocumentUnderstandingServiceTran
         """
         # Sanity check: Only create a new client if we do not already have one.
         if "operations_client" not in self.__dict__:
-            self.__dict__["operations_client"] = operations_v1.OperationsClient(
+            self.__dict__["operations_client"] = operations_v1.OperationsAsyncClient(
                 self.grpc_channel
             )
 
@@ -189,7 +189,8 @@ class DocumentUnderstandingServiceGrpcTransport(DocumentUnderstandingServiceTran
     def batch_process_documents(
         self
     ) -> Callable[
-        [document_understanding.BatchProcessDocumentsRequest], operations.Operation
+        [document_understanding.BatchProcessDocumentsRequest],
+        Awaitable[operations.Operation],
     ]:
         r"""Return a callable for the batch process documents method over gRPC.
 
@@ -198,7 +199,7 @@ class DocumentUnderstandingServiceGrpcTransport(DocumentUnderstandingServiceTran
 
         Returns:
             Callable[[~.BatchProcessDocumentsRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -217,14 +218,16 @@ class DocumentUnderstandingServiceGrpcTransport(DocumentUnderstandingServiceTran
     @property
     def process_document(
         self
-    ) -> Callable[[document_understanding.ProcessDocumentRequest], document.Document]:
+    ) -> Callable[
+        [document_understanding.ProcessDocumentRequest], Awaitable[document.Document]
+    ]:
         r"""Return a callable for the process document method over gRPC.
 
         Processes a single document.
 
         Returns:
             Callable[[~.ProcessDocumentRequest],
-                    ~.Document]:
+                    Awaitable[~.Document]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -241,4 +244,4 @@ class DocumentUnderstandingServiceGrpcTransport(DocumentUnderstandingServiceTran
         return self._stubs["process_document"]
 
 
-__all__ = ("DocumentUnderstandingServiceGrpcTransport",)
+__all__ = ("DocumentUnderstandingServiceGrpcAsyncIOTransport",)

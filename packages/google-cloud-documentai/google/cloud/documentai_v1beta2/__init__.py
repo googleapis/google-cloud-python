@@ -15,7 +15,6 @@
 # limitations under the License.
 #
 
-
 from .services.document_understanding_service import DocumentUnderstandingServiceClient
 from .types.document import Document
 from .types.document_understanding import AutoMlParams

@@ -15,7 +15,9 @@
 # limitations under the License.
 #
 
-
+from google.cloud.documentai_v1beta2.services.document_understanding_service.async_client import (
+    DocumentUnderstandingServiceAsyncClient,
+)
 from google.cloud.documentai_v1beta2.services.document_understanding_service.client import (
     DocumentUnderstandingServiceClient,
 )
@@ -64,6 +66,7 @@ __all__ = (
     "BatchProcessDocumentsResponse",
     "BoundingPoly",
     "Document",
+    "DocumentUnderstandingServiceAsyncClient",
     "DocumentUnderstandingServiceClient",
     "EntityExtractionParams",
     "FormExtractionParams",
