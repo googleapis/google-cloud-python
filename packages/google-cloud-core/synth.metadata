@@ -4,14 +4,14 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-cloud-core.git",
-        "sha": "b9c1524ac5a9b1a4e58e73b5f524c072b640c2c9"
+        "sha": "2f13d19babd66fea6185684a456573fdf8c1b784"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "e99975b6b49827b8720f0a885e218dbdb67849ca"
+        "sha": "cd522c3b4dde821766d95c80ae5aeb43d7a41170"
       }
     }
   ]
