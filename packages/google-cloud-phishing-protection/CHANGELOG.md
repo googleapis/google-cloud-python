@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
 
+## [0.4.0](https://www.github.com/googleapis/python-phishingprotection/compare/v0.3.0...v0.4.0) (2020-06-23)
+
+
+### Features
+
+* release as beta ([#22](https://www.github.com/googleapis/python-phishingprotection/issues/22)) ([5111f42](https://www.github.com/googleapis/python-phishingprotection/commit/5111f425eef6135a4eb4b958d0ed1c6865e6e9d7))
+
 ## [0.3.0](https://www.github.com/googleapis/python-phishingprotection/compare/v0.2.0...v0.3.0) (2020-02-05)
 
 
