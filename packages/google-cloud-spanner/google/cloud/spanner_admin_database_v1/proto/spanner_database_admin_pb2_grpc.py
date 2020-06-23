@@ -2,10 +2,10 @@
 import grpc
 
 from google.cloud.spanner_admin_database_v1.proto import (
-    backup_pb2 as google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2,
+    backup_pb2 as google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2,
 )
 from google.cloud.spanner_admin_database_v1.proto import (
-    spanner_database_admin_pb2 as google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2,
+    spanner_database_admin_pb2 as google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2,
 )
 from google.iam.v1 import iam_policy_pb2 as google_dot_iam_dot_v1_dot_iam__policy__pb2
 from google.iam.v1 import policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
@@ -32,33 +32,33 @@ class DatabaseAdminStub(object):
     """
         self.ListDatabases = channel.unary_unary(
             "/google.spanner.admin.database.v1.DatabaseAdmin/ListDatabases",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabasesRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabasesResponse.FromString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabasesRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabasesResponse.FromString,
         )
         self.CreateDatabase = channel.unary_unary(
             "/google.spanner.admin.database.v1.DatabaseAdmin/CreateDatabase",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.CreateDatabaseRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.CreateDatabaseRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
         self.GetDatabase = channel.unary_unary(
             "/google.spanner.admin.database.v1.DatabaseAdmin/GetDatabase",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.GetDatabaseRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.Database.FromString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.GetDatabaseRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.Database.FromString,
         )
         self.UpdateDatabaseDdl = channel.unary_unary(
             "/google.spanner.admin.database.v1.DatabaseAdmin/UpdateDatabaseDdl",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.UpdateDatabaseDdlRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.UpdateDatabaseDdlRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
         self.DropDatabase = channel.unary_unary(
             "/google.spanner.admin.database.v1.DatabaseAdmin/DropDatabase",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.DropDatabaseRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.DropDatabaseRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
         self.GetDatabaseDdl = channel.unary_unary(
             "/google.spanner.admin.database.v1.DatabaseAdmin/GetDatabaseDdl",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.GetDatabaseDdlRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.GetDatabaseDdlResponse.FromString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.GetDatabaseDdlRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.GetDatabaseDdlResponse.FromString,
         )
         self.SetIamPolicy = channel.unary_unary(
             "/google.spanner.admin.database.v1.DatabaseAdmin/SetIamPolicy",
@@ -77,43 +77,43 @@ class DatabaseAdminStub(object):
         )
         self.CreateBackup = channel.unary_unary(
             "/google.spanner.admin.database.v1.DatabaseAdmin/CreateBackup",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.CreateBackupRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.CreateBackupRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
         self.GetBackup = channel.unary_unary(
             "/google.spanner.admin.database.v1.DatabaseAdmin/GetBackup",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.GetBackupRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.Backup.FromString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.GetBackupRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.Backup.FromString,
         )
         self.UpdateBackup = channel.unary_unary(
             "/google.spanner.admin.database.v1.DatabaseAdmin/UpdateBackup",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.UpdateBackupRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.Backup.FromString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.UpdateBackupRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.Backup.FromString,
         )
         self.DeleteBackup = channel.unary_unary(
             "/google.spanner.admin.database.v1.DatabaseAdmin/DeleteBackup",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.DeleteBackupRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.DeleteBackupRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
         self.ListBackups = channel.unary_unary(
             "/google.spanner.admin.database.v1.DatabaseAdmin/ListBackups",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.ListBackupsRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.ListBackupsResponse.FromString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.ListBackupsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.ListBackupsResponse.FromString,
         )
         self.RestoreDatabase = channel.unary_unary(
             "/google.spanner.admin.database.v1.DatabaseAdmin/RestoreDatabase",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.RestoreDatabaseRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.RestoreDatabaseRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
         self.ListDatabaseOperations = channel.unary_unary(
             "/google.spanner.admin.database.v1.DatabaseAdmin/ListDatabaseOperations",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabaseOperationsRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabaseOperationsResponse.FromString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabaseOperationsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabaseOperationsResponse.FromString,
         )
         self.ListBackupOperations = channel.unary_unary(
             "/google.spanner.admin.database.v1.DatabaseAdmin/ListBackupOperations",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.ListBackupOperationsRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.ListBackupOperationsResponse.FromString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.ListBackupOperationsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.ListBackupOperationsResponse.FromString,
         )
 
 
@@ -334,33 +334,33 @@ def add_DatabaseAdminServicer_to_server(servicer, server):
     rpc_method_handlers = {
         "ListDatabases": grpc.unary_unary_rpc_method_handler(
             servicer.ListDatabases,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabasesRequest.FromString,
-            response_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabasesResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabasesRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabasesResponse.SerializeToString,
         ),
         "CreateDatabase": grpc.unary_unary_rpc_method_handler(
             servicer.CreateDatabase,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.CreateDatabaseRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.CreateDatabaseRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
         "GetDatabase": grpc.unary_unary_rpc_method_handler(
             servicer.GetDatabase,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.GetDatabaseRequest.FromString,
-            response_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.Database.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.GetDatabaseRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.Database.SerializeToString,
         ),
         "UpdateDatabaseDdl": grpc.unary_unary_rpc_method_handler(
             servicer.UpdateDatabaseDdl,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.UpdateDatabaseDdlRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.UpdateDatabaseDdlRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
         "DropDatabase": grpc.unary_unary_rpc_method_handler(
             servicer.DropDatabase,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.DropDatabaseRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.DropDatabaseRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         "GetDatabaseDdl": grpc.unary_unary_rpc_method_handler(
             servicer.GetDatabaseDdl,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.GetDatabaseDdlRequest.FromString,
-            response_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.GetDatabaseDdlResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.GetDatabaseDdlRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.GetDatabaseDdlResponse.SerializeToString,
         ),
         "SetIamPolicy": grpc.unary_unary_rpc_method_handler(
             servicer.SetIamPolicy,
@@ -379,43 +379,43 @@ def add_DatabaseAdminServicer_to_server(servicer, server):
         ),
         "CreateBackup": grpc.unary_unary_rpc_method_handler(
             servicer.CreateBackup,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.CreateBackupRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.CreateBackupRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
         "GetBackup": grpc.unary_unary_rpc_method_handler(
             servicer.GetBackup,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.GetBackupRequest.FromString,
-            response_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.Backup.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.GetBackupRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.Backup.SerializeToString,
         ),
         "UpdateBackup": grpc.unary_unary_rpc_method_handler(
             servicer.UpdateBackup,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.UpdateBackupRequest.FromString,
-            response_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.Backup.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.UpdateBackupRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.Backup.SerializeToString,
         ),
         "DeleteBackup": grpc.unary_unary_rpc_method_handler(
             servicer.DeleteBackup,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.DeleteBackupRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.DeleteBackupRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         "ListBackups": grpc.unary_unary_rpc_method_handler(
             servicer.ListBackups,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.ListBackupsRequest.FromString,
-            response_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.ListBackupsResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.ListBackupsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.ListBackupsResponse.SerializeToString,
         ),
         "RestoreDatabase": grpc.unary_unary_rpc_method_handler(
             servicer.RestoreDatabase,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.RestoreDatabaseRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.RestoreDatabaseRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
         "ListDatabaseOperations": grpc.unary_unary_rpc_method_handler(
             servicer.ListDatabaseOperations,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabaseOperationsRequest.FromString,
-            response_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabaseOperationsResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabaseOperationsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_spanner__database__admin__pb2.ListDatabaseOperationsResponse.SerializeToString,
         ),
         "ListBackupOperations": grpc.unary_unary_rpc_method_handler(
             servicer.ListBackupOperations,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.ListBackupOperationsRequest.FromString,
-            response_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_database__v1_dot_proto_dot_backup__pb2.ListBackupOperationsResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.ListBackupOperationsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner__admin__database__v1_dot_proto_dot_backup__pb2.ListBackupOperationsResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

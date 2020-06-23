@@ -21,3 +21,6 @@ recursive-include google *.json *.proto
 recursive-include tests *
 global-exclude *.py[co]
 global-exclude __pycache__
+
+# Exclude scripts for samples readmegen
+prune scripts/readme-gen

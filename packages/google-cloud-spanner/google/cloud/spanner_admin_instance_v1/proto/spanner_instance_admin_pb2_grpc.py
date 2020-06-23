@@ -2,7 +2,7 @@
 import grpc
 
 from google.cloud.spanner_admin_instance_v1.proto import (
-    spanner_instance_admin_pb2 as google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2,
+    spanner_instance_admin_pb2 as google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2,
 )
 from google.iam.v1 import iam_policy_pb2 as google_dot_iam_dot_v1_dot_iam__policy__pb2
 from google.iam.v1 import policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
@@ -44,37 +44,37 @@ class InstanceAdminStub(object):
     """
         self.ListInstanceConfigs = channel.unary_unary(
             "/google.spanner.admin.instance.v1.InstanceAdmin/ListInstanceConfigs",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.ListInstanceConfigsRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.ListInstanceConfigsResponse.FromString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.ListInstanceConfigsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.ListInstanceConfigsResponse.FromString,
         )
         self.GetInstanceConfig = channel.unary_unary(
             "/google.spanner.admin.instance.v1.InstanceAdmin/GetInstanceConfig",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.GetInstanceConfigRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.InstanceConfig.FromString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.GetInstanceConfigRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.InstanceConfig.FromString,
         )
         self.ListInstances = channel.unary_unary(
             "/google.spanner.admin.instance.v1.InstanceAdmin/ListInstances",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.ListInstancesRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.ListInstancesResponse.FromString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.ListInstancesRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.ListInstancesResponse.FromString,
         )
         self.GetInstance = channel.unary_unary(
             "/google.spanner.admin.instance.v1.InstanceAdmin/GetInstance",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.GetInstanceRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.Instance.FromString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.GetInstanceRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.Instance.FromString,
         )
         self.CreateInstance = channel.unary_unary(
             "/google.spanner.admin.instance.v1.InstanceAdmin/CreateInstance",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.CreateInstanceRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.CreateInstanceRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
         self.UpdateInstance = channel.unary_unary(
             "/google.spanner.admin.instance.v1.InstanceAdmin/UpdateInstance",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.UpdateInstanceRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.UpdateInstanceRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
         self.DeleteInstance = channel.unary_unary(
             "/google.spanner.admin.instance.v1.InstanceAdmin/DeleteInstance",
-            request_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.DeleteInstanceRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.DeleteInstanceRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
         self.SetIamPolicy = channel.unary_unary(
@@ -288,37 +288,37 @@ def add_InstanceAdminServicer_to_server(servicer, server):
     rpc_method_handlers = {
         "ListInstanceConfigs": grpc.unary_unary_rpc_method_handler(
             servicer.ListInstanceConfigs,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.ListInstanceConfigsRequest.FromString,
-            response_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.ListInstanceConfigsResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.ListInstanceConfigsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.ListInstanceConfigsResponse.SerializeToString,
         ),
         "GetInstanceConfig": grpc.unary_unary_rpc_method_handler(
             servicer.GetInstanceConfig,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.GetInstanceConfigRequest.FromString,
-            response_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.InstanceConfig.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.GetInstanceConfigRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.InstanceConfig.SerializeToString,
         ),
         "ListInstances": grpc.unary_unary_rpc_method_handler(
             servicer.ListInstances,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.ListInstancesRequest.FromString,
-            response_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.ListInstancesResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.ListInstancesRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.ListInstancesResponse.SerializeToString,
         ),
         "GetInstance": grpc.unary_unary_rpc_method_handler(
             servicer.GetInstance,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.GetInstanceRequest.FromString,
-            response_serializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.Instance.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.GetInstanceRequest.FromString,
+            response_serializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.Instance.SerializeToString,
         ),
         "CreateInstance": grpc.unary_unary_rpc_method_handler(
             servicer.CreateInstance,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.CreateInstanceRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.CreateInstanceRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
         "UpdateInstance": grpc.unary_unary_rpc_method_handler(
             servicer.UpdateInstance,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.UpdateInstanceRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.UpdateInstanceRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
         "DeleteInstance": grpc.unary_unary_rpc_method_handler(
             servicer.DeleteInstance,
-            request_deserializer=google_dot_cloud_dot_spanner_dot_admin_dot_instance__v1_dot_proto_dot_spanner__instance__admin__pb2.DeleteInstanceRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_spanner__admin__instance__v1_dot_proto_dot_spanner__instance__admin__pb2.DeleteInstanceRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         "SetIamPolicy": grpc.unary_unary_rpc_method_handler(

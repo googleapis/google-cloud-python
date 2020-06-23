@@ -18,37 +18,37 @@ config = {
             },
             "methods": {
                 "ListInstanceConfigs": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 3600000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "GetInstanceConfig": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 3600000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "ListInstances": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 3600000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "GetInstance": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 3600000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "CreateInstance": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 3600000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "UpdateInstance": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 3600000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "DeleteInstance": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 3600000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },

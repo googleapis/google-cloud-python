@@ -17,13 +17,18 @@ config = {
                 }
             },
             "methods": {
+                "ListDatabases": {
+                    "timeout_millis": 3600000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
                 "CreateDatabase": {
                     "timeout_millis": 3600000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "GetDatabase": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 3600000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
@@ -38,7 +43,7 @@ config = {
                     "retry_params_name": "default",
                 },
                 "GetDatabaseDdl": {
-                    "timeout_millis": 30000,
+                    "timeout_millis": 3600000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
@@ -63,12 +68,12 @@ config = {
                     "retry_params_name": "default",
                 },
                 "GetBackup": {
-                    "timeout_millis": 600000,
+                    "timeout_millis": 3600000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "UpdateBackup": {
-                    "timeout_millis": 600000,
+                    "timeout_millis": 3600000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
@@ -78,7 +83,7 @@ config = {
                     "retry_params_name": "default",
                 },
                 "ListBackups": {
-                    "timeout_millis": 600000,
+                    "timeout_millis": 3600000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
@@ -88,17 +93,12 @@ config = {
                     "retry_params_name": "default",
                 },
                 "ListDatabaseOperations": {
-                    "timeout_millis": 600000,
+                    "timeout_millis": 3600000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
                 "ListBackupOperations": {
-                    "timeout_millis": 600000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
-                },
-                "ListDatabases": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 3600000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },

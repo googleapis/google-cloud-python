@@ -121,6 +121,19 @@ class DatabaseAdminGrpcTransport(object):
         return self._channel
 
     @property
+    def list_databases(self):
+        """Return the gRPC stub for :meth:`DatabaseAdminClient.list_databases`.
+
+        Lists Cloud Spanner databases.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["database_admin_stub"].ListDatabases
+
+    @property
     def create_database(self):
         """Return the gRPC stub for :meth:`DatabaseAdminClient.create_database`.
 
@@ -395,16 +408,3 @@ class DatabaseAdminGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["database_admin_stub"].ListBackupOperations
-
-    @property
-    def list_databases(self):
-        """Return the gRPC stub for :meth:`DatabaseAdminClient.list_databases`.
-
-        Lists Cloud Spanner databases.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["database_admin_stub"].ListDatabases
