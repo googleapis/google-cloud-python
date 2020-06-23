@@ -25,6 +25,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.asset.v1p1beta1",
     syntax="proto3",
     serialized_options=b"\n com.google.cloud.asset.v1p1beta1B\021AssetServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/asset/v1p1beta1;asset\252\002\034Google.Cloud.Asset.V1P1Beta1\312\002\034Google\\Cloud\\Asset\\V1p1beta1",
+    create_key=_descriptor._internal_create_key,
     serialized_pb=b'\n6google/cloud/asset_v1p1beta1/proto/asset_service.proto\x12\x1cgoogle.cloud.asset.v1p1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a/google/cloud/asset_v1p1beta1/proto/assets.proto"\xa5\x01\n\x19SearchAllResourcesRequest\x12\x12\n\x05scope\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x12\n\x05query\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x18\n\x0b\x61sset_types\x18\x03 \x03(\tB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x04 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x05 \x01(\tB\x03\xe0\x41\x01\x12\x15\n\x08order_by\x18\n \x01(\tB\x03\xe0\x41\x01"~\n\x1aSearchAllResourcesResponse\x12G\n\x07results\x18\x01 \x03(\x0b\x32\x36.google.cloud.asset.v1p1beta1.StandardResourceMetadata\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"v\n\x1bSearchAllIamPoliciesRequest\x12\x12\n\x05scope\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x12\n\x05query\x18\x02 \x01(\tB\x03\xe0\x41\x01\x12\x16\n\tpage_size\x18\x03 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x04 \x01(\tB\x03\xe0\x41\x01"}\n\x1cSearchAllIamPoliciesResponse\x12\x44\n\x07results\x18\x01 \x03(\x0b\x32\x33.google.cloud.asset.v1p1beta1.IamPolicySearchResult\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t2\x89\x04\n\x0c\x41ssetService\x12\xd5\x01\n\x12SearchAllResources\x12\x37.google.cloud.asset.v1p1beta1.SearchAllResourcesRequest\x1a\x38.google.cloud.asset.v1p1beta1.SearchAllResourcesResponse"L\x82\xd3\xe4\x93\x02,\x12*/v1p1beta1/{scope=*/*}/resources:searchAll\xda\x41\x17scope,query,asset_types\x12\xd1\x01\n\x14SearchAllIamPolicies\x12\x39.google.cloud.asset.v1p1beta1.SearchAllIamPoliciesRequest\x1a:.google.cloud.asset.v1p1beta1.SearchAllIamPoliciesResponse"B\x82\xd3\xe4\x93\x02.\x12,/v1p1beta1/{scope=*/*}/iamPolicies:searchAll\xda\x41\x0bscope,query\x1aM\xca\x41\x19\x63loudasset.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xb8\x01\n com.google.cloud.asset.v1p1beta1B\x11\x41ssetServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/asset/v1p1beta1;asset\xaa\x02\x1cGoogle.Cloud.Asset.V1P1Beta1\xca\x02\x1cGoogle\\Cloud\\Asset\\V1p1beta1b\x06proto3',
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -41,6 +42,7 @@ _SEARCHALLRESOURCESREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="scope",
@@ -59,6 +61,7 @@ _SEARCHALLRESOURCESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="query",
@@ -77,6 +80,7 @@ _SEARCHALLRESOURCESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="asset_types",
@@ -95,6 +99,7 @@ _SEARCHALLRESOURCESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="page_size",
@@ -113,6 +118,7 @@ _SEARCHALLRESOURCESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="page_token",
@@ -131,6 +137,7 @@ _SEARCHALLRESOURCESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="order_by",
@@ -149,6 +156,7 @@ _SEARCHALLRESOURCESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -170,6 +178,7 @@ _SEARCHALLRESOURCESRESPONSE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="results",
@@ -188,6 +197,7 @@ _SEARCHALLRESOURCESRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="next_page_token",
@@ -206,6 +216,7 @@ _SEARCHALLRESOURCESRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -227,6 +238,7 @@ _SEARCHALLIAMPOLICIESREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="scope",
@@ -245,6 +257,7 @@ _SEARCHALLIAMPOLICIESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="query",
@@ -263,6 +276,7 @@ _SEARCHALLIAMPOLICIESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="page_size",
@@ -281,6 +295,7 @@ _SEARCHALLIAMPOLICIESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="page_token",
@@ -299,6 +314,7 @@ _SEARCHALLIAMPOLICIESREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -320,6 +336,7 @@ _SEARCHALLIAMPOLICIESRESPONSE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="results",
@@ -338,6 +355,7 @@ _SEARCHALLIAMPOLICIESRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="next_page_token",
@@ -356,6 +374,7 @@ _SEARCHALLIAMPOLICIESRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -401,6 +420,7 @@ SearchAllResourcesRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _SEARCHALLRESOURCESREQUEST,
         "__module__": "google.cloud.asset_v1p1beta1.proto.asset_service_pb2",
         "__doc__": """Search all resources request.
+  
   Attributes:
       scope:
           Required. The relative name of an asset. The search is limited
@@ -445,6 +465,7 @@ SearchAllResourcesResponse = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _SEARCHALLRESOURCESRESPONSE,
         "__module__": "google.cloud.asset_v1p1beta1.proto.asset_service_pb2",
         "__doc__": """Search all resources response.
+  
   Attributes:
       results:
           A list of resource that match the search query.
@@ -466,6 +487,7 @@ SearchAllIamPoliciesRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _SEARCHALLIAMPOLICIESREQUEST,
         "__module__": "google.cloud.asset_v1p1beta1.proto.asset_service_pb2",
         "__doc__": """Search all IAM policies request.
+  
   Attributes:
       scope:
           Required. The relative name of an asset. The search is limited
@@ -503,6 +525,7 @@ SearchAllIamPoliciesResponse = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _SEARCHALLIAMPOLICIESRESPONSE,
         "__module__": "google.cloud.asset_v1p1beta1.proto.asset_service_pb2",
         "__doc__": """Search all IAM policies response.
+  
   Attributes:
       results:
           A list of IamPolicy that match the search query. Related
@@ -537,6 +560,7 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     serialized_options=b"\312A\031cloudasset.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform",
+    create_key=_descriptor._internal_create_key,
     serialized_start=769,
     serialized_end=1290,
     methods=[
@@ -548,6 +572,7 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
             input_type=_SEARCHALLRESOURCESREQUEST,
             output_type=_SEARCHALLRESOURCESRESPONSE,
             serialized_options=b"\202\323\344\223\002,\022*/v1p1beta1/{scope=*/*}/resources:searchAll\332A\027scope,query,asset_types",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="SearchAllIamPolicies",
@@ -557,6 +582,7 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
             input_type=_SEARCHALLIAMPOLICIESREQUEST,
             output_type=_SEARCHALLIAMPOLICIESRESPONSE,
             serialized_options=b"\202\323\344\223\002.\022,/v1p1beta1/{scope=*/*}/iamPolicies:searchAll\332A\013scope,query",
+            create_key=_descriptor._internal_create_key,
         ),
     ],
 )

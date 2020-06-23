@@ -30,6 +30,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.asset.v1p4beta1",
     syntax="proto3",
     serialized_options=b"\n com.google.cloud.asset.v1p4beta1B\021AssetServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/asset/v1p4beta1;asset\252\002\034Google.Cloud.Asset.V1P4Beta1\312\002\034Google\\Cloud\\Asset\\V1p4beta1",
+    create_key=_descriptor._internal_create_key,
     serialized_pb=b'\n6google/cloud/asset_v1p4beta1/proto/asset_service.proto\x12\x1cgoogle.cloud.asset.v1p4beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a/google/cloud/asset_v1p4beta1/proto/assets.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a#google/longrunning/operations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x17google/api/client.proto"\xfe\x03\n\x16IamPolicyAnalysisQuery\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x65\n\x11resource_selector\x18\x02 \x01(\x0b\x32\x45.google.cloud.asset.v1p4beta1.IamPolicyAnalysisQuery.ResourceSelectorB\x03\xe0\x41\x01\x12\x65\n\x11identity_selector\x18\x03 \x01(\x0b\x32\x45.google.cloud.asset.v1p4beta1.IamPolicyAnalysisQuery.IdentitySelectorB\x03\xe0\x41\x01\x12\x61\n\x0f\x61\x63\x63\x65ss_selector\x18\x04 \x01(\x0b\x32\x43.google.cloud.asset.v1p4beta1.IamPolicyAnalysisQuery.AccessSelectorB\x03\xe0\x41\x01\x1a\x33\n\x10ResourceSelector\x12\x1f\n\x12\x66ull_resource_name\x18\x01 \x01(\tB\x03\xe0\x41\x02\x1a)\n\x10IdentitySelector\x12\x15\n\x08identity\x18\x01 \x01(\tB\x03\xe0\x41\x02\x1a>\n\x0e\x41\x63\x63\x65ssSelector\x12\x12\n\x05roles\x18\x01 \x03(\tB\x03\xe0\x41\x01\x12\x18\n\x0bpermissions\x18\x02 \x03(\tB\x03\xe0\x41\x01"\xd7\x03\n\x17\x41nalyzeIamPolicyRequest\x12Q\n\x0e\x61nalysis_query\x18\x01 \x01(\x0b\x32\x34.google.cloud.asset.v1p4beta1.IamPolicyAnalysisQueryB\x03\xe0\x41\x02\x12S\n\x07options\x18\x02 \x01(\x0b\x32=.google.cloud.asset.v1p4beta1.AnalyzeIamPolicyRequest.OptionsB\x03\xe0\x41\x01\x1a\x93\x02\n\x07Options\x12\x1a\n\rexpand_groups\x18\x01 \x01(\x08\x42\x03\xe0\x41\x01\x12\x19\n\x0c\x65xpand_roles\x18\x02 \x01(\x08\x42\x03\xe0\x41\x01\x12\x1d\n\x10\x65xpand_resources\x18\x03 \x01(\x08\x42\x03\xe0\x41\x01\x12"\n\x15output_resource_edges\x18\x04 \x01(\x08\x42\x03\xe0\x41\x01\x12\x1f\n\x12output_group_edges\x18\x05 \x01(\x08\x42\x03\xe0\x41\x01\x12\x32\n%analyze_service_account_impersonation\x18\x06 \x01(\x08\x42\x03\xe0\x41\x01\x12\x39\n\x11\x65xecution_timeout\x18\x07 \x01(\x0b\x32\x19.google.protobuf.DurationB\x03\xe0\x41\x01"\xbc\x04\n\x18\x41nalyzeIamPolicyResponse\x12_\n\rmain_analysis\x18\x01 \x01(\x0b\x32H.google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.IamPolicyAnalysis\x12x\n&service_account_impersonation_analysis\x18\x02 \x03(\x0b\x32H.google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.IamPolicyAnalysis\x12\x16\n\x0e\x66ully_explored\x18\x03 \x01(\x08\x12`\n\x13non_critical_errors\x18\x04 \x03(\x0b\x32\x43.google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.AnalysisState\x1a\xca\x01\n\x11IamPolicyAnalysis\x12L\n\x0e\x61nalysis_query\x18\x01 \x01(\x0b\x32\x34.google.cloud.asset.v1p4beta1.IamPolicyAnalysisQuery\x12O\n\x10\x61nalysis_results\x18\x02 \x03(\x0b\x32\x35.google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult\x12\x16\n\x0e\x66ully_explored\x18\x03 \x01(\x08"\xb9\x01\n\x1dIamPolicyAnalysisOutputConfig\x12\x65\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32J.google.cloud.asset.v1p4beta1.IamPolicyAnalysisOutputConfig.GcsDestinationH\x00\x1a"\n\x0eGcsDestination\x12\x10\n\x03uri\x18\x01 \x01(\tB\x03\xe0\x41\x02\x42\r\n\x0b\x64\x65stination"\x83\x04\n\x1e\x45xportIamPolicyAnalysisRequest\x12Q\n\x0e\x61nalysis_query\x18\x01 \x01(\x0b\x32\x34.google.cloud.asset.v1p4beta1.IamPolicyAnalysisQueryB\x03\xe0\x41\x02\x12Z\n\x07options\x18\x02 \x01(\x0b\x32\x44.google.cloud.asset.v1p4beta1.ExportIamPolicyAnalysisRequest.OptionsB\x03\xe0\x41\x01\x12W\n\routput_config\x18\x03 \x01(\x0b\x32;.google.cloud.asset.v1p4beta1.IamPolicyAnalysisOutputConfigB\x03\xe0\x41\x02\x1a\xd8\x01\n\x07Options\x12\x1a\n\rexpand_groups\x18\x01 \x01(\x08\x42\x03\xe0\x41\x01\x12\x19\n\x0c\x65xpand_roles\x18\x02 \x01(\x08\x42\x03\xe0\x41\x01\x12\x1d\n\x10\x65xpand_resources\x18\x03 \x01(\x08\x42\x03\xe0\x41\x01\x12"\n\x15output_resource_edges\x18\x04 \x01(\x08\x42\x03\xe0\x41\x01\x12\x1f\n\x12output_group_edges\x18\x05 \x01(\x08\x42\x03\xe0\x41\x01\x12\x32\n%analyze_service_account_impersonation\x18\x06 \x01(\x08\x42\x03\xe0\x41\x01"u\n\x1f\x45xportIamPolicyAnalysisResponse\x12R\n\routput_config\x18\x01 \x01(\x0b\x32;.google.cloud.asset.v1p4beta1.IamPolicyAnalysisOutputConfig2\xe5\x04\n\x0c\x41ssetService\x12\xc2\x01\n\x10\x41nalyzeIamPolicy\x12\x35.google.cloud.asset.v1p4beta1.AnalyzeIamPolicyRequest\x1a\x36.google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse"?\x82\xd3\xe4\x93\x02\x39\x12\x37/v1p4beta1/{analysis_query.parent=*/*}:analyzeIamPolicy\x12\xc0\x02\n\x17\x45xportIamPolicyAnalysis\x12<.google.cloud.asset.v1p4beta1.ExportIamPolicyAnalysisRequest\x1a\x1d.google.longrunning.Operation"\xc7\x01\x82\xd3\xe4\x93\x02\x43">/v1p4beta1/{analysis_query.parent=*/*}:exportIamPolicyAnalysis:\x01*\xca\x41{\n<google.cloud.asset.v1p4beta1.ExportIamPolicyAnalysisResponse\x12;google.cloud.asset.v1p4beta1.ExportIamPolicyAnalysisRequest\x1aM\xca\x41\x19\x63loudasset.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xb8\x01\n com.google.cloud.asset.v1p4beta1B\x11\x41ssetServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/asset/v1p4beta1;asset\xaa\x02\x1cGoogle.Cloud.Asset.V1P4Beta1\xca\x02\x1cGoogle\\Cloud\\Asset\\V1p4beta1b\x06proto3',
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -49,6 +50,7 @@ _IAMPOLICYANALYSISQUERY_RESOURCESELECTOR = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="full_resource_name",
@@ -67,6 +69,7 @@ _IAMPOLICYANALYSISQUERY_RESOURCESELECTOR = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -87,6 +90,7 @@ _IAMPOLICYANALYSISQUERY_IDENTITYSELECTOR = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="identity",
@@ -105,6 +109,7 @@ _IAMPOLICYANALYSISQUERY_IDENTITYSELECTOR = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -125,6 +130,7 @@ _IAMPOLICYANALYSISQUERY_ACCESSSELECTOR = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="roles",
@@ -143,6 +149,7 @@ _IAMPOLICYANALYSISQUERY_ACCESSSELECTOR = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="permissions",
@@ -161,6 +168,7 @@ _IAMPOLICYANALYSISQUERY_ACCESSSELECTOR = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -181,6 +189,7 @@ _IAMPOLICYANALYSISQUERY = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="parent",
@@ -199,6 +208,7 @@ _IAMPOLICYANALYSISQUERY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="resource_selector",
@@ -217,6 +227,7 @@ _IAMPOLICYANALYSISQUERY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="identity_selector",
@@ -235,6 +246,7 @@ _IAMPOLICYANALYSISQUERY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="access_selector",
@@ -253,6 +265,7 @@ _IAMPOLICYANALYSISQUERY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -278,6 +291,7 @@ _ANALYZEIAMPOLICYREQUEST_OPTIONS = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="expand_groups",
@@ -296,6 +310,7 @@ _ANALYZEIAMPOLICYREQUEST_OPTIONS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="expand_roles",
@@ -314,6 +329,7 @@ _ANALYZEIAMPOLICYREQUEST_OPTIONS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="expand_resources",
@@ -332,6 +348,7 @@ _ANALYZEIAMPOLICYREQUEST_OPTIONS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="output_resource_edges",
@@ -350,6 +367,7 @@ _ANALYZEIAMPOLICYREQUEST_OPTIONS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="output_group_edges",
@@ -368,6 +386,7 @@ _ANALYZEIAMPOLICYREQUEST_OPTIONS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="analyze_service_account_impersonation",
@@ -386,6 +405,7 @@ _ANALYZEIAMPOLICYREQUEST_OPTIONS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="execution_timeout",
@@ -404,6 +424,7 @@ _ANALYZEIAMPOLICYREQUEST_OPTIONS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -424,6 +445,7 @@ _ANALYZEIAMPOLICYREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="analysis_query",
@@ -442,6 +464,7 @@ _ANALYZEIAMPOLICYREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="options",
@@ -460,6 +483,7 @@ _ANALYZEIAMPOLICYREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -481,6 +505,7 @@ _ANALYZEIAMPOLICYRESPONSE_IAMPOLICYANALYSIS = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="analysis_query",
@@ -499,6 +524,7 @@ _ANALYZEIAMPOLICYRESPONSE_IAMPOLICYANALYSIS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="analysis_results",
@@ -517,6 +543,7 @@ _ANALYZEIAMPOLICYRESPONSE_IAMPOLICYANALYSIS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="fully_explored",
@@ -535,6 +562,7 @@ _ANALYZEIAMPOLICYRESPONSE_IAMPOLICYANALYSIS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -555,6 +583,7 @@ _ANALYZEIAMPOLICYRESPONSE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="main_analysis",
@@ -573,6 +602,7 @@ _ANALYZEIAMPOLICYRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="service_account_impersonation_analysis",
@@ -591,6 +621,7 @@ _ANALYZEIAMPOLICYRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="fully_explored",
@@ -609,6 +640,7 @@ _ANALYZEIAMPOLICYRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="non_critical_errors",
@@ -627,6 +659,7 @@ _ANALYZEIAMPOLICYRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -648,6 +681,7 @@ _IAMPOLICYANALYSISOUTPUTCONFIG_GCSDESTINATION = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="uri",
@@ -666,6 +700,7 @@ _IAMPOLICYANALYSISOUTPUTCONFIG_GCSDESTINATION = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -686,6 +721,7 @@ _IAMPOLICYANALYSISOUTPUTCONFIG = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="gcs_destination",
@@ -704,6 +740,7 @@ _IAMPOLICYANALYSISOUTPUTCONFIG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -719,6 +756,7 @@ _IAMPOLICYANALYSISOUTPUTCONFIG = _descriptor.Descriptor(
             full_name="google.cloud.asset.v1p4beta1.IamPolicyAnalysisOutputConfig.destination",
             index=0,
             containing_type=None,
+            create_key=_descriptor._internal_create_key,
             fields=[],
         )
     ],
@@ -733,6 +771,7 @@ _EXPORTIAMPOLICYANALYSISREQUEST_OPTIONS = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="expand_groups",
@@ -751,6 +790,7 @@ _EXPORTIAMPOLICYANALYSISREQUEST_OPTIONS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="expand_roles",
@@ -769,6 +809,7 @@ _EXPORTIAMPOLICYANALYSISREQUEST_OPTIONS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="expand_resources",
@@ -787,6 +828,7 @@ _EXPORTIAMPOLICYANALYSISREQUEST_OPTIONS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="output_resource_edges",
@@ -805,6 +847,7 @@ _EXPORTIAMPOLICYANALYSISREQUEST_OPTIONS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="output_group_edges",
@@ -823,6 +866,7 @@ _EXPORTIAMPOLICYANALYSISREQUEST_OPTIONS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="analyze_service_account_impersonation",
@@ -841,6 +885,7 @@ _EXPORTIAMPOLICYANALYSISREQUEST_OPTIONS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -861,6 +906,7 @@ _EXPORTIAMPOLICYANALYSISREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="analysis_query",
@@ -879,6 +925,7 @@ _EXPORTIAMPOLICYANALYSISREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="options",
@@ -897,6 +944,7 @@ _EXPORTIAMPOLICYANALYSISREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\001",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="output_config",
@@ -915,6 +963,7 @@ _EXPORTIAMPOLICYANALYSISREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -936,6 +985,7 @@ _EXPORTIAMPOLICYANALYSISRESPONSE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="output_config",
@@ -954,6 +1004,7 @@ _EXPORTIAMPOLICYANALYSISRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -1068,6 +1119,7 @@ IamPolicyAnalysisQuery = _reflection.GeneratedProtocolMessageType(
     ctor][google.cloud.asset.v1p4beta1.IamPolicyAnalysisQuery.IdentitySele
     ctor] or [AccessSelector][google.cloud.asset.v1p4beta1.IamPolicyAnalys
     isQuery.AccessSelector] must be specified in a request.
+    
     Attributes:
         full_resource_name:
             Required. The `full resource name <https://cloud.google.com/ap
@@ -1085,6 +1137,7 @@ IamPolicyAnalysisQuery = _reflection.GeneratedProtocolMessageType(
                 "__doc__": """Specifies an identity for which to determine resource access, based on
     roles assigned either directly to them or to the groups they belong
     to, directly or indirectly.
+    
     Attributes:
         identity:
             Required. The identity appear in the form of members in `IAM
@@ -1104,6 +1157,7 @@ IamPolicyAnalysisQuery = _reflection.GeneratedProtocolMessageType(
     identities possessing them and the resources they control. If multiple
     values are specified, results will include identities and resources
     matching any of them.
+    
     Attributes:
         roles:
             Optional. The roles to appear in result.
@@ -1116,6 +1170,7 @@ IamPolicyAnalysisQuery = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _IAMPOLICYANALYSISQUERY,
         "__module__": "google.cloud.asset_v1p4beta1.proto.asset_service_pb2",
         "__doc__": """IAM policy analysis query message.
+  
   Attributes:
       parent:
           Required. The relative name of the root asset. Only resources
@@ -1151,6 +1206,7 @@ AnalyzeIamPolicyRequest = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _ANALYZEIAMPOLICYREQUEST_OPTIONS,
                 "__module__": "google.cloud.asset_v1p4beta1.proto.asset_service_pb2",
                 "__doc__": """Contains request options.
+    
     Attributes:
         expand_groups:
             Optional. If true, the identities section of the result will
@@ -1226,6 +1282,7 @@ AnalyzeIamPolicyRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.asset_v1p4beta1.proto.asset_service_pb2",
         "__doc__": """A request message for [AssetService.AnalyzeIamPolicy][google.cloud.ass
   et.v1p4beta1.AssetService.AnalyzeIamPolicy].
+  
   Attributes:
       analysis_query:
           Required. The request query.
@@ -1249,6 +1306,7 @@ AnalyzeIamPolicyResponse = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _ANALYZEIAMPOLICYRESPONSE_IAMPOLICYANALYSIS,
                 "__module__": "google.cloud.asset_v1p4beta1.proto.asset_service_pb2",
                 "__doc__": """An analysis message to group the query and results.
+    
     Attributes:
         analysis_query:
             The analysis query.
@@ -1269,6 +1327,7 @@ AnalyzeIamPolicyResponse = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.asset_v1p4beta1.proto.asset_service_pb2",
         "__doc__": """A response message for [AssetService.AnalyzeIamPolicy][google.cloud.as
   set.v1p4beta1.AssetService.AnalyzeIamPolicy].
+  
   Attributes:
       main_analysis:
           The main analysis that matches the original request.
@@ -1304,6 +1363,7 @@ IamPolicyAnalysisOutputConfig = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _IAMPOLICYANALYSISOUTPUTCONFIG_GCSDESTINATION,
                 "__module__": "google.cloud.asset_v1p4beta1.proto.asset_service_pb2",
                 "__doc__": """A Cloud Storage location.
+    
     Attributes:
         uri:
             Required. The uri of the Cloud Storage object. It’s the same
@@ -1319,6 +1379,7 @@ IamPolicyAnalysisOutputConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _IAMPOLICYANALYSISOUTPUTCONFIG,
         "__module__": "google.cloud.asset_v1p4beta1.proto.asset_service_pb2",
         "__doc__": """Output configuration for export IAM policy analysis destination.
+  
   Attributes:
       destination:
           IAM policy analysis export destination.
@@ -1342,6 +1403,7 @@ ExportIamPolicyAnalysisRequest = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _EXPORTIAMPOLICYANALYSISREQUEST_OPTIONS,
                 "__module__": "google.cloud.asset_v1p4beta1.proto.asset_service_pb2",
                 "__doc__": """Contains request options.
+    
     Attributes:
         expand_groups:
             Optional. If true, the identities section of the result will
@@ -1405,6 +1467,7 @@ ExportIamPolicyAnalysisRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.asset_v1p4beta1.proto.asset_service_pb2",
         "__doc__": """A request message for [AssetService.ExportIamPolicyAnalysis][google.cl
   oud.asset.v1p4beta1.AssetService.ExportIamPolicyAnalysis].
+  
   Attributes:
       analysis_query:
           Required. The request query.
@@ -1429,6 +1492,7 @@ ExportIamPolicyAnalysisResponse = _reflection.GeneratedProtocolMessageType(
         "__doc__": """The export IAM policy analysis response. This message is returned by
   the [google.longrunning.Operations.GetOperation][] method in the
   returned [google.longrunning.Operation.response][] field.
+  
   Attributes:
       output_config:
           Output configuration indicating where the results were output
@@ -1487,6 +1551,7 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     serialized_options=b"\312A\031cloudasset.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform",
+    create_key=_descriptor._internal_create_key,
     serialized_start=2710,
     serialized_end=3323,
     methods=[
@@ -1498,6 +1563,7 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
             input_type=_ANALYZEIAMPOLICYREQUEST,
             output_type=_ANALYZEIAMPOLICYRESPONSE,
             serialized_options=b"\202\323\344\223\0029\0227/v1p4beta1/{analysis_query.parent=*/*}:analyzeIamPolicy",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="ExportIamPolicyAnalysis",
@@ -1507,6 +1573,7 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
             input_type=_EXPORTIAMPOLICYANALYSISREQUEST,
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=b'\202\323\344\223\002C">/v1p4beta1/{analysis_query.parent=*/*}:exportIamPolicyAnalysis:\001*\312A{\n<google.cloud.asset.v1p4beta1.ExportIamPolicyAnalysisResponse\022;google.cloud.asset.v1p4beta1.ExportIamPolicyAnalysisRequest',
+            create_key=_descriptor._internal_create_key,
         ),
     ],
 )

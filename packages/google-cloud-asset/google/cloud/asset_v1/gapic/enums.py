@@ -179,3 +179,23 @@ class ServicePerimeter(object):
 
         PERIMETER_TYPE_REGULAR = 0
         PERIMETER_TYPE_BRIDGE = 1
+
+
+class TemporalAsset(object):
+    class PriorAssetState(enum.IntEnum):
+        """
+        State of prior asset.
+
+        Attributes:
+          PRIOR_ASSET_STATE_UNSPECIFIED (int): prior_asset is not applicable for the current asset.
+          PRESENT (int): prior_asset is populated correctly.
+          INVALID (int): Failed to set prior_asset.
+          DOES_NOT_EXIST (int): Current asset is the first known state.
+          DELETED (int): prior_asset is a deletion.
+        """
+
+        PRIOR_ASSET_STATE_UNSPECIFIED = 0
+        PRESENT = 1
+        INVALID = 2
+        DOES_NOT_EXIST = 3
+        DELETED = 4

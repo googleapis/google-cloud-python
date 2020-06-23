@@ -33,6 +33,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.asset.v1p2beta1",
     syntax="proto3",
     serialized_options=b"\n com.google.cloud.asset.v1p2beta1B\021AssetServiceProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/asset/v1p2beta1;asset\252\002\034Google.Cloud.Asset.V1p2Beta1\312\002\034Google\\Cloud\\Asset\\V1p2Beta1",
+    create_key=_descriptor._internal_create_key,
     serialized_pb=b'\n6google/cloud/asset_v1p2beta1/proto/asset_service.proto\x12\x1cgoogle.cloud.asset.v1p2beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a/google/cloud/asset_v1p2beta1/proto/assets.proto\x1a#google/longrunning/operations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto"u\n\x11\x43reateFeedRequest\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x14\n\x07\x66\x65\x65\x64_id\x18\x02 \x01(\tB\x03\xe0\x41\x02\x12\x35\n\x04\x66\x65\x65\x64\x18\x03 \x01(\x0b\x32".google.cloud.asset.v1p2beta1.FeedB\x03\xe0\x41\x02"F\n\x0eGetFeedRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudasset.googleapis.com/Feed"\'\n\x10ListFeedsRequest\x12\x13\n\x06parent\x18\x01 \x01(\tB\x03\xe0\x41\x02"F\n\x11ListFeedsResponse\x12\x31\n\x05\x66\x65\x65\x64s\x18\x01 \x03(\x0b\x32".google.cloud.asset.v1p2beta1.Feed"\x80\x01\n\x11UpdateFeedRequest\x12\x35\n\x04\x66\x65\x65\x64\x18\x01 \x01(\x0b\x32".google.cloud.asset.v1p2beta1.FeedB\x03\xe0\x41\x02\x12\x34\n\x0bupdate_mask\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.FieldMaskB\x03\xe0\x41\x02"I\n\x11\x44\x65leteFeedRequest\x12\x34\n\x04name\x18\x01 \x01(\tB&\xe0\x41\x02\xfa\x41 \n\x1e\x63loudasset.googleapis.com/Feed"f\n\x0cOutputConfig\x12G\n\x0fgcs_destination\x18\x01 \x01(\x0b\x32,.google.cloud.asset.v1p2beta1.GcsDestinationH\x00\x42\r\n\x0b\x64\x65stination"-\n\x0eGcsDestination\x12\r\n\x03uri\x18\x01 \x01(\tH\x00\x42\x0c\n\nobject_uri""\n\x11PubsubDestination\x12\r\n\x05topic\x18\x01 \x01(\t"p\n\x10\x46\x65\x65\x64OutputConfig\x12M\n\x12pubsub_destination\x18\x01 \x01(\x0b\x32/.google.cloud.asset.v1p2beta1.PubsubDestinationH\x00\x42\r\n\x0b\x64\x65stination"\xe9\x02\n\x04\x46\x65\x65\x64\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x02\x12\x13\n\x0b\x61sset_names\x18\x02 \x03(\t\x12\x13\n\x0b\x61sset_types\x18\x03 \x03(\t\x12?\n\x0c\x63ontent_type\x18\x04 \x01(\x0e\x32).google.cloud.asset.v1p2beta1.ContentType\x12O\n\x12\x66\x65\x65\x64_output_config\x18\x05 \x01(\x0b\x32..google.cloud.asset.v1p2beta1.FeedOutputConfigB\x03\xe0\x41\x02:\x91\x01\xea\x41\x8d\x01\n\x1e\x63loudasset.googleapis.com/Feed\x12\x1fprojects/{project}/feeds/{feed}\x12\x1d\x66olders/{folder}/feeds/{feed}\x12)organizations/{organization}/feeds/{feed} \x01*I\n\x0b\x43ontentType\x12\x1c\n\x18\x43ONTENT_TYPE_UNSPECIFIED\x10\x00\x12\x0c\n\x08RESOURCE\x10\x01\x12\x0e\n\nIAM_POLICY\x10\x02\x32\xbf\x06\n\x0c\x41ssetService\x12\x94\x01\n\nCreateFeed\x12/.google.cloud.asset.v1p2beta1.CreateFeedRequest\x1a".google.cloud.asset.v1p2beta1.Feed"1\x82\xd3\xe4\x93\x02""\x1d/v1p2beta1/{parent=*/*}/feeds:\x01*\xda\x41\x06parent\x12\x89\x01\n\x07GetFeed\x12,.google.cloud.asset.v1p2beta1.GetFeedRequest\x1a".google.cloud.asset.v1p2beta1.Feed",\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1p2beta1/{name=*/*/feeds/*}\xda\x41\x04name\x12\x9c\x01\n\tListFeeds\x12..google.cloud.asset.v1p2beta1.ListFeedsRequest\x1a/.google.cloud.asset.v1p2beta1.ListFeedsResponse".\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1p2beta1/{parent=*/*}/feeds\xda\x41\x06parent\x12\x97\x01\n\nUpdateFeed\x12/.google.cloud.asset.v1p2beta1.UpdateFeedRequest\x1a".google.cloud.asset.v1p2beta1.Feed"4\x82\xd3\xe4\x93\x02\'2"/v1p2beta1/{feed.name=*/*/feeds/*}:\x01*\xda\x41\x04\x66\x65\x65\x64\x12\x83\x01\n\nDeleteFeed\x12/.google.cloud.asset.v1p2beta1.DeleteFeedRequest\x1a\x16.google.protobuf.Empty",\x82\xd3\xe4\x93\x02\x1f*\x1d/v1p2beta1/{name=*/*/feeds/*}\xda\x41\x04name\x1aM\xca\x41\x19\x63loudasset.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xb8\x01\n com.google.cloud.asset.v1p2beta1B\x11\x41ssetServiceProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/asset/v1p2beta1;asset\xaa\x02\x1cGoogle.Cloud.Asset.V1p2Beta1\xca\x02\x1cGoogle\\Cloud\\Asset\\V1p2Beta1b\x06proto3',
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -52,6 +53,7 @@ _CONTENTTYPE = _descriptor.EnumDescriptor(
     full_name="google.cloud.asset.v1p2beta1.ContentType",
     filename=None,
     file=DESCRIPTOR,
+    create_key=_descriptor._internal_create_key,
     values=[
         _descriptor.EnumValueDescriptor(
             name="CONTENT_TYPE_UNSPECIFIED",
@@ -59,12 +61,23 @@ _CONTENTTYPE = _descriptor.EnumDescriptor(
             number=0,
             serialized_options=None,
             type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="RESOURCE", index=1, number=1, serialized_options=None, type=None
+            name="RESOURCE",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.EnumValueDescriptor(
-            name="IAM_POLICY", index=2, number=2, serialized_options=None, type=None
+            name="IAM_POLICY",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     containing_type=None,
@@ -86,6 +99,7 @@ _CREATEFEEDREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="parent",
@@ -104,6 +118,7 @@ _CREATEFEEDREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="feed_id",
@@ -122,6 +137,7 @@ _CREATEFEEDREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="feed",
@@ -140,6 +156,7 @@ _CREATEFEEDREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -161,6 +178,7 @@ _GETFEEDREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -179,6 +197,7 @@ _GETFEEDREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A \n\036cloudasset.googleapis.com/Feed",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -200,6 +219,7 @@ _LISTFEEDSREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="parent",
@@ -218,6 +238,7 @@ _LISTFEEDSREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -239,6 +260,7 @@ _LISTFEEDSRESPONSE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="feeds",
@@ -257,6 +279,7 @@ _LISTFEEDSRESPONSE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -278,6 +301,7 @@ _UPDATEFEEDREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="feed",
@@ -296,6 +320,7 @@ _UPDATEFEEDREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="update_mask",
@@ -314,6 +339,7 @@ _UPDATEFEEDREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -335,6 +361,7 @@ _DELETEFEEDREQUEST = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -353,6 +380,7 @@ _DELETEFEEDREQUEST = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002\372A \n\036cloudasset.googleapis.com/Feed",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -374,6 +402,7 @@ _OUTPUTCONFIG = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="gcs_destination",
@@ -392,6 +421,7 @@ _OUTPUTCONFIG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -407,6 +437,7 @@ _OUTPUTCONFIG = _descriptor.Descriptor(
             full_name="google.cloud.asset.v1p2beta1.OutputConfig.destination",
             index=0,
             containing_type=None,
+            create_key=_descriptor._internal_create_key,
             fields=[],
         )
     ],
@@ -421,6 +452,7 @@ _GCSDESTINATION = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="uri",
@@ -439,6 +471,7 @@ _GCSDESTINATION = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -454,6 +487,7 @@ _GCSDESTINATION = _descriptor.Descriptor(
             full_name="google.cloud.asset.v1p2beta1.GcsDestination.object_uri",
             index=0,
             containing_type=None,
+            create_key=_descriptor._internal_create_key,
             fields=[],
         )
     ],
@@ -468,6 +502,7 @@ _PUBSUBDESTINATION = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="topic",
@@ -486,6 +521,7 @@ _PUBSUBDESTINATION = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -507,6 +543,7 @@ _FEEDOUTPUTCONFIG = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="pubsub_destination",
@@ -525,6 +562,7 @@ _FEEDOUTPUTCONFIG = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -540,6 +578,7 @@ _FEEDOUTPUTCONFIG = _descriptor.Descriptor(
             full_name="google.cloud.asset.v1p2beta1.FeedOutputConfig.destination",
             index=0,
             containing_type=None,
+            create_key=_descriptor._internal_create_key,
             fields=[],
         )
     ],
@@ -554,6 +593,7 @@ _FEED = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -572,6 +612,7 @@ _FEED = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="asset_names",
@@ -590,6 +631,7 @@ _FEED = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="asset_types",
@@ -608,6 +650,7 @@ _FEED = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="content_type",
@@ -626,6 +669,7 @@ _FEED = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="feed_output_config",
@@ -644,6 +688,7 @@ _FEED = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -707,6 +752,7 @@ CreateFeedRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _CREATEFEEDREQUEST,
         "__module__": "google.cloud.asset_v1p2beta1.proto.asset_service_pb2",
         "__doc__": """Create asset feed request.
+  
   Attributes:
       parent:
           Required. The name of the project/folder/organization where
@@ -737,6 +783,7 @@ GetFeedRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _GETFEEDREQUEST,
         "__module__": "google.cloud.asset_v1p2beta1.proto.asset_service_pb2",
         "__doc__": """Get asset feed request.
+  
   Attributes:
       name:
           Required. The name of the Feed and it must be in the format
@@ -756,6 +803,7 @@ ListFeedsRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTFEEDSREQUEST,
         "__module__": "google.cloud.asset_v1p2beta1.proto.asset_service_pb2",
         "__doc__": """List asset feeds request.
+  
   Attributes:
       parent:
           Required. The parent project/folder/organization whose feeds
@@ -791,6 +839,7 @@ UpdateFeedRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _UPDATEFEEDREQUEST,
         "__module__": "google.cloud.asset_v1p2beta1.proto.asset_service_pb2",
         "__doc__": """Update asset feed request.
+  
   Attributes:
       feed:
           Required. The new values of feed details. It must match an
@@ -834,6 +883,7 @@ OutputConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _OUTPUTCONFIG,
         "__module__": "google.cloud.asset_v1p2beta1.proto.asset_service_pb2",
         "__doc__": """Output configuration for export assets destination.
+  
   Attributes:
       destination:
           Asset export destination.
@@ -852,6 +902,7 @@ GcsDestination = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _GCSDESTINATION,
         "__module__": "google.cloud.asset_v1p2beta1.proto.asset_service_pb2",
         "__doc__": """A Cloud Storage location.
+  
   Attributes:
       object_uri:
           Required.
@@ -874,6 +925,7 @@ PubsubDestination = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _PUBSUBDESTINATION,
         "__module__": "google.cloud.asset_v1p2beta1.proto.asset_service_pb2",
         "__doc__": """A Cloud Pubsub destination.
+  
   Attributes:
       topic:
           The name of the Cloud Pub/Sub topic to publish to. For
@@ -891,6 +943,7 @@ FeedOutputConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _FEEDOUTPUTCONFIG,
         "__module__": "google.cloud.asset_v1p2beta1.proto.asset_service_pb2",
         "__doc__": """Output configuration for asset feed destination.
+  
   Attributes:
       destination:
           Asset feed destination.
@@ -912,6 +965,7 @@ Feed = _reflection.GeneratedProtocolMessageType(
   feed filter controls what updates are exported. The asset feed must be
   created within a project, organization, or folder. Supported
   destinations are: Cloud Pub/Sub topics.
+  
   Attributes:
       name:
           Required. The format will be
@@ -971,6 +1025,7 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     serialized_options=b"\312A\031cloudasset.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform",
+    create_key=_descriptor._internal_create_key,
     serialized_start=1636,
     serialized_end=2467,
     methods=[
@@ -982,6 +1037,7 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
             input_type=_CREATEFEEDREQUEST,
             output_type=_FEED,
             serialized_options=b'\202\323\344\223\002""\035/v1p2beta1/{parent=*/*}/feeds:\001*\332A\006parent',
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="GetFeed",
@@ -991,6 +1047,7 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
             input_type=_GETFEEDREQUEST,
             output_type=_FEED,
             serialized_options=b"\202\323\344\223\002\037\022\035/v1p2beta1/{name=*/*/feeds/*}\332A\004name",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="ListFeeds",
@@ -1000,6 +1057,7 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
             input_type=_LISTFEEDSREQUEST,
             output_type=_LISTFEEDSRESPONSE,
             serialized_options=b"\202\323\344\223\002\037\022\035/v1p2beta1/{parent=*/*}/feeds\332A\006parent",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="UpdateFeed",
@@ -1009,6 +1067,7 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
             input_type=_UPDATEFEEDREQUEST,
             output_type=_FEED,
             serialized_options=b"\202\323\344\223\002'2\"/v1p2beta1/{feed.name=*/*/feeds/*}:\001*\332A\004feed",
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.MethodDescriptor(
             name="DeleteFeed",
@@ -1018,6 +1077,7 @@ _ASSETSERVICE = _descriptor.ServiceDescriptor(
             input_type=_DELETEFEEDREQUEST,
             output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
             serialized_options=b"\202\323\344\223\002\037*\035/v1p2beta1/{name=*/*/feeds/*}\332A\004name",
+            create_key=_descriptor._internal_create_key,
         ),
     ],
 )

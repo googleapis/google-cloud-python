@@ -30,6 +30,7 @@ from google.identity.accesscontextmanager.v1 import (
 from google.protobuf import any_pb2 as google_dot_protobuf_dot_any__pb2
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+from google.rpc import code_pb2 as google_dot_rpc_dot_code__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -37,7 +38,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.asset.v1",
     syntax="proto3",
     serialized_options=b"\n\031com.google.cloud.asset.v1B\nAssetProtoP\001Z:google.golang.org/genproto/googleapis/cloud/asset/v1;asset\370\001\001\252\002\025Google.Cloud.Asset.V1\312\002\025Google\\Cloud\\Asset\\V1",
-    serialized_pb=b'\n(google/cloud/asset_v1/proto/assets.proto\x12\x15google.cloud.asset.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a)google/cloud/orgpolicy/v1/orgpolicy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a:google/identity/accesscontextmanager/v1/access_level.proto\x1a;google/identity/accesscontextmanager/v1/access_policy.proto\x1a?google/identity/accesscontextmanager/v1/service_perimeter.proto\x1a\x19google/protobuf/any.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x80\x01\n\rTemporalAsset\x12\x31\n\x06window\x18\x01 \x01(\x0b\x32!.google.cloud.asset.v1.TimeWindow\x12\x0f\n\x07\x64\x65leted\x18\x02 \x01(\x08\x12+\n\x05\x61sset\x18\x03 \x01(\x0b\x32\x1c.google.cloud.asset.v1.Asset"j\n\nTimeWindow\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\x89\x04\n\x05\x41sset\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nasset_type\x18\x02 \x01(\t\x12\x31\n\x08resource\x18\x03 \x01(\x0b\x32\x1f.google.cloud.asset.v1.Resource\x12)\n\niam_policy\x18\x04 \x01(\x0b\x32\x15.google.iam.v1.Policy\x12\x35\n\norg_policy\x18\x06 \x03(\x0b\x32!.google.cloud.orgpolicy.v1.Policy\x12N\n\raccess_policy\x18\x07 \x01(\x0b\x32\x35.google.identity.accesscontextmanager.v1.AccessPolicyH\x00\x12L\n\x0c\x61\x63\x63\x65ss_level\x18\x08 \x01(\x0b\x32\x34.google.identity.accesscontextmanager.v1.AccessLevelH\x00\x12V\n\x11service_perimeter\x18\t \x01(\x0b\x32\x39.google.identity.accesscontextmanager.v1.ServicePerimeterH\x00\x12\x11\n\tancestors\x18\n \x03(\t:\'\xea\x41$\n\x1f\x63loudasset.googleapis.com/Asset\x12\x01*B\x17\n\x15\x61\x63\x63\x65ss_context_policy"\xb2\x01\n\x08Resource\x12\x0f\n\x07version\x18\x01 \x01(\t\x12\x1e\n\x16\x64iscovery_document_uri\x18\x02 \x01(\t\x12\x16\n\x0e\x64iscovery_name\x18\x03 \x01(\t\x12\x14\n\x0cresource_url\x18\x04 \x01(\t\x12\x0e\n\x06parent\x18\x05 \x01(\t\x12%\n\x04\x64\x61ta\x18\x06 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x10\n\x08location\x18\x08 \x01(\t"\xcc\x02\n\x14ResourceSearchResult\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nasset_type\x18\x02 \x01(\t\x12\x0f\n\x07project\x18\x03 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x04 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t\x12\x10\n\x08location\x18\x06 \x01(\t\x12G\n\x06labels\x18\x07 \x03(\x0b\x32\x37.google.cloud.asset.v1.ResourceSearchResult.LabelsEntry\x12\x14\n\x0cnetwork_tags\x18\x08 \x03(\t\x12\x36\n\x15\x61\x64\x64itional_attributes\x18\t \x01(\x0b\x32\x17.google.protobuf.Struct\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xd4\x03\n\x15IamPolicySearchResult\x12\x10\n\x08resource\x18\x01 \x01(\t\x12\x0f\n\x07project\x18\x02 \x01(\t\x12%\n\x06policy\x18\x03 \x01(\x0b\x32\x15.google.iam.v1.Policy\x12M\n\x0b\x65xplanation\x18\x04 \x01(\x0b\x32\x38.google.cloud.asset.v1.IamPolicySearchResult.Explanation\x1a\xa1\x02\n\x0b\x45xplanation\x12m\n\x13matched_permissions\x18\x01 \x03(\x0b\x32P.google.cloud.asset.v1.IamPolicySearchResult.Explanation.MatchedPermissionsEntry\x1a"\n\x0bPermissions\x12\x13\n\x0bpermissions\x18\x01 \x03(\t\x1a\x7f\n\x17MatchedPermissionsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12S\n\x05value\x18\x02 \x01(\x0b\x32\x44.google.cloud.asset.v1.IamPolicySearchResult.Explanation.Permissions:\x02\x38\x01\x42\x98\x01\n\x19\x63om.google.cloud.asset.v1B\nAssetProtoP\x01Z:google.golang.org/genproto/googleapis/cloud/asset/v1;asset\xf8\x01\x01\xaa\x02\x15Google.Cloud.Asset.V1\xca\x02\x15Google\\Cloud\\Asset\\V1b\x06proto3',
+    create_key=_descriptor._internal_create_key,
+    serialized_pb=b'\n(google/cloud/asset_v1/proto/assets.proto\x12\x15google.cloud.asset.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a)google/cloud/orgpolicy/v1/orgpolicy.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a:google/identity/accesscontextmanager/v1/access_level.proto\x1a;google/identity/accesscontextmanager/v1/access_policy.proto\x1a?google/identity/accesscontextmanager/v1/service_perimeter.proto\x1a\x19google/protobuf/any.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x15google/rpc/code.proto"\xf5\x02\n\rTemporalAsset\x12\x31\n\x06window\x18\x01 \x01(\x0b\x32!.google.cloud.asset.v1.TimeWindow\x12\x0f\n\x07\x64\x65leted\x18\x02 \x01(\x08\x12+\n\x05\x61sset\x18\x03 \x01(\x0b\x32\x1c.google.cloud.asset.v1.Asset\x12O\n\x11prior_asset_state\x18\x04 \x01(\x0e\x32\x34.google.cloud.asset.v1.TemporalAsset.PriorAssetState\x12\x31\n\x0bprior_asset\x18\x05 \x01(\x0b\x32\x1c.google.cloud.asset.v1.Asset"o\n\x0fPriorAssetState\x12!\n\x1dPRIOR_ASSET_STATE_UNSPECIFIED\x10\x00\x12\x0b\n\x07PRESENT\x10\x01\x12\x0b\n\x07INVALID\x10\x02\x12\x12\n\x0e\x44OES_NOT_EXIST\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04"j\n\nTimeWindow\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xba\x04\n\x05\x41sset\x12/\n\x0bupdate_time\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nasset_type\x18\x02 \x01(\t\x12\x31\n\x08resource\x18\x03 \x01(\x0b\x32\x1f.google.cloud.asset.v1.Resource\x12)\n\niam_policy\x18\x04 \x01(\x0b\x32\x15.google.iam.v1.Policy\x12\x35\n\norg_policy\x18\x06 \x03(\x0b\x32!.google.cloud.orgpolicy.v1.Policy\x12N\n\raccess_policy\x18\x07 \x01(\x0b\x32\x35.google.identity.accesscontextmanager.v1.AccessPolicyH\x00\x12L\n\x0c\x61\x63\x63\x65ss_level\x18\x08 \x01(\x0b\x32\x34.google.identity.accesscontextmanager.v1.AccessLevelH\x00\x12V\n\x11service_perimeter\x18\t \x01(\x0b\x32\x39.google.identity.accesscontextmanager.v1.ServicePerimeterH\x00\x12\x11\n\tancestors\x18\n \x03(\t:\'\xea\x41$\n\x1f\x63loudasset.googleapis.com/Asset\x12\x01*B\x17\n\x15\x61\x63\x63\x65ss_context_policy"\xb2\x01\n\x08Resource\x12\x0f\n\x07version\x18\x01 \x01(\t\x12\x1e\n\x16\x64iscovery_document_uri\x18\x02 \x01(\t\x12\x16\n\x0e\x64iscovery_name\x18\x03 \x01(\t\x12\x14\n\x0cresource_url\x18\x04 \x01(\t\x12\x0e\n\x06parent\x18\x05 \x01(\t\x12%\n\x04\x64\x61ta\x18\x06 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x10\n\x08location\x18\x08 \x01(\t"\xcc\x02\n\x14ResourceSearchResult\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nasset_type\x18\x02 \x01(\t\x12\x0f\n\x07project\x18\x03 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x04 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t\x12\x10\n\x08location\x18\x06 \x01(\t\x12G\n\x06labels\x18\x07 \x03(\x0b\x32\x37.google.cloud.asset.v1.ResourceSearchResult.LabelsEntry\x12\x14\n\x0cnetwork_tags\x18\x08 \x03(\t\x12\x36\n\x15\x61\x64\x64itional_attributes\x18\t \x01(\x0b\x32\x17.google.protobuf.Struct\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xd4\x03\n\x15IamPolicySearchResult\x12\x10\n\x08resource\x18\x01 \x01(\t\x12\x0f\n\x07project\x18\x02 \x01(\t\x12%\n\x06policy\x18\x03 \x01(\x0b\x32\x15.google.iam.v1.Policy\x12M\n\x0b\x65xplanation\x18\x04 \x01(\x0b\x32\x38.google.cloud.asset.v1.IamPolicySearchResult.Explanation\x1a\xa1\x02\n\x0b\x45xplanation\x12m\n\x13matched_permissions\x18\x01 \x03(\x0b\x32P.google.cloud.asset.v1.IamPolicySearchResult.Explanation.MatchedPermissionsEntry\x1a"\n\x0bPermissions\x12\x13\n\x0bpermissions\x18\x01 \x03(\t\x1a\x7f\n\x17MatchedPermissionsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12S\n\x05value\x18\x02 \x01(\x0b\x32\x44.google.cloud.asset.v1.IamPolicySearchResult.Explanation.Permissions:\x02\x38\x01\x42\x98\x01\n\x19\x63om.google.cloud.asset.v1B\nAssetProtoP\x01Z:google.golang.org/genproto/googleapis/cloud/asset/v1;asset\xf8\x01\x01\xaa\x02\x15Google.Cloud.Asset.V1\xca\x02\x15Google\\Cloud\\Asset\\V1b\x06proto3',
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_api_dot_resource__pb2.DESCRIPTOR,
@@ -49,8 +51,65 @@ DESCRIPTOR = _descriptor.FileDescriptor(
         google_dot_protobuf_dot_any__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,
         google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+        google_dot_rpc_dot_code__pb2.DESCRIPTOR,
     ],
 )
+
+
+_TEMPORALASSET_PRIORASSETSTATE = _descriptor.EnumDescriptor(
+    name="PriorAssetState",
+    full_name="google.cloud.asset.v1.TemporalAsset.PriorAssetState",
+    filename=None,
+    file=DESCRIPTOR,
+    create_key=_descriptor._internal_create_key,
+    values=[
+        _descriptor.EnumValueDescriptor(
+            name="PRIOR_ASSET_STATE_UNSPECIFIED",
+            index=0,
+            number=0,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="PRESENT",
+            index=1,
+            number=1,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="INVALID",
+            index=2,
+            number=2,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="DOES_NOT_EXIST",
+            index=3,
+            number=3,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.EnumValueDescriptor(
+            name="DELETED",
+            index=4,
+            number=4,
+            serialized_options=None,
+            type=None,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    containing_type=None,
+    serialized_options=None,
+    serialized_start=757,
+    serialized_end=868,
+)
+_sym_db.RegisterEnumDescriptor(_TEMPORALASSET_PRIORASSETSTATE)
 
 
 _TEMPORALASSET = _descriptor.Descriptor(
@@ -59,6 +118,7 @@ _TEMPORALASSET = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="window",
@@ -77,6 +137,7 @@ _TEMPORALASSET = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="deleted",
@@ -95,6 +156,7 @@ _TEMPORALASSET = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="asset",
@@ -113,18 +175,57 @@ _TEMPORALASSET = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="prior_asset_state",
+            full_name="google.cloud.asset.v1.TemporalAsset.prior_asset_state",
+            index=3,
+            number=4,
+            type=14,
+            cpp_type=8,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="prior_asset",
+            full_name="google.cloud.asset.v1.TemporalAsset.prior_asset",
+            index=4,
+            number=5,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
     nested_types=[],
-    enum_types=[],
+    enum_types=[_TEMPORALASSET_PRIORASSETSTATE],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=472,
-    serialized_end=600,
+    serialized_start=495,
+    serialized_end=868,
 )
 
 
@@ -134,6 +235,7 @@ _TIMEWINDOW = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="start_time",
@@ -152,6 +254,7 @@ _TIMEWINDOW = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="end_time",
@@ -170,6 +273,7 @@ _TIMEWINDOW = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -180,8 +284,8 @@ _TIMEWINDOW = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=602,
-    serialized_end=708,
+    serialized_start=870,
+    serialized_end=976,
 )
 
 
@@ -191,11 +295,31 @@ _ASSET = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
+        _descriptor.FieldDescriptor(
+            name="update_time",
+            full_name="google.cloud.asset.v1.Asset.update_time",
+            index=0,
+            number=11,
+            type=11,
+            cpp_type=10,
+            label=1,
+            has_default_value=False,
+            default_value=None,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
         _descriptor.FieldDescriptor(
             name="name",
             full_name="google.cloud.asset.v1.Asset.name",
-            index=0,
+            index=1,
             number=1,
             type=9,
             cpp_type=9,
@@ -209,11 +333,12 @@ _ASSET = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="asset_type",
             full_name="google.cloud.asset.v1.Asset.asset_type",
-            index=1,
+            index=2,
             number=2,
             type=9,
             cpp_type=9,
@@ -227,11 +352,12 @@ _ASSET = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="resource",
             full_name="google.cloud.asset.v1.Asset.resource",
-            index=2,
+            index=3,
             number=3,
             type=11,
             cpp_type=10,
@@ -245,11 +371,12 @@ _ASSET = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="iam_policy",
             full_name="google.cloud.asset.v1.Asset.iam_policy",
-            index=3,
+            index=4,
             number=4,
             type=11,
             cpp_type=10,
@@ -263,11 +390,12 @@ _ASSET = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="org_policy",
             full_name="google.cloud.asset.v1.Asset.org_policy",
-            index=4,
+            index=5,
             number=6,
             type=11,
             cpp_type=10,
@@ -281,11 +409,12 @@ _ASSET = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="access_policy",
             full_name="google.cloud.asset.v1.Asset.access_policy",
-            index=5,
+            index=6,
             number=7,
             type=11,
             cpp_type=10,
@@ -299,11 +428,12 @@ _ASSET = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="access_level",
             full_name="google.cloud.asset.v1.Asset.access_level",
-            index=6,
+            index=7,
             number=8,
             type=11,
             cpp_type=10,
@@ -317,11 +447,12 @@ _ASSET = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="service_perimeter",
             full_name="google.cloud.asset.v1.Asset.service_perimeter",
-            index=7,
+            index=8,
             number=9,
             type=11,
             cpp_type=10,
@@ -335,11 +466,12 @@ _ASSET = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="ancestors",
             full_name="google.cloud.asset.v1.Asset.ancestors",
-            index=8,
+            index=9,
             number=10,
             type=9,
             cpp_type=9,
@@ -353,6 +485,7 @@ _ASSET = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -368,11 +501,12 @@ _ASSET = _descriptor.Descriptor(
             full_name="google.cloud.asset.v1.Asset.access_context_policy",
             index=0,
             containing_type=None,
+            create_key=_descriptor._internal_create_key,
             fields=[],
         )
     ],
-    serialized_start=711,
-    serialized_end=1232,
+    serialized_start=979,
+    serialized_end=1549,
 )
 
 
@@ -382,6 +516,7 @@ _RESOURCE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="version",
@@ -400,6 +535,7 @@ _RESOURCE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="discovery_document_uri",
@@ -418,6 +554,7 @@ _RESOURCE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="discovery_name",
@@ -436,6 +573,7 @@ _RESOURCE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="resource_url",
@@ -454,6 +592,7 @@ _RESOURCE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="parent",
@@ -472,6 +611,7 @@ _RESOURCE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="data",
@@ -490,6 +630,7 @@ _RESOURCE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="location",
@@ -508,6 +649,7 @@ _RESOURCE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -518,8 +660,8 @@ _RESOURCE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1235,
-    serialized_end=1413,
+    serialized_start=1552,
+    serialized_end=1730,
 )
 
 
@@ -529,6 +671,7 @@ _RESOURCESEARCHRESULT_LABELSENTRY = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="key",
@@ -547,6 +690,7 @@ _RESOURCESEARCHRESULT_LABELSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="value",
@@ -565,6 +709,7 @@ _RESOURCESEARCHRESULT_LABELSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -575,8 +720,8 @@ _RESOURCESEARCHRESULT_LABELSENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1703,
-    serialized_end=1748,
+    serialized_start=2020,
+    serialized_end=2065,
 )
 
 _RESOURCESEARCHRESULT = _descriptor.Descriptor(
@@ -585,6 +730,7 @@ _RESOURCESEARCHRESULT = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -603,6 +749,7 @@ _RESOURCESEARCHRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="asset_type",
@@ -621,6 +768,7 @@ _RESOURCESEARCHRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="project",
@@ -639,6 +787,7 @@ _RESOURCESEARCHRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="display_name",
@@ -657,6 +806,7 @@ _RESOURCESEARCHRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="description",
@@ -675,6 +825,7 @@ _RESOURCESEARCHRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="location",
@@ -693,6 +844,7 @@ _RESOURCESEARCHRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="labels",
@@ -711,6 +863,7 @@ _RESOURCESEARCHRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="network_tags",
@@ -729,6 +882,7 @@ _RESOURCESEARCHRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="additional_attributes",
@@ -747,6 +901,7 @@ _RESOURCESEARCHRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -757,8 +912,8 @@ _RESOURCESEARCHRESULT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1416,
-    serialized_end=1748,
+    serialized_start=1733,
+    serialized_end=2065,
 )
 
 
@@ -768,6 +923,7 @@ _IAMPOLICYSEARCHRESULT_EXPLANATION_PERMISSIONS = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="permissions",
@@ -786,6 +942,7 @@ _IAMPOLICYSEARCHRESULT_EXPLANATION_PERMISSIONS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -796,8 +953,8 @@ _IAMPOLICYSEARCHRESULT_EXPLANATION_PERMISSIONS = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2056,
-    serialized_end=2090,
+    serialized_start=2373,
+    serialized_end=2407,
 )
 
 _IAMPOLICYSEARCHRESULT_EXPLANATION_MATCHEDPERMISSIONSENTRY = _descriptor.Descriptor(
@@ -806,6 +963,7 @@ _IAMPOLICYSEARCHRESULT_EXPLANATION_MATCHEDPERMISSIONSENTRY = _descriptor.Descrip
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="key",
@@ -824,6 +982,7 @@ _IAMPOLICYSEARCHRESULT_EXPLANATION_MATCHEDPERMISSIONSENTRY = _descriptor.Descrip
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="value",
@@ -842,6 +1001,7 @@ _IAMPOLICYSEARCHRESULT_EXPLANATION_MATCHEDPERMISSIONSENTRY = _descriptor.Descrip
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -852,8 +1012,8 @@ _IAMPOLICYSEARCHRESULT_EXPLANATION_MATCHEDPERMISSIONSENTRY = _descriptor.Descrip
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=2092,
-    serialized_end=2219,
+    serialized_start=2409,
+    serialized_end=2536,
 )
 
 _IAMPOLICYSEARCHRESULT_EXPLANATION = _descriptor.Descriptor(
@@ -862,6 +1022,7 @@ _IAMPOLICYSEARCHRESULT_EXPLANATION = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="matched_permissions",
@@ -880,6 +1041,7 @@ _IAMPOLICYSEARCHRESULT_EXPLANATION = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -893,8 +1055,8 @@ _IAMPOLICYSEARCHRESULT_EXPLANATION = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1930,
-    serialized_end=2219,
+    serialized_start=2247,
+    serialized_end=2536,
 )
 
 _IAMPOLICYSEARCHRESULT = _descriptor.Descriptor(
@@ -903,6 +1065,7 @@ _IAMPOLICYSEARCHRESULT = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="resource",
@@ -921,6 +1084,7 @@ _IAMPOLICYSEARCHRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="project",
@@ -939,6 +1103,7 @@ _IAMPOLICYSEARCHRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="policy",
@@ -957,6 +1122,7 @@ _IAMPOLICYSEARCHRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="explanation",
@@ -975,6 +1141,7 @@ _IAMPOLICYSEARCHRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -985,17 +1152,25 @@ _IAMPOLICYSEARCHRESULT = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1751,
-    serialized_end=2219,
+    serialized_start=2068,
+    serialized_end=2536,
 )
 
 _TEMPORALASSET.fields_by_name["window"].message_type = _TIMEWINDOW
 _TEMPORALASSET.fields_by_name["asset"].message_type = _ASSET
+_TEMPORALASSET.fields_by_name[
+    "prior_asset_state"
+].enum_type = _TEMPORALASSET_PRIORASSETSTATE
+_TEMPORALASSET.fields_by_name["prior_asset"].message_type = _ASSET
+_TEMPORALASSET_PRIORASSETSTATE.containing_type = _TEMPORALASSET
 _TIMEWINDOW.fields_by_name[
     "start_time"
 ].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _TIMEWINDOW.fields_by_name[
     "end_time"
+].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_ASSET.fields_by_name[
+    "update_time"
 ].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _ASSET.fields_by_name["resource"].message_type = _RESOURCE
 _ASSET.fields_by_name[
@@ -1086,7 +1261,7 @@ TemporalAsset = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.asset_v1.proto.assets_pb2",
         "__doc__": """An asset in Google Cloud and its temporal metadata, including the time
   window when it was observed and its status during that window.
-
+  
   Attributes:
       window:
           The time window when the asset data and state was observed.
@@ -1094,6 +1269,12 @@ TemporalAsset = _reflection.GeneratedProtocolMessageType(
           Whether the asset has been deleted or not.
       asset:
           An asset in Google Cloud.
+      prior_asset_state:
+          State of prior_asset.
+      prior_asset:
+          Prior copy of the asset. Populated if prior_asset_state is
+          PRESENT. Currently this is only set for responses in Real-Time
+          Feed.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.TemporalAsset)
     },
@@ -1107,6 +1288,7 @@ TimeWindow = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _TIMEWINDOW,
         "__module__": "google.cloud.asset_v1.proto.assets_pb2",
         "__doc__": """A time window specified by its ``start_time`` and ``end_time``.
+  
   Attributes:
       start_time:
           Start time of the time window (exclusive).
@@ -1126,21 +1308,27 @@ Asset = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _ASSET,
         "__module__": "google.cloud.asset_v1.proto.assets_pb2",
         "__doc__": """An asset in Google Cloud. An asset can be any resource in the Google
-
   Cloud `resource hierarchy <https://cloud.google.com/resource-
   manager/docs/cloud-platform-resource-hierarchy>`__, a resource outside
   the Google Cloud resource hierarchy (such as Google Kubernetes Engine
-  clusters and objects), or a Cloud IAM policy.
-
+  clusters and objects), or a policy (e.g. Cloud IAM policy). See
+  `Supported asset types <https://cloud.google.com/asset-
+  inventory/docs/supported-asset-types>`__ for more information.
+  
   Attributes:
+      update_time:
+          The last update timestamp of an asset. update_time is updated
+          when create/update/delete operation is performed.
       name:
-          The full name of the asset. For example: 
-          ``//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1``
-          See `Resource names <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__ for more information.
+          The full name of the asset. Example: ``//compute.googleapis.co
+          m/projects/my_project_123/zones/zone1/instances/instance1``
+          See `Resource names <https://cloud.google.com/apis/design/reso
+          urce_names#full_resource_name>`__ for more information.
       asset_type:
-          The type of the asset. For example:
+          The type of the asset. Example:
           ``compute.googleapis.com/Disk``  See `Supported asset types
-          <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__ for more information.
+          <https://cloud.google.com/asset-inventory/docs/supported-
+          asset-types>`__ for more information.
       resource:
           A representation of the resource.
       iam_policy:
@@ -1162,15 +1350,30 @@ Asset = _reflection.GeneratedProtocolMessageType(
           a given resource.
       access_context_policy:
           A representation of an `access policy
-          <https://cloud.google.com/access-context-manager/docs/overview#access-policies>`__.
+          <https://cloud.google.com/access-context-
+          manager/docs/overview#access-policies>`__.
+      access_policy:
+          Please also refer to the `access policy user guide
+          <https://cloud.google.com/access-context-
+          manager/docs/overview#access-policies>`__.
+      access_level:
+          Please also refer to the `access level user guide
+          <https://cloud.google.com/access-context-
+          manager/docs/overview#access-levels>`__.
+      service_perimeter:
+          Please also refer to the `service perimeter user guide
+          <https://cloud.google.com/vpc-service-
+          controls/docs/overview>`__.
       ancestors:
           The ancestry path of an asset in Google Cloud `resource
-          hierarchy <https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>`__,
+          hierarchy <https://cloud.google.com/resource-
+          manager/docs/cloud-platform-resource-hierarchy>`__,
           represented as a list of relative resource names. An ancestry
           path starts with the closest ancestor in the hierarchy and
           ends at root. If the asset is a project, folder, or
           organization, the ancestry path starts from the asset itself.
-          For example: ``["projects/123456789", "folders/5432", "organizations/1234"]``
+          Example: ``["projects/123456789", "folders/5432",
+          "organizations/1234"]``
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.asset.v1.Asset)
     },
@@ -1184,24 +1387,24 @@ Resource = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _RESOURCE,
         "__module__": "google.cloud.asset_v1.proto.assets_pb2",
         "__doc__": """A representation of a Google Cloud resource.
+  
   Attributes:
       version:
-          The API version. For example: ``v1``
+          The API version. Example: ``v1``
       discovery_document_uri:
           The URL of the discovery document containing the resource’s
-          JSON schema. For example: ``https://www.googleapis.com/discove
-          ry/v1/apis/compute/v1/rest``  This value is unspecified for
+          JSON schema. Example: ``https://www.googleapis.com/discovery/v
+          1/apis/compute/v1/rest``  This value is unspecified for
           resources that do not have an API based on a discovery
           document, such as Cloud Bigtable.
       discovery_name:
-          The JSON schema name listed in the discovery document. For
-          example: ``Project``  This value is unspecified for resources
+          The JSON schema name listed in the discovery document.
+          Example: ``Project``  This value is unspecified for resources
           that do not have an API based on a discovery document, such as
           Cloud Bigtable.
       resource_url:
           The REST URL for accessing the resource. An HTTP ``GET``
-          request using this URL returns the resource itself. For
-          example:
+          request using this URL returns the resource itself. Example:
           ``https://cloudresourcemanager.googleapis.com/v1/projects/my-
           project-123``  This value is unspecified for resources without
           a REST API.
@@ -1211,8 +1414,8 @@ Resource = _reflection.GeneratedProtocolMessageType(
           _names#full_resource_name>`__ for more information.  For
           Google Cloud assets, this value is the parent resource defined
           in the `Cloud IAM policy hierarchy <https://cloud.google.com/i
-          am/docs/overview#policy_hierarchy>`__. For example: ``//cloudr
-          esourcemanager.googleapis.com/projects/my_project_123``  For
+          am/docs/overview#policy_hierarchy>`__. Example: ``//cloudresou
+          rcemanager.googleapis.com/projects/my_project_123``  For
           third-party assets, this field may be set differently.
       data:
           The content of the resource, in which some sensitive fields
@@ -1244,6 +1447,7 @@ ResourceSearchResult = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.asset_v1.proto.assets_pb2",
         "__doc__": """A result of Resource Search, containing information of a cloud
   resoure.
+  
   Attributes:
       name:
           The full resource name of this resource. Example: ``//compute.
@@ -1330,6 +1534,7 @@ IamPolicySearchResult = _reflection.GeneratedProtocolMessageType(
                         "DESCRIPTOR": _IAMPOLICYSEARCHRESULT_EXPLANATION_PERMISSIONS,
                         "__module__": "google.cloud.asset_v1.proto.assets_pb2",
                         "__doc__": """IAM permissions
+      
       Attributes:
           permissions:
               A list of permissions. A sample permission string:
@@ -1350,6 +1555,7 @@ IamPolicySearchResult = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _IAMPOLICYSEARCHRESULT_EXPLANATION,
                 "__module__": "google.cloud.asset_v1.proto.assets_pb2",
                 "__doc__": """Explanation about the IAM policy search result.
+    
     Attributes:
         matched_permissions:
             The map from roles to their included permissions that match
@@ -1369,6 +1575,7 @@ IamPolicySearchResult = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.asset_v1.proto.assets_pb2",
         "__doc__": """A result of IAM Policy search, containing information of an IAM
   policy.
+  
   Attributes:
       resource:
           The full resource name of the resource associated with this

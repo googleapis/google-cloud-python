@@ -25,6 +25,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.asset.v1beta1",
     syntax="proto3",
     serialized_options=b"\n\036com.google.cloud.asset.v1beta1B\nAssetProtoP\001Z?google.golang.org/genproto/googleapis/cloud/asset/v1beta1;asset\370\001\001\252\002\032Google.Cloud.Asset.V1Beta1\312\002\032Google\\Cloud\\Asset\\V1beta1",
+    create_key=_descriptor._internal_create_key,
     serialized_pb=b'\n-google/cloud/asset_v1beta1/proto/assets.proto\x12\x1agoogle.cloud.asset.v1beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a\x1agoogle/iam/v1/policy.proto\x1a\x19google/protobuf/any.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\x8a\x01\n\rTemporalAsset\x12\x36\n\x06window\x18\x01 \x01(\x0b\x32&.google.cloud.asset.v1beta1.TimeWindow\x12\x0f\n\x07\x64\x65leted\x18\x02 \x01(\x08\x12\x30\n\x05\x61sset\x18\x03 \x01(\x0b\x32!.google.cloud.asset.v1beta1.Asset"j\n\nTimeWindow\x12.\n\nstart_time\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp"\xb5\x01\n\x05\x41sset\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nasset_type\x18\x02 \x01(\t\x12\x36\n\x08resource\x18\x03 \x01(\x0b\x32$.google.cloud.asset.v1beta1.Resource\x12)\n\niam_policy\x18\x04 \x01(\x0b\x32\x15.google.iam.v1.Policy:\'\xea\x41$\n\x1f\x63loudasset.googleapis.com/Asset\x12\x01*"\xa0\x01\n\x08Resource\x12\x0f\n\x07version\x18\x01 \x01(\t\x12\x1e\n\x16\x64iscovery_document_uri\x18\x02 \x01(\t\x12\x16\n\x0e\x64iscovery_name\x18\x03 \x01(\t\x12\x14\n\x0cresource_url\x18\x04 \x01(\t\x12\x0e\n\x06parent\x18\x05 \x01(\t\x12%\n\x04\x64\x61ta\x18\x06 \x01(\x0b\x32\x17.google.protobuf.StructB\xac\x01\n\x1e\x63om.google.cloud.asset.v1beta1B\nAssetProtoP\x01Z?google.golang.org/genproto/googleapis/cloud/asset/v1beta1;asset\xf8\x01\x01\xaa\x02\x1aGoogle.Cloud.Asset.V1Beta1\xca\x02\x1aGoogle\\Cloud\\Asset\\V1beta1b\x06proto3',
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
@@ -43,6 +44,7 @@ _TEMPORALASSET = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="window",
@@ -61,6 +63,7 @@ _TEMPORALASSET = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="deleted",
@@ -79,6 +82,7 @@ _TEMPORALASSET = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="asset",
@@ -97,6 +101,7 @@ _TEMPORALASSET = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -118,6 +123,7 @@ _TIMEWINDOW = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="start_time",
@@ -136,6 +142,7 @@ _TIMEWINDOW = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="end_time",
@@ -154,6 +161,7 @@ _TIMEWINDOW = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -175,6 +183,7 @@ _ASSET = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -193,6 +202,7 @@ _ASSET = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="asset_type",
@@ -211,6 +221,7 @@ _ASSET = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="resource",
@@ -229,6 +240,7 @@ _ASSET = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="iam_policy",
@@ -247,6 +259,7 @@ _ASSET = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -268,6 +281,7 @@ _RESOURCE = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="version",
@@ -286,6 +300,7 @@ _RESOURCE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="discovery_document_uri",
@@ -304,6 +319,7 @@ _RESOURCE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="discovery_name",
@@ -322,6 +338,7 @@ _RESOURCE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="resource_url",
@@ -340,6 +357,7 @@ _RESOURCE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="parent",
@@ -358,6 +376,7 @@ _RESOURCE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="data",
@@ -376,6 +395,7 @@ _RESOURCE = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -421,7 +441,7 @@ TemporalAsset = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.asset_v1beta1.proto.assets_pb2",
         "__doc__": """Temporal asset. In addition to the asset, the temporal asset includes
   the status of the asset and valid from and to time of it.
-
+  
   Attributes:
       window:
           The time window when the asset data and state was observed.
@@ -442,6 +462,7 @@ TimeWindow = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _TIMEWINDOW,
         "__module__": "google.cloud.asset_v1beta1.proto.assets_pb2",
         "__doc__": """A time window of (start_time, end_time].
+  
   Attributes:
       start_time:
           Start time of the time window (exclusive).
@@ -462,6 +483,7 @@ Asset = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.asset_v1beta1.proto.assets_pb2",
         "__doc__": """Cloud asset. This includes all Google Cloud Platform resources, Cloud
   IAM policies, and other non-GCP assets.
+  
   Attributes:
       name:
 
@@ -490,6 +512,7 @@ Resource = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _RESOURCE,
         "__module__": "google.cloud.asset_v1beta1.proto.assets_pb2",
         "__doc__": """Representation of a cloud resource.
+  
   Attributes:
       version:
           The API version. Example: “v1”.

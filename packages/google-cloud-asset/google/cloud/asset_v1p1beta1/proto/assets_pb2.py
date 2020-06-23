@@ -21,6 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package="google.cloud.asset.v1p1beta1",
     syntax="proto3",
     serialized_options=b"\n com.google.cloud.asset.v1p1beta1B\nAssetProtoP\001ZAgoogle.golang.org/genproto/googleapis/cloud/asset/v1p1beta1;asset\370\001\001\252\002\034Google.Cloud.Asset.V1P1Beta1\312\002\034Google\\Cloud\\Asset\\V1p1beta1",
+    create_key=_descriptor._internal_create_key,
     serialized_pb=b'\n/google/cloud/asset_v1p1beta1/proto/assets.proto\x12\x1cgoogle.cloud.asset.v1p1beta1\x1a\x1agoogle/iam/v1/policy.proto\x1a\x1cgoogle/api/annotations.proto"\xc2\x02\n\x18StandardResourceMetadata\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nasset_type\x18\x02 \x01(\t\x12\x0f\n\x07project\x18\x03 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x04 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t\x12\x1d\n\x15\x61\x64\x64itional_attributes\x18\n \x03(\t\x12\x10\n\x08location\x18\x0b \x01(\t\x12R\n\x06labels\x18\x0c \x03(\x0b\x32\x42.google.cloud.asset.v1p1beta1.StandardResourceMetadata.LabelsEntry\x12\x14\n\x0cnetwork_tags\x18\r \x03(\t\x1a-\n\x0bLabelsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\xa3\x03\n\x15IamPolicySearchResult\x12\x10\n\x08resource\x18\x01 \x01(\t\x12\x0f\n\x07project\x18\x03 \x01(\t\x12%\n\x06policy\x18\x04 \x01(\x0b\x32\x15.google.iam.v1.Policy\x12T\n\x0b\x65xplanation\x18\x05 \x01(\x0b\x32?.google.cloud.asset.v1p1beta1.IamPolicySearchResult.Explanation\x1a\xe9\x01\n\x0b\x45xplanation\x12t\n\x13matched_permissions\x18\x01 \x03(\x0b\x32W.google.cloud.asset.v1p1beta1.IamPolicySearchResult.Explanation.MatchedPermissionsEntry\x1a\x64\n\x17MatchedPermissionsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x38\n\x05value\x18\x02 \x01(\x0b\x32).google.cloud.asset.v1p1beta1.Permissions:\x02\x38\x01""\n\x0bPermissions\x12\x13\n\x0bpermissions\x18\x01 \x03(\tB\xb4\x01\n com.google.cloud.asset.v1p1beta1B\nAssetProtoP\x01ZAgoogle.golang.org/genproto/googleapis/cloud/asset/v1p1beta1;asset\xf8\x01\x01\xaa\x02\x1cGoogle.Cloud.Asset.V1P1Beta1\xca\x02\x1cGoogle\\Cloud\\Asset\\V1p1beta1b\x06proto3',
     dependencies=[
         google_dot_iam_dot_v1_dot_policy__pb2.DESCRIPTOR,
@@ -35,6 +36,7 @@ _STANDARDRESOURCEMETADATA_LABELSENTRY = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="key",
@@ -53,6 +55,7 @@ _STANDARDRESOURCEMETADATA_LABELSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="value",
@@ -71,6 +74,7 @@ _STANDARDRESOURCEMETADATA_LABELSENTRY = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -91,6 +95,7 @@ _STANDARDRESOURCEMETADATA = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="name",
@@ -109,6 +114,7 @@ _STANDARDRESOURCEMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="asset_type",
@@ -127,6 +133,7 @@ _STANDARDRESOURCEMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="project",
@@ -145,6 +152,7 @@ _STANDARDRESOURCEMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="display_name",
@@ -163,6 +171,7 @@ _STANDARDRESOURCEMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="description",
@@ -181,6 +190,7 @@ _STANDARDRESOURCEMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="additional_attributes",
@@ -199,6 +209,7 @@ _STANDARDRESOURCEMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="location",
@@ -217,6 +228,7 @@ _STANDARDRESOURCEMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="labels",
@@ -235,6 +247,7 @@ _STANDARDRESOURCEMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="network_tags",
@@ -253,6 +266,7 @@ _STANDARDRESOURCEMETADATA = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -274,6 +288,7 @@ _IAMPOLICYSEARCHRESULT_EXPLANATION_MATCHEDPERMISSIONSENTRY = _descriptor.Descrip
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="key",
@@ -292,6 +307,7 @@ _IAMPOLICYSEARCHRESULT_EXPLANATION_MATCHEDPERMISSIONSENTRY = _descriptor.Descrip
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="value",
@@ -310,6 +326,7 @@ _IAMPOLICYSEARCHRESULT_EXPLANATION_MATCHEDPERMISSIONSENTRY = _descriptor.Descrip
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -330,6 +347,7 @@ _IAMPOLICYSEARCHRESULT_EXPLANATION = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="matched_permissions",
@@ -348,6 +366,7 @@ _IAMPOLICYSEARCHRESULT_EXPLANATION = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -368,6 +387,7 @@ _IAMPOLICYSEARCHRESULT = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="resource",
@@ -386,6 +406,7 @@ _IAMPOLICYSEARCHRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="project",
@@ -404,6 +425,7 @@ _IAMPOLICYSEARCHRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="policy",
@@ -422,6 +444,7 @@ _IAMPOLICYSEARCHRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
         _descriptor.FieldDescriptor(
             name="explanation",
@@ -440,6 +463,7 @@ _IAMPOLICYSEARCHRESULT = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         ),
     ],
     extensions=[],
@@ -461,6 +485,7 @@ _PERMISSIONS = _descriptor.Descriptor(
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
+    create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
             name="permissions",
@@ -479,6 +504,7 @@ _PERMISSIONS = _descriptor.Descriptor(
             extension_scope=None,
             serialized_options=None,
             file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
         )
     ],
     extensions=[],
@@ -536,6 +562,7 @@ StandardResourceMetadata = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _STANDARDRESOURCEMETADATA,
         "__module__": "google.cloud.asset_v1p1beta1.proto.assets_pb2",
         "__doc__": """The standard metadata of a cloud resource.
+  
   Attributes:
       name:
           The full resource name. For example: ``//compute.googleapis.co
@@ -600,6 +627,7 @@ IamPolicySearchResult = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _IAMPOLICYSEARCHRESULT_EXPLANATION,
                 "__module__": "google.cloud.asset_v1p1beta1.proto.assets_pb2",
                 "__doc__": """Explanation about the IAM policy search result.
+    
     Attributes:
         matched_permissions:
             The map from roles to their included permission matching the
@@ -615,6 +643,7 @@ IamPolicySearchResult = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _IAMPOLICYSEARCHRESULT,
         "__module__": "google.cloud.asset_v1p1beta1.proto.assets_pb2",
         "__doc__": """The result for a IAM Policy search.
+  
   Attributes:
       resource:
           The `full resource name <https://cloud.google.com/apis/design/
@@ -652,6 +681,7 @@ Permissions = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _PERMISSIONS,
         "__module__": "google.cloud.asset_v1p1beta1.proto.assets_pb2",
         "__doc__": """IAM permissions
+  
   Attributes:
       permissions:
           A list of permissions. A sample permission string:
