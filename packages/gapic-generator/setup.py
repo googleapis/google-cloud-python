@@ -51,9 +51,11 @@ setup(
         "protobuf >= 3.12.0",
         "pypandoc >= 1.4",
         "PyYAML >= 5.1.1",
+        "dataclasses < 0.7; python_version < '3.7'"
     ),
     extras_require={':python_version<"3.7"': ("dataclasses >= 0.4",),},
     tests_require=("pyfakefs >= 3.6",),
+    python_requires=">=3.6",
     classifiers=(
         "Development Status :: 4 - Beta",
         "Environment :: Console",
@@ -62,6 +64,7 @@ setup(
         "Operating System :: POSIX",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Topic :: Software Development :: Code Generators",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ),
