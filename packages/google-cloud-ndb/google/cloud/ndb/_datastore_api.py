@@ -82,6 +82,8 @@ def make_call(rpc_name, request, retries=None, timeout=None):
 
     @tasklets.tasklet
     def rpc_call():
+        context = context_module.get_toplevel_context()
+
         call = method.future(request, timeout=timeout)
         rpc = _remote.RemoteCall(call, "{}({})".format(rpc_name, request))
         log.debug(rpc)
@@ -93,6 +95,8 @@ def make_call(rpc_name, request, retries=None, timeout=None):
             if isinstance(error, grpc.Call):
                 error = core_exceptions.from_grpc_error(error)
             raise error
+        finally:
+            context.rpc_time += rpc.elapsed_time
 
         raise tasklets.Return(result)
 

@@ -17,6 +17,7 @@
 This should handle both asynchronous ``ndb`` objects and arbitrary callbacks.
 """
 import collections
+import logging
 import uuid
 import time
 
@@ -26,23 +27,8 @@ try:
 except ImportError:  # pragma: NO PY3 COVER
     import Queue as queue
 
-__all__ = [
-    "add_idle",
-    "call_soon",
-    "EventLoop",
-    "get_event_loop",
-    "queue_call",
-    "queue_rpc",
-    "run",
-    "run1",
-]
 
-
-def _logging_debug(*args, **kw):
-    """Placeholder.
-
-    See #6360."""
-
+log = logging.getLogger(__name__)
 
 _Event = collections.namedtuple(
     "_Event", ("when", "callback", "args", "kwargs")
@@ -149,21 +135,21 @@ class EventLoop(object):
             idlers = self.idlers
             queue = self.queue
             rpcs = self.rpcs
-            _logging_debug("Clearing stale EventLoop instance...")
+            log.debug("Clearing stale EventLoop instance...")
             if current:
-                _logging_debug("  current = %s", current)
+                log.debug("  current = %s", current)
             if idlers:
-                _logging_debug("  idlers = %s", idlers)
+                log.debug("  idlers = %s", idlers)
             if queue:
-                _logging_debug("  queue = %s", queue)
+                log.debug("  queue = %s", queue)
             if rpcs:
-                _logging_debug("  rpcs = %s", rpcs)
+                log.debug("  rpcs = %s", rpcs)
             self.__init__()
             current.clear()
             idlers.clear()
             queue[:] = []
             rpcs.clear()
-            _logging_debug("Cleared")
+            log.debug("Cleared")
 
     def insort_event_right(self, event):
         """Insert event in queue with sorting.
@@ -267,12 +253,12 @@ class EventLoop(object):
             return False
         idler = self.idlers.popleft()
         callback, args, kwargs = idler
-        _logging_debug("idler: %s", callback.__name__)
+        log.debug("idler: %s", callback.__name__)
         result = callback(*args, **kwargs)
 
         # See add_idle() for meaning of callback return value.
         if result is None:
-            _logging_debug("idler %s removed", callback.__name__)
+            log.debug("idler %s removed", callback.__name__)
         else:
             if result:
                 self.inactive = 0
@@ -292,7 +278,6 @@ class EventLoop(object):
 
         self.inactive = 0
         callback, args, kwargs = self.current.popleft()
-        _logging_debug("nowevent: %s", callback.__name__)
         callback(*args, **kwargs)
         return True
 
@@ -312,15 +297,24 @@ class EventLoop(object):
             if delay <= 0:
                 self.inactive = 0
                 _, callback, args, kwargs = self.queue.pop(0)
-                _logging_debug("event: %s", callback.__name__)
+                log.debug("event: %s", callback.__name__)
                 callback(*args, **kwargs)
                 return 0
 
         if self.rpcs:
+            # Avoid circular import
+            from google.cloud.ndb import context as context_module
+
+            context = context_module.get_toplevel_context()
+
             # This potentially blocks, waiting for an rpc to finish and put its
             # result on the queue. Functionally equivalent to the ``wait_any``
             # call that was used here in legacy NDB.
+            start_time = time.time()
             rpc_id, rpc = self.rpc_results.get()
+            elapsed = time.time() - start_time
+            log.debug("Blocked for {}s awaiting RPC results.".format(elapsed))
+            context.wait_time += elapsed
 
             callback = self.rpcs.pop(rpc_id)
             callback(rpc)

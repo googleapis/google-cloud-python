@@ -26,20 +26,12 @@ from google.cloud.ndb import key as key_module
 from google.cloud.ndb import tasklets
 
 
-__all__ = [
-    "AutoBatcher",
-    "Context",
-    "ContextOptions",
-    "get_context",
-    "TransactionOptions",
-]
-
-
 class _LocalState(threading.local):
     """Thread local state."""
 
     def __init__(self):
         self.context = None
+        self.toplevel_context = None
 
 
 _state = _LocalState()
@@ -66,6 +58,40 @@ def get_context(raise_context_error=True):
             ``raise_context_error`` is :data:`True`.
     """
     context = _state.context
+    if context:
+        return context
+
+    if raise_context_error:
+        raise exceptions.ContextError()
+
+
+def get_toplevel_context(raise_context_error=True):
+    """Get the current top level context.
+
+    This function should be called within a context established by
+    :meth:`google.cloud.ndb.client.Client.context`.
+
+    The toplevel context is the context created by the call to
+    :meth:`google.cloud.ndb.client.Client.context`. At times, this context will
+    be superceded by subcontexts, which are used, for example, during
+    transactions. This function will always return the top level context
+    regardless of whether one of these subcontexts is the current one.
+
+    Args:
+        raise_context_error (bool): If set to :data:`True`, will raise an
+            exception if called outside of a context. Set this to :data:`False`
+            in order to have it just return :data:`None` if called outside of a
+            context. Default: :data:`True`
+
+    Returns:
+        Context: The current context.
+
+    Raises:
+        .ContextError: If called outside of a context
+            established by :meth:`google.cloud.ndb.client.Client.context` and
+            ``raise_context_error`` is :data:`True`.
+    """
+    context = _state.toplevel_context
     if context:
         return context
 
@@ -192,6 +218,8 @@ class _Context(_ContextTuple):
         datastore_policy=None,
         on_commit_callbacks=None,
         legacy_data=True,
+        rpc_time=None,
+        wait_time=None,
     ):
         # Prevent circular import in Python 2.7
         from google.cloud.ndb import _cache
@@ -253,11 +281,17 @@ class _Context(_ContextTuple):
         """
         prev_context = _state.context
         _state.context = self
+        if not prev_context:
+            _state.toplevel_context = self
+            self.rpc_time = 0
+            self.wait_time = 0
         try:
             yield self
         finally:
             if prev_context:
                 prev_context.cache.update(self.cache)
+            else:
+                _state.toplevel_context = None
             _state.context = prev_context
 
     @tasklets.tasklet

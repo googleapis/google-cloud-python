@@ -28,11 +28,36 @@ from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
 from google.cloud.ndb import _options
 
-from . import utils
+
+class Test_get_context:
+    @staticmethod
+    def test_in_context(in_context):
+        assert context_module.get_context() is in_context
+
+    @staticmethod
+    def test_no_context_raise():
+        with pytest.raises(exceptions.ContextError):
+            context_module.get_context()
+
+    @staticmethod
+    def test_no_context_dont_raise():
+        assert context_module.get_context(False) is None
 
 
-def test___all__():
-    utils.verify___all__(context_module)
+class Test_get_toplevel_context:
+    @staticmethod
+    def test_in_context(in_context):
+        with in_context.new().use():
+            assert context_module.get_toplevel_context() is in_context
+
+    @staticmethod
+    def test_no_context_raise():
+        with pytest.raises(exceptions.ContextError):
+            context_module.get_toplevel_context()
+
+    @staticmethod
+    def test_no_context_dont_raise():
+        assert context_module.get_toplevel_context(False) is None
 
 
 class TestContext:

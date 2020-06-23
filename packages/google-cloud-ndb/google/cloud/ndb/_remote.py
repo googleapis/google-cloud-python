@@ -17,6 +17,7 @@
 # In its own module to avoid circular import between _datastore_api and
 # tasklets modules.
 import grpc
+import time
 
 from google.cloud.ndb import exceptions
 
@@ -39,6 +40,13 @@ class RemoteCall(object):
     def __init__(self, future, info):
         self.future = future
         self.info = info
+        self.start_time = time.time()
+        self.elapsed_time = 0
+
+        def record_time(future):
+            self.elapsed_time = time.time() - self.start_time
+
+        future.add_done_callback(record_time)
 
     def __repr__(self):
         return self.info

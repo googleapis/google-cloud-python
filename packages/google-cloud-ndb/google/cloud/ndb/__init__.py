@@ -30,6 +30,7 @@ from google.cloud.ndb.context import AutoBatcher
 from google.cloud.ndb.context import Context
 from google.cloud.ndb.context import ContextOptions
 from google.cloud.ndb.context import get_context
+from google.cloud.ndb.context import get_toplevel_context
 from google.cloud.ndb.context import TransactionOptions
 from google.cloud.ndb._datastore_api import EVENTUAL
 from google.cloud.ndb._datastore_api import EVENTUAL_CONSISTENCY
@@ -218,6 +219,7 @@ __all__ = [
     "add_flow_exception",
     "Future",
     "get_context",
+    "get_toplevel_context",
     "make_context",
     "make_default_context",
     "QueueFuture",

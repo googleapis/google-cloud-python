@@ -22,14 +22,8 @@ except ImportError:  # pragma: NO PY3 COVER
 import grpc
 import pytest
 
-from . import utils
-
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import _eventloop
-
-
-def test___all__():
-    utils.verify___all__(_eventloop)
 
 
 def _Event(when=0, what="foo", args=(), kw={}):
@@ -258,6 +252,7 @@ class TestEventLoop:
         assert len(loop.queue) == 1
         assert loop.inactive == 0
 
+    @pytest.mark.usefixtures("in_context")
     def test_run0_rpc(self):
         rpc = mock.Mock(spec=grpc.Future)
         callback = mock.Mock(spec=())
