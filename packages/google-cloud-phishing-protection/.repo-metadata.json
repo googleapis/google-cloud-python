@@ -4,7 +4,7 @@
   "product_documentation": "https://cloud.google.com/phishing-protection/docs/",
   "client_documentation": "https://googleapis.dev/python/phishingprotection/latest",
   "issue_tracker": "",
-  "release_level": "alpha",
+  "release_level": "beta",
   "language": "python",
   "repo": "googleapis/python-phishingprotection",
   "distribution_name": "google-cloud-phishingprotection",
