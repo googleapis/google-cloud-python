@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-texttospeech/compare/v2.0.0...v2.1.0) (2020-06-20)
+
+
+### Features
+
+* add async client ([#53](https://www.github.com/googleapis/python-texttospeech/issues/53)) ([887d8d5](https://www.github.com/googleapis/python-texttospeech/commit/887d8d501ce9255fee44170b5fc40ebfb1ea953d))
+
+
+### Documentation
+
+* change relative URLs to absolute URLs to fix broken links ([#40](https://www.github.com/googleapis/python-texttospeech/issues/40)) ([b68df44](https://www.github.com/googleapis/python-texttospeech/commit/b68df446daa7983cad1d31553ece6df569c932b2))
+
 ## [2.0.0](https://www.github.com/googleapis/python-texttospeech/compare/v1.0.1...v2.0.0) (2020-06-01)
 
 
