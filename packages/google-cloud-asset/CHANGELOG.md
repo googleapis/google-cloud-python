@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [1.2.0](https://www.github.com/googleapis/python-asset/compare/v1.1.0...v1.2.0) (2020-06-23)
+
+
+### Features
+
+* **v1:** add support for condition in Feed ([#44](https://www.github.com/googleapis/python-asset/issues/44)) ([467ab58](https://www.github.com/googleapis/python-asset/commit/467ab58b43aa11d8d6f8087800e5d8b451984edc))
+
 ## [1.1.0](https://www.github.com/googleapis/python-asset/compare/v1.0.0...v1.1.0) (2020-06-10)
 
 ### Features
