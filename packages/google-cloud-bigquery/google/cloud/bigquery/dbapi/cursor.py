@@ -15,6 +15,7 @@
 """Cursor for the Google BigQuery DB-API."""
 
 import collections
+import copy
 import warnings
 
 try:
@@ -93,18 +94,16 @@ class Cursor(object):
             return
 
         self.description = tuple(
-            [
-                Column(
-                    name=field.name,
-                    type_code=field.field_type,
-                    display_size=None,
-                    internal_size=None,
-                    precision=None,
-                    scale=None,
-                    null_ok=field.is_nullable,
-                )
-                for field in schema
-            ]
+            Column(
+                name=field.name,
+                type_code=field.field_type,
+                display_size=None,
+                internal_size=None,
+                precision=None,
+                scale=None,
+                null_ok=field.is_nullable,
+            )
+            for field in schema
         )
 
     def _set_rowcount(self, query_results):
@@ -173,11 +172,23 @@ class Cursor(object):
         formatted_operation = _format_operation(operation, parameters=parameters)
         query_parameters = _helpers.to_query_parameters(parameters)
 
-        config = job_config or job.QueryJobConfig(use_legacy_sql=False)
+        if client._default_query_job_config:
+            if job_config:
+                config = job_config._fill_from_default(client._default_query_job_config)
+            else:
+                config = copy.deepcopy(client._default_query_job_config)
+        else:
+            config = job_config or job.QueryJobConfig(use_legacy_sql=False)
+
         config.query_parameters = query_parameters
         self._query_job = client.query(
             formatted_operation, job_config=config, job_id=job_id
         )
+
+        if self._query_job.dry_run:
+            self._set_description(schema=None)
+            self.rowcount = 0
+            return
 
         # Wait for the query to finish.
         try:
@@ -210,6 +221,10 @@ class Cursor(object):
             raise exceptions.InterfaceError(
                 "No query results: execute() must be called before fetch."
             )
+
+        if self._query_job.dry_run:
+            self._query_data = iter([])
+            return
 
         is_dml = (
             self._query_job.statement_type
@@ -307,6 +322,9 @@ class Cursor(object):
     def fetchone(self):
         """Fetch a single row from the results of the last ``execute*()`` call.
 
+        .. note::
+            If a dry run query was executed, no rows are returned.
+
         Returns:
             Tuple:
                 A tuple representing a row or ``None`` if no more data is
@@ -323,6 +341,9 @@ class Cursor(object):
 
     def fetchmany(self, size=None):
         """Fetch multiple results from the last ``execute*()`` call.
+
+        .. note::
+            If a dry run query was executed, no rows are returned.
 
         .. note::
             The size parameter is not used for the request/response size.
@@ -359,6 +380,9 @@ class Cursor(object):
 
     def fetchall(self):
         """Fetch all remaining results from the last ``execute*()`` call.
+
+        .. note::
+            If a dry run query was executed, no rows are returned.
 
         Returns:
             List[Tuple]: A list of all the rows in the results.

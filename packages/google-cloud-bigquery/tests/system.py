@@ -1782,6 +1782,22 @@ class TestBigQuery(unittest.TestCase):
         ]
         self.assertEqual(fetched_data, expected_data)
 
+    def test_dbapi_dry_run_query(self):
+        from google.cloud.bigquery.job import QueryJobConfig
+
+        query = """
+            SELECT country_name
+            FROM `bigquery-public-data.utility_us.country_code_iso`
+            WHERE country_name LIKE 'U%'
+        """
+
+        Config.CURSOR.execute(query, job_config=QueryJobConfig(dry_run=True))
+        self.assertEqual(Config.CURSOR.rowcount, 0, "expected no rows")
+
+        rows = Config.CURSOR.fetchall()
+
+        self.assertEqual(list(rows), [])
+
     @unittest.skipIf(
         bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
     )
