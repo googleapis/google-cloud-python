@@ -660,14 +660,14 @@ def _sign_message(message, access_token, service_account_email):
     message = _helpers._to_bytes(message)
 
     method = "POST"
-    url = "https://iam.googleapis.com/v1/projects/-/serviceAccounts/{}:signBlob?alt=json".format(
+    url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/{}:signBlob?alt=json".format(
         service_account_email
     )
     headers = {
         "Authorization": "Bearer " + access_token,
         "Content-type": "application/json",
     }
-    body = json.dumps({"bytesToSign": base64.b64encode(message).decode("utf-8")})
+    body = json.dumps({"payload": base64.b64encode(message).decode("utf-8")})
 
     request = requests.Request()
     response = request(url=url, method=method, body=body, headers=headers)
@@ -678,7 +678,7 @@ def _sign_message(message, access_token, service_account_email):
         )
 
     data = json.loads(response.data.decode("utf-8"))
-    return data["signature"]
+    return data["signedBlob"]
 
 
 def _url_encode(query_params):

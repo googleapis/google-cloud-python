@@ -678,7 +678,7 @@ class Test_sign_message(unittest.TestCase):
 
     def test_sign_bytes(self):
         signature = "DEADBEEF"
-        data = {"signature": signature}
+        data = {"signedBlob": signature}
         request = make_request(200, data)
         with mock.patch("google.auth.transport.requests.Request", return_value=request):
             returned_signature = self._call_fut(
