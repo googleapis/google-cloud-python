@@ -38,4 +38,8 @@ class AssetServiceClient(asset_service_client.AssetServiceClient):
     enums = enums
 
 
-__all__ = ("enums", "types", "AssetServiceClient")
+__all__ = (
+    "enums",
+    "types",
+    "AssetServiceClient",
+)

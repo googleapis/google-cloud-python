@@ -198,7 +198,7 @@ _GETFEEDREQUEST = _descriptor.Descriptor(
             serialized_options=b"\340A\002\372A \n\036cloudasset.googleapis.com/Feed",
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -239,7 +239,7 @@ _LISTFEEDSREQUEST = _descriptor.Descriptor(
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -280,7 +280,7 @@ _LISTFEEDSRESPONSE = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -381,7 +381,7 @@ _DELETEFEEDREQUEST = _descriptor.Descriptor(
             serialized_options=b"\340A\002\372A \n\036cloudasset.googleapis.com/Feed",
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -422,7 +422,7 @@ _OUTPUTCONFIG = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -439,7 +439,7 @@ _OUTPUTCONFIG = _descriptor.Descriptor(
             containing_type=None,
             create_key=_descriptor._internal_create_key,
             fields=[],
-        )
+        ),
     ],
     serialized_start=895,
     serialized_end=997,
@@ -472,7 +472,7 @@ _GCSDESTINATION = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -489,7 +489,7 @@ _GCSDESTINATION = _descriptor.Descriptor(
             containing_type=None,
             create_key=_descriptor._internal_create_key,
             fields=[],
-        )
+        ),
     ],
     serialized_start=999,
     serialized_end=1044,
@@ -522,7 +522,7 @@ _PUBSUBDESTINATION = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -563,7 +563,7 @@ _FEEDOUTPUTCONFIG = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -580,7 +580,7 @@ _FEEDOUTPUTCONFIG = _descriptor.Descriptor(
             containing_type=None,
             create_key=_descriptor._internal_create_key,
             fields=[],
-        )
+        ),
     ],
     serialized_start=1082,
     serialized_end=1194,

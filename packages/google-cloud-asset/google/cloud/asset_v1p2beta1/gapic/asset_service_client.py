@@ -38,7 +38,7 @@ from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-asset").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-asset",).version
 
 
 class AssetServiceClient(object):
@@ -75,7 +75,7 @@ class AssetServiceClient(object):
     def feed_path(cls, project, feed):
         """Return a fully-qualified feed string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/feeds/{feed}", project=project, feed=feed
+            "projects/{project}/feeds/{feed}", project=project, feed=feed,
         )
 
     def __init__(
@@ -165,12 +165,12 @@ class AssetServiceClient(object):
                 self.transport = transport
         else:
             self.transport = asset_service_grpc_transport.AssetServiceGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -181,7 +181,7 @@ class AssetServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -243,7 +243,7 @@ class AssetServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = asset_service_pb2.DeleteFeedRequest(name=name)
+        request = asset_service_pb2.DeleteFeedRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -337,7 +337,7 @@ class AssetServiceClient(object):
             )
 
         request = asset_service_pb2.CreateFeedRequest(
-            parent=parent, feed_id=feed_id, feed=feed
+            parent=parent, feed_id=feed_id, feed=feed,
         )
         if metadata is None:
             metadata = []
@@ -411,7 +411,7 @@ class AssetServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = asset_service_pb2.GetFeedRequest(name=name)
+        request = asset_service_pb2.GetFeedRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -483,7 +483,7 @@ class AssetServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = asset_service_pb2.ListFeedsRequest(parent=parent)
+        request = asset_service_pb2.ListFeedsRequest(parent=parent,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -571,7 +571,7 @@ class AssetServiceClient(object):
             )
 
         request = asset_service_pb2.UpdateFeedRequest(
-            feed=feed, update_mask=update_mask
+            feed=feed, update_mask=update_mask,
         )
         if metadata is None:
             metadata = []

@@ -174,4 +174,7 @@ if count != 2:
 templated_files = gcp.CommonTemplates().py_library(unit_cov_level=79, cov_level=80)
 s.move(templated_files)
 
+# TODO(busunkim): Use latest sphinx after microgenerator transition
+s.replace("noxfile.py", '"sphinx"', '"sphinx<3.0.0"')
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

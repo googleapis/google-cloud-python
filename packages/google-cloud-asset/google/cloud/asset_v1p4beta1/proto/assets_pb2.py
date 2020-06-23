@@ -231,7 +231,7 @@ _IAMPOLICYANALYSISRESULT_ACCESS = _descriptor.Descriptor(
             containing_type=None,
             create_key=_descriptor._internal_create_key,
             fields=[],
-        )
+        ),
     ],
     serialized_start=689,
     serialized_end=844,

@@ -416,7 +416,7 @@ _BATCHGETASSETSHISTORYRESPONSE = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -536,7 +536,7 @@ _GETFEEDREQUEST = _descriptor.Descriptor(
             serialized_options=b"\340A\002\372A \n\036cloudasset.googleapis.com/Feed",
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -577,7 +577,7 @@ _LISTFEEDSREQUEST = _descriptor.Descriptor(
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -618,7 +618,7 @@ _LISTFEEDSRESPONSE = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -719,7 +719,7 @@ _DELETEFEEDREQUEST = _descriptor.Descriptor(
             serialized_options=b"\340A\002\372A \n\036cloudasset.googleapis.com/Feed",
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -796,7 +796,7 @@ _OUTPUTCONFIG = _descriptor.Descriptor(
             containing_type=None,
             create_key=_descriptor._internal_create_key,
             fields=[],
-        )
+        ),
     ],
     serialized_start=1640,
     serialized_end=1811,
@@ -865,7 +865,7 @@ _GCSDESTINATION = _descriptor.Descriptor(
             containing_type=None,
             create_key=_descriptor._internal_create_key,
             fields=[],
-        )
+        ),
     ],
     serialized_start=1813,
     serialized_end=1880,
@@ -977,7 +977,7 @@ _PUBSUBDESTINATION = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1018,7 +1018,7 @@ _FEEDOUTPUTCONFIG = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1035,7 +1035,7 @@ _FEEDOUTPUTCONFIG = _descriptor.Descriptor(
             containing_type=None,
             create_key=_descriptor._internal_create_key,
             fields=[],
-        )
+        ),
     ],
     serialized_start=1998,
     serialized_end=2103,

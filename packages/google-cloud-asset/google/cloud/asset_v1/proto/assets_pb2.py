@@ -218,7 +218,7 @@ _TEMPORALASSET = _descriptor.Descriptor(
     ],
     extensions=[],
     nested_types=[],
-    enum_types=[_TEMPORALASSET_PRIORASSETSTATE],
+    enum_types=[_TEMPORALASSET_PRIORASSETSTATE,],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
@@ -503,7 +503,7 @@ _ASSET = _descriptor.Descriptor(
             containing_type=None,
             create_key=_descriptor._internal_create_key,
             fields=[],
-        )
+        ),
     ],
     serialized_start=979,
     serialized_end=1549,
@@ -905,7 +905,7 @@ _RESOURCESEARCHRESULT = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_RESOURCESEARCHRESULT_LABELSENTRY],
+    nested_types=[_RESOURCESEARCHRESULT_LABELSENTRY,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -943,7 +943,7 @@ _IAMPOLICYSEARCHRESULT_EXPLANATION_PERMISSIONS = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1042,7 +1042,7 @@ _IAMPOLICYSEARCHRESULT_EXPLANATION = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[
@@ -1145,7 +1145,7 @@ _IAMPOLICYSEARCHRESULT = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_IAMPOLICYSEARCHRESULT_EXPLANATION],
+    nested_types=[_IAMPOLICYSEARCHRESULT_EXPLANATION,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,

@@ -390,7 +390,7 @@ _BATCHGETASSETSHISTORYRESPONSE = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -431,7 +431,7 @@ _OUTPUTCONFIG = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -448,7 +448,7 @@ _OUTPUTCONFIG = _descriptor.Descriptor(
             containing_type=None,
             create_key=_descriptor._internal_create_key,
             fields=[],
-        )
+        ),
     ],
     serialized_start=1077,
     serialized_end=1177,
@@ -517,7 +517,7 @@ _GCSDESTINATION = _descriptor.Descriptor(
             containing_type=None,
             create_key=_descriptor._internal_create_key,
             fields=[],
-        )
+        ),
     ],
     serialized_start=1179,
     serialized_end=1246,

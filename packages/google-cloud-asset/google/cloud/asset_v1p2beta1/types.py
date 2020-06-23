@@ -25,9 +25,14 @@ from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
 
-_shared_modules = [empty_pb2, field_mask_pb2]
+_shared_modules = [
+    empty_pb2,
+    field_mask_pb2,
+]
 
-_local_modules = [asset_service_pb2]
+_local_modules = [
+    asset_service_pb2,
+]
 
 names = []
 
