@@ -143,6 +143,9 @@ class TestInstanceAdminAPI(unittest.TestCase):
         for instance in self.instances_to_delete:
             instance.delete()
 
+    @unittest.skipIf(
+        CREATE_INSTANCE, "This test fails when system tests are run in parallel."
+    )
     def test_list_instances(self):
         instances = list(Config.CLIENT.list_instances())
         # We have added one new instance in `setUpModule`.

@@ -163,4 +163,12 @@ s.replace(
     "include google/cloud/spanner_v1/gapic/transports/spanner.grpc.config\n",
 )
 
+s.replace(
+    ".kokoro/build.sh",
+    "# Remove old nox",
+    "# Set up creating a new instance for each system test run\n"
+    "export GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE=true\n"
+    "\n\g<0>",
+)
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
