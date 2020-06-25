@@ -129,13 +129,14 @@ class TestSecretManagerServiceClient(object):
         # Setup Request
         parent = client.project_path("[PROJECT]")
         secret_id = "secretId-739547894"
+        secret = {}
 
-        response = client.create_secret(parent, secret_id)
+        response = client.create_secret(parent, secret_id, secret)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = service_pb2.CreateSecretRequest(
-            parent=parent, secret_id=secret_id
+            parent=parent, secret_id=secret_id, secret=secret
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -151,9 +152,10 @@ class TestSecretManagerServiceClient(object):
         # Setup request
         parent = client.project_path("[PROJECT]")
         secret_id = "secretId-739547894"
+        secret = {}
 
         with pytest.raises(CustomException):
-            client.create_secret(parent, secret_id)
+            client.create_secret(parent, secret_id, secret)
 
     def test_add_secret_version(self):
         # Setup Expected Response

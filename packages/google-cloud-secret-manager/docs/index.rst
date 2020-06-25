@@ -1,5 +1,7 @@
 .. include:: README.rst
 
+.. include:: multiprocessing.rst
+
 v1 Api Reference
 ----------------
 .. toctree::

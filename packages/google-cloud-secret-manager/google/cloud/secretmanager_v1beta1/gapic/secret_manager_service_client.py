@@ -49,7 +49,7 @@ from google.protobuf import field_mask_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-secret-manager"
+    "google-cloud-secret-manager",
 ).version
 
 
@@ -95,14 +95,14 @@ class SecretManagerServiceClient(object):
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}", project=project,
         )
 
     @classmethod
     def secret_path(cls, project, secret):
         """Return a fully-qualified secret string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/secrets/{secret}", project=project, secret=secret
+            "projects/{project}/secrets/{secret}", project=project, secret=secret,
         )
 
     @classmethod
@@ -202,12 +202,12 @@ class SecretManagerServiceClient(object):
                 self.transport = transport
         else:
             self.transport = secret_manager_service_grpc_transport.SecretManagerServiceGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -218,7 +218,7 @@ class SecretManagerServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -301,7 +301,7 @@ class SecretManagerServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = service_pb2.ListSecretsRequest(parent=parent, page_size=page_size)
+        request = service_pb2.ListSecretsRequest(parent=parent, page_size=page_size,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -334,7 +334,7 @@ class SecretManagerServiceClient(object):
         self,
         parent,
         secret_id,
-        secret=None,
+        secret,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -352,7 +352,10 @@ class SecretManagerServiceClient(object):
             >>> # TODO: Initialize `secret_id`:
             >>> secret_id = ''
             >>>
-            >>> response = client.create_secret(parent, secret_id)
+            >>> # TODO: Initialize `secret`:
+            >>> secret = {}
+            >>>
+            >>> response = client.create_secret(parent, secret_id, secret)
 
         Args:
             parent (str): Required. The resource name of the project to associate with the
@@ -362,7 +365,7 @@ class SecretManagerServiceClient(object):
                 A secret ID is a string with a maximum length of 255 characters and can
                 contain uppercase and lowercase letters, numerals, and the hyphen
                 (``-``) and underscore (``_``) characters.
-            secret (Union[dict, ~google.cloud.secretmanager_v1beta1.types.Secret]): A ``Secret`` with initial field values.
+            secret (Union[dict, ~google.cloud.secretmanager_v1beta1.types.Secret]): Required. A ``Secret`` with initial field values.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.secretmanager_v1beta1.types.Secret`
@@ -397,7 +400,7 @@ class SecretManagerServiceClient(object):
             )
 
         request = service_pb2.CreateSecretRequest(
-            parent=parent, secret_id=secret_id, secret=secret
+            parent=parent, secret_id=secret_id, secret=secret,
         )
         if metadata is None:
             metadata = []
@@ -477,7 +480,7 @@ class SecretManagerServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = service_pb2.AddSecretVersionRequest(parent=parent, payload=payload)
+        request = service_pb2.AddSecretVersionRequest(parent=parent, payload=payload,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -547,7 +550,7 @@ class SecretManagerServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = service_pb2.GetSecretRequest(name=name)
+        request = service_pb2.GetSecretRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -629,7 +632,7 @@ class SecretManagerServiceClient(object):
             )
 
         request = service_pb2.UpdateSecretRequest(
-            secret=secret, update_mask=update_mask
+            secret=secret, update_mask=update_mask,
         )
         if metadata is None:
             metadata = []
@@ -697,7 +700,7 @@ class SecretManagerServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = service_pb2.DeleteSecretRequest(name=name)
+        request = service_pb2.DeleteSecretRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -789,7 +792,7 @@ class SecretManagerServiceClient(object):
             )
 
         request = service_pb2.ListSecretVersionsRequest(
-            parent=parent, page_size=page_size
+            parent=parent, page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -876,7 +879,7 @@ class SecretManagerServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = service_pb2.GetSecretVersionRequest(name=name)
+        request = service_pb2.GetSecretVersionRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -949,7 +952,7 @@ class SecretManagerServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = service_pb2.AccessSecretVersionRequest(name=name)
+        request = service_pb2.AccessSecretVersionRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1021,7 +1024,7 @@ class SecretManagerServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = service_pb2.DisableSecretVersionRequest(name=name)
+        request = service_pb2.DisableSecretVersionRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1093,7 +1096,7 @@ class SecretManagerServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = service_pb2.EnableSecretVersionRequest(name=name)
+        request = service_pb2.EnableSecretVersionRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1166,7 +1169,7 @@ class SecretManagerServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = service_pb2.DestroySecretVersionRequest(name=name)
+        request = service_pb2.DestroySecretVersionRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1252,7 +1255,7 @@ class SecretManagerServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = iam_policy_pb2.SetIamPolicyRequest(resource=resource, policy=policy)
+        request = iam_policy_pb2.SetIamPolicyRequest(resource=resource, policy=policy,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1331,7 +1334,7 @@ class SecretManagerServiceClient(object):
             )
 
         request = iam_policy_pb2.GetIamPolicyRequest(
-            resource=resource, options=options_
+            resource=resource, options=options_,
         )
         if metadata is None:
             metadata = []
@@ -1418,7 +1421,7 @@ class SecretManagerServiceClient(object):
             )
 
         request = iam_policy_pb2.TestIamPermissionsRequest(
-            resource=resource, permissions=permissions
+            resource=resource, permissions=permissions,
         )
         if metadata is None:
             metadata = []
