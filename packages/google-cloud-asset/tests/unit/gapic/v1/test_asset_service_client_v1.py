@@ -66,37 +66,6 @@ class CustomException(Exception):
 
 
 class TestAssetServiceClient(object):
-    def test_delete_feed(self):
-        channel = ChannelStub()
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = asset_v1.AssetServiceClient()
-
-        # Setup Request
-        name = "name3373707"
-
-        client.delete_feed(name)
-
-        assert len(channel.requests) == 1
-        expected_request = asset_service_pb2.DeleteFeedRequest(name=name)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_feed_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = asset_v1.AssetServiceClient()
-
-        # Setup request
-        name = "name3373707"
-
-        with pytest.raises(CustomException):
-            client.delete_feed(name)
-
     def test_export_assets(self):
         # Setup Expected Response
         expected_response = {}
@@ -350,6 +319,37 @@ class TestAssetServiceClient(object):
 
         with pytest.raises(CustomException):
             client.update_feed(feed, update_mask)
+
+    def test_delete_feed(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = asset_v1.AssetServiceClient()
+
+        # Setup Request
+        name = "name3373707"
+
+        client.delete_feed(name)
+
+        assert len(channel.requests) == 1
+        expected_request = asset_service_pb2.DeleteFeedRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_feed_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = asset_v1.AssetServiceClient()
+
+        # Setup request
+        name = "name3373707"
+
+        with pytest.raises(CustomException):
+            client.delete_feed(name)
 
     def test_search_all_resources(self):
         # Setup Expected Response
