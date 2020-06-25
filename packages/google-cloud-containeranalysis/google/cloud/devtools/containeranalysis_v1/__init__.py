@@ -25,8 +25,8 @@ from google.cloud.devtools.containeranalysis_v1.gapic import container_analysis_
 
 if sys.version_info[:2] == (2, 7):
     message = (
-        "A future version of this library will drop support for Python 2.7."
-        "More details about Python 2 support for Google Cloud Client Libraries"
+        "A future version of this library will drop support for Python 2.7. "
+        "More details about Python 2 support for Google Cloud Client Libraries "
         "can be found at https://cloud.google.com/python/docs/python2-sunset/"
     )
     warnings.warn(message, DeprecationWarning)
@@ -36,4 +36,7 @@ class ContainerAnalysisClient(container_analysis_client.ContainerAnalysisClient)
     __doc__ = container_analysis_client.ContainerAnalysisClient.__doc__
 
 
-__all__ = ("types", "ContainerAnalysisClient")
+__all__ = (
+    "types",
+    "ContainerAnalysisClient",
+)

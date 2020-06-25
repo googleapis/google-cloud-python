@@ -21,4 +21,7 @@ from google.cloud.devtools.containeranalysis_v1 import ContainerAnalysisClient
 from google.cloud.devtools.containeranalysis_v1 import types
 
 
-__all__ = ("types", "ContainerAnalysisClient")
+__all__ = (
+    "types",
+    "ContainerAnalysisClient",
+)
