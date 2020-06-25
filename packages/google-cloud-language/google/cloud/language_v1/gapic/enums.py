@@ -21,24 +21,24 @@ import enum
 
 class EncodingType(enum.IntEnum):
     """
-    Represents the text encoding that the caller uses to process the output.
-    Providing an ``EncodingType`` is recommended because the API provides
-    the beginning offsets for various outputs, such as tokens and mentions,
-    and languages that natively use different text encodings may access
-    offsets differently.
+    Represents the text encoding that the caller uses to process the
+    output. Providing an ``EncodingType`` is recommended because the API
+    provides the beginning offsets for various outputs, such as tokens and
+    mentions, and languages that natively use different text encodings may
+    access offsets differently.
 
     Attributes:
       NONE (int): If ``EncodingType`` is not specified, encoding-dependent information
       (such as ``begin_offset``) will be set at ``-1``.
-      UTF8 (int): Encoding-dependent information (such as ``begin_offset``) is calculated
-      based on the UTF-8 encoding of the input. C++ and Go are examples of
-      languages that use this encoding natively.
-      UTF16 (int): Encoding-dependent information (such as ``begin_offset``) is calculated
-      based on the UTF-16 encoding of the input. Java and JavaScript are
+      UTF8 (int): Encoding-dependent information (such as ``begin_offset``) is
+      calculated based on the UTF-8 encoding of the input. C++ and Go are
       examples of languages that use this encoding natively.
-      UTF32 (int): Encoding-dependent information (such as ``begin_offset``) is calculated
-      based on the UTF-32 encoding of the input. Python is an example of a
-      language that uses this encoding natively.
+      UTF16 (int): Encoding-dependent information (such as ``begin_offset``) is
+      calculated based on the UTF-16 encoding of the input. Java and
+      JavaScript are examples of languages that use this encoding natively.
+      UTF32 (int): Encoding-dependent information (such as ``begin_offset``) is
+      calculated based on the UTF-32 encoding of the input. Python is an
+      example of a language that uses this encoding natively.
     """
 
     NONE = 0
@@ -242,8 +242,8 @@ class Document(object):
 class Entity(object):
     class Type(enum.IntEnum):
         """
-        The type of the entity. For most entity types, the associated metadata
-        is a Wikipedia URL (``wikipedia_url``) and Knowledge Graph MID
+        The type of the entity. For most entity types, the associated
+        metadata is a Wikipedia URL (``wikipedia_url``) and Knowledge Graph MID
         (``mid``). The table below lists the associated fields for entities that
         have different metadata.
 
@@ -256,8 +256,9 @@ class Entity(object):
           WORK_OF_ART (int): Artwork
           CONSUMER_GOOD (int): Consumer product
           OTHER (int): Other types of entities
-          PHONE_NUMBER (int): Phone number The metadata lists the phone number, formatted according to
-          local convention, plus whichever additional elements appear in the text:
+          PHONE_NUMBER (int): Phone number The metadata lists the phone number, formatted
+          according to local convention, plus whichever additional elements appear
+          in the text:
 
           .. raw:: html
 

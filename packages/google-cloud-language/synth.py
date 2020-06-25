@@ -58,4 +58,7 @@ s.replace(
     "enums.EncodingType",
 )
 
+# TODO(busunkim): Use latest sphinx after microgenerator transition
+s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

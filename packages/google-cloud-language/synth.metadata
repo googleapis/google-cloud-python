@@ -1,32 +1,25 @@
 {
   "sources": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "2.0.0",
-        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
-      }
-    },
-    {
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-language.git",
-        "sha": "c39138189a0c93512c1cdbb7cd00047c73a80402"
+        "sha": "7dff809b94b5a1d001aeb1e7763dbbe624865600"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "42ee97c1b93a0e3759bbba3013da309f670a90ab",
-        "internalRef": "307114445"
+        "sha": "fa4d2ecd0804eb92f27a65fe65ce2a554a361b93",
+        "internalRef": "317110673"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "f5e4c17dc78a966dbf29961dd01f9bbd63e20a04"
+        "sha": "cd522c3b4dde821766d95c80ae5aeb43d7a41170"
       }
     }
   ],
@@ -37,8 +30,7 @@
         "apiName": "language",
         "apiVersion": "v1beta2",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/language/artman_language_v1beta2.yaml"
+        "generator": "bazel"
       }
     },
     {
@@ -47,8 +39,7 @@
         "apiName": "language",
         "apiVersion": "v1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/language/artman_language_v1.yaml"
+        "generator": "bazel"
       }
     }
   ]
