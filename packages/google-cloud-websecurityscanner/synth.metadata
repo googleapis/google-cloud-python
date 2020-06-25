@@ -1,32 +1,25 @@
 {
   "sources": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "2.0.0",
-        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
-      }
-    },
-    {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-websecurityscanner",
-        "sha": "709cf0f7b76482113374b922070881efd4171975"
+        "remote": "https://github.com/googleapis/python-websecurityscanner.git",
+        "sha": "429103785469bf32cccd351f942a46d85ebf47c1"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "ee9e8e4e67f06aba881392a1a2956fbe7a42d216",
-        "internalRef": "309481123"
+        "sha": "cf41866c6f14f10a07aa1e2a1260fc0a2727d889",
+        "internalRef": "317812187"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "04cb397eb7590ea1e6c10a39fca3d8fe0fb3d256"
+        "sha": "cf2eff09d0f5319a4dc5cdce2b6356d85af4a798"
       }
     }
   ],
@@ -37,8 +30,7 @@
         "apiName": "websecurityscanner",
         "apiVersion": "v1alpha",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/websecurityscanner/artman_websecurityscanner_v1alpha.yaml"
+        "generator": "bazel"
       }
     },
     {
@@ -47,8 +39,7 @@
         "apiName": "websecurityscanner",
         "apiVersion": "v1beta",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/websecurityscanner/artman_websecurityscanner_v1beta.yaml"
+        "generator": "bazel"
       }
     }
   ]

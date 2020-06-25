@@ -1,5 +1,7 @@
 .. include:: README.rst
 
+.. include:: multiprocessing.rst
+
 Api Reference
 -------------
 This package includes clients for multiple versions of the Web Security Scanner API. By default, you will get ``v1beta``, the latest version.
