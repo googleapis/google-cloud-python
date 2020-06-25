@@ -1,5 +1,8 @@
 .. include:: README.rst
 
+.. include:: multiprocessing.rst
+
+
 Using the Library
 -----------------
 

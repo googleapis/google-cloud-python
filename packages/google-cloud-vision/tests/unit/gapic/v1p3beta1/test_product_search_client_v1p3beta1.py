@@ -25,7 +25,6 @@ from google.cloud import vision_v1p3beta1
 from google.cloud.vision_v1p3beta1.proto import product_search_service_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
-from google.protobuf import field_mask_pb2
 
 
 class MultiCallableStub(object):
@@ -65,6 +64,62 @@ class CustomException(Exception):
 
 
 class TestProductSearchClient(object):
+    def test_import_product_sets(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = product_search_service_pb2.ImportProductSetsResponse(
+            **expected_response
+        )
+        operation = operations_pb2.Operation(
+            name="operations/test_import_product_sets", done=True
+        )
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
+
+        # Setup Request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+        input_config = {}
+
+        response = client.import_product_sets(parent, input_config)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = product_search_service_pb2.ImportProductSetsRequest(
+            parent=parent, input_config=input_config
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_import_product_sets_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_import_product_sets_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = vision_v1p3beta1.ProductSearchClient()
+
+        # Setup Request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+        input_config = {}
+
+        response = client.import_product_sets(parent, input_config)
+        exception = response.exception()
+        assert exception.errors[0] == error
+
     def test_create_product_set(self):
         # Setup Expected Response
         name = "name3373707"
@@ -82,14 +137,13 @@ class TestProductSearchClient(object):
         # Setup Request
         parent = client.location_path("[PROJECT]", "[LOCATION]")
         product_set = {}
-        product_set_id = "productSetId4216680"
 
-        response = client.create_product_set(parent, product_set, product_set_id)
+        response = client.create_product_set(parent, product_set)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = product_search_service_pb2.CreateProductSetRequest(
-            parent=parent, product_set=product_set, product_set_id=product_set_id
+            parent=parent, product_set=product_set
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -105,10 +159,9 @@ class TestProductSearchClient(object):
         # Setup request
         parent = client.location_path("[PROJECT]", "[LOCATION]")
         product_set = {}
-        product_set_id = "productSetId4216680"
 
         with pytest.raises(CustomException):
-            client.create_product_set(parent, product_set, product_set_id)
+            client.create_product_set(parent, product_set)
 
     def test_list_product_sets(self):
         # Setup Expected Response
@@ -215,14 +268,13 @@ class TestProductSearchClient(object):
 
         # Setup Request
         product_set = {}
-        update_mask = {}
 
-        response = client.update_product_set(product_set, update_mask)
+        response = client.update_product_set(product_set)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = product_search_service_pb2.UpdateProductSetRequest(
-            product_set=product_set, update_mask=update_mask
+            product_set=product_set
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -237,10 +289,9 @@ class TestProductSearchClient(object):
 
         # Setup request
         product_set = {}
-        update_mask = {}
 
         with pytest.raises(CustomException):
-            client.update_product_set(product_set, update_mask)
+            client.update_product_set(product_set)
 
     def test_delete_product_set(self):
         channel = ChannelStub()
@@ -297,14 +348,13 @@ class TestProductSearchClient(object):
         # Setup Request
         parent = client.location_path("[PROJECT]", "[LOCATION]")
         product = {}
-        product_id = "productId1753008747"
 
-        response = client.create_product(parent, product, product_id)
+        response = client.create_product(parent, product)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = product_search_service_pb2.CreateProductRequest(
-            parent=parent, product=product, product_id=product_id
+            parent=parent, product=product
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -320,10 +370,9 @@ class TestProductSearchClient(object):
         # Setup request
         parent = client.location_path("[PROJECT]", "[LOCATION]")
         product = {}
-        product_id = "productId1753008747"
 
         with pytest.raises(CustomException):
-            client.create_product(parent, product, product_id)
+            client.create_product(parent, product)
 
     def test_list_products(self):
         # Setup Expected Response
@@ -439,14 +488,13 @@ class TestProductSearchClient(object):
 
         # Setup Request
         product = {}
-        update_mask = {}
 
-        response = client.update_product(product, update_mask)
+        response = client.update_product(product)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = product_search_service_pb2.UpdateProductRequest(
-            product=product, update_mask=update_mask
+            product=product
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -461,10 +509,9 @@ class TestProductSearchClient(object):
 
         # Setup request
         product = {}
-        update_mask = {}
 
         with pytest.raises(CustomException):
-            client.update_product(product, update_mask)
+            client.update_product(product)
 
     def test_delete_product(self):
         channel = ChannelStub()
@@ -516,18 +563,13 @@ class TestProductSearchClient(object):
         # Setup Request
         parent = client.product_path("[PROJECT]", "[LOCATION]", "[PRODUCT]")
         reference_image = {}
-        reference_image_id = "referenceImageId1946713331"
 
-        response = client.create_reference_image(
-            parent, reference_image, reference_image_id
-        )
+        response = client.create_reference_image(parent, reference_image)
         assert expected_response == response
 
         assert len(channel.requests) == 1
         expected_request = product_search_service_pb2.CreateReferenceImageRequest(
-            parent=parent,
-            reference_image=reference_image,
-            reference_image_id=reference_image_id,
+            parent=parent, reference_image=reference_image
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -543,10 +585,9 @@ class TestProductSearchClient(object):
         # Setup request
         parent = client.product_path("[PROJECT]", "[LOCATION]", "[PRODUCT]")
         reference_image = {}
-        reference_image_id = "referenceImageId1946713331"
 
         with pytest.raises(CustomException):
-            client.create_reference_image(parent, reference_image, reference_image_id)
+            client.create_reference_image(parent, reference_image)
 
     def test_delete_reference_image(self):
         channel = ChannelStub()
@@ -693,7 +734,7 @@ class TestProductSearchClient(object):
 
         # Setup Request
         name = client.product_set_path("[PROJECT]", "[LOCATION]", "[PRODUCT_SET]")
-        product = "product-309474065"
+        product = client.product_path("[PROJECT]", "[LOCATION]", "[PRODUCT]")
 
         client.add_product_to_product_set(name, product)
 
@@ -714,7 +755,7 @@ class TestProductSearchClient(object):
 
         # Setup request
         name = client.product_set_path("[PROJECT]", "[LOCATION]", "[PRODUCT_SET]")
-        product = "product-309474065"
+        product = client.product_path("[PROJECT]", "[LOCATION]", "[PRODUCT]")
 
         with pytest.raises(CustomException):
             client.add_product_to_product_set(name, product)
@@ -728,7 +769,7 @@ class TestProductSearchClient(object):
 
         # Setup Request
         name = client.product_set_path("[PROJECT]", "[LOCATION]", "[PRODUCT_SET]")
-        product = "product-309474065"
+        product = client.product_path("[PROJECT]", "[LOCATION]", "[PRODUCT]")
 
         client.remove_product_from_product_set(name, product)
 
@@ -749,7 +790,7 @@ class TestProductSearchClient(object):
 
         # Setup request
         name = client.product_set_path("[PROJECT]", "[LOCATION]", "[PRODUCT_SET]")
-        product = "product-309474065"
+        product = client.product_path("[PROJECT]", "[LOCATION]", "[PRODUCT]")
 
         with pytest.raises(CustomException):
             client.remove_product_from_product_set(name, product)
@@ -800,59 +841,3 @@ class TestProductSearchClient(object):
         paged_list_response = client.list_products_in_product_set(name)
         with pytest.raises(CustomException):
             list(paged_list_response)
-
-    def test_import_product_sets(self):
-        # Setup Expected Response
-        expected_response = {}
-        expected_response = product_search_service_pb2.ImportProductSetsResponse(
-            **expected_response
-        )
-        operation = operations_pb2.Operation(
-            name="operations/test_import_product_sets", done=True
-        )
-        operation.response.Pack(expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[operation])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = vision_v1p3beta1.ProductSearchClient()
-
-        # Setup Request
-        parent = client.location_path("[PROJECT]", "[LOCATION]")
-        input_config = {}
-
-        response = client.import_product_sets(parent, input_config)
-        result = response.result()
-        assert expected_response == result
-
-        assert len(channel.requests) == 1
-        expected_request = product_search_service_pb2.ImportProductSetsRequest(
-            parent=parent, input_config=input_config
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_import_product_sets_exception(self):
-        # Setup Response
-        error = status_pb2.Status()
-        operation = operations_pb2.Operation(
-            name="operations/test_import_product_sets_exception", done=True
-        )
-        operation.error.CopyFrom(error)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[operation])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = vision_v1p3beta1.ProductSearchClient()
-
-        # Setup Request
-        parent = client.location_path("[PROJECT]", "[LOCATION]")
-        input_config = {}
-
-        response = client.import_product_sets(parent, input_config)
-        exception = response.exception()
-        assert exception.errors[0] == error

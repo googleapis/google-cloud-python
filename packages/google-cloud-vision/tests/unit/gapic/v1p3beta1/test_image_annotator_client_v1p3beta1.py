@@ -77,16 +77,11 @@ class TestImageAnnotatorClient(object):
             create_channel.return_value = channel
             client = vision_v1p3beta1.ImageAnnotatorClient()
 
-        # Setup Request
-        requests = []
-
-        response = client.batch_annotate_images(requests)
+        response = client.batch_annotate_images()
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = image_annotator_pb2.BatchAnnotateImagesRequest(
-            requests=requests
-        )
+        expected_request = image_annotator_pb2.BatchAnnotateImagesRequest()
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -98,11 +93,8 @@ class TestImageAnnotatorClient(object):
             create_channel.return_value = channel
             client = vision_v1p3beta1.ImageAnnotatorClient()
 
-        # Setup request
-        requests = []
-
         with pytest.raises(CustomException):
-            client.batch_annotate_images(requests)
+            client.batch_annotate_images()
 
     def test_async_batch_annotate_files(self):
         # Setup Expected Response

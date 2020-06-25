@@ -31,7 +31,13 @@ from google.type import color_pb2
 from google.type import latlng_pb2
 
 
-_shared_modules = [any_pb2, wrappers_pb2, status_pb2, color_pb2, latlng_pb2]
+_shared_modules = [
+    any_pb2,
+    wrappers_pb2,
+    status_pb2,
+    color_pb2,
+    latlng_pb2,
+]
 
 _local_modules = [
     geometry_pb2,

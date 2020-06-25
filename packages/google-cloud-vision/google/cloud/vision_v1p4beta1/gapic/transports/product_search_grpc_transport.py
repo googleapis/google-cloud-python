@@ -57,7 +57,7 @@ class ProductSearchGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -78,7 +78,7 @@ class ProductSearchGrpcTransport(object):
         self._stubs = {
             "product_search_stub": product_search_service_pb2_grpc.ProductSearchStub(
                 channel
-            )
+            ),
         }
 
         # Because this API includes a method that returns a
@@ -121,6 +121,29 @@ class ProductSearchGrpcTransport(object):
         return self._channel
 
     @property
+    def import_product_sets(self):
+        """Return the gRPC stub for :meth:`ProductSearchClient.import_product_sets`.
+
+        Asynchronous API that imports a list of reference images to
+        specified product sets based on a list of image information.
+
+        The ``google.longrunning.Operation`` API can be used to keep track of
+        the progress and results of the request. ``Operation.metadata`` contains
+        ``BatchOperationMetadata``. (progress) ``Operation.response`` contains
+        ``ImportProductSetsResponse``. (results)
+
+        The input source of this method is a csv file on Google Cloud Storage.
+        For the format of the csv file please see
+        ``ImportProductSetsGcsSource.csv_file_uri``.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["product_search_stub"].ImportProductSets
+
+    @property
     def create_product_set(self):
         """Return the gRPC stub for :meth:`ProductSearchClient.create_product_set`.
 
@@ -128,7 +151,7 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        -  Returns INVALID\_ARGUMENT if display\_name is missing, or is longer
+        -  Returns INVALID_ARGUMENT if display_name is missing, or is longer
            than 4096 characters.
 
         Returns:
@@ -146,7 +169,7 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        -  Returns INVALID\_ARGUMENT if page\_size is greater than 100, or less
+        -  Returns INVALID_ARGUMENT if page_size is greater than 100, or less
            than 1.
 
         Returns:
@@ -164,7 +187,7 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        -  Returns NOT\_FOUND if the ProductSet does not exist.
+        -  Returns NOT_FOUND if the ProductSet does not exist.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -177,13 +200,13 @@ class ProductSearchGrpcTransport(object):
     def update_product_set(self):
         """Return the gRPC stub for :meth:`ProductSearchClient.update_product_set`.
 
-        Makes changes to a ProductSet resource. Only display\_name can be
+        Makes changes to a ProductSet resource. Only display_name can be
         updated currently.
 
         Possible errors:
 
-        -  Returns NOT\_FOUND if the ProductSet does not exist.
-        -  Returns INVALID\_ARGUMENT if display\_name is present in update\_mask
+        -  Returns NOT_FOUND if the ProductSet does not exist.
+        -  Returns INVALID_ARGUMENT if display_name is present in update_mask
            but missing from the request or longer than 4096 characters.
 
         Returns:
@@ -217,11 +240,11 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        -  Returns INVALID\_ARGUMENT if display\_name is missing or longer than
+        -  Returns INVALID_ARGUMENT if display_name is missing or longer than
            4096 characters.
-        -  Returns INVALID\_ARGUMENT if description is longer than 4096
+        -  Returns INVALID_ARGUMENT if description is longer than 4096
            characters.
-        -  Returns INVALID\_ARGUMENT if product\_category is missing or invalid.
+        -  Returns INVALID_ARGUMENT if product_category is missing or invalid.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -238,7 +261,7 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        -  Returns INVALID\_ARGUMENT if page\_size is greater than 100 or less
+        -  Returns INVALID_ARGUMENT if page_size is greater than 100 or less
            than 1.
 
         Returns:
@@ -256,7 +279,7 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        -  Returns NOT\_FOUND if the Product does not exist.
+        -  Returns NOT_FOUND if the Product does not exist.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -277,13 +300,13 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        -  Returns NOT\_FOUND if the Product does not exist.
-        -  Returns INVALID\_ARGUMENT if display\_name is present in update\_mask
+        -  Returns NOT_FOUND if the Product does not exist.
+        -  Returns INVALID_ARGUMENT if display_name is present in update_mask
            but is missing from the request or longer than 4096 characters.
-        -  Returns INVALID\_ARGUMENT if description is present in update\_mask
-           but is longer than 4096 characters.
-        -  Returns INVALID\_ARGUMENT if product\_category is present in
-           update\_mask.
+        -  Returns INVALID_ARGUMENT if description is present in update_mask but
+           is longer than 4096 characters.
+        -  Returns INVALID_ARGUMENT if product_category is present in
+           update_mask.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -317,7 +340,7 @@ class ProductSearchGrpcTransport(object):
 
         The ``bounding_poly`` field is optional. If ``bounding_poly`` is not
         specified, the system will try to detect regions of interest in the
-        image that are compatible with the product\_category on the parent
+        image that are compatible with the product_category on the parent
         product. If it is specified, detection is ALWAYS skipped. The system
         converts polygons into non-rotated rectangles.
 
@@ -326,13 +349,13 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        -  Returns INVALID\_ARGUMENT if the image\_uri is missing or longer than
+        -  Returns INVALID_ARGUMENT if the image_uri is missing or longer than
            4096 characters.
-        -  Returns INVALID\_ARGUMENT if the product does not exist.
-        -  Returns INVALID\_ARGUMENT if bounding\_poly is not provided, and
-           nothing compatible with the parent product's product\_category is
+        -  Returns INVALID_ARGUMENT if the product does not exist.
+        -  Returns INVALID_ARGUMENT if bounding_poly is not provided, and
+           nothing compatible with the parent product's product_category is
            detected.
-        -  Returns INVALID\_ARGUMENT if bounding\_poly contains more than 10
+        -  Returns INVALID_ARGUMENT if bounding_poly contains more than 10
            polygons.
 
         Returns:
@@ -369,8 +392,8 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        -  Returns NOT\_FOUND if the parent product does not exist.
-        -  Returns INVALID\_ARGUMENT if the page\_size is greater than 100, or
+        -  Returns NOT_FOUND if the parent product does not exist.
+        -  Returns INVALID_ARGUMENT if the page_size is greater than 100, or
            less than 1.
 
         Returns:
@@ -388,7 +411,7 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        -  Returns NOT\_FOUND if the specified image does not exist.
+        -  Returns NOT_FOUND if the specified image does not exist.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -401,14 +424,14 @@ class ProductSearchGrpcTransport(object):
     def add_product_to_product_set(self):
         """Return the gRPC stub for :meth:`ProductSearchClient.add_product_to_product_set`.
 
-        Adds a Product to the specified ProductSet. If the Product is already
-        present, no change is made.
+        Adds a Product to the specified ProductSet. If the Product is
+        already present, no change is made.
 
         One Product can be added to at most 100 ProductSets.
 
         Possible errors:
 
-        -  Returns NOT\_FOUND if the Product or the ProductSet doesn't exist.
+        -  Returns NOT_FOUND if the Product or the ProductSet doesn't exist.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -440,7 +463,7 @@ class ProductSearchGrpcTransport(object):
 
         Possible errors:
 
-        -  Returns INVALID\_ARGUMENT if page\_size is greater than 100 or less
+        -  Returns INVALID_ARGUMENT if page_size is greater than 100 or less
            than 1.
 
         Returns:
@@ -451,34 +474,11 @@ class ProductSearchGrpcTransport(object):
         return self._stubs["product_search_stub"].ListProductsInProductSet
 
     @property
-    def import_product_sets(self):
-        """Return the gRPC stub for :meth:`ProductSearchClient.import_product_sets`.
-
-        Asynchronous API that imports a list of reference images to specified
-        product sets based on a list of image information.
-
-        The ``google.longrunning.Operation`` API can be used to keep track of
-        the progress and results of the request. ``Operation.metadata`` contains
-        ``BatchOperationMetadata``. (progress) ``Operation.response`` contains
-        ``ImportProductSetsResponse``. (results)
-
-        The input source of this method is a csv file on Google Cloud Storage.
-        For the format of the csv file please see
-        ``ImportProductSetsGcsSource.csv_file_uri``.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["product_search_stub"].ImportProductSets
-
-    @property
     def purge_products(self):
         """Return the gRPC stub for :meth:`ProductSearchClient.purge_products`.
 
-        Asynchronous API to delete all Products in a ProductSet or all Products
-        that are in no ProductSet.
+        Asynchronous API to delete all Products in a ProductSet or all
+        Products that are in no ProductSet.
 
         If a Product is a member of the specified ProductSet in addition to
         other ProductSets, the Product will still be deleted.

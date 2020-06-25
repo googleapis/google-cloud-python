@@ -57,7 +57,7 @@ class ImageAnnotatorGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -76,7 +76,9 @@ class ImageAnnotatorGrpcTransport(object):
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "image_annotator_stub": image_annotator_pb2_grpc.ImageAnnotatorStub(channel)
+            "image_annotator_stub": image_annotator_pb2_grpc.ImageAnnotatorStub(
+                channel
+            ),
         }
 
         # Because this API includes a method that returns a
@@ -119,6 +121,47 @@ class ImageAnnotatorGrpcTransport(object):
         return self._channel
 
     @property
+    def async_batch_annotate_images(self):
+        """Return the gRPC stub for :meth:`ImageAnnotatorClient.async_batch_annotate_images`.
+
+        Run asynchronous image detection and annotation for a list of
+        images.
+
+        Progress and results can be retrieved through the
+        ``google.longrunning.Operations`` interface. ``Operation.metadata``
+        contains ``OperationMetadata`` (metadata). ``Operation.response``
+        contains ``AsyncBatchAnnotateImagesResponse`` (results).
+
+        This service will write image annotation outputs to json files in
+        customer GCS bucket, each json file containing
+        BatchAnnotateImagesResponse proto.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["image_annotator_stub"].AsyncBatchAnnotateImages
+
+    @property
+    def async_batch_annotate_files(self):
+        """Return the gRPC stub for :meth:`ImageAnnotatorClient.async_batch_annotate_files`.
+
+        Run asynchronous image detection and annotation for a list of
+        generic files, such as PDF files, which may contain multiple pages and
+        multiple images per page. Progress and results can be retrieved through
+        the ``google.longrunning.Operations`` interface. ``Operation.metadata``
+        contains ``OperationMetadata`` (metadata). ``Operation.response``
+        contains ``AsyncBatchAnnotateFilesResponse`` (results).
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["image_annotator_stub"].AsyncBatchAnnotateFiles
+
+    @property
     def batch_annotate_images(self):
         """Return the gRPC stub for :meth:`ImageAnnotatorClient.batch_annotate_images`.
 
@@ -149,43 +192,3 @@ class ImageAnnotatorGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["image_annotator_stub"].BatchAnnotateFiles
-
-    @property
-    def async_batch_annotate_images(self):
-        """Return the gRPC stub for :meth:`ImageAnnotatorClient.async_batch_annotate_images`.
-
-        Run asynchronous image detection and annotation for a list of images.
-
-        Progress and results can be retrieved through the
-        ``google.longrunning.Operations`` interface. ``Operation.metadata``
-        contains ``OperationMetadata`` (metadata). ``Operation.response``
-        contains ``AsyncBatchAnnotateImagesResponse`` (results).
-
-        This service will write image annotation outputs to json files in
-        customer GCS bucket, each json file containing
-        BatchAnnotateImagesResponse proto.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["image_annotator_stub"].AsyncBatchAnnotateImages
-
-    @property
-    def async_batch_annotate_files(self):
-        """Return the gRPC stub for :meth:`ImageAnnotatorClient.async_batch_annotate_files`.
-
-        Run asynchronous image detection and annotation for a list of generic
-        files, such as PDF files, which may contain multiple pages and multiple
-        images per page. Progress and results can be retrieved through the
-        ``google.longrunning.Operations`` interface. ``Operation.metadata``
-        contains ``OperationMetadata`` (metadata). ``Operation.response``
-        contains ``AsyncBatchAnnotateFilesResponse`` (results).
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["image_annotator_stub"].AsyncBatchAnnotateFiles

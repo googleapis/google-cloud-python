@@ -88,5 +88,7 @@ templated_files = common.py_library(
    cov_level=99, system_test_external_dependencies=["google-cloud-storage"]
 )
 s.move(templated_files)
+# TODO(busunkim): Use latest sphinx after microgenerator transition
+s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

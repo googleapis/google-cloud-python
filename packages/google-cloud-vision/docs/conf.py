@@ -38,20 +38,17 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
+    "recommonmark",
 ]
 
 # autodoc/autosummary flags
 autoclass_content = "both"
-autodoc_default_flags = ["members"]
+autodoc_default_options = {"members": True}
 autosummary_generate = True
 
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
-
-# Allow markdown includes (so releases.md can include CHANGLEOG.md)
-# http://www.sphinx-doc.org/en/master/markdown.html
-source_parsers = {".md": "recommonmark.parser.CommonMarkParser"}
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
@@ -340,7 +337,7 @@ texinfo_documents = [
 intersphinx_mapping = {
     "python": ("http://python.readthedocs.org/en/latest/", None),
     "google-auth": ("https://google-auth.readthedocs.io/en/stable", None),
-    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest/", None),
+    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest/", None,),
     "grpc": ("https://grpc.io/grpc/python/", None),
 }
 

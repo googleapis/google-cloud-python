@@ -160,7 +160,7 @@ class Feature(object):
           LABEL_DETECTION (int): Run label detection.
           TEXT_DETECTION (int): Run OCR.
           DOCUMENT_TEXT_DETECTION (int): Run dense text document OCR. Takes precedence when both
-          DOCUMENT\_TEXT\_DETECTION and TEXT\_DETECTION are present.
+          DOCUMENT_TEXT_DETECTION and TEXT_DETECTION are present.
           SAFE_SEARCH_DETECTION (int): Run computer vision models to compute image safe-search properties.
           IMAGE_PROPERTIES (int): Compute a set of image properties, such as the image's dominant colors.
           CROP_HINTS (int): Run crop hints.

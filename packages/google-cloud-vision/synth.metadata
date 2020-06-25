@@ -1,32 +1,25 @@
 {
   "sources": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "2.0.0",
-        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
-      }
-    },
-    {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-vision",
-        "sha": "e067d8a283aaba44d9da7147c9ded5c8ab0e536c"
+        "remote": "https://github.com/googleapis/python-vision.git",
+        "sha": "b33fa88e4f1e9cb2f6e029e6a34364fb6cdc1a96"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "756b174de4a122461993c1c583345533d819936d",
-        "internalRef": "308824110"
+        "sha": "b882b8e6bfcd708042ff00f7adc67ce750817dd0",
+        "internalRef": "318028816"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "01b6f23d24b27878b48667ce597876d66b59780e"
+        "sha": "2a29860e484695a07aa8670f9e750bfeeb308a43"
       }
     }
   ],
@@ -37,8 +30,7 @@
         "apiName": "vision",
         "apiVersion": "v1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/vision/artman_vision_v1.yaml"
+        "generator": "bazel"
       }
     },
     {
@@ -47,8 +39,7 @@
         "apiName": "vision",
         "apiVersion": "v1p1beta1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/vision/artman_vision_v1p1beta1.yaml"
+        "generator": "bazel"
       }
     },
     {
@@ -57,8 +48,7 @@
         "apiName": "vision",
         "apiVersion": "v1p2beta1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/vision/artman_vision_v1p2beta1.yaml"
+        "generator": "bazel"
       }
     },
     {
@@ -67,8 +57,7 @@
         "apiName": "vision",
         "apiVersion": "v1p3beta1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/vision/artman_vision_v1p3beta1.yaml"
+        "generator": "bazel"
       }
     },
     {
@@ -77,8 +66,7 @@
         "apiName": "vision",
         "apiVersion": "v1p4beta1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/vision/artman_vision_v1p4beta1.yaml"
+        "generator": "bazel"
       }
     }
   ]

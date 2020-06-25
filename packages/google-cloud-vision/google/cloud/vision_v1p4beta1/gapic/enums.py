@@ -181,9 +181,9 @@ class Feature(object):
           LANDMARK_DETECTION (int): Run landmark detection.
           LOGO_DETECTION (int): Run logo detection.
           LABEL_DETECTION (int): Run label detection.
-          TEXT_DETECTION (int): Run text detection / optical character recognition (OCR). Text detection
-          is optimized for areas of text within a larger image; if the image is a
-          document, use ``DOCUMENT_TEXT_DETECTION`` instead.
+          TEXT_DETECTION (int): Run text detection / optical character recognition (OCR). Text
+          detection is optimized for areas of text within a larger image; if the
+          image is a document, use ``DOCUMENT_TEXT_DETECTION`` instead.
           DOCUMENT_TEXT_DETECTION (int): Run dense text document OCR. Takes precedence when both
           ``DOCUMENT_TEXT_DETECTION`` and ``TEXT_DETECTION`` are present.
           SAFE_SEARCH_DETECTION (int): Run Safe Search to detect potentially unsafe

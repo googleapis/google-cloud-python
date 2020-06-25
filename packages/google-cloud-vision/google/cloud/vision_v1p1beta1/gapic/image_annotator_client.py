@@ -36,7 +36,7 @@ from google.cloud.vision_v1p1beta1.proto import image_annotator_pb2
 from google.cloud.vision_v1p1beta1.proto import image_annotator_pb2_grpc
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-vision").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-vision",).version
 
 
 class ImageAnnotatorClient(object):
@@ -160,12 +160,12 @@ class ImageAnnotatorClient(object):
                 self.transport = transport
         else:
             self.transport = image_annotator_grpc_transport.ImageAnnotatorGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -176,7 +176,7 @@ class ImageAnnotatorClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -241,7 +241,7 @@ class ImageAnnotatorClient(object):
                 client_info=self._client_info,
             )
 
-        request = image_annotator_pb2.BatchAnnotateImagesRequest(requests=requests)
+        request = image_annotator_pb2.BatchAnnotateImagesRequest(requests=requests,)
         return self._inner_api_calls["batch_annotate_images"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
