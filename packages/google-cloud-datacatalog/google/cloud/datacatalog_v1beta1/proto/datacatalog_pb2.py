@@ -2644,6 +2644,7 @@ SearchCatalogRequest = _reflection.GeneratedProtocolMessageType(
                 "DESCRIPTOR": _SEARCHCATALOGREQUEST_SCOPE,
                 "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
                 "__doc__": """The criteria that select the subspace used for query matching.
+    
     Attributes:
         include_org_ids:
             The list of organization IDs to search within. To find your
@@ -2667,6 +2668,7 @@ SearchCatalogRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for [SearchCatalog][google.cloud.datacatalog.v1beta1.D
   ataCatalog.SearchCatalog].
+  
   Attributes:
       scope:
           Required. The scope of this search request. A ``scope`` that
@@ -2714,6 +2716,7 @@ SearchCatalogResponse = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Response message for [SearchCatalog][google.cloud.datacatalog.v1beta1.
   DataCatalog.SearchCatalog].
+  
   Attributes:
       results:
           Search results.
@@ -2734,6 +2737,7 @@ CreateEntryGroupRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for [CreateEntryGroup][google.cloud.datacatalog.v1beta
   1.DataCatalog.CreateEntryGroup].
+  
   Attributes:
       parent:
           Required. The name of the project this entry group is in.
@@ -2761,6 +2765,7 @@ UpdateEntryGroupRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for [UpdateEntryGroup][google.cloud.datacatalog.v1beta
   1.DataCatalog.UpdateEntryGroup].
+  
   Attributes:
       entry_group:
           Required. The updated entry group. “name” field must be set.
@@ -2781,6 +2786,7 @@ GetEntryGroupRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for [GetEntryGroup][google.cloud.datacatalog.v1beta1.D
   ataCatalog.GetEntryGroup].
+  
   Attributes:
       name:
           Required. The name of the entry group. For example, ``projects
@@ -2803,6 +2809,7 @@ DeleteEntryGroupRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for [DeleteEntryGroup][google.cloud.datacatalog.v1beta
   1.DataCatalog.DeleteEntryGroup].
+  
   Attributes:
       name:
           Required. The name of the entry group. For example, ``projects
@@ -2824,6 +2831,7 @@ ListEntryGroupsRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for [ListEntryGroups][google.cloud.datacatalog.v1beta1
   .DataCatalog.ListEntryGroups].
+  
   Attributes:
       parent:
           Required. The name of the location that contains the entry
@@ -2850,6 +2858,7 @@ ListEntryGroupsResponse = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Response message for [ListEntryGroups][google.cloud.datacatalog.v1beta
   1.DataCatalog.ListEntryGroups].
+  
   Attributes:
       entry_groups:
           EntryGroup details.
@@ -2870,6 +2879,7 @@ CreateEntryRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for [CreateEntry][google.cloud.datacatalog.v1beta1.Dat
   aCatalog.CreateEntry].
+  
   Attributes:
       parent:
           Required. The name of the entry group this entry is in.
@@ -2895,6 +2905,7 @@ UpdateEntryRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for [UpdateEntry][google.cloud.datacatalog.v1beta1.Dat
   aCatalog.UpdateEntry].
+  
   Attributes:
       entry:
           Required. The updated entry. The “name” field must be set.
@@ -2923,6 +2934,7 @@ DeleteEntryRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for [DeleteEntry][google.cloud.datacatalog.v1beta1.Dat
   aCatalog.DeleteEntry].
+  
   Attributes:
       name:
           Required. The name of the entry. Example:  -  projects/{projec
@@ -2942,6 +2954,7 @@ GetEntryRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for
   [GetEntry][google.cloud.datacatalog.v1beta1.DataCatalog.GetEntry].
+  
   Attributes:
       name:
           Required. The name of the entry. Example:  -  projects/{projec
@@ -2961,6 +2974,7 @@ LookupEntryRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for [LookupEntry][google.cloud.datacatalog.v1beta1.Dat
   aCatalog.LookupEntry].
+  
   Attributes:
       target_name:
           Required. Represents either the Google Cloud Platform resource
@@ -3003,6 +3017,7 @@ Entry = _reflection.GeneratedProtocolMessageType(
   resource details, such as its schema. An Entry can also be used to
   attach flexible metadata, such as a
   [Tag][google.cloud.datacatalog.v1beta1.Tag].
+  
   Attributes:
       name:
           The Data Catalog resource name of the entry in URL format.
@@ -3095,6 +3110,7 @@ EntryGroup = _reflection.GeneratedProtocolMessageType(
         "__doc__": """EntryGroup Metadata. An EntryGroup resource represents a logical
   grouping of zero or more Data Catalog
   [Entry][google.cloud.datacatalog.v1beta1.Entry] resources.
+  
   Attributes:
       name:
           The resource name of the entry group in URL format. Example:
@@ -3126,6 +3142,7 @@ CreateTagTemplateRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for [CreateTagTemplate][google.cloud.datacatalog.v1bet
   a1.DataCatalog.CreateTagTemplate].
+  
   Attributes:
       parent:
           Required. The name of the project and the template location
@@ -3150,6 +3167,7 @@ GetTagTemplateRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for [GetTagTemplate][google.cloud.datacatalog.v1beta1.
   DataCatalog.GetTagTemplate].
+  
   Attributes:
       name:
           Required. The name of the tag template. Example:  -  projects/
@@ -3169,6 +3187,7 @@ UpdateTagTemplateRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for [UpdateTagTemplate][google.cloud.datacatalog.v1bet
   a1.DataCatalog.UpdateTagTemplate].
+  
   Attributes:
       tag_template:
           Required. The template to update. The “name” field must be
@@ -3191,6 +3210,7 @@ DeleteTagTemplateRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for [DeleteTagTemplate][google.cloud.datacatalog.v1bet
   a1.DataCatalog.DeleteTagTemplate].
+  
   Attributes:
       name:
           Required. The name of the tag template to delete. Example:  -
@@ -3215,6 +3235,7 @@ CreateTagRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for
   [CreateTag][google.cloud.datacatalog.v1beta1.DataCatalog.CreateTag].
+  
   Attributes:
       parent:
           Required. The name of the resource to attach this tag to. Tags
@@ -3238,6 +3259,7 @@ UpdateTagRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for
   [UpdateTag][google.cloud.datacatalog.v1beta1.DataCatalog.UpdateTag].
+  
   Attributes:
       tag:
           Required. The updated tag. The “name” field must be set.
@@ -3259,6 +3281,7 @@ DeleteTagRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for
   [DeleteTag][google.cloud.datacatalog.v1beta1.DataCatalog.DeleteTag].
+  
   Attributes:
       name:
           Required. The name of the tag to delete. Example:  -  projects
@@ -3278,6 +3301,7 @@ CreateTagTemplateFieldRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for [CreateTagTemplateField][google.cloud.datacatalog.
   v1beta1.DataCatalog.CreateTagTemplateField].
+  
   Attributes:
       parent:
           Required. The name of the project and the template location
@@ -3307,6 +3331,7 @@ UpdateTagTemplateFieldRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for [UpdateTagTemplateField][google.cloud.datacatalog.
   v1beta1.DataCatalog.UpdateTagTemplateField].
+  
   Attributes:
       name:
           Required. The name of the tag template field. Example:  -  pro
@@ -3338,6 +3363,7 @@ RenameTagTemplateFieldRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for [RenameTagTemplateField][google.cloud.datacatalog.
   v1beta1.DataCatalog.RenameTagTemplateField].
+  
   Attributes:
       name:
           Required. The name of the tag template. Example:  -  projects/
@@ -3360,6 +3386,7 @@ DeleteTagTemplateFieldRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for [DeleteTagTemplateField][google.cloud.datacatalog.
   v1beta1.DataCatalog.DeleteTagTemplateField].
+  
   Attributes:
       name:
           Required. The name of the tag template field to delete.
@@ -3384,6 +3411,7 @@ ListTagsRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for
   [ListTags][google.cloud.datacatalog.v1beta1.DataCatalog.ListTags].
+  
   Attributes:
       parent:
           Required. The name of the Data Catalog resource to list the
@@ -3413,6 +3441,7 @@ ListTagsResponse = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Response message for
   [ListTags][google.cloud.datacatalog.v1beta1.DataCatalog.ListTags].
+  
   Attributes:
       tags:
           [Tag][google.cloud.datacatalog.v1beta1.Tag] details.
@@ -3433,6 +3462,7 @@ ListEntriesRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Request message for [ListEntries][google.cloud.datacatalog.v1beta1.Dat
   aCatalog.ListEntries].
+  
   Attributes:
       parent:
           Required. The name of the entry group that contains the
@@ -3465,6 +3495,7 @@ ListEntriesResponse = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.datacatalog_pb2",
         "__doc__": """Response message for [ListEntries][google.cloud.datacatalog.v1beta1.Da
   taCatalog.ListEntries].
+  
   Attributes:
       entries:
           Entry details.

@@ -520,6 +520,7 @@ SerializedTaxonomy = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.policytagmanagerserialization_pb2",
         "__doc__": """Message capturing a taxonomy and its policy tag hierarchy as a nested
   proto. Used for taxonomy import/export and mutation.
+  
   Attributes:
       display_name:
           Required. Display name of the taxonomy. Max 200 bytes when
@@ -543,6 +544,7 @@ SerializedPolicyTag = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _SERIALIZEDPOLICYTAG,
         "__module__": "google.cloud.datacatalog_v1beta1.proto.policytagmanagerserialization_pb2",
         "__doc__": """Message representing one policy tag when exported as a nested proto.
+  
   Attributes:
       display_name:
           Required. Display name of the policy tag. Max 200 bytes when
@@ -567,6 +569,7 @@ ImportTaxonomiesRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.policytagmanagerserialization_pb2",
         "__doc__": """Request message for [ImportTaxonomies][google.cloud.datacatalog.v1beta
   1.PolicyTagManagerSerialization.ImportTaxonomies].
+  
   Attributes:
       parent:
           Required. Resource name of project that the newly created
@@ -589,6 +592,7 @@ InlineSource = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _INLINESOURCE,
         "__module__": "google.cloud.datacatalog_v1beta1.proto.policytagmanagerserialization_pb2",
         "__doc__": """Inline source used for taxonomies import.
+  
   Attributes:
       taxonomies:
           Required. Taxonomies to be imported.
@@ -606,6 +610,7 @@ ImportTaxonomiesResponse = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.policytagmanagerserialization_pb2",
         "__doc__": """Response message for [ImportTaxonomies][google.cloud.datacatalog.v1bet
   a1.PolicyTagManagerSerialization.ImportTaxonomies].
+  
   Attributes:
       taxonomies:
           Taxonomies that were imported.
@@ -623,6 +628,7 @@ ExportTaxonomiesRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.policytagmanagerserialization_pb2",
         "__doc__": """Request message for [ExportTaxonomies][google.cloud.datacatalog.v1beta
   1.PolicyTagManagerSerialization.ExportTaxonomies].
+  
   Attributes:
       parent:
           Required. Resource name of the project that taxonomies to be
@@ -647,6 +653,7 @@ ExportTaxonomiesResponse = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.policytagmanagerserialization_pb2",
         "__doc__": """Response message for [ExportTaxonomies][google.cloud.datacatalog.v1bet
   a1.PolicyTagManagerSerialization.ExportTaxonomies].
+  
   Attributes:
       taxonomies:
           List of taxonomies and policy tags in a tree structure.

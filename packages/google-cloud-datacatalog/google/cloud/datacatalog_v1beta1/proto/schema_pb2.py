@@ -196,6 +196,7 @@ Schema = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _SCHEMA,
         "__module__": "google.cloud.datacatalog_v1beta1.proto.schema_pb2",
         "__doc__": """Represents a schema (e.g. BigQuery, GoogleSQL, Avro schema).
+  
   Attributes:
       columns:
           Required. Schema of columns. A maximum of 10,000 columns and
@@ -214,6 +215,7 @@ ColumnSchema = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.schema_pb2",
         "__doc__": """Representation of a column within a schema. Columns could be nested
   inside other columns.
+  
   Attributes:
       column:
           Required. Name of the column.

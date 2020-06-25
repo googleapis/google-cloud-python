@@ -1015,6 +1015,7 @@ Taxonomy = _reflection.GeneratedProtocolMessageType(
   policy tags denoting PII such as age, zipcode, and SSN. A data
   *origin* taxonomy could contain policy tags to distinguish user data,
   employee data, partner data, public data.
+  
   Attributes:
       name:
           Output only. Resource name of this taxonomy, whose format is: 
@@ -1049,6 +1050,7 @@ PolicyTag = _reflection.GeneratedProtocolMessageType(
   defined in a hierarchy. For example, consider the following hierarchy:
   Geolocation -> (LatLong, City, ZipCode). PolicyTag “Geolocation”
   contains three child policy tags: “LatLong”, “City”, and “ZipCode”.
+  
   Attributes:
       name:
           Output only. Resource name of this policy tag, whose format
@@ -1090,6 +1092,7 @@ CreateTaxonomyRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.policytagmanager_pb2",
         "__doc__": """Request message for [CreateTaxonomy][google.cloud.datacatalog.v1beta1.
   PolicyTagManager.CreateTaxonomy].
+  
   Attributes:
       parent:
           Required. Resource name of the project that the taxonomy will
@@ -1110,6 +1113,7 @@ DeleteTaxonomyRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.policytagmanager_pb2",
         "__doc__": """Request message for [DeleteTaxonomy][google.cloud.datacatalog.v1beta1.
   PolicyTagManager.DeleteTaxonomy].
+  
   Attributes:
       name:
           Required. Resource name of the taxonomy to be deleted. All
@@ -1128,6 +1132,7 @@ UpdateTaxonomyRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.policytagmanager_pb2",
         "__doc__": """Request message for [UpdateTaxonomy][google.cloud.datacatalog.v1beta1.
   PolicyTagManager.UpdateTaxonomy].
+  
   Attributes:
       taxonomy:
           The taxonomy to update. Only description, display_name, and
@@ -1151,6 +1156,7 @@ ListTaxonomiesRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.policytagmanager_pb2",
         "__doc__": """Request message for [ListTaxonomies][google.cloud.datacatalog.v1beta1.
   PolicyTagManager.ListTaxonomies].
+  
   Attributes:
       parent:
           Required. Resource name of the project to list the taxonomies
@@ -1175,6 +1181,7 @@ ListTaxonomiesResponse = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.policytagmanager_pb2",
         "__doc__": """Response message for [ListTaxonomies][google.cloud.datacatalog.v1beta1
   .PolicyTagManager.ListTaxonomies].
+  
   Attributes:
       taxonomies:
           Taxonomies that the project contains.
@@ -1195,6 +1202,7 @@ GetTaxonomyRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.policytagmanager_pb2",
         "__doc__": """Request message for [GetTaxonomy][google.cloud.datacatalog.v1beta1.Pol
   icyTagManager.GetTaxonomy].
+  
   Attributes:
       name:
           Required. Resource name of the requested taxonomy.
@@ -1212,6 +1220,7 @@ CreatePolicyTagRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.policytagmanager_pb2",
         "__doc__": """Request message for [CreatePolicyTag][google.cloud.datacatalog.v1beta1
   .PolicyTagManager.CreatePolicyTag].
+  
   Attributes:
       parent:
           Required. Resource name of the taxonomy that the policy tag
@@ -1232,6 +1241,7 @@ DeletePolicyTagRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.policytagmanager_pb2",
         "__doc__": """Request message for [DeletePolicyTag][google.cloud.datacatalog.v1beta1
   .PolicyTagManager.DeletePolicyTag].
+  
   Attributes:
       name:
           Required. Resource name of the policy tag to be deleted. All
@@ -1250,6 +1260,7 @@ UpdatePolicyTagRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.policytagmanager_pb2",
         "__doc__": """Request message for [UpdatePolicyTag][google.cloud.datacatalog.v1beta1
   .PolicyTagManager.UpdatePolicyTag].
+  
   Attributes:
       policy_tag:
           The policy tag to update. Only the description, display_name,
@@ -1278,6 +1289,7 @@ ListPolicyTagsRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.policytagmanager_pb2",
         "__doc__": """Request message for [ListPolicyTags][google.cloud.datacatalog.v1beta1.
   PolicyTagManager.ListPolicyTags].
+  
   Attributes:
       parent:
           Required. Resource name of the taxonomy to list the policy
@@ -1302,6 +1314,7 @@ ListPolicyTagsResponse = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.policytagmanager_pb2",
         "__doc__": """Response message for [ListPolicyTags][google.cloud.datacatalog.v1beta1
   .PolicyTagManager.ListPolicyTags].
+  
   Attributes:
       policy_tags:
           The policy tags that are in the requested taxonomy.
@@ -1322,6 +1335,7 @@ GetPolicyTagRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.datacatalog_v1beta1.proto.policytagmanager_pb2",
         "__doc__": """Request message for [GetPolicyTag][google.cloud.datacatalog.v1beta1.Po
   licyTagManager.GetPolicyTag].
+  
   Attributes:
       name:
           Required. Resource name of the requested policy tag.
