@@ -47,7 +47,7 @@ from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-tasks").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-tasks",).version
 
 
 class CloudTasksClient(object):
@@ -200,12 +200,12 @@ class CloudTasksClient(object):
                 self.transport = transport
         else:
             self.transport = cloud_tasks_grpc_transport.CloudTasksGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -216,7 +216,7 @@ class CloudTasksClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -270,10 +270,10 @@ class CloudTasksClient(object):
                 described in `Stackdriver's Advanced Logs
                 Filters <https://cloud.google.com/logging/docs/view/advanced_filters>`__.
 
-                Sample filter "app\_engine\_http\_target: \*".
+                Sample filter "app_engine_http_target: \*".
 
-                Note that using filters might cause fewer queues than the
-                requested\_page size to be returned.
+                Note that using filters might cause fewer queues than the requested_page
+                size to be returned.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -313,7 +313,7 @@ class CloudTasksClient(object):
             )
 
         request = cloudtasks_pb2.ListQueuesRequest(
-            parent=parent, filter=filter_, page_size=page_size
+            parent=parent, filter=filter_, page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -395,7 +395,7 @@ class CloudTasksClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudtasks_pb2.GetQueueRequest(name=name)
+        request = cloudtasks_pb2.GetQueueRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -488,7 +488,7 @@ class CloudTasksClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudtasks_pb2.CreateQueueRequest(parent=parent, queue=queue)
+        request = cloudtasks_pb2.CreateQueueRequest(parent=parent, queue=queue,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -588,7 +588,7 @@ class CloudTasksClient(object):
             )
 
         request = cloudtasks_pb2.UpdateQueueRequest(
-            queue=queue, update_mask=update_mask
+            queue=queue, update_mask=update_mask,
         )
         if metadata is None:
             metadata = []
@@ -667,7 +667,7 @@ class CloudTasksClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudtasks_pb2.DeleteQueueRequest(name=name)
+        request = cloudtasks_pb2.DeleteQueueRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -742,7 +742,7 @@ class CloudTasksClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudtasks_pb2.PurgeQueueRequest(name=name)
+        request = cloudtasks_pb2.PurgeQueueRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -816,7 +816,7 @@ class CloudTasksClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudtasks_pb2.PauseQueueRequest(name=name)
+        request = cloudtasks_pb2.PauseQueueRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -895,7 +895,7 @@ class CloudTasksClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudtasks_pb2.ResumeQueueRequest(name=name)
+        request = cloudtasks_pb2.ResumeQueueRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -922,8 +922,8 @@ class CloudTasksClient(object):
         metadata=None,
     ):
         """
-        Gets the access control policy for a ``Queue``. Returns an empty policy
-        if the resource exists and does not have a policy set.
+        Gets the access control policy for a ``Queue``. Returns an empty
+        policy if the resource exists and does not have a policy set.
 
         Authorization requires the following `Google
         IAM <https://cloud.google.com/iam>`__ permission on the specified
@@ -980,7 +980,7 @@ class CloudTasksClient(object):
             )
 
         request = iam_policy_pb2.GetIamPolicyRequest(
-            resource=resource, options=options_
+            resource=resource, options=options_,
         )
         if metadata is None:
             metadata = []
@@ -1008,8 +1008,8 @@ class CloudTasksClient(object):
         metadata=None,
     ):
         """
-        Sets the access control policy for a ``Queue``. Replaces any existing
-        policy.
+        Sets the access control policy for a ``Queue``. Replaces any
+        existing policy.
 
         Note: The Cloud Console does not check queue-level IAM permissions yet.
         Project-level permissions are required to use the Cloud Console.
@@ -1073,7 +1073,7 @@ class CloudTasksClient(object):
                 client_info=self._client_info,
             )
 
-        request = iam_policy_pb2.SetIamPolicyRequest(resource=resource, policy=policy)
+        request = iam_policy_pb2.SetIamPolicyRequest(resource=resource, policy=policy,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1100,9 +1100,9 @@ class CloudTasksClient(object):
         metadata=None,
     ):
         """
-        Returns permissions that a caller has on a ``Queue``. If the resource
-        does not exist, this will return an empty set of permissions, not a
-        ``NOT_FOUND`` error.
+        Returns permissions that a caller has on a ``Queue``. If the
+        resource does not exist, this will return an empty set of permissions,
+        not a ``NOT_FOUND`` error.
 
         Note: This operation is designed to be used for building
         permission-aware UIs and command-line tools, not for authorization
@@ -1124,8 +1124,8 @@ class CloudTasksClient(object):
         Args:
             resource (str): REQUIRED: The resource for which the policy detail is being requested.
                 See the operation documentation for the appropriate value for this field.
-            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with
-                wildcards (such as '*' or 'storage.*') are not allowed. For more
+            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions
+                with wildcards (such as '*' or 'storage.*') are not allowed. For more
                 information see `IAM
                 Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1159,7 +1159,7 @@ class CloudTasksClient(object):
             )
 
         request = iam_policy_pb2.TestIamPermissionsRequest(
-            resource=resource, permissions=permissions
+            resource=resource, permissions=permissions,
         )
         if metadata is None:
             metadata = []
@@ -1221,10 +1221,10 @@ class CloudTasksClient(object):
         Args:
             parent (str): Required. The queue name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``
-            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response\_view specifies which subset of the ``Task`` will be
+            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response_view specifies which subset of the ``Task`` will be
                 returned.
 
-                By default response\_view is ``BASIC``; not all information is retrieved
+                By default response_view is ``BASIC``; not all information is retrieved
                 by default because some data, such as payloads, might be desirable to
                 return only when needed because of its large size or because of the
                 sensitivity of data that it contains.
@@ -1271,7 +1271,7 @@ class CloudTasksClient(object):
             )
 
         request = cloudtasks_pb2.ListTasksRequest(
-            parent=parent, response_view=response_view, page_size=page_size
+            parent=parent, response_view=response_view, page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -1324,10 +1324,10 @@ class CloudTasksClient(object):
         Args:
             name (str): Required. The task name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``
-            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response\_view specifies which subset of the ``Task`` will be
+            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response_view specifies which subset of the ``Task`` will be
                 returned.
 
-                By default response\_view is ``BASIC``; not all information is retrieved
+                By default response_view is ``BASIC``; not all information is retrieved
                 by default because some data, such as payloads, might be desirable to
                 return only when needed because of its large size or because of the
                 sensitivity of data that it contains.
@@ -1365,7 +1365,7 @@ class CloudTasksClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudtasks_pb2.GetTaskRequest(name=name, response_view=response_view)
+        request = cloudtasks_pb2.GetTaskRequest(name=name, response_view=response_view,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1450,10 +1450,10 @@ class CloudTasksClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.tasks_v2beta2.types.Task`
-            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response\_view specifies which subset of the ``Task`` will be
+            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response_view specifies which subset of the ``Task`` will be
                 returned.
 
-                By default response\_view is ``BASIC``; not all information is retrieved
+                By default response_view is ``BASIC``; not all information is retrieved
                 by default because some data, such as payloads, might be desirable to
                 return only when needed because of its large size or because of the
                 sensitivity of data that it contains.
@@ -1492,7 +1492,7 @@ class CloudTasksClient(object):
             )
 
         request = cloudtasks_pb2.CreateTaskRequest(
-            parent=parent, task=task, response_view=response_view
+            parent=parent, task=task, response_view=response_view,
         )
         if metadata is None:
             metadata = []
@@ -1564,7 +1564,7 @@ class CloudTasksClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudtasks_pb2.DeleteTaskRequest(name=name)
+        request = cloudtasks_pb2.DeleteTaskRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1651,10 +1651,10 @@ class CloudTasksClient(object):
                 The maximum total size of a ``lease tasks response`` is 32 MB. If the
                 sum of all task sizes requested reaches this limit, fewer tasks than
                 requested are returned.
-            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response\_view specifies which subset of the ``Task`` will be
+            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response_view specifies which subset of the ``Task`` will be
                 returned.
 
-                By default response\_view is ``BASIC``; not all information is retrieved
+                By default response_view is ``BASIC``; not all information is retrieved
                 by default because some data, such as payloads, might be desirable to
                 return only when needed because of its large size or because of the
                 sensitivity of data that it contains.
@@ -1811,7 +1811,7 @@ class CloudTasksClient(object):
             )
 
         request = cloudtasks_pb2.AcknowledgeTaskRequest(
-            name=name, schedule_time=schedule_time
+            name=name, schedule_time=schedule_time,
         )
         if metadata is None:
             metadata = []
@@ -1879,10 +1879,10 @@ class CloudTasksClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.tasks_v2beta2.types.Duration`
-            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response\_view specifies which subset of the ``Task`` will be
+            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response_view specifies which subset of the ``Task`` will be
                 returned.
 
-                By default response\_view is ``BASIC``; not all information is retrieved
+                By default response_view is ``BASIC``; not all information is retrieved
                 by default because some data, such as payloads, might be desirable to
                 return only when needed because of its large size or because of the
                 sensitivity of data that it contains.
@@ -1981,10 +1981,10 @@ class CloudTasksClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.tasks_v2beta2.types.Timestamp`
-            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response\_view specifies which subset of the ``Task`` will be
+            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response_view specifies which subset of the ``Task`` will be
                 returned.
 
-                By default response\_view is ``BASIC``; not all information is retrieved
+                By default response_view is ``BASIC``; not all information is retrieved
                 by default because some data, such as payloads, might be desirable to
                 return only when needed because of its large size or because of the
                 sensitivity of data that it contains.
@@ -2023,7 +2023,7 @@ class CloudTasksClient(object):
             )
 
         request = cloudtasks_pb2.CancelLeaseRequest(
-            name=name, schedule_time=schedule_time, response_view=response_view
+            name=name, schedule_time=schedule_time, response_view=response_view,
         )
         if metadata is None:
             metadata = []
@@ -2087,10 +2087,10 @@ class CloudTasksClient(object):
         Args:
             name (str): Required. The task name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``
-            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response\_view specifies which subset of the ``Task`` will be
+            response_view (~google.cloud.tasks_v2beta2.enums.Task.View): The response_view specifies which subset of the ``Task`` will be
                 returned.
 
-                By default response\_view is ``BASIC``; not all information is retrieved
+                By default response_view is ``BASIC``; not all information is retrieved
                 by default because some data, such as payloads, might be desirable to
                 return only when needed because of its large size or because of the
                 sensitivity of data that it contains.
@@ -2128,7 +2128,7 @@ class CloudTasksClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudtasks_pb2.RunTaskRequest(name=name, response_view=response_view)
+        request = cloudtasks_pb2.RunTaskRequest(name=name, response_view=response_view,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)

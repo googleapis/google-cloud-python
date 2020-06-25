@@ -53,7 +53,7 @@ class CloudTasksGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -71,7 +71,9 @@ class CloudTasksGrpcTransport(object):
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
-        self._stubs = {"cloud_tasks_stub": cloudtasks_pb2_grpc.CloudTasksStub(channel)}
+        self._stubs = {
+            "cloud_tasks_stub": cloudtasks_pb2_grpc.CloudTasksStub(channel),
+        }
 
     @classmethod
     def create_channel(
@@ -267,8 +269,8 @@ class CloudTasksGrpcTransport(object):
     def get_iam_policy(self):
         """Return the gRPC stub for :meth:`CloudTasksClient.get_iam_policy`.
 
-        Gets the access control policy for a ``Queue``. Returns an empty policy
-        if the resource exists and does not have a policy set.
+        Gets the access control policy for a ``Queue``. Returns an empty
+        policy if the resource exists and does not have a policy set.
 
         Authorization requires the following `Google
         IAM <https://cloud.google.com/iam>`__ permission on the specified
@@ -287,8 +289,8 @@ class CloudTasksGrpcTransport(object):
     def set_iam_policy(self):
         """Return the gRPC stub for :meth:`CloudTasksClient.set_iam_policy`.
 
-        Sets the access control policy for a ``Queue``. Replaces any existing
-        policy.
+        Sets the access control policy for a ``Queue``. Replaces any
+        existing policy.
 
         Note: The Cloud Console does not check queue-level IAM permissions yet.
         Project-level permissions are required to use the Cloud Console.
@@ -310,9 +312,9 @@ class CloudTasksGrpcTransport(object):
     def test_iam_permissions(self):
         """Return the gRPC stub for :meth:`CloudTasksClient.test_iam_permissions`.
 
-        Returns permissions that a caller has on a ``Queue``. If the resource
-        does not exist, this will return an empty set of permissions, not a
-        ``NOT_FOUND`` error.
+        Returns permissions that a caller has on a ``Queue``. If the
+        resource does not exist, this will return an empty set of permissions,
+        not a ``NOT_FOUND`` error.
 
         Note: This operation is designed to be used for building
         permission-aware UIs and command-line tools, not for authorization

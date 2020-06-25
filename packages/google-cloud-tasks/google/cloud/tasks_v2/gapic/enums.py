@@ -95,8 +95,8 @@ class Task(object):
 
         Attributes:
           VIEW_UNSPECIFIED (int): Unspecified. Defaults to BASIC.
-          BASIC (int): The basic view omits fields which can be large or can contain sensitive
-          data.
+          BASIC (int): The basic view omits fields which can be large or can contain
+          sensitive data.
 
           This view does not include the ``body in AppEngineHttpRequest``. Bodies
           are desirable to return only when needed, because they can be large and

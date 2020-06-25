@@ -54,10 +54,10 @@ class Queue(object):
           take a few minutes to re-activate. Some method calls may return
           ``NOT_FOUND`` and tasks may not be dispatched for a few minutes until
           the queue has been re-activated.
-          PAUSED (int): Tasks are paused by the user. If the queue is paused then Cloud Tasks
-          will stop delivering tasks from it, but more tasks can still be added to
-          it by the user. When a pull queue is paused, all ``LeaseTasks`` calls
-          will return a ``FAILED_PRECONDITION``.
+          PAUSED (int): Tasks are paused by the user. If the queue is paused then Cloud
+          Tasks will stop delivering tasks from it, but more tasks can still be
+          added to it by the user. When a pull queue is paused, all ``LeaseTasks``
+          calls will return a ``FAILED_PRECONDITION``.
           DISABLED (int): The queue is disabled.
 
           A queue becomes ``DISABLED`` when
@@ -93,8 +93,8 @@ class Task(object):
 
         Attributes:
           VIEW_UNSPECIFIED (int): Unspecified. Defaults to BASIC.
-          BASIC (int): The basic view omits fields which can be large or can contain sensitive
-          data.
+          BASIC (int): The basic view omits fields which can be large or can contain
+          sensitive data.
 
           This view does not include the (``payload in AppEngineHttpRequest`` and
           ``payload in PullMessage``). These payloads are desirable to return only

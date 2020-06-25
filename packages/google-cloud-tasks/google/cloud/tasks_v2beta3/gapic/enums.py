@@ -82,6 +82,20 @@ class Queue(object):
         PAUSED = 2
         DISABLED = 3
 
+    class Type(enum.IntEnum):
+        """
+        The type of the queue.
+
+        Attributes:
+          TYPE_UNSPECIFIED (int): Default value.
+          PULL (int): A pull queue.
+          PUSH (int): A push queue.
+        """
+
+        TYPE_UNSPECIFIED = 0
+        PULL = 1
+        PUSH = 2
+
 
 class Task(object):
     class View(enum.IntEnum):
@@ -95,8 +109,8 @@ class Task(object):
 
         Attributes:
           VIEW_UNSPECIFIED (int): Unspecified. Defaults to BASIC.
-          BASIC (int): The basic view omits fields which can be large or can contain sensitive
-          data.
+          BASIC (int): The basic view omits fields which can be large or can contain
+          sensitive data.
 
           This view does not include the ``body in AppEngineHttpRequest``. Bodies
           are desirable to return only when needed, because they can be large and

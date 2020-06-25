@@ -1,32 +1,25 @@
 {
   "sources": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "2.0.0",
-        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
-      }
-    },
-    {
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-tasks.git",
-        "sha": "100e9c709383848498e1e6a747fb819520a7d8c1"
+        "sha": "01304e72b9f4dd6091f770c08135b012075ba731"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "42ee97c1b93a0e3759bbba3013da309f670a90ab",
-        "internalRef": "307114445"
+        "sha": "b882b8e6bfcd708042ff00f7adc67ce750817dd0",
+        "internalRef": "318028816"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "f5e4c17dc78a966dbf29961dd01f9bbd63e20a04"
+        "sha": "2a29860e484695a07aa8670f9e750bfeeb308a43"
       }
     }
   ],
@@ -37,8 +30,7 @@
         "apiName": "tasks",
         "apiVersion": "v2beta2",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/tasks/artman_cloudtasks_v2beta2.yaml"
+        "generator": "bazel"
       }
     },
     {
@@ -47,8 +39,7 @@
         "apiName": "tasks",
         "apiVersion": "v2beta3",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/tasks/artman_cloudtasks_v2beta3.yaml"
+        "generator": "bazel"
       }
     },
     {
@@ -57,8 +48,7 @@
         "apiName": "tasks",
         "apiVersion": "v2",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/tasks/artman_cloudtasks_v2.yaml"
+        "generator": "bazel"
       }
     }
   ]

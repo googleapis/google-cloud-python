@@ -49,7 +49,12 @@ _shared_modules = [
     expr_pb2,
 ]
 
-_local_modules = [cloudtasks_pb2, queue_pb2, target_pb2, task_pb2]
+_local_modules = [
+    cloudtasks_pb2,
+    queue_pb2,
+    target_pb2,
+    task_pb2,
+]
 
 names = []
 
