@@ -63,8 +63,8 @@ s.move(library / "google/cloud/translate.py")
 
 s.replace(
     "google/cloud/**/translation_service_pb2.py",
-    r"""record delimiters are ':raw-latex:`\\n`' instead of
-          ':raw-latex:`\\r`:raw-latex:`\\n`'.""",
+    r"""record delimiters are ‘:raw-latex:`\\n`’ instead of
+          ‘:raw-latex:`\\r`:raw-latex:`\\n`’.""",
     r"""record delimiters are ``\\\\\\\\n`` instead of
           ``\\\\\\\\r\\\\\\\\n``.""",
 )
@@ -72,8 +72,8 @@ s.replace(
 # Fix docstring issue for classes with no summary line
 s.replace(
     "google/cloud/**/proto/*_pb2.py",
-    '''__doc__ = """Attributes:''',
-    '''__doc__ = """
+    '''__doc__: """Attributes:''',
+    '''__doc__: """
     Attributes:''',
 )
 
@@ -96,5 +96,8 @@ templated_files = common.py_library(
     system_test_dependencies=['test_utils']
 )
 s.move(templated_files)
+
+# TODO(busunkim): Use latest sphinx after microgenerator transition
+s.replace("noxfile.py", '"sphinx"', '"sphinx<3.0.0"')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

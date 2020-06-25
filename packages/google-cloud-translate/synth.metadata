@@ -1,26 +1,25 @@
 {
-  "updateTime": "2020-01-31T21:01:53.491633Z",
   "sources": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "0.44.4",
-        "dockerImage": "googleapis/artman@sha256:19e945954fc960a4bdfee6cb34695898ab21a8cf0bac063ee39b91f00a1faec8"
+      "git": {
+        "name": ".",
+        "remote": "https://github.com/googleapis/python-translate.git",
+        "sha": "7a68632c7b5d73e1ee67278c930f67e692a1c56b"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "2717b8a1c762b26911b45ecc2e4ee01d98401b28",
-        "internalRef": "292555664"
+        "sha": "b882b8e6bfcd708042ff00f7adc67ce750817dd0",
+        "internalRef": "318028816"
       }
     },
     {
-      "template": {
-        "name": "python_split_library",
-        "origin": "synthtool.gcp",
-        "version": "2019.10.17"
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "ce68c0e70d36c93ffcde96e9908fb4d94aa4f2e4"
       }
     }
   ],
@@ -31,8 +30,7 @@
         "apiName": "translate",
         "apiVersion": "v3beta1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/translate/artman_translate_v3beta1.yaml"
+        "generator": "bazel"
       }
     },
     {
@@ -41,8 +39,7 @@
         "apiName": "translate",
         "apiVersion": "v3",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/translate/artman_translate_v3.yaml"
+        "generator": "bazel"
       }
     }
   ]

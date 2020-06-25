@@ -21,4 +21,7 @@ from google.cloud.translate_v3 import TranslationServiceClient
 from google.cloud.translate_v3 import types
 
 
-__all__ = ("types", "TranslationServiceClient")
+__all__ = (
+    "types",
+    "TranslationServiceClient",
+)

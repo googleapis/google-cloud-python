@@ -44,7 +44,7 @@ from google.longrunning import operations_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-translate"
+    "google-cloud-translate",
 ).version
 
 
@@ -184,12 +184,12 @@ class TranslationServiceClient(object):
                 self.transport = transport
         else:
             self.transport = translation_service_grpc_transport.TranslationServiceGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -200,7 +200,7 @@ class TranslationServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -247,8 +247,8 @@ class TranslationServiceClient(object):
                 Use BatchTranslateText for larger text.
             target_language_code (str): Required. The BCP-47 language code to use for translation of the input
                 text, set to one of the language codes listed in Language Support.
-            parent (str): Required. Project or location to make a call. Must refer to a caller's
-                project.
+            parent (str): Required. Project or location to make a call. Must refer to a
+                caller's project.
 
                 Format: ``projects/{project-number-or-id}`` or
                 ``projects/{project-number-or-id}/locations/{location-id}``.
@@ -261,7 +261,7 @@ class TranslationServiceClient(object):
                 custom glossaries.
 
                 Models and glossaries must be within the same region (have same
-                location-id), otherwise an INVALID\_ARGUMENT (400) error is returned.
+                location-id), otherwise an INVALID_ARGUMENT (400) error is returned.
             mime_type (str): Optional. The format of the source text, for example, "text/html",
                  "text/plain". If left blank, the MIME type defaults to "text/html".
             source_language_code (str): Optional. The BCP-47 language code of the input text if
@@ -285,9 +285,9 @@ class TranslationServiceClient(object):
                 ``projects/{project-number-or-id}/locations/global/models/general/nmt``.
 
                 If missing, the system decides which google base model to use.
-            glossary_config (Union[dict, ~google.cloud.translate_v3.types.TranslateTextGlossaryConfig]): Optional. Glossary to be applied. The glossary must be within the same
-                region (have the same location-id) as the model, otherwise an
-                INVALID\_ARGUMENT (400) error is returned.
+            glossary_config (Union[dict, ~google.cloud.translate_v3.types.TranslateTextGlossaryConfig]): Optional. Glossary to be applied. The glossary must be within the
+                same region (have the same location-id) as the model, otherwise an
+                INVALID_ARGUMENT (400) error is returned.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.translate_v3.types.TranslateTextGlossaryConfig`
@@ -380,8 +380,8 @@ class TranslationServiceClient(object):
             >>> response = client.detect_language(parent)
 
         Args:
-            parent (str): Required. Project or location to make a call. Must refer to a caller's
-                project.
+            parent (str): Required. Project or location to make a call. Must refer to a
+                caller's project.
 
                 Format: ``projects/{project-number-or-id}/locations/{location-id}`` or
                 ``projects/{project-number-or-id}``.
@@ -391,7 +391,7 @@ class TranslationServiceClient(object):
                 ``projects/{project-number-or-id}``.
 
                 Only models within the same region (has same location-id) can be used.
-                Otherwise an INVALID\_ARGUMENT (400) error is returned.
+                Otherwise an INVALID_ARGUMENT (400) error is returned.
             model (str): Optional. The language detection model to be used.
 
                 Format:
@@ -444,7 +444,7 @@ class TranslationServiceClient(object):
 
         # Sanity check: We have some fields which are mutually exclusive;
         # raise ValueError if more than one is sent.
-        google.api_core.protobuf_helpers.check_oneof(content=content)
+        google.api_core.protobuf_helpers.check_oneof(content=content,)
 
         request = translation_service_pb2.DetectLanguageRequest(
             parent=parent,
@@ -492,8 +492,8 @@ class TranslationServiceClient(object):
             >>> response = client.get_supported_languages(parent)
 
         Args:
-            parent (str): Required. Project or location to make a call. Must refer to a caller's
-                project.
+            parent (str): Required. Project or location to make a call. Must refer to a
+                caller's project.
 
                 Format: ``projects/{project-number-or-id}`` or
                 ``projects/{project-number-or-id}/locations/{location-id}``.
@@ -505,7 +505,7 @@ class TranslationServiceClient(object):
                 Non-global location is required for AutoML models.
 
                 Only models within the same region (have same location-id) can be used,
-                otherwise an INVALID\_ARGUMENT (400) error is returned.
+                otherwise an INVALID_ARGUMENT (400) error is returned.
             display_language_code (str): Optional. The language to use to return localized, human readable names
                 of supported languages. If missing, then display names are not returned
                 in a response.
@@ -553,7 +553,7 @@ class TranslationServiceClient(object):
             )
 
         request = translation_service_pb2.GetSupportedLanguagesRequest(
-            parent=parent, display_language_code=display_language_code, model=model
+            parent=parent, display_language_code=display_language_code, model=model,
         )
         if metadata is None:
             metadata = []
@@ -633,7 +633,7 @@ class TranslationServiceClient(object):
                 The ``global`` location is not supported for batch translation.
 
                 Only AutoML Translation models or glossaries within the same region
-                (have the same location-id) can be used, otherwise an INVALID\_ARGUMENT
+                (have the same location-id) can be used, otherwise an INVALID_ARGUMENT
                 (400) error is returned.
             source_language_code (str): Required. Source language code.
             target_language_codes (list[str]): Required. Specify up to 10 language codes here.
@@ -751,7 +751,7 @@ class TranslationServiceClient(object):
     ):
         """
         Creates a glossary and returns the long-running operation. Returns
-        NOT\_FOUND, if the project doesn't exist.
+        NOT_FOUND, if the project doesn't exist.
 
         Example:
             >>> from google.cloud import translate_v3
@@ -811,7 +811,7 @@ class TranslationServiceClient(object):
             )
 
         request = translation_service_pb2.CreateGlossaryRequest(
-            parent=parent, glossary=glossary
+            parent=parent, glossary=glossary,
         )
         if metadata is None:
             metadata = []
@@ -846,7 +846,7 @@ class TranslationServiceClient(object):
         metadata=None,
     ):
         """
-        Lists glossaries in a project. Returns NOT\_FOUND, if the project
+        Lists glossaries in a project. Returns NOT_FOUND, if the project
         doesn't exist.
 
         Example:
@@ -914,7 +914,7 @@ class TranslationServiceClient(object):
             )
 
         request = translation_service_pb2.ListGlossariesRequest(
-            parent=parent, page_size=page_size, filter=filter_
+            parent=parent, page_size=page_size, filter=filter_,
         )
         if metadata is None:
             metadata = []
@@ -952,7 +952,7 @@ class TranslationServiceClient(object):
         metadata=None,
     ):
         """
-        Gets a glossary. Returns NOT\_FOUND, if the glossary doesn't exist.
+        Gets a glossary. Returns NOT_FOUND, if the glossary doesn't exist.
 
         Example:
             >>> from google.cloud import translate_v3
@@ -995,7 +995,7 @@ class TranslationServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = translation_service_pb2.GetGlossaryRequest(name=name)
+        request = translation_service_pb2.GetGlossaryRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1022,7 +1022,7 @@ class TranslationServiceClient(object):
     ):
         """
         Deletes a glossary, or cancels glossary construction if the glossary
-        isn't created yet. Returns NOT\_FOUND, if the glossary doesn't exist.
+        isn't created yet. Returns NOT_FOUND, if the glossary doesn't exist.
 
         Example:
             >>> from google.cloud import translate_v3
@@ -1074,7 +1074,7 @@ class TranslationServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = translation_service_pb2.DeleteGlossaryRequest(name=name)
+        request = translation_service_pb2.DeleteGlossaryRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)

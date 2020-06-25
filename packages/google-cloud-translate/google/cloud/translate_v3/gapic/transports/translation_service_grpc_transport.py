@@ -57,7 +57,7 @@ class TranslationServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -78,7 +78,7 @@ class TranslationServiceGrpcTransport(object):
         self._stubs = {
             "translation_service_stub": translation_service_pb2_grpc.TranslationServiceStub(
                 channel
-            )
+            ),
         }
 
         # Because this API includes a method that returns a
@@ -183,7 +183,7 @@ class TranslationServiceGrpcTransport(object):
         """Return the gRPC stub for :meth:`TranslationServiceClient.create_glossary`.
 
         Creates a glossary and returns the long-running operation. Returns
-        NOT\_FOUND, if the project doesn't exist.
+        NOT_FOUND, if the project doesn't exist.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -196,7 +196,7 @@ class TranslationServiceGrpcTransport(object):
     def list_glossaries(self):
         """Return the gRPC stub for :meth:`TranslationServiceClient.list_glossaries`.
 
-        Lists glossaries in a project. Returns NOT\_FOUND, if the project
+        Lists glossaries in a project. Returns NOT_FOUND, if the project
         doesn't exist.
 
         Returns:
@@ -210,7 +210,7 @@ class TranslationServiceGrpcTransport(object):
     def get_glossary(self):
         """Return the gRPC stub for :meth:`TranslationServiceClient.get_glossary`.
 
-        Gets a glossary. Returns NOT\_FOUND, if the glossary doesn't exist.
+        Gets a glossary. Returns NOT_FOUND, if the glossary doesn't exist.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -224,7 +224,7 @@ class TranslationServiceGrpcTransport(object):
         """Return the gRPC stub for :meth:`TranslationServiceClient.delete_glossary`.
 
         Deletes a glossary, or cancels glossary construction if the glossary
-        isn't created yet. Returns NOT\_FOUND, if the glossary doesn't exist.
+        isn't created yet. Returns NOT_FOUND, if the glossary doesn't exist.
 
         Returns:
             Callable: A callable which accepts the appropriate
