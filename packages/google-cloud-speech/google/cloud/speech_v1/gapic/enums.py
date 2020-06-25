@@ -49,20 +49,21 @@ class RecognitionConfig(object):
         Attributes:
           ENCODING_UNSPECIFIED (int): Not specified.
           LINEAR16 (int): Uncompressed 16-bit signed little-endian samples (Linear PCM).
-          FLAC (int): ``FLAC`` (Free Lossless Audio Codec) is the recommended encoding because
-          it is lossless--therefore recognition is not compromised--and requires
-          only about half the bandwidth of ``LINEAR16``. ``FLAC`` stream encoding
-          supports 16-bit and 24-bit samples, however, not all fields in
+          FLAC (int): ``FLAC`` (Free Lossless Audio Codec) is the recommended encoding
+          because it is lossless--therefore recognition is not compromised--and
+          requires only about half the bandwidth of ``LINEAR16``. ``FLAC`` stream
+          encoding supports 16-bit and 24-bit samples, however, not all fields in
           ``STREAMINFO`` are supported.
           MULAW (int): 8-bit samples that compand 14-bit audio samples using G.711 PCMU/mu-law.
           AMR (int): Adaptive Multi-Rate Narrowband codec. ``sample_rate_hertz`` must be
           8000.
-          AMR_WB (int): Adaptive Multi-Rate Wideband codec. ``sample_rate_hertz`` must be 16000.
+          AMR_WB (int): Adaptive Multi-Rate Wideband codec. ``sample_rate_hertz`` must be
+          16000.
           OGG_OPUS (int): Opus encoded audio frames in Ogg container
           (`OggOpus <https://wiki.xiph.org/OggOpus>`__). ``sample_rate_hertz``
           must be one of 8000, 12000, 16000, 24000, or 48000.
-          SPEEX_WITH_HEADER_BYTE (int): Although the use of lossy encodings is not recommended, if a very low
-          bitrate encoding is required, ``OGG_OPUS`` is highly preferred over
+          SPEEX_WITH_HEADER_BYTE (int): Although the use of lossy encodings is not recommended, if a very
+          low bitrate encoding is required, ``OGG_OPUS`` is highly preferred over
           Speex encoding. The `Speex <https://speex.org/>`__ encoding supported by
           Cloud Speech API has a header byte in each block, as in MIME type
           ``audio/x-speex-with-header-byte``. It is a variant of the RTP Speex
@@ -97,7 +98,7 @@ class RecognitionMetadata(object):
           DISCUSSION (int): Multiple people in a conversation or discussion. For example in a
           meeting with two or more people actively participating. Typically all
           the primary people speaking would be in the same room (if not, see
-          PHONE\_CALL)
+          PHONE_CALL)
           PRESENTATION (int): One or more persons lecturing or presenting to others, mostly
           uninterrupted.
           PHONE_CALL (int): A phone-call or video-conference in which two or more people, who are
@@ -182,11 +183,11 @@ class StreamingRecognizeResponse(object):
 
         Attributes:
           SPEECH_EVENT_UNSPECIFIED (int): No speech event specified.
-          END_OF_SINGLE_UTTERANCE (int): This event indicates that the server has detected the end of the user's
-          speech utterance and expects no additional speech. Therefore, the server
-          will not process additional audio (although it may subsequently return
-          additional results). The client should stop sending additional audio
-          data, half-close the gRPC connection, and wait for any additional
+          END_OF_SINGLE_UTTERANCE (int): This event indicates that the server has detected the end of the
+          user's speech utterance and expects no additional speech. Therefore, the
+          server will not process additional audio (although it may subsequently
+          return additional results). The client should stop sending additional
+          audio data, half-close the gRPC connection, and wait for any additional
           results until the server closes the gRPC connection. This event is only
           sent if ``single_utterance`` was set to ``true``, and is not used
           otherwise.

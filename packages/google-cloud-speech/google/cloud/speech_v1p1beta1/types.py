@@ -21,6 +21,7 @@ import sys
 from google.api_core.protobuf_helpers import get_messages
 
 from google.cloud.speech_v1p1beta1.proto import cloud_speech_pb2
+from google.cloud.speech_v1p1beta1.proto import resource_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import any_pb2
 from google.protobuf import duration_pb2
@@ -28,9 +29,18 @@ from google.protobuf import timestamp_pb2
 from google.rpc import status_pb2
 
 
-_shared_modules = [operations_pb2, any_pb2, duration_pb2, timestamp_pb2, status_pb2]
+_shared_modules = [
+    operations_pb2,
+    any_pb2,
+    duration_pb2,
+    timestamp_pb2,
+    status_pb2,
+]
 
-_local_modules = [cloud_speech_pb2]
+_local_modules = [
+    cloud_speech_pb2,
+    resource_pb2,
+]
 
 names = []
 
