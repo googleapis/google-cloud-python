@@ -1,26 +1,25 @@
 {
-  "updateTime": "2020-02-03T22:57:22.365987Z",
   "sources": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "0.44.4",
-        "dockerImage": "googleapis/artman@sha256:19e945954fc960a4bdfee6cb34695898ab21a8cf0bac063ee39b91f00a1faec8"
+      "git": {
+        "name": ".",
+        "remote": "https://github.com/googleapis/python-speech.git",
+        "sha": "0d4d2c20b131269e532436da0bf6cdabc7d398e8"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "29d40b78e3dc1579b0b209463fbcb76e5767f72a",
-        "internalRef": "292979741"
+        "sha": "b882b8e6bfcd708042ff00f7adc67ce750817dd0",
+        "internalRef": "318028816"
       }
     },
     {
-      "template": {
-        "name": "python_split_library",
-        "origin": "synthtool.gcp",
-        "version": "2019.10.17"
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "ce68c0e70d36c93ffcde96e9908fb4d94aa4f2e4"
       }
     }
   ],
@@ -31,8 +30,7 @@
         "apiName": "speech",
         "apiVersion": "v1p1beta1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/speech/artman_speech_v1p1beta1.yaml"
+        "generator": "bazel"
       }
     },
     {
@@ -41,8 +39,7 @@
         "apiName": "speech",
         "apiVersion": "v1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/speech/artman_speech_v1.yaml"
+        "generator": "bazel"
       }
     }
   ]
