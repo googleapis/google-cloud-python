@@ -26,9 +26,15 @@ from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
 
-_shared_modules = [common_pb2, empty_pb2, field_mask_pb2]
+_shared_modules = [
+    common_pb2,
+    empty_pb2,
+    field_mask_pb2,
+]
 
-_local_modules = [oslogin_pb2]
+_local_modules = [
+    oslogin_pb2,
+]
 
 names = []
 
