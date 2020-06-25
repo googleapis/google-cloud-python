@@ -44,7 +44,7 @@ from google.protobuf import field_mask_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-billing-budgets"
+    "google-cloud-billing-budgets",
 ).version
 
 
@@ -85,7 +85,7 @@ class BudgetServiceClient(object):
     def billing_account_path(cls, billing_account):
         """Return a fully-qualified billing_account string."""
         return google.api_core.path_template.expand(
-            "billingAccounts/{billing_account}", billing_account=billing_account
+            "billingAccounts/{billing_account}", billing_account=billing_account,
         )
 
     @classmethod
@@ -184,12 +184,12 @@ class BudgetServiceClient(object):
                 self.transport = transport
         else:
             self.transport = budget_service_grpc_transport.BudgetServiceGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -200,7 +200,7 @@ class BudgetServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -272,7 +272,7 @@ class BudgetServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = budget_service_pb2.CreateBudgetRequest(parent=parent, budget=budget)
+        request = budget_service_pb2.CreateBudgetRequest(parent=parent, budget=budget,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -300,6 +300,10 @@ class BudgetServiceClient(object):
     ):
         """
         Updates a budget and returns the updated budget.
+
+        WARNING: There are some fields exposed on the Google Cloud Console that
+        aren't available on this API. Budget fields that are not exposed in
+        this API will not be changed by this method.
 
         Example:
             >>> from google.cloud import billing_budgets_v1beta1
@@ -357,7 +361,7 @@ class BudgetServiceClient(object):
             )
 
         request = budget_service_pb2.UpdateBudgetRequest(
-            budget=budget, update_mask=update_mask
+            budget=budget, update_mask=update_mask,
         )
         if metadata is None:
             metadata = []
@@ -385,6 +389,11 @@ class BudgetServiceClient(object):
     ):
         """
         Returns a budget.
+
+        WARNING: There are some fields exposed on the Google Cloud Console that
+        aren't available on this API. When reading from the API, you will not
+        see these fields in the return value, though they may have been set
+        in the Cloud Console.
 
         Example:
             >>> from google.cloud import billing_budgets_v1beta1
@@ -428,7 +437,7 @@ class BudgetServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = budget_service_pb2.GetBudgetRequest(name=name)
+        request = budget_service_pb2.GetBudgetRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -457,6 +466,11 @@ class BudgetServiceClient(object):
         """
         Returns a list of budgets for a billing account.
 
+        WARNING: There are some fields exposed on the Google Cloud Console that
+        aren't available on this API. When reading from the API, you will not
+        see these fields in the return value, though they may have been set
+        in the Cloud Console.
+
         Example:
             >>> from google.cloud import billing_budgets_v1beta1
             >>>
@@ -479,8 +493,8 @@ class BudgetServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Required. Name of billing account to list budgets under. Values are of
-                the form ``billingAccounts/{billingAccountId}``.
+            parent (str): Required. Name of billing account to list budgets under. Values are
+                of the form ``billingAccounts/{billingAccountId}``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -520,7 +534,7 @@ class BudgetServiceClient(object):
             )
 
         request = budget_service_pb2.ListBudgetsRequest(
-            parent=parent, page_size=page_size
+            parent=parent, page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -599,7 +613,7 @@ class BudgetServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = budget_service_pb2.DeleteBudgetRequest(name=name)
+        request = budget_service_pb2.DeleteBudgetRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)

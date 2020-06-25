@@ -56,7 +56,7 @@ class BudgetServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -75,7 +75,7 @@ class BudgetServiceGrpcTransport(object):
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "budget_service_stub": budget_service_pb2_grpc.BudgetServiceStub(channel)
+            "budget_service_stub": budget_service_pb2_grpc.BudgetServiceStub(channel),
         }
 
     @classmethod
@@ -131,6 +131,10 @@ class BudgetServiceGrpcTransport(object):
 
         Updates a budget and returns the updated budget.
 
+        WARNING: There are some fields exposed on the Google Cloud Console that
+        aren't available on this API. Budget fields that are not exposed in
+        this API will not be changed by this method.
+
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
@@ -144,6 +148,11 @@ class BudgetServiceGrpcTransport(object):
 
         Returns a budget.
 
+        WARNING: There are some fields exposed on the Google Cloud Console that
+        aren't available on this API. When reading from the API, you will not
+        see these fields in the return value, though they may have been set
+        in the Cloud Console.
+
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
@@ -156,6 +165,11 @@ class BudgetServiceGrpcTransport(object):
         """Return the gRPC stub for :meth:`BudgetServiceClient.list_budgets`.
 
         Returns a list of budgets for a billing account.
+
+        WARNING: There are some fields exposed on the Google Cloud Console that
+        aren't available on this API. When reading from the API, you will not
+        see these fields in the return value, though they may have been set
+        in the Cloud Console.
 
         Returns:
             Callable: A callable which accepts the appropriate

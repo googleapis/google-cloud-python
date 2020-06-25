@@ -2,10 +2,10 @@
 import grpc
 
 from google.cloud.billing_budgets_v1beta1.proto import (
-    budget_model_pb2 as google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__model__pb2,
+    budget_model_pb2 as google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__model__pb2,
 )
 from google.cloud.billing_budgets_v1beta1.proto import (
-    budget_service_pb2 as google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__service__pb2,
+    budget_service_pb2 as google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__service__pb2,
 )
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
@@ -23,27 +23,27 @@ class BudgetServiceStub(object):
     """
         self.CreateBudget = channel.unary_unary(
             "/google.cloud.billing.budgets.v1beta1.BudgetService/CreateBudget",
-            request_serializer=google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__service__pb2.CreateBudgetRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__model__pb2.Budget.FromString,
+            request_serializer=google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__service__pb2.CreateBudgetRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__model__pb2.Budget.FromString,
         )
         self.UpdateBudget = channel.unary_unary(
             "/google.cloud.billing.budgets.v1beta1.BudgetService/UpdateBudget",
-            request_serializer=google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__service__pb2.UpdateBudgetRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__model__pb2.Budget.FromString,
+            request_serializer=google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__service__pb2.UpdateBudgetRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__model__pb2.Budget.FromString,
         )
         self.GetBudget = channel.unary_unary(
             "/google.cloud.billing.budgets.v1beta1.BudgetService/GetBudget",
-            request_serializer=google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__service__pb2.GetBudgetRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__model__pb2.Budget.FromString,
+            request_serializer=google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__service__pb2.GetBudgetRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__model__pb2.Budget.FromString,
         )
         self.ListBudgets = channel.unary_unary(
             "/google.cloud.billing.budgets.v1beta1.BudgetService/ListBudgets",
-            request_serializer=google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__service__pb2.ListBudgetsRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__service__pb2.ListBudgetsResponse.FromString,
+            request_serializer=google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__service__pb2.ListBudgetsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__service__pb2.ListBudgetsResponse.FromString,
         )
         self.DeleteBudget = channel.unary_unary(
             "/google.cloud.billing.budgets.v1beta1.BudgetService/DeleteBudget",
-            request_serializer=google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__service__pb2.DeleteBudgetRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__service__pb2.DeleteBudgetRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
 
@@ -64,6 +64,10 @@ class BudgetServiceServicer(object):
 
     def UpdateBudget(self, request, context):
         """Updates a budget and returns the updated budget.
+
+    WARNING: There are some fields exposed on the Google Cloud Console that
+    aren't available on this API. Budget fields that are not exposed in
+    this API will not be changed by this method.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -71,6 +75,11 @@ class BudgetServiceServicer(object):
 
     def GetBudget(self, request, context):
         """Returns a budget.
+
+    WARNING: There are some fields exposed on the Google Cloud Console that
+    aren't available on this API. When reading from the API, you will not
+    see these fields in the return value, though they may have been set
+    in the Cloud Console.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -78,6 +87,11 @@ class BudgetServiceServicer(object):
 
     def ListBudgets(self, request, context):
         """Returns a list of budgets for a billing account.
+
+    WARNING: There are some fields exposed on the Google Cloud Console that
+    aren't available on this API. When reading from the API, you will not
+    see these fields in the return value, though they may have been set
+    in the Cloud Console.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -95,27 +109,27 @@ def add_BudgetServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
         "CreateBudget": grpc.unary_unary_rpc_method_handler(
             servicer.CreateBudget,
-            request_deserializer=google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__service__pb2.CreateBudgetRequest.FromString,
-            response_serializer=google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__model__pb2.Budget.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__service__pb2.CreateBudgetRequest.FromString,
+            response_serializer=google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__model__pb2.Budget.SerializeToString,
         ),
         "UpdateBudget": grpc.unary_unary_rpc_method_handler(
             servicer.UpdateBudget,
-            request_deserializer=google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__service__pb2.UpdateBudgetRequest.FromString,
-            response_serializer=google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__model__pb2.Budget.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__service__pb2.UpdateBudgetRequest.FromString,
+            response_serializer=google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__model__pb2.Budget.SerializeToString,
         ),
         "GetBudget": grpc.unary_unary_rpc_method_handler(
             servicer.GetBudget,
-            request_deserializer=google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__service__pb2.GetBudgetRequest.FromString,
-            response_serializer=google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__model__pb2.Budget.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__service__pb2.GetBudgetRequest.FromString,
+            response_serializer=google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__model__pb2.Budget.SerializeToString,
         ),
         "ListBudgets": grpc.unary_unary_rpc_method_handler(
             servicer.ListBudgets,
-            request_deserializer=google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__service__pb2.ListBudgetsRequest.FromString,
-            response_serializer=google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__service__pb2.ListBudgetsResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__service__pb2.ListBudgetsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__service__pb2.ListBudgetsResponse.SerializeToString,
         ),
         "DeleteBudget": grpc.unary_unary_rpc_method_handler(
             servicer.DeleteBudget,
-            request_deserializer=google_dot_cloud_dot_billing_dot_budgets__v1beta1_dot_proto_dot_budget__service__pb2.DeleteBudgetRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_billing__budgets__v1beta1_dot_proto_dot_budget__service__pb2.DeleteBudgetRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
     }

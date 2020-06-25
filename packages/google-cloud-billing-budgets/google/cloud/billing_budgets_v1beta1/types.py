@@ -24,12 +24,21 @@ from google.cloud.billing_budgets_v1beta1.proto import budget_model_pb2
 from google.cloud.billing_budgets_v1beta1.proto import budget_service_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+from google.protobuf import struct_pb2
 from google.type import money_pb2
 
 
-_shared_modules = [empty_pb2, field_mask_pb2, money_pb2]
+_shared_modules = [
+    empty_pb2,
+    field_mask_pb2,
+    struct_pb2,
+    money_pb2,
+]
 
-_local_modules = [budget_model_pb2, budget_service_pb2]
+_local_modules = [
+    budget_model_pb2,
+    budget_service_pb2,
+]
 
 names = []
 
