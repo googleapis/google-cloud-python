@@ -39,7 +39,7 @@ from google.protobuf import empty_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-container"
+    "google-cloud-container",
 ).version
 
 
@@ -160,12 +160,12 @@ class ClusterManagerClient(object):
                 self.transport = transport
         else:
             self.transport = cluster_manager_grpc_transport.ClusterManagerGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -176,7 +176,7 @@ class ClusterManagerClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -186,6 +186,186 @@ class ClusterManagerClient(object):
         self._inner_api_calls = {}
 
     # Service calls
+    def delete_cluster(
+        self,
+        project_id=None,
+        zone=None,
+        cluster_id=None,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes the cluster, including the Kubernetes endpoint and all worker
+        nodes.
+
+        Firewalls and routes that were configured during cluster creation
+        are also deleted.
+
+        Other Google Compute Engine resources that might be in use by the cluster,
+        such as load balancer resources, are not deleted if they weren't present
+        when the cluster was initially created.
+
+        Example:
+            >>> from google.cloud import container_v1
+            >>>
+            >>> client = container_v1.ClusterManagerClient()
+            >>>
+            >>> response = client.delete_cluster()
+
+        Args:
+            project_id (str): Deprecated. The Google Developers Console `project ID or project
+                number <https://support.google.com/cloud/answer/6158840>`__. This field
+                has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides. This field has been deprecated and replaced
+                by the name field.
+            cluster_id (str): Deprecated. The name of the cluster to delete.
+                This field has been deprecated and replaced by the name field.
+            name (str): The name (project, location, cluster) of the cluster to delete.
+                Specified in the format ``projects/*/locations/*/clusters/*``.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.container_v1.types.Operation` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_cluster" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_cluster"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_cluster,
+                default_retry=self._method_configs["DeleteCluster"].retry,
+                default_timeout=self._method_configs["DeleteCluster"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = cluster_service_pb2.DeleteClusterRequest(
+            project_id=project_id, zone=zone, cluster_id=cluster_id, name=name,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["delete_cluster"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def delete_node_pool(
+        self,
+        project_id=None,
+        zone=None,
+        cluster_id=None,
+        node_pool_id=None,
+        name=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes a node pool from a cluster.
+
+        Example:
+            >>> from google.cloud import container_v1
+            >>>
+            >>> client = container_v1.ClusterManagerClient()
+            >>>
+            >>> response = client.delete_node_pool()
+
+        Args:
+            project_id (str): Deprecated. The Google Developers Console `project ID or project
+                number <https://developers.google.com/console/help/new/#projectnumber>`__.
+                This field has been deprecated and replaced by the name field.
+            zone (str): Deprecated. The name of the Google Compute Engine
+                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
+                which the cluster resides. This field has been deprecated and replaced
+                by the name field.
+            cluster_id (str): Deprecated. The name of the cluster.
+                This field has been deprecated and replaced by the name field.
+            node_pool_id (str): Deprecated. The name of the node pool to delete.
+                This field has been deprecated and replaced by the name field.
+            name (str): The name (project, location, cluster, node pool id) of the node pool
+                to delete. Specified in the format
+                ``projects/*/locations/*/clusters/*/nodePools/*``.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.container_v1.types.Operation` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_node_pool" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_node_pool"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_node_pool,
+                default_retry=self._method_configs["DeleteNodePool"].retry,
+                default_timeout=self._method_configs["DeleteNodePool"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = cluster_service_pb2.DeleteNodePoolRequest(
+            project_id=project_id,
+            zone=zone,
+            cluster_id=cluster_id,
+            node_pool_id=node_pool_id,
+            name=name,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["delete_node_pool"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def list_clusters(
         self,
         project_id=None,
@@ -248,7 +428,7 @@ class ClusterManagerClient(object):
             )
 
         request = cluster_service_pb2.ListClustersRequest(
-            project_id=project_id, zone=zone, parent=parent
+            project_id=project_id, zone=zone, parent=parent,
         )
         if metadata is None:
             metadata = []
@@ -330,7 +510,7 @@ class ClusterManagerClient(object):
             )
 
         request = cluster_service_pb2.GetClusterRequest(
-            project_id=project_id, zone=zone, cluster_id=cluster_id, name=name
+            project_id=project_id, zone=zone, cluster_id=cluster_id, name=name,
         )
         if metadata is None:
             metadata = []
@@ -360,8 +540,8 @@ class ClusterManagerClient(object):
         metadata=None,
     ):
         """
-        Creates a cluster, consisting of the specified number and type of Google
-        Compute Engine instances.
+        Creates a cluster, consisting of the specified number and type of
+        Google Compute Engine instances.
 
         By default, the cluster is created in the project's `default
         network <https://cloud.google.com/compute/docs/networks-and-firewalls#networks>`__.
@@ -429,7 +609,7 @@ class ClusterManagerClient(object):
             )
 
         request = cluster_service_pb2.CreateClusterRequest(
-            cluster=cluster, project_id=project_id, zone=zone, parent=parent
+            cluster=cluster, project_id=project_id, zone=zone, parent=parent,
         )
         if metadata is None:
             metadata = []
@@ -695,8 +875,8 @@ class ClusterManagerClient(object):
                 This field has been deprecated and replaced by the name field.
             node_pool_id (str): Deprecated. The name of the node pool to upgrade.
                 This field has been deprecated and replaced by the name field.
-            name (str): The name (project, location, cluster, node pool) of the node pool to set
-                autoscaler settings. Specified in the format
+            name (str): The name (project, location, cluster, node pool) of the node pool to
+                set autoscaler settings. Specified in the format
                 ``projects/*/locations/*/clusters/*/nodePools/*``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -778,8 +958,8 @@ class ClusterManagerClient(object):
             >>> response = client.set_logging_service(logging_service)
 
         Args:
-            logging_service (str): Required. The logging service the cluster should use to write metrics.
-                Currently available options:
+            logging_service (str): Required. The logging service the cluster should use to write
+                metrics. Currently available options:
 
                 -  "logging.googleapis.com" - the Google Cloud Logging service
                 -  "none" - no metrics will be exported from the cluster
@@ -889,8 +1069,9 @@ class ClusterManagerClient(object):
                 by the name field.
             cluster_id (str): Deprecated. The name of the cluster to upgrade.
                 This field has been deprecated and replaced by the name field.
-            name (str): The name (project, location, cluster) of the cluster to set monitoring.
-                Specified in the format ``projects/*/locations/*/clusters/*``.
+            name (str): The name (project, location, cluster) of the cluster to set
+                monitoring. Specified in the format
+                ``projects/*/locations/*/clusters/*``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1081,8 +1262,9 @@ class ClusterManagerClient(object):
                 by the name field.
             cluster_id (str): Deprecated. The name of the cluster to upgrade.
                 This field has been deprecated and replaced by the name field.
-            name (str): The name (project, location, cluster) of the cluster to set locations.
-                Specified in the format ``projects/*/locations/*/clusters/*``.
+            name (str): The name (project, location, cluster) of the cluster to set
+                locations. Specified in the format
+                ``projects/*/locations/*/clusters/*``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1340,96 +1522,6 @@ class ClusterManagerClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
-    def delete_cluster(
-        self,
-        project_id=None,
-        zone=None,
-        cluster_id=None,
-        name=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Deletes the cluster, including the Kubernetes endpoint and all worker
-        nodes.
-
-        Firewalls and routes that were configured during cluster creation
-        are also deleted.
-
-        Other Google Compute Engine resources that might be in use by the cluster,
-        such as load balancer resources, are not deleted if they weren't present
-        when the cluster was initially created.
-
-        Example:
-            >>> from google.cloud import container_v1
-            >>>
-            >>> client = container_v1.ClusterManagerClient()
-            >>>
-            >>> response = client.delete_cluster()
-
-        Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://support.google.com/cloud/answer/6158840>`__. This field
-                has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
-                which the cluster resides. This field has been deprecated and replaced
-                by the name field.
-            cluster_id (str): Deprecated. The name of the cluster to delete.
-                This field has been deprecated and replaced by the name field.
-            name (str): The name (project, location, cluster) of the cluster to delete.
-                Specified in the format ``projects/*/locations/*/clusters/*``.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "delete_cluster" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "delete_cluster"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_cluster,
-                default_retry=self._method_configs["DeleteCluster"].retry,
-                default_timeout=self._method_configs["DeleteCluster"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = cluster_service_pb2.DeleteClusterRequest(
-            project_id=project_id, zone=zone, cluster_id=cluster_id, name=name
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["delete_cluster"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
     def list_operations(
         self,
         project_id=None,
@@ -1457,9 +1549,9 @@ class ClusterManagerClient(object):
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ to
                 return operations for, or ``-`` for all zones. This field has been
                 deprecated and replaced by the parent field.
-            parent (str): The parent (project and location) where the operations will be listed.
-                Specified in the format ``projects/*/locations/*``. Location "-" matches
-                all zones and all regions.
+            parent (str): The parent (project and location) where the operations will be
+                listed. Specified in the format ``projects/*/locations/*``. Location "-"
+                matches all zones and all regions.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1491,7 +1583,7 @@ class ClusterManagerClient(object):
             )
 
         request = cluster_service_pb2.ListOperationsRequest(
-            project_id=project_id, zone=zone, parent=parent
+            project_id=project_id, zone=zone, parent=parent,
         )
         if metadata is None:
             metadata = []
@@ -1538,8 +1630,8 @@ class ClusterManagerClient(object):
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the cluster resides. This field has been deprecated and replaced
                 by the name field.
-            operation_id (str): Deprecated. The server-assigned ``name`` of the operation. This field
-                has been deprecated and replaced by the name field.
+            operation_id (str): Deprecated. The server-assigned ``name`` of the operation. This
+                field has been deprecated and replaced by the name field.
             name (str): The name (project, location, operation id) of the operation to get.
                 Specified in the format ``projects/*/locations/*/operations/*``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1573,7 +1665,7 @@ class ClusterManagerClient(object):
             )
 
         request = cluster_service_pb2.GetOperationRequest(
-            project_id=project_id, zone=zone, operation_id=operation_id, name=name
+            project_id=project_id, zone=zone, operation_id=operation_id, name=name,
         )
         if metadata is None:
             metadata = []
@@ -1620,10 +1712,10 @@ class ClusterManagerClient(object):
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
                 which the operation resides. This field has been deprecated and replaced
                 by the name field.
-            operation_id (str): Deprecated. The server-assigned ``name`` of the operation. This field
-                has been deprecated and replaced by the name field.
-            name (str): The name (project, location, operation id) of the operation to cancel.
-                Specified in the format ``projects/*/locations/*/operations/*``.
+            operation_id (str): Deprecated. The server-assigned ``name`` of the operation. This
+                field has been deprecated and replaced by the name field.
+            name (str): The name (project, location, operation id) of the operation to
+                cancel. Specified in the format ``projects/*/locations/*/operations/*``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1652,7 +1744,7 @@ class ClusterManagerClient(object):
             )
 
         request = cluster_service_pb2.CancelOperationRequest(
-            project_id=project_id, zone=zone, operation_id=operation_id, name=name
+            project_id=project_id, zone=zone, operation_id=operation_id, name=name,
         )
         if metadata is None:
             metadata = []
@@ -1698,8 +1790,8 @@ class ClusterManagerClient(object):
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__ to
                 return operations for. This field has been deprecated and replaced by
                 the name field.
-            name (str): The name (project and location) of the server config to get, specified
-                in the format ``projects/*/locations/*``.
+            name (str): The name (project and location) of the server config to get,
+                specified in the format ``projects/*/locations/*``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1731,7 +1823,7 @@ class ClusterManagerClient(object):
             )
 
         request = cluster_service_pb2.GetServerConfigRequest(
-            project_id=project_id, zone=zone, name=name
+            project_id=project_id, zone=zone, name=name,
         )
         if metadata is None:
             metadata = []
@@ -1780,8 +1872,9 @@ class ClusterManagerClient(object):
                 by the parent field.
             cluster_id (str): Deprecated. The name of the cluster.
                 This field has been deprecated and replaced by the parent field.
-            parent (str): The parent (project, location, cluster id) where the node pools will be
-                listed. Specified in the format ``projects/*/locations/*/clusters/*``.
+            parent (str): The parent (project, location, cluster id) where the node pools will
+                be listed. Specified in the format
+                ``projects/*/locations/*/clusters/*``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1813,7 +1906,7 @@ class ClusterManagerClient(object):
             )
 
         request = cluster_service_pb2.ListNodePoolsRequest(
-            project_id=project_id, zone=zone, cluster_id=cluster_id, parent=parent
+            project_id=project_id, zone=zone, cluster_id=cluster_id, parent=parent,
         )
         if metadata is None:
             metadata = []
@@ -1865,8 +1958,8 @@ class ClusterManagerClient(object):
                 This field has been deprecated and replaced by the name field.
             node_pool_id (str): Deprecated. The name of the node pool.
                 This field has been deprecated and replaced by the name field.
-            name (str): The name (project, location, cluster, node pool id) of the node pool to
-                get. Specified in the format
+            name (str): The name (project, location, cluster, node pool id) of the node pool
+                to get. Specified in the format
                 ``projects/*/locations/*/clusters/*/nodePools/*``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -1960,8 +2053,9 @@ class ClusterManagerClient(object):
                 by the parent field.
             cluster_id (str): Deprecated. The name of the cluster.
                 This field has been deprecated and replaced by the parent field.
-            parent (str): The parent (project, location, cluster id) where the node pool will be
-                created. Specified in the format ``projects/*/locations/*/clusters/*``.
+            parent (str): The parent (project, location, cluster id) where the node pool will
+                be created. Specified in the format
+                ``projects/*/locations/*/clusters/*``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -2016,96 +2110,6 @@ class ClusterManagerClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
-    def delete_node_pool(
-        self,
-        project_id=None,
-        zone=None,
-        cluster_id=None,
-        node_pool_id=None,
-        name=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Deletes a node pool from a cluster.
-
-        Example:
-            >>> from google.cloud import container_v1
-            >>>
-            >>> client = container_v1.ClusterManagerClient()
-            >>>
-            >>> response = client.delete_node_pool()
-
-        Args:
-            project_id (str): Deprecated. The Google Developers Console `project ID or project
-                number <https://developers.google.com/console/help/new/#projectnumber>`__.
-                This field has been deprecated and replaced by the name field.
-            zone (str): Deprecated. The name of the Google Compute Engine
-                `zone <https://cloud.google.com/compute/docs/zones#available>`__ in
-                which the cluster resides. This field has been deprecated and replaced
-                by the name field.
-            cluster_id (str): Deprecated. The name of the cluster.
-                This field has been deprecated and replaced by the name field.
-            node_pool_id (str): Deprecated. The name of the node pool to delete.
-                This field has been deprecated and replaced by the name field.
-            name (str): The name (project, location, cluster, node pool id) of the node pool to
-                delete. Specified in the format
-                ``projects/*/locations/*/clusters/*/nodePools/*``.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.container_v1.types.Operation` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "delete_node_pool" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "delete_node_pool"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_node_pool,
-                default_retry=self._method_configs["DeleteNodePool"].retry,
-                default_timeout=self._method_configs["DeleteNodePool"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = cluster_service_pb2.DeleteNodePoolRequest(
-            project_id=project_id,
-            zone=zone,
-            cluster_id=cluster_id,
-            node_pool_id=node_pool_id,
-            name=name,
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["delete_node_pool"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
     def rollback_node_pool_upgrade(
         self,
         project_id=None,
@@ -2140,8 +2144,8 @@ class ClusterManagerClient(object):
                 This field has been deprecated and replaced by the name field.
             node_pool_id (str): Deprecated. The name of the node pool to rollback.
                 This field has been deprecated and replaced by the name field.
-            name (str): The name (project, location, cluster, node pool id) of the node poll to
-                rollback upgrade. Specified in the format
+            name (str): The name (project, location, cluster, node pool id) of the node poll
+                to rollback upgrade. Specified in the format
                 ``projects/*/locations/*/clusters/*/nodePools/*``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -2238,8 +2242,8 @@ class ClusterManagerClient(object):
                 This field has been deprecated and replaced by the name field.
             node_pool_id (str): Deprecated. The name of the node pool to update.
                 This field has been deprecated and replaced by the name field.
-            name (str): The name (project, location, cluster, node pool id) of the node pool to
-                set management properties. Specified in the format
+            name (str): The name (project, location, cluster, node pool id) of the node pool
+                to set management properties. Specified in the format
                 ``projects/*/locations/*/clusters/*/nodePools/*``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -2341,8 +2345,8 @@ class ClusterManagerClient(object):
                 by the name field.
             cluster_id (str): Deprecated. The name of the cluster.
                 This field has been deprecated and replaced by the name field.
-            name (str): The name (project, location, cluster id) of the cluster to set labels.
-                Specified in the format ``projects/*/locations/*/clusters/*``.
+            name (str): The name (project, location, cluster id) of the cluster to set
+                labels. Specified in the format ``projects/*/locations/*/clusters/*``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -2433,8 +2437,9 @@ class ClusterManagerClient(object):
                 by the name field.
             cluster_id (str): Deprecated. The name of the cluster to update.
                 This field has been deprecated and replaced by the name field.
-            name (str): The name (project, location, cluster id) of the cluster to set legacy
-                abac. Specified in the format ``projects/*/locations/*/clusters/*``.
+            name (str): The name (project, location, cluster id) of the cluster to set
+                legacy abac. Specified in the format
+                ``projects/*/locations/*/clusters/*``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -2607,8 +2612,9 @@ class ClusterManagerClient(object):
                 by the name field.
             cluster_id (str): Deprecated. The name of the cluster.
                 This field has been deprecated and replaced by the name field.
-            name (str): The name (project, location, cluster id) of the cluster to complete IP
-                rotation. Specified in the format ``projects/*/locations/*/clusters/*``.
+            name (str): The name (project, location, cluster id) of the cluster to complete
+                IP rotation. Specified in the format
+                ``projects/*/locations/*/clusters/*``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -2640,7 +2646,7 @@ class ClusterManagerClient(object):
             )
 
         request = cluster_service_pb2.CompleteIPRotationRequest(
-            project_id=project_id, zone=zone, cluster_id=cluster_id, name=name
+            project_id=project_id, zone=zone, cluster_id=cluster_id, name=name,
         )
         if metadata is None:
             metadata = []
@@ -2697,8 +2703,8 @@ class ClusterManagerClient(object):
                 This field has been deprecated and replaced by the name field.
             node_pool_id (str): Deprecated. The name of the node pool to update.
                 This field has been deprecated and replaced by the name field.
-            name (str): The name (project, location, cluster, node pool id) of the node pool to
-                set size. Specified in the format
+            name (str): The name (project, location, cluster, node pool id) of the node pool
+                to set size. Specified in the format
                 ``projects/*/locations/*/clusters/*/nodePools/*``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -2984,10 +2990,10 @@ class ClusterManagerClient(object):
             ...         pass
 
         Args:
-            parent (str): The parent project where subnetworks are usable. Specified in the format
-                ``projects/*``.
-            filter_ (str): Filtering currently only supports equality on the networkProjectId and
-                must be in the form: "networkProjectId=[PROJECTID]", where
+            parent (str): The parent project where subnetworks are usable. Specified in the
+                format ``projects/*``.
+            filter_ (str): Filtering currently only supports equality on the networkProjectId
+                and must be in the form: "networkProjectId=[PROJECTID]", where
                 ``networkProjectId`` is the project which owns the listed subnetworks.
                 This defaults to the parent project ID.
             page_size (int): The maximum number of resources contained in the
@@ -3029,7 +3035,7 @@ class ClusterManagerClient(object):
             )
 
         request = cluster_service_pb2.ListUsableSubnetworksRequest(
-            parent=parent, filter=filter_, page_size=page_size
+            parent=parent, filter=filter_, page_size=page_size,
         )
         if metadata is None:
             metadata = []

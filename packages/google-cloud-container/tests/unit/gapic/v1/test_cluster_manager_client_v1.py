@@ -62,6 +62,106 @@ class CustomException(Exception):
 
 
 class TestClusterManagerClient(object):
+    def test_delete_cluster(self):
+        # Setup Expected Response
+        name = "name3373707"
+        zone = "zone3744684"
+        detail = "detail-1335224239"
+        status_message = "statusMessage-239442758"
+        self_link = "selfLink-1691268851"
+        target_link = "targetLink-2084812312"
+        location = "location1901043637"
+        start_time = "startTime-1573145462"
+        end_time = "endTime1725551537"
+        expected_response = {
+            "name": name,
+            "zone": zone,
+            "detail": detail,
+            "status_message": status_message,
+            "self_link": self_link,
+            "target_link": target_link,
+            "location": location,
+            "start_time": start_time,
+            "end_time": end_time,
+        }
+        expected_response = cluster_service_pb2.Operation(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
+
+        response = client.delete_cluster()
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = cluster_service_pb2.DeleteClusterRequest()
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_cluster_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
+
+        with pytest.raises(CustomException):
+            client.delete_cluster()
+
+    def test_delete_node_pool(self):
+        # Setup Expected Response
+        name = "name3373707"
+        zone = "zone3744684"
+        detail = "detail-1335224239"
+        status_message = "statusMessage-239442758"
+        self_link = "selfLink-1691268851"
+        target_link = "targetLink-2084812312"
+        location = "location1901043637"
+        start_time = "startTime-1573145462"
+        end_time = "endTime1725551537"
+        expected_response = {
+            "name": name,
+            "zone": zone,
+            "detail": detail,
+            "status_message": status_message,
+            "self_link": self_link,
+            "target_link": target_link,
+            "location": location,
+            "start_time": start_time,
+            "end_time": end_time,
+        }
+        expected_response = cluster_service_pb2.Operation(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
+
+        response = client.delete_node_pool()
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = cluster_service_pb2.DeleteNodePoolRequest()
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_node_pool_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = container_v1.ClusterManagerClient()
+
+        with pytest.raises(CustomException):
+            client.delete_node_pool()
+
     def test_list_clusters(self):
         # Setup Expected Response
         expected_response = {}
@@ -755,56 +855,6 @@ class TestClusterManagerClient(object):
         with pytest.raises(CustomException):
             client.set_master_auth(action, update)
 
-    def test_delete_cluster(self):
-        # Setup Expected Response
-        name = "name3373707"
-        zone = "zone3744684"
-        detail = "detail-1335224239"
-        status_message = "statusMessage-239442758"
-        self_link = "selfLink-1691268851"
-        target_link = "targetLink-2084812312"
-        location = "location1901043637"
-        start_time = "startTime-1573145462"
-        end_time = "endTime1725551537"
-        expected_response = {
-            "name": name,
-            "zone": zone,
-            "detail": detail,
-            "status_message": status_message,
-            "self_link": self_link,
-            "target_link": target_link,
-            "location": location,
-            "start_time": start_time,
-            "end_time": end_time,
-        }
-        expected_response = cluster_service_pb2.Operation(**expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
-
-        response = client.delete_cluster()
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = cluster_service_pb2.DeleteClusterRequest()
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_cluster_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
-
-        with pytest.raises(CustomException):
-            client.delete_cluster()
-
     def test_list_operations(self):
         # Setup Expected Response
         expected_response = {}
@@ -1083,56 +1133,6 @@ class TestClusterManagerClient(object):
 
         with pytest.raises(CustomException):
             client.create_node_pool(node_pool)
-
-    def test_delete_node_pool(self):
-        # Setup Expected Response
-        name = "name3373707"
-        zone = "zone3744684"
-        detail = "detail-1335224239"
-        status_message = "statusMessage-239442758"
-        self_link = "selfLink-1691268851"
-        target_link = "targetLink-2084812312"
-        location = "location1901043637"
-        start_time = "startTime-1573145462"
-        end_time = "endTime1725551537"
-        expected_response = {
-            "name": name,
-            "zone": zone,
-            "detail": detail,
-            "status_message": status_message,
-            "self_link": self_link,
-            "target_link": target_link,
-            "location": location,
-            "start_time": start_time,
-            "end_time": end_time,
-        }
-        expected_response = cluster_service_pb2.Operation(**expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
-
-        response = client.delete_node_pool()
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = cluster_service_pb2.DeleteNodePoolRequest()
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_node_pool_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = container_v1.ClusterManagerClient()
-
-        with pytest.raises(CustomException):
-            client.delete_node_pool()
 
     def test_rollback_node_pool_upgrade(self):
         # Setup Expected Response

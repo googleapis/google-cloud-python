@@ -25,9 +25,14 @@ from google.protobuf import empty_pb2
 from google.protobuf import timestamp_pb2
 
 
-_shared_modules = [empty_pb2, timestamp_pb2]
+_shared_modules = [
+    empty_pb2,
+    timestamp_pb2,
+]
 
-_local_modules = [cluster_service_pb2]
+_local_modules = [
+    cluster_service_pb2,
+]
 
 names = []
 

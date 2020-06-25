@@ -17,6 +17,16 @@ config = {
                 }
             },
             "methods": {
+                "DeleteCluster": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "DeleteNodePool": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
                 "ListClusters": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
@@ -77,11 +87,6 @@ config = {
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
-                "DeleteCluster": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
-                },
                 "ListOperations": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
@@ -113,11 +118,6 @@ config = {
                     "retry_params_name": "default",
                 },
                 "CreateNodePool": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
-                },
-                "DeleteNodePool": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",

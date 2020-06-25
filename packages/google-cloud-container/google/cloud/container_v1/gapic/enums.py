@@ -29,14 +29,15 @@ class Cluster(object):
           PROVISIONING (int): The PROVISIONING state indicates the cluster is being created.
           RUNNING (int): The RUNNING state indicates the cluster has been created and is fully
           usable.
-          RECONCILING (int): The RECONCILING state indicates that some work is actively being done on
-          the cluster, such as upgrading the master or node software. Details can
-          be found in the ``statusMessage`` field.
+          RECONCILING (int): The RECONCILING state indicates that some work is actively being
+          done on the cluster, such as upgrading the master or node software.
+          Details can be found in the ``statusMessage`` field.
           STOPPING (int): The STOPPING state indicates the cluster is being deleted.
-          ERROR (int): The ERROR state indicates the cluster may be unusable. Details can be
-          found in the ``statusMessage`` field.
-          DEGRADED (int): The DEGRADED state indicates the cluster requires user action to restore
-          full functionality. Details can be found in the ``statusMessage`` field.
+          ERROR (int): The ERROR state indicates the cluster may be unusable. Details can
+          be found in the ``statusMessage`` field.
+          DEGRADED (int): The DEGRADED state indicates the cluster requires user action to
+          restore full functionality. Details can be found in the
+          ``statusMessage`` field.
         """
 
         STATUS_UNSPECIFIED = 0
@@ -89,16 +90,16 @@ class NodePool(object):
           PROVISIONING (int): The PROVISIONING state indicates the node pool is being created.
           RUNNING (int): The RUNNING state indicates the node pool has been created
           and is fully usable.
-          RUNNING_WITH_ERROR (int): The RUNNING\_WITH\_ERROR state indicates the node pool has been created
-          and is partially usable. Some error state has occurred and some
+          RUNNING_WITH_ERROR (int): The RUNNING_WITH_ERROR state indicates the node pool has been
+          created and is partially usable. Some error state has occurred and some
           functionality may be impaired. Customer may need to reissue a request or
           trigger a new update.
-          RECONCILING (int): The RECONCILING state indicates that some work is actively being done on
-          the node pool, such as upgrading node software. Details can be found in
-          the ``statusMessage`` field.
-          STOPPING (int): The STOPPING state indicates the node pool is being deleted.
-          ERROR (int): The ERROR state indicates the node pool may be unusable. Details can be
+          RECONCILING (int): The RECONCILING state indicates that some work is actively being
+          done on the node pool, such as upgrading node software. Details can be
           found in the ``statusMessage`` field.
+          STOPPING (int): The STOPPING state indicates the node pool is being deleted.
+          ERROR (int): The ERROR state indicates the node pool may be unusable. Details can
+          be found in the ``statusMessage`` field.
         """
 
         STATUS_UNSPECIFIED = 0
@@ -218,8 +219,8 @@ class StatusCondition(object):
 
         Attributes:
           UNKNOWN (int): UNKNOWN indicates a generic condition.
-          GCE_STOCKOUT (int): GCE\_STOCKOUT indicates a Google Compute Engine stockout.
-          GKE_SERVICE_ACCOUNT_DELETED (int): GKE\_SERVICE\_ACCOUNT\_DELETED indicates that the user deleted their
+          GCE_STOCKOUT (int): GCE_STOCKOUT indicates a Google Compute Engine stockout.
+          GKE_SERVICE_ACCOUNT_DELETED (int): GKE_SERVICE_ACCOUNT_DELETED indicates that the user deleted their
           robot service account.
           GCE_QUOTA_EXCEEDED (int): Google Compute Engine quota was exceeded.
           SET_BY_OPERATOR (int): Cluster state was manually changed by an SRE due to a system logic error.
@@ -244,12 +245,12 @@ class UsableSubnetworkSecondaryRange(object):
         Attributes:
           UNKNOWN (int): UNKNOWN is the zero value of the Status enum. It's not a valid status.
           UNUSED (int): UNUSED denotes that this range is unclaimed by any cluster.
-          IN_USE_SERVICE (int): IN\_USE\_SERVICE denotes that this range is claimed by a cluster for
+          IN_USE_SERVICE (int): IN_USE_SERVICE denotes that this range is claimed by a cluster for
           services. It cannot be used for other clusters.
-          IN_USE_SHAREABLE_POD (int): IN\_USE\_SHAREABLE\_POD denotes this range was created by the network
+          IN_USE_SHAREABLE_POD (int): IN_USE_SHAREABLE_POD denotes this range was created by the network
           admin and is currently claimed by a cluster for pods. It can only be
           used by other clusters as a pod range.
-          IN_USE_MANAGED_POD (int): IN\_USE\_MANAGED\_POD denotes this range was created by GKE and is
+          IN_USE_MANAGED_POD (int): IN_USE_MANAGED_POD denotes this range was created by GKE and is
           claimed for pods. It cannot be used for other clusters.
         """
 
