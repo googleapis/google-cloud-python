@@ -61,6 +61,41 @@ class CustomException(Exception):
 
 
 class TestTraceServiceClient(object):
+    def test_patch_traces(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = trace_v1.TraceServiceClient()
+
+        # Setup Request
+        project_id = "projectId-1969970175"
+        traces = {}
+
+        client.patch_traces(project_id, traces)
+
+        assert len(channel.requests) == 1
+        expected_request = trace_pb2.PatchTracesRequest(
+            project_id=project_id, traces=traces
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_patch_traces_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = trace_v1.TraceServiceClient()
+
+        # Setup request
+        project_id = "projectId-1969970175"
+        traces = {}
+
+        with pytest.raises(CustomException):
+            client.patch_traces(project_id, traces)
+
     def test_list_traces(self):
         # Setup Expected Response
         next_page_token = ""
@@ -146,38 +181,3 @@ class TestTraceServiceClient(object):
 
         with pytest.raises(CustomException):
             client.get_trace(project_id, trace_id)
-
-    def test_patch_traces(self):
-        channel = ChannelStub()
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = trace_v1.TraceServiceClient()
-
-        # Setup Request
-        project_id = "projectId-1969970175"
-        traces = {}
-
-        client.patch_traces(project_id, traces)
-
-        assert len(channel.requests) == 1
-        expected_request = trace_pb2.PatchTracesRequest(
-            project_id=project_id, traces=traces
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_patch_traces_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = trace_v1.TraceServiceClient()
-
-        # Setup request
-        project_id = "projectId-1969970175"
-        traces = {}
-
-        with pytest.raises(CustomException):
-            client.patch_traces(project_id, traces)

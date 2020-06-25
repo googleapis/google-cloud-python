@@ -41,7 +41,7 @@ from google.protobuf import wrappers_pb2
 from google.rpc import status_pb2
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-trace").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-trace",).version
 
 
 class TraceServiceClient(object):
@@ -84,7 +84,7 @@ class TraceServiceClient(object):
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}", project=project,
         )
 
     @classmethod
@@ -184,12 +184,12 @@ class TraceServiceClient(object):
                 self.transport = transport
         else:
             self.transport = trace_service_grpc_transport.TraceServiceGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -200,7 +200,7 @@ class TraceServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -210,83 +210,6 @@ class TraceServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def batch_write_spans(
-        self,
-        name,
-        spans,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Sends new spans to new or existing traces. You cannot update
-        existing spans.
-
-        Example:
-            >>> from google.cloud import trace_v2
-            >>>
-            >>> client = trace_v2.TraceServiceClient()
-            >>>
-            >>> name = client.project_path('[PROJECT]')
-            >>>
-            >>> # TODO: Initialize `spans`:
-            >>> spans = []
-            >>>
-            >>> client.batch_write_spans(name, spans)
-
-        Args:
-            name (str): Required. The name of the project where the spans belong. The format
-                is ``projects/[PROJECT_ID]``.
-            spans (list[Union[dict, ~google.cloud.trace_v2.types.Span]]): Required. A list of new spans. The span names must not match existing
-                spans, or the results are undefined.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.trace_v2.types.Span`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "batch_write_spans" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "batch_write_spans"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.batch_write_spans,
-                default_retry=self._method_configs["BatchWriteSpans"].retry,
-                default_timeout=self._method_configs["BatchWriteSpans"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = tracing_pb2.BatchWriteSpansRequest(name=name, spans=spans)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        self._inner_api_calls["batch_write_spans"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
     def create_span(
         self,
         name,
@@ -460,5 +383,82 @@ class TraceServiceClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls["create_span"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def batch_write_spans(
+        self,
+        name,
+        spans,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Sends new spans to new or existing traces. You cannot update
+        existing spans.
+
+        Example:
+            >>> from google.cloud import trace_v2
+            >>>
+            >>> client = trace_v2.TraceServiceClient()
+            >>>
+            >>> name = client.project_path('[PROJECT]')
+            >>>
+            >>> # TODO: Initialize `spans`:
+            >>> spans = []
+            >>>
+            >>> client.batch_write_spans(name, spans)
+
+        Args:
+            name (str): Required. The name of the project where the spans belong. The format
+                is ``projects/[PROJECT_ID]``.
+            spans (list[Union[dict, ~google.cloud.trace_v2.types.Span]]): Required. A list of new spans. The span names must not match existing
+                spans, or the results are undefined.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.trace_v2.types.Span`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "batch_write_spans" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "batch_write_spans"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.batch_write_spans,
+                default_retry=self._method_configs["BatchWriteSpans"].retry,
+                default_timeout=self._method_configs["BatchWriteSpans"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = tracing_pb2.BatchWriteSpansRequest(name=name, spans=spans,)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["batch_write_spans"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

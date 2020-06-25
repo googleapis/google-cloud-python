@@ -56,7 +56,7 @@ class TraceServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -74,7 +74,9 @@ class TraceServiceGrpcTransport(object):
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
-        self._stubs = {"trace_service_stub": tracing_pb2_grpc.TraceServiceStub(channel)}
+        self._stubs = {
+            "trace_service_stub": tracing_pb2_grpc.TraceServiceStub(channel),
+        }
 
     @classmethod
     def create_channel(
@@ -109,6 +111,19 @@ class TraceServiceGrpcTransport(object):
         return self._channel
 
     @property
+    def create_span(self):
+        """Return the gRPC stub for :meth:`TraceServiceClient.create_span`.
+
+        Creates a new span.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["trace_service_stub"].CreateSpan
+
+    @property
     def batch_write_spans(self):
         """Return the gRPC stub for :meth:`TraceServiceClient.batch_write_spans`.
 
@@ -121,16 +136,3 @@ class TraceServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["trace_service_stub"].BatchWriteSpans
-
-    @property
-    def create_span(self):
-        """Return the gRPC stub for :meth:`TraceServiceClient.create_span`.
-
-        Creates a new span.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["trace_service_stub"].CreateSpan

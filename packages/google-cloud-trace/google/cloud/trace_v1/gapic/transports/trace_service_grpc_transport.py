@@ -57,7 +57,7 @@ class TraceServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -75,7 +75,9 @@ class TraceServiceGrpcTransport(object):
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
-        self._stubs = {"trace_service_stub": trace_pb2_grpc.TraceServiceStub(channel)}
+        self._stubs = {
+            "trace_service_stub": trace_pb2_grpc.TraceServiceStub(channel),
+        }
 
     @classmethod
     def create_channel(
@@ -110,6 +112,23 @@ class TraceServiceGrpcTransport(object):
         return self._channel
 
     @property
+    def patch_traces(self):
+        """Return the gRPC stub for :meth:`TraceServiceClient.patch_traces`.
+
+        Sends new traces to Stackdriver Trace or updates existing traces. If the ID
+        of a trace that you send matches that of an existing trace, any fields
+        in the existing trace and its spans are overwritten by the provided values,
+        and any new fields provided are merged with the existing trace data. If the
+        ID does not match, a new trace is created.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["trace_service_stub"].PatchTraces
+
+    @property
     def list_traces(self):
         """Return the gRPC stub for :meth:`TraceServiceClient.list_traces`.
 
@@ -134,20 +153,3 @@ class TraceServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["trace_service_stub"].GetTrace
-
-    @property
-    def patch_traces(self):
-        """Return the gRPC stub for :meth:`TraceServiceClient.patch_traces`.
-
-        Sends new traces to Stackdriver Trace or updates existing traces. If the ID
-        of a trace that you send matches that of an existing trace, any fields
-        in the existing trace and its spans are overwritten by the provided values,
-        and any new fields provided are merged with the existing trace data. If the
-        ID does not match, a new trace is created.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["trace_service_stub"].PatchTraces
