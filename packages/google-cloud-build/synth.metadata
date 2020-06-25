@@ -1,32 +1,25 @@
 {
   "sources": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "2.0.0",
-        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
-      }
-    },
-    {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-cloudbuild.git",
-        "sha": "2376f6a2d83c4ad32fd5dd9bdc85111ae7503bd9"
+        "remote": "https://github.com/googleapis/python-cloudbuild.git",
+        "sha": "d812ba23a8e460b5cd55922ca72586bd2d6ece41"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "ee9e8e4e67f06aba881392a1a2956fbe7a42d216",
-        "internalRef": "309481123"
+        "sha": "cf41866c6f14f10a07aa1e2a1260fc0a2727d889",
+        "internalRef": "317812187"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "04cb397eb7590ea1e6c10a39fca3d8fe0fb3d256"
+        "sha": "cf2eff09d0f5319a4dc5cdce2b6356d85af4a798"
       }
     }
   ],
@@ -37,8 +30,7 @@
         "apiName": "cloudbuild",
         "apiVersion": "v1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/devtools/cloudbuild/artman_cloudbuild.yaml"
+        "generator": "bazel"
       }
     }
   ]

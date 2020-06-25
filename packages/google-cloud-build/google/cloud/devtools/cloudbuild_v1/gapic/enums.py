@@ -33,6 +33,7 @@ class Build(object):
           INTERNAL_ERROR (int): Build or step failed due to an internal cause.
           TIMEOUT (int): Build or step took longer than was allowed.
           CANCELLED (int): Build or step was canceled by a user.
+          EXPIRED (int): Build was enqueued for longer than the value of ``queue_ttl``.
         """
 
         STATUS_UNKNOWN = 0
@@ -43,6 +44,7 @@ class Build(object):
         INTERNAL_ERROR = 5
         TIMEOUT = 6
         CANCELLED = 7
+        EXPIRED = 9
 
 
 class BuildOptions(object):
@@ -66,8 +68,9 @@ class BuildOptions(object):
         Specifies the logging mode.
 
         Attributes:
-          LOGGING_UNSPECIFIED (int): The service determines the logging mode. The default is ``LEGACY``. Do
-          not rely on the default logging behavior as it may change in the future.
+          LOGGING_UNSPECIFIED (int): The service determines the logging mode. The default is ``LEGACY``.
+          Do not rely on the default logging behavior as it may change in the
+          future.
           LEGACY (int): Stackdriver logging and Cloud Storage logging are enabled.
           GCS_ONLY (int): Only Cloud Storage logging is enabled.
         """
@@ -174,7 +177,8 @@ class WorkerPool(object):
           STATUS_UNSPECIFIED (int): Status of the ``WorkerPool`` is unknown.
           CREATING (int): ``WorkerPool`` is being created.
           RUNNING (int): ``WorkerPool`` is running.
-          DELETING (int): ``WorkerPool`` is being deleted: cancelling builds and draining workers.
+          DELETING (int): ``WorkerPool`` is being deleted: cancelling builds and draining
+          workers.
           DELETED (int): ``WorkerPool`` is deleted.
         """
 

@@ -27,6 +27,8 @@ import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
 import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
+import google.api_core.operation
+import google.api_core.operations_v1
 import google.api_core.page_iterator
 import grpc
 
@@ -41,7 +43,7 @@ from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-build").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-build",).version
 
 
 class CloudBuildClient(object):
@@ -170,12 +172,12 @@ class CloudBuildClient(object):
                 self.transport = transport
         else:
             self.transport = cloud_build_grpc_transport.CloudBuildGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -186,7 +188,7 @@ class CloudBuildClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -196,153 +198,6 @@ class CloudBuildClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def create_build(
-        self,
-        project_id,
-        build,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Starts a build with the specified configuration.
-
-        This method returns a long-running ``Operation``, which includes the
-        build ID. Pass the build ID to ``GetBuild`` to determine the build
-        status (such as ``SUCCESS`` or ``FAILURE``).
-
-        Example:
-            >>> from google.cloud.devtools import cloudbuild_v1
-            >>>
-            >>> client = cloudbuild_v1.CloudBuildClient()
-            >>>
-            >>> # TODO: Initialize `project_id`:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize `build`:
-            >>> build = {}
-            >>>
-            >>> response = client.create_build(project_id, build)
-
-        Args:
-            project_id (str): Required. ID of the project.
-            build (Union[dict, ~google.cloud.devtools.cloudbuild_v1.types.Build]): Required. Build resource to create.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.devtools.cloudbuild_v1.types.Build`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.devtools.cloudbuild_v1.types.Operation` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "create_build" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "create_build"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_build,
-                default_retry=self._method_configs["CreateBuild"].retry,
-                default_timeout=self._method_configs["CreateBuild"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = cloudbuild_pb2.CreateBuildRequest(project_id=project_id, build=build)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("project_id", project_id)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["create_build"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def get_build(
-        self,
-        project_id,
-        id_,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Returns information about a previously requested build.
-
-        The ``Build`` that is returned includes its status (such as ``SUCCESS``,
-        ``FAILURE``, or ``WORKING``), and timing information.
-
-        Example:
-            >>> from google.cloud.devtools import cloudbuild_v1
-            >>>
-            >>> client = cloudbuild_v1.CloudBuildClient()
-            >>>
-            >>> # TODO: Initialize `project_id`:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize `id_`:
-            >>> id_ = ''
-            >>>
-            >>> response = client.get_build(project_id, id_)
-
-        Args:
-            project_id (str): Required. ID of the project.
-            id_ (str): Required. ID of the build.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.devtools.cloudbuild_v1.types.Build` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "get_build" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "get_build"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_build,
-                default_retry=self._method_configs["GetBuild"].retry,
-                default_timeout=self._method_configs["GetBuild"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = cloudbuild_pb2.GetBuildRequest(project_id=project_id, id=id_)
-        return self._inner_api_calls["get_build"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
     def list_builds(
         self,
         project_id,
@@ -422,7 +277,7 @@ class CloudBuildClient(object):
             )
 
         request = cloudbuild_pb2.ListBuildsRequest(
-            project_id=project_id, page_size=page_size, filter=filter_
+            project_id=project_id, page_size=page_size, filter=filter_,
         )
         if metadata is None:
             metadata = []
@@ -451,6 +306,231 @@ class CloudBuildClient(object):
             response_token_field="next_page_token",
         )
         return iterator
+
+    def delete_build_trigger(
+        self,
+        project_id,
+        trigger_id,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes a ``BuildTrigger`` by its project ID and trigger ID.
+
+        This API is experimental.
+
+        Example:
+            >>> from google.cloud.devtools import cloudbuild_v1
+            >>>
+            >>> client = cloudbuild_v1.CloudBuildClient()
+            >>>
+            >>> # TODO: Initialize `project_id`:
+            >>> project_id = ''
+            >>>
+            >>> # TODO: Initialize `trigger_id`:
+            >>> trigger_id = ''
+            >>>
+            >>> client.delete_build_trigger(project_id, trigger_id)
+
+        Args:
+            project_id (str): Required. ID of the project that owns the trigger.
+            trigger_id (str): Required. ID of the ``BuildTrigger`` to delete.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_build_trigger" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_build_trigger"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_build_trigger,
+                default_retry=self._method_configs["DeleteBuildTrigger"].retry,
+                default_timeout=self._method_configs["DeleteBuildTrigger"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = cloudbuild_pb2.DeleteBuildTriggerRequest(
+            project_id=project_id, trigger_id=trigger_id,
+        )
+        self._inner_api_calls["delete_build_trigger"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def create_build(
+        self,
+        project_id,
+        build,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Starts a build with the specified configuration.
+
+        This method returns a long-running ``Operation``, which includes the
+        build ID. Pass the build ID to ``GetBuild`` to determine the build
+        status (such as ``SUCCESS`` or ``FAILURE``).
+
+        Example:
+            >>> from google.cloud.devtools import cloudbuild_v1
+            >>>
+            >>> client = cloudbuild_v1.CloudBuildClient()
+            >>>
+            >>> # TODO: Initialize `project_id`:
+            >>> project_id = ''
+            >>>
+            >>> # TODO: Initialize `build`:
+            >>> build = {}
+            >>>
+            >>> response = client.create_build(project_id, build)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+            >>>
+            >>> # Handle metadata.
+            >>> metadata = response.metadata()
+
+        Args:
+            project_id (str): Required. ID of the project.
+            build (Union[dict, ~google.cloud.devtools.cloudbuild_v1.types.Build]): Required. Build resource to create.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.devtools.cloudbuild_v1.types.Build`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.devtools.cloudbuild_v1.types._OperationFuture` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "create_build" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "create_build"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_build,
+                default_retry=self._method_configs["CreateBuild"].retry,
+                default_timeout=self._method_configs["CreateBuild"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = cloudbuild_pb2.CreateBuildRequest(project_id=project_id, build=build,)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("project_id", project_id)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        operation = self._inner_api_calls["create_build"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.transport._operations_client,
+            cloudbuild_pb2.Build,
+            metadata_type=cloudbuild_pb2.BuildOperationMetadata,
+        )
+
+    def get_build(
+        self,
+        project_id,
+        id_,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Returns information about a previously requested build.
+
+        The ``Build`` that is returned includes its status (such as ``SUCCESS``,
+        ``FAILURE``, or ``WORKING``), and timing information.
+
+        Example:
+            >>> from google.cloud.devtools import cloudbuild_v1
+            >>>
+            >>> client = cloudbuild_v1.CloudBuildClient()
+            >>>
+            >>> # TODO: Initialize `project_id`:
+            >>> project_id = ''
+            >>>
+            >>> # TODO: Initialize `id_`:
+            >>> id_ = ''
+            >>>
+            >>> response = client.get_build(project_id, id_)
+
+        Args:
+            project_id (str): Required. ID of the project.
+            id_ (str): Required. ID of the build.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.devtools.cloudbuild_v1.types.Build` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_build" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_build"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_build,
+                default_retry=self._method_configs["GetBuild"].retry,
+                default_timeout=self._method_configs["GetBuild"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = cloudbuild_pb2.GetBuildRequest(project_id=project_id, id=id_,)
+        return self._inner_api_calls["get_build"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def cancel_build(
         self,
@@ -509,9 +589,113 @@ class CloudBuildClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudbuild_pb2.CancelBuildRequest(project_id=project_id, id=id_)
+        request = cloudbuild_pb2.CancelBuildRequest(project_id=project_id, id=id_,)
         return self._inner_api_calls["cancel_build"](
             request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def retry_build(
+        self,
+        project_id,
+        id_,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Creates a new build based on the specified build.
+
+        This method creates a new build using the original build request, which
+        may or may not result in an identical build.
+
+        For triggered builds:
+
+        -  Triggered builds resolve to a precise revision; therefore a retry of
+           a triggered build will result in a build that uses the same revision.
+
+        For non-triggered builds that specify ``RepoSource``:
+
+        -  If the original build built from the tip of a branch, the retried
+           build will build from the tip of that branch, which may not be the
+           same revision as the original build.
+        -  If the original build specified a commit sha or revision ID, the
+           retried build will use the identical source.
+
+        For builds that specify ``StorageSource``:
+
+        -  If the original build pulled source from Google Cloud Storage without
+           specifying the generation of the object, the new build will use the
+           current object, which may be different from the original build
+           source.
+        -  If the original build pulled source from Cloud Storage and specified
+           the generation of the object, the new build will attempt to use the
+           same object, which may or may not be available depending on the
+           bucket's lifecycle management settings.
+
+        Example:
+            >>> from google.cloud.devtools import cloudbuild_v1
+            >>>
+            >>> client = cloudbuild_v1.CloudBuildClient()
+            >>>
+            >>> # TODO: Initialize `project_id`:
+            >>> project_id = ''
+            >>>
+            >>> # TODO: Initialize `id_`:
+            >>> id_ = ''
+            >>>
+            >>> response = client.retry_build(project_id, id_)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+            >>>
+            >>> # Handle metadata.
+            >>> metadata = response.metadata()
+
+        Args:
+            project_id (str): Required. ID of the project.
+            id_ (str): Required. Build ID of the original build.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.devtools.cloudbuild_v1.types._OperationFuture` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "retry_build" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "retry_build"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.retry_build,
+                default_retry=self._method_configs["RetryBuild"].retry,
+                default_timeout=self._method_configs["RetryBuild"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = cloudbuild_pb2.RetryBuildRequest(project_id=project_id, id=id_,)
+        operation = self._inner_api_calls["retry_build"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.transport._operations_client,
+            cloudbuild_pb2.Build,
+            metadata_type=cloudbuild_pb2.BuildOperationMetadata,
         )
 
     def create_build_trigger(
@@ -577,7 +761,7 @@ class CloudBuildClient(object):
             )
 
         request = cloudbuild_pb2.CreateBuildTriggerRequest(
-            project_id=project_id, trigger=trigger
+            project_id=project_id, trigger=trigger,
         )
         if metadata is None:
             metadata = []
@@ -624,7 +808,8 @@ class CloudBuildClient(object):
 
         Args:
             project_id (str): Required. ID of the project that owns the trigger.
-            trigger_id (str): Required. ID of the ``BuildTrigger`` to get.
+            trigger_id (str): Required. Identifier (``id`` or ``name``) of the ``BuildTrigger`` to
+                get.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -656,7 +841,7 @@ class CloudBuildClient(object):
             )
 
         request = cloudbuild_pb2.GetBuildTriggerRequest(
-            project_id=project_id, trigger_id=trigger_id
+            project_id=project_id, trigger_id=trigger_id,
         )
         return self._inner_api_calls["get_build_trigger"](
             request, retry=retry, timeout=timeout, metadata=metadata
@@ -666,7 +851,6 @@ class CloudBuildClient(object):
         self,
         project_id,
         page_size=None,
-        page_token=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -684,12 +868,27 @@ class CloudBuildClient(object):
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> response = client.list_build_triggers(project_id)
+            >>> # Iterate over all results
+            >>> for element in client.list_build_triggers(project_id):
+            ...     # process element
+            ...     pass
+            >>>
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
+            >>> for page in client.list_build_triggers(project_id).pages:
+            ...     for element in page:
+            ...         # process element
+            ...         pass
 
         Args:
             project_id (str): Required. ID of the project for which to list BuildTriggers.
-            page_size (int): Number of results to return in the list.
-            page_token (str): Token to provide to skip to a particular spot in the list.
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -700,7 +899,10 @@ class CloudBuildClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.devtools.cloudbuild_v1.types.ListBuildTriggersResponse` instance.
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.devtools.cloudbuild_v1.types.BuildTrigger` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -721,7 +923,7 @@ class CloudBuildClient(object):
             )
 
         request = cloudbuild_pb2.ListBuildTriggersRequest(
-            project_id=project_id, page_size=page_size, page_token=page_token
+            project_id=project_id, page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -736,72 +938,20 @@ class CloudBuildClient(object):
             )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["list_build_triggers"](
-            request, retry=retry, timeout=timeout, metadata=metadata
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._inner_api_calls["list_build_triggers"],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            ),
+            request=request,
+            items_field="triggers",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
         )
-
-    def delete_build_trigger(
-        self,
-        project_id,
-        trigger_id,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Deletes a ``BuildTrigger`` by its project ID and trigger ID.
-
-        This API is experimental.
-
-        Example:
-            >>> from google.cloud.devtools import cloudbuild_v1
-            >>>
-            >>> client = cloudbuild_v1.CloudBuildClient()
-            >>>
-            >>> # TODO: Initialize `project_id`:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize `trigger_id`:
-            >>> trigger_id = ''
-            >>>
-            >>> client.delete_build_trigger(project_id, trigger_id)
-
-        Args:
-            project_id (str): Required. ID of the project that owns the trigger.
-            trigger_id (str): Required. ID of the ``BuildTrigger`` to delete.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "delete_build_trigger" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "delete_build_trigger"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_build_trigger,
-                default_retry=self._method_configs["DeleteBuildTrigger"].retry,
-                default_timeout=self._method_configs["DeleteBuildTrigger"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = cloudbuild_pb2.DeleteBuildTriggerRequest(
-            project_id=project_id, trigger_id=trigger_id
-        )
-        self._inner_api_calls["delete_build_trigger"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
+        return iterator
 
     def update_build_trigger(
         self,
@@ -871,7 +1021,7 @@ class CloudBuildClient(object):
             )
 
         request = cloudbuild_pb2.UpdateBuildTriggerRequest(
-            project_id=project_id, trigger_id=trigger_id, trigger=trigger
+            project_id=project_id, trigger_id=trigger_id, trigger=trigger,
         )
         return self._inner_api_calls["update_build_trigger"](
             request, retry=retry, timeout=timeout, metadata=metadata
@@ -904,6 +1054,15 @@ class CloudBuildClient(object):
             >>> source = {}
             >>>
             >>> response = client.run_build_trigger(project_id, trigger_id, source)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+            >>>
+            >>> # Handle metadata.
+            >>> metadata = response.metadata()
 
         Args:
             project_id (str): Required. ID of the project.
@@ -922,7 +1081,7 @@ class CloudBuildClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.devtools.cloudbuild_v1.types.Operation` instance.
+            A :class:`~google.cloud.devtools.cloudbuild_v1.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -943,99 +1102,16 @@ class CloudBuildClient(object):
             )
 
         request = cloudbuild_pb2.RunBuildTriggerRequest(
-            project_id=project_id, trigger_id=trigger_id, source=source
+            project_id=project_id, trigger_id=trigger_id, source=source,
         )
-        return self._inner_api_calls["run_build_trigger"](
+        operation = self._inner_api_calls["run_build_trigger"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
-
-    def retry_build(
-        self,
-        project_id,
-        id_,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Creates a new build based on the specified build.
-
-        This method creates a new build using the original build request, which
-        may or may not result in an identical build.
-
-        For triggered builds:
-
-        -  Triggered builds resolve to a precise revision; therefore a retry of
-           a triggered build will result in a build that uses the same revision.
-
-        For non-triggered builds that specify ``RepoSource``:
-
-        -  If the original build built from the tip of a branch, the retried
-           build will build from the tip of that branch, which may not be the
-           same revision as the original build.
-        -  If the original build specified a commit sha or revision ID, the
-           retried build will use the identical source.
-
-        For builds that specify ``StorageSource``:
-
-        -  If the original build pulled source from Google Cloud Storage without
-           specifying the generation of the object, the new build will use the
-           current object, which may be different from the original build
-           source.
-        -  If the original build pulled source from Cloud Storage and specified
-           the generation of the object, the new build will attempt to use the
-           same object, which may or may not be available depending on the
-           bucket's lifecycle management settings.
-
-        Example:
-            >>> from google.cloud.devtools import cloudbuild_v1
-            >>>
-            >>> client = cloudbuild_v1.CloudBuildClient()
-            >>>
-            >>> # TODO: Initialize `project_id`:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize `id_`:
-            >>> id_ = ''
-            >>>
-            >>> response = client.retry_build(project_id, id_)
-
-        Args:
-            project_id (str): Required. ID of the project.
-            id_ (str): Required. Build ID of the original build.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.devtools.cloudbuild_v1.types.Operation` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "retry_build" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "retry_build"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.retry_build,
-                default_retry=self._method_configs["RetryBuild"].retry,
-                default_timeout=self._method_configs["RetryBuild"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = cloudbuild_pb2.RetryBuildRequest(project_id=project_id, id=id_)
-        return self._inner_api_calls["retry_build"](
-            request, retry=retry, timeout=timeout, metadata=metadata
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.transport._operations_client,
+            cloudbuild_pb2.Build,
+            metadata_type=cloudbuild_pb2.BuildOperationMetadata,
         )
 
     def create_worker_pool(
@@ -1047,8 +1123,8 @@ class CloudBuildClient(object):
         metadata=None,
     ):
         """
-        Creates a ``WorkerPool`` to run the builds, and returns the new worker
-        pool.
+        Creates a ``WorkerPool`` to run the builds, and returns the new
+        worker pool.
 
         This API is experimental.
 
@@ -1096,7 +1172,7 @@ class CloudBuildClient(object):
             )
 
         request = cloudbuild_pb2.CreateWorkerPoolRequest(
-            parent=parent, worker_pool=worker_pool
+            parent=parent, worker_pool=worker_pool,
         )
         return self._inner_api_calls["create_worker_pool"](
             request, retry=retry, timeout=timeout, metadata=metadata
@@ -1154,7 +1230,7 @@ class CloudBuildClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudbuild_pb2.GetWorkerPoolRequest(name=name)
+        request = cloudbuild_pb2.GetWorkerPoolRequest(name=name,)
         return self._inner_api_calls["get_worker_pool"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1208,7 +1284,7 @@ class CloudBuildClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudbuild_pb2.DeleteWorkerPoolRequest(name=name)
+        request = cloudbuild_pb2.DeleteWorkerPoolRequest(name=name,)
         self._inner_api_calls["delete_worker_pool"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -1271,7 +1347,7 @@ class CloudBuildClient(object):
             )
 
         request = cloudbuild_pb2.UpdateWorkerPoolRequest(
-            name=name, worker_pool=worker_pool
+            name=name, worker_pool=worker_pool,
         )
         return self._inner_api_calls["update_worker_pool"](
             request, retry=retry, timeout=timeout, metadata=metadata
@@ -1328,7 +1404,7 @@ class CloudBuildClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudbuild_pb2.ListWorkerPoolsRequest(parent=parent)
+        request = cloudbuild_pb2.ListWorkerPoolsRequest(parent=parent,)
         return self._inner_api_calls["list_worker_pools"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

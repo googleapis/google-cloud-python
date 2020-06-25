@@ -38,7 +38,9 @@ _shared_modules = [
     status_pb2,
 ]
 
-_local_modules = [cloudbuild_pb2]
+_local_modules = [
+    cloudbuild_pb2,
+]
 
 names = []
 

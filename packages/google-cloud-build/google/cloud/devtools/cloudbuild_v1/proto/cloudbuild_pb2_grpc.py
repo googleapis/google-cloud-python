@@ -2,7 +2,7 @@
 import grpc
 
 from google.cloud.devtools.cloudbuild_v1.proto import (
-    cloudbuild_pb2 as google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2,
+    cloudbuild_pb2 as google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2,
 )
 from google.longrunning import (
     operations_pb2 as google_dot_longrunning_dot_operations__pb2,
@@ -29,83 +29,83 @@ class CloudBuildStub(object):
     """
         self.CreateBuild = channel.unary_unary(
             "/google.devtools.cloudbuild.v1.CloudBuild/CreateBuild",
-            request_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.CreateBuildRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.CreateBuildRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
         self.GetBuild = channel.unary_unary(
             "/google.devtools.cloudbuild.v1.CloudBuild/GetBuild",
-            request_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.GetBuildRequest.SerializeToString,
-            response_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.Build.FromString,
+            request_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.GetBuildRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.Build.FromString,
         )
         self.ListBuilds = channel.unary_unary(
             "/google.devtools.cloudbuild.v1.CloudBuild/ListBuilds",
-            request_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListBuildsRequest.SerializeToString,
-            response_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListBuildsResponse.FromString,
+            request_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListBuildsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListBuildsResponse.FromString,
         )
         self.CancelBuild = channel.unary_unary(
             "/google.devtools.cloudbuild.v1.CloudBuild/CancelBuild",
-            request_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.CancelBuildRequest.SerializeToString,
-            response_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.Build.FromString,
+            request_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.CancelBuildRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.Build.FromString,
         )
         self.RetryBuild = channel.unary_unary(
             "/google.devtools.cloudbuild.v1.CloudBuild/RetryBuild",
-            request_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.RetryBuildRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.RetryBuildRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
         self.CreateBuildTrigger = channel.unary_unary(
             "/google.devtools.cloudbuild.v1.CloudBuild/CreateBuildTrigger",
-            request_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.CreateBuildTriggerRequest.SerializeToString,
-            response_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.BuildTrigger.FromString,
+            request_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.CreateBuildTriggerRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.BuildTrigger.FromString,
         )
         self.GetBuildTrigger = channel.unary_unary(
             "/google.devtools.cloudbuild.v1.CloudBuild/GetBuildTrigger",
-            request_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.GetBuildTriggerRequest.SerializeToString,
-            response_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.BuildTrigger.FromString,
+            request_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.GetBuildTriggerRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.BuildTrigger.FromString,
         )
         self.ListBuildTriggers = channel.unary_unary(
             "/google.devtools.cloudbuild.v1.CloudBuild/ListBuildTriggers",
-            request_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListBuildTriggersRequest.SerializeToString,
-            response_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListBuildTriggersResponse.FromString,
+            request_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListBuildTriggersRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListBuildTriggersResponse.FromString,
         )
         self.DeleteBuildTrigger = channel.unary_unary(
             "/google.devtools.cloudbuild.v1.CloudBuild/DeleteBuildTrigger",
-            request_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.DeleteBuildTriggerRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.DeleteBuildTriggerRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
         self.UpdateBuildTrigger = channel.unary_unary(
             "/google.devtools.cloudbuild.v1.CloudBuild/UpdateBuildTrigger",
-            request_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.UpdateBuildTriggerRequest.SerializeToString,
-            response_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.BuildTrigger.FromString,
+            request_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.UpdateBuildTriggerRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.BuildTrigger.FromString,
         )
         self.RunBuildTrigger = channel.unary_unary(
             "/google.devtools.cloudbuild.v1.CloudBuild/RunBuildTrigger",
-            request_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.RunBuildTriggerRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.RunBuildTriggerRequest.SerializeToString,
             response_deserializer=google_dot_longrunning_dot_operations__pb2.Operation.FromString,
         )
         self.CreateWorkerPool = channel.unary_unary(
             "/google.devtools.cloudbuild.v1.CloudBuild/CreateWorkerPool",
-            request_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.CreateWorkerPoolRequest.SerializeToString,
-            response_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.WorkerPool.FromString,
+            request_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.CreateWorkerPoolRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.WorkerPool.FromString,
         )
         self.GetWorkerPool = channel.unary_unary(
             "/google.devtools.cloudbuild.v1.CloudBuild/GetWorkerPool",
-            request_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.GetWorkerPoolRequest.SerializeToString,
-            response_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.WorkerPool.FromString,
+            request_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.GetWorkerPoolRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.WorkerPool.FromString,
         )
         self.DeleteWorkerPool = channel.unary_unary(
             "/google.devtools.cloudbuild.v1.CloudBuild/DeleteWorkerPool",
-            request_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.DeleteWorkerPoolRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.DeleteWorkerPoolRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
         self.UpdateWorkerPool = channel.unary_unary(
             "/google.devtools.cloudbuild.v1.CloudBuild/UpdateWorkerPool",
-            request_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.UpdateWorkerPoolRequest.SerializeToString,
-            response_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.WorkerPool.FromString,
+            request_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.UpdateWorkerPoolRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.WorkerPool.FromString,
         )
         self.ListWorkerPools = channel.unary_unary(
             "/google.devtools.cloudbuild.v1.CloudBuild/ListWorkerPools",
-            request_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListWorkerPoolsRequest.SerializeToString,
-            response_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListWorkerPoolsResponse.FromString,
+            request_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListWorkerPoolsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListWorkerPoolsResponse.FromString,
         )
 
 
@@ -293,83 +293,83 @@ def add_CloudBuildServicer_to_server(servicer, server):
     rpc_method_handlers = {
         "CreateBuild": grpc.unary_unary_rpc_method_handler(
             servicer.CreateBuild,
-            request_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.CreateBuildRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.CreateBuildRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
         "GetBuild": grpc.unary_unary_rpc_method_handler(
             servicer.GetBuild,
-            request_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.GetBuildRequest.FromString,
-            response_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.Build.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.GetBuildRequest.FromString,
+            response_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.Build.SerializeToString,
         ),
         "ListBuilds": grpc.unary_unary_rpc_method_handler(
             servicer.ListBuilds,
-            request_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListBuildsRequest.FromString,
-            response_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListBuildsResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListBuildsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListBuildsResponse.SerializeToString,
         ),
         "CancelBuild": grpc.unary_unary_rpc_method_handler(
             servicer.CancelBuild,
-            request_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.CancelBuildRequest.FromString,
-            response_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.Build.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.CancelBuildRequest.FromString,
+            response_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.Build.SerializeToString,
         ),
         "RetryBuild": grpc.unary_unary_rpc_method_handler(
             servicer.RetryBuild,
-            request_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.RetryBuildRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.RetryBuildRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
         "CreateBuildTrigger": grpc.unary_unary_rpc_method_handler(
             servicer.CreateBuildTrigger,
-            request_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.CreateBuildTriggerRequest.FromString,
-            response_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.BuildTrigger.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.CreateBuildTriggerRequest.FromString,
+            response_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.BuildTrigger.SerializeToString,
         ),
         "GetBuildTrigger": grpc.unary_unary_rpc_method_handler(
             servicer.GetBuildTrigger,
-            request_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.GetBuildTriggerRequest.FromString,
-            response_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.BuildTrigger.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.GetBuildTriggerRequest.FromString,
+            response_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.BuildTrigger.SerializeToString,
         ),
         "ListBuildTriggers": grpc.unary_unary_rpc_method_handler(
             servicer.ListBuildTriggers,
-            request_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListBuildTriggersRequest.FromString,
-            response_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListBuildTriggersResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListBuildTriggersRequest.FromString,
+            response_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListBuildTriggersResponse.SerializeToString,
         ),
         "DeleteBuildTrigger": grpc.unary_unary_rpc_method_handler(
             servicer.DeleteBuildTrigger,
-            request_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.DeleteBuildTriggerRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.DeleteBuildTriggerRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         "UpdateBuildTrigger": grpc.unary_unary_rpc_method_handler(
             servicer.UpdateBuildTrigger,
-            request_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.UpdateBuildTriggerRequest.FromString,
-            response_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.BuildTrigger.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.UpdateBuildTriggerRequest.FromString,
+            response_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.BuildTrigger.SerializeToString,
         ),
         "RunBuildTrigger": grpc.unary_unary_rpc_method_handler(
             servicer.RunBuildTrigger,
-            request_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.RunBuildTriggerRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.RunBuildTriggerRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
         ),
         "CreateWorkerPool": grpc.unary_unary_rpc_method_handler(
             servicer.CreateWorkerPool,
-            request_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.CreateWorkerPoolRequest.FromString,
-            response_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.WorkerPool.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.CreateWorkerPoolRequest.FromString,
+            response_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.WorkerPool.SerializeToString,
         ),
         "GetWorkerPool": grpc.unary_unary_rpc_method_handler(
             servicer.GetWorkerPool,
-            request_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.GetWorkerPoolRequest.FromString,
-            response_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.WorkerPool.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.GetWorkerPoolRequest.FromString,
+            response_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.WorkerPool.SerializeToString,
         ),
         "DeleteWorkerPool": grpc.unary_unary_rpc_method_handler(
             servicer.DeleteWorkerPool,
-            request_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.DeleteWorkerPoolRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.DeleteWorkerPoolRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         "UpdateWorkerPool": grpc.unary_unary_rpc_method_handler(
             servicer.UpdateWorkerPool,
-            request_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.UpdateWorkerPoolRequest.FromString,
-            response_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.WorkerPool.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.UpdateWorkerPoolRequest.FromString,
+            response_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.WorkerPool.SerializeToString,
         ),
         "ListWorkerPools": grpc.unary_unary_rpc_method_handler(
             servicer.ListWorkerPools,
-            request_deserializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListWorkerPoolsRequest.FromString,
-            response_serializer=google_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListWorkerPoolsResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListWorkerPoolsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_devtools_dot_cloudbuild__v1_dot_proto_dot_cloudbuild__pb2.ListWorkerPoolsResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

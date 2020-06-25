@@ -17,63 +17,63 @@ config = {
                 }
             },
             "methods": {
-                "CreateBuild": {
-                    "timeout_millis": 20000,
-                    "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
-                },
-                "GetBuild": {
-                    "timeout_millis": 5000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
-                },
                 "ListBuilds": {
                     "timeout_millis": 20000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
-                "CancelBuild": {
-                    "timeout_millis": 5000,
-                    "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
-                },
-                "CreateBuildTrigger": {
-                    "timeout_millis": 5000,
-                    "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
-                },
-                "GetBuildTrigger": {
-                    "timeout_millis": 5000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
-                },
-                "ListBuildTriggers": {
-                    "timeout_millis": 5000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
-                },
                 "DeleteBuildTrigger": {
-                    "timeout_millis": 5000,
+                    "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
-                "UpdateBuildTrigger": {
-                    "timeout_millis": 5000,
+                "CreateBuild": {
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
-                "RunBuildTrigger": {
-                    "timeout_millis": 20000,
+                "GetBuild": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "CancelBuild": {
+                    "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "RetryBuild": {
-                    "timeout_millis": 20000,
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "CreateBuildTrigger": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "GetBuildTrigger": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "ListBuildTriggers": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default",
+                },
+                "UpdateBuildTrigger": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default",
+                },
+                "RunBuildTrigger": {
+                    "timeout_millis": 180000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "CreateWorkerPool": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 320000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
@@ -83,12 +83,12 @@ config = {
                     "retry_params_name": "default",
                 },
                 "DeleteWorkerPool": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 320000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
                 "UpdateWorkerPool": {
-                    "timeout_millis": 60000,
+                    "timeout_millis": 20000,
                     "retry_codes_name": "non_idempotent",
                     "retry_params_name": "default",
                 },
