@@ -127,7 +127,7 @@ class TestDashboardsServiceClient(object):
             client = v1.DashboardsServiceClient()
 
         # Setup Request
-        parent = "parent-995424086"
+        parent = client.project_path("[PROJECT]")
 
         paged_list_response = client.list_dashboards(parent)
         resources = list(paged_list_response)
@@ -148,7 +148,7 @@ class TestDashboardsServiceClient(object):
             client = v1.DashboardsServiceClient()
 
         # Setup request
-        parent = "parent-995424086"
+        parent = client.project_path("[PROJECT]")
 
         paged_list_response = client.list_dashboards(parent)
         with pytest.raises(CustomException):
@@ -170,7 +170,7 @@ class TestDashboardsServiceClient(object):
             client = v1.DashboardsServiceClient()
 
         # Setup Request
-        name = "name3373707"
+        name = client.dashboard_path("[PROJECT]", "[DASHBOARD]")
 
         response = client.get_dashboard(name)
         assert expected_response == response
@@ -189,7 +189,7 @@ class TestDashboardsServiceClient(object):
             client = v1.DashboardsServiceClient()
 
         # Setup request
-        name = "name3373707"
+        name = client.dashboard_path("[PROJECT]", "[DASHBOARD]")
 
         with pytest.raises(CustomException):
             client.get_dashboard(name)
@@ -202,7 +202,7 @@ class TestDashboardsServiceClient(object):
             client = v1.DashboardsServiceClient()
 
         # Setup Request
-        name = "name3373707"
+        name = client.dashboard_path("[PROJECT]", "[DASHBOARD]")
 
         client.delete_dashboard(name)
 
@@ -220,7 +220,7 @@ class TestDashboardsServiceClient(object):
             client = v1.DashboardsServiceClient()
 
         # Setup request
-        name = "name3373707"
+        name = client.dashboard_path("[PROJECT]", "[DASHBOARD]")
 
         with pytest.raises(CustomException):
             client.delete_dashboard(name)

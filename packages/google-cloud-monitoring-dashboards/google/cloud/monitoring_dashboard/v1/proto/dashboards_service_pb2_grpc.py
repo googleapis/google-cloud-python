@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,10 +17,10 @@
 import grpc
 
 from google.cloud.monitoring_dashboard.v1.proto import (
-    dashboard_pb2 as google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboard__pb2,
+    dashboard_pb2 as google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboard__pb2,
 )
 from google.cloud.monitoring_dashboard.v1.proto import (
-    dashboards_service_pb2 as google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboards__service__pb2,
+    dashboards_service_pb2 as google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboards__service__pb2,
 )
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
@@ -38,28 +38,28 @@ class DashboardsServiceStub(object):
     """
         self.CreateDashboard = channel.unary_unary(
             "/google.monitoring.dashboard.v1.DashboardsService/CreateDashboard",
-            request_serializer=google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboards__service__pb2.CreateDashboardRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboard__pb2.Dashboard.FromString,
+            request_serializer=google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboards__service__pb2.CreateDashboardRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboard__pb2.Dashboard.FromString,
         )
         self.ListDashboards = channel.unary_unary(
             "/google.monitoring.dashboard.v1.DashboardsService/ListDashboards",
-            request_serializer=google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboards__service__pb2.ListDashboardsRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboards__service__pb2.ListDashboardsResponse.FromString,
+            request_serializer=google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboards__service__pb2.ListDashboardsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboards__service__pb2.ListDashboardsResponse.FromString,
         )
         self.GetDashboard = channel.unary_unary(
             "/google.monitoring.dashboard.v1.DashboardsService/GetDashboard",
-            request_serializer=google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboards__service__pb2.GetDashboardRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboard__pb2.Dashboard.FromString,
+            request_serializer=google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboards__service__pb2.GetDashboardRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboard__pb2.Dashboard.FromString,
         )
         self.DeleteDashboard = channel.unary_unary(
             "/google.monitoring.dashboard.v1.DashboardsService/DeleteDashboard",
-            request_serializer=google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboards__service__pb2.DeleteDashboardRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboards__service__pb2.DeleteDashboardRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
         self.UpdateDashboard = channel.unary_unary(
             "/google.monitoring.dashboard.v1.DashboardsService/UpdateDashboard",
-            request_serializer=google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboards__service__pb2.UpdateDashboardRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboard__pb2.Dashboard.FromString,
+            request_serializer=google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboards__service__pb2.UpdateDashboardRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboard__pb2.Dashboard.FromString,
         )
 
 
@@ -128,28 +128,28 @@ def add_DashboardsServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
         "CreateDashboard": grpc.unary_unary_rpc_method_handler(
             servicer.CreateDashboard,
-            request_deserializer=google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboards__service__pb2.CreateDashboardRequest.FromString,
-            response_serializer=google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboard__pb2.Dashboard.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboards__service__pb2.CreateDashboardRequest.FromString,
+            response_serializer=google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboard__pb2.Dashboard.SerializeToString,
         ),
         "ListDashboards": grpc.unary_unary_rpc_method_handler(
             servicer.ListDashboards,
-            request_deserializer=google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboards__service__pb2.ListDashboardsRequest.FromString,
-            response_serializer=google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboards__service__pb2.ListDashboardsResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboards__service__pb2.ListDashboardsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboards__service__pb2.ListDashboardsResponse.SerializeToString,
         ),
         "GetDashboard": grpc.unary_unary_rpc_method_handler(
             servicer.GetDashboard,
-            request_deserializer=google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboards__service__pb2.GetDashboardRequest.FromString,
-            response_serializer=google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboard__pb2.Dashboard.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboards__service__pb2.GetDashboardRequest.FromString,
+            response_serializer=google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboard__pb2.Dashboard.SerializeToString,
         ),
         "DeleteDashboard": grpc.unary_unary_rpc_method_handler(
             servicer.DeleteDashboard,
-            request_deserializer=google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboards__service__pb2.DeleteDashboardRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboards__service__pb2.DeleteDashboardRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         "UpdateDashboard": grpc.unary_unary_rpc_method_handler(
             servicer.UpdateDashboard,
-            request_deserializer=google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboards__service__pb2.UpdateDashboardRequest.FromString,
-            response_serializer=google_dot_cloud_dot_monitoring_dot_dashboard__v1_dot_proto_dot_dashboard__pb2.Dashboard.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboards__service__pb2.UpdateDashboardRequest.FromString,
+            response_serializer=google_dot_cloud_dot_monitoring__dashboard__v1_dot_proto_dot_dashboard__pb2.Dashboard.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

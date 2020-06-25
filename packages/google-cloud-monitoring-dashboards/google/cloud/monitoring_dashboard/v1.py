@@ -22,4 +22,8 @@ from google.cloud.monitoring_dashboard.v1 import enums
 from google.cloud.monitoring_dashboard.v1 import types
 
 
-__all__ = ("enums", "types", "DashboardsServiceClient")
+__all__ = (
+    "enums",
+    "types",
+    "DashboardsServiceClient",
+)

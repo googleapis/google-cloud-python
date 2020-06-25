@@ -77,9 +77,8 @@ s.replace(
 templated_files = common.py_library(cov_level=79)
 s.move(templated_files)
 
-# No local dependencies in a split repo
-# Manually remove from noxfile until the template is updated
-s.replace("noxfile.py", "LOCAL_DEPS = .*", "LOCAL_DEPS = []")
 
+# TODO(busunkim): Use latest sphinx after microgenerator transition
+s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

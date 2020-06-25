@@ -33,7 +33,10 @@ from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 
 
-_shared_modules = [duration_pb2, empty_pb2]
+_shared_modules = [
+    duration_pb2,
+    empty_pb2,
+]
 
 _local_modules = [
     common_pb2,
