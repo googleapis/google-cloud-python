@@ -36,7 +36,7 @@ class AvailabilitySignalType(enum.IntEnum):
       ``APPLY_INDIRECT``
 
       In the context of ``AvailabilityFilter``, the filter is applied on
-      ``Profile.availability_signals`` where ``type`` is JOB\_APPLICATION.
+      ``Profile.availability_signals`` where ``type`` is JOB_APPLICATION.
       RESUME_UPDATE (int): Resume update signal.
 
       In the context of ``Profile.availability_signals``, this signal is
@@ -46,7 +46,7 @@ class AvailabilitySignalType(enum.IntEnum):
       ``SummarizedProfile.profiles``.
 
       In the context of ``AvailabilityFilter``, the filter is applied on
-      ``Profile.availability_signals`` where ``type`` is RESUME\_UPDATE.
+      ``Profile.availability_signals`` where ``type`` is RESUME_UPDATE.
       CANDIDATE_UPDATE (int): Candidate update signal.
 
       In the context of ``Profile.availability_signals``, this signal is
@@ -56,7 +56,7 @@ class AvailabilitySignalType(enum.IntEnum):
       ``SummarizedProfile.profiles``.
 
       In the context of ``AvailabilityFilter``, the filter is applied on
-      ``Profile.availability_signals`` where ``type`` is CANDIDATE\_UPDATE.
+      ``Profile.availability_signals`` where ``type`` is CANDIDATE_UPDATE.
       CLIENT_SUBMISSION (int): Client submission signal.
 
       In the context of ``Profile.availability_signals``, this signal is
@@ -67,7 +67,7 @@ class AvailabilitySignalType(enum.IntEnum):
       ``OFFER_ACCEPTED`` ``STARTED``
 
       In the context of ``AvailabilityFilter``, the filter is applied on
-      ``Profile.availability_signals`` where ``type`` is CLIENT\_SUBMISSION.
+      ``Profile.availability_signals`` where ``type`` is CLIENT_SUBMISSION.
     """
 
     AVAILABILITY_SIGNAL_TYPE_UNSPECIFIED = 0
@@ -203,9 +203,9 @@ class EmploymentType(enum.IntEnum):
       typically less than 40 hours a week.
       CONTRACTOR (int): The job is offered as a contracted, as opposed to a salaried employee,
       position.
-      CONTRACT_TO_HIRE (int): The job is offered as a contracted position with the understanding that
-      it's converted into a full-time position at the end of the contract.
-      Jobs of this type are also returned by a search for
+      CONTRACT_TO_HIRE (int): The job is offered as a contracted position with the understanding
+      that it's converted into a full-time position at the end of the
+      contract. Jobs of this type are also returned by a search for
       ``EmploymentType.CONTRACTOR`` jobs.
       TEMPORARY (int): The job is offered as a temporary employment opportunity, usually
       a short-term engagement.
@@ -398,8 +398,8 @@ class JobView(enum.IntEnum):
       JOB_VIEW_UNSPECIFIED (int): Default value.
       JOB_VIEW_ID_ONLY (int): A ID only view of job, with following attributes: ``Job.name``,
       ``Job.requisition_id``, ``Job.language_code``.
-      JOB_VIEW_MINIMAL (int): A minimal view of the job, with the following attributes: ``Job.name``,
-      ``Job.requisition_id``, ``Job.title``, ``Job.company``,
+      JOB_VIEW_MINIMAL (int): A minimal view of the job, with the following attributes:
+      ``Job.name``, ``Job.requisition_id``, ``Job.title``, ``Job.company``,
       ``Job.DerivedInfo.locations``, ``Job.language_code``.
       JOB_VIEW_SMALL (int): A small view of the job, with the following attributes in the search
       results: ``Job.name``, ``Job.requisition_id``, ``Job.title``,
@@ -446,10 +446,10 @@ class PostingRegion(enum.IntEnum):
     eligible for searches in the specified region.
 
     Attributes:
-      POSTING_REGION_UNSPECIFIED (int): If the region is unspecified, the job is only returned if it matches the
-      ``LocationFilter``.
-      ADMINISTRATIVE_AREA (int): In addition to exact location matching, job posting is returned when the
-      ``LocationFilter`` in the search query is in the same administrative
+      POSTING_REGION_UNSPECIFIED (int): If the region is unspecified, the job is only returned if it matches
+      the ``LocationFilter``.
+      ADMINISTRATIVE_AREA (int): In addition to exact location matching, job posting is returned when
+      the ``LocationFilter`` in the search query is in the same administrative
       area as the returned job posting. For example, if a
       ``ADMINISTRATIVE_AREA`` job is posted in "CA, USA", it's returned if
       ``LocationFilter`` has "Mountain View".
@@ -623,17 +623,17 @@ class CompensationFilter(object):
 
         Attributes:
           FILTER_TYPE_UNSPECIFIED (int): Filter type unspecified. Position holder, INVALID, should never be used.
-          UNIT_ONLY (int): Filter by ``base compensation entry's`` unit. A job is a match if and
-          only if the job contains a base CompensationEntry and the base
+          UNIT_ONLY (int): Filter by ``base compensation entry's`` unit. A job is a match if
+          and only if the job contains a base CompensationEntry and the base
           CompensationEntry's unit matches provided ``units``. Populate one or
           more ``units``.
 
           See ``CompensationInfo.CompensationEntry`` for definition of base
           compensation entry.
-          UNIT_AND_AMOUNT (int): Filter by ``base compensation entry's`` unit and amount / range. A job
-          is a match if and only if the job contains a base CompensationEntry, and
-          the base entry's unit matches provided ``CompensationUnit`` and amount
-          or range overlaps with provided ``CompensationRange``.
+          UNIT_AND_AMOUNT (int): Filter by ``base compensation entry's`` unit and amount / range. A
+          job is a match if and only if the job contains a base CompensationEntry,
+          and the base entry's unit matches provided ``CompensationUnit`` and
+          amount or range overlaps with provided ``CompensationRange``.
 
           See ``CompensationInfo.CompensationEntry`` for definition of base
           compensation entry.
@@ -798,8 +798,8 @@ class DeviceInfo(object):
 class EmployerFilter(object):
     class EmployerFilterMode(enum.IntEnum):
         """
-        Enum indicating which set of ``Profile.employment_records`` to search
-        against.
+        Enum indicating which set of ``Profile.employment_records`` to
+        search against.
 
         Attributes:
           EMPLOYER_FILTER_MODE_UNSPECIFIED (int): Default value.
@@ -827,10 +827,11 @@ class JobEvent(object):
           had a job rendered in their view, such as in a list of search results in
           a compressed or clipped format. This event is typically associated with
           the viewing of a jobs list on a single page by a job seeker.
-          VIEW (int): The job seeker, or other entity interacting with the service, has viewed
-          the details of a job, including the full description. This event doesn't
-          apply to the viewing a snippet of a job appearing as a part of the job
-          search results. Viewing a snippet is associated with an ``impression``).
+          VIEW (int): The job seeker, or other entity interacting with the service, has
+          viewed the details of a job, including the full description. This event
+          doesn't apply to the viewing a snippet of a job appearing as a part of
+          the job search results. Viewing a snippet is associated with an
+          ``impression``).
           VIEW_REDIRECT (int): The job seeker or other entity interacting with the service
           performed an action to view a job and was redirected to a different
           website for job.
@@ -838,10 +839,10 @@ class JobEvent(object):
           began the process or demonstrated the intention of applying for a job.
           APPLICATION_FINISH (int): The job seeker or other entity interacting with the service
           submitted an application for a job.
-          APPLICATION_QUICK_SUBMISSION (int): The job seeker or other entity interacting with the service submitted an
-          application for a job with a single click without entering information.
-          If a job seeker performs this action, send only this event to the
-          service. Do not also send ``JobEventType.APPLICATION_START`` or
+          APPLICATION_QUICK_SUBMISSION (int): The job seeker or other entity interacting with the service
+          submitted an application for a job with a single click without entering
+          information. If a job seeker performs this action, send only this event
+          to the service. Do not also send ``JobEventType.APPLICATION_START`` or
           ``JobEventType.APPLICATION_FINISH`` events.
           APPLICATION_REDIRECT (int): The job seeker or other entity interacting with the service
           performed an action to apply to a job and was redirected to a different
@@ -850,12 +851,12 @@ class JobEvent(object):
           process or demonstrated the intention of applying for a job from the
           search results page without viewing the details of the job posting.
           If sending this event, JobEventType.VIEW event shouldn't be sent.
-          APPLICATION_REDIRECT_FROM_SEARCH (int): The job seeker, or other entity interacting with the service, performs
-          an action with a single click from the search results page to apply to a
-          job (without viewing the details of the job posting), and is redirected
-          to a different website to complete the application. If a candidate
-          performs this action, send only this event to the service. Do not also
-          send ``JobEventType.APPLICATION_START``,
+          APPLICATION_REDIRECT_FROM_SEARCH (int): The job seeker, or other entity interacting with the service,
+          performs an action with a single click from the search results page to
+          apply to a job (without viewing the details of the job posting), and is
+          redirected to a different website to complete the application. If a
+          candidate performs this action, send only this event to the service. Do
+          not also send ``JobEventType.APPLICATION_START``,
           ``JobEventType.APPLICATION_FINISH`` or ``JobEventType.VIEW`` events.
           APPLICATION_COMPANY_SUBMIT (int): This event should be used when a company submits an application
           on behalf of a job seeker. This event is intended for use by staffing
@@ -968,7 +969,7 @@ class Phone(object):
           associated with a particular person, and may be routed to either a
           MOBILE or LANDLINE number. The ``phone usage`` should be set to PERSONAL
           for these phone types. Some more information can be found here:
-          https://en.wikipedia.org/wiki/Personal\_Numbers
+          https://en.wikipedia.org/wiki/Personal_Numbers
           VOIP (int): Voice over IP numbers. This includes TSoIP (Telephony Service over IP).
           MOBILE_OR_LANDLINE (int): In some regions (e.g. the USA), it is impossible to distinguish between
           fixed-line and mobile numbers by looking at the phone number itself.
@@ -993,15 +994,16 @@ class ProfileEvent(object):
 
         Attributes:
           PROFILE_EVENT_TYPE_UNSPECIFIED (int): Default value.
-          IMPRESSION (int): Send this event when a ``ProfileEvent.profiles`` was sent as a part of a
-          result set for a CTS API call and was rendered in the end user's UI
+          IMPRESSION (int): Send this event when a ``ProfileEvent.profiles`` was sent as a part
+          of a result set for a CTS API call and was rendered in the end user's UI
           (that is, the ``ProfileEvent.recruiter``).
-          VIEW (int): The VIEW event records the action of a candidate's profile being viewed
-          by an end user. This is critical to tracking product metrics and should
-          be sent for every profile VIEW that happens in your system, whether the
-          event is associated with an API call (for example, a recruiter making a
-          request for a result set and clicking on a profile) or not (a recruiter
-          using the system to view profile details without making a request).
+          VIEW (int): The VIEW event records the action of a candidate's profile being
+          viewed by an end user. This is critical to tracking product metrics and
+          should be sent for every profile VIEW that happens in your system,
+          whether the event is associated with an API call (for example, a
+          recruiter making a request for a result set and clicking on a profile)
+          or not (a recruiter using the system to view profile details without
+          making a request).
 
           For a VIEW events associated with API calls, the
           ``ClientEvent.request_id`` should be populated. If the VIEW is not
@@ -1069,7 +1071,7 @@ class SearchJobsRequest(object):
 
         Attributes:
           SEARCH_MODE_UNSPECIFIED (int): The mode of the search method isn't specified. The default search
-          behavior is identical to JOB\_SEARCH search behavior.
+          behavior is identical to JOB_SEARCH search behavior.
           JOB_SEARCH (int): The job search matches against all jobs, and featured jobs
           (jobs with promotionValue > 0) are not specially handled.
           FEATURED_JOB_SEARCH (int): The job search matches only against featured jobs (jobs with a

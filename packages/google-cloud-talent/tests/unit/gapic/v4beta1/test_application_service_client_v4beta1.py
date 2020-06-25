@@ -62,41 +62,6 @@ class CustomException(Exception):
 
 
 class TestApplicationServiceClient(object):
-    def test_delete_application(self):
-        channel = ChannelStub()
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = talent_v4beta1.ApplicationServiceClient()
-
-        # Setup Request
-        name = client.application_path(
-            "[PROJECT]", "[TENANT]", "[PROFILE]", "[APPLICATION]"
-        )
-
-        client.delete_application(name)
-
-        assert len(channel.requests) == 1
-        expected_request = application_service_pb2.DeleteApplicationRequest(name=name)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_application_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = talent_v4beta1.ApplicationServiceClient()
-
-        # Setup request
-        name = client.application_path(
-            "[PROJECT]", "[TENANT]", "[PROFILE]", "[APPLICATION]"
-        )
-
-        with pytest.raises(CustomException):
-            client.delete_application(name)
-
     def test_create_application(self):
         # Setup Expected Response
         name = "name3373707"
@@ -262,6 +227,41 @@ class TestApplicationServiceClient(object):
 
         with pytest.raises(CustomException):
             client.update_application(application)
+
+    def test_delete_application(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.ApplicationServiceClient()
+
+        # Setup Request
+        name = client.application_path(
+            "[PROJECT]", "[TENANT]", "[PROFILE]", "[APPLICATION]"
+        )
+
+        client.delete_application(name)
+
+        assert len(channel.requests) == 1
+        expected_request = application_service_pb2.DeleteApplicationRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_application_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.ApplicationServiceClient()
+
+        # Setup request
+        name = client.application_path(
+            "[PROJECT]", "[TENANT]", "[PROFILE]", "[APPLICATION]"
+        )
+
+        with pytest.raises(CustomException):
+            client.delete_application(name)
 
     def test_list_applications(self):
         # Setup Expected Response

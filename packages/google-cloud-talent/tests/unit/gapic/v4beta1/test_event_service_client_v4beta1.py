@@ -81,7 +81,7 @@ class TestEventServiceClient(object):
             client = talent_v4beta1.EventServiceClient()
 
         # Setup Request
-        parent = client.project_path("[PROJECT]")
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
         client_event = {}
 
         response = client.create_client_event(parent, client_event)
@@ -103,7 +103,7 @@ class TestEventServiceClient(object):
             client = talent_v4beta1.EventServiceClient()
 
         # Setup request
-        parent = client.project_path("[PROJECT]")
+        parent = client.tenant_path("[PROJECT]", "[TENANT]")
         client_event = {}
 
         with pytest.raises(CustomException):

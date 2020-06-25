@@ -56,7 +56,7 @@ class ApplicationServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -77,7 +77,7 @@ class ApplicationServiceGrpcTransport(object):
         self._stubs = {
             "application_service_stub": application_service_pb2_grpc.ApplicationServiceStub(
                 channel
-            )
+            ),
         }
 
     @classmethod
@@ -111,19 +111,6 @@ class ApplicationServiceGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return self._channel
-
-    @property
-    def delete_application(self):
-        """Return the gRPC stub for :meth:`ApplicationServiceClient.delete_application`.
-
-        Deletes specified application.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["application_service_stub"].DeleteApplication
 
     @property
     def create_application(self):
@@ -163,6 +150,19 @@ class ApplicationServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["application_service_stub"].UpdateApplication
+
+    @property
+    def delete_application(self):
+        """Return the gRPC stub for :meth:`ApplicationServiceClient.delete_application`.
+
+        Deletes specified application.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["application_service_stub"].DeleteApplication
 
     @property
     def list_applications(self):

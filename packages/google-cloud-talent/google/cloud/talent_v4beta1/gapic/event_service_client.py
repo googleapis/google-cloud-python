@@ -35,7 +35,6 @@ from google.cloud.talent_v4beta1.gapic.transports import event_service_grpc_tran
 from google.cloud.talent_v4beta1.proto import application_pb2
 from google.cloud.talent_v4beta1.proto import application_service_pb2
 from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
-from google.cloud.talent_v4beta1.proto import common_pb2
 from google.cloud.talent_v4beta1.proto import company_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2_grpc
@@ -44,20 +43,11 @@ from google.cloud.talent_v4beta1.proto import completion_service_pb2_grpc
 from google.cloud.talent_v4beta1.proto import event_pb2
 from google.cloud.talent_v4beta1.proto import event_service_pb2
 from google.cloud.talent_v4beta1.proto import event_service_pb2_grpc
-from google.cloud.talent_v4beta1.proto import filters_pb2
-from google.cloud.talent_v4beta1.proto import histogram_pb2
-from google.cloud.talent_v4beta1.proto import job_pb2
-from google.cloud.talent_v4beta1.proto import job_service_pb2
-from google.cloud.talent_v4beta1.proto import job_service_pb2_grpc
-from google.cloud.talent_v4beta1.proto import tenant_pb2
-from google.cloud.talent_v4beta1.proto import tenant_service_pb2
-from google.cloud.talent_v4beta1.proto import tenant_service_pb2_grpc
-from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-talent").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-talent",).version
 
 
 class EventServiceClient(object):
@@ -94,14 +84,14 @@ class EventServiceClient(object):
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}", project=project,
         )
 
     @classmethod
     def tenant_path(cls, project, tenant):
         """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
+            "projects/{project}/tenants/{tenant}", project=project, tenant=tenant,
         )
 
     def __init__(
@@ -191,12 +181,12 @@ class EventServiceClient(object):
                 self.transport = transport
         else:
             self.transport = event_service_grpc_transport.EventServiceGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -207,7 +197,7 @@ class EventServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -226,9 +216,9 @@ class EventServiceClient(object):
         metadata=None,
     ):
         """
-        Report events issued when end user interacts with customer's application
-        that uses Cloud Talent Solution. You may inspect the created events in
-        `self service
+        Report events issued when end user interacts with customer's
+        application that uses Cloud Talent Solution. You may inspect the created
+        events in `self service
         tools <https://console.cloud.google.com/talent-solution/overview>`__.
         `Learn
         more <https://cloud.google.com/talent-solution/docs/management-tools>`__
@@ -239,7 +229,7 @@ class EventServiceClient(object):
             >>>
             >>> client = talent_v4beta1.EventServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # TODO: Initialize `client_event`:
             >>> client_event = {}
@@ -247,11 +237,12 @@ class EventServiceClient(object):
             >>> response = client.create_client_event(parent, client_event)
 
         Args:
-            parent (str): Required. Resource name of the tenant under which the event is created.
+            parent (str): Required. Resource name of the tenant under which the event is
+                created.
 
-                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/foo/tenant/bar". If tenant id is unspecified, a
-                default tenant is created, for example, "projects/foo".
+                The format is "projects/{project_id}/tenants/{tenant_id}", for example,
+                "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant
+                is created, for example, "projects/foo".
             client_event (Union[dict, ~google.cloud.talent_v4beta1.types.ClientEvent]): Required. Events issued when end user interacts with customer's application that
                 uses Cloud Talent Solution.
 
@@ -288,7 +279,7 @@ class EventServiceClient(object):
             )
 
         request = event_service_pb2.CreateClientEventRequest(
-            parent=parent, client_event=client_event
+            parent=parent, client_event=client_event,
         )
         if metadata is None:
             metadata = []

@@ -32,15 +32,15 @@ from google.cloud.talent_v4beta1.gapic import tenant_service_client
 
 if sys.version_info[:2] == (2, 7):
     message = (
-        "A future version of this library will drop support for Python 2.7."
-        "More details about Python 2 support for Google Cloud Client Libraries"
+        "A future version of this library will drop support for Python 2.7. "
+        "More details about Python 2 support for Google Cloud Client Libraries "
         "can be found at https://cloud.google.com/python/docs/python2-sunset/"
     )
     warnings.warn(message, DeprecationWarning)
 
 
-class JobServiceClient(job_service_client.JobServiceClient):
-    __doc__ = job_service_client.JobServiceClient.__doc__
+class ApplicationServiceClient(application_service_client.ApplicationServiceClient):
+    __doc__ = application_service_client.ApplicationServiceClient.__doc__
     enums = enums
 
 
@@ -54,18 +54,13 @@ class CompletionClient(completion_client.CompletionClient):
     enums = enums
 
 
-class ApplicationServiceClient(application_service_client.ApplicationServiceClient):
-    __doc__ = application_service_client.ApplicationServiceClient.__doc__
-    enums = enums
-
-
-class TenantServiceClient(tenant_service_client.TenantServiceClient):
-    __doc__ = tenant_service_client.TenantServiceClient.__doc__
-    enums = enums
-
-
 class EventServiceClient(event_service_client.EventServiceClient):
     __doc__ = event_service_client.EventServiceClient.__doc__
+    enums = enums
+
+
+class JobServiceClient(job_service_client.JobServiceClient):
+    __doc__ = job_service_client.JobServiceClient.__doc__
     enums = enums
 
 
@@ -74,14 +69,19 @@ class ProfileServiceClient(profile_service_client.ProfileServiceClient):
     enums = enums
 
 
+class TenantServiceClient(tenant_service_client.TenantServiceClient):
+    __doc__ = tenant_service_client.TenantServiceClient.__doc__
+    enums = enums
+
+
 __all__ = (
     "enums",
     "types",
-    "JobServiceClient",
+    "ApplicationServiceClient",
     "CompanyServiceClient",
     "CompletionClient",
-    "ApplicationServiceClient",
-    "TenantServiceClient",
     "EventServiceClient",
+    "JobServiceClient",
     "ProfileServiceClient",
+    "TenantServiceClient",
 )

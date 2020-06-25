@@ -34,21 +34,17 @@ import grpc
 from google.cloud.talent_v4beta1.gapic import company_service_client_config
 from google.cloud.talent_v4beta1.gapic import enums
 from google.cloud.talent_v4beta1.gapic.transports import company_service_grpc_transport
-from google.cloud.talent_v4beta1.proto import common_pb2
+from google.cloud.talent_v4beta1.proto import application_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2
+from google.cloud.talent_v4beta1.proto import application_service_pb2_grpc
 from google.cloud.talent_v4beta1.proto import company_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2
 from google.cloud.talent_v4beta1.proto import company_service_pb2_grpc
-from google.cloud.talent_v4beta1.proto import filters_pb2
-from google.cloud.talent_v4beta1.proto import histogram_pb2
-from google.cloud.talent_v4beta1.proto import job_pb2
-from google.cloud.talent_v4beta1.proto import job_service_pb2
-from google.cloud.talent_v4beta1.proto import job_service_pb2_grpc
-from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-talent").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-talent",).version
 
 
 class CompanyServiceClient(object):
@@ -95,21 +91,21 @@ class CompanyServiceClient(object):
     def company_without_tenant_path(cls, project, company):
         """Return a fully-qualified company_without_tenant string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/companies/{company}", project=project, company=company
+            "projects/{project}/companies/{company}", project=project, company=company,
         )
 
     @classmethod
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}", project=project,
         )
 
     @classmethod
     def tenant_path(cls, project, tenant):
         """Return a fully-qualified tenant string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/tenants/{tenant}", project=project, tenant=tenant
+            "projects/{project}/tenants/{tenant}", project=project, tenant=tenant,
         )
 
     def __init__(
@@ -199,12 +195,12 @@ class CompanyServiceClient(object):
                 self.transport = transport
         else:
             self.transport = company_service_grpc_transport.CompanyServiceGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -215,7 +211,7 @@ class CompanyServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -225,80 +221,6 @@ class CompanyServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def delete_company(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Deletes specified company.
-        Prerequisite: The company has no jobs associated with it.
-
-        Example:
-            >>> from google.cloud import talent_v4beta1
-            >>>
-            >>> client = talent_v4beta1.CompanyServiceClient()
-            >>>
-            >>> name = client.company_path('[PROJECT]', '[TENANT]', '[COMPANY]')
-            >>>
-            >>> client.delete_company(name)
-
-        Args:
-            name (str): Required. The resource name of the company to be deleted.
-
-                The format is
-                "projects/{project\_id}/tenants/{tenant\_id}/companies/{company\_id}",
-                for example, "projects/foo/tenants/bar/companies/baz".
-
-                If tenant id is unspecified, the default tenant is used, for example,
-                "projects/foo/companies/bar".
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "delete_company" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "delete_company"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_company,
-                default_retry=self._method_configs["DeleteCompany"].retry,
-                default_timeout=self._method_configs["DeleteCompany"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = company_service_pb2.DeleteCompanyRequest(name=name)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        self._inner_api_calls["delete_company"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
     def create_company(
         self,
         parent,
@@ -315,7 +237,7 @@ class CompanyServiceClient(object):
             >>>
             >>> client = talent_v4beta1.CompanyServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # TODO: Initialize `company`:
             >>> company = {}
@@ -326,9 +248,9 @@ class CompanyServiceClient(object):
             parent (str): Required. Resource name of the tenant under which the company is
                 created.
 
-                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/foo/tenant/bar". If tenant id is unspecified, a
-                default tenant is created, for example, "projects/foo".
+                The format is "projects/{project_id}/tenants/{tenant_id}", for example,
+                "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant
+                is created, for example, "projects/foo".
             company (Union[dict, ~google.cloud.talent_v4beta1.types.Company]): Required. The company to be created.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -364,7 +286,7 @@ class CompanyServiceClient(object):
             )
 
         request = company_service_pb2.CreateCompanyRequest(
-            parent=parent, company=company
+            parent=parent, company=company,
         )
         if metadata is None:
             metadata = []
@@ -406,8 +328,8 @@ class CompanyServiceClient(object):
             name (str): Required. The resource name of the company to be retrieved.
 
                 The format is
-                "projects/{project\_id}/tenants/{tenant\_id}/companies/{company\_id}",
-                for example, "projects/api-test-project/tenants/foo/companies/bar".
+                "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}", for
+                example, "projects/api-test-project/tenants/foo/companies/bar".
 
                 If tenant id is unspecified, the default tenant is used, for example,
                 "projects/api-test-project/companies/bar".
@@ -441,7 +363,7 @@ class CompanyServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = company_service_pb2.GetCompanyRequest(name=name)
+        request = company_service_pb2.GetCompanyRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -526,7 +448,7 @@ class CompanyServiceClient(object):
             )
 
         request = company_service_pb2.UpdateCompanyRequest(
-            company=company, update_mask=update_mask
+            company=company, update_mask=update_mask,
         )
         if metadata is None:
             metadata = []
@@ -542,6 +464,80 @@ class CompanyServiceClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls["update_company"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def delete_company(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes specified company.
+        Prerequisite: The company has no jobs associated with it.
+
+        Example:
+            >>> from google.cloud import talent_v4beta1
+            >>>
+            >>> client = talent_v4beta1.CompanyServiceClient()
+            >>>
+            >>> name = client.company_path('[PROJECT]', '[TENANT]', '[COMPANY]')
+            >>>
+            >>> client.delete_company(name)
+
+        Args:
+            name (str): Required. The resource name of the company to be deleted.
+
+                The format is
+                "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}", for
+                example, "projects/foo/tenants/bar/companies/baz".
+
+                If tenant id is unspecified, the default tenant is used, for example,
+                "projects/foo/companies/bar".
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_company" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_company"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_company,
+                default_retry=self._method_configs["DeleteCompany"].retry,
+                default_timeout=self._method_configs["DeleteCompany"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = company_service_pb2.DeleteCompanyRequest(name=name,)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["delete_company"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
@@ -562,7 +558,7 @@ class CompanyServiceClient(object):
             >>>
             >>> client = talent_v4beta1.CompanyServiceClient()
             >>>
-            >>> parent = client.project_path('[PROJECT]')
+            >>> parent = client.tenant_path('[PROJECT]', '[TENANT]')
             >>>
             >>> # Iterate over all results
             >>> for element in client.list_companies(parent):
@@ -582,8 +578,8 @@ class CompanyServiceClient(object):
             parent (str): Required. Resource name of the tenant under which the company is
                 created.
 
-                The format is "projects/{project\_id}/tenants/{tenant\_id}", for
-                example, "projects/foo/tenant/bar".
+                The format is "projects/{project_id}/tenants/{tenant_id}", for example,
+                "projects/foo/tenant/bar".
 
                 If tenant id is unspecified, the default tenant will be used, for
                 example, "projects/foo".
@@ -632,7 +628,7 @@ class CompanyServiceClient(object):
             )
 
         request = company_service_pb2.ListCompaniesRequest(
-            parent=parent, page_size=page_size, require_open_jobs=require_open_jobs
+            parent=parent, page_size=page_size, require_open_jobs=require_open_jobs,
         )
         if metadata is None:
             metadata = []

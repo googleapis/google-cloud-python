@@ -1,32 +1,25 @@
 {
   "sources": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "2.0.0",
-        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
-      }
-    },
-    {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-talent",
-        "sha": "820ed8b6dcb94f08b45563872009c55cf52012a5"
+        "remote": "https://github.com/googleapis/python-talent.git",
+        "sha": "a9f9c148652876b0d3dd09a900a6185e3e5e4b64"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "756b174de4a122461993c1c583345533d819936d",
-        "internalRef": "308824110"
+        "sha": "b882b8e6bfcd708042ff00f7adc67ce750817dd0",
+        "internalRef": "318028816"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "01b6f23d24b27878b48667ce597876d66b59780e"
+        "sha": "2a29860e484695a07aa8670f9e750bfeeb308a43"
       }
     }
   ],
@@ -37,8 +30,7 @@
         "apiName": "talent",
         "apiVersion": "v4beta1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/talent/artman_talent_v4beta1.yaml"
+        "generator": "bazel"
       }
     }
   ]

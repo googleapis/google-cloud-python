@@ -56,7 +56,7 @@ class EventServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -75,7 +75,7 @@ class EventServiceGrpcTransport(object):
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "event_service_stub": event_service_pb2_grpc.EventServiceStub(channel)
+            "event_service_stub": event_service_pb2_grpc.EventServiceStub(channel),
         }
 
     @classmethod
@@ -114,9 +114,9 @@ class EventServiceGrpcTransport(object):
     def create_client_event(self):
         """Return the gRPC stub for :meth:`EventServiceClient.create_client_event`.
 
-        Report events issued when end user interacts with customer's application
-        that uses Cloud Talent Solution. You may inspect the created events in
-        `self service
+        Report events issued when end user interacts with customer's
+        application that uses Cloud Talent Solution. You may inspect the created
+        events in `self service
         tools <https://console.cloud.google.com/talent-solution/overview>`__.
         `Learn
         more <https://cloud.google.com/talent-solution/docs/management-tools>`__

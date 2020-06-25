@@ -34,10 +34,26 @@ for version in versions:
    )
    s.move(library, excludes=excludes)
 
+# fix docstring
+s.replace(
+   "google/cloud/**/*.py",
+   "\[a-zA-Z\]\[a-zA-Z0-9_\]",
+   "[a-zA-Z][a-zA-Z0-9\_]"
+)
+
+# Escape '_' in docstrings
+s.replace(
+   "google/cloud/**/*_pb2.py",
+   """\_$""",
+   """\_""",
+)
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(cov_level=83)
 s.move(templated_files)
+
+# TODO(busunkim): Use latest sphinx after microgenerator transition
+s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

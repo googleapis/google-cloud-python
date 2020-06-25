@@ -63,37 +63,6 @@ class CustomException(Exception):
 
 
 class TestProfileServiceClient(object):
-    def test_delete_profile(self):
-        channel = ChannelStub()
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = talent_v4beta1.ProfileServiceClient()
-
-        # Setup Request
-        name = client.profile_path("[PROJECT]", "[TENANT]", "[PROFILE]")
-
-        client.delete_profile(name)
-
-        assert len(channel.requests) == 1
-        expected_request = profile_service_pb2.DeleteProfileRequest(name=name)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_profile_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = talent_v4beta1.ProfileServiceClient()
-
-        # Setup request
-        name = client.profile_path("[PROJECT]", "[TENANT]", "[PROFILE]")
-
-        with pytest.raises(CustomException):
-            client.delete_profile(name)
-
     def test_search_profiles(self):
         # Setup Expected Response
         estimated_total_size = 1882144769
@@ -354,3 +323,34 @@ class TestProfileServiceClient(object):
 
         with pytest.raises(CustomException):
             client.update_profile(profile)
+
+    def test_delete_profile(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.ProfileServiceClient()
+
+        # Setup Request
+        name = client.profile_path("[PROJECT]", "[TENANT]", "[PROFILE]")
+
+        client.delete_profile(name)
+
+        assert len(channel.requests) == 1
+        expected_request = profile_service_pb2.DeleteProfileRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_profile_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = talent_v4beta1.ProfileServiceClient()
+
+        # Setup request
+        name = client.profile_path("[PROJECT]", "[TENANT]", "[PROFILE]")
+
+        with pytest.raises(CustomException):
+            client.delete_profile(name)

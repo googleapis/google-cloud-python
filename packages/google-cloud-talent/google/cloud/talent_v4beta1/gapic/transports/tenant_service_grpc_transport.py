@@ -56,7 +56,7 @@ class TenantServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -75,7 +75,7 @@ class TenantServiceGrpcTransport(object):
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "tenant_service_stub": tenant_service_pb2_grpc.TenantServiceStub(channel)
+            "tenant_service_stub": tenant_service_pb2_grpc.TenantServiceStub(channel),
         }
 
     @classmethod
@@ -109,19 +109,6 @@ class TenantServiceGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return self._channel
-
-    @property
-    def delete_tenant(self):
-        """Return the gRPC stub for :meth:`TenantServiceClient.delete_tenant`.
-
-        Deletes specified tenant.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["tenant_service_stub"].DeleteTenant
 
     @property
     def create_tenant(self):
@@ -161,6 +148,19 @@ class TenantServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["tenant_service_stub"].UpdateTenant
+
+    @property
+    def delete_tenant(self):
+        """Return the gRPC stub for :meth:`TenantServiceClient.delete_tenant`.
+
+        Deletes specified tenant.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["tenant_service_stub"].DeleteTenant
 
     @property
     def list_tenants(self):

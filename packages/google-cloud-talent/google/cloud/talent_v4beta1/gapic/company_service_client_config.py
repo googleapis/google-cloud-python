@@ -2,45 +2,64 @@ config = {
     "interfaces": {
         "google.cloud.talent.v4beta1.CompanyService": {
             "retry_codes": {
-                "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
-                "non_idempotent": [],
+                "no_retry_6_codes": [],
+                "no_retry_codes": [],
+                "retry_policy_5_codes": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
             },
             "retry_params": {
-                "default": {
+                "retry_policy_5_params": {
                     "initial_retry_delay_millis": 100,
                     "retry_delay_multiplier": 1.3,
                     "max_retry_delay_millis": 60000,
-                    "initial_rpc_timeout_millis": 20000,
+                    "initial_rpc_timeout_millis": 30000,
                     "rpc_timeout_multiplier": 1.0,
-                    "max_rpc_timeout_millis": 20000,
-                    "total_timeout_millis": 600000,
-                }
+                    "max_rpc_timeout_millis": 30000,
+                    "total_timeout_millis": 30000,
+                },
+                "no_retry_params": {
+                    "initial_retry_delay_millis": 0,
+                    "retry_delay_multiplier": 0.0,
+                    "max_retry_delay_millis": 0,
+                    "initial_rpc_timeout_millis": 0,
+                    "rpc_timeout_multiplier": 1.0,
+                    "max_rpc_timeout_millis": 0,
+                    "total_timeout_millis": 0,
+                },
+                "no_retry_6_params": {
+                    "initial_retry_delay_millis": 0,
+                    "retry_delay_multiplier": 0.0,
+                    "max_retry_delay_millis": 0,
+                    "initial_rpc_timeout_millis": 30000,
+                    "rpc_timeout_multiplier": 1.0,
+                    "max_rpc_timeout_millis": 30000,
+                    "total_timeout_millis": 30000,
+                },
             },
             "methods": {
-                "DeleteCompany": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
-                },
                 "CreateCompany": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "no_retry_6_codes",
+                    "retry_params_name": "no_retry_6_params",
                 },
                 "GetCompany": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "retry_policy_5_codes",
+                    "retry_params_name": "retry_policy_5_params",
                 },
                 "UpdateCompany": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "non_idempotent",
-                    "retry_params_name": "default",
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "no_retry_6_codes",
+                    "retry_params_name": "no_retry_6_params",
+                },
+                "DeleteCompany": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "retry_policy_5_codes",
+                    "retry_params_name": "retry_policy_5_params",
                 },
                 "ListCompanies": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default",
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "retry_policy_5_codes",
+                    "retry_params_name": "retry_policy_5_params",
                 },
             },
         }

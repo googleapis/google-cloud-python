@@ -57,7 +57,7 @@ class JobServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -75,7 +75,9 @@ class JobServiceGrpcTransport(object):
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
-        self._stubs = {"job_service_stub": job_service_pb2_grpc.JobServiceStub(channel)}
+        self._stubs = {
+            "job_service_stub": job_service_pb2_grpc.JobServiceStub(channel),
+        }
 
         # Because this API includes a method that returns a
         # long-running operation (proto: google.longrunning.Operation),
@@ -115,22 +117,6 @@ class JobServiceGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return self._channel
-
-    @property
-    def delete_job(self):
-        """Return the gRPC stub for :meth:`JobServiceClient.delete_job`.
-
-        Deletes the specified job.
-
-        Typically, the job becomes unsearchable within 10 seconds, but it may take
-        up to 5 minutes.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["job_service_stub"].DeleteJob
 
     @property
     def create_job(self):
@@ -203,6 +189,22 @@ class JobServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["job_service_stub"].BatchUpdateJobs
+
+    @property
+    def delete_job(self):
+        """Return the gRPC stub for :meth:`JobServiceClient.delete_job`.
+
+        Deletes the specified job.
+
+        Typically, the job becomes unsearchable within 10 seconds, but it may take
+        up to 5 minutes.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["job_service_stub"].DeleteJob
 
     @property
     def batch_delete_jobs(self):

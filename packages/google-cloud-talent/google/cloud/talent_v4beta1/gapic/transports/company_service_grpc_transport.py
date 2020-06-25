@@ -56,7 +56,7 @@ class CompanyServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -75,7 +75,9 @@ class CompanyServiceGrpcTransport(object):
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "company_service_stub": company_service_pb2_grpc.CompanyServiceStub(channel)
+            "company_service_stub": company_service_pb2_grpc.CompanyServiceStub(
+                channel
+            ),
         }
 
     @classmethod
@@ -109,20 +111,6 @@ class CompanyServiceGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return self._channel
-
-    @property
-    def delete_company(self):
-        """Return the gRPC stub for :meth:`CompanyServiceClient.delete_company`.
-
-        Deletes specified company.
-        Prerequisite: The company has no jobs associated with it.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["company_service_stub"].DeleteCompany
 
     @property
     def create_company(self):
@@ -162,6 +150,20 @@ class CompanyServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["company_service_stub"].UpdateCompany
+
+    @property
+    def delete_company(self):
+        """Return the gRPC stub for :meth:`CompanyServiceClient.delete_company`.
+
+        Deletes specified company.
+        Prerequisite: The company has no jobs associated with it.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["company_service_stub"].DeleteCompany
 
     @property
     def list_companies(self):

@@ -56,7 +56,7 @@ class ProfileServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -75,7 +75,9 @@ class ProfileServiceGrpcTransport(object):
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "profile_service_stub": profile_service_pb2_grpc.ProfileServiceStub(channel)
+            "profile_service_stub": profile_service_pb2_grpc.ProfileServiceStub(
+                channel
+            ),
         }
 
     @classmethod
@@ -109,21 +111,6 @@ class ProfileServiceGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return self._channel
-
-    @property
-    def delete_profile(self):
-        """Return the gRPC stub for :meth:`ProfileServiceClient.delete_profile`.
-
-        Deletes the specified profile.
-        Prerequisite: The profile has no associated applications or assignments
-        associated.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["profile_service_stub"].DeleteProfile
 
     @property
     def search_profiles(self):
@@ -195,3 +182,18 @@ class ProfileServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["profile_service_stub"].UpdateProfile
+
+    @property
+    def delete_profile(self):
+        """Return the gRPC stub for :meth:`ProfileServiceClient.delete_profile`.
+
+        Deletes the specified profile.
+        Prerequisite: The profile has no associated applications or assignments
+        associated.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["profile_service_stub"].DeleteProfile
