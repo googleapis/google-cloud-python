@@ -3060,7 +3060,8 @@ Profile = _reflection.GeneratedProtocolMessageType(
           ing_notes]    are specifically excluded from this action type.
           Note: [candidate_update_time][google.cloud.talent.v4beta1.Prof
           ile.candidate_update_time] must be greater than or equal to [r
-          esume_update_time][google.cloud.talent.v4beta1.Profile.resume_update_time] or an error is thrown.
+          esume_update_time][google.cloud.talent.v4beta1.Profile.resume\_
+          update_time] or an error is thrown.
       resume_update_time:
           The timestamp when the candidate’s resume was added or updated
           on the candidate’s profile. Whether that resume was directly
@@ -3329,7 +3330,9 @@ PersonName = _reflection.GeneratedProtocolMessageType(
           A person’s name in a structured way (last name, first name,
           suffix, and so on.)
       preferred_name:
-          Preferred name for the person. This field is ignored if [structured_name][google.cloud.talent.v4beta1.PersonName.structured_name] is provided.  Number of characters allowed is 100.
+          Preferred name for the person. This field is ignored if [struc
+          tured_name][google.cloud.talent.v4beta1.PersonName.structured\_
+          name] is provided.  Number of characters allowed is 100.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.talent.v4beta1.PersonName)
     },

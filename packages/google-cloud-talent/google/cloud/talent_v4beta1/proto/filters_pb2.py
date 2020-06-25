@@ -2394,8 +2394,8 @@ ProfileQuery = _reflection.GeneratedProtocolMessageType(
           geocoded, the filter falls back to keyword search.  If the
           detected [LocationType][google.cloud.talent.v4beta1.Location.L
           ocationType] is [LocationType.SUB_ADMINISTRATIVE_AREA][google.
-          cloud.talent.v4beta1.Location.LocationType.SUB_ADMINISTRATIVE_AREA],
-          [LocationType.ADMINISTRATIVE_AREA][google.cloud.talent.
+          cloud.talent.v4beta1.Location.LocationType.SUB_ADMINISTRATIVE\_
+          AREA], [LocationType.ADMINISTRATIVE_AREA][google.cloud.talent.
           v4beta1.Location.LocationType.ADMINISTRATIVE_AREA], or [Locati
           onType.COUNTRY][google.cloud.talent.v4beta1.Location.LocationT
           ype.COUNTRY], the filter is performed against the detected

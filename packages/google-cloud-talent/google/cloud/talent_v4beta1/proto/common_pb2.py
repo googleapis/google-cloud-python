@@ -3470,7 +3470,8 @@ CompensationInfo = _reflection.GeneratedProtocolMessageType(
     
     Attributes:
         type:
-            Compensation type.  Default is [CompensationType.COMPENSATION\_TYPE\_UNSPECIFIED][google.cloud.talent.v4beta1.CompensationInfo
+            Compensation type.  Default is [CompensationType.COMPENSATION\_
+            TYPE_UNSPECIFIED][google.cloud.talent.v4beta1.CompensationInfo
             .CompensationType.COMPENSATION_TYPE_UNSPECIFIED].
         unit:
             Frequency of the specified amount.  Default is [CompensationUn

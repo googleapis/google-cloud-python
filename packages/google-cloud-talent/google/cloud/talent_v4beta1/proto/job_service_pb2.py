@@ -1985,7 +1985,8 @@ ListJobsRequest = _reflection.GeneratedProtocolMessageType(
           The starting point of a query result.
       page_size:
           The maximum number of jobs to be returned per page of results.
-          If [job_view][google.cloud.talent.v4beta1.ListJobsRequest.job_view] is set to [JobView.JOB_VIEW_ID_ONLY][google.cloud.talent
+          If [job_view][google.cloud.talent.v4beta1.ListJobsRequest.job\_
+          view] is set to [JobView.JOB_VIEW_ID_ONLY][google.cloud.talent
           .v4beta1.JobView.JOB_VIEW_ID_ONLY], the maximum allowed page
           size is 1000. Otherwise, the maximum allowed page size is 100.
           Default is 100 if empty or a number < 1 is specified.
