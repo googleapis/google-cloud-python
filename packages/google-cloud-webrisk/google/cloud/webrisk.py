@@ -22,4 +22,8 @@ from google.cloud.webrisk_v1 import enums
 from google.cloud.webrisk_v1 import types
 
 
-__all__ = ("enums", "types", "WebRiskServiceClient")
+__all__ = (
+    "enums",
+    "types",
+    "WebRiskServiceClient",
+)

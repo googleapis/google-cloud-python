@@ -36,7 +36,7 @@ from google.cloud.webrisk_v1.proto import webrisk_pb2
 from google.cloud.webrisk_v1.proto import webrisk_pb2_grpc
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-webrisk").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-webrisk",).version
 
 
 class WebRiskServiceClient(object):
@@ -76,7 +76,7 @@ class WebRiskServiceClient(object):
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}", project=project,
         )
 
     def __init__(
@@ -166,12 +166,12 @@ class WebRiskServiceClient(object):
                 self.transport = transport
         else:
             self.transport = web_risk_service_grpc_transport.WebRiskServiceGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -182,7 +182,7 @@ class WebRiskServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -335,7 +335,7 @@ class WebRiskServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = webrisk_pb2.SearchUrisRequest(uri=uri, threat_types=threat_types)
+        request = webrisk_pb2.SearchUrisRequest(uri=uri, threat_types=threat_types,)
         return self._inner_api_calls["search_uris"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
@@ -401,7 +401,7 @@ class WebRiskServiceClient(object):
             )
 
         request = webrisk_pb2.SearchHashesRequest(
-            threat_types=threat_types, hash_prefix=hash_prefix
+            threat_types=threat_types, hash_prefix=hash_prefix,
         )
         return self._inner_api_calls["search_hashes"](
             request, retry=retry, timeout=timeout, metadata=metadata
@@ -416,9 +416,14 @@ class WebRiskServiceClient(object):
         metadata=None,
     ):
         """
-        The maximum size in number of entries. The diff will not contain
-        more entries than this value. This should be a power of 2 between
-        2\ **10 and 2**\ 20. If zero, no diff size limit is set.
+        Creates a Submission of a URI suspected of containing phishing
+        content to be reviewed. If the result verifies the existence of
+        malicious phishing content, the site will be added to the `Google's
+        Social Engineering
+        lists <https://support.google.com/webmasters/answer/6350487/>`__ in
+        order to protect users that could get exposed to this threat in the
+        future. Only projects with CREATE_SUBMISSION_USERS visibility can use
+        this method.
 
         Example:
             >>> from google.cloud import webrisk_v1
@@ -433,10 +438,8 @@ class WebRiskServiceClient(object):
             >>> response = client.create_submission(parent, submission)
 
         Args:
-            parent (str): The encoded local, lexicographically-sorted list indices, using a
-                Golomb-Rice encoding. Used for sending compressed removal indices. The
-                removal indices (uint32) are sorted in ascending order, then delta
-                encoded and stored as encoded_data.
+            parent (str): Required. The name of the project that is making the submission.
+                This string is in the format "projects/{project_number}".
             submission (Union[dict, ~google.cloud.webrisk_v1.types.Submission]): Required. The submission that contains the content of the phishing report.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -472,7 +475,7 @@ class WebRiskServiceClient(object):
             )
 
         request = webrisk_pb2.CreateSubmissionRequest(
-            parent=parent, submission=submission
+            parent=parent, submission=submission,
         )
         if metadata is None:
             metadata = []
