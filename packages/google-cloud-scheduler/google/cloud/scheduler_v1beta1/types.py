@@ -40,7 +40,11 @@ _shared_modules = [
     status_pb2,
 ]
 
-_local_modules = [cloudscheduler_pb2, job_pb2, target_pb2]
+_local_modules = [
+    cloudscheduler_pb2,
+    job_pb2,
+    target_pb2,
+]
 
 names = []
 

@@ -44,7 +44,7 @@ from google.protobuf import field_mask_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-scheduler"
+    "google-cloud-scheduler",
 ).version
 
 
@@ -187,12 +187,12 @@ class CloudSchedulerClient(object):
                 self.transport = transport
         else:
             self.transport = cloud_scheduler_grpc_transport.CloudSchedulerGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -203,7 +203,7 @@ class CloudSchedulerClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -286,7 +286,9 @@ class CloudSchedulerClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudscheduler_pb2.ListJobsRequest(parent=parent, page_size=page_size)
+        request = cloudscheduler_pb2.ListJobsRequest(
+            parent=parent, page_size=page_size,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -367,7 +369,7 @@ class CloudSchedulerClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudscheduler_pb2.GetJobRequest(name=name)
+        request = cloudscheduler_pb2.GetJobRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -411,10 +413,10 @@ class CloudSchedulerClient(object):
         Args:
             parent (str): Required. The location name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID``.
-            job (Union[dict, ~google.cloud.scheduler_v1beta1.types.Job]): Required. The job to add. The user can optionally specify a name for the
-                job in ``name``. ``name`` cannot be the same as an existing job. If a
-                name is not specified then the system will generate a random unique name
-                that will be returned (``name``) in the response.
+            job (Union[dict, ~google.cloud.scheduler_v1beta1.types.Job]): Required. The job to add. The user can optionally specify a name for
+                the job in ``name``. ``name`` cannot be the same as an existing job. If
+                a name is not specified then the system will generate a random unique
+                name that will be returned (``name``) in the response.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.scheduler_v1beta1.types.Job`
@@ -448,7 +450,7 @@ class CloudSchedulerClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudscheduler_pb2.CreateJobRequest(parent=parent, job=job)
+        request = cloudscheduler_pb2.CreateJobRequest(parent=parent, job=job,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -537,7 +539,7 @@ class CloudSchedulerClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudscheduler_pb2.UpdateJobRequest(job=job, update_mask=update_mask)
+        request = cloudscheduler_pb2.UpdateJobRequest(job=job, update_mask=update_mask,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -604,7 +606,7 @@ class CloudSchedulerClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudscheduler_pb2.DeleteJobRequest(name=name)
+        request = cloudscheduler_pb2.DeleteJobRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -679,7 +681,7 @@ class CloudSchedulerClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudscheduler_pb2.PauseJobRequest(name=name)
+        request = cloudscheduler_pb2.PauseJobRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -754,7 +756,7 @@ class CloudSchedulerClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudscheduler_pb2.ResumeJobRequest(name=name)
+        request = cloudscheduler_pb2.ResumeJobRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -827,7 +829,7 @@ class CloudSchedulerClient(object):
                 client_info=self._client_info,
             )
 
-        request = cloudscheduler_pb2.RunJobRequest(name=name)
+        request = cloudscheduler_pb2.RunJobRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
