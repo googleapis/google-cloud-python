@@ -8,13 +8,13 @@ Api Reference
 This package includes clients for multiple versions of the Cloud Asset API. By default, you will get ``v1``
 the latest stable version.
 
-v1
+v1 <v1>
 ~~~~~~~~~
 .. toctree::
     :maxdepth: 2
 
-    gapic/v1/api
-    gapic/v1/types
+    Client (v1) <gapic/v1/api>
+    Types (v1) <gapic/v1/types>
 
 Beta releases with additional features over the current stable version. These are expected to move into the stable release soon;
 until then, the usual beta admonishment (changes are possible, etc.) applies.
@@ -27,8 +27,8 @@ v1p1beta1
 .. toctree::
     :maxdepth: 2
 
-    gapic/v1p1beta1/api
-    gapic/v1p1beta1/types
+    Client (v1p1beta1) <gapic/v1p1beta1/api>
+    Types (v1p1beta1) <gapic/v1p1beta1/types>
 
 
 v1p2beta1
@@ -36,8 +36,8 @@ v1p2beta1
 .. toctree::
     :maxdepth: 2
 
-    gapic/v1p2beta1/api
-    gapic/v1p2beta1/types
+    Client (v1p1beta1) <gapic/v1p2beta1/api>
+    Types (v1p1beta1) <gapic/v1p2beta1/types>
 
 
 v1p4beta1
@@ -45,9 +45,17 @@ v1p4beta1
 .. toctree::
     :maxdepth: 2
 
-    gapic/v1p4beta1/api
-    gapic/v1p4beta1/types
+    Client (v1p4beta1) <gapic/v1p4beta1/api>
+    Types (v1p4beta1) <gapic/v1p4beta1/types>
 
+
+v1p5beta1
+~~~~~~~~~
+.. toctree::
+    :maxdepth: 2
+
+    Client (v1p5beta1) <gapic/v1p5beta1/api>
+    Types (v1p5beta1) <gapic/v1p5beta1/types>
 
 
 v1beta1
@@ -55,8 +63,8 @@ v1beta1
 .. toctree::
     :maxdepth: 2
 
-    gapic/v1beta1/api
-    gapic/v1beta1/types
+    Client (v1beta1) <gapic/v1beta1/api>
+    Types (v1beta1) <gapic/v1beta1/types>
 
 
 Changelog
