@@ -28,9 +28,17 @@ from google.protobuf import timestamp_pb2
 from google.rpc import status_pb2
 
 
-_shared_modules = [operations_pb2, any_pb2, duration_pb2, timestamp_pb2, status_pb2]
+_shared_modules = [
+    operations_pb2,
+    any_pb2,
+    duration_pb2,
+    timestamp_pb2,
+    status_pb2,
+]
 
-_local_modules = [cloud_speech_pb2]
+_local_modules = [
+    cloud_speech_pb2,
+]
 
 names = []
 
