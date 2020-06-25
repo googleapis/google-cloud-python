@@ -1,32 +1,25 @@
 {
   "sources": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "2.0.0",
-        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
-      }
-    },
-    {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-grafeas",
-        "sha": "42638ee7fd79bc62dbc25a39975369839b4f83d4"
+        "remote": "https://github.com/googleapis/python-grafeas.git",
+        "sha": "5a085e3bcff42c1f7492656766b2f287078f1ed5"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "756b174de4a122461993c1c583345533d819936d",
-        "internalRef": "308824110"
+        "sha": "79a17b8c64efa7bafff0a16b467754c73d570b6e",
+        "internalRef": "317385359"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "01b6f23d24b27878b48667ce597876d66b59780e"
+        "sha": "483f18635c3af10031435535268abe001ad69e7c"
       }
     }
   ],
@@ -37,8 +30,7 @@
         "apiName": "grafeas",
         "apiVersion": "v1",
         "language": "python",
-        "generator": "gapic",
-        "config": "grafeas/artman_grafeas_v1.yaml"
+        "generator": "bazel"
       }
     }
   ]

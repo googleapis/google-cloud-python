@@ -62,92 +62,6 @@ class CustomException(Exception):
 
 
 class TestGrafeasClient(object):
-    def test_delete_occurrence(self):
-        channel = ChannelStub()
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            address = "[SERVICE_ADDRESS]"
-
-            scopes = "SCOPE"
-
-            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
-
-            client = grafeas_v1.GrafeasClient(transport)
-
-        # Setup Request
-        name = client.occurrence_path("[PROJECT]", "[OCCURRENCE]")
-
-        client.delete_occurrence(name)
-
-        assert len(channel.requests) == 1
-        expected_request = grafeas_pb2.DeleteOccurrenceRequest(name=name)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_occurrence_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            address = "[SERVICE_ADDRESS]"
-
-            scopes = "SCOPE"
-
-            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
-
-            client = grafeas_v1.GrafeasClient(transport)
-
-        # Setup request
-        name = client.occurrence_path("[PROJECT]", "[OCCURRENCE]")
-
-        with pytest.raises(CustomException):
-            client.delete_occurrence(name)
-
-    def test_delete_note(self):
-        channel = ChannelStub()
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            address = "[SERVICE_ADDRESS]"
-
-            scopes = "SCOPE"
-
-            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
-
-            client = grafeas_v1.GrafeasClient(transport)
-
-        # Setup Request
-        name = client.note_path("[PROJECT]", "[NOTE]")
-
-        client.delete_note(name)
-
-        assert len(channel.requests) == 1
-        expected_request = grafeas_pb2.DeleteNoteRequest(name=name)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_note_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            address = "[SERVICE_ADDRESS]"
-
-            scopes = "SCOPE"
-
-            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
-
-            client = grafeas_v1.GrafeasClient(transport)
-
-        # Setup request
-        name = client.note_path("[PROJECT]", "[NOTE]")
-
-        with pytest.raises(CustomException):
-            client.delete_note(name)
-
     def test_get_occurrence(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
@@ -263,6 +177,49 @@ class TestGrafeasClient(object):
         paged_list_response = client.list_occurrences(parent)
         with pytest.raises(CustomException):
             list(paged_list_response)
+
+    def test_delete_occurrence(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            address = "[SERVICE_ADDRESS]"
+
+            scopes = "SCOPE"
+
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
+
+        # Setup Request
+        name = client.occurrence_path("[PROJECT]", "[OCCURRENCE]")
+
+        client.delete_occurrence(name)
+
+        assert len(channel.requests) == 1
+        expected_request = grafeas_pb2.DeleteOccurrenceRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_occurrence_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            address = "[SERVICE_ADDRESS]"
+
+            scopes = "SCOPE"
+
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
+
+        # Setup request
+        name = client.occurrence_path("[PROJECT]", "[OCCURRENCE]")
+
+        with pytest.raises(CustomException):
+            client.delete_occurrence(name)
 
     def test_create_occurrence(self):
         # Setup Expected Response
@@ -609,6 +566,49 @@ class TestGrafeasClient(object):
         paged_list_response = client.list_notes(parent)
         with pytest.raises(CustomException):
             list(paged_list_response)
+
+    def test_delete_note(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            address = "[SERVICE_ADDRESS]"
+
+            scopes = "SCOPE"
+
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
+
+        # Setup Request
+        name = client.note_path("[PROJECT]", "[NOTE]")
+
+        client.delete_note(name)
+
+        assert len(channel.requests) == 1
+        expected_request = grafeas_pb2.DeleteNoteRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_note_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            address = "[SERVICE_ADDRESS]"
+
+            scopes = "SCOPE"
+
+            transport = grafeas_grpc_transport.GrafeasGrpcTransport(address, scopes)
+
+            client = grafeas_v1.GrafeasClient(transport)
+
+        # Setup request
+        name = client.note_path("[PROJECT]", "[NOTE]")
+
+        with pytest.raises(CustomException):
+            client.delete_note(name)
 
     def test_create_note(self):
         # Setup Expected Response
