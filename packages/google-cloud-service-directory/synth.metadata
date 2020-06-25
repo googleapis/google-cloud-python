@@ -3,8 +3,8 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-service-directory",
-        "sha": "9d7c27ee83b06f1d1fb7f757677dd1ccfbf3a9ad"
+        "remote": "https://github.com/googleapis/python-service-directory.git",
+        "sha": "4e444190b7bc41f66cfb79c9260565f1702e6fbc"
       }
     },
     {

@@ -2118,35 +2118,6 @@ def test_registration_service_grpc_transport_channel_mtls_with_adc(
         assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_service_path():
-    project = "squid"
-    location = "clam"
-    namespace = "whelk"
-    service = "octopus"
-
-    expected = "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
-        project=project, location=location, namespace=namespace, service=service
-    )
-    actual = RegistrationServiceClient.service_path(
-        project, location, namespace, service
-    )
-    assert expected == actual
-
-
-def test_parse_service_path():
-    expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "namespace": "cuttlefish",
-        "service": "mussel",
-    }
-    path = RegistrationServiceClient.service_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = RegistrationServiceClient.parse_service_path(path)
-    assert expected == actual
-
-
 def test_endpoint_path():
     project = "squid"
     location = "clam"
@@ -2179,6 +2150,35 @@ def test_parse_endpoint_path():
 
     # Check that the path construction is reversible.
     actual = RegistrationServiceClient.parse_endpoint_path(path)
+    assert expected == actual
+
+
+def test_service_path():
+    project = "squid"
+    location = "clam"
+    namespace = "whelk"
+    service = "octopus"
+
+    expected = "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
+        project=project, location=location, namespace=namespace, service=service
+    )
+    actual = RegistrationServiceClient.service_path(
+        project, location, namespace, service
+    )
+    assert expected == actual
+
+
+def test_parse_service_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "namespace": "cuttlefish",
+        "service": "mussel",
+    }
+    path = RegistrationServiceClient.service_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RegistrationServiceClient.parse_service_path(path)
     assert expected == actual
 
 
