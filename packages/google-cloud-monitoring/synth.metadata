@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-monitoring.git",
-        "sha": "4f8096b746b56dbd5fe627a8171c6ea559c92a26"
+        "sha": "e45865745551f720d46e4f15e3da4e293c99f130"
       }
     },
     {
@@ -19,7 +19,7 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "4e1d2cb79b02d7496b1452f91c518630c207145e"
+        "sha": "cd522c3b4dde821766d95c80ae5aeb43d7a41170"
       }
     }
   ],

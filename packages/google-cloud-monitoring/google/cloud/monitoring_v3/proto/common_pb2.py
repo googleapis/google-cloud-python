@@ -673,9 +673,9 @@ TimeInterval = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _TIMEINTERVAL,
         "__module__": "google.cloud.monitoring_v3.proto.common_pb2",
-        "__doc__": """A closed time interval. It extends from the start time to
-  the end time, and includes both: ``[startTime, endTime]``. Valid time
-  intervals depend on the
+        "__doc__": """A closed time interval. It extends from the start time to the end time,
+  and includes both: ``[startTime, endTime]``. Valid time intervals depend
+  on the
   ```MetricKind`` </monitoring/api/ref_v3/rest/v3/projects.metricDescriptors#MetricKind>`__
   of the metric value. In no case can the end time be earlier than the
   start time.
