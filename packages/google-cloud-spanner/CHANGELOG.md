@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+### [1.17.1](https://www.github.com/googleapis/python-spanner/compare/v1.17.0...v1.17.1) (2020-06-24)
+
+
+### Documentation
+
+* remove client-usage sections that no longer apply ([#95](https://www.github.com/googleapis/python-spanner/issues/95)) ([16a812f](https://www.github.com/googleapis/python-spanner/commit/16a812fd32320f139213e752eb8210933081015b))
+* update batch-usage reflect the correct usage ([#93](https://www.github.com/googleapis/python-spanner/issues/93)) ([6ec64d8](https://www.github.com/googleapis/python-spanner/commit/6ec64d8c001af9e53ff71a2940ec2a81964e6e7f))
+* update documentation for database-usage ([#96](https://www.github.com/googleapis/python-spanner/issues/96)) ([44e398c](https://www.github.com/googleapis/python-spanner/commit/44e398c3aa9c1af661fecf2beed481484dd05713))
+* update documentation for snapshot usage ([#94](https://www.github.com/googleapis/python-spanner/issues/94)) ([613d9c8](https://www.github.com/googleapis/python-spanner/commit/613d9c820b1c87d2e86ef4084dfe9f767eb70079))
+
 ## [1.17.0](https://www.github.com/googleapis/python-spanner/compare/v1.16.0...v1.17.0) (2020-05-26)
 
 
