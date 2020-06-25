@@ -1,28 +1,25 @@
 {
-  "updateTime": "2020-04-28T20:57:57.056428Z",
   "sources": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "2.0.0",
-        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
+      "git": {
+        "name": ".",
+        "remote": "https://github.com/googleapis/python-securitycenter.git",
+        "sha": "2645a4a371fdf071a52feb651b0047bdc4a67489"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "756b174de4a122461993c1c583345533d819936d",
-        "internalRef": "308824110",
-        "log": "756b174de4a122461993c1c583345533d819936d\nfix: Add missing method_signature annotations for BigTable Admin Backup RPCs\n\nThe added method_signatures reflect method flattenings in the GAPIC v1 config.\n\nPiperOrigin-RevId: 308824110\n\nc284e4f849e4b085a297d336cef8721ab69ba013\nConfigure retry for Diaglogflow v2.Environments.ListEnvironments and v2beta1.Environments.ListEnvironments.\n\nPiperOrigin-RevId: 308749074\n\nff17eefa184f6985e5d9a8ee3e725da95a06cd23\nchore: add Python target for orgpolicy BUILD.bazel\n\nPiperOrigin-RevId: 308747658\n\n371206424e6db4df2cb3734bb1013dcaac9dbe4b\nRemove raw html from proto comments as this breaks client library documentation generators.\n\nSee https://aip.dev/192\n\n> Any formatting in comments must be in CommonMark. Headings and tables must not be used, as these cause problems for several tools, and are unsuitable for client library reference documentation.\n>\n> Comments should use code font for property names and for literals (such as true).\n>\n> Raw HTML must not be used.\n\nPiperOrigin-RevId: 308716969\n\nc2bfceedfc9f01356229bd206ad25e250aa9551c\nGenerating BUILD.bazel for maps/routes/v1alpha.\n\nPiperOrigin-RevId: 308691010\n\n5dca7f1079a4c127245c0f1dbb8293b434fbd0c8\nSupport purchasing capacity commitments in the BigQuery Reservation v1 API.\n\nPiperOrigin-RevId: 308671886\n\n28e76243c23cc282efbb288cb558c174e3e5e9ee\nfeat: integrate gapic generator change in googleapis\n\nPiperOrigin-RevId: 308294748\n\nd14bf59a446c14ef16e9931ebfc8e63ab549bf07\n1. Updated the config file names.\n2. Added a group_by field to the ListBuildsRequest.\n\nPiperOrigin-RevId: 308157960\n\n0d7c3565dd942d0cc41b16e895046486ae29e44e\nbazel: update gapic-generator-go to v0.13.3 in WORKSPACE\n\nChanges include:\n- change plugin use of Unmarshal to be compatible with golang/protobuf v1.4.0\n\nPiperOrigin-RevId: 308113536\n\n1d520eaa7bbd8b40f53942ff03b5496fff887b53\nfeat: Publish ListEnvironments for Dialogflow v2/v2beta1 library.\ndocs: Clarify WebhookResponse fields for Dialogflow v2/v2beta1 library.\n\nPiperOrigin-RevId: 307849529\n\nb3bcfd059ec684445a38db693f6e36f14a1d2618\nfix(google/maps/routes): move gapic targets to match Routes Preferred API\n\nThe Routes Preferred API is not the same as the legacy Routes API. This moves\nthe client library to make a more clear distinction between the two. The\ngenerated clients in google/maps/routespreferred/v1 still have a dependency on\nthe open source libraries published from the protos in\ngoogle/maps/routes/v1.\n\nThe client libraries for languages other than Go and Java have been removed\nsince they are currently broken and were before this change. No gapic targets\nremain in google/maps/routes/v1 except for the Java proto and grpc assembly.\nProtos for Go are automatically published through a different process. See\nhttps://github.com/googleapis/go-genproto.\n\nPiperOrigin-RevId: 307838123\n\n862cd840dbb0101a0630913217bf8b6d4101c84c\nchore: Update gapic-generator version\nThe updated version is required to migrate Python clients generation from artman to bazel.\n\nPiperOrigin-RevId: 307739946\n\n2bf9f22da3f101aeb536e1e88fe036323b8e9188\nchore: enable gapicv2 for bigquery/reservation/v1beta API\n\nCommitter: @miraleung\nPiperOrigin-RevId: 307654927\n\n012c553112fcceb7b69822e24335575bf99ec62b\nfeat: Adding Retry policy for OS Config V1 AgentEndpointService\n\nPiperOrigin-RevId: 307647669\n\n45b363d3ab4692115cc5018eb26dcdaa49b320a8\nRefactor the CEL protos to reflect their use as cross-language\ndata representations used within various open source libraries.\n\nThere is no CEL Google API per se, and as such any reference to\none has been removed from the proto libraries including the GAPIC\nclient code generation.\n\nThere is a gRPC service defined among the protos which is used for\ndriving conformance testing in a cross-language compatible manner.\n\nPiperOrigin-RevId: 307642893\n\n"
+        "sha": "b882b8e6bfcd708042ff00f7adc67ce750817dd0",
+        "internalRef": "318028816"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "01b6f23d24b27878b48667ce597876d66b59780e",
-        "log": "01b6f23d24b27878b48667ce597876d66b59780e\nfix(python): install testutils from pypi (#503)\n\nhttps://pypi.org/project/google-cloud-testutils/\n716f741f2d307b48cbe8a5bc3bc883571212344a\nfix(python): adjust regex for fix_pb2_headers (#500)\n\nFixes regex and updates copyright year to 2020. \n\nBefore:\n```python\n# -*- coding: utf-8 -*-\n\n# Generated by the protocol buffer compiler.  DO NOT EDIT!\n# source: google/type/timeofday.proto\n```\n\nAfter:\n```python\n# -*- coding: utf-8 -*-\n\n# Copyright 2020 Google LLC\n#\n# Licensed under the Apache License, Version 2.0 (the \"License\");\n# you may not use this file except in compliance with the License.\n# You may obtain a copy of the License at\n#\n#     http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n\n# Generated by the protocol buffer compiler.  DO NOT EDIT!\n# source: google/type/timeofday.proto\n```\n21ce80f9d4785dc75aa36d26944bddd5a1b7e25b\nfeat: better Node.js postprocessing (#498)\n\n* feat: better Node.js postprocessing\n\n* docs: docstring for is_gapic_library\n\n* PR feedback\n\n* pass parameter by name\n\nCo-authored-by: Jeffrey Rennie <rennie@google.com>\nCo-authored-by: Benjamin E. Coe <bencoe@google.com>\n"
+        "sha": "2a29860e484695a07aa8670f9e750bfeeb308a43"
       }
     }
   ],
@@ -33,8 +30,7 @@
         "apiName": "securitycenter",
         "apiVersion": "v1p1beta1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/securitycenter/artman_securitycenter_v1p1beta1.yaml"
+        "generator": "bazel"
       }
     },
     {
@@ -43,8 +39,7 @@
         "apiName": "securitycenter",
         "apiVersion": "v1beta1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/securitycenter/artman_securitycenter_v1beta1.yaml"
+        "generator": "bazel"
       }
     },
     {
@@ -53,8 +48,7 @@
         "apiName": "securitycenter",
         "apiVersion": "v1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/securitycenter/artman_securitycenter_v1.yaml"
+        "generator": "bazel"
       }
     }
   ]

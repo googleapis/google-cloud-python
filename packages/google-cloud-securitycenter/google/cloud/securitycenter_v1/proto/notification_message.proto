@@ -18,6 +18,7 @@ package google.cloud.securitycenter.v1;
 
 import "google/api/annotations.proto";
 import "google/cloud/securitycenter/v1/finding.proto";
+import "google/cloud/securitycenter/v1/resource.proto";
 
 option csharp_namespace = "Google.Cloud.SecurityCenter.V1";
 option go_package = "google.golang.org/genproto/googleapis/cloud/securitycenter/v1;securitycenter";
@@ -38,4 +39,7 @@ message NotificationMessage {
     // populated.
     Finding finding = 2;
   }
+
+  // The Cloud resource tied to this notification's Finding.
+  Resource resource = 3;
 }

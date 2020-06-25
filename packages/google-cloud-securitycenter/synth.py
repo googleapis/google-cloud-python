@@ -37,10 +37,21 @@ for version in versions:
 # Use the highest version library to generate import alias.
 s.move(library / "google/cloud/securitycenter.py")
 
+# Fix bad line wrapping in docstring
+s.replace("google/**/security_marks_pb2.py",
+"""“organizations/\{organization_id\}/assets/\{asset_
+\s+id\}/securityMarks” “organizations/\{organization_id\}/sources/\{s
+\s+ource_id\}/findings/\{finding_id\}/securityMarks”\.""",
+"""``organizations/{organization_id}/assets/{asset_id}/securityMarks``
+          ``organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks``.""")
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(cov_level=88)
 s.move(templated_files, excludes=['noxfile.py'])
+
+# TODO(busunkim): Use latest sphinx after microgenerator transition
+s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

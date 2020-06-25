@@ -25,6 +25,7 @@ from google.cloud.securitycenter_v1.proto import finding_pb2
 from google.cloud.securitycenter_v1.proto import notification_config_pb2
 from google.cloud.securitycenter_v1.proto import notification_message_pb2
 from google.cloud.securitycenter_v1.proto import organization_settings_pb2
+from google.cloud.securitycenter_v1.proto import resource_pb2
 from google.cloud.securitycenter_v1.proto import run_asset_discovery_response_pb2
 from google.cloud.securitycenter_v1.proto import security_marks_pb2
 from google.cloud.securitycenter_v1.proto import securitycenter_service_pb2
@@ -64,6 +65,7 @@ _local_modules = [
     notification_config_pb2,
     notification_message_pb2,
     organization_settings_pb2,
+    resource_pb2,
     run_asset_discovery_response_pb2,
     security_marks_pb2,
     securitycenter_service_pb2,

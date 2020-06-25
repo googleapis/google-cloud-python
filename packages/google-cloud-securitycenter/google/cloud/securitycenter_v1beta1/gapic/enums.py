@@ -21,8 +21,8 @@ import enum
 
 class NullValue(enum.IntEnum):
     """
-    ``NullValue`` is a singleton enumeration to represent the null value for
-    the ``Value`` type union.
+    ``NullValue`` is a singleton enumeration to represent the null value
+    for the ``Value`` type union.
 
     The JSON representation for ``NullValue`` is JSON ``null``.
 
@@ -58,7 +58,7 @@ class ListAssetsResponse(object):
 
             When querying across two points in time this describes the change
             between the two points: ADDED, REMOVED, or ACTIVE. If there was no
-            compare\_duration supplied in the request the state should be: UNUSED
+            compare_duration supplied in the request the state should be: UNUSED
 
             Attributes:
               STATE_UNSPECIFIED (int): Unspecified state.
@@ -79,9 +79,9 @@ class OrganizationSettings(object):
     class AssetDiscoveryConfig(object):
         class InclusionMode(enum.IntEnum):
             """
-            The mode of inclusion when running Asset Discovery. Asset discovery can
-            be limited by explicitly identifying projects to be included or
-            excluded. If INCLUDE\_ONLY is set, then only those projects within the
+            The mode of inclusion when running Asset Discovery. Asset discovery
+            can be limited by explicitly identifying projects to be included or
+            excluded. If INCLUDE_ONLY is set, then only those projects within the
             organization and their children are discovered during asset discovery.
             If EXCLUDE is set, then projects that don't match those projects are
             discovered during asset discovery. If neither are set, then all projects
@@ -99,3 +99,22 @@ class OrganizationSettings(object):
             INCLUSION_MODE_UNSPECIFIED = 0
             INCLUDE_ONLY = 1
             EXCLUDE = 2
+
+
+class RunAssetDiscoveryResponse(object):
+    class State(enum.IntEnum):
+        """
+        The state of an asset discovery run.
+
+        Attributes:
+          STATE_UNSPECIFIED (int): Asset discovery run state was unspecified.
+          COMPLETED (int): Asset discovery run completed successfully.
+          SUPERSEDED (int): Asset discovery run was cancelled with tasks still pending, as another
+          run for the same organization was started with a higher priority.
+          TERMINATED (int): Asset discovery run was killed and terminated.
+        """
+
+        STATE_UNSPECIFIED = 0
+        COMPLETED = 1
+        SUPERSEDED = 2
+        TERMINATED = 3

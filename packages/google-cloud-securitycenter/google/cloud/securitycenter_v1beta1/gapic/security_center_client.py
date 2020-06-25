@@ -279,9 +279,9 @@ class SecurityCenterClient(object):
             >>> response = client.create_source(parent, source)
 
         Args:
-            parent (str): Required. Resource name of the new source's parent. Its format should be
-                "organizations/[organization\_id]".
-            source (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Source]): Required. The Source being created, only the display\_name and
+            parent (str): Required. Resource name of the new source's parent. Its format
+                should be "organizations/[organization_id]".
+            source (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Source]): Required. The Source being created, only the display_name and
                 description will be used. All other fields will be ignored.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -365,13 +365,13 @@ class SecurityCenterClient(object):
             >>> response = client.create_finding(parent, finding_id, finding)
 
         Args:
-            parent (str): Required. Resource name of the new finding's parent. Its format should
-                be "organizations/[organization\_id]/sources/[source\_id]".
+            parent (str): Required. Resource name of the new finding's parent. Its format
+                should be "organizations/[organization_id]/sources/[source_id]".
             finding_id (str): Required. Unique identifier provided by the client within the parent scope.
                 It must be alphanumeric and less than or equal to 32 characters and
                 greater than 0 characters in length.
-            finding (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Finding]): Required. The Finding being created. The name and security\_marks will
-                be ignored as they are both output only fields on this resource.
+            finding (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Finding]): Required. The Finding being created. The name and security_marks
+                will be ignored as they are both output only fields on this resource.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1beta1.types.Finding`
@@ -523,8 +523,8 @@ class SecurityCenterClient(object):
             >>> response = client.get_organization_settings(name)
 
         Args:
-            name (str): Required. Name of the organization to get organization settings for. Its
-                format is "organizations/[organization\_id]/organizationSettings".
+            name (str): Required. Name of the organization to get organization settings for.
+                Its format is "organizations/[organization_id]/organizationSettings".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -594,7 +594,7 @@ class SecurityCenterClient(object):
 
         Args:
             name (str): Required. Relative resource name of the source. Its format is
-                "organizations/[organization\_id]/source/[source\_id]".
+                "organizations/[organization_id]/source/[source_id]".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -685,21 +685,21 @@ class SecurityCenterClient(object):
 
         Args:
             parent (str): Required. Name of the organization to groupBy. Its format is
-                "organizations/[organization\_id]".
+                "organizations/[organization_id]".
             group_by (str): Required. Expression that defines what assets fields to use for
                 grouping. The string value should follow SQL syntax: comma separated
                 list of fields. For example:
-                "security\_center\_properties.resource\_project,security\_center\_properties.project".
+                "security_center_properties.resource_project,security_center_properties.project".
 
-                The following fields are supported when compare\_duration is not set:
+                The following fields are supported when compare_duration is not set:
 
-                -  security\_center\_properties.resource\_project
-                -  security\_center\_properties.resource\_type
-                -  security\_center\_properties.resource\_parent
+                -  security_center_properties.resource_project
+                -  security_center_properties.resource_type
+                -  security_center_properties.resource_parent
 
-                The following fields are supported when compare\_duration is set:
+                The following fields are supported when compare_duration is set:
 
-                -  security\_center\_properties.resource\_type
+                -  security_center_properties.resource_type
             filter_ (str): Expression that defines the filter to apply across assets. The
                 expression is a list of zero or more restrictions combined via logical
                 operators ``AND`` and ``OR``. Parentheses are not supported, and ``OR``
@@ -710,9 +710,9 @@ class SecurityCenterClient(object):
                 those defined in the Asset resource. Examples include:
 
                 -  name
-                -  security\_center\_properties.resource\_name
-                -  resource\_properties.a\_property
-                -  security\_marks.marks.marka
+                -  security_center_properties.resource_name
+                -  resource_properties.a_property
+                -  security_marks.marks.marka
 
                 The supported operators are:
 
@@ -728,26 +728,26 @@ class SecurityCenterClient(object):
 
                 For example, ``resource_properties.size = 100`` is a valid filter
                 string.
-            compare_duration (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Duration]): When compare\_duration is set, the Asset's "state" property is updated
-                to indicate whether the asset was added, removed, or remained present
-                during the compare\_duration period of time that precedes the
-                read\_time. This is the time between (read\_time - compare\_duration)
-                and read\_time.
+            compare_duration (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Duration]): When compare_duration is set, the Asset's "state" property is
+                updated to indicate whether the asset was added, removed, or remained
+                present during the compare_duration period of time that precedes the
+                read_time. This is the time between (read_time - compare_duration) and
+                read_time.
 
                 The state value is derived based on the presence of the asset at the two
                 points in time. Intermediate state changes between the two times don't
                 affect the result. For example, the results aren't affected if the asset
                 is removed and re-created again.
 
-                Possible "state" values when compare\_duration is specified:
+                Possible "state" values when compare_duration is specified:
 
                 -  "ADDED": indicates that the asset was not present before
-                   compare\_duration, but present at reference\_time.
+                   compare_duration, but present at reference_time.
                 -  "REMOVED": indicates that the asset was present at the start of
-                   compare\_duration, but not present at reference\_time.
+                   compare_duration, but not present at reference_time.
                 -  "ACTIVE": indicates that the asset was present at both the start and
-                   the end of the time period defined by compare\_duration and
-                   reference\_time.
+                   the end of the time period defined by compare_duration and
+                   reference_time.
 
                 This field is ignored if ``state`` is not a field in ``group_by``.
 
@@ -846,11 +846,11 @@ class SecurityCenterClient(object):
         metadata=None,
     ):
         """
-        Filters an organization or source's findings and groups them by their
-        specified properties.
+        Filters an organization or source's findings and groups them by
+        their specified properties.
 
         To group across all sources provide a ``-`` as the source id. Example:
-        /v1beta1/organizations/{organization\_id}/sources/-/findings
+        /v1beta1/organizations/{organization_id}/sources/-/findings
 
         Example:
             >>> from google.cloud import securitycenter_v1beta1
@@ -878,16 +878,17 @@ class SecurityCenterClient(object):
 
         Args:
             parent (str): Required. Name of the source to groupBy. Its format is
-                "organizations/[organization\_id]/sources/[source\_id]". To groupBy
-                across all sources provide a source\_id of ``-``. For example:
-                organizations/{organization\_id}/sources/-
-            group_by (str): Required. Expression that defines what assets fields to use for grouping
-                (including ``state``). The string value should follow SQL syntax: comma
-                separated list of fields. For example: "parent,resource\_name".
+                "organizations/[organization_id]/sources/[source_id]". To groupBy across
+                all sources provide a source_id of ``-``. For example:
+                organizations/{organization_id}/sources/-
+            group_by (str): Required. Expression that defines what assets fields to use for
+                grouping (including ``state``). The string value should follow SQL
+                syntax: comma separated list of fields. For example:
+                "parent,resource_name".
 
                 The following fields are supported:
 
-                -  resource\_name
+                -  resource_name
                 -  category
                 -  state
                 -  parent
@@ -900,8 +901,8 @@ class SecurityCenterClient(object):
                 ``-`` character in front of them to indicate negation. Examples include:
 
                 -  name
-                -  source\_properties.a\_property
-                -  security\_marks.marks.marka
+                -  source_properties.a_property
+                -  security_marks.marks.marka
 
                 The supported operators are:
 
@@ -1034,8 +1035,8 @@ class SecurityCenterClient(object):
             ...         pass
 
         Args:
-            parent (str): Required. Name of the organization assets should belong to. Its format
-                is "organizations/[organization\_id]".
+            parent (str): Required. Name of the organization assets should belong to. Its
+                format is "organizations/[organization_id]".
             filter_ (str): Expression that defines the filter to apply across assets. The
                 expression is a list of zero or more restrictions combined via logical
                 operators ``AND`` and ``OR``. Parentheses are not supported, and ``OR``
@@ -1046,9 +1047,9 @@ class SecurityCenterClient(object):
                 those defined in the Asset resource. Examples include:
 
                 -  name
-                -  security\_center\_properties.resource\_name
-                -  resource\_properties.a\_property
-                -  security\_marks.marks.marka
+                -  security_center_properties.resource_name
+                -  resource_properties.a_property
+                -  security_marks.marks.marka
 
                 The supported operators are:
 
@@ -1064,15 +1065,14 @@ class SecurityCenterClient(object):
 
                 For example, ``resource_properties.size = 100`` is a valid filter
                 string.
-            order_by (str): Expression that defines what fields and order to use for sorting. The
-                string value should follow SQL syntax: comma separated list of fields.
-                For example: "name,resource\_properties.a\_property". The default
+            order_by (str): Expression that defines what fields and order to use for sorting.
+                The string value should follow SQL syntax: comma separated list of
+                fields. For example: "name,resource_properties.a_property". The default
                 sorting order is ascending. To specify descending order for a field, a
                 suffix " desc" should be appended to the field name. For example: "name
-                desc,resource\_properties.a\_property". Redundant space characters in
-                the syntax are insignificant. "name
-                desc,resource\_properties.a\_property" and " name desc ,
-                resource\_properties.a\_property " are equivalent.
+                desc,resource_properties.a_property". Redundant space characters in the
+                syntax are insignificant. "name desc,resource_properties.a_property" and
+                " name desc , resource_properties.a_property " are equivalent.
             read_time (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Timestamp]): Time used as a reference point when filtering assets. The filter is limited
                 to assets existing at the supplied time and their values are those at that
                 specific time. Absence of this field will default to the API's version of
@@ -1080,29 +1080,28 @@ class SecurityCenterClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1beta1.types.Timestamp`
-            compare_duration (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Duration]): When compare\_duration is set, the ListAssetResult's "state" attribute
-                is updated to indicate whether the asset was added, removed, or remained
-                present during the compare\_duration period of time that precedes the
-                read\_time. This is the time between (read\_time - compare\_duration)
-                and read\_time.
+            compare_duration (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Duration]): When compare_duration is set, the ListAssetResult's "state"
+                attribute is updated to indicate whether the asset was added, removed,
+                or remained present during the compare_duration period of time that
+                precedes the read_time. This is the time between (read_time -
+                compare_duration) and read_time.
 
                 The state value is derived based on the presence of the asset at the two
                 points in time. Intermediate state changes between the two times don't
                 affect the result. For example, the results aren't affected if the asset
                 is removed and re-created again.
 
-                Possible "state" values when compare\_duration is specified:
+                Possible "state" values when compare_duration is specified:
 
                 -  "ADDED": indicates that the asset was not present before
-                   compare\_duration, but present at read\_time.
+                   compare_duration, but present at read_time.
                 -  "REMOVED": indicates that the asset was present at the start of
-                   compare\_duration, but not present at read\_time.
+                   compare_duration, but not present at read_time.
                 -  "ACTIVE": indicates that the asset was present at both the start and
-                   the end of the time period defined by compare\_duration and
-                   read\_time.
+                   the end of the time period defined by compare_duration and read_time.
 
-                If compare\_duration is not specified, then the only possible state is
-                "UNUSED", which indicates that the asset is present at read\_time.
+                If compare_duration is not specified, then the only possible state is
+                "UNUSED", which indicates that the asset is present at read_time.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1beta1.types.Duration`
@@ -1203,7 +1202,7 @@ class SecurityCenterClient(object):
         Lists an organization or source's findings.
 
         To list across all sources provide a ``-`` as the source id. Example:
-        /v1beta1/organizations/{organization\_id}/sources/-/findings
+        /v1beta1/organizations/{organization_id}/sources/-/findings
 
         Example:
             >>> from google.cloud import securitycenter_v1beta1
@@ -1228,9 +1227,9 @@ class SecurityCenterClient(object):
 
         Args:
             parent (str): Required. Name of the source the findings belong to. Its format is
-                "organizations/[organization\_id]/sources/[source\_id]". To list across
-                all sources provide a source\_id of ``-``. For example:
-                organizations/{organization\_id}/sources/-
+                "organizations/[organization_id]/sources/[source_id]". To list across
+                all sources provide a source_id of ``-``. For example:
+                organizations/{organization_id}/sources/-
             filter_ (str): Expression that defines the filter to apply across findings. The
                 expression is a list of one or more restrictions combined via logical
                 operators ``AND`` and ``OR``. Parentheses are not supported, and ``OR``
@@ -1240,8 +1239,8 @@ class SecurityCenterClient(object):
                 ``-`` character in front of them to indicate negation. Examples include:
 
                 -  name
-                -  source\_properties.a\_property
-                -  security\_marks.marks.marka
+                -  source_properties.a_property
+                -  security_marks.marks.marka
 
                 The supported operators are:
 
@@ -1256,14 +1255,14 @@ class SecurityCenterClient(object):
                 -  boolean literals ``true`` and ``false`` without quotes.
 
                 For example, ``source_properties.size = 100`` is a valid filter string.
-            order_by (str): Expression that defines what fields and order to use for sorting. The
-                string value should follow SQL syntax: comma separated list of fields.
-                For example: "name,resource\_properties.a\_property". The default
+            order_by (str): Expression that defines what fields and order to use for sorting.
+                The string value should follow SQL syntax: comma separated list of
+                fields. For example: "name,resource_properties.a_property". The default
                 sorting order is ascending. To specify descending order for a field, a
                 suffix " desc" should be appended to the field name. For example: "name
-                desc,source\_properties.a\_property". Redundant space characters in the
-                syntax are insignificant. "name desc,source\_properties.a\_property" and
-                " name desc , source\_properties.a\_property " are equivalent.
+                desc,source_properties.a_property". Redundant space characters in the
+                syntax are insignificant. "name desc,source_properties.a_property" and "
+                name desc , source_properties.a_property " are equivalent.
             read_time (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Timestamp]): Time used as a reference point when filtering findings. The filter is
                 limited to findings existing at the supplied time and their values are
                 those at that specific time. Absence of this field will default to the
@@ -1384,7 +1383,7 @@ class SecurityCenterClient(object):
 
         Args:
             parent (str): Required. Resource name of the parent of sources to list. Its format
-                should be "organizations/[organization\_id]".
+                should be "organizations/[organization_id]".
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -1467,7 +1466,7 @@ class SecurityCenterClient(object):
 
         This API can only be called with limited frequency for an organization.
         If it is called too frequently the caller will receive a
-        TOO\_MANY\_REQUESTS error.
+        TOO_MANY_REQUESTS error.
 
         Example:
             >>> from google.cloud import securitycenter_v1beta1
@@ -1489,7 +1488,7 @@ class SecurityCenterClient(object):
 
         Args:
             parent (str): Required. Name of the organization to run asset discovery for. Its
-                format is "organizations/[organization\_id]".
+                format is "organizations/[organization_id]".
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1574,9 +1573,9 @@ class SecurityCenterClient(object):
 
         Args:
             name (str): Required. The relative resource name of the finding. See:
-                https://cloud.google.com/apis/design/resource\_names#relative\_resource\_name
+                https://cloud.google.com/apis/design/resource_names#relative_resource_name
                 Example:
-                "organizations/{organization\_id}/sources/{source\_id}/finding/{finding\_id}".
+                "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}".
             state (~google.cloud.securitycenter_v1beta1.types.State): Required. The desired State of the finding.
             start_time (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Timestamp]): Required. The time at which the updated state takes effect.
 
@@ -1739,8 +1738,8 @@ class SecurityCenterClient(object):
         Args:
             resource (str): REQUIRED: The resource for which the policy detail is being requested.
                 See the operation documentation for the appropriate value for this field.
-            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with
-                wildcards (such as '*' or 'storage.*') are not allowed. For more
+            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions
+                with wildcards (such as '*' or 'storage.*') are not allowed. For more
                 information see `IAM
                 Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -1817,8 +1816,7 @@ class SecurityCenterClient(object):
 
         Args:
             finding (Union[dict, ~google.cloud.securitycenter_v1beta1.types.Finding]): Required. The finding resource to update or create if it does not
-                already exist. parent, security\_marks, and update\_time will be
-                ignored.
+                already exist. parent, security_marks, and update_time will be ignored.
 
                 In the case of creation, the finding id portion of the name must
                 alphanumeric and less than or equal to 32 characters and greater than 0

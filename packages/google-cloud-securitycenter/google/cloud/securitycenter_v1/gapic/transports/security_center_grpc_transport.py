@@ -151,11 +151,11 @@ class SecurityCenterGrpcTransport(object):
     def group_findings(self):
         """Return the gRPC stub for :meth:`SecurityCenterClient.group_findings`.
 
-        Filters an organization or source's findings and groups them by their
-        specified properties.
+        Filters an organization or source's findings and groups them by
+        their specified properties.
 
         To group across all sources provide a ``-`` as the source id. Example:
-        /v1/organizations/{organization\_id}/sources/-/findings
+        /v1/organizations/{organization_id}/sources/-/findings
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -289,7 +289,7 @@ class SecurityCenterGrpcTransport(object):
         Lists an organization or source's findings.
 
         To list across all sources provide a ``-`` as the source id. Example:
-        /v1/organizations/{organization\_id}/sources/-/findings
+        /v1/organizations/{organization_id}/sources/-/findings
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -333,7 +333,7 @@ class SecurityCenterGrpcTransport(object):
 
         This API can only be called with limited frequency for an organization.
         If it is called too frequently the caller will receive a
-        TOO\_MANY\_REQUESTS error.
+        TOO_MANY_REQUESTS error.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -386,7 +386,8 @@ class SecurityCenterGrpcTransport(object):
     def update_notification_config(self):
         """Return the gRPC stub for :meth:`SecurityCenterClient.update_notification_config`.
 
-        Updates a notification config.
+        Updates a notification config. The following update fields are
+        allowed: description, pubsub_topic, streaming_config.filter
 
         Returns:
             Callable: A callable which accepts the appropriate

@@ -23,6 +23,7 @@ from google.api_core.protobuf_helpers import get_messages
 from google.cloud.securitycenter_v1beta1.proto import asset_pb2
 from google.cloud.securitycenter_v1beta1.proto import finding_pb2
 from google.cloud.securitycenter_v1beta1.proto import organization_settings_pb2
+from google.cloud.securitycenter_v1beta1.proto import run_asset_discovery_response_pb2
 from google.cloud.securitycenter_v1beta1.proto import security_marks_pb2
 from google.cloud.securitycenter_v1beta1.proto import securitycenter_service_pb2
 from google.cloud.securitycenter_v1beta1.proto import source_pb2
@@ -57,6 +58,7 @@ _local_modules = [
     asset_pb2,
     finding_pb2,
     organization_settings_pb2,
+    run_asset_discovery_response_pb2,
     security_marks_pb2,
     securitycenter_service_pb2,
     source_pb2,

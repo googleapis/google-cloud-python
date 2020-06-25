@@ -21,8 +21,8 @@ import enum
 
 class NullValue(enum.IntEnum):
     """
-    ``NullValue`` is a singleton enumeration to represent the null value for
-    the ``Value`` type union.
+    ``NullValue`` is a singleton enumeration to represent the null value
+    for the ``Value`` type union.
 
     The JSON representation for ``NullValue`` is JSON ``null``.
 
@@ -58,7 +58,7 @@ class ListAssetsResponse(object):
 
             When querying across two points in time this describes the change
             between the two points: ADDED, REMOVED, or ACTIVE. If there was no
-            compare\_duration supplied in the request the state change will be:
+            compare_duration supplied in the request the state change will be:
             UNUSED
 
             Attributes:
@@ -84,7 +84,7 @@ class ListFindingsResponse(object):
             finding between the two points: CHANGED, UNCHANGED, ADDED, or REMOVED.
             Findings can not be deleted, so REMOVED implies that the finding at
             timestamp does not match the filter specified, but it did at timestamp -
-            compare\_duration. If there was no compare\_duration supplied in the
+            compare_duration. If there was no compare_duration supplied in the
             request the state change will be: UNUSED
 
             Attributes:
@@ -94,8 +94,8 @@ class ListFindingsResponse(object):
               UNCHANGED (int): The finding has not changed state between the points in time and
               existed at both points.
               ADDED (int): The finding was created between the points in time.
-              REMOVED (int): The finding at timestamp does not match the filter specified, but it did
-              at timestamp - compare\_duration.
+              REMOVED (int): The finding at timestamp does not match the filter specified, but it
+              did at timestamp - compare_duration.
             """
 
             UNUSED = 0
@@ -123,9 +123,9 @@ class OrganizationSettings(object):
     class AssetDiscoveryConfig(object):
         class InclusionMode(enum.IntEnum):
             """
-            The mode of inclusion when running Asset Discovery. Asset discovery can
-            be limited by explicitly identifying projects to be included or
-            excluded. If INCLUDE\_ONLY is set, then only those projects within the
+            The mode of inclusion when running Asset Discovery. Asset discovery
+            can be limited by explicitly identifying projects to be included or
+            excluded. If INCLUDE_ONLY is set, then only those projects within the
             organization and their children are discovered during asset discovery.
             If EXCLUDE is set, then projects that don't match those projects are
             discovered during asset discovery. If neither are set, then all projects
