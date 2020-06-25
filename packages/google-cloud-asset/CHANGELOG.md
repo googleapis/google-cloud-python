@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [1.3.0](https://www.github.com/googleapis/python-asset/compare/v1.2.0...v1.3.0) (2020-06-25)
+
+
+### Features
+
+* generate v1p5beta1 ([#47](https://www.github.com/googleapis/python-asset/issues/47)) ([207eff4](https://www.github.com/googleapis/python-asset/commit/207eff44c20122c326bc939551f0177574d706dc))
+
+
+### Bug Fixes
+
+* update default retry configs ([#51](https://www.github.com/googleapis/python-asset/issues/51)) ([58f5d58](https://www.github.com/googleapis/python-asset/commit/58f5d58eba2f37af2a0161793fd61019a236cad3))
+
 ## [1.2.0](https://www.github.com/googleapis/python-asset/compare/v1.1.0...v1.2.0) (2020-06-23)
 
 
