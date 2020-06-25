@@ -15,6 +15,7 @@
 """Python idiomatic client for Google Cloud Firestore."""
 
 from pkg_resources import get_distribution
+import warnings
 
 __version__ = get_distribution("google-cloud-firestore").version
 
@@ -38,6 +39,13 @@ from google.cloud.firestore_v1beta1.query import Query
 from google.cloud.firestore_v1beta1.transaction import Transaction
 from google.cloud.firestore_v1beta1.transaction import transactional
 from google.cloud.firestore_v1beta1.watch import Watch
+
+
+_V1BETA1_DEPRECATED_MESSAGE = (
+    "The 'v1beta1' API endpoint is deprecated. "
+    "The client/library which supports it will be removed in a future release."
+)
+warnings.warn(_V1BETA1_DEPRECATED_MESSAGE, DeprecationWarning)
 
 
 __all__ = [
