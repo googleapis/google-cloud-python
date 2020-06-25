@@ -3278,6 +3278,7 @@ Cluster = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """Describes the identifying information, config, and status of a cluster
   of Compute Engine instances.
+  
   Attributes:
       project_id:
           Required. The Google Cloud Platform project ID that the
@@ -3322,6 +3323,7 @@ ClusterConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _CLUSTERCONFIG,
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """The cluster config.
+  
   Attributes:
       config_bucket:
           Optional. A Cloud Storage bucket used to stage job
@@ -3353,11 +3355,11 @@ ClusterConfig = _reflection.GeneratedProtocolMessageType(
           completed. By default, executables are run on master and all
           worker nodes. You can test a node’s ``role`` metadata to run
           an executable on a master or worker node, as shown below using
-          ``curl`` (you can also use ``wget``):  ROLE=\ :math:`(curl -H
-          Metadata-Flavor:Google  http://metadata/computeMetadata/v1/ins
-          tance/attributes/dataproc-role)  if [[ "`\ {ROLE}" == ‘Master’
-          ]]; then … master specific actions … else … worker specific
-          actions … fi
+          ``curl`` (you can also use ``wget``):  ::     ROLE=$(curl -H
+          Metadata-Flavor:Google    http://metadata/computeMetadata/v1/i
+          nstance/attributes/dataproc-role)    if [[ "${ROLE}" ==
+          'Master' ]]; then      ... master specific actions ...    else
+          ... worker specific actions ...    fi
       encryption_config:
           Optional. Encryption settings for the cluster.
       autoscaling_config:
@@ -3381,6 +3383,7 @@ AutoscalingConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _AUTOSCALINGCONFIG,
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """Autoscaling Policy config associated with the cluster.
+  
   Attributes:
       policy_uri:
           Optional. The autoscaling policy used by the cluster.  Only
@@ -3403,6 +3406,7 @@ EncryptionConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _ENCRYPTIONCONFIG,
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """Encryption settings for the cluster.
+  
   Attributes:
       gce_pd_kms_key_name:
           Optional. The Cloud KMS key name to use for PD disk encryption
@@ -3430,6 +3434,7 @@ GceClusterConfig = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """Common config settings for resources of Compute Engine cluster
   instances, applicable to all instances in the cluster.
+  
   Attributes:
       zone_uri:
           Optional. The zone where the Compute Engine cluster will be
@@ -3521,6 +3526,7 @@ InstanceGroupConfig = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """The config settings for Compute Engine resources in an instance group,
   such as a master or worker group.
+  
   Attributes:
       num_instances:
           Optional. The number of VM instances in the instance group.
@@ -3584,6 +3590,7 @@ ManagedGroupConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _MANAGEDGROUPCONFIG,
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """Specifies the resources used to actively manage an instance group.
+  
   Attributes:
       instance_template_name:
           Output only. The name of the Instance Template used for the
@@ -3606,6 +3613,7 @@ AcceleratorConfig = _reflection.GeneratedProtocolMessageType(
         "__doc__": """Specifies the type and number of accelerator cards attached to the
   instances of an instance. See `GPUs on Compute Engine
   <https://cloud.google.com/compute/docs/gpus/>`__.
+  
   Attributes:
       accelerator_type_uri:
           Full URL, partial URI, or short name of the accelerator type
@@ -3638,6 +3646,7 @@ DiskConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _DISKCONFIG,
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """Specifies the config of disk options for a group of VM instances.
+  
   Attributes:
       boot_disk_type:
           Optional. Type of the boot disk (default is “pd-standard”).
@@ -3667,6 +3676,7 @@ NodeInitializationAction = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """Specifies an executable to run on a fully configured node and a
   timeout period for executable completion.
+  
   Attributes:
       executable_file:
           Required. Cloud Storage URI of executable file.
@@ -3691,6 +3701,7 @@ ClusterStatus = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _CLUSTERSTATUS,
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """The status of a cluster and its instances.
+  
   Attributes:
       state:
           Output only. The cluster’s state.
@@ -3717,6 +3728,7 @@ SecurityConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _SECURITYCONFIG,
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """Security related configuration, including Kerberos.
+  
   Attributes:
       kerberos_config:
           Kerberos related configuration.
@@ -3733,6 +3745,7 @@ KerberosConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _KERBEROSCONFIG,
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """Specifies Kerberos related configuration.
+  
   Attributes:
       enable_kerberos:
           Optional. Flag to indicate whether to Kerberize the cluster
@@ -3814,6 +3827,7 @@ SoftwareConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _SOFTWARECONFIG,
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """Specifies the selection and config of software inside the cluster.
+  
   Attributes:
       image_version:
           Optional. The version of software inside the cluster. It must
@@ -3853,6 +3867,7 @@ LifecycleConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LIFECYCLECONFIG,
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """Specifies the cluster auto-delete schedule configuration.
+  
   Attributes:
       idle_delete_ttl:
           Optional. The duration to keep the cluster alive while idling
@@ -3914,6 +3929,7 @@ ClusterMetrics = _reflection.GeneratedProtocolMessageType(
         "__doc__": """Contains cluster daemon metrics, such as HDFS and YARN stats.  **Beta
   Feature**: This report is available for testing purposes only. It may
   be changed before final release.
+  
   Attributes:
       hdfs_metrics:
           The HDFS metrics.
@@ -3934,6 +3950,7 @@ CreateClusterRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _CREATECLUSTERREQUEST,
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """A request to create a cluster.
+  
   Attributes:
       project_id:
           Required. The ID of the Google Cloud Platform project that the
@@ -3967,6 +3984,7 @@ UpdateClusterRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _UPDATECLUSTERREQUEST,
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """A request to update a cluster.
+  
   Attributes:
       project_id:
           Required. The ID of the Google Cloud Platform project the
@@ -4047,6 +4065,7 @@ DeleteClusterRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _DELETECLUSTERREQUEST,
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """A request to delete a cluster.
+  
   Attributes:
       project_id:
           Required. The ID of the Google Cloud Platform project that the
@@ -4084,6 +4103,7 @@ GetClusterRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _GETCLUSTERREQUEST,
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """Request to get the resource representation for a cluster in a project.
+  
   Attributes:
       project_id:
           Required. The ID of the Google Cloud Platform project that the
@@ -4105,6 +4125,7 @@ ListClustersRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTCLUSTERSREQUEST,
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """A request to list the clusters in a project.
+  
   Attributes:
       project_id:
           Required. The ID of the Google Cloud Platform project that the
@@ -4145,6 +4166,7 @@ ListClustersResponse = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTCLUSTERSRESPONSE,
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """The list of all clusters in a project.
+  
   Attributes:
       clusters:
           Output only. The clusters in the project.
@@ -4166,6 +4188,7 @@ DiagnoseClusterRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _DIAGNOSECLUSTERREQUEST,
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """A request to collect cluster diagnostic information.
+  
   Attributes:
       project_id:
           Required. The ID of the Google Cloud Platform project that the
@@ -4187,6 +4210,7 @@ DiagnoseClusterResults = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _DIAGNOSECLUSTERRESULTS,
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """The location of diagnostic output.
+  
   Attributes:
       output_uri:
           Output only. The Cloud Storage URI of the diagnostic output.
@@ -4205,6 +4229,7 @@ ReservationAffinity = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _RESERVATIONAFFINITY,
         "__module__": "google.cloud.dataproc_v1.proto.clusters_pb2",
         "__doc__": """Reservation Affinity for consuming Zonal reservation.
+  
   Attributes:
       consume_reservation_type:
           Optional. Type of reservation to consume

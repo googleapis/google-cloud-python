@@ -4279,6 +4279,7 @@ LoggingConfig = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LOGGINGCONFIG,
         "__module__": "google.cloud.dataproc_v1beta2.proto.jobs_pb2",
         "__doc__": """The runtime logging config of the job.
+  
   Attributes:
       driver_log_levels:
           The per-package log levels for the driver. This may include
@@ -4311,6 +4312,7 @@ HadoopJob = _reflection.GeneratedProtocolMessageType(
   client/hadoop-mapreduce-client-core/MapReduceTutorial.html>`__ jobs on
   `Apache Hadoop YARN <https://hadoop.apache.org/docs/r2.7.1/hadoop-
   yarn/hadoop-yarn-site/YARN.html>`__.
+  
   Attributes:
       driver:
           Required. Indicates the location of the driver’s main class.
@@ -4379,6 +4381,7 @@ SparkJob = _reflection.GeneratedProtocolMessageType(
   class or the main class name. To pass both a main jar and a main class
   in that jar, add the jar to ``CommonJob.jar_file_uris``, and then
   specify the main class name in ``main_class``.
+  
   Attributes:
       main_jar_file_uri:
           The HCFS URI of the jar file that contains the main class.
@@ -4435,6 +4438,7 @@ PySparkJob = _reflection.GeneratedProtocolMessageType(
         "__doc__": """A Dataproc job for running `Apache PySpark
   <https://spark.apache.org/docs/0.9.0/python-programming-guide.html>`__
   applications on YARN.
+  
   Attributes:
       main_python_file_uri:
           Required. The HCFS URI of the main Python file to use as the
@@ -4479,6 +4483,7 @@ QueryList = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _QUERYLIST,
         "__module__": "google.cloud.dataproc_v1beta2.proto.jobs_pb2",
         "__doc__": """A list of queries to run on a cluster.
+  
   Attributes:
       queries:
           Required. The queries to execute. You do not need to terminate
@@ -4520,6 +4525,7 @@ HiveJob = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.dataproc_v1beta2.proto.jobs_pb2",
         "__doc__": """A Dataproc job for running `Apache Hive <https://hive.apache.org/>`__
   queries on YARN.
+  
   Attributes:
       queries:
           Required. The sequence of Hive queries to execute, specified
@@ -4579,6 +4585,7 @@ SparkSqlJob = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.dataproc_v1beta2.proto.jobs_pb2",
         "__doc__": """A Dataproc job for running `Apache Spark SQL
   <http://spark.apache.org/sql/>`__ queries.
+  
   Attributes:
       queries:
           Required. The sequence of Spark SQL queries to execute,
@@ -4633,6 +4640,7 @@ PigJob = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.dataproc_v1beta2.proto.jobs_pb2",
         "__doc__": """A Dataproc job for running `Apache Pig <https://pig.apache.org/>`__
   queries on YARN.
+  
   Attributes:
       queries:
           Required. The sequence of Pig queries to execute, specified as
@@ -4686,6 +4694,7 @@ SparkRJob = _reflection.GeneratedProtocolMessageType(
         "__doc__": """A Dataproc job for running `Apache SparkR
   <https://spark.apache.org/docs/latest/sparkr.html>`__ applications on
   YARN.
+  
   Attributes:
       main_r_file_uri:
           Required. The HCFS URI of the main R file to use as the
@@ -4738,6 +4747,7 @@ PrestoJob = _reflection.GeneratedProtocolMessageType(
   <https://cloud.google.com/dataproc/docs/concepts/components/presto>`__
   must be enabled when the cluster is created to submit a Presto job to
   the cluster.
+  
   Attributes:
       queries:
           Required. The sequence of Presto queries to execute, specified
@@ -4776,6 +4786,7 @@ JobPlacement = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _JOBPLACEMENT,
         "__module__": "google.cloud.dataproc_v1beta2.proto.jobs_pb2",
         "__doc__": """Dataproc job config.
+  
   Attributes:
       cluster_name:
           Required. The name of the cluster where the job will be
@@ -4796,6 +4807,7 @@ JobStatus = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _JOBSTATUS,
         "__module__": "google.cloud.dataproc_v1beta2.proto.jobs_pb2",
         "__doc__": """Dataproc job status.
+  
   Attributes:
       state:
           Output only. A state message specifying the overall job state.
@@ -4820,6 +4832,7 @@ JobReference = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _JOBREFERENCE,
         "__module__": "google.cloud.dataproc_v1beta2.proto.jobs_pb2",
         "__doc__": """Encapsulates the full scoping used to reference a job.
+  
   Attributes:
       project_id:
           Required. The ID of the Google Cloud Platform project that the
@@ -4847,6 +4860,7 @@ YarnApplication = _reflection.GeneratedProtocolMessageType(
   org.apache.hadoop.yarn.proto.YarnProtos.ApplicationReportProto.
   **Beta Feature**: This report is available for testing purposes only.
   It may be changed before final release.
+  
   Attributes:
       name:
           Output only. The application name.
@@ -4882,6 +4896,7 @@ Job = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _JOB,
         "__module__": "google.cloud.dataproc_v1beta2.proto.jobs_pb2",
         "__doc__": """A Dataproc job resource.
+  
   Attributes:
       reference:
           Optional. The fully qualified reference to the job, which can
@@ -4965,6 +4980,7 @@ JobScheduling = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _JOBSCHEDULING,
         "__module__": "google.cloud.dataproc_v1beta2.proto.jobs_pb2",
         "__doc__": """Job scheduling options.
+  
   Attributes:
       max_failures_per_hour:
           Optional. Maximum number of times per hour a driver may be
@@ -4985,6 +5001,7 @@ JobMetadata = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _JOBMETADATA,
         "__module__": "google.cloud.dataproc_v1beta2.proto.jobs_pb2",
         "__doc__": """Job Operation metadata.
+  
   Attributes:
       job_id:
           Output only. The job id.
@@ -5007,6 +5024,7 @@ SubmitJobRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _SUBMITJOBREQUEST,
         "__module__": "google.cloud.dataproc_v1beta2.proto.jobs_pb2",
         "__doc__": """A request to submit a job.
+  
   Attributes:
       project_id:
           Required. The ID of the Google Cloud Platform project that the
@@ -5039,6 +5057,7 @@ GetJobRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _GETJOBREQUEST,
         "__module__": "google.cloud.dataproc_v1beta2.proto.jobs_pb2",
         "__doc__": """A request to get the resource representation for a job in a project.
+  
   Attributes:
       project_id:
           Required. The ID of the Google Cloud Platform project that the
@@ -5060,6 +5079,7 @@ ListJobsRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTJOBSREQUEST,
         "__module__": "google.cloud.dataproc_v1beta2.proto.jobs_pb2",
         "__doc__": """A request to list jobs in a project.
+  
   Attributes:
       project_id:
           Required. The ID of the Google Cloud Platform project that the
@@ -5102,6 +5122,7 @@ UpdateJobRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _UPDATEJOBREQUEST,
         "__module__": "google.cloud.dataproc_v1beta2.proto.jobs_pb2",
         "__doc__": """A request to update a job.
+  
   Attributes:
       project_id:
           Required. The ID of the Google Cloud Platform project that the
@@ -5131,6 +5152,7 @@ ListJobsResponse = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTJOBSRESPONSE,
         "__module__": "google.cloud.dataproc_v1beta2.proto.jobs_pb2",
         "__doc__": """A list of jobs in a project.
+  
   Attributes:
       jobs:
           Output only. Jobs list.
@@ -5152,6 +5174,7 @@ CancelJobRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _CANCELJOBREQUEST,
         "__module__": "google.cloud.dataproc_v1beta2.proto.jobs_pb2",
         "__doc__": """A request to cancel a job.
+  
   Attributes:
       project_id:
           Required. The ID of the Google Cloud Platform project that the
@@ -5173,6 +5196,7 @@ DeleteJobRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _DELETEJOBREQUEST,
         "__module__": "google.cloud.dataproc_v1beta2.proto.jobs_pb2",
         "__doc__": """A request to delete a job.
+  
   Attributes:
       project_id:
           Required. The ID of the Google Cloud Platform project that the

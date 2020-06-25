@@ -2655,6 +2655,7 @@ WorkflowTemplate = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _WORKFLOWTEMPLATE,
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """A Dataproc workflow template resource.
+  
   Attributes:
       name:
           Output only. The resource name of the workflow template, as
@@ -2715,6 +2716,7 @@ WorkflowTemplatePlacement = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """Specifies workflow execution target.  Either ``managed_cluster`` or
   ``cluster_selector`` is required.
+  
   Attributes:
       placement:
           Required. Specifies where workflow executes; either on a
@@ -2747,6 +2749,7 @@ ManagedCluster = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _MANAGEDCLUSTER,
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """Cluster that is managed by the workflow.
+  
   Attributes:
       cluster_name:
           Required. The cluster name prefix. A unique cluster name will
@@ -2784,6 +2787,7 @@ ClusterSelector = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _CLUSTERSELECTOR,
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """A selector that chooses target cluster for jobs based on metadata.
+  
   Attributes:
       zone:
           Optional. The zone where workflow process executes. This
@@ -2816,6 +2820,7 @@ OrderedJob = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _ORDEREDJOB,
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """A job executed by the workflow.
+  
   Attributes:
       step_id:
           Required. The step id. The id must be unique among all jobs
@@ -2860,6 +2865,7 @@ TemplateParameter = _reflection.GeneratedProtocolMessageType(
   template. Parameterizable fields: - Labels - File uris - Job
   properties - Job arguments - Script variables - Main class (in
   HadoopJob and SparkJob) - Zone (in ClusterSelector)
+  
   Attributes:
       name:
           Required. Parameter name. The parameter name is used as the
@@ -2921,6 +2927,7 @@ ParameterValidation = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _PARAMETERVALIDATION,
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """Configuration for parameter validation.
+  
   Attributes:
       validation_type:
           Required. The type of validation to be performed.
@@ -2941,6 +2948,7 @@ RegexValidation = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _REGEXVALIDATION,
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """Validation based on regular expressions.
+  
   Attributes:
       regexes:
           Required. RE2 regular expressions used to validate the
@@ -2959,6 +2967,7 @@ ValueValidation = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _VALUEVALIDATION,
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """Validation based on a list of allowed values.
+  
   Attributes:
       values:
           Required. List of allowed values for the parameter.
@@ -2984,6 +2993,7 @@ WorkflowMetadata = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _WORKFLOWMETADATA,
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """A Dataproc workflow template resource.
+  
   Attributes:
       template:
           Output only. The resource name of the workflow template as
@@ -3032,6 +3042,7 @@ ClusterOperation = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _CLUSTEROPERATION,
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """The cluster operation triggered by a workflow.
+  
   Attributes:
       operation_id:
           Output only. The id of the cluster operation.
@@ -3052,6 +3063,7 @@ WorkflowGraph = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _WORKFLOWGRAPH,
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """The workflow graph.
+  
   Attributes:
       nodes:
           Output only. The workflow nodes.
@@ -3068,6 +3080,7 @@ WorkflowNode = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _WORKFLOWNODE,
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """The workflow node.
+  
   Attributes:
       step_id:
           Output only. The name of the node.
@@ -3093,6 +3106,7 @@ CreateWorkflowTemplateRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _CREATEWORKFLOWTEMPLATEREQUEST,
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """A request to create a workflow template.
+  
   Attributes:
       parent:
           Required. The resource name of the region or location, as
@@ -3119,6 +3133,7 @@ GetWorkflowTemplateRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _GETWORKFLOWTEMPLATEREQUEST,
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """A request to fetch a workflow template.
+  
   Attributes:
       name:
           Required. The resource name of the workflow template, as
@@ -3157,6 +3172,7 @@ InstantiateWorkflowTemplateRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _INSTANTIATEWORKFLOWTEMPLATEREQUEST,
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """A request to instantiate a workflow template.
+  
   Attributes:
       name:
           Required. The resource name of the workflow template, as
@@ -3203,6 +3219,7 @@ InstantiateInlineWorkflowTemplateRequest = _reflection.GeneratedProtocolMessageT
         "DESCRIPTOR": _INSTANTIATEINLINEWORKFLOWTEMPLATEREQUEST,
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """A request to instantiate an inline workflow template.
+  
   Attributes:
       parent:
           Required. The resource name of the region or location, as
@@ -3238,6 +3255,7 @@ UpdateWorkflowTemplateRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _UPDATEWORKFLOWTEMPLATEREQUEST,
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """A request to update a workflow template.
+  
   Attributes:
       template:
           Required. The updated workflow template.  The
@@ -3255,6 +3273,7 @@ ListWorkflowTemplatesRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTWORKFLOWTEMPLATESREQUEST,
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """A request to list workflow templates in a project.
+  
   Attributes:
       parent:
           Required. The resource name of the region or location, as
@@ -3285,6 +3304,7 @@ ListWorkflowTemplatesResponse = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _LISTWORKFLOWTEMPLATESRESPONSE,
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """A response to a request to list workflow templates in a project.
+  
   Attributes:
       templates:
           Output only. WorkflowTemplates list.
@@ -3307,6 +3327,7 @@ DeleteWorkflowTemplateRequest = _reflection.GeneratedProtocolMessageType(
         "__module__": "google.cloud.dataproc_v1.proto.workflow_templates_pb2",
         "__doc__": """A request to delete a workflow template.  Currently started workflows
   will remain running.
+  
   Attributes:
       name:
           Required. The resource name of the workflow template, as
