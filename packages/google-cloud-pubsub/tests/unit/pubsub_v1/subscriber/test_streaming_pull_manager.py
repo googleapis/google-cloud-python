@@ -541,9 +541,14 @@ def make_running_manager():
 
 
 def test_close():
-    manager, consumer, dispatcher, leaser, heartbeater, scheduler = (
-        make_running_manager()
-    )
+    (
+        manager,
+        consumer,
+        dispatcher,
+        leaser,
+        heartbeater,
+        scheduler,
+    ) = make_running_manager()
 
     manager.close()
 
@@ -557,9 +562,14 @@ def test_close():
 
 
 def test_close_inactive_consumer():
-    manager, consumer, dispatcher, leaser, heartbeater, scheduler = (
-        make_running_manager()
-    )
+    (
+        manager,
+        consumer,
+        dispatcher,
+        leaser,
+        heartbeater,
+        scheduler,
+    ) = make_running_manager()
     consumer.is_active = False
 
     manager.close()
