@@ -566,7 +566,7 @@ class Bucket(_PropertyMixin):
             >>> from google.cloud import storage
             >>> from google.cloud.storage.bucket import Bucket
             >>> client = storage.Client()
-            >>> bucket = Bucket.from_string("gs://bucket",client)
+            >>> bucket = Bucket.from_string("gs://bucket", client)
         """
         scheme, netloc, path, query, frag = urlsplit(uri)
 
@@ -911,7 +911,7 @@ class Bucket(_PropertyMixin):
                 self._properties["labels"][removed_label] = None
 
         # Call the superclass method.
-        return super(Bucket, self).patch(
+        super(Bucket, self).patch(
             client=client,
             timeout=timeout,
             if_metageneration_match=if_metageneration_match,
