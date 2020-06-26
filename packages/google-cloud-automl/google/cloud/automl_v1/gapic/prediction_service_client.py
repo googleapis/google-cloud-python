@@ -34,24 +34,15 @@ import grpc
 from google.cloud.automl_v1.gapic import enums
 from google.cloud.automl_v1.gapic import prediction_service_client_config
 from google.cloud.automl_v1.gapic.transports import prediction_service_grpc_transport
-from google.cloud.automl_v1.proto import annotation_spec_pb2
 from google.cloud.automl_v1.proto import data_items_pb2
-from google.cloud.automl_v1.proto import dataset_pb2
-from google.cloud.automl_v1.proto import image_pb2
 from google.cloud.automl_v1.proto import io_pb2
-from google.cloud.automl_v1.proto import model_evaluation_pb2
-from google.cloud.automl_v1.proto import model_pb2
 from google.cloud.automl_v1.proto import operations_pb2 as proto_operations_pb2
 from google.cloud.automl_v1.proto import prediction_service_pb2
 from google.cloud.automl_v1.proto import prediction_service_pb2_grpc
-from google.cloud.automl_v1.proto import service_pb2
-from google.cloud.automl_v1.proto import service_pb2_grpc
 from google.longrunning import operations_pb2 as longrunning_operations_pb2
-from google.protobuf import empty_pb2
-from google.protobuf import field_mask_pb2
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-automl").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-automl",).version
 
 
 class PredictionServiceClient(object):
@@ -59,7 +50,7 @@ class PredictionServiceClient(object):
     AutoML Prediction API.
 
     On any input that is documented to expect a string parameter in
-    snake\_case or kebab-case, either of those cases is accepted.
+    snake_case or kebab-case, either of those cases is accepted.
     """
 
     SERVICE_ADDRESS = "automl.googleapis.com:443"
@@ -186,12 +177,12 @@ class PredictionServiceClient(object):
                 self.transport = transport
         else:
             self.transport = prediction_service_grpc_transport.PredictionServiceGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -202,7 +193,7 @@ class PredictionServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -222,22 +213,41 @@ class PredictionServiceClient(object):
         metadata=None,
     ):
         """
-        Perform an online prediction. The prediction result will be directly
-        returned in the response. Available for following ML problems, and their
-        expected request payloads:
+        Perform an online prediction. The prediction result is directly
+        returned in the response. Available for following ML scenarios, and
+        their expected request payloads:
 
-        -  Image Classification - Image in .JPEG, .GIF or .PNG format,
-           image\_bytes up to 30MB.
-        -  Image Object Detection - Image in .JPEG, .GIF or .PNG format,
-           image\_bytes up to 30MB.
-        -  Text Classification - TextSnippet, content up to 60,000 characters,
-           UTF-8 encoded.
-        -  Text Extraction - TextSnippet, content up to 30,000 characters, UTF-8
-           NFC encoded.
-        -  Translation - TextSnippet, content up to 25,000 characters, UTF-8
-           encoded.
-        -  Text Sentiment - TextSnippet, content up 500 characters, UTF-8
-           encoded.
+        AutoML Vision Classification
+
+        -  An image in .JPEG, .GIF or .PNG format, image_bytes up to 30MB.
+
+        AutoML Vision Object Detection
+
+        -  An image in .JPEG, .GIF or .PNG format, image_bytes up to 30MB.
+
+        AutoML Natural Language Classification
+
+        -  A TextSnippet up to 60,000 characters, UTF-8 encoded or a document in
+           .PDF, .TIF or .TIFF format with size upto 2MB.
+
+        AutoML Natural Language Entity Extraction
+
+        -  A TextSnippet up to 10,000 characters, UTF-8 NFC encoded or a
+           document in .PDF, .TIF or .TIFF format with size upto 20MB.
+
+        AutoML Natural Language Sentiment Analysis
+
+        -  A TextSnippet up to 60,000 characters, UTF-8 encoded or a document in
+           .PDF, .TIF or .TIFF format with size upto 2MB.
+
+        AutoML Translation
+
+        -  A TextSnippet up to 25,000 characters, UTF-8 encoded.
+
+        AutoML Tables
+
+        -  A row with column values matching the columns of the model, up to
+           5MB. Not available for FORECASTING ``prediction_type``.
 
         Example:
             >>> from google.cloud import automl_v1
@@ -252,27 +262,37 @@ class PredictionServiceClient(object):
             >>> response = client.predict(name, payload)
 
         Args:
-            name (str): Name of the model requested to serve the prediction.
+            name (str): Required. Name of the model requested to serve the prediction.
             payload (Union[dict, ~google.cloud.automl_v1.types.ExamplePayload]): Required. Payload to perform a prediction on. The payload must match the
                 problem type that the model was trained to solve.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.automl_v1.types.ExamplePayload`
-            params (dict[str -> str]): Additional domain-specific parameters, any string must be up to 25000
-                characters long.
+            params (dict[str -> str]): Additional domain-specific parameters, any string must be up to
+                25000 characters long.
 
-                -  For Image Classification:
+                AutoML Vision Classification
 
-                   ``score_threshold`` - (float) A value from 0.0 to 1.0. When the model
-                   makes predictions for an image, it will only produce results that
-                   have at least this confidence score. The default is 0.5.
+                ``score_threshold`` : (float) A value from 0.0 to 1.0. When the model
+                makes predictions for an image, it will only produce results that have
+                at least this confidence score. The default is 0.5.
 
-                -  For Image Object Detection: ``score_threshold`` - (float) When Model
-                   detects objects on the image, it will only produce bounding boxes
-                   which have at least this confidence score. Value in 0 to 1 range,
-                   default is 0.5. ``max_bounding_box_count`` - (int64) No more than
-                   this number of bounding boxes will be returned in the response.
-                   Default is 100, the requested value may be limited by server.
+                AutoML Vision Object Detection
+
+                ``score_threshold`` : (float) When Model detects objects on the image,
+                it will only produce bounding boxes which have at least this confidence
+                score. Value in 0 to 1 range, default is 0.5.
+
+                ``max_bounding_box_count`` : (int64) The maximum number of bounding
+                boxes returned. The default is 100. The number of returned bounding
+                boxes might be limited by the server.
+
+                AutoML Tables
+
+                ``feature_importance`` : (boolean) Whether
+
+                ``feature_importance`` is populated in the returned list of
+                ``TablesAnnotation`` objects. The default is false.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -304,7 +324,7 @@ class PredictionServiceClient(object):
             )
 
         request = prediction_service_pb2.PredictRequest(
-            name=name, payload=payload, params=params
+            name=name, payload=payload, params=params,
         )
         if metadata is None:
             metadata = []
@@ -339,11 +359,16 @@ class PredictionServiceClient(object):
         Instead, a long running operation object is returned. User can poll the
         operation result via ``GetOperation`` method. Once the operation is
         done, ``BatchPredictResult`` is returned in the ``response`` field.
-        Available for following ML problems:
+        Available for following ML scenarios:
 
-        -  Image Classification
-        -  Image Object Detection
-        -  Text Extraction
+        -  AutoML Vision Classification
+        -  AutoML Vision Object Detection
+        -  AutoML Video Intelligence Classification
+        -  AutoML Video Intelligence Object Tracking \* AutoML Natural Language
+           Classification
+        -  AutoML Natural Language Entity Extraction
+        -  AutoML Natural Language Sentiment Analysis
+        -  AutoML Tables
 
         Example:
             >>> from google.cloud import automl_v1
@@ -370,7 +395,7 @@ class PredictionServiceClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            name (str): Name of the model requested to serve the batch prediction.
+            name (str): Required. Name of the model requested to serve the batch prediction.
             input_config (Union[dict, ~google.cloud.automl_v1.types.BatchPredictInputConfig]): Required. The input configuration for batch prediction.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -380,29 +405,75 @@ class PredictionServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.automl_v1.types.BatchPredictOutputConfig`
-            params (dict[str -> str]): Additional domain-specific parameters for the predictions, any string
-                must be up to 25000 characters long.
+            params (dict[str -> str]): Additional domain-specific parameters for the predictions, any
+                string must be up to 25000 characters long.
 
-                -  For Text Classification:
+                AutoML Natural Language Classification
 
-                   ``score_threshold`` - (float) A value from 0.0 to 1.0. When the model
-                   makes predictions for a text snippet, it will only produce results
-                   that have at least this confidence score. The default is 0.5.
+                ``score_threshold`` : (float) A value from 0.0 to 1.0. When the model
+                makes predictions for a text snippet, it will only produce results that
+                have at least this confidence score. The default is 0.5.
 
-                -  For Image Classification:
+                AutoML Vision Classification
 
-                   ``score_threshold`` - (float) A value from 0.0 to 1.0. When the model
-                   makes predictions for an image, it will only produce results that
-                   have at least this confidence score. The default is 0.5.
+                ``score_threshold`` : (float) A value from 0.0 to 1.0. When the model
+                makes predictions for an image, it will only produce results that have
+                at least this confidence score. The default is 0.5.
 
-                -  For Image Object Detection:
+                AutoML Vision Object Detection
 
-                   ``score_threshold`` - (float) When Model detects objects on the
-                   image, it will only produce bounding boxes which have at least this
-                   confidence score. Value in 0 to 1 range, default is 0.5.
-                   ``max_bounding_box_count`` - (int64) No more than this number of
-                   bounding boxes will be produced per image. Default is 100, the
-                   requested value may be limited by server.
+                ``score_threshold`` : (float) When Model detects objects on the image,
+                it will only produce bounding boxes which have at least this confidence
+                score. Value in 0 to 1 range, default is 0.5.
+
+                ``max_bounding_box_count`` : (int64) The maximum number of bounding
+                boxes returned per image. The default is 100, the number of bounding
+                boxes returned might be limited by the server. AutoML Video Intelligence
+                Classification
+
+                ``score_threshold`` : (float) A value from 0.0 to 1.0. When the model
+                makes predictions for a video, it will only produce results that have at
+                least this confidence score. The default is 0.5.
+
+                ``segment_classification`` : (boolean) Set to true to request
+                segment-level classification. AutoML Video Intelligence returns labels
+                and their confidence scores for the entire segment of the video that
+                user specified in the request configuration. The default is true.
+
+                ``shot_classification`` : (boolean) Set to true to request shot-level
+                classification. AutoML Video Intelligence determines the boundaries for
+                each camera shot in the entire segment of the video that user specified
+                in the request configuration. AutoML Video Intelligence then returns
+                labels and their confidence scores for each detected shot, along with
+                the start and end time of the shot. The default is false.
+
+                WARNING: Model evaluation is not done for this classification type, the
+                quality of it depends on training data, but there are no metrics
+                provided to describe that quality.
+
+                ``1s_interval_classification`` : (boolean) Set to true to request
+                classification for a video at one-second intervals. AutoML Video
+                Intelligence returns labels and their confidence scores for each second
+                of the entire segment of the video that user specified in the request
+                configuration. The default is false.
+
+                WARNING: Model evaluation is not done for this classification type, the
+                quality of it depends on training data, but there are no metrics
+                provided to describe that quality.
+
+                AutoML Video Intelligence Object Tracking
+
+                ``score_threshold`` : (float) When Model detects objects on video
+                frames, it will only produce bounding boxes which have at least this
+                confidence score. Value in 0 to 1 range, default is 0.5.
+
+                ``max_bounding_box_count`` : (int64) The maximum number of bounding
+                boxes returned per image. The default is 100, the number of bounding
+                boxes returned might be limited by the server.
+
+                ``min_bounding_box_size`` : (float) Only bounding boxes with shortest
+                edge at least that long as a relative value of video frame size are
+                returned. Value in 0 to 1 range. Default is 0.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.

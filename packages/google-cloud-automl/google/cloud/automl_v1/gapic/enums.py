@@ -45,12 +45,12 @@ class Document(object):
               TOKEN (int): The text segment is a token. e.g. word.
               PARAGRAPH (int): The text segment is a paragraph.
               FORM_FIELD (int): The text segment is a form field.
-              FORM_FIELD_NAME (int): The text segment is the name part of a form field. It will be treated as
-              child of another FORM\_FIELD TextSegment if its span is subspan of
-              another TextSegment with type FORM\_FIELD.
-              FORM_FIELD_CONTENTS (int): The text segment is the text content part of a form field. It will be
-              treated as child of another FORM\_FIELD TextSegment if its span is
-              subspan of another TextSegment with type FORM\_FIELD.
+              FORM_FIELD_NAME (int): The text segment is the name part of a form field. It will be
+              treated as child of another FORM_FIELD TextSegment if its span is
+              subspan of another TextSegment with type FORM_FIELD.
+              FORM_FIELD_CONTENTS (int): The text segment is the text content part of a form field. It will
+              be treated as child of another FORM_FIELD TextSegment if its span is
+              subspan of another TextSegment with type FORM_FIELD.
               TABLE (int): The text segment is a whole table, including headers, and all rows.
               TABLE_HEADER (int): The text segment is a table's headers. It will be treated as child of
               another TABLE TextSegment if its span is subspan of another TextSegment
@@ -59,8 +59,8 @@ class Document(object):
               another TABLE TextSegment if its span is subspan of another TextSegment
               with type TABLE.
               TABLE_CELL (int): The text segment is a cell in table. It will be treated as child of
-              another TABLE\_ROW TextSegment if its span is subspan of another
-              TextSegment with type TABLE\_ROW.
+              another TABLE_ROW TextSegment if its span is subspan of another
+              TextSegment with type TABLE_ROW.
             """
 
             TEXT_SEGMENT_TYPE_UNSPECIFIED = 0

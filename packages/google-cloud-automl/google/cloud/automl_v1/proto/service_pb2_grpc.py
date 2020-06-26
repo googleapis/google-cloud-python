@@ -194,6 +194,14 @@ class AutoMlServicer(object):
 
     def ImportData(self, request, context):
         """Imports data into a dataset.
+    For Tables this method can only be called on an empty Dataset.
+
+    For Tables:
+    *   A
+    [schema_inference_version][google.cloud.automl.v1.InputConfig.params]
+    parameter must be explicitly set.
+    Returns an empty response in the
+    [response][google.longrunning.Operation.response] field when it completes.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -263,11 +271,11 @@ class AutoMlServicer(object):
     same parameters has no effect. Deploying with different parametrs
     (as e.g. changing
 
-    [node_number][google.cloud.automl.v1.ImageObjectDetectionModelDeploymentMetadata.node_number])
+    [node_number][google.cloud.automl.v1p1beta.ImageObjectDetectionModelDeploymentMetadata.node_number])
     will reset the deployment state without pausing the model's availability.
 
-    Only applicable for Text Classification, Image Object Detection; all other
-    domains manage deployment automatically.
+    Only applicable for Text Classification, Image Object Detection , Tables, and Image Segmentation; all other domains manage
+    deployment automatically.
 
     Returns an empty response in the
     [response][google.longrunning.Operation.response] field when it completes.
@@ -279,7 +287,7 @@ class AutoMlServicer(object):
     def UndeployModel(self, request, context):
         """Undeploys a model. If the model is not deployed this method has no effect.
 
-    Only applicable for Text Classification, Image Object Detection;
+    Only applicable for Text Classification, Image Object Detection and Tables;
     all other domains manage deployment automatically.
 
     Returns an empty response in the

@@ -27,16 +27,11 @@ from google.cloud.automl_v1.gapic import prediction_service_client
 
 if sys.version_info[:2] == (2, 7):
     message = (
-        "A future version of this library will drop support for Python 2.7."
-        "More details about Python 2 support for Google Cloud Client Libraries"
+        "A future version of this library will drop support for Python 2.7. "
+        "More details about Python 2 support for Google Cloud Client Libraries "
         "can be found at https://cloud.google.com/python/docs/python2-sunset/"
     )
     warnings.warn(message, DeprecationWarning)
-
-
-class AutoMlClient(auto_ml_client.AutoMlClient):
-    __doc__ = auto_ml_client.AutoMlClient.__doc__
-    enums = enums
 
 
 class PredictionServiceClient(prediction_service_client.PredictionServiceClient):
@@ -44,4 +39,14 @@ class PredictionServiceClient(prediction_service_client.PredictionServiceClient)
     enums = enums
 
 
-__all__ = ("enums", "types", "AutoMlClient", "PredictionServiceClient")
+class AutoMlClient(auto_ml_client.AutoMlClient):
+    __doc__ = auto_ml_client.AutoMlClient.__doc__
+    enums = enums
+
+
+__all__ = (
+    "enums",
+    "types",
+    "PredictionServiceClient",
+    "AutoMlClient",
+)

@@ -42,39 +42,63 @@ class PredictionServiceServicer(object):
   """
 
     def Predict(self, request, context):
-        """Perform an online prediction. The prediction result will be directly
+        """Perform an online prediction. The prediction result is directly
     returned in the response.
-    Available for following ML problems, and their expected request payloads:
-    * Image Classification - Image in .JPEG, .GIF or .PNG format, image_bytes
-    up to 30MB.
-    * Image Object Detection - Image in .JPEG, .GIF or .PNG format, image_bytes
-    up to 30MB.
-    * Text Classification - TextSnippet, content up to 60,000 characters,
-    UTF-8 encoded.
-    * Text Extraction - TextSnippet, content up to 30,000 characters,
-    UTF-8 NFC encoded.
-    * Translation - TextSnippet, content up to 25,000 characters, UTF-8
-    encoded.
-    * Text Sentiment - TextSnippet, content up 500 characters, UTF-8
-    encoded.
+    Available for following ML scenarios, and their expected request payloads:
+
+    AutoML Vision Classification
+
+    * An image in .JPEG, .GIF or .PNG format, image_bytes up to 30MB.
+
+    AutoML Vision Object Detection
+
+    * An image in .JPEG, .GIF or .PNG format, image_bytes up to 30MB.
+
+    AutoML Natural Language Classification
+
+    * A TextSnippet up to 60,000 characters, UTF-8 encoded or a document in
+    .PDF, .TIF or .TIFF format with size upto 2MB.
+
+    AutoML Natural Language Entity Extraction
+
+    * A TextSnippet up to 10,000 characters, UTF-8 NFC encoded or a document
+    in .PDF, .TIF or .TIFF format with size upto 20MB.
+
+    AutoML Natural Language Sentiment Analysis
+
+    * A TextSnippet up to 60,000 characters, UTF-8 encoded or a document in
+    .PDF, .TIF or .TIFF format with size upto 2MB.
+
+    AutoML Translation
+
+    * A TextSnippet up to 25,000 characters, UTF-8 encoded.
+
+    AutoML Tables
+
+    * A row with column values matching
+    the columns of the model, up to 5MB. Not available for FORECASTING
+    `prediction_type`.
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def BatchPredict(self, request, context):
-        """Perform a batch prediction. Unlike the online
-    [Predict][google.cloud.automl.v1.PredictionService.Predict], batch
+        """Perform a batch prediction. Unlike the online [Predict][google.cloud.automl.v1.PredictionService.Predict], batch
     prediction result won't be immediately available in the response. Instead,
     a long running operation object is returned. User can poll the operation
     result via [GetOperation][google.longrunning.Operations.GetOperation]
-    method. Once the operation is done,
-    [BatchPredictResult][google.cloud.automl.v1.BatchPredictResult] is returned
-    in the [response][google.longrunning.Operation.response] field. Available
-    for following ML problems:
-    * Image Classification
-    * Image Object Detection
-    * Text Extraction
+    method. Once the operation is done, [BatchPredictResult][google.cloud.automl.v1.BatchPredictResult] is returned in
+    the [response][google.longrunning.Operation.response] field.
+    Available for following ML scenarios:
+
+    * AutoML Vision Classification
+    * AutoML Vision Object Detection
+    * AutoML Video Intelligence Classification
+    * AutoML Video Intelligence Object Tracking * AutoML Natural Language Classification
+    * AutoML Natural Language Entity Extraction
+    * AutoML Natural Language Sentiment Analysis
+    * AutoML Tables
     """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

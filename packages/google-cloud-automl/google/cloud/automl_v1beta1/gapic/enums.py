@@ -36,8 +36,8 @@ class ClassificationType(enum.IntEnum):
 
 class NullValue(enum.IntEnum):
     """
-    ``NullValue`` is a singleton enumeration to represent the null value for
-    the ``Value`` type union.
+    ``NullValue`` is a singleton enumeration to represent the null value
+    for the ``Value`` type union.
 
     The JSON representation for ``NullValue`` is JSON ``null``.
 
@@ -61,17 +61,17 @@ class TypeCode(enum.IntEnum):
       ``date-time`` format, where ``time-offset`` = ``"Z"`` (e.g.
       1985-04-12T23:20:50.52Z).
       STRING (int): Encoded as ``string``.
-      ARRAY (int): Encoded as ``list``, where the list elements are represented according
-      to
+      ARRAY (int): Encoded as ``list``, where the list elements are represented
+      according to
 
       ``list_element_type``.
-      STRUCT (int): Encoded as ``struct``, where field values are represented according to
-      ``struct_type``.
-      CATEGORY (int): Values of this type are not further understood by AutoML, e.g. AutoML is
-      unable to tell the order of values (as it could with FLOAT64), or is
-      unable to say if one value contains another (as it could with STRING).
-      Encoded as ``string`` (bytes should be base64-encoded, as described in
-      RFC 4648, section 4).
+      STRUCT (int): Encoded as ``struct``, where field values are represented according
+      to ``struct_type``.
+      CATEGORY (int): Values of this type are not further understood by AutoML, e.g.
+      AutoML is unable to tell the order of values (as it could with FLOAT64),
+      or is unable to say if one value contains another (as it could with
+      STRING). Encoded as ``string`` (bytes should be base64-encoded, as
+      described in RFC 4648, section 4).
     """
 
     TYPE_CODE_UNSPECIFIED = 0
@@ -94,12 +94,12 @@ class Document(object):
               TOKEN (int): The text segment is a token. e.g. word.
               PARAGRAPH (int): The text segment is a paragraph.
               FORM_FIELD (int): The text segment is a form field.
-              FORM_FIELD_NAME (int): The text segment is the name part of a form field. It will be treated as
-              child of another FORM\_FIELD TextSegment if its span is subspan of
-              another TextSegment with type FORM\_FIELD.
-              FORM_FIELD_CONTENTS (int): The text segment is the text content part of a form field. It will be
-              treated as child of another FORM\_FIELD TextSegment if its span is
-              subspan of another TextSegment with type FORM\_FIELD.
+              FORM_FIELD_NAME (int): The text segment is the name part of a form field. It will be
+              treated as child of another FORM_FIELD TextSegment if its span is
+              subspan of another TextSegment with type FORM_FIELD.
+              FORM_FIELD_CONTENTS (int): The text segment is the text content part of a form field. It will
+              be treated as child of another FORM_FIELD TextSegment if its span is
+              subspan of another TextSegment with type FORM_FIELD.
               TABLE (int): The text segment is a whole table, including headers, and all rows.
               TABLE_HEADER (int): The text segment is a table's headers. It will be treated as child of
               another TABLE TextSegment if its span is subspan of another TextSegment
@@ -108,8 +108,8 @@ class Document(object):
               another TABLE TextSegment if its span is subspan of another TextSegment
               with type TABLE.
               TABLE_CELL (int): The text segment is a cell in table. It will be treated as child of
-              another TABLE\_ROW TextSegment if its span is subspan of another
-              TextSegment with type TABLE\_ROW.
+              another TABLE_ROW TextSegment if its span is subspan of another
+              TextSegment with type TABLE_ROW.
             """
 
             TEXT_SEGMENT_TYPE_UNSPECIFIED = 0

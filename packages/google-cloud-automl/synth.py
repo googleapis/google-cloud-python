@@ -105,14 +105,6 @@ s.replace(
     flags=re.DOTALL,
 )
 
-# Replace docstring with no summary line
-s.replace(
-    "google/cloud/**/io_pb2.py",
-    r"""__doc__ = \"\"\"-  For Translation: CSV file ``translation\.csv``, with each """,
-    r'''__doc__ = """
--  For Translation: CSV file ``translation.csv``, with each ''',
-    flags=re.DOTALL,
-)
 
 s.replace("google/cloud/**/io_pb2.py", r":raw-latex:`\\t `", r"\\\\t")
 
@@ -131,14 +123,41 @@ s.replace("google/cloud/automl_v1/**/io_pb2.py", r""":raw-latex:`\\n`""", r"``\\
 # Make \n visible in JSONL samples
 s.replace("google/cloud/**/io_pb2.py", r"\}\\n", r"}\\\\n")
 
+# properly escape emphasis
+s.replace("google/cloud/**/*.py",
+"""image_classification_dataset_metadata:\*""",
+"""``image_classification_dataset_metadata``""")
+
+s.replace("google/cloud/**/*.py",
+"""video_classification_model_metadata:\*""",
+"""``video_classification_model_metadata:*``""")
+
+# Escape '_' at the end of the line in pb2 docstrings
+s.replace(
+"google/cloud/**/*_pb2.py",
+"""\_$""",
+"""\_""",
+)
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-    unit_cov_level=82, cov_level=83, system_test_dependencies=["test_utils"]
+    unit_cov_level=82, cov_level=83
 )
 
 s.move(templated_files)
+
+# TODO(busunkim): Use latest sphinx after microgenerator transition
+s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
+# TODO(busunkim): Remove after microgenerator transition.
+# This is being added to AutoML because the proto comments are long and
+# regex replaces are a brittle temporary solution. 
+s.replace(
+"noxfile.py", 
+""""-W",  # warnings as errors
+\s+"-T",  \# show full traceback on exception""",
+""""-T",  # show full traceback on exception""")
+
 
 # install with extras (pandas, storage)
 s.replace(

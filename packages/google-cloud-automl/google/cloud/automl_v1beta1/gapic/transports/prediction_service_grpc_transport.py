@@ -54,7 +54,7 @@ class PredictionServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -75,7 +75,7 @@ class PredictionServiceGrpcTransport(object):
         self._stubs = {
             "prediction_service_stub": prediction_service_pb2_grpc.PredictionServiceStub(
                 channel
-            )
+            ),
         }
 
         # Because this API includes a method that returns a
@@ -126,9 +126,9 @@ class PredictionServiceGrpcTransport(object):
         expected request payloads:
 
         -  Image Classification - Image in .JPEG, .GIF or .PNG format,
-           image\_bytes up to 30MB.
+           image_bytes up to 30MB.
         -  Image Object Detection - Image in .JPEG, .GIF or .PNG format,
-           image\_bytes up to 30MB.
+           image_bytes up to 30MB.
         -  Text Classification - TextSnippet, content up to 60,000 characters,
            UTF-8 encoded.
         -  Text Extraction - TextSnippet, content up to 30,000 characters, UTF-8

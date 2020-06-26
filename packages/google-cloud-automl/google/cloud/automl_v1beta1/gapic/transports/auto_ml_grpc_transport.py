@@ -54,7 +54,7 @@ class AutoMlGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -72,7 +72,9 @@ class AutoMlGrpcTransport(object):
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
-        self._stubs = {"auto_ml_stub": service_pb2_grpc.AutoMlStub(channel)}
+        self._stubs = {
+            "auto_ml_stub": service_pb2_grpc.AutoMlStub(channel),
+        }
 
         # Because this API includes a method that returns a
         # long-running operation (proto: google.longrunning.Operation),
@@ -127,19 +129,6 @@ class AutoMlGrpcTransport(object):
         return self._stubs["auto_ml_stub"].CreateDataset
 
     @property
-    def update_dataset(self):
-        """Return the gRPC stub for :meth:`AutoMlClient.update_dataset`.
-
-        Updates a dataset.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["auto_ml_stub"].UpdateDataset
-
-    @property
     def get_dataset(self):
         """Return the gRPC stub for :meth:`AutoMlClient.get_dataset`.
 
@@ -166,11 +155,24 @@ class AutoMlGrpcTransport(object):
         return self._stubs["auto_ml_stub"].ListDatasets
 
     @property
+    def update_dataset(self):
+        """Return the gRPC stub for :meth:`AutoMlClient.update_dataset`.
+
+        Updates a dataset.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["auto_ml_stub"].UpdateDataset
+
+    @property
     def delete_dataset(self):
         """Return the gRPC stub for :meth:`AutoMlClient.delete_dataset`.
 
-        Deletes a dataset and all of its contents. Returns empty response in the
-        ``response`` field when it completes, and ``delete_details`` in the
+        Deletes a dataset and all of its contents. Returns empty response in
+        the ``response`` field when it completes, and ``delete_details`` in the
         ``metadata`` field.
 
         Returns:
@@ -184,8 +186,8 @@ class AutoMlGrpcTransport(object):
     def import_data(self):
         """Return the gRPC stub for :meth:`AutoMlClient.import_data`.
 
-        Imports data into a dataset. For Tables this method can only be called
-        on an empty Dataset.
+        Imports data into a dataset. For Tables this method can only be
+        called on an empty Dataset.
 
         For Tables:
 
@@ -204,8 +206,8 @@ class AutoMlGrpcTransport(object):
     def export_data(self):
         """Return the gRPC stub for :meth:`AutoMlClient.export_data`.
 
-        Exports dataset's data to the provided output location. Returns an empty
-        response in the ``response`` field when it completes.
+        Exports dataset's data to the provided output location. Returns an
+        empty response in the ``response`` field when it completes.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -213,174 +215,6 @@ class AutoMlGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["auto_ml_stub"].ExportData
-
-    @property
-    def create_model(self):
-        """Return the gRPC stub for :meth:`AutoMlClient.create_model`.
-
-        Creates a model. Returns a Model in the ``response`` field when it
-        completes. When you create a model, several model evaluations are
-        created for it: a global evaluation, and one evaluation for each
-        annotation spec.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["auto_ml_stub"].CreateModel
-
-    @property
-    def get_model(self):
-        """Return the gRPC stub for :meth:`AutoMlClient.get_model`.
-
-        Gets a model.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["auto_ml_stub"].GetModel
-
-    @property
-    def list_models(self):
-        """Return the gRPC stub for :meth:`AutoMlClient.list_models`.
-
-        Lists models.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["auto_ml_stub"].ListModels
-
-    @property
-    def delete_model(self):
-        """Return the gRPC stub for :meth:`AutoMlClient.delete_model`.
-
-        Deletes a model. Returns ``google.protobuf.Empty`` in the ``response``
-        field when it completes, and ``delete_details`` in the ``metadata``
-        field.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["auto_ml_stub"].DeleteModel
-
-    @property
-    def deploy_model(self):
-        """Return the gRPC stub for :meth:`AutoMlClient.deploy_model`.
-
-        Deploys a model. If a model is already deployed, deploying it with the
-        same parameters has no effect. Deploying with different parametrs (as
-        e.g. changing
-
-        ``node_number``) will reset the deployment state without pausing the
-        model's availability.
-
-        Only applicable for Text Classification, Image Object Detection and
-        Tables; all other domains manage deployment automatically.
-
-        Returns an empty response in the ``response`` field when it completes.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["auto_ml_stub"].DeployModel
-
-    @property
-    def undeploy_model(self):
-        """Return the gRPC stub for :meth:`AutoMlClient.undeploy_model`.
-
-        Undeploys a model. If the model is not deployed this method has no
-        effect.
-
-        Only applicable for Text Classification, Image Object Detection and
-        Tables; all other domains manage deployment automatically.
-
-        Returns an empty response in the ``response`` field when it completes.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["auto_ml_stub"].UndeployModel
-
-    @property
-    def get_model_evaluation(self):
-        """Return the gRPC stub for :meth:`AutoMlClient.get_model_evaluation`.
-
-        Gets a model evaluation.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["auto_ml_stub"].GetModelEvaluation
-
-    @property
-    def export_model(self):
-        """Return the gRPC stub for :meth:`AutoMlClient.export_model`.
-
-        Exports a trained, "export-able", model to a user specified Google Cloud
-        Storage location. A model is considered export-able if and only if it
-        has an export format defined for it in
-
-        ``ModelExportOutputConfig``.
-
-        Returns an empty response in the ``response`` field when it completes.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["auto_ml_stub"].ExportModel
-
-    @property
-    def export_evaluated_examples(self):
-        """Return the gRPC stub for :meth:`AutoMlClient.export_evaluated_examples`.
-
-        Exports examples on which the model was evaluated (i.e. which were in
-        the TEST set of the dataset the model was created from), together with
-        their ground truth annotations and the annotations created (predicted)
-        by the model. The examples, ground truth and predictions are exported in
-        the state they were at the moment the model was evaluated.
-
-        This export is available only for 30 days since the model evaluation is
-        created.
-
-        Currently only available for Tables.
-
-        Returns an empty response in the ``response`` field when it completes.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["auto_ml_stub"].ExportEvaluatedExamples
-
-    @property
-    def list_model_evaluations(self):
-        """Return the gRPC stub for :meth:`AutoMlClient.list_model_evaluations`.
-
-        Lists model evaluations.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["auto_ml_stub"].ListModelEvaluations
 
     @property
     def get_annotation_spec(self):
@@ -472,3 +306,172 @@ class AutoMlGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["auto_ml_stub"].UpdateColumnSpec
+
+    @property
+    def create_model(self):
+        """Return the gRPC stub for :meth:`AutoMlClient.create_model`.
+
+        Creates a model. Returns a Model in the ``response`` field when it
+        completes. When you create a model, several model evaluations are
+        created for it: a global evaluation, and one evaluation for each
+        annotation spec.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["auto_ml_stub"].CreateModel
+
+    @property
+    def get_model(self):
+        """Return the gRPC stub for :meth:`AutoMlClient.get_model`.
+
+        Gets a model.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["auto_ml_stub"].GetModel
+
+    @property
+    def list_models(self):
+        """Return the gRPC stub for :meth:`AutoMlClient.list_models`.
+
+        Lists models.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["auto_ml_stub"].ListModels
+
+    @property
+    def delete_model(self):
+        """Return the gRPC stub for :meth:`AutoMlClient.delete_model`.
+
+        Deletes a model. Returns ``google.protobuf.Empty`` in the
+        ``response`` field when it completes, and ``delete_details`` in the
+        ``metadata`` field.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["auto_ml_stub"].DeleteModel
+
+    @property
+    def deploy_model(self):
+        """Return the gRPC stub for :meth:`AutoMlClient.deploy_model`.
+
+        Deploys a model. If a model is already deployed, deploying it with
+        the same parameters has no effect. Deploying with different parametrs
+        (as e.g. changing
+
+        ``node_number``) will reset the deployment state without pausing the
+        model's availability.
+
+        Only applicable for Text Classification, Image Object Detection ,
+        Tables, and Image Segmentation; all other domains manage deployment
+        automatically.
+
+        Returns an empty response in the ``response`` field when it completes.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["auto_ml_stub"].DeployModel
+
+    @property
+    def undeploy_model(self):
+        """Return the gRPC stub for :meth:`AutoMlClient.undeploy_model`.
+
+        Undeploys a model. If the model is not deployed this method has no
+        effect.
+
+        Only applicable for Text Classification, Image Object Detection and
+        Tables; all other domains manage deployment automatically.
+
+        Returns an empty response in the ``response`` field when it completes.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["auto_ml_stub"].UndeployModel
+
+    @property
+    def export_model(self):
+        """Return the gRPC stub for :meth:`AutoMlClient.export_model`.
+
+        Exports a trained, "export-able", model to a user specified Google
+        Cloud Storage location. A model is considered export-able if and only if
+        it has an export format defined for it in
+
+        ``ModelExportOutputConfig``.
+
+        Returns an empty response in the ``response`` field when it completes.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["auto_ml_stub"].ExportModel
+
+    @property
+    def export_evaluated_examples(self):
+        """Return the gRPC stub for :meth:`AutoMlClient.export_evaluated_examples`.
+
+        Exports examples on which the model was evaluated (i.e. which were
+        in the TEST set of the dataset the model was created from), together
+        with their ground truth annotations and the annotations created
+        (predicted) by the model. The examples, ground truth and predictions are
+        exported in the state they were at the moment the model was evaluated.
+
+        This export is available only for 30 days since the model evaluation is
+        created.
+
+        Currently only available for Tables.
+
+        Returns an empty response in the ``response`` field when it completes.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["auto_ml_stub"].ExportEvaluatedExamples
+
+    @property
+    def get_model_evaluation(self):
+        """Return the gRPC stub for :meth:`AutoMlClient.get_model_evaluation`.
+
+        Gets a model evaluation.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["auto_ml_stub"].GetModelEvaluation
+
+    @property
+    def list_model_evaluations(self):
+        """Return the gRPC stub for :meth:`AutoMlClient.list_model_evaluations`.
+
+        Lists model evaluations.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["auto_ml_stub"].ListModelEvaluations

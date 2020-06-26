@@ -128,14 +128,18 @@ class TestPredictionServiceClient(object):
         name = client.model_path("[PROJECT]", "[LOCATION]", "[MODEL]")
         input_config = {}
         output_config = {}
+        params = {}
 
-        response = client.batch_predict(name, input_config, output_config)
+        response = client.batch_predict(name, input_config, output_config, params)
         result = response.result()
         assert expected_response == result
 
         assert len(channel.requests) == 1
         expected_request = prediction_service_pb2.BatchPredictRequest(
-            name=name, input_config=input_config, output_config=output_config
+            name=name,
+            input_config=input_config,
+            output_config=output_config,
+            params=params,
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -159,7 +163,8 @@ class TestPredictionServiceClient(object):
         name = client.model_path("[PROJECT]", "[LOCATION]", "[MODEL]")
         input_config = {}
         output_config = {}
+        params = {}
 
-        response = client.batch_predict(name, input_config, output_config)
+        response = client.batch_predict(name, input_config, output_config, params)
         exception = response.exception()
         assert exception.errors[0] == error
