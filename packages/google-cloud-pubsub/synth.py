@@ -18,6 +18,7 @@ import textwrap
 
 import synthtool as s
 from synthtool import gcp
+from synthtool.languages import python
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
@@ -266,8 +267,16 @@ s.replace(
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = gcp.CommonTemplates().py_library(
-    unit_cov_level=97, cov_level=99, system_test_external_dependencies=["psutil"],
+    unit_cov_level=97,
+    cov_level=99,
+    system_test_external_dependencies=["psutil"],
+    samples=True,
 )
 s.move(templated_files)
+
+# ----------------------------------------------------------------------------
+# Samples templates
+# ----------------------------------------------------------------------------
+python.py_samples()
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
