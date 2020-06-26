@@ -38,7 +38,7 @@ from google.cloud.iam_credentials_v1.proto import iamcredentials_pb2_grpc
 from google.protobuf import duration_pb2
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-iam").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-iam",).version
 
 
 class IAMCredentialsClient(object):
@@ -177,12 +177,12 @@ class IAMCredentialsClient(object):
                 self.transport = transport
         else:
             self.transport = iam_credentials_grpc_transport.IamCredentialsGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -193,7 +193,7 @@ class IAMCredentialsClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -287,7 +287,7 @@ class IAMCredentialsClient(object):
             )
 
         request = common_pb2.GenerateAccessTokenRequest(
-            name=name, scope=scope, delegates=delegates, lifetime=lifetime
+            name=name, scope=scope, delegates=delegates, lifetime=lifetime,
         )
         if metadata is None:
             metadata = []
@@ -350,8 +350,8 @@ class IAMCredentialsClient(object):
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``. The ``-``
                 wildcard character is required; replacing it with a project ID is
                 invalid.
-            include_email (bool): Include the service account email in the token. If set to ``true``, the
-                token will contain ``email`` and ``email_verified`` claims.
+            include_email (bool): Include the service account email in the token. If set to ``true``,
+                the token will contain ``email`` and ``email_verified`` claims.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -478,7 +478,7 @@ class IAMCredentialsClient(object):
             )
 
         request = common_pb2.SignBlobRequest(
-            name=name, payload=payload, delegates=delegates
+            name=name, payload=payload, delegates=delegates,
         )
         if metadata is None:
             metadata = []
@@ -570,7 +570,7 @@ class IAMCredentialsClient(object):
             )
 
         request = common_pb2.SignJwtRequest(
-            name=name, payload=payload, delegates=delegates
+            name=name, payload=payload, delegates=delegates,
         )
         if metadata is None:
             metadata = []

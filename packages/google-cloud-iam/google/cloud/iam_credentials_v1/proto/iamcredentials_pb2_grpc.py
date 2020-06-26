@@ -2,7 +2,7 @@
 import grpc
 
 from google.cloud.iam_credentials_v1.proto import (
-    common_pb2 as google_dot_iam_dot_credentials_dot_v1_dot_common__pb2,
+    common_pb2 as google_dot_cloud_dot_iam__credentials__v1_dot_proto_dot_common__pb2,
 )
 
 
@@ -26,23 +26,23 @@ class IAMCredentialsStub(object):
     """
         self.GenerateAccessToken = channel.unary_unary(
             "/google.iam.credentials.v1.IAMCredentials/GenerateAccessToken",
-            request_serializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.GenerateAccessTokenRequest.SerializeToString,
-            response_deserializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.GenerateAccessTokenResponse.FromString,
+            request_serializer=google_dot_cloud_dot_iam__credentials__v1_dot_proto_dot_common__pb2.GenerateAccessTokenRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_iam__credentials__v1_dot_proto_dot_common__pb2.GenerateAccessTokenResponse.FromString,
         )
         self.GenerateIdToken = channel.unary_unary(
             "/google.iam.credentials.v1.IAMCredentials/GenerateIdToken",
-            request_serializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.GenerateIdTokenRequest.SerializeToString,
-            response_deserializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.GenerateIdTokenResponse.FromString,
+            request_serializer=google_dot_cloud_dot_iam__credentials__v1_dot_proto_dot_common__pb2.GenerateIdTokenRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_iam__credentials__v1_dot_proto_dot_common__pb2.GenerateIdTokenResponse.FromString,
         )
         self.SignBlob = channel.unary_unary(
             "/google.iam.credentials.v1.IAMCredentials/SignBlob",
-            request_serializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.SignBlobRequest.SerializeToString,
-            response_deserializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.SignBlobResponse.FromString,
+            request_serializer=google_dot_cloud_dot_iam__credentials__v1_dot_proto_dot_common__pb2.SignBlobRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_iam__credentials__v1_dot_proto_dot_common__pb2.SignBlobResponse.FromString,
         )
         self.SignJwt = channel.unary_unary(
             "/google.iam.credentials.v1.IAMCredentials/SignJwt",
-            request_serializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.SignJwtRequest.SerializeToString,
-            response_deserializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.SignJwtResponse.FromString,
+            request_serializer=google_dot_cloud_dot_iam__credentials__v1_dot_proto_dot_common__pb2.SignJwtRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_iam__credentials__v1_dot_proto_dot_common__pb2.SignJwtResponse.FromString,
         )
 
 
@@ -91,23 +91,23 @@ def add_IAMCredentialsServicer_to_server(servicer, server):
     rpc_method_handlers = {
         "GenerateAccessToken": grpc.unary_unary_rpc_method_handler(
             servicer.GenerateAccessToken,
-            request_deserializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.GenerateAccessTokenRequest.FromString,
-            response_serializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.GenerateAccessTokenResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_iam__credentials__v1_dot_proto_dot_common__pb2.GenerateAccessTokenRequest.FromString,
+            response_serializer=google_dot_cloud_dot_iam__credentials__v1_dot_proto_dot_common__pb2.GenerateAccessTokenResponse.SerializeToString,
         ),
         "GenerateIdToken": grpc.unary_unary_rpc_method_handler(
             servicer.GenerateIdToken,
-            request_deserializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.GenerateIdTokenRequest.FromString,
-            response_serializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.GenerateIdTokenResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_iam__credentials__v1_dot_proto_dot_common__pb2.GenerateIdTokenRequest.FromString,
+            response_serializer=google_dot_cloud_dot_iam__credentials__v1_dot_proto_dot_common__pb2.GenerateIdTokenResponse.SerializeToString,
         ),
         "SignBlob": grpc.unary_unary_rpc_method_handler(
             servicer.SignBlob,
-            request_deserializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.SignBlobRequest.FromString,
-            response_serializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.SignBlobResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_iam__credentials__v1_dot_proto_dot_common__pb2.SignBlobRequest.FromString,
+            response_serializer=google_dot_cloud_dot_iam__credentials__v1_dot_proto_dot_common__pb2.SignBlobResponse.SerializeToString,
         ),
         "SignJwt": grpc.unary_unary_rpc_method_handler(
             servicer.SignJwt,
-            request_deserializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.SignJwtRequest.FromString,
-            response_serializer=google_dot_iam_dot_credentials_dot_v1_dot_common__pb2.SignJwtResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_iam__credentials__v1_dot_proto_dot_common__pb2.SignJwtRequest.FromString,
+            response_serializer=google_dot_cloud_dot_iam__credentials__v1_dot_proto_dot_common__pb2.SignJwtResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

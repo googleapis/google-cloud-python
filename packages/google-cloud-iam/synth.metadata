@@ -1,32 +1,25 @@
 {
   "sources": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "2.0.0",
-        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
-      }
-    },
-    {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-iam",
-        "sha": "b393c9bbfd3ac81bdffcee2abe9607665d80c782"
+        "remote": "https://github.com/googleapis/python-iam.git",
+        "sha": "c9202fc00dc9c5c59d378bca6dd9ff46ca3ceecb"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "756b174de4a122461993c1c583345533d819936d",
-        "internalRef": "308824110"
+        "sha": "cf41866c6f14f10a07aa1e2a1260fc0a2727d889",
+        "internalRef": "317812187"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "01b6f23d24b27878b48667ce597876d66b59780e"
+        "sha": "cf2eff09d0f5319a4dc5cdce2b6356d85af4a798"
       }
     }
   ],
@@ -37,8 +30,7 @@
         "apiName": "iam_credentials",
         "apiVersion": "v1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/iam/credentials/artman_iamcredentials_v1.yaml"
+        "generator": "bazel"
       }
     }
   ]
