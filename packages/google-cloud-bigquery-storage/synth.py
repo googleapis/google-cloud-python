@@ -175,7 +175,8 @@ s.replace(
     '\g<0>\n\n    session.install("google-cloud-bigquery")',
 )
 
-# Do not run unit tests with Python 3.8 yet
-s.replace("noxfile.py", r'("3\.6", "3\.7"), "3\.8"', "\g<1>")
+# TODO(busunkim): Use latest sphinx after microgenerator transition
+s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
+
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

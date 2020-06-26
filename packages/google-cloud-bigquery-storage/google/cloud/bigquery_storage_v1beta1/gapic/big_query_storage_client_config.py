@@ -42,7 +42,7 @@ config = {
                     "retry_params_name": "create_read_session",
                 },
                 "ReadRows": {
-                    "timeout_millis": 86400000,
+                    "timeout_millis": 21600000,
                     "retry_codes_name": "unary_streaming",
                     "retry_params_name": "read_rows",
                 },

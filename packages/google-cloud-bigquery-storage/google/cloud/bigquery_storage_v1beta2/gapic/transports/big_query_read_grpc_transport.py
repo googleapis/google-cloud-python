@@ -60,7 +60,7 @@ class BigQueryReadGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:  # pragma: no cover
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -79,7 +79,7 @@ class BigQueryReadGrpcTransport(object):
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
         self._stubs = {
-            "big_query_read_stub": storage_pb2_grpc.BigQueryReadStub(channel)
+            "big_query_read_stub": storage_pb2_grpc.BigQueryReadStub(channel),
         }
 
     @classmethod

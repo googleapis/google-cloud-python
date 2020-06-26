@@ -78,11 +78,17 @@ class TestBigQueryReadClient(object):
             create_channel.return_value = channel
             client = big_query_read_client.BigQueryReadClient()
 
-        response = client.create_read_session()
+        # Setup Request
+        parent = client.project_path("[PROJECT]")
+        read_session = {}
+
+        response = client.create_read_session(parent, read_session)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = storage_pb2.CreateReadSessionRequest()
+        expected_request = storage_pb2.CreateReadSessionRequest(
+            parent=parent, read_session=read_session
+        )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -94,8 +100,12 @@ class TestBigQueryReadClient(object):
             create_channel.return_value = channel
             client = big_query_read_client.BigQueryReadClient()
 
+        # Setup request
+        parent = client.project_path("[PROJECT]")
+        read_session = {}
+
         with pytest.raises(CustomException):
-            client.create_read_session()
+            client.create_read_session(parent, read_session)
 
     def test_read_rows(self):
         # Setup Expected Response
@@ -110,13 +120,18 @@ class TestBigQueryReadClient(object):
             create_channel.return_value = channel
             client = big_query_read_client.BigQueryReadClient()
 
-        response = client.read_rows()
+        # Setup Request
+        read_stream = client.read_stream_path(
+            "[PROJECT]", "[LOCATION]", "[SESSION]", "[STREAM]"
+        )
+
+        response = client.read_rows(read_stream)
         resources = list(response)
         assert len(resources) == 1
         assert expected_response == resources[0]
 
         assert len(channel.requests) == 1
-        expected_request = storage_pb2.ReadRowsRequest()
+        expected_request = storage_pb2.ReadRowsRequest(read_stream=read_stream)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -128,8 +143,13 @@ class TestBigQueryReadClient(object):
             create_channel.return_value = channel
             client = big_query_read_client.BigQueryReadClient()
 
+        # Setup request
+        read_stream = client.read_stream_path(
+            "[PROJECT]", "[LOCATION]", "[SESSION]", "[STREAM]"
+        )
+
         with pytest.raises(CustomException):
-            client.read_rows()
+            client.read_rows(read_stream)
 
     def test_split_read_stream(self):
         # Setup Expected Response
@@ -143,11 +163,16 @@ class TestBigQueryReadClient(object):
             create_channel.return_value = channel
             client = big_query_read_client.BigQueryReadClient()
 
-        response = client.split_read_stream()
+        # Setup Request
+        name = client.read_stream_path(
+            "[PROJECT]", "[LOCATION]", "[SESSION]", "[STREAM]"
+        )
+
+        response = client.split_read_stream(name)
         assert expected_response == response
 
         assert len(channel.requests) == 1
-        expected_request = storage_pb2.SplitReadStreamRequest()
+        expected_request = storage_pb2.SplitReadStreamRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -159,5 +184,10 @@ class TestBigQueryReadClient(object):
             create_channel.return_value = channel
             client = big_query_read_client.BigQueryReadClient()
 
+        # Setup request
+        name = client.read_stream_path(
+            "[PROJECT]", "[LOCATION]", "[SESSION]", "[STREAM]"
+        )
+
         with pytest.raises(CustomException):
-            client.split_read_stream()
+            client.split_read_stream(name)

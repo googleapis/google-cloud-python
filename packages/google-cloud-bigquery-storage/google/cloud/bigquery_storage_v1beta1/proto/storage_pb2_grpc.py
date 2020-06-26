@@ -2,7 +2,7 @@
 import grpc
 
 from google.cloud.bigquery_storage_v1beta1.proto import (
-    storage_pb2 as google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_storage__pb2,
+    storage_pb2 as google_dot_cloud_dot_bigquery__storage__v1beta1_dot_proto_dot_storage__pb2,
 )
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
@@ -21,28 +21,28 @@ class BigQueryStorageStub(object):
     """
         self.CreateReadSession = channel.unary_unary(
             "/google.cloud.bigquery.storage.v1beta1.BigQueryStorage/CreateReadSession",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_storage__pb2.CreateReadSessionRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_storage__pb2.ReadSession.FromString,
+            request_serializer=google_dot_cloud_dot_bigquery__storage__v1beta1_dot_proto_dot_storage__pb2.CreateReadSessionRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery__storage__v1beta1_dot_proto_dot_storage__pb2.ReadSession.FromString,
         )
         self.ReadRows = channel.unary_stream(
             "/google.cloud.bigquery.storage.v1beta1.BigQueryStorage/ReadRows",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_storage__pb2.ReadRowsRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_storage__pb2.ReadRowsResponse.FromString,
+            request_serializer=google_dot_cloud_dot_bigquery__storage__v1beta1_dot_proto_dot_storage__pb2.ReadRowsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery__storage__v1beta1_dot_proto_dot_storage__pb2.ReadRowsResponse.FromString,
         )
         self.BatchCreateReadSessionStreams = channel.unary_unary(
             "/google.cloud.bigquery.storage.v1beta1.BigQueryStorage/BatchCreateReadSessionStreams",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_storage__pb2.BatchCreateReadSessionStreamsRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_storage__pb2.BatchCreateReadSessionStreamsResponse.FromString,
+            request_serializer=google_dot_cloud_dot_bigquery__storage__v1beta1_dot_proto_dot_storage__pb2.BatchCreateReadSessionStreamsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery__storage__v1beta1_dot_proto_dot_storage__pb2.BatchCreateReadSessionStreamsResponse.FromString,
         )
         self.FinalizeStream = channel.unary_unary(
             "/google.cloud.bigquery.storage.v1beta1.BigQueryStorage/FinalizeStream",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_storage__pb2.FinalizeStreamRequest.SerializeToString,
+            request_serializer=google_dot_cloud_dot_bigquery__storage__v1beta1_dot_proto_dot_storage__pb2.FinalizeStreamRequest.SerializeToString,
             response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
         self.SplitReadStream = channel.unary_unary(
             "/google.cloud.bigquery.storage.v1beta1.BigQueryStorage/SplitReadStream",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_storage__pb2.SplitReadStreamRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_storage__pb2.SplitReadStreamResponse.FromString,
+            request_serializer=google_dot_cloud_dot_bigquery__storage__v1beta1_dot_proto_dot_storage__pb2.SplitReadStreamRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery__storage__v1beta1_dot_proto_dot_storage__pb2.SplitReadStreamResponse.FromString,
         )
 
 
@@ -138,28 +138,28 @@ def add_BigQueryStorageServicer_to_server(servicer, server):
     rpc_method_handlers = {
         "CreateReadSession": grpc.unary_unary_rpc_method_handler(
             servicer.CreateReadSession,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_storage__pb2.CreateReadSessionRequest.FromString,
-            response_serializer=google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_storage__pb2.ReadSession.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_bigquery__storage__v1beta1_dot_proto_dot_storage__pb2.CreateReadSessionRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery__storage__v1beta1_dot_proto_dot_storage__pb2.ReadSession.SerializeToString,
         ),
         "ReadRows": grpc.unary_stream_rpc_method_handler(
             servicer.ReadRows,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_storage__pb2.ReadRowsRequest.FromString,
-            response_serializer=google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_storage__pb2.ReadRowsResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_bigquery__storage__v1beta1_dot_proto_dot_storage__pb2.ReadRowsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery__storage__v1beta1_dot_proto_dot_storage__pb2.ReadRowsResponse.SerializeToString,
         ),
         "BatchCreateReadSessionStreams": grpc.unary_unary_rpc_method_handler(
             servicer.BatchCreateReadSessionStreams,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_storage__pb2.BatchCreateReadSessionStreamsRequest.FromString,
-            response_serializer=google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_storage__pb2.BatchCreateReadSessionStreamsResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_bigquery__storage__v1beta1_dot_proto_dot_storage__pb2.BatchCreateReadSessionStreamsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery__storage__v1beta1_dot_proto_dot_storage__pb2.BatchCreateReadSessionStreamsResponse.SerializeToString,
         ),
         "FinalizeStream": grpc.unary_unary_rpc_method_handler(
             servicer.FinalizeStream,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_storage__pb2.FinalizeStreamRequest.FromString,
+            request_deserializer=google_dot_cloud_dot_bigquery__storage__v1beta1_dot_proto_dot_storage__pb2.FinalizeStreamRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         "SplitReadStream": grpc.unary_unary_rpc_method_handler(
             servicer.SplitReadStream,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_storage__pb2.SplitReadStreamRequest.FromString,
-            response_serializer=google_dot_cloud_dot_bigquery_dot_storage__v1beta1_dot_proto_dot_storage__pb2.SplitReadStreamResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_bigquery__storage__v1beta1_dot_proto_dot_storage__pb2.SplitReadStreamRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery__storage__v1beta1_dot_proto_dot_storage__pb2.SplitReadStreamResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

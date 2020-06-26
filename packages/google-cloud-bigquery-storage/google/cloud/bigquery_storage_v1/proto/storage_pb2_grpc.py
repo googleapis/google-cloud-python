@@ -2,10 +2,10 @@
 import grpc
 
 from google.cloud.bigquery_storage_v1.proto import (
-    storage_pb2 as google_dot_cloud_dot_bigquery_dot_storage__v1_dot_proto_dot_storage__pb2,
+    storage_pb2 as google_dot_cloud_dot_bigquery__storage__v1_dot_proto_dot_storage__pb2,
 )
 from google.cloud.bigquery_storage_v1.proto import (
-    stream_pb2 as google_dot_cloud_dot_bigquery_dot_storage__v1_dot_proto_dot_stream__pb2,
+    stream_pb2 as google_dot_cloud_dot_bigquery__storage__v1_dot_proto_dot_stream__pb2,
 )
 
 
@@ -23,18 +23,18 @@ class BigQueryReadStub(object):
     """
         self.CreateReadSession = channel.unary_unary(
             "/google.cloud.bigquery.storage.v1.BigQueryRead/CreateReadSession",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_storage__v1_dot_proto_dot_storage__pb2.CreateReadSessionRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_bigquery_dot_storage__v1_dot_proto_dot_stream__pb2.ReadSession.FromString,
+            request_serializer=google_dot_cloud_dot_bigquery__storage__v1_dot_proto_dot_storage__pb2.CreateReadSessionRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery__storage__v1_dot_proto_dot_stream__pb2.ReadSession.FromString,
         )
         self.ReadRows = channel.unary_stream(
             "/google.cloud.bigquery.storage.v1.BigQueryRead/ReadRows",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_storage__v1_dot_proto_dot_storage__pb2.ReadRowsRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_bigquery_dot_storage__v1_dot_proto_dot_storage__pb2.ReadRowsResponse.FromString,
+            request_serializer=google_dot_cloud_dot_bigquery__storage__v1_dot_proto_dot_storage__pb2.ReadRowsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery__storage__v1_dot_proto_dot_storage__pb2.ReadRowsResponse.FromString,
         )
         self.SplitReadStream = channel.unary_unary(
             "/google.cloud.bigquery.storage.v1.BigQueryRead/SplitReadStream",
-            request_serializer=google_dot_cloud_dot_bigquery_dot_storage__v1_dot_proto_dot_storage__pb2.SplitReadStreamRequest.SerializeToString,
-            response_deserializer=google_dot_cloud_dot_bigquery_dot_storage__v1_dot_proto_dot_storage__pb2.SplitReadStreamResponse.FromString,
+            request_serializer=google_dot_cloud_dot_bigquery__storage__v1_dot_proto_dot_storage__pb2.SplitReadStreamRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_bigquery__storage__v1_dot_proto_dot_storage__pb2.SplitReadStreamResponse.FromString,
         )
 
 
@@ -105,18 +105,18 @@ def add_BigQueryReadServicer_to_server(servicer, server):
     rpc_method_handlers = {
         "CreateReadSession": grpc.unary_unary_rpc_method_handler(
             servicer.CreateReadSession,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_storage__v1_dot_proto_dot_storage__pb2.CreateReadSessionRequest.FromString,
-            response_serializer=google_dot_cloud_dot_bigquery_dot_storage__v1_dot_proto_dot_stream__pb2.ReadSession.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_bigquery__storage__v1_dot_proto_dot_storage__pb2.CreateReadSessionRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery__storage__v1_dot_proto_dot_stream__pb2.ReadSession.SerializeToString,
         ),
         "ReadRows": grpc.unary_stream_rpc_method_handler(
             servicer.ReadRows,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_storage__v1_dot_proto_dot_storage__pb2.ReadRowsRequest.FromString,
-            response_serializer=google_dot_cloud_dot_bigquery_dot_storage__v1_dot_proto_dot_storage__pb2.ReadRowsResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_bigquery__storage__v1_dot_proto_dot_storage__pb2.ReadRowsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery__storage__v1_dot_proto_dot_storage__pb2.ReadRowsResponse.SerializeToString,
         ),
         "SplitReadStream": grpc.unary_unary_rpc_method_handler(
             servicer.SplitReadStream,
-            request_deserializer=google_dot_cloud_dot_bigquery_dot_storage__v1_dot_proto_dot_storage__pb2.SplitReadStreamRequest.FromString,
-            response_serializer=google_dot_cloud_dot_bigquery_dot_storage__v1_dot_proto_dot_storage__pb2.SplitReadStreamResponse.SerializeToString,
+            request_deserializer=google_dot_cloud_dot_bigquery__storage__v1_dot_proto_dot_storage__pb2.SplitReadStreamRequest.FromString,
+            response_serializer=google_dot_cloud_dot_bigquery__storage__v1_dot_proto_dot_storage__pb2.SplitReadStreamResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

@@ -42,7 +42,7 @@ from google.protobuf import empty_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-bigquery-storage"
+    "google-cloud-bigquery-storage",
 ).version
 
 
@@ -167,12 +167,12 @@ class BigQueryStorageClient(object):
                 self.transport = transport
         else:
             self.transport = big_query_storage_grpc_transport.BigQueryStorageGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -183,7 +183,7 @@ class BigQueryStorageClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -238,9 +238,9 @@ class BigQueryStorageClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_storage_v1beta1.types.TableReference`
-            parent (str): Required. String of the form ``projects/{project_id}`` indicating the
-                project this ReadSession is associated with. This is the project that
-                will be billed for usage.
+            parent (str): Required. String of the form ``projects/{project_id}`` indicating
+                the project this ReadSession is associated with. This is the project
+                that will be billed for usage.
             table_modifiers (Union[dict, ~google.cloud.bigquery_storage_v1beta1.types.TableModifiers]): Any modifiers to the Table (e.g. snapshot timestamp).
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -385,7 +385,7 @@ class BigQueryStorageClient(object):
                 client_info=self._client_info,
             )
 
-        request = storage_pb2.ReadRowsRequest(read_position=read_position)
+        request = storage_pb2.ReadRowsRequest(read_position=read_position,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -473,7 +473,7 @@ class BigQueryStorageClient(object):
             )
 
         request = storage_pb2.BatchCreateReadSessionStreamsRequest(
-            session=session, requested_streams=requested_streams
+            session=session, requested_streams=requested_streams,
         )
         if metadata is None:
             metadata = []
@@ -526,7 +526,7 @@ class BigQueryStorageClient(object):
             >>> client.finalize_stream(stream)
 
         Args:
-            stream (Union[dict, ~google.cloud.bigquery_storage_v1beta1.types.Stream]): Stream to finalize.
+            stream (Union[dict, ~google.cloud.bigquery_storage_v1beta1.types.Stream]): Required. Stream to finalize.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_storage_v1beta1.types.Stream`
@@ -557,7 +557,7 @@ class BigQueryStorageClient(object):
                 client_info=self._client_info,
             )
 
-        request = storage_pb2.FinalizeStreamRequest(stream=stream)
+        request = storage_pb2.FinalizeStreamRequest(stream=stream,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -584,11 +584,12 @@ class BigQueryStorageClient(object):
         metadata=None,
     ):
         """
-        Splits a given read stream into two Streams. These streams are referred
-        to as the primary and the residual of the split. The original stream can
-        still be read from in the same manner as before. Both of the returned
-        streams can also be read from, and the total rows return by both child
-        streams will be the same as the rows read from the original stream.
+        Splits a given read stream into two Streams. These streams are
+        referred to as the primary and the residual of the split. The original
+        stream can still be read from in the same manner as before. Both of the
+        returned streams can also be read from, and the total rows return by
+        both child streams will be the same as the rows read from the original
+        stream.
 
         Moreover, the two child streams will be allocated back to back in the
         original Stream. Concretely, it is guaranteed that for streams Original,
@@ -609,7 +610,7 @@ class BigQueryStorageClient(object):
             >>> response = client.split_read_stream(original_stream)
 
         Args:
-            original_stream (Union[dict, ~google.cloud.bigquery_storage_v1beta1.types.Stream]): Stream to split.
+            original_stream (Union[dict, ~google.cloud.bigquery_storage_v1beta1.types.Stream]): Required. Stream to split.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_storage_v1beta1.types.Stream`
@@ -651,7 +652,7 @@ class BigQueryStorageClient(object):
             )
 
         request = storage_pb2.SplitReadStreamRequest(
-            original_stream=original_stream, fraction=fraction
+            original_stream=original_stream, fraction=fraction,
         )
         if metadata is None:
             metadata = []

@@ -22,4 +22,8 @@ from google.cloud.bigquery_storage_v1 import enums
 from google.cloud.bigquery_storage_v1 import types
 
 
-__all__ = ("enums", "types", "BigQueryReadClient")
+__all__ = (
+    "enums",
+    "types",
+    "BigQueryReadClient",
+)

@@ -27,9 +27,16 @@ from google.cloud.bigquery_storage_v1.proto import stream_pb2
 from google.protobuf import timestamp_pb2
 
 
-_shared_modules = [timestamp_pb2]
+_shared_modules = [
+    timestamp_pb2,
+]
 
-_local_modules = [arrow_pb2, avro_pb2, storage_pb2, stream_pb2]
+_local_modules = [
+    arrow_pb2,
+    avro_pb2,
+    storage_pb2,
+    stream_pb2,
+]
 
 names = []
 
