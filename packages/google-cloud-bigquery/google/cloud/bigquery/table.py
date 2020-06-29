@@ -1633,6 +1633,7 @@ class RowIterator(HTTPIterator):
         dtypes=None,
         progress_bar_type=None,
         create_bqstorage_client=True,
+        date_as_object=True,
     ):
         """Create a pandas DataFrame by loading all pages of a query.
 
@@ -1673,15 +1674,21 @@ class RowIterator(HTTPIterator):
                   progress bar as a graphical dialog box.
 
                 ..versionadded:: 1.11.0
-            create_bqstorage_client (bool):
-                Optional. If ``True`` (default), create a BigQuery Storage API
-                client using the default API settings. The BigQuery Storage API
+            create_bqstorage_client (Optional[bool]):
+                If ``True`` (default), create a BigQuery Storage API client
+                using the default API settings. The BigQuery Storage API
                 is a faster way to fetch rows from BigQuery. See the
                 ``bqstorage_client`` parameter for more information.
 
                 This argument does nothing if ``bqstorage_client`` is supplied.
 
                 ..versionadded:: 1.24.0
+
+            date_as_object (Optional[bool]):
+                If ``True`` (default), cast dates to objects. If ``False``, convert
+                to datetime64[ns] dtype.
+
+                ..versionadded:: 1.26.0
 
         Returns:
             pandas.DataFrame:
@@ -1722,7 +1729,7 @@ class RowIterator(HTTPIterator):
                 bqstorage_client=bqstorage_client,
                 create_bqstorage_client=create_bqstorage_client,
             )
-            df = record_batch.to_pandas()
+            df = record_batch.to_pandas(date_as_object=date_as_object)
             for column in dtypes:
                 df[column] = pandas.Series(df[column], dtype=dtypes[column])
             return df
@@ -1799,6 +1806,7 @@ class _EmptyRowIterator(object):
         dtypes=None,
         progress_bar_type=None,
         create_bqstorage_client=True,
+        date_as_object=True,
     ):
         """Create an empty dataframe.
 
@@ -1807,6 +1815,7 @@ class _EmptyRowIterator(object):
             dtypes (Any): Ignored. Added for compatibility with RowIterator.
             progress_bar_type (Any): Ignored. Added for compatibility with RowIterator.
             create_bqstorage_client (bool): Ignored. Added for compatibility with RowIterator.
+            date_as_object (bool): Ignored. Added for compatibility with RowIterator.
 
         Returns:
             pandas.DataFrame: An empty :class:`~pandas.DataFrame`.

@@ -3320,6 +3320,7 @@ class QueryJob(_AsyncJob):
         dtypes=None,
         progress_bar_type=None,
         create_bqstorage_client=True,
+        date_as_object=True,
     ):
         """Return a pandas DataFrame from a QueryJob
 
@@ -3350,15 +3351,21 @@ class QueryJob(_AsyncJob):
                 for details.
 
                 ..versionadded:: 1.11.0
-            create_bqstorage_client (bool):
-                Optional. If ``True`` (default), create a BigQuery Storage API
-                client using the default API settings. The BigQuery Storage API
+            create_bqstorage_client (Optional[bool]):
+                If ``True`` (default), create a BigQuery Storage API client
+                using the default API settings. The BigQuery Storage API
                 is a faster way to fetch rows from BigQuery. See the
                 ``bqstorage_client`` parameter for more information.
 
                 This argument does nothing if ``bqstorage_client`` is supplied.
 
                 ..versionadded:: 1.24.0
+
+            date_as_object (Optional[bool]):
+                If ``True`` (default), cast dates to objects. If ``False``, convert
+                to datetime64[ns] dtype.
+
+                ..versionadded:: 1.26.0
 
         Returns:
             A :class:`~pandas.DataFrame` populated with row data and column
@@ -3373,6 +3380,7 @@ class QueryJob(_AsyncJob):
             dtypes=dtypes,
             progress_bar_type=progress_bar_type,
             create_bqstorage_client=create_bqstorage_client,
+            date_as_object=date_as_object,
         )
 
     def __iter__(self):

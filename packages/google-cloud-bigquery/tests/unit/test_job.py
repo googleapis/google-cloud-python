@@ -5504,7 +5504,15 @@ class TestQueryJob(unittest.TestCase, _Base):
             },
         }
         row_data = [
-            ["1.4338368E9", "420", "1.1", "1.77", "Cash", "true", "1999-12-01"],
+            [
+                "1.4338368E9",
+                "420",
+                "1.1",
+                "1.77",
+                "Cto_dataframeash",
+                "true",
+                "1999-12-01",
+            ],
             ["1.3878117E9", "2580", "17.7", "28.5", "Cash", "false", "1953-06-14"],
             ["1.3855653E9", "2280", "4.4", "7.1", "Credit", "true", "1981-11-04"],
         ]
@@ -5531,6 +5539,69 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(df.km.dtype.name, "float16")
         self.assertEqual(df.payment_type.dtype.name, "object")
         self.assertEqual(df.complete.dtype.name, "bool")
+        self.assertEqual(df.date.dtype.name, "object")
+
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_column_date_dtypes(self):
+        begun_resource = self._make_resource()
+        query_resource = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "totalRows": "1",
+            "schema": {"fields": [{"name": "date", "type": "DATE"}]},
+        }
+        row_data = [
+            ["1999-12-01"],
+        ]
+        rows = [{"f": [{"v": field} for field in row]} for row in row_data]
+        query_resource["rows"] = rows
+        done_resource = copy.deepcopy(begun_resource)
+        done_resource["status"] = {"state": "DONE"}
+        connection = _make_connection(
+            begun_resource, query_resource, done_resource, query_resource
+        )
+        client = _make_client(project=self.PROJECT, connection=connection)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        df = job.to_dataframe(date_as_object=False, create_bqstorage_client=False)
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 1)  # verify the number of rows
+        exp_columns = [field["name"] for field in query_resource["schema"]["fields"]]
+        self.assertEqual(list(df), exp_columns)  # verify the column names
+
+        self.assertEqual(df.date.dtype.name, "datetime64[ns]")
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_column_date_dtypes_wo_pyarrow(self):
+        begun_resource = self._make_resource()
+        query_resource = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "totalRows": "1",
+            "schema": {"fields": [{"name": "date", "type": "DATE"}]},
+        }
+        row_data = [
+            ["1999-12-01"],
+        ]
+        rows = [{"f": [{"v": field} for field in row]} for row in row_data]
+        query_resource["rows"] = rows
+        done_resource = copy.deepcopy(begun_resource)
+        done_resource["status"] = {"state": "DONE"}
+        connection = _make_connection(
+            begun_resource, query_resource, done_resource, query_resource
+        )
+        client = _make_client(project=self.PROJECT, connection=connection)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+
+        with mock.patch("google.cloud.bigquery.table.pyarrow", None):
+            df = job.to_dataframe(date_as_object=False, create_bqstorage_client=False)
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 1)  # verify the number of rows
+        exp_columns = [field["name"] for field in query_resource["schema"]["fields"]]
+        self.assertEqual(list(df), exp_columns)  # verify the column names
+
         self.assertEqual(df.date.dtype.name, "object")
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
