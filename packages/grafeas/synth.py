@@ -363,4 +363,7 @@ s.move(templated_files)
 # TODO(busunkim): Use latest sphinx after microgenerator transition
 s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
 
+# Library code is in "grafeas" instead of "google"
+s.reaplce("noxfile.py", """['"]google['"]""", "grafeas")
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
