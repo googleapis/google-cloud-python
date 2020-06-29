@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+### [1.0.1](https://www.github.com/googleapis/python-iam/compare/v1.0.0...v1.0.1) (2020-06-29)
+
+
+### Bug Fixes
+
+* update default retry config ([#21](https://www.github.com/googleapis/python-iam/issues/21)) ([840de7e](https://www.github.com/googleapis/python-iam/commit/840de7e974f1214d420d7ff9fc990cd9710baa66))
+
+
+### Documentation
+
+* fix a tiny typo in the README ([#20](https://www.github.com/googleapis/python-iam/issues/20)) ([ef36fe8](https://www.github.com/googleapis/python-iam/commit/ef36fe8eac9b0ff6bd57132c71135718c3c55f9d))
+
 ## [1.0.0](https://www.github.com/googleapis/python-iam/compare/v0.3.0...v1.0.0) (2020-05-19)
 
 
