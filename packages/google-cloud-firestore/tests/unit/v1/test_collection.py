@@ -311,7 +311,7 @@ class TestCollectionReference(unittest.TestCase):
     def _make_field_filter_pb(field_path, op_string, value):
         from google.cloud.firestore_v1.proto import query_pb2
         from google.cloud.firestore_v1 import _helpers
-        from google.cloud.firestore_v1.query import _enum_from_op_string
+        from google.cloud.firestore_v1.base_query import _enum_from_op_string
 
         return query_pb2.StructuredQuery.FieldFilter(
             field=query_pb2.StructuredQuery.FieldReference(field_path=field_path),
@@ -339,7 +339,7 @@ class TestCollectionReference(unittest.TestCase):
     @staticmethod
     def _make_order_pb(field_path, direction):
         from google.cloud.firestore_v1.proto import query_pb2
-        from google.cloud.firestore_v1.query import _enum_from_direction
+        from google.cloud.firestore_v1.base_query import _enum_from_direction
 
         return query_pb2.StructuredQuery.Order(
             field=query_pb2.StructuredQuery.FieldReference(field_path=field_path),
