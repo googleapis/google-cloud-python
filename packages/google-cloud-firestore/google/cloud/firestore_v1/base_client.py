@@ -32,7 +32,7 @@ from google.cloud.client import ClientWithProject
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1 import __version__
 from google.cloud.firestore_v1 import types
-from google.cloud.firestore_v1.document import DocumentSnapshot
+from google.cloud.firestore_v1.base_document import DocumentSnapshot
 from google.cloud.firestore_v1.field_path import render_field_path
 from google.cloud.firestore_v1.gapic import firestore_client
 from google.cloud.firestore_v1.gapic.transports import firestore_grpc_transport
