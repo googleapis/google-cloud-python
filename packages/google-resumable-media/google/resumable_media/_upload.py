@@ -198,7 +198,7 @@ class SimpleUpload(UploadBase):
         self._headers[_CONTENT_TYPE_HEADER] = content_type
         return _POST, self.upload_url, data, self._headers
 
-    def transmit(self, transport, data, content_type):
+    def transmit(self, transport, data, content_type, timeout=None):
         """Transmit the resource to be uploaded.
 
         Args:
@@ -207,6 +207,13 @@ class SimpleUpload(UploadBase):
             data (bytes): The resource content to be uploaded.
             content_type (str): The content type of the resource, e.g. a JPEG
                 image has content type ``image/jpeg``.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
 
         Raises:
             NotImplementedError: Always, since virtual.
@@ -274,7 +281,7 @@ class MultipartUpload(UploadBase):
         self._headers[_CONTENT_TYPE_HEADER] = multipart_content_type
         return _POST, self.upload_url, content, self._headers
 
-    def transmit(self, transport, data, metadata, content_type):
+    def transmit(self, transport, data, metadata, content_type, timeout=None):
         """Transmit the resource to be uploaded.
 
         Args:
@@ -285,6 +292,13 @@ class MultipartUpload(UploadBase):
                 ACL list.
             content_type (str): The content type of the resource, e.g. a JPEG
                 image has content type ``image/jpeg``.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
 
         Raises:
             NotImplementedError: Always, since virtual.
@@ -468,6 +482,7 @@ class ResumableUpload(UploadBase):
         content_type,
         total_bytes=None,
         stream_final=True,
+        timeout=None,
     ):
         """Initiate a resumable upload.
 
@@ -499,6 +514,13 @@ class ResumableUpload(UploadBase):
                 "final" (i.e. no more bytes will be added to it). In this case
                 we determine the upload size from the size of the stream. If
                 ``total_bytes`` is passed, this argument will be ignored.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
 
         Raises:
             NotImplementedError: Always, since virtual.
@@ -626,7 +648,7 @@ class ResumableUpload(UploadBase):
                 )
             self._bytes_uploaded = int(match.group(u"end_byte")) + 1
 
-    def transmit_next_chunk(self, transport):
+    def transmit_next_chunk(self, transport, timeout=None):
         """Transmit the next chunk of the resource to be uploaded.
 
         If the current upload was initiated with ``stream_final=False``,
@@ -637,6 +659,13 @@ class ResumableUpload(UploadBase):
         Args:
             transport (object): An object which can make authenticated
                 requests.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
 
         Raises:
             NotImplementedError: Always, since virtual.

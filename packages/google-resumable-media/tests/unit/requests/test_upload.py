@@ -62,6 +62,20 @@ class TestSimpleUpload(object):
         )
         assert upload.finished
 
+    def test_transmit_w_custom_timeout(self):
+        data = b"I have got a lovely bunch of coconuts."
+        content_type = BASIC_CONTENT
+        upload = upload_mod.SimpleUpload(SIMPLE_URL)
+        transport = mock.Mock(spec=["request"])
+        transport.request.return_value = _make_response()
+
+        upload.transmit(transport, data, content_type, timeout=12.6)
+
+        expected_headers = {u"content-type": content_type}
+        transport.request.assert_called_once_with(
+            u"POST", SIMPLE_URL, data=data, headers=expected_headers, timeout=12.6,
+        )
+
 
 class TestMultipartUpload(object):
     @mock.patch(u"google.resumable_media._upload.get_boundary", return_value=b"==4==")
@@ -96,6 +110,44 @@ class TestMultipartUpload(object):
             data=expected_payload,
             headers=upload_headers,
             timeout=EXPECTED_TIMEOUT,
+        )
+        assert upload.finished
+        mock_get_boundary.assert_called_once_with()
+
+    @mock.patch(u"google.resumable_media._upload.get_boundary", return_value=b"==4==")
+    def test_transmit_w_custom_timeout(self, mock_get_boundary):
+        data = b"Mock data here and there."
+        metadata = {u"Hey": u"You", u"Guys": u"90909"}
+        content_type = BASIC_CONTENT
+        upload = upload_mod.MultipartUpload(MULTIPART_URL)
+        transport = mock.Mock(spec=["request"])
+        transport.request.return_value = _make_response()
+
+        upload.transmit(transport, data, metadata, content_type, timeout=12.6)
+
+        expected_payload = b"".join(
+            (
+                b"--==4==\r\n",
+                JSON_TYPE_LINE,
+                b"\r\n",
+                json.dumps(metadata).encode(u"utf-8"),
+                b"\r\n",
+                b"--==4==\r\n",
+                b"content-type: text/plain\r\n",
+                b"\r\n",
+                b"Mock data here and there.\r\n",
+                b"--==4==--",
+            )
+        )
+        multipart_type = b'multipart/related; boundary="==4=="'
+        upload_headers = {u"content-type": multipart_type}
+
+        transport.request.assert_called_once_with(
+            u"POST",
+            MULTIPART_URL,
+            data=expected_payload,
+            headers=upload_headers,
+            timeout=12.6,
         )
         assert upload.finished
         mock_get_boundary.assert_called_once_with()
@@ -142,6 +194,37 @@ class TestResumableUpload(object):
             data=json_bytes,
             headers=expected_headers,
             timeout=EXPECTED_TIMEOUT,
+        )
+
+    def test_initiate_w_custom_timeout(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        data = b"Knock knock who is there"
+        stream = io.BytesIO(data)
+        metadata = {u"name": u"got-jokes.txt"}
+
+        transport = mock.Mock(spec=["request"])
+        location = (u"http://test.invalid?upload_id=AACODBBBxuw9u3AA",)
+        response_headers = {u"location": location}
+        post_response = _make_response(headers=response_headers)
+        transport.request.return_value = post_response
+
+        upload.initiate(
+            transport, stream, metadata, BASIC_CONTENT, total_bytes=100, timeout=12.6,
+        )
+
+        # Make sure timeout was passed to the transport
+        json_bytes = b'{"name": "got-jokes.txt"}'
+        expected_headers = {
+            u"content-type": JSON_TYPE,
+            u"x-upload-content-type": BASIC_CONTENT,
+            u"x-upload-content-length": u"{:d}".format(100),
+        }
+        transport.request.assert_called_once_with(
+            u"POST",
+            RESUMABLE_URL,
+            data=json_bytes,
+            headers=expected_headers,
+            timeout=12.6,
         )
 
     @staticmethod
@@ -194,6 +277,38 @@ class TestResumableUpload(object):
             data=payload,
             headers=expected_headers,
             timeout=EXPECTED_TIMEOUT,
+        )
+
+    def test_transmit_next_chunk_w_custom_timeout(self):
+        data = b"This time the data is official."
+        upload = self._upload_in_flight(data)
+
+        # Make a fake chunk size smaller than 256 KB.
+        chunk_size = 10
+        upload._chunk_size = chunk_size
+
+        # Make a fake 308 response.
+        response_headers = {u"range": u"bytes=0-{:d}".format(chunk_size - 1)}
+        transport = self._chunk_mock(
+            resumable_media.PERMANENT_REDIRECT, response_headers
+        )
+
+        # Make request and check the return value (against the mock).
+        upload.transmit_next_chunk(transport, timeout=12.6)
+
+        # Make sure timeout was passed to the transport
+        payload = data[:chunk_size]
+        content_range = u"bytes 0-{:d}/{:d}".format(chunk_size - 1, len(data))
+        expected_headers = {
+            u"content-range": content_range,
+            u"content-type": BASIC_CONTENT,
+        }
+        transport.request.assert_called_once_with(
+            u"PUT",
+            upload.resumable_url,
+            data=payload,
+            headers=expected_headers,
+            timeout=12.6,
         )
 
     def test_recover(self):

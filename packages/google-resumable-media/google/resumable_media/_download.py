@@ -171,7 +171,7 @@ class Download(DownloadBase):
             response, _ACCEPTABLE_STATUS_CODES, self._get_status_code
         )
 
-    def consume(self, transport):
+    def consume(self, transport, timeout=None):
         """Consume the resource to be downloaded.
 
         If a ``stream`` is attached to this download, then the downloaded
@@ -180,6 +180,13 @@ class Download(DownloadBase):
         Args:
             transport (object): An object which can make authenticated
                 requests.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
 
         Raises:
             NotImplementedError: Always, since virtual.
@@ -398,12 +405,19 @@ class ChunkedDownload(DownloadBase):
         # Write the response body to the stream.
         self._stream.write(response_body)
 
-    def consume_next_chunk(self, transport):
+    def consume_next_chunk(self, transport, timeout=None):
         """Consume the next chunk of the resource to be downloaded.
 
         Args:
             transport (object): An object which can make authenticated
                 requests.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
 
         Raises:
             NotImplementedError: Always, since virtual.
