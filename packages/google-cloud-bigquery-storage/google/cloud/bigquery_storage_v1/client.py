@@ -74,11 +74,16 @@ class BigQueryReadClient(big_query_read_client.BigQueryReadClient):
             >>> # TODO: Initialize `parent`:
             >>> parent = 'projects/your-billing-project-id'
             >>>
-            >>> session = client.create_read_session(table, parent)
-            >>> stream=session.streams[0],  # TODO: Read the other streams.
-            ...
+            >>> requested_session = bigquery_storage_v1.types.ReadSession(
+            ...     table=table,
+            ...     data_format=bigquery_storage_v1.enums.DataFormat.AVRO,
+            ... )
+            >>> session = client.create_read_session(parent, requested_session)
             >>>
-            >>> for element in client.read_rows(stream):
+            >>> stream = session.streams[0],  # TODO: Also read any other streams.
+            >>> read_rows_stream = client.read_rows(stream.name)
+            >>>
+            >>> for element in read_rows_stream.rows(session):
             ...     # process element
             ...     pass
 
