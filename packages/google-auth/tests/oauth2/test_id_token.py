@@ -95,6 +95,7 @@ def test_verify_token_args(_fetch_certs, decode):
 
 @mock.patch("google.oauth2.id_token.verify_token", autospec=True)
 def test_verify_oauth2_token(verify_token):
+    verify_token.return_value = {"iss": "accounts.google.com"}
     result = id_token.verify_oauth2_token(
         mock.sentinel.token, mock.sentinel.request, audience=mock.sentinel.audience
     )
@@ -106,6 +107,16 @@ def test_verify_oauth2_token(verify_token):
         audience=mock.sentinel.audience,
         certs_url=id_token._GOOGLE_OAUTH2_CERTS_URL,
     )
+
+
+@mock.patch("google.oauth2.id_token.verify_token", autospec=True)
+def test_verify_oauth2_token_invalid_iss(verify_token):
+    verify_token.return_value = {"iss": "invalid_issuer"}
+
+    with pytest.raises(exceptions.GoogleAuthError):
+        id_token.verify_oauth2_token(
+            mock.sentinel.token, mock.sentinel.request, audience=mock.sentinel.audience
+        )
 
 
 @mock.patch("google.oauth2.id_token.verify_token", autospec=True)

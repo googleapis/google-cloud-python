@@ -80,6 +80,8 @@ _GOOGLE_APIS_CERTS_URL = (
     "/securetoken@system.gserviceaccount.com"
 )
 
+_GOOGLE_ISSUERS = ["accounts.google.com", "https://accounts.google.com"]
+
 
 def _fetch_certs(request, certs_url):
     """Fetches certificates.
@@ -140,10 +142,22 @@ def verify_oauth2_token(id_token, request, audience=None):
 
     Returns:
         Mapping[str, Any]: The decoded token.
+
+    Raises:
+        exceptions.GoogleAuthError: If the issuer is invalid.
     """
-    return verify_token(
+    idinfo = verify_token(
         id_token, request, audience=audience, certs_url=_GOOGLE_OAUTH2_CERTS_URL
     )
+
+    if idinfo["iss"] not in _GOOGLE_ISSUERS:
+        raise exceptions.GoogleAuthError(
+            "Wrong issuer. 'iss' should be one of the following: {}".format(
+                _GOOGLE_ISSUERS
+            )
+        )
+
+    return idinfo
 
 
 def verify_firebase_token(id_token, request, audience=None):

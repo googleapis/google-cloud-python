@@ -365,7 +365,11 @@ class AuthorizedSession(requests.Session):
             six.raise_from(new_exc, caught_exc)
 
         try:
-            self._is_mtls, cert, key = google.auth.transport._mtls_helper.get_client_cert_and_key(
+            (
+                self._is_mtls,
+                cert,
+                key,
+            ) = google.auth.transport._mtls_helper.get_client_cert_and_key(
                 client_cert_callback
             )
 
