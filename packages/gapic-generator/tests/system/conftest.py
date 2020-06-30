@@ -27,15 +27,18 @@ from google.showcase import MessagingClient
 import grpc
 from grpc.experimental import aio
 
+_test_event_loop = asyncio.new_event_loop()
 
 # NOTE(lidiz) We must override the default event_loop fixture from
 # pytest-asyncio. pytest fixture frees resources once there isn't any reference
 # to it. So, the event loop might close before tests finishes. In the
 # customized version, we don't close the event loop.
+
+
 @pytest.fixture
 def event_loop():
-    loop = asyncio.get_event_loop()
-    return loop
+    asyncio.set_event_loop(_test_event_loop)
+    return asyncio.get_event_loop()
 
 
 dir = os.path.dirname(__file__)
