@@ -27,11 +27,11 @@ class UDFResource(object):
     """Describe a single user-defined function (UDF) resource.
 
     Args:
-        udf_type (str): the type of the resource ('inlineCode' or 'resourceUri')
+        udf_type (str): The type of the resource ('inlineCode' or 'resourceUri')
 
-        value (str): the inline code or resource URI.
+        value (str): The inline code or resource URI.
 
-    See
+    See:
     https://cloud.google.com/bigquery/user-defined-functions#api
     """
 
@@ -82,12 +82,12 @@ class ScalarQueryParameter(_AbstractQueryParameter):
             parameter can only be addressed via position (``?``).
 
         type_ (str):
-            name of parameter type.  One of 'STRING', 'INT64',
+            Name of parameter type.  One of 'STRING', 'INT64',
             'FLOAT64', 'NUMERIC', 'BOOL', 'TIMESTAMP', 'DATETIME', or
             'DATE'.
 
         value (Union[str, int, float, decimal.Decimal, bool,
-                 datetime.datetime, datetime.date]): the scalar parameter value.
+                 datetime.datetime, datetime.date]): The scalar parameter value.
     """
 
     def __init__(self, name, type_, value):
@@ -101,16 +101,16 @@ class ScalarQueryParameter(_AbstractQueryParameter):
 
         Args:
             type_ (str):
-                name of parameter type.  One of 'STRING', 'INT64',
+                Name of parameter type.  One of 'STRING', 'INT64',
                 'FLOAT64', 'NUMERIC', 'BOOL', 'TIMESTAMP', 'DATETIME', or
                 'DATE'.
 
             value (Union[str, int, float, decimal.Decimal, bool,
                      datetime.datetime,
-                     datetime.date]): the scalar parameter value.
+                     datetime.date]): The scalar parameter value.
 
         Returns:
-            google.cloud.bigquery.query.ScalarQueryParameter: instance without name
+            google.cloud.bigquery.query.ScalarQueryParameter: Instance without name
         """
         return cls(None, type_, value)
 
@@ -122,7 +122,7 @@ class ScalarQueryParameter(_AbstractQueryParameter):
             resource (Dict): JSON mapping of parameter
 
         Returns:
-            google.cloud.bigquery.query.ScalarQueryParameter: instance
+            google.cloud.bigquery.query.ScalarQueryParameter: Instance
         """
         name = resource.get("name")
         type_ = resource["parameterType"]["type"]
@@ -186,10 +186,10 @@ class ArrayQueryParameter(_AbstractQueryParameter):
             parameter can only be addressed via position (``?``).
 
         array_type (str):
-            name of type of array elements.  One of `'STRING'`, `'INT64'`,
+            Name of type of array elements.  One of `'STRING'`, `'INT64'`,
             `'FLOAT64'`, `'NUMERIC'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
 
-        values (List[appropriate scalar type]): the parameter array values.
+        values (List[appropriate scalar type]): The parameter array values.
     """
 
     def __init__(self, name, array_type, values):
@@ -203,13 +203,13 @@ class ArrayQueryParameter(_AbstractQueryParameter):
 
         Args:
             array_type (str):
-                name of type of array elements.  One of `'STRING'`, `'INT64'`,
+                Name of type of array elements.  One of `'STRING'`, `'INT64'`,
                 `'FLOAT64'`, `'NUMERIC'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
 
-            values (List[appropriate scalar type]): the parameter array values.
+            values (List[appropriate scalar type]): The parameter array values.
 
         Returns:
-            google.cloud.bigquery.query.ArrayQueryParameter: instance without name
+            google.cloud.bigquery.query.ArrayQueryParameter: Instance without name
         """
         return cls(None, array_type, values)
 
@@ -250,7 +250,7 @@ class ArrayQueryParameter(_AbstractQueryParameter):
             resource (Dict): JSON mapping of parameter
 
         Returns:
-            google.cloud.bigquery.query.ArrayQueryParameter: instance
+            google.cloud.bigquery.query.ArrayQueryParameter: Instance
         """
         array_type = resource["parameterType"]["arrayType"]["type"]
         if array_type == "STRUCT":
@@ -316,7 +316,7 @@ class StructQueryParameter(_AbstractQueryParameter):
             google.cloud.bigquery.query.ScalarQueryParameter,
             google.cloud.bigquery.query.ArrayQueryParameter,
             google.cloud.bigquery.query.StructQueryParameter
-        ]]): the sub-parameters for the struct
+        ]]): The sub-parameters for the struct
     """
 
     def __init__(self, name, *sub_params):
@@ -343,10 +343,10 @@ class StructQueryParameter(_AbstractQueryParameter):
                 google.cloud.bigquery.query.ScalarQueryParameter,
                 google.cloud.bigquery.query.ArrayQueryParameter,
                 google.cloud.bigquery.query.StructQueryParameter
-            ]]): the sub-parameters for the struct
+            ]]): The sub-parameters for the struct
 
         Returns:
-            google.cloud.bigquery.query.StructQueryParameter: instance without name
+            google.cloud.bigquery.query.StructQueryParameter: Instance without name
         """
         return cls(None, *sub_params)
 
@@ -358,7 +358,7 @@ class StructQueryParameter(_AbstractQueryParameter):
             resource (Dict): JSON mapping of parameter
 
         Returns:
-            google.cloud.bigquery.query.StructQueryParameter: instance
+            google.cloud.bigquery.query.StructQueryParameter: Instance
         """
         name = resource.get("name")
         instance = cls(name)
@@ -473,7 +473,7 @@ class _QueryResults(object):
     def cache_hit(self):
         """Query results served from cache.
 
-        See
+        See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.cache_hit
 
         Returns:
@@ -487,7 +487,7 @@ class _QueryResults(object):
     def complete(self):
         """Server completed query.
 
-        See
+        See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.job_complete
 
         Returns:
@@ -501,7 +501,7 @@ class _QueryResults(object):
     def errors(self):
         """Errors generated by the query.
 
-        See
+        See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.errors
 
         Returns:
@@ -515,7 +515,7 @@ class _QueryResults(object):
     def job_id(self):
         """Job ID of the query job these results are from.
 
-        See
+        See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.job_reference
 
         Returns:
@@ -527,7 +527,7 @@ class _QueryResults(object):
     def page_token(self):
         """Token for fetching next bach of results.
 
-        See
+        See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.page_token
 
         Returns:
@@ -539,7 +539,7 @@ class _QueryResults(object):
     def total_rows(self):
         """Total number of rows returned by the query.
 
-        See
+        See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.total_rows
 
         Returns:
@@ -553,7 +553,7 @@ class _QueryResults(object):
     def total_bytes_processed(self):
         """Total number of bytes processed by the query.
 
-        See
+        See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.total_bytes_processed
 
         Returns:
@@ -567,7 +567,7 @@ class _QueryResults(object):
     def num_dml_affected_rows(self):
         """Total number of rows affected by a DML query.
 
-        See
+        See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.num_dml_affected_rows
 
         Returns:
@@ -581,7 +581,7 @@ class _QueryResults(object):
     def rows(self):
         """Query results.
 
-        See
+        See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.rows
 
         Returns:
@@ -594,7 +594,7 @@ class _QueryResults(object):
     def schema(self):
         """Schema for query results.
 
-        See
+        See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.schema
 
         Returns:
@@ -607,7 +607,7 @@ class _QueryResults(object):
         """Update properties from resource in body of ``api_response``
 
         Args:
-            api_response (Dict): response returned from an API call
+            api_response (Dict): Response returned from an API call
         """
         job_id_present = (
             "jobReference" in api_response
@@ -622,7 +622,7 @@ class _QueryResults(object):
 
 
 def _query_param_from_api_repr(resource):
-    """Helper:  construct concrete query parameter from JSON resource."""
+    """Helper:  Construct concrete query parameter from JSON resource."""
     qp_type = resource["parameterType"]
     if "arrayType" in qp_type:
         klass = ArrayQueryParameter

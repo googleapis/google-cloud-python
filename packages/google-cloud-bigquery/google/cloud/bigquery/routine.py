@@ -288,7 +288,7 @@ class Routine(object):
 class RoutineArgument(object):
     """Input/output argument of a function or a stored procedure.
 
-    See
+    See:
     https://cloud.google.com/bigquery/docs/reference/rest/v2/routines#argument
 
     Args:
@@ -411,7 +411,7 @@ class RoutineArgument(object):
 class RoutineReference(object):
     """A pointer to a routine.
 
-    See
+    See:
     https://cloud.google.com/bigquery/docs/reference/rest/v2/routines#routinereference
     """
 
@@ -467,8 +467,8 @@ class RoutineReference(object):
                 A routine ID in standard SQL format. If ``default_project``
                 is not specified, this must included a project ID, dataset
                 ID, and routine ID, each separated by ``.``.
-            default_project (str):
-                Optional. The project ID to use when ``routine_id`` does not
+            default_project (Optional[str]):
+                The project ID to use when ``routine_id`` does not
                 include a project ID.
 
         Returns:

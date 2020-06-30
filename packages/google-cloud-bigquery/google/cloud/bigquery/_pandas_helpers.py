@@ -472,10 +472,9 @@ def dataframe_to_parquet(dataframe, bq_schema, filepath, parquet_compression="SN
             columns in the DataFrame.
         filepath (str):
             Path to write Parquet file to.
-        parquet_compression (str):
-            (optional) The compression codec to use by the the
-            ``pyarrow.parquet.write_table`` serializing method. Defaults to
-            "SNAPPY".
+        parquet_compression (Optional[str]):
+            The compression codec to use by the the ``pyarrow.parquet.write_table``
+            serializing method. Defaults to "SNAPPY".
             https://arrow.apache.org/docs/python/generated/pyarrow.parquet.write_table.html#pyarrow-parquet-write-table
     """
     if pyarrow is None:

@@ -228,7 +228,7 @@ class Model(object):
 
     @property
     def friendly_name(self):
-        """Union[str, None]: Title of the table (defaults to :data:`None`).
+        """Optional[str]: Title of the table (defaults to :data:`None`).
 
         Raises:
             ValueError: For invalid value types.
@@ -241,7 +241,7 @@ class Model(object):
 
     @property
     def labels(self):
-        """Dict[str, str]: Labels for the table.
+        """Optional[Dict[str, str]]: Labels for the table.
 
         This method always returns a dict. To change a model's labels,
         modify the dict, then call ``Client.update_model``. To delete a
@@ -257,7 +257,7 @@ class Model(object):
 
     @property
     def encryption_configuration(self):
-        """google.cloud.bigquery.encryption_configuration.EncryptionConfiguration: Custom
+        """Optional[google.cloud.bigquery.encryption_configuration.EncryptionConfiguration]: Custom
         encryption configuration for the model.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
@@ -383,9 +383,9 @@ class ModelReference(object):
                 A model ID in standard SQL format. If ``default_project``
                 is not specified, this must included a project ID, dataset
                 ID, and model ID, each separated by ``.``.
-            default_project (str):
-                Optional. The project ID to use when ``model_id`` does not
-                include a project ID.
+            default_project (Optional[str]):
+                The project ID to use when ``model_id`` does not include
+                a project ID.
 
         Returns:
             google.cloud.bigquery.model.ModelReference:

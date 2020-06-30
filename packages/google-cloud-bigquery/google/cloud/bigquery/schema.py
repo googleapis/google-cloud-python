@@ -50,18 +50,18 @@ class SchemaField(object):
     """Describe a single field within a table schema.
 
     Args:
-        name (str): the name of the field.
+        name (str): The name of the field.
 
-        field_type (str): the type of the field. See
+        field_type (str): The type of the field. See
             https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#TableFieldSchema.FIELDS.type
 
-        mode (str): the mode of the field.  See
+        mode (Optional[str]): The mode of the field.  See
             https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#TableFieldSchema.FIELDS.mode
 
-        description (Optional[str]): description for the field.
+        description (Optional[str]): Description for the field.
 
-        fields (Tuple[google.cloud.bigquery.schema.SchemaField]):
-            subfields (requires ``field_type`` of 'RECORD').
+        fields (Optional[Tuple[google.cloud.bigquery.schema.SchemaField]]):
+            Subfields (requires ``field_type`` of 'RECORD').
 
         policy_tags (Optional[PolicyTagList]): The policy tag list for the field.
 
@@ -125,7 +125,7 @@ class SchemaField(object):
 
     @property
     def mode(self):
-        """str: The mode of the field.
+        """Optional[str]: The mode of the field.
 
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#TableFieldSchema.FIELDS.mode
@@ -144,7 +144,7 @@ class SchemaField(object):
 
     @property
     def fields(self):
-        """tuple: Subfields contained in this field.
+        """Optional[tuple]: Subfields contained in this field.
 
         Must be empty unset if ``field_type`` is not 'RECORD'.
         """

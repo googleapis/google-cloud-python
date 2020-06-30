@@ -26,31 +26,31 @@
 
     Parameters:
 
-    * ``<destination_var>`` (optional, line argument):
+    * ``<destination_var>`` (Optional[line argument]):
         variable to store the query results. The results are not displayed if
         this parameter is used. If an error occurs during the query execution,
         the corresponding ``QueryJob`` instance (if available) is stored in
         the variable instead.
-    * ``--destination_table`` (optional, line argument):
+    * ``--destination_table`` (Optional[line argument]):
         A dataset and table to store the query results. If table does not exists,
         it will be created. If table already exists, its data will be overwritten.
         Variable should be in a format <dataset_id>.<table_id>.
-    * ``--project <project>`` (optional, line argument):
+    * ``--project <project>`` (Optional[line argument]):
         Project to use for running the query. Defaults to the context
         :attr:`~google.cloud.bigquery.magics.Context.project`.
-    * ``--use_bqstorage_api`` (optional, line argument):
+    * ``--use_bqstorage_api`` (Optional[line argument]):
         [Deprecated] Not used anymore, as BigQuery Storage API is used by default.
-    * ``--use_rest_api`` (optional, line argument):
+    * ``--use_rest_api`` (Optional[line argument]):
         Use the BigQuery REST API instead of the Storage API.
-    * ``--use_legacy_sql`` (optional, line argument):
+    * ``--use_legacy_sql`` (Optional[line argument]):
         Runs the query using Legacy SQL syntax. Defaults to Standard SQL if
         this argument not used.
-    * ``--verbose`` (optional, line argument):
+    * ``--verbose`` (Optional[line argument]):
         If this flag is used, information including the query job ID and the
         amount of time for the query to complete will not be cleared after the
         query is finished. By default, this information will be displayed but
         will be cleared after the query is finished.
-    * ``--params <params>`` (optional, line argument):
+    * ``--params <params>`` (Optional[line argument]):
         If present, the argument following the ``--params`` flag must be
         either:
 
@@ -304,7 +304,7 @@ def _run_query(client, query, job_config=None):
         query (str):
             SQL query to be executed. Defaults to the standard SQL dialect.
             Use the ``job_config`` parameter to change dialects.
-        job_config (google.cloud.bigquery.job.QueryJobConfig, optional):
+        job_config (Optional[google.cloud.bigquery.job.QueryJobConfig]):
             Extra configuration options for the job.
 
     Returns:

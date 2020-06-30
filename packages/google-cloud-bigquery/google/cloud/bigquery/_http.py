@@ -25,7 +25,7 @@ class Connection(_http.JSONConnection):
     Args:
         client (google.cloud.bigquery.client.Client): The client that owns the current connection.
 
-        client_info (google.api_core.client_info.ClientInfo): (Optional) instance used to generate user agent.
+        client_info (Optional[google.api_core.client_info.ClientInfo]): Instance used to generate user agent.
     """
 
     DEFAULT_API_ENDPOINT = "https://bigquery.googleapis.com"

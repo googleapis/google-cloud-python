@@ -471,7 +471,7 @@ def _get_sub_prop(container, keys, default=None):
 
     This method works like ``dict.get(key)``, but for nested values.
 
-    Arguments:
+    Args:
         container (Dict):
             A dictionary which may contain other dictionaries as values.
         keys (Iterable):
@@ -479,8 +479,8 @@ def _get_sub_prop(container, keys, default=None):
             the sequence represents a deeper nesting. The first key is for
             the top level. If there is a dictionary there, the second key
             attempts to get the value within that, and so on.
-        default (object):
-            (Optional) Value to returned if any of the keys are not found.
+        default (Optional[object]):
+            Value to returned if any of the keys are not found.
             Defaults to ``None``.
 
     Examples:
@@ -514,7 +514,7 @@ def _get_sub_prop(container, keys, default=None):
 def _set_sub_prop(container, keys, value):
     """Set a nested value in a dictionary.
 
-    Arguments:
+    Args:
         container (Dict):
             A dictionary which may contain other dictionaries as values.
         keys (Iterable):
@@ -557,7 +557,7 @@ def _set_sub_prop(container, keys, value):
 def _del_sub_prop(container, keys):
     """Remove a nested key fro a dictionary.
 
-    Arguments:
+    Args:
         container (Dict):
             A dictionary which may contain other dictionaries as values.
         keys (Iterable):

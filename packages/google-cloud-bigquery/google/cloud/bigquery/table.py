@@ -166,8 +166,8 @@ class TableReference(object):
                 A table ID in standard SQL format. If ``default_project``
                 is not specified, this must included a project ID, dataset
                 ID, and table ID, each separated by ``.``.
-            default_project (str):
-                Optional. The project ID to use when ``table_id`` does not
+            default_project (Optional[str]):
+                The project ID to use when ``table_id`` does not
                 include a project ID.
 
         Returns:
@@ -1322,20 +1322,20 @@ class RowIterator(HTTPIterator):
             :meth:`~google.cloud.bigquery.schema.SchemaField.from_api_repr`.
         page_token (str): A token identifying a page in a result set to start
             fetching results from.
-        max_results (int, optional): The maximum number of results to fetch.
-        page_size (int, optional): The maximum number of rows in each page
+        max_results (Optional[int]): The maximum number of results to fetch.
+        page_size (Optional[int]): The maximum number of rows in each page
             of results from this request. Non-positive values are ignored.
             Defaults to a sensible value set by the API.
-        extra_params (Dict[str, object]):
+        extra_params (Optional[Dict[str, object]]):
             Extra query string parameters for the API call.
-        table (Union[ \
+        table (Optional[Union[ \
             google.cloud.bigquery.table.Table, \
             google.cloud.bigquery.table.TableReference, \
-        ]):
-            Optional. The table which these rows belong to, or a reference to
-            it. Used to call the BigQuery Storage API to fetch rows.
-        selected_fields (Sequence[google.cloud.bigquery.schema.SchemaField]):
-            Optional. A subset of columns to select from this table.
+        ]]):
+            The table which these rows belong to, or a reference to it. Used to
+            call the BigQuery Storage API to fetch rows.
+        selected_fields (Optional[Sequence[google.cloud.bigquery.schema.SchemaField]]):
+            A subset of columns to select from this table.
 
     """
 
@@ -1487,10 +1487,9 @@ class RowIterator(HTTPIterator):
                 ``'tqdm_gui'``
                   Use the :func:`tqdm.tqdm_gui` function to display a
                   progress bar as a graphical dialog box.
-            bqstorage_client (google.cloud.bigquery_storage_v1.BigQueryReadClient):
-                Optional. A BigQuery Storage API client. If supplied, use the
-                faster BigQuery Storage API to fetch rows from BigQuery. This
-                API is a billable API.
+            bqstorage_client (Optional[google.cloud.bigquery_storage_v1.BigQueryReadClient]):
+                A BigQuery Storage API client. If supplied, use the faster BigQuery
+                Storage API to fetch rows from BigQuery. This API is a billable API.
 
                 This method requires the ``pyarrow`` and
                 ``google-cloud-bigquery-storage`` libraries.
@@ -1498,11 +1497,11 @@ class RowIterator(HTTPIterator):
                 This method only  exposes a subset of the capabilities of the
                 BigQuery Storage API.  For full access to all features
                 (projections, filters, snapshots) use the Storage API directly.
-            create_bqstorage_client (bool):
-                Optional. If ``True`` (default), create a BigQuery Storage API
-                client using the default API settings. The BigQuery Storage API
-                is a faster way to fetch rows from BigQuery. See the
-                ``bqstorage_client`` parameter for more information.
+            create_bqstorage_client (Optional[bool]):
+                If ``True`` (default), create a BigQuery Storage API client using
+                the default API settings. The BigQuery Storage API is a faster way
+                to fetch rows from BigQuery. See the ``bqstorage_client`` parameter
+                for more information.
 
                 This argument does nothing if ``bqstorage_client`` is supplied.
 
@@ -1572,9 +1571,9 @@ class RowIterator(HTTPIterator):
         """Create an iterable of pandas DataFrames, to process the table as a stream.
 
         Args:
-            bqstorage_client (google.cloud.bigquery_storage_v1.BigQueryReadClient):
-                Optional. A BigQuery Storage API client. If supplied, use the
-                faster BigQuery Storage API to fetch rows from BigQuery.
+            bqstorage_client (Optional[google.cloud.bigquery_storage_v1.BigQueryReadClient]):
+                A BigQuery Storage API client. If supplied, use the faster
+                BigQuery Storage API to fetch rows from BigQuery.
 
                 This method requires the ``pyarrow`` and
                 ``google-cloud-bigquery-storage`` libraries.
@@ -1583,11 +1582,10 @@ class RowIterator(HTTPIterator):
                 BigQuery Storage API. For full access to all features
                 (projections, filters, snapshots) use the Storage API directly.
 
-            dtypes (Map[str, Union[str, pandas.Series.dtype]]):
-                Optional. A dictionary of column names pandas ``dtype``s. The
-                provided ``dtype`` is used when constructing the series for
-                the column specified. Otherwise, the default pandas behavior
-                is used.
+            dtypes (Optional[Map[str, Union[str, pandas.Series.dtype]]]):
+                A dictionary of column names pandas ``dtype``s. The provided
+                ``dtype`` is used when constructing the series for the column
+                specified. Otherwise, the default pandas behavior is used.
 
         Returns:
             pandas.DataFrame:
@@ -1638,9 +1636,9 @@ class RowIterator(HTTPIterator):
         """Create a pandas DataFrame by loading all pages of a query.
 
         Args:
-            bqstorage_client (google.cloud.bigquery_storage_v1.BigQueryReadClient):
-                Optional. A BigQuery Storage API client. If supplied, use the
-                faster BigQuery Storage API to fetch rows from BigQuery.
+            bqstorage_client (Optional[google.cloud.bigquery_storage_v1.BigQueryReadClient]):
+                A BigQuery Storage API client. If supplied, use the faster
+                BigQuery Storage API to fetch rows from BigQuery.
 
                 This method requires the ``pyarrow`` and
                 ``google-cloud-bigquery-storage`` libraries.
@@ -1649,11 +1647,10 @@ class RowIterator(HTTPIterator):
                 BigQuery Storage API. For full access to all features
                 (projections, filters, snapshots) use the Storage API directly.
 
-            dtypes (Map[str, Union[str, pandas.Series.dtype]]):
-                Optional. A dictionary of column names pandas ``dtype``s. The
-                provided ``dtype`` is used when constructing the series for
-                the column specified. Otherwise, the default pandas behavior
-                is used.
+            dtypes (Optional[Map[str, Union[str, pandas.Series.dtype]]]):
+                A dictionary of column names pandas ``dtype``s. The provided
+                ``dtype`` is used when constructing the series for the column
+                specified. Otherwise, the default pandas behavior is used.
             progress_bar_type (Optional[str]):
                 If set, use the `tqdm <https://tqdm.github.io/>`_ library to
                 display a progress bar while the data downloads. Install the
@@ -1789,7 +1786,7 @@ class _EmptyRowIterator(object):
         """[Beta] Create an empty class:`pyarrow.Table`.
 
         Args:
-            progress_bar_type (Optional[str]): Ignored. Added for compatibility with RowIterator.
+            progress_bar_type (str): Ignored. Added for compatibility with RowIterator.
             bqstorage_client (Any): Ignored. Added for compatibility with RowIterator.
             create_bqstorage_client (bool): Ignored. Added for compatibility with RowIterator.
 
@@ -1983,19 +1980,19 @@ class TimePartitioning(object):
     """Configures time-based partitioning for a table.
 
     Args:
-        type_ (google.cloud.bigquery.table.TimePartitioningType, optional):
+        type_ (Optional[google.cloud.bigquery.table.TimePartitioningType]):
             Specifies the type of time partitioning to perform. Defaults to
             :attr:`~google.cloud.bigquery.table.TimePartitioningType.DAY`,
             which is the only currently supported type.
-        field (str, optional):
+        field (Optional[str]):
             If set, the table is partitioned by this field. If not set, the
             table is partitioned by pseudo column ``_PARTITIONTIME``. The field
             must be a top-level ``TIMESTAMP`` or ``DATE`` field. Its mode must
             be ``NULLABLE`` or ``REQUIRED``.
-        expiration_ms(int, optional):
+        expiration_ms(Optional[int]):
             Number of milliseconds for which to keep the storage for a
             partition.
-        require_partition_filter (bool, optional):
+        require_partition_filter (Optional[bool]):
             DEPRECATED: Use
             :attr:`~google.cloud.bigquery.table.Table.require_partition_filter`,
             instead.
