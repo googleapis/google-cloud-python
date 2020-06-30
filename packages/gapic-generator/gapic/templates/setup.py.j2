@@ -25,7 +25,7 @@ setuptools.setup(
     ),
     python_requires='>={% if opts.lazy_import %}3.7{% else %}3.6{% endif %}',{# Lazy import requires module-level getattr #}
     scripts=[
-        'scripts/fixup_keywords.py',
+        'scripts/fixup_{{ api.naming.versioned_module_name }}_keywords.py',
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
