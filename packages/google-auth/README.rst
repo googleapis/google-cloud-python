@@ -24,7 +24,7 @@ For more information on setting up your Python development environment, please r
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.4
+Python >= 3.5
 
 Deprecated Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
