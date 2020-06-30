@@ -229,7 +229,7 @@ jobs:
   showcase:
     docker:
       - image: python:3.8-slim
-      - image: gcr.io/gapic-images/gapic-showcase:0.8.1
+      - image: gcr.io/gapic-images/gapic-showcase:0.11.0
     steps:
       - checkout
       - run:
@@ -278,7 +278,7 @@ jobs:
           command:  |
             mkdir gapic_showcase
             cd gapic_showcase
-            curl -sSL https://github.com/googleapis/gapic-showcase/releases/download/v0.8.1/gapic-showcase-0.8.1-linux-amd64.tar.gz | tar xz
+            curl -sSL https://github.com/googleapis/gapic-showcase/releases/download/v0.11.0/gapic-showcase-0.11.0-linux-amd64.tar.gz | tar xz
             ./gapic-showcase run --mtls-ca-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-key=/tmp/workspace/tests/cert/mtls.key &
             showcase_pid=$!
 
@@ -295,7 +295,7 @@ jobs:
   showcase-alternative-templates:
     docker:
       - image: python:3.8-slim
-      - image: gcr.io/gapic-images/gapic-showcase:0.8.1
+      - image: gcr.io/gapic-images/gapic-showcase:0.11.0
     steps:
       - checkout
       - run:
@@ -344,7 +344,7 @@ jobs:
           command:  |
             mkdir gapic_showcase
             cd gapic_showcase
-            curl -sSL https://github.com/googleapis/gapic-showcase/releases/download/v0.8.1/gapic-showcase-0.8.1-linux-amd64.tar.gz | tar xz
+            curl -sSL https://github.com/googleapis/gapic-showcase/releases/download/v0.11.0/gapic-showcase-0.11.0-linux-amd64.tar.gz | tar xz
             ./gapic-showcase run --mtls-ca-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-key=/tmp/workspace/tests/cert/mtls.key &
             showcase_pid=$!
 
