@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [1.1.0](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v1.0.0...v1.1.0) (2020-06-20)
+
+
+### Features
+
+* add first party oauth ([#22](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/22)) ([a806b8b](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/a806b8b3d0e3213f1488563f25504a27af9a9cda))
+
 ## [1.0.0](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v0.4.1...v1.0.0) (2020-03-04)
 
 
