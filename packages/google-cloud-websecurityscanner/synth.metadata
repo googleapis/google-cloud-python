@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-websecurityscanner.git",
-        "sha": "429103785469bf32cccd351f942a46d85ebf47c1"
+        "sha": "6fd30b19fa2b6840e43bef2d8f2d492cba79c723"
       }
     },
     {
@@ -19,7 +19,7 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "cf2eff09d0f5319a4dc5cdce2b6356d85af4a798"
+        "sha": "303271797a360f8a439203413f13a160f2f5b3b4"
       }
     }
   ],
