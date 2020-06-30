@@ -354,11 +354,11 @@ class TestIDTokenCredentials(object):
         signature = base64.b64encode(b"some-signature").decode("utf-8")
         responses.add(
             responses.POST,
-            "https://iam.googleapis.com/v1/projects/-/serviceAccounts/"
-            "service-account@example.com:signBlob?alt=json",
+            "https://iamcredentials.googleapis.com/v1/projects/-/"
+            "serviceAccounts/service-account@example.com:signBlob?alt=json",
             status=200,
             content_type="application/json",
-            json={"keyId": "some-key-id", "signature": signature},
+            json={"keyId": "some-key-id", "signedBlob": signature},
         )
 
         id_token = "{}.{}.{}".format(
