@@ -57,7 +57,7 @@ class VideoIntelligenceServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -78,7 +78,7 @@ class VideoIntelligenceServiceGrpcTransport(object):
         self._stubs = {
             "video_intelligence_service_stub": video_intelligence_pb2_grpc.VideoIntelligenceServiceStub(
                 channel
-            )
+            ),
         }
 
         # Because this API includes a method that returns a

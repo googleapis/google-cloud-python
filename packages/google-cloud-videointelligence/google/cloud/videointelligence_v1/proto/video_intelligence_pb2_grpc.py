@@ -47,7 +47,7 @@ def add_VideoIntelligenceServiceServicer_to_server(servicer, server):
             servicer.AnnotateVideo,
             request_deserializer=google_dot_cloud_dot_videointelligence__v1_dot_proto_dot_video__intelligence__pb2.AnnotateVideoRequest.FromString,
             response_serializer=google_dot_longrunning_dot_operations__pb2.Operation.SerializeToString,
-        )
+        ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
         "google.cloud.videointelligence.v1.VideoIntelligenceService",

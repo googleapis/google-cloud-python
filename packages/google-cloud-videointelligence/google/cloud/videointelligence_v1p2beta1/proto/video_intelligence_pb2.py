@@ -594,7 +594,7 @@ _SHOTCHANGEDETECTIONCONFIG = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -635,7 +635,7 @@ _EXPLICITCONTENTDETECTIONCONFIG = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -676,7 +676,7 @@ _TEXTDETECTIONCONFIG = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1134,7 +1134,7 @@ _EXPLICITCONTENTANNOTATION = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1466,7 +1466,7 @@ _ANNOTATEVIDEORESPONSE = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1605,7 +1605,7 @@ _ANNOTATEVIDEOPROGRESS = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -1706,7 +1706,7 @@ _NORMALIZEDBOUNDINGPOLY = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -2818,7 +2818,7 @@ _VIDEOINTELLIGENCESERVICE = _descriptor.ServiceDescriptor(
             output_type=google_dot_longrunning_dot_operations__pb2._OPERATION,
             serialized_options=b'\202\323\344\223\002\037"\032/v1p2beta1/videos:annotate:\001*\332A\022input_uri,features\312A.\n\025AnnotateVideoResponse\022\025AnnotateVideoProgress',
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
 )
 _sym_db.RegisterServiceDescriptor(_VIDEOINTELLIGENCESERVICE)
