@@ -4,14 +4,14 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-runtimeconfig.git",
-        "sha": "a91620b0b343063865d5e22748e8cefcb85a3e7e"
+        "sha": "0a0c9f2906ca50ff95fa9686345f1b5779d7e46d"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "274dd49554809834287c24b6dd324a85283f1182"
+        "sha": "303271797a360f8a439203413f13a160f2f5b3b4"
       }
     }
   ]
