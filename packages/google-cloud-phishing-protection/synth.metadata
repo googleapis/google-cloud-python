@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-phishingprotection.git",
-        "sha": "3cf1c90f28f16d73ca56027c3b68e72ee73517bb"
+        "sha": "4f57701cc4d163eff7cfd83dd2f3932ad80ff264"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "eafa840ceec23b44a5c21670288107c661252711",
-        "internalRef": "313488995"
+        "sha": "184661793fbe3b89f2b485c303e7466cef9d21a1",
+        "internalRef": "316182409"
       }
     },
     {

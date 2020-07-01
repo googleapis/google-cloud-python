@@ -125,6 +125,7 @@ ReportPhishingRequest = _reflection.GeneratedProtocolMessageType(
         "DESCRIPTOR": _REPORTPHISHINGREQUEST,
         "__module__": "google.cloud.phishingprotection_v1beta1.proto.phishingprotection_pb2",
         "__doc__": """The ReportPhishing request message.
+  
   Attributes:
       parent:
           Required. The name of the project for which the report will be
