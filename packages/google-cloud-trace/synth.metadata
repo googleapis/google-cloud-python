@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-trace.git",
-        "sha": "74df351491d4e52efa728a2c42b3c5b6ea158812"
+        "sha": "95ffd4e247b48d055bbe626f8231792bf0015d20"
       }
     },
     {
