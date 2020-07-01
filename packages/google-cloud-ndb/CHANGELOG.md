@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [1.4.0](https://www.github.com/googleapis/python-ndb/compare/v1.3.0...v1.4.0) (2020-07-01)
+
+
+### Features
+
+* allow `Query.fetch_page` for queries with post filters ([#463](https://www.github.com/googleapis/python-ndb/issues/463)) ([632435c](https://www.github.com/googleapis/python-ndb/commit/632435c155f565f5e7b45ab08680613599994f0e)), closes [#270](https://www.github.com/googleapis/python-ndb/issues/270)
+* record time spent waiting on rpc calls ([#472](https://www.github.com/googleapis/python-ndb/issues/472)) ([1629805](https://www.github.com/googleapis/python-ndb/commit/16298057c96921a3c995e9ddded36d37fc90819f))
+
+
+### Bug Fixes
+
+* ignore datastore properties that are not mapped to NDB properties ([#470](https://www.github.com/googleapis/python-ndb/issues/470)) ([ab460fa](https://www.github.com/googleapis/python-ndb/commit/ab460fad8ded5b3b550359253e90a6b189145842)), closes [#461](https://www.github.com/googleapis/python-ndb/issues/461)
+* make sure `tests` package is not included in distribution ([#469](https://www.github.com/googleapis/python-ndb/issues/469)) ([5a20d0a](https://www.github.com/googleapis/python-ndb/commit/5a20d0af6c6c1c2d10e9e42a35a5b58fa952547c)), closes [#468](https://www.github.com/googleapis/python-ndb/issues/468)
+* retry grpc `UNKNOWN` errors ([#458](https://www.github.com/googleapis/python-ndb/issues/458)) ([5d354e4](https://www.github.com/googleapis/python-ndb/commit/5d354e4b4247372f2ffdc9caa2df1516ce97ff8d)), closes [#310](https://www.github.com/googleapis/python-ndb/issues/310)
+
 ## [1.3.0](https://www.github.com/googleapis/python-ndb/compare/v1.2.1...v1.3.0) (2020-06-01)
 
 
