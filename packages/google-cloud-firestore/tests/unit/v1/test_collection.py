@@ -32,10 +32,18 @@ class TestCollectionReference(unittest.TestCase):
 
     @staticmethod
     def _get_public_methods(klass):
-        return set(
-            name
-            for name, value in six.iteritems(klass.__dict__)
-            if (not name.startswith("_") and isinstance(value, types.FunctionType))
+        return set().union(
+            *(
+                (
+                    name
+                    for name, value in six.iteritems(class_.__dict__)
+                    if (
+                        not name.startswith("_")
+                        and isinstance(value, types.FunctionType)
+                    )
+                )
+                for class_ in (klass,) + klass.__bases__
+            )
         )
 
     def test_query_method_matching(self):
@@ -74,119 +82,6 @@ class TestCollectionReference(unittest.TestCase):
     def test_constructor_invalid_kwarg(self):
         with self.assertRaises(TypeError):
             self._make_one("Coh-lek-shun", donut=True)
-
-    def test___eq___other_type(self):
-        client = mock.sentinel.client
-        collection = self._make_one("name", client=client)
-        other = object()
-        self.assertFalse(collection == other)
-
-    def test___eq___different_path_same_client(self):
-        client = mock.sentinel.client
-        collection = self._make_one("name", client=client)
-        other = self._make_one("other", client=client)
-        self.assertFalse(collection == other)
-
-    def test___eq___same_path_different_client(self):
-        client = mock.sentinel.client
-        other_client = mock.sentinel.other_client
-        collection = self._make_one("name", client=client)
-        other = self._make_one("name", client=other_client)
-        self.assertFalse(collection == other)
-
-    def test___eq___same_path_same_client(self):
-        client = mock.sentinel.client
-        collection = self._make_one("name", client=client)
-        other = self._make_one("name", client=client)
-        self.assertTrue(collection == other)
-
-    def test_id_property(self):
-        collection_id = "hi-bob"
-        collection = self._make_one(collection_id)
-        self.assertEqual(collection.id, collection_id)
-
-    def test_parent_property(self):
-        from google.cloud.firestore_v1.document import DocumentReference
-
-        collection_id1 = "grocery-store"
-        document_id = "market"
-        collection_id2 = "darth"
-        client = _make_client()
-        collection = self._make_one(
-            collection_id1, document_id, collection_id2, client=client
-        )
-
-        parent = collection.parent
-        self.assertIsInstance(parent, DocumentReference)
-        self.assertIs(parent._client, client)
-        self.assertEqual(parent._path, (collection_id1, document_id))
-
-    def test_parent_property_top_level(self):
-        collection = self._make_one("tahp-leh-vull")
-        self.assertIsNone(collection.parent)
-
-    def test_document_factory_explicit_id(self):
-        from google.cloud.firestore_v1.document import DocumentReference
-
-        collection_id = "grocery-store"
-        document_id = "market"
-        client = _make_client()
-        collection = self._make_one(collection_id, client=client)
-
-        child = collection.document(document_id)
-        self.assertIsInstance(child, DocumentReference)
-        self.assertIs(child._client, client)
-        self.assertEqual(child._path, (collection_id, document_id))
-
-    @mock.patch(
-        "google.cloud.firestore_v1.collection._auto_id",
-        return_value="zorpzorpthreezorp012",
-    )
-    def test_document_factory_auto_id(self, mock_auto_id):
-        from google.cloud.firestore_v1.document import DocumentReference
-
-        collection_name = "space-town"
-        client = _make_client()
-        collection = self._make_one(collection_name, client=client)
-
-        child = collection.document()
-        self.assertIsInstance(child, DocumentReference)
-        self.assertIs(child._client, client)
-        self.assertEqual(child._path, (collection_name, mock_auto_id.return_value))
-
-        mock_auto_id.assert_called_once_with()
-
-    def test__parent_info_top_level(self):
-        client = _make_client()
-        collection_id = "soap"
-        collection = self._make_one(collection_id, client=client)
-
-        parent_path, expected_prefix = collection._parent_info()
-
-        expected_path = "projects/{}/databases/{}/documents".format(
-            client.project, client._database
-        )
-        self.assertEqual(parent_path, expected_path)
-        prefix = "{}/{}".format(expected_path, collection_id)
-        self.assertEqual(expected_prefix, prefix)
-
-    def test__parent_info_nested(self):
-        collection_id1 = "bar"
-        document_id = "baz"
-        collection_id2 = "chunk"
-        client = _make_client()
-        collection = self._make_one(
-            collection_id1, document_id, collection_id2, client=client
-        )
-
-        parent_path, expected_prefix = collection._parent_info()
-
-        expected_path = "projects/{}/databases/{}/documents/{}/{}".format(
-            client.project, client._database, collection_id1, document_id
-        )
-        self.assertEqual(parent_path, expected_path)
-        prefix = "{}/{}".format(expected_path, collection_id2)
-        self.assertEqual(expected_prefix, prefix)
 
     def test_add_auto_assigned(self):
         from google.cloud.firestore_v1.proto import document_pb2
@@ -292,139 +187,6 @@ class TestCollectionReference(unittest.TestCase):
             transaction=None,
             metadata=client._rpc_metadata,
         )
-
-    def test_select(self):
-        from google.cloud.firestore_v1.query import Query
-
-        collection = self._make_one("collection")
-        field_paths = ["a", "b"]
-        query = collection.select(field_paths)
-
-        self.assertIsInstance(query, Query)
-        self.assertIs(query._parent, collection)
-        projection_paths = [
-            field_ref.field_path for field_ref in query._projection.fields
-        ]
-        self.assertEqual(projection_paths, field_paths)
-
-    @staticmethod
-    def _make_field_filter_pb(field_path, op_string, value):
-        from google.cloud.firestore_v1.proto import query_pb2
-        from google.cloud.firestore_v1 import _helpers
-        from google.cloud.firestore_v1.base_query import _enum_from_op_string
-
-        return query_pb2.StructuredQuery.FieldFilter(
-            field=query_pb2.StructuredQuery.FieldReference(field_path=field_path),
-            op=_enum_from_op_string(op_string),
-            value=_helpers.encode_value(value),
-        )
-
-    def test_where(self):
-        from google.cloud.firestore_v1.query import Query
-
-        collection = self._make_one("collection")
-        field_path = "foo"
-        op_string = "=="
-        value = 45
-        query = collection.where(field_path, op_string, value)
-
-        self.assertIsInstance(query, Query)
-        self.assertIs(query._parent, collection)
-        self.assertEqual(len(query._field_filters), 1)
-        field_filter_pb = query._field_filters[0]
-        self.assertEqual(
-            field_filter_pb, self._make_field_filter_pb(field_path, op_string, value)
-        )
-
-    @staticmethod
-    def _make_order_pb(field_path, direction):
-        from google.cloud.firestore_v1.proto import query_pb2
-        from google.cloud.firestore_v1.base_query import _enum_from_direction
-
-        return query_pb2.StructuredQuery.Order(
-            field=query_pb2.StructuredQuery.FieldReference(field_path=field_path),
-            direction=_enum_from_direction(direction),
-        )
-
-    def test_order_by(self):
-        from google.cloud.firestore_v1.query import Query
-
-        collection = self._make_one("collection")
-        field_path = "foo"
-        direction = Query.DESCENDING
-        query = collection.order_by(field_path, direction=direction)
-
-        self.assertIsInstance(query, Query)
-        self.assertIs(query._parent, collection)
-        self.assertEqual(len(query._orders), 1)
-        order_pb = query._orders[0]
-        self.assertEqual(order_pb, self._make_order_pb(field_path, direction))
-
-    def test_limit(self):
-        from google.cloud.firestore_v1.query import Query
-
-        collection = self._make_one("collection")
-        limit = 15
-        query = collection.limit(limit)
-
-        self.assertIsInstance(query, Query)
-        self.assertIs(query._parent, collection)
-        self.assertEqual(query._limit, limit)
-
-    def test_offset(self):
-        from google.cloud.firestore_v1.query import Query
-
-        collection = self._make_one("collection")
-        offset = 113
-        query = collection.offset(offset)
-
-        self.assertIsInstance(query, Query)
-        self.assertIs(query._parent, collection)
-        self.assertEqual(query._offset, offset)
-
-    def test_start_at(self):
-        from google.cloud.firestore_v1.query import Query
-
-        collection = self._make_one("collection")
-        doc_fields = {"a": "b"}
-        query = collection.start_at(doc_fields)
-
-        self.assertIsInstance(query, Query)
-        self.assertIs(query._parent, collection)
-        self.assertEqual(query._start_at, (doc_fields, True))
-
-    def test_start_after(self):
-        from google.cloud.firestore_v1.query import Query
-
-        collection = self._make_one("collection")
-        doc_fields = {"d": "foo", "e": 10}
-        query = collection.start_after(doc_fields)
-
-        self.assertIsInstance(query, Query)
-        self.assertIs(query._parent, collection)
-        self.assertEqual(query._start_at, (doc_fields, False))
-
-    def test_end_before(self):
-        from google.cloud.firestore_v1.query import Query
-
-        collection = self._make_one("collection")
-        doc_fields = {"bar": 10.5}
-        query = collection.end_before(doc_fields)
-
-        self.assertIsInstance(query, Query)
-        self.assertIs(query._parent, collection)
-        self.assertEqual(query._end_at, (doc_fields, True))
-
-    def test_end_at(self):
-        from google.cloud.firestore_v1.query import Query
-
-        collection = self._make_one("collection")
-        doc_fields = {"opportunity": True, "reason": 9}
-        query = collection.end_at(doc_fields)
-
-        self.assertIsInstance(query, Query)
-        self.assertIs(query._parent, collection)
-        self.assertEqual(query._end_at, (doc_fields, False))
 
     def _list_documents_helper(self, page_size=None):
         from google.api_core.page_iterator import Iterator
@@ -543,26 +305,6 @@ class TestCollectionReference(unittest.TestCase):
         collection = self._make_one("collection")
         collection.on_snapshot(None)
         watch.for_query.assert_called_once()
-
-
-class Test__auto_id(unittest.TestCase):
-    @staticmethod
-    def _call_fut():
-        from google.cloud.firestore_v1.collection import _auto_id
-
-        return _auto_id()
-
-    @mock.patch("random.choice")
-    def test_it(self, mock_rand_choice):
-        from google.cloud.firestore_v1.collection import _AUTO_ID_CHARS
-
-        mock_result = "0123456789abcdefghij"
-        mock_rand_choice.side_effect = list(mock_result)
-        result = self._call_fut()
-        self.assertEqual(result, mock_result)
-
-        mock_calls = [mock.call(_AUTO_ID_CHARS)] * 20
-        self.assertEqual(mock_rand_choice.mock_calls, mock_calls)
 
 
 def _make_credentials():

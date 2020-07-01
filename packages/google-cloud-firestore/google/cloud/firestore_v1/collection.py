@@ -13,20 +13,19 @@
 # limitations under the License.
 
 """Classes for representing collections for the Google Cloud Firestore API."""
-import random
 import warnings
 
-import six
-
-from google.cloud.firestore_v1 import _helpers
+from google.cloud.firestore_v1.base_collection import (
+    BaseCollectionReference,
+    _auto_id,
+    _item_to_document_ref,
+)
 from google.cloud.firestore_v1 import query as query_mod
 from google.cloud.firestore_v1.watch import Watch
 from google.cloud.firestore_v1 import document
 
-_AUTO_ID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
-
-class CollectionReference(object):
+class CollectionReference(BaseCollectionReference):
     """A reference to a collection in a Firestore database.
 
     The collection may already exist or this class can facilitate creation
@@ -53,83 +52,15 @@ class CollectionReference(object):
     """
 
     def __init__(self, *path, **kwargs):
-        _helpers.verify_path(path, is_collection=True)
-        self._path = path
-        self._client = kwargs.pop("client", None)
-        if kwargs:
-            raise TypeError(
-                "Received unexpected arguments", kwargs, "Only `client` is supported"
-            )
+        super(CollectionReference, self).__init__(*path, **kwargs)
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return NotImplemented
-        return self._path == other._path and self._client == other._client
-
-    @property
-    def id(self):
-        """The collection identifier.
+    def _query(self):
+        """Query factory.
 
         Returns:
-            str: The last component of the path.
+            :class:`~google.cloud.firestore_v1.query.Query`
         """
-        return self._path[-1]
-
-    @property
-    def parent(self):
-        """Document that owns the current collection.
-
-        Returns:
-            Optional[:class:`~google.cloud.firestore_v1.document.DocumentReference`]:
-            The parent document, if the current collection is not a
-            top-level collection.
-        """
-        if len(self._path) == 1:
-            return None
-        else:
-            parent_path = self._path[:-1]
-        return self._client.document(*parent_path)
-
-    def document(self, document_id=None):
-        """Create a sub-document underneath the current collection.
-
-        Args:
-            document_id (Optional[str]): The document identifier
-                within the current collection. If not provided, will default
-                to a random 20 character string composed of digits,
-                uppercase and lowercase and letters.
-
-        Returns:
-            :class:`~google.cloud.firestore_v1.document.DocumentReference`:
-            The child document.
-        """
-        if document_id is None:
-            document_id = _auto_id()
-
-        child_path = self._path + (document_id,)
-        return self._client.document(*child_path)
-
-    def _parent_info(self):
-        """Get fully-qualified parent path and prefix for this collection.
-
-        Returns:
-            Tuple[str, str]: Pair of
-
-            * the fully-qualified (with database and project) path to the
-              parent of this collection (will either be the database path
-              or a document path).
-            * the prefix to a document in this collection.
-        """
-        parent_doc = self.parent
-        if parent_doc is None:
-            parent_path = _helpers.DOCUMENT_PATH_DELIMITER.join(
-                (self._client._database_string, "documents")
-            )
-        else:
-            parent_path = parent_doc._document_path
-
-        expected_prefix = _helpers.DOCUMENT_PATH_DELIMITER.join((parent_path, self.id))
-        return parent_path, expected_prefix
+        return query_mod.Query(self)
 
     def add(self, document_data, document_id=None):
         """Create a document in the Firestore database with the provided data.
@@ -188,191 +119,6 @@ class CollectionReference(object):
         iterator.collection = self
         iterator.item_to_value = _item_to_document_ref
         return iterator
-
-    def select(self, field_paths):
-        """Create a "select" query with this collection as parent.
-
-        See
-        :meth:`~google.cloud.firestore_v1.query.Query.select` for
-        more information on this method.
-
-        Args:
-            field_paths (Iterable[str, ...]): An iterable of field paths
-                (``.``-delimited list of field names) to use as a projection
-                of document fields in the query results.
-
-        Returns:
-            :class:`~google.cloud.firestore_v1.query.Query`:
-            A "projected" query.
-        """
-        query = query_mod.Query(self)
-        return query.select(field_paths)
-
-    def where(self, field_path, op_string, value):
-        """Create a "where" query with this collection as parent.
-
-        See
-        :meth:`~google.cloud.firestore_v1.query.Query.where` for
-        more information on this method.
-
-        Args:
-            field_path (str): A field path (``.``-delimited list of
-                field names) for the field to filter on.
-            op_string (str): A comparison operation in the form of a string.
-                Acceptable values are ``<``, ``<=``, ``==``, ``>=``
-                and ``>``.
-            value (Any): The value to compare the field against in the filter.
-                If ``value`` is :data:`None` or a NaN, then ``==`` is the only
-                allowed operation.
-
-        Returns:
-            :class:`~google.cloud.firestore_v1.query.Query`:
-            A filtered query.
-        """
-        query = query_mod.Query(self)
-        return query.where(field_path, op_string, value)
-
-    def order_by(self, field_path, **kwargs):
-        """Create an "order by" query with this collection as parent.
-
-        See
-        :meth:`~google.cloud.firestore_v1.query.Query.order_by` for
-        more information on this method.
-
-        Args:
-            field_path (str): A field path (``.``-delimited list of
-                field names) on which to order the query results.
-            kwargs (Dict[str, Any]): The keyword arguments to pass along
-                to the query. The only supported keyword is ``direction``,
-                see :meth:`~google.cloud.firestore_v1.query.Query.order_by`
-                for more information.
-
-        Returns:
-            :class:`~google.cloud.firestore_v1.query.Query`:
-            An "order by" query.
-        """
-        query = query_mod.Query(self)
-        return query.order_by(field_path, **kwargs)
-
-    def limit(self, count):
-        """Create a limited query with this collection as parent.
-
-        See
-        :meth:`~google.cloud.firestore_v1.query.Query.limit` for
-        more information on this method.
-
-        Args:
-            count (int): Maximum number of documents to return that match
-                the query.
-
-        Returns:
-            :class:`~google.cloud.firestore_v1.query.Query`:
-            A limited query.
-        """
-        query = query_mod.Query(self)
-        return query.limit(count)
-
-    def offset(self, num_to_skip):
-        """Skip to an offset in a query with this collection as parent.
-
-        See
-        :meth:`~google.cloud.firestore_v1.query.Query.offset` for
-        more information on this method.
-
-        Args:
-            num_to_skip (int): The number of results to skip at the beginning
-                of query results. (Must be non-negative.)
-
-        Returns:
-            :class:`~google.cloud.firestore_v1.query.Query`:
-            An offset query.
-        """
-        query = query_mod.Query(self)
-        return query.offset(num_to_skip)
-
-    def start_at(self, document_fields):
-        """Start query at a cursor with this collection as parent.
-
-        See
-        :meth:`~google.cloud.firestore_v1.query.Query.start_at` for
-        more information on this method.
-
-        Args:
-            document_fields (Union[:class:`~google.cloud.firestore_v1.\
-                document.DocumentSnapshot`, dict, list, tuple]):
-                A document snapshot or a dictionary/list/tuple of fields
-                representing a query results cursor. A cursor is a collection
-                of values that represent a position in a query result set.
-
-        Returns:
-            :class:`~google.cloud.firestore_v1.query.Query`:
-            A query with cursor.
-        """
-        query = query_mod.Query(self)
-        return query.start_at(document_fields)
-
-    def start_after(self, document_fields):
-        """Start query after a cursor with this collection as parent.
-
-        See
-        :meth:`~google.cloud.firestore_v1.query.Query.start_after` for
-        more information on this method.
-
-        Args:
-            document_fields (Union[:class:`~google.cloud.firestore_v1.\
-                document.DocumentSnapshot`, dict, list, tuple]):
-                A document snapshot or a dictionary/list/tuple of fields
-                representing a query results cursor. A cursor is a collection
-                of values that represent a position in a query result set.
-
-        Returns:
-            :class:`~google.cloud.firestore_v1.query.Query`:
-            A query with cursor.
-        """
-        query = query_mod.Query(self)
-        return query.start_after(document_fields)
-
-    def end_before(self, document_fields):
-        """End query before a cursor with this collection as parent.
-
-        See
-        :meth:`~google.cloud.firestore_v1.query.Query.end_before` for
-        more information on this method.
-
-        Args:
-            document_fields (Union[:class:`~google.cloud.firestore_v1.\
-                document.DocumentSnapshot`, dict, list, tuple]):
-                A document snapshot or a dictionary/list/tuple of fields
-                representing a query results cursor. A cursor is a collection
-                of values that represent a position in a query result set.
-
-        Returns:
-            :class:`~google.cloud.firestore_v1.query.Query`:
-            A query with cursor.
-        """
-        query = query_mod.Query(self)
-        return query.end_before(document_fields)
-
-    def end_at(self, document_fields):
-        """End query at a cursor with this collection as parent.
-
-        See
-        :meth:`~google.cloud.firestore_v1.query.Query.end_at` for
-        more information on this method.
-
-        Args:
-            document_fields (Union[:class:`~google.cloud.firestore_v1.\
-                document.DocumentSnapshot`, dict, list, tuple]):
-                A document snapshot or a dictionary/list/tuple of fields
-                representing a query results cursor. A cursor is a collection
-                of values that represent a position in a query result set.
-
-        Returns:
-            :class:`~google.cloud.firestore_v1.query.Query`:
-            A query with cursor.
-        """
-        query = query_mod.Query(self)
-        return query.end_at(document_fields)
 
     def get(self, transaction=None):
         """Deprecated alias for :meth:`stream`."""
@@ -440,30 +186,8 @@ class CollectionReference(object):
             collection_watch.unsubscribe()
         """
         return Watch.for_query(
-            query_mod.Query(self),
+            self._query(),
             callback,
             document.DocumentSnapshot,
             document.DocumentReference,
         )
-
-
-def _auto_id():
-    """Generate a "random" automatically generated ID.
-
-    Returns:
-        str: A 20 character string composed of digits, uppercase and
-        lowercase and letters.
-    """
-    return "".join(random.choice(_AUTO_ID_CHARS) for _ in six.moves.xrange(20))
-
-
-def _item_to_document_ref(iterator, item):
-    """Convert Document resource to document ref.
-
-    Args:
-        iterator (google.api_core.page_iterator.GRPCIterator):
-            iterator response
-        item (dict): document resource
-    """
-    document_id = item.name.split(_helpers.DOCUMENT_PATH_DELIMITER)[-1]
-    return iterator.collection.document(document_id)
