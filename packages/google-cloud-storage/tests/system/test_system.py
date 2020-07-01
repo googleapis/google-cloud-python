@@ -1905,6 +1905,7 @@ class TestKMSIntegration(TestStorageFiles):
         (listed,) = list(self.bucket.list_blobs())
         self.assertTrue(listed.kms_key_name.startswith(kms_key_name))
 
+    @RetryErrors(unittest.TestCase.failureException)
     def test_bucket_w_default_kms_key_name(self):
         BLOB_NAME = "default-kms-key-name"
         OVERRIDE_BLOB_NAME = "override-default-kms-key-name"
