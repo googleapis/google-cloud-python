@@ -421,8 +421,7 @@ PhraseSet = _reflection.GeneratedProtocolMessageType(
     in january”, “i was born in febuary”, …), use the pre-built ``$MONTH``
     class improves the likelihood of correctly transcribing audio that
     includes months (e.g. "i was born in :math:`month"). To refer to pre-
-    built classes, use the class' symbol prepended with ``\ ``e.g.``\$MONTH\ ``.
-    To refer to custom classes that were defined inline in the
+    built classes, use the class' symbol prepended with ``\ ``e.g.``\$MONTH\ ``. To refer to custom classes that were defined inline in the
     request, set the class's``\ custom_class_id\ ``to a string unique to
     all class resources and inline classes. Then use the class' id wrapped
     in $``\ {…}``e.g. "${my-months}". To refer to custom classes
