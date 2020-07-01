@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-bigquery-storage.git",
-        "sha": "eebe11dd6c932464814fe9914347fb9f5708fe4e"
+        "sha": "1ff6a08d5a7f17a2c8b7c40295c71a6ca7c12054"
       }
     },
     {
@@ -19,7 +19,7 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "cf2eff09d0f5319a4dc5cdce2b6356d85af4a798"
+        "sha": "303271797a360f8a439203413f13a160f2f5b3b4"
       }
     }
   ],
