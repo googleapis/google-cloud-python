@@ -114,40 +114,6 @@ class CloudRedisGrpcTransport(object):
         return self._channel
 
     @property
-    def list_instances(self):
-        """Return the gRPC stub for :meth:`CloudRedisClient.list_instances`.
-
-        Lists all Redis instances owned by a project in either the specified
-        location (region) or all locations.
-
-        The location should have the following format:
-
-        -  ``projects/{project_id}/locations/{location_id}``
-
-        If ``location_id`` is specified as ``-`` (wildcard), then all regions
-        available to the project are queried, and the results are aggregated.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["cloud_redis_stub"].ListInstances
-
-    @property
-    def get_instance(self):
-        """Return the gRPC stub for :meth:`CloudRedisClient.get_instance`.
-
-        Gets the details of a specific Redis instance.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["cloud_redis_stub"].GetInstance
-
-    @property
     def create_instance(self):
         """Return the gRPC stub for :meth:`CloudRedisClient.create_instance`.
 
@@ -155,7 +121,7 @@ class CloudRedisGrpcTransport(object):
         size.
 
         By default, the instance is accessible from the project's `default
-        network <https://cloud.google.com/compute/docs/networks-and-firewalls#networks>`__.
+        network <https://cloud.google.com/vpc/docs/vpc>`__.
 
         The creation is executed asynchronously and callers may check the
         returned operation to track its progress. Once the operation is
@@ -255,3 +221,37 @@ class CloudRedisGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["cloud_redis_stub"].DeleteInstance
+
+    @property
+    def list_instances(self):
+        """Return the gRPC stub for :meth:`CloudRedisClient.list_instances`.
+
+        Lists all Redis instances owned by a project in either the specified
+        location (region) or all locations.
+
+        The location should have the following format:
+
+        -  ``projects/{project_id}/locations/{location_id}``
+
+        If ``location_id`` is specified as ``-`` (wildcard), then all regions
+        available to the project are queried, and the results are aggregated.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["cloud_redis_stub"].ListInstances
+
+    @property
+    def get_instance(self):
+        """Return the gRPC stub for :meth:`CloudRedisClient.get_instance`.
+
+        Gets the details of a specific Redis instance.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["cloud_redis_stub"].GetInstance

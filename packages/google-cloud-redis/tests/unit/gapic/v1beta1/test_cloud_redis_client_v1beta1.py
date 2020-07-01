@@ -66,113 +66,6 @@ class CustomException(Exception):
 
 
 class TestCloudRedisClient(object):
-    def test_list_instances(self):
-        # Setup Expected Response
-        next_page_token = ""
-        instances_element = {}
-        instances = [instances_element]
-        expected_response = {"next_page_token": next_page_token, "instances": instances}
-        expected_response = cloud_redis_pb2.ListInstancesResponse(**expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = redis_v1beta1.CloudRedisClient()
-
-        # Setup Request
-        parent = client.location_path("[PROJECT]", "[LOCATION]")
-
-        paged_list_response = client.list_instances(parent)
-        resources = list(paged_list_response)
-        assert len(resources) == 1
-
-        assert expected_response.instances[0] == resources[0]
-
-        assert len(channel.requests) == 1
-        expected_request = cloud_redis_pb2.ListInstancesRequest(parent=parent)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_list_instances_exception(self):
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = redis_v1beta1.CloudRedisClient()
-
-        # Setup request
-        parent = client.location_path("[PROJECT]", "[LOCATION]")
-
-        paged_list_response = client.list_instances(parent)
-        with pytest.raises(CustomException):
-            list(paged_list_response)
-
-    def test_get_instance(self):
-        # Setup Expected Response
-        name_2 = "name2-1052831874"
-        display_name = "displayName1615086568"
-        location_id = "locationId552319461"
-        alternative_location_id = "alternativeLocationId-718920621"
-        redis_version = "redisVersion-685310444"
-        reserved_ip_range = "reservedIpRange-1082940580"
-        host = "host3208616"
-        port = 3446913
-        current_location_id = "currentLocationId1312712735"
-        status_message = "statusMessage-239442758"
-        memory_size_gb = 34199707
-        authorized_network = "authorizedNetwork-1733809270"
-        persistence_iam_identity = "persistenceIamIdentity1061944584"
-        expected_response = {
-            "name": name_2,
-            "display_name": display_name,
-            "location_id": location_id,
-            "alternative_location_id": alternative_location_id,
-            "redis_version": redis_version,
-            "reserved_ip_range": reserved_ip_range,
-            "host": host,
-            "port": port,
-            "current_location_id": current_location_id,
-            "status_message": status_message,
-            "memory_size_gb": memory_size_gb,
-            "authorized_network": authorized_network,
-            "persistence_iam_identity": persistence_iam_identity,
-        }
-        expected_response = cloud_redis_pb2.Instance(**expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = redis_v1beta1.CloudRedisClient()
-
-        # Setup Request
-        name = client.instance_path("[PROJECT]", "[LOCATION]", "[INSTANCE]")
-
-        response = client.get_instance(name)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = cloud_redis_pb2.GetInstanceRequest(name=name)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_get_instance_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = redis_v1beta1.CloudRedisClient()
-
-        # Setup request
-        name = client.instance_path("[PROJECT]", "[LOCATION]", "[INSTANCE]")
-
-        with pytest.raises(CustomException):
-            client.get_instance(name)
-
     def test_create_instance(self):
         # Setup Expected Response
         name = "name3373707"
@@ -649,6 +542,113 @@ class TestCloudRedisClient(object):
         response = client.delete_instance(name)
         exception = response.exception()
         assert exception.errors[0] == error
+
+    def test_list_instances(self):
+        # Setup Expected Response
+        next_page_token = ""
+        instances_element = {}
+        instances = [instances_element]
+        expected_response = {"next_page_token": next_page_token, "instances": instances}
+        expected_response = cloud_redis_pb2.ListInstancesResponse(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = redis_v1beta1.CloudRedisClient()
+
+        # Setup Request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+
+        paged_list_response = client.list_instances(parent)
+        resources = list(paged_list_response)
+        assert len(resources) == 1
+
+        assert expected_response.instances[0] == resources[0]
+
+        assert len(channel.requests) == 1
+        expected_request = cloud_redis_pb2.ListInstancesRequest(parent=parent)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_list_instances_exception(self):
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = redis_v1beta1.CloudRedisClient()
+
+        # Setup request
+        parent = client.location_path("[PROJECT]", "[LOCATION]")
+
+        paged_list_response = client.list_instances(parent)
+        with pytest.raises(CustomException):
+            list(paged_list_response)
+
+    def test_get_instance(self):
+        # Setup Expected Response
+        name_2 = "name2-1052831874"
+        display_name = "displayName1615086568"
+        location_id = "locationId552319461"
+        alternative_location_id = "alternativeLocationId-718920621"
+        redis_version = "redisVersion-685310444"
+        reserved_ip_range = "reservedIpRange-1082940580"
+        host = "host3208616"
+        port = 3446913
+        current_location_id = "currentLocationId1312712735"
+        status_message = "statusMessage-239442758"
+        memory_size_gb = 34199707
+        authorized_network = "authorizedNetwork-1733809270"
+        persistence_iam_identity = "persistenceIamIdentity1061944584"
+        expected_response = {
+            "name": name_2,
+            "display_name": display_name,
+            "location_id": location_id,
+            "alternative_location_id": alternative_location_id,
+            "redis_version": redis_version,
+            "reserved_ip_range": reserved_ip_range,
+            "host": host,
+            "port": port,
+            "current_location_id": current_location_id,
+            "status_message": status_message,
+            "memory_size_gb": memory_size_gb,
+            "authorized_network": authorized_network,
+            "persistence_iam_identity": persistence_iam_identity,
+        }
+        expected_response = cloud_redis_pb2.Instance(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = redis_v1beta1.CloudRedisClient()
+
+        # Setup Request
+        name = client.instance_path("[PROJECT]", "[LOCATION]", "[INSTANCE]")
+
+        response = client.get_instance(name)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = cloud_redis_pb2.GetInstanceRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_get_instance_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = redis_v1beta1.CloudRedisClient()
+
+        # Setup request
+        name = client.instance_path("[PROJECT]", "[LOCATION]", "[INSTANCE]")
+
+        with pytest.raises(CustomException):
+            client.get_instance(name)
 
     def test_upgrade_instance(self):
         # Setup Expected Response
