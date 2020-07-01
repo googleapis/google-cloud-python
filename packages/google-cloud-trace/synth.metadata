@@ -3,16 +3,16 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-trace.git",
-        "sha": "95ffd4e247b48d055bbe626f8231792bf0015d20"
+        "remote": "git@github.com:googleapis/python-trace",
+        "sha": "dbee00dcf67d988cf0ec4054619e74d80836800b"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "b882b8e6bfcd708042ff00f7adc67ce750817dd0",
-        "internalRef": "318028816"
+        "sha": "a758393a3f77b11b0ddbf62d468454dd6492f48a",
+        "internalRef": "319296039"
       }
     },
     {
