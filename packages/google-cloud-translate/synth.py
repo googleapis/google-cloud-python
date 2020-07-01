@@ -98,6 +98,14 @@ templated_files = common.py_library(
 s.move(templated_files)
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition
-s.replace("noxfile.py", '"sphinx"', '"sphinx<3.0.0"')
+s.replace("noxfile.py", '''["']sphinx["']''', '"sphinx<3.0.0"')
+
+# Add missing blank line before Attributes: in generated docstrings
+# https://github.com/googleapis/protoc-docs-plugin/pull/31
+s.replace(
+    "google/**/*_pb2.py",
+    "(\s+)Attributes:",
+    "\n\n\g<1>Attributes:"
+)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
