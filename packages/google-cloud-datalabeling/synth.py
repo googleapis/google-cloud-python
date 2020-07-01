@@ -50,13 +50,13 @@ s.replace(
 )
 
 s.replace(
-    "./**/gapic/**/*client.py",
-    r"operations_pb2.ImportDataOperationMetadata",
-    "proto_operations_pb2.ImportDataOperationMetadata",
+    "google/**/*client.py",
+    r"=operations_pb2",
+    "=proto_operations_pb2",
 )
 
 s.replace(
-    "./tests/unit/gapic/**/test*_client*.py",
+    "tests/**/test*_client*.py",
     r"operations_pb2.Operation\(",
     "longrunning_operations_pb2.Operation(",
 )
@@ -64,10 +64,21 @@ s.replace(
 # Fix docstrings with no summary line
 s.replace(
     "google/cloud/**/proto/*_pb2.py",
-    '''__doc__ = """Attributes:''',
-    '''__doc__ = """
+    '''['"]__doc__['"]: """Attributes:''',
+    '''"__doc__": """
     Attributes:''',
 )
+
+# Escape '_' at the end of the line in pb2 docstrings
+s.replace(
+"google/cloud/**/*_pb2.py",
+"""\_$""",
+"""\_""",
+)
+
+
+# TODO(busunkim): Use latest sphinx after microgenerator transition
+s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
 
 # ----------------------------------------------------------------------------
 # Add templated files

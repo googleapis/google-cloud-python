@@ -1,32 +1,25 @@
 {
   "sources": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "2.0.0",
-        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
-      }
-    },
-    {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-datalabeling.git",
-        "sha": "acc4fceba0d9144ba539f66ed04df21238686b35"
+        "remote": "git@github.com:googleapis/python-datalabeling.git",
+        "sha": "62a52b2e2143640c62524a0a6970d10a4f2308a6"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "42ee97c1b93a0e3759bbba3013da309f670a90ab",
-        "internalRef": "307114445"
+        "sha": "d13e2da37268f7ed2808a7288d934274627cdefd",
+        "internalRef": "318386808"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "f5e4c17dc78a966dbf29961dd01f9bbd63e20a04"
+        "sha": "652d446edabb0ea07de0ce542c6b37ab7dad3a19"
       }
     }
   ],
@@ -37,8 +30,7 @@
         "apiName": "datalabeling",
         "apiVersion": "v1beta1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/datalabeling/artman_datalabeling_v1beta1.yaml"
+        "generator": "bazel"
       }
     }
   ]

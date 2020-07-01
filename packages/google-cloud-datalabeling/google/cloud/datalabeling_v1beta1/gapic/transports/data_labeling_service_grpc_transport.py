@@ -54,7 +54,7 @@ class DataLabelingServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -75,7 +75,7 @@ class DataLabelingServiceGrpcTransport(object):
         self._stubs = {
             "data_labeling_service_stub": data_labeling_service_pb2_grpc.DataLabelingServiceStub(
                 channel
-            )
+            ),
         }
 
         # Because this API includes a method that returns a
@@ -528,8 +528,8 @@ class DataLabelingServiceGrpcTransport(object):
     def pause_evaluation_job(self):
         """Return the gRPC stub for :meth:`DataLabelingServiceClient.pause_evaluation_job`.
 
-        Pauses an evaluation job. Pausing an evaluation job that is already in a
-        ``PAUSED`` state is a no-op.
+        Pauses an evaluation job. Pausing an evaluation job that is already
+        in a ``PAUSED`` state is a no-op.
 
         Returns:
             Callable: A callable which accepts the appropriate

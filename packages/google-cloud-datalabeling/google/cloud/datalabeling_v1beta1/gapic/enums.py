@@ -127,8 +127,8 @@ class EvaluationJob(object):
 
           When the job is in this state, it samples prediction input and output
           from your model version into your BigQuery table as predictions occur.
-          RUNNING (int): The job is currently running. When the job runs, Data Labeling Service
-          does several things:
+          RUNNING (int): The job is currently running. When the job runs, Data Labeling
+          Service does several things:
 
           1. If you have configured your job to use Data Labeling Service for
              ground truth labeling, the service creates a ``Dataset`` and a
@@ -151,9 +151,9 @@ class EvaluationJob(object):
           If the job remains in this state for a long time, it continues to sample
           prediction data into your BigQuery table and will run again at the next
           interval, even if it causes the job to run multiple times in parallel.
-          PAUSED (int): The job is not sampling prediction input and output into your BigQuery
-          table and it will not run according to its schedule. You can ``resume``
-          the job.
+          PAUSED (int): The job is not sampling prediction input and output into your
+          BigQuery table and it will not run according to its schedule. You can
+          ``resume`` the job.
           STOPPED (int): The job has this state right before it is deleted.
         """
 

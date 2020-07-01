@@ -56,7 +56,7 @@ from google.protobuf import field_mask_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-datalabeling"
+    "google-cloud-datalabeling",
 ).version
 
 
@@ -121,7 +121,7 @@ class DataLabelingServiceClient(object):
     def dataset_path(cls, project, dataset):
         """Return a fully-qualified dataset string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/datasets/{dataset}", project=project, dataset=dataset
+            "projects/{project}/datasets/{dataset}", project=project, dataset=dataset,
         )
 
     @classmethod
@@ -167,7 +167,7 @@ class DataLabelingServiceClient(object):
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}", project=project,
         )
 
     def __init__(
@@ -257,12 +257,12 @@ class DataLabelingServiceClient(object):
                 self.transport = transport
         else:
             self.transport = data_labeling_service_grpc_transport.DataLabelingServiceGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -273,7 +273,7 @@ class DataLabelingServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -307,7 +307,7 @@ class DataLabelingServiceClient(object):
             >>> response = client.create_dataset(parent, dataset)
 
         Args:
-            parent (str): Required. Dataset resource parent, format: projects/{project\_id}
+            parent (str): Required. Dataset resource parent, format: projects/{project_id}
             dataset (Union[dict, ~google.cloud.datalabeling_v1beta1.types.Dataset]): Required. The dataset to be created.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -343,7 +343,7 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.CreateDatasetRequest(
-            parent=parent, dataset=dataset
+            parent=parent, dataset=dataset,
         )
         if metadata is None:
             metadata = []
@@ -383,7 +383,7 @@ class DataLabelingServiceClient(object):
 
         Args:
             name (str): Required. Dataset resource name, format:
-                projects/{project\_id}/datasets/{dataset\_id}
+                projects/{project_id}/datasets/{dataset_id}
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -414,7 +414,7 @@ class DataLabelingServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = data_labeling_service_pb2.GetDatasetRequest(name=name)
+        request = data_labeling_service_pb2.GetDatasetRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -466,7 +466,7 @@ class DataLabelingServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Required. Dataset resource parent, format: projects/{project\_id}
+            parent (str): Required. Dataset resource parent, format: projects/{project_id}
             filter_ (str): Optional. Filter on dataset is not supported at this moment.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -507,7 +507,7 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.ListDatasetsRequest(
-            parent=parent, filter=filter_, page_size=page_size
+            parent=parent, filter=filter_, page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -558,7 +558,7 @@ class DataLabelingServiceClient(object):
 
         Args:
             name (str): Required. Dataset resource name, format:
-                projects/{project\_id}/datasets/{dataset\_id}
+                projects/{project_id}/datasets/{dataset_id}
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -586,7 +586,7 @@ class DataLabelingServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = data_labeling_service_pb2.DeleteDatasetRequest(name=name)
+        request = data_labeling_service_pb2.DeleteDatasetRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -643,7 +643,7 @@ class DataLabelingServiceClient(object):
 
         Args:
             name (str): Required. Dataset resource name, format:
-                projects/{project\_id}/datasets/{dataset\_id}
+                projects/{project_id}/datasets/{dataset_id}
             input_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.InputConfig]): Required. Specify the input source of the data.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -681,7 +681,7 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.ImportDataRequest(
-            name=name, input_config=input_config, user_email_address=user_email_address
+            name=name, input_config=input_config, user_email_address=user_email_address,
         )
         if metadata is None:
             metadata = []
@@ -744,12 +744,12 @@ class DataLabelingServiceClient(object):
 
         Args:
             name (str): Required. Dataset resource name, format:
-                projects/{project\_id}/datasets/{dataset\_id}
-            annotated_dataset (str): Required. Annotated dataset resource name. DataItem in Dataset and their
-                annotations in specified annotated dataset will be exported. It's in
-                format of
-                projects/{project\_id}/datasets/{dataset\_id}/annotatedDatasets/
-                {annotated\_dataset\_id}
+                projects/{project_id}/datasets/{dataset_id}
+            annotated_dataset (str): Required. Annotated dataset resource name. DataItem in Dataset and
+                their annotations in specified annotated dataset will be exported. It's
+                in format of
+                projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/
+                {annotated_dataset_id}
             output_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.OutputConfig]): Required. Specify the output destination.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -839,7 +839,7 @@ class DataLabelingServiceClient(object):
 
         Args:
             name (str): Required. The name of the data item to get, format:
-                projects/{project\_id}/datasets/{dataset\_id}/dataItems/{data\_item\_id}
+                projects/{project_id}/datasets/{dataset_id}/dataItems/{data_item_id}
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -870,7 +870,7 @@ class DataLabelingServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = data_labeling_service_pb2.GetDataItemRequest(name=name)
+        request = data_labeling_service_pb2.GetDataItemRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -924,7 +924,7 @@ class DataLabelingServiceClient(object):
 
         Args:
             parent (str): Required. Name of the dataset to list data items, format:
-                projects/{project\_id}/datasets/{dataset\_id}
+                projects/{project_id}/datasets/{dataset_id}
             filter_ (str): Optional. Filter is not supported at this moment.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -965,7 +965,7 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.ListDataItemsRequest(
-            parent=parent, filter=filter_, page_size=page_size
+            parent=parent, filter=filter_, page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -1016,8 +1016,8 @@ class DataLabelingServiceClient(object):
 
         Args:
             name (str): Required. Name of the annotated dataset to get, format:
-                projects/{project\_id}/datasets/{dataset\_id}/annotatedDatasets/
-                {annotated\_dataset\_id}
+                projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/
+                {annotated_dataset_id}
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1048,7 +1048,7 @@ class DataLabelingServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = data_labeling_service_pb2.GetAnnotatedDatasetRequest(name=name)
+        request = data_labeling_service_pb2.GetAnnotatedDatasetRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1101,7 +1101,7 @@ class DataLabelingServiceClient(object):
 
         Args:
             parent (str): Required. Name of the dataset to list annotated datasets, format:
-                projects/{project\_id}/datasets/{dataset\_id}
+                projects/{project_id}/datasets/{dataset_id}
             filter_ (str): Optional. Filter is not supported at this moment.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -1142,7 +1142,7 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.ListAnnotatedDatasetsRequest(
-            parent=parent, filter=filter_, page_size=page_size
+            parent=parent, filter=filter_, page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -1193,8 +1193,8 @@ class DataLabelingServiceClient(object):
 
         Args:
             name (str): Required. Name of the annotated dataset to delete, format:
-                projects/{project\_id}/datasets/{dataset\_id}/annotatedDatasets/
-                {annotated\_dataset\_id}
+                projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/
+                {annotated_dataset_id}
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1222,7 +1222,7 @@ class DataLabelingServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = data_labeling_service_pb2.DeleteAnnotatedDatasetRequest(name=name)
+        request = data_labeling_service_pb2.DeleteAnnotatedDatasetRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1284,33 +1284,33 @@ class DataLabelingServiceClient(object):
 
         Args:
             parent (str): Required. Name of the dataset to request labeling task, format:
-                projects/{project\_id}/datasets/{dataset\_id}
+                projects/{project_id}/datasets/{dataset_id}
             basic_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig]): Required. Basic human annotation config.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig`
             feature (~google.cloud.datalabeling_v1beta1.types.Feature): Required. The type of image labeling task.
             image_classification_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.ImageClassificationConfig]): Configuration for image classification task. One of
-                image\_classification\_config, bounding\_poly\_config, polyline\_config
-                and segmentation\_config are required.
+                image_classification_config, bounding_poly_config, polyline_config and
+                segmentation_config are required.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.ImageClassificationConfig`
             bounding_poly_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.BoundingPolyConfig]): Configuration for bounding box and bounding poly task. One of
-                image\_classification\_config, bounding\_poly\_config, polyline\_config
-                and segmentation\_config are required.
+                image_classification_config, bounding_poly_config, polyline_config and
+                segmentation_config are required.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.BoundingPolyConfig`
-            polyline_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.PolylineConfig]): Configuration for polyline task. One of image\_classification\_config,
-                bounding\_poly\_config, polyline\_config and segmentation\_config are
+            polyline_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.PolylineConfig]): Configuration for polyline task. One of image_classification_config,
+                bounding_poly_config, polyline_config and segmentation_config are
                 required.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.PolylineConfig`
             segmentation_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.SegmentationConfig]): Configuration for segmentation task. One of
-                image\_classification\_config, bounding\_poly\_config, polyline\_config
-                and segmentation\_config are required.
+                image_classification_config, bounding_poly_config, polyline_config and
+                segmentation_config are required.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.SegmentationConfig`
@@ -1429,33 +1429,33 @@ class DataLabelingServiceClient(object):
 
         Args:
             parent (str): Required. Name of the dataset to request labeling task, format:
-                projects/{project\_id}/datasets/{dataset\_id}
+                projects/{project_id}/datasets/{dataset_id}
             basic_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig]): Required. Basic human annotation config.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig`
             feature (~google.cloud.datalabeling_v1beta1.types.Feature): Required. The type of video labeling task.
             video_classification_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.VideoClassificationConfig]): Configuration for video classification task. One of
-                video\_classification\_config, object\_detection\_config,
-                object\_tracking\_config and event\_config is required.
+                video_classification_config, object_detection_config,
+                object_tracking_config and event_config is required.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.VideoClassificationConfig`
             object_detection_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.ObjectDetectionConfig]): Configuration for video object detection task. One of
-                video\_classification\_config, object\_detection\_config,
-                object\_tracking\_config and event\_config is required.
+                video_classification_config, object_detection_config,
+                object_tracking_config and event_config is required.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.ObjectDetectionConfig`
             object_tracking_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.ObjectTrackingConfig]): Configuration for video object tracking task. One of
-                video\_classification\_config, object\_detection\_config,
-                object\_tracking\_config and event\_config is required.
+                video_classification_config, object_detection_config,
+                object_tracking_config and event_config is required.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.ObjectTrackingConfig`
             event_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.EventConfig]): Configuration for video event task. One of
-                video\_classification\_config, object\_detection\_config,
-                object\_tracking\_config and event\_config is required.
+                video_classification_config, object_detection_config,
+                object_tracking_config and event_config is required.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.EventConfig`
@@ -1572,20 +1572,20 @@ class DataLabelingServiceClient(object):
 
         Args:
             parent (str): Required. Name of the data set to request labeling task, format:
-                projects/{project\_id}/datasets/{dataset\_id}
+                projects/{project_id}/datasets/{dataset_id}
             basic_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig]): Required. Basic human annotation config.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig`
             feature (~google.cloud.datalabeling_v1beta1.types.Feature): Required. The type of text labeling task.
             text_classification_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.TextClassificationConfig]): Configuration for text classification task. One of
-                text\_classification\_config and text\_entity\_extraction\_config is
+                text_classification_config and text_entity_extraction_config is
                 required.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.TextClassificationConfig`
             text_entity_extraction_config (Union[dict, ~google.cloud.datalabeling_v1beta1.types.TextEntityExtractionConfig]): Configuration for entity extraction task. One of
-                text\_classification\_config and text\_entity\_extraction\_config is
+                text_classification_config and text_entity_extraction_config is
                 required.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -1679,11 +1679,11 @@ class DataLabelingServiceClient(object):
 
         Args:
             name (str): Required. Name of example, format:
-                projects/{project\_id}/datasets/{dataset\_id}/annotatedDatasets/
-                {annotated\_dataset\_id}/examples/{example\_id}
+                projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/
+                {annotated_dataset_id}/examples/{example_id}
             filter_ (str): Optional. An expression for filtering Examples. Filter by
-                annotation\_spec.display\_name is supported. Format
-                "annotation\_spec.display\_name = {display\_name}"
+                annotation_spec.display_name is supported. Format
+                "annotation_spec.display_name = {display_name}"
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1714,7 +1714,9 @@ class DataLabelingServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = data_labeling_service_pb2.GetExampleRequest(name=name, filter=filter_)
+        request = data_labeling_service_pb2.GetExampleRequest(
+            name=name, filter=filter_,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1767,9 +1769,10 @@ class DataLabelingServiceClient(object):
 
         Args:
             parent (str): Required. Example resource parent.
-            filter_ (str): Optional. An expression for filtering Examples. For annotated datasets
-                that have annotation spec set, filter by annotation\_spec.display\_name
-                is supported. Format "annotation\_spec.display\_name = {display\_name}"
+            filter_ (str): Optional. An expression for filtering Examples. For annotated
+                datasets that have annotation spec set, filter by
+                annotation_spec.display_name is supported. Format
+                "annotation_spec.display_name = {display_name}"
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -1809,7 +1812,7 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.ListExamplesRequest(
-            parent=parent, filter=filter_, page_size=page_size
+            parent=parent, filter=filter_, page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -1864,10 +1867,10 @@ class DataLabelingServiceClient(object):
 
         Args:
             parent (str): Required. AnnotationSpecSet resource parent, format:
-                projects/{project\_id}
+                projects/{project_id}
             annotation_spec_set (Union[dict, ~google.cloud.datalabeling_v1beta1.types.AnnotationSpecSet]): Required. Annotation spec set to create. Annotation specs must be
                 included. Only one annotation spec will be accepted for annotation specs
-                with same display\_name.
+                with same display_name.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datalabeling_v1beta1.types.AnnotationSpecSet`
@@ -1902,7 +1905,7 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.CreateAnnotationSpecSetRequest(
-            parent=parent, annotation_spec_set=annotation_spec_set
+            parent=parent, annotation_spec_set=annotation_spec_set,
         )
         if metadata is None:
             metadata = []
@@ -1942,7 +1945,7 @@ class DataLabelingServiceClient(object):
 
         Args:
             name (str): Required. AnnotationSpecSet resource name, format:
-                projects/{project\_id}/annotationSpecSets/{annotation\_spec\_set\_id}
+                projects/{project_id}/annotationSpecSets/{annotation_spec_set_id}
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -1973,7 +1976,7 @@ class DataLabelingServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = data_labeling_service_pb2.GetAnnotationSpecSetRequest(name=name)
+        request = data_labeling_service_pb2.GetAnnotationSpecSetRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -2026,7 +2029,7 @@ class DataLabelingServiceClient(object):
 
         Args:
             parent (str): Required. Parent of AnnotationSpecSet resource, format:
-                projects/{project\_id}
+                projects/{project_id}
             filter_ (str): Optional. Filter is not supported at this moment.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -2067,7 +2070,7 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.ListAnnotationSpecSetsRequest(
-            parent=parent, filter=filter_, page_size=page_size
+            parent=parent, filter=filter_, page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -2146,7 +2149,7 @@ class DataLabelingServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = data_labeling_service_pb2.DeleteAnnotationSpecSetRequest(name=name)
+        request = data_labeling_service_pb2.DeleteAnnotationSpecSetRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -2197,7 +2200,7 @@ class DataLabelingServiceClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            parent (str): Required. Instruction resource parent, format: projects/{project\_id}
+            parent (str): Required. Instruction resource parent, format: projects/{project_id}
             instruction (Union[dict, ~google.cloud.datalabeling_v1beta1.types.Instruction]): Required. Instruction of how to perform the labeling task.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -2233,7 +2236,7 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.CreateInstructionRequest(
-            parent=parent, instruction=instruction
+            parent=parent, instruction=instruction,
         )
         if metadata is None:
             metadata = []
@@ -2279,7 +2282,7 @@ class DataLabelingServiceClient(object):
 
         Args:
             name (str): Required. Instruction resource name, format:
-                projects/{project\_id}/instructions/{instruction\_id}
+                projects/{project_id}/instructions/{instruction_id}
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -2310,7 +2313,7 @@ class DataLabelingServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = data_labeling_service_pb2.GetInstructionRequest(name=name)
+        request = data_labeling_service_pb2.GetInstructionRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -2362,7 +2365,7 @@ class DataLabelingServiceClient(object):
             ...         pass
 
         Args:
-            parent (str): Required. Instruction resource parent, format: projects/{project\_id}
+            parent (str): Required. Instruction resource parent, format: projects/{project_id}
             filter_ (str): Optional. Filter is not supported at this moment.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
@@ -2403,7 +2406,7 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.ListInstructionsRequest(
-            parent=parent, filter=filter_, page_size=page_size
+            parent=parent, filter=filter_, page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -2454,7 +2457,7 @@ class DataLabelingServiceClient(object):
 
         Args:
             name (str): Required. Instruction resource name, format:
-                projects/{project\_id}/instructions/{instruction\_id}
+                projects/{project_id}/instructions/{instruction_id}
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -2482,7 +2485,7 @@ class DataLabelingServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = data_labeling_service_pb2.DeleteInstructionRequest(name=name)
+        request = data_labeling_service_pb2.DeleteInstructionRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -2523,7 +2526,7 @@ class DataLabelingServiceClient(object):
         Args:
             name (str): Required. Name of the evaluation. Format:
 
-                "projects/{project\_id}/datasets/{dataset\_id}/evaluations/{evaluation\_id}'
+                "projects/{project_id}/datasets/{dataset_id}/evaluations/{evaluation_id}'
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -2554,7 +2557,7 @@ class DataLabelingServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = data_labeling_service_pb2.GetEvaluationRequest(name=name)
+        request = data_labeling_service_pb2.GetEvaluationRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -2607,30 +2610,30 @@ class DataLabelingServiceClient(object):
 
         Args:
             parent (str): Required. Evaluation search parent (project ID). Format:
-                "projects/{project\_id}"
+                "projects/{project_id}"
             filter_ (str): Optional. To search evaluations, you can filter by the following:
 
-                -  evaluation\_job.evaluation\_job\_id (the last part of
+                -  evaluation\_job.evaluation_job_id (the last part of
                    ``EvaluationJob.name``)
-                -  evaluation\_job.model\_id (the {model\_name} portion of
+                -  evaluation\_job.model_id (the {model_name} portion of
                    ``EvaluationJob.modelVersion``)
-                -  evaluation\_job.evaluation\_job\_run\_time\_start (Minimum threshold
-                   for the ``evaluationJobRunTime`` that created the evaluation)
-                -  evaluation\_job.evaluation\_job\_run\_time\_end (Maximum threshold
-                   for the ``evaluationJobRunTime`` that created the evaluation)
-                -  evaluation\_job.job\_state (``EvaluationJob.state``)
-                -  annotation\_spec.display\_name (the Evaluation contains a metric for
+                -  evaluation\_job.evaluation_job_run_time_start (Minimum threshold for
+                   the ``evaluationJobRunTime`` that created the evaluation)
+                -  evaluation\_job.evaluation_job_run_time_end (Maximum threshold for
+                   the ``evaluationJobRunTime`` that created the evaluation)
+                -  evaluation\_job.job_state (``EvaluationJob.state``)
+                -  annotation\_spec.display_name (the Evaluation contains a metric for
                    the annotation spec with this ``displayName``)
 
                 To filter by multiple critiera, use the ``AND`` operator or the ``OR``
                 operator. The following examples shows a string that filters by several
                 critiera:
 
-                "evaluation\ *job.evaluation\_job\_id = {evaluation\_job\_id} AND
-                evaluation*\ job.model\_id = {model\_name} AND
-                evaluation\ *job.evaluation\_job\_run\_time\_start = {timestamp\_1} AND
-                evaluation*\ job.evaluation\_job\_run\_time\_end = {timestamp\_2} AND
-                annotation\_spec.display\_name = {display\_name}"
+                "evaluation\ *job.evaluation_job_id = {evaluation_job_id} AND
+                evaluation*\ job.model_id = {model_name} AND
+                evaluation\ *job.evaluation_job_run_time_start = {timestamp_1} AND
+                evaluation*\ job.evaluation_job_run_time_end = {timestamp_2} AND
+                annotation\_spec.display_name = {display_name}"
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -2670,7 +2673,7 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.SearchEvaluationsRequest(
-            parent=parent, filter=filter_, page_size=page_size
+            parent=parent, filter=filter_, page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -2738,7 +2741,7 @@ class DataLabelingServiceClient(object):
             parent (str): Required. Name of the ``Evaluation`` resource to search for example
                 comparisons from. Format:
 
-                "projects/{project\_id}/datasets/{dataset\_id}/evaluations/{evaluation\_id}"
+                "projects/{project_id}/datasets/{dataset_id}/evaluations/{evaluation_id}"
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -2780,7 +2783,7 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.SearchExampleComparisonsRequest(
-            parent=parent, page_size=page_size
+            parent=parent, page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -2835,7 +2838,7 @@ class DataLabelingServiceClient(object):
 
         Args:
             parent (str): Required. Evaluation job resource parent. Format:
-                "projects/{project\_id}"
+                "projects/{project_id}"
             job (Union[dict, ~google.cloud.datalabeling_v1beta1.types.EvaluationJob]): Required. The evaluation job to create.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -2871,7 +2874,7 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.CreateEvaluationJobRequest(
-            parent=parent, job=job
+            parent=parent, job=job,
         )
         if metadata is None:
             metadata = []
@@ -2964,7 +2967,7 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.UpdateEvaluationJobRequest(
-            evaluation_job=evaluation_job, update_mask=update_mask
+            evaluation_job=evaluation_job, update_mask=update_mask,
         )
         if metadata is None:
             metadata = []
@@ -3005,7 +3008,7 @@ class DataLabelingServiceClient(object):
         Args:
             name (str): Required. Name of the evaluation job. Format:
 
-                "projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}"
+                "projects/{project_id}/evaluationJobs/{evaluation_job_id}"
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -3036,7 +3039,7 @@ class DataLabelingServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = data_labeling_service_pb2.GetEvaluationJobRequest(name=name)
+        request = data_labeling_service_pb2.GetEvaluationJobRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -3062,8 +3065,8 @@ class DataLabelingServiceClient(object):
         metadata=None,
     ):
         """
-        Pauses an evaluation job. Pausing an evaluation job that is already in a
-        ``PAUSED`` state is a no-op.
+        Pauses an evaluation job. Pausing an evaluation job that is already
+        in a ``PAUSED`` state is a no-op.
 
         Example:
             >>> from google.cloud import datalabeling_v1beta1
@@ -3075,9 +3078,10 @@ class DataLabelingServiceClient(object):
             >>> client.pause_evaluation_job(name)
 
         Args:
-            name (str): Required. Name of the evaluation job that is going to be paused. Format:
+            name (str): Required. Name of the evaluation job that is going to be paused.
+                Format:
 
-                "projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}"
+                "projects/{project_id}/evaluationJobs/{evaluation_job_id}"
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -3105,7 +3109,7 @@ class DataLabelingServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = data_labeling_service_pb2.PauseEvaluationJobRequest(name=name)
+        request = data_labeling_service_pb2.PauseEvaluationJobRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -3147,7 +3151,7 @@ class DataLabelingServiceClient(object):
             name (str): Required. Name of the evaluation job that is going to be resumed.
                 Format:
 
-                "projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}"
+                "projects/{project_id}/evaluationJobs/{evaluation_job_id}"
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -3175,7 +3179,7 @@ class DataLabelingServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = data_labeling_service_pb2.ResumeEvaluationJobRequest(name=name)
+        request = data_labeling_service_pb2.ResumeEvaluationJobRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -3216,7 +3220,7 @@ class DataLabelingServiceClient(object):
             name (str): Required. Name of the evaluation job that is going to be deleted.
                 Format:
 
-                "projects/{project\_id}/evaluationJobs/{evaluation\_job\_id}"
+                "projects/{project_id}/evaluationJobs/{evaluation_job_id}"
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -3244,7 +3248,7 @@ class DataLabelingServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = data_labeling_service_pb2.DeleteEvaluationJobRequest(name=name)
+        request = data_labeling_service_pb2.DeleteEvaluationJobRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -3298,14 +3302,14 @@ class DataLabelingServiceClient(object):
 
         Args:
             parent (str): Required. Evaluation job resource parent. Format:
-                "projects/{project\_id}"
-            filter_ (str): Optional. You can filter the jobs to list by model\_id (also known as
-                model\_name, as described in ``EvaluationJob.modelVersion``) or by
+                "projects/{project_id}"
+            filter_ (str): Optional. You can filter the jobs to list by model_id (also known as
+                model_name, as described in ``EvaluationJob.modelVersion``) or by
                 evaluation job state (as described in ``EvaluationJob.state``). To
                 filter by both criteria, use the ``AND`` operator or the ``OR``
                 operator. For example, you can use the following string for your filter:
-                "evaluation\ *job.model\_id = {model\_name} AND evaluation*\ job.state =
-                {evaluation\_job\_state}"
+                "evaluation\ *job.model_id = {model_name} AND evaluation*\ job.state =
+                {evaluation_job_state}"
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -3345,7 +3349,7 @@ class DataLabelingServiceClient(object):
             )
 
         request = data_labeling_service_pb2.ListEvaluationJobsRequest(
-            parent=parent, filter=filter_, page_size=page_size
+            parent=parent, filter=filter_, page_size=page_size,
         )
         if metadata is None:
             metadata = []

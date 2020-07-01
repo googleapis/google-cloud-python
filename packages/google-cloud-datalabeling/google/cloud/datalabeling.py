@@ -22,4 +22,8 @@ from google.cloud.datalabeling_v1beta1 import enums
 from google.cloud.datalabeling_v1beta1 import types
 
 
-__all__ = ("enums", "types", "DataLabelingServiceClient")
+__all__ = (
+    "enums",
+    "types",
+    "DataLabelingServiceClient",
+)
