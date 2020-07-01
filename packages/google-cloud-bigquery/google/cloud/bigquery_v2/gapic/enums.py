@@ -30,7 +30,7 @@ class Model(object):
           CUSTOM (int): Splits data with the user provided tags.
           SEQUENTIAL (int): Splits data sequentially.
           NO_SPLIT (int): Data split will be skipped.
-          AUTO_SPLIT (int): Splits data automatically: Uses NO\_SPLIT if the data size is small.
+          AUTO_SPLIT (int): Splits data automatically: Uses NO_SPLIT if the data size is small.
           Otherwise uses RANDOM.
         """
 
@@ -125,7 +125,7 @@ class Model(object):
               KMEANS_INITIALIZATION_METHOD_UNSPECIFIED (int)
               RANDOM (int): Initializes the centroids randomly.
               CUSTOM (int): Initializes the centroids using data specified in
-              kmeans\_initialization\_column.
+              kmeans_initialization_column.
             """
 
             KMEANS_INITIALIZATION_METHOD_UNSPECIFIED = 0
@@ -150,9 +150,9 @@ class StandardSqlDataType(object):
           DATETIME (int): Encoded as RFC 3339 full-date "T" partial-time: 1985-04-12T23:20:50.52
           GEOGRAPHY (int): Encoded as WKT
           NUMERIC (int): Encoded as a decimal string.
-          ARRAY (int): Encoded as a list with types matching Type.array\_type.
-          STRUCT (int): Encoded as a list with fields of type Type.struct\_type[i]. List is used
-          because a JSON object cannot have duplicate field names.
+          ARRAY (int): Encoded as a list with types matching Type.array_type.
+          STRUCT (int): Encoded as a list with fields of type Type.struct_type[i]. List is
+          used because a JSON object cannot have duplicate field names.
         """
 
         TYPE_KIND_UNSPECIFIED = 0
