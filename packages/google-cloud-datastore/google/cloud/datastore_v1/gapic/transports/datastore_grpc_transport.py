@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ class DatastoreGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -74,7 +74,9 @@ class DatastoreGrpcTransport(object):
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
-        self._stubs = {"datastore_stub": datastore_pb2_grpc.DatastoreStub(channel)}
+        self._stubs = {
+            "datastore_stub": datastore_pb2_grpc.DatastoreStub(channel),
+        }
 
     @classmethod
     def create_channel(
@@ -135,6 +137,20 @@ class DatastoreGrpcTransport(object):
         return self._stubs["datastore_stub"].RunQuery
 
     @property
+    def reserve_ids(self):
+        """Return the gRPC stub for :meth:`DatastoreClient.reserve_ids`.
+
+        Prevents the supplied keys' IDs from being auto-allocated by Cloud
+        Datastore.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["datastore_stub"].ReserveIds
+
+    @property
     def begin_transaction(self):
         """Return the gRPC stub for :meth:`DatastoreClient.begin_transaction`.
 
@@ -187,17 +203,3 @@ class DatastoreGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["datastore_stub"].AllocateIds
-
-    @property
-    def reserve_ids(self):
-        """Return the gRPC stub for :meth:`DatastoreClient.reserve_ids`.
-
-        Prevents the supplied keys' IDs from being auto-allocated by Cloud
-        Datastore.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["datastore_stub"].ReserveIds

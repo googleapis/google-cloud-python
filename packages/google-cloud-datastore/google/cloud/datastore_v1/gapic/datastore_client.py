@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ from google.cloud.datastore_v1.proto import query_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-datastore"
+    "google-cloud-datastore",
 ).version
 
 
@@ -167,12 +167,12 @@ class DatastoreClient(object):
                 self.transport = transport
         else:
             self.transport = datastore_grpc_transport.DatastoreGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -183,7 +183,7 @@ class DatastoreClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -219,8 +219,8 @@ class DatastoreClient(object):
             >>> response = client.lookup(project_id, keys)
 
         Args:
-            project_id (str): The ID of the project against which to make the request.
-            keys (list[Union[dict, ~google.cloud.datastore_v1.types.Key]]): Keys of entities to look up.
+            project_id (str): Required. The ID of the project against which to make the request.
+            keys (list[Union[dict, ~google.cloud.datastore_v1.types.Key]]): Required. Keys of entities to look up.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datastore_v1.types.Key`
@@ -259,7 +259,7 @@ class DatastoreClient(object):
             )
 
         request = datastore_pb2.LookupRequest(
-            project_id=project_id, keys=keys, read_options=read_options
+            project_id=project_id, keys=keys, read_options=read_options,
         )
         if metadata is None:
             metadata = []
@@ -281,7 +281,7 @@ class DatastoreClient(object):
     def run_query(
         self,
         project_id,
-        partition_id,
+        partition_id=None,
         read_options=None,
         query=None,
         gql_query=None,
@@ -300,13 +300,10 @@ class DatastoreClient(object):
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize `partition_id`:
-            >>> partition_id = {}
-            >>>
-            >>> response = client.run_query(project_id, partition_id)
+            >>> response = client.run_query(project_id)
 
         Args:
-            project_id (str): The ID of the project against which to make the request.
+            project_id (str): Required. The ID of the project against which to make the request.
             partition_id (Union[dict, ~google.cloud.datastore_v1.types.PartitionId]): Entities are partitioned into subsets, identified by a partition ID.
                 Queries are scoped to a single partition.
                 This partition ID is normalized with the standard default context
@@ -358,7 +355,9 @@ class DatastoreClient(object):
 
         # Sanity check: We have some fields which are mutually exclusive;
         # raise ValueError if more than one is sent.
-        google.api_core.protobuf_helpers.check_oneof(query=query, gql_query=gql_query)
+        google.api_core.protobuf_helpers.check_oneof(
+            query=query, gql_query=gql_query,
+        )
 
         request = datastore_pb2.RunQueryRequest(
             project_id=project_id,
@@ -384,6 +383,90 @@ class DatastoreClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
+    def reserve_ids(
+        self,
+        project_id,
+        keys,
+        database_id=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Prevents the supplied keys' IDs from being auto-allocated by Cloud
+        Datastore.
+
+        Example:
+            >>> from google.cloud import datastore_v1
+            >>>
+            >>> client = datastore_v1.DatastoreClient()
+            >>>
+            >>> # TODO: Initialize `project_id`:
+            >>> project_id = ''
+            >>>
+            >>> # TODO: Initialize `keys`:
+            >>> keys = []
+            >>>
+            >>> response = client.reserve_ids(project_id, keys)
+
+        Args:
+            project_id (str): Required. The ID of the project against which to make the request.
+            keys (list[Union[dict, ~google.cloud.datastore_v1.types.Key]]): Required. A list of keys with complete key paths whose numeric IDs should not be
+                auto-allocated.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.datastore_v1.types.Key`
+            database_id (str): If not empty, the ID of the database against which to make the request.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.datastore_v1.types.ReserveIdsResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "reserve_ids" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "reserve_ids"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.reserve_ids,
+                default_retry=self._method_configs["ReserveIds"].retry,
+                default_timeout=self._method_configs["ReserveIds"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = datastore_pb2.ReserveIdsRequest(
+            project_id=project_id, keys=keys, database_id=database_id,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("project_id", project_id)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["reserve_ids"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def begin_transaction(
         self,
         project_id,
@@ -406,7 +489,7 @@ class DatastoreClient(object):
             >>> response = client.begin_transaction(project_id)
 
         Args:
-            project_id (str): The ID of the project against which to make the request.
+            project_id (str): Required. The ID of the project against which to make the request.
             transaction_options (Union[dict, ~google.cloud.datastore_v1.types.TransactionOptions]): Options for a new transaction.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -442,7 +525,7 @@ class DatastoreClient(object):
             )
 
         request = datastore_pb2.BeginTransactionRequest(
-            project_id=project_id, transaction_options=transaction_options
+            project_id=project_id, transaction_options=transaction_options,
         )
         if metadata is None:
             metadata = []
@@ -464,8 +547,8 @@ class DatastoreClient(object):
     def commit(
         self,
         project_id,
-        mode,
-        mutations,
+        mode=None,
+        mutations=None,
         transaction=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
@@ -477,24 +560,20 @@ class DatastoreClient(object):
 
         Example:
             >>> from google.cloud import datastore_v1
-            >>> from google.cloud.datastore_v1 import enums
             >>>
             >>> client = datastore_v1.DatastoreClient()
             >>>
             >>> # TODO: Initialize `project_id`:
             >>> project_id = ''
             >>>
-            >>> # TODO: Initialize `mode`:
-            >>> mode = enums.CommitRequest.Mode.MODE_UNSPECIFIED
-            >>>
-            >>> # TODO: Initialize `mutations`:
-            >>> mutations = []
-            >>>
-            >>> response = client.commit(project_id, mode, mutations)
+            >>> response = client.commit(project_id)
 
         Args:
-            project_id (str): The ID of the project against which to make the request.
+            project_id (str): Required. The ID of the project against which to make the request.
             mode (~google.cloud.datastore_v1.types.Mode): The type of commit to perform. Defaults to ``TRANSACTIONAL``.
+            transaction (bytes): The identifier of the transaction associated with the commit. A
+                transaction identifier is returned by a call to
+                ``Datastore.BeginTransaction``.
             mutations (list[Union[dict, ~google.cloud.datastore_v1.types.Mutation]]): The mutations to perform.
 
                 When mode is ``TRANSACTIONAL``, mutations affecting a single entity are
@@ -511,9 +590,6 @@ class DatastoreClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.datastore_v1.types.Mutation`
-            transaction (bytes): The identifier of the transaction associated with the commit. A
-                transaction identifier is returned by a call to
-                ``Datastore.BeginTransaction``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -546,13 +622,13 @@ class DatastoreClient(object):
 
         # Sanity check: We have some fields which are mutually exclusive;
         # raise ValueError if more than one is sent.
-        google.api_core.protobuf_helpers.check_oneof(transaction=transaction)
+        google.api_core.protobuf_helpers.check_oneof(transaction=transaction,)
 
         request = datastore_pb2.CommitRequest(
             project_id=project_id,
             mode=mode,
-            mutations=mutations,
             transaction=transaction,
+            mutations=mutations,
         )
         if metadata is None:
             metadata = []
@@ -596,8 +672,8 @@ class DatastoreClient(object):
             >>> response = client.rollback(project_id, transaction)
 
         Args:
-            project_id (str): The ID of the project against which to make the request.
-            transaction (bytes): The transaction identifier, returned by a call to
+            project_id (str): Required. The ID of the project against which to make the request.
+            transaction (bytes): Required. The transaction identifier, returned by a call to
                 ``Datastore.BeginTransaction``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -630,7 +706,7 @@ class DatastoreClient(object):
             )
 
         request = datastore_pb2.RollbackRequest(
-            project_id=project_id, transaction=transaction
+            project_id=project_id, transaction=transaction,
         )
         if metadata is None:
             metadata = []
@@ -675,8 +751,8 @@ class DatastoreClient(object):
             >>> response = client.allocate_ids(project_id, keys)
 
         Args:
-            project_id (str): The ID of the project against which to make the request.
-            keys (list[Union[dict, ~google.cloud.datastore_v1.types.Key]]): A list of keys with incomplete key paths for which to allocate IDs.
+            project_id (str): Required. The ID of the project against which to make the request.
+            keys (list[Union[dict, ~google.cloud.datastore_v1.types.Key]]): Required. A list of keys with incomplete key paths for which to allocate IDs.
                 No key may be reserved/read-only.
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -711,7 +787,7 @@ class DatastoreClient(object):
                 client_info=self._client_info,
             )
 
-        request = datastore_pb2.AllocateIdsRequest(project_id=project_id, keys=keys)
+        request = datastore_pb2.AllocateIdsRequest(project_id=project_id, keys=keys,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -726,89 +802,5 @@ class DatastoreClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls["allocate_ids"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def reserve_ids(
-        self,
-        project_id,
-        keys,
-        database_id=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Prevents the supplied keys' IDs from being auto-allocated by Cloud
-        Datastore.
-
-        Example:
-            >>> from google.cloud import datastore_v1
-            >>>
-            >>> client = datastore_v1.DatastoreClient()
-            >>>
-            >>> # TODO: Initialize `project_id`:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize `keys`:
-            >>> keys = []
-            >>>
-            >>> response = client.reserve_ids(project_id, keys)
-
-        Args:
-            project_id (str): The ID of the project against which to make the request.
-            keys (list[Union[dict, ~google.cloud.datastore_v1.types.Key]]): A list of keys with complete key paths whose numeric IDs should not be
-                auto-allocated.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.datastore_v1.types.Key`
-            database_id (str): If not empty, the ID of the database against which to make the request.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.datastore_v1.types.ReserveIdsResponse` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "reserve_ids" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "reserve_ids"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.reserve_ids,
-                default_retry=self._method_configs["ReserveIds"].retry,
-                default_timeout=self._method_configs["ReserveIds"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = datastore_pb2.ReserveIdsRequest(
-            project_id=project_id, keys=keys, database_id=database_id
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("project_id", project_id)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["reserve_ids"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

@@ -358,7 +358,7 @@ class TestKey(unittest.TestCase):
         self.assertEqual(pb.partition_id.namespace_id, "")
 
         # Check the element PB matches the partial key and kind.
-        elem, = list(pb.path)
+        (elem,) = list(pb.path)
         self.assertEqual(elem.kind, _KIND)
         # Unset values are False-y.
         self.assertEqual(elem.name, "")

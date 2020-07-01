@@ -1,32 +1,25 @@
 {
   "sources": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "2.0.0",
-        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
-      }
-    },
-    {
       "git": {
         "name": ".",
         "remote": "git@github.com:googleapis/python-datastore",
-        "sha": "f9c0937f24f3a9874db6a8710e260c6ce2907069"
+        "sha": "f822b98873c829d4ae01d3de1b0d58e0076948fd"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "756b174de4a122461993c1c583345533d819936d",
-        "internalRef": "308824110"
+        "sha": "5202cfe3e5c2907a1a21a4c6d4bd0812029b6aa3",
+        "internalRef": "319247865"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "01b6f23d24b27878b48667ce597876d66b59780e"
+        "sha": "303271797a360f8a439203413f13a160f2f5b3b4"
       }
     }
   ],
@@ -37,8 +30,16 @@
         "apiName": "datastore",
         "apiVersion": "v1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/datastore/artman_datastore.yaml"
+        "generator": "bazel"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "datastore_admin",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "bazel"
       }
     }
   ]

@@ -45,10 +45,39 @@ library = gapic.py_library(
 s.move(library / "google/cloud/datastore_admin_v1/proto")
 s.move(library / "google/cloud/datastore_admin_v1/gapic")
 
+# TODO(busunkim): Remove during the microgenerator transition.
+# This re-orders the parameters to avoid breaking existing code.
+num = s.replace(
+"google/**/datastore_client.py",
+"""def commit\(
+\s+self,
+\s+project_id,
+\s+mode=None,
+\s+transaction=None,
+\s+mutations=None,
+\s+retry=google\.api_core\.gapic_v1\.method\.DEFAULT,
+\s+timeout=google\.api_core\.gapic_v1\.method\.DEFAULT,
+\s+metadata=None\):""",
+"""def commit(
+        self,
+        project_id,
+        mode=None,
+        mutations=None,
+        transaction=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):"""
+)
+
+if num != 1:
+    raise Exception("Required replacement not made.")
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(unit_cov_level=97, cov_level=99)
-s.move(templated_files, excludes=["docs/conf.py"])
+s.move(templated_files, excludes=["docs/conf.py", "docs/multiprocessing.rst"])
+
+s.replace("noxfile.py", """["']sphinx['"]""", '''"sphinx<3.0.0"''')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

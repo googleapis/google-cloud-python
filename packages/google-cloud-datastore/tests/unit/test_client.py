@@ -572,7 +572,7 @@ class TestClient(unittest.TestCase):
         client._datastore_api_internal = ds_api
 
         key = Key(kind, id_, project=self.PROJECT)
-        result, = client.get_multi([key])
+        (result,) = client.get_multi([key])
         new_key = result.key
 
         # Check the returned value is as expected.
@@ -609,7 +609,7 @@ class TestClient(unittest.TestCase):
         key = Key(kind, id_, project=self.PROJECT)
         txn = client.transaction()
         txn._id = txn_id
-        result, = client.get_multi([key], transaction=txn)
+        (result,) = client.get_multi([key], transaction=txn)
         new_key = result.key
 
         # Check the returned value is as expected.
