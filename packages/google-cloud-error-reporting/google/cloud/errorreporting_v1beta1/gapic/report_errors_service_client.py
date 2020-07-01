@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ from google.protobuf import timestamp_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-error-reporting"
+    "google-cloud-error-reporting",
 ).version
 
 
@@ -86,7 +86,7 @@ class ReportErrorsServiceClient(object):
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}", project=project,
         )
 
     def __init__(
@@ -176,12 +176,12 @@ class ReportErrorsServiceClient(object):
                 self.transport = transport
         else:
             self.transport = report_errors_service_grpc_transport.ReportErrorsServiceGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -192,7 +192,7 @@ class ReportErrorsServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -213,6 +213,13 @@ class ReportErrorsServiceClient(object):
         """
         Report an individual error event.
 
+        This endpoint accepts **either** an OAuth token, **or** an `API
+        key <https://support.google.com/cloud/answer/6158862>`__ for
+        authentication. To use an API key, append it to the URL as the value of
+        a ``key`` parameter. For example:
+
+        ``POST https://clouderrorreporting.googleapis.com/v1beta1/projects/example-project/events:report?key=123ABC456``
+
         Example:
             >>> from google.cloud import errorreporting_v1beta1
             >>>
@@ -226,11 +233,11 @@ class ReportErrorsServiceClient(object):
             >>> response = client.report_error_event(project_name, event)
 
         Args:
-            project_name (str): [Required] The resource name of the Google Cloud Platform project.
+            project_name (str): Required. The resource name of the Google Cloud Platform project.
                 Written as ``projects/`` plus the `Google Cloud Platform project
                 ID <https://support.google.com/cloud/answer/6158840>`__. Example:
                 ``projects/my-project-123``.
-            event (Union[dict, ~google.cloud.errorreporting_v1beta1.types.ReportedErrorEvent]): [Required] The error event to be reported.
+            event (Union[dict, ~google.cloud.errorreporting_v1beta1.types.ReportedErrorEvent]): Required. The error event to be reported.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.errorreporting_v1beta1.types.ReportedErrorEvent`
@@ -265,7 +272,7 @@ class ReportErrorsServiceClient(object):
             )
 
         request = report_errors_service_pb2.ReportErrorEventRequest(
-            project_name=project_name, event=event
+            project_name=project_name, event=event,
         )
         if metadata is None:
             metadata = []

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -61,6 +61,45 @@ class CustomException(Exception):
 
 
 class TestErrorGroupServiceClient(object):
+    def test_update_group(self):
+        # Setup Expected Response
+        name = "name3373707"
+        group_id = "groupId506361563"
+        expected_response = {"name": name, "group_id": group_id}
+        expected_response = common_pb2.ErrorGroup(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = errorreporting_v1beta1.ErrorGroupServiceClient()
+
+        # Setup Request
+        group = {}
+
+        response = client.update_group(group)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = error_group_service_pb2.UpdateGroupRequest(group=group)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_update_group_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = errorreporting_v1beta1.ErrorGroupServiceClient()
+
+        # Setup request
+        group = {}
+
+        with pytest.raises(CustomException):
+            client.update_group(group)
+
     def test_get_group(self):
         # Setup Expected Response
         name = "name3373707"
@@ -101,42 +140,3 @@ class TestErrorGroupServiceClient(object):
 
         with pytest.raises(CustomException):
             client.get_group(group_name)
-
-    def test_update_group(self):
-        # Setup Expected Response
-        name = "name3373707"
-        group_id = "groupId506361563"
-        expected_response = {"name": name, "group_id": group_id}
-        expected_response = common_pb2.ErrorGroup(**expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = errorreporting_v1beta1.ErrorGroupServiceClient()
-
-        # Setup Request
-        group = {}
-
-        response = client.update_group(group)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = error_group_service_pb2.UpdateGroupRequest(group=group)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_update_group_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = errorreporting_v1beta1.ErrorGroupServiceClient()
-
-        # Setup request
-        group = {}
-
-        with pytest.raises(CustomException):
-            client.update_group(group)

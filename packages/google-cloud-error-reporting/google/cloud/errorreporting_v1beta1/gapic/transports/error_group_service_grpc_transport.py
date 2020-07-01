@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ class ErrorGroupServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -77,7 +77,7 @@ class ErrorGroupServiceGrpcTransport(object):
         self._stubs = {
             "error_group_service_stub": error_group_service_pb2_grpc.ErrorGroupServiceStub(
                 channel
-            )
+            ),
         }
 
     @classmethod
@@ -116,19 +116,6 @@ class ErrorGroupServiceGrpcTransport(object):
         return self._channel
 
     @property
-    def get_group(self):
-        """Return the gRPC stub for :meth:`ErrorGroupServiceClient.get_group`.
-
-        Get the specified group.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["error_group_service_stub"].GetGroup
-
-    @property
     def update_group(self):
         """Return the gRPC stub for :meth:`ErrorGroupServiceClient.update_group`.
 
@@ -141,3 +128,16 @@ class ErrorGroupServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["error_group_service_stub"].UpdateGroup
+
+    @property
+    def get_group(self):
+        """Return the gRPC stub for :meth:`ErrorGroupServiceClient.get_group`.
+
+        Get the specified group.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["error_group_service_stub"].GetGroup

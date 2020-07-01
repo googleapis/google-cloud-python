@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -61,6 +61,47 @@ class CustomException(Exception):
 
 
 class TestErrorStatsServiceClient(object):
+    def test_delete_events(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = error_stats_service_pb2.DeleteEventsResponse(
+            **expected_response
+        )
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = errorreporting_v1beta1.ErrorStatsServiceClient()
+
+        # Setup Request
+        project_name = client.project_path("[PROJECT]")
+
+        response = client.delete_events(project_name)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = error_stats_service_pb2.DeleteEventsRequest(
+            project_name=project_name
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_events_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = errorreporting_v1beta1.ErrorStatsServiceClient()
+
+        # Setup request
+        project_name = client.project_path("[PROJECT]")
+
+        with pytest.raises(CustomException):
+            client.delete_events(project_name)
+
     def test_list_group_stats(self):
         # Setup Expected Response
         next_page_token = ""
@@ -83,9 +124,8 @@ class TestErrorStatsServiceClient(object):
 
         # Setup Request
         project_name = client.project_path("[PROJECT]")
-        time_range = {}
 
-        paged_list_response = client.list_group_stats(project_name, time_range)
+        paged_list_response = client.list_group_stats(project_name)
         resources = list(paged_list_response)
         assert len(resources) == 1
 
@@ -93,7 +133,7 @@ class TestErrorStatsServiceClient(object):
 
         assert len(channel.requests) == 1
         expected_request = error_stats_service_pb2.ListGroupStatsRequest(
-            project_name=project_name, time_range=time_range
+            project_name=project_name
         )
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
@@ -107,9 +147,8 @@ class TestErrorStatsServiceClient(object):
 
         # Setup request
         project_name = client.project_path("[PROJECT]")
-        time_range = {}
 
-        paged_list_response = client.list_group_stats(project_name, time_range)
+        paged_list_response = client.list_group_stats(project_name)
         with pytest.raises(CustomException):
             list(paged_list_response)
 
@@ -164,44 +203,3 @@ class TestErrorStatsServiceClient(object):
         paged_list_response = client.list_events(project_name, group_id)
         with pytest.raises(CustomException):
             list(paged_list_response)
-
-    def test_delete_events(self):
-        # Setup Expected Response
-        expected_response = {}
-        expected_response = error_stats_service_pb2.DeleteEventsResponse(
-            **expected_response
-        )
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = errorreporting_v1beta1.ErrorStatsServiceClient()
-
-        # Setup Request
-        project_name = client.project_path("[PROJECT]")
-
-        response = client.delete_events(project_name)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = error_stats_service_pb2.DeleteEventsRequest(
-            project_name=project_name
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_events_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = errorreporting_v1beta1.ErrorStatsServiceClient()
-
-        # Setup request
-        project_name = client.project_path("[PROJECT]")
-
-        with pytest.raises(CustomException):
-            client.delete_events(project_name)

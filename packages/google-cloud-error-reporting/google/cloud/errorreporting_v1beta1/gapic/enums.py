@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,9 +45,9 @@ class TimedCountAlignment(enum.IntEnum):
 
     Attributes:
       ERROR_COUNT_ALIGNMENT_UNSPECIFIED (int): No alignment specified.
-      ALIGNMENT_EQUAL_ROUNDED (int): The time periods shall be consecutive, have width equal to the requested
-      duration, and be aligned at the ``alignment_time`` provided in the
-      request. The ``alignment_time`` does not have to be inside the query
+      ALIGNMENT_EQUAL_ROUNDED (int): The time periods shall be consecutive, have width equal to the
+      requested duration, and be aligned at the ``alignment_time`` provided in
+      the request. The ``alignment_time`` does not have to be inside the query
       period but even if it is outside, only time periods are returned which
       overlap with the query period. A rounded alignment will typically result
       in a different size of the first or the last time period.

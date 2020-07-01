@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ from google.protobuf import timestamp_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-error-reporting"
+    "google-cloud-error-reporting",
 ).version
 
 
@@ -87,7 +87,7 @@ class ErrorStatsServiceClient(object):
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project
+            "projects/{project}", project=project,
         )
 
     def __init__(
@@ -177,12 +177,12 @@ class ErrorStatsServiceClient(object):
                 self.transport = transport
         else:
             self.transport = error_stats_service_grpc_transport.ErrorStatsServiceGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -193,7 +193,7 @@ class ErrorStatsServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -203,10 +203,84 @@ class ErrorStatsServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
+    def delete_events(
+        self,
+        project_name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes all error events of a given project.
+
+        Example:
+            >>> from google.cloud import errorreporting_v1beta1
+            >>>
+            >>> client = errorreporting_v1beta1.ErrorStatsServiceClient()
+            >>>
+            >>> project_name = client.project_path('[PROJECT]')
+            >>>
+            >>> response = client.delete_events(project_name)
+
+        Args:
+            project_name (str): Required. The resource name of the Google Cloud Platform project.
+                Written as ``projects/`` plus the `Google Cloud Platform project
+                ID <https://support.google.com/cloud/answer/6158840>`__. Example:
+                ``projects/my-project-123``.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.errorreporting_v1beta1.types.DeleteEventsResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_events" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_events"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_events,
+                default_retry=self._method_configs["DeleteEvents"].retry,
+                default_timeout=self._method_configs["DeleteEvents"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = error_stats_service_pb2.DeleteEventsRequest(
+            project_name=project_name,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("project_name", project_name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["delete_events"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def list_group_stats(
         self,
         project_name,
-        time_range,
+        time_range=None,  # DO NOT MOVE, see synth.py
         group_id=None,
         service_filter=None,
         timed_count_duration=None,
@@ -218,6 +292,7 @@ class ErrorStatsServiceClient(object):
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
     ):
+
         """
         Lists the specified groups.
 
@@ -228,11 +303,8 @@ class ErrorStatsServiceClient(object):
             >>>
             >>> project_name = client.project_path('[PROJECT]')
             >>>
-            >>> # TODO: Initialize `time_range`:
-            >>> time_range = {}
-            >>>
             >>> # Iterate over all results
-            >>> for element in client.list_group_stats(project_name, time_range):
+            >>> for element in client.list_group_stats(project_name):
             ...     # process element
             ...     pass
             >>>
@@ -240,46 +312,48 @@ class ErrorStatsServiceClient(object):
             >>> # Alternatively:
             >>>
             >>> # Iterate over results one page at a time
-            >>> for page in client.list_group_stats(project_name, time_range).pages:
+            >>> for page in client.list_group_stats(project_name).pages:
             ...     for element in page:
             ...         # process element
             ...         pass
 
         Args:
-            project_name (str): [Required] The resource name of the Google Cloud Platform project.
-                Written as projects/ plus the Google Cloud Platform project ID.
+            project_name (str): Required. The resource name of the Google Cloud Platform project. Written
+                as <code>projects/</code> plus the
+                <a href="https://support.google.com/cloud/answer/6158840">Google Cloud
+                Platform project ID</a>.
 
-                Example: projects/my-project-123.
-            time_range (Union[dict, ~google.cloud.errorreporting_v1beta1.types.QueryTimeRange]): [Optional] List data for the given time range. If not set a default time
-                range is used. The field time\_range\_begin in the response will specify
-                the beginning of this time range. Only ErrorGroupStats with a non-zero
-                count in the given time range are returned, unless the request contains
-                an explicit group\_id list. If a group\_id list is given, also
+                Example: <code>projects/my-project-123</code>.
+            group_id (list[str]): Optional. List all <code>ErrorGroupStats</code> with these IDs.
+            service_filter (Union[dict, ~google.cloud.errorreporting_v1beta1.types.ServiceContextFilter]): Optional. List only <code>ErrorGroupStats</code> which belong to a service
+                context that matches the filter.
+                Data for all service contexts is returned if this field is not specified.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.errorreporting_v1beta1.types.ServiceContextFilter`
+            time_range (Union[dict, ~google.cloud.errorreporting_v1beta1.types.QueryTimeRange]): Optional. List data for the given time range. If not set, a default
+                time range is used. The field time_range_begin in the response will
+                specify the beginning of this time range. Only ErrorGroupStats with a
+                non-zero count in the given time range are returned, unless the request
+                contains an explicit group_id list. If a group_id list is given, also
                 ErrorGroupStats with zero occurrences are returned.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.errorreporting_v1beta1.types.QueryTimeRange`
-            group_id (list[str]): [Optional] List all ErrorGroupStats with these IDs.
-            service_filter (Union[dict, ~google.cloud.errorreporting_v1beta1.types.ServiceContextFilter]): [Optional] List only ErrorGroupStats which belong to a service context
-                that matches the filter. Data for all service contexts is returned if
-                this field is not specified.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.errorreporting_v1beta1.types.ServiceContextFilter`
-            timed_count_duration (Union[dict, ~google.cloud.errorreporting_v1beta1.types.Duration]): [Optional] The preferred duration for a single returned ``TimedCount``.
-                If not set, no timed counts are returned.
+            timed_count_duration (Union[dict, ~google.cloud.errorreporting_v1beta1.types.Duration]): Optional. The preferred duration for a single returned
+                ``TimedCount``. If not set, no timed counts are returned.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.errorreporting_v1beta1.types.Duration`
-            alignment (~google.cloud.errorreporting_v1beta1.types.TimedCountAlignment): [Optional] The alignment of the timed counts to be returned. Default is
-                ``ALIGNMENT_EQUAL_AT_END``.
-            alignment_time (Union[dict, ~google.cloud.errorreporting_v1beta1.types.Timestamp]): [Optional] Time where the timed counts shall be aligned if rounded
+            alignment (~google.cloud.errorreporting_v1beta1.types.TimedCountAlignment): Optional. The alignment of the timed counts to be returned. Default
+                is ``ALIGNMENT_EQUAL_AT_END``.
+            alignment_time (Union[dict, ~google.cloud.errorreporting_v1beta1.types.Timestamp]): Optional. Time where the timed counts shall be aligned if rounded
                 alignment is chosen. Default is 00:00 UTC.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.errorreporting_v1beta1.types.Timestamp`
-            order (~google.cloud.errorreporting_v1beta1.types.ErrorGroupOrder): [Optional] The sort order in which the results are returned. Default is
-                ``COUNT_DESC``.
+            order (~google.cloud.errorreporting_v1beta1.types.ErrorGroupOrder): Optional. The sort order in which the results are returned. Default
+                is ``COUNT_DESC``.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
@@ -320,9 +394,9 @@ class ErrorStatsServiceClient(object):
 
         request = error_stats_service_pb2.ListGroupStatsRequest(
             project_name=project_name,
-            time_range=time_range,
             group_id=group_id,
             service_filter=service_filter,
+            time_range=time_range,
             timed_count_duration=timed_count_duration,
             alignment=alignment,
             alignment_time=alignment_time,
@@ -396,20 +470,20 @@ class ErrorStatsServiceClient(object):
             ...         pass
 
         Args:
-            project_name (str): [Required] The resource name of the Google Cloud Platform project.
+            project_name (str): Required. The resource name of the Google Cloud Platform project.
                 Written as ``projects/`` plus the `Google Cloud Platform project
                 ID <https://support.google.com/cloud/answer/6158840>`__. Example:
                 ``projects/my-project-123``.
-            group_id (str): [Required] The group for which events shall be returned.
-            service_filter (Union[dict, ~google.cloud.errorreporting_v1beta1.types.ServiceContextFilter]): [Optional] List only ErrorGroups which belong to a service context that
-                matches the filter. Data for all service contexts is returned if this
-                field is not specified.
+            group_id (str): Required. The group for which events shall be returned.
+            service_filter (Union[dict, ~google.cloud.errorreporting_v1beta1.types.ServiceContextFilter]): Optional. List only ErrorGroups which belong to a service context that
+                matches the filter.
+                Data for all service contexts is returned if this field is not specified.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.errorreporting_v1beta1.types.ServiceContextFilter`
-            time_range (Union[dict, ~google.cloud.errorreporting_v1beta1.types.QueryTimeRange]): [Optional] List only data for the given time range. If not set a default
-                time range is used. The field time\_range\_begin in the response will
-                specify the beginning of this time range.
+            time_range (Union[dict, ~google.cloud.errorreporting_v1beta1.types.QueryTimeRange]): Optional. List only data for the given time range. If not set a
+                default time range is used. The field time_range_begin in the response
+                will specify the beginning of this time range.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.errorreporting_v1beta1.types.QueryTimeRange`
@@ -485,75 +559,3 @@ class ErrorStatsServiceClient(object):
             response_token_field="next_page_token",
         )
         return iterator
-
-    def delete_events(
-        self,
-        project_name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Deletes all error events of a given project.
-
-        Example:
-            >>> from google.cloud import errorreporting_v1beta1
-            >>>
-            >>> client = errorreporting_v1beta1.ErrorStatsServiceClient()
-            >>>
-            >>> project_name = client.project_path('[PROJECT]')
-            >>>
-            >>> response = client.delete_events(project_name)
-
-        Args:
-            project_name (str): [Required] The resource name of the Google Cloud Platform project.
-                Written as ``projects/`` plus the `Google Cloud Platform project
-                ID <https://support.google.com/cloud/answer/6158840>`__. Example:
-                ``projects/my-project-123``.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.errorreporting_v1beta1.types.DeleteEventsResponse` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "delete_events" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "delete_events"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_events,
-                default_retry=self._method_configs["DeleteEvents"].retry,
-                default_timeout=self._method_configs["DeleteEvents"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = error_stats_service_pb2.DeleteEventsRequest(project_name=project_name)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("project_name", project_name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["delete_events"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ from google.cloud.errorreporting_v1beta1.proto import error_group_service_pb2_gr
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-error-reporting"
+    "google-cloud-error-reporting",
 ).version
 
 
@@ -76,9 +76,9 @@ class ErrorGroupServiceClient(object):
 
     @classmethod
     def group_path(cls, project, group):
-        """Return a fully-qualified group string."""
+        """Return a fully-qualified error_group string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/groups/{group}", project=project, group=group
+            "projects/{project}/groups/{group}", project=project, group=group,
         )
 
     def __init__(
@@ -168,12 +168,12 @@ class ErrorGroupServiceClient(object):
                 self.transport = transport
         else:
             self.transport = error_group_service_grpc_transport.ErrorGroupServiceGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -184,7 +184,7 @@ class ErrorGroupServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -194,79 +194,6 @@ class ErrorGroupServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def get_group(
-        self,
-        group_name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Get the specified group.
-
-        Example:
-            >>> from google.cloud import errorreporting_v1beta1
-            >>>
-            >>> client = errorreporting_v1beta1.ErrorGroupServiceClient()
-            >>>
-            >>> group_name = client.group_path('[PROJECT]', '[GROUP]')
-            >>>
-            >>> response = client.get_group(group_name)
-
-        Args:
-            group_name (str): [Required] The group resource name. Written as
-                projects/projectID/groups/group\_name. Call groupStats.list to return a
-                list of groups belonging to this project.
-
-                Example: projects/my-project-123/groups/my-group
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.errorreporting_v1beta1.types.ErrorGroup` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "get_group" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "get_group"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_group,
-                default_retry=self._method_configs["GetGroup"].retry,
-                default_timeout=self._method_configs["GetGroup"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = error_group_service_pb2.GetGroupRequest(group_name=group_name)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("group_name", group_name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["get_group"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
     def update_group(
         self,
         group,
@@ -289,7 +216,7 @@ class ErrorGroupServiceClient(object):
             >>> response = client.update_group(group)
 
         Args:
-            group (Union[dict, ~google.cloud.errorreporting_v1beta1.types.ErrorGroup]): [Required] The group which replaces the resource on the server.
+            group (Union[dict, ~google.cloud.errorreporting_v1beta1.types.ErrorGroup]): Required. The group which replaces the resource on the server.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.errorreporting_v1beta1.types.ErrorGroup`
@@ -323,7 +250,7 @@ class ErrorGroupServiceClient(object):
                 client_info=self._client_info,
             )
 
-        request = error_group_service_pb2.UpdateGroupRequest(group=group)
+        request = error_group_service_pb2.UpdateGroupRequest(group=group,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -338,5 +265,79 @@ class ErrorGroupServiceClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls["update_group"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def get_group(
+        self,
+        group_name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Get the specified group.
+
+        Example:
+            >>> from google.cloud import errorreporting_v1beta1
+            >>>
+            >>> client = errorreporting_v1beta1.ErrorGroupServiceClient()
+            >>>
+            >>> group_name = client.group_path('[PROJECT]', '[GROUP]')
+            >>>
+            >>> response = client.get_group(group_name)
+
+        Args:
+            group_name (str): The group resource name. Written as
+                ``projects/{projectID}/groups/{group_name}``. Call
+                ```groupStats.list`` <https://cloud.google.com/error-reporting/reference/rest/v1beta1/projects.groupStats/list>`__
+                to return a list of groups belonging to this project.
+
+                Example: ``projects/my-project-123/groups/my-group``
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.errorreporting_v1beta1.types.ErrorGroup` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_group" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_group"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_group,
+                default_retry=self._method_configs["GetGroup"].retry,
+                default_timeout=self._method_configs["GetGroup"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = error_group_service_pb2.GetGroupRequest(group_name=group_name,)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("group_name", group_name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["get_group"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )

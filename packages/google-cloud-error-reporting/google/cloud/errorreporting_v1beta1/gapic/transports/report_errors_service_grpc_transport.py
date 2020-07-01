@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ class ReportErrorsServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -77,7 +77,7 @@ class ReportErrorsServiceGrpcTransport(object):
         self._stubs = {
             "report_errors_service_stub": report_errors_service_pb2_grpc.ReportErrorsServiceStub(
                 channel
-            )
+            ),
         }
 
     @classmethod
@@ -120,6 +120,13 @@ class ReportErrorsServiceGrpcTransport(object):
         """Return the gRPC stub for :meth:`ReportErrorsServiceClient.report_error_event`.
 
         Report an individual error event.
+
+        This endpoint accepts **either** an OAuth token, **or** an `API
+        key <https://support.google.com/cloud/answer/6158862>`__ for
+        authentication. To use an API key, append it to the URL as the value of
+        a ``key`` parameter. For example:
+
+        ``POST https://clouderrorreporting.googleapis.com/v1beta1/projects/example-project/events:report?key=123ABC456``
 
         Returns:
             Callable: A callable which accepts the appropriate

@@ -17,12 +17,12 @@ config = {
                 }
             },
             "methods": {
-                "GetGroup": {
+                "UpdateGroup": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
                 },
-                "UpdateGroup": {
+                "GetGroup": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default",
