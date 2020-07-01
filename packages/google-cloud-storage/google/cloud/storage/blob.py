@@ -187,7 +187,7 @@ class Blob(_PropertyMixin):
         self._bucket = bucket
         self._acl = ObjectACL(self)
         _raise_if_more_than_one_set(
-            encryption_key=encryption_key, kms_key_name=kms_key_name,
+            encryption_key=encryption_key, kms_key_name=kms_key_name
         )
 
         self._encryption_key = encryption_key

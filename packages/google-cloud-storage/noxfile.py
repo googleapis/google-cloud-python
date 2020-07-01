@@ -26,11 +26,12 @@ import nox
 BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
-if os.path.exists("samples"):
-    BLACK_PATHS.append("samples")
+DEFAULT_PYTHON_VERSION = "3.8"
+SYSTEM_TEST_PYTHON_VERSIONS = ["2.7", "3.8"]
+UNIT_TEST_PYTHON_VERSIONS = ["2.7", "3.5", "3.6", "3.7", "3.8"]
 
 
-@nox.session(python="3.8")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
     """Run linters.
 
@@ -38,7 +39,9 @@ def lint(session):
     serious code quality issues.
     """
     session.install("flake8", BLACK_VERSION)
-    session.run("black", "--check", *BLACK_PATHS)
+    session.run(
+        "black", "--check", *BLACK_PATHS,
+    )
     session.run("flake8", "google", "tests")
 
 
@@ -53,10 +56,12 @@ def blacken(session):
     check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
     """
     session.install(BLACK_VERSION)
-    session.run("black", *BLACK_PATHS)
+    session.run(
+        "black", *BLACK_PATHS,
+    )
 
 
-@nox.session(python="3.8")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.install("docutils", "pygments")
@@ -73,6 +78,7 @@ def default(session):
         "py.test",
         "--quiet",
         "--cov=google.cloud.storage",
+        "--cov=google.cloud",
         "--cov=tests.unit",
         "--cov-append",
         "--cov-config=.coveragerc",
@@ -83,13 +89,13 @@ def default(session):
     )
 
 
-@nox.session(python=["2.7", "3.5", "3.6", "3.7", "3.8"])
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
     """Run the unit test suite."""
     default(session)
 
 
-@nox.session(python=["2.7", "3.8"])
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system(session):
     """Run the system test suite."""
     system_test_path = os.path.join("tests", "system.py")
@@ -103,19 +109,21 @@ def system(session):
     # Sanity check: only run tests if found.
     if not system_test_exists and not system_test_folder_exists:
         session.skip("System tests were not found")
-    session.install("google-cloud-iam")
-    session.install("google-cloud-pubsub")
-    session.install("google-cloud-kms")
 
     # Use pre-release gRPC for system tests.
     session.install("--pre", "grpcio")
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install("mock", "pytest")
-
+    session.install(
+        "mock",
+        "pytest",
+        "google-cloud-testutils",
+        "google-cloud-iam",
+        "google-cloud-pubsub",
+        "google-cloud-kms",
+    )
     session.install("-e", ".")
-    session.install("-e", "test_utils")
 
     # Run py.test against the system tests.
     if system_test_exists:
@@ -124,7 +132,7 @@ def system(session):
         session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)
 
 
-@nox.session(python="3.8")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def cover(session):
     """Run the final coverage report.
 
@@ -132,12 +140,12 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=100")
+    session.run("coverage", "report", "--show-missing", "--fail-under=99")
 
     session.run("coverage", "erase")
 
 
-@nox.session(python="3.8")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def docs(session):
     """Build the docs for this library."""
 

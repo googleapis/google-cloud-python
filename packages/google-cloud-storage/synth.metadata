@@ -1,11 +1,17 @@
 {
-  "updateTime": "2020-03-31T12:14:08.930178Z",
   "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "git@github.com:googleapis/python-storage",
+        "sha": "0709ad5121098af68faf2432d8960650d238d8cd"
+      }
+    },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "a003d8655d3ebec2bbbd5fc3898e91e152265c67"
+        "sha": "303271797a360f8a439203413f13a160f2f5b3b4"
       }
     }
   ]
