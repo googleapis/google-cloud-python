@@ -4,14 +4,14 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-resource-manager.git",
-        "sha": "1a44d9affa737192c6376ac52d3d9016b8d34554"
+        "sha": "695d01802668b12085d0fb9934abab45fd4ccfa1"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "4e1d2cb79b02d7496b1452f91c518630c207145e"
+        "sha": "303271797a360f8a439203413f13a160f2f5b3b4"
       }
     }
   ]
