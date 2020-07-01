@@ -4346,7 +4346,15 @@ class LocalStructuredProperty(BlobProperty):
         if isinstance(value, bytes):
             pb = entity_pb2.Entity()
             pb.MergeFromString(value)
-            value = helpers.entity_from_protobuf(pb)
+            entity_value = helpers.entity_from_protobuf(pb)
+            if not entity_value.keys():
+                # No properties. Maybe dealing with legacy pb format.
+                from google.cloud.ndb._legacy_entity_pb import EntityProto
+
+                pb = EntityProto()
+                pb.MergePartialFromString(value)
+                entity_value.update(pb.entity_props())
+            value = entity_value
         if not self._keep_keys and value.key:
             value.key = None
         return _entity_from_ds_entity(value, model_class=self._model_class)

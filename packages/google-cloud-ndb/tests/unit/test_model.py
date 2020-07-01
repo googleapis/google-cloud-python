@@ -3782,6 +3782,27 @@ class TestLocalStructuredProperty:
         assert prop._call_from_base_type(ds_entity) == entity
 
     @staticmethod
+    def test_legacy_compressed_entity_local_structured_property():
+        class SubKind(model.Model):
+            foo = model.StringProperty()
+            bar = model.StringProperty()
+            baz = model.StringProperty()
+
+        prop = model.LocalStructuredProperty(
+            SubKind, repeated=True, compressed=True
+        )
+        entity = SubKind(foo="so", bar="much", baz="code")
+        compressed = b"".join(
+            [
+                b"x\x9c+\xe2\x95bN\xcb\xcfW`\xd0b\x91b*\xce",
+                b"/\xe2\x97bNJ,\x02r\xd9\xa4XrK\x933 \x02U\x10",
+                b"\x81\xe4\xfc\x94T\x00\x08\xe1\n\xff",
+            ]
+        )
+
+        assert prop._call_from_base_type(compressed) == entity
+
+    @staticmethod
     def test__get_for_dict():
         class Mine(model.Model):
             foo = model.StringProperty()
