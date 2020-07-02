@@ -22,8 +22,4 @@ from grafeas.grafeas_v1 import enums
 from grafeas.grafeas_v1 import types
 
 
-__all__ = (
-    "enums",
-    "types",
-    "GrafeasClient",
-)
+__all__ = ("enums", "types", "GrafeasClient")
