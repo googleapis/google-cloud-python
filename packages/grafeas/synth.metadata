@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-grafeas.git",
-        "sha": "5a085e3bcff42c1f7492656766b2f287078f1ed5"
+        "sha": "0ea0ff9b9d6ef182456b792d981a0f5cdd3d5bb6"
       }
     },
     {
@@ -19,7 +19,7 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "483f18635c3af10031435535268abe001ad69e7c"
+        "sha": "303271797a360f8a439203413f13a160f2f5b3b4"
       }
     }
   ],
