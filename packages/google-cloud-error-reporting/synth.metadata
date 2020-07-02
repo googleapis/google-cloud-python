@@ -3,8 +3,8 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-error-reporting.git",
-        "sha": "98a2c71f717cca54fe8d8dc192d2b497058ae297"
+        "remote": "https://github.com/googleapis/python-error-reporting.git",
+        "sha": "840d67c09502ae99ce4771c66bde1cefb961a367"
       }
     },
     {
