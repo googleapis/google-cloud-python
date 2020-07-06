@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [0.6.0](https://www.github.com/googleapis/python-securitycenter/compare/v0.5.0...v0.6.0) (2020-07-01)
+
+
+### Features
+
+* add `security_marks_path` method; fix docstring links (via synth) ([#24](https://www.github.com/googleapis/python-securitycenter/issues/24)) ([80ce6e6](https://www.github.com/googleapis/python-securitycenter/commit/80ce6e6128abf106ef7c3631a426f99440a406d9))
+* add Resource to the v1 NotificationMessage ([#33](https://www.github.com/googleapis/python-securitycenter/issues/33)) ([c930e6a](https://www.github.com/googleapis/python-securitycenter/commit/c930e6afc6aa701761f9966e1391ca2d3ebb30f4))
+
+
+### Documentation
+
+* Update notification samples to v1 ([#19](https://www.github.com/googleapis/python-securitycenter/issues/19)) ([5eba984](https://www.github.com/googleapis/python-securitycenter/commit/5eba984eefefd3d689d84d14a8078c28914307c8))
+
 ## [0.5.0](https://www.github.com/googleapis/python-securitycenter/compare/v0.4.0...v0.5.0) (2020-03-10)
 
 
