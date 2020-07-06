@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+### [1.6.1](https://www.github.com/googleapis/python-pubsub/compare/v1.6.0...v1.6.1) (2020-06-30)
+
+
+### Documentation
+
+* added Python2 sunset notice (synth) ([#140](https://www.github.com/googleapis/python-pubsub/issues/140)) ([c8f6378](https://www.github.com/googleapis/python-pubsub/commit/c8f63788636c2e3436c8ce6a01ef3b59e3df772a))
+* explain how to nack a sync pull message ([#123](https://www.github.com/googleapis/python-pubsub/issues/123)) ([f2eec65](https://www.github.com/googleapis/python-pubsub/commit/f2eec65cec43066ba7a2d1d45efa979e6b7add4f))
+
 ## [1.6.0](https://www.github.com/googleapis/python-pubsub/compare/v1.5.0...v1.6.0) (2020-06-09)
 
 
