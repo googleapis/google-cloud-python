@@ -346,7 +346,8 @@ class SubscriberClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.pubsub_v1.types.ExpirationPolicy`
-            filter_ (str): An expression written in the Cloud Pub/Sub filter language. If
+            filter_ (str): An expression written in the Pub/Sub `filter
+                language <https://cloud.google.com/pubsub/docs/filtering>`__. If
                 non-empty, then only ``PubsubMessage``\ s whose ``attributes`` field
                 matches the filter are delivered on this subscription. If empty, then no
                 messages are filtered out.
