@@ -1,11 +1,17 @@
 {
-  "updateTime": "2019-09-12T22:40:28.148018Z",
   "sources": [
     {
-      "template": {
-        "name": "python_library",
-        "origin": "synthtool.gcp",
-        "version": "2019.5.2"
+      "git": {
+        "name": ".",
+        "remote": "git@github.com:googleapis/google-auth-library-python",
+        "sha": "aab4f2fdb2cfa598397026865ccb270a05c38cc4"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "71b8a272549c06b5768d00fa48d3ae990e871bec"
       }
     }
   ]
