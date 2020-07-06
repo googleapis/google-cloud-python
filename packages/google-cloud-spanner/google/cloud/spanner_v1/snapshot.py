@@ -408,7 +408,7 @@ class Snapshot(_SnapshotBase):
     at a timestamp where all previously committed transactions are visible.
 
     :type session: :class:`~google.cloud.spanner_v1.session.Session`
-    :param session: the session used to perform the commit.
+    :param session: The session used to perform the commit.
 
     :type read_timestamp: :class:`datetime.datetime`
     :param read_timestamp: Execute all reads at the given timestamp.
@@ -426,7 +426,7 @@ class Snapshot(_SnapshotBase):
                             ``exact_staleness`` old.
 
     :type multi_use: :class:`bool`
-    :param multi_use: If true, multipl :meth:`read` / :meth:`execute_sql`
+    :param multi_use: If true, multiple :meth:`read` / :meth:`execute_sql`
                       calls can be performed with the snapshot in the
                       context of a read-only transaction, used to ensure
                       isolation / consistency. Incompatible with
