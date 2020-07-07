@@ -26,6 +26,7 @@ class MockHttp(object):
         self.responses = responses
         self.requests = []
         self.headers = headers or {}
+        self.add_certificate = mock.Mock(return_value=None)
 
     def request(self, url, method='GET', body=None, headers=None, **kwargs):
         self.requests.append((method, url, body, headers, kwargs))
@@ -94,6 +95,40 @@ class TestAuthorizedHttp(object):
 
         authed_http.connections = mock.sentinel.connections
         assert authed_http.http.connections == mock.sentinel.connections
+
+    def test_follow_redirects(self):
+        auth_http = google_auth_httplib2.AuthorizedHttp(
+            mock.sentinel.credentials
+        )
+
+        assert auth_http.follow_redirects == auth_http.http.follow_redirects
+
+        mock_follow_redirects = mock.sentinel.follow_redirects
+        auth_http.follow_redirects = mock_follow_redirects
+        assert auth_http.http.follow_redirects == mock_follow_redirects
+
+    def test_timeout(self):
+        authed_http = google_auth_httplib2.AuthorizedHttp(
+            mock.sentinel.credentials
+        )
+
+        assert authed_http.timeout == authed_http.http.timeout
+
+        authed_http.timeout = mock.sentinel.timeout
+        assert authed_http.http.timeout == mock.sentinel.timeout
+
+    def test_add_certificate(self):
+        authed_http = google_auth_httplib2.AuthorizedHttp(
+            mock.sentinel.credentials,
+            http=MockHttp(MockResponse())
+        )
+
+        authed_http.add_certificate(
+            "key", "cert", "domain", password="password"
+        )
+        authed_http.http.add_certificate.assert_called_once_with(
+            "key", "cert", "domain", password="password"
+        )
 
     def test_request_no_refresh(self):
         mock_credentials = mock.Mock(wraps=MockCredentials())
