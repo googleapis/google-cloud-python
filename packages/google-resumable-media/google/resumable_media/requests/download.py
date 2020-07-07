@@ -27,8 +27,8 @@ from google.resumable_media.requests import _helpers
 
 _LOGGER = logging.getLogger(__name__)
 _HASH_HEADER = u"x-goog-hash"
-_MISSING_MD5 = u"""\
-No MD5 checksum was returned from the service while downloading {}
+_MISSING_CHECKSUM = u"""\
+No {checksum_type} checksum was returned from the service while downloading {}
 (which happens for composite objects), so client-side content integrity
 checking is not being performed."""
 _CHECKSUM_MISMATCH = u"""\
@@ -36,11 +36,11 @@ Checksum mismatch while downloading:
 
   {}
 
-The X-Goog-Hash header indicated an MD5 checksum of:
+The X-Goog-Hash header indicated an {checksum_type} checksum of:
 
   {}
 
-but the actual MD5 checksum of the downloaded contents was:
+but the actual {checksum_type} checksum of the downloaded contents was:
 
   {}
 """
@@ -65,6 +65,13 @@ class Download(_helpers.RequestsMixin, _download.Download):
             ``start`` to the end of the media.
         headers (Optional[Mapping[str, str]]): Extra headers that should
             be sent with the request, e.g. headers for encrypted data.
+        checksum Optional([str]): The type of checksum to compute to verify
+            the integrity of the object. The response headers must contain
+            a checksum of the requested type. If the headers lack an
+            appropriate checksum (for instance in the case of transcoded or
+            ranged downloads where the remote service does not know the
+            correct checksum) an INFO-level log will be emitted. Supported
+            values are "md5", "crc32c" and None. The default is "md5".
 
     Attributes:
         media_url (str): The URL containing the media to be downloaded.
@@ -87,37 +94,42 @@ class Download(_helpers.RequestsMixin, _download.Download):
             ~google.resumable_media.common.DataCorruption: If the download's
                 checksum doesn't agree with server-computed checksum.
         """
-        expected_md5_hash = _get_expected_md5(
-            response, self._get_headers, self.media_url
+
+        # `_get_expected_checksum()` may return None even if a checksum was
+        # requested, in which case it will emit an info log _MISSING_CHECKSUM.
+        # If an invalid checksum type is specified, this will raise ValueError.
+        expected_checksum, checksum_object = _get_expected_checksum(
+            response, self._get_headers, self.media_url, checksum_type=self.checksum
         )
 
-        if expected_md5_hash is None:
-            md5_hash = _DoNothingHash()
-        else:
-            md5_hash = hashlib.md5()
         with response:
-            # NOTE: This might "donate" ``md5_hash`` to the decoder and replace
-            #       it with a ``_DoNothingHash``.
-            local_hash = _add_decoder(response.raw, md5_hash)
+            # NOTE: In order to handle compressed streams gracefully, we try
+            # to insert our checksum object into the decompression stream. If
+            # the stream is indeed compressed, this will delegate the checksum
+            # object to the decoder and return a _DoNothingHash here.
+            local_checksum_object = _add_decoder(response.raw, checksum_object)
             body_iter = response.iter_content(
                 chunk_size=_helpers._SINGLE_GET_CHUNK_SIZE, decode_unicode=False
             )
             for chunk in body_iter:
                 self._stream.write(chunk)
-                local_hash.update(chunk)
+                local_checksum_object.update(chunk)
 
-        if expected_md5_hash is None:
+        if expected_checksum is None:
             return
-
-        actual_md5_hash = base64.b64encode(md5_hash.digest())
-        # NOTE: ``b64encode`` returns ``bytes``, but ``expected_md5_hash``
-        #       came from a header, so it will be ``str``.
-        actual_md5_hash = actual_md5_hash.decode(u"utf-8")
-        if actual_md5_hash != expected_md5_hash:
-            msg = _CHECKSUM_MISMATCH.format(
-                self.media_url, expected_md5_hash, actual_md5_hash
-            )
-            raise common.DataCorruption(response, msg)
+        else:
+            actual_checksum = base64.b64encode(checksum_object.digest())
+            # NOTE: ``b64encode`` returns ``bytes``, but ``expected_checksum``
+            #       came from a header, so it will be ``str``.
+            actual_checksum = actual_checksum.decode(u"utf-8")
+            if actual_checksum != expected_checksum:
+                msg = _CHECKSUM_MISMATCH.format(
+                    self.media_url,
+                    expected_checksum,
+                    actual_checksum,
+                    checksum_type=self.checksum.upper(),
+                )
+                raise common.DataCorruption(response, msg)
 
     def consume(
         self,
@@ -189,7 +201,13 @@ class RawDownload(_helpers.RawRequestsMixin, _download.Download):
             ``start`` to the end of the media.
         headers (Optional[Mapping[str, str]]): Extra headers that should
             be sent with the request, e.g. headers for encrypted data.
-
+        checksum Optional([str]): The type of checksum to compute to verify
+            the integrity of the object. The response headers must contain
+            a checksum of the requested type. If the headers lack an
+            appropriate checksum (for instance in the case of transcoded or
+            ranged downloads where the remote service does not know the
+            correct checksum) an INFO-level log will be emitted. Supported
+            values are "md5", "crc32c" and None. The default is "md5".
     Attributes:
         media_url (str): The URL containing the media to be downloaded.
         start (Optional[int]): The first byte in a range to be downloaded.
@@ -211,37 +229,39 @@ class RawDownload(_helpers.RawRequestsMixin, _download.Download):
             ~google.resumable_media.common.DataCorruption: If the download's
                 checksum doesn't agree with server-computed checksum.
         """
-        expected_md5_hash = _get_expected_md5(
-            response, self._get_headers, self.media_url
+
+        # `_get_expected_checksum()` may return None even if a checksum was
+        # requested, in which case it will emit an info log _MISSING_CHECKSUM.
+        # If an invalid checksum type is specified, this will raise ValueError.
+        expected_checksum, checksum_object = _get_expected_checksum(
+            response, self._get_headers, self.media_url, checksum_type=self.checksum
         )
 
-        if expected_md5_hash is None:
-            md5_hash = _DoNothingHash()
-        else:
-            md5_hash = hashlib.md5()
         with response:
-            # NOTE: This might "donate" ``md5_hash`` to the decoder and replace
-            #       it with a ``_DoNothingHash``.
             body_iter = response.raw.stream(
                 _helpers._SINGLE_GET_CHUNK_SIZE, decode_content=False
             )
             for chunk in body_iter:
                 self._stream.write(chunk)
-                md5_hash.update(chunk)
+                checksum_object.update(chunk)
             response._content_consumed = True
 
-        if expected_md5_hash is None:
+        if expected_checksum is None:
             return
+        else:
+            actual_checksum = base64.b64encode(checksum_object.digest())
 
-        actual_md5_hash = base64.b64encode(md5_hash.digest())
-        # NOTE: ``b64encode`` returns ``bytes``, but ``expected_md5_hash``
-        #       came from a header, so it will be ``str``.
-        actual_md5_hash = actual_md5_hash.decode(u"utf-8")
-        if actual_md5_hash != expected_md5_hash:
-            msg = _CHECKSUM_MISMATCH.format(
-                self.media_url, expected_md5_hash, actual_md5_hash
-            )
-            raise common.DataCorruption(response, msg)
+            # NOTE: ``b64encode`` returns ``bytes``, but ``expected_checksum``
+            #       came from a header, so it will be ``str``.
+            actual_checksum = actual_checksum.decode(u"utf-8")
+            if actual_checksum != expected_checksum:
+                msg = _CHECKSUM_MISMATCH.format(
+                    self.media_url,
+                    expected_checksum,
+                    actual_checksum,
+                    checksum_type=self.checksum.upper(),
+                )
+                raise common.DataCorruption(response, msg)
 
     def consume(
         self,
@@ -429,29 +449,49 @@ class RawChunkedDownload(_helpers.RawRequestsMixin, _download.ChunkedDownload):
         return result
 
 
-def _get_expected_md5(response, get_headers, media_url):
-    """Get the expected MD5 hash from the response headers.
+def _get_expected_checksum(response, get_headers, media_url, checksum_type):
+    """Get the expected checksum and checksum object for the response.
 
     Args:
         response (~requests.Response): The HTTP response object.
         get_headers (callable: response->dict): returns response headers.
         media_url (str): The URL containing the media to be downloaded.
+        checksum_type Optional(str): The checksum type to read from the headers,
+            exactly as it will appear in the headers (case-sensitive). Must be
+            "md5", "crc32c" or None.
 
     Returns:
-        Optional[str]: The expected MD5 hash of the response, if it
-        can be detected from the ``X-Goog-Hash`` header.
+        Tuple (Optional[str], object): The expected checksum of the response,
+        if it can be detected from the ``X-Goog-Hash`` header, and the
+        appropriate checksum object for the expected checksum.
     """
-    headers = get_headers(response)
-    expected_md5_hash = _parse_md5_header(headers.get(_HASH_HEADER), response)
+    if checksum_type not in ["md5", "crc32c", None]:
+        raise ValueError("checksum must be ``'md5'``, ``'crc32c'`` or ``None``")
+    elif checksum_type in ["md5", "crc32c"]:
+        headers = get_headers(response)
+        expected_checksum = _parse_checksum_header(
+            headers.get(_HASH_HEADER), response, checksum_label=checksum_type
+        )
 
-    if expected_md5_hash is None:
-        msg = _MISSING_MD5.format(media_url)
-        _LOGGER.info(msg)
+        if expected_checksum is None:
+            msg = _MISSING_CHECKSUM.format(
+                media_url, checksum_type=checksum_type.upper()
+            )
+            _LOGGER.info(msg)
+            checksum_object = _DoNothingHash()
+        else:
+            if checksum_type == "md5":
+                checksum_object = hashlib.md5()
+            else:
+                checksum_object = _helpers._get_crc32c_object()
+    else:
+        expected_checksum = None
+        checksum_object = _DoNothingHash()
 
-    return expected_md5_hash
+    return (expected_checksum, checksum_object)
 
 
-def _parse_md5_header(header_value, response):
+def _parse_checksum_header(header_value, response, checksum_label):
     """Parses the MD5 header from an ``X-Goog-Hash`` value.
 
     .. _header reference: https://cloud.google.com/storage/docs/\
@@ -470,14 +510,16 @@ def _parse_md5_header(header_value, response):
         header_value (Optional[str]): The ``X-Goog-Hash`` header from
             a download response.
         response (~requests.Response): The HTTP response object.
+        checksum_label (str): The label of the header value to read, as in the
+            examples above. Typically "md5" or "crc32c"
 
     Returns:
-        Optional[str]: The expected MD5 hash of the response, if it
-        can be detected from the ``X-Goog-Hash`` header.
+        Optional[str]: The expected checksum of the response, if it
+        can be detected from the ``X-Goog-Hash`` header; otherwise, None.
 
     Raises:
         ~google.resumable_media.common.InvalidResponse: If there are
-            multiple ``md5`` checksums in ``header_value``.
+            multiple checksums of the requested type in ``header_value``.
     """
     if header_value is None:
         return None
@@ -485,7 +527,7 @@ def _parse_md5_header(header_value, response):
     matches = []
     for checksum in header_value.split(u","):
         name, value = checksum.split(u"=", 1)
-        if name == u"md5":
+        if name == checksum_label:
             matches.append(value)
 
     if len(matches) == 0:
@@ -495,7 +537,7 @@ def _parse_md5_header(header_value, response):
     else:
         raise common.InvalidResponse(
             response,
-            u"X-Goog-Hash header had multiple ``md5`` values.",
+            u"X-Goog-Hash header had multiple ``{}`` values.".format(checksum_label),
             header_value,
             matches,
         )
@@ -504,21 +546,21 @@ def _parse_md5_header(header_value, response):
 class _DoNothingHash(object):
     """Do-nothing hash object.
 
-    Intended as a stand-in for ``hashlib.md5`` in cases where it
-    isn't necessary to compute the hash.
+    Intended as a stand-in for ``hashlib.md5`` or a crc32c checksum
+    implementation in cases where it isn't necessary to compute the hash.
     """
 
     def update(self, unused_chunk):
         """Do-nothing ``update`` method.
 
-        Intended to match the interface of ``hashlib.md5``.
+        Intended to match the interface of ``hashlib.md5`` and other checksums.
 
         Args:
             unused_chunk (bytes): A chunk of data.
         """
 
 
-def _add_decoder(response_raw, md5_hash):
+def _add_decoder(response_raw, checksum):
     """Patch the ``_decoder`` on a ``urllib3`` response.
 
     This is so that we can intercept the compressed bytes before they are
@@ -529,36 +571,36 @@ def _add_decoder(response_raw, md5_hash):
     Args:
         response_raw (urllib3.response.HTTPResponse): The raw response for
             an HTTP request.
-        md5_hash (Union[_DoNothingHash, hashlib.md5]): A hash function which
-            will get updated when it encounters compressed bytes.
+        checksum (object):
+            A checksum which will be updated with compressed bytes.
 
     Returns:
-        Union[_DoNothingHash, hashlib.md5]: Either the original ``md5_hash``
-        if ``_decoder`` is not patched. Otherwise, returns a ``_DoNothingHash``
-        since the caller will no longer need to hash to decoded bytes.
+        object: Either the original ``checksum`` if ``_decoder`` is not
+        patched, or a ``_DoNothingHash`` if the decoder is patched, since the
+        caller will no longer need to hash to decoded bytes.
     """
     encoding = response_raw.headers.get(u"content-encoding", u"").lower()
     if encoding != u"gzip":
-        return md5_hash
+        return checksum
 
-    response_raw._decoder = _GzipDecoder(md5_hash)
+    response_raw._decoder = _GzipDecoder(checksum)
     return _DoNothingHash()
 
 
 class _GzipDecoder(urllib3.response.GzipDecoder):
     """Custom subclass of ``urllib3`` decoder for ``gzip``-ed bytes.
 
-    Allows an MD5 hash function to see the compressed bytes before they are
-    decoded. This way the hash of the compressed value can be computed.
+    Allows a checksum function to see the compressed bytes before they are
+    decoded. This way the checksum of the compressed value can be computed.
 
     Args:
-        md5_hash (Union[_DoNothingHash, hashlib.md5]): A hash function which
-            will get updated when it encounters compressed bytes.
+        checksum (object):
+            A checksum which will be updated with compressed bytes.
     """
 
-    def __init__(self, md5_hash):
+    def __init__(self, checksum):
         super(_GzipDecoder, self).__init__()
-        self._md5_hash = md5_hash
+        self._checksum = checksum
 
     def decompress(self, data):
         """Decompress the bytes.
@@ -569,5 +611,5 @@ class _GzipDecoder(urllib3.response.GzipDecoder):
         Returns:
             bytes: The decompressed bytes from ``data``.
         """
-        self._md5_hash.update(data)
+        self._checksum.update(data)
         return super(_GzipDecoder, self).decompress(data)

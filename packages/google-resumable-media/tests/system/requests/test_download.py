@@ -59,14 +59,19 @@ class CorruptingAuthorizedSession(tr_requests.AuthorizedSession):
             constructor.
     """
 
-    EMPTY_HASH = base64.b64encode(hashlib.md5(b"").digest()).decode(u"utf-8")
+    EMPTY_MD5 = base64.b64encode(hashlib.md5(b"").digest()).decode(u"utf-8")
+    crc32c = _helpers._get_crc32c_object()
+    crc32c.update(b"")
+    EMPTY_CRC32C = base64.b64encode(crc32c.digest()).decode(u"utf-8")
 
     def request(self, method, url, data=None, headers=None, **kwargs):
         """Implementation of Requests' request."""
         response = tr_requests.AuthorizedSession.request(
             self, method, url, data=data, headers=headers, **kwargs
         )
-        response.headers[download_mod._HASH_HEADER] = u"md5={}".format(self.EMPTY_HASH)
+        response.headers[download_mod._HASH_HEADER] = u"crc32c={},md5={}".format(
+            self.EMPTY_CRC32C, self.EMPTY_MD5
+        )
         return response
 
 
@@ -78,7 +83,8 @@ ALL_FILES = (
     {
         u"path": get_path(u"image1.jpg"),
         u"content_type": IMAGE_JPEG,
-        u"checksum": u"1bsd83IYNug8hd+V1ING3Q==",
+        u"md5": u"1bsd83IYNug8hd+V1ING3Q==",
+        u"crc32c": u"YQGPxA==",
         u"slices": (
             slice(1024, 16386, None),  # obj[1024:16386]
             slice(None, 8192, None),  # obj[:8192]
@@ -89,7 +95,8 @@ ALL_FILES = (
     {
         u"path": get_path(u"image2.jpg"),
         u"content_type": IMAGE_JPEG,
-        u"checksum": u"gdLXJltiYAMP9WZZFEQI1Q==",
+        u"md5": u"gdLXJltiYAMP9WZZFEQI1Q==",
+        u"crc32c": u"sxxEFQ==",
         u"slices": (
             slice(1024, 16386, None),  # obj[1024:16386]
             slice(None, 8192, None),  # obj[:8192]
@@ -100,14 +107,16 @@ ALL_FILES = (
     {
         u"path": get_path(u"file.txt"),
         u"content_type": PLAIN_TEXT,
-        u"checksum": u"XHSHAr/SpIeZtZbjgQ4nGw==",
+        u"md5": u"XHSHAr/SpIeZtZbjgQ4nGw==",
+        u"crc32c": u"MeMHoQ==",
         u"slices": (),
     },
     {
         u"path": get_path(u"gzipped.txt.gz"),
         u"uncompressed": get_path(u"gzipped.txt"),
         u"content_type": PLAIN_TEXT,
-        u"checksum": u"KHRs/+ZSrc/FuuR4qz/PZQ==",
+        u"md5": u"KHRs/+ZSrc/FuuR4qz/PZQ==",
+        u"crc32c": u"/LIRNg==",
         u"slices": (),
         u"metadata": {u"contentEncoding": u"gzip"},
     },
@@ -249,14 +258,15 @@ class TestDownload(object):
     def _read_response_content(response):
         return response.content
 
-    def test_download_full(self, add_files, authorized_transport):
+    @pytest.mark.parametrize("checksum", [u"md5", u"crc32c", None])
+    def test_download_full(self, add_files, authorized_transport, checksum):
         for info in ALL_FILES:
             actual_contents = self._get_contents(info)
             blob_name = get_blob_name(info)
 
             # Create the actual download object.
             media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
-            download = self._make_one(media_url)
+            download = self._make_one(media_url, checksum=checksum)
             # Consume the resource.
             response = download.consume(authorized_transport)
             assert response.status_code == http_client.OK
@@ -372,25 +382,45 @@ class TestRawDownload(TestDownload):
             response.raw.stream(_helpers._SINGLE_GET_CHUNK_SIZE, decode_content=False)
         )
 
-    def test_corrupt_download(self, add_files, corrupting_transport):
+    @pytest.mark.parametrize("checksum", [u"md5", u"crc32c"])
+    def test_corrupt_download(self, add_files, corrupting_transport, checksum):
         for info in ALL_FILES:
             blob_name = get_blob_name(info)
 
             # Create the actual download object.
             media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
             stream = io.BytesIO()
-            download = self._make_one(media_url, stream=stream)
+            download = self._make_one(media_url, stream=stream, checksum=checksum)
             # Consume the resource.
             with pytest.raises(common.DataCorruption) as exc_info:
                 download.consume(corrupting_transport)
 
             assert download.finished
+
+            if checksum == "md5":
+                EMPTY_HASH = CorruptingAuthorizedSession.EMPTY_MD5
+            else:
+                EMPTY_HASH = CorruptingAuthorizedSession.EMPTY_CRC32C
             msg = download_mod._CHECKSUM_MISMATCH.format(
                 download.media_url,
-                CorruptingAuthorizedSession.EMPTY_HASH,
-                info[u"checksum"],
+                EMPTY_HASH,
+                info[checksum],
+                checksum_type=checksum.upper(),
             )
             assert exc_info.value.args == (msg,)
+
+    def test_corrupt_download_no_check(self, add_files, corrupting_transport):
+        for info in ALL_FILES:
+            blob_name = get_blob_name(info)
+
+            # Create the actual download object.
+            media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
+            stream = io.BytesIO()
+            download = self._make_one(media_url, stream=stream, checksum=None)
+            # Consume the resource.
+            download.consume(corrupting_transport)
+
+            assert download.finished
 
 
 def get_chunk_size(min_chunks, total_bytes):

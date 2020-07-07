@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import mock
+import pytest
 from six.moves import http_client
 
 from google.resumable_media.requests import _helpers
@@ -94,6 +95,49 @@ def test_http_request_defaults():
     transport.request.assert_called_once_with(
         method, url, data=None, headers=None, timeout=EXPECTED_TIMEOUT
     )
+
+
+def test_crc32c_throws_import_error():
+    try:
+        import builtins
+    except ImportError:
+        import __builtin__ as builtins
+    orig_import = builtins.__import__
+
+    # Raises ImportError for name == "crc32c" or name == "crcmod"
+    def mock_import(name, globals, locals, fromlist, level=None):
+        raise ImportError
+
+    builtins.__import__ = mock_import
+
+    try:
+        with pytest.raises(ImportError):
+            _helpers._get_crc32c_object()
+    finally:
+        builtins.__import__ = orig_import
+
+
+@pytest.mark.filterwarnings("ignore::RuntimeWarning")
+def test_crc32c_warning_on_slow_crcmod():
+    try:
+        import builtins
+    except ImportError:
+        import __builtin__ as builtins
+
+    orig_import = builtins.__import__
+
+    # crcmod.crcmod is the only import.
+    def mock_import(name, globals, locals, fromlist, level):
+        crcmod = mock.MagicMock()
+        crcmod._usingExtension = False
+        return crcmod
+
+    builtins.__import__ = mock_import
+
+    try:
+        assert not _helpers._is_fast_crcmod()
+    finally:
+        builtins.__import__ = orig_import
 
 
 def _make_response(status_code):

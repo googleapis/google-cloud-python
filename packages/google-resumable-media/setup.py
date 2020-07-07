@@ -25,6 +25,8 @@ with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
 
 REQUIREMENTS = [
     'six',
+    'google-crc32c >= 0.1.0; python_version>="3.5"',
+    'crcmod >= 1.7; python_version=="2.7"',
 ]
 EXTRAS_REQUIRE = {
     'requests': [
