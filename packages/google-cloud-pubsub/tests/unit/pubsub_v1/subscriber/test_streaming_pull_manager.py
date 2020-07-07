@@ -159,6 +159,15 @@ def test_client_id():
     assert client_id_1 != client_id_2
 
 
+def test_streaming_flow_control():
+    manager = make_manager(
+        flow_control=types.FlowControl(max_messages=10, max_bytes=1000)
+    )
+    request = manager._get_initial_request(stream_ack_deadline_seconds=10)
+    assert request.max_outstanding_messages == 10
+    assert request.max_outstanding_bytes == 1000
+
+
 def test_ack_deadline_with_max_duration_per_lease_extension():
     manager = make_manager()
     manager._flow_control = types.FlowControl(max_duration_per_lease_extension=5)

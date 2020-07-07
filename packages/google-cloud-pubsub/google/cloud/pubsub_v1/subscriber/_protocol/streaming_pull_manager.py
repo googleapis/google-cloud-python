@@ -575,6 +575,8 @@ class StreamingPullManager(object):
             stream_ack_deadline_seconds=stream_ack_deadline_seconds,
             subscription=self._subscription,
             client_id=self._client_id,
+            max_outstanding_messages=self._flow_control.max_messages,
+            max_outstanding_bytes=self._flow_control.max_bytes,
         )
 
         # Return the initial request.
