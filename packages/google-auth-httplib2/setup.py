@@ -30,7 +30,7 @@ with io.open('README.rst', 'r') as fh:
 
 setup(
     name='google-auth-httplib2',
-    version='0.0.3',
+    version='0.0.4',
     author='Google Cloud Platform',
     author_email='jonwayne+google-auth@google.com',
     description='Google Authentication Library: httplib2 transport',
