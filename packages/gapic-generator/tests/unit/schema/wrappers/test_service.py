@@ -260,3 +260,38 @@ def test_service_any_streaming():
 
         assert service.any_client_streaming == client
         assert service.any_server_streaming == server
+
+
+def test_has_pagers():
+    paged = make_field(name='foos', message=make_message('Foo'), repeated=True)
+    input_msg = make_message(
+        name='ListFoosRequest',
+        fields=(
+            make_field(name='parent', type=9),      # str
+            make_field(name='page_size', type=5),   # int
+            make_field(name='page_token', type=9),  # str
+        ),
+    )
+    output_msg = make_message(
+        name='ListFoosResponse',
+        fields=(
+            paged,
+            make_field(name='next_page_token', type=9),  # str
+        ),
+    )
+    method = make_method(
+        'ListFoos',
+        input_message=input_msg,
+        output_message=output_msg,
+    )
+
+    service = make_service(name="Fooer", methods=(method,),)
+    assert service.has_pagers
+
+    other_service = make_service(
+        name="Unfooer",
+        methods=(
+            get_method("Unfoo", "foo.bar.UnfooReq", "foo.bar.UnFooResp"),
+        ),
+    )
+    assert not other_service.has_pagers

@@ -244,6 +244,7 @@ class {{ service.async_client_name }}:
             method=rpc,
             request=request,
             response=response,
+            metadata=metadata,
         )
         {%- endif %}
         {%- if not method.void %}

@@ -27,6 +27,9 @@ from google.api_core import future
 from google.api_core import operations_v1
 from google.longrunning import operations_pb2
 {% endif -%}
+{% if service.has_pagers -%}
+from google.api_core import gapic_v1
+{% endif -%}
 {% for method in service.methods.values() -%}
 {% for ref_type in method.ref_types
    if not ((ref_type.ident.python_import.package == ('google', 'api_core') and ref_type.ident.python_import.module == 'operation')
@@ -695,9 +698,24 @@ def test_{{ method.name|snake_case }}_pager():
             ),
             RuntimeError,
         )
-        results = [i for i in client.{{ method.name|snake_case }}(
-            request={},
-        )]
+
+        metadata = ()
+        {% if method.field_headers -%}
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((
+                {%- for field_header in method.field_headers %}
+                {%- if not method.client_streaming %}
+                ('{{ field_header }}', ''),
+                {%- endif %}
+                {%- endfor %}
+            )),
+        )
+        {% endif -%}
+        pager = client.{{ method.name|snake_case }}(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
         assert len(results) == 6
         assert all(isinstance(i, {{ method.paged_result_field.message.ident }})
                    for i in results)
