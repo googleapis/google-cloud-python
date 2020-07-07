@@ -15,6 +15,7 @@
 from gapic.utils.cache import cached_property
 from gapic.utils.case import to_snake_case
 from gapic.utils.code import empty
+from gapic.utils.code import nth
 from gapic.utils.code import partition
 from gapic.utils.doc import doc
 from gapic.utils.filename import to_valid_filename
@@ -29,6 +30,7 @@ __all__ = (
     'cached_property',
     'doc',
     'empty',
+    'nth',
     'partition',
     'RESERVED_NAMES',
     'rst',

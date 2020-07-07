@@ -200,6 +200,7 @@ def make_field(
     message: wrappers.MessageType = None,
     enum: wrappers.EnumType = None,
     meta: metadata.Metadata = None,
+    oneof: str = None,
     **kwargs
 ) -> wrappers.Field:
     T = desc.FieldDescriptorProto.Type
@@ -223,11 +224,13 @@ def make_field(
         number=number,
         **kwargs
     )
+
     return wrappers.Field(
         field_pb=field_pb,
         enum=enum,
         message=message,
         meta=meta or metadata.Metadata(),
+        oneof=oneof,
     )
 
 
@@ -322,20 +325,28 @@ def make_enum_pb2(
 def make_message_pb2(
         name: str,
         fields: tuple = (),
+        oneof_decl: tuple = (),
         **kwargs
 ) -> desc.DescriptorProto:
-    return desc.DescriptorProto(name=name, field=fields, **kwargs)
+    return desc.DescriptorProto(name=name, field=fields, oneof_decl=oneof_decl, **kwargs)
 
 
 def make_field_pb2(name: str, number: int,
                    type: int = 11,  # 11 == message
                    type_name: str = None,
+                   oneof_index: int = None
                    ) -> desc.FieldDescriptorProto:
     return desc.FieldDescriptorProto(
         name=name,
         number=number,
         type=type,
         type_name=type_name,
+        oneof_index=oneof_index,
+    )
+
+def make_oneof_pb2(name: str) -> desc.OneofDescriptorProto:
+    return desc.OneofDescriptorProto(
+        name=name,
     )
 
 

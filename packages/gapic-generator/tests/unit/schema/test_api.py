@@ -34,6 +34,7 @@ from test_utils.test_utils import (
     make_file_pb2,
     make_message_pb2,
     make_naming,
+    make_oneof_pb2,
 )
 
 
@@ -237,6 +238,45 @@ def test_proto_keyword_fname():
         'class_.proto',
         'class__.proto',
     }
+
+
+def test_proto_oneof():
+    # Put together a couple of minimal protos.
+    fd = (
+        make_file_pb2(
+            name='dep.proto',
+            package='google.dep',
+            messages=(make_message_pb2(name='ImportedMessage', fields=()),),
+        ),
+        make_file_pb2(
+            name='foo.proto',
+            package='google.example.v1',
+            messages=(
+                make_message_pb2(name='Foo', fields=()),
+                make_message_pb2(
+                    name='Bar',
+                    fields=(
+                        make_field_pb2(name='imported_message', number=1,
+                                   type_name='.google.dep.ImportedMessage',
+                                   oneof_index=0),
+                        make_field_pb2(
+                            name='primitive', number=2, type=1, oneof_index=0),
+                    ),
+                    oneof_decl=(
+                        make_oneof_pb2(name="value_type"),
+                    )
+                )
+            )
+        )
+    )
+
+    # Create an API with those protos.
+    api_schema = api.API.build(fd, package='google.example.v1')
+    proto = api_schema.protos['foo.proto']
+    assert proto.names == {'imported_message', 'Bar', 'primitive', 'Foo'}
+    oneofs = proto.messages["google.example.v1.Bar"].oneofs
+    assert len(oneofs) == 1
+    assert "value_type" in oneofs.keys()
 
 
 def test_proto_names_import_collision():

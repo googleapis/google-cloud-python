@@ -54,6 +54,7 @@ class Field:
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
+    oneof: Optional[str] = None
 
     def __getattr__(self, name):
         return getattr(self.field_pb, name)
@@ -207,6 +208,15 @@ class Field:
 
 
 @dataclasses.dataclass(frozen=True)
+class Oneof:
+    """Description of a field."""
+    oneof_pb: descriptor_pb2.OneofDescriptorProto
+
+    def __getattr__(self, name):
+        return getattr(self.oneof_pb, name)
+
+
+@dataclasses.dataclass(frozen=True)
 class MessageType:
     """Description of a message (defined with the ``message`` keyword)."""
     # Class attributes
@@ -220,6 +230,7 @@ class MessageType:
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
+    oneofs: Optional[Mapping[str, 'Oneof']] = None
 
     def __getattr__(self, name):
         return getattr(self.message_pb, name)

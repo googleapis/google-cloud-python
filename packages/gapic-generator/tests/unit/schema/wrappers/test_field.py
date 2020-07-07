@@ -153,6 +153,13 @@ def test_mock_value_int():
     assert field.mock_value == '728'
 
 
+def test_oneof():
+    REP = descriptor_pb2.FieldDescriptorProto.Label.Value('LABEL_REPEATED')
+
+    field = make_field(oneof="oneof_name")
+    assert field.oneof == "oneof_name"
+
+
 def test_mock_value_float():
     field = make_field(name='foo_bar', type='TYPE_DOUBLE')
     assert field.mock_value == '0.728'

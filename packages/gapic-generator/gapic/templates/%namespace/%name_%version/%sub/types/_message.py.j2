@@ -38,14 +38,15 @@ class {{ message.name }}({{ p }}.Message):
         {{- p }}.{{ key_field.proto_type }}, {{ p }}.{{ value_field.proto_type }}, number={{ field.number }}
     {%- if value_field.enum or value_field.message %},
         {{ value_field.proto_type.lower() }}={{ value_field.type.ident.rel(message.ident) }},
-    {% endif %})
+    {% endif %})                {# enum or message#}
     {% endwith -%}
-    {% else -%}
+    {% else -%}                 {# field.map #}
     {{ field.name }} = {{ p }}.{% if field.repeated %}Repeated{% endif %}Field(
         {{- p }}.{{ field.proto_type }}, number={{ field.number }}
+    {% if field.oneof %}, oneof='{{ field.oneof }}'{% endif %}
     {%- if field.enum or field.message %},
         {{ field.proto_type.lower() }}={{ field.type.ident.rel(message.ident) }},
-    {% endif %})
-    {% endif -%}
-    {% endfor -%}
+    {% endif %})                {# enum or message #}
+    {% endif -%}                {# field.map #}
+    {% endfor -%} {# for field in message.fields.values#}
 {{ '\n\n' }}

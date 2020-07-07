@@ -43,6 +43,7 @@ class {{ message.name }}({{ p }}.Message):
     {% else -%}
     {{ field.name }} = {{ p }}.{% if field.repeated %}Repeated{% endif %}Field(
         {{- p }}.{{ field.proto_type }}, number={{ field.number }}
+    {% if field.oneof %}, oneof='{{ field.oneof }}'{% endif %}
     {%- if field.enum or field.message %},
         {{ field.proto_type.lower() }}={{ field.type.ident.rel(message.ident) }},
     {% endif %})

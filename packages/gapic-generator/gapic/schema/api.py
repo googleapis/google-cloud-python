@@ -34,6 +34,7 @@ from gapic.schema import metadata
 from gapic.schema import wrappers
 from gapic.schema import naming as api_naming
 from gapic.utils import cached_property
+from gapic.utils import nth
 from gapic.utils import to_snake_case
 from gapic.utils import RESERVED_NAMES
 
@@ -556,14 +557,42 @@ class _ProtoBuilder:
             answer[wrapped.name] = wrapped
         return answer
 
+    def _get_oneofs(self,
+                    oneof_pbs: Sequence[descriptor_pb2.OneofDescriptorProto],
+                    address: metadata.Address, path: Tuple[int, ...],
+                    ) -> Dict[str, wrappers.Oneof]:
+        """Return a dictionary of wrapped oneofs for the given message.
+
+        Args:
+            oneof_fields (Sequence[~.descriptor_pb2.OneofDescriptorProto]): A
+                sequence of protobuf field objects.
+            address (~.metadata.Address): An address object denoting the
+                location of these oneofs.
+            path (Tuple[int]): The source location path thus far, as
+                understood by ``SourceCodeInfo.Location``.
+
+        Returns:
+            Mapping[str, ~.wrappers.Oneof]: A ordered mapping of
+                :class:`~.wrappers.Oneof` objects.
+        """
+        # Iterate over the oneofs and collect them into a dictionary.
+        answer = collections.OrderedDict(
+            (oneof_pb.name, wrappers.Oneof(oneof_pb=oneof_pb))
+            for i, oneof_pb in enumerate(oneof_pbs)
+        )
+
+        # Done; return the answer.
+        return answer
+
     def _get_fields(self,
                     field_pbs: Sequence[descriptor_pb2.FieldDescriptorProto],
                     address: metadata.Address, path: Tuple[int, ...],
+                    oneofs: Optional[Dict[str, wrappers.Oneof]] = None
                     ) -> Dict[str, wrappers.Field]:
         """Return a dictionary of wrapped fields for the given message.
 
         Args:
-            fields (Sequence[~.descriptor_pb2.FieldDescriptorProto]): A
+            field_pbs (Sequence[~.descriptor_pb2.FieldDescriptorProto]): A
                 sequence of protobuf field objects.
             address (~.metadata.Address): An address object denoting the
                 location of these fields.
@@ -585,7 +614,13 @@ class _ProtoBuilder:
         # first) and this will be None. This case is addressed in the
         # `_load_message` method.
         answer: Dict[str, wrappers.Field] = collections.OrderedDict()
-        for field_pb, i in zip(field_pbs, range(0, sys.maxsize)):
+        for i, field_pb in enumerate(field_pbs):
+            is_oneof = oneofs and field_pb.oneof_index > 0
+            oneof_name = nth(
+                (oneofs or {}).keys(),
+                field_pb.oneof_index
+            ) if is_oneof else None
+
             answer[field_pb.name] = wrappers.Field(
                 field_pb=field_pb,
                 enum=self.api_enums.get(field_pb.type_name.lstrip('.')),
@@ -594,6 +629,7 @@ class _ProtoBuilder:
                     address=address.child(field_pb.name, path + (i,)),
                     documentation=self.docs.get(path + (i,), self.EMPTY),
                 ),
+                oneof=oneof_name,
             )
 
         # Done; return the answer.
@@ -779,19 +815,25 @@ class _ProtoBuilder:
             loader=self._load_message,
             path=path + (3,),
         )
-        # self._load_children(message.oneof_decl, loader=self._load_field,
-        #                     address=nested_addr, info=info.get(8, {}))
+
+        oneofs = self._get_oneofs(
+            message_pb.oneof_decl,
+            address=address,
+            path=path + (7,),
+        )
 
         # Create a dictionary of all the fields for this message.
         fields = self._get_fields(
             message_pb.field,
             address=address,
             path=path + (2,),
+            oneofs=oneofs,
         )
         fields.update(self._get_fields(
             message_pb.extension,
             address=address,
             path=path + (6,),
+            oneofs=oneofs,
         ))
 
         # Create a message correspoding to this descriptor.
@@ -804,6 +846,7 @@ class _ProtoBuilder:
                 address=address,
                 documentation=self.docs.get(path, self.EMPTY),
             ),
+            oneofs=oneofs,
         )
         return self.proto_messages[address.proto]
 

@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import (Callable, Iterable, List, Tuple, TypeVar)
+from typing import (Callable, Iterable, List, Optional, Tuple, TypeVar)
+import itertools
 
 
 def empty(content: str) -> bool:
@@ -50,3 +51,15 @@ def partition(predicate: Callable[[T], bool],
 
     # Returns trueList, falseList
     return results[1], results[0]
+
+
+def nth(iterable: Iterable[T], n: int, default: Optional[T] = None) -> Optional[T]:
+    """Return the nth element of an iterable or a default value.
+
+    Args
+        iterable (Iterable(T)): An iterable on any type.
+        n (int):                The 'index' of the lement to retrieve.
+        default (Optional(T)):  An optional default elemnt if the iterable has
+                                 fewer than n elements.
+    """
+    return next(itertools.islice(iterable, n, None), default)

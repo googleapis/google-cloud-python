@@ -288,9 +288,9 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
         call.return_value = iter([{{ method.output.ident }}()])
         {% else -%}
         call.return_value = {{ method.output.ident }}(
-            {%- for field in method.output.fields.values() | rejectattr('message') %}
+            {%- for field in method.output.fields.values() | rejectattr('message')%}{% if not (field.oneof and not field.proto3_optional) %}
             {{ field.name }}={{ field.mock_value }},
-            {%- endfor %}
+            {% endif %}{%- endfor %}
         )
         {% endif -%}
         {% if method.client_streaming %}
@@ -318,7 +318,7 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
         assert isinstance(message, {{ method.output.ident }})
     {% else -%}
     assert isinstance(response, {{ method.client_output.ident }})
-    {% for field in method.output.fields.values() | rejectattr('message') -%}
+    {% for field in method.output.fields.values() | rejectattr('message') -%}{% if not (field.oneof and not field.proto3_optional) %}
     {% if field.field_pb.type in [1, 2] -%} {# Use approx eq for floats -#}
     assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
     {% elif field.field_pb.type == 8 -%} {# Use 'is' for bools #}
@@ -326,6 +326,7 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
     {% else -%}
     assert response.{{ field.name }} == {{ field.mock_value }}
     {% endif -%}
+    {% endif -%} {# end oneof/optional #}
     {% endfor %}
     {% endif %}
 
@@ -368,8 +369,9 @@ async def test_{{ method.name|snake_case }}_async(transport: str = 'grpc_asyncio
             {%- else -%}
                 grpc_helpers_async.FakeStreamUnaryCall
             {%- endif -%}({{ method.output.ident }}(
-            {%- for field in method.output.fields.values() | rejectattr('message') %}
+            {%- for field in method.output.fields.values() | rejectattr('message') %}{% if not (field.oneof and not field.proto3_optional) %}
             {{ field.name }}={{ field.mock_value }},
+            {%- endif %}
             {%- endfor %}
         ))
         {% endif -%}
@@ -400,7 +402,7 @@ async def test_{{ method.name|snake_case }}_async(transport: str = 'grpc_asyncio
     assert isinstance(message, {{ method.output.ident }})
     {% else -%}
     assert isinstance(response, {{ method.client_output_async.ident }})
-    {% for field in method.output.fields.values() | rejectattr('message') -%}
+    {% for field in method.output.fields.values() | rejectattr('message') -%}{% if not (field.oneof and not field.proto3_optional) %}
     {% if field.field_pb.type in [1, 2] -%} {# Use approx eq for floats -#}
     assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
     {% elif field.field_pb.type == 8 -%} {# Use 'is' for bools #}
@@ -408,6 +410,7 @@ async def test_{{ method.name|snake_case }}_async(transport: str = 'grpc_asyncio
     {% else -%}
     assert response.{{ field.name }} == {{ field.mock_value }}
     {% endif -%}
+    {% endif -%} {# oneof/optional #}
     {% endfor %}
     {% endif %}
 
