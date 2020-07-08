@@ -206,7 +206,7 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio")
 ])
 def test_{{ service.client_name|snake_case }}_client_options_scopes(client_class, transport_class, transport_name):
-    # Check the case api_endpoint is provided.
+    # Check the case scopes are provided.
     options = client_options.ClientOptions(
         scopes=["1", "2"],
     )
@@ -216,9 +216,9 @@ def test_{{ service.client_name|snake_case }}_client_options_scopes(client_class
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host="localhost:7469",
+            host=client.DEFAULT_ENDPOINT,
             scopes=["1", "2"],
-            api_mtls_endpoint="localhost:7469",
+            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
             client_cert_source=None,
         )
 
@@ -228,7 +228,7 @@ def test_{{ service.client_name|snake_case }}_client_options_scopes(client_class
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio")
 ])
 def test_{{ service.client_name|snake_case }}_client_options_credentials_file(client_class, transport_class, transport_name):
-    # Check the case api_endpoint is provided.
+    # Check the case credentials file is provided.
     options = client_options.ClientOptions(
         credentials_file="credentials.json"
     )
@@ -238,9 +238,9 @@ def test_{{ service.client_name|snake_case }}_client_options_credentials_file(cl
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host="localhost:7469",
+            host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            api_mtls_endpoint="localhost:7469",
+            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
             client_cert_source=None,
         )
 
@@ -893,7 +893,7 @@ def test_credentials_transport_error():
             client_options={"scopes": ["1", "2"]},
             transport=transport,
         )
-    
+
 
 
 def test_transport_instance():
