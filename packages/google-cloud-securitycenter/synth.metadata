@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-securitycenter.git",
-        "sha": "c930e6afc6aa701761f9966e1391ca2d3ebb30f4"
+        "sha": "93853b4b33a15b7fa59e89b0d498d1a10af7748d"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "b882b8e6bfcd708042ff00f7adc67ce750817dd0",
-        "internalRef": "318028816"
+        "sha": "db69b46790b55a82ab7cfa473d031da787bc7591",
+        "internalRef": "320411362"
       }
     },
     {
