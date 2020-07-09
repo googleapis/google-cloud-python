@@ -65,6 +65,9 @@ class CredentialsStub(google.auth.credentials.Credentials):
     def refresh(self, request):
         self.token += "1"
 
+    def with_quota_project(self, quota_project_id):
+        raise NotImplementedError()
+
 
 class HttpStub(object):
     def __init__(self, responses, headers=None):

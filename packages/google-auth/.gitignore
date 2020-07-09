@@ -13,6 +13,8 @@ docs/_build
 .tox/
 .cache/
 .pytest_cache/
+cert_path
+key_path
 
 # Django test database
 db.sqlite3

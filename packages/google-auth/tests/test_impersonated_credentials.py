@@ -311,6 +311,12 @@ class TestImpersonatedCredentials(object):
         signature = credentials.sign_bytes(b"signed bytes")
         assert signature == b"signature"
 
+    def test_with_quota_project(self):
+        credentials = self.make_credentials()
+
+        quota_project_creds = credentials.with_quota_project("project-foo")
+        assert quota_project_creds._quota_project_id == "project-foo"
+
     def test_id_token_success(
         self, mock_donor_credentials, mock_authorizedsession_idtoken
     ):
@@ -435,3 +441,32 @@ class TestImpersonatedCredentials(object):
         id_creds.refresh(request)
 
         assert id_creds.token == ID_TOKEN_DATA
+
+    def test_id_token_with_quota_project(
+        self, mock_donor_credentials, mock_authorizedsession_idtoken
+    ):
+        credentials = self.make_credentials(lifetime=None)
+        token = "token"
+        target_audience = "https://foo.bar"
+
+        expire_time = (
+            _helpers.utcnow().replace(microsecond=0) + datetime.timedelta(seconds=500)
+        ).isoformat("T") + "Z"
+        response_body = {"accessToken": token, "expireTime": expire_time}
+
+        request = self.make_request(
+            data=json.dumps(response_body), status=http_client.OK
+        )
+
+        credentials.refresh(request)
+
+        assert credentials.valid
+        assert not credentials.expired
+
+        id_creds = impersonated_credentials.IDTokenCredentials(
+            credentials, target_audience=target_audience
+        )
+        id_creds = id_creds.with_quota_project("project-foo")
+        id_creds.refresh(request)
+
+        assert id_creds.quota_project_id == "project-foo"

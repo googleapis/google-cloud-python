@@ -156,26 +156,14 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
         return self._client_secret
 
     @property
-    def quota_project_id(self):
-        """Optional[str]: The project to use for quota and billing purposes."""
-        return self._quota_project_id
-
-    @property
     def requires_scopes(self):
         """False: OAuth 2.0 credentials have their scopes set when
         the initial token is requested and can not be changed."""
         return False
 
+    @_helpers.copy_docstring(credentials.Credentials)
     def with_quota_project(self, quota_project_id):
-        """Returns a copy of these credentials with a modified quota project
 
-        Args:
-            quota_project_id (str): The project to use for quota and
-            billing purposes
-
-        Returns:
-            google.oauth2.credentials.Credentials: A new credentials instance.
-        """
         return self.__class__(
             self.token,
             refresh_token=self.refresh_token,
@@ -226,12 +214,6 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
                         ", ".join(scopes_requested_but_not_granted)
                     )
                 )
-
-    @_helpers.copy_docstring(credentials.Credentials)
-    def apply(self, headers, token=None):
-        super(Credentials, self).apply(headers, token=token)
-        if self.quota_project_id is not None:
-            headers["x-goog-user-project"] = self.quota_project_id
 
     @classmethod
     def from_authorized_user_info(cls, info, scopes=None):
@@ -332,11 +314,15 @@ class UserAccessTokenCredentials(credentials.Credentials):
     Args:
         account (Optional[str]): Account to get the access token for. If not
             specified, the current active account will be used.
+        quota_project_id (Optional[str]): The project ID used for quota
+            and billing.
+
     """
 
-    def __init__(self, account=None):
+    def __init__(self, account=None, quota_project_id=None):
         super(UserAccessTokenCredentials, self).__init__()
         self._account = account
+        self._quota_project_id = quota_project_id
 
     def with_account(self, account):
         """Create a new instance with the given account.
@@ -348,7 +334,11 @@ class UserAccessTokenCredentials(credentials.Credentials):
             google.oauth2.credentials.UserAccessTokenCredentials: The created
                 credentials with the given account.
         """
-        return self.__class__(account=account)
+        return self.__class__(account=account, quota_project_id=self._quota_project_id)
+
+    @_helpers.copy_docstring(credentials.Credentials)
+    def with_quota_project(self, quota_project_id):
+        return self.__class__(account=self._account, quota_project_id=quota_project_id)
 
     def refresh(self, request):
         """Refreshes the access token.

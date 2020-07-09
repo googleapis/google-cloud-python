@@ -69,7 +69,7 @@ def _warn_about_problematic_credentials(credentials):
         warnings.warn(_CLOUD_SDK_CREDENTIALS_WARNING)
 
 
-def load_credentials_from_file(filename, scopes=None):
+def load_credentials_from_file(filename, scopes=None, quota_project_id=None):
     """Loads Google credentials from a file.
 
     The credentials file must be a service account key or stored authorized
@@ -79,7 +79,9 @@ def load_credentials_from_file(filename, scopes=None):
         filename (str): The full path to the credentials file.
         scopes (Optional[Sequence[str]]): The list of scopes for the credentials. If
             specified, the credentials will automatically be scoped if
-            necessary.
+            necessary
+        quota_project_id (Optional[str]):  The project ID used for
+                quota and billing.
 
     Returns:
         Tuple[google.auth.credentials.Credentials, Optional[str]]: Loaded
@@ -114,7 +116,7 @@ def load_credentials_from_file(filename, scopes=None):
         try:
             credentials = credentials.Credentials.from_authorized_user_info(
                 info, scopes=scopes
-            )
+            ).with_quota_project(quota_project_id)
         except ValueError as caught_exc:
             msg = "Failed to load authorized user credentials from {}".format(filename)
             new_exc = exceptions.DefaultCredentialsError(msg, caught_exc)
@@ -129,7 +131,7 @@ def load_credentials_from_file(filename, scopes=None):
         try:
             credentials = service_account.Credentials.from_service_account_info(
                 info, scopes=scopes
-            )
+            ).with_quota_project(quota_project_id)
         except ValueError as caught_exc:
             msg = "Failed to load service account credentials from {}".format(filename)
             new_exc = exceptions.DefaultCredentialsError(msg, caught_exc)
@@ -226,7 +228,7 @@ def _get_gce_credentials(request=None):
         return None, None
 
 
-def default(scopes=None, request=None):
+def default(scopes=None, request=None, quota_project_id=None):
     """Gets the default credentials for the current environment.
 
     `Application Default Credentials`_ provides an easy way to obtain
@@ -286,7 +288,8 @@ def default(scopes=None, request=None):
             HTTP requests. This is used to detect whether the application
             is running on Compute Engine. If not specified, then it will
             use the standard library http client to make requests.
-
+        quota_project_id (Optional[str]):  The project ID used for
+            quota and billing.
     Returns:
         Tuple[~google.auth.credentials.Credentials, Optional[str]]:
             the current environment's credentials and project ID. Project ID
@@ -314,7 +317,9 @@ def default(scopes=None, request=None):
     for checker in checkers:
         credentials, project_id = checker()
         if credentials is not None:
-            credentials = with_scopes_if_required(credentials, scopes)
+            credentials = with_scopes_if_required(
+                credentials, scopes
+            ).with_quota_project(quota_project_id)
             effective_project_id = explicit_project_id or project_id
             if not effective_project_id:
                 _LOGGER.warning(

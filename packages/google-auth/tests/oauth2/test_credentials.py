@@ -454,6 +454,13 @@ class TestUserAccessTokenCredentials(object):
         cred.refresh(None)
         assert cred.token == "access_token"
 
+    def test_with_quota_project(self):
+        cred = credentials.UserAccessTokenCredentials()
+        quota_project_cred = cred.with_quota_project("project-foo")
+
+        assert quota_project_cred._quota_project_id == "project-foo"
+        assert quota_project_cred._account == cred._account
+
     @mock.patch(
         "google.oauth2.credentials.UserAccessTokenCredentials.apply", autospec=True
     )

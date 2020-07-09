@@ -238,11 +238,6 @@ class Credentials(credentials.Signing, credentials.Scoped, credentials.Credentia
         return self._project_id
 
     @property
-    def quota_project_id(self):
-        """Project ID to use for quota and billing purposes."""
-        return self._quota_project_id
-
-    @property
     def requires_scopes(self):
         """Checks if the credentials requires scopes.
 
@@ -311,17 +306,9 @@ class Credentials(credentials.Signing, credentials.Scoped, credentials.Credentia
             additional_claims=new_additional_claims,
         )
 
+    @_helpers.copy_docstring(credentials.Credentials)
     def with_quota_project(self, quota_project_id):
-        """Returns a copy of these credentials with a modified quota project.
 
-        Args:
-            quota_project_id (str): The project to use for quota and
-            billing purposes
-
-        Returns:
-            google.auth.service_account.Credentials: A new credentials
-                instance.
-        """
         return self.__class__(
             self._signer,
             service_account_email=self._service_account_email,
@@ -372,12 +359,6 @@ class Credentials(credentials.Signing, credentials.Scoped, credentials.Credentia
         access_token, expiry, _ = _client.jwt_grant(request, self._token_uri, assertion)
         self.token = access_token
         self.expiry = expiry
-
-    @_helpers.copy_docstring(credentials.Credentials)
-    def apply(self, headers, token=None):
-        super(Credentials, self).apply(headers, token=token)
-        if self.quota_project_id is not None:
-            headers["x-goog-user-project"] = self.quota_project_id
 
     @_helpers.copy_docstring(credentials.Signing)
     def sign_bytes(self, message):
@@ -443,6 +424,7 @@ class IDTokenCredentials(credentials.Signing, credentials.Credentials):
         token_uri,
         target_audience,
         additional_claims=None,
+        quota_project_id=None,
     ):
         """
         Args:
@@ -454,7 +436,7 @@ class IDTokenCredentials(credentials.Signing, credentials.Credentials):
                 will be set to this string.
             additional_claims (Mapping[str, str]): Any additional claims for
                 the JWT assertion used in the authorization grant.
-
+            quota_project_id (Optional[str]): The project ID used for quota and billing.
         .. note:: Typically one of the helper constructors
             :meth:`from_service_account_file` or
             :meth:`from_service_account_info` are used instead of calling the
@@ -465,6 +447,7 @@ class IDTokenCredentials(credentials.Signing, credentials.Credentials):
         self._service_account_email = service_account_email
         self._token_uri = token_uri
         self._target_audience = target_audience
+        self._quota_project_id = quota_project_id
 
         if additional_claims is not None:
             self._additional_claims = additional_claims
@@ -547,6 +530,18 @@ class IDTokenCredentials(credentials.Signing, credentials.Credentials):
             token_uri=self._token_uri,
             target_audience=target_audience,
             additional_claims=self._additional_claims.copy(),
+            quota_project_id=self.quota_project_id,
+        )
+
+    @_helpers.copy_docstring(credentials.Credentials)
+    def with_quota_project(self, quota_project_id):
+        return self.__class__(
+            self._signer,
+            service_account_email=self._service_account_email,
+            token_uri=self._token_uri,
+            target_audience=self._target_audience,
+            additional_claims=self._additional_claims.copy(),
+            quota_project_id=quota_project_id,
         )
 
     def _make_authorization_grant_assertion(self):

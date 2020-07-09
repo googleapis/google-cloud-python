@@ -24,6 +24,9 @@ class CredentialsImpl(credentials.Credentials):
     def refresh(self, request):
         self.token = request
 
+    def with_quota_project(self, quota_project_id):
+        raise NotImplementedError()
+
 
 def test_credentials_constructor():
     credentials = CredentialsImpl()
@@ -110,6 +113,12 @@ def test_anonymous_credentials_before_request():
     headers = {}
     anon.before_request(request, method, url, headers)
     assert headers == {}
+
+
+def test_anonymous_credentials_with_quota_project():
+    with pytest.raises(ValueError):
+        anon = credentials.AnonymousCredentials()
+        anon.with_quota_project("project-foo")
 
 
 class ReadOnlyScopedCredentialsImpl(credentials.ReadOnlyScoped, CredentialsImpl):

@@ -363,6 +363,18 @@ class TestCredentials(object):
         assert new_credentials._subject == self.credentials._subject
         assert new_credentials._audience == new_audience
         assert new_credentials._additional_claims == self.credentials._additional_claims
+        assert new_credentials._quota_project_id == self.credentials._quota_project_id
+
+    def test_with_quota_project(self):
+        quota_project_id = "project-foo"
+
+        new_credentials = self.credentials.with_quota_project(quota_project_id)
+        assert new_credentials._signer == self.credentials._signer
+        assert new_credentials._issuer == self.credentials._issuer
+        assert new_credentials._subject == self.credentials._subject
+        assert new_credentials._audience == self.credentials._audience
+        assert new_credentials._additional_claims == self.credentials._additional_claims
+        assert new_credentials._quota_project_id == quota_project_id
 
     def test_sign_bytes(self):
         to_sign = b"123"
@@ -506,6 +518,16 @@ class TestOnDemandCredentials(object):
         assert new_credentials._issuer == self.credentials._issuer
         assert new_credentials._subject == self.credentials._subject
         assert new_credentials._additional_claims == new_claims
+
+    def test_with_quota_project(self):
+        quota_project_id = "project-foo"
+        new_credentials = self.credentials.with_quota_project(quota_project_id)
+
+        assert new_credentials._signer == self.credentials._signer
+        assert new_credentials._issuer == self.credentials._issuer
+        assert new_credentials._subject == self.credentials._subject
+        assert new_credentials._additional_claims == self.credentials._additional_claims
+        assert new_credentials._quota_project_id == quota_project_id
 
     def test_sign_bytes(self):
         to_sign = b"123"

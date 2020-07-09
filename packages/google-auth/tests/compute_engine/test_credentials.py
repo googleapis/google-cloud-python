@@ -59,6 +59,8 @@ class TestCredentials(object):
         assert not self.credentials.requires_scopes
         # Service account email hasn't been populated
         assert self.credentials.service_account_email == "default"
+        # No quota project
+        assert not self.credentials._quota_project_id
 
     @mock.patch(
         "google.auth._helpers.utcnow",
@@ -131,6 +133,11 @@ class TestCredentials(object):
         # Credentials should now be valid.
         assert self.credentials.valid
 
+    def test_with_quota_project(self):
+        quota_project_creds = self.credentials.with_quota_project("project-foo")
+
+        assert quota_project_creds._quota_project_id == "project-foo"
+
 
 class TestIDTokenCredentials(object):
     credentials = None
@@ -154,6 +161,8 @@ class TestIDTokenCredentials(object):
         # Signer is initialized
         assert self.credentials.signer
         assert self.credentials.signer_email == "service-account@example.com"
+        # No quota project
+        assert not self.credentials._quota_project_id
 
     @mock.patch(
         "google.auth._helpers.utcnow",
@@ -394,6 +403,121 @@ class TestIDTokenCredentials(object):
     )
     @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     @mock.patch("google.auth.iam.Signer.sign", autospec=True)
+    def test_with_quota_project(self, sign, get, utcnow):
+        get.side_effect = [
+            {"email": "service-account@example.com", "scopes": ["one", "two"]}
+        ]
+        sign.side_effect = [b"signature"]
+
+        request = mock.create_autospec(transport.Request, instance=True)
+        self.credentials = credentials.IDTokenCredentials(
+            request=request, target_audience="https://audience.com"
+        )
+        self.credentials = self.credentials.with_quota_project("project-foo")
+
+        assert self.credentials._quota_project_id == "project-foo"
+
+        # Generate authorization grant:
+        token = self.credentials._make_authorization_grant_assertion()
+        payload = jwt.decode(token, verify=False)
+
+        # The JWT token signature is 'signature' encoded in base 64:
+        assert token.endswith(b".c2lnbmF0dXJl")
+
+        # Check that the credentials have the token and proper expiration
+        assert payload == {
+            "aud": "https://www.googleapis.com/oauth2/v4/token",
+            "exp": 3600,
+            "iat": 0,
+            "iss": "service-account@example.com",
+            "target_audience": "https://audience.com",
+        }
+
+        # Check that the signer have been initialized with a Request object
+        assert isinstance(self.credentials._signer._request, transport.Request)
+
+    @responses.activate
+    def test_with_quota_project_integration(self):
+        """ Test that it is possible to refresh credentials
+        generated from `with_quota_project`.
+
+        Instead of mocking the methods, the HTTP responses
+        have been mocked.
+        """
+
+        # mock information about credentials
+        responses.add(
+            responses.GET,
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/default/?recursive=true",
+            status=200,
+            content_type="application/json",
+            json={
+                "scopes": "email",
+                "email": "service-account@example.com",
+                "aliases": ["default"],
+            },
+        )
+
+        # mock token for credentials
+        responses.add(
+            responses.GET,
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/service-account@example.com/token",
+            status=200,
+            content_type="application/json",
+            json={
+                "access_token": "some-token",
+                "expires_in": 3210,
+                "token_type": "Bearer",
+            },
+        )
+
+        # mock sign blob endpoint
+        signature = base64.b64encode(b"some-signature").decode("utf-8")
+        responses.add(
+            responses.POST,
+            "https://iamcredentials.googleapis.com/v1/projects/-/"
+            "serviceAccounts/service-account@example.com:signBlob?alt=json",
+            status=200,
+            content_type="application/json",
+            json={"keyId": "some-key-id", "signedBlob": signature},
+        )
+
+        id_token = "{}.{}.{}".format(
+            base64.b64encode(b'{"some":"some"}').decode("utf-8"),
+            base64.b64encode(b'{"exp": 3210}').decode("utf-8"),
+            base64.b64encode(b"token").decode("utf-8"),
+        )
+
+        # mock id token endpoint
+        responses.add(
+            responses.POST,
+            "https://www.googleapis.com/oauth2/v4/token",
+            status=200,
+            content_type="application/json",
+            json={"id_token": id_token, "expiry": 3210},
+        )
+
+        self.credentials = credentials.IDTokenCredentials(
+            request=requests.Request(),
+            service_account_email="service-account@example.com",
+            target_audience="https://audience.com",
+        )
+
+        self.credentials = self.credentials.with_quota_project("project-foo")
+
+        self.credentials.refresh(requests.Request())
+
+        assert self.credentials.token is not None
+        assert self.credentials._quota_project_id == "project-foo"
+
+    @mock.patch(
+        "google.auth._helpers.utcnow",
+        return_value=datetime.datetime.utcfromtimestamp(0),
+    )
+    @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
+    @mock.patch("google.auth.iam.Signer.sign", autospec=True)
     @mock.patch("google.oauth2._client.id_token_jwt_grant", autospec=True)
     def test_refresh_success(self, id_token_jwt_grant, sign, get, utcnow):
         get.side_effect = [
@@ -543,6 +667,23 @@ class TestIDTokenCredentials(object):
         cred = cred.with_target_audience("new_audience")
 
         assert cred._target_audience == "new_audience"
+        assert cred._use_metadata_identity_endpoint
+        assert cred._signer is None
+        assert cred._token_uri is None
+        assert cred._service_account_email == "foo@example.com"
+
+    @mock.patch(
+        "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
+    )
+    def test_id_token_with_quota_project(self, get_service_account_info):
+        get_service_account_info.return_value = {"email": "foo@example.com"}
+
+        cred = credentials.IDTokenCredentials(
+            mock.Mock(), "audience", use_metadata_identity_endpoint=True
+        )
+        cred = cred.with_quota_project("project-foo")
+
+        assert cred._quota_project_id == "project-foo"
         assert cred._use_metadata_identity_endpoint
         assert cred._signer is None
         assert cred._token_uri is None

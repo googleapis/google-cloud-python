@@ -49,6 +49,8 @@ class Credentials(object):
         self.expiry = None
         """Optional[datetime]: When the token expires and is no longer valid.
         If this is None, the token is assumed to never expire."""
+        self._quota_project_id = None
+        """Optional[str]: Project to use for quota and billing purposes."""
 
     @property
     def expired(self):
@@ -74,6 +76,11 @@ class Credentials(object):
         is not :attr:`expired`.
         """
         return self.token is not None and not self.expired
+
+    @property
+    def quota_project_id(self):
+        """Project to use for quota and billing purposes."""
+        return self._quota_project_id
 
     @abc.abstractmethod
     def refresh(self, request):
@@ -102,6 +109,8 @@ class Credentials(object):
         headers["authorization"] = "Bearer {}".format(
             _helpers.from_bytes(token or self.token)
         )
+        if self.quota_project_id:
+            headers["x-goog-user-project"] = self.quota_project_id
 
     def before_request(self, request, method, url, headers):
         """Performs credential-specific before request logic.
@@ -123,6 +132,18 @@ class Credentials(object):
         if not self.valid:
             self.refresh(request)
         self.apply(headers)
+
+    def with_quota_project(self, quota_project_id):
+        """Returns a copy of these credentials with a modified quota project
+
+        Args:
+            quota_project_id (str): The project to use for quota and
+                billing purposes
+
+        Returns:
+            google.oauth2.credentials.Credentials: A new credentials instance.
+        """
+        raise NotImplementedError("This class does not support quota project.")
 
 
 class AnonymousCredentials(Credentials):
@@ -160,6 +181,9 @@ class AnonymousCredentials(Credentials):
 
     def before_request(self, request, method, url, headers):
         """Anonymous credentials do nothing to the request."""
+
+    def with_quota_project(self, quota_project_id):
+        raise ValueError("Anonymous credentials don't support quota project.")
 
 
 @six.add_metaclass(abc.ABCMeta)

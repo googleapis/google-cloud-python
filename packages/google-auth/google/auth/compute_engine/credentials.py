@@ -54,15 +54,18 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
         https://cloud.google.com/compute/docs/authentication#using
     """
 
-    def __init__(self, service_account_email="default"):
+    def __init__(self, service_account_email="default", quota_project_id=None):
         """
         Args:
             service_account_email (str): The service account email to use, or
                 'default'. A Compute Engine instance may have multiple service
                 accounts.
+            quota_project_id (Optional[str]): The project ID used for quota and
+                billing.
         """
         super(Credentials, self).__init__()
         self._service_account_email = service_account_email
+        self._quota_project_id = quota_project_id
 
     def _retrieve_info(self, request):
         """Retrieve information about the service account.
@@ -115,6 +118,13 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
         """False: Compute Engine credentials can not be scoped."""
         return False
 
+    @_helpers.copy_docstring(credentials.Credentials)
+    def with_quota_project(self, quota_project_id):
+        return self.__class__(
+            service_account_email=self._service_account_email,
+            quota_project_id=quota_project_id,
+        )
+
 
 _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
 _DEFAULT_TOKEN_URI = "https://www.googleapis.com/oauth2/v4/token"
@@ -143,6 +153,7 @@ class IDTokenCredentials(credentials.Credentials, credentials.Signing):
         service_account_email=None,
         signer=None,
         use_metadata_identity_endpoint=False,
+        quota_project_id=None,
     ):
         """
         Args:
@@ -165,6 +176,8 @@ class IDTokenCredentials(credentials.Credentials, credentials.Signing):
                 is False. If set to True, ``token_uri``, ``additional_claims``,
                 ``service_account_email``, ``signer`` argument should not be set;
                 otherwise ValueError will be raised.
+            quota_project_id (Optional[str]): The project ID used for quota and
+                billing.
 
         Raises:
             ValueError:
@@ -174,6 +187,7 @@ class IDTokenCredentials(credentials.Credentials, credentials.Signing):
         """
         super(IDTokenCredentials, self).__init__()
 
+        self._quota_project_id = quota_project_id
         self._use_metadata_identity_endpoint = use_metadata_identity_endpoint
         self._target_audience = target_audience
 
@@ -226,6 +240,7 @@ class IDTokenCredentials(credentials.Credentials, credentials.Signing):
                 None,
                 target_audience=target_audience,
                 use_metadata_identity_endpoint=True,
+                quota_project_id=self._quota_project_id,
             )
         else:
             return self.__class__(
@@ -236,6 +251,31 @@ class IDTokenCredentials(credentials.Credentials, credentials.Signing):
                 additional_claims=self._additional_claims.copy(),
                 signer=self.signer,
                 use_metadata_identity_endpoint=False,
+                quota_project_id=self._quota_project_id,
+            )
+
+    @_helpers.copy_docstring(credentials.Credentials)
+    def with_quota_project(self, quota_project_id):
+
+        # since the signer is already instantiated,
+        # the request is not needed
+        if self._use_metadata_identity_endpoint:
+            return self.__class__(
+                None,
+                target_audience=self._target_audience,
+                use_metadata_identity_endpoint=True,
+                quota_project_id=quota_project_id,
+            )
+        else:
+            return self.__class__(
+                None,
+                service_account_email=self._service_account_email,
+                token_uri=self._token_uri,
+                target_audience=self._target_audience,
+                additional_claims=self._additional_claims.copy(),
+                signer=self.signer,
+                use_metadata_identity_endpoint=False,
+                quota_project_id=quota_project_id,
             )
 
     def _make_authorization_grant_assertion(self):

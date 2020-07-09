@@ -52,6 +52,9 @@ class CredentialsStub(credentials.Credentials):
     def refresh(self, request):
         self.token += "1"
 
+    def with_quota_project(self, quota_project_id):
+        raise NotImplementedError()
+
 
 class TestAuthMetadataPlugin(object):
     def test_call_no_refresh(self):

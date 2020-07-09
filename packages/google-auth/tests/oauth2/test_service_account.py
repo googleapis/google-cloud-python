@@ -291,6 +291,11 @@ class TestIDTokenCredentials(object):
         new_credentials = credentials.with_target_audience("https://new.example.com")
         assert new_credentials._target_audience == "https://new.example.com"
 
+    def test_with_quota_project(self):
+        credentials = self.make_credentials()
+        new_credentials = credentials.with_quota_project("project-foo")
+        assert new_credentials._quota_project_id == "project-foo"
+
     def test__make_authorization_grant_assertion(self):
         credentials = self.make_credentials()
         token = credentials._make_authorization_grant_assertion()

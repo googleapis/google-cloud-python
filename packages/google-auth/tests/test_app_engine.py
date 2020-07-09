@@ -102,6 +102,7 @@ class TestCredentials(object):
         # Scopes are required
         assert not credentials.scopes
         assert credentials.requires_scopes
+        assert not credentials.quota_project_id
 
     def test_with_scopes(self, app_identity):
         credentials = app_engine.Credentials()
@@ -113,6 +114,16 @@ class TestCredentials(object):
 
         assert scoped_credentials.has_scopes(["email"])
         assert not scoped_credentials.requires_scopes
+
+    def test_with_quota_project(self, app_identity):
+        credentials = app_engine.Credentials()
+
+        assert not credentials.scopes
+        assert not credentials.quota_project_id
+
+        quota_project_creds = credentials.with_quota_project("project-foo")
+
+        assert quota_project_creds.quota_project_id == "project-foo"
 
     def test_service_account_email_implicit(self, app_identity):
         app_identity.get_service_account_name.return_value = (
