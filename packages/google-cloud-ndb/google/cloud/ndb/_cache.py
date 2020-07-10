@@ -49,6 +49,9 @@ class ContextCache(UserDict):
             del self.data[key]
             raise KeyError(key)
 
+    def __repr__(self):
+        return "ContextCache()"
+
 
 def _future_result(result):
     """Returns a completed Future with the given result.

@@ -17,11 +17,18 @@ Difficult to classify regression tests.
 """
 import os
 import pickle
+import traceback
+
+try:
+    from unittest import mock
+except ImportError:  # pragma: NO PY3 COVER
+    import mock
 
 import pytest
 
 import test_utils.system
 
+from google.api_core import exceptions as core_exceptions
 from google.cloud import ndb
 
 from . import eventually, length_equals, KIND
@@ -315,3 +322,27 @@ def test_crosswired_property_names(ds_entity):
     entity = key.get()
 
     assert entity.bar == 42
+
+
+@mock.patch("google.cloud.ndb._datastore_api.begin_transaction")
+def test_do_not_disclose_cache_contents(begin_transaction, client_context):
+    """Regression test for #482.
+
+    https://github.com/googleapis/python-ndb/issues/482
+    """
+    begin_transaction.side_effect = core_exceptions.ServiceUnavailable(
+        "Spurious Error"
+    )
+
+    client_context.cache["hello dad"] = "i'm in jail"
+
+    @ndb.transactional()
+    def callback():
+        pass
+
+    with pytest.raises(Exception) as error_info:
+        callback()
+
+    error = error_info.value
+    message = "".join(traceback.format_exception_only(type(error), error))
+    assert "hello dad" not in message

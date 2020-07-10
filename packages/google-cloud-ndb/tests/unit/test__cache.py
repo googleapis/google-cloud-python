@@ -58,6 +58,12 @@ class TestContextCache:
         with pytest.raises(KeyError):
             cache.get_and_validate("nonexistent_key")
 
+    @staticmethod
+    def test___repr__():
+        cache = _cache.ContextCache()
+        cache["hello dad"] = "i'm in jail"
+        assert repr(cache) == "ContextCache()"
+
 
 class Test_GlobalCacheBatch:
     @staticmethod
