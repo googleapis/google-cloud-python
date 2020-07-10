@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+### [1.4.1](https://www.github.com/googleapis/python-ndb/compare/v1.4.0...v1.4.1) (2020-07-10)
+
+
+### Bug Fixes
+
+* do not disclose cache contents in stack traces ([#485](https://www.github.com/googleapis/python-ndb/issues/485)) ([2d2c5a2](https://www.github.com/googleapis/python-ndb/commit/2d2c5a2004629b807f296f74648c789c6ce9a6ba)), closes [#482](https://www.github.com/googleapis/python-ndb/issues/482)
+
 ## [1.4.0](https://www.github.com/googleapis/python-ndb/compare/v1.3.0...v1.4.0) (2020-07-01)
 
 
