@@ -6,7 +6,7 @@
 {# This lives within the loop in order to ensure that this template
    is empty if there are no paged methods.
  -#}
-from typing import Any, Callable, Iterable
+from typing import Any, Callable, Iterable, Sequence, Tuple
 
 {% filter sort_lines -%}
 {% for method in service.methods.values() | selectattr('paged_result_field') -%}
@@ -35,10 +35,10 @@ class {{ method.name }}Pager:
     the most recent response is retained, and thus used for attribute lookup.
     """
     def __init__(self,
-            method: Callable[[{{ method.input.ident }}],
-                {{ method.output.ident }}],
+            method: Callable[..., {{ method.output.ident }}],
             request: {{ method.input.ident }},
-            response: {{ method.output.ident }}):
+            response: {{ method.output.ident }},
+            metadata: Sequence[Tuple[str, str]] = ())):
         """Instantiate the pager.
 
         Args:
@@ -48,10 +48,13 @@ class {{ method.name }}Pager:
                 The initial request object.
             response (:class:`{{ method.output.ident.sphinx }}`):
                 The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
         """
         self._method = method
         self._request = {{ method.input.ident }}(request)
         self._response = response
+        self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self._response, name)
@@ -61,7 +64,7 @@ class {{ method.name }}Pager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request)
+            self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> {{ method.paged_result_field.ident | replace('Sequence', 'Iterable') }}:

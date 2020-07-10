@@ -369,6 +369,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             method=rpc,
             request=request,
             response=response,
+            metadata=metadata,
         )
         {%- endif %}
         {%- if not method.void %}
