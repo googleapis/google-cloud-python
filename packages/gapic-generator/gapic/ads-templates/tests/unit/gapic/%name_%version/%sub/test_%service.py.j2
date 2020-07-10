@@ -217,8 +217,14 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
         call.return_value = iter([{{ method.output.ident }}()])
         {% else -%}
         call.return_value = {{ method.output.ident }}(
-            {%- for field in method.output.fields.values() | rejectattr('message') %}
+            {%- for field in method.output.fields.values() | rejectattr('message') %}{%- for field in method.output.fields.values() | rejectattr('message')%}{% if not field.oneof or field.proto3_optional %}
             {{ field.name }}={{ field.mock_value }},
+            {%- endfor %}
+            {#- This is a hack to only pick one field  #}
+            {%- for oneof_fields in method.output.oneof_fields().values() %}
+            {% with field = oneof_fields[0] %}
+            {{ field.name }}={{ field.mock_value }},
+            {%- endwith %}
             {%- endfor %}
         )
         {% endif -%}
@@ -364,9 +370,14 @@ def test_{{ method.name|snake_case }}_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        {% for key, field in method.flattened_fields.items() -%}
+        {% for key, field in method.flattened_fields.items() -%}{%- if not field.oneof or field.proto3_optional %}
         assert args[0].{{ key }} == {{ field.mock_value }}
-        {% endfor %}
+        {% endif %}{% endfor %}
+        {%- for oneofs in method.flattened_oneof_fields().values() %}
+        {%- with field = oneofs[-1]  %}
+        assert args[0].{{ method.flattened_field_to_key[field.name] }} == {{ field.mock_value }}
+        {%- endwith %}
+        {%- endfor %}
 
 
 def test_{{ method.name|snake_case }}_flattened_error():
