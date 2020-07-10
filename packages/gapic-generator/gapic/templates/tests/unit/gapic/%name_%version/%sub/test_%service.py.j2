@@ -8,6 +8,7 @@ import grpc
 from grpc.experimental import aio
 import math
 import pytest
+from proto.marshal.rules.dates import DurationRule, TimestampRule
 
 {# Import the service itself as well as every proto module that it imports. -#}
 {% filter sort_lines -%}
@@ -574,7 +575,13 @@ def test_{{ method.name|snake_case }}_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         {% for key, field in method.flattened_fields.items() -%}{%- if not field.oneof or field.proto3_optional %}
+        {% if field.ident|string() == 'timestamp.Timestamp' -%}
+        assert TimestampRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
+        {% elif field.ident|string() == 'duration.Duration' -%}
+        assert DurationRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
+        {% else -%}
         assert args[0].{{ key }} == {{ field.mock_value }}
+        {% endif %}
         {% endif %}{% endfor %}
         {%- for oneofs in method.flattened_oneof_fields().values() %}
         {%- with field = oneofs[-1]  %}
@@ -653,7 +660,13 @@ async def test_{{ method.name|snake_case }}_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         {% for key, field in method.flattened_fields.items() -%}{%- if not field.oneof or field.proto3_optional %}
+        {% if field.ident|string() == 'timestamp.Timestamp' -%}
+        assert TimestampRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
+        {% elif field.ident|string() == 'duration.Duration' -%}
+        assert DurationRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
+        {% else -%}
         assert args[0].{{ key }} == {{ field.mock_value }}
+        {% endif %}
         {% endif %}{% endfor %}
         {%- for oneofs in method.flattened_oneof_fields().values() %}
         {%- with field = oneofs[-1]  %}
