@@ -615,7 +615,7 @@ class _ProtoBuilder:
         # `_load_message` method.
         answer: Dict[str, wrappers.Field] = collections.OrderedDict()
         for i, field_pb in enumerate(field_pbs):
-            is_oneof = oneofs and field_pb.oneof_index > 0
+            is_oneof = oneofs and field_pb.HasField('oneof_index')
             oneof_name = nth(
                 (oneofs or {}).keys(),
                 field_pb.oneof_index

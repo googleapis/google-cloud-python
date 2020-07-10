@@ -235,3 +235,26 @@ def test_field_map():
     entry_field = make_field('foos', message=entry_msg, repeated=True)
     assert entry_msg.map
     assert entry_field.map
+
+
+def test_oneof_fields():
+    mass_kg = make_field(name="mass_kg", oneof="mass", type=5)
+    mass_lbs = make_field(name="mass_lbs", oneof="mass", type=5)
+    length_m = make_field(name="length_m", oneof="length", type=5)
+    length_f = make_field(name="length_f", oneof="length", type=5)
+    color = make_field(name="color", type=5)
+    request = make_message(
+        name="CreateMolluscReuqest",
+        fields=(
+            mass_kg,
+            mass_lbs,
+            length_m,
+            length_f,
+            color,
+        ),
+    )
+    actual_oneofs = request.oneof_fields()
+    expected_oneofs = {
+        "mass": [mass_kg, mass_lbs],
+        "length": [length_m, length_f],
+    }

@@ -239,6 +239,15 @@ class MessageType:
         # Identity is sufficiently unambiguous.
         return hash(self.ident)
 
+    def oneof_fields(self, include_optional=False):
+        oneof_fields = collections.defaultdict(list)
+        for field in self.fields.values():
+            # Only include proto3 optional oneofs if explicitly looked for.
+            if field.oneof and not field.proto3_optional or include_optional:
+                oneof_fields[field.oneof].append(field)
+
+        return oneof_fields
+
     @utils.cached_property
     def field_types(self) -> Sequence[Union['MessageType', 'EnumType']]:
         answer = tuple(
@@ -583,6 +592,15 @@ class Method:
     def client_output_async(self):
         return self._client_output(enable_asyncio=True)
 
+    def flattened_oneof_fields(self, include_optional=False):
+        oneof_fields = collections.defaultdict(list)
+        for field in self.flattened_fields.values():
+            # Only include proto3 optional oneofs if explicitly looked for.
+            if field.oneof and not field.proto3_optional or include_optional:
+                oneof_fields[field.oneof].append(field)
+
+        return oneof_fields
+
     def _client_output(self, enable_asyncio: bool):
         """Return the output from the client layer.
 
@@ -684,6 +702,10 @@ class Method:
         )
 
         return answer
+
+    @utils.cached_property
+    def flattened_field_to_key(self):
+        return {field.name: key for key, field in self.flattened_fields.items()}
 
     @utils.cached_property
     def legacy_flattened_fields(self) -> Mapping[str, Field]:
