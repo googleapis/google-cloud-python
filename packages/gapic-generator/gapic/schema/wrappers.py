@@ -759,7 +759,7 @@ class Method:
 
         # Return the first repeated field.
         for field in self.output.fields.values():
-            if field.repeated and field.message:
+            if field.repeated:
                 return field
 
         # We found no repeated fields. Return None.

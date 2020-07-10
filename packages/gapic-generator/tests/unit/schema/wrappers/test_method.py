@@ -206,6 +206,29 @@ def test_flattened_ref_types():
     assert expected_flat_ref_type_names == actual_flat_ref_type_names
 
 
+def test_method_paged_result_primitive():
+    paged = make_field(name='squids', type=9, repeated=True)
+    input_msg = make_message(
+        name='ListSquidsRequest',
+        fields=(
+            make_field(name='parent', type=9),      # str
+            make_field(name='page_size', type=5),   # int
+            make_field(name='page_token', type=9),  # str
+        ),
+    )
+    output_msg = make_message(name='ListFoosResponse', fields=(
+        paged,
+        make_field(name='next_page_token', type=9),  # str
+    ))
+    method = make_method(
+        'ListSquids',
+        input_message=input_msg,
+        output_message=output_msg,
+    )
+    assert method.paged_result_field == paged
+    assert method.client_output.ident.name == 'ListSquidsPager'
+
+
 def test_method_field_headers_none():
     method = make_method('DoSomething')
     assert isinstance(method.field_headers, collections.abc.Sequence)
