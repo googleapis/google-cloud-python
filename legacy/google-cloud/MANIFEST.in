@@ -1,2 +1,0 @@
-include setup-README.rst
-global-exclude *.pyc
