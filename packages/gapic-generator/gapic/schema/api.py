@@ -621,7 +621,7 @@ class _ProtoBuilder:
                 field_pb.oneof_index
             ) if is_oneof else None
 
-            answer[field_pb.name] = wrappers.Field(
+            field = wrappers.Field(
                 field_pb=field_pb,
                 enum=self.api_enums.get(field_pb.type_name.lstrip('.')),
                 message=self.api_messages.get(field_pb.type_name.lstrip('.')),
@@ -631,6 +631,7 @@ class _ProtoBuilder:
                 ),
                 oneof=oneof_name,
             )
+            answer[field.name] = field
 
         # Done; return the answer.
         return answer

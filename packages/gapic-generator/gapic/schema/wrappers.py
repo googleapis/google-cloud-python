@@ -59,6 +59,12 @@ class Field:
     def __getattr__(self, name):
         return getattr(self.field_pb, name)
 
+    @property
+    def name(self) -> str:
+        """Used to prevent collisions with python keywords"""
+        name = self.field_pb.name
+        return name + "_" if name in utils.RESERVED_NAMES else name
+
     @utils.cached_property
     def ident(self) -> metadata.FieldIdentifier:
         """Return the identifier to be used in templates."""

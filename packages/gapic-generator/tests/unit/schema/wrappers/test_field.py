@@ -248,3 +248,15 @@ def test_mock_value_message():
         message=message,
     )
     assert field.mock_value == 'bogus.Message(foo=324)'
+
+
+def test_field_name_kword_disambiguation():
+    from_field = make_field(
+        name="from",
+    )
+    assert from_field.name == "from_"
+
+    frum_field = make_field(
+        name="frum",
+    )
+    assert frum_field.name == "frum"
