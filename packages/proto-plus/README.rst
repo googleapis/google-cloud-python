@@ -1,7 +1,7 @@
 Proto Plus for Python
 =====================
 
-|release level| |ci| |docs| |codecov|
+|pypi| |release level| |ci| |docs| |codecov|
 
     Beautiful, Pythonic protocol buffers.
 
@@ -20,7 +20,8 @@ Documentation
 
 .. _documentation: https://proto-plus-python.readthedocs.io/en/latest/
 
-.. |release level| image:: https://img.shields.io/badge/release%20level-beta-yellow.svg?style&#x3D;flat
+.. |pypi| image:: https://img.shields.io/pypi/v/proto-plus.svg
+.. |release level| image:: https://img.shields.io/badge/release%20level-ga-gold.svg?style&#x3D;flat
   :target: https://cloud.google.com/terms/launch-stages
 .. |docs| image:: https://readthedocs.org/projects/proto-plus-python/badge/?version=latest
   :target: https://proto-plus-python.readthedocs.io/en/latest/
