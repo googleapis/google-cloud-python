@@ -32,6 +32,9 @@ from google.api import client_pb2 as google_dot_api_dot_client__pb2
 from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 from google.cloud.recommender_v1.proto import (
+    insight_pb2 as google_dot_cloud_dot_recommender__v1_dot_proto_dot_insight__pb2,
+)
+from google.cloud.recommender_v1.proto import (
     recommendation_pb2 as google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommendation__pb2,
 )
 
@@ -42,14 +45,352 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     syntax="proto3",
     serialized_options=b"\n\037com.google.cloud.recommender.v1B\020RecommenderProtoP\001ZFgoogle.golang.org/genproto/googleapis/cloud/recommender/v1;recommender\242\002\004CREC\252\002\033Google.Cloud.Recommender.V1",
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n;google/cloud/recommender_v1/proto/recommender_service.proto\x12\x1bgoogle.cloud.recommender.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a\x36google/cloud/recommender_v1/proto/recommendation.proto"\x9d\x01\n\x1aListRecommendationsRequest\x12>\n\x06parent\x18\x01 \x01(\tB.\xe0\x41\x02\xfa\x41(\n&recommender.googleapis.com/Recommender\x12\x16\n\tpage_size\x18\x02 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x03 \x01(\tB\x03\xe0\x41\x01\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t"|\n\x1bListRecommendationsResponse\x12\x44\n\x0frecommendations\x18\x01 \x03(\x0b\x32+.google.cloud.recommender.v1.Recommendation\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"[\n\x18GetRecommendationRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)recommender.googleapis.com/Recommendation"\x96\x02\n MarkRecommendationClaimedRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)recommender.googleapis.com/Recommendation\x12h\n\x0estate_metadata\x18\x02 \x03(\x0b\x32P.google.cloud.recommender.v1.MarkRecommendationClaimedRequest.StateMetadataEntry\x12\x11\n\x04\x65tag\x18\x03 \x01(\tB\x03\xe0\x41\x02\x1a\x34\n\x12StateMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x9a\x02\n"MarkRecommendationSucceededRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)recommender.googleapis.com/Recommendation\x12j\n\x0estate_metadata\x18\x02 \x03(\x0b\x32R.google.cloud.recommender.v1.MarkRecommendationSucceededRequest.StateMetadataEntry\x12\x11\n\x04\x65tag\x18\x03 \x01(\tB\x03\xe0\x41\x02\x1a\x34\n\x12StateMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x94\x02\n\x1fMarkRecommendationFailedRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)recommender.googleapis.com/Recommendation\x12g\n\x0estate_metadata\x18\x02 \x03(\x0b\x32O.google.cloud.recommender.v1.MarkRecommendationFailedRequest.StateMetadataEntry\x12\x11\n\x04\x65tag\x18\x03 \x01(\tB\x03\xe0\x41\x02\x1a\x34\n\x12StateMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x32\x9d\n\n\x0bRecommender\x12\xed\x01\n\x13ListRecommendations\x12\x37.google.cloud.recommender.v1.ListRecommendationsRequest\x1a\x38.google.cloud.recommender.v1.ListRecommendationsResponse"c\x82\xd3\xe4\x93\x02\x44\x12\x42/v1/{parent=projects/*/locations/*/recommenders/*}/recommendations\xda\x41\x06parent\xda\x41\rparent,filter\x12\xca\x01\n\x11GetRecommendation\x12\x35.google.cloud.recommender.v1.GetRecommendationRequest\x1a+.google.cloud.recommender.v1.Recommendation"Q\x82\xd3\xe4\x93\x02\x44\x12\x42/v1/{name=projects/*/locations/*/recommenders/*/recommendations/*}\xda\x41\x04name\x12\xfd\x01\n\x19MarkRecommendationClaimed\x12=.google.cloud.recommender.v1.MarkRecommendationClaimedRequest\x1a+.google.cloud.recommender.v1.Recommendation"t\x82\xd3\xe4\x93\x02S"N/v1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markClaimed:\x01*\xda\x41\x18name,state_metadata,etag\x12\x83\x02\n\x1bMarkRecommendationSucceeded\x12?.google.cloud.recommender.v1.MarkRecommendationSucceededRequest\x1a+.google.cloud.recommender.v1.Recommendation"v\x82\xd3\xe4\x93\x02U"P/v1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markSucceeded:\x01*\xda\x41\x18name,state_metadata,etag\x12\xfa\x01\n\x18MarkRecommendationFailed\x12<.google.cloud.recommender.v1.MarkRecommendationFailedRequest\x1a+.google.cloud.recommender.v1.Recommendation"s\x82\xd3\xe4\x93\x02R"M/v1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markFailed:\x01*\xda\x41\x18name,state_metadata,etag\x1aN\xca\x41\x1arecommender.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xa2\x01\n\x1f\x63om.google.cloud.recommender.v1B\x10RecommenderProtoP\x01ZFgoogle.golang.org/genproto/googleapis/cloud/recommender/v1;recommender\xa2\x02\x04\x43REC\xaa\x02\x1bGoogle.Cloud.Recommender.V1b\x06proto3',
+    serialized_pb=b'\n;google/cloud/recommender_v1/proto/recommender_service.proto\x12\x1bgoogle.cloud.recommender.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x17google/api/client.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\x1a/google/cloud/recommender_v1/proto/insight.proto\x1a\x36google/cloud/recommender_v1/proto/recommendation.proto"\x9b\x01\n\x13ListInsightsRequest\x12>\n\x06parent\x18\x01 \x01(\tB.\xe0\x41\x02\xfa\x41(\n&recommender.googleapis.com/InsightType\x12\x16\n\tpage_size\x18\x02 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x03 \x01(\tB\x03\xe0\x41\x01\x12\x13\n\x06\x66ilter\x18\x04 \x01(\tB\x03\xe0\x41\x01"g\n\x14ListInsightsResponse\x12\x36\n\x08insights\x18\x01 \x03(\x0b\x32$.google.cloud.recommender.v1.Insight\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"M\n\x11GetInsightRequest\x12\x38\n\x04name\x18\x01 \x01(\tB*\xe0\x41\x02\xfa\x41$\n"recommender.googleapis.com/Insight"\x88\x02\n\x1aMarkInsightAcceptedRequest\x12\x38\n\x04name\x18\x01 \x01(\tB*\xe0\x41\x02\xfa\x41$\n"recommender.googleapis.com/Insight\x12g\n\x0estate_metadata\x18\x02 \x03(\x0b\x32J.google.cloud.recommender.v1.MarkInsightAcceptedRequest.StateMetadataEntryB\x03\xe0\x41\x01\x12\x11\n\x04\x65tag\x18\x03 \x01(\tB\x03\xe0\x41\x02\x1a\x34\n\x12StateMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x9d\x01\n\x1aListRecommendationsRequest\x12>\n\x06parent\x18\x01 \x01(\tB.\xe0\x41\x02\xfa\x41(\n&recommender.googleapis.com/Recommender\x12\x16\n\tpage_size\x18\x02 \x01(\x05\x42\x03\xe0\x41\x01\x12\x17\n\npage_token\x18\x03 \x01(\tB\x03\xe0\x41\x01\x12\x0e\n\x06\x66ilter\x18\x05 \x01(\t"|\n\x1bListRecommendationsResponse\x12\x44\n\x0frecommendations\x18\x01 \x03(\x0b\x32+.google.cloud.recommender.v1.Recommendation\x12\x17\n\x0fnext_page_token\x18\x02 \x01(\t"[\n\x18GetRecommendationRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)recommender.googleapis.com/Recommendation"\x96\x02\n MarkRecommendationClaimedRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)recommender.googleapis.com/Recommendation\x12h\n\x0estate_metadata\x18\x02 \x03(\x0b\x32P.google.cloud.recommender.v1.MarkRecommendationClaimedRequest.StateMetadataEntry\x12\x11\n\x04\x65tag\x18\x03 \x01(\tB\x03\xe0\x41\x02\x1a\x34\n\x12StateMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x9a\x02\n"MarkRecommendationSucceededRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)recommender.googleapis.com/Recommendation\x12j\n\x0estate_metadata\x18\x02 \x03(\x0b\x32R.google.cloud.recommender.v1.MarkRecommendationSucceededRequest.StateMetadataEntry\x12\x11\n\x04\x65tag\x18\x03 \x01(\tB\x03\xe0\x41\x02\x1a\x34\n\x12StateMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01"\x94\x02\n\x1fMarkRecommendationFailedRequest\x12?\n\x04name\x18\x01 \x01(\tB1\xe0\x41\x02\xfa\x41+\n)recommender.googleapis.com/Recommendation\x12g\n\x0estate_metadata\x18\x02 \x03(\x0b\x32O.google.cloud.recommender.v1.MarkRecommendationFailedRequest.StateMetadataEntry\x12\x11\n\x04\x65tag\x18\x03 \x01(\tB\x03\xe0\x41\x02\x1a\x34\n\x12StateMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x32\xf9\x0e\n\x0bRecommender\x12\xc1\x01\n\x0cListInsights\x12\x30.google.cloud.recommender.v1.ListInsightsRequest\x1a\x31.google.cloud.recommender.v1.ListInsightsResponse"L\x82\xd3\xe4\x93\x02=\x12;/v1/{parent=projects/*/locations/*/insightTypes/*}/insights\xda\x41\x06parent\x12\xae\x01\n\nGetInsight\x12..google.cloud.recommender.v1.GetInsightRequest\x1a$.google.cloud.recommender.v1.Insight"J\x82\xd3\xe4\x93\x02=\x12;/v1/{name=projects/*/locations/*/insightTypes/*/insights/*}\xda\x41\x04name\x12\xe4\x01\n\x13MarkInsightAccepted\x12\x37.google.cloud.recommender.v1.MarkInsightAcceptedRequest\x1a$.google.cloud.recommender.v1.Insight"n\x82\xd3\xe4\x93\x02M"H/v1/{name=projects/*/locations/*/insightTypes/*/insights/*}:markAccepted:\x01*\xda\x41\x18name,state_metadata,etag\x12\xed\x01\n\x13ListRecommendations\x12\x37.google.cloud.recommender.v1.ListRecommendationsRequest\x1a\x38.google.cloud.recommender.v1.ListRecommendationsResponse"c\x82\xd3\xe4\x93\x02\x44\x12\x42/v1/{parent=projects/*/locations/*/recommenders/*}/recommendations\xda\x41\x06parent\xda\x41\rparent,filter\x12\xca\x01\n\x11GetRecommendation\x12\x35.google.cloud.recommender.v1.GetRecommendationRequest\x1a+.google.cloud.recommender.v1.Recommendation"Q\x82\xd3\xe4\x93\x02\x44\x12\x42/v1/{name=projects/*/locations/*/recommenders/*/recommendations/*}\xda\x41\x04name\x12\xfd\x01\n\x19MarkRecommendationClaimed\x12=.google.cloud.recommender.v1.MarkRecommendationClaimedRequest\x1a+.google.cloud.recommender.v1.Recommendation"t\x82\xd3\xe4\x93\x02S"N/v1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markClaimed:\x01*\xda\x41\x18name,state_metadata,etag\x12\x83\x02\n\x1bMarkRecommendationSucceeded\x12?.google.cloud.recommender.v1.MarkRecommendationSucceededRequest\x1a+.google.cloud.recommender.v1.Recommendation"v\x82\xd3\xe4\x93\x02U"P/v1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markSucceeded:\x01*\xda\x41\x18name,state_metadata,etag\x12\xfa\x01\n\x18MarkRecommendationFailed\x12<.google.cloud.recommender.v1.MarkRecommendationFailedRequest\x1a+.google.cloud.recommender.v1.Recommendation"s\x82\xd3\xe4\x93\x02R"M/v1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markFailed:\x01*\xda\x41\x18name,state_metadata,etag\x1aN\xca\x41\x1arecommender.googleapis.com\xd2\x41.https://www.googleapis.com/auth/cloud-platformB\xa2\x01\n\x1f\x63om.google.cloud.recommender.v1B\x10RecommenderProtoP\x01ZFgoogle.golang.org/genproto/googleapis/cloud/recommender/v1;recommender\xa2\x02\x04\x43REC\xaa\x02\x1bGoogle.Cloud.Recommender.V1b\x06proto3',
     dependencies=[
         google_dot_api_dot_annotations__pb2.DESCRIPTOR,
         google_dot_api_dot_client__pb2.DESCRIPTOR,
         google_dot_api_dot_field__behavior__pb2.DESCRIPTOR,
         google_dot_api_dot_resource__pb2.DESCRIPTOR,
+        google_dot_cloud_dot_recommender__v1_dot_proto_dot_insight__pb2.DESCRIPTOR,
         google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommendation__pb2.DESCRIPTOR,
     ],
+)
+
+
+_LISTINSIGHTSREQUEST = _descriptor.Descriptor(
+    name="ListInsightsRequest",
+    full_name="google.cloud.recommender.v1.ListInsightsRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="parent",
+            full_name="google.cloud.recommender.v1.ListInsightsRequest.parent",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=b"\340A\002\372A(\n&recommender.googleapis.com/InsightType",
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_size",
+            full_name="google.cloud.recommender.v1.ListInsightsRequest.page_size",
+            index=1,
+            number=2,
+            type=5,
+            cpp_type=1,
+            label=1,
+            has_default_value=False,
+            default_value=0,
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=b"\340A\001",
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="page_token",
+            full_name="google.cloud.recommender.v1.ListInsightsRequest.page_token",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=b"\340A\001",
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="filter",
+            full_name="google.cloud.recommender.v1.ListInsightsRequest.filter",
+            index=3,
+            number=4,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=b"\340A\001",
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=313,
+    serialized_end=468,
+)
+
+
+_LISTINSIGHTSRESPONSE = _descriptor.Descriptor(
+    name="ListInsightsResponse",
+    full_name="google.cloud.recommender.v1.ListInsightsResponse",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="insights",
+            full_name="google.cloud.recommender.v1.ListInsightsResponse.insights",
+            index=0,
+            number=1,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="next_page_token",
+            full_name="google.cloud.recommender.v1.ListInsightsResponse.next_page_token",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=470,
+    serialized_end=573,
+)
+
+
+_GETINSIGHTREQUEST = _descriptor.Descriptor(
+    name="GetInsightRequest",
+    full_name="google.cloud.recommender.v1.GetInsightRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.recommender.v1.GetInsightRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=b'\340A\002\372A$\n"recommender.googleapis.com/Insight',
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        )
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=575,
+    serialized_end=652,
+)
+
+
+_MARKINSIGHTACCEPTEDREQUEST_STATEMETADATAENTRY = _descriptor.Descriptor(
+    name="StateMetadataEntry",
+    full_name="google.cloud.recommender.v1.MarkInsightAcceptedRequest.StateMetadataEntry",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="key",
+            full_name="google.cloud.recommender.v1.MarkInsightAcceptedRequest.StateMetadataEntry.key",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="value",
+            full_name="google.cloud.recommender.v1.MarkInsightAcceptedRequest.StateMetadataEntry.value",
+            index=1,
+            number=2,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=None,
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=b"8\001",
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=867,
+    serialized_end=919,
+)
+
+_MARKINSIGHTACCEPTEDREQUEST = _descriptor.Descriptor(
+    name="MarkInsightAcceptedRequest",
+    full_name="google.cloud.recommender.v1.MarkInsightAcceptedRequest",
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    create_key=_descriptor._internal_create_key,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name="name",
+            full_name="google.cloud.recommender.v1.MarkInsightAcceptedRequest.name",
+            index=0,
+            number=1,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=b'\340A\002\372A$\n"recommender.googleapis.com/Insight',
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="state_metadata",
+            full_name="google.cloud.recommender.v1.MarkInsightAcceptedRequest.state_metadata",
+            index=1,
+            number=2,
+            type=11,
+            cpp_type=10,
+            label=3,
+            has_default_value=False,
+            default_value=[],
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=b"\340A\001",
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.FieldDescriptor(
+            name="etag",
+            full_name="google.cloud.recommender.v1.MarkInsightAcceptedRequest.etag",
+            index=2,
+            number=3,
+            type=9,
+            cpp_type=9,
+            label=1,
+            has_default_value=False,
+            default_value=b"".decode("utf-8"),
+            message_type=None,
+            enum_type=None,
+            containing_type=None,
+            is_extension=False,
+            extension_scope=None,
+            serialized_options=b"\340A\002",
+            file=DESCRIPTOR,
+            create_key=_descriptor._internal_create_key,
+        ),
+    ],
+    extensions=[],
+    nested_types=[_MARKINSIGHTACCEPTEDREQUEST_STATEMETADATAENTRY],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax="proto3",
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=655,
+    serialized_end=919,
 )
 
 
@@ -146,8 +487,8 @@ _LISTRECOMMENDATIONSREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=264,
-    serialized_end=421,
+    serialized_start=922,
+    serialized_end=1079,
 )
 
 
@@ -206,8 +547,8 @@ _LISTRECOMMENDATIONSRESPONSE = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=423,
-    serialized_end=547,
+    serialized_start=1081,
+    serialized_end=1205,
 )
 
 
@@ -247,8 +588,8 @@ _GETRECOMMENDATIONREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=549,
-    serialized_end=640,
+    serialized_start=1207,
+    serialized_end=1298,
 )
 
 
@@ -307,8 +648,8 @@ _MARKRECOMMENDATIONCLAIMEDREQUEST_STATEMETADATAENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=869,
-    serialized_end=921,
+    serialized_start=867,
+    serialized_end=919,
 )
 
 _MARKRECOMMENDATIONCLAIMEDREQUEST = _descriptor.Descriptor(
@@ -385,8 +726,8 @@ _MARKRECOMMENDATIONCLAIMEDREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=643,
-    serialized_end=921,
+    serialized_start=1301,
+    serialized_end=1579,
 )
 
 
@@ -445,8 +786,8 @@ _MARKRECOMMENDATIONSUCCEEDEDREQUEST_STATEMETADATAENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=869,
-    serialized_end=921,
+    serialized_start=867,
+    serialized_end=919,
 )
 
 _MARKRECOMMENDATIONSUCCEEDEDREQUEST = _descriptor.Descriptor(
@@ -523,8 +864,8 @@ _MARKRECOMMENDATIONSUCCEEDEDREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=924,
-    serialized_end=1206,
+    serialized_start=1582,
+    serialized_end=1864,
 )
 
 
@@ -583,8 +924,8 @@ _MARKRECOMMENDATIONFAILEDREQUEST_STATEMETADATAENTRY = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=869,
-    serialized_end=921,
+    serialized_start=867,
+    serialized_end=919,
 )
 
 _MARKRECOMMENDATIONFAILEDREQUEST = _descriptor.Descriptor(
@@ -661,10 +1002,21 @@ _MARKRECOMMENDATIONFAILEDREQUEST = _descriptor.Descriptor(
     syntax="proto3",
     extension_ranges=[],
     oneofs=[],
-    serialized_start=1209,
-    serialized_end=1485,
+    serialized_start=1867,
+    serialized_end=2143,
 )
 
+_LISTINSIGHTSRESPONSE.fields_by_name[
+    "insights"
+].message_type = (
+    google_dot_cloud_dot_recommender__v1_dot_proto_dot_insight__pb2._INSIGHT
+)
+_MARKINSIGHTACCEPTEDREQUEST_STATEMETADATAENTRY.containing_type = (
+    _MARKINSIGHTACCEPTEDREQUEST
+)
+_MARKINSIGHTACCEPTEDREQUEST.fields_by_name[
+    "state_metadata"
+].message_type = _MARKINSIGHTACCEPTEDREQUEST_STATEMETADATAENTRY
 _LISTRECOMMENDATIONSRESPONSE.fields_by_name[
     "recommendations"
 ].message_type = (
@@ -688,6 +1040,12 @@ _MARKRECOMMENDATIONFAILEDREQUEST_STATEMETADATAENTRY.containing_type = (
 _MARKRECOMMENDATIONFAILEDREQUEST.fields_by_name[
     "state_metadata"
 ].message_type = _MARKRECOMMENDATIONFAILEDREQUEST_STATEMETADATAENTRY
+DESCRIPTOR.message_types_by_name["ListInsightsRequest"] = _LISTINSIGHTSREQUEST
+DESCRIPTOR.message_types_by_name["ListInsightsResponse"] = _LISTINSIGHTSRESPONSE
+DESCRIPTOR.message_types_by_name["GetInsightRequest"] = _GETINSIGHTREQUEST
+DESCRIPTOR.message_types_by_name[
+    "MarkInsightAcceptedRequest"
+] = _MARKINSIGHTACCEPTEDREQUEST
 DESCRIPTOR.message_types_by_name[
     "ListRecommendationsRequest"
 ] = _LISTRECOMMENDATIONSREQUEST
@@ -705,6 +1063,111 @@ DESCRIPTOR.message_types_by_name[
     "MarkRecommendationFailedRequest"
 ] = _MARKRECOMMENDATIONFAILEDREQUEST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+ListInsightsRequest = _reflection.GeneratedProtocolMessageType(
+    "ListInsightsRequest",
+    (_message.Message,),
+    {
+        "DESCRIPTOR": _LISTINSIGHTSREQUEST,
+        "__module__": "google.cloud.recommender_v1.proto.recommender_service_pb2",
+        "__doc__": """Request for the ``ListInsights`` method.
+  
+  Attributes:
+      parent:
+          Required. The container resource on which to execute the
+          request. Acceptable formats:  1. “projects/[PROJECT_NUMBER]/lo
+          cations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]”,  LOCATION
+          here refers to GCP Locations:
+          https://cloud.google.com/about/locations/
+      page_size:
+          Optional. The maximum number of results to return from this
+          request. Non-positive values are ignored. If not specified,
+          the server will determine the number of results to return.
+      page_token:
+          Optional. If present, retrieves the next batch of results from
+          the preceding call to this method. ``page_token`` must be the
+          value of ``next_page_token`` from the previous response. The
+          values of other method parameters must be identical to those
+          in the previous call.
+      filter:
+          Optional. Filter expression to restrict the insights returned.
+          Supported filter fields: state Eg: \`state:“DISMISSED” or
+          state:“ACTIVE”
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1.ListInsightsRequest)
+    },
+)
+_sym_db.RegisterMessage(ListInsightsRequest)
+
+ListInsightsResponse = _reflection.GeneratedProtocolMessageType(
+    "ListInsightsResponse",
+    (_message.Message,),
+    {
+        "DESCRIPTOR": _LISTINSIGHTSRESPONSE,
+        "__module__": "google.cloud.recommender_v1.proto.recommender_service_pb2",
+        "__doc__": """Response to the ``ListInsights`` method.
+  
+  Attributes:
+      insights:
+          The set of insights for the ``parent`` resource.
+      next_page_token:
+          A token that can be used to request the next page of results.
+          This field is empty if there are no additional results.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1.ListInsightsResponse)
+    },
+)
+_sym_db.RegisterMessage(ListInsightsResponse)
+
+GetInsightRequest = _reflection.GeneratedProtocolMessageType(
+    "GetInsightRequest",
+    (_message.Message,),
+    {
+        "DESCRIPTOR": _GETINSIGHTREQUEST,
+        "__module__": "google.cloud.recommender_v1.proto.recommender_service_pb2",
+        "__doc__": """Request to the ``GetInsight`` method.
+  
+  Attributes:
+      name:
+          Required. Name of the insight.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1.GetInsightRequest)
+    },
+)
+_sym_db.RegisterMessage(GetInsightRequest)
+
+MarkInsightAcceptedRequest = _reflection.GeneratedProtocolMessageType(
+    "MarkInsightAcceptedRequest",
+    (_message.Message,),
+    {
+        "StateMetadataEntry": _reflection.GeneratedProtocolMessageType(
+            "StateMetadataEntry",
+            (_message.Message,),
+            {
+                "DESCRIPTOR": _MARKINSIGHTACCEPTEDREQUEST_STATEMETADATAENTRY,
+                "__module__": "google.cloud.recommender_v1.proto.recommender_service_pb2"
+                # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1.MarkInsightAcceptedRequest.StateMetadataEntry)
+            },
+        ),
+        "DESCRIPTOR": _MARKINSIGHTACCEPTEDREQUEST,
+        "__module__": "google.cloud.recommender_v1.proto.recommender_service_pb2",
+        "__doc__": """Request for the ``MarkInsightAccepted`` method.
+  
+  Attributes:
+      name:
+          Required. Name of the insight.
+      state_metadata:
+          Optional. State properties user wish to include with this
+          state. Full replace of the current state_metadata.
+      etag:
+          Required. Fingerprint of the Insight. Provides optimistic
+          locking.
+  """,
+        # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1.MarkInsightAcceptedRequest)
+    },
+)
+_sym_db.RegisterMessage(MarkInsightAcceptedRequest)
+_sym_db.RegisterMessage(MarkInsightAcceptedRequest.StateMetadataEntry)
 
 ListRecommendationsRequest = _reflection.GeneratedProtocolMessageType(
     "ListRecommendationsRequest",
@@ -754,7 +1217,8 @@ ListRecommendationsResponse = _reflection.GeneratedProtocolMessageType(
           The set of recommendations for the ``parent`` resource.
       next_page_token:
           A token that can be used to request the next page of results.
-          This field is empty if there are no additional results.
+          This field is empty if there are no additional results.  ..
+          [1]    a-z0-9  .. [2]    a-z0-9  .. [3]    a-z0-9
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1.ListRecommendationsResponse)
     },
@@ -801,7 +1265,7 @@ MarkRecommendationClaimedRequest = _reflection.GeneratedProtocolMessageType(
       state_metadata:
           State properties to include with this state. Overwrites any
           existing ``state_metadata``. Keys must match the regex ``/
-          [2]_[a-z0-9_.-]{0,62}/``. Values must match the regex
+          [1]_[a-z0-9_.-]{0,62}/``. Values must match the regex
           ``/^[a-zA-Z0-9_./-]{0,255}/``.
       etag:
           Required. Fingerprint of the Recommendation. Provides
@@ -836,7 +1300,7 @@ MarkRecommendationSucceededRequest = _reflection.GeneratedProtocolMessageType(
       state_metadata:
           State properties to include with this state. Overwrites any
           existing ``state_metadata``. Keys must match the regex ``/
-          [3]_[a-z0-9_.-]{0,62}/``. Values must match the regex
+          [2]_[a-z0-9_.-]{0,62}/``. Values must match the regex
           ``/^[a-zA-Z0-9_./-]{0,255}/``.
       etag:
           Required. Fingerprint of the Recommendation. Provides
@@ -872,7 +1336,7 @@ MarkRecommendationFailedRequest = _reflection.GeneratedProtocolMessageType(
       state_metadata:
           State properties to include with this state. Overwrites any
           existing ``state_metadata``. Keys must match the regex ``/
-          [1]_[a-z0-9_.-]{0,62}/``. Values must match the regex
+          [3]_[a-z0-9_.-]{0,62}/``. Values must match the regex
           ``/^[a-zA-Z0-9_./-]{0,255}/``.
       etag:
           Required. Fingerprint of the Recommendation. Provides
@@ -886,6 +1350,15 @@ _sym_db.RegisterMessage(MarkRecommendationFailedRequest.StateMetadataEntry)
 
 
 DESCRIPTOR._options = None
+_LISTINSIGHTSREQUEST.fields_by_name["parent"]._options = None
+_LISTINSIGHTSREQUEST.fields_by_name["page_size"]._options = None
+_LISTINSIGHTSREQUEST.fields_by_name["page_token"]._options = None
+_LISTINSIGHTSREQUEST.fields_by_name["filter"]._options = None
+_GETINSIGHTREQUEST.fields_by_name["name"]._options = None
+_MARKINSIGHTACCEPTEDREQUEST_STATEMETADATAENTRY._options = None
+_MARKINSIGHTACCEPTEDREQUEST.fields_by_name["name"]._options = None
+_MARKINSIGHTACCEPTEDREQUEST.fields_by_name["state_metadata"]._options = None
+_MARKINSIGHTACCEPTEDREQUEST.fields_by_name["etag"]._options = None
 _LISTRECOMMENDATIONSREQUEST.fields_by_name["parent"]._options = None
 _LISTRECOMMENDATIONSREQUEST.fields_by_name["page_size"]._options = None
 _LISTRECOMMENDATIONSREQUEST.fields_by_name["page_token"]._options = None
@@ -907,13 +1380,43 @@ _RECOMMENDER = _descriptor.ServiceDescriptor(
     index=0,
     serialized_options=b"\312A\032recommender.googleapis.com\322A.https://www.googleapis.com/auth/cloud-platform",
     create_key=_descriptor._internal_create_key,
-    serialized_start=1488,
-    serialized_end=2797,
+    serialized_start=2146,
+    serialized_end=4059,
     methods=[
+        _descriptor.MethodDescriptor(
+            name="ListInsights",
+            full_name="google.cloud.recommender.v1.Recommender.ListInsights",
+            index=0,
+            containing_service=None,
+            input_type=_LISTINSIGHTSREQUEST,
+            output_type=_LISTINSIGHTSRESPONSE,
+            serialized_options=b"\202\323\344\223\002=\022;/v1/{parent=projects/*/locations/*/insightTypes/*}/insights\332A\006parent",
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.MethodDescriptor(
+            name="GetInsight",
+            full_name="google.cloud.recommender.v1.Recommender.GetInsight",
+            index=1,
+            containing_service=None,
+            input_type=_GETINSIGHTREQUEST,
+            output_type=google_dot_cloud_dot_recommender__v1_dot_proto_dot_insight__pb2._INSIGHT,
+            serialized_options=b"\202\323\344\223\002=\022;/v1/{name=projects/*/locations/*/insightTypes/*/insights/*}\332A\004name",
+            create_key=_descriptor._internal_create_key,
+        ),
+        _descriptor.MethodDescriptor(
+            name="MarkInsightAccepted",
+            full_name="google.cloud.recommender.v1.Recommender.MarkInsightAccepted",
+            index=2,
+            containing_service=None,
+            input_type=_MARKINSIGHTACCEPTEDREQUEST,
+            output_type=google_dot_cloud_dot_recommender__v1_dot_proto_dot_insight__pb2._INSIGHT,
+            serialized_options=b'\202\323\344\223\002M"H/v1/{name=projects/*/locations/*/insightTypes/*/insights/*}:markAccepted:\001*\332A\030name,state_metadata,etag',
+            create_key=_descriptor._internal_create_key,
+        ),
         _descriptor.MethodDescriptor(
             name="ListRecommendations",
             full_name="google.cloud.recommender.v1.Recommender.ListRecommendations",
-            index=0,
+            index=3,
             containing_service=None,
             input_type=_LISTRECOMMENDATIONSREQUEST,
             output_type=_LISTRECOMMENDATIONSRESPONSE,
@@ -923,7 +1426,7 @@ _RECOMMENDER = _descriptor.ServiceDescriptor(
         _descriptor.MethodDescriptor(
             name="GetRecommendation",
             full_name="google.cloud.recommender.v1.Recommender.GetRecommendation",
-            index=1,
+            index=4,
             containing_service=None,
             input_type=_GETRECOMMENDATIONREQUEST,
             output_type=google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommendation__pb2._RECOMMENDATION,
@@ -933,7 +1436,7 @@ _RECOMMENDER = _descriptor.ServiceDescriptor(
         _descriptor.MethodDescriptor(
             name="MarkRecommendationClaimed",
             full_name="google.cloud.recommender.v1.Recommender.MarkRecommendationClaimed",
-            index=2,
+            index=5,
             containing_service=None,
             input_type=_MARKRECOMMENDATIONCLAIMEDREQUEST,
             output_type=google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommendation__pb2._RECOMMENDATION,
@@ -943,7 +1446,7 @@ _RECOMMENDER = _descriptor.ServiceDescriptor(
         _descriptor.MethodDescriptor(
             name="MarkRecommendationSucceeded",
             full_name="google.cloud.recommender.v1.Recommender.MarkRecommendationSucceeded",
-            index=3,
+            index=6,
             containing_service=None,
             input_type=_MARKRECOMMENDATIONSUCCEEDEDREQUEST,
             output_type=google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommendation__pb2._RECOMMENDATION,
@@ -953,7 +1456,7 @@ _RECOMMENDER = _descriptor.ServiceDescriptor(
         _descriptor.MethodDescriptor(
             name="MarkRecommendationFailed",
             full_name="google.cloud.recommender.v1.Recommender.MarkRecommendationFailed",
-            index=4,
+            index=7,
             containing_service=None,
             input_type=_MARKRECOMMENDATIONFAILEDREQUEST,
             output_type=google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommendation__pb2._RECOMMENDATION,

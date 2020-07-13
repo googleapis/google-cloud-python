@@ -108,6 +108,52 @@ class RecommenderGrpcTransport(object):
         return self._channel
 
     @property
+    def list_insights(self):
+        """Return the gRPC stub for :meth:`RecommenderClient.list_insights`.
+
+        Lists insights for a Cloud project. Requires the recommender.*.list
+        IAM permission for the specified insight type.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["recommender_stub"].ListInsights
+
+    @property
+    def get_insight(self):
+        """Return the gRPC stub for :meth:`RecommenderClient.get_insight`.
+
+        Gets the requested insight. Requires the recommender.*.get IAM
+        permission for the specified insight type.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["recommender_stub"].GetInsight
+
+    @property
+    def mark_insight_accepted(self):
+        """Return the gRPC stub for :meth:`RecommenderClient.mark_insight_accepted`.
+
+        Marks the Insight State as Accepted. Users can use this method to
+        indicate to the Recommender API that they have applied some action based
+        on the insight. This stops the insight content from being updated.
+
+        MarkInsightAccepted can be applied to insights in ACTIVE state. Requires
+        the recommender.*.update IAM permission for the specified insight.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["recommender_stub"].MarkInsightAccepted
+
+    @property
     def list_recommendations(self):
         """Return the gRPC stub for :meth:`RecommenderClient.list_recommendations`.
 
@@ -139,10 +185,11 @@ class RecommenderGrpcTransport(object):
     def mark_recommendation_claimed(self):
         """Return the gRPC stub for :meth:`RecommenderClient.mark_recommendation_claimed`.
 
-        Mark the Recommendation State as Claimed. Users can use this method
+        Marks the Recommendation State as Claimed. Users can use this method
         to indicate to the Recommender API that they are starting to apply the
         recommendation themselves. This stops the recommendation content from
-        being updated.
+        being updated. Associated insights are frozen and placed in the ACCEPTED
+        state.
 
         MarkRecommendationClaimed can be applied to recommendations in CLAIMED,
         SUCCEEDED, FAILED, or ACTIVE state.
@@ -161,10 +208,11 @@ class RecommenderGrpcTransport(object):
     def mark_recommendation_succeeded(self):
         """Return the gRPC stub for :meth:`RecommenderClient.mark_recommendation_succeeded`.
 
-        Mark the Recommendation State as Succeeded. Users can use this
+        Marks the Recommendation State as Succeeded. Users can use this
         method to indicate to the Recommender API that they have applied the
         recommendation themselves, and the operation was successful. This stops
-        the recommendation content from being updated.
+        the recommendation content from being updated. Associated insights are
+        frozen and placed in the ACCEPTED state.
 
         MarkRecommendationSucceeded can be applied to recommendations in ACTIVE,
         CLAIMED, SUCCEEDED, or FAILED state.
@@ -183,10 +231,11 @@ class RecommenderGrpcTransport(object):
     def mark_recommendation_failed(self):
         """Return the gRPC stub for :meth:`RecommenderClient.mark_recommendation_failed`.
 
-        Mark the Recommendation State as Failed. Users can use this method
+        Marks the Recommendation State as Failed. Users can use this method
         to indicate to the Recommender API that they have applied the
         recommendation themselves, and the operation failed. This stops the
-        recommendation content from being updated.
+        recommendation content from being updated. Associated insights are
+        frozen and placed in the ACCEPTED state.
 
         MarkRecommendationFailed can be applied to recommendations in ACTIVE,
         CLAIMED, SUCCEEDED, or FAILED state.

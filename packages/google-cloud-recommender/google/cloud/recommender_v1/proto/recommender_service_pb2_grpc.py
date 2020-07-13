@@ -3,6 +3,9 @@
 import grpc
 
 from google.cloud.recommender_v1.proto import (
+    insight_pb2 as google_dot_cloud_dot_recommender__v1_dot_proto_dot_insight__pb2,
+)
+from google.cloud.recommender_v1.proto import (
     recommendation_pb2 as google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommendation__pb2,
 )
 from google.cloud.recommender_v1.proto import (
@@ -11,10 +14,10 @@ from google.cloud.recommender_v1.proto import (
 
 
 class RecommenderStub(object):
-    """Provides recommendations for cloud customers for various categories like
-    performance optimization, cost savings, reliability, feature discovery, etc.
-    These recommendations are generated automatically based on analysis of user
-    resources, configuration and monitoring metrics.
+    """Provides insights and recommendations for cloud customers for various
+    categories like performance optimization, cost savings, reliability, feature
+    discovery, etc. Insights and recommendations are generated automatically
+    based on analysis of user resources, configuration and monitoring metrics.
     """
 
     def __init__(self, channel):
@@ -23,6 +26,21 @@ class RecommenderStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.ListInsights = channel.unary_unary(
+            "/google.cloud.recommender.v1.Recommender/ListInsights",
+            request_serializer=google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommender__service__pb2.ListInsightsRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommender__service__pb2.ListInsightsResponse.FromString,
+        )
+        self.GetInsight = channel.unary_unary(
+            "/google.cloud.recommender.v1.Recommender/GetInsight",
+            request_serializer=google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommender__service__pb2.GetInsightRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_recommender__v1_dot_proto_dot_insight__pb2.Insight.FromString,
+        )
+        self.MarkInsightAccepted = channel.unary_unary(
+            "/google.cloud.recommender.v1.Recommender/MarkInsightAccepted",
+            request_serializer=google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommender__service__pb2.MarkInsightAcceptedRequest.SerializeToString,
+            response_deserializer=google_dot_cloud_dot_recommender__v1_dot_proto_dot_insight__pb2.Insight.FromString,
+        )
         self.ListRecommendations = channel.unary_unary(
             "/google.cloud.recommender.v1.Recommender/ListRecommendations",
             request_serializer=google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommender__service__pb2.ListRecommendationsRequest.SerializeToString,
@@ -51,11 +69,39 @@ class RecommenderStub(object):
 
 
 class RecommenderServicer(object):
-    """Provides recommendations for cloud customers for various categories like
-    performance optimization, cost savings, reliability, feature discovery, etc.
-    These recommendations are generated automatically based on analysis of user
-    resources, configuration and monitoring metrics.
+    """Provides insights and recommendations for cloud customers for various
+    categories like performance optimization, cost savings, reliability, feature
+    discovery, etc. Insights and recommendations are generated automatically
+    based on analysis of user resources, configuration and monitoring metrics.
     """
+
+    def ListInsights(self, request, context):
+        """Lists insights for a Cloud project. Requires the recommender.*.list IAM
+        permission for the specified insight type.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def GetInsight(self, request, context):
+        """Gets the requested insight. Requires the recommender.*.get IAM permission
+        for the specified insight type.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def MarkInsightAccepted(self, request, context):
+        """Marks the Insight State as Accepted. Users can use this method to
+        indicate to the Recommender API that they have applied some action based
+        on the insight. This stops the insight content from being updated.
+
+        MarkInsightAccepted can be applied to insights in ACTIVE state. Requires
+        the recommender.*.update IAM permission for the specified insight.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def ListRecommendations(self, request, context):
         """Lists recommendations for a Cloud project. Requires the recommender.*.list
@@ -74,10 +120,10 @@ class RecommenderServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def MarkRecommendationClaimed(self, request, context):
-        """Mark the Recommendation State as Claimed. Users can use this method to
+        """Marks the Recommendation State as Claimed. Users can use this method to
         indicate to the Recommender API that they are starting to apply the
         recommendation themselves. This stops the recommendation content from being
-        updated.
+        updated. Associated insights are frozen and placed in the ACCEPTED state.
 
         MarkRecommendationClaimed can be applied to recommendations in CLAIMED,
         SUCCEEDED, FAILED, or ACTIVE state.
@@ -90,10 +136,11 @@ class RecommenderServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def MarkRecommendationSucceeded(self, request, context):
-        """Mark the Recommendation State as Succeeded. Users can use this method to
+        """Marks the Recommendation State as Succeeded. Users can use this method to
         indicate to the Recommender API that they have applied the recommendation
         themselves, and the operation was successful. This stops the recommendation
-        content from being updated.
+        content from being updated. Associated insights are frozen and placed in
+        the ACCEPTED state.
 
         MarkRecommendationSucceeded can be applied to recommendations in ACTIVE,
         CLAIMED, SUCCEEDED, or FAILED state.
@@ -106,10 +153,11 @@ class RecommenderServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def MarkRecommendationFailed(self, request, context):
-        """Mark the Recommendation State as Failed. Users can use this method to
+        """Marks the Recommendation State as Failed. Users can use this method to
         indicate to the Recommender API that they have applied the recommendation
         themselves, and the operation failed. This stops the recommendation content
-        from being updated.
+        from being updated. Associated insights are frozen and placed in the
+        ACCEPTED state.
 
         MarkRecommendationFailed can be applied to recommendations in ACTIVE,
         CLAIMED, SUCCEEDED, or FAILED state.
@@ -124,6 +172,21 @@ class RecommenderServicer(object):
 
 def add_RecommenderServicer_to_server(servicer, server):
     rpc_method_handlers = {
+        "ListInsights": grpc.unary_unary_rpc_method_handler(
+            servicer.ListInsights,
+            request_deserializer=google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommender__service__pb2.ListInsightsRequest.FromString,
+            response_serializer=google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommender__service__pb2.ListInsightsResponse.SerializeToString,
+        ),
+        "GetInsight": grpc.unary_unary_rpc_method_handler(
+            servicer.GetInsight,
+            request_deserializer=google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommender__service__pb2.GetInsightRequest.FromString,
+            response_serializer=google_dot_cloud_dot_recommender__v1_dot_proto_dot_insight__pb2.Insight.SerializeToString,
+        ),
+        "MarkInsightAccepted": grpc.unary_unary_rpc_method_handler(
+            servicer.MarkInsightAccepted,
+            request_deserializer=google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommender__service__pb2.MarkInsightAcceptedRequest.FromString,
+            response_serializer=google_dot_cloud_dot_recommender__v1_dot_proto_dot_insight__pb2.Insight.SerializeToString,
+        ),
         "ListRecommendations": grpc.unary_unary_rpc_method_handler(
             servicer.ListRecommendations,
             request_deserializer=google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommender__service__pb2.ListRecommendationsRequest.FromString,
@@ -158,11 +221,92 @@ def add_RecommenderServicer_to_server(servicer, server):
 
 # This class is part of an EXPERIMENTAL API.
 class Recommender(object):
-    """Provides recommendations for cloud customers for various categories like
-    performance optimization, cost savings, reliability, feature discovery, etc.
-    These recommendations are generated automatically based on analysis of user
-    resources, configuration and monitoring metrics.
+    """Provides insights and recommendations for cloud customers for various
+    categories like performance optimization, cost savings, reliability, feature
+    discovery, etc. Insights and recommendations are generated automatically
+    based on analysis of user resources, configuration and monitoring metrics.
     """
+
+    @staticmethod
+    def ListInsights(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/google.cloud.recommender.v1.Recommender/ListInsights",
+            google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommender__service__pb2.ListInsightsRequest.SerializeToString,
+            google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommender__service__pb2.ListInsightsResponse.FromString,
+            options,
+            channel_credentials,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def GetInsight(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/google.cloud.recommender.v1.Recommender/GetInsight",
+            google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommender__service__pb2.GetInsightRequest.SerializeToString,
+            google_dot_cloud_dot_recommender__v1_dot_proto_dot_insight__pb2.Insight.FromString,
+            options,
+            channel_credentials,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def MarkInsightAccepted(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/google.cloud.recommender.v1.Recommender/MarkInsightAccepted",
+            google_dot_cloud_dot_recommender__v1_dot_proto_dot_recommender__service__pb2.MarkInsightAcceptedRequest.SerializeToString,
+            google_dot_cloud_dot_recommender__v1_dot_proto_dot_insight__pb2.Insight.FromString,
+            options,
+            channel_credentials,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
     def ListRecommendations(

@@ -20,6 +20,7 @@ import mock
 import pytest
 
 from google.cloud import recommender_v1
+from google.cloud.recommender_v1.proto import insight_pb2
 from google.cloud.recommender_v1.proto import recommendation_pb2
 from google.cloud.recommender_v1.proto import recommender_service_pb2
 
@@ -61,6 +62,155 @@ class CustomException(Exception):
 
 
 class TestRecommenderClient(object):
+    def test_list_insights(self):
+        # Setup Expected Response
+        next_page_token = ""
+        insights_element = {}
+        insights = [insights_element]
+        expected_response = {"next_page_token": next_page_token, "insights": insights}
+        expected_response = recommender_service_pb2.ListInsightsResponse(
+            **expected_response
+        )
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = recommender_v1.RecommenderClient()
+
+        # Setup Request
+        parent = client.insight_type_path("[PROJECT]", "[LOCATION]", "[INSIGHT_TYPE]")
+
+        paged_list_response = client.list_insights(parent)
+        resources = list(paged_list_response)
+        assert len(resources) == 1
+
+        assert expected_response.insights[0] == resources[0]
+
+        assert len(channel.requests) == 1
+        expected_request = recommender_service_pb2.ListInsightsRequest(parent=parent)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_list_insights_exception(self):
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = recommender_v1.RecommenderClient()
+
+        # Setup request
+        parent = client.insight_type_path("[PROJECT]", "[LOCATION]", "[INSIGHT_TYPE]")
+
+        paged_list_response = client.list_insights(parent)
+        with pytest.raises(CustomException):
+            list(paged_list_response)
+
+    def test_get_insight(self):
+        # Setup Expected Response
+        name_2 = "name2-1052831874"
+        description = "description-1724546052"
+        insight_subtype = "insightSubtype-1491142701"
+        etag = "etag3123477"
+        expected_response = {
+            "name": name_2,
+            "description": description,
+            "insight_subtype": insight_subtype,
+            "etag": etag,
+        }
+        expected_response = insight_pb2.Insight(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = recommender_v1.RecommenderClient()
+
+        # Setup Request
+        name = client.insight_path(
+            "[PROJECT]", "[LOCATION]", "[INSIGHT_TYPE]", "[INSIGHT]"
+        )
+
+        response = client.get_insight(name)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = recommender_service_pb2.GetInsightRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_get_insight_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = recommender_v1.RecommenderClient()
+
+        # Setup request
+        name = client.insight_path(
+            "[PROJECT]", "[LOCATION]", "[INSIGHT_TYPE]", "[INSIGHT]"
+        )
+
+        with pytest.raises(CustomException):
+            client.get_insight(name)
+
+    def test_mark_insight_accepted(self):
+        # Setup Expected Response
+        name_2 = "name2-1052831874"
+        description = "description-1724546052"
+        insight_subtype = "insightSubtype-1491142701"
+        etag_2 = "etag2-1293302904"
+        expected_response = {
+            "name": name_2,
+            "description": description,
+            "insight_subtype": insight_subtype,
+            "etag": etag_2,
+        }
+        expected_response = insight_pb2.Insight(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = recommender_v1.RecommenderClient()
+
+        # Setup Request
+        name = client.insight_path(
+            "[PROJECT]", "[LOCATION]", "[INSIGHT_TYPE]", "[INSIGHT]"
+        )
+        etag = "etag3123477"
+
+        response = client.mark_insight_accepted(name, etag)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = recommender_service_pb2.MarkInsightAcceptedRequest(
+            name=name, etag=etag
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_mark_insight_accepted_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = recommender_v1.RecommenderClient()
+
+        # Setup request
+        name = client.insight_path(
+            "[PROJECT]", "[LOCATION]", "[INSIGHT_TYPE]", "[INSIGHT]"
+        )
+        etag = "etag3123477"
+
+        with pytest.raises(CustomException):
+            client.mark_insight_accepted(name, etag)
+
     def test_list_recommendations(self):
         # Setup Expected Response
         next_page_token = ""

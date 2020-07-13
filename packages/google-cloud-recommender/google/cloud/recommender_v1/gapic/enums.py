@@ -53,10 +53,54 @@ class Impact(object):
         MANAGEABILITY = 4
 
 
+class Insight(object):
+    class Category(enum.IntEnum):
+        """
+        Insight category.
+
+        Attributes:
+          CATEGORY_UNSPECIFIED (int): Unspecified category.
+          COST (int): The insight is related to cost.
+          SECURITY (int): The insight is related to security.
+          PERFORMANCE (int): The insight is related to performance.
+          MANAGEABILITY (int): This insight is related to manageability.
+        """
+
+        CATEGORY_UNSPECIFIED = 0
+        COST = 1
+        SECURITY = 2
+        PERFORMANCE = 3
+        MANAGEABILITY = 4
+
+
+class InsightStateInfo(object):
+    class State(enum.IntEnum):
+        """
+        Represents insight state.
+
+        Attributes:
+          STATE_UNSPECIFIED (int): Unspecified state.
+          ACTIVE (int): Insight is active. Content for ACTIVE insights can be updated by Google.
+          ACTIVE insights can be marked DISMISSED OR ACCEPTED.
+          ACCEPTED (int): Some action has been taken based on this insight. Insights become
+          accepted when a recommendation derived from the insight has been marked
+          CLAIMED, SUCCEEDED, or FAILED. ACTIVE insights can also be marked
+          ACCEPTED explicitly. Content for ACCEPTED insights is immutable. ACCEPTED
+          insights can only be marked ACCEPTED (which may update state metadata).
+          DISMISSED (int): Insight is dismissed. Content for DISMISSED insights can be updated by
+          Google. DISMISSED insights can be marked as ACTIVE.
+        """
+
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 1
+        ACCEPTED = 2
+        DISMISSED = 3
+
+
 class RecommendationStateInfo(object):
     class State(enum.IntEnum):
         """
-        Represents Recommendation State
+        Represents Recommendation State.
 
         Attributes:
           STATE_UNSPECIFIED (int): Default state. Don't use directly.
