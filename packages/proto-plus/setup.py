@@ -36,7 +36,7 @@ setup(
     platforms='Posix; MacOS X',
     include_package_data=True,
     install_requires=(
-        'protobuf >= 3.5.1',
+        'protobuf >= 3.12.0',
     ),
     classifiers=[
         'Development Status :: 5 - Production/Stable',
