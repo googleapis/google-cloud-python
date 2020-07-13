@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [1.1.0](https://www.github.com/googleapis/python-recommender/compare/v1.0.0...v1.1.0) (2020-07-13)
+
+
+### Features
+
+* add methods for interacting with insights ([#35](https://www.github.com/googleapis/python-recommender/issues/35)) ([940a3fb](https://www.github.com/googleapis/python-recommender/commit/940a3fb01013865c836bfb55397c25284004a7ad))
+
+
+### Bug Fixes
+
+* update retry config ([#31](https://www.github.com/googleapis/python-recommender/issues/31)) ([5c497e2](https://www.github.com/googleapis/python-recommender/commit/5c497e29d65d288a4b8b24a7b5aa487a5804e880))
+
 ## [1.0.0](https://www.github.com/googleapis/python-recommender/compare/v0.3.0...v1.0.0) (2020-05-21)
 
 
