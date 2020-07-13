@@ -42,8 +42,12 @@ library = gapic.py_library(
     include_protos=True,
 )
 
+s.move(
+    library / "datastore-admin-v1-py/google/cloud/datastore_admin_v1",
+    "google/cloud/datastore_admin_v1"
+)
+
 s.move(library / "google/cloud/datastore_admin_v1/proto")
-s.move(library / "google/cloud/datastore_admin_v1/gapic")
 
 # TODO(busunkim): Remove during the microgenerator transition.
 # This re-orders the parameters to avoid breaking existing code.
