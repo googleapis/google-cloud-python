@@ -41,7 +41,7 @@ from google.cloud.recommender_v1beta1.proto import recommender_service_pb2_grpc
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-recommender"
+    "google-cloud-recommender",
 ).version
 
 
@@ -209,12 +209,12 @@ class RecommenderClient(object):
                 self.transport = transport
         else:
             self.transport = recommender_grpc_transport.RecommenderGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -225,7 +225,7 @@ class RecommenderClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -320,7 +320,7 @@ class RecommenderClient(object):
             )
 
         request = recommender_service_pb2.ListInsightsRequest(
-            parent=parent, page_size=page_size, filter=filter_
+            parent=parent, page_size=page_size, filter=filter_,
         )
         if metadata is None:
             metadata = []
@@ -402,7 +402,7 @@ class RecommenderClient(object):
                 client_info=self._client_info,
             )
 
-        request = recommender_service_pb2.GetInsightRequest(name=name)
+        request = recommender_service_pb2.GetInsightRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -485,7 +485,7 @@ class RecommenderClient(object):
             )
 
         request = recommender_service_pb2.MarkInsightAcceptedRequest(
-            name=name, etag=etag, state_metadata=state_metadata
+            name=name, etag=etag, state_metadata=state_metadata,
         )
         if metadata is None:
             metadata = []
@@ -590,7 +590,7 @@ class RecommenderClient(object):
             )
 
         request = recommender_service_pb2.ListRecommendationsRequest(
-            parent=parent, page_size=page_size, filter=filter_
+            parent=parent, page_size=page_size, filter=filter_,
         )
         if metadata is None:
             metadata = []
@@ -672,7 +672,7 @@ class RecommenderClient(object):
                 client_info=self._client_info,
             )
 
-        request = recommender_service_pb2.GetRecommendationRequest(name=name)
+        request = recommender_service_pb2.GetRecommendationRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -764,7 +764,7 @@ class RecommenderClient(object):
             )
 
         request = recommender_service_pb2.MarkRecommendationClaimedRequest(
-            name=name, etag=etag, state_metadata=state_metadata
+            name=name, etag=etag, state_metadata=state_metadata,
         )
         if metadata is None:
             metadata = []
@@ -857,7 +857,7 @@ class RecommenderClient(object):
             )
 
         request = recommender_service_pb2.MarkRecommendationSucceededRequest(
-            name=name, etag=etag, state_metadata=state_metadata
+            name=name, etag=etag, state_metadata=state_metadata,
         )
         if metadata is None:
             metadata = []
@@ -950,7 +950,7 @@ class RecommenderClient(object):
             )
 
         request = recommender_service_pb2.MarkRecommendationFailedRequest(
-            name=name, etag=etag, state_metadata=state_metadata
+            name=name, etag=etag, state_metadata=state_metadata,
         )
         if metadata is None:
             metadata = []

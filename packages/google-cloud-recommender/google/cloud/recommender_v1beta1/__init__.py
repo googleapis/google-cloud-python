@@ -38,4 +38,8 @@ class RecommenderClient(recommender_client.RecommenderClient):
     enums = enums
 
 
-__all__ = ("enums", "types", "RecommenderClient")
+__all__ = (
+    "enums",
+    "types",
+    "RecommenderClient",
+)

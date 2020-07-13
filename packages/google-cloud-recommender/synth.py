@@ -67,10 +67,10 @@ python.fix_pb2_grpc_headers()
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=80)
+templated_files = common.py_library(microgenerator=True, cov_level=80)
 s.move(templated_files)
 
-# don't run 2.7 tests
-s.replace("noxfile.py", """\["2\.7", """, "[")
+# TODO(busunkim): Use latest sphinx after microgenerator transition
+s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

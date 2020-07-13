@@ -578,7 +578,7 @@ _GETRECOMMENDATIONREQUEST = _descriptor.Descriptor(
             serialized_options=b"\340A\002\372A+\n)recommender.googleapis.com/Recommendation",
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -719,7 +719,7 @@ _MARKRECOMMENDATIONCLAIMEDREQUEST = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_MARKRECOMMENDATIONCLAIMEDREQUEST_STATEMETADATAENTRY],
+    nested_types=[_MARKRECOMMENDATIONCLAIMEDREQUEST_STATEMETADATAENTRY,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -857,7 +857,7 @@ _MARKRECOMMENDATIONSUCCEEDEDREQUEST = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_MARKRECOMMENDATIONSUCCEEDEDREQUEST_STATEMETADATAENTRY],
+    nested_types=[_MARKRECOMMENDATIONSUCCEEDEDREQUEST_STATEMETADATAENTRY,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -995,7 +995,7 @@ _MARKRECOMMENDATIONFAILEDREQUEST = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_MARKRECOMMENDATIONFAILEDREQUEST_STATEMETADATAENTRY],
+    nested_types=[_MARKRECOMMENDATIONFAILEDREQUEST_STATEMETADATAENTRY,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -1198,6 +1198,7 @@ ListRecommendationsRequest = _reflection.GeneratedProtocolMessageType(
           Filter expression to restrict the recommendations returned.
           Supported filter fields: state_info.state Eg:
           \`state_info.state:“DISMISSED” or state_info.state:“FAILED”
+          .. [1]    a-z0-9  .. [2]    a-z0-9  .. [3]    a-z0-9
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1.ListRecommendationsRequest)
     },
