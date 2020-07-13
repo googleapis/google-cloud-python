@@ -221,9 +221,9 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
         call.return_value = iter([{{ method.output.ident }}()])
         {% else -%}
         call.return_value = {{ method.output.ident }}(
-            {%- for field in method.output.fields.values() | rejectattr('message') %}{%- for field in method.output.fields.values() | rejectattr('message')%}{% if not field.oneof or field.proto3_optional %}
+            {%- for field in method.output.fields.values() | rejectattr('message')%}{% if not field.oneof or field.proto3_optional %}
             {{ field.name }}={{ field.mock_value }},
-            {%- endfor %}
+            {% endif %}{%- endfor %}
             {#- This is a hack to only pick one field  #}
             {%- for oneof_fields in method.output.oneof_fields().values() %}
             {% with field = oneof_fields[0] %}
@@ -257,7 +257,7 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
         assert isinstance(message, {{ method.output.ident }})
     {% else -%}
     assert isinstance(response, {{ method.client_output.ident }})
-    {% for field in method.output.fields.values() | rejectattr('message') -%}
+    {% for field in method.output.fields.values() | rejectattr('message') -%}{% if not field.oneof or field.proto3_optional %}
     {% if field.field_pb.type in [1, 2] -%} {# Use approx eq for floats -#}
     assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
     {% elif field.field_pb.type == 8 -%} {# Use 'is' for bools #}
@@ -265,6 +265,7 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
     {% else -%}
     assert response.{{ field.name }} == {{ field.mock_value }}
     {% endif -%}
+    {% endif -%} {# end oneof/optional #}
     {% endfor %}
     {% endif %}
 

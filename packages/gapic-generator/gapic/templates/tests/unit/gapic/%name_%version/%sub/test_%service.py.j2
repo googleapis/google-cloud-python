@@ -325,7 +325,7 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
         assert isinstance(message, {{ method.output.ident }})
     {% else -%}
     assert isinstance(response, {{ method.client_output.ident }})
-    {% for field in method.output.fields.values() | rejectattr('message') -%}{% if not (field.oneof and not field.proto3_optional) %}
+    {% for field in method.output.fields.values() | rejectattr('message') -%}{% if not field.oneof or field.proto3_optional %}
     {% if field.field_pb.type in [1, 2] -%} {# Use approx eq for floats -#}
     assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
     {% elif field.field_pb.type == 8 -%} {# Use 'is' for bools #}
@@ -376,7 +376,7 @@ async def test_{{ method.name|snake_case }}_async(transport: str = 'grpc_asyncio
             {%- else -%}
                 grpc_helpers_async.FakeStreamUnaryCall
             {%- endif -%}({{ method.output.ident }}(
-            {%- for field in method.output.fields.values() | rejectattr('message') %}{% if not (field.oneof and not field.proto3_optional) %}
+            {%- for field in method.output.fields.values() | rejectattr('message') %}{% if not field.oneof or field.proto3_optional %}
             {{ field.name }}={{ field.mock_value }},
             {%- endif %}
             {%- endfor %}
@@ -409,7 +409,7 @@ async def test_{{ method.name|snake_case }}_async(transport: str = 'grpc_asyncio
     assert isinstance(message, {{ method.output.ident }})
     {% else -%}
     assert isinstance(response, {{ method.client_output_async.ident }})
-    {% for field in method.output.fields.values() | rejectattr('message') -%}{% if not (field.oneof and not field.proto3_optional) %}
+    {% for field in method.output.fields.values() | rejectattr('message') -%}{% if not field.oneof or field.proto3_optional %}
     {% if field.field_pb.type in [1, 2] -%} {# Use approx eq for floats -#}
     assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
     {% elif field.field_pb.type == 8 -%} {# Use 'is' for bools #}

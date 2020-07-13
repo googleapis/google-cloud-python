@@ -38,7 +38,7 @@ class {{ method.name }}Pager:
             method: Callable[..., {{ method.output.ident }}],
             request: {{ method.input.ident }},
             response: {{ method.output.ident }},
-            metadata: Sequence[Tuple[str, str]] = ())):
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
