@@ -84,7 +84,7 @@ class TestCollectionReference(unittest.TestCase):
             self._make_one("Coh-lek-shun", donut=True)
 
     def test_add_auto_assigned(self):
-        from google.cloud.firestore_v1.proto import document_pb2
+        from google.cloud.firestore_v1.types import document
         from google.cloud.firestore_v1.document import DocumentReference
         from google.cloud.firestore_v1 import SERVER_TIMESTAMP
         from google.cloud.firestore_v1._helpers import pbs_for_create
@@ -94,13 +94,15 @@ class TestCollectionReference(unittest.TestCase):
         write_result = mock.Mock(
             update_time=mock.sentinel.update_time, spec=["update_time"]
         )
+
         commit_response = mock.Mock(
             write_results=[write_result],
             spec=["write_results", "commit_time"],
             commit_time=mock.sentinel.commit_time,
         )
+
         firestore_api.commit.return_value = commit_response
-        create_doc_response = document_pb2.Document()
+        create_doc_response = document.Document()
         firestore_api.create_document.return_value = create_doc_response
         client = _make_client()
         client._firestore_api_internal = firestore_api
@@ -127,9 +129,11 @@ class TestCollectionReference(unittest.TestCase):
 
         write_pbs = pbs_for_create(document_ref._document_path, document_data)
         firestore_api.commit.assert_called_once_with(
-            client._database_string,
-            write_pbs,
-            transaction=None,
+            request={
+                "database": client._database_string,
+                "writes": write_pbs,
+                "transaction": None,
+            },
             metadata=client._rpc_metadata,
         )
         # Since we generate the ID locally, we don't call 'create_document'.
@@ -137,16 +141,16 @@ class TestCollectionReference(unittest.TestCase):
 
     @staticmethod
     def _write_pb_for_create(document_path, document_data):
-        from google.cloud.firestore_v1.proto import common_pb2
-        from google.cloud.firestore_v1.proto import document_pb2
-        from google.cloud.firestore_v1.proto import write_pb2
+        from google.cloud.firestore_v1.types import common
+        from google.cloud.firestore_v1.types import document
+        from google.cloud.firestore_v1.types import write
         from google.cloud.firestore_v1 import _helpers
 
-        return write_pb2.Write(
-            update=document_pb2.Document(
+        return write.Write(
+            update=document.Document(
                 name=document_path, fields=_helpers.encode_dict(document_data)
             ),
-            current_document=common_pb2.Precondition(exists=False),
+            current_document=common.Precondition(exists=False),
         )
 
     def test_add_explicit_id(self):
@@ -182,9 +186,11 @@ class TestCollectionReference(unittest.TestCase):
 
         write_pb = self._write_pb_for_create(document_ref._document_path, document_data)
         firestore_api.commit.assert_called_once_with(
-            client._database_string,
-            [write_pb],
-            transaction=None,
+            request={
+                "database": client._database_string,
+                "writes": [write_pb],
+                "transaction": None,
+            },
             metadata=client._rpc_metadata,
         )
 
@@ -192,8 +198,8 @@ class TestCollectionReference(unittest.TestCase):
         from google.api_core.page_iterator import Iterator
         from google.api_core.page_iterator import Page
         from google.cloud.firestore_v1.document import DocumentReference
-        from google.cloud.firestore_v1.gapic.firestore_client import FirestoreClient
-        from google.cloud.firestore_v1.proto.document_pb2 import Document
+        from google.cloud.firestore_v1.services.firestore.client import FirestoreClient
+        from google.cloud.firestore_v1.types.document import Document
 
         class _Iterator(Iterator):
             def __init__(self, pages):
@@ -231,10 +237,12 @@ class TestCollectionReference(unittest.TestCase):
 
         parent, _ = collection._parent_info()
         api_client.list_documents.assert_called_once_with(
-            parent,
-            collection.id,
-            page_size=page_size,
-            show_missing=True,
+            request={
+                "parent": parent,
+                "collection_id": collection.id,
+                "page_size": page_size,
+                "show_missing": True,
+            },
             metadata=client._rpc_metadata,
         )
 

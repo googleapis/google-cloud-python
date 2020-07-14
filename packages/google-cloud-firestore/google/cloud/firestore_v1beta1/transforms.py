@@ -72,7 +72,7 @@ class ArrayUnion(_ValueList):
     """Field transform: appends missing values to an array field.
 
     See:
-    https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1beta1.ArrayValue.google.firestore.v1beta1.DocumentTransform.FieldTransform.append_missing_elements
+    https://cloud.google.com/firestore/docs/reference/rpc/google.cloud.firestore.v1beta1#google.cloud.firestore.v1beta1.DocumentTransform.FieldTransform.FIELDS.google.cloud.firestore.v1beta1.ArrayValue.google.cloud.firestore.v1beta1.DocumentTransform.FieldTransform.append_missing_elements
 
     Args:
         values (List | Tuple): values to append.
@@ -83,7 +83,7 @@ class ArrayRemove(_ValueList):
     """Field transform: remove values from an array field.
 
     See:
-    https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1beta1#google.firestore.v1beta1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1beta1.ArrayValue.google.firestore.v1beta1.DocumentTransform.FieldTransform.remove_all_from_array
+    https://cloud.google.com/firestore/docs/reference/rpc/google.cloud.firestore.v1beta1#google.cloud.firestore.v1beta1.DocumentTransform.FieldTransform.FIELDS.google.cloud.firestore.v1beta1.ArrayValue.google.cloud.firestore.v1beta1.DocumentTransform.FieldTransform.remove_all_from_array
 
     Args:
         values (List | Tuple): values to remove.

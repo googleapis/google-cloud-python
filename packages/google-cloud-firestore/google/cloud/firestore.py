@@ -23,7 +23,7 @@ from google.cloud.firestore_v1 import CollectionReference
 from google.cloud.firestore_v1 import DELETE_FIELD
 from google.cloud.firestore_v1 import DocumentReference
 from google.cloud.firestore_v1 import DocumentSnapshot
-from google.cloud.firestore_v1 import enums
+from google.cloud.firestore_v1 import DocumentTransform
 from google.cloud.firestore_v1 import ExistsOption
 from google.cloud.firestore_v1 import GeoPoint
 from google.cloud.firestore_v1 import Increment
@@ -50,7 +50,7 @@ __all__ = [
     "DELETE_FIELD",
     "DocumentReference",
     "DocumentSnapshot",
-    "enums",
+    "DocumentTransform",
     "ExistsOption",
     "GeoPoint",
     "Increment",

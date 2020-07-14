@@ -42,9 +42,9 @@ class TestBaseWriteBatch(unittest.TestCase):
         self.assertEqual(batch._write_pbs, [mock.sentinel.write1, mock.sentinel.write2])
 
     def test_create(self):
-        from google.cloud.firestore_v1.proto import common_pb2
-        from google.cloud.firestore_v1.proto import document_pb2
-        from google.cloud.firestore_v1.proto import write_pb2
+        from google.cloud.firestore_v1.types import common
+        from google.cloud.firestore_v1.types import document
+        from google.cloud.firestore_v1.types import write
 
         client = _make_client()
         batch = self._make_one(client)
@@ -54,21 +54,21 @@ class TestBaseWriteBatch(unittest.TestCase):
         document_data = {"a": 10, "b": 2.5}
         ret_val = batch.create(reference, document_data)
         self.assertIsNone(ret_val)
-        new_write_pb = write_pb2.Write(
-            update=document_pb2.Document(
+        new_write_pb = write.Write(
+            update=document.Document(
                 name=reference._document_path,
                 fields={
                     "a": _value_pb(integer_value=document_data["a"]),
                     "b": _value_pb(double_value=document_data["b"]),
                 },
             ),
-            current_document=common_pb2.Precondition(exists=False),
+            current_document=common.Precondition(exists=False),
         )
         self.assertEqual(batch._write_pbs, [new_write_pb])
 
     def test_set(self):
-        from google.cloud.firestore_v1.proto import document_pb2
-        from google.cloud.firestore_v1.proto import write_pb2
+        from google.cloud.firestore_v1.types import document
+        from google.cloud.firestore_v1.types import write
 
         client = _make_client()
         batch = self._make_one(client)
@@ -80,8 +80,8 @@ class TestBaseWriteBatch(unittest.TestCase):
         document_data = {field: value}
         ret_val = batch.set(reference, document_data)
         self.assertIsNone(ret_val)
-        new_write_pb = write_pb2.Write(
-            update=document_pb2.Document(
+        new_write_pb = write.Write(
+            update=document.Document(
                 name=reference._document_path,
                 fields={field: _value_pb(string_value=value)},
             )
@@ -89,8 +89,8 @@ class TestBaseWriteBatch(unittest.TestCase):
         self.assertEqual(batch._write_pbs, [new_write_pb])
 
     def test_set_merge(self):
-        from google.cloud.firestore_v1.proto import document_pb2
-        from google.cloud.firestore_v1.proto import write_pb2
+        from google.cloud.firestore_v1.types import document
+        from google.cloud.firestore_v1.types import write
 
         client = _make_client()
         batch = self._make_one(client)
@@ -102,8 +102,8 @@ class TestBaseWriteBatch(unittest.TestCase):
         document_data = {field: value}
         ret_val = batch.set(reference, document_data, merge=True)
         self.assertIsNone(ret_val)
-        new_write_pb = write_pb2.Write(
-            update=document_pb2.Document(
+        new_write_pb = write.Write(
+            update=document.Document(
                 name=reference._document_path,
                 fields={field: _value_pb(string_value=value)},
             ),
@@ -112,9 +112,9 @@ class TestBaseWriteBatch(unittest.TestCase):
         self.assertEqual(batch._write_pbs, [new_write_pb])
 
     def test_update(self):
-        from google.cloud.firestore_v1.proto import common_pb2
-        from google.cloud.firestore_v1.proto import document_pb2
-        from google.cloud.firestore_v1.proto import write_pb2
+        from google.cloud.firestore_v1.types import common
+        from google.cloud.firestore_v1.types import document
+        from google.cloud.firestore_v1.types import write
 
         client = _make_client()
         batch = self._make_one(client)
@@ -128,19 +128,19 @@ class TestBaseWriteBatch(unittest.TestCase):
         ret_val = batch.update(reference, field_updates)
         self.assertIsNone(ret_val)
 
-        map_pb = document_pb2.MapValue(fields={"foot": _value_pb(string_value=value)})
-        new_write_pb = write_pb2.Write(
-            update=document_pb2.Document(
+        map_pb = document.MapValue(fields={"foot": _value_pb(string_value=value)})
+        new_write_pb = write.Write(
+            update=document.Document(
                 name=reference._document_path,
                 fields={"head": _value_pb(map_value=map_pb)},
             ),
-            update_mask=common_pb2.DocumentMask(field_paths=[field_path]),
-            current_document=common_pb2.Precondition(exists=True),
+            update_mask=common.DocumentMask(field_paths=[field_path]),
+            current_document=common.Precondition(exists=True),
         )
         self.assertEqual(batch._write_pbs, [new_write_pb])
 
     def test_delete(self):
-        from google.cloud.firestore_v1.proto import write_pb2
+        from google.cloud.firestore_v1.types import write
 
         client = _make_client()
         batch = self._make_one(client)
@@ -149,12 +149,12 @@ class TestBaseWriteBatch(unittest.TestCase):
         reference = client.document("early", "mornin", "dawn", "now")
         ret_val = batch.delete(reference)
         self.assertIsNone(ret_val)
-        new_write_pb = write_pb2.Write(delete=reference._document_path)
+        new_write_pb = write.Write(delete=reference._document_path)
         self.assertEqual(batch._write_pbs, [new_write_pb])
 
 
 def _value_pb(**kwargs):
-    from google.cloud.firestore_v1.proto.document_pb2 import Value
+    from google.cloud.firestore_v1.types.document import Value
 
     return Value(**kwargs)
 

@@ -26,6 +26,7 @@ In the hierarchy of API concepts
 import os
 
 import google.api_core.client_options
+import google.api_core.path_template
 from google.api_core.gapic_v1 import client_info
 from google.cloud.client import ClientWithProject
 
@@ -34,9 +35,10 @@ from google.cloud.firestore_v1 import __version__
 from google.cloud.firestore_v1 import types
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
 from google.cloud.firestore_v1.field_path import render_field_path
-from google.cloud.firestore_v1.gapic import firestore_client
-from google.cloud.firestore_v1.gapic.transports import firestore_grpc_transport
-
+from google.cloud.firestore_v1.services.firestore import client as firestore_client
+from google.cloud.firestore_v1.services.firestore.transports import (
+    grpc as firestore_grpc_transport,
+)
 
 DEFAULT_DATABASE = "(default)"
 """str: The default database used in a :class:`~google.cloud.firestore_v1.client.Client`."""
@@ -118,7 +120,6 @@ class BaseClient(ClientWithProject):
     @property
     def _firestore_api(self):
         """Lazy-loading getter GAPIC Firestore API.
-
         Returns:
             :class:`~google.cloud.gapic.firestore.v1`.firestore_client.FirestoreClient:
             <The GAPIC client with the credentials of the current client.
@@ -128,8 +129,10 @@ class BaseClient(ClientWithProject):
             # We need this in order to set appropriate keepalive options.
 
             if self._emulator_host is not None:
-                channel = firestore_grpc_transport.firestore_pb2_grpc.grpc.insecure_channel(
-                    self._emulator_host
+                # TODO(microgen): this likely needs to be adapted to use insecure_channel
+                # on new generated surface.
+                channel = firestore_grpc_transport.FirestoreGrpcTransport.create_channel(
+                    host=self._emulator_host
                 )
             else:
                 channel = firestore_grpc_transport.FirestoreGrpcTransport.create_channel(
@@ -139,12 +142,13 @@ class BaseClient(ClientWithProject):
                 )
 
             self._transport = firestore_grpc_transport.FirestoreGrpcTransport(
-                address=self._target, channel=channel
+                host=self._target, channel=channel
             )
 
             self._firestore_api_internal = firestore_client.FirestoreClient(
-                transport=self._transport, client_info=self._client_info
+                transport=self._transport, client_options=self._client_options
             )
+            firestore_client._client_info = self._client_info
 
         return self._firestore_api_internal
 
@@ -160,7 +164,7 @@ class BaseClient(ClientWithProject):
         elif self._client_options and self._client_options.api_endpoint:
             return self._client_options.api_endpoint
         else:
-            return firestore_client.FirestoreClient.SERVICE_ADDRESS
+            return firestore_client.FirestoreClient.DEFAULT_ENDPOINT
 
     @property
     def _database_string(self):
@@ -179,11 +183,12 @@ class BaseClient(ClientWithProject):
             project. (The default database is also in this string.)
         """
         if self._database_string_internal is None:
-            # NOTE: database_root_path() is a classmethod, so we don't use
-            #       self._firestore_api (it isn't necessary).
-            db_str = firestore_client.FirestoreClient.database_root_path(
-                self.project, self._database
+            db_str = google.api_core.path_template.expand(
+                "projects/{project}/databases/{database}",
+                project=self.project,
+                database=self._database,
             )
+
             self._database_string_internal = db_str
 
         return self._database_string_internal
@@ -402,7 +407,7 @@ def _parse_batch_get(get_doc_response, reference_map, client):
 
     Args:
         get_doc_response (~google.cloud.proto.firestore.v1.\
-            firestore_pb2.BatchGetDocumentsResponse): A single response (from
+            firestore.BatchGetDocumentsResponse): A single response (from
             a stream) containing the "get" response for a document.
         reference_map (Dict[str, .DocumentReference]): A mapping (produced
             by :func:`_reference_info`) of fully-qualified document paths to
@@ -417,7 +422,7 @@ def _parse_batch_get(get_doc_response, reference_map, client):
         ValueError: If the response has a ``result`` field (a oneof) other
             than ``found`` or ``missing``.
     """
-    result_type = get_doc_response.WhichOneof("result")
+    result_type = get_doc_response._pb.WhichOneof("result")
     if result_type == "found":
         reference = _get_reference(get_doc_response.found.name, reference_map)
         data = _helpers.decode_dict(get_doc_response.found.fields, client)

@@ -15,6 +15,8 @@
 import unittest
 
 import mock
+import datetime
+import pytz
 
 
 class TestBaseDocumentReference(unittest.TestCase):
@@ -262,19 +264,15 @@ class TestDocumentSnapshot(unittest.TestCase):
         self.assertTrue(snapshot == other)
 
     def test___hash__(self):
-        from google.protobuf import timestamp_pb2
-
         client = mock.MagicMock()
         client.__hash__.return_value = 234566789
         reference = self._make_reference("hi", "bye", client=client)
         data = {"zoop": 83}
-        update_time = timestamp_pb2.Timestamp(seconds=123456, nanos=123456789)
+        update_time = datetime.datetime.fromtimestamp(123456, pytz.utc)
         snapshot = self._make_one(
             reference, data, True, None, mock.sentinel.create_time, update_time
         )
-        self.assertEqual(
-            hash(snapshot), hash(reference) + hash(123456) + hash(123456789)
-        )
+        self.assertEqual(hash(snapshot), hash(reference) + hash(123456) + hash(0))
 
     def test__client_property(self):
         reference = self._make_reference(
@@ -390,9 +388,9 @@ class Test__first_write_result(unittest.TestCase):
 
     def test_success(self):
         from google.protobuf import timestamp_pb2
-        from google.cloud.firestore_v1.proto import write_pb2
+        from google.cloud.firestore_v1.types import write
 
-        single_result = write_pb2.WriteResult(
+        single_result = write.WriteResult(
             update_time=timestamp_pb2.Timestamp(seconds=1368767504, nanos=458000123)
         )
         write_results = [single_result]
@@ -405,10 +403,10 @@ class Test__first_write_result(unittest.TestCase):
             self._call_fut(write_results)
 
     def test_more_than_one(self):
-        from google.cloud.firestore_v1.proto import write_pb2
+        from google.cloud.firestore_v1.types import write
 
-        result1 = write_pb2.WriteResult()
-        result2 = write_pb2.WriteResult()
+        result1 = write.WriteResult()
+        result2 = write.WriteResult()
         write_results = [result1, result2]
         result = self._call_fut(write_results)
         self.assertIs(result, result1)

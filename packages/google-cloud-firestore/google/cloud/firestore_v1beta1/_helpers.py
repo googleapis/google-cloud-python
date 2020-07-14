@@ -28,10 +28,12 @@ from google.cloud.firestore_v1beta1 import transforms
 from google.cloud.firestore_v1beta1 import types
 from google.cloud.firestore_v1beta1.field_path import FieldPath
 from google.cloud.firestore_v1beta1.field_path import parse_field_path
-from google.cloud.firestore_v1beta1.gapic import enums
-from google.cloud.firestore_v1beta1.proto import common_pb2
-from google.cloud.firestore_v1beta1.proto import document_pb2
-from google.cloud.firestore_v1beta1.proto import write_pb2
+
+from google.cloud.firestore_v1beta1.types.write import DocumentTransform
+
+from google.cloud.firestore_v1beta1.types import common
+from google.cloud.firestore_v1beta1.types import document
+from google.cloud.firestore_v1beta1.types import write
 
 
 BAD_PATH_TEMPLATE = "A path element must be a string. Received {}, which is a {}."
@@ -46,7 +48,7 @@ BAD_REFERENCE_ERROR = (
 WRONG_APP_REFERENCE = (
     "Document {!r} does not correspond to the same database " "({!r}) as the client."
 )
-REQUEST_TIME_ENUM = enums.DocumentTransform.FieldTransform.ServerValue.REQUEST_TIME
+REQUEST_TIME_ENUM = DocumentTransform.FieldTransform.ServerValue.REQUEST_TIME
 _GRPC_ERROR_MAPPING = {
     grpc.StatusCode.ALREADY_EXISTS: exceptions.Conflict,
     grpc.StatusCode.NOT_FOUND: exceptions.NotFound,
@@ -153,48 +155,48 @@ def encode_value(value):
         TypeError: If the ``value`` is not one of the accepted types.
     """
     if value is None:
-        return document_pb2.Value(null_value=struct_pb2.NULL_VALUE)
+        return document.Value(null_value=struct_pb2.NULL_VALUE)
 
     # Must come before six.integer_types since ``bool`` is an integer subtype.
     if isinstance(value, bool):
-        return document_pb2.Value(boolean_value=value)
+        return document.Value(boolean_value=value)
 
     if isinstance(value, six.integer_types):
-        return document_pb2.Value(integer_value=value)
+        return document.Value(integer_value=value)
 
     if isinstance(value, float):
-        return document_pb2.Value(double_value=value)
+        return document.Value(double_value=value)
 
     if isinstance(value, DatetimeWithNanoseconds):
-        return document_pb2.Value(timestamp_value=value.timestamp_pb())
+        return document.Value(timestamp_value=value.timestamp_pb())
 
     if isinstance(value, datetime.datetime):
-        return document_pb2.Value(timestamp_value=_datetime_to_pb_timestamp(value))
+        return document.Value(timestamp_value=_datetime_to_pb_timestamp(value))
 
     if isinstance(value, six.text_type):
-        return document_pb2.Value(string_value=value)
+        return document.Value(string_value=value)
 
     if isinstance(value, six.binary_type):
-        return document_pb2.Value(bytes_value=value)
+        return document.Value(bytes_value=value)
 
     # NOTE: We avoid doing an isinstance() check for a Document
     #       here to avoid import cycles.
     document_path = getattr(value, "_document_path", None)
     if document_path is not None:
-        return document_pb2.Value(reference_value=document_path)
+        return document.Value(reference_value=document_path)
 
     if isinstance(value, GeoPoint):
-        return document_pb2.Value(geo_point_value=value.to_protobuf())
+        return document.Value(geo_point_value=value.to_protobuf())
 
     if isinstance(value, list):
         value_list = [encode_value(element) for element in value]
-        value_pb = document_pb2.ArrayValue(values=value_list)
-        return document_pb2.Value(array_value=value_pb)
+        value_pb = document.ArrayValue(values=value_list)
+        return document.Value(array_value=value_pb)
 
     if isinstance(value, dict):
         value_dict = encode_dict(value)
-        value_pb = document_pb2.MapValue(fields=value_dict)
-        return document_pb2.Value(map_value=value_pb)
+        value_pb = document.MapValue(fields=value_dict)
+        return document.Value(map_value=value_pb)
 
     raise TypeError(
         "Cannot convert to a Firestore Value", value, "Invalid type", type(value)
@@ -267,7 +269,7 @@ def decode_value(value, client):
         NotImplementedError: If the ``value_type`` is ``reference_value``.
         ValueError: If the ``value_type`` is unknown.
     """
-    value_type = value.WhichOneof("value_type")
+    value_type = value._pb.WhichOneof("value_type")
 
     if value_type == "null_value":
         return None
@@ -278,7 +280,7 @@ def decode_value(value, client):
     elif value_type == "double_value":
         return value.double_value
     elif value_type == "timestamp_value":
-        return DatetimeWithNanoseconds.from_timestamp_pb(value.timestamp_value)
+        return DatetimeWithNanoseconds.from_timestamp_pb(value._pb.timestamp_value)
     elif value_type == "string_value":
         return value.string_value
     elif value_type == "bytes_value":
@@ -319,7 +321,7 @@ def get_doc_id(document_pb, expected_prefix):
 
     Args:
         document_pb (google.cloud.proto.firestore.v1beta1.\
-            document_pb2.Document): A protobuf for a document that
+            document.Document): A protobuf for a document that
             was created in a ``CreateDocument`` RPC.
         expected_prefix (str): The expected collection prefix for the
             fully-qualified document name.
@@ -450,12 +452,12 @@ class DocumentExtractor(object):
     def get_update_pb(self, document_path, exists=None, allow_empty_mask=False):
 
         if exists is not None:
-            current_document = common_pb2.Precondition(exists=exists)
+            current_document = common.Precondition(exists=exists)
         else:
             current_document = None
 
-        update_pb = write_pb2.Write(
-            update=document_pb2.Document(
+        update_pb = write.Write(
+            update=document.Document(
                 name=document_path, fields=encode_dict(self.set_fields)
             ),
             update_mask=self._get_update_mask(allow_empty_mask),
@@ -467,13 +469,13 @@ class DocumentExtractor(object):
     def get_transform_pb(self, document_path, exists=None):
         def make_array_value(values):
             value_list = [encode_value(element) for element in values]
-            return document_pb2.ArrayValue(values=value_list)
+            return document.ArrayValue(values=value_list)
 
         path_field_transforms = (
             [
                 (
                     path,
-                    write_pb2.DocumentTransform.FieldTransform(
+                    write.DocumentTransform.FieldTransform(
                         field_path=path.to_api_repr(),
                         set_to_server_value=REQUEST_TIME_ENUM,
                     ),
@@ -483,7 +485,7 @@ class DocumentExtractor(object):
             + [
                 (
                     path,
-                    write_pb2.DocumentTransform.FieldTransform(
+                    write.DocumentTransform.FieldTransform(
                         field_path=path.to_api_repr(),
                         remove_all_from_array=make_array_value(values),
                     ),
@@ -493,7 +495,7 @@ class DocumentExtractor(object):
             + [
                 (
                     path,
-                    write_pb2.DocumentTransform.FieldTransform(
+                    write.DocumentTransform.FieldTransform(
                         field_path=path.to_api_repr(),
                         append_missing_elements=make_array_value(values),
                     ),
@@ -504,14 +506,14 @@ class DocumentExtractor(object):
         field_transforms = [
             transform for path, transform in sorted(path_field_transforms)
         ]
-        transform_pb = write_pb2.Write(
-            transform=write_pb2.DocumentTransform(
+        transform_pb = write.Write(
+            transform=write.DocumentTransform(
                 document=document_path, field_transforms=field_transforms
             )
         )
         if exists is not None:
-            transform_pb.current_document.CopyFrom(
-                common_pb2.Precondition(exists=exists)
+            transform_pb._pb.current_document.CopyFrom(
+                common.Precondition(exists=exists)._pb
             )
 
         return transform_pb
@@ -716,7 +718,7 @@ class DocumentExtractorForMerge(DocumentExtractor):
         ]
 
         if mask_paths or allow_empty_mask:
-            return common_pb2.DocumentMask(field_paths=mask_paths)
+            return common.DocumentMask(field_paths=mask_paths)
 
 
 def pbs_for_set_with_merge(document_path, document_data, merge):
@@ -786,7 +788,7 @@ class DocumentExtractorForUpdate(DocumentExtractor):
             if field_path not in self.transform_paths:
                 mask_paths.append(field_path.to_api_repr())
 
-        return common_pb2.DocumentMask(field_paths=mask_paths)
+        return common.DocumentMask(field_paths=mask_paths)
 
 
 def pbs_for_update(document_path, field_updates, option):
@@ -843,7 +845,7 @@ def pb_for_delete(document_path, option):
         google.cloud.firestore_v1beta1.types.Write: A
         ``Write`` protobuf instance for the ``delete()``.
     """
-    write_pb = write_pb2.Write(delete=document_path)
+    write_pb = write.Write(delete=document_path)
     if option is not None:
         option.modify_write(write_pb)
 
@@ -902,13 +904,13 @@ def metadata_with_prefix(prefix, **kw):
 class WriteOption(object):
     """Option used to assert a condition on a write operation."""
 
-    def modify_write(self, write_pb, no_create_msg=None):
+    def modify_write(self, write, no_create_msg=None):
         """Modify a ``Write`` protobuf based on the state of this write option.
 
         This is a virtual method intended to be implemented by subclasses.
 
         Args:
-            write_pb (google.cloud.firestore_v1beta1.types.Write): A
+            write (google.cloud.firestore_v1beta1.types.Write): A
                 ``Write`` protobuf instance to be modified with a precondition
                 determined by the state of this option.
             no_create_msg (Optional[str]): A message to use to indicate that
@@ -942,7 +944,7 @@ class LastUpdateOption(WriteOption):
             return NotImplemented
         return self._last_update_time == other._last_update_time
 
-    def modify_write(self, write_pb, **unused_kwargs):
+    def modify_write(self, write, **unused_kwargs):
         """Modify a ``Write`` protobuf based on the state of this write option.
 
         The ``last_update_time`` is added to ``write_pb`` as an "update time"
@@ -950,14 +952,14 @@ class LastUpdateOption(WriteOption):
         last updated at that time.
 
         Args:
-            write_pb (google.cloud.firestore_v1beta1.types.Write): A
+            write (google.cloud.firestore_v1beta1.types.Write): A
                 ``Write`` protobuf instance to be modified with a precondition
                 determined by the state of this option.
             unused_kwargs (Dict[str, Any]): Keyword arguments accepted by
                 other subclasses that are unused here.
         """
         current_doc = types.Precondition(update_time=self._last_update_time)
-        write_pb.current_document.CopyFrom(current_doc)
+        write._pb.current_document.CopyFrom(current_doc._pb)
 
 
 class ExistsOption(WriteOption):
@@ -979,7 +981,7 @@ class ExistsOption(WriteOption):
             return NotImplemented
         return self._exists == other._exists
 
-    def modify_write(self, write_pb, **unused_kwargs):
+    def modify_write(self, write, **unused_kwargs):
         """Modify a ``Write`` protobuf based on the state of this write option.
 
         If:
@@ -988,11 +990,11 @@ class ExistsOption(WriteOption):
         * ``exists=False``, adds a precondition that requires non-existence
 
         Args:
-            write_pb (google.cloud.firestore_v1beta1.types.Write): A
+            write (google.cloud.firestore_v1beta1.types.Write): A
                 ``Write`` protobuf instance to be modified with a precondition
                 determined by the state of this option.
             unused_kwargs (Dict[str, Any]): Keyword arguments accepted by
                 other subclasses that are unused here.
         """
         current_doc = types.Precondition(exists=self._exists)
-        write_pb.current_document.CopyFrom(current_doc)
+        write._pb.current_document.CopyFrom(current_doc._pb)

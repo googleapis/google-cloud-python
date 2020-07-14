@@ -243,8 +243,12 @@ class DocumentSnapshot(object):
         return self._reference == other._reference and self._data == other._data
 
     def __hash__(self):
-        seconds = self.update_time.seconds
-        nanos = self.update_time.nanos
+        # TODO(microgen, https://github.com/googleapis/proto-plus-python/issues/38):
+        # maybe add datetime_with_nanos to protoplus, revisit
+        # seconds = self.update_time.seconds
+        # nanos = self.update_time.nanos
+        seconds = int(self.update_time.timestamp())
+        nanos = 0
         return hash(self._reference) + hash(seconds) + hash(nanos)
 
     @property
@@ -402,7 +406,7 @@ def _consume_single_get(response_iterator):
 
     Returns:
         ~google.cloud.proto.firestore.v1.\
-            firestore_pb2.BatchGetDocumentsResponse: The single "get"
+            firestore.BatchGetDocumentsResponse: The single "get"
         response in the batch.
 
     Raises:
@@ -429,7 +433,7 @@ def _first_write_result(write_results):
 
     Args:
         write_results (List[google.cloud.proto.firestore.v1.\
-            write_pb2.WriteResult, ...]: The write results from a
+            write.WriteResult, ...]: The write results from a
             ``CommitResponse``.
 
     Returns:

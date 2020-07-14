@@ -19,7 +19,9 @@
 branch = True
 
 [report]
-fail_under = 100
+# TODO(https://github.com/googleapis/python-firestore/issues/92): raise this 
+# coverage back to 100%
+fail_under = 97
 show_missing = True
 exclude_lines =
     # Re-enable the standard pragma

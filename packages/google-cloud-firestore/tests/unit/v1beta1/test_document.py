@@ -17,6 +17,8 @@ import unittest
 
 import mock
 import pytest
+import datetime
+import pytz
 
 
 class TestDocumentReference(unittest.TestCase):
@@ -196,23 +198,23 @@ class TestDocumentReference(unittest.TestCase):
 
     @staticmethod
     def _write_pb_for_create(document_path, document_data):
-        from google.cloud.firestore_v1beta1.proto import common_pb2
-        from google.cloud.firestore_v1beta1.proto import document_pb2
-        from google.cloud.firestore_v1beta1.proto import write_pb2
+        from google.cloud.firestore_v1beta1.types import common
+        from google.cloud.firestore_v1beta1.types import document
+        from google.cloud.firestore_v1beta1.types import write
         from google.cloud.firestore_v1beta1 import _helpers
 
-        return write_pb2.Write(
-            update=document_pb2.Document(
+        return write.Write(
+            update=document.Document(
                 name=document_path, fields=_helpers.encode_dict(document_data)
             ),
-            current_document=common_pb2.Precondition(exists=False),
+            current_document=common.Precondition(exists=False),
         )
 
     @staticmethod
     def _make_commit_repsonse(write_results=None):
-        from google.cloud.firestore_v1beta1.proto import firestore_pb2
+        from google.cloud.firestore_v1beta1.types import firestore
 
-        response = mock.create_autospec(firestore_pb2.CommitResponse)
+        response = mock.create_autospec(firestore.CommitResponse)
         response.write_results = write_results or [mock.sentinel.write_result]
         response.commit_time = mock.sentinel.commit_time
         return response
@@ -235,9 +237,11 @@ class TestDocumentReference(unittest.TestCase):
         self.assertIs(write_result, mock.sentinel.write_result)
         write_pb = self._write_pb_for_create(document._document_path, document_data)
         firestore_api.commit.assert_called_once_with(
-            client._database_string,
-            [write_pb],
-            transaction=None,
+            request={
+                "database": client._database_string,
+                "writes": [write_pb],
+                "transaction": None,
+            },
             metadata=client._rpc_metadata,
         )
 
@@ -269,13 +273,13 @@ class TestDocumentReference(unittest.TestCase):
 
     @staticmethod
     def _write_pb_for_set(document_path, document_data, merge):
-        from google.cloud.firestore_v1beta1.proto import common_pb2
-        from google.cloud.firestore_v1beta1.proto import document_pb2
-        from google.cloud.firestore_v1beta1.proto import write_pb2
+        from google.cloud.firestore_v1beta1.types import common
+        from google.cloud.firestore_v1beta1.types import document
+        from google.cloud.firestore_v1beta1.types import write
         from google.cloud.firestore_v1beta1 import _helpers
 
-        write_pbs = write_pb2.Write(
-            update=document_pb2.Document(
+        write_pbs = write.Write(
+            update=document.Document(
                 name=document_path, fields=_helpers.encode_dict(document_data)
             )
         )
@@ -289,8 +293,8 @@ class TestDocumentReference(unittest.TestCase):
             field_paths = [
                 field_path.to_api_repr() for field_path in sorted(field_paths)
             ]
-            mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
-            write_pbs.update_mask.CopyFrom(mask)
+            mask = common.DocumentMask(field_paths=sorted(field_paths))
+            write_pbs._pb.update_mask.CopyFrom(mask._pb)
         return write_pbs
 
     def _set_helper(self, merge=False, **option_kwargs):
@@ -312,9 +316,11 @@ class TestDocumentReference(unittest.TestCase):
         write_pb = self._write_pb_for_set(document._document_path, document_data, merge)
 
         firestore_api.commit.assert_called_once_with(
-            client._database_string,
-            [write_pb],
-            transaction=None,
+            request={
+                "database": client._database_string,
+                "writes": [write_pb],
+                "transaction": None,
+            },
             metadata=client._rpc_metadata,
         )
 
@@ -326,17 +332,17 @@ class TestDocumentReference(unittest.TestCase):
 
     @staticmethod
     def _write_pb_for_update(document_path, update_values, field_paths):
-        from google.cloud.firestore_v1beta1.proto import common_pb2
-        from google.cloud.firestore_v1beta1.proto import document_pb2
-        from google.cloud.firestore_v1beta1.proto import write_pb2
+        from google.cloud.firestore_v1beta1.types import common
+        from google.cloud.firestore_v1beta1.types import document
+        from google.cloud.firestore_v1beta1.types import write
         from google.cloud.firestore_v1beta1 import _helpers
 
-        return write_pb2.Write(
-            update=document_pb2.Document(
+        return write.Write(
+            update=document.Document(
                 name=document_path, fields=_helpers.encode_dict(update_values)
             ),
-            update_mask=common_pb2.DocumentMask(field_paths=field_paths),
-            current_document=common_pb2.Precondition(exists=True),
+            update_mask=common.DocumentMask(field_paths=field_paths),
+            current_document=common.Precondition(exists=True),
         )
 
     def _update_helper(self, **option_kwargs):
@@ -376,9 +382,11 @@ class TestDocumentReference(unittest.TestCase):
         if option is not None:
             option.modify_write(write_pb)
         firestore_api.commit.assert_called_once_with(
-            client._database_string,
-            [write_pb],
-            transaction=None,
+            request={
+                "database": client._database_string,
+                "writes": [write_pb],
+                "transaction": None,
+            },
             metadata=client._rpc_metadata,
         )
 
@@ -412,7 +420,7 @@ class TestDocumentReference(unittest.TestCase):
             document.update(field_updates)
 
     def _delete_helper(self, **option_kwargs):
-        from google.cloud.firestore_v1beta1.proto import write_pb2
+        from google.cloud.firestore_v1beta1.types import write
 
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = mock.Mock(spec=["commit"])
@@ -433,13 +441,15 @@ class TestDocumentReference(unittest.TestCase):
 
         # Verify the response and the mocks.
         self.assertIs(delete_time, mock.sentinel.commit_time)
-        write_pb = write_pb2.Write(delete=document._document_path)
+        write_pb = write.Write(delete=document._document_path)
         if option is not None:
             option.modify_write(write_pb)
         firestore_api.commit.assert_called_once_with(
-            client._database_string,
-            [write_pb],
-            transaction=None,
+            request={
+                "database": client._database_string,
+                "writes": [write_pb],
+                "transaction": None,
+            },
             metadata=client._rpc_metadata,
         )
 
@@ -454,15 +464,15 @@ class TestDocumentReference(unittest.TestCase):
 
     def _get_helper(self, field_paths=None, use_transaction=False, not_found=False):
         from google.api_core.exceptions import NotFound
-        from google.cloud.firestore_v1beta1.proto import common_pb2
-        from google.cloud.firestore_v1beta1.proto import document_pb2
+        from google.cloud.firestore_v1beta1.types import common
+        from google.cloud.firestore_v1beta1.types import document
         from google.cloud.firestore_v1beta1.transaction import Transaction
 
         # Create a minimal fake GAPIC with a dummy response.
         create_time = 123
         update_time = 234
         firestore_api = mock.Mock(spec=["get_document"])
-        response = mock.create_autospec(document_pb2.Document)
+        response = mock.create_autospec(document.Document)
         response.fields = {}
         response.create_time = create_time
         response.update_time = update_time
@@ -501,7 +511,7 @@ class TestDocumentReference(unittest.TestCase):
 
         # Verify the request made to the API
         if field_paths is not None:
-            mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
+            mask = common.DocumentMask(field_paths=sorted(field_paths))
         else:
             mask = None
 
@@ -511,9 +521,11 @@ class TestDocumentReference(unittest.TestCase):
             expected_transaction_id = None
 
         firestore_api.get_document.assert_called_once_with(
-            document._document_path,
-            mask=mask,
-            transaction=expected_transaction_id,
+            request={
+                "name": document._document_path,
+                "mask": mask,
+                "transaction": expected_transaction_id,
+            },
             metadata=client._rpc_metadata,
         )
 
@@ -540,7 +552,7 @@ class TestDocumentReference(unittest.TestCase):
         from google.api_core.page_iterator import Iterator
         from google.api_core.page_iterator import Page
         from google.cloud.firestore_v1beta1.collection import CollectionReference
-        from google.cloud.firestore_v1beta1.gapic.firestore_client import (
+        from google.cloud.firestore_v1beta1.services.firestore.client import (
             FirestoreClient,
         )
 
@@ -577,7 +589,8 @@ class TestDocumentReference(unittest.TestCase):
             self.assertEqual(collection.id, collection_id)
 
         api_client.list_collection_ids.assert_called_once_with(
-            document._document_path, page_size=page_size, metadata=client._rpc_metadata
+            request={"parent": document._document_path, "page_size": page_size},
+            metadata=client._rpc_metadata,
         )
 
     def test_collections_wo_page_size(self):
@@ -663,19 +676,15 @@ class TestDocumentSnapshot(unittest.TestCase):
         self.assertTrue(snapshot == other)
 
     def test___hash__(self):
-        from google.protobuf import timestamp_pb2
-
         client = mock.MagicMock()
         client.__hash__.return_value = 234566789
         reference = self._make_reference("hi", "bye", client=client)
         data = {"zoop": 83}
-        update_time = timestamp_pb2.Timestamp(seconds=123456, nanos=123456789)
+        update_time = datetime.datetime.fromtimestamp(123456, pytz.utc)
         snapshot = self._make_one(
             reference, data, True, None, mock.sentinel.create_time, update_time
         )
-        self.assertEqual(
-            hash(snapshot), hash(reference) + hash(123456) + hash(123456789)
-        )
+        self.assertEqual(hash(snapshot), hash(reference) + hash(123456) + hash(0))
 
     def test__client_property(self):
         reference = self._make_reference(
@@ -791,9 +800,9 @@ class Test__first_write_result(unittest.TestCase):
 
     def test_success(self):
         from google.protobuf import timestamp_pb2
-        from google.cloud.firestore_v1beta1.proto import write_pb2
+        from google.cloud.firestore_v1beta1.types import write
 
-        single_result = write_pb2.WriteResult(
+        single_result = write.WriteResult(
             update_time=timestamp_pb2.Timestamp(seconds=1368767504, nanos=458000123)
         )
         write_results = [single_result]
@@ -806,10 +815,10 @@ class Test__first_write_result(unittest.TestCase):
             self._call_fut(write_results)
 
     def test_more_than_one(self):
-        from google.cloud.firestore_v1beta1.proto import write_pb2
+        from google.cloud.firestore_v1beta1.types import write
 
-        result1 = write_pb2.WriteResult()
-        result2 = write_pb2.WriteResult()
+        result1 = write.WriteResult()
+        result2 = write.WriteResult()
         write_results = [result1, result2]
         result = self._call_fut(write_results)
         self.assertIs(result, result1)

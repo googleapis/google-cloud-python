@@ -31,7 +31,6 @@ from google.cloud.firestore_v1.base_client import (
     _reference_info,
     _parse_batch_get,
     _get_doc_mask,
-    _item_to_collection_ref,
     _path_helper,
 )
 
@@ -215,10 +214,12 @@ class Client(BaseClient):
         document_paths, reference_map = _reference_info(references)
         mask = _get_doc_mask(field_paths)
         response_iterator = self._firestore_api.batch_get_documents(
-            self._database_string,
-            document_paths,
-            mask,
-            transaction=_helpers.get_transaction_id(transaction),
+            request={
+                "database": self._database_string,
+                "documents": document_paths,
+                "mask": mask,
+                "transaction": _helpers.get_transaction_id(transaction),
+            },
             metadata=self._rpc_metadata,
         )
 
@@ -233,11 +234,30 @@ class Client(BaseClient):
                 iterator of subcollections of the current document.
         """
         iterator = self._firestore_api.list_collection_ids(
-            "{}/documents".format(self._database_string), metadata=self._rpc_metadata
+            request={"parent": "{}/documents".format(self._database_string)},
+            metadata=self._rpc_metadata,
         )
-        iterator.client = self
-        iterator.item_to_value = _item_to_collection_ref
-        return iterator
+
+        while True:
+            for i in iterator.collection_ids:
+                yield self.collection(i)
+            if iterator.next_page_token:
+                iterator = self._firestore_api.list_collection_ids(
+                    request={
+                        "parent": "{}/documents".format(self._database_string),
+                        "page_token": iterator.next_page_token,
+                    },
+                    metadata=self._rpc_metadata,
+                )
+            else:
+                return
+
+        # TODO(microgen): currently this method is rewritten to iterate/page itself.
+        # https://github.com/googleapis/gapic-generator-python/issues/516
+        # it seems the generator ought to be able to do this itself.
+        # iterator.client = self
+        # iterator.item_to_value = _item_to_collection_ref
+        # return iterator
 
     def batch(self):
         """Get a batch instance from this client.

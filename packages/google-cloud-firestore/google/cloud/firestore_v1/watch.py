@@ -15,15 +15,12 @@
 import logging
 import collections
 import threading
-import datetime
 from enum import Enum
 import functools
 
-import pytz
-
 from google.api_core.bidi import ResumableBidiRpc
 from google.api_core.bidi import BackgroundConsumer
-from google.cloud.firestore_v1.proto import firestore_pb2
+from google.cloud.firestore_v1.types import firestore
 from google.cloud.firestore_v1 import _helpers
 
 from google.api_core import exceptions
@@ -221,7 +218,7 @@ class Watch(object):
             ResumableBidiRpc = self.ResumableBidiRpc  # FBO unit tests
 
         self._rpc = ResumableBidiRpc(
-            self._api.transport.listen,
+            self._api._transport.listen,
             should_recover=_should_recover,
             should_terminate=_should_terminate,
             initial_request=rpc_request,
@@ -261,7 +258,8 @@ class Watch(object):
     def _get_rpc_request(self):
         if self.resume_token is not None:
             self._targets["resume_token"] = self.resume_token
-        return firestore_pb2.ListenRequest(
+
+        return firestore.ListenRequest(
             database=self._firestore._database_string, add_target=self._targets
         )
 
@@ -367,14 +365,14 @@ class Watch(object):
         cls, query, snapshot_callback, snapshot_class_instance, reference_class_instance
     ):
         parent_path, _ = query._parent._parent_info()
-        query_target = firestore_pb2.Target.QueryTarget(
+        query_target = firestore.Target.QueryTarget(
             parent=parent_path, structured_query=query._to_protobuf()
         )
 
         return cls(
             query,
             query._client,
-            {"query": query_target, "target_id": WATCH_TARGET_ID},
+            {"query": query_target._pb, "target_id": WATCH_TARGET_ID},
             query._comparator,
             snapshot_callback,
             snapshot_class_instance,
@@ -387,7 +385,8 @@ class Watch(object):
 
         no_target_ids = change.target_ids is None or len(change.target_ids) == 0
         if no_target_ids and change.read_time and self.current:
-            # TargetChange.CURRENT followed by TargetChange.NO_CHANGE
+            # TargetChange.TargetChangeType.CURRENT followed by
+            # TargetChange.TargetChangeType.NO_CHANGE
             # signals a consistent state. Invoke the onSnapshot
             # callback as specified by the user.
             self.push(change.read_time, change.resume_token)
@@ -431,14 +430,14 @@ class Watch(object):
             listen_response(`google.cloud.firestore_v1.types.ListenResponse`):
                 Callback method that receives a object to
         """
-        TargetChange = firestore_pb2.TargetChange
+        TargetChange = firestore.TargetChange
 
         target_changetype_dispatch = {
-            TargetChange.NO_CHANGE: self._on_snapshot_target_change_no_change,
-            TargetChange.ADD: self._on_snapshot_target_change_add,
-            TargetChange.REMOVE: self._on_snapshot_target_change_remove,
-            TargetChange.RESET: self._on_snapshot_target_change_reset,
-            TargetChange.CURRENT: self._on_snapshot_target_change_current,
+            TargetChange.TargetChangeType.NO_CHANGE: self._on_snapshot_target_change_no_change,
+            TargetChange.TargetChangeType.ADD: self._on_snapshot_target_change_add,
+            TargetChange.TargetChangeType.REMOVE: self._on_snapshot_target_change_remove,
+            TargetChange.TargetChangeType.RESET: self._on_snapshot_target_change_reset,
+            TargetChange.TargetChangeType.CURRENT: self._on_snapshot_target_change_current,
         }
 
         target_change = getattr(proto, "target_change", "")
@@ -569,7 +568,9 @@ class Watch(object):
             self._snapshot_callback(
                 keys,
                 appliedChanges,
-                datetime.datetime.fromtimestamp(read_time.seconds, pytz.utc),
+                read_time
+                # TODO(microgen): now a datetime
+                # datetime.datetime.fromtimestamp(read_time.seconds, pytz.utc),
             )
             self.has_pushed = True
 

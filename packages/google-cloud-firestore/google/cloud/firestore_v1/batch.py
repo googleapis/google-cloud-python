@@ -37,15 +37,17 @@ class WriteBatch(BaseWriteBatch):
         """Commit the changes accumulated in this batch.
 
         Returns:
-            List[:class:`google.cloud.proto.firestore.v1.write_pb2.WriteResult`, ...]:
+            List[:class:`google.cloud.proto.firestore.v1.write.WriteResult`, ...]:
             The write results corresponding to the changes committed, returned
             in the same order as the changes were applied to this batch. A
             write result contains an ``update_time`` field.
         """
         commit_response = self._client._firestore_api.commit(
-            self._client._database_string,
-            self._write_pbs,
-            transaction=None,
+            request={
+                "database": self._client._database_string,
+                "writes": self._write_pbs,
+                "transaction": None,
+            },
             metadata=self._client._rpc_metadata,
         )
 

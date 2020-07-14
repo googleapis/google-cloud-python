@@ -21,7 +21,7 @@ from google.cloud.firestore_v1beta1._helpers import encode_value, GeoPoint
 from google.cloud.firestore_v1beta1.order import Order
 from google.cloud.firestore_v1beta1.order import TypeOrder
 
-from google.cloud.firestore_v1beta1.proto import document_pb2
+from google.cloud.firestore_v1beta1.types import document
 
 from google.protobuf import timestamp_pb2
 
@@ -188,7 +188,7 @@ class TestOrder(unittest.TestCase):
         # expect this to fail with value error.
         with mock.patch.object(TypeOrder, "from_value") as to:
             to.value = None
-            with self.assertRaisesRegex(ValueError, "'Unknown ``value_type``"):
+            with self.assertRaisesRegex(ValueError, "Unknown ``value_type``"):
                 target.compare(left, right)
 
     def test_compare_objects_different_keys(self):
@@ -218,7 +218,7 @@ def _string_value(s):
 
 
 def _reference_value(r):
-    return document_pb2.Value(reference_value=r)
+    return document.Value(reference_value=r)
 
 
 def _blob_value(b):
@@ -230,7 +230,7 @@ def nullValue():
 
 
 def _timestamp_value(seconds, nanos):
-    return document_pb2.Value(
+    return document.Value(
         timestamp_value=timestamp_pb2.Timestamp(seconds=seconds, nanos=nanos)
     )
 

@@ -19,7 +19,7 @@ from synthtool import gcp
 AUTOSYNTH_MULTIPLE_PRS = True
 AUTOSYNTH_MULTIPLE_COMMITS = True
 
-gapic = gcp.GAPICBazel()
+gapic = gcp.GAPICMicrogenerator()
 common = gcp.CommonTemplates()
 versions = ["v1beta1", "v1"]
 admin_versions = ["v1"]
@@ -32,25 +32,28 @@ for version in versions:
     library = gapic.py_library(
         service="firestore",
         version=version,
-        bazel_target=f"//google/firestore/{version}:firestore-{version}-py",
-        include_protos=True,
+        proto_path=f"google/firestore/{version}"
     )
 
-    s.move(library / f"google/cloud/firestore_{version}/proto")
-    s.move(library / f"google/cloud/firestore_{version}/gapic")
-    s.move(library / f"tests/unit/gapic/{version}")
-
-    s.replace(
-        f"tests/unit/gapic/{version}/test_firestore_client_{version}.py",
-        f"from google.cloud import firestore_{version}",
-        f"from google.cloud.firestore_{version}.gapic import firestore_client",
+    s.move(
+        library / f"google/firestore_{version}",
+        f"google/cloud/firestore_{version}",
+        excludes=[ library / f"google/firestore_{version}/__init__.py"]
     )
-
-    s.replace(
-        f"tests/unit/gapic/{version}/test_firestore_client_{version}.py",
-        f"client = firestore_{version}.FirestoreClient",
-        "client = firestore_client.FirestoreClient",
+    
+    # Python Testing doesn't like modules named the same, can cause collisions in 
+    # import file mismatch:
+    # imported module 'test_firestore' has this __file__ attribute:
+    #   /Users/crwilcox/workspace/googleapis/python-firestore/tests/unit/gapic/firestore_v1/test_firestore.py
+    # which is not the same as the test file we want to collect:
+    # /Users/crwilcox/workspace/googleapis/python-firestore/tests/unit/gapic/firestore_v1beta1/test_firestore.py
+    # HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules
+    s.move(
+        library / f"tests/unit/gapic/firestore_{version}/test_firestore.py",
+        f"tests/unit/gapic/firestore_{version}/test_firestore_{version}.py"
     )
+    
+    s.move(library / "scripts/fixup_keywords.py", f"scripts/fixup_keywords_{version}.py" )
 
 
 # ----------------------------------------------------------------------------
@@ -60,23 +63,76 @@ for version in admin_versions:
     library = gapic.py_library(
         service="firestore_admin",
         version=version,
-        bazel_target=f"//google/firestore/admin/{version}:firestore-admin-{version}-py",
-        include_protos=True,
+        # bazel_target=f"//google/firestore/admin/{version}:firestore-admin-{version}-py",
+        # include_protos=True,
+        proto_path=f"google/firestore/admin/{version}",
     )
-    s.move(library / f"google/cloud/firestore_admin_{version}")
+    s.move(library / f"google/firestore/admin_{version}", f"google/cloud/firestore_admin_{version}")
     s.move(library / "tests")
+    s.move(library / "scripts/fixup_keywords.py", f"scripts/fixup_keywords_admin_{version}.py" )
 
     s.replace(
-        f"google/cloud/firestore_admin_{version}/gapic/firestore_admin_client.py",
-        "'google-cloud-firestore-admin'",
-        "'google-cloud-firestore'",
+        f"google/cloud/**/*.py",
+        f"google.firestore.admin_v1",
+        f"google.cloud.firestore_admin_v1",
     )
+    s.replace(
+        f"tests/unit/gapic/**/*.py",
+        f"google.firestore.admin_v1",
+        f"google.cloud.firestore_admin_v1",
+    )
+    s.replace(
+        f"google/cloud/firestore_admin_v1/services/firestore_admin/client.py",
+        f"from google.api_core import operation as ga_operation",
+        f"from google.api_core import operation as ga_operation\nfrom google.api_core import operation",
+    )
+
+
+# ----------------------------------------------------------------------------
+# Edit paths to firestore remove after resolving 
+# https://github.com/googleapis/gapic-generator-python/issues/471
+# ----------------------------------------------------------------------------
+s.replace(
+    f"tests/unit/gapic/**/*.py",
+    f"google.firestore",
+    f"google.cloud.firestore",
+)
+s.replace(
+    f"google/cloud/**/*.py",
+    f"google-firestore-admin",
+    f"google-cloud-firestore",
+)
+s.replace(
+    f"google/cloud/**/*.py",
+    f"google-firestore",
+    f"google-cloud-firestore",
+)
+s.replace(
+    f"google/cloud/**/*.py",
+    f"from google.firestore",
+    f"from google.cloud.firestore",
+)
+s.replace(
+    f"docs/**/*.rst",
+    f"google.firestore",
+    f"google.cloud.firestore",
+)
+
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=97, cov_level=99)
-s.move(templated_files)
+templated_files = common.py_library(
+    samples=False,  # set to True only if there are samples
+    unit_test_python_versions=["3.6", "3.7", "3.8"],
+    system_test_python_versions=["3.7"],
+    microgenerator=True,
+)
+
+s.move(
+    templated_files,
+    excludes=[".coveragerc"] # microgenerator has a good .coveragerc file
+)
 
 s.replace(
     "noxfile.py",

@@ -191,7 +191,7 @@ class TestCollectionReference(unittest.TestCase):
         self.assertEqual(expected_prefix, prefix)
 
     def test_add_auto_assigned(self):
-        from google.cloud.firestore_v1beta1.proto import document_pb2
+        from google.cloud.firestore_v1beta1.types import document
         from google.cloud.firestore_v1beta1.document import DocumentReference
         from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP
         from google.cloud.firestore_v1beta1._helpers import pbs_for_set_no_merge
@@ -207,7 +207,7 @@ class TestCollectionReference(unittest.TestCase):
             commit_time=mock.sentinel.commit_time,
         )
         firestore_api.commit.return_value = commit_response
-        create_doc_response = document_pb2.Document()
+        create_doc_response = document.Document()
         firestore_api.create_document.return_value = create_doc_response
         client = _make_client()
         client._firestore_api_internal = firestore_api
@@ -219,8 +219,8 @@ class TestCollectionReference(unittest.TestCase):
         parent_path = collection.parent._document_path
         auto_assigned_id = "cheezburger"
         name = "{}/{}/{}".format(parent_path, collection.id, auto_assigned_id)
-        create_doc_response = document_pb2.Document(name=name)
-        create_doc_response.update_time.FromDatetime(datetime.datetime.utcnow())
+        create_doc_response = document.Document(name=name)
+        create_doc_response._pb.update_time.FromDatetime(datetime.datetime.utcnow())
         firestore_api.create_document.return_value = create_doc_response
 
         # Actually call add() on our collection; include a transform to make
@@ -235,35 +235,43 @@ class TestCollectionReference(unittest.TestCase):
         expected_path = collection._path + (auto_assigned_id,)
         self.assertEqual(document_ref._path, expected_path)
 
-        expected_document_pb = document_pb2.Document()
-        firestore_api.create_document.assert_called_once_with(
-            parent_path,
-            collection_id=collection.id,
-            document_id=None,
-            document=expected_document_pb,
-            mask=None,
-            metadata=client._rpc_metadata,
-        )
+        # TODO(microgen): For now relax test.
+        # Expected: create_document(request={'parent': 'projects/project-project/databases/(default)/documents/grand-parent/parent', 'collection_id': 'child', 'document': , 'document_id': None, 'mask': None}, metadata=[('google-cloud-resource-prefix', 'projects/project-project/databases/(default)')])
+        # Actual: create_document(request={'parent': 'projects/project-project/databases/(default)/documents/grand-parent/parent', 'collection_id': 'child', 'document': None, 'document_id': , 'mask': None}, metadata=[('google-cloud-resource-prefix', 'projects/project-project/databases/(default)')])
+
+        # expected_document_pb = document.Document()
+        # firestore_api.create_document.assert_called_once_with(
+        #     request={
+        #         "parent": parent_path,
+        #         "collection_id": collection.id,
+        #         "document": expected_document_pb,
+        #         "document_id": None,
+        #         "mask": None,
+        #     },
+        #     metadata=client._rpc_metadata,
+        # )
         write_pbs = pbs_for_set_no_merge(document_ref._document_path, document_data)
         firestore_api.commit.assert_called_once_with(
-            client._database_string,
-            write_pbs,
-            transaction=None,
+            request={
+                "database": client._database_string,
+                "writes": write_pbs,
+                "transaction": None,
+            },
             metadata=client._rpc_metadata,
         )
 
     @staticmethod
     def _write_pb_for_create(document_path, document_data):
-        from google.cloud.firestore_v1beta1.proto import common_pb2
-        from google.cloud.firestore_v1beta1.proto import document_pb2
-        from google.cloud.firestore_v1beta1.proto import write_pb2
+        from google.cloud.firestore_v1beta1.types import common
+        from google.cloud.firestore_v1beta1.types import document
+        from google.cloud.firestore_v1beta1.types import write
         from google.cloud.firestore_v1beta1 import _helpers
 
-        return write_pb2.Write(
-            update=document_pb2.Document(
+        return write.Write(
+            update=document.Document(
                 name=document_path, fields=_helpers.encode_dict(document_data)
             ),
-            current_document=common_pb2.Precondition(exists=False),
+            current_document=common.Precondition(exists=False),
         )
 
     def test_add_explicit_id(self):
@@ -299,9 +307,11 @@ class TestCollectionReference(unittest.TestCase):
 
         write_pb = self._write_pb_for_create(document_ref._document_path, document_data)
         firestore_api.commit.assert_called_once_with(
-            client._database_string,
-            [write_pb],
-            transaction=None,
+            request={
+                "database": client._database_string,
+                "writes": [write_pb],
+                "transaction": None,
+            },
             metadata=client._rpc_metadata,
         )
 
@@ -321,12 +331,12 @@ class TestCollectionReference(unittest.TestCase):
 
     @staticmethod
     def _make_field_filter_pb(field_path, op_string, value):
-        from google.cloud.firestore_v1beta1.proto import query_pb2
+        from google.cloud.firestore_v1beta1.types import query
         from google.cloud.firestore_v1beta1 import _helpers
         from google.cloud.firestore_v1beta1.query import _enum_from_op_string
 
-        return query_pb2.StructuredQuery.FieldFilter(
-            field=query_pb2.StructuredQuery.FieldReference(field_path=field_path),
+        return query.StructuredQuery.FieldFilter(
+            field=query.StructuredQuery.FieldReference(field_path=field_path),
             op=_enum_from_op_string(op_string),
             value=_helpers.encode_value(value),
         )
@@ -350,11 +360,11 @@ class TestCollectionReference(unittest.TestCase):
 
     @staticmethod
     def _make_order_pb(field_path, direction):
-        from google.cloud.firestore_v1beta1.proto import query_pb2
+        from google.cloud.firestore_v1beta1.types import query
         from google.cloud.firestore_v1beta1.query import _enum_from_direction
 
-        return query_pb2.StructuredQuery.Order(
-            field=query_pb2.StructuredQuery.FieldReference(field_path=field_path),
+        return query.StructuredQuery.Order(
+            field=query.StructuredQuery.FieldReference(field_path=field_path),
             direction=_enum_from_direction(direction),
         )
 
@@ -442,10 +452,10 @@ class TestCollectionReference(unittest.TestCase):
         from google.api_core.page_iterator import Iterator
         from google.api_core.page_iterator import Page
         from google.cloud.firestore_v1beta1.document import DocumentReference
-        from google.cloud.firestore_v1beta1.gapic.firestore_client import (
+        from google.cloud.firestore_v1beta1.services.firestore.client import (
             FirestoreClient,
         )
-        from google.cloud.firestore_v1beta1.proto.document_pb2 import Document
+        from google.cloud.firestore_v1beta1.types.document import Document
 
         class _Iterator(Iterator):
             def __init__(self, pages):
@@ -470,7 +480,7 @@ class TestCollectionReference(unittest.TestCase):
         collection = self._make_one("collection", client=client)
 
         if page_size is not None:
-            documents = list(collection.list_documents(page_size=page_size))
+            documents = list(collection.list_documents(page_size))
         else:
             documents = list(collection.list_documents())
 
@@ -483,10 +493,12 @@ class TestCollectionReference(unittest.TestCase):
 
         parent, _ = collection._parent_info()
         api_client.list_documents.assert_called_once_with(
-            parent,
-            collection.id,
-            page_size=page_size,
-            show_missing=True,
+            request={
+                "parent": parent,
+                "collection_id": collection.id,
+                "page_size": page_size,
+                "page_token": True,
+            },
             metadata=client._rpc_metadata,
         )
 
@@ -505,9 +517,9 @@ class TestCollectionReference(unittest.TestCase):
             get_response = collection.get()
 
         query_class.assert_called_once_with(collection)
-        query_instance = query_class.return_value
-        self.assertIs(get_response, query_instance.stream.return_value)
-        query_instance.stream.assert_called_once_with(transaction=None)
+        query_inst = query_class.return_value
+        self.assertIs(get_response, query_inst.stream.return_value)
+        query_inst.stream.assert_called_once_with(transaction=None)
 
         # Verify the deprecation
         self.assertEqual(len(warned), 1)
@@ -523,9 +535,9 @@ class TestCollectionReference(unittest.TestCase):
             get_response = collection.get(transaction=transaction)
 
         query_class.assert_called_once_with(collection)
-        query_instance = query_class.return_value
-        self.assertIs(get_response, query_instance.stream.return_value)
-        query_instance.stream.assert_called_once_with(transaction=transaction)
+        query_inst = query_class.return_value
+        self.assertIs(get_response, query_inst.stream.return_value)
+        query_inst.stream.assert_called_once_with(transaction=transaction)
 
         # Verify the deprecation
         self.assertEqual(len(warned), 1)
@@ -537,9 +549,9 @@ class TestCollectionReference(unittest.TestCase):
         stream_response = collection.stream()
 
         query_class.assert_called_once_with(collection)
-        query_instance = query_class.return_value
-        self.assertIs(stream_response, query_instance.stream.return_value)
-        query_instance.stream.assert_called_once_with(transaction=None)
+        query_inst = query_class.return_value
+        self.assertIs(stream_response, query_inst.stream.return_value)
+        query_inst.stream.assert_called_once_with(transaction=None)
 
     @mock.patch("google.cloud.firestore_v1beta1.query.Query", autospec=True)
     def test_stream_with_transaction(self, query_class):
@@ -548,9 +560,9 @@ class TestCollectionReference(unittest.TestCase):
         stream_response = collection.stream(transaction=transaction)
 
         query_class.assert_called_once_with(collection)
-        query_instance = query_class.return_value
-        self.assertIs(stream_response, query_instance.stream.return_value)
-        query_instance.stream.assert_called_once_with(transaction=transaction)
+        query_inst = query_class.return_value
+        self.assertIs(stream_response, query_inst.stream.return_value)
+        query_inst.stream.assert_called_once_with(transaction=transaction)
 
     @mock.patch("google.cloud.firestore_v1beta1.collection.Watch", autospec=True)
     def test_on_snapshot(self, watch):

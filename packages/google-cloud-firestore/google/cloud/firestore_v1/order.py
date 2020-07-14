@@ -32,7 +32,7 @@ class TypeOrder(Enum):
 
     @staticmethod
     def from_value(value):
-        v = value.WhichOneof("value_type")
+        v = value._pb.WhichOneof("value_type")
 
         lut = {
             "null_value": TypeOrder.NULL,
@@ -49,7 +49,7 @@ class TypeOrder(Enum):
         }
 
         if v not in lut:
-            raise ValueError("Could not detect value type for " + v)
+            raise ValueError(f"Could not detect value type for {v}")
         return lut[v]
 
 
@@ -73,7 +73,7 @@ class Order(object):
                 return -1
             return 1
 
-        value_type = left.WhichOneof("value_type")
+        value_type = left._pb.WhichOneof("value_type")
 
         if value_type == "null_value":
             return 0  # nulls are all equal
@@ -98,7 +98,7 @@ class Order(object):
         elif value_type == "map_value":
             return cls.compare_objects(left, right)
         else:
-            raise ValueError("Unknown ``value_type``", str(value_type))
+            raise ValueError(f"Unknown ``value_type`` {value_type}")
 
     @staticmethod
     def compare_blobs(left, right):
@@ -109,8 +109,8 @@ class Order(object):
 
     @staticmethod
     def compare_timestamps(left, right):
-        left = left.timestamp_value
-        right = right.timestamp_value
+        left = left._pb.timestamp_value
+        right = right._pb.timestamp_value
 
         seconds = Order._compare_to(left.seconds or 0, right.seconds or 0)
         if seconds != 0:

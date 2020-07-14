@@ -24,7 +24,7 @@ In the hierarchy of API concepts
   :class:`~google.cloud.firestore_v1beta1.document.DocumentReference`
 """
 import warnings
-
+import google.api_core.path_template
 from google.cloud.client import ClientWithProject
 
 from google.cloud.firestore_v1beta1 import _helpers
@@ -34,8 +34,10 @@ from google.cloud.firestore_v1beta1.collection import CollectionReference
 from google.cloud.firestore_v1beta1.document import DocumentReference
 from google.cloud.firestore_v1beta1.document import DocumentSnapshot
 from google.cloud.firestore_v1beta1.field_path import render_field_path
-from google.cloud.firestore_v1beta1.gapic import firestore_client
-from google.cloud.firestore_v1beta1.gapic.transports import firestore_grpc_transport
+from google.cloud.firestore_v1beta1.services.firestore import client as firestore_client
+from google.cloud.firestore_v1beta1.services.firestore.transports import (
+    grpc as firestore_grpc_transport,
+)
 from google.cloud.firestore_v1beta1.transaction import Transaction
 
 
@@ -113,7 +115,7 @@ class Client(ClientWithProject):
             )
 
             self._transport = firestore_grpc_transport.FirestoreGrpcTransport(
-                address=self._target, channel=channel
+                host=self._target, channel=channel
             )
 
             self._firestore_api_internal = firestore_client.FirestoreClient(
@@ -129,7 +131,7 @@ class Client(ClientWithProject):
         Returns:
             str: The location of the API.
         """
-        return firestore_client.FirestoreClient.SERVICE_ADDRESS
+        return firestore_client.FirestoreClient.DEFAULT_ENDPOINT
 
     @property
     def _database_string(self):
@@ -148,10 +150,10 @@ class Client(ClientWithProject):
             project. (The default database is also in this string.)
         """
         if self._database_string_internal is None:
-            # NOTE: database_root_path() is a classmethod, so we don't use
-            #       self._firestore_api (it isn't necessary).
-            db_str = firestore_client.FirestoreClient.database_root_path(
-                self.project, self._database
+            db_str = google.api_core.path_template.expand(
+                "projects/{project}/databases/{database}",
+                project=self.project,
+                database=self._database,
             )
             self._database_string_internal = db_str
 
@@ -358,10 +360,12 @@ class Client(ClientWithProject):
         document_paths, reference_map = _reference_info(references)
         mask = _get_doc_mask(field_paths)
         response_iterator = self._firestore_api.batch_get_documents(
-            self._database_string,
-            document_paths,
-            mask,
-            transaction=_helpers.get_transaction_id(transaction),
+            request={
+                "database": self._database_string,
+                "documents": document_paths,
+                "mask": mask,
+                "transaction": _helpers.get_transaction_id(transaction),
+            },
             metadata=self._rpc_metadata,
         )
 
@@ -376,7 +380,7 @@ class Client(ClientWithProject):
                 iterator of subcollections of the current document.
         """
         iterator = self._firestore_api.list_collection_ids(
-            self._database_string, metadata=self._rpc_metadata
+            request={"parent": self._database_string}, metadata=self._rpc_metadata
         )
         iterator.client = self
         iterator.item_to_value = _item_to_collection_ref
@@ -469,7 +473,7 @@ def _parse_batch_get(get_doc_response, reference_map, client):
 
     Args:
         get_doc_response (~google.cloud.proto.firestore.v1beta1.\
-            firestore_pb2.BatchGetDocumentsResponse): A single response (from
+            firestore.BatchGetDocumentsResponse): A single response (from
             a stream) containing the "get" response for a document.
         reference_map (Dict[str, .DocumentReference]): A mapping (produced
             by :func:`_reference_info`) of fully-qualified document paths to
@@ -484,7 +488,7 @@ def _parse_batch_get(get_doc_response, reference_map, client):
         ValueError: If the response has a ``result`` field (a oneof) other
             than ``found`` or ``missing``.
     """
-    result_type = get_doc_response.WhichOneof("result")
+    result_type = get_doc_response._pb.WhichOneof("result")
     if result_type == "found":
         reference = _get_reference(get_doc_response.found.name, reference_map)
         data = _helpers.decode_dict(get_doc_response.found.fields, client)

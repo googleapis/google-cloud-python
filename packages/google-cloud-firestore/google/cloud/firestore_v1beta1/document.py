@@ -21,7 +21,7 @@ import six
 from google.api_core import exceptions
 from google.cloud.firestore_v1beta1 import _helpers
 from google.cloud.firestore_v1beta1 import field_path as field_path_module
-from google.cloud.firestore_v1beta1.proto import common_pb2
+from google.cloud.firestore_v1beta1.types import common
 from google.cloud.firestore_v1beta1.watch import Watch
 
 
@@ -397,9 +397,11 @@ class DocumentReference(object):
         """
         write_pb = _helpers.pb_for_delete(self._document_path, option)
         commit_response = self._client._firestore_api.commit(
-            self._client._database_string,
-            [write_pb],
-            transaction=None,
+            request={
+                "database": self._client._database_string,
+                "writes": [write_pb],
+                "transaction": None,
+            },
             metadata=self._client._rpc_metadata,
         )
 
@@ -435,16 +437,18 @@ class DocumentReference(object):
             raise ValueError("'field_paths' must be a sequence of paths, not a string.")
 
         if field_paths is not None:
-            mask = common_pb2.DocumentMask(field_paths=sorted(field_paths))
+            mask = common.DocumentMask(field_paths=sorted(field_paths))
         else:
             mask = None
 
         firestore_api = self._client._firestore_api
         try:
             document_pb = firestore_api.get_document(
-                self._document_path,
-                mask=mask,
-                transaction=_helpers.get_transaction_id(transaction),
+                request={
+                    "name": self._document_path,
+                    "mask": mask,
+                    "transaction": _helpers.get_transaction_id(transaction),
+                },
                 metadata=self._client._rpc_metadata,
             )
         except exceptions.NotFound:
@@ -482,8 +486,7 @@ class DocumentReference(object):
                 iterator will be empty
         """
         iterator = self._client._firestore_api.list_collection_ids(
-            self._document_path,
-            page_size=page_size,
+            request={"parent": self._document_path, "page_size": page_size},
             metadata=self._client._rpc_metadata,
         )
         iterator.document = self
@@ -567,8 +570,12 @@ class DocumentSnapshot(object):
         return self._reference == other._reference and self._data == other._data
 
     def __hash__(self):
-        seconds = self.update_time.seconds
-        nanos = self.update_time.nanos
+        # TODO(microgen, https://github.com/googleapis/proto-plus-python/issues/38):
+        # maybe add datetime_with_nanos to protoplus, revisit
+        # seconds = self.update_time.seconds
+        # nanos = self.update_time.nanos
+        seconds = int(self.update_time.timestamp())
+        nanos = 0
         return hash(self._reference) + hash(seconds) + hash(nanos)
 
     @property
@@ -725,7 +732,7 @@ def _consume_single_get(response_iterator):
 
     Returns:
         ~google.cloud.proto.firestore.v1beta1.\
-            firestore_pb2.BatchGetDocumentsResponse: The single "get"
+            firestore.BatchGetDocumentsResponse: The single "get"
         response in the batch.
 
     Raises:
@@ -752,7 +759,7 @@ def _first_write_result(write_results):
 
     Args:
         write_results (List[google.cloud.proto.firestore.v1beta1.\
-            write_pb2.WriteResult, ...]: The write results from a
+            write.WriteResult, ...]: The write results from a
             ``CommitResponse``.
 
     Returns:

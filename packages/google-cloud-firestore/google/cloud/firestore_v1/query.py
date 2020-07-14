@@ -41,13 +41,13 @@ class Query(BaseQuery):
         parent (:class:`~google.cloud.firestore_v1.collection.CollectionReference`):
             The collection that this query applies to.
         projection (Optional[:class:`google.cloud.proto.firestore.v1.\
-            query_pb2.StructuredQuery.Projection`]):
+            query.StructuredQuery.Projection`]):
             A projection of document fields to limit the query results to.
         field_filters (Optional[Tuple[:class:`google.cloud.proto.firestore.v1.\
-            query_pb2.StructuredQuery.FieldFilter`, ...]]):
+            query.StructuredQuery.FieldFilter`, ...]]):
             The filters to be applied in the query.
         orders (Optional[Tuple[:class:`google.cloud.proto.firestore.v1.\
-            query_pb2.StructuredQuery.Order`, ...]]):
+            query.StructuredQuery.Order`, ...]]):
             The "order by" entries to use in the query.
         limit (Optional[int]):
             The maximum number of documents the query is allowed to return.
@@ -149,9 +149,11 @@ class Query(BaseQuery):
         """
         parent_path, expected_prefix = self._parent._parent_info()
         response_iterator = self._client._firestore_api.run_query(
-            parent_path,
-            self._to_protobuf(),
-            transaction=_helpers.get_transaction_id(transaction),
+            request={
+                "parent": parent_path,
+                "structured_query": self._to_protobuf(),
+                "transaction": _helpers.get_transaction_id(transaction),
+            },
             metadata=self._client._rpc_metadata,
         )
 
