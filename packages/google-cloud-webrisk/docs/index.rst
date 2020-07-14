@@ -7,8 +7,8 @@ v1
 .. toctree::
     :maxdepth: 2
 
-    gapic/v1/api
-    gapic/v1/types
+    webrisk_v1/services
+    webrisk_v1/types
     
 
 v1beta1
@@ -16,8 +16,8 @@ v1beta1
 .. toctree::
     :maxdepth: 2
 
-    gapic/v1beta1/api
-    gapic/v1beta1/types
+    webrisk_v1beta1/services
+    webrisk_v1beta1/types
     changelog
 
 Changelog
