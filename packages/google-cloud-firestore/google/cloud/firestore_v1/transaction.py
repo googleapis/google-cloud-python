@@ -20,31 +20,27 @@ import time
 
 import six
 
+from google.cloud.firestore_v1.base_transaction import (
+    _BaseTransactional,
+    BaseTransaction,
+    MAX_ATTEMPTS,
+    _CANT_BEGIN,
+    _CANT_ROLLBACK,
+    _CANT_COMMIT,
+    _WRITE_READ_ONLY,
+    _INITIAL_SLEEP,
+    _MAX_SLEEP,
+    _MULTIPLIER,
+    _EXCEED_ATTEMPTS_TEMPLATE,
+)
+
 from google.api_core import exceptions
 from google.cloud.firestore_v1 import batch
-from google.cloud.firestore_v1 import types
 from google.cloud.firestore_v1.document import DocumentReference
 from google.cloud.firestore_v1.query import Query
 
 
-MAX_ATTEMPTS = 5
-"""int: Default number of transaction attempts (with retries)."""
-_CANT_BEGIN = "The transaction has already begun. Current transaction ID: {!r}."
-_MISSING_ID_TEMPLATE = "The transaction has no transaction ID, so it cannot be {}."
-_CANT_ROLLBACK = _MISSING_ID_TEMPLATE.format("rolled back")
-_CANT_COMMIT = _MISSING_ID_TEMPLATE.format("committed")
-_WRITE_READ_ONLY = "Cannot perform write operation in read-only transaction."
-_INITIAL_SLEEP = 1.0
-"""float: Initial "max" for sleep interval. To be used in :func:`_sleep`."""
-_MAX_SLEEP = 30.0
-"""float: Eventual "max" sleep time. To be used in :func:`_sleep`."""
-_MULTIPLIER = 2.0
-"""float: Multiplier for exponential backoff. To be used in :func:`_sleep`."""
-_EXCEED_ATTEMPTS_TEMPLATE = "Failed to commit transaction in {:d} attempts."
-_CANT_RETRY_READ_ONLY = "Only read-write transactions can be retried."
-
-
-class Transaction(batch.WriteBatch):
+class Transaction(batch.WriteBatch, BaseTransaction):
     """Accumulate read-and-write operations to be sent in a transaction.
 
     Args:
@@ -60,9 +56,7 @@ class Transaction(batch.WriteBatch):
 
     def __init__(self, client, max_attempts=MAX_ATTEMPTS, read_only=False):
         super(Transaction, self).__init__(client)
-        self._max_attempts = max_attempts
-        self._read_only = read_only
-        self._id = None
+        BaseTransaction.__init__(self, max_attempts, read_only)
 
     def _add_write_pbs(self, write_pbs):
         """Add `Write`` protobufs to this transaction.
@@ -78,61 +72,6 @@ class Transaction(batch.WriteBatch):
             raise ValueError(_WRITE_READ_ONLY)
 
         super(Transaction, self)._add_write_pbs(write_pbs)
-
-    def _options_protobuf(self, retry_id):
-        """Convert the current object to protobuf.
-
-        The ``retry_id`` value is used when retrying a transaction that
-        failed (e.g. due to contention). It is intended to be the "first"
-        transaction that failed (i.e. if multiple retries are needed).
-
-        Args:
-            retry_id (Union[bytes, NoneType]): Transaction ID of a transaction
-                to be retried.
-
-        Returns:
-            Optional[google.cloud.firestore_v1.types.TransactionOptions]:
-            The protobuf ``TransactionOptions`` if ``read_only==True`` or if
-            there is a transaction ID to be retried, else :data:`None`.
-
-        Raises:
-            ValueError: If ``retry_id`` is not :data:`None` but the
-                transaction is read-only.
-        """
-        if retry_id is not None:
-            if self._read_only:
-                raise ValueError(_CANT_RETRY_READ_ONLY)
-
-            return types.TransactionOptions(
-                read_write=types.TransactionOptions.ReadWrite(
-                    retry_transaction=retry_id
-                )
-            )
-        elif self._read_only:
-            return types.TransactionOptions(
-                read_only=types.TransactionOptions.ReadOnly()
-            )
-        else:
-            return None
-
-    @property
-    def in_progress(self):
-        """Determine if this transaction has already begun.
-
-        Returns:
-            bool: Indicates if the transaction has started.
-        """
-        return self._id is not None
-
-    @property
-    def id(self):
-        """Get the current transaction ID.
-
-        Returns:
-            Optional[bytes]: The transaction ID (or :data:`None` if the
-            current transaction is not in progress).
-        """
-        return self._id
 
     def _begin(self, retry_id=None):
         """Begin the transaction.
@@ -156,14 +95,6 @@ class Transaction(batch.WriteBatch):
             metadata=self._client._rpc_metadata,
         )
         self._id = transaction_response.transaction
-
-    def _clean_up(self):
-        """Clean up the instance after :meth:`_rollback`` or :meth:`_commit``.
-
-        This intended to occur on success or failure of the associated RPCs.
-        """
-        self._write_pbs = []
-        self._id = None
 
     def _rollback(self):
         """Roll back the transaction.
@@ -238,7 +169,7 @@ class Transaction(batch.WriteBatch):
             )
 
 
-class _Transactional(object):
+class _Transactional(_BaseTransactional):
     """Provide a callable object to use as a transactional decorater.
 
     This is surfaced via
@@ -250,16 +181,7 @@ class _Transactional(object):
     """
 
     def __init__(self, to_wrap):
-        self.to_wrap = to_wrap
-        self.current_id = None
-        """Optional[bytes]: The current transaction ID."""
-        self.retry_id = None
-        """Optional[bytes]: The ID of the first attempted transaction."""
-
-    def _reset(self):
-        """Unset the transaction IDs."""
-        self.current_id = None
-        self.retry_id = None
+        super(_Transactional, self).__init__(to_wrap)
 
     def _pre_commit(self, transaction, *args, **kwargs):
         """Begin transaction and call the wrapped callable.

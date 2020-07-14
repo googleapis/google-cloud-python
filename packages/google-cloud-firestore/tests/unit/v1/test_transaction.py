@@ -48,7 +48,7 @@ class TestTransaction(unittest.TestCase):
         self.assertIsNone(transaction._id)
 
     def test__add_write_pbs_failure(self):
-        from google.cloud.firestore_v1.transaction import _WRITE_READ_ONLY
+        from google.cloud.firestore_v1.base_transaction import _WRITE_READ_ONLY
 
         batch = self._make_one(mock.sentinel.client, read_only=True)
         self.assertEqual(batch._write_pbs, [])
@@ -64,53 +64,16 @@ class TestTransaction(unittest.TestCase):
         batch._add_write_pbs([mock.sentinel.write])
         self.assertEqual(batch._write_pbs, [mock.sentinel.write])
 
-    def test__options_protobuf_read_only(self):
-        from google.cloud.firestore_v1.types import common
-
-        transaction = self._make_one(mock.sentinel.client, read_only=True)
-        options_pb = transaction._options_protobuf(None)
-        expected_pb = common.TransactionOptions(
-            read_only=common.TransactionOptions.ReadOnly()
-        )
-        self.assertEqual(options_pb, expected_pb)
-
-    def test__options_protobuf_read_only_retry(self):
-        from google.cloud.firestore_v1.transaction import _CANT_RETRY_READ_ONLY
-
-        transaction = self._make_one(mock.sentinel.client, read_only=True)
-        retry_id = b"illuminate"
-
-        with self.assertRaises(ValueError) as exc_info:
-            transaction._options_protobuf(retry_id)
-
-        self.assertEqual(exc_info.exception.args, (_CANT_RETRY_READ_ONLY,))
-
-    def test__options_protobuf_read_write(self):
+    def test__clean_up(self):
         transaction = self._make_one(mock.sentinel.client)
-        options_pb = transaction._options_protobuf(None)
-        self.assertIsNone(options_pb)
+        transaction._write_pbs.extend([mock.sentinel.write_pb1, mock.sentinel.write])
+        transaction._id = b"not-this-time-my-friend"
 
-    def test__options_protobuf_on_retry(self):
-        from google.cloud.firestore_v1.types import common
+        ret_val = transaction._clean_up()
+        self.assertIsNone(ret_val)
 
-        transaction = self._make_one(mock.sentinel.client)
-        retry_id = b"hocus-pocus"
-        options_pb = transaction._options_protobuf(retry_id)
-        expected_pb = common.TransactionOptions(
-            read_write=common.TransactionOptions.ReadWrite(retry_transaction=retry_id)
-        )
-        self.assertEqual(options_pb, expected_pb)
-
-    def test_in_progress_property(self):
-        transaction = self._make_one(mock.sentinel.client)
-        self.assertFalse(transaction.in_progress)
-        transaction._id = b"not-none-bites"
-        self.assertTrue(transaction.in_progress)
-
-    def test_id_property(self):
-        transaction = self._make_one(mock.sentinel.client)
-        transaction._id = mock.sentinel.eye_dee
-        self.assertIs(transaction.id, mock.sentinel.eye_dee)
+        self.assertEqual(transaction._write_pbs, [])
+        self.assertIsNone(transaction._id)
 
     def test__begin(self):
         from google.cloud.firestore_v1.services.firestore import (
@@ -145,7 +108,7 @@ class TestTransaction(unittest.TestCase):
         )
 
     def test__begin_failure(self):
-        from google.cloud.firestore_v1.transaction import _CANT_BEGIN
+        from google.cloud.firestore_v1.base_transaction import _CANT_BEGIN
 
         client = _make_client()
         transaction = self._make_one(client)
@@ -156,17 +119,6 @@ class TestTransaction(unittest.TestCase):
 
         err_msg = _CANT_BEGIN.format(transaction._id)
         self.assertEqual(exc_info.exception.args, (err_msg,))
-
-    def test__clean_up(self):
-        transaction = self._make_one(mock.sentinel.client)
-        transaction._write_pbs.extend([mock.sentinel.write_pb1, mock.sentinel.write])
-        transaction._id = b"not-this-time-my-friend"
-
-        ret_val = transaction._clean_up()
-        self.assertIsNone(ret_val)
-
-        self.assertEqual(transaction._write_pbs, [])
-        self.assertIsNone(transaction._id)
 
     def test__rollback(self):
         from google.protobuf import empty_pb2
@@ -199,7 +151,7 @@ class TestTransaction(unittest.TestCase):
         )
 
     def test__rollback_not_allowed(self):
-        from google.cloud.firestore_v1.transaction import _CANT_ROLLBACK
+        from google.cloud.firestore_v1.base_transaction import _CANT_ROLLBACK
 
         client = _make_client()
         transaction = self._make_one(client)
@@ -288,7 +240,7 @@ class TestTransaction(unittest.TestCase):
         )
 
     def test__commit_not_allowed(self):
-        from google.cloud.firestore_v1.transaction import _CANT_COMMIT
+        from google.cloud.firestore_v1.base_transaction import _CANT_COMMIT
 
         transaction = self._make_one(mock.sentinel.client)
         self.assertIsNone(transaction._id)
@@ -390,17 +342,6 @@ class Test_Transactional(unittest.TestCase):
     def test_constructor(self):
         wrapped = self._make_one(mock.sentinel.callable_)
         self.assertIs(wrapped.to_wrap, mock.sentinel.callable_)
-        self.assertIsNone(wrapped.current_id)
-        self.assertIsNone(wrapped.retry_id)
-
-    def test__reset(self):
-        wrapped = self._make_one(mock.sentinel.callable_)
-        wrapped.current_id = b"not-none"
-        wrapped.retry_id = b"also-not"
-
-        ret_val = wrapped._reset()
-        self.assertIsNone(ret_val)
-
         self.assertIsNone(wrapped.current_id)
         self.assertIsNone(wrapped.retry_id)
 
@@ -759,7 +700,7 @@ class Test_Transactional(unittest.TestCase):
 
     def test___call__failure(self):
         from google.api_core import exceptions
-        from google.cloud.firestore_v1.transaction import _EXCEED_ATTEMPTS_TEMPLATE
+        from google.cloud.firestore_v1.base_transaction import _EXCEED_ATTEMPTS_TEMPLATE
 
         to_wrap = mock.Mock(return_value=mock.sentinel.result, spec=[])
         wrapped = self._make_one(to_wrap)
