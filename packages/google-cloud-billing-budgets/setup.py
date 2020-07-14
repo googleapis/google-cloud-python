@@ -25,8 +25,9 @@ description = "Cloud Billing Budget API API client library"
 version = "0.4.0"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
-    'enum34; python_version < "3.4"',
+    "google-api-core[grpc] >= 1.21.0, < 2.0.0dev",
+    "proto-plus >= 0.4.0",
+    "libcst >= 0.2.5",
 ]
 
 
@@ -37,7 +38,9 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
 packages = [
-    package for package in setuptools.find_packages() if package.startswith("google")
+    package
+    for package in setuptools.PEP420PackageFinder.find()
+    if package.startswith("google")
 ]
 
 namespaces = ["google"]
@@ -60,14 +63,16 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.4",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Operating System :: OS Independent",
         "Topic :: Internet",
     ],
     platforms="Posix; MacOS X; Windows",
     packages=packages,
+    python_requires=">=3.6",
+    scripts=["scripts/fixup_budgets_v1beta1_keywords.py"],
     namespace_packages=namespaces,
     install_requires=dependencies,
     include_package_data=True,

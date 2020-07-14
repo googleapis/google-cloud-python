@@ -31,6 +31,7 @@ library = gapic.py_library(
     version="v1beta1",
     bazel_target="//google/cloud/billing/budgets/v1beta1:billing-budgets-v1beta1-py",
     include_protos=True,
+    proto_output_path=f"google/cloud/billing/budgets_v1beta1/proto"
 )
 
 excludes = [
@@ -42,28 +43,24 @@ excludes = [
 
 s.move(library, excludes=excludes)
 
-# Fix namespace
-s.replace(
-    "**/*.py",
-    "from google\.cloud\.billing\.budgets_v1beta1",
-    "from google.cloud.billing_budgets_v1beta1",
-)
-
-# Fix package name
-s.replace(
-    ["**/*.rst", "setup.py", "*/**/*.py"],
-    "google-cloud-billingbudgets",
-    "google-cloud-billing-budgets",
-)
-
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=70)
-s.move(templated_files)
+templated_files = common.py_library(
+    samples=False,  # set to True only if there are samples
+    microgenerator=True,
+    cov_level=99,
+)
+s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition
 s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
 
+# Update the namespace in noxfile.py
+s.replace(
+    "noxfile.py",
+    "google.cloud.billingbudgets",
+    "google.cloud.billing.budgets"
+)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

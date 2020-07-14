@@ -33,3 +33,4 @@ omit =
   */proto/*.py
   */core/*.py
   */site-packages/*.py
+  google/cloud/billing/budgets/__init__.py

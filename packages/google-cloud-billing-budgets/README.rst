@@ -1,7 +1,7 @@
 Python Client for Cloud Billing Budget API
 =====================================================
 
-|beta| |pypi| |versions| 
+|beta| |pypi| |versions|
 
 `Cloud Billing Budget API`_: The Cloud Billing Budget API stores Cloud Billing budgets, which define a
 budget plan and the rules to execute as spend is tracked against that
@@ -48,6 +48,15 @@ dependencies.
 
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Python >= 3.6
+
+Deprecated Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python == 2.7.
+
+The last version of this library compatible with Python 2.7 is google-cloud-billing-budgets==0.4.0.
 
 Mac/Linux
 ^^^^^^^^^
