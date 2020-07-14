@@ -2601,33 +2601,6 @@ def test_firestore_admin_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_index_path():
-    project = "squid"
-    database = "clam"
-    collection = "whelk"
-    index = "octopus"
-
-    expected = "projects/{project}/databases/{database}/collectionGroups/{collection}/indexes/{index}".format(
-        project=project, database=database, collection=collection, index=index,
-    )
-    actual = FirestoreAdminClient.index_path(project, database, collection, index)
-    assert expected == actual
-
-
-def test_parse_index_path():
-    expected = {
-        "project": "oyster",
-        "database": "nudibranch",
-        "collection": "cuttlefish",
-        "index": "mussel",
-    }
-    path = FirestoreAdminClient.index_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = FirestoreAdminClient.parse_index_path(path)
-    assert expected == actual
-
-
 def test_field_path():
     project = "squid"
     database = "clam"
@@ -2652,4 +2625,31 @@ def test_parse_field_path():
 
     # Check that the path construction is reversible.
     actual = FirestoreAdminClient.parse_field_path(path)
+    assert expected == actual
+
+
+def test_index_path():
+    project = "squid"
+    database = "clam"
+    collection = "whelk"
+    index = "octopus"
+
+    expected = "projects/{project}/databases/{database}/collectionGroups/{collection}/indexes/{index}".format(
+        project=project, database=database, collection=collection, index=index,
+    )
+    actual = FirestoreAdminClient.index_path(project, database, collection, index)
+    assert expected == actual
+
+
+def test_parse_index_path():
+    expected = {
+        "project": "oyster",
+        "database": "nudibranch",
+        "collection": "cuttlefish",
+        "index": "mussel",
+    }
+    path = FirestoreAdminClient.index_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = FirestoreAdminClient.parse_index_path(path)
     assert expected == actual

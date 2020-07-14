@@ -54,9 +54,9 @@ class FirestoreAdminAsyncClient:
     DEFAULT_ENDPOINT = FirestoreAdminClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = FirestoreAdminClient.DEFAULT_MTLS_ENDPOINT
 
-    index_path = staticmethod(FirestoreAdminClient.index_path)
-
     field_path = staticmethod(FirestoreAdminClient.field_path)
+
+    index_path = staticmethod(FirestoreAdminClient.index_path)
 
     from_service_account_file = FirestoreAdminClient.from_service_account_file
     from_service_account_json = from_service_account_file

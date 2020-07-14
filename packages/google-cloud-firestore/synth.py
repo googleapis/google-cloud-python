@@ -21,7 +21,7 @@ AUTOSYNTH_MULTIPLE_COMMITS = True
 
 gapic = gcp.GAPICMicrogenerator()
 common = gcp.CommonTemplates()
-versions = ["v1beta1", "v1"]
+versions = ["v1"]
 admin_versions = ["v1"]
 
 
@@ -32,7 +32,8 @@ for version in versions:
     library = gapic.py_library(
         service="firestore",
         version=version,
-        proto_path=f"google/firestore/{version}"
+        proto_path=f"google/firestore/{version}",
+        generator_version="v0.26.5"
     )
 
     s.move(
@@ -41,19 +42,7 @@ for version in versions:
         excludes=[ library / f"google/firestore_{version}/__init__.py"]
     )
     
-    # Python Testing doesn't like modules named the same, can cause collisions in 
-    # import file mismatch:
-    # imported module 'test_firestore' has this __file__ attribute:
-    #   /Users/crwilcox/workspace/googleapis/python-firestore/tests/unit/gapic/firestore_v1/test_firestore.py
-    # which is not the same as the test file we want to collect:
-    # /Users/crwilcox/workspace/googleapis/python-firestore/tests/unit/gapic/firestore_v1beta1/test_firestore.py
-    # HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules
-    s.move(
-        library / f"tests/unit/gapic/firestore_{version}/test_firestore.py",
-        f"tests/unit/gapic/firestore_{version}/test_firestore_{version}.py"
-    )
-    
-    s.move(library / "scripts/fixup_keywords.py", f"scripts/fixup_keywords_{version}.py" )
+    s.move(library / "scripts" )
 
 
 # ----------------------------------------------------------------------------
@@ -69,7 +58,7 @@ for version in admin_versions:
     )
     s.move(library / f"google/firestore/admin_{version}", f"google/cloud/firestore_admin_{version}")
     s.move(library / "tests")
-    s.move(library / "scripts/fixup_keywords.py", f"scripts/fixup_keywords_admin_{version}.py" )
+    s.move(library / "scripts")
 
     s.replace(
         f"google/cloud/**/*.py",
