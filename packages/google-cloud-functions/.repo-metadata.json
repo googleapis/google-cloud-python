@@ -1,0 +1,12 @@
+{
+    "name": "cloudfunctions",
+    "name_pretty": "Cloud Functions",
+    "product_documentation": "https://cloud.google.com/functions/",
+    "client_documentation": "https://googleapis.dev/python/cloudfunctions/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/559729",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-functions",
+    "distribution_name": "google-cloud-functions",
+    "api_id": "cloudfunctions.googleapis.com"
+  }
