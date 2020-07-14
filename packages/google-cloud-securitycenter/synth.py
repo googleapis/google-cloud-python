@@ -15,6 +15,7 @@
 """This script is used to synthesize generated parts of this library."""
 import synthtool as s
 from synthtool import gcp
+from synthtool.languages import python
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
@@ -48,8 +49,10 @@ s.replace("google/**/security_marks_pb2.py",
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=88)
-s.move(templated_files, excludes=['noxfile.py'])
+templated_files = common.py_library(cov_level=88, samples=True)
+s.move(templated_files)
+
+python.py_samples(root="samples", skip_readmes=True)
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition
 s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
