@@ -16,6 +16,18 @@ from . import KIND, OTHER_KIND
 log = logging.getLogger(__name__)
 
 
+@pytest.fixture(scope="session", autouse=True)
+def preclean():
+    """Clean out default namespace in test database."""
+    ds_client = _make_ds_client(None)
+    for kind in (KIND, OTHER_KIND):
+        query = ds_client.query(kind=kind)
+        query.keys_only()
+        for page in query.fetch().pages:
+            keys = [entity.key for entity in page]
+            ds_client.delete_multi(keys)
+
+
 def _make_ds_client(namespace):
     emulator = bool(os.environ.get("DATASTORE_EMULATOR_HOST"))
     if emulator:

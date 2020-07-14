@@ -89,6 +89,12 @@ class TestQueryOptions:
         assert options.project == "app2"
         assert options.namespace == "foo"
 
+    @staticmethod
+    def test_explicitly_set_default_namespace(in_context):
+        with in_context.new(namespace="somethingelse").use() as context:
+            options = query_module.QueryOptions(context=context, namespace="")
+            assert options.namespace == ""
+
 
 class TestPropertyOrder:
     @staticmethod

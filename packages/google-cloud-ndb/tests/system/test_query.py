@@ -315,6 +315,39 @@ def test_namespace_set_on_client_with_id(dispose_of, other_namespace):
         assert results[0].key.namespace() == other_namespace
 
 
+def test_query_default_namespace_when_context_namespace_is_other(
+    client_context, dispose_of, other_namespace
+):
+    """Regression test for #476.
+
+    https://github.com/googleapis/python-ndb/issues/476
+    """
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    entity1 = SomeKind(foo=1, bar="a", id="x", namespace=other_namespace)
+    entity1.put()
+    dispose_of(entity1.key._key)
+
+    entity2 = SomeKind(foo=2, bar="b", id="x", namespace="")
+    entity2.put()
+    dispose_of(entity2.key._key)
+
+    eventually(
+        SomeKind.query(namespace=other_namespace).fetch, length_equals(1)
+    )
+
+    with client_context.new(namespace=other_namespace).use():
+        query = SomeKind.query(namespace="")
+        results = eventually(query.fetch, length_equals(1))
+
+    assert results[0].foo == 2
+    assert results[0].bar == "b"
+    assert results[0].key.namespace() is None
+
+
 @pytest.mark.usefixtures("client_context")
 def test_filter_equal(ds_entity):
     for i in range(5):

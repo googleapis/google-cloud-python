@@ -1281,7 +1281,7 @@ class QueryOptions(_options.ReadOptions):
             if not self.project:
                 self.project = context.client.project
 
-            if not self.namespace:
+            if self.namespace is None:
                 self.namespace = context.get_namespace()
 
 
