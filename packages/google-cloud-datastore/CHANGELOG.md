@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+### [1.13.1](https://www.github.com/googleapis/python-datastore/compare/v1.13.0...v1.13.1) (2020-07-13)
+
+
+### Bug Fixes
+
+* add missing datastore admin client files ([#43](https://www.github.com/googleapis/python-datastore/issues/43)) ([0d40f87](https://www.github.com/googleapis/python-datastore/commit/0d40f87eeacd2a256d4b45ccb742599b5df93096))
+
 ## [1.13.0](https://www.github.com/googleapis/python-datastore/compare/v1.12.0...v1.13.0) (2020-07-01)
 
 
