@@ -707,9 +707,9 @@ def test_{{ method.name|snake_case }}_pager():
         call.side_effect = (
             {{ method.output.ident }}(
                 {{ method.paged_result_field.name }}=[
-                    {{ method.paged_result_field.message.ident }}(),
-                    {{ method.paged_result_field.message.ident }}(),
-                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
                 ],
                 next_page_token='abc',
             ),
@@ -719,14 +719,14 @@ def test_{{ method.name|snake_case }}_pager():
             ),
             {{ method.output.ident }}(
                 {{ method.paged_result_field.name }}=[
-                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
                 ],
                 next_page_token='ghi',
             ),
             {{ method.output.ident }}(
                 {{ method.paged_result_field.name }}=[
-                    {{ method.paged_result_field.message.ident }}(),
-                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
                 ],
             ),
             RuntimeError,
@@ -750,7 +750,7 @@ def test_{{ method.name|snake_case }}_pager():
 
         results = [i for i in pager]
         assert len(results) == 6
-        assert all(isinstance(i, {{ method.paged_result_field.message.ident }})
+        assert all(isinstance(i, {{ method.paged_result_field.type.ident }})
                    for i in results)
 
 def test_{{ method.name|snake_case }}_pages():
@@ -766,9 +766,9 @@ def test_{{ method.name|snake_case }}_pages():
         call.side_effect = (
             {{ method.output.ident }}(
                 {{ method.paged_result_field.name }}=[
-                    {{ method.paged_result_field.message.ident }}(),
-                    {{ method.paged_result_field.message.ident }}(),
-                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
                 ],
                 next_page_token='abc',
             ),
@@ -778,14 +778,14 @@ def test_{{ method.name|snake_case }}_pages():
             ),
             {{ method.output.ident }}(
                 {{ method.paged_result_field.name }}=[
-                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
                 ],
                 next_page_token='ghi',
             ),
             {{ method.output.ident }}(
                 {{ method.paged_result_field.name }}=[
-                    {{ method.paged_result_field.message.ident }}(),
-                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
                 ],
             ),
             RuntimeError,
@@ -808,9 +808,9 @@ async def test_{{ method.name|snake_case }}_async_pager():
         call.side_effect = (
             {{ method.output.ident }}(
                 {{ method.paged_result_field.name }}=[
-                    {{ method.paged_result_field.message.ident }}(),
-                    {{ method.paged_result_field.message.ident }}(),
-                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
                 ],
                 next_page_token='abc',
             ),
@@ -820,14 +820,14 @@ async def test_{{ method.name|snake_case }}_async_pager():
             ),
             {{ method.output.ident }}(
                 {{ method.paged_result_field.name }}=[
-                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
                 ],
                 next_page_token='ghi',
             ),
             {{ method.output.ident }}(
                 {{ method.paged_result_field.name }}=[
-                    {{ method.paged_result_field.message.ident }}(),
-                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
                 ],
             ),
             RuntimeError,
@@ -839,7 +839,7 @@ async def test_{{ method.name|snake_case }}_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(isinstance(i, {{ method.paged_result_field.message.ident }})
+        assert all(isinstance(i, {{ method.paged_result_field.type.ident }})
                    for i in responses)
 
 @pytest.mark.asyncio
@@ -856,9 +856,9 @@ async def test_{{ method.name|snake_case }}_async_pages():
         call.side_effect = (
             {{ method.output.ident }}(
                 {{ method.paged_result_field.name }}=[
-                    {{ method.paged_result_field.message.ident }}(),
-                    {{ method.paged_result_field.message.ident }}(),
-                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
                 ],
                 next_page_token='abc',
             ),
@@ -868,14 +868,14 @@ async def test_{{ method.name|snake_case }}_async_pages():
             ),
             {{ method.output.ident }}(
                 {{ method.paged_result_field.name }}=[
-                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
                 ],
                 next_page_token='ghi',
             ),
             {{ method.output.ident }}(
                 {{ method.paged_result_field.name }}=[
-                    {{ method.paged_result_field.message.ident }}(),
-                    {{ method.paged_result_field.message.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
                 ],
             ),
             RuntimeError,

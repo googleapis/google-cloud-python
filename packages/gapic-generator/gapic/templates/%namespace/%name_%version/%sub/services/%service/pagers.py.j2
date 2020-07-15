@@ -12,7 +12,7 @@ from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, 
 {% for method in service.methods.values() | selectattr('paged_result_field') -%}
 {{ method.input.ident.python_import }}
 {{ method.output.ident.python_import }}
-{{ method.paged_result_field.message.ident.python_import }}
+{% if not method.paged_result_field.is_primitive %}{{ method.paged_result_field.message.ident.python_import }}{% endif %}
 {% endfor %}
 {% endfilter -%}
 {% endif %}
