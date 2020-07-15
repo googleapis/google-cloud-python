@@ -30,16 +30,10 @@ version = "1.25.0"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     'enum34; python_version < "3.4"',
-    "google-auth >= 1.9.0, < 2.0dev",
-    "google-api-core >= 1.15.0, < 2.0dev",
+    "google-api-core >= 1.21.0, < 2.0dev",
     "google-cloud-core >= 1.1.0, < 2.0dev",
     "google-resumable-media >= 0.5.0, < 0.6dev",
-    "protobuf >= 3.6.0",
     "six >=1.13.0,< 2.0.0dev",
-    # rsa >= 4.1 is not compatible with Python 2
-    # https://github.com/sybrenstuvel/python-rsa/issues/152
-    'rsa <4.1; python_version < "3"',
-    'rsa >=3.1.4, <5; python_version >= "3"',
 ]
 extras = {
     "bqstorage": [
