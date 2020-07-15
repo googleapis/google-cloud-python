@@ -67,6 +67,134 @@ class CustomException(Exception):
 
 
 class TestInstanceAdminClient(object):
+    def test_create_instance(self):
+        # Setup Expected Response
+        name = "name3373707"
+        config = "config-1354792126"
+        display_name = "displayName1615086568"
+        node_count = 1539922066
+        expected_response = {
+            "name": name,
+            "config": config,
+            "display_name": display_name,
+            "node_count": node_count,
+        }
+        expected_response = spanner_instance_admin_pb2.Instance(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_create_instance", done=True
+        )
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
+
+        # Setup Request
+        parent = client.project_path("[PROJECT]")
+        instance_id = "instanceId-2101995259"
+        instance = {}
+
+        response = client.create_instance(parent, instance_id, instance)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = spanner_instance_admin_pb2.CreateInstanceRequest(
+            parent=parent, instance_id=instance_id, instance=instance
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_create_instance_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_create_instance_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
+
+        # Setup Request
+        parent = client.project_path("[PROJECT]")
+        instance_id = "instanceId-2101995259"
+        instance = {}
+
+        response = client.create_instance(parent, instance_id, instance)
+        exception = response.exception()
+        assert exception.errors[0] == error
+
+    def test_update_instance(self):
+        # Setup Expected Response
+        name = "name3373707"
+        config = "config-1354792126"
+        display_name = "displayName1615086568"
+        node_count = 1539922066
+        expected_response = {
+            "name": name,
+            "config": config,
+            "display_name": display_name,
+            "node_count": node_count,
+        }
+        expected_response = spanner_instance_admin_pb2.Instance(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_update_instance", done=True
+        )
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
+
+        # Setup Request
+        instance = {}
+        field_mask = {}
+
+        response = client.update_instance(instance, field_mask)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = spanner_instance_admin_pb2.UpdateInstanceRequest(
+            instance=instance, field_mask=field_mask
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_update_instance_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_update_instance_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_instance_v1.InstanceAdminClient()
+
+        # Setup Request
+        instance = {}
+        field_mask = {}
+
+        response = client.update_instance(instance, field_mask)
+        exception = response.exception()
+        assert exception.errors[0] == error
+
     def test_list_instance_configs(self):
         # Setup Expected Response
         next_page_token = ""
@@ -252,134 +380,6 @@ class TestInstanceAdminClient(object):
 
         with pytest.raises(CustomException):
             client.get_instance(name)
-
-    def test_create_instance(self):
-        # Setup Expected Response
-        name = "name3373707"
-        config = "config-1354792126"
-        display_name = "displayName1615086568"
-        node_count = 1539922066
-        expected_response = {
-            "name": name,
-            "config": config,
-            "display_name": display_name,
-            "node_count": node_count,
-        }
-        expected_response = spanner_instance_admin_pb2.Instance(**expected_response)
-        operation = operations_pb2.Operation(
-            name="operations/test_create_instance", done=True
-        )
-        operation.response.Pack(expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[operation])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Setup Request
-        parent = client.project_path("[PROJECT]")
-        instance_id = "instanceId-2101995259"
-        instance = {}
-
-        response = client.create_instance(parent, instance_id, instance)
-        result = response.result()
-        assert expected_response == result
-
-        assert len(channel.requests) == 1
-        expected_request = spanner_instance_admin_pb2.CreateInstanceRequest(
-            parent=parent, instance_id=instance_id, instance=instance
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_create_instance_exception(self):
-        # Setup Response
-        error = status_pb2.Status()
-        operation = operations_pb2.Operation(
-            name="operations/test_create_instance_exception", done=True
-        )
-        operation.error.CopyFrom(error)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[operation])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Setup Request
-        parent = client.project_path("[PROJECT]")
-        instance_id = "instanceId-2101995259"
-        instance = {}
-
-        response = client.create_instance(parent, instance_id, instance)
-        exception = response.exception()
-        assert exception.errors[0] == error
-
-    def test_update_instance(self):
-        # Setup Expected Response
-        name = "name3373707"
-        config = "config-1354792126"
-        display_name = "displayName1615086568"
-        node_count = 1539922066
-        expected_response = {
-            "name": name,
-            "config": config,
-            "display_name": display_name,
-            "node_count": node_count,
-        }
-        expected_response = spanner_instance_admin_pb2.Instance(**expected_response)
-        operation = operations_pb2.Operation(
-            name="operations/test_update_instance", done=True
-        )
-        operation.response.Pack(expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[operation])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Setup Request
-        instance = {}
-        field_mask = {}
-
-        response = client.update_instance(instance, field_mask)
-        result = response.result()
-        assert expected_response == result
-
-        assert len(channel.requests) == 1
-        expected_request = spanner_instance_admin_pb2.UpdateInstanceRequest(
-            instance=instance, field_mask=field_mask
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_update_instance_exception(self):
-        # Setup Response
-        error = status_pb2.Status()
-        operation = operations_pb2.Operation(
-            name="operations/test_update_instance_exception", done=True
-        )
-        operation.error.CopyFrom(error)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[operation])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = spanner_admin_instance_v1.InstanceAdminClient()
-
-        # Setup Request
-        instance = {}
-        field_mask = {}
-
-        response = client.update_instance(instance, field_mask)
-        exception = response.exception()
-        assert exception.errors[0] == error
 
     def test_delete_instance(self):
         channel = ChannelStub()

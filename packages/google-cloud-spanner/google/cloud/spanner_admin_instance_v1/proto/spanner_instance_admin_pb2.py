@@ -1555,7 +1555,7 @@ GetInstanceRequest = _reflection.GeneratedProtocolMessageType(
           Required. The name of the requested instance. Values are of
           the form ``projects/<project>/instances/<instance>``.
       field_mask:
-          If field\_mask is present, specifies the subset of
+          If field_mask is present, specifies the subset of
           [Instance][google.spanner.admin.instance.v1.Instance] fields
           that should be returned. If absent, all
           [Instance][google.spanner.admin.instance.v1.Instance] fields

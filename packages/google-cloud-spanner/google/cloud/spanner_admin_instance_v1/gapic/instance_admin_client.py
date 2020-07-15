@@ -241,6 +241,277 @@ class InstanceAdminClient(object):
         self._inner_api_calls = {}
 
     # Service calls
+    def create_instance(
+        self,
+        parent,
+        instance_id,
+        instance,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Creates an instance and begins preparing it to begin serving. The
+        returned ``long-running operation`` can be used to track the progress of
+        preparing the new instance. The instance name is assigned by the caller.
+        If the named instance already exists, ``CreateInstance`` returns
+        ``ALREADY_EXISTS``.
+
+        Immediately upon completion of this request:
+
+        -  The instance is readable via the API, with all requested attributes
+           but no allocated resources. Its state is ``CREATING``.
+
+        Until completion of the returned operation:
+
+        -  Cancelling the operation renders the instance immediately unreadable
+           via the API.
+        -  The instance can be deleted.
+        -  All other attempts to modify the instance are rejected.
+
+        Upon completion of the returned operation:
+
+        -  Billing for all successfully-allocated resources begins (some types
+           may have lower than the requested levels).
+        -  Databases can be created in the instance.
+        -  The instance's allocated resource levels are readable via the API.
+        -  The instance's state becomes ``READY``.
+
+        The returned ``long-running operation`` will have a name of the format
+        ``<instance_name>/operations/<operation_id>`` and can be used to track
+        creation of the instance. The ``metadata`` field type is
+        ``CreateInstanceMetadata``. The ``response`` field type is ``Instance``,
+        if successful.
+
+        Example:
+            >>> from google.cloud import spanner_admin_instance_v1
+            >>>
+            >>> client = spanner_admin_instance_v1.InstanceAdminClient()
+            >>>
+            >>> parent = client.project_path('[PROJECT]')
+            >>>
+            >>> # TODO: Initialize `instance_id`:
+            >>> instance_id = ''
+            >>>
+            >>> # TODO: Initialize `instance`:
+            >>> instance = {}
+            >>>
+            >>> response = client.create_instance(parent, instance_id, instance)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+            >>>
+            >>> # Handle metadata.
+            >>> metadata = response.metadata()
+
+        Args:
+            parent (str): Required. The name of the project in which to create the instance.
+                Values are of the form ``projects/<project>``.
+            instance_id (str): Required. The ID of the instance to create. Valid identifiers are of
+                the form ``[a-z][-a-z0-9]*[a-z0-9]`` and must be between 2 and 64
+                characters in length.
+            instance (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.Instance]): Required. The instance to create. The name may be omitted, but if
+                specified must be ``<parent>/instances/<instance_id>``.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_admin_instance_v1.types.Instance`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.api_core.operation.Operation` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "create_instance" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "create_instance"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_instance,
+                default_retry=self._method_configs["CreateInstance"].retry,
+                default_timeout=self._method_configs["CreateInstance"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = spanner_instance_admin_pb2.CreateInstanceRequest(
+            parent=parent, instance_id=instance_id, instance=instance
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        operation = self._inner_api_calls["create_instance"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.transport._operations_client,
+            spanner_instance_admin_pb2.Instance,
+            metadata_type=spanner_instance_admin_pb2.CreateInstanceMetadata,
+        )
+
+    def update_instance(
+        self,
+        instance,
+        field_mask,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Updates an instance, and begins allocating or releasing resources as
+        requested. The returned ``long-running operation`` can be used to track
+        the progress of updating the instance. If the named instance does not
+        exist, returns ``NOT_FOUND``.
+
+        Immediately upon completion of this request:
+
+        -  For resource types for which a decrease in the instance's allocation
+           has been requested, billing is based on the newly-requested level.
+
+        Until completion of the returned operation:
+
+        -  Cancelling the operation sets its metadata's ``cancel_time``, and
+           begins restoring resources to their pre-request values. The operation
+           is guaranteed to succeed at undoing all resource changes, after which
+           point it terminates with a ``CANCELLED`` status.
+        -  All other attempts to modify the instance are rejected.
+        -  Reading the instance via the API continues to give the pre-request
+           resource levels.
+
+        Upon completion of the returned operation:
+
+        -  Billing begins for all successfully-allocated resources (some types
+           may have lower than the requested levels).
+        -  All newly-reserved resources are available for serving the instance's
+           tables.
+        -  The instance's new resource levels are readable via the API.
+
+        The returned ``long-running operation`` will have a name of the format
+        ``<instance_name>/operations/<operation_id>`` and can be used to track
+        the instance modification. The ``metadata`` field type is
+        ``UpdateInstanceMetadata``. The ``response`` field type is ``Instance``,
+        if successful.
+
+        Authorization requires ``spanner.instances.update`` permission on
+        resource ``name``.
+
+        Example:
+            >>> from google.cloud import spanner_admin_instance_v1
+            >>>
+            >>> client = spanner_admin_instance_v1.InstanceAdminClient()
+            >>>
+            >>> # TODO: Initialize `instance`:
+            >>> instance = {}
+            >>>
+            >>> # TODO: Initialize `field_mask`:
+            >>> field_mask = {}
+            >>>
+            >>> response = client.update_instance(instance, field_mask)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+            >>>
+            >>> # Handle metadata.
+            >>> metadata = response.metadata()
+
+        Args:
+            instance (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.Instance]): Required. The instance to update, which must always include the
+                instance name. Otherwise, only fields mentioned in ``field_mask`` need
+                be included.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_admin_instance_v1.types.Instance`
+            field_mask (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.FieldMask]): Required. A mask specifying which fields in ``Instance`` should be
+                updated. The field mask must always be specified; this prevents any
+                future fields in ``Instance`` from being erased accidentally by clients
+                that do not know about them.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_admin_instance_v1.types.FieldMask`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.api_core.operation.Operation` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "update_instance" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "update_instance"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_instance,
+                default_retry=self._method_configs["UpdateInstance"].retry,
+                default_timeout=self._method_configs["UpdateInstance"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = spanner_instance_admin_pb2.UpdateInstanceRequest(
+            instance=instance, field_mask=field_mask
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("instance.name", instance.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        operation = self._inner_api_calls["update_instance"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.transport._operations_client,
+            spanner_instance_admin_pb2.Instance,
+            metadata_type=spanner_instance_admin_pb2.UpdateInstanceMetadata,
+        )
+
     def list_instance_configs(
         self,
         parent,
@@ -616,277 +887,6 @@ class InstanceAdminClient(object):
 
         return self._inner_api_calls["get_instance"](
             request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def create_instance(
-        self,
-        parent,
-        instance_id,
-        instance,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Creates an instance and begins preparing it to begin serving. The
-        returned ``long-running operation`` can be used to track the progress of
-        preparing the new instance. The instance name is assigned by the caller.
-        If the named instance already exists, ``CreateInstance`` returns
-        ``ALREADY_EXISTS``.
-
-        Immediately upon completion of this request:
-
-        -  The instance is readable via the API, with all requested attributes
-           but no allocated resources. Its state is ``CREATING``.
-
-        Until completion of the returned operation:
-
-        -  Cancelling the operation renders the instance immediately unreadable
-           via the API.
-        -  The instance can be deleted.
-        -  All other attempts to modify the instance are rejected.
-
-        Upon completion of the returned operation:
-
-        -  Billing for all successfully-allocated resources begins (some types
-           may have lower than the requested levels).
-        -  Databases can be created in the instance.
-        -  The instance's allocated resource levels are readable via the API.
-        -  The instance's state becomes ``READY``.
-
-        The returned ``long-running operation`` will have a name of the format
-        ``<instance_name>/operations/<operation_id>`` and can be used to track
-        creation of the instance. The ``metadata`` field type is
-        ``CreateInstanceMetadata``. The ``response`` field type is ``Instance``,
-        if successful.
-
-        Example:
-            >>> from google.cloud import spanner_admin_instance_v1
-            >>>
-            >>> client = spanner_admin_instance_v1.InstanceAdminClient()
-            >>>
-            >>> parent = client.project_path('[PROJECT]')
-            >>>
-            >>> # TODO: Initialize `instance_id`:
-            >>> instance_id = ''
-            >>>
-            >>> # TODO: Initialize `instance`:
-            >>> instance = {}
-            >>>
-            >>> response = client.create_instance(parent, instance_id, instance)
-            >>>
-            >>> def callback(operation_future):
-            ...     # Handle result.
-            ...     result = operation_future.result()
-            >>>
-            >>> response.add_done_callback(callback)
-            >>>
-            >>> # Handle metadata.
-            >>> metadata = response.metadata()
-
-        Args:
-            parent (str): Required. The name of the project in which to create the instance.
-                Values are of the form ``projects/<project>``.
-            instance_id (str): Required. The ID of the instance to create. Valid identifiers are of
-                the form ``[a-z][-a-z0-9]*[a-z0-9]`` and must be between 2 and 64
-                characters in length.
-            instance (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.Instance]): Required. The instance to create. The name may be omitted, but if
-                specified must be ``<parent>/instances/<instance_id>``.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.spanner_admin_instance_v1.types.Instance`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.api_core.operation.Operation` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "create_instance" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "create_instance"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_instance,
-                default_retry=self._method_configs["CreateInstance"].retry,
-                default_timeout=self._method_configs["CreateInstance"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = spanner_instance_admin_pb2.CreateInstanceRequest(
-            parent=parent, instance_id=instance_id, instance=instance
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("parent", parent)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        operation = self._inner_api_calls["create_instance"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-        return google.api_core.operation.from_gapic(
-            operation,
-            self.transport._operations_client,
-            spanner_instance_admin_pb2.Instance,
-            metadata_type=spanner_instance_admin_pb2.CreateInstanceMetadata,
-        )
-
-    def update_instance(
-        self,
-        instance,
-        field_mask,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Updates an instance, and begins allocating or releasing resources as
-        requested. The returned ``long-running operation`` can be used to track
-        the progress of updating the instance. If the named instance does not
-        exist, returns ``NOT_FOUND``.
-
-        Immediately upon completion of this request:
-
-        -  For resource types for which a decrease in the instance's allocation
-           has been requested, billing is based on the newly-requested level.
-
-        Until completion of the returned operation:
-
-        -  Cancelling the operation sets its metadata's ``cancel_time``, and
-           begins restoring resources to their pre-request values. The operation
-           is guaranteed to succeed at undoing all resource changes, after which
-           point it terminates with a ``CANCELLED`` status.
-        -  All other attempts to modify the instance are rejected.
-        -  Reading the instance via the API continues to give the pre-request
-           resource levels.
-
-        Upon completion of the returned operation:
-
-        -  Billing begins for all successfully-allocated resources (some types
-           may have lower than the requested levels).
-        -  All newly-reserved resources are available for serving the instance's
-           tables.
-        -  The instance's new resource levels are readable via the API.
-
-        The returned ``long-running operation`` will have a name of the format
-        ``<instance_name>/operations/<operation_id>`` and can be used to track
-        the instance modification. The ``metadata`` field type is
-        ``UpdateInstanceMetadata``. The ``response`` field type is ``Instance``,
-        if successful.
-
-        Authorization requires ``spanner.instances.update`` permission on
-        resource ``name``.
-
-        Example:
-            >>> from google.cloud import spanner_admin_instance_v1
-            >>>
-            >>> client = spanner_admin_instance_v1.InstanceAdminClient()
-            >>>
-            >>> # TODO: Initialize `instance`:
-            >>> instance = {}
-            >>>
-            >>> # TODO: Initialize `field_mask`:
-            >>> field_mask = {}
-            >>>
-            >>> response = client.update_instance(instance, field_mask)
-            >>>
-            >>> def callback(operation_future):
-            ...     # Handle result.
-            ...     result = operation_future.result()
-            >>>
-            >>> response.add_done_callback(callback)
-            >>>
-            >>> # Handle metadata.
-            >>> metadata = response.metadata()
-
-        Args:
-            instance (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.Instance]): Required. The instance to update, which must always include the
-                instance name. Otherwise, only fields mentioned in ``field_mask`` need
-                be included.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.spanner_admin_instance_v1.types.Instance`
-            field_mask (Union[dict, ~google.cloud.spanner_admin_instance_v1.types.FieldMask]): Required. A mask specifying which fields in ``Instance`` should be
-                updated. The field mask must always be specified; this prevents any
-                future fields in ``Instance`` from being erased accidentally by clients
-                that do not know about them.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.spanner_admin_instance_v1.types.FieldMask`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.api_core.operation.Operation` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "update_instance" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "update_instance"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.update_instance,
-                default_retry=self._method_configs["UpdateInstance"].retry,
-                default_timeout=self._method_configs["UpdateInstance"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = spanner_instance_admin_pb2.UpdateInstanceRequest(
-            instance=instance, field_mask=field_mask
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("instance.name", instance.name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        operation = self._inner_api_calls["update_instance"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-        return google.api_core.operation.from_gapic(
-            operation,
-            self.transport._operations_client,
-            spanner_instance_admin_pb2.Instance,
-            metadata_type=spanner_instance_admin_pb2.UpdateInstanceMetadata,
         )
 
     def delete_instance(

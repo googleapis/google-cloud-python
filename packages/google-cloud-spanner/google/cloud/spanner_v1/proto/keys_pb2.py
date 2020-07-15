@@ -347,7 +347,7 @@ KeySet = _reflection.GeneratedProtocolMessageType(
     {
         "DESCRIPTOR": _KEYSET,
         "__module__": "google.cloud.spanner_v1.proto.keys_pb2",
-        "__doc__": """\ ``KeySet`` defines a collection of Cloud Spanner keys and/or key
+        "__doc__": """``KeySet`` defines a collection of Cloud Spanner keys and/or key
   ranges. All the keys are expected to be in the same table or index.
   The keys need not be sorted in any particular way.  If the same key is
   specified multiple times in the set (for example if two ranges, two

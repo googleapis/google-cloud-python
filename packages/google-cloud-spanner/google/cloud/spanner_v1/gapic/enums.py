@@ -65,6 +65,14 @@ class TypeCode(enum.IntEnum):
       STRUCT (int): Encoded as ``list``, where list element ``i`` is represented
       according to
       [struct_type.fields[i]][google.spanner.v1.StructType.fields].
+      NUMERIC (int): Encoded as ``string``, in decimal format or scientific notation
+      format. Decimal format: \ ``[+-]Digits[.[Digits]]`` or
+      \``+-\ ``.Digits``
+
+      Scientific notation:
+      \ ``[+-]Digits[.[Digits]][ExponentIndicator[+-]Digits]`` or
+      \``+-\ ``.Digits[ExponentIndicator[+-]Digits]`` (ExponentIndicator is
+      \`"e"\` or \`"E"`)
     """
 
     TYPE_CODE_UNSPECIFIED = 0
@@ -77,6 +85,7 @@ class TypeCode(enum.IntEnum):
     BYTES = 7
     ARRAY = 8
     STRUCT = 9
+    NUMERIC = 10
 
 
 class ExecuteSqlRequest(object):

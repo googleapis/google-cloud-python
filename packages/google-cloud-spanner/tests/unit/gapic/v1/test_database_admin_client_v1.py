@@ -68,53 +68,6 @@ class CustomException(Exception):
 
 
 class TestDatabaseAdminClient(object):
-    def test_list_databases(self):
-        # Setup Expected Response
-        next_page_token = ""
-        databases_element = {}
-        databases = [databases_element]
-        expected_response = {"next_page_token": next_page_token, "databases": databases}
-        expected_response = spanner_database_admin_pb2.ListDatabasesResponse(
-            **expected_response
-        )
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Setup Request
-        parent = client.instance_path("[PROJECT]", "[INSTANCE]")
-
-        paged_list_response = client.list_databases(parent)
-        resources = list(paged_list_response)
-        assert len(resources) == 1
-
-        assert expected_response.databases[0] == resources[0]
-
-        assert len(channel.requests) == 1
-        expected_request = spanner_database_admin_pb2.ListDatabasesRequest(
-            parent=parent
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_list_databases_exception(self):
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Setup request
-        parent = client.instance_path("[PROJECT]", "[INSTANCE]")
-
-        paged_list_response = client.list_databases(parent)
-        with pytest.raises(CustomException):
-            list(paged_list_response)
-
     def test_create_database(self):
         # Setup Expected Response
         name = "name3373707"
@@ -170,44 +123,6 @@ class TestDatabaseAdminClient(object):
         exception = response.exception()
         assert exception.errors[0] == error
 
-    def test_get_database(self):
-        # Setup Expected Response
-        name_2 = "name2-1052831874"
-        expected_response = {"name": name_2}
-        expected_response = spanner_database_admin_pb2.Database(**expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Setup Request
-        name = client.database_path("[PROJECT]", "[INSTANCE]", "[DATABASE]")
-
-        response = client.get_database(name)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = spanner_database_admin_pb2.GetDatabaseRequest(name=name)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_get_database_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Setup request
-        name = client.database_path("[PROJECT]", "[INSTANCE]", "[DATABASE]")
-
-        with pytest.raises(CustomException):
-            client.get_database(name)
-
     def test_update_database_ddl(self):
         # Setup Expected Response
         expected_response = {}
@@ -261,6 +176,209 @@ class TestDatabaseAdminClient(object):
         response = client.update_database_ddl(database, statements)
         exception = response.exception()
         assert exception.errors[0] == error
+
+    def test_create_backup(self):
+        # Setup Expected Response
+        database = "database1789464955"
+        name = "name3373707"
+        size_bytes = 1796325715
+        expected_response = {
+            "database": database,
+            "name": name,
+            "size_bytes": size_bytes,
+        }
+        expected_response = backup_pb2.Backup(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_create_backup", done=True
+        )
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
+
+        # Setup Request
+        parent = client.instance_path("[PROJECT]", "[INSTANCE]")
+        backup_id = "backupId1355353272"
+        backup = {}
+
+        response = client.create_backup(parent, backup_id, backup)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = backup_pb2.CreateBackupRequest(
+            parent=parent, backup_id=backup_id, backup=backup
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_create_backup_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_create_backup_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
+
+        # Setup Request
+        parent = client.instance_path("[PROJECT]", "[INSTANCE]")
+        backup_id = "backupId1355353272"
+        backup = {}
+
+        response = client.create_backup(parent, backup_id, backup)
+        exception = response.exception()
+        assert exception.errors[0] == error
+
+    def test_restore_database(self):
+        # Setup Expected Response
+        name = "name3373707"
+        expected_response = {"name": name}
+        expected_response = spanner_database_admin_pb2.Database(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_restore_database", done=True
+        )
+        operation.response.Pack(expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
+
+        # Setup Request
+        parent = client.instance_path("[PROJECT]", "[INSTANCE]")
+        database_id = "databaseId816491103"
+
+        response = client.restore_database(parent, database_id)
+        result = response.result()
+        assert expected_response == result
+
+        assert len(channel.requests) == 1
+        expected_request = spanner_database_admin_pb2.RestoreDatabaseRequest(
+            parent=parent, database_id=database_id
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_restore_database_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_restore_database_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[operation])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
+
+        # Setup Request
+        parent = client.instance_path("[PROJECT]", "[INSTANCE]")
+        database_id = "databaseId816491103"
+
+        response = client.restore_database(parent, database_id)
+        exception = response.exception()
+        assert exception.errors[0] == error
+
+    def test_list_databases(self):
+        # Setup Expected Response
+        next_page_token = ""
+        databases_element = {}
+        databases = [databases_element]
+        expected_response = {"next_page_token": next_page_token, "databases": databases}
+        expected_response = spanner_database_admin_pb2.ListDatabasesResponse(
+            **expected_response
+        )
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
+
+        # Setup Request
+        parent = client.instance_path("[PROJECT]", "[INSTANCE]")
+
+        paged_list_response = client.list_databases(parent)
+        resources = list(paged_list_response)
+        assert len(resources) == 1
+
+        assert expected_response.databases[0] == resources[0]
+
+        assert len(channel.requests) == 1
+        expected_request = spanner_database_admin_pb2.ListDatabasesRequest(
+            parent=parent
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_list_databases_exception(self):
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
+
+        # Setup request
+        parent = client.instance_path("[PROJECT]", "[INSTANCE]")
+
+        paged_list_response = client.list_databases(parent)
+        with pytest.raises(CustomException):
+            list(paged_list_response)
+
+    def test_get_database(self):
+        # Setup Expected Response
+        name_2 = "name2-1052831874"
+        expected_response = {"name": name_2}
+        expected_response = spanner_database_admin_pb2.Database(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
+
+        # Setup Request
+        name = client.database_path("[PROJECT]", "[INSTANCE]", "[DATABASE]")
+
+        response = client.get_database(name)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = spanner_database_admin_pb2.GetDatabaseRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_get_database_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = spanner_admin_database_v1.DatabaseAdminClient()
+
+        # Setup request
+        name = client.database_path("[PROJECT]", "[INSTANCE]", "[DATABASE]")
+
+        with pytest.raises(CustomException):
+            client.get_database(name)
 
     def test_drop_database(self):
         channel = ChannelStub()
@@ -461,69 +579,6 @@ class TestDatabaseAdminClient(object):
         with pytest.raises(CustomException):
             client.test_iam_permissions(resource, permissions)
 
-    def test_create_backup(self):
-        # Setup Expected Response
-        database = "database1789464955"
-        name = "name3373707"
-        size_bytes = 1796325715
-        expected_response = {
-            "database": database,
-            "name": name,
-            "size_bytes": size_bytes,
-        }
-        expected_response = backup_pb2.Backup(**expected_response)
-        operation = operations_pb2.Operation(
-            name="operations/test_create_backup", done=True
-        )
-        operation.response.Pack(expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[operation])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Setup Request
-        parent = client.instance_path("[PROJECT]", "[INSTANCE]")
-        backup_id = "backupId1355353272"
-        backup = {}
-
-        response = client.create_backup(parent, backup_id, backup)
-        result = response.result()
-        assert expected_response == result
-
-        assert len(channel.requests) == 1
-        expected_request = backup_pb2.CreateBackupRequest(
-            parent=parent, backup_id=backup_id, backup=backup
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_create_backup_exception(self):
-        # Setup Response
-        error = status_pb2.Status()
-        operation = operations_pb2.Operation(
-            name="operations/test_create_backup_exception", done=True
-        )
-        operation.error.CopyFrom(error)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[operation])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Setup Request
-        parent = client.instance_path("[PROJECT]", "[INSTANCE]")
-        backup_id = "backupId1355353272"
-        backup = {}
-
-        response = client.create_backup(parent, backup_id, backup)
-        exception = response.exception()
-        assert exception.errors[0] == error
-
     def test_get_backup(self):
         # Setup Expected Response
         database = "database1789464955"
@@ -689,61 +744,6 @@ class TestDatabaseAdminClient(object):
         paged_list_response = client.list_backups(parent)
         with pytest.raises(CustomException):
             list(paged_list_response)
-
-    def test_restore_database(self):
-        # Setup Expected Response
-        name = "name3373707"
-        expected_response = {"name": name}
-        expected_response = spanner_database_admin_pb2.Database(**expected_response)
-        operation = operations_pb2.Operation(
-            name="operations/test_restore_database", done=True
-        )
-        operation.response.Pack(expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[operation])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Setup Request
-        parent = client.instance_path("[PROJECT]", "[INSTANCE]")
-        database_id = "databaseId816491103"
-
-        response = client.restore_database(parent, database_id)
-        result = response.result()
-        assert expected_response == result
-
-        assert len(channel.requests) == 1
-        expected_request = spanner_database_admin_pb2.RestoreDatabaseRequest(
-            parent=parent, database_id=database_id
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_restore_database_exception(self):
-        # Setup Response
-        error = status_pb2.Status()
-        operation = operations_pb2.Operation(
-            name="operations/test_restore_database_exception", done=True
-        )
-        operation.error.CopyFrom(error)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[operation])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = spanner_admin_database_v1.DatabaseAdminClient()
-
-        # Setup Request
-        parent = client.instance_path("[PROJECT]", "[INSTANCE]")
-        database_id = "databaseId816491103"
-
-        response = client.restore_database(parent, database_id)
-        exception = response.exception()
-        assert exception.errors[0] == error
 
     def test_list_database_operations(self):
         # Setup Expected Response

@@ -2994,10 +2994,10 @@ PartitionReadRequest = _reflection.GeneratedProtocolMessageType(
           [table][google.spanner.v1.PartitionReadRequest.table]. This
           index is used instead of the table primary key when
           interpreting
-          [key\_set][google.spanner.v1.PartitionReadRequest.key\_set]
-          and sorting result rows. See
-          [key\_set][google.spanner.v1.PartitionReadRequest.key\_set]
-          for further information.
+          [key_set][google.spanner.v1.PartitionReadRequest.key_set] and
+          sorting result rows. See
+          [key_set][google.spanner.v1.PartitionReadRequest.key_set] for
+          further information.
       columns:
           The columns of
           [table][google.spanner.v1.PartitionReadRequest.table] to be
@@ -3011,7 +3011,7 @@ PartitionReadRequest = _reflection.GeneratedProtocolMessageType(
           present. If
           [index][google.spanner.v1.PartitionReadRequest.index] is
           present, then
-          [key\_set][google.spanner.v1.PartitionReadRequest.key\_set]
+          [key_set][google.spanner.v1.PartitionReadRequest.key_set]
           instead names index keys in
           [index][google.spanner.v1.PartitionReadRequest.index].  It is
           not an error for the ``key_set`` to name rows that do not
@@ -3133,7 +3133,7 @@ ReadRequest = _reflection.GeneratedProtocolMessageType(
           partition previously created using PartitionRead(). There must
           be an exact match for the values of fields common to this
           message and the PartitionReadRequest message used to create
-          this partition\_token.
+          this partition_token.
   """,
         # @@protoc_insertion_point(class_scope:google.spanner.v1.ReadRequest)
     },

@@ -121,58 +121,6 @@ class InstanceAdminGrpcTransport(object):
         return self._channel
 
     @property
-    def list_instance_configs(self):
-        """Return the gRPC stub for :meth:`InstanceAdminClient.list_instance_configs`.
-
-        Lists the supported instance configurations for a given project.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["instance_admin_stub"].ListInstanceConfigs
-
-    @property
-    def get_instance_config(self):
-        """Return the gRPC stub for :meth:`InstanceAdminClient.get_instance_config`.
-
-        Gets information about a particular instance configuration.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["instance_admin_stub"].GetInstanceConfig
-
-    @property
-    def list_instances(self):
-        """Return the gRPC stub for :meth:`InstanceAdminClient.list_instances`.
-
-        Lists all instances in the given project.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["instance_admin_stub"].ListInstances
-
-    @property
-    def get_instance(self):
-        """Return the gRPC stub for :meth:`InstanceAdminClient.get_instance`.
-
-        Gets information about a particular instance.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["instance_admin_stub"].GetInstance
-
-    @property
     def create_instance(self):
         """Return the gRPC stub for :meth:`InstanceAdminClient.create_instance`.
 
@@ -262,6 +210,58 @@ class InstanceAdminGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["instance_admin_stub"].UpdateInstance
+
+    @property
+    def list_instance_configs(self):
+        """Return the gRPC stub for :meth:`InstanceAdminClient.list_instance_configs`.
+
+        Lists the supported instance configurations for a given project.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["instance_admin_stub"].ListInstanceConfigs
+
+    @property
+    def get_instance_config(self):
+        """Return the gRPC stub for :meth:`InstanceAdminClient.get_instance_config`.
+
+        Gets information about a particular instance configuration.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["instance_admin_stub"].GetInstanceConfig
+
+    @property
+    def list_instances(self):
+        """Return the gRPC stub for :meth:`InstanceAdminClient.list_instances`.
+
+        Lists all instances in the given project.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["instance_admin_stub"].ListInstances
+
+    @property
+    def get_instance(self):
+        """Return the gRPC stub for :meth:`InstanceAdminClient.get_instance`.
+
+        Gets information about a particular instance.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["instance_admin_stub"].GetInstance
 
     @property
     def delete_instance(self):

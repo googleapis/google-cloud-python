@@ -232,110 +232,6 @@ class DatabaseAdminClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def list_databases(
-        self,
-        parent,
-        page_size=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Lists Cloud Spanner databases.
-
-        Example:
-            >>> from google.cloud import spanner_admin_database_v1
-            >>>
-            >>> client = spanner_admin_database_v1.DatabaseAdminClient()
-            >>>
-            >>> parent = client.instance_path('[PROJECT]', '[INSTANCE]')
-            >>>
-            >>> # Iterate over all results
-            >>> for element in client.list_databases(parent):
-            ...     # process element
-            ...     pass
-            >>>
-            >>>
-            >>> # Alternatively:
-            >>>
-            >>> # Iterate over results one page at a time
-            >>> for page in client.list_databases(parent).pages:
-            ...     for element in page:
-            ...         # process element
-            ...         pass
-
-        Args:
-            parent (str): Required. The instance whose databases should be listed. Values are
-                of the form ``projects/<project>/instances/<instance>``.
-            page_size (int): The maximum number of resources contained in the
-                underlying API response. If page streaming is performed per-
-                resource, this parameter does not affect the return value. If page
-                streaming is performed per-page, this determines the maximum number
-                of resources in a page.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.api_core.page_iterator.PageIterator` instance.
-            An iterable of :class:`~google.cloud.spanner_admin_database_v1.types.Database` instances.
-            You can also iterate over the pages of the response
-            using its `pages` property.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "list_databases" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "list_databases"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.list_databases,
-                default_retry=self._method_configs["ListDatabases"].retry,
-                default_timeout=self._method_configs["ListDatabases"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = spanner_database_admin_pb2.ListDatabasesRequest(
-            parent=parent, page_size=page_size
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("parent", parent)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        iterator = google.api_core.page_iterator.GRPCIterator(
-            client=None,
-            method=functools.partial(
-                self._inner_api_calls["list_databases"],
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            ),
-            request=request,
-            items_field="databases",
-            request_token_field="page_token",
-            response_token_field="next_page_token",
-        )
-        return iterator
-
     def create_database(
         self,
         parent,
@@ -442,76 +338,6 @@ class DatabaseAdminClient(object):
             self.transport._operations_client,
             spanner_database_admin_pb2.Database,
             metadata_type=spanner_database_admin_pb2.CreateDatabaseMetadata,
-        )
-
-    def get_database(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Gets the state of a Cloud Spanner database.
-
-        Example:
-            >>> from google.cloud import spanner_admin_database_v1
-            >>>
-            >>> client = spanner_admin_database_v1.DatabaseAdminClient()
-            >>>
-            >>> name = client.database_path('[PROJECT]', '[INSTANCE]', '[DATABASE]')
-            >>>
-            >>> response = client.get_database(name)
-
-        Args:
-            name (str): Required. The name of the requested database. Values are of the form
-                ``projects/<project>/instances/<instance>/databases/<database>``.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.spanner_admin_database_v1.types.Database` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "get_database" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "get_database"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_database,
-                default_retry=self._method_configs["GetDatabase"].retry,
-                default_timeout=self._method_configs["GetDatabase"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = spanner_database_admin_pb2.GetDatabaseRequest(name=name)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["get_database"](
-            request, retry=retry, timeout=timeout, metadata=metadata
         )
 
     def update_database_ddl(
@@ -624,6 +450,409 @@ class DatabaseAdminClient(object):
             self.transport._operations_client,
             empty_pb2.Empty,
             metadata_type=spanner_database_admin_pb2.UpdateDatabaseDdlMetadata,
+        )
+
+    def create_backup(
+        self,
+        parent,
+        backup_id,
+        backup,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Starts creating a new Cloud Spanner Backup. The returned backup
+        ``long-running operation`` will have a name of the format
+        ``projects/<project>/instances/<instance>/backups/<backup>/operations/<operation_id>``
+        and can be used to track creation of the backup. The ``metadata`` field
+        type is ``CreateBackupMetadata``. The ``response`` field type is
+        ``Backup``, if successful. Cancelling the returned operation will stop
+        the creation and delete the backup. There can be only one pending backup
+        creation per database. Backup creation of different databases can run
+        concurrently.
+
+        Example:
+            >>> from google.cloud import spanner_admin_database_v1
+            >>>
+            >>> client = spanner_admin_database_v1.DatabaseAdminClient()
+            >>>
+            >>> parent = client.instance_path('[PROJECT]', '[INSTANCE]')
+            >>>
+            >>> # TODO: Initialize `backup_id`:
+            >>> backup_id = ''
+            >>>
+            >>> # TODO: Initialize `backup`:
+            >>> backup = {}
+            >>>
+            >>> response = client.create_backup(parent, backup_id, backup)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+            >>>
+            >>> # Handle metadata.
+            >>> metadata = response.metadata()
+
+        Args:
+            parent (str): Required. The name of the instance in which the backup will be
+                created. This must be the same instance that contains the database the
+                backup will be created from. The backup will be stored in the
+                location(s) specified in the instance configuration of this instance.
+                Values are of the form ``projects/<project>/instances/<instance>``.
+            backup_id (str): Required. The id of the backup to be created. The ``backup_id``
+                appended to ``parent`` forms the full backup name of the form
+                ``projects/<project>/instances/<instance>/backups/<backup_id>``.
+            backup (Union[dict, ~google.cloud.spanner_admin_database_v1.types.Backup]): Required. The backup to create.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_admin_database_v1.types.Backup`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.api_core.operation.Operation` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "create_backup" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "create_backup"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_backup,
+                default_retry=self._method_configs["CreateBackup"].retry,
+                default_timeout=self._method_configs["CreateBackup"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = backup_pb2.CreateBackupRequest(
+            parent=parent, backup_id=backup_id, backup=backup
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        operation = self._inner_api_calls["create_backup"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.transport._operations_client,
+            backup_pb2.Backup,
+            metadata_type=backup_pb2.CreateBackupMetadata,
+        )
+
+    def restore_database(
+        self,
+        parent,
+        database_id,
+        backup=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Create a new database by restoring from a completed backup. The new
+        database must be in the same project and in an instance with the same
+        instance configuration as the instance containing the backup. The
+        returned database ``long-running operation`` has a name of the format
+        ``projects/<project>/instances/<instance>/databases/<database>/operations/<operation_id>``,
+        and can be used to track the progress of the operation, and to cancel
+        it. The ``metadata`` field type is ``RestoreDatabaseMetadata``. The
+        ``response`` type is ``Database``, if successful. Cancelling the
+        returned operation will stop the restore and delete the database. There
+        can be only one database being restored into an instance at a time. Once
+        the restore operation completes, a new restore operation can be
+        initiated, without waiting for the optimize operation associated with
+        the first restore to complete.
+
+        Example:
+            >>> from google.cloud import spanner_admin_database_v1
+            >>>
+            >>> client = spanner_admin_database_v1.DatabaseAdminClient()
+            >>>
+            >>> parent = client.instance_path('[PROJECT]', '[INSTANCE]')
+            >>>
+            >>> # TODO: Initialize `database_id`:
+            >>> database_id = ''
+            >>>
+            >>> response = client.restore_database(parent, database_id)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+            >>>
+            >>> # Handle metadata.
+            >>> metadata = response.metadata()
+
+        Args:
+            parent (str): Required. The name of the instance in which to create the restored
+                database. This instance must be in the same project and have the same
+                instance configuration as the instance containing the source backup.
+                Values are of the form ``projects/<project>/instances/<instance>``.
+            database_id (str): Required. The id of the database to create and restore to. This
+                database must not already exist. The ``database_id`` appended to
+                ``parent`` forms the full database name of the form
+                ``projects/<project>/instances/<instance>/databases/<database_id>``.
+            backup (str): Name of the backup from which to restore. Values are of the form
+                ``projects/<project>/instances/<instance>/backups/<backup>``.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.api_core.operation.Operation` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "restore_database" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "restore_database"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.restore_database,
+                default_retry=self._method_configs["RestoreDatabase"].retry,
+                default_timeout=self._method_configs["RestoreDatabase"].timeout,
+                client_info=self._client_info,
+            )
+
+        # Sanity check: We have some fields which are mutually exclusive;
+        # raise ValueError if more than one is sent.
+        google.api_core.protobuf_helpers.check_oneof(backup=backup)
+
+        request = spanner_database_admin_pb2.RestoreDatabaseRequest(
+            parent=parent, database_id=database_id, backup=backup
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        operation = self._inner_api_calls["restore_database"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.transport._operations_client,
+            spanner_database_admin_pb2.Database,
+            metadata_type=spanner_database_admin_pb2.RestoreDatabaseMetadata,
+        )
+
+    def list_databases(
+        self,
+        parent,
+        page_size=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Lists Cloud Spanner databases.
+
+        Example:
+            >>> from google.cloud import spanner_admin_database_v1
+            >>>
+            >>> client = spanner_admin_database_v1.DatabaseAdminClient()
+            >>>
+            >>> parent = client.instance_path('[PROJECT]', '[INSTANCE]')
+            >>>
+            >>> # Iterate over all results
+            >>> for element in client.list_databases(parent):
+            ...     # process element
+            ...     pass
+            >>>
+            >>>
+            >>> # Alternatively:
+            >>>
+            >>> # Iterate over results one page at a time
+            >>> for page in client.list_databases(parent).pages:
+            ...     for element in page:
+            ...         # process element
+            ...         pass
+
+        Args:
+            parent (str): Required. The instance whose databases should be listed. Values are
+                of the form ``projects/<project>/instances/<instance>``.
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.api_core.page_iterator.PageIterator` instance.
+            An iterable of :class:`~google.cloud.spanner_admin_database_v1.types.Database` instances.
+            You can also iterate over the pages of the response
+            using its `pages` property.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "list_databases" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "list_databases"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.list_databases,
+                default_retry=self._method_configs["ListDatabases"].retry,
+                default_timeout=self._method_configs["ListDatabases"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = spanner_database_admin_pb2.ListDatabasesRequest(
+            parent=parent, page_size=page_size
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._inner_api_calls["list_databases"],
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            ),
+            request=request,
+            items_field="databases",
+            request_token_field="page_token",
+            response_token_field="next_page_token",
+        )
+        return iterator
+
+    def get_database(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Gets the state of a Cloud Spanner database.
+
+        Example:
+            >>> from google.cloud import spanner_admin_database_v1
+            >>>
+            >>> client = spanner_admin_database_v1.DatabaseAdminClient()
+            >>>
+            >>> name = client.database_path('[PROJECT]', '[INSTANCE]', '[DATABASE]')
+            >>>
+            >>> response = client.get_database(name)
+
+        Args:
+            name (str): Required. The name of the requested database. Values are of the form
+                ``projects/<project>/instances/<instance>/databases/<database>``.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.spanner_admin_database_v1.types.Database` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_database" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_database"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_database,
+                default_retry=self._method_configs["GetDatabase"].retry,
+                default_timeout=self._method_configs["GetDatabase"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = spanner_database_admin_pb2.GetDatabaseRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["get_database"](
+            request, retry=retry, timeout=timeout, metadata=metadata
         )
 
     def drop_database(
@@ -1025,119 +1254,6 @@ class DatabaseAdminClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
-    def create_backup(
-        self,
-        parent,
-        backup_id,
-        backup,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Starts creating a new Cloud Spanner Backup. The returned backup
-        ``long-running operation`` will have a name of the format
-        ``projects/<project>/instances/<instance>/backups/<backup>/operations/<operation_id>``
-        and can be used to track creation of the backup. The ``metadata`` field
-        type is ``CreateBackupMetadata``. The ``response`` field type is
-        ``Backup``, if successful. Cancelling the returned operation will stop
-        the creation and delete the backup. There can be only one pending backup
-        creation per database. Backup creation of different databases can run
-        concurrently.
-
-        Example:
-            >>> from google.cloud import spanner_admin_database_v1
-            >>>
-            >>> client = spanner_admin_database_v1.DatabaseAdminClient()
-            >>>
-            >>> parent = client.instance_path('[PROJECT]', '[INSTANCE]')
-            >>>
-            >>> # TODO: Initialize `backup_id`:
-            >>> backup_id = ''
-            >>>
-            >>> # TODO: Initialize `backup`:
-            >>> backup = {}
-            >>>
-            >>> response = client.create_backup(parent, backup_id, backup)
-            >>>
-            >>> def callback(operation_future):
-            ...     # Handle result.
-            ...     result = operation_future.result()
-            >>>
-            >>> response.add_done_callback(callback)
-            >>>
-            >>> # Handle metadata.
-            >>> metadata = response.metadata()
-
-        Args:
-            parent (str): Required. The name of the instance in which the backup will be
-                created. This must be the same instance that contains the database the
-                backup will be created from. The backup will be stored in the
-                location(s) specified in the instance configuration of this instance.
-                Values are of the form ``projects/<project>/instances/<instance>``.
-            backup_id (str): Required. The id of the backup to be created. The ``backup_id``
-                appended to ``parent`` forms the full backup name of the form
-                ``projects/<project>/instances/<instance>/backups/<backup_id>``.
-            backup (Union[dict, ~google.cloud.spanner_admin_database_v1.types.Backup]): Required. The backup to create.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.spanner_admin_database_v1.types.Backup`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.api_core.operation.Operation` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "create_backup" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "create_backup"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_backup,
-                default_retry=self._method_configs["CreateBackup"].retry,
-                default_timeout=self._method_configs["CreateBackup"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = backup_pb2.CreateBackupRequest(
-            parent=parent, backup_id=backup_id, backup=backup
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("parent", parent)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        operation = self._inner_api_calls["create_backup"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-        return google.api_core.operation.from_gapic(
-            operation,
-            self.transport._operations_client,
-            backup_pb2.Backup,
-            metadata_type=backup_pb2.CreateBackupMetadata,
-        )
-
     def get_backup(
         self,
         name,
@@ -1503,122 +1619,6 @@ class DatabaseAdminClient(object):
             response_token_field="next_page_token",
         )
         return iterator
-
-    def restore_database(
-        self,
-        parent,
-        database_id,
-        backup=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Create a new database by restoring from a completed backup. The new
-        database must be in the same project and in an instance with the same
-        instance configuration as the instance containing the backup. The
-        returned database ``long-running operation`` has a name of the format
-        ``projects/<project>/instances/<instance>/databases/<database>/operations/<operation_id>``,
-        and can be used to track the progress of the operation, and to cancel
-        it. The ``metadata`` field type is ``RestoreDatabaseMetadata``. The
-        ``response`` type is ``Database``, if successful. Cancelling the
-        returned operation will stop the restore and delete the database. There
-        can be only one database being restored into an instance at a time. Once
-        the restore operation completes, a new restore operation can be
-        initiated, without waiting for the optimize operation associated with
-        the first restore to complete.
-
-        Example:
-            >>> from google.cloud import spanner_admin_database_v1
-            >>>
-            >>> client = spanner_admin_database_v1.DatabaseAdminClient()
-            >>>
-            >>> parent = client.instance_path('[PROJECT]', '[INSTANCE]')
-            >>>
-            >>> # TODO: Initialize `database_id`:
-            >>> database_id = ''
-            >>>
-            >>> response = client.restore_database(parent, database_id)
-            >>>
-            >>> def callback(operation_future):
-            ...     # Handle result.
-            ...     result = operation_future.result()
-            >>>
-            >>> response.add_done_callback(callback)
-            >>>
-            >>> # Handle metadata.
-            >>> metadata = response.metadata()
-
-        Args:
-            parent (str): Required. The name of the instance in which to create the restored
-                database. This instance must be in the same project and have the same
-                instance configuration as the instance containing the source backup.
-                Values are of the form ``projects/<project>/instances/<instance>``.
-            database_id (str): Required. The id of the database to create and restore to. This
-                database must not already exist. The ``database_id`` appended to
-                ``parent`` forms the full database name of the form
-                ``projects/<project>/instances/<instance>/databases/<database_id>``.
-            backup (str): Name of the backup from which to restore. Values are of the form
-                ``projects/<project>/instances/<instance>/backups/<backup>``.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.api_core.operation.Operation` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "restore_database" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "restore_database"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.restore_database,
-                default_retry=self._method_configs["RestoreDatabase"].retry,
-                default_timeout=self._method_configs["RestoreDatabase"].timeout,
-                client_info=self._client_info,
-            )
-
-        # Sanity check: We have some fields which are mutually exclusive;
-        # raise ValueError if more than one is sent.
-        google.api_core.protobuf_helpers.check_oneof(backup=backup)
-
-        request = spanner_database_admin_pb2.RestoreDatabaseRequest(
-            parent=parent, database_id=database_id, backup=backup
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("parent", parent)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        operation = self._inner_api_calls["restore_database"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-        return google.api_core.operation.from_gapic(
-            operation,
-            self.transport._operations_client,
-            spanner_database_admin_pb2.Database,
-            metadata_type=spanner_database_admin_pb2.RestoreDatabaseMetadata,
-        )
 
     def list_database_operations(
         self,

@@ -3,8 +3,16 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:larkee/python-spanner.git",
-        "sha": "33055e577288cbcc848aa9abf43ccd382c9907a9"
+        "remote": "https://github.com/googleapis/python-spanner.git",
+        "sha": "edfefc8aa2e74e0366b0f9208896c5637f1a0b11"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "3474dc892349674efda09d74b3a574765d996188",
+        "internalRef": "321098618"
       }
     },
     {
