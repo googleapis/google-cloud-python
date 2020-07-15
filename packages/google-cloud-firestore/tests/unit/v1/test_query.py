@@ -16,16 +16,11 @@ import types
 import unittest
 
 import mock
-import six
 
 from tests.unit.v1.test_base_query import _make_credentials, _make_query_response
 
 
 class TestQuery(unittest.TestCase):
-
-    if six.PY2:
-        assertRaisesRegex = unittest.TestCase.assertRaisesRegexp
-
     @staticmethod
     def _get_target_class():
         from google.cloud.firestore_v1.query import Query
