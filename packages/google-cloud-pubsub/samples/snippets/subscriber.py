@@ -589,7 +589,7 @@ def listen_for_errors(project_id, subscription_id, timeout=None):
 
 
 def receive_messages_with_delivery_attempts(project_id, subscription_id, timeout=None):
-    # [START  pubsub_dead_letter_delivery_attempt]
+    # [START pubsub_dead_letter_delivery_attempt]
     from concurrent.futures import TimeoutError
     from google.cloud import pubsub_v1
 
@@ -616,7 +616,7 @@ def receive_messages_with_delivery_attempts(project_id, subscription_id, timeout
             streaming_pull_future.result(timeout=timeout)
         except TimeoutError:
             streaming_pull_future.cancel()
-    # [END  pubsub_dead_letter_delivery_attempt]
+    # [END pubsub_dead_letter_delivery_attempt]
 
 
 if __name__ == "__main__":
