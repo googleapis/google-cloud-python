@@ -116,11 +116,13 @@ def load_credentials_from_file(filename, scopes=None, quota_project_id=None):
         try:
             credentials = credentials.Credentials.from_authorized_user_info(
                 info, scopes=scopes
-            ).with_quota_project(quota_project_id)
+            )
         except ValueError as caught_exc:
             msg = "Failed to load authorized user credentials from {}".format(filename)
             new_exc = exceptions.DefaultCredentialsError(msg, caught_exc)
             six.raise_from(new_exc, caught_exc)
+        if quota_project_id:
+            credentials = credentials.with_quota_project(quota_project_id)
         if not credentials.quota_project_id:
             _warn_about_problematic_credentials(credentials)
         return credentials, None
@@ -131,11 +133,13 @@ def load_credentials_from_file(filename, scopes=None, quota_project_id=None):
         try:
             credentials = service_account.Credentials.from_service_account_info(
                 info, scopes=scopes
-            ).with_quota_project(quota_project_id)
+            )
         except ValueError as caught_exc:
             msg = "Failed to load service account credentials from {}".format(filename)
             new_exc = exceptions.DefaultCredentialsError(msg, caught_exc)
             six.raise_from(new_exc, caught_exc)
+        if quota_project_id:
+            credentials = credentials.with_quota_project(quota_project_id)
         return credentials, info.get("project_id")
 
     else:
@@ -317,9 +321,10 @@ def default(scopes=None, request=None, quota_project_id=None):
     for checker in checkers:
         credentials, project_id = checker()
         if credentials is not None:
-            credentials = with_scopes_if_required(
-                credentials, scopes
-            ).with_quota_project(quota_project_id)
+            credentials = with_scopes_if_required(credentials, scopes)
+            if quota_project_id:
+                credentials = credentials.with_quota_project(quota_project_id)
+
             effective_project_id = explicit_project_id or project_id
             if not effective_project_id:
                 _LOGGER.warning(

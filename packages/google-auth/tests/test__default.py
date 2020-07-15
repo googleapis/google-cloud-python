@@ -165,6 +165,15 @@ def test_load_credentials_from_file_service_account_with_scopes():
     assert credentials.scopes == ["https://www.google.com/calendar/feeds"]
 
 
+def test_load_credentials_from_file_service_account_with_quota_project():
+    credentials, project_id = _default.load_credentials_from_file(
+        SERVICE_ACCOUNT_FILE, quota_project_id="project-foo"
+    )
+    assert isinstance(credentials, service_account.Credentials)
+    assert project_id == SERVICE_ACCOUNT_FILE_DATA["project_id"]
+    assert credentials.quota_project_id == "project-foo"
+
+
 def test_load_credentials_from_file_service_account_bad_format(tmpdir):
     filename = tmpdir.join("serivce_account_bad.json")
     filename.write(json.dumps({"type": "service_account"}))
@@ -463,6 +472,18 @@ def test_default_scoped(with_scopes, unused_get):
     assert credentials == with_scopes.return_value
     assert project_id == mock.sentinel.project_id
     with_scopes.assert_called_once_with(MOCK_CREDENTIALS, scopes)
+
+
+@mock.patch(
+    "google.auth._default._get_explicit_environ_credentials",
+    return_value=(MOCK_CREDENTIALS, mock.sentinel.project_id),
+    autospec=True,
+)
+def test_default_quota_project(with_quota_project):
+    credentials, project_id = _default.default(quota_project_id="project-foo")
+
+    MOCK_CREDENTIALS.with_quota_project.assert_called_once_with("project-foo")
+    assert project_id == mock.sentinel.project_id
 
 
 @mock.patch(
