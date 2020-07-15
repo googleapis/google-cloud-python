@@ -3,6 +3,13 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+### [1.0.1](https://www.github.com/googleapis/python-webrisk/compare/v1.0.0...v1.0.1) (2020-07-15)
+
+
+### Bug Fixes
+
+* update README for library conversion to microgenerator ([#29](https://www.github.com/googleapis/python-webrisk/issues/29)) ([ebd278b](https://www.github.com/googleapis/python-webrisk/commit/ebd278b8c41d72a9f9c594677c8d69684d8ef977))
+
 ## [1.0.0](https://www.github.com/googleapis/python-webrisk/compare/v0.3.0...v1.0.0) (2020-07-14)
 
 
