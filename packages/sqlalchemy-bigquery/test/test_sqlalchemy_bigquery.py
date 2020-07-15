@@ -480,6 +480,8 @@ def test_get_columns(inspector, inspector_using_test_dataset):
 def test_has_table(engine, engine_using_test_dataset):
     assert engine.has_table('sample', 'test_pybigquery') is True
     assert engine.has_table('test_pybigquery.sample') is True
+    assert engine.has_table('test_pybigquery.nonexistent_table') is False
+    assert engine.has_table('nonexistent_table', 'nonexistent_dataset') is False
 
     assert engine.has_table('sample_alt', 'test_pybigquery_alt') is True
     assert engine.has_table('test_pybigquery_alt.sample_alt') is True

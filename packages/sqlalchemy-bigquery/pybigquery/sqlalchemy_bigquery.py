@@ -7,8 +7,7 @@ from google import auth
 from google.cloud import bigquery
 from google.cloud.bigquery import dbapi, QueryJobConfig
 from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery.table import EncryptionConfiguration
-from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery.table import EncryptionConfiguration, TableReference
 from google.oauth2 import service_account
 from google.api_core.exceptions import NotFound
 from sqlalchemy.exc import NoSuchTableError
@@ -350,7 +349,8 @@ class BigQueryDialect(DefaultDialect):
         """
         return row
 
-    def _split_table_name(self, full_table_name):
+    @staticmethod
+    def _split_table_name(full_table_name):
         # Split full_table_name to get project, dataset and table name
         dataset = None
         table_name = None
@@ -370,19 +370,20 @@ class BigQueryDialect(DefaultDialect):
         if isinstance(connection, Engine):
             connection = connection.connect()
 
-        project, dataset, table_name_prepared = self._split_table_name(table_name)
-        if dataset is None:
-            if schema is not None:
-                dataset = schema
-            elif self.dataset_id:
-                dataset = self.dataset_id
+        client = connection.connection._client
 
-        table = connection.connection._client.dataset(dataset, project=project).table(table_name_prepared)
+        project_id, dataset_id, table_id = self._split_table_name(table_name)
+        project_id = project_id or client.project
+        dataset_id = dataset_id or schema or self.dataset_id
+
+        table_ref = TableReference.from_string("{}.{}.{}".format(
+            project_id, dataset_id, table_id
+        ))
         try:
-            t = connection.connection._client.get_table(table)
-        except NotFound as e:
+            table = client.get_table(table_ref)
+        except NotFound:
             raise NoSuchTableError(table_name)
-        return t
+        return table
 
     def has_table(self, connection, table_name, schema=None):
         try:
