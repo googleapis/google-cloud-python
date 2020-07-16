@@ -62,6 +62,15 @@ def test_collections(client):
     assert isinstance(collections, list)
 
 
+def test_collections_w_import():
+    from google.cloud import firestore
+
+    client = firestore.Client()
+    collections = list(client.collections())
+
+    assert isinstance(collections, list)
+
+
 def test_create_document(client, cleanup):
     now = datetime.datetime.utcnow().replace(tzinfo=UTC)
     collection_id = "doc-create" + UNIQUE_RESOURCE_ID
