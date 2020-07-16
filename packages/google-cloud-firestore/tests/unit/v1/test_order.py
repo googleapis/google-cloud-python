@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import mock
-import six
 import unittest
 
 from google.cloud.firestore_v1._helpers import encode_value, GeoPoint
@@ -27,10 +26,6 @@ from google.protobuf import timestamp_pb2
 
 
 class TestOrder(unittest.TestCase):
-
-    if six.PY2:
-        assertRaisesRegex = unittest.TestCase.assertRaisesRegexp
-
     @staticmethod
     def _get_target_class():
         from google.cloud.firestore_v1.order import Order
@@ -212,8 +207,8 @@ def _int_value(value):
 
 
 def _string_value(s):
-    if not isinstance(s, six.text_type):
-        s = six.u(s)
+    if not isinstance(s, str):
+        s = str(s)
     return encode_value(s)
 
 

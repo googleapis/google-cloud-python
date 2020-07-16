@@ -16,14 +16,9 @@ import datetime
 import unittest
 
 import mock
-import six
 
 
 class TestBaseQuery(unittest.TestCase):
-
-    if six.PY2:
-        assertRaisesRegex = unittest.TestCase.assertRaisesRegexp
-
     @staticmethod
     def _get_target_class():
         from google.cloud.firestore_v1.query import Query
@@ -252,7 +247,7 @@ class TestBaseQuery(unittest.TestCase):
 
         field_pb = new_query._field_filters[0]
         expected_pb = StructuredQuery.UnaryFilter(
-            field=StructuredQuery.FieldReference(field_path=field_path), op=op_enum,
+            field=StructuredQuery.FieldReference(field_path=field_path), op=op_enum
         )
         self.assertEqual(field_pb, expected_pb)
         self._compare_queries(query_inst, new_query, "_field_filters")

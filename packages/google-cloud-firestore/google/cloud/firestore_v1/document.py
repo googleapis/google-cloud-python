@@ -14,8 +14,6 @@
 
 """Classes for representing documents for the Google Cloud Firestore API."""
 
-import six
-
 from google.cloud.firestore_v1.base_document import (
     BaseDocumentReference,
     DocumentSnapshot,
@@ -310,7 +308,7 @@ class DocumentReference(BaseDocumentReference):
                 :attr:`create_time` attributes will all be ``None`` and
                 its :attr:`exists` attribute will be ``False``.
         """
-        if isinstance(field_paths, six.string_types):
+        if isinstance(field_paths, str):
             raise ValueError("'field_paths' must be a sequence of paths, not a string.")
 
         if field_paths is not None:

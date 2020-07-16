@@ -22,7 +22,6 @@ import copy
 import math
 
 from google.protobuf import wrappers_pb2
-import six
 
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1 import document
@@ -688,7 +687,7 @@ class BaseQuery(object):
                 msg = _INVALID_CURSOR_TRANSFORM
                 raise ValueError(msg)
 
-            if key == "__name__" and isinstance(field, six.string_types):
+            if key == "__name__" and isinstance(field, str):
                 document_fields[index] = self._parent.document(field)
 
         return document_fields, before

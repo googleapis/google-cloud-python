@@ -16,7 +16,6 @@ import types
 import unittest
 
 import mock
-import six
 
 
 class TestCollectionReference(unittest.TestCase):
@@ -36,7 +35,7 @@ class TestCollectionReference(unittest.TestCase):
             *(
                 (
                     name
-                    for name, value in six.iteritems(class_.__dict__)
+                    for name, value in class_.__dict__.items()
                     if (
                         not name.startswith("_")
                         and isinstance(value, types.FunctionType)

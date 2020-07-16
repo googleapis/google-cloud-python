@@ -21,8 +21,6 @@ except ImportError:  # Python 2.7
 
 import re
 
-import six
-
 
 _FIELD_PATH_MISSING_TOP = "{!r} is not contained in the data"
 _FIELD_PATH_MISSING_KEY = "{!r} is not contained in the data for the key {!r}"
@@ -271,7 +269,7 @@ class FieldPath(object):
 
     def __init__(self, *parts):
         for part in parts:
-            if not isinstance(part, six.string_types) or not part:
+            if not isinstance(part, str) or not part:
                 error = "One or more components is not a string or is empty."
                 raise ValueError(error)
         self.parts = tuple(parts)
@@ -353,7 +351,7 @@ class FieldPath(object):
         if isinstance(other, FieldPath):
             parts = self.parts + other.parts
             return FieldPath(*parts)
-        elif isinstance(other, six.string_types):
+        elif isinstance(other, str):
             parts = self.parts + FieldPath.from_string(other).parts
             return FieldPath(*parts)
         else:
@@ -382,7 +380,7 @@ class FieldPath(object):
 
         Returns: Set[:class:`FieldPath`]
         """
-        indexes = six.moves.range(1, len(self.parts))
+        indexes = range(1, len(self.parts))
         return {FieldPath(*self.parts[:index]) for index in indexes}
 
     @staticmethod

@@ -20,7 +20,6 @@ import re
 
 from google.oauth2 import service_account
 import pytest
-import six
 
 from google.api_core.exceptions import AlreadyExists
 from google.api_core.exceptions import FailedPrecondition
@@ -518,7 +517,7 @@ def query_docs(client):
     cleanup = []
     stored = {}
     num_vals = 5
-    allowed_vals = six.moves.xrange(num_vals)
+    allowed_vals = range(num_vals)
     for a_val in allowed_vals:
         for b_val in allowed_vals:
             document_data = {
@@ -543,7 +542,7 @@ def test_query_stream_w_simple_field_eq_op(query_docs):
     query = collection.where("a", "==", 1)
     values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
     assert len(values) == len(allowed_vals)
-    for key, value in six.iteritems(values):
+    for key, value in values.items():
         assert stored[key] == value
         assert value["a"] == 1
 
@@ -553,7 +552,7 @@ def test_query_stream_w_simple_field_array_contains_op(query_docs):
     query = collection.where("c", "array_contains", 1)
     values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
     assert len(values) == len(allowed_vals)
-    for key, value in six.iteritems(values):
+    for key, value in values.items():
         assert stored[key] == value
         assert value["a"] == 1
 
@@ -564,7 +563,7 @@ def test_query_stream_w_simple_field_in_op(query_docs):
     query = collection.where("a", "in", [1, num_vals + 100])
     values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
     assert len(values) == len(allowed_vals)
-    for key, value in six.iteritems(values):
+    for key, value in values.items():
         assert stored[key] == value
         assert value["a"] == 1
 
@@ -575,7 +574,7 @@ def test_query_stream_w_simple_field_array_contains_any_op(query_docs):
     query = collection.where("c", "array_contains_any", [1, num_vals * 200])
     values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
     assert len(values) == len(allowed_vals)
-    for key, value in six.iteritems(values):
+    for key, value in values.items():
         assert stored[key] == value
         assert value["a"] == 1
 
@@ -599,7 +598,7 @@ def test_query_stream_w_field_path(query_docs):
     values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
     assert len(values) == 10
     ab_pairs2 = set()
-    for key, value in six.iteritems(values):
+    for key, value in values.items():
         assert stored[key] == value
         ab_pairs2.add((value["a"], value["b"]))
 
@@ -643,7 +642,7 @@ def test_query_stream_w_projection(query_docs):
     query = collection.where("b", "<=", 1).select(["a", "stats.product"])
     values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
     assert len(values) == num_vals * 2  # a ANY, b in (0, 1)
-    for key, value in six.iteritems(values):
+    for key, value in values.items():
         expected = {
             "a": stored[key]["a"],
             "stats": {"product": stored[key]["stats"]["product"]},
@@ -662,7 +661,7 @@ def test_query_stream_w_multiple_filters(query_docs):
         if 5 < a_val * b_val < 10
     ]
     assert len(values) == len(matching_pairs)
-    for key, value in six.iteritems(values):
+    for key, value in values.items():
         assert stored[key] == value
         pair = (value["a"], value["b"])
         assert pair in matching_pairs
@@ -678,7 +677,7 @@ def test_query_stream_w_offset(query_docs):
     #       an ``order_by('a')``, which combined with the ``b == 2``
     #       filter would necessitate an index.
     assert len(values) == num_vals - offset
-    for key, value in six.iteritems(values):
+    for key, value in values.items():
         assert stored[key] == value
         assert value["b"] == 2
 

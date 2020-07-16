@@ -19,7 +19,6 @@ import datetime
 from google.protobuf import struct_pb2
 from google.type import latlng_pb2
 import grpc
-import six
 
 from google.cloud import exceptions
 from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -132,7 +131,7 @@ def verify_path(path, is_collection):
             raise ValueError("A document must have an even number of path elements")
 
     for element in path:
-        if not isinstance(element, six.string_types):
+        if not isinstance(element, str):
             msg = BAD_PATH_TEMPLATE.format(element, type(element))
             raise ValueError(msg)
 
@@ -155,11 +154,11 @@ def encode_value(value):
     if value is None:
         return document.Value(null_value=struct_pb2.NULL_VALUE)
 
-    # Must come before six.integer_types since ``bool`` is an integer subtype.
+    # Must come before int since ``bool`` is an integer subtype.
     if isinstance(value, bool):
         return document.Value(boolean_value=value)
 
-    if isinstance(value, six.integer_types):
+    if isinstance(value, int):
         return document.Value(integer_value=value)
 
     if isinstance(value, float):
@@ -171,10 +170,10 @@ def encode_value(value):
     if isinstance(value, datetime.datetime):
         return document.Value(timestamp_value=_datetime_to_pb_timestamp(value))
 
-    if isinstance(value, six.text_type):
+    if isinstance(value, str):
         return document.Value(string_value=value)
 
-    if isinstance(value, six.binary_type):
+    if isinstance(value, bytes):
         return document.Value(bytes_value=value)
 
     # NOTE: We avoid doing an isinstance() check for a Document
@@ -212,7 +211,7 @@ def encode_dict(values_dict):
         dictionary of string keys and ``Value`` protobufs as dictionary
         values.
     """
-    return {key: encode_value(value) for key, value in six.iteritems(values_dict)}
+    return {key: encode_value(value) for key, value in values_dict.items()}
 
 
 def reference_value_to_document(reference_value, client):
@@ -309,9 +308,7 @@ def decode_dict(value_fields, client):
             str, bytes, dict, ~google.cloud.Firestore.GeoPoint]]: A dictionary
         of native Python values converted from the ``value_fields``.
     """
-    return {
-        key: decode_value(value, client) for key, value in six.iteritems(value_fields)
-    }
+    return {key: decode_value(value, client) for key, value in value_fields.items()}
 
 
 def get_doc_id(document_pb, expected_prefix):
@@ -350,7 +347,7 @@ def extract_fields(document_data, prefix_path, expand_dots=False):
     if not document_data:
         yield prefix_path, _EmptyDict
     else:
-        for key, value in sorted(six.iteritems(document_data)):
+        for key, value in sorted(document_data.items()):
 
             if expand_dots:
                 sub_key = FieldPath.from_string(key)
