@@ -37,6 +37,8 @@ Protocol buffer type                Python type             Nullable
     Protocol buffers include well-known types for ``Timestamp`` and
     ``Duration``, both of which have nanosecond precision. However, the
     Python ``datetime`` and ``timedelta`` objects have only microsecond
+    precision. This library converts timestamps to an implementation of
+    ``datetime.datetime``, DatetimeWithNanoseconds, that includes nanosecond
     precision.
 
     If you *write* a timestamp field using a Python ``datetime`` value,

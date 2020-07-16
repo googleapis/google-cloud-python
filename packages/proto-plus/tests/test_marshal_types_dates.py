@@ -21,6 +21,8 @@ from google.protobuf import timestamp_pb2
 
 import proto
 from proto.marshal.marshal import BaseMarshal
+from proto import datetime_helpers
+from proto.datetime_helpers import DatetimeWithNanoseconds
 
 
 def test_timestamp_read():
@@ -30,7 +32,8 @@ def test_timestamp_read():
         )
 
     foo = Foo(event_time=timestamp_pb2.Timestamp(seconds=1335020400))
-    assert isinstance(foo.event_time, datetime)
+
+    assert isinstance(foo.event_time, DatetimeWithNanoseconds)
     assert foo.event_time.year == 2012
     assert foo.event_time.month == 4
     assert foo.event_time.day == 21
@@ -45,8 +48,8 @@ def test_timestamp_write_init():
             proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
         )
 
-    foo = Foo(event_time=datetime(2012, 4, 21, 15, tzinfo=timezone.utc))
-    assert isinstance(foo.event_time, datetime)
+    foo = Foo(event_time=DatetimeWithNanoseconds(2012, 4, 21, 15, tzinfo=timezone.utc))
+    assert isinstance(foo.event_time, DatetimeWithNanoseconds)
     assert isinstance(Foo.pb(foo).event_time, timestamp_pb2.Timestamp)
     assert foo.event_time.year == 2012
     assert foo.event_time.month == 4
@@ -61,8 +64,9 @@ def test_timestamp_write():
         )
 
     foo = Foo()
-    foo.event_time = datetime(2012, 4, 21, 15, tzinfo=timezone.utc)
-    assert isinstance(foo.event_time, datetime)
+    dns = DatetimeWithNanoseconds(2012, 4, 21, 15, tzinfo=timezone.utc)
+    foo.event_time = dns
+    assert isinstance(foo.event_time, DatetimeWithNanoseconds)
     assert isinstance(Foo.pb(foo).event_time, timestamp_pb2.Timestamp)
     assert foo.event_time.year == 2012
     assert foo.event_time.month == 4
@@ -78,7 +82,7 @@ def test_timestamp_write_pb2():
 
     foo = Foo()
     foo.event_time = timestamp_pb2.Timestamp(seconds=1335020400)
-    assert isinstance(foo.event_time, datetime)
+    assert isinstance(foo.event_time, DatetimeWithNanoseconds)
     assert isinstance(Foo.pb(foo).event_time, timestamp_pb2.Timestamp)
     assert foo.event_time.year == 2012
     assert foo.event_time.month == 4
@@ -93,7 +97,9 @@ def test_timestamp_rmw_nanos():
         )
 
     foo = Foo()
-    foo.event_time = datetime(2012, 4, 21, 15, 0, 0, 1, tzinfo=timezone.utc)
+    foo.event_time = DatetimeWithNanoseconds(
+        2012, 4, 21, 15, 0, 0, 1, tzinfo=timezone.utc
+    )
     assert foo.event_time.microsecond == 1
     assert Foo.pb(foo).event_time.nanos == 1000
     foo.event_time = foo.event_time.replace(microsecond=2)
@@ -117,7 +123,7 @@ def test_timestamp_del():
             proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
         )
 
-    foo = Foo(event_time=datetime(2012, 4, 21, 15, tzinfo=timezone.utc))
+    foo = Foo(event_time=DatetimeWithNanoseconds(2012, 4, 21, 15, tzinfo=timezone.utc))
     del foo.event_time
     assert foo.event_time is None
 
@@ -202,7 +208,7 @@ def test_timestamp_to_python_idempotent():
     # However, we test idempotency for consistency with `to_proto` and
     # general resiliency.
     marshal = BaseMarshal()
-    py_value = datetime(2012, 4, 21, 15, tzinfo=timezone.utc)
+    py_value = DatetimeWithNanoseconds(2012, 4, 21, 15, tzinfo=timezone.utc)
     assert marshal.to_python(timestamp_pb2.Timestamp, py_value) is py_value
 
 
