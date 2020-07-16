@@ -53,7 +53,7 @@ class AutoscalingPolicyServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -74,7 +74,7 @@ class AutoscalingPolicyServiceGrpcTransport(object):
         self._stubs = {
             "autoscaling_policy_service_stub": autoscaling_policies_pb2_grpc.AutoscalingPolicyServiceStub(
                 channel
-            )
+            ),
         }
 
     @classmethod

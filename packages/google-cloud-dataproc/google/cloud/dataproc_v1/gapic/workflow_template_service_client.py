@@ -53,7 +53,9 @@ from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-dataproc").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
+    "google-cloud-dataproc",
+).version
 
 
 class WorkflowTemplateServiceClient(object):
@@ -102,7 +104,7 @@ class WorkflowTemplateServiceClient(object):
     def region_path(cls, project, region):
         """Return a fully-qualified region string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/regions/{region}", project=project, region=region
+            "projects/{project}/regions/{region}", project=project, region=region,
         )
 
     @classmethod
@@ -202,12 +204,12 @@ class WorkflowTemplateServiceClient(object):
                 self.transport = transport
         else:
             self.transport = workflow_template_service_grpc_transport.WorkflowTemplateServiceGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -218,7 +220,7 @@ class WorkflowTemplateServiceClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -297,7 +299,7 @@ class WorkflowTemplateServiceClient(object):
             )
 
         request = workflow_templates_pb2.CreateWorkflowTemplateRequest(
-            parent=parent, template=template
+            parent=parent, template=template,
         )
         if metadata is None:
             metadata = []
@@ -386,7 +388,7 @@ class WorkflowTemplateServiceClient(object):
             )
 
         request = workflow_templates_pb2.GetWorkflowTemplateRequest(
-            name=name, version=version
+            name=name, version=version,
         )
         if metadata is None:
             metadata = []
@@ -513,7 +515,7 @@ class WorkflowTemplateServiceClient(object):
             )
 
         request = workflow_templates_pb2.InstantiateWorkflowTemplateRequest(
-            name=name, version=version, request_id=request_id, parameters=parameters
+            name=name, version=version, request_id=request_id, parameters=parameters,
         )
         if metadata is None:
             metadata = []
@@ -649,7 +651,7 @@ class WorkflowTemplateServiceClient(object):
             )
 
         request = workflow_templates_pb2.InstantiateInlineWorkflowTemplateRequest(
-            parent=parent, template=template, request_id=request_id
+            parent=parent, template=template, request_id=request_id,
         )
         if metadata is None:
             metadata = []
@@ -733,7 +735,7 @@ class WorkflowTemplateServiceClient(object):
             )
 
         request = workflow_templates_pb2.UpdateWorkflowTemplateRequest(
-            template=template
+            template=template,
         )
         if metadata is None:
             metadata = []
@@ -834,7 +836,7 @@ class WorkflowTemplateServiceClient(object):
             )
 
         request = workflow_templates_pb2.ListWorkflowTemplatesRequest(
-            parent=parent, page_size=page_size
+            parent=parent, page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -927,7 +929,7 @@ class WorkflowTemplateServiceClient(object):
             )
 
         request = workflow_templates_pb2.DeleteWorkflowTemplateRequest(
-            name=name, version=version
+            name=name, version=version,
         )
         if metadata is None:
             metadata = []

@@ -157,7 +157,7 @@ _AUTOSCALINGPOLICY = _descriptor.Descriptor(
             containing_type=None,
             create_key=_descriptor._internal_create_key,
             fields=[],
-        )
+        ),
     ],
     serialized_start=274,
     serialized_end=843,
@@ -506,7 +506,7 @@ _GETAUTOSCALINGPOLICYREQUEST = _descriptor.Descriptor(
             serialized_options=b"\340A\002\372A+\n)dataproc.googleapis.com/AutoscalingPolicy",
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -547,7 +547,7 @@ _UPDATEAUTOSCALINGPOLICYREQUEST = _descriptor.Descriptor(
             serialized_options=b"\340A\002",
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -588,7 +588,7 @@ _DELETEAUTOSCALINGPOLICYREQUEST = _descriptor.Descriptor(
             serialized_options=b"\340A\002\372A+\n)dataproc.googleapis.com/AutoscalingPolicy",
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],

@@ -23,7 +23,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     serialized_options=b"\n\034com.google.cloud.dataproc.v1B\013SharedProtoP\001Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataproc",
     create_key=_descriptor._internal_create_key,
     serialized_pb=b"\n+google/cloud/dataproc_v1/proto/shared.proto\x12\x18google.cloud.dataproc.v1\x1a\x1cgoogle/api/annotations.proto*|\n\tComponent\x12\x19\n\x15\x43OMPONENT_UNSPECIFIED\x10\x00\x12\x0c\n\x08\x41NACONDA\x10\x05\x12\x10\n\x0cHIVE_WEBHCAT\x10\x03\x12\x0b\n\x07JUPYTER\x10\x01\x12\n\n\x06PRESTO\x10\x06\x12\x0c\n\x08ZEPPELIN\x10\x04\x12\r\n\tZOOKEEPER\x10\x08\x42o\n\x1c\x63om.google.cloud.dataproc.v1B\x0bSharedProtoP\x01Z@google.golang.org/genproto/googleapis/cloud/dataproc/v1;dataprocb\x06proto3",
-    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
+    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,],
 )
 
 _COMPONENT = _descriptor.EnumDescriptor(

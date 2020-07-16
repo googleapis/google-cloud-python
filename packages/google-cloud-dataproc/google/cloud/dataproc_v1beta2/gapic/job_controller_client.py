@@ -47,7 +47,9 @@ from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-dataproc").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
+    "google-cloud-dataproc",
+).version
 
 
 class JobControllerClient(object):
@@ -167,12 +169,12 @@ class JobControllerClient(object):
                 self.transport = transport
         else:
             self.transport = job_controller_grpc_transport.JobControllerGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -183,7 +185,7 @@ class JobControllerClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -271,7 +273,7 @@ class JobControllerClient(object):
             )
 
         request = jobs_pb2.SubmitJobRequest(
-            project_id=project_id, region=region, job=job, request_id=request_id
+            project_id=project_id, region=region, job=job, request_id=request_id,
         )
         return self._inner_api_calls["submit_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
@@ -341,7 +343,7 @@ class JobControllerClient(object):
             )
 
         request = jobs_pb2.GetJobRequest(
-            project_id=project_id, region=region, job_id=job_id
+            project_id=project_id, region=region, job_id=job_id,
         )
         return self._inner_api_calls["get_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
@@ -634,7 +636,7 @@ class JobControllerClient(object):
             )
 
         request = jobs_pb2.CancelJobRequest(
-            project_id=project_id, region=region, job_id=job_id
+            project_id=project_id, region=region, job_id=job_id,
         )
         return self._inner_api_calls["cancel_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
@@ -702,7 +704,7 @@ class JobControllerClient(object):
             )
 
         request = jobs_pb2.DeleteJobRequest(
-            project_id=project_id, region=region, job_id=job_id
+            project_id=project_id, region=region, job_id=job_id,
         )
         self._inner_api_calls["delete_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
@@ -795,7 +797,7 @@ class JobControllerClient(object):
             )
 
         request = jobs_pb2.SubmitJobRequest(
-            project_id=project_id, region=region, job=job, request_id=request_id
+            project_id=project_id, region=region, job=job, request_id=request_id,
         )
         operation = self._inner_api_calls["submit_job_as_operation"](
             request, retry=retry, timeout=timeout, metadata=metadata

@@ -45,7 +45,9 @@ from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-dataproc").version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
+    "google-cloud-dataproc",
+).version
 
 
 class ClusterControllerClient(object):
@@ -168,12 +170,12 @@ class ClusterControllerClient(object):
                 self.transport = transport
         else:
             self.transport = cluster_controller_grpc_transport.ClusterControllerGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
             client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-                gapic_version=_GAPIC_LIBRARY_VERSION
+                gapic_version=_GAPIC_LIBRARY_VERSION,
             )
         else:
             client_info.gapic_version = _GAPIC_LIBRARY_VERSION
@@ -184,7 +186,7 @@ class ClusterControllerClient(object):
         # (Ordinarily, these are the defaults specified in the `*_config.py`
         # file next to this one.)
         self._method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            client_config["interfaces"][self._INTERFACE_NAME]
+            client_config["interfaces"][self._INTERFACE_NAME],
         )
 
         # Save a dictionary of cached API call functions.
@@ -284,7 +286,10 @@ class ClusterControllerClient(object):
             )
 
         request = clusters_pb2.CreateClusterRequest(
-            project_id=project_id, region=region, cluster=cluster, request_id=request_id
+            project_id=project_id,
+            region=region,
+            cluster=cluster,
+            request_id=request_id,
         )
         operation = self._inner_api_calls["create_cluster"](
             request, retry=retry, timeout=timeout, metadata=metadata
@@ -659,7 +664,7 @@ class ClusterControllerClient(object):
             )
 
         request = clusters_pb2.GetClusterRequest(
-            project_id=project_id, region=region, cluster_name=cluster_name
+            project_id=project_id, region=region, cluster_name=cluster_name,
         )
         return self._inner_api_calls["get_cluster"](
             request, retry=retry, timeout=timeout, metadata=metadata
@@ -766,7 +771,7 @@ class ClusterControllerClient(object):
             )
 
         request = clusters_pb2.ListClustersRequest(
-            project_id=project_id, region=region, filter=filter_, page_size=page_size
+            project_id=project_id, region=region, filter=filter_, page_size=page_size,
         )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
@@ -860,7 +865,7 @@ class ClusterControllerClient(object):
             )
 
         request = clusters_pb2.DiagnoseClusterRequest(
-            project_id=project_id, region=region, cluster_name=cluster_name
+            project_id=project_id, region=region, cluster_name=cluster_name,
         )
         operation = self._inner_api_calls["diagnose_cluster"](
             request, retry=retry, timeout=timeout, metadata=metadata

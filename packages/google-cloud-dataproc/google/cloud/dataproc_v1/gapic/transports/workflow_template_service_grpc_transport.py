@@ -54,7 +54,7 @@ class WorkflowTemplateServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -75,7 +75,7 @@ class WorkflowTemplateServiceGrpcTransport(object):
         self._stubs = {
             "workflow_template_service_stub": workflow_templates_pb2_grpc.WorkflowTemplateServiceStub(
                 channel
-            )
+            ),
         }
 
         # Because this API includes a method that returns a
