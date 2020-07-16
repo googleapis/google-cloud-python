@@ -29,12 +29,14 @@ def test_registration():
 
         def to_python(self, value, *, absent=None):
             return value
+
     assert isinstance(marshal._rules[empty_pb2.Empty], Rule)
 
 
 def test_invalid_target_registration():
     marshal = BaseMarshal()
     with pytest.raises(TypeError):
+
         @marshal.register(object)
         class Rule:
             def to_proto(self, value):
@@ -47,6 +49,7 @@ def test_invalid_target_registration():
 def test_invalid_marshal_class():
     marshal = BaseMarshal()
     with pytest.raises(TypeError):
+
         @marshal.register(empty_pb2.Empty)
         class Marshal:
             pass

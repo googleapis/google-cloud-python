@@ -22,12 +22,12 @@ def test_bytes_init():
         bar = proto.Field(proto.BYTES, number=1)
         baz = proto.Field(proto.BYTES, number=2)
 
-    foo = Foo(bar=b'spam')
-    assert foo.bar == b'spam'
-    assert foo.baz == b''
+    foo = Foo(bar=b"spam")
+    assert foo.bar == b"spam"
+    assert foo.baz == b""
     assert not foo.baz
-    assert Foo.pb(foo).bar == b'spam'
-    assert Foo.pb(foo).baz == b''
+    assert Foo.pb(foo).bar == b"spam"
+    assert Foo.pb(foo).baz == b""
 
 
 def test_bytes_rmw():
@@ -35,27 +35,27 @@ def test_bytes_rmw():
         spam = proto.Field(proto.BYTES, number=1)
         eggs = proto.Field(proto.BYTES, number=2)
 
-    foo = Foo(spam=b'bar')
-    foo.eggs = b'baz'
-    assert foo.spam == b'bar'
-    assert foo.eggs == b'baz'
-    assert Foo.pb(foo).spam == b'bar'
-    assert Foo.pb(foo).eggs == b'baz'
-    foo.spam = b'bacon'
-    assert foo.spam == b'bacon'
-    assert foo.eggs == b'baz'
-    assert Foo.pb(foo).spam == b'bacon'
-    assert Foo.pb(foo).eggs == b'baz'
+    foo = Foo(spam=b"bar")
+    foo.eggs = b"baz"
+    assert foo.spam == b"bar"
+    assert foo.eggs == b"baz"
+    assert Foo.pb(foo).spam == b"bar"
+    assert Foo.pb(foo).eggs == b"baz"
+    foo.spam = b"bacon"
+    assert foo.spam == b"bacon"
+    assert foo.eggs == b"baz"
+    assert Foo.pb(foo).spam == b"bacon"
+    assert Foo.pb(foo).eggs == b"baz"
 
 
 def test_bytes_del():
     class Foo(proto.Message):
         bar = proto.Field(proto.BYTES, number=1)
 
-    foo = Foo(bar=b'spam')
-    assert foo.bar == b'spam'
+    foo = Foo(bar=b"spam")
+    assert foo.bar == b"spam"
     del foo.bar
-    assert foo.bar == b''
+    assert foo.bar == b""
     assert not foo.bar
 
 
@@ -69,7 +69,7 @@ def test_bytes_string_distinct():
 
     # Since protobuf was written against Python 2, it accepts bytes objects
     # for strings (but not vice versa).
-    foo.bar = b'anything'
-    assert foo.bar == 'anything'
+    foo.bar = b"anything"
+    assert foo.bar == "anything"
     with pytest.raises(TypeError):
-        foo.baz = 'anything'
+        foo.baz = "anything"

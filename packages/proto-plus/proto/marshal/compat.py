@@ -19,6 +19,7 @@
 # not be included.
 
 from google.protobuf.internal import containers
+
 try:
     from google.protobuf.pyext import _message
 except ImportError:
@@ -34,7 +35,7 @@ if _message:
 
 
 __all__ = (
-    'repeated_composite_types',
-    'repeated_scalar_types',
-    'map_composite_types',
+    "repeated_composite_types",
+    "repeated_scalar_types",
+    "map_composite_types",
 )

@@ -34,10 +34,11 @@ class EnumRule:
                 #
                 # However, it is useful to make some noise about it so
                 # the user realizes that an unexpected value came along.
-                warnings.warn('Unrecognized {name} enum value: {value}'.format(
-                    name=self._enum.__name__,
-                    value=value,
-                ))
+                warnings.warn(
+                    "Unrecognized {name} enum value: {value}".format(
+                        name=self._enum.__name__, value=value,
+                    )
+                )
         return value
 
     def to_proto(self, value):

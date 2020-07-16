@@ -20,6 +20,7 @@ import proto
 def test_message_constructor_instance():
     class Foo(proto.Message):
         bar = proto.Field(proto.INT64, number=1)
+
     foo_original = Foo(bar=42)
     foo_copy = Foo(foo_original)
     assert foo_original.bar == foo_copy.bar == 42
@@ -33,6 +34,7 @@ def test_message_constructor_instance():
 def test_message_constructor_underlying_pb2():
     class Foo(proto.Message):
         bar = proto.Field(proto.INT64, number=1)
+
     foo_pb2 = Foo.pb()(bar=42)
     foo = Foo(foo_pb2)
     assert foo.bar == Foo.pb(foo).bar == foo_pb2.bar == 42
@@ -47,6 +49,7 @@ def test_message_constructor_underlying_pb2():
 def test_message_constructor_underlying_pb2_and_kwargs():
     class Foo(proto.Message):
         bar = proto.Field(proto.INT64, number=1)
+
     foo_pb2 = Foo.pb()(bar=42)
     foo = Foo(foo_pb2, bar=99)
     assert foo.bar == Foo.pb(foo).bar == 99
@@ -59,9 +62,10 @@ def test_message_constructor_underlying_pb2_and_kwargs():
 def test_message_constructor_dict():
     class Foo(proto.Message):
         bar = proto.Field(proto.INT64, number=1)
-    foo = Foo({'bar': 42})
+
+    foo = Foo({"bar": 42})
     assert foo.bar == Foo.pb(foo).bar == 42
-    assert foo != {'bar': 42}
+    assert foo != {"bar": 42}
     assert isinstance(foo, Foo)
     assert isinstance(Foo.pb(foo), Foo.pb())
 
@@ -69,6 +73,7 @@ def test_message_constructor_dict():
 def test_message_constructor_kwargs():
     class Foo(proto.Message):
         bar = proto.Field(proto.INT64, number=1)
+
     foo = Foo(bar=42)
     assert foo.bar == Foo.pb(foo).bar == 42
     assert isinstance(foo, Foo)
@@ -78,14 +83,16 @@ def test_message_constructor_kwargs():
 def test_message_constructor_invalid():
     class Foo(proto.Message):
         bar = proto.Field(proto.INT64, number=1)
+
     with pytest.raises(TypeError):
         Foo(object())
 
 
 def test_message_constructor_explicit_qualname():
     class Foo(proto.Message):
-        __qualname__ = 'Foo'
+        __qualname__ = "Foo"
         bar = proto.Field(proto.INT64, number=1)
+
     foo_original = Foo(bar=42)
     foo_copy = Foo(foo_original)
     assert foo_original.bar == foo_copy.bar == 42
@@ -99,9 +106,10 @@ def test_message_constructor_explicit_qualname():
 def test_message_contains_primitive():
     class Foo(proto.Message):
         bar = proto.Field(proto.INT64, number=1)
-    assert 'bar' in Foo(bar=42)
-    assert 'bar' not in Foo(bar=0)
-    assert 'bar' not in Foo()
+
+    assert "bar" in Foo(bar=42)
+    assert "bar" not in Foo(bar=0)
+    assert "bar" not in Foo()
 
 
 def test_message_contains_composite():
@@ -111,19 +119,19 @@ def test_message_contains_composite():
     class Baz(proto.Message):
         foo = proto.Field(proto.MESSAGE, number=1, message=Foo)
 
-    assert 'foo' in Baz(foo=Foo(bar=42))
-    assert 'foo' in Baz(foo=Foo())
-    assert 'foo' not in Baz()
+    assert "foo" in Baz(foo=Foo(bar=42))
+    assert "foo" in Baz(foo=Foo())
+    assert "foo" not in Baz()
 
 
 def test_message_contains_repeated_primitive():
     class Foo(proto.Message):
         bar = proto.RepeatedField(proto.INT64, number=1)
 
-    assert 'bar' in Foo(bar=[1, 1, 2, 3, 5])
-    assert 'bar' in Foo(bar=[0])
-    assert 'bar' not in Foo(bar=[])
-    assert 'bar' not in Foo()
+    assert "bar" in Foo(bar=[1, 1, 2, 3, 5])
+    assert "bar" in Foo(bar=[0])
+    assert "bar" not in Foo(bar=[])
+    assert "bar" not in Foo()
 
 
 def test_message_contains_repeated_composite():
@@ -133,10 +141,10 @@ def test_message_contains_repeated_composite():
     class Baz(proto.Message):
         foo = proto.RepeatedField(proto.MESSAGE, number=1, message=Foo)
 
-    assert 'foo' in Baz(foo=[Foo(bar=42)])
-    assert 'foo' in Baz(foo=[Foo()])
-    assert 'foo' not in Baz(foo=[])
-    assert 'foo' not in Baz()
+    assert "foo" in Baz(foo=[Foo(bar=42)])
+    assert "foo" in Baz(foo=[Foo()])
+    assert "foo" not in Baz(foo=[])
+    assert "foo" not in Baz()
 
 
 def test_message_eq_primitives():
@@ -146,17 +154,17 @@ def test_message_eq_primitives():
         bacon = proto.Field(proto.BOOL, number=3)
 
     assert Foo() == Foo()
-    assert Foo(bar=42, baz='42') == Foo(bar=42, baz='42')
-    assert Foo(bar=42, baz='42') != Foo(baz='42')
+    assert Foo(bar=42, baz="42") == Foo(bar=42, baz="42")
+    assert Foo(bar=42, baz="42") != Foo(baz="42")
     assert Foo(bar=42, bacon=True) == Foo(bar=42, bacon=True)
     assert Foo(bar=42, bacon=True) != Foo(bar=42)
-    assert Foo(bar=42, baz='42', bacon=True) != Foo(bar=42, bacon=True)
+    assert Foo(bar=42, baz="42", bacon=True) != Foo(bar=42, bacon=True)
     assert Foo(bacon=False) == Foo()
     assert Foo(bacon=True) != Foo(bacon=False)
     assert Foo(bar=21 * 2) == Foo(bar=42)
     assert Foo() == Foo(bar=0)
-    assert Foo() == Foo(bar=0, baz='', bacon=False)
-    assert Foo() != Foo(bar=0, baz='0', bacon=False)
+    assert Foo() == Foo(bar=0, baz="", bacon=False)
+    assert Foo() != Foo(bar=0, baz="0", bacon=False)
 
 
 def test_message_serialize():
@@ -175,7 +183,7 @@ def test_message_dict_serialize():
         baz = proto.Field(proto.STRING, number=2)
         bacon = proto.Field(proto.BOOL, number=3)
 
-    foo = {'bar': 42, 'bacon': True}
+    foo = {"bar": 42, "bacon": True}
     assert Foo.serialize(foo) == Foo.pb(foo, coerce=True).SerializeToString()
 
 

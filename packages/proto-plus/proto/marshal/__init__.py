@@ -15,6 +15,4 @@
 from .marshal import Marshal
 
 
-__all__ = (
-    'Marshal',
-)
+__all__ = ("Marshal",)

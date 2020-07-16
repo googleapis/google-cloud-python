@@ -22,9 +22,17 @@ from proto.primitives import ProtoType
 class Field:
     """A representation of a type of field in protocol buffers."""
 
-    def __init__(self, proto_type, *, number: int,
-                 message=None, enum=None, oneof: str = None,
-                 json_name: str = None, optional: bool = False):
+    def __init__(
+        self,
+        proto_type,
+        *,
+        number: int,
+        message=None,
+        enum=None,
+        oneof: str = None,
+        json_name: str = None,
+        optional: bool = False
+    ):
         # This class is not intended to stand entirely alone;
         # data is augmented by the metaclass for Message.
         self.mcls_data = {}
@@ -70,13 +78,12 @@ class Field:
             type_name = None
             if isinstance(self.message, str):
                 if not self.message.startswith(self.package):
-                    self.message = '{package}.{name}'.format(
-                        package=self.package,
-                        name=self.message,
+                    self.message = "{package}.{name}".format(
+                        package=self.package, name=self.message,
                     )
                 type_name = self.message
             elif self.message:
-                if hasattr(self.message, 'DESCRIPTOR'):
+                if hasattr(self.message, "DESCRIPTOR"):
                     type_name = self.message.DESCRIPTOR.full_name
                 else:
                     type_name = self.message.meta.full_name
@@ -112,12 +119,12 @@ class Field:
     @property
     def name(self) -> str:
         """Return the name of the field."""
-        return self.mcls_data['name']
+        return self.mcls_data["name"]
 
     @property
     def package(self) -> str:
         """Return the package of the field."""
-        return self.mcls_data['package']
+        return self.mcls_data["package"]
 
     @property
     def pb_type(self):
@@ -131,7 +138,7 @@ class Field:
             return None
 
         # Return the internal protobuf message.
-        if hasattr(self.message, '_meta'):
+        if hasattr(self.message, "_meta"):
             return self.message.pb()
         return self.message
 
@@ -139,8 +146,7 @@ class Field:
 class RepeatedField(Field):
     """A representation of a repeated field in protocol buffers."""
 
-    def __init__(self, proto_type, *, number: int,
-                 message=None, enum=None):
+    def __init__(self, proto_type, *, number: int, message=None, enum=None):
         super().__init__(proto_type, number=number, message=message, enum=enum)
         self.repeated = True
 
@@ -148,14 +154,13 @@ class RepeatedField(Field):
 class MapField(Field):
     """A representation of a map field in protocol buffers."""
 
-    def __init__(self, key_type, value_type, *, number: int,
-                 message=None, enum=None):
+    def __init__(self, key_type, value_type, *, number: int, message=None, enum=None):
         super().__init__(value_type, number=number, message=message, enum=enum)
         self.map_key_type = key_type
 
 
 __all__ = (
-    'Field',
-    'MapField',
-    'RepeatedField',
+    "Field",
+    "MapField",
+    "RepeatedField",
 )

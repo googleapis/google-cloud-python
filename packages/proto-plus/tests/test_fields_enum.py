@@ -61,7 +61,7 @@ def test_outer_enum_init_str():
     class Foo(proto.Message):
         color = proto.Field(Color, number=1)
 
-    foo = Foo(color='RED')
+    foo = Foo(color="RED")
     assert foo.color == Color.RED
     assert foo.color == 1
     assert foo.color
@@ -79,7 +79,7 @@ def test_outer_enum_init_dict():
     class Foo(proto.Message):
         color = proto.Field(Color, number=1)
 
-    foo = Foo({'color': 1})
+    foo = Foo({"color": 1})
     assert foo.color == Color.RED
     assert foo.color == 1
     assert foo.color
@@ -97,7 +97,7 @@ def test_outer_enum_init_dict_str():
     class Foo(proto.Message):
         color = proto.Field(Color, number=1)
 
-    foo = Foo({'color': 'BLUE'})
+    foo = Foo({"color": "BLUE"})
     assert foo.color == Color.BLUE
     assert foo.color == 3
     assert foo.color
@@ -136,10 +136,10 @@ def test_outer_enum_unset():
     foo = Foo()
     assert foo.color == Color.COLOR_UNSPECIFIED
     assert foo.color == 0
-    assert 'color' not in foo
+    assert "color" not in foo
     assert not foo.color
     assert Foo.pb(foo).color == 0
-    assert Foo.serialize(foo) == b''
+    assert Foo.serialize(foo) == b""
 
 
 def test_outer_enum_write():
@@ -190,7 +190,7 @@ def test_outer_enum_write_str():
         color = proto.Field(Color, number=1)
 
     foo = Foo()
-    foo.color = 'BLUE'
+    foo.color = "BLUE"
     assert foo.color == Color.BLUE
     assert foo.color == 3
     assert isinstance(foo.color, Color)
@@ -249,6 +249,6 @@ def test_enum_del():
     assert foo.color == Color.COLOR_UNSPECIFIED
     assert foo.color == 0
     assert isinstance(foo.color, Color)
-    assert 'color' not in foo
+    assert "color" not in foo
     assert not foo.color
     assert Foo.pb(foo).color == 0

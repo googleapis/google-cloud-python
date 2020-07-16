@@ -18,7 +18,7 @@ from .repeated import RepeatedComposite
 
 
 __all__ = (
-    'MapComposite',
-    'Repeated',
-    'RepeatedComposite',
+    "MapComposite",
+    "Repeated",
+    "RepeatedComposite",
 )

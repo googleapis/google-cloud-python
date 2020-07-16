@@ -20,6 +20,7 @@ from proto.marshal.rules.enums import EnumRule
 
 class ProtoEnumMeta(enum.EnumMeta):
     """A metaclass for building and registering protobuf enums."""
+
     def __new__(mcls, name, bases, attrs):
         # Do not do any special behavior for `proto.Enum` itself.
         if bases[0] == enum.IntEnum:
@@ -41,4 +42,5 @@ class ProtoEnumMeta(enum.EnumMeta):
 
 class Enum(enum.IntEnum, metaclass=ProtoEnumMeta):
     """A enum object that also builds a protobuf enum descriptor."""
+
     pass

@@ -111,4 +111,4 @@ def test_repeated_scalar_wrong_type():
     with pytest.raises(TypeError):
         foo.bar.append(21.0)
     with pytest.raises(TypeError):
-        foo.bar.append('21')
+        foo.bar.append("21")

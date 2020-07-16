@@ -32,26 +32,22 @@ class ValueRule:
         Note that setting ``null_value`` is distinct from not setting
         a value, and the absent value will raise an exception.
         """
-        kind = value.WhichOneof('kind')
-        if kind == 'null_value':
+        kind = value.WhichOneof("kind")
+        if kind == "null_value":
             return None
-        if kind == 'bool_value':
+        if kind == "bool_value":
             return bool(value.bool_value)
-        if kind == 'number_value':
+        if kind == "number_value":
             return float(value.number_value)
-        if kind == 'string_value':
+        if kind == "string_value":
             return str(value.string_value)
-        if kind == 'struct_value':
+        if kind == "struct_value":
             return self._marshal.to_python(
-                struct_pb2.Struct,
-                value.struct_value,
-                absent=False,
+                struct_pb2.Struct, value.struct_value, absent=False,
             )
-        if kind == 'list_value':
+        if kind == "list_value":
             return self._marshal.to_python(
-                struct_pb2.ListValue,
-                value.list_value,
-                absent=False,
+                struct_pb2.ListValue, value.list_value, absent=False,
             )
         raise AttributeError
 
@@ -75,7 +71,7 @@ class ValueRule:
             return struct_pb2.Value(
                 struct_value=self._marshal.to_proto(struct_pb2.Struct, value),
             )
-        raise ValueError('Unable to coerce value: %r' % value)
+        raise ValueError("Unable to coerce value: %r" % value)
 
 
 class ListValueRule:
@@ -97,9 +93,9 @@ class ListValueRule:
             return struct_pb2.ListValue(values=[v for v in value.pb])
 
         # We got a list (or something list-like); convert it.
-        return struct_pb2.ListValue(values=[
-            self._marshal.to_proto(struct_pb2.Value, v) for v in value
-        ])
+        return struct_pb2.ListValue(
+            values=[self._marshal.to_proto(struct_pb2.Value, v) for v in value]
+        )
 
 
 class StructRule:
@@ -118,13 +114,12 @@ class StructRule:
         if isinstance(value, struct_pb2.Struct):
             return value
         if isinstance(value, maps.MapComposite):
-            return struct_pb2.Struct(
-                fields={k: v for k, v in value.pb.items()},
-            )
+            return struct_pb2.Struct(fields={k: v for k, v in value.pb.items()},)
 
         # We got a dict (or something dict-like); convert it.
-        answer = struct_pb2.Struct(fields={
-            k: self._marshal.to_proto(struct_pb2.Value, v)
-            for k, v in value.items()
-        })
+        answer = struct_pb2.Struct(
+            fields={
+                k: self._marshal.to_proto(struct_pb2.Value, v) for k, v in value.items()
+            }
+        )
         return answer

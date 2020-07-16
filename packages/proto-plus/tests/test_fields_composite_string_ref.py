@@ -19,39 +19,41 @@ import proto
 
 def test_composite_forward_ref():
     class Spam(proto.Message):
-        foo = proto.Field(proto.MESSAGE, number=1, message='Foo')
+        foo = proto.Field(proto.MESSAGE, number=1, message="Foo")
         eggs = proto.Field(proto.BOOL, number=2)
 
     class Foo(proto.Message):
         bar = proto.Field(proto.STRING, number=1)
         baz = proto.Field(proto.INT64, number=2)
 
-    spam = Spam(foo=Foo(bar='str', baz=42))
-    assert spam.foo.bar == 'str'
+    spam = Spam(foo=Foo(bar="str", baz=42))
+    assert spam.foo.bar == "str"
     assert spam.foo.baz == 42
     assert spam.eggs is False
 
 
 def test_composite_forward_ref_with_package():
-    sys.modules[__name__].__protobuf__ = proto.module(package='abc.def')
+    sys.modules[__name__].__protobuf__ = proto.module(package="abc.def")
     try:
+
         class Spam(proto.Message):
-            foo = proto.Field('Foo', number=1)
+            foo = proto.Field("Foo", number=1)
 
         class Eggs(proto.Message):
-            foo = proto.Field('abc.def.Foo', number=1)
+            foo = proto.Field("abc.def.Foo", number=1)
 
         class Foo(proto.Message):
             bar = proto.Field(proto.STRING, number=1)
             baz = proto.Field(proto.INT64, number=2)
+
     finally:
         del sys.modules[__name__].__protobuf__
 
-    spam = Spam(foo=Foo(bar='str', baz=42))
-    eggs = Eggs(foo=Foo(bar='rts', baz=24))
-    assert spam.foo.bar == 'str'
+    spam = Spam(foo=Foo(bar="str", baz=42))
+    eggs = Eggs(foo=Foo(bar="rts", baz=24))
+    assert spam.foo.bar == "str"
     assert spam.foo.baz == 42
-    assert eggs.foo.bar == 'rts'
+    assert eggs.foo.bar == "rts"
     assert eggs.foo.baz == 24
 
 
@@ -64,15 +66,15 @@ def test_composite_backward_ref():
         foo = proto.Field(proto.MESSAGE, number=1, message=Foo)
         eggs = proto.Field(proto.BOOL, number=2)
 
-    spam = Spam(foo=Foo(bar='str', baz=42))
-    assert spam.foo.bar == 'str'
+    spam = Spam(foo=Foo(bar="str", baz=42))
+    assert spam.foo.bar == "str"
     assert spam.foo.baz == 42
     assert spam.eggs is False
 
 
 def test_composite_multi_ref():
     class Spam(proto.Message):
-        foo = proto.Field(proto.MESSAGE, number=1, message='Foo')
+        foo = proto.Field(proto.MESSAGE, number=1, message="Foo")
         eggs = proto.Field(proto.BOOL, number=2)
 
     class Foo(proto.Message):
@@ -82,9 +84,9 @@ def test_composite_multi_ref():
     class Bacon(proto.Message):
         foo = proto.Field(proto.MESSAGE, number=1, message=Foo)
 
-    spam = Spam(foo=Foo(bar='str', baz=42))
+    spam = Spam(foo=Foo(bar="str", baz=42))
     bacon = Bacon(foo=spam.foo)
-    assert spam.foo.bar == 'str'
+    assert spam.foo.bar == "str"
     assert spam.foo.baz == 42
     assert spam.eggs is False
     assert bacon.foo == spam.foo
@@ -92,7 +94,7 @@ def test_composite_multi_ref():
 
 def test_composite_self_ref():
     class Spam(proto.Message):
-        spam = proto.Field(proto.MESSAGE, number=1, message='Spam')
+        spam = proto.Field(proto.MESSAGE, number=1, message="Spam")
         eggs = proto.Field(proto.BOOL, number=2)
 
     spam = Spam(spam=Spam(eggs=True))

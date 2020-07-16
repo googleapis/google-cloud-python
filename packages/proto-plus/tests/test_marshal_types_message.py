@@ -23,7 +23,7 @@ def test_to_proto():
     message_rule = MessageRule(Foo.pb(), Foo)
     foo_pb2_a = message_rule.to_proto(Foo(bar=42))
     foo_pb2_b = message_rule.to_proto(Foo.pb()(bar=42))
-    foo_pb2_c = message_rule.to_proto({'bar': 42})
+    foo_pb2_c = message_rule.to_proto({"bar": 42})
     assert foo_pb2_a == foo_pb2_b == foo_pb2_c
 
 

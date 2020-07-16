@@ -28,21 +28,20 @@ class TimestampRule:
     precision matters, it is recommended to interact with the internal
     proto directly.
     """
+
     def to_python(self, value, *, absent: bool = None) -> datetime:
         if isinstance(value, timestamp_pb2.Timestamp):
             if absent:
                 return None
             return datetime.fromtimestamp(
-                value.seconds + value.nanos / 1e9,
-                tz=timezone.utc,
+                value.seconds + value.nanos / 1e9, tz=timezone.utc,
             )
         return value
 
     def to_proto(self, value) -> timestamp_pb2.Timestamp:
         if isinstance(value, datetime):
             return timestamp_pb2.Timestamp(
-                seconds=int(value.timestamp()),
-                nanos=value.microsecond * 1000,
+                seconds=int(value.timestamp()), nanos=value.microsecond * 1000,
             )
         return value
 
@@ -55,6 +54,7 @@ class DurationRule:
     precision matters, it is recommended to interact with the internal
     proto directly.
     """
+
     def to_python(self, value, *, absent: bool = None) -> timedelta:
         if isinstance(value, duration_pb2.Duration):
             return timedelta(

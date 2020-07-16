@@ -28,7 +28,7 @@ def test_to_proto():
     enum_rule = EnumRule(Foo)
     foo_a = enum_rule.to_proto(Foo.BAR)
     foo_b = enum_rule.to_proto(1)
-    foo_c = enum_rule.to_proto('BAR')
+    foo_c = enum_rule.to_proto("BAR")
     # We want to distinguish literal `1` from `Foo.BAR` here
     # (they are equivalent but not identical).
     assert foo_a is foo_b is foo_c is 1  # noqa: F632
@@ -53,6 +53,6 @@ def test_to_python_unknown_value():
         BAZ = 2
 
     enum_rule = EnumRule(Foo)
-    with mock.patch.object(warnings, 'warn') as warn:
+    with mock.patch.object(warnings, "warn") as warn:
         assert enum_rule.to_python(4) == 4
-        warn.assert_called_once_with('Unrecognized Foo enum value: 4')
+        warn.assert_called_once_with("Unrecognized Foo enum value: 4")

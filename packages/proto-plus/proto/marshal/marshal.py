@@ -35,7 +35,7 @@ class Rule(abc.ABC):
 
     @classmethod
     def __subclasshook__(cls, C):
-        if hasattr(C, 'to_python') and hasattr(C, 'to_proto'):
+        if hasattr(C, "to_python") and hasattr(C, "to_proto"):
             return True
         return NotImplemented
 
@@ -58,6 +58,7 @@ class BaseMarshal:
     The primary implementation of this is :class:`Marshal`, which should
     usually be used instead of this class directly.
     """
+
     def __init__(self):
         self._rules = {}
         self._noop = NoopRule()
@@ -87,15 +88,19 @@ class BaseMarshal:
         # Sanity check: Do not register anything to a class that is not
         # a protocol buffer message.
         if not issubclass(proto_type, (message.Message, enum.IntEnum)):
-            raise TypeError('Only enums and protocol buffer messages may be '
-                            'registered to the marshal.')
+            raise TypeError(
+                "Only enums and protocol buffer messages may be "
+                "registered to the marshal."
+            )
 
         # If a rule was provided, register it and be done.
         if rule:
             # Ensure the rule implements Rule.
             if not isinstance(rule, Rule):
-                raise TypeError('Marshal rule instances must implement '
-                                '`to_proto` and `to_python` methods.')
+                raise TypeError(
+                    "Marshal rule instances must implement "
+                    "`to_proto` and `to_python` methods."
+                )
 
             # Register the rule.
             self._rules[proto_type] = rule
@@ -106,12 +111,15 @@ class BaseMarshal:
         def register_rule_class(rule_class: type):
             # Ensure the rule class is a valid rule.
             if not issubclass(rule_class, Rule):
-                raise TypeError('Marshal rule subclasses must implement '
-                                '`to_proto` and `to_python` methods.')
+                raise TypeError(
+                    "Marshal rule subclasses must implement "
+                    "`to_proto` and `to_python` methods."
+                )
 
             # Register the rule class.
             self._rules[proto_type] = rule_class()
             return rule_class
+
         return register_rule_class
 
     def reset(self):
@@ -162,8 +170,11 @@ class BaseMarshal:
         # The protos in google/protobuf/struct.proto are exceptional cases,
         # because they can and should represent themselves as lists and dicts.
         # These cases are handled in their rule classes.
-        if proto_type not in (struct_pb2.Value,
-                struct_pb2.ListValue, struct_pb2.Struct):
+        if proto_type not in (
+            struct_pb2.Value,
+            struct_pb2.ListValue,
+            struct_pb2.Struct,
+        ):
             # For our repeated and map view objects, simply return the
             # underlying pb.
             if isinstance(value, (Repeated, MapComposite)):
@@ -171,9 +182,7 @@ class BaseMarshal:
 
             # Convert lists and tuples recursively.
             if isinstance(value, (list, tuple)):
-                return type(value)(
-                    [self.to_proto(proto_type, i) for i in value],
-                )
+                return type(value)([self.to_proto(proto_type, i) for i in value],)
 
         # Convert dictionaries recursively when the proto type is a map.
         # This is slightly more complicated than converting a list or tuple
@@ -183,10 +192,13 @@ class BaseMarshal:
         # a FoosEntry with a `key` field, `value` field, and a `map_entry`
         # annotation. We need to do the conversion based on the `value`
         # field's type.
-        if isinstance(value, dict) and (proto_type.DESCRIPTOR.has_options and
-                proto_type.DESCRIPTOR.GetOptions().map_entry):
-            return {k: self.to_proto(type(proto_type().value), v)
-                    for k, v in value.items()}
+        if isinstance(value, dict) and (
+            proto_type.DESCRIPTOR.has_options
+            and proto_type.DESCRIPTOR.GetOptions().map_entry
+        ):
+            return {
+                k: self.to_proto(type(proto_type().value), v) for k, v in value.items()
+            }
 
         # Convert ordinary values.
         rule = self._rules.get(proto_type, self._noop)
@@ -195,10 +207,9 @@ class BaseMarshal:
         # Sanity check: If we are in strict mode, did we get the value we want?
         if strict and not isinstance(pb_value, proto_type):
             raise TypeError(
-                'Parameter must be instance of the same class; '
-                'expected {expected}, got {got}'.format(
-                    expected=proto_type.__name__,
-                    got=pb_value.__class__.__name__,
+                "Parameter must be instance of the same class; "
+                "expected {expected}, got {got}".format(
+                    expected=proto_type.__name__, got=pb_value.__class__.__name__,
                 ),
             )
 
@@ -213,6 +224,7 @@ class Marshal(BaseMarshal):
     adds identity tracking: multiple instantiations of :class:`Marshal` with
     the same name will provide the same instance.
     """
+
     _instances = {}
 
     def __new__(cls, *, name: str):
@@ -236,7 +248,7 @@ class Marshal(BaseMarshal):
                 same marshal each time.
         """
         self._name = name
-        if not hasattr(self, '_rules'):
+        if not hasattr(self, "_rules"):
             super().__init__()
 
 
@@ -250,6 +262,4 @@ class NoopRule:
         return value
 
 
-__all__ = (
-    'Marshal',
-)
+__all__ = ("Marshal",)

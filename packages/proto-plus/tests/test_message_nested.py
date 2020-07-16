@@ -19,6 +19,7 @@ def test_singly_nested_message():
     class Foo(proto.Message):
         class Bar(proto.Message):
             value = proto.Field(proto.INT32, number=1)
+
         bar = proto.Field(proto.MESSAGE, number=1, message=Bar)
 
     foo = Foo(bar=Foo.Bar(value=42))
@@ -30,7 +31,9 @@ def test_multiply_nested_message():
         class Bar(proto.Message):
             class Baz(proto.Message):
                 value = proto.Field(proto.INT32, number=1)
+
             baz = proto.Field(proto.MESSAGE, number=1, message=Baz)
+
         bar = proto.Field(proto.MESSAGE, number=1, message=Bar)
 
     foo = Foo(bar=Foo.Bar(baz=Foo.Bar.Baz(value=42)))
@@ -46,14 +49,15 @@ def test_forking_nested_messages():
         class Baz(proto.Message):
             class Bacon(proto.Message):
                 value = proto.Field(proto.INT32, number=1)
+
             bacon = proto.Field(proto.MESSAGE, number=1, message=Bacon)
+
         bar = proto.Field(proto.MESSAGE, number=1, message=Bar)
         baz = proto.Field(proto.MESSAGE, number=2, message=Baz)
 
     foo = Foo(
-        bar={'spam': 'xyz', 'eggs': False},
-        baz=Foo.Baz(bacon=Foo.Baz.Bacon(value=42)),
+        bar={"spam": "xyz", "eggs": False}, baz=Foo.Baz(bacon=Foo.Baz.Bacon(value=42)),
     )
-    assert foo.bar.spam == 'xyz'
+    assert foo.bar.spam == "xyz"
     assert not foo.bar.eggs
     assert foo.baz.bacon.value == 42

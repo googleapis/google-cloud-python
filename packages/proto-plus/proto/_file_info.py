@@ -24,8 +24,11 @@ from google.protobuf import reflection
 from proto.marshal.rules.message import MessageRule
 
 
-class _FileInfo(collections.namedtuple(
-        '_FileInfo', ['descriptor', 'messages', 'enums', 'name', 'nested'])):
+class _FileInfo(
+    collections.namedtuple(
+        "_FileInfo", ["descriptor", "messages", "enums", "name", "nested"]
+    )
+):
     registry = {}  # Mapping[str, '_FileInfo']
 
     def generate_file_pb(self):
@@ -44,9 +47,8 @@ class _FileInfo(collections.namedtuple(
         # Salt the filename in the descriptor.
         # This allows re-use of the filename by other proto messages if
         # needed (e.g. if __all__ is not used).
-        self.descriptor.name = '{prefix}_{salt}.proto'.format(
-            prefix=self.descriptor.name[:-6],
-            salt=str(uuid.uuid4())[0:8],
+        self.descriptor.name = "{prefix}_{salt}.proto".format(
+            prefix=self.descriptor.name[:-6], salt=str(uuid.uuid4())[0:8],
         )
 
         # Add the file descriptor.
@@ -62,7 +64,7 @@ class _FileInfo(collections.namedtuple(
             pb_message = reflection.GeneratedProtocolMessageType(
                 descriptor.name,
                 (message.Message,),
-                {'DESCRIPTOR': descriptor, '__module__': None},
+                {"DESCRIPTOR": descriptor, "__module__": None},
             )
 
             # Register the message with the marshal so it is wrapped
@@ -73,8 +75,7 @@ class _FileInfo(collections.namedtuple(
             # message subclass, which is what we need to use.
             proto_plus_message._meta._pb = pb_message
             proto_plus_message._meta.marshal.register(
-                pb_message,
-                MessageRule(pb_message, proto_plus_message)
+                pb_message, MessageRule(pb_message, proto_plus_message)
             )
 
             # Iterate over any fields on the message and, if their type
@@ -122,10 +123,8 @@ class _FileInfo(collections.namedtuple(
         # manifest has been populated.
         module = inspect.getmodule(new_class)
         manifest = frozenset()
-        if hasattr(module, '__protobuf__'):
-            manifest = module.__protobuf__.manifest.difference(
-                {new_class.__name__},
-            )
+        if hasattr(module, "__protobuf__"):
+            manifest = module.__protobuf__.manifest.difference({new_class.__name__},)
         if not all([hasattr(module, i) for i in manifest]):
             return False
 

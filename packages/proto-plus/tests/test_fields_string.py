@@ -20,12 +20,12 @@ def test_string_init():
         bar = proto.Field(proto.STRING, number=1)
         baz = proto.Field(proto.STRING, number=2)
 
-    foo = Foo(bar='spam')
-    assert foo.bar == 'spam'
-    assert foo.baz == ''
+    foo = Foo(bar="spam")
+    assert foo.bar == "spam"
+    assert foo.baz == ""
     assert not foo.baz
-    assert Foo.pb(foo).bar == 'spam'
-    assert Foo.pb(foo).baz == ''
+    assert Foo.pb(foo).bar == "spam"
+    assert Foo.pb(foo).baz == ""
 
 
 def test_string_rmw():
@@ -33,25 +33,25 @@ def test_string_rmw():
         spam = proto.Field(proto.STRING, number=1)
         eggs = proto.Field(proto.STRING, number=2)
 
-    foo = Foo(spam='bar')
-    foo.eggs = 'baz'
-    assert foo.spam == 'bar'
-    assert foo.eggs == 'baz'
-    assert Foo.pb(foo).spam == 'bar'
-    assert Foo.pb(foo).eggs == 'baz'
-    foo.spam = 'bacon'
-    assert foo.spam == 'bacon'
-    assert foo.eggs == 'baz'
-    assert Foo.pb(foo).spam == 'bacon'
-    assert Foo.pb(foo).eggs == 'baz'
+    foo = Foo(spam="bar")
+    foo.eggs = "baz"
+    assert foo.spam == "bar"
+    assert foo.eggs == "baz"
+    assert Foo.pb(foo).spam == "bar"
+    assert Foo.pb(foo).eggs == "baz"
+    foo.spam = "bacon"
+    assert foo.spam == "bacon"
+    assert foo.eggs == "baz"
+    assert Foo.pb(foo).spam == "bacon"
+    assert Foo.pb(foo).eggs == "baz"
 
 
 def test_string_del():
     class Foo(proto.Message):
         bar = proto.Field(proto.STRING, number=1)
 
-    foo = Foo(bar='spam')
-    assert foo.bar == 'spam'
+    foo = Foo(bar="spam")
+    assert foo.bar == "spam"
     del foo.bar
-    assert foo.bar == ''
+    assert foo.bar == ""
     assert not foo.bar

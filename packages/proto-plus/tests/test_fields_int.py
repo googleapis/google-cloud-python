@@ -91,5 +91,5 @@ def test_field_descriptor_idempotent():
     class Foo(proto.Message):
         bar = proto.Field(proto.INT32, number=1)
 
-    bar_field = Foo.meta.fields['bar']
+    bar_field = Foo.meta.fields["bar"]
     assert bar_field.descriptor is bar_field.descriptor

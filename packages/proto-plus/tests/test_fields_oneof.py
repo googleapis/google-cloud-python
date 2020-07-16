@@ -17,23 +17,23 @@ import proto
 
 def test_oneof():
     class Foo(proto.Message):
-        bar = proto.Field(proto.INT32, number=1, oneof='bacon')
-        baz = proto.Field(proto.STRING, number=2, oneof='bacon')
+        bar = proto.Field(proto.INT32, number=1, oneof="bacon")
+        baz = proto.Field(proto.STRING, number=2, oneof="bacon")
 
     foo = Foo(bar=42)
     assert foo.bar == 42
     assert not foo.baz
-    foo.baz = 'the answer'
+    foo.baz = "the answer"
     assert not foo.bar
-    assert foo.baz == 'the answer'
+    assert foo.baz == "the answer"
 
 
 def test_multiple_oneofs():
     class Foo(proto.Message):
-        bar = proto.Field(proto.INT32, number=1, oneof='spam')
-        baz = proto.Field(proto.STRING, number=2, oneof='spam')
-        bacon = proto.Field(proto.FLOAT, number=3, oneof='eggs')
-        ham = proto.Field(proto.STRING, number=4, oneof='eggs')
+        bar = proto.Field(proto.INT32, number=1, oneof="spam")
+        baz = proto.Field(proto.STRING, number=2, oneof="spam")
+        bacon = proto.Field(proto.FLOAT, number=3, oneof="eggs")
+        ham = proto.Field(proto.STRING, number=4, oneof="eggs")
 
     foo = Foo()
     foo.bar = 42
@@ -42,8 +42,8 @@ def test_multiple_oneofs():
     assert foo.bacon == 42.0
     assert not foo.baz
     assert not foo.ham
-    foo.ham = 'this one gets assigned'
+    foo.ham = "this one gets assigned"
     assert not foo.bacon
-    assert foo.ham == 'this one gets assigned'
+    assert foo.ham == "this one gets assigned"
     assert foo.bar == 42
     assert not foo.baz

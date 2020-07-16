@@ -45,16 +45,16 @@ class MessageMeta(type):
         package, marshal = _package_info.compile(name, attrs)
 
         # Determine the local path of this proto component within the file.
-        local_path = tuple(attrs.get('__qualname__', name).split('.'))
+        local_path = tuple(attrs.get("__qualname__", name).split("."))
 
         # Sanity check: We get the wrong full name if a class is declared
         # inside a function local scope; correct this.
-        if '<locals>' in local_path:
-            ix = local_path.index('<locals>')
-            local_path = local_path[:ix - 1] + local_path[ix + 1:]
+        if "<locals>" in local_path:
+            ix = local_path.index("<locals>")
+            local_path = local_path[: ix - 1] + local_path[ix + 1 :]
 
         # Determine the full name in protocol buffers.
-        full_name = '.'.join((package,) + local_path).lstrip('.')
+        full_name = ".".join((package,) + local_path).lstrip(".")
 
         # Special case: Maps. Map fields are special; they are essentially
         # shorthand for a nested message and a repeated field of that message.
@@ -65,11 +65,9 @@ class MessageMeta(type):
                 continue
 
             # Determine the name of the entry message.
-            msg_name = '{pascal_key}Entry'.format(
+            msg_name = "{pascal_key}Entry".format(
                 pascal_key=re.sub(
-                    r'_\w',
-                    lambda m: m.group()[1:].upper(),
-                    key,
+                    r"_\w", lambda m: m.group()[1:].upper(), key,
                 ).replace(key[0], key[0].upper(), 1),
             )
 
@@ -81,25 +79,24 @@ class MessageMeta(type):
             # This is only an issue in Python 3.5, where the order is
             # random (and the wrong order causes the pool to refuse to add
             # the descriptor because reasons).
-            entry_attrs = collections.OrderedDict({
-                '__module__': attrs.get('__module__', None),
-                '__qualname__': '{prefix}.{name}'.format(
-                    prefix=attrs.get('__qualname__', name),
-                    name=msg_name,
-                ),
-                '_pb_options': {'map_entry': True},
-            })
-            entry_attrs['key'] = Field(field.map_key_type, number=1)
-            entry_attrs['value'] = Field(field.proto_type, number=2,
-                enum=field.enum,
-                message=field.message,
+            entry_attrs = collections.OrderedDict(
+                {
+                    "__module__": attrs.get("__module__", None),
+                    "__qualname__": "{prefix}.{name}".format(
+                        prefix=attrs.get("__qualname__", name), name=msg_name,
+                    ),
+                    "_pb_options": {"map_entry": True},
+                }
+            )
+            entry_attrs["key"] = Field(field.map_key_type, number=1)
+            entry_attrs["value"] = Field(
+                field.proto_type, number=2, enum=field.enum, message=field.message,
             )
             attrs[msg_name] = MessageMeta(msg_name, (Message,), entry_attrs)
 
             # Create the repeated field for the entry message.
-            attrs[key] = RepeatedField(ProtoType.MESSAGE,
-                number=field.number,
-                message=attrs[msg_name],
+            attrs[key] = RepeatedField(
+                ProtoType.MESSAGE, number=field.number, message=attrs[msg_name],
             )
 
         # Okay, now we deal with all the rest of the fields.
@@ -122,10 +119,10 @@ class MessageMeta(type):
             # constructor because we can derive it from the metaclass.
             # (The goal is to make the declaration syntax as nice as possible.)
             field.mcls_data = {
-                'name': key,
-                'parent_name': full_name,
-                'index': index,
-                'package': package,
+                "name": key,
+                "parent_name": full_name,
+                "index": index,
+                "package": package,
             }
 
             # Add the field to the list of fields.
@@ -143,7 +140,7 @@ class MessageMeta(type):
             # construct our file descriptor proto).
             if field.message and not isinstance(field.message, str):
                 field_msg = field.message
-                if hasattr(field_msg, 'pb') and callable(field_msg.pb):
+                if hasattr(field_msg, "pb") and callable(field_msg.pb):
                     field_msg = field_msg.pb()
 
                 # Sanity check: The field's message may not yet be defined if
@@ -177,13 +174,13 @@ class MessageMeta(type):
         #
         # m = MyMessage()
         # MyMessage.field in m
-        mcls = type('AttrsMeta', (mcls,), opt_attrs)
+        mcls = type("AttrsMeta", (mcls,), opt_attrs)
 
         # Determine the filename.
         # We determine an appropriate proto filename based on the
         # Python module.
-        filename = '{0}.proto'.format(
-            attrs.get('__module__', name.lower()).replace('.', '/')
+        filename = "{0}.proto".format(
+            attrs.get("__module__", name.lower()).replace(".", "/")
         )
 
         # Get or create the information about the file, including the
@@ -192,9 +189,7 @@ class MessageMeta(type):
             filename,
             _file_info._FileInfo(
                 descriptor=descriptor_pb2.FileDescriptorProto(
-                    name=filename,
-                    package=package,
-                    syntax='proto3',
+                    name=filename, package=package, syntax="proto3",
                 ),
                 enums=collections.OrderedDict(),
                 messages=collections.OrderedDict(),
@@ -210,14 +205,15 @@ class MessageMeta(type):
                 file_info.descriptor.dependency.append(proto_import)
 
         # Retrieve any message options.
-        opts = descriptor_pb2.MessageOptions(**attrs.pop('_pb_options', {}))
+        opts = descriptor_pb2.MessageOptions(**attrs.pop("_pb_options", {}))
 
         # Create the underlying proto descriptor.
         desc = descriptor_pb2.DescriptorProto(
             name=name,
             field=[i.descriptor for i in fields],
-            oneof_decl=[descriptor_pb2.OneofDescriptorProto(name=i)
-                        for i in oneofs.keys()],
+            oneof_decl=[
+                descriptor_pb2.OneofDescriptorProto(name=i) for i in oneofs.keys()
+            ],
             options=opts,
         )
 
@@ -225,9 +221,7 @@ class MessageMeta(type):
         # attached as nested types here.
         for child_path in copy.copy(file_info.nested).keys():
             if local_path == child_path[:-1]:
-                desc.nested_type.add().MergeFrom(
-                    file_info.nested.pop(child_path),
-                )
+                desc.nested_type.add().MergeFrom(file_info.nested.pop(child_path),)
 
         # Add the descriptor to the file if it is a top-level descriptor,
         # or to a "holding area" for nested messages otherwise.
@@ -237,7 +231,7 @@ class MessageMeta(type):
             file_info.nested[local_path] = desc
 
         # Create the MessageInfo instance to be attached to this message.
-        attrs['_meta'] = _MessageInfo(
+        attrs["_meta"] = _MessageInfo(
             fields=fields,
             full_name=full_name,
             marshal=marshal,
@@ -288,9 +282,7 @@ class MessageMeta(type):
             if coerce:
                 obj = cls(obj)
             else:
-                raise TypeError('%r is not an instance of %s' % (
-                    obj, cls.__name__,
-                ))
+                raise TypeError("%r is not an instance of %s" % (obj, cls.__name__,))
         return obj._pb
 
     def wrap(cls, pb):
@@ -314,7 +306,7 @@ class MessageMeta(type):
         """
         return cls.pb(instance, coerce=True).SerializeToString()
 
-    def deserialize(cls, payload: bytes) -> 'Message':
+    def deserialize(cls, payload: bytes) -> "Message":
         """Given a serialized proto, deserialize it into a Message instance.
 
         Args:
@@ -338,7 +330,7 @@ class MessageMeta(type):
         """
         return MessageToJson(cls.pb(instance))
 
-    def from_json(cls, payload) -> 'Message':
+    def from_json(cls, payload) -> "Message":
         """Given a json string representing an instance,
         parse it into a message.
 
@@ -361,6 +353,7 @@ class Message(metaclass=MessageMeta):
         kwargs (dict): Keys and values corresponding to the fields of the
             message.
     """
+
     def __init__(self, mapping=None, **kwargs):
         # We accept several things for `mapping`:
         #   * An instance of this class.
@@ -370,10 +363,12 @@ class Message(metaclass=MessageMeta):
         #
         # Sanity check: Did we get something not on that list? Error if so.
         if mapping and not isinstance(
-                mapping, (collections.abc.Mapping, type(self), self._meta.pb)):
-            raise TypeError('Invalid constructor input for %s: %r' % (
-                self.__class__.__name__, mapping,
-            ))
+            mapping, (collections.abc.Mapping, type(self), self._meta.pb)
+        ):
+            raise TypeError(
+                "Invalid constructor input for %s: %r"
+                % (self.__class__.__name__, mapping,)
+            )
 
         # Handle the first two cases: they both involve keeping
         # a copy of the underlying protobuf descriptor instance.
@@ -389,7 +384,7 @@ class Message(metaclass=MessageMeta):
             # this behavior, because `MessageRule` actually does want to
             # wrap the original argument it was given. The `wrap` method
             # on the metaclass is the public API for this behavior.
-            if not kwargs.pop('__wrap_original', False):
+            if not kwargs.pop("__wrap_original", False):
                 mapping = copy.copy(mapping)
             self._pb = mapping
             if kwargs:
@@ -419,8 +414,7 @@ class Message(metaclass=MessageMeta):
 
     def __bool__(self):
         """Return True if any field is truthy, False otherwise."""
-        return any(k in self and getattr(self, k)
-                   for k in self._meta.fields.keys())
+        return any(k in self and getattr(self, k) for k in self._meta.fields.keys())
 
     def __contains__(self, key):
         """Return True if this field was set to something non-zero on the wire.
@@ -522,7 +516,7 @@ class Message(metaclass=MessageMeta):
         For well-known protocol buffer types which are marshalled, either
         the protocol buffer object or the Python equivalent is accepted.
         """
-        if key.startswith('_'):
+        if key.startswith("_"):
             return super().__setattr__(key, value)
         marshal = self._meta.marshal
         pb_type = self._meta.fields[key].pb_type
@@ -552,19 +546,21 @@ class _MessageInfo:
         options (~.descriptor_pb2.MessageOptions): Any options that were
             set on the message.
     """
-    def __init__(self, *,
-            fields: List[Field], package: str, full_name: str,
-            marshal: Marshal, options: descriptor_pb2.MessageOptions
-            ) -> None:
+
+    def __init__(
+        self,
+        *,
+        fields: List[Field],
+        package: str,
+        full_name: str,
+        marshal: Marshal,
+        options: descriptor_pb2.MessageOptions
+    ) -> None:
         self.package = package
         self.full_name = full_name
         self.options = options
-        self.fields = collections.OrderedDict([
-            (i.name, i) for i in fields
-        ])
-        self.fields_by_number = collections.OrderedDict([
-            (i.number, i) for i in fields
-        ])
+        self.fields = collections.OrderedDict([(i.name, i) for i in fields])
+        self.fields_by_number = collections.OrderedDict([(i.number, i) for i in fields])
         self.marshal = marshal
         self._pb = None
 
@@ -578,6 +574,4 @@ class _MessageInfo:
         return self._pb
 
 
-__all__ = (
-    'Message',
-)
+__all__ = ("Message",)

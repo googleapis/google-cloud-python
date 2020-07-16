@@ -32,10 +32,10 @@ def test_message_from_json():
     class Squid(proto.Message):
         mass_kg = proto.Field(proto.INT32, number=1)
 
-    json = '''{
+    json = """{
     "massKg": 100
     }    
-    '''
+    """
 
     s = Squid.from_json(json)
     assert s == Squid(mass_kg=100)

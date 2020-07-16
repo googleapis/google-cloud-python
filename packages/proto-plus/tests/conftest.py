@@ -33,8 +33,8 @@ def pytest_runtest_setup(item):
     pool = descriptor_pool.DescriptorPool()
     sym_db = symbol_database.SymbolDatabase(pool=pool)
     item._mocks = (
-        mock.patch.object(descriptor_pool, 'Default', return_value=pool),
-        mock.patch.object(symbol_database, 'Default', return_value=sym_db),
+        mock.patch.object(descriptor_pool, "Default", return_value=pool),
+        mock.patch.object(symbol_database, "Default", return_value=sym_db),
     )
     [i.start() for i in item._mocks]
 
@@ -53,7 +53,7 @@ def pytest_runtest_setup(item):
     # onto the pb2 modules.
     reloaded = set()
     for name in dir(item.module):
-        if name.endswith('_pb2') and not name.startswith('test_'):
+        if name.endswith("_pb2") and not name.startswith("test_"):
             module = getattr(item.module, name)
             pool.AddSerializedFile(module.DESCRIPTOR.serialized_pb)
             fd = pool.FindFileByName(module.DESCRIPTOR.name)
@@ -68,11 +68,11 @@ def pytest_runtest_setup(item):
 
     # If the marshal had previously registered the old message classes,
     # then reload the appropriate modules so the marshal is using the new ones.
-    if 'wrappers_pb2' in reloaded:
+    if "wrappers_pb2" in reloaded:
         imp.reload(rules.wrappers)
-    if 'struct_pb2' in reloaded:
+    if "struct_pb2" in reloaded:
         imp.reload(rules.struct)
-    if reloaded.intersection({'timestamp_pb2', 'duration_pb2'}):
+    if reloaded.intersection({"timestamp_pb2", "duration_pb2"}):
         imp.reload(rules.dates)
 
 
@@ -85,9 +85,7 @@ def _register_messages(scope, iterable, sym_db):
     """Create and register messages from the file descriptor."""
     for name, descriptor in iterable.items():
         new_msg = reflection.GeneratedProtocolMessageType(
-            name,
-            (message.Message,),
-            {'DESCRIPTOR': descriptor, '__module__': None},
+            name, (message.Message,), {"DESCRIPTOR": descriptor, "__module__": None},
         )
         sym_db.RegisterMessage(new_msg)
         setattr(scope, name, new_msg)

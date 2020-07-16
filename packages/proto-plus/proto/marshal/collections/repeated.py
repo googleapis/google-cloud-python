@@ -45,7 +45,7 @@ class Repeated(collections.abc.MutableSequence):
         del self.pb[key]
 
     def __eq__(self, other):
-        if hasattr(other, 'pb'):
+        if hasattr(other, "pb"):
             return tuple(self.pb) == tuple(other.pb)
         return tuple(self.pb) == tuple(other)
 
@@ -85,6 +85,7 @@ class RepeatedComposite(Repeated):
     This implements the full Python MutableSequence interface, but all methods
     modify the underlying field container directly.
     """
+
     @cached_property
     def _pb_type(self):
         """Return the protocol buffer type for this sequence."""

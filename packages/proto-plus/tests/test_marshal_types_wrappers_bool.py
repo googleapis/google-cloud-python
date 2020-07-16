@@ -20,10 +20,8 @@ from proto.marshal.marshal import BaseMarshal
 
 def test_bool_value_init():
     class Foo(proto.Message):
-        bar = proto.Field(proto.MESSAGE,
-            message=wrappers_pb2.BoolValue,
-            number=1,
-        )
+        bar = proto.Field(proto.MESSAGE, message=wrappers_pb2.BoolValue, number=1,)
+
     assert Foo(bar=True).bar is True
     assert Foo(bar=False).bar is False
     assert Foo().bar is None
@@ -31,22 +29,18 @@ def test_bool_value_init():
 
 def test_bool_value_init_dict():
     class Foo(proto.Message):
-        bar = proto.Field(proto.MESSAGE,
-            message=wrappers_pb2.BoolValue,
-            number=1,
-        )
-    assert Foo({'bar': True}).bar is True
-    assert Foo({'bar': False}).bar is False
-    assert Foo({'bar': None}).bar is None
+        bar = proto.Field(proto.MESSAGE, message=wrappers_pb2.BoolValue, number=1,)
+
+    assert Foo({"bar": True}).bar is True
+    assert Foo({"bar": False}).bar is False
+    assert Foo({"bar": None}).bar is None
 
 
 def test_bool_value_distinction_from_bool():
     class Foo(proto.Message):
-        bar = proto.Field(proto.MESSAGE,
-            message=wrappers_pb2.BoolValue,
-            number=1,
-        )
+        bar = proto.Field(proto.MESSAGE, message=wrappers_pb2.BoolValue, number=1,)
         baz = proto.Field(proto.BOOL, number=2)
+
     assert Foo().bar is None
     assert Foo().baz is False
 
@@ -55,6 +49,7 @@ def test_bool_value_rmw():
     class Foo(proto.Message):
         bar = proto.Field(wrappers_pb2.BoolValue, number=1)
         baz = proto.Field(wrappers_pb2.BoolValue, number=2)
+
     foo = Foo(bar=False)
     assert foo.bar is False
     assert foo.baz is None
@@ -63,15 +58,13 @@ def test_bool_value_rmw():
     assert Foo.pb(foo).baz.value is True
     foo.bar = None
     assert foo.bar is None
-    assert not Foo.pb(foo).HasField('bar')
+    assert not Foo.pb(foo).HasField("bar")
 
 
 def test_bool_value_write_bool_value():
     class Foo(proto.Message):
-        bar = proto.Field(proto.MESSAGE,
-            message=wrappers_pb2.BoolValue,
-            number=1,
-        )
+        bar = proto.Field(proto.MESSAGE, message=wrappers_pb2.BoolValue, number=1,)
+
     foo = Foo(bar=True)
     foo.bar = wrappers_pb2.BoolValue()
     assert foo.bar is False
@@ -79,10 +72,8 @@ def test_bool_value_write_bool_value():
 
 def test_bool_value_del():
     class Foo(proto.Message):
-        bar = proto.Field(proto.MESSAGE,
-            message=wrappers_pb2.BoolValue,
-            number=1,
-        )
+        bar = proto.Field(proto.MESSAGE, message=wrappers_pb2.BoolValue, number=1,)
+
     foo = Foo(bar=False)
     assert foo.bar is False
     del foo.bar
@@ -93,6 +84,7 @@ def test_multiple_types():
     class Foo(proto.Message):
         bar = proto.Field(wrappers_pb2.BoolValue, number=1)
         baz = proto.Field(wrappers_pb2.Int32Value, number=2)
+
     foo = Foo(bar=True, baz=42)
     assert foo.bar is True
     assert foo.baz == 42

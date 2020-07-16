@@ -17,6 +17,7 @@ import enum
 
 class ProtoType(enum.IntEnum):
     """The set of basic types in protocol buffers."""
+
     # These values come from google/protobuf/descriptor.proto
     DOUBLE = 1
     FLOAT = 2

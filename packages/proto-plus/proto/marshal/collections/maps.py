@@ -23,6 +23,7 @@ class MapComposite(collections.abc.MutableMapping):
     This implements the full Python MutableMapping interface, but all methods
     modify the underlying field container directly.
     """
+
     @cached_property
     def _pb_type(self):
         """Return the protocol buffer type for this sequence."""

@@ -18,39 +18,47 @@ import os
 import nox
 
 
-@nox.session(python=['3.5', '3.6', '3.7'])
-def unit(session, proto='python'):
+@nox.session(python=["3.5", "3.6", "3.7"])
+def unit(session, proto="python"):
     """Run the unit test suite."""
 
-    session.env['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = proto
-    session.install('coverage', 'pytest', 'pytest-cov')
-    session.install('-e', '.')
+    session.env["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = proto
+    session.install("coverage", "pytest", "pytest-cov")
+    session.install("-e", ".")
 
     session.run(
-        'py.test',
-        '-W=error',
-        '--quiet',
-        '--cov=proto',
-        '--cov-config=.coveragerc',
-        '--cov-report=term',
-        '--cov-report=html',
-        os.path.join('tests', ''),
+        "py.test",
+        "-W=error",
+        "--quiet",
+        "--cov=proto",
+        "--cov-config=.coveragerc",
+        "--cov-report=term",
+        "--cov-report=html",
+        os.path.join("tests", ""),
     )
 
 
-@nox.session(python=['3.5', '3.6', '3.7'])
+@nox.session(python=["3.5", "3.6", "3.7"])
 def unitcpp(session):
-    return unit(session, proto='cpp')
+    return unit(session, proto="cpp")
 
 
-@nox.session(python='3.6')
+@nox.session(python="3.6")
 def docs(session):
     """Build the docs."""
 
-    session.install('sphinx', 'sphinx_rtd_theme')
-    session.install('.')
+    session.install("sphinx", "sphinx_rtd_theme")
+    session.install(".")
 
     # Build the docs!
-    session.run('rm', '-rf', 'docs/_build/')
-    session.run('sphinx-build', '-W', '-b', 'html', '-d',
-                'docs/_build/doctrees', 'docs/', 'docs/_build/html/')
+    session.run("rm", "-rf", "docs/_build/")
+    session.run(
+        "sphinx-build",
+        "-W",
+        "-b",
+        "html",
+        "-d",
+        "docs/_build/doctrees",
+        "docs/",
+        "docs/_build/html/",
+    )

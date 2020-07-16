@@ -45,8 +45,8 @@ def test_optional_and_oneof():
 
     # Oneof defined before an optional
     class Squid(proto.Message):
-        mass_kg = proto.Field(proto.INT32, number=1, oneof='mass')
-        mass_lbs = proto.Field(proto.INT32, number=2, oneof='mass')
+        mass_kg = proto.Field(proto.INT32, number=1, oneof="mass")
+        mass_lbs = proto.Field(proto.INT32, number=2, oneof="mass")
 
         iridiphore_num = proto.Field(proto.INT32, number=3, optional=True)
 
@@ -69,8 +69,8 @@ def test_optional_and_oneof():
     class Clam(proto.Message):
         flute_radius = proto.Field(proto.INT32, number=1, optional=True)
 
-        mass_kg = proto.Field(proto.INT32, number=2, oneof='mass')
-        mass_lbs = proto.Field(proto.INT32, number=3, oneof='mass')
+        mass_kg = proto.Field(proto.INT32, number=2, oneof="mass")
+        mass_lbs = proto.Field(proto.INT32, number=3, oneof="mass")
 
     c = Clam(mass_kg=20)
 

@@ -25,6 +25,7 @@ class WrapperRule:
     These are effectively similar to the protobuf primitives except
     that None becomes a possible value.
     """
+
     def to_python(self, value, *, absent: bool = None):
         if isinstance(value, self._proto_type):
             if absent:

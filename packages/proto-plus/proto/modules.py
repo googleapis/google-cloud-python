@@ -16,13 +16,14 @@ from typing import Set
 import collections
 
 
-_ProtoModule = collections.namedtuple('ProtoModule',
-    ['package', 'marshal', 'manifest'],
+_ProtoModule = collections.namedtuple(
+    "ProtoModule", ["package", "marshal", "manifest"],
 )
 
 
-def define_module(*, package: str, marshal: str = None,
-            manifest: Set[str] = frozenset()) -> _ProtoModule:
+def define_module(
+    *, package: str, marshal: str = None, manifest: Set[str] = frozenset()
+) -> _ProtoModule:
     """Define a protocol buffers module.
 
     The settings defined here are used for all protobuf messages
@@ -38,13 +39,7 @@ def define_module(*, package: str, marshal: str = None,
     """
     if not marshal:
         marshal = package
-    return _ProtoModule(
-        package=package,
-        marshal=marshal,
-        manifest=frozenset(manifest),
-    )
+    return _ProtoModule(package=package, marshal=marshal, manifest=frozenset(manifest),)
 
 
-__all__ = (
-    'define_module',
-)
+__all__ = ("define_module",)
