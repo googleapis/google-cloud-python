@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+### [1.0.1](https://www.github.com/googleapis/python-dataproc/compare/v1.0.0...v1.0.1) (2020-07-16)
+
+
+### Bug Fixes
+
+* correct protobuf type for diagnose_cluster, update retry configs ([#55](https://www.github.com/googleapis/python-dataproc/issues/55)) ([822315e](https://www.github.com/googleapis/python-dataproc/commit/822315ec3f2517ebb6ca199b72156ebd50e0518b))
+
 ## [1.0.0](https://www.github.com/googleapis/python-dataproc/compare/v0.8.1...v1.0.0) (2020-06-17)
 
 
