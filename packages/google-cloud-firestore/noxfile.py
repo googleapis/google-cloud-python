@@ -68,7 +68,7 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-def default(session):
+def default(session, test_dir, ignore_dir):
     # Install all test dependencies, then install this package in-place.
     session.install("asyncmock", "pytest-asyncio")
 
@@ -76,8 +76,7 @@ def default(session):
     session.install("-e", ".")
 
     # Run py.test against the unit tests.
-    session.run(
-        "py.test",
+    args = [
         "--quiet",
         "--cov=google.cloud.firestore",
         "--cov=google.cloud",
@@ -86,15 +85,31 @@ def default(session):
         "--cov-config=.coveragerc",
         "--cov-report=",
         "--cov-fail-under=0",
-        os.path.join("tests", "unit"),
+        test_dir,
         *session.posargs,
-    )
+    ]
+
+    if ignore_dir:
+        args.insert(0, f"--ignore={ignore_dir}")
+
+    session.run("py.test", *args)
 
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
-    """Run the unit test suite."""
-    default(session)
+    """Run the unit test suite for sync tests."""
+    default(
+        session,
+        os.path.join("tests", "unit"),
+        os.path.join("tests", "unit", "v1", "async"),
+    )
+
+
+@nox.session(python=["3.6", "3.7", "3.8"])
+def unit_async(session):
+    """Run the unit test suite for async tests."""
+    session.install("pytest-asyncio", "aiounittest")
+    default(session, os.path.join("tests", "unit", "v1", "async"), None)
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)

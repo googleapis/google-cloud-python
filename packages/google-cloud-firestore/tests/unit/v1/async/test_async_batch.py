@@ -1,4 +1,4 @@
-# Copyright 2017 Google LLC All rights reserved.
+# Copyright 2020 Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
+import pytest
+import aiounittest
 
 import mock
 
 
-class TestWriteBatch(unittest.TestCase):
+class TestAsyncWriteBatch(aiounittest.AsyncTestCase):
     @staticmethod
     def _get_target_class():
-        from google.cloud.firestore_v1.batch import WriteBatch
+        from google.cloud.firestore_v1.async_batch import AsyncWriteBatch
 
-        return WriteBatch
+        return AsyncWriteBatch
 
     def _make_one(self, *args, **kwargs):
         klass = self._get_target_class()
@@ -35,7 +36,8 @@ class TestWriteBatch(unittest.TestCase):
         self.assertIsNone(batch.write_results)
         self.assertIsNone(batch.commit_time)
 
-    def test_commit(self):
+    @pytest.mark.asyncio
+    async def test_commit(self):
         from google.protobuf import timestamp_pb2
         from google.cloud.firestore_v1.types import firestore
         from google.cloud.firestore_v1.types import write
@@ -61,7 +63,7 @@ class TestWriteBatch(unittest.TestCase):
         batch.delete(document2)
         write_pbs = batch._write_pbs[::]
 
-        write_results = batch.commit()
+        write_results = await batch.commit()
         self.assertEqual(write_results, list(commit_response.write_results))
         self.assertEqual(batch.write_results, write_results)
         # TODO(microgen): v2: commit time is already a datetime, though not with nano
@@ -79,7 +81,8 @@ class TestWriteBatch(unittest.TestCase):
             metadata=client._rpc_metadata,
         )
 
-    def test_as_context_mgr_wo_error(self):
+    @pytest.mark.asyncio
+    async def test_as_context_mgr_wo_error(self):
         from google.protobuf import timestamp_pb2
         from google.cloud.firestore_v1.types import firestore
         from google.cloud.firestore_v1.types import write
@@ -97,7 +100,7 @@ class TestWriteBatch(unittest.TestCase):
         document1 = client.document("a", "b")
         document2 = client.document("c", "d", "e", "f")
 
-        with batch as ctx_mgr:
+        async with batch as ctx_mgr:
             self.assertIs(ctx_mgr, batch)
             ctx_mgr.create(document1, {"ten": 10, "buck": u"ets"})
             ctx_mgr.delete(document2)
@@ -119,7 +122,8 @@ class TestWriteBatch(unittest.TestCase):
             metadata=client._rpc_metadata,
         )
 
-    def test_as_context_mgr_w_error(self):
+    @pytest.mark.asyncio
+    async def test_as_context_mgr_w_error(self):
         firestore_api = mock.Mock(spec=["commit"])
         client = _make_client()
         client._firestore_api_internal = firestore_api
@@ -128,12 +132,12 @@ class TestWriteBatch(unittest.TestCase):
         document2 = client.document("c", "d", "e", "f")
 
         with self.assertRaises(RuntimeError):
-            with batch as ctx_mgr:
+            async with batch as ctx_mgr:
                 ctx_mgr.create(document1, {"ten": 10, "buck": u"ets"})
                 ctx_mgr.delete(document2)
                 raise RuntimeError("testing")
 
-        # batch still has its changes, as _exit_ (and commit) is not invoked
+        # batch still has its changes, as _aexit_ (and commit) is not invoked
         # changes are preserved so commit can be retried
         self.assertIsNone(batch.write_results)
         self.assertIsNone(batch.commit_time)

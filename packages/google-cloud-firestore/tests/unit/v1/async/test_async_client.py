@@ -12,22 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
 import datetime
 import types
-import unittest
+import aiounittest
 
 import mock
 
 
-class TestClient(unittest.TestCase):
+class TestAsyncClient(aiounittest.AsyncTestCase):
 
     PROJECT = "my-prahjekt"
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.firestore_v1.client import Client
+        from google.cloud.firestore_v1.async_client import AsyncClient
 
-        return Client
+        return AsyncClient
 
     def _make_one(self, *args, **kwargs):
         klass = self._get_target_class()
@@ -38,8 +39,8 @@ class TestClient(unittest.TestCase):
         return self._make_one(project=self.PROJECT, credentials=credentials)
 
     def test_constructor(self):
-        from google.cloud.firestore_v1.client import _CLIENT_INFO
-        from google.cloud.firestore_v1.client import DEFAULT_DATABASE
+        from google.cloud.firestore_v1.async_client import _CLIENT_INFO
+        from google.cloud.firestore_v1.async_client import DEFAULT_DATABASE
 
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
@@ -88,7 +89,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client._target, "foo-firestore.googleapis.com")
 
     def test_collection_factory(self):
-        from google.cloud.firestore_v1.collection import CollectionReference
+        from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
 
         collection_id = "users"
         client = self._make_default_one()
@@ -96,10 +97,10 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(collection._path, (collection_id,))
         self.assertIs(collection._client, client)
-        self.assertIsInstance(collection, CollectionReference)
+        self.assertIsInstance(collection, AsyncCollectionReference)
 
     def test_collection_factory_nested(self):
-        from google.cloud.firestore_v1.collection import CollectionReference
+        from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
 
         client = self._make_default_one()
         parts = ("users", "alovelace", "beep")
@@ -108,22 +109,22 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(collection1._path, parts)
         self.assertIs(collection1._client, client)
-        self.assertIsInstance(collection1, CollectionReference)
+        self.assertIsInstance(collection1, AsyncCollectionReference)
 
         # Make sure using segments gives the same result.
         collection2 = client.collection(*parts)
         self.assertEqual(collection2._path, parts)
         self.assertIs(collection2._client, client)
-        self.assertIsInstance(collection2, CollectionReference)
+        self.assertIsInstance(collection2, AsyncCollectionReference)
 
     def test__get_collection_reference(self):
-        from google.cloud.firestore_v1.collection import CollectionReference
+        from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
 
         client = self._make_default_one()
         collection = client._get_collection_reference("collectionId")
 
         self.assertIs(collection._client, client)
-        self.assertIsInstance(collection, CollectionReference)
+        self.assertIsInstance(collection, AsyncCollectionReference)
 
     def test_collection_group(self):
         client = self._make_default_one()
@@ -143,7 +144,7 @@ class TestClient(unittest.TestCase):
             client.collection_group("foo/bar")
 
     def test_document_factory(self):
-        from google.cloud.firestore_v1.document import DocumentReference
+        from google.cloud.firestore_v1.async_document import AsyncDocumentReference
 
         parts = ("rooms", "roomA")
         client = self._make_default_one()
@@ -152,16 +153,16 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(document1._path, parts)
         self.assertIs(document1._client, client)
-        self.assertIsInstance(document1, DocumentReference)
+        self.assertIsInstance(document1, AsyncDocumentReference)
 
         # Make sure using segments gives the same result.
         document2 = client.document(*parts)
         self.assertEqual(document2._path, parts)
         self.assertIs(document2._client, client)
-        self.assertIsInstance(document2, DocumentReference)
+        self.assertIsInstance(document2, AsyncDocumentReference)
 
     def test_document_factory_w_absolute_path(self):
-        from google.cloud.firestore_v1.document import DocumentReference
+        from google.cloud.firestore_v1.async_document import AsyncDocumentReference
 
         parts = ("rooms", "roomA")
         client = self._make_default_one()
@@ -171,10 +172,10 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(document1._path, parts)
         self.assertIs(document1._client, client)
-        self.assertIsInstance(document1, DocumentReference)
+        self.assertIsInstance(document1, AsyncDocumentReference)
 
     def test_document_factory_w_nested_path(self):
-        from google.cloud.firestore_v1.document import DocumentReference
+        from google.cloud.firestore_v1.async_document import AsyncDocumentReference
 
         client = self._make_default_one()
         parts = ("rooms", "roomA", "shoes", "dressy")
@@ -183,18 +184,19 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(document1._path, parts)
         self.assertIs(document1._client, client)
-        self.assertIsInstance(document1, DocumentReference)
+        self.assertIsInstance(document1, AsyncDocumentReference)
 
         # Make sure using segments gives the same result.
         document2 = client.document(*parts)
         self.assertEqual(document2._path, parts)
         self.assertIs(document2._client, client)
-        self.assertIsInstance(document2, DocumentReference)
+        self.assertIsInstance(document2, AsyncDocumentReference)
 
-    def test_collections(self):
+    @pytest.mark.asyncio
+    async def test_collections(self):
         from google.api_core.page_iterator import Iterator
         from google.api_core.page_iterator import Page
-        from google.cloud.firestore_v1.collection import CollectionReference
+        from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
 
         collection_ids = ["users", "projects"]
         client = self._make_default_one()
@@ -217,11 +219,11 @@ class TestClient(unittest.TestCase):
         iterator = _Iterator(pages=[collection_ids])
         firestore_api.list_collection_ids.return_value = iterator
 
-        collections = list(client.collections())
+        collections = [c async for c in client.collections()]
 
         self.assertEqual(len(collections), len(collection_ids))
         for collection, collection_id in zip(collections, collection_ids):
-            self.assertIsInstance(collection, CollectionReference)
+            self.assertIsInstance(collection, AsyncCollectionReference)
             self.assertEqual(collection.parent, None)
             self.assertEqual(collection.id, collection_id)
 
@@ -230,7 +232,7 @@ class TestClient(unittest.TestCase):
             request={"parent": base_path}, metadata=client._rpc_metadata
         )
 
-    def _get_all_helper(self, client, references, document_pbs, **kwargs):
+    async def _get_all_helper(self, client, references, document_pbs, **kwargs):
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = mock.Mock(spec=["batch_get_documents"])
         response_iterator = iter(document_pbs)
@@ -241,9 +243,9 @@ class TestClient(unittest.TestCase):
 
         # Actually call get_all().
         snapshots = client.get_all(references, **kwargs)
-        self.assertIsInstance(snapshots, types.GeneratorType)
+        self.assertIsInstance(snapshots, types.AsyncGeneratorType)
 
-        return list(snapshots)
+        return [s async for s in snapshots]
 
     def _info_for_get_all(self, data1, data2):
         client = self._make_default_one()
@@ -259,9 +261,10 @@ class TestClient(unittest.TestCase):
 
         return client, document1, document2, response1, response2
 
-    def test_get_all(self):
+    @pytest.mark.asyncio
+    async def test_get_all(self):
         from google.cloud.firestore_v1.types import common
-        from google.cloud.firestore_v1.document import DocumentSnapshot
+        from google.cloud.firestore_v1.async_document import DocumentSnapshot
 
         data1 = {"a": u"cheese"}
         data2 = {"b": True, "c": 18}
@@ -270,7 +273,7 @@ class TestClient(unittest.TestCase):
 
         # Exercise the mocked ``batch_get_documents``.
         field_paths = ["a", "b"]
-        snapshots = self._get_all_helper(
+        snapshots = await self._get_all_helper(
             client,
             [document1, document2],
             [response1, response2],
@@ -301,8 +304,9 @@ class TestClient(unittest.TestCase):
             metadata=client._rpc_metadata,
         )
 
-    def test_get_all_with_transaction(self):
-        from google.cloud.firestore_v1.document import DocumentSnapshot
+    @pytest.mark.asyncio
+    async def test_get_all_with_transaction(self):
+        from google.cloud.firestore_v1.async_document import DocumentSnapshot
 
         data = {"so-much": 484}
         info = self._info_for_get_all(data, {})
@@ -312,7 +316,7 @@ class TestClient(unittest.TestCase):
         transaction._id = txn_id
 
         # Exercise the mocked ``batch_get_documents``.
-        snapshots = self._get_all_helper(
+        snapshots = await self._get_all_helper(
             client, [document], [response], transaction=transaction
         )
         self.assertEqual(len(snapshots), 1)
@@ -334,7 +338,8 @@ class TestClient(unittest.TestCase):
             metadata=client._rpc_metadata,
         )
 
-    def test_get_all_unknown_result(self):
+    @pytest.mark.asyncio
+    async def test_get_all_unknown_result(self):
         from google.cloud.firestore_v1.base_client import _BAD_DOC_TEMPLATE
 
         info = self._info_for_get_all({"z": 28.5}, {})
@@ -342,7 +347,7 @@ class TestClient(unittest.TestCase):
 
         # Exercise the mocked ``batch_get_documents``.
         with self.assertRaises(ValueError) as exc_info:
-            self._get_all_helper(client, [document], [response])
+            await self._get_all_helper(client, [document], [response])
 
         err_msg = _BAD_DOC_TEMPLATE.format(response.found.name)
         self.assertEqual(exc_info.exception.args, (err_msg,))
@@ -359,8 +364,9 @@ class TestClient(unittest.TestCase):
             metadata=client._rpc_metadata,
         )
 
-    def test_get_all_wrong_order(self):
-        from google.cloud.firestore_v1.document import DocumentSnapshot
+    @pytest.mark.asyncio
+    async def test_get_all_wrong_order(self):
+        from google.cloud.firestore_v1.async_document import DocumentSnapshot
 
         data1 = {"up": 10}
         data2 = {"down": -10}
@@ -370,7 +376,7 @@ class TestClient(unittest.TestCase):
         response3 = _make_batch_response(missing=document3._document_path)
 
         # Exercise the mocked ``batch_get_documents``.
-        snapshots = self._get_all_helper(
+        snapshots = await self._get_all_helper(
             client, [document1, document2, document3], [response2, response1, response3]
         )
 
@@ -405,20 +411,20 @@ class TestClient(unittest.TestCase):
         )
 
     def test_batch(self):
-        from google.cloud.firestore_v1.batch import WriteBatch
+        from google.cloud.firestore_v1.async_batch import AsyncWriteBatch
 
         client = self._make_default_one()
         batch = client.batch()
-        self.assertIsInstance(batch, WriteBatch)
+        self.assertIsInstance(batch, AsyncWriteBatch)
         self.assertIs(batch._client, client)
         self.assertEqual(batch._write_pbs, [])
 
     def test_transaction(self):
-        from google.cloud.firestore_v1.transaction import Transaction
+        from google.cloud.firestore_v1.async_transaction import AsyncTransaction
 
         client = self._make_default_one()
         transaction = client.transaction(max_attempts=3, read_only=True)
-        self.assertIsInstance(transaction, Transaction)
+        self.assertIsInstance(transaction, AsyncTransaction)
         self.assertEqual(transaction._write_pbs, [])
         self.assertEqual(transaction._max_attempts, 3)
         self.assertTrue(transaction._read_only)

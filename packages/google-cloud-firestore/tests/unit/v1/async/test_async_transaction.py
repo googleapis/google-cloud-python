@@ -1,4 +1,4 @@
-# Copyright 2017 Google LLC All rights reserved.
+# Copyright 2020 Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,23 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
+import pytest
+import aiounittest
 import mock
 
 
-class TestTransaction(unittest.TestCase):
+class TestAsyncTransaction(aiounittest.AsyncTestCase):
     @staticmethod
     def _get_target_class():
-        from google.cloud.firestore_v1.transaction import Transaction
+        from google.cloud.firestore_v1.async_transaction import AsyncTransaction
 
-        return Transaction
+        return AsyncTransaction
 
     def _make_one(self, *args, **kwargs):
         klass = self._get_target_class()
         return klass(*args, **kwargs)
 
     def test_constructor_defaults(self):
-        from google.cloud.firestore_v1.transaction import MAX_ATTEMPTS
+        from google.cloud.firestore_v1.async_transaction import MAX_ATTEMPTS
 
         transaction = self._make_one(mock.sentinel.client)
         self.assertIs(transaction._client, mock.sentinel.client)
@@ -66,7 +67,9 @@ class TestTransaction(unittest.TestCase):
 
     def test__clean_up(self):
         transaction = self._make_one(mock.sentinel.client)
-        transaction._write_pbs.extend([mock.sentinel.write_pb1, mock.sentinel.write])
+        transaction._write_pbs.extend(
+            [mock.sentinel.write_pb1, mock.sentinel.write_pb2]
+        )
         transaction._id = b"not-this-time-my-friend"
 
         ret_val = transaction._clean_up()
@@ -75,7 +78,8 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(transaction._write_pbs, [])
         self.assertIsNone(transaction._id)
 
-    def test__begin(self):
+    @pytest.mark.asyncio
+    async def test__begin(self):
         from google.cloud.firestore_v1.services.firestore import (
             client as firestore_client,
         )
@@ -97,7 +101,7 @@ class TestTransaction(unittest.TestCase):
         transaction = self._make_one(client)
         self.assertIsNone(transaction._id)
 
-        ret_val = transaction._begin()
+        ret_val = await transaction._begin()
         self.assertIsNone(ret_val)
         self.assertEqual(transaction._id, txn_id)
 
@@ -107,7 +111,8 @@ class TestTransaction(unittest.TestCase):
             metadata=client._rpc_metadata,
         )
 
-    def test__begin_failure(self):
+    @pytest.mark.asyncio
+    async def test__begin_failure(self):
         from google.cloud.firestore_v1.base_transaction import _CANT_BEGIN
 
         client = _make_client()
@@ -115,12 +120,13 @@ class TestTransaction(unittest.TestCase):
         transaction._id = b"not-none"
 
         with self.assertRaises(ValueError) as exc_info:
-            transaction._begin()
+            await transaction._begin()
 
         err_msg = _CANT_BEGIN.format(transaction._id)
         self.assertEqual(exc_info.exception.args, (err_msg,))
 
-    def test__rollback(self):
+    @pytest.mark.asyncio
+    async def test__rollback(self):
         from google.protobuf import empty_pb2
         from google.cloud.firestore_v1.services.firestore import (
             client as firestore_client,
@@ -140,7 +146,7 @@ class TestTransaction(unittest.TestCase):
         transaction = self._make_one(client)
         txn_id = b"to-be-r\x00lled"
         transaction._id = txn_id
-        ret_val = transaction._rollback()
+        ret_val = await transaction._rollback()
         self.assertIsNone(ret_val)
         self.assertIsNone(transaction._id)
 
@@ -150,7 +156,8 @@ class TestTransaction(unittest.TestCase):
             metadata=client._rpc_metadata,
         )
 
-    def test__rollback_not_allowed(self):
+    @pytest.mark.asyncio
+    async def test__rollback_not_allowed(self):
         from google.cloud.firestore_v1.base_transaction import _CANT_ROLLBACK
 
         client = _make_client()
@@ -158,11 +165,12 @@ class TestTransaction(unittest.TestCase):
         self.assertIsNone(transaction._id)
 
         with self.assertRaises(ValueError) as exc_info:
-            transaction._rollback()
+            await transaction._rollback()
 
         self.assertEqual(exc_info.exception.args, (_CANT_ROLLBACK,))
 
-    def test__rollback_failure(self):
+    @pytest.mark.asyncio
+    async def test__rollback_failure(self):
         from google.api_core import exceptions
         from google.cloud.firestore_v1.services.firestore import (
             client as firestore_client,
@@ -185,7 +193,7 @@ class TestTransaction(unittest.TestCase):
         transaction._id = txn_id
 
         with self.assertRaises(exceptions.InternalServerError) as exc_info:
-            transaction._rollback()
+            await transaction._rollback()
 
         self.assertIs(exc_info.exception, exc)
         self.assertIsNone(transaction._id)
@@ -197,7 +205,8 @@ class TestTransaction(unittest.TestCase):
             metadata=client._rpc_metadata,
         )
 
-    def test__commit(self):
+    @pytest.mark.asyncio
+    async def test__commit(self):
         from google.cloud.firestore_v1.services.firestore import (
             client as firestore_client,
         )
@@ -223,7 +232,7 @@ class TestTransaction(unittest.TestCase):
         transaction.set(document, {"apple": 4.5})
         write_pbs = transaction._write_pbs[::]
 
-        write_results = transaction._commit()
+        write_results = await transaction._commit()
         self.assertEqual(write_results, list(commit_response.write_results))
         # Make sure transaction has no more "changes".
         self.assertIsNone(transaction._id)
@@ -239,17 +248,19 @@ class TestTransaction(unittest.TestCase):
             metadata=client._rpc_metadata,
         )
 
-    def test__commit_not_allowed(self):
+    @pytest.mark.asyncio
+    async def test__commit_not_allowed(self):
         from google.cloud.firestore_v1.base_transaction import _CANT_COMMIT
 
         transaction = self._make_one(mock.sentinel.client)
         self.assertIsNone(transaction._id)
         with self.assertRaises(ValueError) as exc_info:
-            transaction._commit()
+            await transaction._commit()
 
         self.assertEqual(exc_info.exception.args, (_CANT_COMMIT,))
 
-    def test__commit_failure(self):
+    @pytest.mark.asyncio
+    async def test__commit_failure(self):
         from google.api_core import exceptions
         from google.cloud.firestore_v1.services.firestore import (
             client as firestore_client,
@@ -275,7 +286,7 @@ class TestTransaction(unittest.TestCase):
         write_pbs = transaction._write_pbs[::]
 
         with self.assertRaises(exceptions.InternalServerError) as exc_info:
-            transaction._commit()
+            await transaction._commit()
 
         self.assertIs(exc_info.exception, exc)
         self.assertEqual(transaction._id, txn_id)
@@ -291,49 +302,53 @@ class TestTransaction(unittest.TestCase):
             metadata=client._rpc_metadata,
         )
 
-    def test_get_all(self):
+    @pytest.mark.asyncio
+    async def test_get_all(self):
         client = mock.Mock(spec=["get_all"])
         transaction = self._make_one(client)
         ref1, ref2 = mock.Mock(), mock.Mock()
-        result = transaction.get_all([ref1, ref2])
+        result = await transaction.get_all([ref1, ref2])
         client.get_all.assert_called_once_with([ref1, ref2], transaction=transaction)
         self.assertIs(result, client.get_all.return_value)
 
-    def test_get_document_ref(self):
-        from google.cloud.firestore_v1.document import DocumentReference
+    @pytest.mark.asyncio
+    async def test_get_document_ref(self):
+        from google.cloud.firestore_v1.async_document import AsyncDocumentReference
 
         client = mock.Mock(spec=["get_all"])
         transaction = self._make_one(client)
-        ref = DocumentReference("documents", "doc-id")
-        result = transaction.get(ref)
+        ref = AsyncDocumentReference("documents", "doc-id")
+        result = await transaction.get(ref)
         client.get_all.assert_called_once_with([ref], transaction=transaction)
         self.assertIs(result, client.get_all.return_value)
 
-    def test_get_w_query(self):
-        from google.cloud.firestore_v1.query import Query
+    @pytest.mark.asyncio
+    async def test_get_w_query(self):
+        from google.cloud.firestore_v1.async_query import AsyncQuery
 
         client = mock.Mock(spec=[])
         transaction = self._make_one(client)
-        query = Query(parent=mock.Mock(spec=[]))
+        query = AsyncQuery(parent=mock.Mock(spec=[]))
         query.stream = mock.MagicMock()
-        result = transaction.get(query)
+        result = await transaction.get(query)
         query.stream.assert_called_once_with(transaction=transaction)
         self.assertIs(result, query.stream.return_value)
 
-    def test_get_failure(self):
+    @pytest.mark.asyncio
+    async def test_get_failure(self):
         client = _make_client()
         transaction = self._make_one(client)
         ref_or_query = object()
         with self.assertRaises(ValueError):
-            transaction.get(ref_or_query)
+            await transaction.get(ref_or_query)
 
 
-class Test_Transactional(unittest.TestCase):
+class Test_Transactional(aiounittest.AsyncTestCase):
     @staticmethod
     def _get_target_class():
-        from google.cloud.firestore_v1.transaction import _Transactional
+        from google.cloud.firestore_v1.async_transaction import _AsyncTransactional
 
-        return _Transactional
+        return _AsyncTransactional
 
     def _make_one(self, *args, **kwargs):
         klass = self._get_target_class()
@@ -345,13 +360,14 @@ class Test_Transactional(unittest.TestCase):
         self.assertIsNone(wrapped.current_id)
         self.assertIsNone(wrapped.retry_id)
 
-    def test__pre_commit_success(self):
+    @pytest.mark.asyncio
+    async def test__pre_commit_success(self):
         to_wrap = mock.Mock(return_value=mock.sentinel.result, spec=[])
         wrapped = self._make_one(to_wrap)
 
         txn_id = b"totes-began"
         transaction = _make_transaction(txn_id)
-        result = wrapped._pre_commit(transaction, "pos", key="word")
+        result = await wrapped._pre_commit(transaction, "pos", key="word")
         self.assertIs(result, mock.sentinel.result)
 
         self.assertEqual(transaction._id, txn_id)
@@ -371,7 +387,8 @@ class Test_Transactional(unittest.TestCase):
         firestore_api.rollback.assert_not_called()
         firestore_api.commit.assert_not_called()
 
-    def test__pre_commit_retry_id_already_set_success(self):
+    @pytest.mark.asyncio
+    async def test__pre_commit_retry_id_already_set_success(self):
         from google.cloud.firestore_v1.types import common
 
         to_wrap = mock.Mock(return_value=mock.sentinel.result, spec=[])
@@ -381,7 +398,7 @@ class Test_Transactional(unittest.TestCase):
 
         txn_id2 = b"ok-here-too"
         transaction = _make_transaction(txn_id2)
-        result = wrapped._pre_commit(transaction)
+        result = await wrapped._pre_commit(transaction)
         self.assertIs(result, mock.sentinel.result)
 
         self.assertEqual(transaction._id, txn_id2)
@@ -404,7 +421,8 @@ class Test_Transactional(unittest.TestCase):
         firestore_api.rollback.assert_not_called()
         firestore_api.commit.assert_not_called()
 
-    def test__pre_commit_failure(self):
+    @pytest.mark.asyncio
+    async def test__pre_commit_failure(self):
         exc = RuntimeError("Nope not today.")
         to_wrap = mock.Mock(side_effect=exc, spec=[])
         wrapped = self._make_one(to_wrap)
@@ -412,7 +430,7 @@ class Test_Transactional(unittest.TestCase):
         txn_id = b"gotta-fail"
         transaction = _make_transaction(txn_id)
         with self.assertRaises(RuntimeError) as exc_info:
-            wrapped._pre_commit(transaction, 10, 20)
+            await wrapped._pre_commit(transaction, 10, 20)
         self.assertIs(exc_info.exception, exc)
 
         self.assertIsNone(transaction._id)
@@ -438,7 +456,8 @@ class Test_Transactional(unittest.TestCase):
         )
         firestore_api.commit.assert_not_called()
 
-    def test__pre_commit_failure_with_rollback_failure(self):
+    @pytest.mark.asyncio
+    async def test__pre_commit_failure_with_rollback_failure(self):
         from google.api_core import exceptions
 
         exc1 = ValueError("I will not be only failure.")
@@ -454,7 +473,7 @@ class Test_Transactional(unittest.TestCase):
 
         # Try to ``_pre_commit``
         with self.assertRaises(exceptions.InternalServerError) as exc_info:
-            wrapped._pre_commit(transaction, a="b", c="zebra")
+            await wrapped._pre_commit(transaction, a="b", c="zebra")
         self.assertIs(exc_info.exception, exc2)
 
         self.assertIsNone(transaction._id)
@@ -479,13 +498,14 @@ class Test_Transactional(unittest.TestCase):
         )
         firestore_api.commit.assert_not_called()
 
-    def test__maybe_commit_success(self):
+    @pytest.mark.asyncio
+    async def test__maybe_commit_success(self):
         wrapped = self._make_one(mock.sentinel.callable_)
 
         txn_id = b"nyet"
         transaction = _make_transaction(txn_id)
         transaction._id = txn_id  # We won't call ``begin()``.
-        succeeded = wrapped._maybe_commit(transaction)
+        succeeded = await wrapped._maybe_commit(transaction)
         self.assertTrue(succeeded)
 
         # On success, _id is reset.
@@ -504,7 +524,8 @@ class Test_Transactional(unittest.TestCase):
             metadata=transaction._client._rpc_metadata,
         )
 
-    def test__maybe_commit_failure_read_only(self):
+    @pytest.mark.asyncio
+    async def test__maybe_commit_failure_read_only(self):
         from google.api_core import exceptions
 
         wrapped = self._make_one(mock.sentinel.callable_)
@@ -522,7 +543,7 @@ class Test_Transactional(unittest.TestCase):
         firestore_api.commit.side_effect = exc
 
         with self.assertRaises(exceptions.Aborted) as exc_info:
-            wrapped._maybe_commit(transaction)
+            await wrapped._maybe_commit(transaction)
         self.assertIs(exc_info.exception, exc)
 
         self.assertEqual(transaction._id, txn_id)
@@ -541,7 +562,8 @@ class Test_Transactional(unittest.TestCase):
             metadata=transaction._client._rpc_metadata,
         )
 
-    def test__maybe_commit_failure_can_retry(self):
+    @pytest.mark.asyncio
+    async def test__maybe_commit_failure_can_retry(self):
         from google.api_core import exceptions
 
         wrapped = self._make_one(mock.sentinel.callable_)
@@ -557,7 +579,7 @@ class Test_Transactional(unittest.TestCase):
         firestore_api = transaction._client._firestore_api
         firestore_api.commit.side_effect = exc
 
-        succeeded = wrapped._maybe_commit(transaction)
+        succeeded = await wrapped._maybe_commit(transaction)
         self.assertFalse(succeeded)
 
         self.assertEqual(transaction._id, txn_id)
@@ -576,7 +598,8 @@ class Test_Transactional(unittest.TestCase):
             metadata=transaction._client._rpc_metadata,
         )
 
-    def test__maybe_commit_failure_cannot_retry(self):
+    @pytest.mark.asyncio
+    async def test__maybe_commit_failure_cannot_retry(self):
         from google.api_core import exceptions
 
         wrapped = self._make_one(mock.sentinel.callable_)
@@ -593,7 +616,7 @@ class Test_Transactional(unittest.TestCase):
         firestore_api.commit.side_effect = exc
 
         with self.assertRaises(exceptions.InternalServerError) as exc_info:
-            wrapped._maybe_commit(transaction)
+            await wrapped._maybe_commit(transaction)
         self.assertIs(exc_info.exception, exc)
 
         self.assertEqual(transaction._id, txn_id)
@@ -612,13 +635,14 @@ class Test_Transactional(unittest.TestCase):
             metadata=transaction._client._rpc_metadata,
         )
 
-    def test___call__success_first_attempt(self):
+    @pytest.mark.asyncio
+    async def test___call__success_first_attempt(self):
         to_wrap = mock.Mock(return_value=mock.sentinel.result, spec=[])
         wrapped = self._make_one(to_wrap)
 
         txn_id = b"whole-enchilada"
         transaction = _make_transaction(txn_id)
-        result = wrapped(transaction, "a", b="c")
+        result = await wrapped(transaction, "a", b="c")
         self.assertIs(result, mock.sentinel.result)
 
         self.assertIsNone(transaction._id)
@@ -642,7 +666,8 @@ class Test_Transactional(unittest.TestCase):
             metadata=transaction._client._rpc_metadata,
         )
 
-    def test___call__success_second_attempt(self):
+    @pytest.mark.asyncio
+    async def test___call__success_second_attempt(self):
         from google.api_core import exceptions
         from google.cloud.firestore_v1.types import common
         from google.cloud.firestore_v1.types import firestore
@@ -663,7 +688,7 @@ class Test_Transactional(unittest.TestCase):
         ]
 
         # Call the __call__-able ``wrapped``.
-        result = wrapped(transaction, "a", b="c")
+        result = await wrapped(transaction, "a", b="c")
         self.assertIs(result, mock.sentinel.result)
 
         self.assertIsNone(transaction._id)
@@ -698,9 +723,12 @@ class Test_Transactional(unittest.TestCase):
         )
         self.assertEqual(firestore_api.commit.mock_calls, [commit_call, commit_call])
 
-    def test___call__failure(self):
+    @pytest.mark.asyncio
+    async def test___call__failure(self):
         from google.api_core import exceptions
-        from google.cloud.firestore_v1.base_transaction import _EXCEED_ATTEMPTS_TEMPLATE
+        from google.cloud.firestore_v1.async_transaction import (
+            _EXCEED_ATTEMPTS_TEMPLATE,
+        )
 
         to_wrap = mock.Mock(return_value=mock.sentinel.result, spec=[])
         wrapped = self._make_one(to_wrap)
@@ -715,7 +743,7 @@ class Test_Transactional(unittest.TestCase):
 
         # Call the __call__-able ``wrapped``.
         with self.assertRaises(ValueError) as exc_info:
-            wrapped(transaction, "here", there=1.5)
+            await wrapped(transaction, "here", there=1.5)
 
         err_msg = _EXCEED_ATTEMPTS_TEMPLATE.format(transaction._max_attempts)
         self.assertEqual(exc_info.exception.args, (err_msg,))
@@ -750,30 +778,32 @@ class Test_Transactional(unittest.TestCase):
         )
 
 
-class Test_transactional(unittest.TestCase):
+class Test_transactional(aiounittest.AsyncTestCase):
     @staticmethod
     def _call_fut(to_wrap):
-        from google.cloud.firestore_v1.transaction import transactional
+        from google.cloud.firestore_v1.async_transaction import transactional
 
         return transactional(to_wrap)
 
     def test_it(self):
-        from google.cloud.firestore_v1.transaction import _Transactional
+        from google.cloud.firestore_v1.async_transaction import _AsyncTransactional
 
         wrapped = self._call_fut(mock.sentinel.callable_)
-        self.assertIsInstance(wrapped, _Transactional)
+        self.assertIsInstance(wrapped, _AsyncTransactional)
         self.assertIs(wrapped.to_wrap, mock.sentinel.callable_)
 
 
-class Test__commit_with_retry(unittest.TestCase):
+class Test__commit_with_retry(aiounittest.AsyncTestCase):
     @staticmethod
-    def _call_fut(client, write_pbs, transaction_id):
-        from google.cloud.firestore_v1.transaction import _commit_with_retry
+    @pytest.mark.asyncio
+    async def _call_fut(client, write_pbs, transaction_id):
+        from google.cloud.firestore_v1.async_transaction import _commit_with_retry
 
-        return _commit_with_retry(client, write_pbs, transaction_id)
+        return await _commit_with_retry(client, write_pbs, transaction_id)
 
-    @mock.patch("google.cloud.firestore_v1.transaction._sleep")
-    def test_success_first_attempt(self, _sleep):
+    @mock.patch("google.cloud.firestore_v1.async_transaction._sleep")
+    @pytest.mark.asyncio
+    async def test_success_first_attempt(self, _sleep):
         from google.cloud.firestore_v1.services.firestore import (
             client as firestore_client,
         )
@@ -789,7 +819,7 @@ class Test__commit_with_retry(unittest.TestCase):
 
         # Call function and check result.
         txn_id = b"cheeeeeez"
-        commit_response = self._call_fut(client, mock.sentinel.write_pbs, txn_id)
+        commit_response = await self._call_fut(client, mock.sentinel.write_pbs, txn_id)
         self.assertIs(commit_response, firestore_api.commit.return_value)
 
         # Verify mocks used.
@@ -803,8 +833,11 @@ class Test__commit_with_retry(unittest.TestCase):
             metadata=client._rpc_metadata,
         )
 
-    @mock.patch("google.cloud.firestore_v1.transaction._sleep", side_effect=[2.0, 4.0])
-    def test_success_third_attempt(self, _sleep):
+    @mock.patch(
+        "google.cloud.firestore_v1.async_transaction._sleep", side_effect=[2.0, 4.0]
+    )
+    @pytest.mark.asyncio
+    async def test_success_third_attempt(self, _sleep):
         from google.api_core import exceptions
         from google.cloud.firestore_v1.services.firestore import (
             client as firestore_client,
@@ -827,7 +860,7 @@ class Test__commit_with_retry(unittest.TestCase):
 
         # Call function and check result.
         txn_id = b"the-world\x00"
-        commit_response = self._call_fut(client, mock.sentinel.write_pbs, txn_id)
+        commit_response = await self._call_fut(client, mock.sentinel.write_pbs, txn_id)
         self.assertIs(commit_response, mock.sentinel.commit_response)
 
         # Verify mocks used.
@@ -848,8 +881,9 @@ class Test__commit_with_retry(unittest.TestCase):
             firestore_api.commit.mock_calls, [commit_call, commit_call, commit_call]
         )
 
-    @mock.patch("google.cloud.firestore_v1.transaction._sleep")
-    def test_failure_first_attempt(self, _sleep):
+    @mock.patch("google.cloud.firestore_v1.async_transaction._sleep")
+    @pytest.mark.asyncio
+    async def test_failure_first_attempt(self, _sleep):
         from google.api_core import exceptions
         from google.cloud.firestore_v1.services.firestore import (
             client as firestore_client,
@@ -870,7 +904,7 @@ class Test__commit_with_retry(unittest.TestCase):
         # Call function and check result.
         txn_id = b"\x08\x06\x07\x05\x03\x00\x09-jenny"
         with self.assertRaises(exceptions.ResourceExhausted) as exc_info:
-            self._call_fut(client, mock.sentinel.write_pbs, txn_id)
+            await self._call_fut(client, mock.sentinel.write_pbs, txn_id)
 
         self.assertIs(exc_info.exception, exc)
 
@@ -885,8 +919,9 @@ class Test__commit_with_retry(unittest.TestCase):
             metadata=client._rpc_metadata,
         )
 
-    @mock.patch("google.cloud.firestore_v1.transaction._sleep", return_value=2.0)
-    def test_failure_second_attempt(self, _sleep):
+    @mock.patch("google.cloud.firestore_v1.async_transaction._sleep", return_value=2.0)
+    @pytest.mark.asyncio
+    async def test_failure_second_attempt(self, _sleep):
         from google.api_core import exceptions
         from google.cloud.firestore_v1.services.firestore import (
             client as firestore_client,
@@ -909,7 +944,7 @@ class Test__commit_with_retry(unittest.TestCase):
         # Call function and check result.
         txn_id = b"the-journey-when-and-where-well-go"
         with self.assertRaises(exceptions.InternalServerError) as exc_info:
-            self._call_fut(client, mock.sentinel.write_pbs, txn_id)
+            await self._call_fut(client, mock.sentinel.write_pbs, txn_id)
 
         self.assertIs(exc_info.exception, exc2)
 
@@ -927,46 +962,54 @@ class Test__commit_with_retry(unittest.TestCase):
         self.assertEqual(firestore_api.commit.mock_calls, [commit_call, commit_call])
 
 
-class Test__sleep(unittest.TestCase):
+class Test__sleep(aiounittest.AsyncTestCase):
     @staticmethod
-    def _call_fut(current_sleep, **kwargs):
-        from google.cloud.firestore_v1.transaction import _sleep
+    @pytest.mark.asyncio
+    async def _call_fut(current_sleep, **kwargs):
+        from google.cloud.firestore_v1.async_transaction import _sleep
 
-        return _sleep(current_sleep, **kwargs)
+        return await _sleep(current_sleep, **kwargs)
 
     @mock.patch("random.uniform", return_value=5.5)
-    @mock.patch("time.sleep", return_value=None)
-    def test_defaults(self, sleep, uniform):
+    @mock.patch("asyncio.sleep", return_value=None)
+    @pytest.mark.asyncio
+    async def test_defaults(self, sleep, uniform):
         curr_sleep = 10.0
         self.assertLessEqual(uniform.return_value, curr_sleep)
 
-        new_sleep = self._call_fut(curr_sleep)
+        new_sleep = await self._call_fut(curr_sleep)
         self.assertEqual(new_sleep, 2.0 * curr_sleep)
 
         uniform.assert_called_once_with(0.0, curr_sleep)
         sleep.assert_called_once_with(uniform.return_value)
 
     @mock.patch("random.uniform", return_value=10.5)
-    @mock.patch("time.sleep", return_value=None)
-    def test_explicit(self, sleep, uniform):
+    @mock.patch("asyncio.sleep", return_value=None)
+    @pytest.mark.asyncio
+    async def test_explicit(self, sleep, uniform):
         curr_sleep = 12.25
         self.assertLessEqual(uniform.return_value, curr_sleep)
 
         multiplier = 1.5
-        new_sleep = self._call_fut(curr_sleep, max_sleep=100.0, multiplier=multiplier)
+        new_sleep = await self._call_fut(
+            curr_sleep, max_sleep=100.0, multiplier=multiplier
+        )
         self.assertEqual(new_sleep, multiplier * curr_sleep)
 
         uniform.assert_called_once_with(0.0, curr_sleep)
         sleep.assert_called_once_with(uniform.return_value)
 
     @mock.patch("random.uniform", return_value=6.75)
-    @mock.patch("time.sleep", return_value=None)
-    def test_exceeds_max(self, sleep, uniform):
+    @mock.patch("asyncio.sleep", return_value=None)
+    @pytest.mark.asyncio
+    async def test_exceeds_max(self, sleep, uniform):
         curr_sleep = 20.0
         self.assertLessEqual(uniform.return_value, curr_sleep)
 
         max_sleep = 38.5
-        new_sleep = self._call_fut(curr_sleep, max_sleep=max_sleep, multiplier=2.0)
+        new_sleep = await self._call_fut(
+            curr_sleep, max_sleep=max_sleep, multiplier=2.0
+        )
         self.assertEqual(new_sleep, max_sleep)
 
         uniform.assert_called_once_with(0.0, curr_sleep)
@@ -991,7 +1034,7 @@ def _make_transaction(txn_id, **txn_kwargs):
     from google.cloud.firestore_v1.services.firestore import client as firestore_client
     from google.cloud.firestore_v1.types import firestore
     from google.cloud.firestore_v1.types import write
-    from google.cloud.firestore_v1.transaction import Transaction
+    from google.cloud.firestore_v1.async_transaction import AsyncTransaction
 
     # Create a fake GAPIC ...
     firestore_api = mock.create_autospec(
@@ -1010,4 +1053,4 @@ def _make_transaction(txn_id, **txn_kwargs):
     client = _make_client()
     client._firestore_api_internal = firestore_api
 
-    return Transaction(client, **txn_kwargs)
+    return AsyncTransaction(client, **txn_kwargs)
