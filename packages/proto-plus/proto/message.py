@@ -21,6 +21,7 @@ from typing import List, Type
 from google.protobuf import descriptor_pb2
 from google.protobuf import message
 from google.protobuf import symbol_database
+from google.protobuf.json_format import MessageToJson, Parse
 
 from proto import _file_info
 from proto import _package_info
@@ -324,6 +325,31 @@ class MessageMeta(type):
             method was called.
         """
         return cls(cls.pb().FromString(payload))
+
+    def to_json(cls, instance) -> str:
+        """Given a message instance, serialize it to json
+
+        Args:
+            instance: An instance of this message type, or something
+                compatible (accepted by the type's constructor).
+
+        Returns:
+            str: The json string representation of the protocol buffer.
+        """
+        return MessageToJson(cls.pb(instance))
+
+    def from_json(cls, payload) -> 'Message':
+        """Given a json string representing an instance,
+        parse it into a message.
+
+        Args:
+            paylod: A json string representing a message.
+
+        Returns:
+            ~.Message: An instance of the message class against which this
+            method was called.
+        """
+        return cls(Parse(payload, cls()._pb))
 
 
 class Message(metaclass=MessageMeta):
