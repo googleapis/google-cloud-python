@@ -4,13 +4,27 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## [0.6.0](https://www.github.com/googleapis/google-resumable-media-python/compare/v0.5.1...v0.6.0) (2020-07-07)
+
+
+### Features
+
+* add customizable timeouts to upload/download methods ([#116](https://www.github.com/googleapis/google-resumable-media-python/issues/116)) ([5310921](https://www.github.com/googleapis/google-resumable-media-python/commit/5310921dacf5232ad58a5d6e324f3df6b320eca7))
+* add configurable crc32c checksumming for downloads ([#135](https://www.github.com/googleapis/google-resumable-media-python/issues/135)) ([db31bf5](https://www.github.com/googleapis/google-resumable-media-python/commit/db31bf56560109f19b49cf38c494ecacfa74b0b2))
+* add templates for python samples projects ([#506](https://www.github.com/googleapis/google-resumable-media-python/issues/506)) ([#132](https://www.github.com/googleapis/google-resumable-media-python/issues/132)) ([8e60cc4](https://www.github.com/googleapis/google-resumable-media-python/commit/8e60cc45d4fefe63d7353e978d15d6e238b7a1a1))
+
+
+### Documentation
+
+* update client_documentation link ([#136](https://www.github.com/googleapis/google-resumable-media-python/issues/136)) ([063b4f9](https://www.github.com/googleapis/google-resumable-media-python/commit/063b4f9f3ea3dff850d9ae46b2abf25d08312320))
+
 ### [0.5.1](https://www.github.com/googleapis/google-resumable-media-python/compare/v0.5.0...v0.5.1) (2020-05-26)
 
 
 ### Bug Fixes
 
-* **resumable-media:** fix failing unit tests by dropping Python 3.4, add Python 3.8 ([#118](https://www.github.com/googleapis/google-resumable-media-python/issues/118)) ([1edb974](https://www.github.com/googleapis/google-resumable-media-python/commit/1edb974175d16c9f542fe84dd6bbfa2d70115d48))
-* **resumable-media:** fix upload_from_file size greater than multipart ([#129](https://www.github.com/googleapis/google-resumable-media-python/issues/129)) ([07dd9c2](https://www.github.com/googleapis/google-resumable-media-python/commit/07dd9c26a7eff9b2b43d32636faf9a5aa151fed5))
+* fix failing unit tests by dropping Python 3.4, add Python 3.8 ([#118](https://www.github.com/googleapis/google-resumable-media-python/issues/118)) ([1edb974](https://www.github.com/googleapis/google-resumable-media-python/commit/1edb974175d16c9f542fe84dd6bbfa2d70115d48))
+* fix upload_from_file size greater than multipart ([#129](https://www.github.com/googleapis/google-resumable-media-python/issues/129)) ([07dd9c2](https://www.github.com/googleapis/google-resumable-media-python/commit/07dd9c26a7eff9b2b43d32636faf9a5aa151fed5))
 * Generated file update for docs and testing templates. ([#127](https://www.github.com/googleapis/google-resumable-media-python/issues/127)) ([bc7a5a9](https://www.github.com/googleapis/google-resumable-media-python/commit/bc7a5a9b66e16d08778ace96845bb429b94ddbce))
 
 ## 0.5.0
