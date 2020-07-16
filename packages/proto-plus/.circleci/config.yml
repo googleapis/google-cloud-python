@@ -4,6 +4,18 @@ workflows:
   version: 2
   tests:
     jobs:
+      - style-check:
+          filters:
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
+      - publish_package:
+          requires:
+            - style-check
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
       - unit-3.5:
           filters:
             tags:
@@ -163,6 +175,43 @@ jobs:
   publish:
     docker:
       - image: python:3.7
+    steps:
+      - checkout
+      - run:
+          name: Decrypt the PyPI key.
+          command: |
+            openssl aes-256-cbc -d \
+              -in .circleci/.pypirc.enc \
+              -out ~/.pypirc \
+              -k "${PYPIRC_ENCRYPTION_KEY}"
+      - run:
+          name: Publish to PyPI.
+          command: python setup.py sdist upload
+  style-check:
+    docker:
+      - image: python:3.8-slim
+    steps:
+      - checkout
+      - run:
+          name: Install git
+          command: |
+            apt-get update
+            apt-get install -y git
+      - run:
+          name: Install black
+          command: |
+            pip install black
+      - run:
+          name: Format files
+          command: |
+            black .
+      - run:
+          name: Check diff
+          command: |
+            git diff --ignore-submodules=all --color --exit-code .
+  publish_package:
+    docker:
+      - image: python:3.8-slim
     steps:
       - checkout
       - run:
