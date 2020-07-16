@@ -1,7 +1,7 @@
 Python Client for Google Kubernetes Engine API
 ==============================================
 
-|ga| |pypi| |versions| 
+|ga| |pypi| |versions|
 
 `Google Kubernetes Engine API`_: The Google Kubernetes Engine API is used for
 building and managing container based applications, powered by the open source
@@ -49,11 +49,13 @@ dependencies.
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.5
+Python >= 3.6
 
 Deprecated Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7. Python 2.7 support will be removed on January 1, 2020.
+Python == 2.7.
+
+The last version of this library compatible with Python 2.7 is google-cloud-container==1.0.1
 
 
 Mac/Linux

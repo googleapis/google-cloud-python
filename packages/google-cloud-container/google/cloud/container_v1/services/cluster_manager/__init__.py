@@ -1,4 +1,6 @@
-# Copyright 2017, Google LLC All rights reserved.
+# -*- coding: utf-8 -*-
+
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,18 +13,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-import os
-import time
+from .client import ClusterManagerClient
+from .async_client import ClusterManagerAsyncClient
 
-from google.cloud import container_v1
-
-
-class TestSystemClusterManager(object):
-    def test_list_clusters(self):
-        project_id = os.environ["PROJECT_ID"]
-
-        client = container_v1.ClusterManagerClient()
-        response = client.list_clusters(
-            request={"project_id": os.environ["PROJECT_ID"], "zone": "us-central1-a"}
-        )
+__all__ = (
+    "ClusterManagerClient",
+    "ClusterManagerAsyncClient",
+)

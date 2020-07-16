@@ -29,13 +29,39 @@ for version in versions:
         version=version,
         bazel_target=f"//google/container/{version}:container-{version}-py",
         include_protos=True,
+        proto_output_path=f"google/container_{version}/proto",
     )
 
-    s.move(library / f"google/cloud/container_{version}")
-    s.move(library / f"tests/unit/gapic/{version}")
+    s.move(library / "google/container", "google/cloud/container")
+    s.move(
+        library / f"google/container_{version}",
+        f"google/cloud/container_{version}"
+    )
+    s.move(library / "tests")
+    s.move(library / "scripts")
+    s.move(library / "docs", excludes=[library / "docs/index.rst"])
 
-# Use the highest version library to generate import alias.
-s.move(library / "google/cloud/container.py")
+    # Fix namespace
+    s.replace(
+        f"google/cloud/**/*.py",
+        f"google.container_{version}",
+        f"google.cloud.container_{version}",
+    )
+    s.replace(
+        f"tests/unit/gapic/**/*.py",
+        f"google.container_{version}",
+        f"google.cloud.container_{version}",
+    )
+    s.replace(
+        f"google/cloud/**/*.py",
+        f"google.container_{version}",
+        f"google.cloud.container_{version}",
+    )
+    s.replace(
+        f"docs/**/*.rst",
+        f"google.container_{version}",
+        f"google.cloud.container_{version}",
+    )
 
 # Issues exist where python files should define the source encoding
 # https://github.com/googleapis/gapic-generator/issues/2097
@@ -60,10 +86,19 @@ s.replace(
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=0, cov_level=70)
-s.move(templated_files)
+templated_files = common.py_library(
+    samples=False,  # set to True only if there are samples
+    microgenerator=True,
+    cov_level=99,
+)
+s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
+
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition
 s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
+
+# Temporarily disable warnings due to
+# https://github.com/googleapis/gapic-generator-python/issues/525
+s.replace("noxfile.py", '[\"\']-W[\"\']', '# "-W"')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
