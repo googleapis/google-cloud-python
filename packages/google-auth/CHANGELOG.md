@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.19.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.19.0...v1.19.1) (2020-07-15)
+
+
+### Bug Fixes
+
+* don't add empty quota project  ([#560](https://www.github.com/googleapis/google-auth-library-python/issues/560)) ([ab2be5d](https://www.github.com/googleapis/google-auth-library-python/commit/ab2be5de829e830979514683582c11f98fa943c7))
+
 ## [1.19.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.18.0...v1.19.0) (2020-07-09)
 
 
