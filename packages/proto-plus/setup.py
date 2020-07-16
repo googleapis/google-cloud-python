@@ -17,6 +17,7 @@ import os
 
 from setuptools import find_packages, setup
 
+version = "1.2.0"
 
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 
@@ -25,7 +26,7 @@ with io.open(os.path.join(PACKAGE_ROOT, "README.rst")) as file_obj:
 
 setup(
     name="proto-plus",
-    version="1.2.0",
+    version=version,
     license="Apache 2.0",
     author="Google LLC",
     author_email="googleapis-packages@google.com",
