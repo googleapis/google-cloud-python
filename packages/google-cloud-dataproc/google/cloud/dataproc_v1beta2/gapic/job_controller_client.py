@@ -279,6 +279,105 @@ class JobControllerClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
+    def submit_job_as_operation(
+        self,
+        project_id,
+        region,
+        job,
+        request_id=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Submits job to a cluster.
+
+        Example:
+            >>> from google.cloud import dataproc_v1beta2
+            >>>
+            >>> client = dataproc_v1beta2.JobControllerClient()
+            >>>
+            >>> # TODO: Initialize `project_id`:
+            >>> project_id = ''
+            >>>
+            >>> # TODO: Initialize `region`:
+            >>> region = ''
+            >>>
+            >>> # TODO: Initialize `job`:
+            >>> job = {}
+            >>>
+            >>> response = client.submit_job_as_operation(project_id, region, job)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+            >>>
+            >>> # Handle metadata.
+            >>> metadata = response.metadata()
+
+        Args:
+            project_id (str): Required. The ID of the Google Cloud Platform project that the job
+                belongs to.
+            region (str): Required. The Dataproc region in which to handle the request.
+            job (Union[dict, ~google.cloud.dataproc_v1beta2.types.Job]): Required. The job resource.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dataproc_v1beta2.types.Job`
+            request_id (str): Optional. A unique id used to identify the request. If the server
+                receives two ``SubmitJobRequest`` requests with the same id, then the
+                second request will be ignored and the first ``Job`` created and stored
+                in the backend is returned.
+
+                It is recommended to always set this value to a
+                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
+
+                The id must contain only letters (a-z, A-Z), numbers (0-9), underscores
+                (_), and hyphens (-). The maximum length is 40 characters.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.dataproc_v1beta2.types._OperationFuture` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "submit_job_as_operation" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "submit_job_as_operation"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.submit_job_as_operation,
+                default_retry=self._method_configs["SubmitJobAsOperation"].retry,
+                default_timeout=self._method_configs["SubmitJobAsOperation"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = jobs_pb2.SubmitJobRequest(
+            project_id=project_id, region=region, job=job, request_id=request_id,
+        )
+        operation = self._inner_api_calls["submit_job_as_operation"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.transport._operations_client,
+            jobs_pb2.Job,
+            metadata_type=jobs_pb2.JobMetadata,
+        )
+
     def get_job(
         self,
         project_id,
@@ -708,103 +807,4 @@ class JobControllerClient(object):
         )
         self._inner_api_calls["delete_job"](
             request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def submit_job_as_operation(
-        self,
-        project_id,
-        region,
-        job,
-        request_id=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Submits job to a cluster.
-
-        Example:
-            >>> from google.cloud import dataproc_v1beta2
-            >>>
-            >>> client = dataproc_v1beta2.JobControllerClient()
-            >>>
-            >>> # TODO: Initialize `project_id`:
-            >>> project_id = ''
-            >>>
-            >>> # TODO: Initialize `region`:
-            >>> region = ''
-            >>>
-            >>> # TODO: Initialize `job`:
-            >>> job = {}
-            >>>
-            >>> response = client.submit_job_as_operation(project_id, region, job)
-            >>>
-            >>> def callback(operation_future):
-            ...     # Handle result.
-            ...     result = operation_future.result()
-            >>>
-            >>> response.add_done_callback(callback)
-            >>>
-            >>> # Handle metadata.
-            >>> metadata = response.metadata()
-
-        Args:
-            project_id (str): Required. The ID of the Google Cloud Platform project that the job
-                belongs to.
-            region (str): Required. The Dataproc region in which to handle the request.
-            job (Union[dict, ~google.cloud.dataproc_v1beta2.types.Job]): Required. The job resource.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dataproc_v1beta2.types.Job`
-            request_id (str): Optional. A unique id used to identify the request. If the server
-                receives two ``SubmitJobRequest`` requests with the same id, then the
-                second request will be ignored and the first ``Job`` created and stored
-                in the backend is returned.
-
-                It is recommended to always set this value to a
-                `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
-
-                The id must contain only letters (a-z, A-Z), numbers (0-9), underscores
-                (_), and hyphens (-). The maximum length is 40 characters.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.dataproc_v1beta2.types._OperationFuture` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "submit_job_as_operation" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "submit_job_as_operation"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.submit_job_as_operation,
-                default_retry=self._method_configs["SubmitJobAsOperation"].retry,
-                default_timeout=self._method_configs["SubmitJobAsOperation"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = jobs_pb2.SubmitJobRequest(
-            project_id=project_id, region=region, job=job, request_id=request_id,
-        )
-        operation = self._inner_api_calls["submit_job_as_operation"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-        return google.api_core.operation.from_gapic(
-            operation,
-            self.transport._operations_client,
-            jobs_pb2.Job,
-            metadata_type=jobs_pb2.JobMetadata,
         )

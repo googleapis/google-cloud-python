@@ -3,23 +3,23 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-dataproc.git",
-        "sha": "9b025ab62582e9c85d744159534e32ed63f2dce2"
+        "remote": "git@github.com:googleapis/python-dataproc.git",
+        "sha": "f0c8897e5124a553fb66ef20d9cd55d2ed912a6a"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "5824c4db2d0a3cb5485cb7f4b68cbc2598758d2d",
-        "internalRef": "318081240"
+        "sha": "bad4b831900d70e69b5e4d43bd7565d0aaded997",
+        "internalRef": "321584556"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "303271797a360f8a439203413f13a160f2f5b3b4"
+        "sha": "21f1470ecd01424dc91c70f1a7c798e4e87d1eec"
       }
     }
   ],

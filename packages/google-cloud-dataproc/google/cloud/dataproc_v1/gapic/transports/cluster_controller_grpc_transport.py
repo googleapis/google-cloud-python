@@ -161,6 +161,23 @@ class ClusterControllerGrpcTransport(object):
         return self._stubs["cluster_controller_stub"].DeleteCluster
 
     @property
+    def diagnose_cluster(self):
+        """Return the gRPC stub for :meth:`ClusterControllerClient.diagnose_cluster`.
+
+        Gets cluster diagnostic information. The returned
+        ``Operation.metadata`` will be
+        `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
+        After the operation completes, ``Operation.response`` contains
+        `DiagnoseClusterResults <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#diagnoseclusterresults>`__.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["cluster_controller_stub"].DiagnoseCluster
+
+    @property
     def get_cluster(self):
         """Return the gRPC stub for :meth:`ClusterControllerClient.get_cluster`.
 
@@ -185,20 +202,3 @@ class ClusterControllerGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["cluster_controller_stub"].ListClusters
-
-    @property
-    def diagnose_cluster(self):
-        """Return the gRPC stub for :meth:`ClusterControllerClient.diagnose_cluster`.
-
-        Gets cluster diagnostic information. The returned
-        ``Operation.metadata`` will be
-        `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
-        After the operation completes, ``Operation.response`` contains
-        `DiagnoseClusterResults <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#diagnoseclusterresults>`__.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["cluster_controller_stub"].DiagnoseCluster

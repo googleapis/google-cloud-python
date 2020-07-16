@@ -129,6 +129,19 @@ class JobControllerGrpcTransport(object):
         return self._stubs["job_controller_stub"].SubmitJob
 
     @property
+    def submit_job_as_operation(self):
+        """Return the gRPC stub for :meth:`JobControllerClient.submit_job_as_operation`.
+
+        Submits job to a cluster.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["job_controller_stub"].SubmitJobAsOperation
+
+    @property
     def get_job(self):
         """Return the gRPC stub for :meth:`JobControllerClient.get_job`.
 
@@ -197,16 +210,3 @@ class JobControllerGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["job_controller_stub"].DeleteJob
-
-    @property
-    def submit_job_as_operation(self):
-        """Return the gRPC stub for :meth:`JobControllerClient.submit_job_as_operation`.
-
-        Submits job to a cluster.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["job_controller_stub"].SubmitJobAsOperation

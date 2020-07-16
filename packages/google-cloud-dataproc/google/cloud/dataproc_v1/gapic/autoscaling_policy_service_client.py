@@ -218,84 +218,6 @@ class AutoscalingPolicyServiceClient(object):
         self._inner_api_calls = {}
 
     # Service calls
-    def update_autoscaling_policy(
-        self,
-        policy,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Updates (replaces) autoscaling policy.
-
-        Disabled check for update_mask, because all updates will be full
-        replacements.
-
-        Example:
-            >>> from google.cloud import dataproc_v1
-            >>>
-            >>> client = dataproc_v1.AutoscalingPolicyServiceClient()
-            >>>
-            >>> # TODO: Initialize `policy`:
-            >>> policy = {}
-            >>>
-            >>> response = client.update_autoscaling_policy(policy)
-
-        Args:
-            policy (Union[dict, ~google.cloud.dataproc_v1.types.AutoscalingPolicy]): Required. The updated autoscaling policy.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dataproc_v1.types.AutoscalingPolicy`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.dataproc_v1.types.AutoscalingPolicy` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "update_autoscaling_policy" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "update_autoscaling_policy"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.update_autoscaling_policy,
-                default_retry=self._method_configs["UpdateAutoscalingPolicy"].retry,
-                default_timeout=self._method_configs["UpdateAutoscalingPolicy"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = autoscaling_policies_pb2.UpdateAutoscalingPolicyRequest(
-            policy=policy,
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("policy.name", policy.name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["update_autoscaling_policy"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
     def create_autoscaling_policy(
         self,
         parent,
@@ -381,6 +303,84 @@ class AutoscalingPolicyServiceClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls["create_autoscaling_policy"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def update_autoscaling_policy(
+        self,
+        policy,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Updates (replaces) autoscaling policy.
+
+        Disabled check for update_mask, because all updates will be full
+        replacements.
+
+        Example:
+            >>> from google.cloud import dataproc_v1
+            >>>
+            >>> client = dataproc_v1.AutoscalingPolicyServiceClient()
+            >>>
+            >>> # TODO: Initialize `policy`:
+            >>> policy = {}
+            >>>
+            >>> response = client.update_autoscaling_policy(policy)
+
+        Args:
+            policy (Union[dict, ~google.cloud.dataproc_v1.types.AutoscalingPolicy]): Required. The updated autoscaling policy.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dataproc_v1.types.AutoscalingPolicy`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.dataproc_v1.types.AutoscalingPolicy` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "update_autoscaling_policy" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "update_autoscaling_policy"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.update_autoscaling_policy,
+                default_retry=self._method_configs["UpdateAutoscalingPolicy"].retry,
+                default_timeout=self._method_configs["UpdateAutoscalingPolicy"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = autoscaling_policies_pb2.UpdateAutoscalingPolicyRequest(
+            policy=policy,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("policy.name", policy.name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["update_autoscaling_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
