@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-container/compare/v1.0.1...v2.0.0) (2020-07-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate to microgenerator (#33)
+
+### Features
+
+* migrate to microgenerator ([#33](https://www.github.com/googleapis/python-container/issues/33)) ([aa9b20c](https://www.github.com/googleapis/python-container/commit/aa9b20c6f4ccb6dff305bfcd72e1bde4a1ee86cd))
+
 ### [1.0.1](https://www.github.com/googleapis/python-container/compare/v1.0.0...v1.0.1) (2020-06-16)
 
 
