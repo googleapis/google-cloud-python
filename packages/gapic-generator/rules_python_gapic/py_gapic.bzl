@@ -29,7 +29,6 @@ def py_gapic_library(
     if grpc_service_config:
         file_args[grpc_service_config] =  "retry-config"
 
-    proto_
     proto_custom_library(
         name = srcjar_target_name,
         deps = srcs,
