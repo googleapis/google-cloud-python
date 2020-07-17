@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+### [1.13.2](https://www.github.com/googleapis/python-datastore/compare/v1.13.1...v1.13.2) (2020-07-17)
+
+
+### Bug Fixes
+
+* modify admin pkg name in gapic ([#47](https://www.github.com/googleapis/python-datastore/issues/47)) ([5b5011d](https://www.github.com/googleapis/python-datastore/commit/5b5011daf74133ecdd579bf19bbcf356e6f40dad))
+
 ### [1.13.1](https://www.github.com/googleapis/python-datastore/compare/v1.13.0...v1.13.1) (2020-07-13)
 
 
