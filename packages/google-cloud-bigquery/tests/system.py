@@ -2335,6 +2335,14 @@ class TestBigQuery(unittest.TestCase):
                     "string_col": "another string",
                     "int_col": 50,
                 },
+                {
+                    "float_col": 6.66,
+                    "bool_col": True,
+                    # Include a NaN value, because pandas often uses NaN as a
+                    # NULL value indicator.
+                    "string_col": float("NaN"),
+                    "int_col": 60,
+                },
             ]
         )
 
@@ -2344,14 +2352,28 @@ class TestBigQuery(unittest.TestCase):
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
-        Config.CLIENT.insert_rows_from_dataframe(table, dataframe, chunk_size=3)
+        chunk_errors = Config.CLIENT.insert_rows_from_dataframe(
+            table, dataframe, chunk_size=3
+        )
+        for errors in chunk_errors:
+            assert not errors
 
-        retry = RetryResult(_has_rows, max_tries=8)
-        rows = retry(self._fetch_single_page)(table)
+        # Use query to fetch rows instead of listing directly from the table so
+        # that we get values from the streaming buffer.
+        rows = list(
+            Config.CLIENT.query(
+                "SELECT * FROM `{}.{}.{}`".format(
+                    table.project, table.dataset_id, table.table_id
+                )
+            )
+        )
 
         sorted_rows = sorted(rows, key=operator.attrgetter("int_col"))
         row_tuples = [r.values() for r in sorted_rows]
-        expected = [tuple(data_row) for data_row in dataframe.itertuples(index=False)]
+        expected = [
+            tuple(None if col != col else col for col in data_row)
+            for data_row in dataframe.itertuples(index=False)
+        ]
 
         assert len(row_tuples) == len(expected)
 

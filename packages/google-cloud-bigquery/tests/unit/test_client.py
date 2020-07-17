@@ -5583,6 +5583,74 @@ class TestClient(unittest.TestCase):
             assert call == expected_call
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_insert_rows_from_dataframe_nan(self):
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
+
+        API_PATH = "/projects/{}/datasets/{}/tables/{}/insertAll".format(
+            self.PROJECT, self.DS_ID, self.TABLE_REF.table_id
+        )
+
+        dataframe = pandas.DataFrame(
+            {
+                "str_col": ["abc", "def", float("NaN"), "jkl"],
+                "int_col": [1, float("NaN"), 3, 4],
+                "float_col": [float("NaN"), 0.25, 0.5, 0.125],
+            }
+        )
+
+        # create client
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection({}, {})
+
+        # create table
+        schema = [
+            SchemaField("str_col", "STRING"),
+            SchemaField("int_col", "INTEGER"),
+            SchemaField("float_col", "FLOAT"),
+        ]
+        table = Table(self.TABLE_REF, schema=schema)
+
+        with mock.patch("uuid.uuid4", side_effect=map(str, range(len(dataframe)))):
+            error_info = client.insert_rows_from_dataframe(
+                table, dataframe, chunk_size=3, timeout=7.5
+            )
+
+        self.assertEqual(len(error_info), 2)
+        for chunk_errors in error_info:
+            assert chunk_errors == []
+
+        EXPECTED_SENT_DATA = [
+            {
+                "rows": [
+                    {"insertId": "0", "json": {"str_col": "abc", "int_col": 1}},
+                    {"insertId": "1", "json": {"str_col": "def", "float_col": 0.25}},
+                    {"insertId": "2", "json": {"int_col": 3, "float_col": 0.5}},
+                ]
+            },
+            {
+                "rows": [
+                    {
+                        "insertId": "3",
+                        "json": {"str_col": "jkl", "int_col": 4, "float_col": 0.125},
+                    }
+                ]
+            },
+        ]
+
+        actual_calls = conn.api_request.call_args_list
+
+        for call, expected_data in six.moves.zip_longest(
+            actual_calls, EXPECTED_SENT_DATA
+        ):
+            expected_call = mock.call(
+                method="POST", path=API_PATH, data=expected_data, timeout=7.5
+            )
+            assert call == expected_call
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_insert_rows_from_dataframe_many_columns(self):
         from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.table import Table

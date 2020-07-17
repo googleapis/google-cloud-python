@@ -19,6 +19,7 @@ import functools
 import logging
 import warnings
 
+import six
 from six.moves import queue
 
 try:
@@ -780,3 +781,14 @@ def download_dataframe_bqstorage(
         selected_fields=selected_fields,
         page_to_item=page_to_item,
     )
+
+
+def dataframe_to_json_generator(dataframe):
+    for row in dataframe.itertuples(index=False, name=None):
+        output = {}
+        for column, value in six.moves.zip(dataframe.columns, row):
+            # Omit NaN values.
+            if value != value:
+                continue
+            output[column] = value
+        yield output

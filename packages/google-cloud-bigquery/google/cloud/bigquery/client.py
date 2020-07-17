@@ -2535,7 +2535,9 @@ class Client(ClientWithProject):
             ]):
                 The destination table for the row data, or a reference to it.
             dataframe (pandas.DataFrame):
-                A :class:`~pandas.DataFrame` containing the data to load.
+                A :class:`~pandas.DataFrame` containing the data to load. Any
+                ``NaN`` values present in the dataframe are omitted from the
+                streaming API request(s).
             selected_fields (Sequence[google.cloud.bigquery.schema.SchemaField]):
                 The fields to return. Required if ``table`` is a
                 :class:`~google.cloud.bigquery.table.TableReference`.
@@ -2559,10 +2561,7 @@ class Client(ClientWithProject):
         insert_results = []
 
         chunk_count = int(math.ceil(len(dataframe) / chunk_size))
-        rows_iter = (
-            dict(six.moves.zip(dataframe.columns, row))
-            for row in dataframe.itertuples(index=False, name=None)
-        )
+        rows_iter = _pandas_helpers.dataframe_to_json_generator(dataframe)
 
         for _ in range(chunk_count):
             rows_chunk = itertools.islice(rows_iter, chunk_size)
