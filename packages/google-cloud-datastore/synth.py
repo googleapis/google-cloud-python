@@ -49,6 +49,12 @@ s.move(
 
 s.move(library / "google/cloud/datastore_admin_v1/proto")
 
+s.replace(
+    "google/**/datastore_admin_client.py",
+    "google-cloud-datastore-admin",
+    "google-cloud-datstore"
+)
+
 # TODO(busunkim): Remove during the microgenerator transition.
 # This re-orders the parameters to avoid breaking existing code.
 num = s.replace(

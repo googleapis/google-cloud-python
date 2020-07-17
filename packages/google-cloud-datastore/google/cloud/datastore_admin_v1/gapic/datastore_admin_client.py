@@ -45,7 +45,7 @@ from google.protobuf import empty_pb2
 
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-datastore-admin",
+    "google-cloud-datastore",
 ).version
 
 
