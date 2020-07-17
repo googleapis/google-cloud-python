@@ -70,7 +70,7 @@ DocTreeEntry = collections.namedtuple("DocTreeEntry", ["value", "index"])
 
 
 class WatchDocTree(object):
-    # TODO: Currently this uses a dict. Other implementations us an rbtree.
+    # TODO: Currently this uses a dict. Other implementations use a rbtree.
     # The performance of this implementation should be investigated and may
     # require modifying the underlying datastructure to a rbtree.
     def __init__(self):
