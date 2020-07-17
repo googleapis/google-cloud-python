@@ -46,20 +46,6 @@ class TestDocumentReference(unittest.TestCase):
         )
         self.assertEqual(document.path, expected_path)
 
-    def test_constructor_invalid_path(self):
-        with self.assertRaises(ValueError):
-            self._make_one()
-        with self.assertRaises(ValueError):
-            self._make_one(None, "before", "bad-collection-id", "fifteen")
-        with self.assertRaises(ValueError):
-            self._make_one("bad-document-ID", None)
-        with self.assertRaises(ValueError):
-            self._make_one("Just", "A-Collection", "Sub")
-
-    def test_constructor_invalid_kwarg(self):
-        with self.assertRaises(TypeError):
-            self._make_one("Coh-lek-shun", "Dahk-yu-mehnt", burger=18.75)
-
     @staticmethod
     def _make_commit_repsonse(write_results=None):
         from google.cloud.firestore_v1.types import firestore

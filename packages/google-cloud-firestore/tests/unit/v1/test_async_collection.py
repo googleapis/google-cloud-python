@@ -79,20 +79,6 @@ class TestAsyncCollectionReference(aiounittest.AsyncTestCase):
         expected_path = (collection_id1, document_id, collection_id2)
         self.assertEqual(collection._path, expected_path)
 
-    def test_constructor_invalid_path(self):
-        with self.assertRaises(ValueError):
-            self._make_one()
-        with self.assertRaises(ValueError):
-            self._make_one(99, "doc", "bad-collection-id")
-        with self.assertRaises(ValueError):
-            self._make_one("bad-document-ID", None, "sub-collection")
-        with self.assertRaises(ValueError):
-            self._make_one("Just", "A-Document")
-
-    def test_constructor_invalid_kwarg(self):
-        with self.assertRaises(TypeError):
-            self._make_one("Coh-lek-shun", donut=True)
-
     @pytest.mark.asyncio
     async def test_add_auto_assigned(self):
         from google.cloud.firestore_v1.types import document

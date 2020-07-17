@@ -41,13 +41,19 @@ class TestCollectionReference(unittest.TestCase):
         expected_path = (collection_id1, document_id, collection_id2)
         self.assertEqual(collection._path, expected_path)
 
-    def test_constructor_invalid_path(self):
+    def test_constructor_invalid_path_empty(self):
         with self.assertRaises(ValueError):
             self._make_one()
+
+    def test_constructor_invalid_path_bad_collection_id(self):
         with self.assertRaises(ValueError):
             self._make_one(99, "doc", "bad-collection-id")
+
+    def test_constructor_invalid_path_bad_document_id(self):
         with self.assertRaises(ValueError):
             self._make_one("bad-document-ID", None, "sub-collection")
+
+    def test_constructor_invalid_path_bad_number_args(self):
         with self.assertRaises(ValueError):
             self._make_one("Just", "A-Document")
 

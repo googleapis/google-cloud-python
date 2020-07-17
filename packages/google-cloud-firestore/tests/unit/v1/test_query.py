@@ -31,7 +31,7 @@ class TestQuery(unittest.TestCase):
         klass = self._get_target_class()
         return klass(*args, **kwargs)
 
-    def test_constructor_defaults(self):
+    def test_constructor(self):
         query = self._make_one(mock.sentinel.parent)
         self.assertIs(query._parent, mock.sentinel.parent)
         self.assertIsNone(query._projection)
