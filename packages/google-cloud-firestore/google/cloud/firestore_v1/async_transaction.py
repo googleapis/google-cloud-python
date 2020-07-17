@@ -18,8 +18,6 @@
 import asyncio
 import random
 
-import six
-
 from google.cloud.firestore_v1.base_transaction import (
     _BaseTransactional,
     BaseTransaction,
@@ -272,7 +270,7 @@ class _AsyncTransactional(_BaseTransactional):
         """
         self._reset()
 
-        for attempt in six.moves.xrange(transaction._max_attempts):
+        for attempt in range(transaction._max_attempts):
             result = await self._pre_commit(transaction, *args, **kwargs)
             succeeded = await self._maybe_commit(transaction)
             if succeeded:
