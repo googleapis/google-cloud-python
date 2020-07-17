@@ -43,53 +43,33 @@ class TestQuery(unittest.TestCase):
         self.assertIsNone(query._end_at)
         self.assertFalse(query._all_descendants)
 
-    def test_get_simple(self):
+    def test_get(self):
         import warnings
 
-        # Create a minimal fake GAPIC.
-        firestore_api = mock.Mock(spec=["run_query"])
+        with mock.patch.object(self._get_target_class(), "stream") as stream_mock:
+            # Create a minimal fake GAPIC.
+            firestore_api = mock.Mock(spec=["run_query"])
 
-        # Attach the fake GAPIC to a real client.
-        client = _make_client()
-        client._firestore_api_internal = firestore_api
+            # Attach the fake GAPIC to a real client.
+            client = _make_client()
+            client._firestore_api_internal = firestore_api
 
-        # Make a **real** collection reference as parent.
-        parent = client.collection("dee")
+            # Make a **real** collection reference as parent.
+            parent = client.collection("dee")
 
-        # Add a dummy response to the minimal fake GAPIC.
-        _, expected_prefix = parent._parent_info()
-        name = "{}/sleep".format(expected_prefix)
-        data = {"snooze": 10}
-        response_pb = _make_query_response(name=name, data=data)
-        firestore_api.run_query.return_value = iter([response_pb])
+            # Execute the query and check the response.
+            query = self._make_one(parent)
 
-        # Execute the query and check the response.
-        query = self._make_one(parent)
+            with warnings.catch_warnings(record=True) as warned:
+                get_response = query.get()
 
-        with warnings.catch_warnings(record=True) as warned:
-            get_response = query.get()
+                # Verify that `get` merely wraps `stream`.
+                stream_mock.assert_called_once()
+                self.assertEqual(get_response, stream_mock.return_value)
 
-        self.assertIsInstance(get_response, types.GeneratorType)
-        returned = list(get_response)
-        self.assertEqual(len(returned), 1)
-        snapshot = returned[0]
-        self.assertEqual(snapshot.reference._path, ("dee", "sleep"))
-        self.assertEqual(snapshot.to_dict(), data)
-
-        # Verify the mock call.
-        parent_path, _ = parent._parent_info()
-        firestore_api.run_query.assert_called_once_with(
-            request={
-                "parent": parent_path,
-                "structured_query": query._to_protobuf(),
-                "transaction": None,
-            },
-            metadata=client._rpc_metadata,
-        )
-
-        # Verify the deprecation
-        self.assertEqual(len(warned), 1)
-        self.assertIs(warned[0].category, DeprecationWarning)
+            # Verify the deprecation.
+            self.assertEqual(len(warned), 1)
+            self.assertIs(warned[0].category, DeprecationWarning)
 
     def test_stream_simple(self):
         # Create a minimal fake GAPIC.

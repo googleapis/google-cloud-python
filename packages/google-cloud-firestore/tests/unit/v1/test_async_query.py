@@ -21,6 +21,16 @@ import mock
 from tests.unit.v1.test_base_query import _make_credentials, _make_query_response
 
 
+class MockAsyncIter:
+    def __init__(self, count=3):
+        # count is arbitrary value
+        self.count = count
+
+    async def __aiter__(self, **_):
+        for i in range(self.count):
+            yield i
+
+
 class TestAsyncQuery(aiounittest.AsyncTestCase):
     @staticmethod
     def _get_target_class():
@@ -45,53 +55,37 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
         self.assertFalse(query._all_descendants)
 
     @pytest.mark.asyncio
-    async def test_get_simple(self):
+    async def test_get(self):
         import warnings
 
-        # Create a minimal fake GAPIC.
-        firestore_api = mock.Mock(spec=["run_query"])
+        with mock.patch.object(self._get_target_class(), "stream") as stream_mock:
+            stream_mock.return_value = MockAsyncIter(3)
 
-        # Attach the fake GAPIC to a real client.
-        client = _make_client()
-        client._firestore_api_internal = firestore_api
+            # Create a minimal fake GAPIC.
+            firestore_api = mock.Mock(spec=["run_query"])
 
-        # Make a **real** collection reference as parent.
-        parent = client.collection("dee")
+            # Attach the fake GAPIC to a real client.
+            client = _make_client()
+            client._firestore_api_internal = firestore_api
 
-        # Add a dummy response to the minimal fake GAPIC.
-        _, expected_prefix = parent._parent_info()
-        name = "{}/sleep".format(expected_prefix)
-        data = {"snooze": 10}
-        response_pb = _make_query_response(name=name, data=data)
-        firestore_api.run_query.return_value = iter([response_pb])
+            # Make a **real** collection reference as parent.
+            parent = client.collection("dee")
 
-        # Execute the query and check the response.
-        query = self._make_one(parent)
+            # Execute the query and check the response.
+            query = self._make_one(parent)
 
-        with warnings.catch_warnings(record=True) as warned:
-            get_response = query.get()
-            self.assertIsInstance(get_response, types.AsyncGeneratorType)
-            returned = [x async for x in get_response]
+            with warnings.catch_warnings(record=True) as warned:
+                get_response = query.get()
+                returned = [x async for x in get_response]
 
-        self.assertEqual(len(returned), 1)
-        snapshot = returned[0]
-        self.assertEqual(snapshot.reference._path, ("dee", "sleep"))
-        self.assertEqual(snapshot.to_dict(), data)
+                # Verify that `get` merely wraps `stream`.
+                stream_mock.assert_called_once()
+                self.assertIsInstance(get_response, types.AsyncGeneratorType)
+                self.assertEqual(returned, list(range(stream_mock.return_value.count)))
 
-        # Verify the mock call.
-        parent_path, _ = parent._parent_info()
-        firestore_api.run_query.assert_called_once_with(
-            request={
-                "parent": parent_path,
-                "structured_query": query._to_protobuf(),
-                "transaction": None,
-            },
-            metadata=client._rpc_metadata,
-        )
-
-        # Verify the deprecation
-        self.assertEqual(len(warned), 1)
-        self.assertIs(warned[0].category, DeprecationWarning)
+            # Verify the deprecation.
+            self.assertEqual(len(warned), 1)
+            self.assertIs(warned[0].category, DeprecationWarning)
 
     @pytest.mark.asyncio
     async def test_stream_simple(self):
