@@ -68,9 +68,9 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-def default(session, test_dir, ignore_dir):
+def default(session, test_dir, ignore_dir=None):
     # Install all test dependencies, then install this package in-place.
-    session.install("asyncmock", "pytest-asyncio")
+    session.install("asyncmock", "pytest-asyncio", "aiounittest")
 
     session.install("mock", "pytest", "pytest-cov")
     session.install("-e", ".")
@@ -99,17 +99,8 @@ def default(session, test_dir, ignore_dir):
 def unit(session):
     """Run the unit test suite for sync tests."""
     default(
-        session,
-        os.path.join("tests", "unit"),
-        os.path.join("tests", "unit", "v1", "async"),
+        session, os.path.join("tests", "unit"),
     )
-
-
-@nox.session(python=["3.6", "3.7", "3.8"])
-def unit_async(session):
-    """Run the unit test suite for async tests."""
-    session.install("pytest-asyncio", "aiounittest")
-    default(session, os.path.join("tests", "unit", "v1", "async"), None)
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
