@@ -41,6 +41,3 @@ pylintrc.test
 pytype_output/
 
 .python-version
-.DS_Store
-cert_path
-key_path
