@@ -79,19 +79,6 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-container
 
-Example Usage
-~~~~~~~~~~~~~
-
-.. code:: py
-
-    from google.cloud import container_v1
-
-    client = container_v1.ClusterManagerClient()
-
-    project_id = ''
-    zone = ''
-
-    response = client.list_clusters(project_id, zone)
 
 Next Steps
 ~~~~~~~~~~
