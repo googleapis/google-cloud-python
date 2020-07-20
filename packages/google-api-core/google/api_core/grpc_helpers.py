@@ -176,7 +176,12 @@ def wrap_errors(callable_):
         return _wrap_unary_errors(callable_)
 
 
-def _create_composite_credentials(credentials=None, credentials_file=None, scopes=None, ssl_credentials=None):
+def _create_composite_credentials(
+        credentials=None,
+        credentials_file=None,
+        scopes=None,
+        ssl_credentials=None,
+        quota_project_id=None):
     """Create the composite credentials for secure channels.
 
     Args:
@@ -191,6 +196,7 @@ def _create_composite_credentials(credentials=None, credentials_file=None, scope
             are passed to :func:`google.auth.default`.
         ssl_credentials (grpc.ChannelCredentials): Optional SSL channel
             credentials. This can be used to specify different certificates.
+        quota_project_id (str): An optional project to use for billing and quota.
 
     Returns:
         grpc.ChannelCredentials: The composed channel credentials object.
@@ -209,6 +215,9 @@ def _create_composite_credentials(credentials=None, credentials_file=None, scope
         credentials = google.auth.credentials.with_scopes_if_required(credentials, scopes)
     else:
         credentials, _ = google.auth.default(scopes=scopes)
+
+    if quota_project_id:
+        credentials = credentials.with_quota_project(quota_project_id)
 
     request = google.auth.transport.requests.Request()
 
@@ -229,7 +238,14 @@ def _create_composite_credentials(credentials=None, credentials_file=None, scope
     )
 
 
-def create_channel(target, credentials=None, scopes=None, ssl_credentials=None, credentials_file=None, **kwargs):
+def create_channel(
+        target,
+        credentials=None,
+        scopes=None,
+        ssl_credentials=None,
+        credentials_file=None,
+        quota_project_id=None,
+        **kwargs):
     """Create a secure channel with credentials.
 
     Args:
@@ -245,6 +261,7 @@ def create_channel(target, credentials=None, scopes=None, ssl_credentials=None, 
         credentials_file (str): A file with credentials that can be loaded with
             :func:`google.auth.load_credentials_from_file`. This argument is
             mutually exclusive with credentials.
+        quota_project_id (str): An optional project to use for billing and quota.
         kwargs: Additional key-word args passed to
             :func:`grpc_gcp.secure_channel` or :func:`grpc.secure_channel`.
 
@@ -259,7 +276,8 @@ def create_channel(target, credentials=None, scopes=None, ssl_credentials=None, 
         credentials=credentials,
         credentials_file=credentials_file,
         scopes=scopes,
-        ssl_credentials=ssl_credentials
+        ssl_credentials=ssl_credentials,
+        quota_project_id=quota_project_id,
     )
 
     if HAS_GRPC_GCP:

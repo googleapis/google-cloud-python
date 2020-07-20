@@ -365,6 +365,23 @@ def test_create_channel_explicit_scoped(grpc_secure_channel, composite_creds_cal
 
 @mock.patch("grpc.composite_channel_credentials")
 @mock.patch("grpc.experimental.aio.secure_channel")
+def test_create_channel_explicit_with_quota_project(grpc_secure_channel, composite_creds_call):
+    target = "example.com:443"
+    composite_creds = composite_creds_call.return_value
+
+    credentials = mock.create_autospec(google.auth.credentials.Credentials, instance=True)
+
+    channel = grpc_helpers_async.create_channel(
+        target, credentials=credentials, quota_project_id="project-foo"
+    )
+
+    credentials.with_quota_project.assert_called_once_with("project-foo")
+    assert channel is grpc_secure_channel.return_value
+    grpc_secure_channel.assert_called_once_with(target, composite_creds)
+
+
+@mock.patch("grpc.composite_channel_credentials")
+@mock.patch("grpc.experimental.aio.secure_channel")
 @mock.patch(
     "google.auth.load_credentials_from_file",
     return_value=(mock.sentinel.credentials, mock.sentinel.project)

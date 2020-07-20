@@ -206,7 +206,14 @@ def wrap_errors(callable_):
         return _wrap_stream_errors(callable_)
 
 
-def create_channel(target, credentials=None, scopes=None, ssl_credentials=None, credentials_file=None, **kwargs):
+def create_channel(
+        target,
+        credentials=None,
+        scopes=None,
+        ssl_credentials=None,
+        credentials_file=None,
+        quota_project_id=None,
+        **kwargs):
     """Create an AsyncIO secure channel with credentials.
 
     Args:
@@ -222,6 +229,7 @@ def create_channel(target, credentials=None, scopes=None, ssl_credentials=None, 
         credentials_file (str): A file with credentials that can be loaded with
             :func:`google.auth.load_credentials_from_file`. This argument is
             mutually exclusive with credentials.
+        quota_project_id (str): An optional project to use for billing and quota.
         kwargs: Additional key-word args passed to :func:`aio.secure_channel`.
 
     Returns:
@@ -235,7 +243,8 @@ def create_channel(target, credentials=None, scopes=None, ssl_credentials=None, 
         credentials=credentials,
         credentials_file=credentials_file,
         scopes=scopes,
-        ssl_credentials=ssl_credentials
+        ssl_credentials=ssl_credentials,
+        quota_project_id=quota_project_id,
     )
 
     return aio.secure_channel(target, composite_credentials, **kwargs)
