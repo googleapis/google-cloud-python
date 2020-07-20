@@ -441,6 +441,10 @@ class Client(ClientWithProject):
             google.cloud.bigquery.dataset.Dataset:
                 A new ``Dataset`` returned from the API.
 
+        Raises:
+            google.cloud.exceptions.Conflict:
+                If the dataset already exists.
+
         Example:
 
             >>> from google.cloud import bigquery
@@ -496,6 +500,10 @@ class Client(ClientWithProject):
         Returns:
             google.cloud.bigquery.routine.Routine:
                 A new ``Routine`` returned from the service.
+
+        Raises:
+            google.cloud.exceptions.Conflict:
+                If the routine already exists.
         """
         reference = routine.reference
         path = "/projects/{}/datasets/{}/routines".format(
@@ -540,6 +548,10 @@ class Client(ClientWithProject):
         Returns:
             google.cloud.bigquery.table.Table:
                 A new ``Table`` returned from the service.
+
+        Raises:
+            google.cloud.exceptions.Conflict:
+                If the table already exists.
         """
         table = _table_arg_to_table(table, default_project=self.project)
 
