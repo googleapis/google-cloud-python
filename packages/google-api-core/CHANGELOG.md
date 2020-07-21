@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [1.22.0](https://www.github.com/googleapis/python-api-core/compare/v1.21.0...v1.22.0) (2020-07-21)
+
+
+### Features
+
+* allow quota project to be passed to create_channel ([#58](https://www.github.com/googleapis/python-api-core/issues/58)) ([e2d9a7b](https://www.github.com/googleapis/python-api-core/commit/e2d9a7b209b7dfab300dc848fabbae8f42a2ab19))
+
+
+### Bug Fixes
+
+* _determine_timeout problem handling float type timeout ([#64](https://www.github.com/googleapis/python-api-core/issues/64)) ([2010373](https://www.github.com/googleapis/python-api-core/commit/2010373b27536d1191175624b297a709d70153fa))
+
+
+### Documentation
+
+* change the documentation for using 'six.moves.collections_abc.Mapping' instead of 'dict' in 'client_options.from_dict()' ([#53](https://www.github.com/googleapis/python-api-core/issues/53)) ([c890675](https://www.github.com/googleapis/python-api-core/commit/c890675dc9ebc084f105be81dc81c048f4f599ea))
+
 ## [1.21.0](https://www.github.com/googleapis/python-api-core/compare/v1.20.1...v1.21.0) (2020-06-18)
 
 
