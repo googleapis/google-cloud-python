@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [1.26.0](https://www.github.com/googleapis/python-bigquery/compare/v1.25.0...v1.26.0) (2020-07-20)
+
+
+### Features
+
+* use BigQuery Storage client by default ([#55](https://www.github.com/googleapis/python-bigquery/issues/55)) ([e75ff82](https://www.github.com/googleapis/python-bigquery/commit/e75ff8297c65981545b097f75a17cf9e78ac6772)), closes [#91](https://www.github.com/googleapis/python-bigquery/issues/91)
+* **bigquery:** add __eq__ method for class PartitionRange and RangePartitioning ([#162](https://www.github.com/googleapis/python-bigquery/issues/162)) ([0d2a88d](https://www.github.com/googleapis/python-bigquery/commit/0d2a88d8072154cfc9152afd6d26a60ddcdfbc73))
+* **bigquery:** expose date_as_object parameter to users ([#150](https://www.github.com/googleapis/python-bigquery/issues/150)) ([a2d5ce9](https://www.github.com/googleapis/python-bigquery/commit/a2d5ce9e97992318d7dc85c51c053cab74e25a11))
+* **bigquery:** expose date_as_object parameter to users ([#150](https://www.github.com/googleapis/python-bigquery/issues/150)) ([cbd831e](https://www.github.com/googleapis/python-bigquery/commit/cbd831e08024a67148723afd49e1db085e0a862c))
+
+
+### Bug Fixes
+
+* dry run queries with DB API cursor ([#128](https://www.github.com/googleapis/python-bigquery/issues/128)) ([bc33a67](https://www.github.com/googleapis/python-bigquery/commit/bc33a678a765f0232615aa2038b8cc67c88468a0))
+* omit `NaN` values when uploading from `insert_rows_from_dataframe` ([#170](https://www.github.com/googleapis/python-bigquery/issues/170)) ([f9f2f45](https://www.github.com/googleapis/python-bigquery/commit/f9f2f45bc009c03cd257441bd4b6beb1754e2177))
+
+
+### Documentation
+
+* **bigquery:** add client thread-safety documentation ([#132](https://www.github.com/googleapis/python-bigquery/issues/132)) ([fce76b3](https://www.github.com/googleapis/python-bigquery/commit/fce76b3776472b1da798df862a3405e659e35bab))
+* **bigquery:** add docstring for conflict exception ([#171](https://www.github.com/googleapis/python-bigquery/issues/171)) ([9c3409b](https://www.github.com/googleapis/python-bigquery/commit/9c3409bb06218bf499620544f8e92802df0cce47))
+* **bigquery:** consistent use of optional keyword ([#153](https://www.github.com/googleapis/python-bigquery/issues/153)) ([79d8c61](https://www.github.com/googleapis/python-bigquery/commit/79d8c61064cca18b596a24b6f738c7611721dd5c))
+* **bigquery:** fix the broken docs ([#139](https://www.github.com/googleapis/python-bigquery/issues/139)) ([3235255](https://www.github.com/googleapis/python-bigquery/commit/3235255cc5f483949f34d2e8ef13b372e8713782))
+
 ## [1.25.0](https://www.github.com/googleapis/python-bigquery/compare/v1.24.0...v1.25.0) (2020-06-06)
 
 
