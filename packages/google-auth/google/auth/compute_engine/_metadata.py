@@ -95,11 +95,13 @@ def ping(request, timeout=_METADATA_DEFAULT_TIMEOUT, retry_count=3):
                 and metadata_flavor == _METADATA_FLAVOR_VALUE
             )
 
-        except exceptions.TransportError:
-            _LOGGER.info(
-                "Compute Engine Metadata server unavailable on" "attempt %s of %s",
+        except exceptions.TransportError as e:
+            _LOGGER.warning(
+                "Compute Engine Metadata server unavailable on"
+                "attempt %s of %s. Reason: %s",
                 retries + 1,
                 retry_count,
+                e,
             )
             retries += 1
 
@@ -144,11 +146,13 @@ def get(request, path, root=_METADATA_ROOT, recursive=False, retry_count=5):
             response = request(url=url, method="GET", headers=_METADATA_HEADERS)
             break
 
-        except exceptions.TransportError:
-            _LOGGER.info(
-                "Compute Engine Metadata server unavailable on" "attempt %s of %s",
+        except exceptions.TransportError as e:
+            _LOGGER.warning(
+                "Compute Engine Metadata server unavailable on"
+                "attempt %s of %s. Reason: %s",
                 retries + 1,
                 retry_count,
+                e,
             )
             retries += 1
     else:
