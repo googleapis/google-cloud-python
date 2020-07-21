@@ -14,12 +14,11 @@
 
 """User-friendly container for Google Cloud Bigtable Instance."""
 
-
 import re
 
-from google.cloud.bigtable.table import Table
-from google.cloud.bigtable.cluster import Cluster
 from google.cloud.bigtable.app_profile import AppProfile
+from google.cloud.bigtable.cluster import Cluster
+from google.cloud.bigtable.table import Table
 
 from google.protobuf import field_mask_pb2
 

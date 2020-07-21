@@ -15,6 +15,7 @@
 import datetime
 import operator
 import os
+import time
 import unittest
 
 from google.api_core.exceptions import TooManyRequests
@@ -652,10 +653,13 @@ class TestTableAdminAPI(unittest.TestCase):
 
     def setUp(self):
         self.tables_to_delete = []
+        self.backups_to_delete = []
 
     def tearDown(self):
         for table in self.tables_to_delete:
             table.delete()
+        for backup in self.backups_to_delete:
+            backup.delete()
 
     def _skip_if_emulated(self, message):
         # NOTE: This method is necessary because ``Config.IN_EMULATOR``
@@ -828,6 +832,61 @@ class TestTableAdminAPI(unittest.TestCase):
         column_family.delete()
         # Make sure we have successfully deleted it.
         self.assertEqual(temp_table.list_column_families(), {})
+
+    def test_backup(self):
+        temp_table_id = "test-backup-table"
+        temp_table = Config.INSTANCE_DATA.table(temp_table_id)
+        temp_table.create()
+        self.tables_to_delete.append(temp_table)
+
+        temp_backup_id = "test-backup"
+
+        # TODO: consider using `datetime.datetime.now().timestamp()`
+        #  when support for Python 2 is fully dropped
+        expire = int(time.mktime(datetime.datetime.now().timetuple())) + 604800
+
+        # Testing `Table.backup()` factory
+        temp_backup = temp_table.backup(
+            temp_backup_id,
+            cluster_id=CLUSTER_ID_DATA,
+            expire_time=datetime.datetime.utcfromtimestamp(expire),
+        )
+
+        # Sanity check for `Backup.exists()` method
+        self.assertFalse(temp_backup.exists())
+
+        # Testing `Backup.create()` method
+        temp_backup.create().result()
+
+        # Implicit testing of `Backup.delete()` method
+        self.backups_to_delete.append(temp_backup)
+
+        # Testing `Backup.exists()` method
+        self.assertTrue(temp_backup.exists())
+
+        # Testing `Table.list_backups()` method
+        temp_table_backup = temp_table.list_backups()[0]
+        self.assertEqual(temp_backup_id, temp_table_backup.backup_id)
+        self.assertEqual(CLUSTER_ID_DATA, temp_table_backup.cluster)
+        self.assertEqual(expire, temp_table_backup.expire_time.seconds)
+
+        # Testing `Backup.update_expire_time()` method
+        expire += 3600  # A one-hour change in the `expire_time` parameter
+        temp_backup.update_expire_time(datetime.datetime.utcfromtimestamp(expire))
+
+        # Testing `Backup.get()` method
+        temp_table_backup = temp_backup.get()
+        self.assertEqual(expire, temp_table_backup.expire_time.seconds)
+
+        # Testing `Table.restore()` and `Backup.retore()` methods
+        restored_table_id = "test-backup-table-restored"
+        restored_table = Config.INSTANCE_DATA.table(restored_table_id)
+        temp_table.restore(
+            restored_table_id, cluster_id=CLUSTER_ID_DATA, backup_id=temp_backup_id
+        ).result()
+        tables = Config.INSTANCE_DATA.list_tables()
+        self.assertIn(restored_table, tables)
+        restored_table.delete()
 
 
 class TestDataAPI(unittest.TestCase):

@@ -39,6 +39,10 @@ class TestInstance(unittest.TestCase):
     )
     TABLE_ID = "table_id"
     TABLE_NAME = INSTANCE_NAME + "/tables/" + TABLE_ID
+    CLUSTER_ID = "cluster-id"
+    CLUSTER_NAME = INSTANCE_NAME + "/clusters/" + CLUSTER_ID
+    BACKUP_ID = "backup-id"
+    BACKUP_NAME = CLUSTER_NAME + "/backups/" + BACKUP_ID
 
     @staticmethod
     def _get_target_class():
