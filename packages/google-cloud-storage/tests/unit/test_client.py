@@ -1844,7 +1844,7 @@ def test_conformance_post_policy(test_data):
     in_data = test_data["policyInput"]
     timestamp = datetime.datetime.strptime(in_data["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
 
-    client = Client(credentials=_DUMMY_CREDENTIALS)
+    client = Client(credentials=_DUMMY_CREDENTIALS, project="PROJECT")
 
     # mocking time functions
     with mock.patch("google.cloud.storage._signing.NOW", return_value=timestamp):
