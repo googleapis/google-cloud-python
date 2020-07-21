@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [1.4.0](https://www.github.com/googleapis/python-bigtable/compare/v1.3.0...v1.4.0) (2020-07-21)
+
+
+### Features
+
+* **bigtable:** Managed Backups wrappers ([#57](https://www.github.com/googleapis/python-bigtable/issues/57)) ([a351734](https://www.github.com/googleapis/python-bigtable/commit/a351734ae16b4a689b89e6a42f63ea3ea5ad84ca))
+
 ## [1.3.0](https://www.github.com/googleapis/python-bigtable/compare/v1.2.1...v1.3.0) (2020-07-16)
 
 
