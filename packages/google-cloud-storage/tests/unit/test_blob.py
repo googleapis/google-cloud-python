@@ -936,7 +936,7 @@ class Test_Blob(unittest.TestCase):
         response.request = requests.Request("POST", "http://example.com").prepare()
         return response
 
-    def _do_download_helper_wo_chunks(self, w_range, raw_download):
+    def _do_download_helper_wo_chunks(self, w_range, raw_download, timeout=None):
         blob_name = "blob-name"
         client = mock.Mock()
         bucket = _Bucket(client)
@@ -953,6 +953,13 @@ class Test_Blob(unittest.TestCase):
         else:
             patch = mock.patch("google.cloud.storage.blob.Download")
 
+        if timeout is None:
+            expected_timeout = self._get_default_timeout()
+            timeout_kwarg = {}
+        else:
+            expected_timeout = timeout
+            timeout_kwarg = {"timeout": timeout}
+
         with patch as patched:
             if w_range:
                 blob._do_download(
@@ -963,6 +970,7 @@ class Test_Blob(unittest.TestCase):
                     start=1,
                     end=3,
                     raw_download=raw_download,
+                    **timeout_kwarg
                 )
             else:
                 blob._do_download(
@@ -971,6 +979,7 @@ class Test_Blob(unittest.TestCase):
                     download_url,
                     headers,
                     raw_download=raw_download,
+                    **timeout_kwarg
                 )
 
         if w_range:
@@ -981,7 +990,10 @@ class Test_Blob(unittest.TestCase):
             patched.assert_called_once_with(
                 download_url, stream=file_obj, headers=headers, start=None, end=None
             )
-        patched.return_value.consume.assert_called_once_with(transport)
+
+        patched.return_value.consume.assert_called_once_with(
+            transport, timeout=expected_timeout
+        )
 
     def test__do_download_wo_chunks_wo_range_wo_raw(self):
         self._do_download_helper_wo_chunks(w_range=False, raw_download=False)
@@ -995,7 +1007,12 @@ class Test_Blob(unittest.TestCase):
     def test__do_download_wo_chunks_w_range_w_raw(self):
         self._do_download_helper_wo_chunks(w_range=True, raw_download=True)
 
-    def _do_download_helper_w_chunks(self, w_range, raw_download):
+    def test__do_download_wo_chunks_w_custom_timeout(self):
+        self._do_download_helper_wo_chunks(
+            w_range=False, raw_download=False, timeout=9.58
+        )
+
+    def _do_download_helper_w_chunks(self, w_range, raw_download, timeout=None):
         blob_name = "blob-name"
         client = mock.Mock(_credentials=_make_credentials(), spec=["_credentials"])
         bucket = _Bucket(client)
@@ -1010,7 +1027,7 @@ class Test_Blob(unittest.TestCase):
 
         download = mock.Mock(finished=False, spec=["finished", "consume_next_chunk"])
 
-        def side_effect(_):
+        def side_effect(*args, **kwargs):
             download.finished = True
 
         download.consume_next_chunk.side_effect = side_effect
@@ -1019,6 +1036,13 @@ class Test_Blob(unittest.TestCase):
             patch = mock.patch("google.cloud.storage.blob.RawChunkedDownload")
         else:
             patch = mock.patch("google.cloud.storage.blob.ChunkedDownload")
+
+        if timeout is None:
+            expected_timeout = self._get_default_timeout()
+            timeout_kwarg = {}
+        else:
+            expected_timeout = timeout
+            timeout_kwarg = {"timeout": timeout}
 
         with patch as patched:
             patched.return_value = download
@@ -1031,6 +1055,7 @@ class Test_Blob(unittest.TestCase):
                     start=1,
                     end=3,
                     raw_download=raw_download,
+                    **timeout_kwarg
                 )
             else:
                 blob._do_download(
@@ -1039,6 +1064,7 @@ class Test_Blob(unittest.TestCase):
                     download_url,
                     headers,
                     raw_download=raw_download,
+                    **timeout_kwarg
                 )
 
         if w_range:
@@ -1049,7 +1075,9 @@ class Test_Blob(unittest.TestCase):
             patched.assert_called_once_with(
                 download_url, chunk_size, file_obj, headers=headers, start=0, end=None
             )
-        download.consume_next_chunk.assert_called_once_with(transport)
+        download.consume_next_chunk.assert_called_once_with(
+            transport, timeout=expected_timeout
+        )
 
     def test__do_download_w_chunks_wo_range_wo_raw(self):
         self._do_download_helper_w_chunks(w_range=False, raw_download=False)
@@ -1062,6 +1090,9 @@ class Test_Blob(unittest.TestCase):
 
     def test__do_download_w_chunks_w_range_w_raw(self):
         self._do_download_helper_w_chunks(w_range=True, raw_download=True)
+
+    def test__do_download_w_chunks_w_custom_timeout(self):
+        self._do_download_helper_w_chunks(w_range=True, raw_download=True, timeout=9.58)
 
     def test_download_to_file_with_failure(self):
         import requests
@@ -1091,7 +1122,14 @@ class Test_Blob(unittest.TestCase):
 
         headers = {"accept-encoding": "gzip"}
         blob._do_download.assert_called_once_with(
-            client._http, file_obj, media_link, headers, None, None, False
+            client._http,
+            file_obj,
+            media_link,
+            headers,
+            None,
+            None,
+            False,
+            timeout=self._get_default_timeout(),
         )
 
     def test_download_to_file_wo_media_link(self):
@@ -1114,7 +1152,14 @@ class Test_Blob(unittest.TestCase):
         )
         headers = {"accept-encoding": "gzip"}
         blob._do_download.assert_called_once_with(
-            client._http, file_obj, expected_url, headers, None, None, False
+            client._http,
+            file_obj,
+            expected_url,
+            headers,
+            None,
+            None,
+            False,
+            timeout=self._get_default_timeout(),
         )
 
     def test_download_to_file_w_generation_match(self):
@@ -1136,10 +1181,17 @@ class Test_Blob(unittest.TestCase):
         blob.download_to_file(file_obj, if_generation_not_match=GENERATION_NUMBER)
 
         blob._do_download.assert_called_once_with(
-            client._http, file_obj, EXPECTED_URL, HEADERS, None, None, False
+            client._http,
+            file_obj,
+            EXPECTED_URL,
+            HEADERS,
+            None,
+            None,
+            False,
+            timeout=self._get_default_timeout(),
         )
 
-    def _download_to_file_helper(self, use_chunks, raw_download):
+    def _download_to_file_helper(self, use_chunks, raw_download, timeout=None):
         blob_name = "blob-name"
         client = mock.Mock(spec=[u"_http"])
         bucket = _Bucket(client)
@@ -1151,15 +1203,29 @@ class Test_Blob(unittest.TestCase):
             blob.chunk_size = 3
         blob._do_download = mock.Mock()
 
+        if timeout is None:
+            expected_timeout = self._get_default_timeout()
+            timeout_kwarg = {}
+        else:
+            expected_timeout = timeout
+            timeout_kwarg = {"timeout": timeout}
+
         file_obj = io.BytesIO()
         if raw_download:
-            blob.download_to_file(file_obj, raw_download=True)
+            blob.download_to_file(file_obj, raw_download=True, **timeout_kwarg)
         else:
-            blob.download_to_file(file_obj)
+            blob.download_to_file(file_obj, **timeout_kwarg)
 
         headers = {"accept-encoding": "gzip"}
         blob._do_download.assert_called_once_with(
-            client._http, file_obj, media_link, headers, None, None, raw_download
+            client._http,
+            file_obj,
+            media_link,
+            headers,
+            None,
+            None,
+            raw_download,
+            timeout=expected_timeout,
         )
 
     def test_download_to_file_wo_chunks_wo_raw(self):
@@ -1174,7 +1240,12 @@ class Test_Blob(unittest.TestCase):
     def test_download_to_file_w_chunks_w_raw(self):
         self._download_to_file_helper(use_chunks=True, raw_download=True)
 
-    def _download_to_filename_helper(self, updated, raw_download):
+    def test_download_to_file_w_custom_timeout(self):
+        self._download_to_file_helper(
+            use_chunks=False, raw_download=False, timeout=9.58
+        )
+
+    def _download_to_filename_helper(self, updated, raw_download, timeout=None):
         import os
         from google.cloud.storage._helpers import _convert_to_timestamp
         from google.cloud._testing import _NamedTemporaryFile
@@ -1191,7 +1262,13 @@ class Test_Blob(unittest.TestCase):
         blob._do_download = mock.Mock()
 
         with _NamedTemporaryFile() as temp:
-            blob.download_to_filename(temp.name, raw_download=raw_download)
+            if timeout is None:
+                blob.download_to_filename(temp.name, raw_download=raw_download)
+            else:
+                blob.download_to_filename(
+                    temp.name, raw_download=raw_download, timeout=timeout,
+                )
+
             if updated is None:
                 self.assertIsNone(blob.updated)
             else:
@@ -1202,9 +1279,18 @@ class Test_Blob(unittest.TestCase):
                     updated_time = blob.updated.timestamp()
                 self.assertEqual(mtime, updated_time)
 
+        expected_timeout = self._get_default_timeout() if timeout is None else timeout
+
         headers = {"accept-encoding": "gzip"}
         blob._do_download.assert_called_once_with(
-            client._http, mock.ANY, media_link, headers, None, None, raw_download
+            client._http,
+            mock.ANY,
+            media_link,
+            headers,
+            None,
+            None,
+            raw_download,
+            timeout=expected_timeout,
         )
         stream = blob._do_download.mock_calls[0].args[1]
         self.assertEqual(stream.name, temp.name)
@@ -1228,7 +1314,14 @@ class Test_Blob(unittest.TestCase):
             blob.download_to_filename(temp.name, if_generation_match=GENERATION_NUMBER)
 
         blob._do_download.assert_called_once_with(
-            client._http, mock.ANY, EXPECTED_LINK, HEADERS, None, None, False
+            client._http,
+            mock.ANY,
+            EXPECTED_LINK,
+            HEADERS,
+            None,
+            None,
+            False,
+            timeout=self._get_default_timeout(),
         )
 
     def test_download_to_filename_w_updated_wo_raw(self):
@@ -1244,6 +1337,11 @@ class Test_Blob(unittest.TestCase):
 
     def test_download_to_filename_wo_updated_w_raw(self):
         self._download_to_filename_helper(updated=None, raw_download=True)
+
+    def test_download_to_filename_w_custom_timeout(self):
+        self._download_to_filename_helper(
+            updated=None, raw_download=False, timeout=9.58
+        )
 
     def test_download_to_filename_corrupted(self):
         from google.resumable_media import DataCorruption
@@ -1273,7 +1371,14 @@ class Test_Blob(unittest.TestCase):
 
         headers = {"accept-encoding": "gzip"}
         blob._do_download.assert_called_once_with(
-            client._http, mock.ANY, media_link, headers, None, None, False
+            client._http,
+            mock.ANY,
+            media_link,
+            headers,
+            None,
+            None,
+            False,
+            timeout=self._get_default_timeout(),
         )
         stream = blob._do_download.mock_calls[0].args[1]
         self.assertEqual(stream.name, filename)
@@ -1300,12 +1405,19 @@ class Test_Blob(unittest.TestCase):
         headers = {"accept-encoding": "gzip"}
         headers.update(_get_encryption_headers(key))
         blob._do_download.assert_called_once_with(
-            client._http, mock.ANY, media_link, headers, None, None, False
+            client._http,
+            mock.ANY,
+            media_link,
+            headers,
+            None,
+            None,
+            False,
+            timeout=self._get_default_timeout(),
         )
         stream = blob._do_download.mock_calls[0].args[1]
         self.assertEqual(stream.name, temp.name)
 
-    def _download_as_string_helper(self, raw_download):
+    def _download_as_string_helper(self, raw_download, timeout=None):
         blob_name = "blob-name"
         client = mock.Mock(spec=["_http"])
         bucket = _Bucket(client)
@@ -1314,12 +1426,27 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(blob_name, bucket=bucket, properties=properties)
         blob._do_download = mock.Mock()
 
-        fetched = blob.download_as_string(raw_download=raw_download)
+        if timeout is None:
+            expected_timeout = self._get_default_timeout()
+            fetched = blob.download_as_string(raw_download=raw_download)
+        else:
+            expected_timeout = timeout
+            fetched = blob.download_as_string(
+                raw_download=raw_download, timeout=timeout
+            )
+
         self.assertEqual(fetched, b"")
 
         headers = {"accept-encoding": "gzip"}
         blob._do_download.assert_called_once_with(
-            client._http, mock.ANY, media_link, headers, None, None, raw_download
+            client._http,
+            mock.ANY,
+            media_link,
+            headers,
+            None,
+            None,
+            raw_download,
+            timeout=expected_timeout,
         )
         stream = blob._do_download.mock_calls[0].args[1]
         self.assertIsInstance(stream, io.BytesIO)
@@ -1347,6 +1474,7 @@ class Test_Blob(unittest.TestCase):
             if_generation_not_match=None,
             if_metageneration_match=None,
             if_metageneration_not_match=None,
+            timeout=self._get_default_timeout(),
         )
 
     def test_download_as_string_wo_raw(self):
@@ -1354,6 +1482,9 @@ class Test_Blob(unittest.TestCase):
 
     def test_download_as_string_w_raw(self):
         self._download_as_string_helper(raw_download=True)
+
+    def test_download_as_string_w_custom_timeout(self):
+        self._download_as_string_helper(raw_download=False, timeout=9.58)
 
     def test__get_content_type_explicit(self):
         blob = self._make_one(u"blob-name", bucket=None)
@@ -1471,6 +1602,7 @@ class Test_Blob(unittest.TestCase):
         if_metageneration_match=None,
         if_metageneration_not_match=None,
         kms_key_name=None,
+        timeout=None,
     ):
         from six.moves.urllib.parse import urlencode
 
@@ -1487,6 +1619,14 @@ class Test_Blob(unittest.TestCase):
         data = b"data here hear hier"
         stream = io.BytesIO(data)
         content_type = u"application/xml"
+
+        if timeout is None:
+            expected_timeout = self._get_default_timeout()
+            timeout_kwarg = {}
+        else:
+            expected_timeout = timeout
+            timeout_kwarg = {"timeout": timeout}
+
         response = blob._do_multipart_upload(
             client,
             stream,
@@ -1498,6 +1638,7 @@ class Test_Blob(unittest.TestCase):
             if_generation_not_match,
             if_metageneration_match,
             if_metageneration_not_match,
+            **timeout_kwarg
         )
 
         # Check the mocks and the returned value.
@@ -1551,7 +1692,7 @@ class Test_Blob(unittest.TestCase):
         )
         headers = {"content-type": b'multipart/related; boundary="==0=="'}
         transport.request.assert_called_once_with(
-            "POST", upload_url, data=payload, headers=headers, timeout=mock.ANY
+            "POST", upload_url, data=payload, headers=headers, timeout=expected_timeout
         )
 
     @mock.patch(u"google.resumable_media._upload.get_boundary", return_value=b"==0==")
@@ -1599,6 +1740,10 @@ class Test_Blob(unittest.TestCase):
         )
 
     @mock.patch(u"google.resumable_media._upload.get_boundary", return_value=b"==0==")
+    def test__do_multipart_upload_with_custom_timeout(self, mock_get_boundary):
+        self._do_multipart_success(mock_get_boundary, timeout=9.58)
+
+    @mock.patch(u"google.resumable_media._upload.get_boundary", return_value=b"==0==")
     def test__do_multipart_upload_with_generation_not_match(self, mock_get_boundary):
         self._do_multipart_success(
             mock_get_boundary, if_generation_not_match=4, if_metageneration_not_match=4
@@ -1635,6 +1780,7 @@ class Test_Blob(unittest.TestCase):
         if_metageneration_not_match=None,
         blob_chunk_size=786432,
         kms_key_name=None,
+        timeout=None,
     ):
         from six.moves.urllib.parse import urlencode
         from google.resumable_media.requests import ResumableUpload
@@ -1665,6 +1811,14 @@ class Test_Blob(unittest.TestCase):
         data = b"hello hallo halo hi-low"
         stream = io.BytesIO(data)
         content_type = u"text/plain"
+
+        if timeout is None:
+            expected_timeout = self._get_default_timeout()
+            timeout_kwarg = {}
+        else:
+            expected_timeout = timeout
+            timeout_kwarg = {"timeout": timeout}
+
         upload, transport = blob._initiate_resumable_upload(
             client,
             stream,
@@ -1678,6 +1832,7 @@ class Test_Blob(unittest.TestCase):
             if_generation_not_match=if_generation_not_match,
             if_metageneration_match=if_metageneration_match,
             if_metageneration_not_match=if_metageneration_not_match,
+            **timeout_kwarg
         )
 
         # Check the returned values.
@@ -1757,8 +1912,15 @@ class Test_Blob(unittest.TestCase):
         if extra_headers is not None:
             expected_headers.update(extra_headers)
         transport.request.assert_called_once_with(
-            "POST", upload_url, data=payload, headers=expected_headers, timeout=mock.ANY
+            "POST",
+            upload_url,
+            data=payload,
+            headers=expected_headers,
+            timeout=expected_timeout,
         )
+
+    def test__initiate_resumable_upload_with_custom_timeout(self):
+        self._initiate_resumable_helper(timeout=9.58)
 
     def test__initiate_resumable_upload_no_size(self):
         self._initiate_resumable_helper()
@@ -1844,6 +2006,7 @@ class Test_Blob(unittest.TestCase):
         if_generation_not_match=None,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
+        timeout=None,
     ):
         # First mock transport.request() does initiates upload.
         upload_url = (
@@ -1861,7 +2024,7 @@ class Test_Blob(unittest.TestCase):
             expected_headers["x-upload-content-length"] = str(size)
         payload = json.dumps({"name": blob.name}).encode("utf-8")
         return mock.call(
-            "POST", upload_url, data=payload, headers=expected_headers, timeout=mock.ANY
+            "POST", upload_url, data=payload, headers=expected_headers, timeout=timeout
         )
 
     @staticmethod
@@ -1876,6 +2039,7 @@ class Test_Blob(unittest.TestCase):
         if_generation_not_match=None,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
+        timeout=None,
     ):
         # Second mock transport.request() does sends first chunk.
         if size is None:
@@ -1893,7 +2057,7 @@ class Test_Blob(unittest.TestCase):
             resumable_url,
             data=payload,
             headers=expected_headers,
-            timeout=mock.ANY,
+            timeout=timeout,
         )
 
     @staticmethod
@@ -1908,6 +2072,7 @@ class Test_Blob(unittest.TestCase):
         if_generation_not_match=None,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
+        timeout=None,
     ):
         # Third mock transport.request() does sends last chunk.
         content_range = "bytes {:d}-{:d}/{:d}".format(
@@ -1923,7 +2088,7 @@ class Test_Blob(unittest.TestCase):
             resumable_url,
             data=payload,
             headers=expected_headers,
-            timeout=mock.ANY,
+            timeout=timeout,
         )
 
     def _do_resumable_helper(
@@ -1935,6 +2100,7 @@ class Test_Blob(unittest.TestCase):
         if_generation_not_match=None,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
+        timeout=None,
     ):
         bucket = _Bucket(name="yesterday")
         blob = self._make_one(u"blob-name", bucket=bucket)
@@ -1962,6 +2128,14 @@ class Test_Blob(unittest.TestCase):
         client._connection.API_BASE_URL = "https://storage.googleapis.com"
         stream = io.BytesIO(data)
         content_type = u"text/html"
+
+        if timeout is None:
+            expected_timeout = self._get_default_timeout()
+            timeout_kwarg = {}
+        else:
+            expected_timeout = timeout
+            timeout_kwarg = {"timeout": timeout}
+
         response = blob._do_resumable_upload(
             client,
             stream,
@@ -1973,6 +2147,7 @@ class Test_Blob(unittest.TestCase):
             if_generation_not_match,
             if_metageneration_match,
             if_metageneration_not_match,
+            **timeout_kwarg
         )
 
         # Check the returned values.
@@ -1989,6 +2164,7 @@ class Test_Blob(unittest.TestCase):
             if_generation_not_match=if_generation_not_match,
             if_metageneration_match=if_metageneration_match,
             if_metageneration_not_match=if_metageneration_not_match,
+            timeout=expected_timeout,
         )
         call1 = self._do_resumable_upload_call1(
             blob,
@@ -2001,6 +2177,7 @@ class Test_Blob(unittest.TestCase):
             if_generation_not_match=if_generation_not_match,
             if_metageneration_match=if_metageneration_match,
             if_metageneration_not_match=if_metageneration_not_match,
+            timeout=expected_timeout,
         )
         call2 = self._do_resumable_upload_call2(
             blob,
@@ -2013,8 +2190,12 @@ class Test_Blob(unittest.TestCase):
             if_generation_not_match=if_generation_not_match,
             if_metageneration_match=if_metageneration_match,
             if_metageneration_not_match=if_metageneration_not_match,
+            timeout=expected_timeout,
         )
         self.assertEqual(transport.request.mock_calls, [call0, call1, call2])
+
+    def test__do_resumable_upload_with_custom_timeout(self):
+        self._do_resumable_helper(timeout=9.58)
 
     def test__do_resumable_upload_no_size(self):
         self._do_resumable_helper()
@@ -2038,6 +2219,7 @@ class Test_Blob(unittest.TestCase):
         if_metageneration_match=None,
         if_metageneration_not_match=None,
         size=None,
+        timeout=None,
     ):
         from google.cloud.storage.blob import _MAX_MULTIPART_SIZE
 
@@ -2061,6 +2243,14 @@ class Test_Blob(unittest.TestCase):
         content_type = u"video/mp4"
         if size is None:
             size = 12345654321
+
+        if timeout is None:
+            expected_timeout = self._get_default_timeout()
+            timeout_kwarg = {}
+        else:
+            expected_timeout = timeout
+            timeout_kwarg = {"timeout": timeout}
+
         # Make the request and check the mocks.
         created_json = blob._do_upload(
             client,
@@ -2073,6 +2263,7 @@ class Test_Blob(unittest.TestCase):
             if_generation_not_match,
             if_metageneration_match,
             if_metageneration_not_match,
+            **timeout_kwarg
         )
         self.assertIs(created_json, mock.sentinel.json)
         response.json.assert_called_once_with()
@@ -2088,6 +2279,7 @@ class Test_Blob(unittest.TestCase):
                 if_generation_not_match,
                 if_metageneration_match,
                 if_metageneration_not_match,
+                timeout=expected_timeout,
             )
             blob._do_resumable_upload.assert_not_called()
         else:
@@ -2103,6 +2295,7 @@ class Test_Blob(unittest.TestCase):
                 if_generation_not_match,
                 if_metageneration_match,
                 if_metageneration_not_match,
+                timeout=expected_timeout,
             )
 
     def test__do_upload_uses_multipart(self):
@@ -2110,11 +2303,24 @@ class Test_Blob(unittest.TestCase):
 
         self._do_upload_helper(size=_MAX_MULTIPART_SIZE)
 
+    def test__do_upload_uses_multipart_w_custom_timeout(self):
+        from google.cloud.storage.blob import _MAX_MULTIPART_SIZE
+
+        self._do_upload_helper(size=_MAX_MULTIPART_SIZE, timeout=9.58)
+
     def test__do_upload_uses_resumable(self):
         from google.cloud.storage.blob import _MAX_MULTIPART_SIZE
 
         chunk_size = 256 * 1024  # 256KB
         self._do_upload_helper(chunk_size=chunk_size, size=_MAX_MULTIPART_SIZE + 1)
+
+    def test__do_upload_uses_resumable_w_custom_timeout(self):
+        from google.cloud.storage.blob import _MAX_MULTIPART_SIZE
+
+        chunk_size = 256 * 1024  # 256KB
+        self._do_upload_helper(
+            chunk_size=chunk_size, size=_MAX_MULTIPART_SIZE + 1, timeout=9.58
+        )
 
     def test__do_upload_with_retry(self):
         self._do_upload_helper(num_retries=20)
@@ -2150,6 +2356,8 @@ class Test_Blob(unittest.TestCase):
         new_updated = datetime.datetime(2017, 1, 1, 9, 9, 9, 81000, tzinfo=UTC)
         self.assertEqual(blob.updated, new_updated)
 
+        expected_timeout = kwargs.get("timeout", self._get_default_timeout())
+
         # Check the mock.
         num_retries = kwargs.get("num_retries")
         blob._do_upload.assert_called_once_with(
@@ -2163,6 +2371,7 @@ class Test_Blob(unittest.TestCase):
             if_generation_not_match,
             if_metageneration_match,
             if_metageneration_not_match,
+            timeout=expected_timeout,
         )
         return stream
 
@@ -2183,6 +2392,9 @@ class Test_Blob(unittest.TestCase):
         stream = self._upload_from_file_helper(rewind=True)
         assert stream.tell() == 0
 
+    def test_upload_from_file_with_custom_timeout(self):
+        self._upload_from_file_helper(timeout=9.58)
+
     def test_upload_from_file_failure(self):
         import requests
 
@@ -2201,7 +2413,9 @@ class Test_Blob(unittest.TestCase):
         self.assertIn(message, exc_info.exception.message)
         self.assertEqual(exc_info.exception.errors, [])
 
-    def _do_upload_mock_call_helper(self, blob, client, content_type, size):
+    def _do_upload_mock_call_helper(
+        self, blob, client, content_type, size, timeout=None
+    ):
         self.assertEqual(blob._do_upload.call_count, 1)
         mock_call = blob._do_upload.mock_calls[0]
         call_name, pos_args, kwargs = mock_call
@@ -2216,7 +2430,9 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(pos_args[7])  # if_generation_not_match
         self.assertIsNone(pos_args[8])  # if_metageneration_match
         self.assertIsNone(pos_args[9])  # if_metageneration_not_match
-        self.assertEqual(kwargs, {})
+
+        expected_timeout = self._get_default_timeout() if timeout is None else timeout
+        self.assertEqual(kwargs, {"timeout": expected_timeout})
 
         return pos_args[1]
 
@@ -2251,6 +2467,32 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(stream.mode, "rb")
         self.assertEqual(stream.name, temp.name)
 
+    def test_upload_from_filename_w_custom_timeout(self):
+        from google.cloud._testing import _NamedTemporaryFile
+
+        blob = self._make_one("blob-name", bucket=None)
+        # Mock low-level upload helper on blob (it is tested elsewhere).
+        created_json = {"metadata": {"mint": "ice-cream"}}
+        blob._do_upload = mock.Mock(return_value=created_json, spec=[])
+        # Make sure `metadata` is empty before the request.
+        self.assertIsNone(blob.metadata)
+
+        data = b"soooo much data"
+        content_type = u"image/svg+xml"
+        client = mock.sentinel.client
+        with _NamedTemporaryFile() as temp:
+            with open(temp.name, "wb") as file_obj:
+                file_obj.write(data)
+
+            blob.upload_from_filename(
+                temp.name, content_type=content_type, client=client, timeout=9.58
+            )
+
+        # Check the mock.
+        self._do_upload_mock_call_helper(
+            blob, client, content_type, len(data), timeout=9.58
+        )
+
     def _upload_from_string_helper(self, data, **kwargs):
         from google.cloud._helpers import _to_bytes
 
@@ -2272,10 +2514,18 @@ class Test_Blob(unittest.TestCase):
         # Check the mock.
         payload = _to_bytes(data, encoding="utf-8")
         stream = self._do_upload_mock_call_helper(
-            blob, client, "text/plain", len(payload)
+            blob,
+            client,
+            "text/plain",
+            len(payload),
+            kwargs.get("timeout", self._get_default_timeout()),
         )
         self.assertIsInstance(stream, io.BytesIO)
         self.assertEqual(stream.getvalue(), payload)
+
+    def test_upload_from_string_w_custom_timeout(self):
+        data = b"XB]jb\xb8tad\xe0"
+        self._upload_from_string_helper(data, timeout=9.58)
 
     def test_upload_from_string_w_bytes(self):
         data = b"XB]jb\xb8tad\xe0"
@@ -2285,7 +2535,9 @@ class Test_Blob(unittest.TestCase):
         data = u"\N{snowman} \N{sailboat}"
         self._upload_from_string_helper(data)
 
-    def _create_resumable_upload_session_helper(self, origin=None, side_effect=None):
+    def _create_resumable_upload_session_helper(
+        self, origin=None, side_effect=None, timeout=None
+    ):
         bucket = _Bucket(name="alex-trebek")
         blob = self._make_one("blob-name", bucket=bucket)
         chunk_size = 99 * blob._CHUNK_SIZE_MULTIPLE
@@ -2303,8 +2555,20 @@ class Test_Blob(unittest.TestCase):
         size = 10000
         client = mock.Mock(_http=transport, _connection=_Connection, spec=[u"_http"])
         client._connection.API_BASE_URL = "https://storage.googleapis.com"
+
+        if timeout is None:
+            expected_timeout = self._get_default_timeout()
+            timeout_kwarg = {}
+        else:
+            expected_timeout = timeout
+            timeout_kwarg = {"timeout": timeout}
+
         new_url = blob.create_resumable_upload_session(
-            content_type=content_type, size=size, origin=origin, client=client
+            content_type=content_type,
+            size=size,
+            origin=origin,
+            client=client,
+            **timeout_kwarg
         )
 
         # Check the returned value and (lack of) side-effect.
@@ -2326,11 +2590,18 @@ class Test_Blob(unittest.TestCase):
         if origin is not None:
             expected_headers["Origin"] = origin
         transport.request.assert_called_once_with(
-            "POST", upload_url, data=payload, headers=expected_headers, timeout=mock.ANY
+            "POST",
+            upload_url,
+            data=payload,
+            headers=expected_headers,
+            timeout=expected_timeout,
         )
 
     def test_create_resumable_upload_session(self):
         self._create_resumable_upload_session_helper()
+
+    def test_create_resumable_upload_session_with_custom_timeout(self):
+        self._create_resumable_upload_session_helper(timeout=9.58)
 
     def test_create_resumable_upload_session_with_origin(self):
         self._create_resumable_upload_session_helper(origin="http://google.com")
@@ -3251,6 +3522,41 @@ class Test_Blob(unittest.TestCase):
         blob.update_storage_class("NEARLINE")
 
         self.assertEqual(blob.storage_class, "NEARLINE")
+
+    def test_update_storage_class_with_custom_timeout(self):
+        BLOB_NAME = "blob-name"
+        STORAGE_CLASS = u"NEARLINE"
+        TOKEN = "TOKEN"
+        INCOMPLETE_RESPONSE = {
+            "totalBytesRewritten": 42,
+            "objectSize": 84,
+            "done": False,
+            "rewriteToken": TOKEN,
+            "resource": {"storageClass": STORAGE_CLASS},
+        }
+        COMPLETE_RESPONSE = {
+            "totalBytesRewritten": 84,
+            "objectSize": 84,
+            "done": True,
+            "resource": {"storageClass": STORAGE_CLASS},
+        }
+        response_1 = ({"status": http_client.OK}, INCOMPLETE_RESPONSE)
+        response_2 = ({"status": http_client.OK}, COMPLETE_RESPONSE)
+        connection = _Connection(response_1, response_2)
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+
+        blob.update_storage_class("NEARLINE", timeout=9.58)
+
+        self.assertEqual(blob.storage_class, "NEARLINE")
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 2)
+
+        for kw_item in kw:
+            self.assertIn("timeout", kw_item)
+            self.assertEqual(kw_item["timeout"], 9.58)
 
     def test_update_storage_class_wo_encryption_key(self):
         BLOB_NAME = "blob-name"
