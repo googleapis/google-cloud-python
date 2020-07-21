@@ -41,56 +41,15 @@ for version in versions:
 
     s.move(library, excludes=excludes)
 
-    # Files to be renamed (remove v1_beta1 from name)
-    gapic_dir = Path(f"google/cloud/phishingprotection_{version}/gapic")
-    client = gapic_dir / "phishing_protection_service_v1_beta1_client.py"
-    client_config = gapic_dir / "phishing_protection_service_v1_beta1_client_config.py"
-    transport = (
-        gapic_dir / "transports/phishing_protection_service_v1_beta1_grpc_transport.py"
-    )
-    unit_test = Path(
-        "tests/unit/gapic/v1beta1/test_phishing_protection_service_v1_beta1_client_v1beta1.py"
-    )
-
-    s.replace(
-        client,
-        "google-cloud-phishingprotection",
-        "google-cloud-phishing-protection",
-    )
-
-    files = [client, client_config, transport, unit_test]
-    for file_ in files:
-        new_name = str(file_).replace("v1_beta1_", "")
-        os.rename(file_, new_name)
-
-# Rename classes in google/cloud and in tests/
-class_names = [
-    "PhishingProtectionServiceV1Beta1Client",
-    "PhishingProtectionServiceV1Beta1GrpcTransport",
-]
-
-for name in class_names:
-    new_name = name.replace("V1Beta1", "")
-    s.replace("google/cloud/**/*.py", name, new_name)
-    s.replace("tests/**/*.py", name, new_name)
-
-# Rename references to modules
-
-module_names = [
-    "phishing_protection_v1_beta1_service_client",
-    "phishing_protection_service_v1_beta1_grpc_transport",
-    "phishing_protection_service_v1_beta1_client",
-]
-
-for name in module_names:
-    new_name = name.replace("v1_beta1_", "")
-    s.replace("google/cloud/**/*.py", name, new_name)
-
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=97, cov_level=75)
-s.move(templated_files)
+templated_files = common.py_library(
+    samples=False,  # set to True only if there are samples
+    microgenerator=True,
+    cov_level=100,
+)
+s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition
 s.replace("noxfile.py", '''["']sphinx["']''', '"sphinx<3.0.0"')

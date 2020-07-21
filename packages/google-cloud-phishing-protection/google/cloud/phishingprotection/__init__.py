@@ -15,15 +15,22 @@
 # limitations under the License.
 #
 
-from .services.phishing_protection_service_v1_beta1 import (
+from google.cloud.phishingprotection_v1beta1.services.phishing_protection_service_v1_beta1.async_client import (
+    PhishingProtectionServiceV1Beta1AsyncClient,
+)
+from google.cloud.phishingprotection_v1beta1.services.phishing_protection_service_v1_beta1.client import (
     PhishingProtectionServiceV1Beta1Client,
 )
-from .types.phishingprotection import ReportPhishingRequest
-from .types.phishingprotection import ReportPhishingResponse
-
+from google.cloud.phishingprotection_v1beta1.types.phishingprotection import (
+    ReportPhishingRequest,
+)
+from google.cloud.phishingprotection_v1beta1.types.phishingprotection import (
+    ReportPhishingResponse,
+)
 
 __all__ = (
+    "PhishingProtectionServiceV1Beta1AsyncClient",
+    "PhishingProtectionServiceV1Beta1Client",
     "ReportPhishingRequest",
     "ReportPhishingResponse",
-    "PhishingProtectionServiceV1Beta1Client",
 )
