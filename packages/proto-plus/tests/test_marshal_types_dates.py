@@ -221,3 +221,15 @@ def test_duration_to_python_idempotent():
     marshal = BaseMarshal()
     py_value = timedelta(seconds=240)
     assert marshal.to_python(duration_pb2.Duration, py_value) is py_value
+
+
+def test_vanilla_datetime_construction():
+    # 99% of users are going to want to pass in regular datetime objects.
+    # Make sure that this interoperates well with nanosecond precision.
+    class User(proto.Message):
+        birthday = proto.Field(timestamp_pb2.Timestamp, number=1)
+
+    # Our user WAs born yesterday.
+    bday = datetime.now(tz=timezone.utc) + timedelta(days=-1)
+    u = User(birthday=bday)
+    assert u.birthday == bday
