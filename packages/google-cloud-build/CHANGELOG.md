@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [1.1.0](https://www.github.com/googleapis/python-cloudbuild/compare/v1.0.0...v1.1.0) (2020-06-30)
+
+
+### Features
+
+* add time-to-live in a queue for builds ([#19](https://www.github.com/googleapis/python-cloudbuild/issues/19)) ([d30aba7](https://www.github.com/googleapis/python-cloudbuild/commit/d30aba73e7026089d4e3f9b51ce71d262698d510))
+
 ## [1.0.0](https://www.github.com/googleapis/python-cloudbuild/compare/v0.1.0...v1.0.0) (2020-02-28)
 
 
