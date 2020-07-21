@@ -16,6 +16,7 @@
 
 import synthtool as s
 from synthtool import gcp
+from synthtool.languages import python
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
@@ -58,10 +59,17 @@ s.replace("google/cloud/bigquery_v2/proto/*.py", "[“”]", '``')
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=100)
+templated_files = common.py_library(cov_level=100, samples=True)
 
 # BigQuery has a custom multiprocessing note
 s.move(templated_files, excludes=["noxfile.py", "docs/multiprocessing.rst"])
+
+# ----------------------------------------------------------------------------
+# Samples templates
+# ----------------------------------------------------------------------------
+
+python.py_samples()
+
 
 s.replace(
     "docs/conf.py",
