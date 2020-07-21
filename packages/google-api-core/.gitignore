@@ -29,6 +29,7 @@ pip-log.txt
 .nox
 .cache
 .pytest_cache
+pytype_output
 
 
 # Mac

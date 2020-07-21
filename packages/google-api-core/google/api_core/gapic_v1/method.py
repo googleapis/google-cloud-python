@@ -61,6 +61,13 @@ def _determine_timeout(default_timeout, specified_timeout, retry):
     Returns:
         Optional[Timeout]: The timeout to apply to the method or ``None``.
     """
+    # If timeout is specified as a number instead of a Timeout instance,
+    # convert it to a ConstantTimeout.
+    if isinstance(specified_timeout, (int, float)):
+        specified_timeout = timeout.ConstantTimeout(specified_timeout)
+    if isinstance(default_timeout, (int, float)):
+        default_timeout = timeout.ConstantTimeout(default_timeout)
+
     if specified_timeout is DEFAULT:
         specified_timeout = default_timeout
 
@@ -78,12 +85,7 @@ def _determine_timeout(default_timeout, specified_timeout, retry):
         else:
             return default_timeout
 
-    # If timeout is specified as a number instead of a Timeout instance,
-    # convert it to a ConstantTimeout.
-    if isinstance(specified_timeout, (int, float)):
-        return timeout.ConstantTimeout(specified_timeout)
-    else:
-        return specified_timeout
+    return specified_timeout
 
 
 class _GapicCallable(object):

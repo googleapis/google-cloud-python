@@ -32,6 +32,27 @@ def _utcnow_monotonic():
         curr_value += delta
 
 
+def test__determine_timeout():
+    # Check _determine_timeout always returns a Timeout object.
+    timeout_type_timeout = timeout.ConstantTimeout(600.0)
+    returned_timeout = google.api_core.gapic_v1.method._determine_timeout(
+        600.0, 600.0, None
+    )
+    assert isinstance(returned_timeout, timeout.ConstantTimeout)
+    returned_timeout = google.api_core.gapic_v1.method._determine_timeout(
+        600.0, timeout_type_timeout, None
+    )
+    assert isinstance(returned_timeout, timeout.ConstantTimeout)
+    returned_timeout = google.api_core.gapic_v1.method._determine_timeout(
+        timeout_type_timeout, 600.0, None
+    )
+    assert isinstance(returned_timeout, timeout.ConstantTimeout)
+    returned_timeout = google.api_core.gapic_v1.method._determine_timeout(
+        timeout_type_timeout, timeout_type_timeout, None
+    )
+    assert isinstance(returned_timeout, timeout.ConstantTimeout)
+
+
 def test_wrap_method_basic():
     method = mock.Mock(spec=["__call__"], return_value=42)
 
@@ -154,7 +175,8 @@ def test_wrap_method_with_default_retry_and_timeout_using_sentinel(unusued_sleep
 
 @mock.patch("time.sleep")
 def test_wrap_method_with_overriding_retry_and_timeout(unusued_sleep):
-    method = mock.Mock(spec=["__call__"], side_effect=[exceptions.NotFound(None), 42])
+    method = mock.Mock(spec=["__call__"], side_effect=[
+                       exceptions.NotFound(None), 42])
     default_retry = retry.Retry()
     default_timeout = timeout.ConstantTimeout(60)
     wrapped_method = google.api_core.gapic_v1.method.wrap_method(
