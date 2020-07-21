@@ -180,7 +180,7 @@ jobs:
       - run:
           name: Decrypt the PyPI key.
           command: |
-            openssl aes-256-cbc -d \
+            openssl aes-256-ctr -pbkdf2 -d \
               -in .circleci/.pypirc.enc \
               -out ~/.pypirc \
               -k "${PYPIRC_ENCRYPTION_KEY}"
