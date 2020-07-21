@@ -178,6 +178,31 @@ class TestCredentials(object):
         payload = jwt.decode(token, PUBLIC_CERT_BYTES)
         assert payload["sub"] == subject
 
+    def test_apply_with_quota_project_id(self):
+        credentials = service_account.Credentials(
+            SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.TOKEN_URI,
+            quota_project_id="quota-project-123",
+        )
+
+        headers = {}
+        credentials.apply(headers, token="token")
+
+        assert headers["x-goog-user-project"] == "quota-project-123"
+        assert "token" in headers["authorization"]
+
+    def test_apply_with_no_quota_project_id(self):
+        credentials = service_account.Credentials(
+            SIGNER, self.SERVICE_ACCOUNT_EMAIL, self.TOKEN_URI
+        )
+
+        headers = {}
+        credentials.apply(headers, token="token")
+
+        assert "x-goog-user-project" not in headers
+        assert "token" in headers["authorization"]
+
     @mock.patch("google.oauth2._client.jwt_grant", autospec=True)
     def test_refresh_success(self, jwt_grant):
         credentials = self.make_credentials()
