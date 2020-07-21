@@ -545,7 +545,7 @@ class Client(ClientWithProject):
                 (Optional) The last byte in a range to be downloaded.
 
         Examples:
-            Download a blob using using a blob resource.
+            Download a blob using a blob resource.
 
             >>> from google.cloud import storage
             >>> client = storage.Client()
