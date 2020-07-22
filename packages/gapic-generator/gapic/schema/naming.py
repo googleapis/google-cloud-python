@@ -99,7 +99,7 @@ class Naming(abc.ABC):
         # This code may look counter-intuitive (why not use ? to make it
         # optional), but the engine's greediness routine will decide that
         # the version is the name, which is not what we want.
-        version = r'\.(?P<version>v[0-9]+(p[0-9]+)?((alpha|beta)[0-9]+)?)'
+        version = r'\.(?P<version>v[0-9]+(p[0-9]+)?((alpha|beta)[0-9]*)?)'
         if re.search(version, root_package):
             pattern += version
 
