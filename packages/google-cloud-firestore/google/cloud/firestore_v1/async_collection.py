@@ -110,7 +110,7 @@ class AsyncCollectionReference(BaseCollectionReference):
         """
         parent, _ = self._parent_info()
 
-        iterator = self._client._firestore_api.list_documents(
+        iterator = await self._client._firestore_api.list_documents(
             request={
                 "parent": parent,
                 "collection_id": self.id,
