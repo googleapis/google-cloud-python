@@ -28,7 +28,6 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
 
-
 setuptools.setup(
     name="google-cloud-functions",
     version=version,
