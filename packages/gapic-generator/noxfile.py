@@ -176,6 +176,11 @@ def showcase_unit_alternative_templates(session):
     showcase_unit(session, templates=ADS_TEMPLATES, other_opts=("old-naming",))
 
 
+@nox.session(python=["3.8"])
+def showcase_unit_add_iam_methods(session):
+    showcase_unit(session, other_opts=("add-iam-methods",))
+
+
 @nox.session(python="3.8")
 def showcase_mypy(
     session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),

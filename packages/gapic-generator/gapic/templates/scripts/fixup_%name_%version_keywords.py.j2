@@ -32,6 +32,11 @@ class {{ api.naming.module_name }}CallTransformer(cst.CSTTransformer):
     {% for method in all_methods|sort(attribute='name')|unique(attribute='name') -%}
           '{{ method.name|snake_case }}': ({% for field in method.legacy_flattened_fields.values() %}'{{ field.name }}', {% endfor %}),
     {% endfor -%}
+    {% if opts.add_iam_methods %}
+    'get_iam_policy': ('resource', 'options', ),
+    'set_iam_policy': ('resource', 'policy', ),
+    'test_iam_permissions': ('resource', 'permissions', ),
+    {% endif %}
     }
     {% endwith %}
 

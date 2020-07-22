@@ -39,6 +39,7 @@ class Options:
     templates: Tuple[str, ...] = dataclasses.field(default=('DEFAULT',))
     lazy_import: bool = False
     old_naming: bool = False
+    add_iam_methods: bool = False
 
     # Class constants
     PYTHON_GAPIC_PREFIX: str = 'python-gapic-'
@@ -47,6 +48,7 @@ class Options:
         'retry-config',         # takes a path
         'samples',              # output dir
         'lazy-import',          # requires >= 3.7
+        'add-iam-methods',      # microgenerator implementation for `reroute_to_grpc_interface`
     ))
 
     @classmethod
@@ -131,6 +133,7 @@ class Options:
             templates=tuple(path.expanduser(i) for i in templates),
             lazy_import=bool(opts.pop('lazy-import', False)),
             old_naming=bool(opts.pop('old-naming', False)),
+            add_iam_methods=bool(opts.pop('add-iam-methods', False)),
         )
 
         # Note: if we ever need to recursively check directories for sample

@@ -16,6 +16,10 @@ from google.auth import credentials  # type: ignore
 {{ method.input.ident.python_import }}
 {{ method.output.ident.python_import }}
 {% endfor -%}
+{% if opts.add_iam_methods %}
+from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
+from google.iam.v1 import policy_pb2 as policy  # type: ignore
+{% endif %}
 {% endfilter %}
 
 class {{ service.name }}Transport(abc.ABC):
@@ -94,6 +98,38 @@ class {{ service.name }}Transport(abc.ABC):
         raise NotImplementedError()
     {%- endfor %}
 
+
+    {% if opts.add_iam_methods %}
+    @property
+    def set_iam_policy(
+        self,
+    ) -> typing.Callable[
+        [iam_policy.SetIamPolicyRequest],
+        typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> typing.Callable[
+        [iam_policy.GetIamPolicyRequest],
+        typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> typing.Callable[
+        [iam_policy.TestIamPermissionsRequest],
+        typing.Union[
+            iam_policy.TestIamPermissionsResponse,
+            typing.Awaitable[iam_policy.TestIamPermissionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+    {% endif %} 
 
 __all__ = (
     '{{ service.name }}Transport',

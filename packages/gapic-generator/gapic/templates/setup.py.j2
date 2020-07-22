@@ -19,7 +19,7 @@ setuptools.setup(
         'google-api-core[grpc] >= 1.22.0, < 2.0.0dev',
         'libcst >= 0.2.5',
         'proto-plus >= 1.1.0',
-    {%- if api.requires_package(('google', 'iam', 'v1')) %}
+    {%- if api.requires_package(('google', 'iam', 'v1')) or opts.add_iam_methods %}
         'grpc-google-iam-v1',
     {%- endif %}
     ),

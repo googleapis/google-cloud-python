@@ -147,3 +147,8 @@ def test_options_lazy_import():
 def test_options_old_naming():
     opts = options.Options.build('old-naming')
     assert opts.old_naming
+
+
+def test_options_add_iam_methods():
+    opts = options.Options.build('add-iam-methods')
+    assert opts.add_iam_methods
