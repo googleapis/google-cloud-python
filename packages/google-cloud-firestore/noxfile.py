@@ -70,7 +70,7 @@ def lint_setup_py(session):
 
 def default(session, test_dir, ignore_dir=None):
     # Install all test dependencies, then install this package in-place.
-    session.install("asyncmock", "pytest-asyncio", "aiounittest")
+    session.install("pytest-asyncio", "aiounittest")
 
     session.install("mock", "pytest", "pytest-cov")
     session.install("-e", ".")

@@ -18,6 +18,7 @@ import types
 import aiounittest
 
 import mock
+from tests.unit.v1.test__helpers import AsyncMock
 
 
 class TestAsyncClient(aiounittest.AsyncTestCase):
@@ -200,7 +201,8 @@ class TestAsyncClient(aiounittest.AsyncTestCase):
 
         collection_ids = ["users", "projects"]
         client = self._make_default_one()
-        firestore_api = mock.Mock(spec=["list_collection_ids"])
+        firestore_api = AsyncMock()
+        firestore_api.mock_add_spec(spec=["list_collection_ids"])
         client._firestore_api_internal = firestore_api
 
         # TODO(microgen): list_collection_ids isn't a pager.

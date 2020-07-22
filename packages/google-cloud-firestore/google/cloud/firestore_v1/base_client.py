@@ -35,10 +35,6 @@ from google.cloud.firestore_v1 import __version__
 from google.cloud.firestore_v1 import types
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
 from google.cloud.firestore_v1.field_path import render_field_path
-from google.cloud.firestore_v1.services.firestore import client as firestore_client
-from google.cloud.firestore_v1.services.firestore.transports import (
-    grpc as firestore_grpc_transport,
-)
 
 DEFAULT_DATABASE = "(default)"
 """str: The default database used in a :class:`~google.cloud.firestore_v1.client.Client`."""
@@ -117,12 +113,10 @@ class BaseClient(ClientWithProject):
         self._database = database
         self._emulator_host = os.getenv(_FIRESTORE_EMULATOR_HOST)
 
-    @property
-    def _firestore_api(self):
+    def _firestore_api_helper(self, transport, client_class, client_module):
         """Lazy-loading getter GAPIC Firestore API.
         Returns:
-            :class:`~google.cloud.gapic.firestore.v1`.firestore_client.FirestoreClient:
-            <The GAPIC client with the credentials of the current client.
+            The GAPIC client with the credentials of the current client.
         """
         if self._firestore_api_internal is None:
             # Use a custom channel.
@@ -131,30 +125,26 @@ class BaseClient(ClientWithProject):
             if self._emulator_host is not None:
                 # TODO(microgen): this likely needs to be adapted to use insecure_channel
                 # on new generated surface.
-                channel = firestore_grpc_transport.FirestoreGrpcTransport.create_channel(
-                    host=self._emulator_host
-                )
+                channel = transport.create_channel(host=self._emulator_host)
             else:
-                channel = firestore_grpc_transport.FirestoreGrpcTransport.create_channel(
+                channel = transport.create_channel(
                     self._target,
                     credentials=self._credentials,
                     options={"grpc.keepalive_time_ms": 30000}.items(),
                 )
 
-            self._transport = firestore_grpc_transport.FirestoreGrpcTransport(
-                host=self._target, channel=channel
-            )
+            self._transport = transport(host=self._target, channel=channel)
 
-            self._firestore_api_internal = firestore_client.FirestoreClient(
+            self._firestore_api_internal = client_class(
                 transport=self._transport, client_options=self._client_options
             )
-            firestore_client._client_info = self._client_info
+            client_module._client_info = self._client_info
 
         return self._firestore_api_internal
 
-    @property
-    def _target(self):
+    def _target_helper(self, client_class):
         """Return the target (where the API is).
+        Eg. "firestore.googleapis.com"
 
         Returns:
             str: The location of the API.
@@ -164,7 +154,7 @@ class BaseClient(ClientWithProject):
         elif self._client_options and self._client_options.api_endpoint:
             return self._client_options.api_endpoint
         else:
-            return firestore_client.FirestoreClient.DEFAULT_ENDPOINT
+            return client_class.DEFAULT_ENDPOINT
 
     @property
     def _database_string(self):

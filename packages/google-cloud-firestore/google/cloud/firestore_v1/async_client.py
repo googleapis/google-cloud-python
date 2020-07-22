@@ -40,6 +40,12 @@ from google.cloud.firestore_v1.async_batch import AsyncWriteBatch
 from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
 from google.cloud.firestore_v1.async_document import AsyncDocumentReference
 from google.cloud.firestore_v1.async_transaction import AsyncTransaction
+from google.cloud.firestore_v1.services.firestore import (
+    async_client as firestore_client,
+)
+from google.cloud.firestore_v1.services.firestore.transports import (
+    grpc_asyncio as firestore_grpc_transport,
+)
 
 
 class AsyncClient(BaseClient):
@@ -85,6 +91,29 @@ class AsyncClient(BaseClient):
             client_info=client_info,
             client_options=client_options,
         )
+
+    @property
+    def _firestore_api(self):
+        """Lazy-loading getter GAPIC Firestore API.
+        Returns:
+            :class:`~google.cloud.gapic.firestore.v1`.async_firestore_client.FirestoreAsyncClient:
+            The GAPIC client with the credentials of the current client.
+        """
+        return self._firestore_api_helper(
+            firestore_grpc_transport.FirestoreGrpcAsyncIOTransport,
+            firestore_client.FirestoreAsyncClient,
+            firestore_client,
+        )
+
+    @property
+    def _target(self):
+        """Return the target (where the API is).
+        Eg. "firestore.googleapis.com"
+
+        Returns:
+            str: The location of the API.
+        """
+        return self._target_helper(firestore_client.FirestoreAsyncClient)
 
     def collection(self, *collection_path):
         """Get a reference to a collection.
@@ -233,7 +262,7 @@ class AsyncClient(BaseClient):
             Sequence[:class:`~google.cloud.firestore_v1.async_collection.AsyncCollectionReference`]:
                 iterator of subcollections of the current document.
         """
-        iterator = self._firestore_api.list_collection_ids(
+        iterator = await self._firestore_api.list_collection_ids(
             request={"parent": "{}/documents".format(self._database_string)},
             metadata=self._rpc_metadata,
         )
@@ -242,7 +271,7 @@ class AsyncClient(BaseClient):
             for i in iterator.collection_ids:
                 yield self.collection(i)
             if iterator.next_page_token:
-                iterator = self._firestore_api.list_collection_ids(
+                iterator = await self._firestore_api.list_collection_ids(
                     request={
                         "parent": "{}/documents".format(self._database_string),
                         "page_token": iterator.next_page_token,

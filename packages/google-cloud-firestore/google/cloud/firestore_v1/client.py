@@ -40,6 +40,10 @@ from google.cloud.firestore_v1.batch import WriteBatch
 from google.cloud.firestore_v1.collection import CollectionReference
 from google.cloud.firestore_v1.document import DocumentReference
 from google.cloud.firestore_v1.transaction import Transaction
+from google.cloud.firestore_v1.services.firestore import client as firestore_client
+from google.cloud.firestore_v1.services.firestore.transports import (
+    grpc as firestore_grpc_transport,
+)
 
 
 class Client(BaseClient):
@@ -85,6 +89,29 @@ class Client(BaseClient):
             client_info=client_info,
             client_options=client_options,
         )
+
+    @property
+    def _firestore_api(self):
+        """Lazy-loading getter GAPIC Firestore API.
+        Returns:
+            :class:`~google.cloud.gapic.firestore.v1`.firestore_client.FirestoreClient:
+            The GAPIC client with the credentials of the current client.
+        """
+        return self._firestore_api_helper(
+            firestore_grpc_transport.FirestoreGrpcTransport,
+            firestore_client.FirestoreClient,
+            firestore_client,
+        )
+
+    @property
+    def _target(self):
+        """Return the target (where the API is).
+        Eg. "firestore.googleapis.com"
+
+        Returns:
+            str: The location of the API.
+        """
+        return self._target_helper(firestore_client.FirestoreClient)
 
     def collection(self, *collection_path):
         """Get a reference to a collection.
