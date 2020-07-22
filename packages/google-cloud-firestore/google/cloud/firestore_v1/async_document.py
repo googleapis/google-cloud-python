@@ -270,7 +270,7 @@ class AsyncDocumentReference(BaseDocumentReference):
             still return the time that the request was received by the server.
         """
         write_pb = _helpers.pb_for_delete(self._document_path, option)
-        commit_response = self._client._firestore_api.commit(
+        commit_response = await self._client._firestore_api.commit(
             request={
                 "database": self._client._database_string,
                 "writes": [write_pb],
@@ -284,7 +284,7 @@ class AsyncDocumentReference(BaseDocumentReference):
     async def get(self, field_paths=None, transaction=None):
         """Retrieve a snapshot of the current document.
 
-        See :meth:`~google.cloud.firestore_v1.client.Client.field_path` for
+        See :meth:`~google.cloud.firestore_v1.base_client.BaseClient.field_path` for
         more information on **field paths**.
 
         If a ``transaction`` is used and it already has write operations
@@ -296,12 +296,12 @@ class AsyncDocumentReference(BaseDocumentReference):
                 paths (``.``-delimited list of field names) to use as a
                 projection of document fields in the returned results. If
                 no value is provided, all fields will be returned.
-            transaction (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
+            transaction (Optional[:class:`~google.cloud.firestore_v1.async_transaction.AsyncTransaction`]):
                 An existing transaction that this reference
                 will be retrieved in.
 
         Returns:
-            :class:`~google.cloud.firestore_v1.document.DocumentSnapshot`:
+            :class:`~google.cloud.firestore_v1.base_document.DocumentSnapshot`:
                 A snapshot of the current document. If the document does not
                 exist at the time of the snapshot is taken, the snapshot's
                 :attr:`reference`, :attr:`data`, :attr:`update_time`, and
@@ -318,7 +318,7 @@ class AsyncDocumentReference(BaseDocumentReference):
 
         firestore_api = self._client._firestore_api
         try:
-            document_pb = firestore_api.get_document(
+            document_pb = await firestore_api.get_document(
                 request={
                     "name": self._document_path,
                     "mask": mask,
@@ -360,7 +360,7 @@ class AsyncDocumentReference(BaseDocumentReference):
                 document does not exist at the time of `snapshot`, the
                 iterator will be empty
         """
-        iterator = self._client._firestore_api.list_collection_ids(
+        iterator = await self._client._firestore_api.list_collection_ids(
             request={"parent": self._document_path, "page_size": page_size},
             metadata=self._client._rpc_metadata,
         )
@@ -369,7 +369,7 @@ class AsyncDocumentReference(BaseDocumentReference):
             for i in iterator.collection_ids:
                 yield self.collection(i)
             if iterator.next_page_token:
-                iterator = self._client._firestore_api.list_collection_ids(
+                iterator = await self._client._firestore_api.list_collection_ids(
                     request={
                         "parent": self._document_path,
                         "page_size": page_size,

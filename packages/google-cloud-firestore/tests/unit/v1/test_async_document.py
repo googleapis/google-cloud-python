@@ -17,6 +17,7 @@ import collections
 import aiounittest
 
 import mock
+from tests.unit.v1.test__helpers import AsyncMock
 
 
 class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
@@ -286,7 +287,7 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
         from google.cloud.firestore_v1.types import write
 
         # Create a minimal fake GAPIC with a dummy response.
-        firestore_api = mock.Mock(spec=["commit"])
+        firestore_api = AsyncMock(spec=["commit"])
         firestore_api.commit.return_value = self._make_commit_repsonse()
 
         # Attach the fake GAPIC to a real client.
@@ -339,7 +340,7 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
         # Create a minimal fake GAPIC with a dummy response.
         create_time = 123
         update_time = 234
-        firestore_api = mock.Mock(spec=["get_document"])
+        firestore_api = AsyncMock(spec=["get_document"])
         response = mock.create_autospec(document.Document)
         response.fields = {}
         response.create_time = create_time
@@ -427,7 +428,6 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
         from google.api_core.page_iterator import Iterator
         from google.api_core.page_iterator import Page
         from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
-        from google.cloud.firestore_v1.services.firestore.client import FirestoreClient
 
         # TODO(microgen): https://github.com/googleapis/gapic-generator-python/issues/516
         class _Iterator(Iterator):
@@ -443,11 +443,12 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
 
         collection_ids = ["coll-1", "coll-2"]
         iterator = _Iterator(pages=[collection_ids])
-        api_client = mock.create_autospec(FirestoreClient)
-        api_client.list_collection_ids.return_value = iterator
+        firestore_api = AsyncMock()
+        firestore_api.mock_add_spec(spec=["list_collection_ids"])
+        firestore_api.list_collection_ids.return_value = iterator
 
         client = _make_client()
-        client._firestore_api_internal = api_client
+        client._firestore_api_internal = firestore_api
 
         # Actually make a document and call delete().
         document = self._make_one("where", "we-are", client=client)
@@ -463,7 +464,7 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
             self.assertEqual(collection.parent, document)
             self.assertEqual(collection.id, collection_id)
 
-        api_client.list_collection_ids.assert_called_once_with(
+        firestore_api.list_collection_ids.assert_called_once_with(
             request={"parent": document._document_path, "page_size": page_size},
             metadata=client._rpc_metadata,
         )

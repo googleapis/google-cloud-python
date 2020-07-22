@@ -284,7 +284,7 @@ class DocumentReference(BaseDocumentReference):
     def get(self, field_paths=None, transaction=None):
         """Retrieve a snapshot of the current document.
 
-        See :meth:`~google.cloud.firestore_v1.client.Client.field_path` for
+        See :meth:`~google.cloud.firestore_v1.base_client.BaseClient.field_path` for
         more information on **field paths**.
 
         If a ``transaction`` is used and it already has write operations
@@ -301,7 +301,7 @@ class DocumentReference(BaseDocumentReference):
                 will be retrieved in.
 
         Returns:
-            :class:`~google.cloud.firestore_v1.document.DocumentSnapshot`:
+            :class:`~google.cloud.firestore_v1.base_document.DocumentSnapshot`:
                 A snapshot of the current document. If the document does not
                 exist at the time of the snapshot is taken, the snapshot's
                 :attr:`reference`, :attr:`data`, :attr:`update_time`, and
