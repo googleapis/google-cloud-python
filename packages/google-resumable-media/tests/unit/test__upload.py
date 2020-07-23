@@ -507,9 +507,10 @@ class TestResumableUpload(object):
 
         error = exc_info.value
         assert error.response is response
-        assert len(error.args) == 4
+        assert len(error.args) == 5
         assert error.args[1] == 403
         assert error.args[3] == 200
+        assert error.args[4] == 201
 
     def test__process_initiate_response(self):
         upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)

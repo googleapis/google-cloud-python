@@ -501,7 +501,7 @@ class ResumableUpload(UploadBase):
         """
         _helpers.require_status_code(
             response,
-            (http_client.OK,),
+            (http_client.OK, http_client.CREATED),
             self._get_status_code,
             callback=self._make_invalid,
         )
