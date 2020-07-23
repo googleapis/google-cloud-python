@@ -17,16 +17,7 @@ import types
 import aiounittest
 
 import mock
-from tests.unit.v1.test__helpers import AsyncMock
-
-
-class MockAsyncIter:
-    def __init__(self, count):
-        self.count = count
-
-    async def __aiter__(self, **_):
-        for i in range(self.count):
-            yield i
+from tests.unit.v1.test__helpers import AsyncMock, AsyncIter
 
 
 class TestAsyncCollectionReference(aiounittest.AsyncTestCase):
@@ -258,7 +249,7 @@ class TestAsyncCollectionReference(aiounittest.AsyncTestCase):
     async def test_get(self, query_class):
         import warnings
 
-        query_class.return_value.stream.return_value = MockAsyncIter(3)
+        query_class.return_value.stream.return_value = AsyncIter(range(3))
 
         collection = self._make_one("collection")
         with warnings.catch_warnings(record=True) as warned:
@@ -280,7 +271,7 @@ class TestAsyncCollectionReference(aiounittest.AsyncTestCase):
     async def test_get_with_transaction(self, query_class):
         import warnings
 
-        query_class.return_value.stream.return_value = MockAsyncIter(3)
+        query_class.return_value.stream.return_value = AsyncIter(range(3))
 
         collection = self._make_one("collection")
         transaction = mock.sentinel.txn
@@ -301,7 +292,7 @@ class TestAsyncCollectionReference(aiounittest.AsyncTestCase):
     @mock.patch("google.cloud.firestore_v1.async_query.AsyncQuery", autospec=True)
     @pytest.mark.asyncio
     async def test_stream(self, query_class):
-        query_class.return_value.stream.return_value = MockAsyncIter(3)
+        query_class.return_value.stream.return_value = AsyncIter(range(3))
 
         collection = self._make_one("collection")
         stream_response = collection.stream()
@@ -316,7 +307,7 @@ class TestAsyncCollectionReference(aiounittest.AsyncTestCase):
     @mock.patch("google.cloud.firestore_v1.async_query.AsyncQuery", autospec=True)
     @pytest.mark.asyncio
     async def test_stream_with_transaction(self, query_class):
-        query_class.return_value.stream.return_value = MockAsyncIter(3)
+        query_class.return_value.stream.return_value = AsyncIter(range(3))
 
         collection = self._make_one("collection")
         transaction = mock.sentinel.txn

@@ -252,7 +252,7 @@ class AsyncClient(BaseClient):
             metadata=self._rpc_metadata,
         )
 
-        for get_doc_response in response_iterator:
+        async for get_doc_response in response_iterator:
             yield _parse_batch_get(get_doc_response, reference_map, self)
 
     async def collections(self):

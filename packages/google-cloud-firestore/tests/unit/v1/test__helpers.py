@@ -25,6 +25,15 @@ class AsyncMock(mock.MagicMock):
         return super(AsyncMock, self).__call__(*args, **kwargs)
 
 
+class AsyncIter:
+    def __init__(self, items):
+        self.items = items
+
+    async def __aiter__(self, **_):
+        for i in self.items:
+            yield i
+
+
 class TestGeoPoint(unittest.TestCase):
     @staticmethod
     def _get_target_class():
