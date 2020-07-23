@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-websecurityscanner/compare/v0.4.0...v1.0.0) (2020-07-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate to microgenerator (#21)
+
+### Features
+
+* migrate to microgenerator ([#21](https://www.github.com/googleapis/python-websecurityscanner/issues/21)) ([aaa956b](https://www.github.com/googleapis/python-websecurityscanner/commit/aaa956b61a963a51a74695a6729e1da7a3dfe665))
+
 ## [0.4.0](https://www.github.com/googleapis/python-websecurityscanner/compare/v0.3.0...v0.4.0) (2020-01-30)
 
 
