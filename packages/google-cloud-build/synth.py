@@ -29,19 +29,38 @@ library = gapic.py_library(
     version=version,
     bazel_target=f"//google/devtools/cloudbuild/{version}:devtools-cloudbuild-{version}-py",
     include_protos=True,
-    proto_output_path=f"google/cloud/devtools/cloudbuild_{version}/proto",
+    proto_output_path=f"google/devtools/cloudbuild_{version}/proto",
 )
 
+s.move(library / "google/devtools/cloudbuild", "google/cloud/devtools/cloudbuild")
 s.move(
-    library,
-    excludes=[
-        'docs/index.rst',
-        'nox*.py',
-        'setup.py',
-        'setup.cfg',
-        'README.rst',
-        'google/cloud/devtools/__init__.py',  # declare this as a namespace package
-    ],
+    library / f"google/devtools/cloudbuild_{version}",
+    f"google/cloud/devtools/cloudbuild_{version}"
+)
+s.move(library / "tests")
+s.move(library / "scripts")
+s.move(library / "docs", excludes=[library / "docs/index.rst"])
+
+# Fix namespace
+s.replace(
+    f"google/cloud/**/*.py",
+    f"google.devtools.cloudbuild_{version}",
+    f"google.cloud.devtools.cloudbuild_{version}",
+)
+s.replace(
+    f"tests/unit/gapic/**/*.py",
+    f"google.devtools.cloudbuild_{version}",
+    f"google.cloud.devtools.cloudbuild_{version}",
+)
+s.replace(
+    f"google/cloud/**/*.py",
+    f"google.devtools.cloudbuild_{version}",
+    f"google.cloud.devtools.cloudbuild_{version}",
+)
+s.replace(
+    f"docs/**/*.rst",
+    f"google.devtools.cloudbuild_{version}",
+    f"google.cloud.devtools.cloudbuild_{version}",
 )
 
 # Rename package to `google-cloud-build`
@@ -54,13 +73,21 @@ s.replace(
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-
-# coverage level is low because of missing coverage for __init__.py files
-templated_files = common.py_library(unit_cov_level=65, cov_level=65)
-s.move(templated_files)
+templated_files = common.py_library(
+    samples=False,  # set to True only if there are samples
+    microgenerator=True,
+    cov_level=99,
+)
+s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition
 s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
+
+s.replace(
+    "noxfile.py",
+    "google.cloud.cloudbuild",
+    "google.cloud.devtools.cloudbuild",
+)
 
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

@@ -28,8 +28,9 @@ version = "1.1.0"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
-    'enum34; python_version < "3.4"',
+    "google-api-core[grpc] >= 1.22.0, < 2.0.0dev",
+    "proto-plus >= 0.4.0",
+    "libcst >= 0.2.5",
 ]
 
 package_root = os.path.abspath(os.path.dirname(__file__))
@@ -39,7 +40,9 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
 packages = [
-    package for package in setuptools.find_packages() if package.startswith("google")
+    package
+    for package in setuptools.PEP420PackageFinder.find()
+    if package.startswith("google")
 ]
 
 namespaces = ["google"]
@@ -63,18 +66,18 @@ setuptools.setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Operating System :: OS Independent",
         "Topic :: Internet",
     ],
     platforms="Posix; MacOS X; Windows",
     packages=packages,
+    python_requires=">=3.6",
     namespace_packages=namespaces,
+    scripts=["scripts/fixup_cloudbuild_v1_keywords.py"],
     install_requires=dependencies,
     include_package_data=True,
     zip_safe=False,

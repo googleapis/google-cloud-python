@@ -1,45 +1,109 @@
 # -*- coding: utf-8 -*-
-#
+
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-
-from __future__ import absolute_import
-import sys
-import warnings
-
-from google.cloud.devtools.cloudbuild_v1 import types
-from google.cloud.devtools.cloudbuild_v1.gapic import cloud_build_client
-from google.cloud.devtools.cloudbuild_v1.gapic import enums
-
-
-if sys.version_info[:2] == (2, 7):
-    message = (
-        "A future version of this library will drop support for Python 2.7. "
-        "More details about Python 2 support for Google Cloud Client Libraries "
-        "can be found at https://cloud.google.com/python/docs/python2-sunset/"
-    )
-    warnings.warn(message, DeprecationWarning)
-
-
-class CloudBuildClient(cloud_build_client.CloudBuildClient):
-    __doc__ = cloud_build_client.CloudBuildClient.__doc__
-    enums = enums
+from .services.cloud_build import CloudBuildClient
+from .types.cloudbuild import ArtifactResult
+from .types.cloudbuild import Artifacts
+from .types.cloudbuild import Build
+from .types.cloudbuild import BuildOperationMetadata
+from .types.cloudbuild import BuildOptions
+from .types.cloudbuild import BuildStep
+from .types.cloudbuild import BuildTrigger
+from .types.cloudbuild import BuiltImage
+from .types.cloudbuild import CancelBuildRequest
+from .types.cloudbuild import CreateBuildRequest
+from .types.cloudbuild import CreateBuildTriggerRequest
+from .types.cloudbuild import CreateWorkerPoolRequest
+from .types.cloudbuild import DeleteBuildTriggerRequest
+from .types.cloudbuild import DeleteWorkerPoolRequest
+from .types.cloudbuild import FileHashes
+from .types.cloudbuild import GetBuildRequest
+from .types.cloudbuild import GetBuildTriggerRequest
+from .types.cloudbuild import GetWorkerPoolRequest
+from .types.cloudbuild import GitHubEventsConfig
+from .types.cloudbuild import Hash
+from .types.cloudbuild import ListBuildTriggersRequest
+from .types.cloudbuild import ListBuildTriggersResponse
+from .types.cloudbuild import ListBuildsRequest
+from .types.cloudbuild import ListBuildsResponse
+from .types.cloudbuild import ListWorkerPoolsRequest
+from .types.cloudbuild import ListWorkerPoolsResponse
+from .types.cloudbuild import Network
+from .types.cloudbuild import PullRequestFilter
+from .types.cloudbuild import PushFilter
+from .types.cloudbuild import RepoSource
+from .types.cloudbuild import Results
+from .types.cloudbuild import RetryBuildRequest
+from .types.cloudbuild import RunBuildTriggerRequest
+from .types.cloudbuild import Secret
+from .types.cloudbuild import Source
+from .types.cloudbuild import SourceProvenance
+from .types.cloudbuild import StorageSource
+from .types.cloudbuild import TimeSpan
+from .types.cloudbuild import UpdateBuildTriggerRequest
+from .types.cloudbuild import UpdateWorkerPoolRequest
+from .types.cloudbuild import Volume
+from .types.cloudbuild import WorkerConfig
+from .types.cloudbuild import WorkerPool
 
 
 __all__ = (
-    "enums",
-    "types",
+    "ArtifactResult",
+    "Artifacts",
+    "Build",
+    "BuildOperationMetadata",
+    "BuildOptions",
+    "BuildStep",
+    "BuildTrigger",
+    "BuiltImage",
+    "CancelBuildRequest",
+    "CreateBuildRequest",
+    "CreateBuildTriggerRequest",
+    "CreateWorkerPoolRequest",
+    "DeleteBuildTriggerRequest",
+    "DeleteWorkerPoolRequest",
+    "FileHashes",
+    "GetBuildRequest",
+    "GetBuildTriggerRequest",
+    "GetWorkerPoolRequest",
+    "GitHubEventsConfig",
+    "Hash",
+    "ListBuildTriggersRequest",
+    "ListBuildTriggersResponse",
+    "ListBuildsRequest",
+    "ListBuildsResponse",
+    "ListWorkerPoolsRequest",
+    "ListWorkerPoolsResponse",
+    "Network",
+    "PullRequestFilter",
+    "PushFilter",
+    "RepoSource",
+    "Results",
+    "RetryBuildRequest",
+    "RunBuildTriggerRequest",
+    "Secret",
+    "Source",
+    "SourceProvenance",
+    "StorageSource",
+    "TimeSpan",
+    "UpdateBuildTriggerRequest",
+    "UpdateWorkerPoolRequest",
+    "Volume",
+    "WorkerConfig",
+    "WorkerPool",
     "CloudBuildClient",
 )

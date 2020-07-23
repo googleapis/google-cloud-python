@@ -1,7 +1,7 @@
 Python Client for Cloud Build API (`GA`_)
 ============================================
 
-|ga| |pypi| |versions| 
+|ga| |pypi| |versions|
 
 `Cloud Build API`_: Creates and manages builds on Google Cloud Platform.
 
@@ -48,6 +48,15 @@ dependencies.
 
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Python >= 3.6
+
+Deprecated Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python == 2.7.
+
+The last version of this library compatible with Python 2.7 is google-cloud-build==1.1.0.
 
 Mac/Linux
 ^^^^^^^^^
