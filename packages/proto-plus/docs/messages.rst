@@ -50,9 +50,11 @@ A few things to note:
 
 * This library only handles proto3.
 * The ``number`` is really a field ID. It is *not* a value of any kind.
-* All fields are optional (as is always the case in proto3). As a general
-  rule, there is no distinction between setting the type's falsy value and
-  not setting it at all (although there are exceptions to this in some cases).
+* All fields are optional (as is always the case in proto3).
+  The only general way to determine whether a field was explicitly set to its
+  falsy value or not set all is to mark it ``optional``.
+* Because all fields are optional, it is the responsibility of application logic
+  to determine whether a necessary field has been set.
 
 .. _messages: https://developers.google.com/protocol-buffers/docs/proto3#simple
 
@@ -153,3 +155,13 @@ returns an instance of the message:
 .. code-block:: python
 
     song = Song.deserialize(serialized_song)
+
+JSON serialization and deserialization are also available from message *classes*
+via the :meth:`~.Message.to_json` and :meth:`~.Message.from_json` methods.
+
+.. code-block:: python
+
+    json = Song.to_json(song)
+
+    new_song = Song.from_json(json)
+

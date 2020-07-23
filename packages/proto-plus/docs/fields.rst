@@ -120,3 +120,51 @@ a string (which should match for all fields within the oneof):
     implementation of protocol buffers will reject the message. They need not
     have consecutive field numbers, but they must be declared in consecutive
     order.
+
+
+Optional fields
+---------------
+
+All fields in protocol buffers are optional, but it is often necessary to
+check for field presence. Sometimes legitimate values for fields can be falsy,
+so checking for truthiness is not sufficient. Proto3 v3.12.0 added the
+``optional`` keyword to field descriptions, which enables a mechanism for
+checking field presence.
+
+In proto plus, fields can be marked as optional by passing ``optional=True``
+in the constructor. The message *class* then gains a field of the same name
+that can be used to detect whether the field is present in message *instances*.
+
+.. code-block:: python
+
+   class Song(proto.Message):
+       composer = proto.Field(Composer, number=1)
+       title = proto.Field(proto.STRING, number=2)
+       lyrics = proto.Field(proto.STRING, number=3)
+       year = proto.Field(proto.INT32, number=4)
+       performer = proto.Field(proto.STRING, number=5, optional=True)
+
+    >>> s = Song(
+    ...     composer={'given_name': 'Johann', 'family_name': 'Pachelbel'},
+    ...     title='Canon in D',
+    ...     year=1680,
+    ...     genre=Genre.CLASSICAL,
+    ... )
+    >>> Song.performer in s
+    False
+    >>> s.performer = 'Brahms'
+    >>> Song.performer in s
+    True
+    >>> del s.performer
+    >>> Song.performer in s
+    False
+    >>> s.performer = ""    # The mysterious, unnamed composer
+    >>> Song.performer in s
+    True
+
+
+Under the hood, fields marked as optional are implemented via a synthetic
+one-variant ``oneof``. See the protocolbuffers documentation_ for more
+information.
+
+.. _documentation: https://github.com/protocolbuffers/protobuf/blob/v3.12.0/docs/field_presence.md
