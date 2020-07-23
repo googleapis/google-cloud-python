@@ -1,5 +1,17 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-containeranalysis/compare/v1.0.1...v1.0.2) (2020-07-16)
+
+
+### Bug Fixes
+
+* update retry config ([#23](https://www.github.com/googleapis/python-containeranalysis/issues/23)) ([ddf9585](https://www.github.com/googleapis/python-containeranalysis/commit/ddf95852778c0e60961516ecd77b793e6af3295b))
+
+
+### Documentation
+
+* add multiprocessing note ([#21](https://www.github.com/googleapis/python-containeranalysis/issues/21)) ([be29088](https://www.github.com/googleapis/python-containeranalysis/commit/be290885cef76ffdd27afb44cd858c6a89d4f280))
+
 ### [1.0.1](https://www.github.com/googleapis/python-containeranalysis/compare/v1.0.0...v1.0.1) (2020-06-16)
 
 
