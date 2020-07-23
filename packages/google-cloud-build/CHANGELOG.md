@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-cloudbuild/compare/v1.1.0...v2.0.0) (2020-07-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate to use microgenerator (#23)
+
+### Features
+
+* migrate to use microgenerator ([#23](https://www.github.com/googleapis/python-cloudbuild/issues/23)) ([f52a799](https://www.github.com/googleapis/python-cloudbuild/commit/f52a79930e621c46dea574917549f9ed37771149))
+
 ## [1.1.0](https://www.github.com/googleapis/python-cloudbuild/compare/v1.0.0...v1.1.0) (2020-06-30)
 
 
