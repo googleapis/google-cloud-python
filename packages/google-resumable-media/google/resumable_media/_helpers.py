@@ -14,9 +14,12 @@
 
 """Shared utilities used by both downloads and uploads."""
 
-
+import base64
+import hashlib
+import logging
 import random
 import time
+import warnings
 
 from six.moves import http_client
 
@@ -32,6 +35,18 @@ RETRYABLE = (
     http_client.SERVICE_UNAVAILABLE,
     http_client.GATEWAY_TIMEOUT,
 )
+
+_SLOW_CRC32C_WARNING = (
+    "Currently using crcmod in pure python form. This is a slow "
+    "implementation. Python 3 has a faster implementation, `google-crc32c`, "
+    "which will be used if it is installed."
+)
+_HASH_HEADER = u"x-goog-hash"
+_MISSING_CHECKSUM = u"""\
+No {checksum_type} checksum was returned from the service while downloading {}
+(which happens for composite objects), so client-side content integrity
+checking is not being performed."""
+_LOGGER = logging.getLogger(__name__)
 
 
 def do_nothing():
@@ -164,3 +179,183 @@ def wait_and_retry(func, get_status_code, retry_strategy):
             return response
 
     return response
+
+
+def _get_crc32c_object():
+    """ Get crc32c object
+    Attempt to use the Google-CRC32c package. If it isn't available, try
+    to use CRCMod. CRCMod might be using a 'slow' varietal. If so, warn...
+    """
+    try:
+        import crc32c
+
+        crc_obj = crc32c.Checksum()
+    except ImportError:
+        try:
+            import crcmod
+
+            crc_obj = crcmod.predefined.Crc("crc-32c")
+            _is_fast_crcmod()
+
+        except ImportError:
+            raise ImportError("Failed to import either `google-crc32c` or `crcmod`")
+
+    return crc_obj
+
+
+def _is_fast_crcmod():
+    # Determine if this is using the slow form of crcmod.
+    nested_crcmod = __import__(
+        "crcmod.crcmod", globals(), locals(), ["_usingExtension"], 0,
+    )
+    fast_crc = getattr(nested_crcmod, "_usingExtension", False)
+    if not fast_crc:
+        warnings.warn(_SLOW_CRC32C_WARNING, RuntimeWarning, stacklevel=2)
+    return fast_crc
+
+
+def _get_metadata_key(checksum_type):
+    if checksum_type == "md5":
+        return "md5Hash"
+    else:
+        return checksum_type
+
+
+def prepare_checksum_digest(digest_bytestring):
+    """Convert a checksum object into a digest encoded for an HTTP header.
+
+    Args:
+        bytes: A checksum digest bytestring.
+
+    Returns:
+        str: A base64 string representation of the input.
+    """
+    encoded_digest = base64.b64encode(digest_bytestring)
+    # NOTE: ``b64encode`` returns ``bytes``, but HTTP headers expect ``str``.
+    return encoded_digest.decode(u"utf-8")
+
+
+def _get_expected_checksum(response, get_headers, media_url, checksum_type):
+    """Get the expected checksum and checksum object for the download response.
+
+    Args:
+        response (~requests.Response): The HTTP response object.
+        get_headers (callable: response->dict): returns response headers.
+        media_url (str): The URL containing the media to be downloaded.
+        checksum_type Optional(str): The checksum type to read from the headers,
+            exactly as it will appear in the headers (case-sensitive). Must be
+            "md5", "crc32c" or None.
+
+    Returns:
+        Tuple (Optional[str], object): The expected checksum of the response,
+        if it can be detected from the ``X-Goog-Hash`` header, and the
+        appropriate checksum object for the expected checksum.
+    """
+    if checksum_type not in ["md5", "crc32c", None]:
+        raise ValueError("checksum must be ``'md5'``, ``'crc32c'`` or ``None``")
+    elif checksum_type in ["md5", "crc32c"]:
+        headers = get_headers(response)
+        expected_checksum = _parse_checksum_header(
+            headers.get(_HASH_HEADER), response, checksum_label=checksum_type
+        )
+
+        if expected_checksum is None:
+            msg = _MISSING_CHECKSUM.format(
+                media_url, checksum_type=checksum_type.upper()
+            )
+            _LOGGER.info(msg)
+            checksum_object = _DoNothingHash()
+        else:
+            if checksum_type == "md5":
+                checksum_object = hashlib.md5()
+            else:
+                checksum_object = _get_crc32c_object()
+    else:
+        expected_checksum = None
+        checksum_object = _DoNothingHash()
+
+    return (expected_checksum, checksum_object)
+
+
+def _parse_checksum_header(header_value, response, checksum_label):
+    """Parses the checksum header from an ``X-Goog-Hash`` value.
+
+    .. _header reference: https://cloud.google.com/storage/docs/\
+                          xml-api/reference-headers#xgooghash
+
+    Expects ``header_value`` (if not :data:`None`) to be in one of the three
+    following formats:
+
+    * ``crc32c=n03x6A==``
+    * ``md5=Ojk9c3dhfxgoKVVHYwFbHQ==``
+    * ``crc32c=n03x6A==,md5=Ojk9c3dhfxgoKVVHYwFbHQ==``
+
+    See the `header reference`_ for more information.
+
+    Args:
+        header_value (Optional[str]): The ``X-Goog-Hash`` header from
+            a download response.
+        response (~requests.Response): The HTTP response object.
+        checksum_label (str): The label of the header value to read, as in the
+            examples above. Typically "md5" or "crc32c"
+
+    Returns:
+        Optional[str]: The expected checksum of the response, if it
+        can be detected from the ``X-Goog-Hash`` header; otherwise, None.
+
+    Raises:
+        ~google.resumable_media.common.InvalidResponse: If there are
+            multiple checksums of the requested type in ``header_value``.
+    """
+    if header_value is None:
+        return None
+
+    matches = []
+    for checksum in header_value.split(u","):
+        name, value = checksum.split(u"=", 1)
+        if name == checksum_label:
+            matches.append(value)
+
+    if len(matches) == 0:
+        return None
+    elif len(matches) == 1:
+        return matches[0]
+    else:
+        raise common.InvalidResponse(
+            response,
+            u"X-Goog-Hash header had multiple ``{}`` values.".format(checksum_label),
+            header_value,
+            matches,
+        )
+
+
+def _get_checksum_object(checksum_type):
+    """Respond with a checksum object for a supported type, if not None.
+
+    Raises ValueError if checksum_type is unsupported.
+    """
+    if checksum_type == "md5":
+        return hashlib.md5()
+    elif checksum_type == "crc32c":
+        return _get_crc32c_object()
+    elif checksum_type is None:
+        return None
+    else:
+        raise ValueError("checksum must be ``'md5'``, ``'crc32c'`` or ``None``")
+
+
+class _DoNothingHash(object):
+    """Do-nothing hash object.
+
+    Intended as a stand-in for ``hashlib.md5`` or a crc32c checksum
+    implementation in cases where it isn't necessary to compute the hash.
+    """
+
+    def update(self, unused_chunk):
+        """Do-nothing ``update`` method.
+
+        Intended to match the interface of ``hashlib.md5`` and other checksums.
+
+        Args:
+            unused_chunk (bytes): A chunk of data.
+        """

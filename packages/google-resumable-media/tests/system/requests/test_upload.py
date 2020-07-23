@@ -18,12 +18,16 @@ import io
 import os
 
 import pytest
+import mock
 from six.moves import http_client
 from six.moves import urllib_parse
 
+from google.resumable_media import common
 from google import resumable_media
 import google.resumable_media.requests as resumable_requests
+from google.resumable_media import _helpers
 from tests.system import utils
+from google.resumable_media import _upload
 
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -226,7 +230,8 @@ def test_simple_upload_with_headers(authorized_transport, bucket, cleanup):
     check_tombstoned(upload, authorized_transport, data, BYTES_CONTENT_TYPE)
 
 
-def test_multipart_upload(authorized_transport, bucket, cleanup):
+@pytest.mark.parametrize("checksum", ["md5", "crc32c", None])
+def test_multipart_upload(authorized_transport, bucket, cleanup, checksum):
     with open(ICO_FILE, u"rb") as file_obj:
         actual_contents = file_obj.read()
 
@@ -237,7 +242,7 @@ def test_multipart_upload(authorized_transport, bucket, cleanup):
 
     # Create the actual upload object.
     upload_url = utils.MULTIPART_UPLOAD
-    upload = resumable_requests.MultipartUpload(upload_url)
+    upload = resumable_requests.MultipartUpload(upload_url, checksum=checksum)
     # Transmit the resource.
     metadata = {u"name": blob_name, u"metadata": {u"color": u"yellow"}}
     response = upload.transmit(
@@ -251,6 +256,43 @@ def test_multipart_upload(authorized_transport, bucket, cleanup):
     )
     # Download the content to make sure it's "working as expected".
     check_content(blob_name, actual_contents, authorized_transport)
+    # Make sure the upload is tombstoned.
+    check_tombstoned(
+        upload, authorized_transport, actual_contents, metadata, ICO_CONTENT_TYPE
+    )
+
+
+@pytest.mark.parametrize("checksum", [u"md5", u"crc32c"])
+def test_multipart_upload_with_bad_checksum(authorized_transport, checksum, bucket):
+    with open(ICO_FILE, u"rb") as file_obj:
+        actual_contents = file_obj.read()
+
+    blob_name = os.path.basename(ICO_FILE)
+    check_does_not_exist(authorized_transport, blob_name)
+
+    # Create the actual upload object.
+    upload_url = utils.MULTIPART_UPLOAD
+    upload = resumable_requests.MultipartUpload(upload_url, checksum=checksum)
+    # Transmit the resource.
+    metadata = {u"name": blob_name, u"metadata": {u"color": u"yellow"}}
+    fake_checksum_object = _helpers._get_checksum_object(checksum)
+    fake_checksum_object.update(b"bad data")
+    fake_prepared_checksum_digest = _helpers.prepare_checksum_digest(
+        fake_checksum_object.digest()
+    )
+    with mock.patch.object(
+        _helpers, "prepare_checksum_digest", return_value=fake_prepared_checksum_digest
+    ):
+        with pytest.raises(common.InvalidResponse) as exc_info:
+            response = upload.transmit(
+                authorized_transport, actual_contents, metadata, ICO_CONTENT_TYPE
+            )
+    response = exc_info.value.response
+    message = response.json()["error"]["message"]
+    # Attempt to verify that this is a checksum mismatch error.
+    assert checksum.upper() in message
+    assert fake_prepared_checksum_digest in message
+
     # Make sure the upload is tombstoned.
     check_tombstoned(
         upload, authorized_transport, actual_contents, metadata, ICO_CONTENT_TYPE
@@ -280,7 +322,9 @@ def test_multipart_upload_with_headers(authorized_transport, bucket, cleanup):
     check_tombstoned(upload, authorized_transport, data, metadata, BYTES_CONTENT_TYPE)
 
 
-def _resumable_upload_helper(authorized_transport, stream, cleanup, headers=None):
+def _resumable_upload_helper(
+    authorized_transport, stream, cleanup, headers=None, checksum=None
+):
     blob_name = os.path.basename(stream.name)
     # Make sure to clean up the uploaded blob when we are done.
     cleanup(blob_name, authorized_transport)
@@ -288,7 +332,7 @@ def _resumable_upload_helper(authorized_transport, stream, cleanup, headers=None
     # Create the actual upload object.
     chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
     upload = resumable_requests.ResumableUpload(
-        utils.RESUMABLE_UPLOAD, chunk_size, headers=headers
+        utils.RESUMABLE_UPLOAD, chunk_size, headers=headers, checksum=checksum
     )
     # Initiate the upload.
     metadata = {u"name": blob_name, u"metadata": {u"direction": u"north"}}
@@ -310,8 +354,11 @@ def _resumable_upload_helper(authorized_transport, stream, cleanup, headers=None
     check_tombstoned(upload, authorized_transport)
 
 
-def test_resumable_upload(authorized_transport, img_stream, bucket, cleanup):
-    _resumable_upload_helper(authorized_transport, img_stream, cleanup)
+@pytest.mark.parametrize("checksum", [u"md5", u"crc32c", None])
+def test_resumable_upload(authorized_transport, img_stream, bucket, cleanup, checksum):
+    _resumable_upload_helper(
+        authorized_transport, img_stream, cleanup, checksum=checksum
+    )
 
 
 def test_resumable_upload_with_headers(
@@ -319,6 +366,29 @@ def test_resumable_upload_with_headers(
 ):
     headers = utils.get_encryption_headers()
     _resumable_upload_helper(authorized_transport, img_stream, cleanup, headers=headers)
+
+
+@pytest.mark.parametrize("checksum", [u"md5", u"crc32c"])
+def test_resumable_upload_with_bad_checksum(
+    authorized_transport, img_stream, bucket, cleanup, checksum
+):
+    fake_checksum_object = _helpers._get_checksum_object(checksum)
+    fake_checksum_object.update(b"bad data")
+    fake_prepared_checksum_digest = _helpers.prepare_checksum_digest(
+        fake_checksum_object.digest()
+    )
+    with mock.patch.object(
+        _helpers, "prepare_checksum_digest", return_value=fake_prepared_checksum_digest
+    ):
+        with pytest.raises(common.DataCorruption) as exc_info:
+            _resumable_upload_helper(
+                authorized_transport, img_stream, cleanup, checksum=checksum
+            )
+    expected_checksums = {"md5": "1bsd83IYNug8hd+V1ING3Q==", "crc32c": "YQGPxA=="}
+    expected_message = _upload._UPLOAD_CHECKSUM_MISMATCH_MESSAGE.format(
+        checksum.upper(), fake_prepared_checksum_digest, expected_checksums[checksum]
+    )
+    assert exc_info.value.args[0] == expected_message
 
 
 def test_resumable_upload_bad_chunk_size(authorized_transport, img_stream):
@@ -363,7 +433,9 @@ def sabotage_and_recover(upload, stream, transport, chunk_size):
     assert stream.tell() == chunk_size
 
 
-def _resumable_upload_recover_helper(authorized_transport, cleanup, headers=None):
+def _resumable_upload_recover_helper(
+    authorized_transport, cleanup, headers=None, checksum=None
+):
     blob_name = u"some-bytes.bin"
     chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
     data = b"123" * chunk_size  # 3 chunks worth.
@@ -372,7 +444,7 @@ def _resumable_upload_recover_helper(authorized_transport, cleanup, headers=None
     check_does_not_exist(authorized_transport, blob_name)
     # Create the actual upload object.
     upload = resumable_requests.ResumableUpload(
-        utils.RESUMABLE_UPLOAD, chunk_size, headers=headers
+        utils.RESUMABLE_UPLOAD, chunk_size, headers=headers, checksum=checksum
     )
     # Initiate the upload.
     metadata = {u"name": blob_name}
@@ -404,8 +476,9 @@ def _resumable_upload_recover_helper(authorized_transport, cleanup, headers=None
     check_tombstoned(upload, authorized_transport)
 
 
-def test_resumable_upload_recover(authorized_transport, bucket, cleanup):
-    _resumable_upload_recover_helper(authorized_transport, cleanup)
+@pytest.mark.parametrize("checksum", [u"md5", u"crc32c", None])
+def test_resumable_upload_recover(authorized_transport, bucket, cleanup, checksum):
+    _resumable_upload_recover_helper(authorized_transport, cleanup, checksum=checksum)
 
 
 def test_resumable_upload_recover_with_headers(authorized_transport, bucket, cleanup):
@@ -441,7 +514,10 @@ class TestResumableUploadUnknownSize(object):
         self._check_range_sent(response, start_byte, end_byte, u"*")
         self._check_range_received(response, end_byte + 1)
 
-    def test_smaller_than_chunk_size(self, authorized_transport, bucket, cleanup):
+    @pytest.mark.parametrize("checksum", [u"md5", u"crc32c", None])
+    def test_smaller_than_chunk_size(
+        self, authorized_transport, bucket, cleanup, checksum
+    ):
         blob_name = os.path.basename(ICO_FILE)
         chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
         # Make sure to clean up the uploaded blob when we are done.
@@ -451,7 +527,9 @@ class TestResumableUploadUnknownSize(object):
         total_bytes = os.path.getsize(ICO_FILE)
         assert total_bytes < chunk_size
         # Create the actual upload object.
-        upload = resumable_requests.ResumableUpload(utils.RESUMABLE_UPLOAD, chunk_size)
+        upload = resumable_requests.ResumableUpload(
+            utils.RESUMABLE_UPLOAD, chunk_size, checksum=checksum
+        )
         # Initiate the upload.
         metadata = {u"name": blob_name}
         with open(ICO_FILE, u"rb") as stream:
@@ -477,7 +555,8 @@ class TestResumableUploadUnknownSize(object):
             # Make sure the upload is tombstoned.
             check_tombstoned(upload, authorized_transport)
 
-    def test_finish_at_chunk(self, authorized_transport, bucket, cleanup):
+    @pytest.mark.parametrize("checksum", [u"md5", u"crc32c", None])
+    def test_finish_at_chunk(self, authorized_transport, bucket, cleanup, checksum):
         blob_name = u"some-clean-stuff.bin"
         chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
         # Make sure to clean up the uploaded blob when we are done.
@@ -488,7 +567,9 @@ class TestResumableUploadUnknownSize(object):
         total_bytes = len(data)
         stream = io.BytesIO(data)
         # Create the actual upload object.
-        upload = resumable_requests.ResumableUpload(utils.RESUMABLE_UPLOAD, chunk_size)
+        upload = resumable_requests.ResumableUpload(
+            utils.RESUMABLE_UPLOAD, chunk_size, checksum=checksum
+        )
         # Initiate the upload.
         metadata = {u"name": blob_name}
         response = upload.initiate(
@@ -529,7 +610,8 @@ class TestResumableUploadUnknownSize(object):
         # Go back to where we were before the write.
         stream.seek(curr_pos)
 
-    def test_interleave_writes(self, authorized_transport, bucket, cleanup):
+    @pytest.mark.parametrize("checksum", [u"md5", u"crc32c", None])
+    def test_interleave_writes(self, authorized_transport, bucket, cleanup, checksum):
         blob_name = u"some-moar-stuff.bin"
         chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
         # Make sure to clean up the uploaded blob when we are done.
@@ -538,7 +620,9 @@ class TestResumableUploadUnknownSize(object):
         # Start out the blob as a single chunk (but we will add to it).
         stream = io.BytesIO(b"Z" * chunk_size)
         # Create the actual upload object.
-        upload = resumable_requests.ResumableUpload(utils.RESUMABLE_UPLOAD, chunk_size)
+        upload = resumable_requests.ResumableUpload(
+            utils.RESUMABLE_UPLOAD, chunk_size, checksum=checksum
+        )
         # Initiate the upload.
         metadata = {u"name": blob_name}
         response = upload.initiate(

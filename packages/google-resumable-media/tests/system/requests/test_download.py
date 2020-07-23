@@ -25,7 +25,8 @@ from six.moves import http_client
 
 from google.resumable_media import common
 import google.resumable_media.requests as resumable_requests
-from google.resumable_media.requests import _helpers
+from google.resumable_media import _helpers
+from google.resumable_media.requests import _request_helpers
 import google.resumable_media.requests.download as download_mod
 from tests.system import utils
 
@@ -69,7 +70,7 @@ class CorruptingAuthorizedSession(tr_requests.AuthorizedSession):
         response = tr_requests.AuthorizedSession.request(
             self, method, url, data=data, headers=headers, **kwargs
         )
-        response.headers[download_mod._HASH_HEADER] = u"crc32c={},md5={}".format(
+        response.headers[_helpers._HASH_HEADER] = u"crc32c={},md5={}".format(
             self.EMPTY_CRC32C, self.EMPTY_MD5
         )
         return response
@@ -258,7 +259,7 @@ class TestDownload(object):
     def _read_response_content(response):
         return response.content
 
-    @pytest.mark.parametrize("checksum", [u"md5", u"crc32c", None])
+    @pytest.mark.parametrize("checksum", ["md5", "crc32c", None])
     def test_download_full(self, add_files, authorized_transport, checksum):
         for info in ALL_FILES:
             actual_contents = self._get_contents(info)
@@ -379,10 +380,12 @@ class TestRawDownload(TestDownload):
     @staticmethod
     def _read_response_content(response):
         return b"".join(
-            response.raw.stream(_helpers._SINGLE_GET_CHUNK_SIZE, decode_content=False)
+            response.raw.stream(
+                _request_helpers._SINGLE_GET_CHUNK_SIZE, decode_content=False
+            )
         )
 
-    @pytest.mark.parametrize("checksum", [u"md5", u"crc32c"])
+    @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
     def test_corrupt_download(self, add_files, corrupting_transport, checksum):
         for info in ALL_FILES:
             blob_name = get_blob_name(info)

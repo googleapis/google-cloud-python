@@ -19,7 +19,6 @@ This utilities are explicitly catered to ``requests``-like transports.
 
 
 import functools
-import warnings
 
 from google.resumable_media import _helpers
 from google.resumable_media import common
@@ -33,12 +32,6 @@ _SINGLE_GET_CHUNK_SIZE = 8192
 _DEFAULT_CONNECT_TIMEOUT = 61
 # The number of seconds to wait between bytes sent from the server.
 _DEFAULT_READ_TIMEOUT = 60
-
-_SLOW_CRC32C_WARNING = (
-    "Currently using crcmod in pure python form. This is a slow "
-    "implementation. Python 3 has a faster implementation, `google-crc32c`, "
-    "which will be used if it is installed."
-)
 
 
 class RequestsMixin(object):
@@ -141,36 +134,3 @@ def http_request(
         transport.request, method, url, data=data, headers=headers, **transport_kwargs
     )
     return _helpers.wait_and_retry(func, RequestsMixin._get_status_code, retry_strategy)
-
-
-def _get_crc32c_object():
-    """ Get crc32c object
-    Attempt to use the Google-CRC32c package. If it isn't available, try
-    to use CRCMod. CRCMod might be using a 'slow' varietal. If so, warn...
-    """
-    try:
-        import crc32c
-
-        crc_obj = crc32c.Checksum()
-    except ImportError:
-        try:
-            import crcmod
-
-            crc_obj = crcmod.predefined.Crc("crc-32c")
-            _is_fast_crcmod()
-
-        except ImportError:
-            raise ImportError("Failed to import either `google-crc32c` or `crcmod`")
-
-    return crc_obj
-
-
-def _is_fast_crcmod():
-    # Determine if this is using the slow form of crcmod.
-    nested_crcmod = __import__(
-        "crcmod.crcmod", globals(), locals(), ["_usingExtension"], 0,
-    )
-    fast_crc = getattr(nested_crcmod, "_usingExtension", False)
-    if not fast_crc:
-        warnings.warn(_SLOW_CRC32C_WARNING, RuntimeWarning, stacklevel=2)
-    return fast_crc

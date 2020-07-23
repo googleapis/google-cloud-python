@@ -20,6 +20,7 @@ import pytest
 from six.moves import http_client
 
 from google import resumable_media
+from google.resumable_media import _helpers
 from google.resumable_media import _upload
 from google.resumable_media import common
 
@@ -172,6 +173,23 @@ class TestSimpleUpload(object):
 
 
 class TestMultipartUpload(object):
+    def test_constructor_defaults(self):
+        upload = _upload.MultipartUpload(MULTIPART_URL)
+        assert upload.upload_url == MULTIPART_URL
+        assert upload._headers == {}
+        assert upload._checksum_type is None
+        assert not upload._finished
+        _check_retry_strategy(upload)
+
+    def test_constructor_explicit(self):
+        headers = {u"spin": u"doctors"}
+        upload = _upload.MultipartUpload(MULTIPART_URL, headers=headers, checksum="md5")
+        assert upload.upload_url == MULTIPART_URL
+        assert upload._headers is headers
+        assert upload._checksum_type == "md5"
+        assert not upload._finished
+        _check_retry_strategy(upload)
+
     def test__prepare_request_already_finished(self):
         upload = _upload.MultipartUpload(MULTIPART_URL)
         upload._finished = True
@@ -185,10 +203,30 @@ class TestMultipartUpload(object):
             upload._prepare_request(data, {}, BASIC_CONTENT)
 
     @mock.patch(u"google.resumable_media._upload.get_boundary", return_value=b"==3==")
-    def _prepare_request_helper(self, mock_get_boundary, headers=None):
-        upload = _upload.MultipartUpload(MULTIPART_URL, headers=headers)
+    def _prepare_request_helper(
+        self,
+        mock_get_boundary,
+        headers=None,
+        checksum=None,
+        expected_checksum=None,
+        test_overwrite=False,
+    ):
+        upload = _upload.MultipartUpload(
+            MULTIPART_URL, headers=headers, checksum=checksum
+        )
         data = b"Hi"
-        metadata = {u"Some": u"Stuff"}
+        if test_overwrite and checksum:
+            # Deliberately set metadata that conflicts with the chosen checksum.
+            # This should be fully overwritten by the calculated checksum, so
+            # the output should not change even if this is set.
+            if checksum == "md5":
+                metadata = {u"md5Hash": u"ZZZZZZZZZZZZZZZZZZZZZZ=="}
+            else:
+                metadata = {u"crc32c": u"ZZZZZZ=="}
+        else:
+            # To simplify parsing the response, omit other test metadata if a
+            # checksum is specified.
+            metadata = {u"Some": u"Stuff"} if not checksum else {}
         content_type = BASIC_CONTENT
         method, url, payload, new_headers = upload._prepare_request(
             data, metadata, content_type
@@ -196,15 +234,28 @@ class TestMultipartUpload(object):
 
         assert method == u"POST"
         assert url == MULTIPART_URL
-        expected_payload = (
-            b"--==3==\r\n" + JSON_TYPE_LINE + b"\r\n"
-            b'{"Some": "Stuff"}\r\n'
+
+        preamble = b"--==3==\r\n" + JSON_TYPE_LINE + b"\r\n"
+
+        if checksum == "md5" and expected_checksum:
+            metadata_payload = '{{"md5Hash": "{}"}}\r\n'.format(
+                expected_checksum
+            ).encode("utf8")
+        elif checksum == "crc32c" and expected_checksum:
+            metadata_payload = '{{"crc32c": "{}"}}\r\n'.format(
+                expected_checksum
+            ).encode("utf8")
+        else:
+            metadata_payload = b'{"Some": "Stuff"}\r\n'
+        remainder = (
             b"--==3==\r\n"
             b"content-type: text/plain\r\n"
             b"\r\n"
             b"Hi\r\n"
             b"--==3==--"
         )
+        expected_payload = preamble + metadata_payload + remainder
+
         assert payload == expected_payload
         multipart_type = b'multipart/related; boundary="==3=="'
         mock_get_boundary.assert_called_once_with()
@@ -226,6 +277,34 @@ class TestMultipartUpload(object):
         }
         assert expected_headers == headers
 
+    @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
+    def test__prepare_request_with_checksum(self, checksum):
+        checksums = {
+            "md5": "waUpj5Oeh+j5YqXt/CBpGA==",
+            "crc32c": "ihY6wA==",
+        }
+        headers, multipart_type = self._prepare_request_helper(
+            checksum=checksum, expected_checksum=checksums[checksum]
+        )
+        assert headers == {
+            u"content-type": multipart_type,
+        }
+
+    @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
+    def test__prepare_request_with_checksum_overwrite(self, checksum):
+        checksums = {
+            "md5": "waUpj5Oeh+j5YqXt/CBpGA==",
+            "crc32c": "ihY6wA==",
+        }
+        headers, multipart_type = self._prepare_request_helper(
+            checksum=checksum,
+            expected_checksum=checksums[checksum],
+            test_overwrite=True,
+        )
+        assert headers == {
+            u"content-type": multipart_type,
+        }
+
     def test_transmit(self):
         upload = _upload.MultipartUpload(MULTIPART_URL)
         with pytest.raises(NotImplementedError) as exc_info:
@@ -246,8 +325,11 @@ class TestResumableUpload(object):
         assert upload._stream is None
         assert upload._content_type is None
         assert upload._bytes_uploaded == 0
+        assert upload._bytes_checksummed == 0
+        assert upload._checksum_object is None
         assert upload._total_bytes is None
         assert upload._resumable_url is None
+        assert upload._checksum_type is None
 
     def test_constructor_bad_chunk_size(self):
         with pytest.raises(ValueError):
@@ -494,17 +576,19 @@ class TestResumableUpload(object):
         assert exc_info.match(u"Bytes stream is in unexpected state.")
 
     @staticmethod
-    def _upload_in_flight(data, headers=None):
-        upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB, headers=headers)
+    def _upload_in_flight(data, headers=None, checksum=None):
+        upload = _upload.ResumableUpload(
+            RESUMABLE_URL, ONE_MB, headers=headers, checksum=checksum
+        )
         upload._stream = io.BytesIO(data)
         upload._content_type = BASIC_CONTENT
         upload._total_bytes = len(data)
         upload._resumable_url = u"http://test.invalid?upload_id=not-none"
         return upload
 
-    def _prepare_request_helper(self, headers=None):
+    def _prepare_request_helper(self, headers=None, checksum=None):
         data = b"All of the data goes in a stream."
-        upload = self._upload_in_flight(data, headers=headers)
+        upload = self._upload_in_flight(data, headers=headers, checksum=checksum)
         method, url, payload, new_headers = upload._prepare_request()
         # Check the response values.
         assert method == u"PUT"
@@ -534,6 +618,94 @@ class TestResumableUpload(object):
         assert new_headers == expected_headers
         # Make sure the ``_headers`` are not incorporated.
         assert u"cannot" not in new_headers
+
+    @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
+    def test__prepare_request_with_checksum(self, checksum):
+        data = b"All of the data goes in a stream."
+        upload = self._upload_in_flight(data, checksum=checksum)
+        upload._prepare_request()
+        assert upload._checksum_object is not None
+
+        checksums = {"md5": "GRvfKbqr5klAOwLkxgIf8w==", "crc32c": "Qg8thA=="}
+        checksum_digest = _helpers.prepare_checksum_digest(
+            upload._checksum_object.digest()
+        )
+        assert checksum_digest == checksums[checksum]
+        assert upload._bytes_checksummed == len(data)
+
+    @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
+    def test__update_checksum(self, checksum):
+        data = b"All of the data goes in a stream."
+        upload = self._upload_in_flight(data, checksum=checksum)
+        start_byte, payload, _ = _upload.get_next_chunk(upload._stream, 8, len(data))
+        upload._update_checksum(start_byte, payload)
+        assert upload._bytes_checksummed == 8
+
+        start_byte, payload, _ = _upload.get_next_chunk(upload._stream, 8, len(data))
+        upload._update_checksum(start_byte, payload)
+        assert upload._bytes_checksummed == 16
+
+        # Continue to the end.
+        start_byte, payload, _ = _upload.get_next_chunk(
+            upload._stream, len(data), len(data)
+        )
+        upload._update_checksum(start_byte, payload)
+        assert upload._bytes_checksummed == len(data)
+
+        checksums = {"md5": "GRvfKbqr5klAOwLkxgIf8w==", "crc32c": "Qg8thA=="}
+        checksum_digest = _helpers.prepare_checksum_digest(
+            upload._checksum_object.digest()
+        )
+        assert checksum_digest == checksums[checksum]
+
+    @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
+    def test__update_checksum_rewind(self, checksum):
+        data = b"All of the data goes in a stream."
+        upload = self._upload_in_flight(data, checksum=checksum)
+        start_byte, payload, _ = _upload.get_next_chunk(upload._stream, 8, len(data))
+        upload._update_checksum(start_byte, payload)
+        assert upload._bytes_checksummed == 8
+        checksum_checkpoint = upload._checksum_object.digest()
+
+        # Rewind to the beginning.
+        upload._stream.seek(0)
+        start_byte, payload, _ = _upload.get_next_chunk(upload._stream, 8, len(data))
+        upload._update_checksum(start_byte, payload)
+        assert upload._bytes_checksummed == 8
+        assert upload._checksum_object.digest() == checksum_checkpoint
+
+        # Rewind but not to the beginning.
+        upload._stream.seek(4)
+        start_byte, payload, _ = _upload.get_next_chunk(upload._stream, 8, len(data))
+        upload._update_checksum(start_byte, payload)
+        assert upload._bytes_checksummed == 12
+
+        # Continue to the end.
+        start_byte, payload, _ = _upload.get_next_chunk(
+            upload._stream, len(data), len(data)
+        )
+        upload._update_checksum(start_byte, payload)
+        assert upload._bytes_checksummed == len(data)
+
+        checksums = {"md5": "GRvfKbqr5klAOwLkxgIf8w==", "crc32c": "Qg8thA=="}
+        checksum_digest = _helpers.prepare_checksum_digest(
+            upload._checksum_object.digest()
+        )
+        assert checksum_digest == checksums[checksum]
+
+    def test__update_checksum_none(self):
+        data = b"All of the data goes in a stream."
+        upload = self._upload_in_flight(data, checksum=None)
+        start_byte, payload, _ = _upload.get_next_chunk(upload._stream, 8, len(data))
+        upload._update_checksum(start_byte, payload)
+        assert upload._checksum_object is None
+
+    def test__update_checksum_invalid(self):
+        data = b"All of the data goes in a stream."
+        upload = self._upload_in_flight(data, checksum="invalid")
+        start_byte, payload, _ = _upload.get_next_chunk(upload._stream, 8, len(data))
+        with pytest.raises(ValueError):
+            upload._update_checksum(start_byte, payload)
 
     def test__make_invalid(self):
         upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)
@@ -638,6 +810,122 @@ class TestResumableUpload(object):
         assert ret_val is None
         # Check status after.
         assert upload._bytes_uploaded == 172
+
+    @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
+    def test__validate_checksum_success(self, checksum):
+        data = b"All of the data goes in a stream."
+        upload = self._upload_in_flight(data, checksum=checksum)
+        _fix_up_virtual(upload)
+        # Go ahead and process the entire data in one go for this test.
+        start_byte, payload, _ = _upload.get_next_chunk(
+            upload._stream, len(data), len(data)
+        )
+        upload._update_checksum(start_byte, payload)
+        assert upload._bytes_checksummed == len(data)
+
+        # This is only used by _validate_checksum for fetching metadata and
+        # logging.
+        metadata = {"md5Hash": "GRvfKbqr5klAOwLkxgIf8w==", "crc32c": "Qg8thA=="}
+        response = _make_response(metadata=metadata)
+        upload._finished = True
+
+        assert upload._checksum_object is not None
+        # Test passes if it does not raise an error (no assert needed)
+        upload._validate_checksum(response)
+
+    def test__validate_checksum_none(self):
+        data = b"All of the data goes in a stream."
+        upload = self._upload_in_flight(b"test", checksum=None)
+        _fix_up_virtual(upload)
+        # Go ahead and process the entire data in one go for this test.
+        start_byte, payload, _ = _upload.get_next_chunk(
+            upload._stream, len(data), len(data)
+        )
+        upload._update_checksum(start_byte, payload)
+
+        # This is only used by _validate_checksum for fetching metadata and
+        # logging.
+        metadata = {"md5Hash": "GRvfKbqr5klAOwLkxgIf8w==", "crc32c": "Qg8thA=="}
+        response = _make_response(metadata=metadata)
+        upload._finished = True
+
+        assert upload._checksum_object is None
+        assert upload._bytes_checksummed == 0
+        # Test passes if it does not raise an error (no assert needed)
+        upload._validate_checksum(response)
+
+    @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
+    def test__validate_checksum_header_no_match(self, checksum):
+        data = b"All of the data goes in a stream."
+        upload = self._upload_in_flight(data, checksum=checksum)
+        _fix_up_virtual(upload)
+        # Go ahead and process the entire data in one go for this test.
+        start_byte, payload, _ = _upload.get_next_chunk(
+            upload._stream, len(data), len(data)
+        )
+        upload._update_checksum(start_byte, payload)
+        assert upload._bytes_checksummed == len(data)
+
+        # For this test, each checksum option will be provided with a valid but
+        # mismatching remote checksum type.
+        if checksum == "crc32c":
+            metadata = {"md5Hash": "GRvfKbqr5klAOwLkxgIf8w=="}
+        else:
+            metadata = {"crc32c": "Qg8thA=="}
+        # This is only used by _validate_checksum for fetching headers and
+        # logging, so it doesn't need to be fleshed out with a response body.
+        response = _make_response(metadata=metadata)
+        upload._finished = True
+
+        assert upload._checksum_object is not None
+        with pytest.raises(common.InvalidResponse) as exc_info:
+            upload._validate_checksum(response)
+
+        error = exc_info.value
+        assert error.response is response
+        message = error.args[0]
+        metadata_key = _helpers._get_metadata_key(checksum)
+        assert (
+            message
+            == _upload._UPLOAD_METADATA_NO_APPROPRIATE_CHECKSUM_MESSAGE.format(
+                metadata_key
+            )
+        )
+
+    @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
+    def test__validate_checksum_mismatch(self, checksum):
+        data = b"All of the data goes in a stream."
+        upload = self._upload_in_flight(data, checksum=checksum)
+        _fix_up_virtual(upload)
+        # Go ahead and process the entire data in one go for this test.
+        start_byte, payload, _ = _upload.get_next_chunk(
+            upload._stream, len(data), len(data)
+        )
+        upload._update_checksum(start_byte, payload)
+        assert upload._bytes_checksummed == len(data)
+
+        metadata = {
+            "md5Hash": "ZZZZZZZZZZZZZZZZZZZZZZ==",
+            "crc32c": "ZZZZZZ==",
+        }
+        # This is only used by _validate_checksum for fetching headers and
+        # logging, so it doesn't need to be fleshed out with a response body.
+        response = _make_response(metadata=metadata)
+        upload._finished = True
+
+        assert upload._checksum_object is not None
+        # Test passes if it does not raise an error (no assert needed)
+        with pytest.raises(common.DataCorruption) as exc_info:
+            upload._validate_checksum(response)
+
+        error = exc_info.value
+        assert error.response is response
+        message = error.args[0]
+        correct_checksums = {"crc32c": u"Qg8thA==", "md5": u"GRvfKbqr5klAOwLkxgIf8w=="}
+        metadata_key = _helpers._get_metadata_key(checksum)
+        assert message == _upload._UPLOAD_CHECKSUM_MISMATCH_MESSAGE.format(
+            checksum.upper(), correct_checksums[checksum], metadata[metadata_key]
+        )
 
     def test_transmit_next_chunk(self):
         upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)
@@ -924,10 +1212,13 @@ class Test_get_content_range(object):
         assert result == u"bytes 1000-10000/*"
 
 
-def _make_response(status_code=http_client.OK, headers=None):
+def _make_response(status_code=http_client.OK, headers=None, metadata=None):
     headers = headers or {}
     return mock.Mock(
-        headers=headers, status_code=status_code, spec=["headers", "status_code"]
+        headers=headers,
+        status_code=status_code,
+        json=mock.Mock(return_value=metadata),
+        spec=["headers", "status_code"],
     )
 
 

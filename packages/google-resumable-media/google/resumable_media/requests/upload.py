@@ -20,10 +20,10 @@ uploads that contain both metadata and a small file as payload.
 
 
 from google.resumable_media import _upload
-from google.resumable_media.requests import _helpers
+from google.resumable_media.requests import _request_helpers
 
 
-class SimpleUpload(_helpers.RequestsMixin, _upload.SimpleUpload):
+class SimpleUpload(_request_helpers.RequestsMixin, _upload.SimpleUpload):
     """Upload a resource to a Google API.
 
     A **simple** media upload sends no metadata and completes the upload
@@ -43,7 +43,10 @@ class SimpleUpload(_helpers.RequestsMixin, _upload.SimpleUpload):
         transport,
         data,
         content_type,
-        timeout=(_helpers._DEFAULT_CONNECT_TIMEOUT, _helpers._DEFAULT_READ_TIMEOUT),
+        timeout=(
+            _request_helpers._DEFAULT_CONNECT_TIMEOUT,
+            _request_helpers._DEFAULT_READ_TIMEOUT,
+        ),
     ):
         """Transmit the resource to be uploaded.
 
@@ -65,7 +68,7 @@ class SimpleUpload(_helpers.RequestsMixin, _upload.SimpleUpload):
             ~requests.Response: The HTTP response returned by ``transport``.
         """
         method, url, payload, headers = self._prepare_request(data, content_type)
-        response = _helpers.http_request(
+        response = _request_helpers.http_request(
             transport,
             method,
             url,
@@ -78,7 +81,7 @@ class SimpleUpload(_helpers.RequestsMixin, _upload.SimpleUpload):
         return response
 
 
-class MultipartUpload(_helpers.RequestsMixin, _upload.MultipartUpload):
+class MultipartUpload(_request_helpers.RequestsMixin, _upload.MultipartUpload):
     """Upload a resource with metadata to a Google API.
 
     A **multipart** upload sends both metadata and the resource in a single
@@ -88,6 +91,11 @@ class MultipartUpload(_helpers.RequestsMixin, _upload.MultipartUpload):
         upload_url (str): The URL where the content will be uploaded.
         headers (Optional[Mapping[str, str]]): Extra headers that should
             be sent with the request, e.g. headers for encrypted data.
+        checksum Optional([str]): The type of checksum to compute to verify
+            the integrity of the object. The request metadata will be amended
+            to include the computed value. Using this option will override a
+            manually-set checksum value. Supported values are "md5",
+            "crc32c" and None. The default is None.
 
     Attributes:
         upload_url (str): The URL where the content will be uploaded.
@@ -99,7 +107,10 @@ class MultipartUpload(_helpers.RequestsMixin, _upload.MultipartUpload):
         data,
         metadata,
         content_type,
-        timeout=(_helpers._DEFAULT_CONNECT_TIMEOUT, _helpers._DEFAULT_READ_TIMEOUT),
+        timeout=(
+            _request_helpers._DEFAULT_CONNECT_TIMEOUT,
+            _request_helpers._DEFAULT_READ_TIMEOUT,
+        ),
     ):
         """Transmit the resource to be uploaded.
 
@@ -125,7 +136,7 @@ class MultipartUpload(_helpers.RequestsMixin, _upload.MultipartUpload):
         method, url, payload, headers = self._prepare_request(
             data, metadata, content_type
         )
-        response = _helpers.http_request(
+        response = _request_helpers.http_request(
             transport,
             method,
             url,
@@ -138,7 +149,7 @@ class MultipartUpload(_helpers.RequestsMixin, _upload.MultipartUpload):
         return response
 
 
-class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
+class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
     """Initiate and fulfill a resumable upload to a Google API.
 
     A **resumable** upload sends an initial request with the resource metadata
@@ -312,6 +323,13 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
             be sent with the :meth:`initiate` request, e.g. headers for
             encrypted data. These **will not** be sent with
             :meth:`transmit_next_chunk` or :meth:`recover` requests.
+        checksum Optional([str]): The type of checksum to compute to verify
+            the integrity of the object. After the upload is complete, the
+            server-computed checksum of the resulting object will be checked
+            and google.resumable_media.common.DataCorruption will be raised on
+            a mismatch. The corrupted file will not be deleted from the remote
+            host automatically. Supported values are "md5", "crc32c" and None.
+            The default is None.
 
     Attributes:
         upload_url (str): The URL where the content will be uploaded.
@@ -329,7 +347,10 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
         content_type,
         total_bytes=None,
         stream_final=True,
-        timeout=(_helpers._DEFAULT_CONNECT_TIMEOUT, _helpers._DEFAULT_READ_TIMEOUT),
+        timeout=(
+            _request_helpers._DEFAULT_CONNECT_TIMEOUT,
+            _request_helpers._DEFAULT_READ_TIMEOUT,
+        ),
     ):
         """Initiate a resumable upload.
 
@@ -379,7 +400,7 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
             total_bytes=total_bytes,
             stream_final=stream_final,
         )
-        response = _helpers.http_request(
+        response = _request_helpers.http_request(
             transport,
             method,
             url,
@@ -394,7 +415,10 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
     def transmit_next_chunk(
         self,
         transport,
-        timeout=(_helpers._DEFAULT_CONNECT_TIMEOUT, _helpers._DEFAULT_READ_TIMEOUT),
+        timeout=(
+            _request_helpers._DEFAULT_CONNECT_TIMEOUT,
+            _request_helpers._DEFAULT_READ_TIMEOUT,
+        ),
     ):
         """Transmit the next chunk of the resource to be uploaded.
 
@@ -463,9 +487,12 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
         Raises:
             ~google.resumable_media.common.InvalidResponse: If the status
                 code is not 200 or 308.
+            ~google.resumable_media.common.DataCorruption: If this is the final
+                chunk, a checksum validation was requested, and the checksum
+                does not match or is not available.
         """
         method, url, payload, headers = self._prepare_request()
-        response = _helpers.http_request(
+        response = _request_helpers.http_request(
             transport,
             method,
             url,
@@ -496,7 +523,7 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
         """
         method, url, payload, headers = self._prepare_recover_request()
         # NOTE: We assume "payload is None" but pass it along anyway.
-        response = _helpers.http_request(
+        response = _request_helpers.http_request(
             transport,
             method,
             url,

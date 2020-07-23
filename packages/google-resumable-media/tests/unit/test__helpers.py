@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import hashlib
 import mock
 import pytest
 from six.moves import http_client
@@ -241,3 +242,192 @@ def _get_status_code(response):
 
 def _get_headers(response):
     return response.headers
+
+
+@pytest.mark.parametrize("checksum", ["md5", "crc32c", None])
+def test__get_checksum_object(checksum):
+    checksum_object = _helpers._get_checksum_object(checksum)
+
+    checksum_types = {
+        "md5": type(hashlib.md5()),
+        "crc32c": type(_helpers._get_crc32c_object()),
+        None: type(None),
+    }
+    assert isinstance(checksum_object, checksum_types[checksum])
+
+
+def test__get_checksum_object_invalid():
+    with pytest.raises(ValueError):
+        _helpers._get_checksum_object("invalid")
+
+
+def test_crc32c_throws_import_error():
+    try:
+        import builtins
+    except ImportError:
+        import __builtin__ as builtins
+    orig_import = builtins.__import__
+
+    # Raises ImportError for name == "crc32c" or name == "crcmod"
+    def mock_import(name, globals, locals, fromlist, level=None):
+        raise ImportError
+
+    builtins.__import__ = mock_import
+
+    try:
+        with pytest.raises(ImportError):
+            _helpers._get_crc32c_object()
+    finally:
+        builtins.__import__ = orig_import
+
+
+@pytest.mark.filterwarnings("ignore::RuntimeWarning")
+def test_crc32c_warning_on_slow_crcmod():
+    try:
+        import builtins
+    except ImportError:
+        import __builtin__ as builtins
+
+    orig_import = builtins.__import__
+
+    # crcmod.crcmod is the only import.
+    def mock_import(name, globals, locals, fromlist, level):
+        crcmod = mock.MagicMock()
+        crcmod._usingExtension = False
+        return crcmod
+
+    builtins.__import__ = mock_import
+
+    try:
+        assert not _helpers._is_fast_crcmod()
+    finally:
+        builtins.__import__ = orig_import
+
+
+def test__DoNothingHash():
+    do_nothing_hash = _helpers._DoNothingHash()
+    return_value = do_nothing_hash.update(b"some data")
+    assert return_value is None
+
+
+class Test__get_expected_checksum(object):
+    @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
+    @mock.patch("google.resumable_media._helpers._LOGGER")
+    def test__w_header_present(self, _LOGGER, checksum):
+        checksums = {"md5": u"b2twdXNodGhpc2J1dHRvbg==", "crc32c": u"3q2+7w=="}
+        header_value = u"crc32c={},md5={}".format(checksums["crc32c"], checksums["md5"])
+        headers = {_helpers._HASH_HEADER: header_value}
+        response = _mock_response(headers=headers)
+
+        def _get_headers(response):
+            return response.headers
+
+        url = "https://example.com/"
+        expected_checksum, checksum_obj = _helpers._get_expected_checksum(
+            response, _get_headers, url, checksum_type=checksum
+        )
+        assert expected_checksum == checksums[checksum]
+
+        checksum_types = {
+            "md5": type(hashlib.md5()),
+            "crc32c": type(_helpers._get_crc32c_object()),
+        }
+        assert isinstance(checksum_obj, checksum_types[checksum])
+
+        _LOGGER.info.assert_not_called()
+
+    @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
+    @mock.patch("google.resumable_media._helpers._LOGGER")
+    def test__w_header_missing(self, _LOGGER, checksum):
+        headers = {}
+        response = _mock_response(headers=headers)
+
+        def _get_headers(response):
+            return response.headers
+
+        url = "https://example.com/"
+        expected_checksum, checksum_obj = _helpers._get_expected_checksum(
+            response, _get_headers, url, checksum_type=checksum
+        )
+        assert expected_checksum is None
+        assert isinstance(checksum_obj, _helpers._DoNothingHash)
+        expected_msg = _helpers._MISSING_CHECKSUM.format(
+            url, checksum_type=checksum.upper()
+        )
+        _LOGGER.info.assert_called_once_with(expected_msg)
+
+
+class Test__parse_checksum_header(object):
+
+    CRC32C_CHECKSUM = u"3q2+7w=="
+    MD5_CHECKSUM = u"c2l4dGVlbmJ5dGVzbG9uZw=="
+
+    def test_empty_value(self):
+        header_value = None
+        response = None
+        md5_header = _helpers._parse_checksum_header(
+            header_value, response, checksum_label="md5"
+        )
+        assert md5_header is None
+        crc32c_header = _helpers._parse_checksum_header(
+            header_value, response, checksum_label="crc32c"
+        )
+        assert crc32c_header is None
+
+    def test_crc32c_only(self):
+        header_value = u"crc32c={}".format(self.CRC32C_CHECKSUM)
+        response = None
+        md5_header = _helpers._parse_checksum_header(
+            header_value, response, checksum_label="md5"
+        )
+        assert md5_header is None
+        crc32c_header = _helpers._parse_checksum_header(
+            header_value, response, checksum_label="crc32c"
+        )
+        assert crc32c_header == self.CRC32C_CHECKSUM
+
+    def test_md5_only(self):
+        header_value = u"md5={}".format(self.MD5_CHECKSUM)
+        response = None
+        md5_header = _helpers._parse_checksum_header(
+            header_value, response, checksum_label="md5"
+        )
+        assert md5_header == self.MD5_CHECKSUM
+        crc32c_header = _helpers._parse_checksum_header(
+            header_value, response, checksum_label="crc32c"
+        )
+        assert crc32c_header is None
+
+    def test_both_crc32c_and_md5(self):
+        header_value = u"crc32c={},md5={}".format(
+            self.CRC32C_CHECKSUM, self.MD5_CHECKSUM
+        )
+        response = None
+        md5_header = _helpers._parse_checksum_header(
+            header_value, response, checksum_label="md5"
+        )
+        assert md5_header == self.MD5_CHECKSUM
+        crc32c_header = _helpers._parse_checksum_header(
+            header_value, response, checksum_label="crc32c"
+        )
+        assert crc32c_header == self.CRC32C_CHECKSUM
+
+    def test_md5_multiple_matches(self):
+        another_checksum = u"eW91IGRpZCBXQVQgbm93Pw=="
+        header_value = u"md5={},md5={}".format(self.MD5_CHECKSUM, another_checksum)
+        response = mock.sentinel.response
+
+        with pytest.raises(common.InvalidResponse) as exc_info:
+            _helpers._parse_checksum_header(
+                header_value, response, checksum_label="md5"
+            )
+
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 3
+        assert error.args[1] == header_value
+        assert error.args[2] == [self.MD5_CHECKSUM, another_checksum]
+
+
+def _mock_response(headers):
+    return mock.Mock(headers=headers, status_code=200, spec=["status_code", "headers"],)
