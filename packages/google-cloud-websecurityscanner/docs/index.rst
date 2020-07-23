@@ -9,8 +9,8 @@ This package includes clients for multiple versions of the Web Security Scanner 
 .. toctree::
     :maxdepth: 2
 
-    gapic/v1beta/api
-    gapic/v1beta/types
+    websecurityscanner_v1beta/services
+    websecurityscanner_v1beta/types
 
 The previous alpha release, spelled ``v1alpha`` is provided to continue to support code previously written against it. In order to use it, you will want to import from it e.g., ``google.cloud.websecurityscanner_v1alpha`` in lieu of ``google.cloud.websecurityscanner`` (or the equivalent ``google.cloud.websecurityscanner_v1beta``).
 
@@ -19,8 +19,19 @@ v1alpha
 .. toctree::
     :maxdepth: 2
 
-    gapic/v1alpha/api
-    gapic/v1alpha/types
+    websecurityscanner_v1alpha/services
+    websecurityscanner_v1alpha/types
+
+
+Migration Guide
+---------------
+
+See the guide below for instructions on migrating to the 1.x release of this library.
+
+.. toctree::
+    :maxdepth: 2
+
+    UPGRADING
 
 
 Changelog
