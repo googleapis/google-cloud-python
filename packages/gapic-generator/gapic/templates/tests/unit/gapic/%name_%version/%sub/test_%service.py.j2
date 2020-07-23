@@ -50,6 +50,13 @@ def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
 
 
+# If default endpoint is localhost, then default mtls endpoint will be the same.
+# This method modifies the default endpoint so the client can produce a different
+# mtls endpoint for endpoint testing purposes.
+def modify_default_endpoint(client):
+    return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
@@ -91,6 +98,8 @@ def test_{{ service.client_name|snake_case }}_get_transport_class():
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc"),
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio")
 ])
+@mock.patch.object({{ service.client_name }}, "DEFAULT_ENDPOINT", modify_default_endpoint({{ service.client_name }}))
+@mock.patch.object({{ service.async_client_name }}, "DEFAULT_ENDPOINT", modify_default_endpoint({{ service.async_client_name }}))
 def test_{{ service.client_name|snake_case }}_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object({{ service.client_name }}, 'get_transport_class') as gtc:
