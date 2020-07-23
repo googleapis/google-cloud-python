@@ -10,5 +10,6 @@ Submodules
 ----------
 
 .. toctree::
+   :maxdepth: 4
 
    google.auth.compute_engine.credentials
