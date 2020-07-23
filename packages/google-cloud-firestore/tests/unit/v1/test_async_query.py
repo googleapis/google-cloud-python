@@ -17,7 +17,7 @@ import types
 import aiounittest
 
 import mock
-
+from tests.unit.v1.test__helpers import AsyncIter
 from tests.unit.v1.test_base_query import _make_credentials, _make_query_response
 
 
@@ -59,7 +59,7 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
         import warnings
 
         with mock.patch.object(self._get_target_class(), "stream") as stream_mock:
-            stream_mock.return_value = MockAsyncIter(3)
+            stream_mock.return_value = AsyncIter(range(3))
 
             # Create a minimal fake GAPIC.
             firestore_api = mock.Mock(spec=["run_query"])
@@ -81,7 +81,7 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
                 # Verify that `get` merely wraps `stream`.
                 stream_mock.assert_called_once()
                 self.assertIsInstance(get_response, types.AsyncGeneratorType)
-                self.assertEqual(returned, list(range(stream_mock.return_value.count)))
+                self.assertEqual(returned, list(stream_mock.return_value.items))
 
             # Verify the deprecation.
             self.assertEqual(len(warned), 1)
@@ -104,7 +104,7 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
         name = "{}/sleep".format(expected_prefix)
         data = {"snooze": 10}
         response_pb = _make_query_response(name=name, data=data)
-        firestore_api.run_query.return_value = iter([response_pb])
+        firestore_api.run_query.return_value = AsyncIter([response_pb])
 
         # Execute the query and check the response.
         query = self._make_one(parent)
@@ -149,7 +149,7 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
         name = "{}/burger".format(expected_prefix)
         data = {"lettuce": b"\xee\x87"}
         response_pb = _make_query_response(name=name, data=data)
-        firestore_api.run_query.return_value = iter([response_pb])
+        firestore_api.run_query.return_value = AsyncIter([response_pb])
 
         # Execute the query and check the response.
         query = self._make_one(parent)
@@ -176,7 +176,7 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = mock.Mock(spec=["run_query"])
         empty_response = _make_query_response()
-        run_query_response = iter([empty_response])
+        run_query_response = AsyncIter([empty_response])
         firestore_api.run_query.return_value = run_query_response
 
         # Attach the fake GAPIC to a real client.
@@ -208,7 +208,7 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
         firestore_api = mock.Mock(spec=["run_query"])
         empty_response1 = _make_query_response()
         empty_response2 = _make_query_response()
-        run_query_response = iter([empty_response1, empty_response2])
+        run_query_response = AsyncIter([empty_response1, empty_response2])
         firestore_api.run_query.return_value = run_query_response
 
         # Attach the fake GAPIC to a real client.
@@ -252,7 +252,7 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
         name = "{}/clock".format(expected_prefix)
         data = {"noon": 12, "nested": {"bird": 10.5}}
         response_pb2 = _make_query_response(name=name, data=data)
-        firestore_api.run_query.return_value = iter([response_pb1, response_pb2])
+        firestore_api.run_query.return_value = AsyncIter([response_pb1, response_pb2])
 
         # Execute the query and check the response.
         query = self._make_one(parent)
@@ -293,7 +293,7 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
         data = {"lee": "hoop"}
         response_pb1 = _make_query_response(name=name, data=data)
         response_pb2 = _make_query_response()
-        firestore_api.run_query.return_value = iter([response_pb1, response_pb2])
+        firestore_api.run_query.return_value = AsyncIter([response_pb1, response_pb2])
 
         # Execute the query and check the response.
         query = self._make_one(parent)
@@ -335,7 +335,7 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
         data = {"lee": "hoop"}
         response_pb1 = _make_query_response(name=name, data=data)
         response_pb2 = _make_query_response()
-        firestore_api.run_query.return_value = iter([response_pb1, response_pb2])
+        firestore_api.run_query.return_value = AsyncIter([response_pb1, response_pb2])
 
         # Execute the query and check the response.
         query = self._make_one(parent)

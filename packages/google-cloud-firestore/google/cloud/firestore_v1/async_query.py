@@ -158,7 +158,7 @@ class AsyncQuery(BaseQuery):
             metadata=self._client._rpc_metadata,
         )
 
-        for response in response_iterator:
+        async for response in response_iterator:
             if self._all_descendants:
                 snapshot = _collection_group_query_response_to_snapshot(
                     response, self._parent
