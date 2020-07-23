@@ -316,7 +316,11 @@ class MessageMeta(type):
             ~.Message: An instance of the message class against which this
             method was called.
         """
-        return cls(cls.pb().FromString(payload))
+        # Usually we don't wrap the original proto and are force to make a copy
+        # to prevent modifying user data.
+        # In this case it's perfectly reasonable to wrap the proto becasue it's
+        # never user visible, and it gives a huge performance boost.
+        return cls(cls.pb().FromString(payload), __wrap_original=True)
 
     def to_json(cls, instance) -> str:
         """Given a message instance, serialize it to json
@@ -341,7 +345,9 @@ class MessageMeta(type):
             ~.Message: An instance of the message class against which this
             method was called.
         """
-        return cls(Parse(payload, cls()._pb))
+        instance = cls()
+        Parse(payload, instance._pb)
+        return instance
 
 
 class Message(metaclass=MessageMeta):
@@ -398,19 +404,19 @@ class Message(metaclass=MessageMeta):
             mapping = {}
         mapping.update(kwargs)
 
+        # Avoid copying the mapping unnecessarily
+        params = {}
         # Update the mapping to address any values that need to be
         # coerced.
         marshal = self._meta.marshal
-        for key, value in copy.copy(mapping).items():
+        for key, value in mapping.items():
             pb_type = self._meta.fields[key].pb_type
             pb_value = marshal.to_proto(pb_type, value)
-            if pb_value is None:
-                mapping.pop(key)
-            else:
-                mapping[key] = pb_value
+            if pb_value is not None:
+                params[key] = pb_value
 
         # Create the internal protocol buffer.
-        self._pb = self._meta.pb(**mapping)
+        self._pb = self._meta.pb(**params)
 
     def __bool__(self):
         """Return True if any field is truthy, False otherwise."""
