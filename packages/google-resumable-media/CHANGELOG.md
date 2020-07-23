@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## [0.7.0](https://www.github.com/googleapis/google-resumable-media-python/compare/v0.6.0...v0.7.0) (2020-07-23)
+
+
+### Features
+
+* add configurable checksum support for uploads ([#139](https://www.github.com/googleapis/google-resumable-media-python/issues/139)) ([68264f8](https://www.github.com/googleapis/google-resumable-media-python/commit/68264f811473a5aa06102912ea8d454b6bb59307))
+
+
+### Bug Fixes
+
+* accept `201 Created` as valid upload response ([#141](https://www.github.com/googleapis/google-resumable-media-python/issues/141)) ([00d280e](https://www.github.com/googleapis/google-resumable-media-python/commit/00d280e116d69f7f8d8a4b970bb1176e338f9ce0)), closes [#125](https://www.github.com/googleapis/google-resumable-media-python/issues/125) [#124](https://www.github.com/googleapis/google-resumable-media-python/issues/124)
+
 ## [0.6.0](https://www.github.com/googleapis/google-resumable-media-python/compare/v0.5.1...v0.6.0) (2020-07-07)
 
 
