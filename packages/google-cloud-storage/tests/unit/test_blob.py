@@ -1451,6 +1451,37 @@ class Test_Blob(unittest.TestCase):
         stream = blob._do_download.mock_calls[0].args[1]
         self.assertIsInstance(stream, io.BytesIO)
 
+    def test_download_as_string_w_response_headers(self):
+        blob_name = "blob-name"
+        client = mock.Mock(spec=["_http"])
+        bucket = _Bucket(client)
+        media_link = "http://example.com/media/"
+        properties = {"mediaLink": media_link}
+        blob = self._make_one(blob_name, bucket=bucket, properties=properties)
+
+        response = self._mock_requests_response(
+            http_client.OK,
+            headers={
+                "Content-Type": "application/json",
+                "Content-Language": "ko-kr",
+                "Cache-Control": "max-age=1337;public",
+                "Content-Encoding": "gzip",
+                "X-Goog-Storage-Class": "STANDARD",
+                "X-Goog-Hash": "crc32c=4gcgLQ==,md5=CS9tHYTtyFntzj7B9nkkJQ==",
+            },
+            # { "x": 5 } gzipped
+            content=b"\x1f\x8b\x08\x00\xcfo\x17_\x02\xff\xabVP\xaaP\xb2R0U\xa8\x05\x00\xa1\xcaQ\x93\n\x00\x00\x00",
+        )
+        blob._extract_headers_from_download(response)
+
+        self.assertEqual(blob.content_type, "application/json")
+        self.assertEqual(blob.content_language, "ko-kr")
+        self.assertEqual(blob.content_encoding, "gzip")
+        self.assertEqual(blob.cache_control, "max-age=1337;public")
+        self.assertEqual(blob.storage_class, "STANDARD")
+        self.assertEqual(blob.md5_hash, "CS9tHYTtyFntzj7B9nkkJQ")
+        self.assertEqual(blob.crc32c, "4gcgLQ")
+
     def test_download_as_string_w_generation_match(self):
         GENERATION_NUMBER = 6
         MEDIA_LINK = "http://example.com/media/"

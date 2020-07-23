@@ -31,6 +31,7 @@ import hashlib
 from io import BytesIO
 import mimetypes
 import os
+import re
 import warnings
 import six
 
@@ -783,6 +784,34 @@ class Blob(_PropertyMixin):
         )
         return _add_query_parameters(base_url, name_value_pairs)
 
+    def _extract_headers_from_download(self, response):
+        """Extract headers from a non-chunked request's http object.
+
+        This avoids the need to make a second request for commonly used
+        headers.
+
+        :type response:
+            :class requests.models.Response
+        :param response: The server response from downloading a non-chunked file
+        """
+        self.content_encoding = response.headers.get("Content-Encoding", None)
+        self.content_type = response.headers.get("Content-Type", None)
+        self.cache_control = response.headers.get("Cache-Control", None)
+        self.storage_class = response.headers.get("X-Goog-Storage-Class", None)
+        self.content_language = response.headers.get("Content-Language", None)
+        #  'X-Goog-Hash': 'crc32c=4gcgLQ==,md5=CS9tHYTtyFntzj7B9nkkJQ==',
+        x_goog_hash = response.headers.get("X-Goog-Hash", "")
+
+        digests = {}
+        for encoded_digest in x_goog_hash.split(","):
+            match = re.match(r"(crc32c|md5)=([\w\d]+)==", encoded_digest)
+            if match:
+                method, digest = match.groups()
+                digests[method] = digest
+
+        self.crc32c = digests.get("crc32c", None)
+        self.md5_hash = digests.get("md5", None)
+
     def _do_download(
         self,
         transport,
@@ -840,8 +869,8 @@ class Blob(_PropertyMixin):
             download = klass(
                 download_url, stream=file_obj, headers=headers, start=start, end=end
             )
-            download.consume(transport, timeout=timeout)
-
+            response = download.consume(transport, timeout=timeout)
+            self._extract_headers_from_download(response)
         else:
 
             if raw_download:
