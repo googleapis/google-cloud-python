@@ -1534,8 +1534,8 @@ class RowIterator(HTTPIterator):
 
         owns_bqstorage_client = False
         if not bqstorage_client and create_bqstorage_client:
-            owns_bqstorage_client = True
             bqstorage_client = self.client._create_bqstorage_client()
+            owns_bqstorage_client = bqstorage_client is not None
 
         try:
             progress_bar = self._get_progress_bar(progress_bar_type)

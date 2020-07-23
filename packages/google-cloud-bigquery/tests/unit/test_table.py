@@ -1991,6 +1991,33 @@ class TestRowIterator(unittest.TestCase):
         bqstorage_client.transport.channel.close.assert_called_once()
 
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_to_arrow_create_bqstorage_client_wo_bqstorage(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+        rows = [
+            {"f": [{"v": "Alice"}, {"v": "98"}]},
+            {"f": [{"v": "Bob"}, {"v": "99"}]},
+        ]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+
+        mock_client = _mock_client()
+        mock_client._create_bqstorage_client.return_value = None
+        row_iterator = self._make_one(mock_client, api_request, path, schema)
+
+        tbl = row_iterator.to_arrow(create_bqstorage_client=True)
+
+        # The client attempted to create a BQ Storage client, and even though
+        # that was not possible, results were still returned without errors.
+        mock_client._create_bqstorage_client.assert_called_once()
+        self.assertIsInstance(tbl, pyarrow.Table)
+        self.assertEqual(tbl.num_rows, 2)
+
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     @unittest.skipIf(
         bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
     )
