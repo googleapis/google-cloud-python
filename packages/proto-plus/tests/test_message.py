@@ -207,3 +207,12 @@ def test_message_pb():
     assert isinstance(Foo.pb(Foo()), Foo.pb())
     with pytest.raises(TypeError):
         Foo.pb(object())
+
+
+def test_invalid_field_access():
+    class Squid(proto.Message):
+        mass_kg = proto.Field(proto.INT32, number=1)
+
+    s = Squid()
+    with pytest.raises(AttributeError):
+        getattr(s, "shell")

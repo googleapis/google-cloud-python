@@ -504,10 +504,13 @@ class Message(metaclass=MessageMeta):
             their Python equivalents. See the ``marshal`` module for
             more details.
         """
-        pb_type = self._meta.fields[key].pb_type
-        pb_value = getattr(self._pb, key)
-        marshal = self._meta.marshal
-        return marshal.to_python(pb_type, pb_value, absent=key not in self)
+        try:
+            pb_type = self._meta.fields[key].pb_type
+            pb_value = getattr(self._pb, key)
+            marshal = self._meta.marshal
+            return marshal.to_python(pb_type, pb_value, absent=key not in self)
+        except KeyError as ex:
+            raise AttributeError(str(ex))
 
     def __ne__(self, other):
         """Return True if the messages are unequal, False otherwise."""
