@@ -42,7 +42,7 @@ class AsyncWriteBatch(BaseWriteBatch):
             in the same order as the changes were applied to this batch. A
             write result contains an ``update_time`` field.
         """
-        commit_response = self._client._firestore_api.commit(
+        commit_response = await self._client._firestore_api.commit(
             request={
                 "database": self._client._database_string,
                 "writes": self._write_pbs,

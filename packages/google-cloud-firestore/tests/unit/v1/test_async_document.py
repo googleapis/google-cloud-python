@@ -74,7 +74,7 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
     @pytest.mark.asyncio
     async def test_create(self):
         # Create a minimal fake GAPIC with a dummy response.
-        firestore_api = mock.Mock()
+        firestore_api = AsyncMock()
         firestore_api.commit.mock_add_spec(spec=["commit"])
         firestore_api.commit.return_value = self._make_commit_repsonse()
 
@@ -105,7 +105,7 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
         from google.cloud.firestore_v1.async_document import AsyncDocumentReference
         from google.cloud.firestore_v1.async_document import DocumentSnapshot
 
-        firestore_api = mock.Mock(spec=["commit"])
+        firestore_api = AsyncMock(spec=["commit"])
         document_reference = mock.create_autospec(AsyncDocumentReference)
         snapshot = mock.create_autospec(DocumentSnapshot)
         snapshot.exists = True
@@ -155,7 +155,7 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
     @pytest.mark.asyncio
     async def _set_helper(self, merge=False, **option_kwargs):
         # Create a minimal fake GAPIC with a dummy response.
-        firestore_api = mock.Mock(spec=["commit"])
+        firestore_api = AsyncMock(spec=["commit"])
         firestore_api.commit.return_value = self._make_commit_repsonse()
 
         # Attach the fake GAPIC to a real client.
@@ -208,7 +208,7 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
         from google.cloud.firestore_v1.transforms import DELETE_FIELD
 
         # Create a minimal fake GAPIC with a dummy response.
-        firestore_api = mock.Mock(spec=["commit"])
+        firestore_api = AsyncMock(spec=["commit"])
         firestore_api.commit.return_value = self._make_commit_repsonse()
 
         # Attach the fake GAPIC to a real client.
@@ -268,7 +268,7 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
     @pytest.mark.asyncio
     async def test_empty_update(self):
         # Create a minimal fake GAPIC with a dummy response.
-        firestore_api = mock.Mock(spec=["commit"])
+        firestore_api = AsyncMock(spec=["commit"])
         firestore_api.commit.return_value = self._make_commit_repsonse()
 
         # Attach the fake GAPIC to a real client.

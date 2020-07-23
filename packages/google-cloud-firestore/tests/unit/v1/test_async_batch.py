@@ -16,6 +16,7 @@ import pytest
 import aiounittest
 
 import mock
+from tests.unit.v1.test__helpers import AsyncMock
 
 
 class TestAsyncWriteBatch(aiounittest.AsyncTestCase):
@@ -43,7 +44,7 @@ class TestAsyncWriteBatch(aiounittest.AsyncTestCase):
         from google.cloud.firestore_v1.types import write
 
         # Create a minimal fake GAPIC with a dummy result.
-        firestore_api = mock.Mock(spec=["commit"])
+        firestore_api = AsyncMock(spec=["commit"])
         timestamp = timestamp_pb2.Timestamp(seconds=1234567, nanos=123456798)
         commit_response = firestore.CommitResponse(
             write_results=[write.WriteResult(), write.WriteResult()],
@@ -87,7 +88,7 @@ class TestAsyncWriteBatch(aiounittest.AsyncTestCase):
         from google.cloud.firestore_v1.types import firestore
         from google.cloud.firestore_v1.types import write
 
-        firestore_api = mock.Mock(spec=["commit"])
+        firestore_api = AsyncMock(spec=["commit"])
         timestamp = timestamp_pb2.Timestamp(seconds=1234567, nanos=123456798)
         commit_response = firestore.CommitResponse(
             write_results=[write.WriteResult(), write.WriteResult()],
@@ -124,7 +125,7 @@ class TestAsyncWriteBatch(aiounittest.AsyncTestCase):
 
     @pytest.mark.asyncio
     async def test_as_context_mgr_w_error(self):
-        firestore_api = mock.Mock(spec=["commit"])
+        firestore_api = AsyncMock(spec=["commit"])
         client = _make_client()
         client._firestore_api_internal = firestore_api
         batch = self._make_one(client)

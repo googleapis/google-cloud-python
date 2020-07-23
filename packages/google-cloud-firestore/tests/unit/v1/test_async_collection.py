@@ -87,7 +87,7 @@ class TestAsyncCollectionReference(aiounittest.AsyncTestCase):
         from google.cloud.firestore_v1._helpers import pbs_for_create
 
         # Create a minimal fake GAPIC add attach it to a real client.
-        firestore_api = mock.Mock(spec=["create_document", "commit"])
+        firestore_api = AsyncMock(spec=["create_document", "commit"])
         write_result = mock.Mock(
             update_time=mock.sentinel.update_time, spec=["update_time"]
         )
@@ -153,7 +153,7 @@ class TestAsyncCollectionReference(aiounittest.AsyncTestCase):
         from google.cloud.firestore_v1.async_document import AsyncDocumentReference
 
         # Create a minimal fake GAPIC with a dummy response.
-        firestore_api = mock.Mock(spec=["commit"])
+        firestore_api = AsyncMock(spec=["commit"])
         write_result = mock.Mock(
             update_time=mock.sentinel.update_time, spec=["update_time"]
         )
