@@ -1,0 +1,12 @@
+{
+    "name": "notebooks",
+    "name_pretty": "AI Platform Notebooks",
+    "product_documentation": "https://cloud.google.com/ai-platform/notebooks/",
+    "client_documentation": "https://googleapis.dev/python/notebooks/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-notebooks",
+    "distribution_name": "google-cloud-notebooks",
+    "api_id": "notebooks.googleapis.com"
+  }  
