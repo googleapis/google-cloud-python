@@ -9,7 +9,7 @@
 
 ### ⚠ BREAKING CHANGES
 
-* migrate to microgenerator (#33)
+* migrate to microgenerator (#33). See the [migration guide](https://github.com/googleapis/python-container/blob/master/UPGRADING.md).
 
 ### Features
 
