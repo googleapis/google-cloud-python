@@ -29,7 +29,7 @@ dependencies = [
     "google-cloud-core >= 1.0.3, < 2.0dev",
     "pytz",
     "libcst >= 0.2.5",
-    "proto-plus >= 0.4.0",
+    "proto-plus >= 1.3.0",
 ]
 extras = {}
 

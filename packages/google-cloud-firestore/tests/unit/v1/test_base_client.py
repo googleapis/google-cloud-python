@@ -300,10 +300,9 @@ class Test__parse_batch_get(unittest.TestCase):
         self.assertIs(snapshot._reference, mock.sentinel.reference)
         self.assertEqual(snapshot._data, {"foo": 1.5, "bar": u"skillz"})
         self.assertTrue(snapshot._exists)
-        # TODO(microgen): v2: datetime with nanos implementation needed.
-        # self.assertEqual(snapshot.read_time, read_time)
-        # self.assertEqual(snapshot.create_time, create_time)
-        # self.assertEqual(snapshot.update_time, update_time)
+        self.assertEqual(snapshot.read_time.timestamp_pb(), read_time)
+        self.assertEqual(snapshot.create_time.timestamp_pb(), create_time)
+        self.assertEqual(snapshot.update_time.timestamp_pb(), update_time)
 
     def test_missing(self):
         from google.cloud.firestore_v1.document import DocumentReference

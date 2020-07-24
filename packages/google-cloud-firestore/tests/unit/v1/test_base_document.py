@@ -15,8 +15,8 @@
 import unittest
 
 import mock
-import datetime
-import pytz
+from proto.datetime_helpers import DatetimeWithNanoseconds
+from google.protobuf import timestamp_pb2
 
 
 class TestBaseDocumentReference(unittest.TestCase):
@@ -274,11 +274,15 @@ class TestDocumentSnapshot(unittest.TestCase):
         client.__hash__.return_value = 234566789
         reference = self._make_reference("hi", "bye", client=client)
         data = {"zoop": 83}
-        update_time = datetime.datetime.fromtimestamp(123456, pytz.utc)
+        update_time = DatetimeWithNanoseconds.from_timestamp_pb(
+            timestamp_pb2.Timestamp(seconds=123456, nanos=123456789)
+        )
         snapshot = self._make_one(
             reference, data, True, None, mock.sentinel.create_time, update_time
         )
-        self.assertEqual(hash(snapshot), hash(reference) + hash(123456) + hash(0))
+        self.assertEqual(
+            hash(snapshot), hash(reference) + hash(123456) + hash(123456789)
+        )
 
     def test__client_property(self):
         reference = self._make_reference(

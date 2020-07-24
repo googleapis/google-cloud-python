@@ -243,12 +243,8 @@ class DocumentSnapshot(object):
         return self._reference == other._reference and self._data == other._data
 
     def __hash__(self):
-        # TODO(microgen, https://github.com/googleapis/proto-plus-python/issues/38):
-        # maybe add datetime_with_nanos to protoplus, revisit
-        # seconds = self.update_time.seconds
-        # nanos = self.update_time.nanos
         seconds = int(self.update_time.timestamp())
-        nanos = 0
+        nanos = self.update_time.nanosecond
         return hash(self._reference) + hash(seconds) + hash(nanos)
 
     @property
