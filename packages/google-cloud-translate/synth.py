@@ -16,6 +16,7 @@
 
 import synthtool as s
 from synthtool import gcp
+from synthtool.languages import python
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
@@ -92,12 +93,18 @@ s.replace(
 # templated_files = gcp.CommonTemplates().py_library(unit_cov_level=100, cov_level=100)
 # Pass dependencies to system tests
 templated_files = common.py_library(
-    unit_cov_level=95, cov_level=95,
+    unit_cov_level=95, cov_level=95, samples=True,
     system_test_dependencies=['test_utils']
 )
 s.move(templated_files)
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition
 s.replace("noxfile.py", '''["']sphinx["']''', '"sphinx<3.0.0"')
+
+# ----------------------------------------------------------------------------
+# Samples templates
+# ----------------------------------------------------------------------------
+
+python.py_samples()
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
