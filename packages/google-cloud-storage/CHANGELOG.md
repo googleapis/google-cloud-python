@@ -4,6 +4,38 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [1.30.0](https://www.github.com/googleapis/python-storage/compare/v1.29.0...v1.30.0) (2020-07-24)
+
+
+### Features
+
+* add timeouts to Blob methods where missing ([#185](https://www.github.com/googleapis/python-storage/issues/185)) ([6eeb855](https://www.github.com/googleapis/python-storage/commit/6eeb855aa0e6a7835d1d4f6e72951e43af22ab57))
+* auto-populate standard headers for non-chunked downloads ([#204](https://www.github.com/googleapis/python-storage/issues/204)) ([d8432cd](https://www.github.com/googleapis/python-storage/commit/d8432cd65a4e9b38eebd1ade2ff00f2f44bb0ef6)), closes [#24](https://www.github.com/googleapis/python-storage/issues/24)
+* migrate to Service Account Credentials API ([#189](https://www.github.com/googleapis/python-storage/issues/189)) ([e4990d0](https://www.github.com/googleapis/python-storage/commit/e4990d06043dbd8d1a417f3a1a67fe8746071f1c))
+
+
+### Bug Fixes
+
+* add multiprocessing.rst to synthool excludes ([#186](https://www.github.com/googleapis/python-storage/issues/186)) ([4d76e38](https://www.github.com/googleapis/python-storage/commit/4d76e3882210ed2818a43256265f6df31348d410))
+
+
+### Documentation
+
+* fix indent in code blocks ([#171](https://www.github.com/googleapis/python-storage/issues/171)) ([62d1543](https://www.github.com/googleapis/python-storage/commit/62d1543e18040b286b23464562aa6eb998074c54)), closes [#170](https://www.github.com/googleapis/python-storage/issues/170)
+* remove doubled word in docstring ([#209](https://www.github.com/googleapis/python-storage/issues/209)) ([7a4e7a5](https://www.github.com/googleapis/python-storage/commit/7a4e7a5974abedb0b7b2e110cacbfcd0a40346b6))
+
+
+### Documentation
+
+* fix indent in code blocks ([#171](https://www.github.com/googleapis/python-storage/issues/171)) ([62d1543](https://www.github.com/googleapis/python-storage/commit/62d1543e18040b286b23464562aa6eb998074c54)), closes [#170](https://www.github.com/googleapis/python-storage/issues/170)
+* remove doubled word in docstring ([#209](https://www.github.com/googleapis/python-storage/issues/209)) ([7a4e7a5](https://www.github.com/googleapis/python-storage/commit/7a4e7a5974abedb0b7b2e110cacbfcd0a40346b6))
+
+
+### Dependencies
+
+* prep for grmp-1.0.0 release ([#211](https://www.github.com/googleapis/python-storage/issues/211)) ([55bae9a](https://www.github.com/googleapis/python-storage/commit/55bae9a0e7c0db512c10c6b3b621cd2ef05c9729))
+
+
 ## [1.29.0](https://www.github.com/googleapis/python-storage/compare/v1.28.1...v1.29.0) (2020-06-09)
 
 
@@ -20,11 +52,11 @@
 
 ### Bug Fixes
 
-* **storage:** add documentaion of list_blobs with user project ([#147](https://www.github.com/googleapis/python-storage/issues/147)) ([792b21f](https://www.github.com/googleapis/python-storage/commit/792b21fd2263b518d56f79cab6a4a1bb06c6e4e7))
-* **storage:** add projection parameter to blob.reload method ([#146](https://www.github.com/googleapis/python-storage/issues/146)) ([ddad20b](https://www.github.com/googleapis/python-storage/commit/ddad20b3c3d2e6bf482e34dad85fa4b0ff90e1b1))
-* **storage:** add unused variables to method generation match ([#152](https://www.github.com/googleapis/python-storage/issues/152)) ([f6574bb](https://www.github.com/googleapis/python-storage/commit/f6574bb84c60c30989d05dba97b423579360cdb2))
-* **storage:** change the method names in snippets file ([#161](https://www.github.com/googleapis/python-storage/issues/161)) ([e516ed9](https://www.github.com/googleapis/python-storage/commit/e516ed9be518e30df4e201d3242f979c0b081086))
-* **storage:** fix upload object with bucket cmek enabled ([#158](https://www.github.com/googleapis/python-storage/issues/158)) ([5f27ffa](https://www.github.com/googleapis/python-storage/commit/5f27ffa3b1b55681453b594a0ef9e2811fc5f0c8))
+* add documentaion of list_blobs with user project ([#147](https://www.github.com/googleapis/python-storage/issues/147)) ([792b21f](https://www.github.com/googleapis/python-storage/commit/792b21fd2263b518d56f79cab6a4a1bb06c6e4e7))
+* add projection parameter to blob.reload method ([#146](https://www.github.com/googleapis/python-storage/issues/146)) ([ddad20b](https://www.github.com/googleapis/python-storage/commit/ddad20b3c3d2e6bf482e34dad85fa4b0ff90e1b1))
+* add unused variables to method generation match ([#152](https://www.github.com/googleapis/python-storage/issues/152)) ([f6574bb](https://www.github.com/googleapis/python-storage/commit/f6574bb84c60c30989d05dba97b423579360cdb2))
+* change the method names in snippets file ([#161](https://www.github.com/googleapis/python-storage/issues/161)) ([e516ed9](https://www.github.com/googleapis/python-storage/commit/e516ed9be518e30df4e201d3242f979c0b081086))
+* fix upload object with bucket cmek enabled ([#158](https://www.github.com/googleapis/python-storage/issues/158)) ([5f27ffa](https://www.github.com/googleapis/python-storage/commit/5f27ffa3b1b55681453b594a0ef9e2811fc5f0c8))
 * set default POST policy scheme to "http" ([#172](https://www.github.com/googleapis/python-storage/issues/172)) ([90c020d](https://www.github.com/googleapis/python-storage/commit/90c020d69a69ebc396416e4086a2e0838932130c))
 
 ### [1.28.1](https://www.github.com/googleapis/python-storage/compare/v1.28.0...v1.28.1) (2020-04-28)
@@ -32,7 +64,7 @@
 
 ### Bug Fixes
 
-* **storage:** anonymous credentials for private bucket ([#107](https://www.github.com/googleapis/python-storage/issues/107)) ([6152ab4](https://www.github.com/googleapis/python-storage/commit/6152ab4067d39ba824f9b6a17b83859dd7236cec))
+* anonymous credentials for private bucket ([#107](https://www.github.com/googleapis/python-storage/issues/107)) ([6152ab4](https://www.github.com/googleapis/python-storage/commit/6152ab4067d39ba824f9b6a17b83859dd7236cec))
 * add bucket name into POST policy conditions ([#118](https://www.github.com/googleapis/python-storage/issues/118)) ([311ecab](https://www.github.com/googleapis/python-storage/commit/311ecabf8acc3018cef0697dd29483693f7722b9))
 
 ## [1.28.0](https://www.github.com/googleapis/python-storage/compare/v1.27.0...v1.28.0) (2020-04-22)
@@ -40,13 +72,13 @@
 
 ### Features
 
-* **storage:** add arguments for *GenerationMatch uploading options ([#111](https://www.github.com/googleapis/python-storage/issues/111)) ([b11aa5f](https://www.github.com/googleapis/python-storage/commit/b11aa5f00753b094580847bc62c154ae0e584dbc))
+* add arguments for *GenerationMatch uploading options ([#111](https://www.github.com/googleapis/python-storage/issues/111)) ([b11aa5f](https://www.github.com/googleapis/python-storage/commit/b11aa5f00753b094580847bc62c154ae0e584dbc))
 
 
 ### Bug Fixes
 
-* **storage:** fix incorrect mtime by UTC offset ([#42](https://www.github.com/googleapis/python-storage/issues/42)) ([76bd652](https://www.github.com/googleapis/python-storage/commit/76bd652a3078d94e03e566b6a387fc488ab26910))
-* **storage:** remove expiration strict conversion ([#106](https://www.github.com/googleapis/python-storage/issues/106)) ([9550dad](https://www.github.com/googleapis/python-storage/commit/9550dad6e63e249110fc9dcda245061b76dacdcf)), closes [#105](https://www.github.com/googleapis/python-storage/issues/105)
+* fix incorrect mtime by UTC offset ([#42](https://www.github.com/googleapis/python-storage/issues/42)) ([76bd652](https://www.github.com/googleapis/python-storage/commit/76bd652a3078d94e03e566b6a387fc488ab26910))
+* remove expiration strict conversion ([#106](https://www.github.com/googleapis/python-storage/issues/106)) ([9550dad](https://www.github.com/googleapis/python-storage/commit/9550dad6e63e249110fc9dcda245061b76dacdcf)), closes [#105](https://www.github.com/googleapis/python-storage/issues/105)
 
 ## [1.27.0](https://www.github.com/googleapis/python-storage/compare/v1.26.0...v1.27.0) (2020-04-01)
 
@@ -54,35 +86,35 @@
 ### Features
 
 * generate signed URLs for blobs/buckets using virtual hostname ([#58](https://www.github.com/googleapis/python-storage/issues/58)) ([23df542](https://www.github.com/googleapis/python-storage/commit/23df542d0669852b05139023d5ef1ae14a09f4c7))
-* **storage:** Add cname support for V4 signature ([#72](https://www.github.com/googleapis/python-storage/issues/72)) ([cc853af](https://www.github.com/googleapis/python-storage/commit/cc853af6bf8e44e5b16e8cdfb3a275629ffb1f27))
-* **storage:** add conformance tests for virtual hosted style signed URLs ([#83](https://www.github.com/googleapis/python-storage/issues/83)) ([5adc8b0](https://www.github.com/googleapis/python-storage/commit/5adc8b0e6ffe28185a4085cd1fc8c1b4998094aa))
-* **storage:** add get notification method ([#77](https://www.github.com/googleapis/python-storage/issues/77)) ([f602252](https://www.github.com/googleapis/python-storage/commit/f6022521bee0824e1b291211703afc5eae6c6891))
-* **storage:** improve v4 signature query parameters encoding ([#48](https://www.github.com/googleapis/python-storage/issues/48)) ([8df0b55](https://www.github.com/googleapis/python-storage/commit/8df0b554a1904787889309707f08c6b8683cad44))
+* Add cname support for V4 signature ([#72](https://www.github.com/googleapis/python-storage/issues/72)) ([cc853af](https://www.github.com/googleapis/python-storage/commit/cc853af6bf8e44e5b16e8cdfb3a275629ffb1f27))
+* add conformance tests for virtual hosted style signed URLs ([#83](https://www.github.com/googleapis/python-storage/issues/83)) ([5adc8b0](https://www.github.com/googleapis/python-storage/commit/5adc8b0e6ffe28185a4085cd1fc8c1b4998094aa))
+* add get notification method ([#77](https://www.github.com/googleapis/python-storage/issues/77)) ([f602252](https://www.github.com/googleapis/python-storage/commit/f6022521bee0824e1b291211703afc5eae6c6891))
+* improve v4 signature query parameters encoding ([#48](https://www.github.com/googleapis/python-storage/issues/48)) ([8df0b55](https://www.github.com/googleapis/python-storage/commit/8df0b554a1904787889309707f08c6b8683cad44))
 
 
 ### Bug Fixes
 
-* **storage:** fix blob metadata to None regression ([#60](https://www.github.com/googleapis/python-storage/issues/60)) ([a834d1b](https://www.github.com/googleapis/python-storage/commit/a834d1b54aa96152ced4d841c4e0c241acd2d8d8))
+* fix blob metadata to None regression ([#60](https://www.github.com/googleapis/python-storage/issues/60)) ([a834d1b](https://www.github.com/googleapis/python-storage/commit/a834d1b54aa96152ced4d841c4e0c241acd2d8d8))
 * add classifer for Python 3.8 ([#63](https://www.github.com/googleapis/python-storage/issues/63)) ([1b9b6bc](https://www.github.com/googleapis/python-storage/commit/1b9b6bc2601ee336a8399266852fb850e368b30a))
 * make v4 signing formatting consistent w/ spec ([#56](https://www.github.com/googleapis/python-storage/issues/56)) ([8712da8](https://www.github.com/googleapis/python-storage/commit/8712da84c93600a736e72a097c42a49b4724347d))
 * use correct IAM object admin role ([#71](https://www.github.com/googleapis/python-storage/issues/71)) ([2e27edd](https://www.github.com/googleapis/python-storage/commit/2e27edd3fe65cd5e17c12bf11f2b58f611937d61))
-* **storage:** remove docstring of retrun in reload method ([#78](https://www.github.com/googleapis/python-storage/issues/78)) ([4abeb1c](https://www.github.com/googleapis/python-storage/commit/4abeb1c0810c4e5d716758536da9fc204fa4c2a9))
-* **storage:** use OrderedDict while encoding POST policy ([#95](https://www.github.com/googleapis/python-storage/issues/95)) ([df560e1](https://www.github.com/googleapis/python-storage/commit/df560e178369a6d03140e412a25af6ec7444f5a1))
+* remove docstring of retrun in reload method ([#78](https://www.github.com/googleapis/python-storage/issues/78)) ([4abeb1c](https://www.github.com/googleapis/python-storage/commit/4abeb1c0810c4e5d716758536da9fc204fa4c2a9))
+* use OrderedDict while encoding POST policy ([#95](https://www.github.com/googleapis/python-storage/issues/95)) ([df560e1](https://www.github.com/googleapis/python-storage/commit/df560e178369a6d03140e412a25af6ec7444f5a1))
 
 ## [1.26.0](https://www.github.com/googleapis/python-storage/compare/v1.25.0...v1.26.0) (2020-02-12)
 
 
 ### Features
 
-* **storage:** add support for signing URLs using token ([#9889](https://www.github.com/googleapis/google-cloud-python/issues/9889)) ([ad280bf](https://www.github.com/googleapis/python-storage/commit/ad280bf506d3d7a37c402d06eac07422a5fe80af))
+* add support for signing URLs using token ([#9889](https://www.github.com/googleapis/google-cloud-python/issues/9889)) ([ad280bf](https://www.github.com/googleapis/python-storage/commit/ad280bf506d3d7a37c402d06eac07422a5fe80af))
 * add timeout parameter to public methods ([#44](https://www.github.com/googleapis/python-storage/issues/44)) ([63abf07](https://www.github.com/googleapis/python-storage/commit/63abf0778686df1caa001270dd22f9df0daf0c78))
 
 
 ### Bug Fixes
 
-* **storage:** fix documentation of max_result parameter in list_blob ([#43](https://www.github.com/googleapis/python-storage/issues/43)) ([ff15f19](https://www.github.com/googleapis/python-storage/commit/ff15f19d3a5830acdd540181dc6e9d07ca7d88ee))
-* **storage:** fix system test and change scope for iam access token ([#47](https://www.github.com/googleapis/python-storage/issues/47)) ([bc5375f](https://www.github.com/googleapis/python-storage/commit/bc5375f4c88f7e6ad1afbe7667c49d9a846e9757))
-* **tests:** remove low version error assertion from iam conditions system tests ([#53](https://www.github.com/googleapis/python-storage/issues/53)) ([8904aee](https://www.github.com/googleapis/python-storage/commit/8904aee9ad5dc01ab83e1460b6f186a739668eb7))
+* fix documentation of max_result parameter in list_blob ([#43](https://www.github.com/googleapis/python-storage/issues/43)) ([ff15f19](https://www.github.com/googleapis/python-storage/commit/ff15f19d3a5830acdd540181dc6e9d07ca7d88ee))
+* fix system test and change scope for iam access token ([#47](https://www.github.com/googleapis/python-storage/issues/47)) ([bc5375f](https://www.github.com/googleapis/python-storage/commit/bc5375f4c88f7e6ad1afbe7667c49d9a846e9757))
+* remove low version error assertion from iam conditions system tests ([#53](https://www.github.com/googleapis/python-storage/issues/53)) ([8904aee](https://www.github.com/googleapis/python-storage/commit/8904aee9ad5dc01ab83e1460b6f186a739668eb7))
 
 ## 1.25.0
 
