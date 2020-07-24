@@ -6,4 +6,4 @@
 
 
 # The python-samples-owners team is the default owner for samples
-/samples/                       @telpirion @sirtorry @googleapis/python-samples-owners
+/samples/**/*.py                       @telpirion @sirtorry @googleapis/python-samples-owners
