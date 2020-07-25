@@ -1226,10 +1226,10 @@ def test_download_arrow_tabledata_list_unknown_field_type(module_under_test):
     assert len(result.columns) == 2
     col = result.columns[0]
     assert type(col) is pyarrow.lib.Int64Array
-    assert list(col) == [1, 10, 100]
+    assert col.to_pylist() == [1, 10, 100]
     col = result.columns[1]
     assert type(col) is pyarrow.lib.DoubleArray
-    assert list(col) == [2.2, 22.22, 222.222]
+    assert col.to_pylist() == [2.2, 22.22, 222.222]
 
 
 @pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
@@ -1261,10 +1261,10 @@ def test_download_arrow_tabledata_list_known_field_type(module_under_test):
     assert len(result.columns) == 2
     col = result.columns[0]
     assert type(col) is pyarrow.lib.Int64Array
-    assert list(col) == [1, 10, 100]
+    assert col.to_pylist() == [1, 10, 100]
     col = result.columns[1]
     assert type(col) is pyarrow.lib.StringArray
-    assert list(col) == ["2.2", "22.22", "222.222"]
+    assert col.to_pylist() == ["2.2", "22.22", "222.222"]
 
 
 @pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
@@ -1288,10 +1288,10 @@ def test_download_arrow_tabledata_list_dict_sequence_schema(module_under_test):
     assert len(result.columns) == 2
     col = result.columns[0]
     assert type(col) is pyarrow.lib.Int64Array
-    assert list(col) == [1, 10, 100]
+    assert col.to_pylist() == [1, 10, 100]
     col = result.columns[1]
     assert type(col) is pyarrow.lib.StringArray
-    assert list(col) == ["2.2", "22.22", "222.222"]
+    assert col.to_pylist() == ["2.2", "22.22", "222.222"]
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
