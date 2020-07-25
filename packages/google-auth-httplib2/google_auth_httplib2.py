@@ -260,3 +260,13 @@ class AuthorizedHttp(object):
     def timeout(self, value):
         """Proxy to httplib2.Http.timeout."""
         self.http.timeout = value
+
+    @property
+    def redirect_codes(self):
+        """Proxy to httplib2.Http.redirect_codes."""
+        return self.http.redirect_codes
+
+    @redirect_codes.setter
+    def redirect_codes(self, value):
+        """Proxy to httplib2.Http.redirect_codes."""
+        self.http.redirect_codes = value

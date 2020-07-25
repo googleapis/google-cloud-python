@@ -117,6 +117,16 @@ class TestAuthorizedHttp(object):
         authed_http.timeout = mock.sentinel.timeout
         assert authed_http.http.timeout == mock.sentinel.timeout
 
+    def test_redirect_codes(self):
+        authed_http = google_auth_httplib2.AuthorizedHttp(
+            mock.sentinel.credentials
+        )
+
+        assert authed_http.redirect_codes == authed_http.http.redirect_codes
+
+        authed_http.redirect_codes = mock.sentinel.redirect_codes
+        assert authed_http.http.redirect_codes == mock.sentinel.redirect_codes
+
     def test_add_certificate(self):
         authed_http = google_auth_httplib2.AuthorizedHttp(
             mock.sentinel.credentials,
