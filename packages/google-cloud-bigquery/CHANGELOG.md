@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+### [1.26.1](https://www.github.com/googleapis/python-bigquery/compare/v1.26.0...v1.26.1) (2020-07-25)
+
+### Documentation
+
+* Migrated code samples from
+  https://github.com/GoogleCloudPlatform/python-docs-samples
+
+### Bug Fixes
+
+* RowIterator.to_arrow() error when BQ Storage client cannot be created ([#181](https://www.github.com/googleapis/python-bigquery/issues/181)) ([7afa3d7](https://www.github.com/googleapis/python-bigquery/commit/7afa3d70f8564dcdacda2b9acbbd7207b50b186e))
+
+### Dependencies
+
+* Updated version constraints on grmp dependency in anticipation of 1.0.0 release
+  ([#189](https://github.com/googleapis/python-bigquery/pull/189))
+
 ## [1.26.0](https://www.github.com/googleapis/python-bigquery/compare/v1.25.0...v1.26.0) (2020-07-20)
 
 
