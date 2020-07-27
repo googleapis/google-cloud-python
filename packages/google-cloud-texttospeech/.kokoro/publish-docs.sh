@@ -18,26 +18,16 @@ set -eo pipefail
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
 
-cd github/python-texttospeech
-
-# Remove old nox
-python3.6 -m pip uninstall --yes --quiet nox-automation
+export PATH="${HOME}/.local/bin:${PATH}"
 
 # Install nox
-python3.6 -m pip install --upgrade --quiet nox
-python3.6 -m nox --version
+python3 -m pip install --user --upgrade --quiet nox
+python3 -m nox --version
 
 # build docs
 nox -s docs
 
-python3 -m pip install gcp-docuploader
-
-# install a json parser
-sudo apt-get update
-sudo apt-get -y install software-properties-common
-sudo add-apt-repository universe
-sudo apt-get update
-sudo apt-get -y install jq
+python3 -m pip install --user gcp-docuploader
 
 # create metadata
 python3 -m docuploader create-metadata \
@@ -52,4 +42,4 @@ python3 -m docuploader create-metadata \
 cat docs.metadata
 
 # upload docs
-python3 -m docuploader upload docs/_build/html --metadata-file docs.metadata --staging-bucket docs-staging
+python3 -m docuploader upload docs/_build/html --metadata-file docs.metadata --staging-bucket "${STAGING_BUCKET}"
