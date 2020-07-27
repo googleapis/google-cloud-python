@@ -15,25 +15,25 @@
 # limitations under the License.
 #
 
-from .services.iam_credentials import IAMCredentialsClient
-from .types.common import GenerateAccessTokenRequest
-from .types.common import GenerateAccessTokenResponse
-from .types.common import GenerateIdTokenRequest
-from .types.common import GenerateIdTokenResponse
-from .types.common import SignBlobRequest
-from .types.common import SignBlobResponse
-from .types.common import SignJwtRequest
-from .types.common import SignJwtResponse
+from .common import (
+    GenerateAccessTokenRequest,
+    GenerateAccessTokenResponse,
+    SignBlobRequest,
+    SignBlobResponse,
+    SignJwtRequest,
+    SignJwtResponse,
+    GenerateIdTokenRequest,
+    GenerateIdTokenResponse,
+)
 
 
 __all__ = (
     "GenerateAccessTokenRequest",
     "GenerateAccessTokenResponse",
-    "GenerateIdTokenRequest",
-    "GenerateIdTokenResponse",
     "SignBlobRequest",
     "SignBlobResponse",
     "SignJwtRequest",
     "SignJwtResponse",
-    "IAMCredentialsClient",
+    "GenerateIdTokenRequest",
+    "GenerateIdTokenResponse",
 )

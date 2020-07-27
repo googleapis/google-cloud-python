@@ -30,47 +30,52 @@ library = gapic.py_library(
     include_protos=True,
 )
 
-excludes = [
-    "README.rst",
-    "setup.py",
-    "docs/index.rst",
-    "nox.py",
-]
-s.copy(library, excludes=excludes)
+s.move(library / "google/cloud/iam_credentials_v1/proto")
+s.move(library / "google/iam/credentials/", "google/cloud/iam_credentials")
+s.move(library / "google/iam/credentials_v1", "google/cloud/iam_credentials_v1")
+s.move(library / "tests")
+s.move(library / "scripts")
+s.move(library / "docs", excludes=[library / "docs/index.rst"])
 
+# Fix namespace
 s.replace(
-    "google/**/*.py",
-    "google-cloud-iam-credentials",
+    "google/cloud/**/*.py",
+    "google.iam.credentials_v1",
+    "google.cloud.iam_credentials_v1",
+)
+s.replace(
+    "tests/unit/gapic/**/*.py",
+    "google.iam.credentials_v1",
+    "google.cloud.iam_credentials_v1",
+)
+s.replace(
+    "docs/**/*.rst",
+    "google.iam.credentials_v1",
+    "google.cloud.iam_credentials_v1",
+)
+
+# Rename package to `google-cloud-build`
+s.replace(
+    ["**/*.rst", "*/**/*.py", "**/*.md"],
+    "google-iam-credentials",
     "google-cloud-iam"
-)
-s.replace(
-    "docs/**/*.py",
-    "google-cloud-iam-credentials",
-    "google-cloud-iam"
-)
-
-s.replace(
-    "**/*.py",
-    "from google\.iam\.credentials\.v1 import common_pb2",
-    "from google.cloud.iam_credentials_v1.proto import common_pb2"
-)
-s.replace(
-    "**/*.py",
-    "from google\.iam\.credentials\.v1 import iamcredentials_pb2_grpc",
-    "from google.cloud.iam_credentials_v1.proto import iamcredentials_pb2_grpc"
-)
-
-s.replace(
-    "google/cloud/iam_credentials_v1/proto/common_pb2.py",
-    "\"\"\"Attributes:\n",
-    "\"\"\"\nAttributes:\n"
 )
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=76)
-s.move(templated_files)
+templated_files = common.py_library(
+    samples=False,  # set to True only if there are samples
+    microgenerator=True,
+    cov_level=99,
+)
+s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
+
+s.replace(
+    "noxfile.py",
+    "google.cloud.iam",
+    "google.cloud.iam_credentials_v1",
+)
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition
 s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
