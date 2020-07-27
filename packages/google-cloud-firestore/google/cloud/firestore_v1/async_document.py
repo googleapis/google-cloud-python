@@ -120,7 +120,7 @@ class AsyncDocumentReference(BaseDocumentReference):
 
         .. code-block:: python
 
-           >>> snapshot = document.get()
+           >>> snapshot = await document.get()
            >>> snapshot.to_dict()
            {
                'foo': {
@@ -138,14 +138,14 @@ class AsyncDocumentReference(BaseDocumentReference):
            ...         'quux': 800,
            ...     },
            ... }
-           >>> document.update(field_updates)
+           >>> await document.update(field_updates)
 
         then all of ``foo`` will be overwritten on the server and the new
         value will be
 
         .. code-block:: python
 
-           >>> snapshot = document.get()
+           >>> snapshot = await document.get()
            >>> snapshot.to_dict()
            {
                'foo': {
@@ -162,14 +162,14 @@ class AsyncDocumentReference(BaseDocumentReference):
            >>> field_updates = {
            ...     'foo.quux': 800,
            ... }
-           >>> document.update(field_updates)
+           >>> await document.update(field_updates)
 
         then only ``foo.quux`` will be updated on the server and the
         field ``foo.bar`` will remain intact:
 
         .. code-block:: python
 
-           >>> snapshot = document.get()
+           >>> snapshot = await document.get()
            >>> snapshot.to_dict()
            {
                'foo': {
@@ -193,13 +193,13 @@ class AsyncDocumentReference(BaseDocumentReference):
            >>> field_updates = {
            ...     'other': firestore.DELETE_FIELD,
            ... }
-           >>> document.update(field_updates)
+           >>> await document.update(field_updates)
 
         would update the value on the server to:
 
         .. code-block:: python
 
-           >>> snapshot = document.get()
+           >>> snapshot = await document.get()
            >>> snapshot.to_dict()
            {
                'foo': {
@@ -218,13 +218,13 @@ class AsyncDocumentReference(BaseDocumentReference):
            >>> field_updates = {
            ...     'foo.now': firestore.SERVER_TIMESTAMP,
            ... }
-           >>> document.update(field_updates)
+           >>> await document.update(field_updates)
 
         would update the value on the server to:
 
         .. code-block:: python
 
-           >>> snapshot = document.get()
+           >>> snapshot = await document.get()
            >>> snapshot.to_dict()
            {
                'foo': {
