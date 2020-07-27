@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-iam/compare/v1.0.1...v2.0.0) (2020-07-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate to microgenerator (#26)
+
+### Features
+
+* migrate to microgenerator ([#26](https://www.github.com/googleapis/python-iam/issues/26)) ([60e221b](https://www.github.com/googleapis/python-iam/commit/60e221b010c18f12b156c2e282edc647d178a0f2))
+
 ### [1.0.1](https://www.github.com/googleapis/python-iam/compare/v1.0.0...v1.0.1) (2020-06-29)
 
 
