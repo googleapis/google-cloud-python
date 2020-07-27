@@ -1,0 +1,13 @@
+{
+    "name": "auditlog",
+    "name_pretty": "Audit Log",
+    "product_documentation": "https://github.com/googleapis/python-audit-log",
+    "client_documentation": "https://github.com/googleapis/python-audit-log",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-audit-log",
+    "distribution_name": "google-cloud-audit-log",
+    "api_id": ""
+  }
+  

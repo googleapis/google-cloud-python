@@ -1,0 +1,24 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "sso://devrel/cloud/libraries/python/python-audit-log"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "5506723fef367557d83cf072d0c18020c049fcb8"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "5506723fef367557d83cf072d0c18020c049fcb8"
+      }
+    }
+  ]
+}
