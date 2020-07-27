@@ -98,9 +98,10 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                 scopes=self.AUTH_SCOPES,
             )
 
+        self._stubs = {}  # type: Dict[str, Callable]
+
         # Run the base constructor.
         super().__init__(host=host, credentials=credentials)
-        self._stubs = {}  # type: Dict[str, Callable]
 
 
     @classmethod

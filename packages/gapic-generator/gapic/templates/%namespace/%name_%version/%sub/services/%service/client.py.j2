@@ -221,6 +221,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 quota_project_id=client_options.quota_project_id,
             )
 
+
     {% for method in service.methods.values() -%}
     def {{ method.name|snake_case }}(self,
             {%- if not method.client_streaming %}
@@ -317,25 +318,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.{{ method.name|snake_case }},
-            {%- if method.retry %}
-            default_retry=retries.Retry(
-                {% if method.retry.initial_backoff %}initial={{ method.retry.initial_backoff }},{% endif %}
-                {% if method.retry.max_backoff %}maximum={{ method.retry.max_backoff }},{% endif %}
-                {% if method.retry.backoff_multiplier %}multiplier={{ method.retry.backoff_multiplier }},{% endif %}
-                predicate=retries.if_exception_type(
-                    {%- filter sort_lines %}
-                    {%- for ex in method.retry.retryable_exceptions %}
-                    exceptions.{{ ex.__name__ }},
-                    {%- endfor %}
-                    {%- endfilter %}
-                ),
-            ),
-            {%- endif %}
-            default_timeout={{ method.timeout }},
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.{{ method.name|snake_case}}]
         {%- if method.field_headers %}
 
         # Certain fields should be provided within the metadata header;

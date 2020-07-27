@@ -3,9 +3,11 @@
 {% block content %}
 import abc
 import typing
+import pkg_resources
 
 from google import auth
 from google.api_core import exceptions  # type: ignore
+from google.api_core import gapic_v1    # type: ignore
 {%- if service.has_lro %}
 from google.api_core import operations_v1  # type: ignore
 {%- endif %}
@@ -21,6 +23,15 @@ from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
 {% endif %}
 {% endfilter %}
+
+try:
+    _client_info = gapic_v1.client_info.ClientInfo(
+        gapic_version=pkg_resources.get_distribution(
+            '{{ api.naming.warehouse_package_name }}',
+        ).version,
+    )
+except pkg_resources.DistributionNotFound:
+    _client_info = gapic_v1.client_info.ClientInfo()
 
 class {{ service.name }}Transport(abc.ABC):
     """Abstract transport class for {{ service.name }}."""
@@ -79,6 +90,38 @@ class {{ service.name }}Transport(abc.ABC):
 
         # Save the credentials.
         self._credentials = credentials
+
+        # Lifted into its own function so it can be stubbed out during tests.
+        self._prep_wrapped_messages()
+
+
+    def _prep_wrapped_messages(self):
+        # Precompute the wrapped methods.
+        self._wrapped_methods = {
+            {% for method in service.methods.values() -%}
+            self.{{ method.name|snake_case }}: gapic_v1.method.wrap_method(
+                self.{{ method.name|snake_case }},
+                {%- if method.retry %}
+                default_retry=retries.Retry(
+                    {% if method.retry.initial_backoff %}initial={{ method.retry.initial_backoff }},{% endif %}
+                    {% if method.retry.max_backoff %}maximum={{ method.retry.max_backoff }},{% endif %}
+                    {% if method.retry.backoff_multiplier %}multiplier={{ method.retry.backoff_multiplier }},{% endif %}
+                    predicate=retries.if_exception_type(
+                        {%- filter sort_lines %}
+                        {%- for ex in method.retry.retryable_exceptions %}
+                        exceptions.{{ ex.__name__ }},
+                        {%- endfor %}
+                        {%- endfilter %}
+                    ),
+                ),
+                {%- endif %}
+                default_timeout={{ method.timeout }},
+                client_info=_client_info,
+            ),
+            {% endfor %} {# precomputed wrappers loop #}
+        }
+
+
     {%- if service.has_lro %}
 
     @property

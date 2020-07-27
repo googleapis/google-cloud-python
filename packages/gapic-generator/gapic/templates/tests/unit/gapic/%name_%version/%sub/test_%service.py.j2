@@ -1008,9 +1008,11 @@ def test_{{ service.name|snake_case }}_base_transport_error():
 
 def test_{{ service.name|snake_case }}_base_transport():
     # Instantiate the base transport.
-    transport = transports.{{ service.name }}Transport(
-        credentials=credentials.AnonymousCredentials(),
-    )
+    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}Transport.__init__') as Transport:
+        Transport.return_value = None
+        transport = transports.{{ service.name }}Transport(
+            credentials=credentials.AnonymousCredentials(),
+        )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
@@ -1038,7 +1040,8 @@ def test_{{ service.name|snake_case }}_base_transport():
 
 def test_{{ service.name|snake_case }}_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(auth, 'load_credentials_from_file') as load_creds:
+    with mock.patch.object(auth, 'load_credentials_from_file') as load_creds, mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}Transport._prep_wrapped_messages') as Transport:
+        Transport.return_value = None
         load_creds.return_value = (credentials.AnonymousCredentials(), None)
         transport = transports.{{ service.name }}Transport(
             credentials_file="credentials.json",
