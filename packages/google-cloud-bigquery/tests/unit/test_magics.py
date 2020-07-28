@@ -772,9 +772,16 @@ def test_bigquery_magic_w_missing_query():
     ip.extension_manager.load_extension("google.cloud.bigquery")
     magics.context._project = None
 
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    default_patch = mock.patch(
+        "google.auth.default", return_value=(credentials_mock, "general-project")
+    )
+
     cell_body = "   \n    \n   \t\t  \n  "
 
-    with io.capture_output() as captured_io:
+    with io.capture_output() as captured_io, default_patch:
         ip.run_cell_magic("bigquery", "df", cell_body)
 
     output = captured_io.stderr

@@ -221,7 +221,7 @@ class TestClient(unittest.TestCase):
         from concurrent.futures import TimeoutError
         from google.cloud.bigquery.retry import DEFAULT_RETRY
 
-        client = self._make_one()
+        client = self._make_one(project=self.PROJECT)
 
         api_request_patcher = mock.patch.object(
             client._connection, "api_request", side_effect=[TimeoutError, "result"],
@@ -674,7 +674,7 @@ class TestClient(unittest.TestCase):
         mock_client.assert_called_once_with(credentials=creds)
 
     def test_create_bqstorage_client_missing_dependency(self):
-        client = self._make_one()
+        client = self._make_one(project=self.PROJECT)
 
         def fail_bqstorage_import(name, globals, locals, fromlist, level):
             # NOTE: *very* simplified, assuming a straightforward absolute import
