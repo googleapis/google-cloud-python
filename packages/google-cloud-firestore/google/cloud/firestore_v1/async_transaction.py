@@ -85,7 +85,7 @@ class AsyncTransaction(async_batch.AsyncWriteBatch, BaseTransaction):
             msg = _CANT_BEGIN.format(self._id)
             raise ValueError(msg)
 
-        transaction_response = self._client._firestore_api.begin_transaction(
+        transaction_response = await self._client._firestore_api.begin_transaction(
             request={
                 "database": self._client._database_string,
                 "options": self._options_protobuf(retry_id),
@@ -105,7 +105,7 @@ class AsyncTransaction(async_batch.AsyncWriteBatch, BaseTransaction):
 
         try:
             # NOTE: The response is just ``google.protobuf.Empty``.
-            self._client._firestore_api.rollback(
+            await self._client._firestore_api.rollback(
                 request={
                     "database": self._client._database_string,
                     "transaction": self._id,
@@ -148,7 +148,7 @@ class AsyncTransaction(async_batch.AsyncWriteBatch, BaseTransaction):
             .DocumentSnapshot: The next document snapshot that fulfills the
             query, or :data:`None` if the document does not exist.
         """
-        return self._client.get_all(references, transaction=self)
+        return await self._client.get_all(references, transaction=self)
 
     async def get(self, ref_or_query):
         """
@@ -160,9 +160,9 @@ class AsyncTransaction(async_batch.AsyncWriteBatch, BaseTransaction):
             query, or :data:`None` if the document does not exist.
         """
         if isinstance(ref_or_query, AsyncDocumentReference):
-            return self._client.get_all([ref_or_query], transaction=self)
+            return await self._client.get_all([ref_or_query], transaction=self)
         elif isinstance(ref_or_query, AsyncQuery):
-            return ref_or_query.stream(transaction=self)
+            return await ref_or_query.stream(transaction=self)
         else:
             raise ValueError(
                 'Value for argument "ref_or_query" must be a AsyncDocumentReference or a AsyncQuery.'
@@ -192,7 +192,7 @@ class _AsyncTransactional(_BaseTransactional):
 
         Args:
             transaction
-                (:class:`~google.cloud.firestore_v1.transaction.Transaction`):
+                (:class:`~google.cloud.firestore_v1.async_transaction.AsyncTransaction`):
                 A transaction to execute the callable within.
             args (Tuple[Any, ...]): The extra positional arguments to pass
                 along to the wrapped callable.
@@ -330,7 +330,7 @@ async def _commit_with_retry(client, write_pbs, transaction_id):
     current_sleep = _INITIAL_SLEEP
     while True:
         try:
-            return client._firestore_api.commit(
+            return await client._firestore_api.commit(
                 request={
                     "database": client._database_string,
                     "writes": write_pbs,
