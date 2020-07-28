@@ -44,4 +44,4 @@ pip-log.txt
 .idea
 
 # Docs build artifacts
-docs_build/doctest/
+docs/_build
