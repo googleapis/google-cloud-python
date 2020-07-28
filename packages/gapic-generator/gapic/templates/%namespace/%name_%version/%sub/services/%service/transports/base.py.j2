@@ -8,6 +8,7 @@ import pkg_resources
 from google import auth
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1    # type: ignore
+from google.api_core import retry as retries  # type: ignore
 {%- if service.has_lro %}
 from google.api_core import operations_v1  # type: ignore
 {%- endif %}
