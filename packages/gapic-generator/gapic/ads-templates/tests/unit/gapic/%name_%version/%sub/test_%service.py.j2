@@ -201,7 +201,7 @@ def test_{{ service.client_name|snake_case }}_client_options_from_dict():
 
 
 {% for method in service.methods.values() -%}
-def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
+def test_{{ method.name|snake_case }}(transport: str = 'grpc', request_type={{ method.input.ident }}):
     client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(),
         transport=transport,
@@ -209,7 +209,7 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = {{ method.input.ident }}()
+    request = request_type()
     {% if method.client_streaming %}
     requests = [request]
     {% endif %}
@@ -250,7 +250,7 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
         {% if method.client_streaming %}
         assert next(args[0]) == request
         {% else %}
-        assert args[0] == request
+        assert args[0] == {{ method.input.ident }}()
         {% endif %}
 
     # Establish that the response is the type that we expect.
@@ -274,6 +274,11 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc'):
     {% endif -%} {# end oneof/optional #}
     {% endfor %}
     {% endif %}
+
+
+def test_{{ method.name|snake_case }}_from_dict():
+    test_{{ method.name|snake_case }}(request_type=dict)
+
 
 {% if method.field_headers and not method.client_streaming %}
 def test_{{ method.name|snake_case }}_field_headers():

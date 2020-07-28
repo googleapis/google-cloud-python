@@ -287,24 +287,28 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             request = {{ method.input.ident }}()
         {% endif -%}{# Cross-package req and flattened fields #}
         {%- else %}
-        request = {{ method.input.ident }}(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a {{ method.input.ident }}.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, {{ method.input.ident }}):
+            request = {{ method.input.ident }}(request)
         {% endif %} {# different request package #}
-
         {#- Vanilla python protobuf wrapper types cannot _set_ repeated fields #}
-        {% if method.flattened_fields -%}
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        {% endif -%}
-        {%- for key, field in method.flattened_fields.items() if not(field.repeated and method.input.ident.package != method.ident.package) %}
-        if {{ field.name }} is not None:
-            request.{{ key }} = {{ field.name }}
-        {%- endfor %}
-        {# They can be _extended_, however -#}
-        {%- for key, field in method.flattened_fields.items() if (field.repeated and method.input.ident.package != method.ident.package) %}
-        if {{ field.name }}:
-            request.{{ key }}.extend({{ field.name }})
-        {%- endfor %}
-        {%- endif %}
+            {% if method.flattened_fields -%}
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            {% endif -%}
+            {%- for key, field in method.flattened_fields.items() if not(field.repeated and method.input.ident.package != method.ident.package) %}
+            if {{ field.name }} is not None:
+                request.{{ key }} = {{ field.name }}
+            {%- endfor %}
+            {# They can be _extended_, however -#}
+            {%- for key, field in method.flattened_fields.items() if (field.repeated and method.input.ident.package != method.ident.package) %}
+            if {{ field.name }}:
+                request.{{ key }}.extend({{ field.name }})
+            {%- endfor %}
+            {%- endif %}
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
