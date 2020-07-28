@@ -17,11 +17,13 @@
 # Add required env vars here.
 required_envvars+=(
     "STAGING_BUCKET"
+    "V2_STAGING_BUCKET"
 )
 
 # Add env vars which are passed down into the container here.
 pass_down_envvars+=(
     "STAGING_BUCKET"
+    "V2_STAGING_BUCKET"
 )
 
 # Prevent unintentional override on the default image.
