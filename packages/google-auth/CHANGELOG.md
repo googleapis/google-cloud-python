@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [1.20.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.19.2...v1.20.0) (2020-07-23)
+
+
+### Features
+
+* Add debug logging that can help with diagnosing auth lib. path ([#473](https://www.github.com/googleapis/google-auth-library-python/issues/473)) ([ecd88d4](https://www.github.com/googleapis/google-auth-library-python/commit/ecd88d4f0efc5c619ebd3e3fa7e2472f11c63452))
+* Show the transport exception that happened for GCE Metadata ([#474](https://www.github.com/googleapis/google-auth-library-python/issues/474)) ([23919bb](https://www.github.com/googleapis/google-auth-library-python/commit/23919bb60e5f9d9b73644e9a2e127d4d1dd68e8c))
+* **packaging:** add support for Python 3.8 ([#569](https://www.github.com/googleapis/google-auth-library-python/issues/569)) ([1aad54a](https://www.github.com/googleapis/google-auth-library-python/commit/1aad54af6b1d5da73d7471cdbfaf0d0b37c5fde6)), closes [#568](https://www.github.com/googleapis/google-auth-library-python/issues/568)
+
 ### [1.19.2](https://www.github.com/googleapis/google-auth-library-python/compare/v1.19.1...v1.19.2) (2020-07-17)
 
 
