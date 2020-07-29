@@ -1280,12 +1280,16 @@ class TestStorageSignURLs(unittest.TestCase):
     def test_create_signed_read_url_v2_w_access_token(self):
         client = iam_credentials_v1.IAMCredentialsClient()
         service_account_email = Config.CLIENT._credentials.service_account_email
-        name = client.service_account_path("-", service_account_email)
+        name = google.api_core.path_template.expand(
+            "projects/{project}/serviceAccounts/{service_account}",
+            project="-",
+            service_account=service_account_email,
+        )
         scope = [
             "https://www.googleapis.com/auth/devstorage.read_write",
             "https://www.googleapis.com/auth/iam",
         ]
-        response = client.generate_access_token(name, scope)
+        response = client.generate_access_token(name=name, scope=scope)
         self._create_signed_read_url_helper(
             service_account_email=service_account_email,
             access_token=response.access_token,
@@ -1294,12 +1298,16 @@ class TestStorageSignURLs(unittest.TestCase):
     def test_create_signed_read_url_v4_w_access_token(self):
         client = iam_credentials_v1.IAMCredentialsClient()
         service_account_email = Config.CLIENT._credentials.service_account_email
-        name = client.service_account_path("-", service_account_email)
+        name = google.api_core.path_template.expand(
+            "projects/{project}/serviceAccounts/{service_account}",
+            project="-",
+            service_account=service_account_email,
+        )
         scope = [
             "https://www.googleapis.com/auth/devstorage.read_write",
             "https://www.googleapis.com/auth/iam",
         ]
-        response = client.generate_access_token(name, scope)
+        response = client.generate_access_token(name=name, scope=scope)
         self._create_signed_read_url_helper(
             version="v4",
             service_account_email=service_account_email,
