@@ -15,6 +15,7 @@
 """This script is used to synthesize generated parts of this library."""
 import synthtool as s
 from synthtool import gcp
+from synthtool.languages import python
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
@@ -151,7 +152,7 @@ s.replace("google/cloud/spanner_admin_database_v1/gapic/database_admin_client.py
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=97, cov_level=99)
+templated_files = common.py_library(unit_cov_level=97, cov_level=99, samples=True)
 s.move(templated_files, excludes=["noxfile.py"])
 
 # Template's MANIFEST.in does not include the needed GAPIC config file.
@@ -170,5 +171,11 @@ s.replace(
     "export GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE=true\n"
     "\n\g<0>",
 )
+
+# ----------------------------------------------------------------------------
+# Samples templates
+# ----------------------------------------------------------------------------
+
+python.py_samples()
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
