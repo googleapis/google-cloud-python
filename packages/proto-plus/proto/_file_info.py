@@ -12,16 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import collections
 import collections.abc
 import inspect
-import uuid
+import logging
 
 from google.protobuf import descriptor_pool
 from google.protobuf import message
 from google.protobuf import reflection
 
 from proto.marshal.rules.message import MessageRule
+
+log = logging.getLogger("_FileInfo")
 
 
 class _FileInfo(
@@ -31,7 +32,40 @@ class _FileInfo(
 ):
     registry = {}  # Mapping[str, '_FileInfo']
 
-    def generate_file_pb(self):
+    def _get_manifest(self, new_class):
+        module = inspect.getmodule(new_class)
+        if hasattr(module, "__protobuf__"):
+            return frozenset(module.__protobuf__.manifest)
+
+        return frozenset()
+
+    def _get_remaining_manifest(self, new_class):
+        return self._get_manifest(new_class) - {new_class.__name__}
+
+    def _has_manifest(self, new_class):
+        return len(self._get_manifest(new_class)) > 0
+
+    def _is_in_manifest(self, new_class):
+        return new_class.__name__ in self._get_manifest(new_class)
+
+    def _calculate_salt(self, new_class, fallback):
+        if self._has_manifest(new_class=new_class) and not self._is_in_manifest(
+            new_class=new_class
+        ):
+            log.warning(
+                "proto-plus module {module} has a declared manifest but {classname} is not in it".format(
+                    module=inspect.getmodule(new_class).__name__,
+                    classname=new_class.__name__,
+                )
+            )
+
+        return (
+            ""
+            if self._is_in_manifest(new_class=new_class)
+            else (fallback or "").lower()
+        )
+
+    def generate_file_pb(self, new_class, fallback_salt=""):
         """Generate the descriptors for all protos in the file.
 
         This method takes the file descriptor attached to the parent
@@ -47,8 +81,9 @@ class _FileInfo(
         # Salt the filename in the descriptor.
         # This allows re-use of the filename by other proto messages if
         # needed (e.g. if __all__ is not used).
-        self.descriptor.name = "{prefix}_{salt}.proto".format(
-            prefix=self.descriptor.name[:-6], salt=str(uuid.uuid4())[0:8],
+        salt = self._calculate_salt(new_class, fallback_salt)
+        self.descriptor.name = "{name}.proto".format(
+            name="_".join([self.descriptor.name[:-6], salt]).rstrip("_"),
         )
 
         # Add the file descriptor.
@@ -122,9 +157,7 @@ class _FileInfo(
         # Do not generate the file descriptor until every member of the
         # manifest has been populated.
         module = inspect.getmodule(new_class)
-        manifest = frozenset()
-        if hasattr(module, "__protobuf__"):
-            manifest = module.__protobuf__.manifest.difference({new_class.__name__},)
+        manifest = self._get_remaining_manifest(new_class)
         if not all([hasattr(module, i) for i in manifest]):
             return False
 

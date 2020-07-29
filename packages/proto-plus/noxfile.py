@@ -18,7 +18,7 @@ import os
 import nox
 
 
-@nox.session(python=["3.5", "3.6", "3.7"])
+@nox.session(python=["3.5", "3.6", "3.7", "3.8"])
 def unit(session, proto="python"):
     """Run the unit test suite."""
 
@@ -38,7 +38,7 @@ def unit(session, proto="python"):
     )
 
 
-@nox.session(python=["3.5", "3.6", "3.7"])
+@nox.session(python=["3.5", "3.6", "3.7", "3.8"])
 def unitcpp(session):
     return unit(session, proto="cpp")
 

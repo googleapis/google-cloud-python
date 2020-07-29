@@ -254,7 +254,7 @@ class MessageMeta(type):
 
         # Generate the descriptor for the file if it is ready.
         if file_info.ready(new_class=cls):
-            file_info.generate_file_pb()
+            file_info.generate_file_pb(new_class=cls, fallback_salt=full_name)
 
         # Done; return the class.
         return cls
