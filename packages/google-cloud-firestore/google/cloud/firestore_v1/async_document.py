@@ -23,7 +23,6 @@ from google.cloud.firestore_v1.base_document import (
 from google.api_core import exceptions
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.types import common
-from google.cloud.firestore_v1.watch import Watch
 
 
 class AsyncDocumentReference(BaseDocumentReference):
@@ -385,39 +384,3 @@ class AsyncDocumentReference(BaseDocumentReference):
         # iterator.document = self
         # iterator.item_to_value = _item_to_collection_ref
         # return iterator
-
-    def on_snapshot(self, callback):
-        """Watch this document.
-
-        This starts a watch on this document using a background thread. The
-        provided callback is run on the snapshot.
-
-        Args:
-            callback(Callable[[:class:`~google.cloud.firestore.document.DocumentSnapshot`], NoneType]):
-                a callback to run when a change occurs
-
-        Example:
-
-        .. code-block:: python
-
-            from google.cloud import firestore_v1
-
-            db = firestore_v1.Client()
-            collection_ref = db.collection(u'users')
-
-            def on_snapshot(document_snapshot, changes, read_time):
-                doc = document_snapshot
-                print(u'{} => {}'.format(doc.id, doc.to_dict()))
-
-            doc_ref = db.collection(u'users').document(
-                u'alovelace' + unique_resource_id())
-
-            # Watch this document
-            doc_watch = doc_ref.on_snapshot(on_snapshot)
-
-            # Terminate this watch
-            doc_watch.unsubscribe()
-        """
-        return Watch.for_document(
-            self, callback, DocumentSnapshot, AsyncDocumentReference
-        )

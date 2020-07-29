@@ -27,8 +27,6 @@ from google.cloud.firestore_v1.base_query import (
 )
 
 from google.cloud.firestore_v1 import _helpers
-from google.cloud.firestore_v1 import async_document
-from google.cloud.firestore_v1.watch import Watch
 
 
 class AsyncQuery(BaseQuery):
@@ -149,7 +147,7 @@ class AsyncQuery(BaseQuery):
             The next document that fulfills the query.
         """
         parent_path, expected_prefix = self._parent._parent_info()
-        response_iterator = self._client._firestore_api.run_query(
+        response_iterator = await self._client._firestore_api.run_query(
             request={
                 "parent": parent_path,
                 "structured_query": self._to_protobuf(),
@@ -169,39 +167,3 @@ class AsyncQuery(BaseQuery):
                 )
             if snapshot is not None:
                 yield snapshot
-
-    def on_snapshot(self, callback):
-        """Monitor the documents in this collection that match this query.
-
-        This starts a watch on this query using a background thread. The
-        provided callback is run on the snapshot of the documents.
-
-        Args:
-            callback(Callable[[:class:`~google.cloud.firestore.query.QuerySnapshot`], NoneType]):
-                a callback to run when a change occurs.
-
-        Example:
-
-        .. code-block:: python
-
-            from google.cloud import firestore_v1
-
-            db = firestore_v1.Client()
-            query_ref = db.collection(u'users').where("user", "==", u'Ada')
-
-            def on_snapshot(docs, changes, read_time):
-                for doc in docs:
-                    print(u'{} => {}'.format(doc.id, doc.to_dict()))
-
-            # Watch this query
-            query_watch = query_ref.on_snapshot(on_snapshot)
-
-            # Terminate this watch
-            query_watch.unsubscribe()
-        """
-        return Watch.for_query(
-            self,
-            callback,
-            async_document.DocumentSnapshot,
-            async_document.AsyncDocumentReference,
-        )

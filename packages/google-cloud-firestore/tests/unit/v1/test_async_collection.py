@@ -185,17 +185,17 @@ class TestAsyncCollectionReference(aiounittest.AsyncTestCase):
 
     @pytest.mark.asyncio
     async def _list_documents_helper(self, page_size=None):
-        from google.api_core.page_iterator import Iterator
+        from google.api_core.page_iterator_async import AsyncIterator
         from google.api_core.page_iterator import Page
         from google.cloud.firestore_v1.async_document import AsyncDocumentReference
         from google.cloud.firestore_v1.types.document import Document
 
-        class _Iterator(Iterator):
+        class _AsyncIterator(AsyncIterator):
             def __init__(self, pages):
-                super(_Iterator, self).__init__(client=None)
+                super(_AsyncIterator, self).__init__(client=None)
                 self._pages = pages
 
-            def _next_page(self):
+            async def _next_page(self):
                 if self._pages:
                     page, self._pages = self._pages[0], self._pages[1:]
                     return Page(self, page, self.item_to_value)
@@ -206,7 +206,7 @@ class TestAsyncCollectionReference(aiounittest.AsyncTestCase):
         documents = [
             Document(name=template.format(document_id)) for document_id in document_ids
         ]
-        iterator = _Iterator(pages=[documents])
+        iterator = _AsyncIterator(pages=[documents])
         firestore_api = AsyncMock()
         firestore_api.mock_add_spec(spec=["list_documents"])
         firestore_api.list_documents.return_value = iterator
@@ -214,9 +214,11 @@ class TestAsyncCollectionReference(aiounittest.AsyncTestCase):
         collection = self._make_one("collection", client=client)
 
         if page_size is not None:
-            documents = list(await collection.list_documents(page_size=page_size))
+            documents = [
+                i async for i in collection.list_documents(page_size=page_size)
+            ]
         else:
-            documents = list(await collection.list_documents())
+            documents = [i async for i in collection.list_documents()]
 
         # Verify the response and the mocks.
         self.assertEqual(len(documents), len(document_ids))
@@ -319,12 +321,6 @@ class TestAsyncCollectionReference(aiounittest.AsyncTestCase):
         query_class.assert_called_once_with(collection)
         query_instance = query_class.return_value
         query_instance.stream.assert_called_once_with(transaction=transaction)
-
-    @mock.patch("google.cloud.firestore_v1.async_collection.Watch", autospec=True)
-    def test_on_snapshot(self, watch):
-        collection = self._make_one("collection")
-        collection.on_snapshot(None)
-        watch.for_query.assert_called_once()
 
 
 def _make_credentials():

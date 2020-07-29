@@ -755,12 +755,12 @@ class Test_Transactional(aiounittest.AsyncTestCase):
         )
 
 
-class Test_transactional(aiounittest.AsyncTestCase):
+class Test_async_transactional(aiounittest.AsyncTestCase):
     @staticmethod
     def _call_fut(to_wrap):
-        from google.cloud.firestore_v1.async_transaction import transactional
+        from google.cloud.firestore_v1.async_transaction import async_transactional
 
-        return transactional(to_wrap)
+        return async_transactional(to_wrap)
 
     def test_it(self):
         from google.cloud.firestore_v1.async_transaction import _AsyncTransactional

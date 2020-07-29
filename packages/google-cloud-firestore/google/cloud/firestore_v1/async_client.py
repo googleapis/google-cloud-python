@@ -242,7 +242,7 @@ class AsyncClient(BaseClient):
         """
         document_paths, reference_map = _reference_info(references)
         mask = _get_doc_mask(field_paths)
-        response_iterator = self._firestore_api.batch_get_documents(
+        response_iterator = await self._firestore_api.batch_get_documents(
             request={
                 "database": self._database_string,
                 "documents": document_paths,

@@ -12,12 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
 import datetime
 import math
+import pytest
 import operator
 
 from google.oauth2 import service_account
-import pytest
 
 from google.api_core.exceptions import AlreadyExists
 from google.api_core.exceptions import FailedPrecondition
@@ -27,8 +28,6 @@ from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import UTC
 from google.cloud import firestore_v1 as firestore
 
-from time import sleep
-
 from tests.system.test__helpers import (
     FIRESTORE_CREDS,
     FIRESTORE_PROJECT,
@@ -37,38 +36,47 @@ from tests.system.test__helpers import (
     UNIQUE_RESOURCE_ID,
 )
 
+_test_event_loop = asyncio.new_event_loop()
+pytestmark = pytest.mark.asyncio
+
 
 @pytest.fixture(scope=u"module")
 def client():
     credentials = service_account.Credentials.from_service_account_file(FIRESTORE_CREDS)
     project = FIRESTORE_PROJECT or credentials.project_id
-    yield firestore.Client(project=project, credentials=credentials)
+    yield firestore.AsyncClient(project=project, credentials=credentials)
 
 
 @pytest.fixture
-def cleanup():
+async def cleanup():
     operations = []
     yield operations.append
 
     for operation in operations:
-        operation()
+        await operation()
 
 
-def test_collections(client):
-    collections = list(client.collections())
+@pytest.fixture
+def event_loop():
+    asyncio.set_event_loop(_test_event_loop)
+    return asyncio.get_event_loop()
+
+
+async def test_collections(client):
+    collections = [x async for x in client.collections()]
     assert isinstance(collections, list)
 
 
-def test_collections_w_import():
+async def test_collections_w_import():
     from google.cloud import firestore
 
-    client = firestore.Client()
-    collections = list(client.collections())
+    client = firestore.AsyncClient()
+    collections = [x async for x in client.collections()]
 
     assert isinstance(collections, list)
 
 
-def test_create_document(client, cleanup):
+async def test_create_document(client, cleanup):
     now = datetime.datetime.utcnow().replace(tzinfo=UTC)
     collection_id = "doc-create" + UNIQUE_RESOURCE_ID
     document_id = "doc" + UNIQUE_RESOURCE_ID
@@ -82,17 +90,18 @@ def test_create_document(client, cleanup):
         "bites": b"\xe2\x98\x83 \xe2\x9b\xb5",
         "also": {"nestednow": firestore.SERVER_TIMESTAMP, "quarter": 0.25},
     }
-    write_result = document.create(data)
+    write_result = await document.create(data)
+
     updated = write_result.update_time
     delta = updated - now
     # Allow a bit of clock skew, but make sure timestamps are close.
     assert -300.0 < delta.total_seconds() < 300.0
 
     with pytest.raises(AlreadyExists):
-        document.create(data)
+        await document.create(data)
 
     # Verify the server times.
-    snapshot = document.get()
+    snapshot = await document.get()
     stored_data = snapshot.to_dict()
     server_now = stored_data["now"]
 
@@ -112,7 +121,7 @@ def test_create_document(client, cleanup):
     assert stored_data == expected_data
 
 
-def test_create_document_w_subcollection(client, cleanup):
+async def test_create_document_w_subcollection(client, cleanup):
     collection_id = "doc-create-sub" + UNIQUE_RESOURCE_ID
     document_id = "doc" + UNIQUE_RESOURCE_ID
     document = client.document(collection_id, document_id)
@@ -120,20 +129,20 @@ def test_create_document_w_subcollection(client, cleanup):
     cleanup(document.delete)
 
     data = {"now": firestore.SERVER_TIMESTAMP}
-    document.create(data)
+    await document.create(data)
 
     child_ids = ["child1", "child2"]
 
     for child_id in child_ids:
         subcollection = document.collection(child_id)
-        _, subdoc = subcollection.add({"foo": "bar"})
+        _, subdoc = await subcollection.add({"foo": "bar"})
         cleanup(subdoc.delete)
 
     children = document.collections()
-    assert sorted(child.id for child in children) == sorted(child_ids)
+    assert sorted([child.id async for child in children]) == sorted(child_ids)
 
 
-def test_cannot_use_foreign_key(client, cleanup):
+async def test_cannot_use_foreign_key(client, cleanup):
     document_id = "cannot" + UNIQUE_RESOURCE_ID
     document = client.document("foreign-key", document_id)
     # Add to clean-up before API request (in case ``create()`` fails).
@@ -145,34 +154,34 @@ def test_cannot_use_foreign_key(client, cleanup):
     assert other_client._database_string != client._database_string
     fake_doc = other_client.document("foo", "bar")
     with pytest.raises(InvalidArgument):
-        document.create({"ref": fake_doc})
+        await document.create({"ref": fake_doc})
 
 
 def assert_timestamp_less(timestamp_pb1, timestamp_pb2):
     assert timestamp_pb1 < timestamp_pb2
 
 
-def test_no_document(client):
+async def test_no_document(client):
     document_id = "no_document" + UNIQUE_RESOURCE_ID
     document = client.document("abcde", document_id)
-    snapshot = document.get()
+    snapshot = await document.get()
     assert snapshot.to_dict() is None
 
 
-def test_document_set(client, cleanup):
+async def test_document_set(client, cleanup):
     document_id = "for-set" + UNIQUE_RESOURCE_ID
     document = client.document("i-did-it", document_id)
     # Add to clean-up before API request (in case ``set()`` fails).
     cleanup(document.delete)
 
     # 0. Make sure the document doesn't exist yet
-    snapshot = document.get()
+    snapshot = await document.get()
     assert snapshot.to_dict() is None
 
     # 1. Use ``create()`` to create the document.
     data1 = {"foo": 88}
-    write_result1 = document.create(data1)
-    snapshot1 = document.get()
+    write_result1 = await document.create(data1)
+    snapshot1 = await document.get()
     assert snapshot1.to_dict() == data1
     # Make sure the update is what created the document.
     assert snapshot1.create_time == snapshot1.update_time
@@ -180,44 +189,44 @@ def test_document_set(client, cleanup):
 
     # 2. Call ``set()`` again to overwrite.
     data2 = {"bar": None}
-    write_result2 = document.set(data2)
-    snapshot2 = document.get()
+    write_result2 = await document.set(data2)
+    snapshot2 = await document.get()
     assert snapshot2.to_dict() == data2
     # Make sure the create time hasn't changed.
     assert snapshot2.create_time == snapshot1.create_time
     assert snapshot2.update_time == write_result2.update_time
 
 
-def test_document_integer_field(client, cleanup):
+async def test_document_integer_field(client, cleanup):
     document_id = "for-set" + UNIQUE_RESOURCE_ID
     document = client.document("i-did-it", document_id)
     # Add to clean-up before API request (in case ``set()`` fails).
     cleanup(document.delete)
 
     data1 = {"1a": {"2b": "3c", "ab": "5e"}, "6f": {"7g": "8h", "cd": "0j"}}
-    document.create(data1)
+    await document.create(data1)
 
     data2 = {"1a.ab": "4d", "6f.7g": "9h"}
-    document.update(data2)
-    snapshot = document.get()
+    await document.update(data2)
+    snapshot = await document.get()
     expected = {"1a": {"2b": "3c", "ab": "4d"}, "6f": {"7g": "9h", "cd": "0j"}}
     assert snapshot.to_dict() == expected
 
 
-def test_document_set_merge(client, cleanup):
+async def test_document_set_merge(client, cleanup):
     document_id = "for-set" + UNIQUE_RESOURCE_ID
     document = client.document("i-did-it", document_id)
     # Add to clean-up before API request (in case ``set()`` fails).
     cleanup(document.delete)
 
     # 0. Make sure the document doesn't exist yet
-    snapshot = document.get()
+    snapshot = await document.get()
     assert not snapshot.exists
 
     # 1. Use ``create()`` to create the document.
     data1 = {"name": "Sam", "address": {"city": "SF", "state": "CA"}}
-    write_result1 = document.create(data1)
-    snapshot1 = document.get()
+    write_result1 = await document.create(data1)
+    snapshot1 = await document.get()
     assert snapshot1.to_dict() == data1
     # Make sure the update is what created the document.
     assert snapshot1.create_time == snapshot1.update_time
@@ -225,8 +234,8 @@ def test_document_set_merge(client, cleanup):
 
     # 2. Call ``set()`` to merge
     data2 = {"address": {"city": "LA"}}
-    write_result2 = document.set(data2, merge=True)
-    snapshot2 = document.get()
+    write_result2 = await document.set(data2, merge=True)
+    snapshot2 = await document.get()
     assert snapshot2.to_dict() == {
         "name": "Sam",
         "address": {"city": "LA", "state": "CA"},
@@ -236,30 +245,30 @@ def test_document_set_merge(client, cleanup):
     assert snapshot2.update_time == write_result2.update_time
 
 
-def test_document_set_w_int_field(client, cleanup):
+async def test_document_set_w_int_field(client, cleanup):
     document_id = "set-int-key" + UNIQUE_RESOURCE_ID
     document = client.document("i-did-it", document_id)
     # Add to clean-up before API request (in case ``set()`` fails).
     cleanup(document.delete)
 
     # 0. Make sure the document doesn't exist yet
-    snapshot = document.get()
+    snapshot = await document.get()
     assert not snapshot.exists
 
     # 1. Use ``create()`` to create the document.
     before = {"testing": "1"}
-    document.create(before)
+    await document.create(before)
 
     # 2. Replace using ``set()``.
     data = {"14": {"status": "active"}}
-    document.set(data)
+    await document.set(data)
 
     # 3. Verify replaced data.
-    snapshot1 = document.get()
+    snapshot1 = await document.get()
     assert snapshot1.to_dict() == data
 
 
-def test_document_update_w_int_field(client, cleanup):
+async def test_document_update_w_int_field(client, cleanup):
     # Attempt to reproduce #5489.
     document_id = "update-int-key" + UNIQUE_RESOURCE_ID
     document = client.document("i-did-it", document_id)
@@ -267,25 +276,25 @@ def test_document_update_w_int_field(client, cleanup):
     cleanup(document.delete)
 
     # 0. Make sure the document doesn't exist yet
-    snapshot = document.get()
+    snapshot = await document.get()
     assert not snapshot.exists
 
     # 1. Use ``create()`` to create the document.
     before = {"testing": "1"}
-    document.create(before)
+    await document.create(before)
 
     # 2. Add values using ``update()``.
     data = {"14": {"status": "active"}}
-    document.update(data)
+    await document.update(data)
 
     # 3. Verify updated data.
     expected = before.copy()
     expected.update(data)
-    snapshot1 = document.get()
+    snapshot1 = await document.get()
     assert snapshot1.to_dict() == expected
 
 
-def test_update_document(client, cleanup):
+async def test_update_document(client, cleanup):
     document_id = "for-update" + UNIQUE_RESOURCE_ID
     document = client.document("made", document_id)
     # Add to clean-up before API request (in case ``create()`` fails).
@@ -293,25 +302,25 @@ def test_update_document(client, cleanup):
 
     # 0. Try to update before the document exists.
     with pytest.raises(NotFound) as exc_info:
-        document.update({"not": "there"})
+        await document.update({"not": "there"})
     assert exc_info.value.message.startswith(MISSING_DOCUMENT)
     assert document_id in exc_info.value.message
 
     # 1. Try to update before the document exists (now with an option).
     with pytest.raises(NotFound) as exc_info:
-        document.update({"still": "not-there"})
+        await document.update({"still": "not-there"})
     assert exc_info.value.message.startswith(MISSING_DOCUMENT)
     assert document_id in exc_info.value.message
 
     # 2. Update and create the document (with an option).
     data = {"foo": {"bar": "baz"}, "scoop": {"barn": 981}, "other": True}
-    write_result2 = document.create(data)
+    write_result2 = await document.create(data)
 
     # 3. Send an update without a field path (no option).
     field_updates3 = {"foo": {"quux": 800}}
-    write_result3 = document.update(field_updates3)
+    write_result3 = await document.update(field_updates3)
     assert_timestamp_less(write_result2.update_time, write_result3.update_time)
-    snapshot3 = document.get()
+    snapshot3 = await document.get()
     expected3 = {
         "foo": field_updates3["foo"],
         "scoop": data["scoop"],
@@ -323,9 +332,9 @@ def test_update_document(client, cleanup):
     #    "last timestamp" option.
     field_updates4 = {"scoop.silo": None, "other": firestore.DELETE_FIELD}
     option4 = client.write_option(last_update_time=snapshot3.update_time)
-    write_result4 = document.update(field_updates4, option=option4)
+    write_result4 = await document.update(field_updates4, option=option4)
     assert_timestamp_less(write_result3.update_time, write_result4.update_time)
-    snapshot4 = document.get()
+    snapshot4 = await document.get()
     expected4 = {
         "foo": field_updates3["foo"],
         "scoop": {"barn": data["scoop"]["barn"], "silo": field_updates4["scoop.silo"]},
@@ -335,9 +344,10 @@ def test_update_document(client, cleanup):
     # 5. Call ``update()`` with invalid (in the past) "last timestamp" option.
     assert_timestamp_less(option4._last_update_time, snapshot4.update_time)
     with pytest.raises(FailedPrecondition) as exc_info:
-        document.update({"bad": "time-past"}, option=option4)
+        await document.update({"bad": "time-past"}, option=option4)
 
     # 6. Call ``update()`` with invalid (in future) "last timestamp" option.
+    # TODO(microgen): start using custom datetime with nanos in protoplus?
     timestamp_pb = _datetime_to_pb_timestamp(snapshot4.update_time)
     timestamp_pb.seconds += 3600
 
@@ -345,7 +355,7 @@ def test_update_document(client, cleanup):
     # TODO(microgen):invalid argument thrown after microgen.
     # with pytest.raises(FailedPrecondition) as exc_info:
     with pytest.raises(InvalidArgument) as exc_info:
-        document.update({"bad": "time-future"}, option=option6)
+        await document.update({"bad": "time-future"}, option=option6)
 
 
 def check_snapshot(snapshot, document, data, write_result):
@@ -356,7 +366,7 @@ def check_snapshot(snapshot, document, data, write_result):
     assert snapshot.update_time == write_result.update_time
 
 
-def test_document_get(client, cleanup):
+async def test_document_get(client, cleanup):
     now = datetime.datetime.utcnow().replace(tzinfo=UTC)
     document_id = "for-get" + UNIQUE_RESOURCE_ID
     document = client.document("created", document_id)
@@ -364,7 +374,7 @@ def test_document_get(client, cleanup):
     cleanup(document.delete)
 
     # First make sure it doesn't exist.
-    assert not document.get().exists
+    assert not (await document.get()).exists
 
     ref_doc = client.document("top", "middle1", "middle2", "bottom")
     data = {
@@ -376,20 +386,20 @@ def test_document_get(client, cleanup):
         "deep": [u"some", b"\xde\xad\xbe\xef"],
         "map": {"ice": True, "water": None, "vapor": {"deeper": now}},
     }
-    write_result = document.create(data)
-    snapshot = document.get()
+    write_result = await document.create(data)
+    snapshot = await document.get()
     check_snapshot(snapshot, document, data, write_result)
 
 
-def test_document_delete(client, cleanup):
+async def test_document_delete(client, cleanup):
     document_id = "deleted" + UNIQUE_RESOURCE_ID
     document = client.document("here-to-be", document_id)
     # Add to clean-up before API request (in case ``create()`` fails).
     cleanup(document.delete)
-    document.create({"not": "much"})
+    await document.create({"not": "much"})
 
     # 1. Call ``delete()`` with invalid (in the past) "last timestamp" option.
-    snapshot1 = document.get()
+    snapshot1 = await document.get()
     timestamp_pb = _datetime_to_pb_timestamp(snapshot1.update_time)
     timestamp_pb.seconds += 3600
 
@@ -397,7 +407,7 @@ def test_document_delete(client, cleanup):
     # TODO(microgen):invalid argument thrown after microgen.
     # with pytest.raises(FailedPrecondition):
     with pytest.raises(InvalidArgument):
-        document.delete(option=option1)
+        await document.delete(option=option1)
 
     # 2. Call ``delete()`` with invalid (in future) "last timestamp" option.
     timestamp_pb = _datetime_to_pb_timestamp(snapshot1.update_time)
@@ -407,17 +417,17 @@ def test_document_delete(client, cleanup):
     # TODO(microgen):invalid argument thrown after microgen.
     # with pytest.raises(FailedPrecondition):
     with pytest.raises(InvalidArgument):
-        document.delete(option=option2)
+        await document.delete(option=option2)
 
     # 3. Actually ``delete()`` the document.
-    delete_time3 = document.delete()
+    delete_time3 = await document.delete()
 
     # 4. ``delete()`` again, even though we know the document is gone.
-    delete_time4 = document.delete()
+    delete_time4 = await document.delete()
     assert_timestamp_less(delete_time3, delete_time4)
 
 
-def test_collection_add(client, cleanup):
+async def test_collection_add(client, cleanup):
     # TODO(microgen): list_documents is returning a generator, not a list.
     # Consider if this is desired. Also, Document isn't hashable.
     collection_id = "coll-add" + UNIQUE_RESOURCE_ID
@@ -426,30 +436,35 @@ def test_collection_add(client, cleanup):
     collection3 = client.collection(collection_id, "table", "child")
     explicit_doc_id = "hula" + UNIQUE_RESOURCE_ID
 
-    assert set(collection1.list_documents()) == set()
-    assert set(collection2.list_documents()) == set()
-    assert set(collection3.list_documents()) == set()
+    assert set([i async for i in collection1.list_documents()]) == set()
+    assert set([i async for i in collection2.list_documents()]) == set()
+    assert set([i async for i in collection3.list_documents()]) == set()
 
     # Auto-ID at top-level.
     data1 = {"foo": "bar"}
-    update_time1, document_ref1 = collection1.add(data1)
+    update_time1, document_ref1 = await collection1.add(data1)
     cleanup(document_ref1.delete)
-    assert set(collection1.list_documents()) == {document_ref1}
-    assert set(collection2.list_documents()) == set()
-    assert set(collection3.list_documents()) == set()
-    snapshot1 = document_ref1.get()
+    assert set([i async for i in collection1.list_documents()]) == {document_ref1}
+    assert set([i async for i in collection2.list_documents()]) == set()
+    assert set([i async for i in collection3.list_documents()]) == set()
+    snapshot1 = await document_ref1.get()
     assert snapshot1.to_dict() == data1
     assert snapshot1.update_time == update_time1
     assert RANDOM_ID_REGEX.match(document_ref1.id)
 
     # Explicit ID at top-level.
     data2 = {"baz": 999}
-    update_time2, document_ref2 = collection1.add(data2, document_id=explicit_doc_id)
+    update_time2, document_ref2 = await collection1.add(
+        data2, document_id=explicit_doc_id
+    )
     cleanup(document_ref2.delete)
-    assert set(collection1.list_documents()) == {document_ref1, document_ref2}
-    assert set(collection2.list_documents()) == set()
-    assert set(collection3.list_documents()) == set()
-    snapshot2 = document_ref2.get()
+    assert set([i async for i in collection1.list_documents()]) == {
+        document_ref1,
+        document_ref2,
+    }
+    assert set([i async for i in collection2.list_documents()]) == set()
+    assert set([i async for i in collection3.list_documents()]) == set()
+    snapshot2 = await document_ref2.get()
     assert snapshot2.to_dict() == data2
     assert snapshot2.create_time == update_time2
     assert snapshot2.update_time == update_time2
@@ -459,32 +474,37 @@ def test_collection_add(client, cleanup):
 
     # Auto-ID for nested collection.
     data3 = {"quux": b"\x00\x01\x02\x03"}
-    update_time3, document_ref3 = collection2.add(data3)
+    update_time3, document_ref3 = await collection2.add(data3)
     cleanup(document_ref3.delete)
-    assert set(collection1.list_documents()) == {
+    assert set([i async for i in collection1.list_documents()]) == {
         document_ref1,
         document_ref2,
         nested_ref,
     }
-    assert set(collection2.list_documents()) == {document_ref3}
-    assert set(collection3.list_documents()) == set()
-    snapshot3 = document_ref3.get()
+    assert set([i async for i in collection2.list_documents()]) == {document_ref3}
+    assert set([i async for i in collection3.list_documents()]) == set()
+    snapshot3 = await document_ref3.get()
     assert snapshot3.to_dict() == data3
     assert snapshot3.update_time == update_time3
     assert RANDOM_ID_REGEX.match(document_ref3.id)
 
     # Explicit for nested collection.
     data4 = {"kazaam": None, "bad": False}
-    update_time4, document_ref4 = collection2.add(data4, document_id=explicit_doc_id)
+    update_time4, document_ref4 = await collection2.add(
+        data4, document_id=explicit_doc_id
+    )
     cleanup(document_ref4.delete)
-    assert set(collection1.list_documents()) == {
+    assert set([i async for i in collection1.list_documents()]) == {
         document_ref1,
         document_ref2,
         nested_ref,
     }
-    assert set(collection2.list_documents()) == {document_ref3, document_ref4}
-    assert set(collection3.list_documents()) == set()
-    snapshot4 = document_ref4.get()
+    assert set([i async for i in collection2.list_documents()]) == {
+        document_ref3,
+        document_ref4,
+    }
+    assert set([i async for i in collection3.list_documents()]) == set()
+    snapshot4 = await document_ref4.get()
     assert snapshot4.to_dict() == data4
     assert snapshot4.create_time == update_time4
     assert snapshot4.update_time == update_time4
@@ -492,21 +512,24 @@ def test_collection_add(client, cleanup):
 
     # Exercise "missing" document (no doc, but subcollection).
     data5 = {"bam": 123, "folyk": False}
-    update_time5, document_ref5 = collection3.add(data5)
+    update_time5, document_ref5 = await collection3.add(data5)
     cleanup(document_ref5.delete)
     missing_ref = collection1.document("table")
-    assert set(collection1.list_documents()) == {
+    assert set([i async for i in collection1.list_documents()]) == {
         document_ref1,
         document_ref2,
         nested_ref,
         missing_ref,
     }
-    assert set(collection2.list_documents()) == {document_ref3, document_ref4}
-    assert set(collection3.list_documents()) == {document_ref5}
+    assert set([i async for i in collection2.list_documents()]) == {
+        document_ref3,
+        document_ref4,
+    }
+    assert set([i async for i in collection3.list_documents()]) == {document_ref5}
 
 
 @pytest.fixture
-def query_docs(client):
+async def query_docs(client):
     collection_id = "qs" + UNIQUE_RESOURCE_ID
     sub_collection = "child" + UNIQUE_RESOURCE_ID
     collection = client.collection(collection_id, "doc", sub_collection)
@@ -523,7 +546,7 @@ def query_docs(client):
                 "c": [a_val, num_vals * 100],
                 "stats": {"sum": a_val + b_val, "product": a_val * b_val},
             }
-            _, doc_ref = collection.add(document_data)
+            _, doc_ref = await collection.add(document_data)
             # Add to clean-up.
             cleanup.append(doc_ref.delete)
             stored[doc_ref.id] = document_data
@@ -531,55 +554,55 @@ def query_docs(client):
     yield collection, stored, allowed_vals
 
     for operation in cleanup:
-        operation()
+        await operation()
 
 
-def test_query_stream_w_simple_field_eq_op(query_docs):
+async def test_query_stream_w_simple_field_eq_op(query_docs):
     collection, stored, allowed_vals = query_docs
     query = collection.where("a", "==", 1)
-    values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
+    values = {snapshot.id: snapshot.to_dict() async for snapshot in query.stream()}
     assert len(values) == len(allowed_vals)
     for key, value in values.items():
         assert stored[key] == value
         assert value["a"] == 1
 
 
-def test_query_stream_w_simple_field_array_contains_op(query_docs):
+async def test_query_stream_w_simple_field_array_contains_op(query_docs):
     collection, stored, allowed_vals = query_docs
     query = collection.where("c", "array_contains", 1)
-    values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
+    values = {snapshot.id: snapshot.to_dict() async for snapshot in query.stream()}
     assert len(values) == len(allowed_vals)
     for key, value in values.items():
         assert stored[key] == value
         assert value["a"] == 1
 
 
-def test_query_stream_w_simple_field_in_op(query_docs):
+async def test_query_stream_w_simple_field_in_op(query_docs):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
     query = collection.where("a", "in", [1, num_vals + 100])
-    values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
+    values = {snapshot.id: snapshot.to_dict() async for snapshot in query.stream()}
     assert len(values) == len(allowed_vals)
     for key, value in values.items():
         assert stored[key] == value
         assert value["a"] == 1
 
 
-def test_query_stream_w_simple_field_array_contains_any_op(query_docs):
+async def test_query_stream_w_simple_field_array_contains_any_op(query_docs):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
     query = collection.where("c", "array_contains_any", [1, num_vals * 200])
-    values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
+    values = {snapshot.id: snapshot.to_dict() async for snapshot in query.stream()}
     assert len(values) == len(allowed_vals)
     for key, value in values.items():
         assert stored[key] == value
         assert value["a"] == 1
 
 
-def test_query_stream_w_order_by(query_docs):
+async def test_query_stream_w_order_by(query_docs):
     collection, stored, allowed_vals = query_docs
     query = collection.order_by("b", direction=firestore.Query.DESCENDING)
-    values = [(snapshot.id, snapshot.to_dict()) for snapshot in query.stream()]
+    values = [(snapshot.id, snapshot.to_dict()) async for snapshot in query.stream()]
     assert len(values) == len(stored)
     b_vals = []
     for key, value in values:
@@ -589,10 +612,10 @@ def test_query_stream_w_order_by(query_docs):
     assert sorted(b_vals, reverse=True) == b_vals
 
 
-def test_query_stream_w_field_path(query_docs):
+async def test_query_stream_w_field_path(query_docs):
     collection, stored, allowed_vals = query_docs
     query = collection.where("stats.sum", ">", 4)
-    values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
+    values = {snapshot.id: snapshot.to_dict() async for snapshot in query.stream()}
     assert len(values) == 10
     ab_pairs2 = set()
     for key, value in values.items():
@@ -610,7 +633,7 @@ def test_query_stream_w_field_path(query_docs):
     assert expected_ab_pairs == ab_pairs2
 
 
-def test_query_stream_w_start_end_cursor(query_docs):
+async def test_query_stream_w_start_end_cursor(query_docs):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
     query = (
@@ -618,26 +641,26 @@ def test_query_stream_w_start_end_cursor(query_docs):
         .start_at({"a": num_vals - 2})
         .end_before({"a": num_vals - 1})
     )
-    values = [(snapshot.id, snapshot.to_dict()) for snapshot in query.stream()]
+    values = [(snapshot.id, snapshot.to_dict()) async for snapshot in query.stream()]
     assert len(values) == num_vals
     for key, value in values:
         assert stored[key] == value
         assert value["a"] == num_vals - 2
 
 
-def test_query_stream_wo_results(query_docs):
+async def test_query_stream_wo_results(query_docs):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
     query = collection.where("b", "==", num_vals + 100)
-    values = list(query.stream())
+    values = [i async for i in query.stream()]
     assert len(values) == 0
 
 
-def test_query_stream_w_projection(query_docs):
+async def test_query_stream_w_projection(query_docs):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
     query = collection.where("b", "<=", 1).select(["a", "stats.product"])
-    values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
+    values = {snapshot.id: snapshot.to_dict() async for snapshot in query.stream()}
     assert len(values) == num_vals * 2  # a ANY, b in (0, 1)
     for key, value in values.items():
         expected = {
@@ -647,10 +670,10 @@ def test_query_stream_w_projection(query_docs):
         assert expected == value
 
 
-def test_query_stream_w_multiple_filters(query_docs):
+async def test_query_stream_w_multiple_filters(query_docs):
     collection, stored, allowed_vals = query_docs
     query = collection.where("stats.product", ">", 5).where("stats.product", "<", 10)
-    values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
+    values = {snapshot.id: snapshot.to_dict() async for snapshot in query.stream()}
     matching_pairs = [
         (a_val, b_val)
         for a_val in allowed_vals
@@ -664,12 +687,12 @@ def test_query_stream_w_multiple_filters(query_docs):
         assert pair in matching_pairs
 
 
-def test_query_stream_w_offset(query_docs):
+async def test_query_stream_w_offset(query_docs):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
     offset = 3
     query = collection.where("b", "==", 2).offset(offset)
-    values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
+    values = {snapshot.id: snapshot.to_dict() async for snapshot in query.stream()}
     # NOTE: We don't check the ``a``-values, since that would require
     #       an ``order_by('a')``, which combined with the ``b == 2``
     #       filter would necessitate an index.
@@ -679,27 +702,28 @@ def test_query_stream_w_offset(query_docs):
         assert value["b"] == 2
 
 
-def test_query_with_order_dot_key(client, cleanup):
+async def test_query_with_order_dot_key(client, cleanup):
     db = client
     collection_id = "collek" + UNIQUE_RESOURCE_ID
     collection = db.collection(collection_id)
     for index in range(100, -1, -1):
         doc = collection.document("test_{:09d}".format(index))
         data = {"count": 10 * index, "wordcount": {"page1": index * 10 + 100}}
-        doc.set(data)
+        await doc.set(data)
         cleanup(doc.delete)
     query = collection.order_by("wordcount.page1").limit(3)
-    data = [doc.to_dict()["wordcount"]["page1"] for doc in query.stream()]
+    data = [doc.to_dict()["wordcount"]["page1"] async for doc in query.stream()]
     assert [100, 110, 120] == data
-    for snapshot in collection.order_by("wordcount.page1").limit(3).stream():
+    async for snapshot in collection.order_by("wordcount.page1").limit(3).stream():
         last_value = snapshot.get("wordcount.page1")
     cursor_with_nested_keys = {"wordcount": {"page1": last_value}}
-    found = list(
-        collection.order_by("wordcount.page1")
+    found = [
+        i
+        async for i in collection.order_by("wordcount.page1")
         .start_after(cursor_with_nested_keys)
         .limit(3)
         .stream()
-    )
+    ]
     found_data = [
         {u"count": 30, u"wordcount": {u"page1": 130}},
         {u"count": 40, u"wordcount": {u"page1": 140}},
@@ -707,32 +731,33 @@ def test_query_with_order_dot_key(client, cleanup):
     ]
     assert found_data == [snap.to_dict() for snap in found]
     cursor_with_dotted_paths = {"wordcount.page1": last_value}
-    cursor_with_key_data = list(
-        collection.order_by("wordcount.page1")
+    cursor_with_key_data = [
+        i
+        async for i in collection.order_by("wordcount.page1")
         .start_after(cursor_with_dotted_paths)
         .limit(3)
         .stream()
-    )
+    ]
     assert found_data == [snap.to_dict() for snap in cursor_with_key_data]
 
 
-def test_query_unary(client, cleanup):
+async def test_query_unary(client, cleanup):
     collection_name = "unary" + UNIQUE_RESOURCE_ID
     collection = client.collection(collection_name)
     field_name = "foo"
 
-    _, document0 = collection.add({field_name: None})
+    _, document0 = await collection.add({field_name: None})
     # Add to clean-up.
     cleanup(document0.delete)
 
     nan_val = float("nan")
-    _, document1 = collection.add({field_name: nan_val})
+    _, document1 = await collection.add({field_name: nan_val})
     # Add to clean-up.
     cleanup(document1.delete)
 
     # 0. Query for null.
     query0 = collection.where(field_name, "==", None)
-    values0 = list(query0.stream())
+    values0 = [i async for i in query0.stream()]
     assert len(values0) == 1
     snapshot0 = values0[0]
     assert snapshot0.reference._path == document0._path
@@ -740,7 +765,7 @@ def test_query_unary(client, cleanup):
 
     # 1. Query for a NAN.
     query1 = collection.where(field_name, "==", nan_val)
-    values1 = list(query1.stream())
+    values1 = [i async for i in query1.stream()]
     assert len(values1) == 1
     snapshot1 = values1[0]
     assert snapshot1.reference._path == document1._path
@@ -749,7 +774,7 @@ def test_query_unary(client, cleanup):
     assert math.isnan(data1[field_name])
 
 
-def test_collection_group_queries(client, cleanup):
+async def test_collection_group_queries(client, cleanup):
     collection_group = "b" + UNIQUE_RESOURCE_ID
 
     doc_paths = [
@@ -772,16 +797,16 @@ def test_collection_group_queries(client, cleanup):
         batch.set(doc_ref, {"x": 1})
         cleanup(doc_ref.delete)
 
-    batch.commit()
+    await batch.commit()
 
     query = client.collection_group(collection_group)
-    snapshots = list(query.stream())
+    snapshots = [i async for i in query.stream()]
     found = [snapshot.id for snapshot in snapshots]
     expected = ["cg-doc1", "cg-doc2", "cg-doc3", "cg-doc4", "cg-doc5"]
     assert found == expected
 
 
-def test_collection_group_queries_startat_endat(client, cleanup):
+async def test_collection_group_queries_startat_endat(client, cleanup):
     collection_group = "b" + UNIQUE_RESOURCE_ID
 
     doc_paths = [
@@ -800,7 +825,7 @@ def test_collection_group_queries_startat_endat(client, cleanup):
         batch.set(doc_ref, {"x": doc_path})
         cleanup(doc_ref.delete)
 
-    batch.commit()
+    await batch.commit()
 
     query = (
         client.collection_group(collection_group)
@@ -808,7 +833,7 @@ def test_collection_group_queries_startat_endat(client, cleanup):
         .start_at([client.document("a/b")])
         .end_at([client.document("a/b0")])
     )
-    snapshots = list(query.stream())
+    snapshots = [i async for i in query.stream()]
     found = set(snapshot.id for snapshot in snapshots)
     assert found == set(["cg-doc2", "cg-doc3", "cg-doc4"])
 
@@ -818,12 +843,12 @@ def test_collection_group_queries_startat_endat(client, cleanup):
         .start_after([client.document("a/b")])
         .end_before([client.document("a/b/" + collection_group + "/cg-doc3")])
     )
-    snapshots = list(query.stream())
+    snapshots = [i async for i in query.stream()]
     found = set(snapshot.id for snapshot in snapshots)
     assert found == set(["cg-doc2"])
 
 
-def test_collection_group_queries_filters(client, cleanup):
+async def test_collection_group_queries_filters(client, cleanup):
     collection_group = "b" + UNIQUE_RESOURCE_ID
 
     doc_paths = [
@@ -843,7 +868,7 @@ def test_collection_group_queries_filters(client, cleanup):
         batch.set(doc_ref, {"x": index})
         cleanup(doc_ref.delete)
 
-    batch.commit()
+    await batch.commit()
 
     query = (
         client.collection_group(collection_group)
@@ -854,7 +879,7 @@ def test_collection_group_queries_filters(client, cleanup):
             firestore.field_path.FieldPath.document_id(), "<=", client.document("a/b0")
         )
     )
-    snapshots = list(query.stream())
+    snapshots = [i async for i in query.stream()]
     found = set(snapshot.id for snapshot in snapshots)
     assert found == set(["cg-doc2", "cg-doc3", "cg-doc4"])
 
@@ -869,12 +894,12 @@ def test_collection_group_queries_filters(client, cleanup):
             client.document("a/b/{}/cg-doc3".format(collection_group)),
         )
     )
-    snapshots = list(query.stream())
+    snapshots = [i async for i in query.stream()]
     found = set(snapshot.id for snapshot in snapshots)
     assert found == set(["cg-doc2"])
 
 
-def test_get_all(client, cleanup):
+async def test_get_all(client, cleanup):
     collection_name = "get-all" + UNIQUE_RESOURCE_ID
 
     document1 = client.document(collection_name, "a")
@@ -885,12 +910,12 @@ def test_get_all(client, cleanup):
     cleanup(document3.delete)
 
     data1 = {"a": {"b": 2, "c": 3}, "d": 4, "e": 0}
-    write_result1 = document1.create(data1)
+    write_result1 = await document1.create(data1)
     data3 = {"a": {"b": 5, "c": 6}, "d": 7, "e": 100}
-    write_result3 = document3.create(data3)
+    write_result3 = await document3.create(data3)
 
     # 0. Get 3 unique documents, one of which is missing.
-    snapshots = list(client.get_all([document1, document2, document3]))
+    snapshots = [i async for i in client.get_all([document1, document2, document3])]
 
     assert snapshots[0].exists
     assert snapshots[1].exists
@@ -906,14 +931,17 @@ def test_get_all(client, cleanup):
 
     # 1. Get 2 colliding documents.
     document1_also = client.document(collection_name, "a")
-    snapshots = list(client.get_all([document1, document1_also]))
+    snapshots = [i async for i in client.get_all([document1, document1_also])]
 
     assert len(snapshots) == 1
     assert document1 is not document1_also
     check_snapshot(snapshots[0], document1_also, data1, write_result1)
 
     # 2. Use ``field_paths`` / projection in ``get_all()``.
-    snapshots = list(client.get_all([document1, document3], field_paths=["a.b", "d"]))
+    snapshots = [
+        i
+        async for i in client.get_all([document1, document3], field_paths=["a.b", "d"])
+    ]
 
     assert len(snapshots) == 2
     snapshots.sort(key=id_attr)
@@ -925,7 +953,7 @@ def test_get_all(client, cleanup):
     check_snapshot(snapshot3, document3, restricted3, write_result3)
 
 
-def test_batch(client, cleanup):
+async def test_batch(client, cleanup):
     collection_name = "batch" + UNIQUE_RESOURCE_ID
 
     document1 = client.document(collection_name, "abc")
@@ -937,8 +965,8 @@ def test_batch(client, cleanup):
     cleanup(document3.delete)
 
     data2 = {"some": {"deep": "stuff", "and": "here"}, "water": 100.0}
-    document2.create(data2)
-    document3.create({"other": 19})
+    await document2.create(data2)
+    await document3.create({"other": 19})
 
     batch = client.batch()
     data1 = {"all": True}
@@ -946,7 +974,7 @@ def test_batch(client, cleanup):
     new_value = "there"
     batch.update(document2, {"some.and": new_value})
     batch.delete(document3)
-    write_results = batch.commit()
+    write_results = await batch.commit()
 
     assert len(write_results) == 3
 
@@ -955,197 +983,16 @@ def test_batch(client, cleanup):
     write_result3 = write_results[2]
     assert not write_result3._pb.HasField("update_time")
 
-    snapshot1 = document1.get()
+    snapshot1 = await document1.get()
     assert snapshot1.to_dict() == data1
     assert snapshot1.create_time == write_result1.update_time
     assert snapshot1.update_time == write_result1.update_time
 
-    snapshot2 = document2.get()
+    snapshot2 = await document2.get()
     assert snapshot2.to_dict() != data2
     data2["some"]["and"] = new_value
     assert snapshot2.to_dict() == data2
     assert_timestamp_less(snapshot2.create_time, write_result2.update_time)
     assert snapshot2.update_time == write_result2.update_time
 
-    assert not document3.get().exists
-
-
-def test_watch_document(client, cleanup):
-    db = client
-    collection_ref = db.collection(u"wd-users" + UNIQUE_RESOURCE_ID)
-    doc_ref = collection_ref.document(u"alovelace")
-
-    # Initial setting
-    doc_ref.set({u"first": u"Jane", u"last": u"Doe", u"born": 1900})
-    cleanup(doc_ref.delete)
-
-    sleep(1)
-
-    # Setup listener
-    def on_snapshot(docs, changes, read_time):
-        on_snapshot.called_count += 1
-
-    on_snapshot.called_count = 0
-
-    doc_ref.on_snapshot(on_snapshot)
-
-    # Alter document
-    doc_ref.set({u"first": u"Ada", u"last": u"Lovelace", u"born": 1815})
-
-    sleep(1)
-
-    for _ in range(10):
-        if on_snapshot.called_count > 0:
-            break
-        sleep(1)
-
-    if on_snapshot.called_count not in (1, 2):
-        raise AssertionError(
-            "Failed to get one or two document changes: count: "
-            + str(on_snapshot.called_count)
-        )
-
-
-def test_watch_collection(client, cleanup):
-    db = client
-    collection_ref = db.collection(u"wc-users" + UNIQUE_RESOURCE_ID)
-    doc_ref = collection_ref.document(u"alovelace")
-
-    # Initial setting
-    doc_ref.set({u"first": u"Jane", u"last": u"Doe", u"born": 1900})
-    cleanup(doc_ref.delete)
-
-    # Setup listener
-    def on_snapshot(docs, changes, read_time):
-        on_snapshot.called_count += 1
-        for doc in [doc for doc in docs if doc.id == doc_ref.id]:
-            on_snapshot.born = doc.get("born")
-
-    on_snapshot.called_count = 0
-    on_snapshot.born = 0
-
-    collection_ref.on_snapshot(on_snapshot)
-
-    # delay here so initial on_snapshot occurs and isn't combined with set
-    sleep(1)
-
-    doc_ref.set({u"first": u"Ada", u"last": u"Lovelace", u"born": 1815})
-
-    for _ in range(10):
-        if on_snapshot.born == 1815:
-            break
-        sleep(1)
-
-    if on_snapshot.born != 1815:
-        raise AssertionError(
-            "Expected the last document update to update born: " + str(on_snapshot.born)
-        )
-
-
-def test_watch_query(client, cleanup):
-    db = client
-    collection_ref = db.collection(u"wq-users" + UNIQUE_RESOURCE_ID)
-    doc_ref = collection_ref.document(u"alovelace")
-    query_ref = collection_ref.where("first", "==", u"Ada")
-
-    # Initial setting
-    doc_ref.set({u"first": u"Jane", u"last": u"Doe", u"born": 1900})
-    cleanup(doc_ref.delete)
-
-    sleep(1)
-
-    # Setup listener
-    def on_snapshot(docs, changes, read_time):
-        on_snapshot.called_count += 1
-
-        # A snapshot should return the same thing as if a query ran now.
-        query_ran = collection_ref.where("first", "==", u"Ada").stream()
-        assert len(docs) == len([i for i in query_ran])
-
-    on_snapshot.called_count = 0
-
-    query_ref.on_snapshot(on_snapshot)
-
-    # Alter document
-    doc_ref.set({u"first": u"Ada", u"last": u"Lovelace", u"born": 1815})
-
-    for _ in range(10):
-        if on_snapshot.called_count == 1:
-            return
-        sleep(1)
-
-    if on_snapshot.called_count != 1:
-        raise AssertionError(
-            "Failed to get exactly one document change: count: "
-            + str(on_snapshot.called_count)
-        )
-
-
-def test_watch_query_order(client, cleanup):
-    db = client
-    collection_ref = db.collection(u"users")
-    doc_ref1 = collection_ref.document(u"alovelace" + UNIQUE_RESOURCE_ID)
-    doc_ref2 = collection_ref.document(u"asecondlovelace" + UNIQUE_RESOURCE_ID)
-    doc_ref3 = collection_ref.document(u"athirdlovelace" + UNIQUE_RESOURCE_ID)
-    doc_ref4 = collection_ref.document(u"afourthlovelace" + UNIQUE_RESOURCE_ID)
-    doc_ref5 = collection_ref.document(u"afifthlovelace" + UNIQUE_RESOURCE_ID)
-
-    query_ref = collection_ref.where("first", "==", u"Ada").order_by("last")
-
-    # Setup listener
-    def on_snapshot(docs, changes, read_time):
-        try:
-            if len(docs) != 5:
-                return
-            # A snapshot should return the same thing as if a query ran now.
-            query_ran = query_ref.stream()
-            query_ran_results = [i for i in query_ran]
-            assert len(docs) == len(query_ran_results)
-
-            # compare the order things are returned
-            for snapshot, query in zip(docs, query_ran_results):
-                assert snapshot.get("last") == query.get(
-                    "last"
-                ), "expect the sort order to match, last"
-                assert snapshot.get("born") == query.get(
-                    "born"
-                ), "expect the sort order to match, born"
-            on_snapshot.called_count += 1
-            on_snapshot.last_doc_count = len(docs)
-        except Exception as e:
-            on_snapshot.failed = e
-
-    on_snapshot.called_count = 0
-    on_snapshot.last_doc_count = 0
-    on_snapshot.failed = None
-    query_ref.on_snapshot(on_snapshot)
-
-    sleep(1)
-
-    doc_ref1.set({u"first": u"Ada", u"last": u"Lovelace", u"born": 1815})
-    cleanup(doc_ref1.delete)
-
-    doc_ref2.set({u"first": u"Ada", u"last": u"SecondLovelace", u"born": 1815})
-    cleanup(doc_ref2.delete)
-
-    doc_ref3.set({u"first": u"Ada", u"last": u"ThirdLovelace", u"born": 1815})
-    cleanup(doc_ref3.delete)
-
-    doc_ref4.set({u"first": u"Ada", u"last": u"FourthLovelace", u"born": 1815})
-    cleanup(doc_ref4.delete)
-
-    doc_ref5.set({u"first": u"Ada", u"last": u"lovelace", u"born": 1815})
-    cleanup(doc_ref5.delete)
-
-    for _ in range(10):
-        if on_snapshot.last_doc_count == 5:
-            break
-        sleep(1)
-
-    if on_snapshot.failed:
-        raise on_snapshot.failed
-
-    if on_snapshot.last_doc_count != 5:
-        raise AssertionError(
-            "5 docs expected in snapshot method " + str(on_snapshot.last_doc_count)
-        )
+    assert not (await document3.get()).exists

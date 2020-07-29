@@ -18,6 +18,13 @@
 from google.cloud.firestore_v1 import __version__
 from google.cloud.firestore_v1 import ArrayRemove
 from google.cloud.firestore_v1 import ArrayUnion
+from google.cloud.firestore_v1 import AsyncClient
+from google.cloud.firestore_v1 import AsyncCollectionReference
+from google.cloud.firestore_v1 import AsyncDocumentReference
+from google.cloud.firestore_v1 import AsyncQuery
+from google.cloud.firestore_v1 import async_transactional
+from google.cloud.firestore_v1 import AsyncTransaction
+from google.cloud.firestore_v1 import AsyncWriteBatch
 from google.cloud.firestore_v1 import Client
 from google.cloud.firestore_v1 import CollectionReference
 from google.cloud.firestore_v1 import DELETE_FIELD
@@ -45,6 +52,13 @@ __all__ = [
     "__version__",
     "ArrayRemove",
     "ArrayUnion",
+    "AsyncClient",
+    "AsyncCollectionReference",
+    "AsyncDocumentReference",
+    "AsyncQuery",
+    "async_transactional",
+    "AsyncTransaction",
+    "AsyncWriteBatch",
     "Client",
     "CollectionReference",
     "DELETE_FIELD",

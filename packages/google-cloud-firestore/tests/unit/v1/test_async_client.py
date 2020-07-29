@@ -236,7 +236,7 @@ class TestAsyncClient(aiounittest.AsyncTestCase):
 
     async def _get_all_helper(self, client, references, document_pbs, **kwargs):
         # Create a minimal fake GAPIC with a dummy response.
-        firestore_api = mock.Mock(spec=["batch_get_documents"])
+        firestore_api = AsyncMock(spec=["batch_get_documents"])
         response_iterator = AsyncIter(document_pbs)
         firestore_api.batch_get_documents.return_value = response_iterator
 

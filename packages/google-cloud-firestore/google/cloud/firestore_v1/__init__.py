@@ -29,9 +29,21 @@ from google.cloud.firestore_v1._helpers import ExistsOption
 from google.cloud.firestore_v1._helpers import LastUpdateOption
 from google.cloud.firestore_v1._helpers import ReadAfterWriteError
 from google.cloud.firestore_v1._helpers import WriteOption
+from google.cloud.firestore_v1.async_batch import AsyncWriteBatch
+from google.cloud.firestore_v1.async_client import AsyncClient
+from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
+from google.cloud.firestore_v1.async_document import AsyncDocumentReference
+from google.cloud.firestore_v1.async_query import AsyncQuery
+from google.cloud.firestore_v1.async_transaction import async_transactional
+from google.cloud.firestore_v1.async_transaction import AsyncTransaction
+from google.cloud.firestore_v1.base_document import DocumentSnapshot
 from google.cloud.firestore_v1.batch import WriteBatch
 from google.cloud.firestore_v1.client import Client
 from google.cloud.firestore_v1.collection import CollectionReference
+from google.cloud.firestore_v1.document import DocumentReference
+from google.cloud.firestore_v1.query import Query
+from google.cloud.firestore_v1.transaction import Transaction
+from google.cloud.firestore_v1.transaction import transactional
 from google.cloud.firestore_v1.transforms import ArrayRemove
 from google.cloud.firestore_v1.transforms import ArrayUnion
 from google.cloud.firestore_v1.transforms import DELETE_FIELD
@@ -39,11 +51,6 @@ from google.cloud.firestore_v1.transforms import Increment
 from google.cloud.firestore_v1.transforms import Maximum
 from google.cloud.firestore_v1.transforms import Minimum
 from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
-from google.cloud.firestore_v1.document import DocumentReference
-from google.cloud.firestore_v1.document import DocumentSnapshot
-from google.cloud.firestore_v1.query import Query
-from google.cloud.firestore_v1.transaction import Transaction
-from google.cloud.firestore_v1.transaction import transactional
 from google.cloud.firestore_v1.watch import Watch
 
 
@@ -100,6 +107,13 @@ __all__ = [
     "__version__",
     "ArrayRemove",
     "ArrayUnion",
+    "AsyncClient",
+    "AsyncCollectionReference",
+    "AsyncDocumentReference",
+    "AsyncQuery",
+    "async_transactional",
+    "AsyncTransaction",
+    "AsyncWriteBatch",
     "Client",
     "CollectionReference",
     "DELETE_FIELD",

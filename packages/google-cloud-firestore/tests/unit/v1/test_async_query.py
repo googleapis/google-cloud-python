@@ -17,7 +17,7 @@ import types
 import aiounittest
 
 import mock
-from tests.unit.v1.test__helpers import AsyncIter
+from tests.unit.v1.test__helpers import AsyncMock, AsyncIter
 from tests.unit.v1.test_base_query import _make_credentials, _make_query_response
 
 
@@ -62,7 +62,7 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
             stream_mock.return_value = AsyncIter(range(3))
 
             # Create a minimal fake GAPIC.
-            firestore_api = mock.Mock(spec=["run_query"])
+            firestore_api = AsyncMock(spec=["run_query"])
 
             # Attach the fake GAPIC to a real client.
             client = _make_client()
@@ -90,7 +90,7 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
     @pytest.mark.asyncio
     async def test_stream_simple(self):
         # Create a minimal fake GAPIC.
-        firestore_api = mock.Mock(spec=["run_query"])
+        firestore_api = AsyncMock(spec=["run_query"])
 
         # Attach the fake GAPIC to a real client.
         client = _make_client()
@@ -130,7 +130,7 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
     @pytest.mark.asyncio
     async def test_stream_with_transaction(self):
         # Create a minimal fake GAPIC.
-        firestore_api = mock.Mock(spec=["run_query"])
+        firestore_api = AsyncMock(spec=["run_query"])
 
         # Attach the fake GAPIC to a real client.
         client = _make_client()
@@ -174,7 +174,7 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
     @pytest.mark.asyncio
     async def test_stream_no_results(self):
         # Create a minimal fake GAPIC with a dummy response.
-        firestore_api = mock.Mock(spec=["run_query"])
+        firestore_api = AsyncMock(spec=["run_query"])
         empty_response = _make_query_response()
         run_query_response = AsyncIter([empty_response])
         firestore_api.run_query.return_value = run_query_response
@@ -205,7 +205,7 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
     @pytest.mark.asyncio
     async def test_stream_second_response_in_empty_stream(self):
         # Create a minimal fake GAPIC with a dummy response.
-        firestore_api = mock.Mock(spec=["run_query"])
+        firestore_api = AsyncMock(spec=["run_query"])
         empty_response1 = _make_query_response()
         empty_response2 = _make_query_response()
         run_query_response = AsyncIter([empty_response1, empty_response2])
@@ -237,7 +237,7 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
     @pytest.mark.asyncio
     async def test_stream_with_skipped_results(self):
         # Create a minimal fake GAPIC.
-        firestore_api = mock.Mock(spec=["run_query"])
+        firestore_api = AsyncMock(spec=["run_query"])
 
         # Attach the fake GAPIC to a real client.
         client = _make_client()
@@ -278,7 +278,7 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
     @pytest.mark.asyncio
     async def test_stream_empty_after_first_response(self):
         # Create a minimal fake GAPIC.
-        firestore_api = mock.Mock(spec=["run_query"])
+        firestore_api = AsyncMock(spec=["run_query"])
 
         # Attach the fake GAPIC to a real client.
         client = _make_client()
@@ -319,7 +319,7 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
     @pytest.mark.asyncio
     async def test_stream_w_collection_group(self):
         # Create a minimal fake GAPIC.
-        firestore_api = mock.Mock(spec=["run_query"])
+        firestore_api = AsyncMock(spec=["run_query"])
 
         # Attach the fake GAPIC to a real client.
         client = _make_client()
@@ -359,12 +359,6 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
             },
             metadata=client._rpc_metadata,
         )
-
-    @mock.patch("google.cloud.firestore_v1.async_query.Watch", autospec=True)
-    def test_on_snapshot(self, watch):
-        query = self._make_one(mock.sentinel.parent)
-        query.on_snapshot(None)
-        watch.for_query.assert_called_once()
 
 
 def _make_client(project="project-project"):

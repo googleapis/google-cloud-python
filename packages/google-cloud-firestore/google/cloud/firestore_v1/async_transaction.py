@@ -287,7 +287,7 @@ class _AsyncTransactional(_BaseTransactional):
         raise ValueError(msg)
 
 
-def transactional(to_wrap):
+def async_transactional(to_wrap):
     """Decorate a callable so that it runs in a transaction.
 
     Args:

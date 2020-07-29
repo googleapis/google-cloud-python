@@ -22,8 +22,6 @@ from google.cloud.firestore_v1.base_collection import (
     _item_to_document_ref,
 )
 from google.cloud.firestore_v1 import async_query
-from google.cloud.firestore_v1.watch import Watch
-from google.cloud.firestore_v1 import async_document
 
 
 class AsyncCollectionReference(BaseCollectionReference):
@@ -119,7 +117,8 @@ class AsyncCollectionReference(BaseCollectionReference):
             },
             metadata=self._client._rpc_metadata,
         )
-        return (_item_to_document_ref(self, i) for i in iterator)
+        async for i in iterator:
+            yield _item_to_document_ref(self, i)
 
     async def get(self, transaction=None):
         """Deprecated alias for :meth:`stream`."""
@@ -161,36 +160,3 @@ class AsyncCollectionReference(BaseCollectionReference):
         query = async_query.AsyncQuery(self)
         async for d in query.stream(transaction=transaction):
             yield d
-
-    def on_snapshot(self, callback):
-        """Monitor the documents in this collection.
-
-        This starts a watch on this collection using a background thread. The
-        provided callback is run on the snapshot of the documents.
-
-        Args:
-            callback (Callable[[:class:`~google.cloud.firestore.collection.CollectionSnapshot`], NoneType]):
-                a callback to run when a change occurs.
-
-        Example:
-            from google.cloud import firestore_v1
-
-            db = firestore_v1.Client()
-            collection_ref = db.collection(u'users')
-
-            def on_snapshot(collection_snapshot, changes, read_time):
-                for doc in collection_snapshot.documents:
-                    print(u'{} => {}'.format(doc.id, doc.to_dict()))
-
-            # Watch this collection
-            collection_watch = collection_ref.on_snapshot(on_snapshot)
-
-            # Terminate this watch
-            collection_watch.unsubscribe()
-        """
-        return Watch.for_query(
-            self._query(),
-            callback,
-            async_document.DocumentSnapshot,
-            async_document.AsyncDocumentReference,
-        )
