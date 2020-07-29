@@ -1,7 +1,7 @@
 {
     "name": "google-resumable-media",
     "name_pretty": "Google Resumable Media",
-    "client_documentation": "https://googleapis.github.io/google-resumable-media-python/latest/",
+    "client_documentation": "https://googleapis.dev/python/google-resumable-media/latest/index.html",
     "release_level": "alpha",
     "language": "python",
     "repo": "googleapis/google-resumable-media-python",

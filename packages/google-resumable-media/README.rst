@@ -7,7 +7,7 @@ Utilities for Google Media Downloads and Resumable Uploads
 
 See the `docs`_ for examples and usage.
 
-.. _docs: https://googleapis.github.io/google-resumable-media-python/latest/
+.. _docs: https://googleapis.dev/python/google-resumable-media/latest/index.html
 
 Supported Python Versions
 -------------------------
