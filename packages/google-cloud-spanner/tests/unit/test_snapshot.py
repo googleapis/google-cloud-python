@@ -13,10 +13,13 @@
 # limitations under the License.
 
 
-import unittest
 import google.api_core.gapic_v1.method
 import mock
-
+from tests._helpers import (
+    OpenTelemetryBase,
+    StatusCanonicalCode,
+    HAS_OPENTELEMETRY_INSTALLED,
+)
 
 TABLE_NAME = "citizens"
 COLUMNS = ["email", "first_name", "last_name", "age"]
@@ -33,13 +36,19 @@ RESUME_TOKEN = b"DEADBEEF"
 TXN_ID = b"DEAFBEAD"
 SECONDS = 3
 MICROS = 123456
+BASE_ATTRIBUTES = {
+    "db.type": "spanner",
+    "db.url": "spanner.googleapis.com:443",
+    "db.instance": "testing",
+    "net.host.name": "spanner.googleapis.com:443",
+}
 
 
-class Test_restart_on_unavailable(unittest.TestCase):
-    def _call_fut(self, restart):
+class Test_restart_on_unavailable(OpenTelemetryBase):
+    def _call_fut(self, restart, span_name=None, session=None, attributes=None):
         from google.cloud.spanner_v1.snapshot import _restart_on_unavailable
 
-        return _restart_on_unavailable(restart)
+        return _restart_on_unavailable(restart, span_name, session, attributes)
 
     def _make_item(self, value, resume_token=b""):
         return mock.Mock(
@@ -51,6 +60,7 @@ class Test_restart_on_unavailable(unittest.TestCase):
         restart = mock.Mock(spec=[], return_value=raw)
         resumable = self._call_fut(restart)
         self.assertEqual(list(resumable), [])
+        self.assertNoSpans()
 
     def test_iteration_w_non_empty_raw(self):
         ITEMS = (self._make_item(0), self._make_item(1))
@@ -59,6 +69,7 @@ class Test_restart_on_unavailable(unittest.TestCase):
         resumable = self._call_fut(restart)
         self.assertEqual(list(resumable), list(ITEMS))
         restart.assert_called_once_with()
+        self.assertNoSpans()
 
     def test_iteration_w_raw_w_resume_tken(self):
         ITEMS = (
@@ -72,6 +83,7 @@ class Test_restart_on_unavailable(unittest.TestCase):
         resumable = self._call_fut(restart)
         self.assertEqual(list(resumable), list(ITEMS))
         restart.assert_called_once_with()
+        self.assertNoSpans()
 
     def test_iteration_w_raw_raising_unavailable_no_token(self):
         ITEMS = (
@@ -85,6 +97,7 @@ class Test_restart_on_unavailable(unittest.TestCase):
         resumable = self._call_fut(restart)
         self.assertEqual(list(resumable), list(ITEMS))
         self.assertEqual(restart.mock_calls, [mock.call(), mock.call(resume_token=b"")])
+        self.assertNoSpans()
 
     def test_iteration_w_raw_raising_unavailable(self):
         FIRST = (self._make_item(0), self._make_item(1, resume_token=RESUME_TOKEN))
@@ -98,6 +111,7 @@ class Test_restart_on_unavailable(unittest.TestCase):
         self.assertEqual(
             restart.mock_calls, [mock.call(), mock.call(resume_token=RESUME_TOKEN)]
         )
+        self.assertNoSpans()
 
     def test_iteration_w_raw_raising_unavailable_after_token(self):
         FIRST = (self._make_item(0), self._make_item(1, resume_token=RESUME_TOKEN))
@@ -110,9 +124,48 @@ class Test_restart_on_unavailable(unittest.TestCase):
         self.assertEqual(
             restart.mock_calls, [mock.call(), mock.call(resume_token=RESUME_TOKEN)]
         )
+        self.assertNoSpans()
+
+    def test_iteration_w_span_creation(self):
+        name = "TestSpan"
+        extra_atts = {"test_att": 1}
+        raw = _MockIterator()
+        restart = mock.Mock(spec=[], return_value=raw)
+        resumable = self._call_fut(restart, name, _Session(_Database()), extra_atts)
+        self.assertEqual(list(resumable), [])
+        self.assertSpanAttributes(name, attributes=dict(BASE_ATTRIBUTES, test_att=1))
+
+    def test_iteration_w_multiple_span_creation(self):
+        if HAS_OPENTELEMETRY_INSTALLED:
+            FIRST = (self._make_item(0), self._make_item(1, resume_token=RESUME_TOKEN))
+            SECOND = (self._make_item(2),)  # discarded after 503
+            LAST = (self._make_item(3),)
+            before = _MockIterator(*(FIRST + SECOND), fail_after=True)
+            after = _MockIterator(*LAST)
+            restart = mock.Mock(spec=[], side_effect=[before, after])
+            name = "TestSpan"
+            resumable = self._call_fut(restart, name, _Session(_Database()))
+            self.assertEqual(list(resumable), list(FIRST + LAST))
+            self.assertEqual(
+                restart.mock_calls, [mock.call(), mock.call(resume_token=RESUME_TOKEN)]
+            )
+
+            span_list = self.memory_exporter.get_finished_spans()
+            self.assertEqual(len(span_list), 2)
+            for span in span_list:
+                self.assertEqual(span.name, name)
+                self.assertEqual(
+                    span.attributes,
+                    {
+                        "db.type": "spanner",
+                        "db.url": "spanner.googleapis.com:443",
+                        "db.instance": "testing",
+                        "net.host.name": "spanner.googleapis.com:443",
+                    },
+                )
 
 
-class Test_SnapshotBase(unittest.TestCase):
+class Test_SnapshotBase(OpenTelemetryBase):
 
     PROJECT_ID = "project-id"
     INSTANCE_ID = "instance-id"
@@ -166,6 +219,8 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertIs(base._session, session)
         self.assertEqual(base._execute_sql_count, 0)
 
+        self.assertNoSpans()
+
     def test__make_txn_selector_virtual(self):
         session = _Session()
         base = self._make_one(session)
@@ -184,6 +239,14 @@ class Test_SnapshotBase(unittest.TestCase):
 
         with self.assertRaises(RuntimeError):
             list(derived.read(TABLE_NAME, COLUMNS, keyset))
+
+        self.assertSpanAttributes(
+            "CloudSpanner.ReadOnlyTransaction",
+            status=StatusCanonicalCode.UNKNOWN,
+            attributes=dict(
+                BASE_ATTRIBUTES, table_id=TABLE_NAME, columns=tuple(COLUMNS)
+            ),
+        )
 
     def _read_helper(self, multi_use, first=True, count=0, partition=None):
         from google.protobuf.struct_pb2 import Struct
@@ -280,6 +343,13 @@ class Test_SnapshotBase(unittest.TestCase):
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
+        self.assertSpanAttributes(
+            "CloudSpanner.ReadOnlyTransaction",
+            attributes=dict(
+                BASE_ATTRIBUTES, table_id=TABLE_NAME, columns=tuple(COLUMNS)
+            ),
+        )
+
     def test_read_wo_multi_use(self):
         self._read_helper(multi_use=False)
 
@@ -313,6 +383,12 @@ class Test_SnapshotBase(unittest.TestCase):
 
         self.assertEqual(derived._execute_sql_count, 1)
 
+        self.assertSpanAttributes(
+            "CloudSpanner.ReadWriteTransaction",
+            status=StatusCanonicalCode.UNKNOWN,
+            attributes=dict(BASE_ATTRIBUTES, **{"db.statement": SQL_QUERY}),
+        )
+
     def test_execute_sql_w_params_wo_param_types(self):
         database = _Database()
         session = _Session(database)
@@ -320,6 +396,8 @@ class Test_SnapshotBase(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             derived.execute_sql(SQL_QUERY_WITH_PARAM, PARAMS)
+
+        self.assertNoSpans()
 
     def _execute_sql_helper(
         self,
@@ -440,6 +518,12 @@ class Test_SnapshotBase(unittest.TestCase):
 
         self.assertEqual(derived._execute_sql_count, sql_count + 1)
 
+        self.assertSpanAttributes(
+            "CloudSpanner.ReadWriteTransaction",
+            status=StatusCanonicalCode.OK,
+            attributes=dict(BASE_ATTRIBUTES, **{"db.statement": SQL_QUERY_WITH_PARAM}),
+        )
+
     def test_execute_sql_wo_multi_use(self):
         self._execute_sql_helper(multi_use=False)
 
@@ -534,6 +618,14 @@ class Test_SnapshotBase(unittest.TestCase):
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
+        self.assertSpanAttributes(
+            "CloudSpanner.PartitionReadOnlyTransaction",
+            status=StatusCanonicalCode.OK,
+            attributes=dict(
+                BASE_ATTRIBUTES, table_id=TABLE_NAME, columns=tuple(COLUMNS)
+            ),
+        )
+
     def test_partition_read_single_use_raises(self):
         with self.assertRaises(ValueError):
             self._partition_read_helper(multi_use=False, w_txn=True)
@@ -556,6 +648,14 @@ class Test_SnapshotBase(unittest.TestCase):
 
         with self.assertRaises(RuntimeError):
             list(derived.partition_read(TABLE_NAME, COLUMNS, keyset))
+
+        self.assertSpanAttributes(
+            "CloudSpanner.PartitionReadOnlyTransaction",
+            status=StatusCanonicalCode.UNKNOWN,
+            attributes=dict(
+                BASE_ATTRIBUTES, table_id=TABLE_NAME, columns=tuple(COLUMNS)
+            ),
+        )
 
     def test_partition_read_ok_w_index_no_options(self):
         self._partition_read_helper(multi_use=True, w_txn=True, index="index")
@@ -626,6 +726,12 @@ class Test_SnapshotBase(unittest.TestCase):
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
+        self.assertSpanAttributes(
+            "CloudSpanner.PartitionReadWriteTransaction",
+            status=StatusCanonicalCode.OK,
+            attributes=dict(BASE_ATTRIBUTES, **{"db.statement": SQL_QUERY_WITH_PARAM}),
+        )
+
     def test_partition_query_other_error(self):
         database = _Database()
         database.spanner_api = self._make_spanner_api()
@@ -638,6 +744,12 @@ class Test_SnapshotBase(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             list(derived.partition_query(SQL_QUERY))
 
+        self.assertSpanAttributes(
+            "CloudSpanner.PartitionReadWriteTransaction",
+            status=StatusCanonicalCode.UNKNOWN,
+            attributes=dict(BASE_ATTRIBUTES, **{"db.statement": SQL_QUERY}),
+        )
+
     def test_partition_query_w_params_wo_param_types(self):
         database = _Database()
         session = _Session(database)
@@ -647,6 +759,8 @@ class Test_SnapshotBase(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             list(derived.partition_query(SQL_QUERY_WITH_PARAM, PARAMS))
+
+        self.assertNoSpans()
 
     def test_partition_query_single_use_raises(self):
         with self.assertRaises(ValueError):
@@ -666,7 +780,7 @@ class Test_SnapshotBase(unittest.TestCase):
         self._partition_query_helper(multi_use=True, w_txn=True, max_partitions=4)
 
 
-class TestSnapshot(unittest.TestCase):
+class TestSnapshot(OpenTelemetryBase):
 
     PROJECT_ID = "project-id"
     INSTANCE_ID = "instance-id"
@@ -933,6 +1047,12 @@ class TestSnapshot(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             snapshot.begin()
 
+        self.assertSpanAttributes(
+            "CloudSpanner.BeginTransaction",
+            status=StatusCanonicalCode.UNKNOWN,
+            attributes=BASE_ATTRIBUTES,
+        )
+
     def test_begin_ok_exact_staleness(self):
         from google.protobuf.duration_pb2 import Duration
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
@@ -964,6 +1084,12 @@ class TestSnapshot(unittest.TestCase):
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
+        self.assertSpanAttributes(
+            "CloudSpanner.BeginTransaction",
+            status=StatusCanonicalCode.OK,
+            attributes=BASE_ATTRIBUTES,
+        )
+
     def test_begin_ok_exact_strong(self):
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB,
@@ -990,6 +1116,12 @@ class TestSnapshot(unittest.TestCase):
             session.name,
             expected_txn_options,
             metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+
+        self.assertSpanAttributes(
+            "CloudSpanner.BeginTransaction",
+            status=StatusCanonicalCode.OK,
+            attributes=BASE_ATTRIBUTES,
         )
 
 

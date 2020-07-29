@@ -52,6 +52,7 @@ from test_utils.retry import RetryInstanceState
 from test_utils.retry import RetryResult
 from test_utils.system import unique_resource_id
 from tests._fixtures import DDL_STATEMENTS
+from tests._helpers import OpenTelemetryBase, HAS_OPENTELEMETRY_INSTALLED
 
 
 CREATE_INSTANCE = os.getenv("GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE") is not None
@@ -66,6 +67,12 @@ else:
 EXISTING_INSTANCES = []
 COUNTERS_TABLE = "counters"
 COUNTERS_COLUMNS = ("name", "value")
+
+BASE_ATTRIBUTES = {
+    "db.type": "spanner",
+    "db.url": "spanner.googleapis.com:443",
+    "net.host.name": "spanner.googleapis.com:443",
+}
 
 _STATUS_CODE_TO_GRPC_STATUS_CODE = {
     member.value[0]: member for member in grpc.StatusCode
@@ -726,7 +733,7 @@ SOME_TIME = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
 NANO_TIME = DatetimeWithNanoseconds(1995, 8, 31, nanosecond=987654321)
 POS_INF = float("+inf")
 NEG_INF = float("-inf")
-OTHER_NAN, = struct.unpack("<d", b"\x01\x00\x01\x00\x00\x00\xf8\xff")
+(OTHER_NAN,) = struct.unpack("<d", b"\x01\x00\x01\x00\x00\x00\xf8\xff")
 BYTES_1 = b"Ymlu"
 BYTES_2 = b"Ym9vdHM="
 ALL_TYPES_TABLE = "all_types"
@@ -781,7 +788,7 @@ ALL_TYPES_ROWDATA = (
 )
 
 
-class TestSessionAPI(unittest.TestCase, _TestData):
+class TestSessionAPI(OpenTelemetryBase, _TestData):
     DATABASE_NAME = "test_sessions" + unique_resource_id("_")
 
     @classmethod
@@ -798,9 +805,11 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         cls._db.drop()
 
     def setUp(self):
+        super(TestSessionAPI, self).setUp()
         self.to_delete = []
 
     def tearDown(self):
+        super(TestSessionAPI, self).tearDown()
         for doomed in self.to_delete:
             doomed.delete()
 
@@ -825,6 +834,46 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         with self._db.snapshot(read_timestamp=batch.committed) as snapshot:
             rows = list(snapshot.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_rows_data(rows)
+
+        if HAS_OPENTELEMETRY_INSTALLED:
+            span_list = self.memory_exporter.get_finished_spans()
+            self.assertEqual(len(span_list), 4)
+            self.assertSpanAttributes(
+                "CloudSpanner.GetSession",
+                attributes=dict(
+                    BASE_ATTRIBUTES,
+                    **{"db.instance": self._db.name, "session_found": True}
+                ),
+                span=span_list[0],
+            )
+            self.assertSpanAttributes(
+                "CloudSpanner.Commit",
+                attributes=dict(
+                    BASE_ATTRIBUTES,
+                    **{"db.instance": self._db.name, "num_mutations": 2}
+                ),
+                span=span_list[1],
+            )
+            self.assertSpanAttributes(
+                "CloudSpanner.GetSession",
+                attributes=dict(
+                    BASE_ATTRIBUTES,
+                    **{"db.instance": self._db.name, "session_found": True}
+                ),
+                span=span_list[2],
+            )
+            self.assertSpanAttributes(
+                "CloudSpanner.ReadOnlyTransaction",
+                attributes=dict(
+                    BASE_ATTRIBUTES,
+                    **{
+                        "db.instance": self._db.name,
+                        "columns": self.COLUMNS,
+                        "table_id": self.TABLE,
+                    }
+                ),
+                span=span_list[3],
+            )
 
     def test_batch_insert_then_read_string_array_of_string(self):
         TABLE = "string_plus_array_of_string"
@@ -923,6 +972,77 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
         self.assertEqual(rows, [])
+
+        if HAS_OPENTELEMETRY_INSTALLED:
+            span_list = self.memory_exporter.get_finished_spans()
+            self.assertEqual(len(span_list), 8)
+            self.assertSpanAttributes(
+                "CloudSpanner.CreateSession",
+                attributes=dict(BASE_ATTRIBUTES, **{"db.instance": self._db.name}),
+                span=span_list[0],
+            )
+            self.assertSpanAttributes(
+                "CloudSpanner.GetSession",
+                attributes=dict(
+                    BASE_ATTRIBUTES,
+                    **{"db.instance": self._db.name, "session_found": True}
+                ),
+                span=span_list[1],
+            )
+            self.assertSpanAttributes(
+                "CloudSpanner.Commit",
+                attributes=dict(
+                    BASE_ATTRIBUTES,
+                    **{"db.instance": self._db.name, "num_mutations": 1}
+                ),
+                span=span_list[2],
+            )
+            self.assertSpanAttributes(
+                "CloudSpanner.BeginTransaction",
+                attributes=dict(BASE_ATTRIBUTES, **{"db.instance": self._db.name}),
+                span=span_list[3],
+            )
+            self.assertSpanAttributes(
+                "CloudSpanner.ReadOnlyTransaction",
+                attributes=dict(
+                    BASE_ATTRIBUTES,
+                    **{
+                        "db.instance": self._db.name,
+                        "table_id": self.TABLE,
+                        "columns": self.COLUMNS,
+                    }
+                ),
+                span=span_list[4],
+            )
+            self.assertSpanAttributes(
+                "CloudSpanner.ReadOnlyTransaction",
+                attributes=dict(
+                    BASE_ATTRIBUTES,
+                    **{
+                        "db.instance": self._db.name,
+                        "table_id": self.TABLE,
+                        "columns": self.COLUMNS,
+                    }
+                ),
+                span=span_list[5],
+            )
+            self.assertSpanAttributes(
+                "CloudSpanner.Rollback",
+                attributes=dict(BASE_ATTRIBUTES, **{"db.instance": self._db.name}),
+                span=span_list[6],
+            )
+            self.assertSpanAttributes(
+                "CloudSpanner.ReadOnlyTransaction",
+                attributes=dict(
+                    BASE_ATTRIBUTES,
+                    **{
+                        "db.instance": self._db.name,
+                        "table_id": self.TABLE,
+                        "columns": self.COLUMNS,
+                    }
+                ),
+                span=span_list[7],
+            )
 
     def _transaction_read_then_raise(self, transaction):
         rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
@@ -1225,6 +1345,66 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         with session.transaction() as transaction:
             with self.assertRaises(InvalidArgument):
                 transaction.batch_update([])
+
+    def test_transaction_batch_update_w_parent_span(self):
+        try:
+            from opentelemetry import trace
+        except ImportError:
+            return
+
+        tracer = trace.get_tracer(__name__)
+
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        insert_statement = list(self._generate_insert_statements())[0]
+        update_statement = (
+            "UPDATE contacts SET email = @email " "WHERE contact_id = @contact_id;",
+            {"contact_id": 1, "email": "phreddy@example.com"},
+            {"contact_id": Type(code=INT64), "email": Type(code=STRING)},
+        )
+        delete_statement = (
+            "DELETE contacts WHERE contact_id = @contact_id;",
+            {"contact_id": 1},
+            {"contact_id": Type(code=INT64)},
+        )
+
+        def unit_of_work(transaction, self):
+
+            status, row_counts = transaction.batch_update(
+                [insert_statement, update_statement, delete_statement]
+            )
+            self._check_batch_status(status.code)
+            self.assertEqual(len(row_counts), 3)
+            for row_count in row_counts:
+                self.assertEqual(row_count, 1)
+
+        with tracer.start_as_current_span("Test Span"):
+            session.run_in_transaction(unit_of_work, self)
+
+        span_list = self.memory_exporter.get_finished_spans()
+        self.assertEqual(len(span_list), 6)
+        self.assertEqual(
+            list(map(lambda span: span.name, span_list)),
+            [
+                "CloudSpanner.CreateSession",
+                "CloudSpanner.Commit",
+                "CloudSpanner.BeginTransaction",
+                "CloudSpanner.DMLTransaction",
+                "CloudSpanner.Commit",
+                "Test Span",
+            ],
+        )
+        for span in span_list[2:-1]:
+            self.assertEqual(span.context.trace_id, span_list[-1].context.trace_id)
+            self.assertEqual(span.parent.span_id, span_list[-1].context.span_id)
 
     def test_execute_partitioned_dml(self):
         # [START spanner_test_dml_partioned_dml_update]
@@ -2333,7 +2513,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                 )
             )
             self.assertEqual(len(rows), 1)
-            float_array, = rows[0]
+            float_array = rows[0][0]
             self.assertEqual(float_array[0], float("-inf"))
             self.assertEqual(float_array[1], float("+inf"))
             # NaNs cannot be searched for by equality.

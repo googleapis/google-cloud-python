@@ -26,6 +26,7 @@ from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.snapshot import Snapshot
 from google.cloud.spanner_v1.transaction import Transaction
+from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
 import random
 
 # pylint: enable=ungrouped-imports
@@ -114,7 +115,11 @@ class Session(object):
         kw = {}
         if self._labels:
             kw = {"session": {"labels": self._labels}}
-        session_pb = api.create_session(self._database.name, metadata=metadata, **kw)
+
+        with trace_call("CloudSpanner.CreateSession", self, self._labels):
+            session_pb = api.create_session(
+                self._database.name, metadata=metadata, **kw
+            )
         self._session_id = session_pb.name.split("/")[-1]
 
     def exists(self):
@@ -130,10 +135,16 @@ class Session(object):
             return False
         api = self._database.spanner_api
         metadata = _metadata_with_prefix(self._database.name)
-        try:
-            api.get_session(self.name, metadata=metadata)
-        except NotFound:
-            return False
+
+        with trace_call("CloudSpanner.GetSession", self) as span:
+            try:
+                api.get_session(self.name, metadata=metadata)
+                if span:
+                    span.set_attribute("session_found", True)
+            except NotFound:
+                if span:
+                    span.set_attribute("session_found", False)
+                return False
 
         return True
 
@@ -150,8 +161,8 @@ class Session(object):
             raise ValueError("Session ID not set by back-end")
         api = self._database.spanner_api
         metadata = _metadata_with_prefix(self._database.name)
-
-        api.delete_session(self.name, metadata=metadata)
+        with trace_call("CloudSpanner.DeleteSession", self):
+            api.delete_session(self.name, metadata=metadata)
 
     def ping(self):
         """Ping the session to keep it alive by executing "SELECT 1".

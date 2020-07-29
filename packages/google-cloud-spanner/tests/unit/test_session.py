@@ -13,9 +13,13 @@
 # limitations under the License.
 
 
-import unittest
 import google.api_core.gapic_v1.method
 import mock
+from tests._helpers import (
+    OpenTelemetryBase,
+    StatusCanonicalCode,
+    HAS_OPENTELEMETRY_INSTALLED,
+)
 
 
 def _make_rpc_error(error_cls, trailing_metadata=None):
@@ -26,7 +30,12 @@ def _make_rpc_error(error_cls, trailing_metadata=None):
     return error_cls("error", errors=(grpc_error,))
 
 
-class TestSession(unittest.TestCase):
+class _ConstantTime:
+    def time(self):
+        return 1
+
+
+class TestSession(OpenTelemetryBase):
 
     PROJECT_ID = "project-id"
     INSTANCE_ID = "instance-id"
@@ -35,6 +44,12 @@ class TestSession(unittest.TestCase):
     DATABASE_NAME = INSTANCE_NAME + "/databases/" + DATABASE_ID
     SESSION_ID = "session-id"
     SESSION_NAME = DATABASE_NAME + "/sessions/" + SESSION_ID
+    BASE_ATTRIBUTES = {
+        "db.type": "spanner",
+        "db.url": "spanner.googleapis.com:443",
+        "db.instance": DATABASE_NAME,
+        "net.host.name": "spanner.googleapis.com:443",
+    }
 
     def _getTargetClass(self):
         from google.cloud.spanner_v1.session import Session
@@ -107,6 +122,8 @@ class TestSession(unittest.TestCase):
         with self.assertRaises(ValueError):
             session.create()
 
+        self.assertNoSpans()
+
     def test_create_ok(self):
         session_pb = self._make_session_pb(self.SESSION_NAME)
         gax_api = self._make_spanner_api()
@@ -121,6 +138,10 @@ class TestSession(unittest.TestCase):
 
         gax_api.create_session.assert_called_once_with(
             database.name, metadata=[("google-cloud-resource-prefix", database.name)]
+        )
+
+        self.assertSpanAttributes(
+            "CloudSpanner.CreateSession", attributes=TestSession.BASE_ATTRIBUTES
         )
 
     def test_create_w_labels(self):
@@ -142,6 +163,11 @@ class TestSession(unittest.TestCase):
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
+        self.assertSpanAttributes(
+            "CloudSpanner.CreateSession",
+            attributes=dict(TestSession.BASE_ATTRIBUTES, foo="bar"),
+        )
+
     def test_create_error(self):
         from google.api_core.exceptions import Unknown
 
@@ -154,10 +180,18 @@ class TestSession(unittest.TestCase):
         with self.assertRaises(Unknown):
             session.create()
 
+        self.assertSpanAttributes(
+            "CloudSpanner.CreateSession",
+            status=StatusCanonicalCode.UNKNOWN,
+            attributes=TestSession.BASE_ATTRIBUTES,
+        )
+
     def test_exists_wo_session_id(self):
         database = self._make_database()
         session = self._make_one(database)
         self.assertFalse(session.exists())
+
+        self.assertNoSpans()
 
     def test_exists_hit(self):
         session_pb = self._make_session_pb(self.SESSION_NAME)
@@ -173,6 +207,11 @@ class TestSession(unittest.TestCase):
         gax_api.get_session.assert_called_once_with(
             self.SESSION_NAME,
             metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+
+        self.assertSpanAttributes(
+            "CloudSpanner.GetSession",
+            attributes=dict(TestSession.BASE_ATTRIBUTES, session_found=True),
         )
 
     def test_exists_miss(self):
@@ -192,6 +231,11 @@ class TestSession(unittest.TestCase):
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
+        self.assertSpanAttributes(
+            "CloudSpanner.GetSession",
+            attributes=dict(TestSession.BASE_ATTRIBUTES, session_found=False),
+        )
+
     def test_exists_error(self):
         from google.api_core.exceptions import Unknown
 
@@ -208,6 +252,12 @@ class TestSession(unittest.TestCase):
         gax_api.get_session.assert_called_once_with(
             self.SESSION_NAME,
             metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+
+        self.assertSpanAttributes(
+            "CloudSpanner.GetSession",
+            status=StatusCanonicalCode.UNKNOWN,
+            attributes=TestSession.BASE_ATTRIBUTES,
         )
 
     def test_ping_wo_session_id(self):
@@ -277,6 +327,8 @@ class TestSession(unittest.TestCase):
         with self.assertRaises(ValueError):
             session.delete()
 
+        self.assertNoSpans()
+
     def test_delete_hit(self):
         gax_api = self._make_spanner_api()
         gax_api.delete_session.return_value = None
@@ -290,6 +342,10 @@ class TestSession(unittest.TestCase):
         gax_api.delete_session.assert_called_once_with(
             self.SESSION_NAME,
             metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+
+        self.assertSpanAttributes(
+            "CloudSpanner.DeleteSession", attributes=TestSession.BASE_ATTRIBUTES
         )
 
     def test_delete_miss(self):
@@ -310,6 +366,12 @@ class TestSession(unittest.TestCase):
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
+        self.assertSpanAttributes(
+            "CloudSpanner.DeleteSession",
+            status=StatusCanonicalCode.NOT_FOUND,
+            attributes=TestSession.BASE_ATTRIBUTES,
+        )
+
     def test_delete_error(self):
         from google.api_core.exceptions import Unknown
 
@@ -326,6 +388,12 @@ class TestSession(unittest.TestCase):
         gax_api.delete_session.assert_called_once_with(
             self.SESSION_NAME,
             metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+
+        self.assertSpanAttributes(
+            "CloudSpanner.DeleteSession",
+            status=StatusCanonicalCode.UNKNOWN,
+            attributes=TestSession.BASE_ATTRIBUTES,
         )
 
     def test_snapshot_not_created(self):
@@ -1044,9 +1112,17 @@ class TestSession(unittest.TestCase):
             return _results.pop(0)
 
         with mock.patch("time.time", _time):
-            with mock.patch("time.sleep") as sleep_mock:
-                with self.assertRaises(Aborted):
-                    session.run_in_transaction(unit_of_work, "abc", timeout_secs=1)
+            if HAS_OPENTELEMETRY_INSTALLED:
+                with mock.patch("opentelemetry.util.time", _ConstantTime()):
+                    with mock.patch("time.sleep") as sleep_mock:
+                        with self.assertRaises(Aborted):
+                            session.run_in_transaction(
+                                unit_of_work, "abc", timeout_secs=1
+                            )
+            else:
+                with mock.patch("time.sleep") as sleep_mock:
+                    with self.assertRaises(Aborted):
+                        session.run_in_transaction(unit_of_work, "abc", timeout_secs=1)
 
         sleep_mock.assert_not_called()
 
@@ -1106,9 +1182,15 @@ class TestSession(unittest.TestCase):
             return _results.pop(0)
 
         with mock.patch("time.time", _time):
-            with mock.patch("time.sleep") as sleep_mock:
-                with self.assertRaises(Aborted):
-                    session.run_in_transaction(unit_of_work, timeout_secs=8)
+            if HAS_OPENTELEMETRY_INSTALLED:
+                with mock.patch("opentelemetry.util.time", _ConstantTime()):
+                    with mock.patch("time.sleep") as sleep_mock:
+                        with self.assertRaises(Aborted):
+                            session.run_in_transaction(unit_of_work, timeout_secs=8)
+            else:
+                with mock.patch("time.sleep") as sleep_mock:
+                    with self.assertRaises(Aborted):
+                        session.run_in_transaction(unit_of_work, timeout_secs=8)
 
         # unpacking call args into list
         call_args = [call_[0][0] for call_ in sleep_mock.call_args_list]

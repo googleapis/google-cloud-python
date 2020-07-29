@@ -23,6 +23,7 @@ API Documentation
 
   api-reference
   advanced-session-pool-topics
+  opentelemetry-tracing
 
 Changelog
 ---------

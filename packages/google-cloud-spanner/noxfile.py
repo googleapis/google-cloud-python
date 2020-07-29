@@ -66,6 +66,13 @@ def lint_setup_py(session):
 def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install("mock", "pytest", "pytest-cov")
+
+    # Install opentelemetry dependencies if python3+
+    if session.python != "2.7":
+        session.install(
+            "opentelemetry-api", "opentelemetry-sdk", "opentelemetry-instrumentation"
+        )
+
     session.install("-e", ".")
 
     # Run py.test against the unit tests.
@@ -114,6 +121,12 @@ def system(session):
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install("mock", "pytest")
+
+    # Install opentelemetry dependencies if not 2.7
+    if session.python != "2.7":
+        session.install(
+            "opentelemetry-api", "opentelemetry-sdk", "opentelemetry-instrumentation"
+        )
 
     session.install("-e", ".")
     session.install("-e", "test_utils/")

@@ -14,7 +14,7 @@
 
 
 import unittest
-
+from tests._helpers import OpenTelemetryBase, StatusCanonicalCode
 
 TABLE_NAME = "citizens"
 COLUMNS = ["email", "first_name", "last_name", "age"]
@@ -22,6 +22,12 @@ VALUES = [
     [u"phred@exammple.com", u"Phred", u"Phlyntstone", 32],
     [u"bharney@example.com", u"Bharney", u"Rhubble", 31],
 ]
+BASE_ATTRIBUTES = {
+    "db.type": "spanner",
+    "db.url": "spanner.googleapis.com:443",
+    "db.instance": "testing",
+    "net.host.name": "spanner.googleapis.com:443",
+}
 
 
 class _BaseTest(unittest.TestCase):
@@ -164,7 +170,7 @@ class Test_BatchBase(_BaseTest):
             )
 
 
-class TestBatch(_BaseTest):
+class TestBatch(_BaseTest, OpenTelemetryBase):
     def _getTargetClass(self):
         from google.cloud.spanner_v1.batch import Batch
 
@@ -189,6 +195,8 @@ class TestBatch(_BaseTest):
         with self.assertRaises(ValueError):
             batch.commit()
 
+        self.assertNoSpans()
+
     def test_commit_grpc_error(self):
         from google.api_core.exceptions import Unknown
         from google.cloud.spanner_v1.keyset import KeySet
@@ -203,6 +211,12 @@ class TestBatch(_BaseTest):
 
         with self.assertRaises(Unknown):
             batch.commit()
+
+        self.assertSpanAttributes(
+            "CloudSpanner.Commit",
+            status=StatusCanonicalCode.UNKNOWN,
+            attributes=dict(BASE_ATTRIBUTES, num_mutations=1),
+        )
 
     def test_commit_ok(self):
         import datetime
@@ -231,6 +245,10 @@ class TestBatch(_BaseTest):
         self.assertIsInstance(single_use_txn, TransactionOptions)
         self.assertTrue(single_use_txn.HasField("read_write"))
         self.assertEqual(metadata, [("google-cloud-resource-prefix", database.name)])
+
+        self.assertSpanAttributes(
+            "CloudSpanner.Commit", attributes=dict(BASE_ATTRIBUTES, num_mutations=1)
+        )
 
     def test_context_mgr_already_committed(self):
         import datetime
@@ -275,6 +293,10 @@ class TestBatch(_BaseTest):
         self.assertIsInstance(single_use_txn, TransactionOptions)
         self.assertTrue(single_use_txn.HasField("read_write"))
         self.assertEqual(metadata, [("google-cloud-resource-prefix", database.name)])
+
+        self.assertSpanAttributes(
+            "CloudSpanner.Commit", attributes=dict(BASE_ATTRIBUTES, num_mutations=1)
+        )
 
     def test_context_mgr_failure(self):
         import datetime

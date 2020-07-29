@@ -22,6 +22,7 @@ from google.cloud._helpers import _pb_timestamp_to_datetime
 from google.cloud.spanner_v1._helpers import _SessionWrapper
 from google.cloud.spanner_v1._helpers import _make_list_value_pbs
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
+from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
 
 # pylint: enable=ungrouped-imports
 
@@ -147,12 +148,14 @@ class Batch(_BatchBase):
         api = database.spanner_api
         metadata = _metadata_with_prefix(database.name)
         txn_options = TransactionOptions(read_write=TransactionOptions.ReadWrite())
-        response = api.commit(
-            self._session.name,
-            mutations=self._mutations,
-            single_use_transaction=txn_options,
-            metadata=metadata,
-        )
+        trace_attributes = {"num_mutations": len(self._mutations)}
+        with trace_call("CloudSpanner.Commit", self._session, trace_attributes):
+            response = api.commit(
+                self._session.name,
+                mutations=self._mutations,
+                single_use_transaction=txn_options,
+                metadata=metadata,
+            )
         self.committed = _pb_timestamp_to_datetime(response.commit_timestamp)
         return self.committed
 
