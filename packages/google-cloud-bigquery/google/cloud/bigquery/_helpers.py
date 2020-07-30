@@ -19,6 +19,7 @@ import copy
 import datetime
 import decimal
 import re
+import six
 
 from google.cloud._helpers import UTC
 from google.cloud._helpers import _date_from_iso8601_date
@@ -419,8 +420,22 @@ def _record_field_to_json(fields, row_value):
     Returns:
         Mapping[str, Any]: A JSON-serializable dictionary.
     """
-    record = {}
     isdict = isinstance(row_value, dict)
+
+    # If row is passed as a tuple, make the length sanity check to avoid either
+    # uninformative index errors a few lines below or silently omitting some of
+    # the values from the result (we cannot know exactly which fields are missing
+    # or redundant, since we don't have their names).
+    if not isdict and len(row_value) != len(fields):
+        msg = "The number of row fields ({}) does not match schema length ({}).".format(
+            len(row_value), len(fields)
+        )
+        raise ValueError(msg)
+
+    record = {}
+
+    if isdict:
+        processed_fields = set()
 
     for subindex, subfield in enumerate(fields):
         subname = subfield.name
@@ -429,6 +444,20 @@ def _record_field_to_json(fields, row_value):
         # None values are unconditionally omitted
         if subvalue is not None:
             record[subname] = _field_to_json(subfield, subvalue)
+
+        if isdict:
+            processed_fields.add(subname)
+
+    # Unknown fields should not be silently dropped, include them. Since there
+    # is no schema information available for them, include them as strings
+    # to make them JSON-serializable.
+    if isdict:
+        not_processed = set(row_value.keys()) - processed_fields
+
+        for field_name in not_processed:
+            value = row_value[field_name]
+            if value is not None:
+                record[field_name] = six.text_type(value)
 
     return record
 

@@ -18,6 +18,7 @@ import decimal
 import unittest
 
 import mock
+import six
 
 
 class Test_not_null(unittest.TestCase):
@@ -847,6 +848,26 @@ class Test_record_field_to_json(unittest.TestCase):
         converted = self._call_fut(fields, original)
         self.assertEqual(converted, {"one": "42", "two": "two"})
 
+    def test_w_list_missing_fields(self):
+        fields = [
+            _make_field("INT64", name="one", mode="NULLABLE"),
+            _make_field("STRING", name="two", mode="NULLABLE"),
+        ]
+        original = [42]
+
+        with six.assertRaisesRegex(self, ValueError, r".*not match schema length.*"):
+            self._call_fut(fields, original)
+
+    def test_w_list_too_many_fields(self):
+        fields = [
+            _make_field("INT64", name="one", mode="NULLABLE"),
+            _make_field("STRING", name="two", mode="NULLABLE"),
+        ]
+        original = [42, "two", "three"]
+
+        with six.assertRaisesRegex(self, ValueError, r".*not match schema length.*"):
+            self._call_fut(fields, original)
+
     def test_w_non_empty_dict(self):
         fields = [
             _make_field("INT64", name="one", mode="NULLABLE"),
@@ -889,6 +910,25 @@ class Test_record_field_to_json(unittest.TestCase):
 
         # None values should be dropped regardless of the field type
         self.assertEqual(converted, {"one": "42"})
+
+    def test_w_dict_unknown_fields(self):
+        fields = [
+            _make_field("INT64", name="one", mode="NULLABLE"),
+            _make_field("STRING", name="two", mode="NULLABLE"),
+        ]
+        original = {
+            "whoami": datetime.date(2020, 7, 20),
+            "one": 111,
+            "two": "222",
+            "void": None,
+        }
+
+        converted = self._call_fut(fields, original)
+
+        # Unknown fields should be included (if not None), but converted as strings.
+        self.assertEqual(
+            converted, {"whoami": "2020-07-20", "one": "111", "two": "222"},
+        )
 
 
 class Test_field_to_json(unittest.TestCase):
