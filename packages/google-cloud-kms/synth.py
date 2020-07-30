@@ -37,43 +37,61 @@ library = gapic.py_library(
     include_protos=True,
 )
 
-s.move(library, excludes=["README.rst", "setup.py", "nox*.py", "docs/**/*"])
+s.move(library, excludes=["README.rst", "setup.py", "nox*.py", "docs/index.rst"])
 
-# Temporary fixup for 'grpc-google-iam-vi 0.12.4' (before generation).
+# Escape single '_' which RST treats as target names
+s.replace("google/**/resources.py", '''"(.*?)_((SIGN)|(DECRYPT))_"''', '''"\g<1>_\g<2>\_"''')
+
+# Docstrings of *_iam_policy() methods are formatted poorly and must be fixed
+# in order to avoid docstring format warnings in docs.
 s.replace(
-    "google/cloud/kms_v1/gapic/transports/key_management_service_grpc_transport.py",
-    "from google.iam.v1 import iam_policy_pb2",
-    "from google.iam.v1 import iam_policy_pb2_grpc as iam_policy_pb2",
+    "google/**/*client.py",
+    r"(\s+)Args:",
+    "\n\g<1>Args:"
 )
-# re-insert `crypto_key_path_path` method as this was used in the published samples
-# TODO: remove when this library is moved to the microgenerator and mention it in the relase
-# notes
-count = s.replace("google/cloud/kms_v1/gapic/key_management_service_client.py",
-"""(@classmethod
-\s+def crypto_key_version_path\(.*)""",
-"""
-    @classmethod	
-    def crypto_key_path_path(cls, project, location, key_ring, crypto_key_path):	
-        \"\"\"Return a fully-qualified crypto_key_path string.\"\"\"	
-        return google.api_core.path_template.expand(	
-            "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key_path=**}",	
-            project=project,	
-            location=location,	
-            key_ring=key_ring,	
-            crypto_key_path=crypto_key_path,	
-        )
+s.replace(
+    "google/**/*client.py",
+    r"(\s+)\*\*JSON Example\*\*\s+::",
+    "\n\g<1>**JSON Example**::\n",
+)
+s.replace(
+    "google/**/*client.py",
+    r"(\s+)\*\*YAML Example\*\*\s+::",
+    "\n\g<1>**YAML Example**::\n",
+)
+s.replace(
+    "google/**/*client.py",
+    r"(\s+)For a description of IAM and its features, see",
+    "\n\g<0>",
+)
 
-    \g<1>
-""")
+# TODO(busunkim): Remove once https://github.com/googleapis/gapic-generator-python/pull/555 is merged
+s.replace(
+    "google/**/base.py",
+    """from google\.api_core import gapic_v1\s+# type: ignore""",
+    """from google.api_core import gapic_v1  # type: ignore
+from google.api_core import retry as retries  # type: ignore""",
+)
 
-if count != 1:
-    raise Exception("Required insertion of `crypto_key_path_path` not made.")
+# fix bad indentation
+s.replace(
+    "google/**/*service.py",
+    """(\s+)settings resource.
+\s+If empty all mutable fields will be updated.""",
+    """\g<1>settings resource.
+\g<1>If empty all mutable fields will be updated.""",
+)
+
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=70, samples=True)
-s.move(templated_files)
+templated_files = common.py_library(
+    cov_level=99,
+    samples=True,
+    microgenerator=True,
+)
+s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
 # ----------------------------------------------------------------------------
 # Samples templates
