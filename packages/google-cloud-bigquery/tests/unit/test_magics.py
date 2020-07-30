@@ -399,7 +399,7 @@ def test_bigquery_magic_without_optional_arguments(monkeypatch):
 
     # Set up the context with monkeypatch so that it's reset for subsequent
     # tests.
-    monkeypatch.setattr(magics.context, "credentials", mock_credentials)
+    monkeypatch.setattr(magics.context, "_credentials", mock_credentials)
 
     # Mock out the BigQuery Storage API.
     bqstorage_mock = mock.create_autospec(bigquery_storage_v1.BigQueryReadClient)
@@ -560,7 +560,7 @@ def test_bigquery_magic_with_bqstorage_from_argument(monkeypatch):
 
     # Set up the context with monkeypatch so that it's reset for subsequent
     # tests.
-    monkeypatch.setattr(magics.context, "credentials", mock_credentials)
+    monkeypatch.setattr(magics.context, "_credentials", mock_credentials)
 
     # Mock out the BigQuery Storage API.
     bqstorage_mock = mock.create_autospec(bigquery_storage_v1.BigQueryReadClient)
@@ -624,7 +624,7 @@ def test_bigquery_magic_with_rest_client_requested(monkeypatch):
 
     # Set up the context with monkeypatch so that it's reset for subsequent
     # tests.
-    monkeypatch.setattr(magics.context, "credentials", mock_credentials)
+    monkeypatch.setattr(magics.context, "_credentials", mock_credentials)
 
     # Mock out the BigQuery Storage API.
     bqstorage_mock = mock.create_autospec(bigquery_storage_v1.BigQueryReadClient)

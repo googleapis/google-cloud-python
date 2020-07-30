@@ -1778,7 +1778,8 @@ class TestRowIterator(unittest.TestCase):
         api_request = mock.Mock(return_value={"rows": rows})
         row_iterator = self._make_one(_mock_client(), api_request, path, schema)
 
-        tbl = row_iterator.to_arrow(create_bqstorage_client=False)
+        with warnings.catch_warnings(record=True) as warned:
+            tbl = row_iterator.to_arrow(create_bqstorage_client=False)
 
         self.assertIsInstance(tbl, pyarrow.Table)
         self.assertEqual(tbl.num_rows, 2)
@@ -1798,6 +1799,10 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(names, ["Bharney Rhubble", "Wylma Phlyntstone"])
         self.assertEqual(ages, [33, 29])
         self.assertEqual(sports, ["volleyball", "basketball"])
+
+        self.assertEqual(len(warned), 1)
+        warning = warned[0]
+        self.assertTrue("sport" in str(warning))
 
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow_w_empty_table(self):
@@ -2370,12 +2375,17 @@ class TestRowIterator(unittest.TestCase):
         for progress_bar_type, progress_bar_mock in progress_bars:
             row_iterator = self._make_one(_mock_client(), api_request, path, schema)
             with mock.patch("google.cloud.bigquery.table.pyarrow", None):
-                df = row_iterator.to_dataframe(progress_bar_type=progress_bar_type)
+                with warnings.catch_warnings(record=True) as warned:
+                    df = row_iterator.to_dataframe(progress_bar_type=progress_bar_type)
 
             progress_bar_mock.assert_called()
             progress_bar_mock().update.assert_called()
             progress_bar_mock().close.assert_called_once()
             self.assertEqual(len(df), 4)
+
+            self.assertEqual(len(warned), 1)
+            warning = warned[0]
+            self.assertTrue("without pyarrow" in str(warning))
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @mock.patch("google.cloud.bigquery.table.tqdm", new=None)
@@ -2499,11 +2509,16 @@ class TestRowIterator(unittest.TestCase):
             api_request = mock.Mock(return_value={"rows": []})
             row_iterator = self._make_one(_mock_client(), api_request, schema=schema)
 
-            df = row_iterator.to_dataframe()
+            with warnings.catch_warnings(record=True) as warned:
+                df = row_iterator.to_dataframe()
 
             self.assertIsInstance(df, pandas.DataFrame)
             self.assertEqual(len(df), 0)  # verify the number of rows
             self.assertEqual(list(df), ["name", "age"])  # verify the column names
+
+            self.assertEqual(len(warned), 1)
+            warning = warned[0]
+            self.assertTrue("without pyarrow" in str(warning))
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_w_no_results_wo_pyarrow(self):
@@ -2522,11 +2537,16 @@ class TestRowIterator(unittest.TestCase):
 
             row_iterator.to_dataframe_iterable = empty_iterable
 
-            df = row_iterator.to_dataframe()
+            with warnings.catch_warnings(record=True) as warned:
+                df = row_iterator.to_dataframe()
 
             self.assertIsInstance(df, pandas.DataFrame)
             self.assertEqual(len(df), 0)  # verify the number of rows
             self.assertEqual(list(df), ["name", "age"])  # verify the column names
+
+            self.assertEqual(len(warned), 1)
+            warning = warned[0]
+            self.assertTrue("without pyarrow" in str(warning))
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_w_various_types_nullable(self):
@@ -2787,10 +2807,18 @@ class TestRowIterator(unittest.TestCase):
             table=mut.TableReference.from_string("proj.dset.tbl"),
         )
 
-        got = row_iterator.to_dataframe(bqstorage_client)
+        with warnings.catch_warnings(record=True) as warned:
+            got = row_iterator.to_dataframe(bqstorage_client)
+
         column_names = ["colA", "colC", "colB"]
         self.assertEqual(list(got), column_names)
         self.assertTrue(got.empty)
+
+        self.assertEqual(len(warned), 1)
+        warning = warned[0]
+        self.assertTrue(
+            "Support for BigQuery Storage v1beta1 clients is deprecated" in str(warning)
+        )
 
     @unittest.skipIf(
         bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
@@ -3493,7 +3521,10 @@ class TestRowIterator(unittest.TestCase):
 
         row_iterator = self._make_one(_mock_client(), api_request, path, schema)
 
-        with mock.patch("google.cloud.bigquery.table.pyarrow", None):
+        mock_pyarrow = mock.patch("google.cloud.bigquery.table.pyarrow", None)
+        catch_warnings = warnings.catch_warnings(record=True)
+
+        with mock_pyarrow, catch_warnings as warned:
             got = row_iterator.to_dataframe(
                 dtypes={
                     "col_category": pandas.core.dtypes.dtypes.CategoricalDtype(
@@ -3521,6 +3552,10 @@ class TestRowIterator(unittest.TestCase):
             list(got["col_category"]),
             ["low", "medium", "low", "medium", "high", "low"],
         )
+
+        self.assertEqual(len(warned), 1)
+        warning = warned[0]
+        self.assertTrue("without pyarrow" in str(warning))
 
 
 class TestPartitionRange(unittest.TestCase):

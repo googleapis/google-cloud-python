@@ -221,7 +221,8 @@ class TestClient(unittest.TestCase):
         from concurrent.futures import TimeoutError
         from google.cloud.bigquery.retry import DEFAULT_RETRY
 
-        client = self._make_one(project=self.PROJECT)
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
 
         api_request_patcher = mock.patch.object(
             client._connection, "api_request", side_effect=[TimeoutError, "result"],
@@ -674,7 +675,8 @@ class TestClient(unittest.TestCase):
         mock_client.assert_called_once_with(credentials=creds)
 
     def test_create_bqstorage_client_missing_dependency(self):
-        client = self._make_one(project=self.PROJECT)
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
 
         def fail_bqstorage_import(name, globals, locals, fromlist, level):
             # NOTE: *very* simplified, assuming a straightforward absolute import
@@ -7680,16 +7682,23 @@ class TestClientUpload(object):
         )
 
         with load_patch, get_table_patch, pyarrow_patch, to_parquet_patch as to_parquet_spy:
-            client.load_table_from_dataframe(
-                dataframe,
-                self.TABLE_REF,
-                location=self.LOCATION,
-                parquet_compression="gzip",
-            )
+            with warnings.catch_warnings(record=True) as warned:
+                client.load_table_from_dataframe(
+                    dataframe,
+                    self.TABLE_REF,
+                    location=self.LOCATION,
+                    parquet_compression="gzip",
+                )
 
         call_args = to_parquet_spy.call_args
         assert call_args is not None
         assert call_args.kwargs.get("compression") == "gzip"
+
+        assert len(warned) == 2
+        warning = warned[0]
+        assert "Loading dataframe data without pyarrow" in str(warning)
+        warning = warned[1]
+        assert "Please install the pyarrow package" in str(warning)
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")

@@ -17,6 +17,7 @@ import copy
 import json
 import textwrap
 import unittest
+import warnings
 
 import freezegun
 import mock
@@ -1834,13 +1835,18 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
             "expirationMs": str(year_ms),
             "requirePartitionFilter": False,
         }
-        expected = TimePartitioning(
-            type_=TimePartitioningType.DAY,
-            field=field,
-            expiration_ms=year_ms,
-            require_partition_filter=False,
-        )
+        with warnings.catch_warnings(record=True) as warned:
+            expected = TimePartitioning(
+                type_=TimePartitioningType.DAY,
+                field=field,
+                expiration_ms=year_ms,
+                require_partition_filter=False,
+            )
         self.assertEqual(config.time_partitioning, expected)
+
+        assert len(warned) == 1
+        warning = warned[0]
+        assert "TimePartitioning.require_partition_filter" in str(warning)
 
     def test_time_partitioning_setter(self):
         from google.cloud.bigquery.table import TimePartitioning
@@ -1848,12 +1854,15 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
 
         field = "creation_date"
         year_ms = 86400 * 1000 * 365
-        time_partitioning = TimePartitioning(
-            type_=TimePartitioningType.DAY,
-            field=field,
-            expiration_ms=year_ms,
-            require_partition_filter=False,
-        )
+
+        with warnings.catch_warnings(record=True) as warned:
+            time_partitioning = TimePartitioning(
+                type_=TimePartitioningType.DAY,
+                field=field,
+                expiration_ms=year_ms,
+                require_partition_filter=False,
+            )
+
         config = self._get_target_class()()
         config.time_partitioning = time_partitioning
         expected = {
@@ -1863,6 +1872,10 @@ class TestLoadJobConfig(unittest.TestCase, _Base):
             "requirePartitionFilter": False,
         }
         self.assertEqual(config._properties["load"]["timePartitioning"], expected)
+
+        assert len(warned) == 1
+        warning = warned[0]
+        assert "TimePartitioning.require_partition_filter" in str(warning)
 
     def test_time_partitioning_setter_w_none(self):
         from google.cloud.bigquery.table import TimePartitioningType
@@ -5595,7 +5608,10 @@ class TestQueryJob(unittest.TestCase, _Base):
         job = self._make_one(self.JOB_ID, self.QUERY, client)
 
         with mock.patch("google.cloud.bigquery.table.pyarrow", None):
-            df = job.to_dataframe(date_as_object=False, create_bqstorage_client=False)
+            with warnings.catch_warnings(record=True) as warned:
+                df = job.to_dataframe(
+                    date_as_object=False, create_bqstorage_client=False
+                )
 
         self.assertIsInstance(df, pandas.DataFrame)
         self.assertEqual(len(df), 1)  # verify the number of rows
@@ -5603,6 +5619,10 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(list(df), exp_columns)  # verify the column names
 
         self.assertEqual(df.date.dtype.name, "object")
+
+        assert len(warned) == 1
+        warning = warned[0]
+        assert "without pyarrow" in str(warning)
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(tqdm is None, "Requires `tqdm`")
