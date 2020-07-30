@@ -34,6 +34,16 @@ In order to use this library, you first need to go through the following steps:
 .. _Enable the Stackdriver Monitoring Dashboards API.:  https://cloud.google.com/monitoring/dashboards/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Python >= 3.6
+
+Deprecated Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python == 2.7.
+
+The last version of this library compatible with Python 2.7 is google-cloud-monitoring-dashboards==1.0.0.
+
 Installation
 ~~~~~~~~~~~~
 

@@ -3,30 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-monitoring-dashboards.git",
-        "sha": "8ed9094df80db87caa9852279be76d69783dc9c3"
+        "remote": "git@github.com:googleapis/python-monitoring-dashboards.git",
+        "sha": "bee992e45a3500dfe44089e7e594a906fd675c8d"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "184661793fbe3b89f2b485c303e7466cef9d21a1",
-        "internalRef": "316182409"
+        "sha": "d399c754bdea83297877ab49e5f66b257a957a78",
+        "internalRef": "323860336"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "303271797a360f8a439203413f13a160f2f5b3b4"
+        "sha": "ee7506d15daa3873accfff9430eff7e3953f0248"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "303271797a360f8a439203413f13a160f2f5b3b4"
+        "sha": "ee7506d15daa3873accfff9430eff7e3953f0248"
       }
     }
   ],

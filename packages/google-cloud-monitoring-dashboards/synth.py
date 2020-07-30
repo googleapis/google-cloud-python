@@ -28,57 +28,54 @@ library = gapic.py_library(
     version="v1",
     bazel_target="//google/monitoring/dashboard/v1:monitoring-dashboard-v1-py",
     include_protos=True,
-    proto_output_path="google/cloud/monitoring_dashboard/v1/proto",
 )
 
+s.move(library / "google/cloud/monitoring_dashboard_v1/proto")
+s.move(library / "google/monitoring/dashboard", "google/cloud/monitoring_dashboard")
 s.move(
-    library,
-    excludes=[
-        "google/cloud/monitoring_dashboard_v1/proto",  # Protos (pb2s) are copied to the incorrect location
-        "nox.py",
-        "README.rst",
-        "setup.py",
-        "docs/index.rst",
-    ],
+    library / "google/monitoring/dashboard_v1",
+    "google/cloud/monitoring_dashboard_v1"
 )
+s.move(library / "tests")
+s.move(library / "scripts")
+s.move(library / "docs", excludes=[library / "docs/index.rst"])
 
-s.move(
-    library / "google/cloud/monitoring_dashboard_v1/proto",
-    "google/cloud/monitoring_dashboard/v1/proto",
-)
-
-# correct license headers
-python.fix_pb2_headers()
-python.fix_pb2_grpc_headers()
-
-# Fix imports
+# Fix namespace
 s.replace(
-    "google/cloud/**/proto/*_pb2*.py",
-    "google\.cloud\.monitoring\_dashboard\_v1\.proto",
-    "google.cloud.monitoring_dashboard.v1.proto",
+    "google/cloud/**/*.py",
+    "google.monitoring.dashboard_v1",
+    "google.cloud.monitoring_dashboard_v1",
 )
-
-# Fix docstring with trailing backticks
 s.replace(
-    "google/cloud/**/dashboards_service_pb2.py",
-    """          Required\. The resource name of the Dashboard\. The format is ``
-          "projects/\{project\_id\_or\_number\}/dashboards/\{dashboard\_id\}"``""",
-    """          Required. The resource name of the Dashboard. The format is
-          ``"projects/{project_id_or_number}/dashboards/{dashboard_id}"``""",
+    "tests/unit/gapic/**/*.py",
+    "google.monitoring.dashboard_v1",
+    "google.cloud.monitoring_dashboard_v1",
+)
+s.replace(
+    "docs/**/*.rst",
+    "google.monitoring.dashboard_v1",
+    "google.cloud.monitoring_dashboard_v1",
 )
 
 # Keep cloud in package names for consistency
 s.replace(
     "google/**/*.py", "google-cloud-monitoring-dashboard", "google-cloud-monitoring-dashboards"
 )
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=79)
-s.move(templated_files)
+templated_files = common.py_library(
+    samples=False,  # set to True only if there are samples
+    microgenerator=True,
+)
+s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition
 s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
+# Temporarily disable warnings due to
+# https://github.com/googleapis/gapic-generator-python/issues/525
+s.replace("noxfile.py", '[\"\']-W[\"\']', '# "-W"')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
