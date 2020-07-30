@@ -1748,6 +1748,216 @@ class TestClient(unittest.TestCase):
         )
         self.assertIn("my-application/1.2.3", expected_user_agent)
 
+    def test_get_iam_policy(self):
+        from google.cloud.bigquery.iam import BIGQUERY_DATA_OWNER_ROLE
+        from google.cloud.bigquery.iam import BIGQUERY_DATA_EDITOR_ROLE
+        from google.cloud.bigquery.iam import BIGQUERY_DATA_VIEWER_ROLE
+        from google.api_core.iam import Policy
+
+        PATH = "/projects/{}/datasets/{}/tables/{}:getIamPolicy".format(
+            self.PROJECT, self.DS_ID, self.TABLE_ID,
+        )
+        BODY = {"options": {"requestedPolicyVersion": 1}}
+        ETAG = "CARDI"
+        VERSION = 1
+        OWNER1 = "user:phred@example.com"
+        OWNER2 = "group:cloud-logs@google.com"
+        EDITOR1 = "domain:google.com"
+        EDITOR2 = "user:phred@example.com"
+        VIEWER1 = "serviceAccount:1234-abcdef@service.example.com"
+        VIEWER2 = "user:phred@example.com"
+        RETURNED = {
+            "resourceId": PATH,
+            "etag": ETAG,
+            "version": VERSION,
+            "bindings": [
+                {"role": BIGQUERY_DATA_OWNER_ROLE, "members": [OWNER1, OWNER2]},
+                {"role": BIGQUERY_DATA_EDITOR_ROLE, "members": [EDITOR1, EDITOR2]},
+                {"role": BIGQUERY_DATA_VIEWER_ROLE, "members": [VIEWER1, VIEWER2]},
+            ],
+        }
+        EXPECTED = {
+            binding["role"]: set(binding["members"]) for binding in RETURNED["bindings"]
+        }
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection(RETURNED)
+
+        policy = client.get_iam_policy(self.TABLE_REF, timeout=7.5)
+
+        conn.api_request.assert_called_once_with(
+            method="POST", path=PATH, data=BODY, timeout=7.5
+        )
+
+        self.assertIsInstance(policy, Policy)
+        self.assertEqual(policy.etag, RETURNED["etag"])
+        self.assertEqual(policy.version, RETURNED["version"])
+        self.assertEqual(dict(policy), EXPECTED)
+
+    def test_get_iam_policy_w_invalid_table(self):
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        table_resource_string = "projects/{}/datasets/{}/tables/{}".format(
+            self.PROJECT, self.DS_ID, self.TABLE_ID,
+        )
+
+        with self.assertRaises(TypeError):
+            client.get_iam_policy(table_resource_string)
+
+    def test_get_iam_policy_w_invalid_version(self):
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        with self.assertRaises(ValueError):
+            client.get_iam_policy(self.TABLE_REF, requested_policy_version=2)
+
+    def test_set_iam_policy(self):
+        from google.cloud.bigquery.iam import BIGQUERY_DATA_OWNER_ROLE
+        from google.cloud.bigquery.iam import BIGQUERY_DATA_EDITOR_ROLE
+        from google.cloud.bigquery.iam import BIGQUERY_DATA_VIEWER_ROLE
+        from google.api_core.iam import Policy
+
+        PATH = "/projects/%s/datasets/%s/tables/%s:setIamPolicy" % (
+            self.PROJECT,
+            self.DS_ID,
+            self.TABLE_ID,
+        )
+        ETAG = "foo"
+        VERSION = 1
+        OWNER1 = "user:phred@example.com"
+        OWNER2 = "group:cloud-logs@google.com"
+        EDITOR1 = "domain:google.com"
+        EDITOR2 = "user:phred@example.com"
+        VIEWER1 = "serviceAccount:1234-abcdef@service.example.com"
+        VIEWER2 = "user:phred@example.com"
+        BINDINGS = [
+            {"role": BIGQUERY_DATA_OWNER_ROLE, "members": [OWNER1, OWNER2]},
+            {"role": BIGQUERY_DATA_EDITOR_ROLE, "members": [EDITOR1, EDITOR2]},
+            {"role": BIGQUERY_DATA_VIEWER_ROLE, "members": [VIEWER1, VIEWER2]},
+        ]
+        MASK = "bindings,etag"
+        RETURNED = {"etag": ETAG, "version": VERSION, "bindings": BINDINGS}
+
+        policy = Policy()
+        for binding in BINDINGS:
+            policy[binding["role"]] = binding["members"]
+
+        BODY = {"policy": policy.to_api_repr(), "updateMask": MASK}
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection(RETURNED)
+
+        returned_policy = client.set_iam_policy(
+            self.TABLE_REF, policy, updateMask=MASK, timeout=7.5
+        )
+
+        conn.api_request.assert_called_once_with(
+            method="POST", path=PATH, data=BODY, timeout=7.5
+        )
+        self.assertEqual(returned_policy.etag, ETAG)
+        self.assertEqual(returned_policy.version, VERSION)
+        self.assertEqual(dict(returned_policy), dict(policy))
+
+    def test_set_iam_policy_no_mask(self):
+        from google.api_core.iam import Policy
+
+        PATH = "/projects/%s/datasets/%s/tables/%s:setIamPolicy" % (
+            self.PROJECT,
+            self.DS_ID,
+            self.TABLE_ID,
+        )
+        RETURNED = {"etag": "foo", "version": 1, "bindings": []}
+
+        policy = Policy()
+        BODY = {"policy": policy.to_api_repr()}
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection(RETURNED)
+
+        client.set_iam_policy(self.TABLE_REF, policy, timeout=7.5)
+
+        conn.api_request.assert_called_once_with(
+            method="POST", path=PATH, data=BODY, timeout=7.5
+        )
+
+    def test_set_iam_policy_invalid_policy(self):
+        from google.api_core.iam import Policy
+
+        policy = Policy()
+        invalid_policy_repr = policy.to_api_repr()
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        with self.assertRaises(TypeError):
+            client.set_iam_policy(self.TABLE_REF, invalid_policy_repr)
+
+    def test_set_iam_policy_w_invalid_table(self):
+        from google.api_core.iam import Policy
+
+        policy = Policy()
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        table_resource_string = "projects/%s/datasets/%s/tables/%s" % (
+            self.PROJECT,
+            self.DS_ID,
+            self.TABLE_ID,
+        )
+
+        with self.assertRaises(TypeError):
+            client.set_iam_policy(table_resource_string, policy)
+
+    def test_test_iam_permissions(self):
+        PATH = "/projects/%s/datasets/%s/tables/%s:testIamPermissions" % (
+            self.PROJECT,
+            self.DS_ID,
+            self.TABLE_ID,
+        )
+
+        PERMISSIONS = ["bigquery.tables.get", "bigquery.tables.update"]
+        BODY = {"permissions": PERMISSIONS}
+        RETURNED = {"permissions": PERMISSIONS}
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = make_connection(RETURNED)
+
+        client.test_iam_permissions(self.TABLE_REF, PERMISSIONS, timeout=7.5)
+
+        conn.api_request.assert_called_once_with(
+            method="POST", path=PATH, data=BODY, timeout=7.5
+        )
+
+    def test_test_iam_permissions_w_invalid_table(self):
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        table_resource_string = "projects/%s/datasets/%s/tables/%s" % (
+            self.PROJECT,
+            self.DS_ID,
+            self.TABLE_ID,
+        )
+
+        PERMISSIONS = ["bigquery.tables.get", "bigquery.tables.update"]
+
+        with self.assertRaises(TypeError):
+            client.test_iam_permissions(table_resource_string, PERMISSIONS)
+
     def test_update_dataset_w_invalid_field(self):
         from google.cloud.bigquery.dataset import Dataset
 
