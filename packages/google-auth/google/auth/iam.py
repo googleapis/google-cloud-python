@@ -69,7 +69,7 @@ class Signer(crypt.Signer):
 
         method = "POST"
         url = _SIGN_BLOB_URI.format(self._service_account_email)
-        headers = {}
+        headers = {"Content-Type": "application/json"}
         body = json.dumps(
             {"bytesToSign": base64.b64encode(message).decode("utf-8")}
         ).encode("utf-8")
