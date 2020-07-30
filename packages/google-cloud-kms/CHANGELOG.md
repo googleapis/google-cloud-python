@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-kms/compare/v1.4.0...v2.0.0) (2020-07-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate to microgenerator. (#16)
+
+### Features
+
+* migrate to microgenerator. See [Migration Guide](https://github.com/googleapis/python-kms/blob/release-v2.0.0/UPGRADING.md). ([#16](https://www.github.com/googleapis/python-kms/issues/16)) ([605f757](https://www.github.com/googleapis/python-kms/commit/605f7577a9a9f1a2b39fa69da7e250b5f70e945e))
+
+
 ## [1.4.0](https://www.github.com/googleapis/python-kms/compare/v1.3.0...v1.4.0) (2020-04-14)
 
 
