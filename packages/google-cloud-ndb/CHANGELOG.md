@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+### [1.4.2](https://www.github.com/googleapis/python-ndb/compare/v1.4.1...v1.4.2) (2020-07-30)
+
+
+### Bug Fixes
+
+* include ancestors in `Key.to_legacy_urlsafe` ([#494](https://www.github.com/googleapis/python-ndb/issues/494)) ([0f29190](https://www.github.com/googleapis/python-ndb/commit/0f2919070ef78a17988fb5cae573a1514ff63926)), closes [#478](https://www.github.com/googleapis/python-ndb/issues/478)
+* properly handle explicitly passing default namespace ([#488](https://www.github.com/googleapis/python-ndb/issues/488)) ([3c64483](https://www.github.com/googleapis/python-ndb/commit/3c644838a499f54620c6a12773f8cdd1c245096f)), closes [#476](https://www.github.com/googleapis/python-ndb/issues/476)
+
 ### [1.4.1](https://www.github.com/googleapis/python-ndb/compare/v1.4.0...v1.4.1) (2020-07-10)
 
 
