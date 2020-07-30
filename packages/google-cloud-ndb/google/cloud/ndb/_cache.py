@@ -18,19 +18,12 @@ from google.cloud.ndb import _batch
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import tasklets
 
-# For Python 2.7 Compatibility
-try:
-    from collections import UserDict
-except ImportError:  # pragma: NO PY3 COVER
-    from UserDict import UserDict
-
-
 _LOCKED = b"0"
 _LOCK_TIME = 32
 _PREFIX = b"NDB30"
 
 
-class ContextCache(UserDict):
+class ContextCache(dict):
     """A per-context in-memory entity cache.
 
     This cache verifies the fetched entity has the correct key before
@@ -42,11 +35,11 @@ class ContextCache(UserDict):
         """Verify that the entity's key has not changed since it was added
            to the cache. If it has changed, consider this a cache miss.
            See issue 13.  http://goo.gl/jxjOP"""
-        entity = self.data[key]  # May be None, meaning "doesn't exist".
+        entity = self[key]  # May be None, meaning "doesn't exist".
         if entity is None or entity._key == key:
             return entity
         else:
-            del self.data[key]
+            del self[key]
             raise KeyError(key)
 
     def __repr__(self):

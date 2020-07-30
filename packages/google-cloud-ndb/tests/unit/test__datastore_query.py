@@ -1105,7 +1105,7 @@ class Test_Result:
         entity = mock.Mock(key=key_pb)
         cached_entity = mock.Mock(key=key_pb, _key=key)
         context = context_module.get_context()
-        context.cache.data[key] = cached_entity
+        context.cache[key] = cached_entity
         model._entity_from_protobuf.return_value = entity
         result = _datastore_query._Result(
             _datastore_query.RESULT_TYPE_FULL,

@@ -281,6 +281,8 @@ class Key(object):
             arguments were given with the path.
     """
 
+    _hash_value = None
+
     def __new__(cls, *path_args, **kwargs):
         # Avoid circular import in Python 2.7
         from google.cloud.ndb import context as context_module
@@ -375,7 +377,10 @@ class Key(object):
             values. The primary concern is that hashes of equal keys are
             equal, not the other way around.
         """
-        return hash(self.pairs())
+        hash_value = self._hash_value
+        if hash_value is None:
+            self._hash_value = hash_value = hash(self.pairs())
+        return hash_value
 
     def _tuple(self):
         """Helper to return an orderable tuple."""
