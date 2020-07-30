@@ -3,23 +3,15 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-talent.git",
-        "sha": "a337dcc7e9f5e40408e5091197d9190aeba6d7cf"
-      }
-    },
-    {
-      "git": {
-        "name": "googleapis",
-        "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "b882b8e6bfcd708042ff00f7adc67ce750817dd0",
-        "internalRef": "318028816"
+        "remote": "git@github.com:googleapis/python-talent.git",
+        "sha": "2dfbb967b35e9edc97fdbe13bf536a6dff0ea676"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "303271797a360f8a439203413f13a160f2f5b3b4"
+        "sha": "ee7506d15daa3873accfff9430eff7e3953f0248"
       }
     }
   ],
