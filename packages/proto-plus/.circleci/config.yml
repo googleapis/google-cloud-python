@@ -222,15 +222,16 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Decrypt the PyPI key.
+          name: Install twine
           command: |
-            openssl aes-256-ctr -pbkdf2 -d \
-              -in .circleci/.pypirc.enc \
-              -out ~/.pypirc \
-              -k "${PYPIRC_ENCRYPTION_KEY}"
+            pip install twine
+      - run:
+          name: Build the package.
+          command: python setup.py sdist
       - run:
           name: Publish to PyPI.
-          command: python setup.py sdist upload
+          command: twine upload dist/*
+
   style-check:
     docker:
       - image: python:3.8-slim
@@ -259,12 +260,12 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Decrypt the PyPI key.
+          name: Install twine
           command: |
-            openssl aes-256-ctr -pbkdf2 -d \
-              -in .circleci/.pypirc.enc \
-              -out ~/.pypirc \
-              -k "${PYPIRC_ENCRYPTION_KEY}"
+            pip install twine
+      - run:
+          name: Build the package.
+          command: python setup.py sdist
       - run:
           name: Publish to PyPI.
-          command: python setup.py sdist upload
+          command: twine upload dist/*
