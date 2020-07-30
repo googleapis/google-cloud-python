@@ -182,7 +182,7 @@ class BaseMarshal:
 
             # Convert lists and tuples recursively.
             if isinstance(value, (list, tuple)):
-                return type(value)([self.to_proto(proto_type, i) for i in value],)
+                return type(value)(self.to_proto(proto_type, i) for i in value)
 
         # Convert dictionaries recursively when the proto type is a map.
         # This is slightly more complicated than converting a list or tuple
@@ -196,9 +196,8 @@ class BaseMarshal:
             proto_type.DESCRIPTOR.has_options
             and proto_type.DESCRIPTOR.GetOptions().map_entry
         ):
-            return {
-                k: self.to_proto(type(proto_type().value), v) for k, v in value.items()
-            }
+            recursive_type = type(proto_type().value)
+            return {k: self.to_proto(recursive_type, v) for k, v in value.items()}
 
         # Convert ordinary values.
         rule = self._rules.get(proto_type, self._noop)
@@ -235,9 +234,11 @@ class Marshal(BaseMarshal):
                 marshals with the same ``name`` argument will provide the
                 same marshal each time.
         """
-        if name not in cls._instances:
-            cls._instances[name] = super().__new__(cls)
-        return cls._instances[name]
+        klass = cls._instances.get(name)
+        if klass is None:
+            klass = cls._instances[name] = super().__new__(cls)
+
+        return klass
 
     def __init__(self, *, name: str):
         """Instantiate a marshal.

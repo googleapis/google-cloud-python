@@ -60,7 +60,8 @@ class MessageMeta(type):
         # shorthand for a nested message and a repeated field of that message.
         # Decompose each map into its constituent form.
         # https://developers.google.com/protocol-buffers/docs/proto3#maps
-        for key, field in copy.copy(attrs).items():
+        map_fields = {}
+        for key, field in attrs.items():
             if not isinstance(field, MapField):
                 continue
 
@@ -92,12 +93,15 @@ class MessageMeta(type):
             entry_attrs["value"] = Field(
                 field.proto_type, number=2, enum=field.enum, message=field.message,
             )
-            attrs[msg_name] = MessageMeta(msg_name, (Message,), entry_attrs)
+            map_fields[msg_name] = MessageMeta(msg_name, (Message,), entry_attrs)
 
             # Create the repeated field for the entry message.
-            attrs[key] = RepeatedField(
-                ProtoType.MESSAGE, number=field.number, message=attrs[msg_name],
+            map_fields[key] = RepeatedField(
+                ProtoType.MESSAGE, number=field.number, message=map_fields[msg_name],
             )
+
+        # Add the new entries to the attrs
+        attrs.update(map_fields)
 
         # Okay, now we deal with all the rest of the fields.
         # Iterate over all the attributes and separate the fields into
@@ -525,7 +529,7 @@ class Message(metaclass=MessageMeta):
         For well-known protocol buffer types which are marshalled, either
         the protocol buffer object or the Python equivalent is accepted.
         """
-        if key.startswith("_"):
+        if key[0] == "_":
             return super().__setattr__(key, value)
         marshal = self._meta.marshal
         pb_type = self._meta.fields[key].pb_type

@@ -158,11 +158,9 @@ class _FileInfo(
         # manifest has been populated.
         module = inspect.getmodule(new_class)
         manifest = self._get_remaining_manifest(new_class)
-        if not all([hasattr(module, i) for i in manifest]):
-            return False
 
-        # Okay, we are ready.
-        return True
+        # We are ready if all members have been populated.
+        return all(hasattr(module, i) for i in manifest)
 
     @property
     def unresolved_fields(self):

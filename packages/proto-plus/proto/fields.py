@@ -22,6 +22,10 @@ from proto.primitives import ProtoType
 class Field:
     """A representation of a type of field in protocol buffers."""
 
+    # Fields are NOT repeated nor maps.
+    # The RepeatedField overrides this values.
+    repeated = False
+
     def __init__(
         self,
         proto_type,
@@ -35,7 +39,7 @@ class Field:
     ):
         # This class is not intended to stand entirely alone;
         # data is augmented by the metaclass for Message.
-        self.mcls_data = {}
+        self.mcls_data = None
         self.parent = None
 
         # If the proto type sent is an object or a string, it is really
@@ -59,11 +63,6 @@ class Field:
         self.optional = optional
         self.oneof = oneof
 
-        # Fields are neither repeated nor maps.
-        # The RepeatedField and MapField subclasses override these values
-        # in their initializers.
-        self.repeated = False
-
         # Once the descriptor is accessed the first time, cache it.
         # This is important because in rare cases the message or enum
         # types are written later.
@@ -72,8 +71,8 @@ class Field:
     @property
     def descriptor(self):
         """Return the descriptor for the field."""
-        proto_type = self.proto_type
         if not self._descriptor:
+            proto_type = self.proto_type
             # Resolve the message type, if any, to a string.
             type_name = None
             if isinstance(self.message, str):
@@ -83,10 +82,11 @@ class Field:
                     )
                 type_name = self.message
             elif self.message:
-                if hasattr(self.message, "DESCRIPTOR"):
-                    type_name = self.message.DESCRIPTOR.full_name
-                else:
-                    type_name = self.message.meta.full_name
+                type_name = (
+                    self.message.DESCRIPTOR.full_name
+                    if hasattr(self.message, "DESCRIPTOR")
+                    else self.message.meta.full_name
+                )
             elif self.enum:
                 # Nos decipiat.
                 #
@@ -146,9 +146,7 @@ class Field:
 class RepeatedField(Field):
     """A representation of a repeated field in protocol buffers."""
 
-    def __init__(self, proto_type, *, number: int, message=None, enum=None):
-        super().__init__(proto_type, number=number, message=message, enum=enum)
-        self.repeated = True
+    repeated = True
 
 
 class MapField(Field):
