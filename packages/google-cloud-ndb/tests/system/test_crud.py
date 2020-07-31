@@ -1473,3 +1473,27 @@ def test_cache_off_new_entity_created(dispose_of, client_context):
     ourkind.bar = "confusing"
 
     assert somekind.bar is None
+
+
+@pytest.mark.usefixtures("client_context")
+def test_local_structured_property_with_polymodel(dispose_of):
+    """Regression test for #481
+
+    https://github.com/googleapis/python-ndb/issues/481
+    """
+
+    class Base(ndb.PolyModel):
+        pass
+
+    class SubKind(Base):
+        foo = ndb.StringProperty()
+
+    class Container(ndb.Model):
+        child = ndb.LocalStructuredProperty(Base)
+
+    entity = Container(child=SubKind(foo="bar"))
+    key = entity.put()
+    dispose_of(key._key)
+
+    entity = entity.key.get()
+    assert entity.child.foo == "bar"

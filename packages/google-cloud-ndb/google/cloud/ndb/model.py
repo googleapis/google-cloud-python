@@ -636,6 +636,12 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
 
                 continue
 
+        if prop is None and kind != model_class.__name__:
+            # kind and model_class name do not match, so this is probably a
+            # polymodel. We need to check if the prop belongs to the subclass.
+            model_subclass = Model._lookup_model(kind)
+            prop = getattr(model_subclass, name, None)
+
         def base_value_or_none(value):
             return None if value is None else _BaseValue(value)
 
@@ -4357,7 +4363,14 @@ class LocalStructuredProperty(BlobProperty):
             value = entity_value
         if not self._keep_keys and value.key:
             value.key = None
-        return _entity_from_ds_entity(value, model_class=self._model_class)
+        model_class = self._model_class
+        kind = self._model_class.__name__
+        if "class" in value and value["class"]:
+            kind = value["class"][-1] or model_class
+        if kind != self._model_class.__name__:
+            # if this is a polymodel, find correct subclass.
+            model_class = Model._lookup_model(kind)
+        return _entity_from_ds_entity(value, model_class=model_class)
 
     def _prepare_for_put(self, entity):
         values = self._get_user_value(entity)

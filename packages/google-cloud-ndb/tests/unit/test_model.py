@@ -3863,6 +3863,34 @@ class TestLocalStructuredProperty:
             assert data.pop("_exclude_from_indexes") == ["child_a"]
             assert data["child_a"]["child_b"] is None
 
+    @staticmethod
+    def test_local_structured_property_with_polymodel(in_context):
+        class Base(polymodel.PolyModel):
+            pass
+
+        class SubKind(Base):
+            foo = model.StringProperty()
+
+        class Container(model.Model):
+            child = model.LocalStructuredProperty(Base)
+
+        entity = Container(child=SubKind(foo="bar"))
+        value = b"".join(
+            [
+                b"\x1a \n\x05class\x12\x17J\x15\n\x07\x8a\x01\x04Base\n\n",
+                b"\x8a\x01\x07SubKind\x1a\r\n\x03foo\x12\x06\x8a\x01\x03bar",
+            ]
+        )
+
+        child = entity._properties["child"]._from_base_type(value)
+        assert child.foo == "bar"
+
+        pb = entity_pb2.Entity()
+        pb.MergeFromString(value)
+        value = helpers.entity_from_protobuf(pb)
+        child = model._entity_from_ds_entity(value, model_class=Base)
+        assert child._values["foo"].b_val == "bar"
+
 
 class TestGenericProperty:
     @staticmethod
