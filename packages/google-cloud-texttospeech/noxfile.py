@@ -23,10 +23,10 @@ import shutil
 import nox
 
 
-BLACK_VERSION = "black==19.3b0"
+BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
-DEFAULT_PYTHON_VERSION = "3.7"
+DEFAULT_PYTHON_VERSION = "3.8"
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.7"]
 UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8"]
 
@@ -39,7 +39,9 @@ def lint(session):
     serious code quality issues.
     """
     session.install("flake8", BLACK_VERSION)
-    session.run("black", "--check", *BLACK_PATHS)
+    session.run(
+        "black", "--check", *BLACK_PATHS,
+    )
     session.run("flake8", "google", "tests")
 
 
@@ -54,7 +56,9 @@ def blacken(session):
     check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
     """
     session.install(BLACK_VERSION)
-    session.run("black", *BLACK_PATHS)
+    session.run(
+        "black", *BLACK_PATHS,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -67,6 +71,7 @@ def lint_setup_py(session):
 def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install("asyncmock", "pytest-asyncio")
+
     session.install("mock", "pytest", "pytest-cov")
     session.install("-e", ".")
 
@@ -112,7 +117,9 @@ def system(session):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install("mock", "pytest", "google-cloud-testutils")
+    session.install(
+        "mock", "pytest", "google-cloud-testutils",
+    )
     session.install("-e", ".")
 
     # Run py.test against the system tests.

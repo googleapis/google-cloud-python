@@ -14,6 +14,8 @@
 # limitations under the License.
 
 # A script to fetch gpg keys with retry.
+# Avoid jinja parsing the file.
+# 
 
 function retry {
     if [[ "${#}" -le 1 ]]; then
@@ -39,3 +41,5 @@ retry 3 gpg --keyserver ha.pool.sks-keyservers.net --recv-keys \
 # 3.8.0 (Łukasz Langa)
 retry 3 gpg --keyserver ha.pool.sks-keyservers.net --recv-keys \
       E3FF2839C048B25C084DEBE9B26995E310250568
+
+# 

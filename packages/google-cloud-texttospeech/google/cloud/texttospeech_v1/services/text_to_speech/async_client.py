@@ -88,7 +88,7 @@ class TextToSpeechAsyncClient:
         """
 
         self._client = TextToSpeechClient(
-            credentials=credentials, transport=transport, client_options=client_options
+            credentials=credentials, transport=transport, client_options=client_options,
         )
 
     async def list_voices(
@@ -113,9 +113,9 @@ class TextToSpeechAsyncClient:
                 only return voices that can be used to synthesize this
                 language_code. E.g. when specifying "en-NZ", you will
                 get supported "en-\*" voices; when specifying "no", you
-                will get supported "no-\*" (Norwegian) and "nb-*"
+                will get supported "no-\*" (Norwegian) and "nb-\*"
                 (Norwegian Bokmal) voices; specifying "zh" will also get
-                supported "cmn-*" voices; specifying "zh-hk" will also
+                supported "cmn-\*" voices; specifying "zh-hk" will also
                 get supported "yue-\*" voices.
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -159,7 +159,7 @@ class TextToSpeechAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -243,7 +243,7 @@ class TextToSpeechAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -252,8 +252,8 @@ class TextToSpeechAsyncClient:
 try:
     _client_info = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
-            "google-cloud-texttospeech"
-        ).version
+            "google-cloud-texttospeech",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     _client_info = gapic_v1.client_info.ClientInfo()

@@ -17,11 +17,25 @@
 
 import abc
 import typing
+import pkg_resources
 
 from google import auth
+from google.api_core import exceptions  # type: ignore
+from google.api_core import gapic_v1  # type: ignore
+from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 
 from google.cloud.texttospeech_v1.types import cloud_tts
+
+
+try:
+    _client_info = gapic_v1.client_info.ClientInfo(
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-texttospeech",
+        ).version,
+    )
+except pkg_resources.DistributionNotFound:
+    _client_info = gapic_v1.client_info.ClientInfo()
 
 
 class TextToSpeechTransport(abc.ABC):
@@ -34,6 +48,9 @@ class TextToSpeechTransport(abc.ABC):
         *,
         host: str = "texttospeech.googleapis.com",
         credentials: credentials.Credentials = None,
+        credentials_file: typing.Optional[str] = None,
+        scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
+        quota_project_id: typing.Optional[str] = None,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
@@ -45,6 +62,12 @@ class TextToSpeechTransport(abc.ABC):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is mutually exclusive with credentials.
+            scope (Optional[Sequence[str]]): A list of scopes.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ":" not in host:
@@ -53,15 +76,41 @@ class TextToSpeechTransport(abc.ABC):
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
-        if credentials is None:
-            credentials, _ = auth.default(scopes=self.AUTH_SCOPES)
+        if credentials and credentials_file:
+            raise exceptions.DuplicateCredentialArgs(
+                "'credentials_file' and 'credentials' are mutually exclusive"
+            )
+
+        if credentials_file is not None:
+            credentials, _ = auth.load_credentials_from_file(
+                credentials_file, scopes=scopes, quota_project_id=quota_project_id
+            )
+
+        elif credentials is None:
+            credentials, _ = auth.default(
+                scopes=scopes, quota_project_id=quota_project_id
+            )
 
         # Save the credentials.
         self._credentials = credentials
 
+        # Lifted into its own function so it can be stubbed out during tests.
+        self._prep_wrapped_messages()
+
+    def _prep_wrapped_messages(self):
+        # Precompute the wrapped methods.
+        self._wrapped_methods = {
+            self.list_voices: gapic_v1.method.wrap_method(
+                self.list_voices, default_timeout=None, client_info=_client_info,
+            ),
+            self.synthesize_speech: gapic_v1.method.wrap_method(
+                self.synthesize_speech, default_timeout=None, client_info=_client_info,
+            ),
+        }
+
     @property
     def list_voices(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_tts.ListVoicesRequest],
         typing.Union[
@@ -72,7 +121,7 @@ class TextToSpeechTransport(abc.ABC):
 
     @property
     def synthesize_speech(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_tts.SynthesizeSpeechRequest],
         typing.Union[

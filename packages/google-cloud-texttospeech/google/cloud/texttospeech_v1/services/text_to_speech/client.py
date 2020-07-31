@@ -49,7 +49,7 @@ class TextToSpeechClientMeta(type):
     _transport_registry["grpc"] = TextToSpeechGrpcTransport
     _transport_registry["grpc_asyncio"] = TextToSpeechGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None) -> Type[TextToSpeechTransport]:
+    def get_transport_class(cls, label: str = None,) -> Type[TextToSpeechTransport]:
         """Return an appropriate transport class.
 
         Args:
@@ -192,19 +192,27 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
         # instance provides an extensibility point for unusual situations.
         if isinstance(transport, TextToSpeechTransport):
             # transport is a TextToSpeechTransport instance.
-            if credentials:
+            if credentials or client_options.credentials_file:
                 raise ValueError(
                     "When providing a transport instance, "
                     "provide its credentials directly."
+                )
+            if client_options.scopes:
+                raise ValueError(
+                    "When providing a transport instance, "
+                    "provide its scopes directly."
                 )
             self._transport = transport
         else:
             Transport = type(self).get_transport_class(transport)
             self._transport = Transport(
                 credentials=credentials,
+                credentials_file=client_options.credentials_file,
                 host=client_options.api_endpoint,
+                scopes=client_options.scopes,
                 api_mtls_endpoint=client_options.api_endpoint,
                 client_cert_source=client_options.client_cert_source,
+                quota_project_id=client_options.quota_project_id,
             )
 
     def list_voices(
@@ -229,9 +237,9 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
                 only return voices that can be used to synthesize this
                 language_code. E.g. when specifying "en-NZ", you will
                 get supported "en-\*" voices; when specifying "no", you
-                will get supported "no-\*" (Norwegian) and "nb-*"
+                will get supported "no-\*" (Norwegian) and "nb-\*"
                 (Norwegian Bokmal) voices; specifying "zh" will also get
-                supported "cmn-*" voices; specifying "zh-hk" will also
+                supported "cmn-\*" voices; specifying "zh-hk" will also
                 get supported "yue-\*" voices.
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -252,28 +260,32 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([language_code]):
+        has_flattened_params = any([language_code])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = cloud_tts.ListVoicesRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_tts.ListVoicesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_tts.ListVoicesRequest):
+            request = cloud_tts.ListVoicesRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if language_code is not None:
-            request.language_code = language_code
+            if language_code is not None:
+                request.language_code = language_code
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_voices, default_timeout=None, client_info=_client_info
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_voices]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -330,34 +342,36 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([input, voice, audio_config]):
+        has_flattened_params = any([input, voice, audio_config])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = cloud_tts.SynthesizeSpeechRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_tts.SynthesizeSpeechRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_tts.SynthesizeSpeechRequest):
+            request = cloud_tts.SynthesizeSpeechRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if input is not None:
-            request.input = input
-        if voice is not None:
-            request.voice = voice
-        if audio_config is not None:
-            request.audio_config = audio_config
+            if input is not None:
+                request.input = input
+            if voice is not None:
+                request.voice = voice
+            if audio_config is not None:
+                request.audio_config = audio_config
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.synthesize_speech,
-            default_timeout=None,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.synthesize_speech]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -366,8 +380,8 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
 try:
     _client_info = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
-            "google-cloud-texttospeech"
-        ).version
+            "google-cloud-texttospeech",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     _client_info = gapic_v1.client_info.ClientInfo()

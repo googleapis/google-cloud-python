@@ -67,8 +67,8 @@ class ListVoicesRequest(proto.Message):
             return voices that can be used to synthesize this
             language_code. E.g. when specifying "en-NZ", you will get
             supported "en-\*" voices; when specifying "no", you will get
-            supported "no-\*" (Norwegian) and "nb-*" (Norwegian Bokmal)
-            voices; specifying "zh" will also get supported "cmn-*"
+            supported "no-\*" (Norwegian) and "nb-\*" (Norwegian Bokmal)
+            voices; specifying "zh" will also get supported "cmn-\*"
             voices; specifying "zh-hk" will also get supported "yue-\*"
             voices.
     """
@@ -84,7 +84,7 @@ class ListVoicesResponse(proto.Message):
             The list of voices.
     """
 
-    voices = proto.RepeatedField(proto.MESSAGE, number=1, message="Voice")
+    voices = proto.RepeatedField(proto.MESSAGE, number=1, message="Voice",)
 
 
 class Voice(proto.Message):
@@ -106,8 +106,11 @@ class Voice(proto.Message):
     """
 
     language_codes = proto.RepeatedField(proto.STRING, number=1)
+
     name = proto.Field(proto.STRING, number=2)
-    ssml_gender = proto.Field(proto.ENUM, number=3, enum="SsmlVoiceGender")
+
+    ssml_gender = proto.Field(proto.ENUM, number=3, enum="SsmlVoiceGender",)
+
     natural_sample_rate_hertz = proto.Field(proto.INT32, number=4)
 
 
@@ -127,9 +130,11 @@ class SynthesizeSpeechRequest(proto.Message):
             synthesized audio.
     """
 
-    input = proto.Field(proto.MESSAGE, number=1, message="SynthesisInput")
-    voice = proto.Field(proto.MESSAGE, number=2, message="VoiceSelectionParams")
-    audio_config = proto.Field(proto.MESSAGE, number=3, message="AudioConfig")
+    input = proto.Field(proto.MESSAGE, number=1, message="SynthesisInput",)
+
+    voice = proto.Field(proto.MESSAGE, number=2, message="VoiceSelectionParams",)
+
+    audio_config = proto.Field(proto.MESSAGE, number=3, message="AudioConfig",)
 
 
 class SynthesisInput(proto.Message):
@@ -149,8 +154,9 @@ class SynthesisInput(proto.Message):
             `SSML <https://cloud.google.com/text-to-speech/docs/ssml>`__.
     """
 
-    text = proto.Field(proto.STRING, number=1)
-    ssml = proto.Field(proto.STRING, number=2)
+    text = proto.Field(proto.STRING, number=1, oneof="input_source")
+
+    ssml = proto.Field(proto.STRING, number=2, oneof="input_source")
 
 
 class VoiceSelectionParams(proto.Message):
@@ -186,8 +192,10 @@ class VoiceSelectionParams(proto.Message):
     """
 
     language_code = proto.Field(proto.STRING, number=1)
+
     name = proto.Field(proto.STRING, number=2)
-    ssml_gender = proto.Field(proto.ENUM, number=3, enum="SsmlVoiceGender")
+
+    ssml_gender = proto.Field(proto.ENUM, number=3, enum="SsmlVoiceGender",)
 
 
 class AudioConfig(proto.Message):
@@ -237,11 +245,16 @@ class AudioConfig(proto.Message):
             for current supported profile ids.
     """
 
-    audio_encoding = proto.Field(proto.ENUM, number=1, enum="AudioEncoding")
+    audio_encoding = proto.Field(proto.ENUM, number=1, enum="AudioEncoding",)
+
     speaking_rate = proto.Field(proto.DOUBLE, number=2)
+
     pitch = proto.Field(proto.DOUBLE, number=3)
+
     volume_gain_db = proto.Field(proto.DOUBLE, number=4)
+
     sample_rate_hertz = proto.Field(proto.INT32, number=5)
+
     effects_profile_id = proto.RepeatedField(proto.STRING, number=6)
 
 

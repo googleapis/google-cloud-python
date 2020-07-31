@@ -23,7 +23,6 @@ sys.path.insert(0, os.path.abspath(".."))
 # For plugins that can not read conf.py.
 sys.path.insert(0, os.path.abspath("."))
 
-
 __version__ = ""
 
 # -- General configuration ------------------------------------------------
@@ -341,7 +340,7 @@ texinfo_documents = [
 intersphinx_mapping = {
     "python": ("http://python.readthedocs.org/en/latest/", None),
     "google-auth": ("https://google-auth.readthedocs.io/en/stable", None),
-    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest/", None),
+    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest/", None,),
     "grpc": ("https://grpc.io/grpc/python/", None),
 }
 

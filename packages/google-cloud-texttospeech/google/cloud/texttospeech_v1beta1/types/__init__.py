@@ -24,6 +24,7 @@ from .cloud_tts import (
     VoiceSelectionParams,
     AudioConfig,
     SynthesizeSpeechResponse,
+    Timepoint,
 )
 
 
@@ -36,4 +37,5 @@ __all__ = (
     "VoiceSelectionParams",
     "AudioConfig",
     "SynthesizeSpeechResponse",
+    "Timepoint",
 )

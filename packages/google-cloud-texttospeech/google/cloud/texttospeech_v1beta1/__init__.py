@@ -24,6 +24,7 @@ from .types.cloud_tts import SsmlVoiceGender
 from .types.cloud_tts import SynthesisInput
 from .types.cloud_tts import SynthesizeSpeechRequest
 from .types.cloud_tts import SynthesizeSpeechResponse
+from .types.cloud_tts import Timepoint
 from .types.cloud_tts import Voice
 from .types.cloud_tts import VoiceSelectionParams
 
@@ -37,6 +38,7 @@ __all__ = (
     "SynthesisInput",
     "SynthesizeSpeechRequest",
     "SynthesizeSpeechResponse",
+    "Timepoint",
     "Voice",
     "VoiceSelectionParams",
     "TextToSpeechClient",
