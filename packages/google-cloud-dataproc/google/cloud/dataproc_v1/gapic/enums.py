@@ -24,7 +24,7 @@ class Component(enum.IntEnum):
     Cluster components that can be activated.
 
     Attributes:
-      COMPONENT_UNSPECIFIED (int): Unspecified component.
+      COMPONENT_UNSPECIFIED (int): Unspecified component. Specifying this will cause Cluster creation to fail.
       ANACONDA (int): The Anaconda python distribution.
       HIVE_WEBHCAT (int): The Hive Web HCatalog (the REST service for accessing HCatalog).
       JUPYTER (int): The Jupyter Notebook.
@@ -101,6 +101,30 @@ class ClusterStatus(object):
         UNSPECIFIED = 0
         UNHEALTHY = 1
         STALE_STATUS = 2
+
+
+class InstanceGroupConfig(object):
+    class Preemptibility(enum.IntEnum):
+        """
+        Controls the use of [preemptible instances]
+        (https://cloud.google.com/compute/docs/instances/preemptible) within the
+        group.
+
+        Attributes:
+          PREEMPTIBILITY_UNSPECIFIED (int): Preemptibility is unspecified, the system will choose the
+          appropriate setting for each instance group.
+          NON_PREEMPTIBLE (int): Instances are non-preemptible.
+
+          This option is allowed for all instance groups and is the only valid
+          value for Master and Worker instance groups.
+          PREEMPTIBLE (int): Instances are preemptible.
+
+          This option is allowed only for secondary worker groups.
+        """
+
+        PREEMPTIBILITY_UNSPECIFIED = 0
+        NON_PREEMPTIBLE = 1
+        PREEMPTIBLE = 2
 
 
 class JobStatus(object):

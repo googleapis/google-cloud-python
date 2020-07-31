@@ -3,16 +3,16 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-dataproc.git",
-        "sha": "f0c8897e5124a553fb66ef20d9cd55d2ed912a6a"
+        "remote": "https://github.com/googleapis/python-dataproc.git",
+        "sha": "380e122da3e7ef329d39f658f6dbfa775c612efc"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "bad4b831900d70e69b5e4d43bd7565d0aaded997",
-        "internalRef": "321584556"
+        "sha": "c8fc4b79cc54749520e6fc7726deee7a22d1f988",
+        "internalRef": "323858574"
       }
     },
     {
