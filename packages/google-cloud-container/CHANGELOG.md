@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+### [2.0.1](https://www.github.com/googleapis/python-container/compare/v2.0.0...v2.0.1) (2020-07-24)
+
+
+### Bug Fixes
+
+* Update README.rst ([#35](https://www.github.com/googleapis/python-container/issues/35)) ([e7d1c66](https://www.github.com/googleapis/python-container/commit/e7d1c66a3f14dc9554a9fbdc78ec16bc912de5f9))
+
+
+### Documentation
+
+* link to migration guide ([#39](https://www.github.com/googleapis/python-container/issues/39)) ([5341b96](https://www.github.com/googleapis/python-container/commit/5341b96719a82cb8509f4dcc9e66ee05acd95ae9))
+
 ## [2.0.0](https://www.github.com/googleapis/python-container/compare/v1.0.1...v2.0.0) (2020-07-16)
 
 
