@@ -13,6 +13,7 @@ Using the API
   row
   row-data
   row-filters
+  row-set
 
 
 In the hierarchy of API concepts

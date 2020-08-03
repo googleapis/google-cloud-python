@@ -539,7 +539,7 @@ class Table(object):
         :param end_inclusive: (Optional) Whether the ``end_key`` should be
                       considered inclusive. The default is False (exclusive).
 
-        :type row_set: :class:`row_set.RowSet`
+        :type row_set: :class:`.RowSet`
         :param row_set: (Optional) The row set containing multiple row keys and
                         row_ranges.
 
@@ -595,7 +595,7 @@ class Table(object):
                         specified row(s). If unset, reads every column in
                         each row.
 
-        :type row_set: :class:`row_set.RowSet`
+        :type row_set: :class:`.RowSet`
         :param row_set: (Optional) The row set containing multiple row keys and
                         row_ranges.
 
@@ -1204,7 +1204,7 @@ def _create_row_request(
     :type: app_profile_id: str
     :param app_profile_id: (Optional) The unique name of the AppProfile.
 
-    :type row_set: :class:`row_set.RowSet`
+    :type row_set: :class:`.RowSet`
     :param row_set: (Optional) The row set containing multiple row keys and
                     row_ranges.
 
