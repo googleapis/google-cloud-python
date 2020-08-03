@@ -42,28 +42,17 @@ class _FileInfo(
     def _get_remaining_manifest(self, new_class):
         return self._get_manifest(new_class) - {new_class.__name__}
 
-    def _has_manifest(self, new_class):
-        return len(self._get_manifest(new_class)) > 0
-
-    def _is_in_manifest(self, new_class):
-        return new_class.__name__ in self._get_manifest(new_class)
-
     def _calculate_salt(self, new_class, fallback):
-        if self._has_manifest(new_class=new_class) and not self._is_in_manifest(
-            new_class=new_class
-        ):
+        manifest = self._get_manifest(new_class)
+        if manifest and new_class.__name__ not in manifest:
             log.warning(
-                "proto-plus module {module} has a declared manifest but {classname} is not in it".format(
+                "proto-plus module {module} has a declared manifest but {class_name} is not in it".format(
                     module=inspect.getmodule(new_class).__name__,
-                    classname=new_class.__name__,
+                    class_name=new_class.__name__,
                 )
             )
 
-        return (
-            ""
-            if self._is_in_manifest(new_class=new_class)
-            else (fallback or "").lower()
-        )
+        return "" if new_class.__name__ in manifest else (fallback or "").lower()
 
     def generate_file_pb(self, new_class, fallback_salt=""):
         """Generate the descriptors for all protos in the file.

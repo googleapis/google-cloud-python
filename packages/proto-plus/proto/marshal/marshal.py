@@ -153,13 +153,14 @@ class BaseMarshal:
     def to_python(self, proto_type, value, *, absent: bool = None):
         # Internal protobuf has its own special type for lists of values.
         # Return a view around it that implements MutableSequence.
-        if isinstance(value, compat.repeated_composite_types):
+        value_type = type(value)  # Minor performance boost over isinstance
+        if value_type in compat.repeated_composite_types:
             return RepeatedComposite(value, marshal=self)
-        if isinstance(value, compat.repeated_scalar_types):
+        if value_type in compat.repeated_scalar_types:
             return Repeated(value, marshal=self)
 
         # Same thing for maps of messages.
-        if isinstance(value, compat.map_composite_types):
+        if value_type in compat.map_composite_types:
             return MapComposite(value, marshal=self)
 
         # Convert ordinary values.

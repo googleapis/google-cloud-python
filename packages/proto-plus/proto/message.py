@@ -370,20 +370,9 @@ class Message(metaclass=MessageMeta):
         #   * An instance of the underlying protobuf descriptor class.
         #   * A dict
         #   * Nothing (keyword arguments only).
-        #
-        # Sanity check: Did we get something not on that list? Error if so.
-        if mapping and not isinstance(
-            mapping, (collections.abc.Mapping, type(self), self._meta.pb)
-        ):
-            raise TypeError(
-                "Invalid constructor input for %s: %r"
-                % (self.__class__.__name__, mapping,)
-            )
 
         # Handle the first two cases: they both involve keeping
         # a copy of the underlying protobuf descriptor instance.
-        if isinstance(mapping, type(self)):
-            mapping = mapping._pb
         if isinstance(mapping, self._meta.pb):
             # Make a copy of the mapping.
             # This is a constructor for a new object, so users will assume
@@ -400,12 +389,23 @@ class Message(metaclass=MessageMeta):
             if kwargs:
                 self._pb.MergeFrom(self._meta.pb(**kwargs))
             return
+        if isinstance(mapping, type(self)):
+            # Performance hack to streamline construction from vanilla protos.
+            self.__init__(mapping=mapping._pb, **kwargs)
+            return
 
         # Handle the remaining case by converging the mapping and kwargs
         # dictionaries (with kwargs winning), and saving a descriptor
         # based on that.
+
         if mapping is None:
             mapping = {}
+        elif not isinstance(mapping, collections.abc.Mapping):
+            # Sanity check: Did we get something not a map? Error if so.
+            raise TypeError(
+                "Invalid constructor input for %s: %r"
+                % (self.__class__.__name__, mapping,)
+            )
         mapping.update(kwargs)
 
         # Avoid copying the mapping unnecessarily
