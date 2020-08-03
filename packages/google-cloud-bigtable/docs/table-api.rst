@@ -143,12 +143,11 @@ data directly via a :class:`Table <google.cloud.bigtable.table.Table>`.
 
 Head next to learn about the :doc:`data-api`.
 
-.. _ListTables: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L40-L42
-.. _CreateTable: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L35-L37
-.. _DeleteTable: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L50-L52
-.. _RenameTable: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L56-L58
-.. _GetTable: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L45-L47
-.. _CreateColumnFamily: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L61-L63
-.. _UpdateColumnFamily: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L66-L68
-.. _DeleteColumnFamily: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L71-L73
+.. _ListTables: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto#L69-L73
+.. _CreateTable: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto#L45-L50
+.. _DeleteTable: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto#L83-L87
+.. _GetTable: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto#L76-L80
+.. _CreateColumnFamily: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto#L93-L98
+.. _UpdateColumnFamily: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto#L93-L98
+.. _DeleteColumnFamily: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto#L93-L98
 .. _column families: https://cloud.google.com/bigtable/docs/schema-design#column_families_and_column_qualifiers

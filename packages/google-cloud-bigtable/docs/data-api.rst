@@ -337,8 +337,8 @@ Just as with reading, the stream can be canceled:
 
     keys_iterator.cancel()
 
-.. _ReadRows: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/v1/bigtable_service.proto#L36-L38
-.. _SampleRowKeys: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/v1/bigtable_service.proto#L44-L46
-.. _MutateRow: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/v1/bigtable_service.proto#L50-L52
-.. _CheckAndMutateRow: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/v1/bigtable_service.proto#L62-L64
-.. _ReadModifyWriteRow: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/v1/bigtable_service.proto#L70-L72
+.. _ReadRows: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_v2/proto/bigtable.proto#L54-L61
+.. _SampleRowKeys: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_v2/proto/bigtable.proto#L67-L73
+.. _MutateRow: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_v2/proto/bigtable.proto#L77-L84
+.. _CheckAndMutateRow: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_v2/proto/bigtable.proto#L99-L106
+.. _ReadModifyWriteRow: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_v2/proto/bigtable.proto#L113-L121

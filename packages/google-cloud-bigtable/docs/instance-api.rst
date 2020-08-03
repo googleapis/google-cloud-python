@@ -121,10 +121,10 @@ Now we go down the hierarchy from
 Head next to learn about the :doc:`table-api`.
 
 .. _Instance Admin API: https://cloud.google.com/bigtable/docs/creating-instance
-.. _CreateInstance: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/instance/v1/bigtable_instance_service.proto#L66-L68
-.. _GetInstance: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/instance/v1/bigtable_instance_service.proto#L38-L40
-.. _UpdateInstance: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/instance/v1/bigtable_instance_service.proto#L93-L95
-.. _DeleteInstance: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/instance/v1/bigtable_instance_service.proto#L109-L111
-.. _ListInstances: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/instance/v1/bigtable_instance_service.proto#L44-L46
-.. _GetOperation: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/longrunning/operations.proto#L43-L45
-.. _long-running operation: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/longrunning/operations.proto#L73-L102
+.. _CreateInstance: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_instance_admin.proto#L41-L47
+.. _GetInstance: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_instance_admin.proto#L50-L54
+.. _UpdateInstance: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_instance_admin.proto#L64-L69
+.. _DeleteInstance: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_instance_admin.proto#L81-L85
+.. _ListInstances: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_instance_admin.proto#L57-L61
+.. _GetOperation: https://github.com/googleapis/googleapis/blob/master/google/longrunning/operations.proto#L77-L82
+.. _long-running operation: https://github.com/googleapis/googleapis/blob/master/google/longrunning/operations.proto#L128-L162
