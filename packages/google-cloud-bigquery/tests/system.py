@@ -131,6 +131,8 @@ retry_storage_errors = RetryErrors(
 
 PANDAS_MINIMUM_VERSION = pkg_resources.parse_version("1.0.0")
 PANDAS_INSTALLED_VERSION = pkg_resources.get_distribution("pandas").parsed_version
+PYARROW_MINIMUM_VERSION = pkg_resources.parse_version("0.17.0")
+PYARROW_INSTALLED_VERSION = pkg_resources.get_distribution("pyarrow").parsed_version
 
 
 def _has_rows(result):
@@ -1073,6 +1075,48 @@ class TestBigQuery(unittest.TestCase):
 
         table = Config.CLIENT.get_table(table_id)
         self.assertEqual(tuple(table.schema), table_schema)
+        self.assertEqual(table.num_rows, 3)
+
+    @unittest.skipIf(
+        pyarrow is None or PYARROW_INSTALLED_VERSION < PYARROW_MINIMUM_VERSION,
+        "Only `pyarrow version >=0.17.0` is supported",
+    )
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_load_table_from_dataframe_w_struct_datatype(self):
+        """Test that a DataFrame with struct datatype can be uploaded if a
+        BigQuery schema is specified.
+
+        https://github.com/googleapis/python-bigquery/issues/21
+        """
+        dataset_id = _make_dataset_id("bq_load_test")
+        self.temp_dataset(dataset_id)
+        table_id = "{}.{}.load_table_from_dataframe_w_struct_datatype".format(
+            Config.CLIENT.project, dataset_id
+        )
+        table_schema = [
+            bigquery.SchemaField(
+                "bar",
+                "RECORD",
+                fields=[
+                    bigquery.SchemaField("id", "INTEGER", mode="REQUIRED"),
+                    bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
+                ],
+                mode="REQUIRED",
+            ),
+        ]
+        table = retry_403(Config.CLIENT.create_table)(
+            Table(table_id, schema=table_schema)
+        )
+        self.to_delete.insert(0, table)
+
+        df_data = [{"id": 1, "age": 21}, {"id": 2, "age": 22}, {"id": 2, "age": 23}]
+        dataframe = pandas.DataFrame(data={"bar": df_data}, columns=["bar"])
+
+        load_job = Config.CLIENT.load_table_from_dataframe(dataframe, table_id)
+        load_job.result()
+
+        table = Config.CLIENT.get_table(table_id)
+        self.assertEqual(table.schema, table_schema)
         self.assertEqual(table.num_rows, 3)
 
     def test_load_table_from_json_basic_use(self):
