@@ -17,7 +17,7 @@ plan.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-billing-budgets.svg
    :target: https://pypi.org/project/google-cloud-billing-budgets/
 .. _Cloud Billing Budget API: https://cloud.google.com/billing/docs/how-to/budget-api-overview
-.. _Client Library Documentation: https://googleapis.dev/python/billing-budgets/latest
+.. _Client Library Documentation: https://googleapis.dev/python/billingbudgets/latest
 .. _Product Documentation:  https://cloud.google.com/billing/docs/how-to/budget-api-overview
 
 Quick Start
