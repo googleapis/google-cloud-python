@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+### [2.0.2](https://www.github.com/googleapis/python-translate/compare/v2.0.1...v2.0.2) (2020-08-03)
+
+
+### Bug Fixes
+
+* refactored MP3 file creation test for Hybrid glossaries samples [([#2379](https://www.github.com/googleapis/python-translate/issues/2379))](https://github.com/GoogleCloudPlatform/python-docs-samples/issues/2379) ([b8b5101](https://www.github.com/googleapis/python-translate/commit/b8b5101be28d0d0d17a4d688eea81af6754a394c))
+* translate test [([#2671](https://www.github.com/googleapis/python-translate/issues/2671))](https://github.com/GoogleCloudPlatform/python-docs-samples/issues/2671) ([a3d9f80](https://www.github.com/googleapis/python-translate/commit/a3d9f804576caeb4fdcdbbd4479caeb926efd8d0))
+* update default retry config ([#15](https://www.github.com/googleapis/python-translate/issues/15)) ([dddf0bf](https://www.github.com/googleapis/python-translate/commit/dddf0bf33463968932031cc0be5bc8a0d4a96455))
+
 ### [2.0.1](https://www.github.com/googleapis/python-translate/compare/v2.0.0...v2.0.1) (2020-01-31)
 
 
