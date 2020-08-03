@@ -48,6 +48,7 @@ class MaxVersionsGCRule(GarbageCollectionRule):
     .. literalinclude:: snippets_table.py
         :start-after: [START bigtable_create_family_gc_max_versions]
         :end-before: [END bigtable_create_family_gc_max_versions]
+        :dedent: 4
 
     :type max_num_versions: int
     :param max_num_versions: The maximum number of versions
@@ -81,6 +82,7 @@ class MaxAgeGCRule(GarbageCollectionRule):
     .. literalinclude:: snippets_table.py
         :start-after: [START bigtable_create_family_gc_max_age]
         :end-before: [END bigtable_create_family_gc_max_age]
+        :dedent: 4
 
     :type max_age: :class:`datetime.timedelta`
     :param max_age: The maximum age allowed for a cell in the table.
@@ -115,6 +117,7 @@ class GCRuleUnion(GarbageCollectionRule):
     .. literalinclude:: snippets_table.py
         :start-after: [START bigtable_create_family_gc_union]
         :end-before: [END bigtable_create_family_gc_union]
+        :dedent: 4
 
     :type rules: list
     :param rules: List of :class:`GarbageCollectionRule`.
@@ -149,6 +152,7 @@ class GCRuleIntersection(GarbageCollectionRule):
     .. literalinclude:: snippets_table.py
         :start-after: [START bigtable_create_family_gc_intersection]
         :end-before: [END bigtable_create_family_gc_intersection]
+        :dedent: 4
 
     :type rules: list
     :param rules: List of :class:`GarbageCollectionRule`.
@@ -212,6 +216,7 @@ class ColumnFamily(object):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_column_family_name]
             :end-before: [END bigtable_column_family_name]
+            :dedent: 4
 
         .. note::
 
@@ -258,6 +263,7 @@ class ColumnFamily(object):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_create_column_family]
             :end-before: [END bigtable_create_column_family]
+            :dedent: 4
 
         """
         column_family = self.to_pb()
@@ -280,6 +286,7 @@ class ColumnFamily(object):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_update_column_family]
             :end-before: [END bigtable_update_column_family]
+            :dedent: 4
 
         .. note::
 
@@ -306,6 +313,7 @@ class ColumnFamily(object):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_delete_column_family]
             :end-before: [END bigtable_delete_column_family]
+            :dedent: 4
 
         """
         modification = table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification(

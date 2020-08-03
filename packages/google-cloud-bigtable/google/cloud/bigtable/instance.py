@@ -134,6 +134,7 @@ class Instance(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_instance_from_pb]
             :end-before: [END bigtable_instance_from_pb]
+            :dedent: 4
 
         :type instance_pb: :class:`instance_pb2.Instance`
         :param instance_pb: An instance protobuf object.
@@ -178,6 +179,7 @@ class Instance(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_instance_name]
             :end-before: [END bigtable_instance_name]
+            :dedent: 4
 
         The instance name is of the form
 
@@ -199,6 +201,7 @@ class Instance(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_instance_state]
             :end-before: [END bigtable_instance_state]
+            :dedent: 4
 
         """
         return self._state
@@ -231,6 +234,7 @@ class Instance(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_create_prod_instance]
             :end-before: [END bigtable_create_prod_instance]
+            :dedent: 4
 
         .. note::
 
@@ -331,6 +335,7 @@ class Instance(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_check_instance_exists]
             :end-before: [END bigtable_check_instance_exists]
+            :dedent: 4
 
         :rtype: bool
         :returns: True if the table exists, else False.
@@ -350,6 +355,7 @@ class Instance(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_reload_instance]
             :end-before: [END bigtable_reload_instance]
+            :dedent: 4
         """
         instance_pb = self._client.instance_admin_client.get_instance(self.name)
 
@@ -365,6 +371,7 @@ class Instance(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_update_instance]
             :end-before: [END bigtable_update_instance]
+            :dedent: 4
 
         .. note::
 
@@ -411,6 +418,7 @@ class Instance(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_delete_instance]
             :end-before: [END bigtable_delete_instance]
+            :dedent: 4
 
         Marks an instance and all of its tables for permanent deletion
         in 7 days.
@@ -441,6 +449,7 @@ class Instance(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_get_iam_policy]
             :end-before: [END bigtable_get_iam_policy]
+            :dedent: 4
 
         :type requested_policy_version: int or ``NoneType``
         :param requested_policy_version: Optional. The version of IAM policies to request.
@@ -480,6 +489,7 @@ class Instance(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_set_iam_policy]
             :end-before: [END bigtable_set_iam_policy]
+            :dedent: 4
 
         :type policy: :class:`google.cloud.bigtable.policy.Policy`
         :param policy: A new IAM policy to replace the current IAM policy
@@ -503,6 +513,7 @@ class Instance(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_test_iam_permissions]
             :end-before: [END bigtable_test_iam_permissions]
+            :dedent: 4
 
         :type permissions: list
         :param permissions: The set of permissions to check for
@@ -532,6 +543,7 @@ class Instance(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_create_cluster]
             :end-before: [END bigtable_create_cluster]
+            :dedent: 4
 
         :type cluster_id: str
         :param cluster_id: The ID of the cluster.
@@ -575,6 +587,7 @@ class Instance(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_list_clusters_on_instance]
             :end-before: [END bigtable_list_clusters_on_instance]
+            :dedent: 4
 
         :rtype: tuple
         :returns:
@@ -595,6 +608,7 @@ class Instance(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_create_table]
             :end-before: [END bigtable_create_table]
+            :dedent: 4
 
         :type table_id: str
         :param table_id: The ID of the table.
@@ -620,6 +634,7 @@ class Instance(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_list_tables]
             :end-before: [END bigtable_list_tables]
+            :dedent: 4
 
         :rtype: list of :class:`Table <google.cloud.bigtable.table.Table>`
         :returns: The list of tables owned by the instance.
@@ -655,6 +670,7 @@ class Instance(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_create_app_profile]
             :end-before: [END bigtable_create_app_profile]
+            :dedent: 4
 
         :type app_profile_id: str
         :param app_profile_id: The ID of the AppProfile. Must be of the form
@@ -701,6 +717,7 @@ class Instance(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_list_app_profiles]
             :end-before: [END bigtable_list_app_profiles]
+            :dedent: 4
 
         :rtype: :list:[`~google.cloud.bigtable.app_profile.AppProfile`]
         :returns: A :list:[`~google.cloud.bigtable.app_profile.AppProfile`].

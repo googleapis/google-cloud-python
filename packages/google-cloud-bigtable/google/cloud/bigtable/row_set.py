@@ -58,6 +58,7 @@ class RowSet(object):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_add_row_key]
             :end-before: [END bigtable_add_row_key]
+            :dedent: 4
 
         :type row_key: bytes
         :param row_key: The key of a row to read
@@ -72,6 +73,7 @@ class RowSet(object):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_add_row_range]
             :end-before: [END bigtable_add_row_range]
+            :dedent: 4
 
         :type row_range: class:`RowRange`
         :param row_range: The row range object having start and end key
@@ -88,6 +90,7 @@ class RowSet(object):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_range_from_keys]
             :end-before: [END bigtable_row_range_from_keys]
+            :dedent: 4
 
         :type start_key: bytes
         :param start_key: (Optional) Start key of the row range. If left empty,

@@ -73,6 +73,7 @@ class MutationsBatcher(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_batcher_mutate]
             :end-before: [END bigtable_batcher_mutate]
+            :dedent: 4
 
         :type row: class
         :param row: class:`~google.cloud.bigtable.row.DirectRow`.
@@ -112,6 +113,7 @@ class MutationsBatcher(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_batcher_mutate_rows]
             :end-before: [END bigtable_batcher_mutate_rows]
+            :dedent: 4
 
         :type rows: list:[`~google.cloud.bigtable.row.DirectRow`]
         :param rows: list:[`~google.cloud.bigtable.row.DirectRow`].
@@ -134,6 +136,7 @@ class MutationsBatcher(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_batcher_flush]
             :end-before: [END bigtable_batcher_flush]
+            :dedent: 4
 
         """
         if len(self.rows) != 0:

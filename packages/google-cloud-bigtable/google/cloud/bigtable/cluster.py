@@ -99,6 +99,7 @@ class Cluster(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_cluster_from_pb]
             :end-before: [END bigtable_cluster_from_pb]
+            :dedent: 4
 
         :type cluster_pb: :class:`instance_pb2.Cluster`
         :param cluster_pb: An instance protobuf object.
@@ -159,6 +160,7 @@ class Cluster(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_cluster_name]
             :end-before: [END bigtable_cluster_name]
+            :dedent: 4
 
         The cluster name is of the form
 
@@ -180,6 +182,7 @@ class Cluster(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_cluster_state]
             :end-before: [END bigtable_cluster_state]
+            :dedent: 4
 
         """
         return self._state
@@ -206,6 +209,7 @@ class Cluster(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_reload_cluster]
             :end-before: [END bigtable_reload_cluster]
+            :dedent: 4
         """
         cluster_pb = self._instance._client.instance_admin_client.get_cluster(self.name)
 
@@ -221,6 +225,7 @@ class Cluster(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_check_cluster_exists]
             :end-before: [END bigtable_check_cluster_exists]
+            :dedent: 4
 
         :rtype: bool
         :returns: True if the table exists, else False.
@@ -241,6 +246,7 @@ class Cluster(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_create_cluster]
             :end-before: [END bigtable_create_cluster]
+            :dedent: 4
 
         .. note::
 
@@ -274,6 +280,7 @@ class Cluster(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_update_cluster]
             :end-before: [END bigtable_update_cluster]
+            :dedent: 4
 
         .. note::
 
@@ -306,6 +313,7 @@ class Cluster(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_delete_cluster]
             :end-before: [END bigtable_delete_cluster]
+            :dedent: 4
 
         Marks a cluster and all of its tables for permanent deletion in 7 days.
 

@@ -184,6 +184,7 @@ class PartialRowData(object):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_data_cells]
             :end-before: [END bigtable_row_data_cells]
+            :dedent: 4
 
         :rtype: dict
         :returns: Dictionary of the :class:`Cell` objects accumulated. This
@@ -210,6 +211,7 @@ class PartialRowData(object):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_find_cells]
             :end-before: [END bigtable_row_find_cells]
+            :dedent: 4
 
         Args:
             column_family_id (str): The ID of the column family. Must be of the
@@ -247,6 +249,7 @@ class PartialRowData(object):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_cell_value]
             :end-before: [END bigtable_row_cell_value]
+            :dedent: 4
 
         Args:
             column_family_id (str): The ID of the column family. Must be of the
@@ -288,6 +291,7 @@ class PartialRowData(object):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_cell_values]
             :end-before: [END bigtable_row_cell_values]
+            :dedent: 4
 
         Args:
             column_family_id (str): The ID of the column family. Must be of the

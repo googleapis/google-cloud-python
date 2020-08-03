@@ -106,6 +106,7 @@ class Policy(BasePolicy):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_admins_policy]
             :end-before: [END bigtable_admins_policy]
+            :dedent: 4
         """
         result = set()
         for member in self.get(BIGTABLE_ADMIN_ROLE, ()):
@@ -123,6 +124,7 @@ class Policy(BasePolicy):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_readers_policy]
             :end-before: [END bigtable_readers_policy]
+            :dedent: 4
         """
         result = set()
         for member in self.get(BIGTABLE_READER_ROLE, ()):
@@ -140,6 +142,7 @@ class Policy(BasePolicy):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_users_policy]
             :end-before: [END bigtable_users_policy]
+            :dedent: 4
         """
         result = set()
         for member in self.get(BIGTABLE_USER_ROLE, ()):
@@ -157,6 +160,7 @@ class Policy(BasePolicy):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_viewers_policy]
             :end-before: [END bigtable_viewers_policy]
+            :dedent: 4
         """
         result = set()
         for member in self.get(BIGTABLE_VIEWER_ROLE, ()):

@@ -95,6 +95,7 @@ class AppProfile(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_app_profile_name]
             :end-before: [END bigtable_app_profile_name]
+            :dedent: 4
 
         The AppProfile name is of the form
             ``"projects/../instances/../app_profile/{app_profile_id}"``
@@ -238,6 +239,7 @@ class AppProfile(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_reload_app_profile]
             :end-before: [END bigtable_reload_app_profile]
+            :dedent: 4
         """
 
         app_profile_pb = self.instance_admin_client.get_app_profile(self.name)
@@ -254,6 +256,7 @@ class AppProfile(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_app_profile_exists]
             :end-before: [END bigtable_app_profile_exists]
+            :dedent: 4
 
         :rtype: bool
         :returns: True if the AppProfile exists, else False.
@@ -280,6 +283,7 @@ class AppProfile(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_create_app_profile]
             :end-before: [END bigtable_create_app_profile]
+            :dedent: 4
 
         :type: ignore_warnings: bool
         :param: ignore_warnings: (Optional) If true, ignore safety checks when
@@ -311,6 +315,7 @@ class AppProfile(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_update_app_profile]
             :end-before: [END bigtable_update_app_profile]
+            :dedent: 4
         """
         update_mask_pb = field_mask_pb2.FieldMask()
 
@@ -336,6 +341,7 @@ class AppProfile(object):
         .. literalinclude:: snippets.py
             :start-after: [START bigtable_delete_app_profile]
             :end-before: [END bigtable_delete_app_profile]
+            :dedent: 4
 
         :type: ignore_warnings: bool
         :param: ignore_warnings: If true, ignore safety checks when deleting

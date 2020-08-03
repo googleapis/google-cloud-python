@@ -61,6 +61,7 @@ class Row(object):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_row_key]
             :end-before: [END bigtable_row_row_key]
+            :dedent: 4
 
         :rtype: bytes
         :returns: The key for the current row.
@@ -76,6 +77,7 @@ class Row(object):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_table]
             :end-before: [END bigtable_row_table]
+            :dedent: 4
 
         :rtype: table: :class:`Table <google.cloud.bigtable.table.Table>`
         :returns: table: The table that owns the row.
@@ -300,7 +302,7 @@ class DirectRow(_SetDeleteRow):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_get_mutations_size]
             :end-before: [END bigtable_row_get_mutations_size]
-
+            :dedent: 4
         """
 
         mutation_size = 0
@@ -328,6 +330,7 @@ class DirectRow(_SetDeleteRow):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_set_cell]
             :end-before: [END bigtable_row_set_cell]
+            :dedent: 4
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column.
@@ -363,7 +366,7 @@ class DirectRow(_SetDeleteRow):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_delete]
             :end-before: [END bigtable_row_delete]
-
+            :dedent: 4
         """
         self._delete(state=None)
 
@@ -382,6 +385,7 @@ class DirectRow(_SetDeleteRow):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_delete_cell]
             :end-before: [END bigtable_row_delete_cell]
+            :dedent: 4
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column
@@ -415,6 +419,7 @@ class DirectRow(_SetDeleteRow):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_delete_cells]
             :end-before: [END bigtable_row_delete_cells]
+            :dedent: 4
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column
@@ -450,6 +455,7 @@ class DirectRow(_SetDeleteRow):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_commit]
             :end-before: [END bigtable_row_commit]
+            :dedent: 4
 
         :raises: :exc:`~.table.TooManyMutationsError` if the number of
                  mutations is greater than 100,000.
@@ -465,7 +471,7 @@ class DirectRow(_SetDeleteRow):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_clear]
             :end-before: [END bigtable_row_clear]
-
+            :dedent: 4
         """
         del self._pb_mutations[:]
 
@@ -557,6 +563,7 @@ class ConditionalRow(_SetDeleteRow):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_commit]
             :end-before: [END bigtable_row_commit]
+            :dedent: 4
 
         :rtype: bool
         :returns: Flag indicating if the filter was matched (which also
@@ -610,6 +617,7 @@ class ConditionalRow(_SetDeleteRow):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_set_cell]
             :end-before: [END bigtable_row_set_cell]
+            :dedent: 4
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column.
@@ -651,6 +659,7 @@ class ConditionalRow(_SetDeleteRow):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_delete]
             :end-before: [END bigtable_row_delete]
+            :dedent: 4
 
         :type state: bool
         :param state: (Optional) The state that the mutation should be
@@ -673,6 +682,7 @@ class ConditionalRow(_SetDeleteRow):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_delete_cell]
             :end-before: [END bigtable_row_delete_cell]
+            :dedent: 4
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column
@@ -710,6 +720,7 @@ class ConditionalRow(_SetDeleteRow):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_delete_cells]
             :end-before: [END bigtable_row_delete_cells]
+            :dedent: 4
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column
@@ -744,7 +755,7 @@ class ConditionalRow(_SetDeleteRow):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_clear]
             :end-before: [END bigtable_row_clear]
-
+            :dedent: 4
         """
         del self._true_pb_mutations[:]
         del self._false_pb_mutations[:]
@@ -783,7 +794,7 @@ class AppendRow(Row):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_clear]
             :end-before: [END bigtable_row_clear]
-
+            :dedent: 4
         """
         del self._rule_pb_list[:]
 
@@ -802,6 +813,7 @@ class AppendRow(Row):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_append_cell_value]
             :end-before: [END bigtable_row_append_cell_value]
+            :dedent: 4
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column.
@@ -842,6 +854,7 @@ class AppendRow(Row):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_increment_cell_value]
             :end-before: [END bigtable_row_increment_cell_value]
+            :dedent: 4
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column.
@@ -888,6 +901,7 @@ class AppendRow(Row):
         .. literalinclude:: snippets_table.py
             :start-after: [START bigtable_row_commit]
             :end-before: [END bigtable_row_commit]
+            :dedent: 4
 
         :rtype: dict
         :returns: The new contents of all modified cells. Returned as a
