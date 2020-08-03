@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [1.1.0](https://www.github.com/googleapis/python-dataproc/compare/v1.0.1...v1.1.0) (2020-07-31)
+
+
+### Features
+
+* add support for temp_bucket, endpoint_config in clusters; add preemptibility for instance group configs ([#60](https://www.github.com/googleapis/python-dataproc/issues/60)) ([a80fc72](https://www.github.com/googleapis/python-dataproc/commit/a80fc727510c10c678caa125902c201c8280dcc1))
+
 ### [1.0.1](https://www.github.com/googleapis/python-dataproc/compare/v1.0.0...v1.0.1) (2020-07-16)
 
 
