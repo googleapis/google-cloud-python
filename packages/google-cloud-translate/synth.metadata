@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-translate.git",
-        "sha": "9441130407cc230224d96776d55da45df8055042"
+        "sha": "3aad1dae70b7b2ca15fcbcdefe1966181e8bb4a1"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "2686d7075fa456972bf4d08680d99617f5eb32b1"
+        "sha": "bfcdbe0da977b2de6c1c0471bb6dc2f1e13bf669"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "2686d7075fa456972bf4d08680d99617f5eb32b1"
+        "sha": "bfcdbe0da977b2de6c1c0471bb6dc2f1e13bf669"
       }
     }
   ],
