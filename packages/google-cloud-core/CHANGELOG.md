@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## [1.4.0](https://www.github.com/googleapis/python-cloud-core/compare/v1.3.0...v1.4.0) (2020-08-04)
+
+
+### Features
+
+* add quota_project, credentials file, and scopes options ([#15](https://www.github.com/googleapis/python-cloud-core/issues/15)) ([a1e11e1](https://www.github.com/googleapis/python-cloud-core/commit/a1e11e1f81a2a7e17b87fe4321eb497f7f3ccdc5))
+* add support for Python 3.8 ([#17](https://www.github.com/googleapis/python-cloud-core/issues/17)) ([f727aba](https://www.github.com/googleapis/python-cloud-core/commit/f727aba432d4726cce72da5f74e8be6adb945a80)), closes [#16](https://www.github.com/googleapis/python-cloud-core/issues/16)
+
 ## 1.3.0
 
 01-31-2020 13:30 PST
