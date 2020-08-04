@@ -107,17 +107,16 @@ class MessageMeta(type):
         # Iterate over all the attributes and separate the fields into
         # their own sequence.
         fields = []
+        new_attrs = {}
         oneofs = collections.OrderedDict()
         proto_imports = set()
         index = 0
-        for key, field in copy.copy(attrs).items():
+        for key, field in attrs.items():
             # Sanity check: If this is not a field, do nothing.
             if not isinstance(field, Field):
+                # The field objects themselves should not be direct attributes.
+                new_attrs[key] = field
                 continue
-
-            # Remove the field from the attrs dictionary; the field objects
-            # themselves should not be direct attributes.
-            attrs.pop(key)
 
             # Add data that the field requires that we do not take in the
             # constructor because we can derive it from the metaclass.
@@ -184,7 +183,7 @@ class MessageMeta(type):
         # We determine an appropriate proto filename based on the
         # Python module.
         filename = "{0}.proto".format(
-            attrs.get("__module__", name.lower()).replace(".", "/")
+            new_attrs.get("__module__", name.lower()).replace(".", "/")
         )
 
         # Get or create the information about the file, including the
@@ -209,7 +208,7 @@ class MessageMeta(type):
                 file_info.descriptor.dependency.append(proto_import)
 
         # Retrieve any message options.
-        opts = descriptor_pb2.MessageOptions(**attrs.pop("_pb_options", {}))
+        opts = descriptor_pb2.MessageOptions(**new_attrs.pop("_pb_options", {}))
 
         # Create the underlying proto descriptor.
         desc = descriptor_pb2.DescriptorProto(
@@ -223,9 +222,9 @@ class MessageMeta(type):
 
         # If any descriptors were nested under this one, they need to be
         # attached as nested types here.
-        for child_path in copy.copy(file_info.nested).keys():
-            if local_path == child_path[:-1]:
-                desc.nested_type.add().MergeFrom(file_info.nested.pop(child_path),)
+        child_paths = [p for p in file_info.nested.keys() if local_path == p[:-1]]
+        for child_path in child_paths:
+            desc.nested_type.add().MergeFrom(file_info.nested.pop(child_path))
 
         # Add the descriptor to the file if it is a top-level descriptor,
         # or to a "holding area" for nested messages otherwise.
@@ -235,7 +234,7 @@ class MessageMeta(type):
             file_info.nested[local_path] = desc
 
         # Create the MessageInfo instance to be attached to this message.
-        attrs["_meta"] = _MessageInfo(
+        new_attrs["_meta"] = _MessageInfo(
             fields=fields,
             full_name=full_name,
             marshal=marshal,
@@ -244,7 +243,7 @@ class MessageMeta(type):
         )
 
         # Run the superclass constructor.
-        cls = super().__new__(mcls, name, bases, attrs)
+        cls = super().__new__(mcls, name, bases, new_attrs)
 
         # The info class and fields need a reference to the class just created.
         cls._meta.parent = cls
@@ -371,9 +370,14 @@ class Message(metaclass=MessageMeta):
         #   * A dict
         #   * Nothing (keyword arguments only).
 
-        # Handle the first two cases: they both involve keeping
-        # a copy of the underlying protobuf descriptor instance.
-        if isinstance(mapping, self._meta.pb):
+        if mapping is None:
+            if not kwargs:
+                # Special fast path for empty construction.
+                self._pb = self._meta.pb()
+                return
+
+            mapping = kwargs
+        elif isinstance(mapping, self._meta.pb):
             # Make a copy of the mapping.
             # This is a constructor for a new object, so users will assume
             # that it will not have side effects on the arguments being
@@ -389,26 +393,22 @@ class Message(metaclass=MessageMeta):
             if kwargs:
                 self._pb.MergeFrom(self._meta.pb(**kwargs))
             return
-        if isinstance(mapping, type(self)):
-            # Performance hack to streamline construction from vanilla protos.
+        elif isinstance(mapping, type(self)):
+            # Just use the above logic on mapping's underlying pb.
             self.__init__(mapping=mapping._pb, **kwargs)
             return
-
-        # Handle the remaining case by converging the mapping and kwargs
-        # dictionaries (with kwargs winning), and saving a descriptor
-        # based on that.
-
-        if mapping is None:
-            mapping = {}
         elif not isinstance(mapping, collections.abc.Mapping):
             # Sanity check: Did we get something not a map? Error if so.
             raise TypeError(
                 "Invalid constructor input for %s: %r"
                 % (self.__class__.__name__, mapping,)
             )
-        mapping.update(kwargs)
+        else:
+            # Can't have side effects on mapping.
+            mapping = copy.copy(mapping)
+            # kwargs entries take priority for duplicate keys.
+            mapping.update(kwargs)
 
-        # Avoid copying the mapping unnecessarily
         params = {}
         # Update the mapping to address any values that need to be
         # coerced.
@@ -572,8 +572,8 @@ class _MessageInfo:
         self.package = package
         self.full_name = full_name
         self.options = options
-        self.fields = collections.OrderedDict([(i.name, i) for i in fields])
-        self.fields_by_number = collections.OrderedDict([(i.number, i) for i in fields])
+        self.fields = collections.OrderedDict((i.name, i) for i in fields)
+        self.fields_by_number = collections.OrderedDict((i.number, i) for i in fields)
         self.marshal = marshal
         self._pb = None
 
