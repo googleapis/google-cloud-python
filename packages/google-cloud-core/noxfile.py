@@ -19,6 +19,8 @@ import shutil
 import nox
 
 
+DEFAULT_PYTHON_VERSION = "3.7"
+
 
 def default(session):
     """Default unit test session.
@@ -53,7 +55,7 @@ def unit(session):
     default(session)
 
 
-@nox.session(python="3.6")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
     """Run linters.
 
@@ -65,7 +67,7 @@ def lint(session):
     session.run("flake8", "google", "tests")
 
 
-@nox.session(python="3.6")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
 
@@ -73,7 +75,7 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-@nox.session(python="3.6")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def cover(session):
     """Run the final coverage report.
 
@@ -84,7 +86,7 @@ def cover(session):
     session.run("coverage", "report", "--show-missing", "--fail-under=100")
     session.run("coverage", "erase")
 
-@nox.session(python="3.7")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def docs(session):
     """Build the docs for this library."""
 
@@ -98,6 +100,39 @@ def docs(session):
         "-W",  # warnings as errors
         "-T",  # show full traceback on exception
         "-N",  # no colors
+        "-b",
+        "html",
+        "-d",
+        os.path.join("docs", "_build", "doctrees", ""),
+        os.path.join("docs", ""),
+        os.path.join("docs", "_build", "html", ""),
+    )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def docfx(session):
+    """Build the docfx yaml files for this library."""
+
+    session.install("-e", ".")
+    session.install("sphinx", "alabaster", "recommonmark", "sphinx-docfx-yaml")
+
+    shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
+    session.run(
+        "sphinx-build",
+        "-T",  # show full traceback on exception
+        "-N",  # no colors
+        "-D",
+        (
+            "extensions=sphinx.ext.autodoc,"
+            "sphinx.ext.autosummary,"
+            "docfx_yaml.extension,"
+            "sphinx.ext.intersphinx,"
+            "sphinx.ext.coverage,"
+            "sphinx.ext.napoleon,"
+            "sphinx.ext.todo,"
+            "sphinx.ext.viewcode,"
+            "recommonmark"
+        ),
         "-b",
         "html",
         "-d",
