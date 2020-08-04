@@ -17,6 +17,7 @@
 import abc
 import collections
 import os
+import threading
 import time
 import uuid
 
@@ -203,7 +204,14 @@ class RedisCache(GlobalCache):
 
     def __init__(self, redis):
         self.redis = redis
-        self.pipes = {}
+        self._pipes = threading.local()
+
+    @property
+    def pipes(self):
+        local = self._pipes
+        if not hasattr(local, "pipes"):
+            local.pipes = {}
+        return local.pipes
 
     def get(self, keys):
         """Implements :meth:`GlobalCache.get`."""

@@ -17,7 +17,11 @@ Difficult to classify regression tests.
 """
 import os
 import pickle
+import threading
+import time
 import traceback
+
+import redis
 
 try:
     from unittest import mock
@@ -346,3 +350,54 @@ def test_do_not_disclose_cache_contents(begin_transaction, client_context):
     error = error_info.value
     message = "".join(traceback.format_exception_only(type(error), error))
     assert "hello dad" not in message
+
+
+@pytest.mark.skipif(not USE_REDIS_CACHE, reason="Redis is not configured")
+@pytest.mark.usefixtures("client_context")
+def test_parallel_threads_lookup_w_redis_cache(namespace, dispose_of):
+    """Regression test for #496
+
+    https://github.com/googleapis/python-ndb/issues/496
+    """
+
+    class MonkeyPipeline(redis.client.Pipeline):
+        def mset(self, mapping):
+            """Force a delay here to expose concurrency error."""
+            time.sleep(0.05)
+            return super(MonkeyPipeline, self).mset(mapping)
+
+    with mock.patch("redis.client.Pipeline", MonkeyPipeline):
+        client = ndb.Client()
+        global_cache = ndb.RedisCache.from_environment()
+        activity = {"calls": 0}
+
+        class SomeKind(ndb.Model):
+            foo = ndb.IntegerProperty()
+
+        class LookupThread(threading.Thread):
+            def __init__(self, id):
+                super(LookupThread, self).__init__()
+                self.id = id
+
+            def run(self):
+                context = client.context(
+                    cache_policy=False,
+                    global_cache=global_cache,
+                    namespace=namespace,
+                )
+                with context:
+                    entity = SomeKind.get_by_id(self.id)
+                    assert entity.foo == 42
+                    activity["calls"] += 1
+
+        key = SomeKind(foo=42).put()
+        dispose_of(key._key)
+        id = key.id()
+
+        thread1, thread2 = LookupThread(id), LookupThread(id)
+        thread1.start()
+        thread2.start()
+        thread1.join()
+        thread2.join()
+
+        assert activity["calls"] == 2

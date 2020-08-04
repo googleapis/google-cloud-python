@@ -235,7 +235,7 @@ class TestRedisCache:
         cache = global_cache.RedisCache(redis)
         pipe1 = mock.Mock(spec=("multi", "mset", "execute", "reset"))
         pipe2 = mock.Mock(spec=("multi", "mset", "execute", "reset"))
-        cache.pipes = {
+        cache._pipes.pipes = {
             "ay": global_cache._Pipeline(pipe1, "abc123"),
             "be": global_cache._Pipeline(pipe1, "abc123"),
             "see": global_cache._Pipeline(pipe2, "def456"),
@@ -277,7 +277,7 @@ class TestRedisCache:
             expire=mock_expire,
             spec=("multi", "mset", "execute", "expire", "reset"),
         )
-        cache.pipes = {
+        cache._pipes.pipes = {
             "ay": global_cache._Pipeline(pipe1, "abc123"),
             "be": global_cache._Pipeline(pipe1, "abc123"),
             "see": global_cache._Pipeline(pipe2, "def456"),
