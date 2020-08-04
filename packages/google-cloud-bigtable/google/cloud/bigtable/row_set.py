@@ -112,6 +112,24 @@ class RowSet(object):
         row_range = RowRange(start_key, end_key, start_inclusive, end_inclusive)
         self.row_ranges.append(row_range)
 
+    def add_row_range_with_prefix(self, row_key_prefix):
+        """Add row range to row_ranges list that start with the row_key_prefix from the row keys
+
+        For example:
+
+        .. literalinclude:: snippets_table.py
+            :start-after: [START bigtable_add_row_range_with_prefix]
+            :end-before: [END bigtable_add_row_range_with_prefix]
+
+        :type row_key_prefix: str
+        :param row_key_prefix: To retrieve  all rows that start with this row key prefix.
+                            Prefix cannot be zero length."""
+
+        end_key = row_key_prefix[:-1] + chr(ord(row_key_prefix[-1]) + 1)
+        self.add_row_range_from_keys(
+            row_key_prefix.encode("utf-8"), end_key.encode("utf-8")
+        )
+
     def _update_message_request(self, message):
         """Add row keys and row range to given request message
 

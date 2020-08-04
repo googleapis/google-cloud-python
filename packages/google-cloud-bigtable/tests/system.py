@@ -1083,6 +1083,38 @@ class TestDataAPI(unittest.TestCase):
         found_row_keys = [row.row_key for row in read_rows]
         self.assertEqual(found_row_keys, expected_row_keys)
 
+    def test_add_row_range_by_prefix_from_keys(self):
+        row_keys = [
+            b"row_key_1",
+            b"row_key_2",
+            b"row_key_3",
+            b"row_key_4",
+            b"sample_row_key_1",
+            b"sample_row_key_2",
+        ]
+
+        rows = []
+        for row_key in row_keys:
+            row = self._table.row(row_key)
+            row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+            rows.append(row)
+            self.rows_to_delete.append(row)
+        self._table.mutate_rows(rows)
+
+        row_set = RowSet()
+        row_set.add_row_range_with_prefix("row")
+
+        read_rows = self._table.yield_rows(row_set=row_set)
+
+        expected_row_keys = [
+            b"row_key_1",
+            b"row_key_2",
+            b"row_key_3",
+            b"row_key_4",
+        ]
+        found_row_keys = [row.row_key for row in read_rows]
+        self.assertEqual(found_row_keys, expected_row_keys)
+
     def test_read_large_cell_limit(self):
         self._maybe_emulator_skip(
             "Maximum gRPC received message size for emulator is 4194304 bytes."

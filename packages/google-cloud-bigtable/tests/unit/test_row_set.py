@@ -167,6 +167,11 @@ class TestRowSet(unittest.TestCase):
         )
         self.assertEqual(row_set.row_ranges[0].end_key, b"row_key9")
 
+    def test_add_row_range_with_prefix(self):
+        row_set = self._make_one()
+        row_set.add_row_range_with_prefix("row")
+        self.assertEqual(row_set.row_ranges[0].end_key, b"rox")
+
     def test__update_message_request(self):
         row_set = self._make_one()
         table_name = "table_name"
