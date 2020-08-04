@@ -50,14 +50,14 @@ class TestClient(unittest.TestCase):
     def test_unpickleable(self):
         import pickle
 
-        CREDENTIALS = _make_credentials()
+        credentials = _make_credentials()
         HTTP = object()
 
-        client_obj = self._make_one(credentials=CREDENTIALS, _http=HTTP)
+        client_obj = self._make_one(credentials=credentials, _http=HTTP)
         with self.assertRaises(pickle.PicklingError):
             pickle.dumps(client_obj)
 
-    def test_constructor_defaults(self):
+    def test_ctor_defaults(self):
         credentials = _make_credentials()
 
         patch = mock.patch("google.auth.default", return_value=(credentials, None))
@@ -66,9 +66,9 @@ class TestClient(unittest.TestCase):
 
         self.assertIs(client_obj._credentials, credentials)
         self.assertIsNone(client_obj._http_internal)
-        default.assert_called_once_with()
+        default.assert_called_once_with(scopes=None)
 
-    def test_constructor_explicit(self):
+    def test_ctor_explicit(self):
         credentials = _make_credentials()
         http = mock.sentinel.http
         client_obj = self._make_one(credentials=credentials, _http=http)
@@ -76,11 +76,70 @@ class TestClient(unittest.TestCase):
         self.assertIs(client_obj._credentials, credentials)
         self.assertIs(client_obj._http_internal, http)
 
-    def test_constructor_bad_credentials(self):
+    def test_ctor_client_options_w_conflicting_creds(self):
+        from google.api_core.exceptions import DuplicateCredentialArgs
+
+        credentials = _make_credentials()
+        client_options = {'credentials_file': '/path/to/creds.json'}
+        with self.assertRaises(DuplicateCredentialArgs):
+            self._make_one(credentials=credentials, client_options=client_options)
+
+    def test_ctor_bad_credentials(self):
         credentials = mock.sentinel.credentials
 
         with self.assertRaises(ValueError):
             self._make_one(credentials=credentials)
+
+    def test_ctor_client_options_w_creds_file_scopes(self):
+        credentials = _make_credentials()
+        credentials_file = '/path/to/creds.json'
+        scopes = ['SCOPE1', 'SCOPE2']
+        client_options = {'credentials_file': credentials_file, 'scopes': scopes}
+
+        patch = mock.patch("google.auth.load_credentials_from_file", return_value=(credentials, None))
+        with patch as load_credentials_from_file:
+            client_obj = self._make_one(client_options=client_options)
+
+        self.assertIs(client_obj._credentials, credentials)
+        self.assertIsNone(client_obj._http_internal)
+        load_credentials_from_file.assert_called_once_with(credentials_file, scopes=scopes)
+
+    def test_ctor_client_options_w_quota_project(self):
+        credentials = _make_credentials()
+        quota_project_id = 'quota-project-123'
+        client_options = {'quota_project_id': quota_project_id}
+
+        client_obj = self._make_one(credentials=credentials, client_options=client_options)
+
+        self.assertIs(client_obj._credentials, credentials.with_quota_project.return_value)
+        credentials.with_quota_project.assert_called_once_with(quota_project_id)
+
+    def test_ctor__http_property_existing(self):
+        credentials = _make_credentials()
+        http = object()
+        client = self._make_one(credentials=credentials, _http=http)
+        self.assertIs(client._http_internal, http)
+        self.assertIs(client._http, http)
+
+    def test_ctor__http_property_new(self):
+        from google.cloud.client import _CREDENTIALS_REFRESH_TIMEOUT
+
+        credentials = _make_credentials()
+        client = self._make_one(credentials=credentials)
+        self.assertIsNone(client._http_internal)
+
+        authorized_session_patch = mock.patch(
+            "google.auth.transport.requests.AuthorizedSession",
+            return_value=mock.sentinel.http,
+        )
+        with authorized_session_patch as AuthorizedSession:
+            self.assertIs(client._http, mock.sentinel.http)
+            # Check the mock.
+            AuthorizedSession.assert_called_once_with(credentials, refresh_timeout=_CREDENTIALS_REFRESH_TIMEOUT)
+            # Make sure the cached value is used on subsequent access.
+            self.assertIs(client._http_internal, mock.sentinel.http)
+            self.assertIs(client._http, mock.sentinel.http)
+            self.assertEqual(AuthorizedSession.call_count, 1)
 
     def test_from_service_account_json(self):
         from google.cloud import _helpers
@@ -114,32 +173,6 @@ class TestClient(unittest.TestCase):
                 mock.sentinel.filename, credentials=mock.sentinel.credentials
             )
 
-    def test__http_property_existing(self):
-        credentials = _make_credentials()
-        http = object()
-        client = self._make_one(credentials=credentials, _http=http)
-        self.assertIs(client._http_internal, http)
-        self.assertIs(client._http, http)
-
-    def test__http_property_new(self):
-        from google.cloud.client import _CREDENTIALS_REFRESH_TIMEOUT
-        credentials = _make_credentials()
-        client = self._make_one(credentials=credentials)
-        self.assertIsNone(client._http_internal)
-
-        authorized_session_patch = mock.patch(
-            "google.auth.transport.requests.AuthorizedSession",
-            return_value=mock.sentinel.http,
-        )
-        with authorized_session_patch as AuthorizedSession:
-            self.assertIs(client._http, mock.sentinel.http)
-            # Check the mock.
-            AuthorizedSession.assert_called_once_with(credentials, refresh_timeout=_CREDENTIALS_REFRESH_TIMEOUT)
-            # Make sure the cached value is used on subsequent access.
-            self.assertIs(client._http_internal, mock.sentinel.http)
-            self.assertIs(client._http, mock.sentinel.http)
-            self.assertEqual(AuthorizedSession.call_count, 1)
-
 
 class TestClientWithProject(unittest.TestCase):
     @staticmethod
@@ -167,7 +200,7 @@ class TestClientWithProject(unittest.TestCase):
         self.assertEqual(client_obj.project, project)
         self.assertIs(client_obj._credentials, credentials)
         self.assertIsNone(client_obj._http_internal)
-        default.assert_called_once_with()
+        default.assert_called_once_with(scopes=None)
         _determine_default_project.assert_called_once_with(None)
 
     def test_constructor_missing_project(self):

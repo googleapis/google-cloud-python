@@ -20,6 +20,8 @@ from pickle import PicklingError
 
 import six
 
+import google.api_core.client_options
+import google.api_core.exceptions
 import google.auth
 import google.auth.credentials
 import google.auth.transport.requests
@@ -102,6 +104,8 @@ class Client(_ClientFactoryMixin):
             (Optional) The OAuth2 Credentials to use for this client. If not
             passed (and if no ``_http`` object is passed), falls back to the
             default inferred from the environment.
+        client_options (google.api_core.client_options.ClientOptions):
+            (Optional) Custom options for the client.
         _http (requests.Session):
             (Optional) HTTP object to make requests. Can be any object that
             defines ``request()`` with the same interface as
@@ -123,16 +127,35 @@ class Client(_ClientFactoryMixin):
     Needs to be set by subclasses.
     """
 
-    def __init__(self, credentials=None, _http=None):
-        if credentials is not None and not isinstance(
-            credentials, google.auth.credentials.Credentials
-        ):
+    def __init__(self, credentials=None, _http=None, client_options=None):
+        if isinstance(client_options, dict):
+            client_options = google.api_core.client_options.from_dict(client_options)
+        if client_options is None:
+            client_options = google.api_core.client_options.ClientOptions()
+
+        if credentials and client_options.credentials_file:
+            raise google.api_core.exceptions.DuplicateCredentialArgs(
+                "'credentials' and 'client_options.credentials_file' are mutually exclusive.")
+
+        if credentials and not isinstance(credentials, google.auth.credentials.Credentials):
             raise ValueError(_GOOGLE_AUTH_CREDENTIALS_HELP)
-        if credentials is None and _http is None:
-            credentials, _ = google.auth.default()
+
+        scopes = client_options.scopes or self.SCOPE
+
+        # if no http is provided, credentials must exist
+        if not _http and credentials is None:
+            if client_options.credentials_file:
+                credentials, _ = google.auth.load_credentials_from_file(
+                    client_options.credentials_file, scopes=scopes)
+            else:
+                credentials, _ = google.auth.default(scopes=scopes)
+
         self._credentials = google.auth.credentials.with_scopes_if_required(
-            credentials, self.SCOPE
-        )
+            credentials, scopes=scopes)
+
+        if client_options.quota_project_id:
+            self._credentials = self._credentials.with_quota_project(client_options.quota_project_id)
+
         self._http_internal = _http
 
     def __getstate__(self):
@@ -222,6 +245,6 @@ class ClientWithProject(Client, _ClientProjectMixin):
 
     _SET_PROJECT = True  # Used by from_service_account_json()
 
-    def __init__(self, project=None, credentials=None, _http=None):
+    def __init__(self, project=None, credentials=None, client_options=None, _http=None):
         _ClientProjectMixin.__init__(self, project=project)
-        Client.__init__(self, credentials=credentials, _http=_http)
+        Client.__init__(self, credentials=credentials, client_options=client_options, _http=_http)
