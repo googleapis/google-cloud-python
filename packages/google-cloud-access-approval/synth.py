@@ -33,10 +33,6 @@ library = gapic.py_library(
 
 s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
 
-# correct license headers
-python.fix_pb2_headers()
-python.fix_pb2_grpc_headers()
-
 # Rename package to `google-cloud-access-approval` instead of `google-cloud-accessapproval`
 s.replace(
     ["google/**/*.py", "tests/**/*.py"],
@@ -44,26 +40,13 @@ s.replace(
     "google-cloud-access-approval",
 )
 
-# fix bad docs insertion for protobuf
-s.replace("google/**/accessapproval_pb2.py", "__doc__ = ", "'__doc__' : ")
-
-#
-s.replace('google/**/accessapproval_pb2.py', '''"""Attributes:''', '''"""\nAttributes:''')
-
-# fix bad quotes
-s.replace('google/**/accessapproval_pb2.py', "“", '"')
-s.replace('google/**/accessapproval_pb2.py', "”", '"')
-
-# fix unescaped curly braces
-s.replace('google/**/accessapproval_pb2.py', """\{projects|folders
-          |organizations\}/\{id\}/approvalRequests/\{approval_request_id\}""",
-          """``{projects|folders
-          |organizations}/{id}/approvalRequests/{approval_request_id}``""")
-
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=70)
-s.move(templated_files)
+templated_files = common.py_library(
+    samples=False,  # set to True only if there are samples
+    microgenerator=True
+)
+s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

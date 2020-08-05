@@ -1,7 +1,7 @@
 Python Client for Access Approval API (`Beta`_)
 ================================================
 
-|beta| |pypi| |versions| 
+|beta| |pypi| |versions|
 
 `Access Approval API`_: An API for controlling access to data by Google personnel.
 
@@ -14,7 +14,7 @@ Python Client for Access Approval API (`Beta`_)
    :target: https://pypi.org/project/google-cloud-access-approval/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-access-approval.svg
    :target: https://pypi.org/project/google-cloud-access-approval/
-   
+
 .. _Beta: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
 .. _Access Approval API: https://cloud.google.com/access-approval
 .. _Client Library Documentation: https://googleapis.dev/python/access-approval
@@ -47,6 +47,17 @@ install permissions, and without clashing with the installed system
 dependencies.
 
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+
+
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Python >= 3.6
+
+Deprecated Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python == 2.7.
+
+The last version of this library compatible with Python 2.7 is google-cloud-access-approval==0.2.0.
 
 
 Mac/Linux

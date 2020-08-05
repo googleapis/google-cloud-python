@@ -1,41 +1,57 @@
 # -*- coding: utf-8 -*-
-#
+
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+
+from .services.access_approval import AccessApprovalClient
+from .types.accessapproval import AccessApprovalSettings
+from .types.accessapproval import AccessLocations
+from .types.accessapproval import AccessReason
+from .types.accessapproval import ApprovalRequest
+from .types.accessapproval import ApproveApprovalRequestMessage
+from .types.accessapproval import ApproveDecision
+from .types.accessapproval import DeleteAccessApprovalSettingsMessage
+from .types.accessapproval import DismissApprovalRequestMessage
+from .types.accessapproval import DismissDecision
+from .types.accessapproval import EnrolledService
+from .types.accessapproval import EnrollmentLevel
+from .types.accessapproval import GetAccessApprovalSettingsMessage
+from .types.accessapproval import GetApprovalRequestMessage
+from .types.accessapproval import ListApprovalRequestsMessage
+from .types.accessapproval import ListApprovalRequestsResponse
+from .types.accessapproval import ResourceProperties
+from .types.accessapproval import UpdateAccessApprovalSettingsMessage
 
 
-from __future__ import absolute_import
-import sys
-import warnings
-
-from google.cloud.accessapproval_v1 import types
-from google.cloud.accessapproval_v1.gapic import access_approval_client
-from google.cloud.accessapproval_v1.gapic import enums
-
-
-if sys.version_info[:2] == (2, 7):
-    message = (
-        "A future version of this library will drop support for Python 2.7."
-        "More details about Python 2 support for Google Cloud Client Libraries"
-        "can be found at https://cloud.google.com/python/docs/python2-sunset/"
-    )
-    warnings.warn(message, DeprecationWarning)
-
-
-class AccessApprovalClient(access_approval_client.AccessApprovalClient):
-    __doc__ = access_approval_client.AccessApprovalClient.__doc__
-    enums = enums
-
-
-__all__ = ("enums", "types", "AccessApprovalClient")
+__all__ = (
+    "AccessApprovalSettings",
+    "AccessLocations",
+    "AccessReason",
+    "ApprovalRequest",
+    "ApproveApprovalRequestMessage",
+    "ApproveDecision",
+    "DeleteAccessApprovalSettingsMessage",
+    "DismissApprovalRequestMessage",
+    "DismissDecision",
+    "EnrolledService",
+    "EnrollmentLevel",
+    "GetAccessApprovalSettingsMessage",
+    "GetApprovalRequestMessage",
+    "ListApprovalRequestsMessage",
+    "ListApprovalRequestsResponse",
+    "ResourceProperties",
+    "UpdateAccessApprovalSettingsMessage",
+    "AccessApprovalClient",
+)
