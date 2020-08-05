@@ -121,10 +121,10 @@ Now we go down the hierarchy from
 Head next to learn about the :doc:`table-api`.
 
 .. _Instance Admin API: https://cloud.google.com/bigtable/docs/creating-instance
-.. _CreateInstance: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_instance_admin.proto#L41-L47
-.. _GetInstance: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_instance_admin.proto#L50-L54
-.. _UpdateInstance: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_instance_admin.proto#L64-L69
-.. _DeleteInstance: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_instance_admin.proto#L81-L85
-.. _ListInstances: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_instance_admin.proto#L57-L61
-.. _GetOperation: https://github.com/googleapis/googleapis/blob/master/google/longrunning/operations.proto#L77-L82
+.. _CreateInstance: https://googleapis.dev/python/bigtable/latest/instance-api.html#create-a-new-instance
+.. _GetInstance: https://googleapis.dev/python/bigtable/latest/instance-api.html#get-metadata-for-an-existing-instance
+.. _UpdateInstance: https://googleapis.dev/python/bigtable/latest/instance-api.html#update-an-existing-instance
+.. _DeleteInstance: https://googleapis.dev/python/bigtable/latest/instance-api.html#delete-an-existing-instance
+.. _ListInstances: https://googleapis.dev/python/bigtable/latest/instance-api.html#list-instances
+.. _GetOperation: https://googleapis.dev/python/bigtable/latest/instance-api.html#check-on-current-operation
 .. _long-running operation: https://github.com/googleapis/googleapis/blob/master/google/longrunning/operations.proto#L128-L162

@@ -143,11 +143,11 @@ data directly via a :class:`Table <google.cloud.bigtable.table.Table>`.
 
 Head next to learn about the :doc:`data-api`.
 
-.. _ListTables: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto#L69-L73
-.. _CreateTable: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto#L45-L50
-.. _DeleteTable: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto#L83-L87
-.. _GetTable: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto#L76-L80
-.. _CreateColumnFamily: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto#L93-L98
-.. _UpdateColumnFamily: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto#L93-L98
-.. _DeleteColumnFamily: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto#L93-L98
+.. _ListTables: https://googleapis.dev/python/bigtable/latest/table-api.html#list-tables
+.. _CreateTable: https://googleapis.dev/python/bigtable/latest/table-api.html#create-a-new-table
+.. _DeleteTable: https://googleapis.dev/python/bigtable/latest/table-api.html#delete-an-existing-table
+.. _GetTable: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto#L97-L102
+.. _CreateColumnFamily: https://googleapis.dev/python/bigtable/latest/table-api.html?highlight=gettable#create-a-new-column-family
+.. _UpdateColumnFamily: https://googleapis.dev/python/bigtable/latest/table-api.html?highlight=gettable#update-an-existing-column-family
+.. _DeleteColumnFamily: https://googleapis.dev/python/bigtable/latest/table-api.html?highlight=gettable#delete-an-existing-column-family
 .. _column families: https://cloud.google.com/bigtable/docs/schema-design#column_families_and_column_qualifiers
