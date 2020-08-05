@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [1.14.0](https://www.github.com/googleapis/python-datastore/compare/v1.13.2...v1.14.0) (2020-08-05)
+
+
+### Features
+
+* pass 'client_options' to base class ctor ([#60](https://www.github.com/googleapis/python-datastore/issues/60)) ([2575697](https://www.github.com/googleapis/python-datastore/commit/2575697380a2e57b210a37033f2558de582ec10e)), closes [#50](https://www.github.com/googleapis/python-datastore/issues/50)
+
+
+### Documentation
+
+* correct semantics of 'complete_key' arg to 'Client.reserve_ids' ([#36](https://www.github.com/googleapis/python-datastore/issues/36)) ([50ed945](https://www.github.com/googleapis/python-datastore/commit/50ed94503da244434df0be58098a0ccf2da54b16))
+* update docs build (via synth) ([#58](https://www.github.com/googleapis/python-datastore/issues/58)) ([5bdacd4](https://www.github.com/googleapis/python-datastore/commit/5bdacd4785f3d433e6e7302fc6839a3c5a3314b4)), closes [#700](https://www.github.com/googleapis/python-datastore/issues/700)
+
 ### [1.13.2](https://www.github.com/googleapis/python-datastore/compare/v1.13.1...v1.13.2) (2020-07-17)
 
 
