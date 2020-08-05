@@ -16,6 +16,8 @@ import base64
 import hashlib
 import time
 
+from test_utils.retry import RetryResult
+
 
 BUCKET_NAME = u"grpm-systest-{}".format(int(1000 * time.time()))
 BUCKET_POST_URL = u"https://www.googleapis.com/storage/v1/b/"
@@ -42,6 +44,20 @@ ENCRYPTION_KEY = (
     b"R\xb8\x1b\x94T\xea_\xa8\x93\xae\xd1\xf6\xfca\x15\x0ekA"
     b"\x08 Y\x13\xe2\n\x02i\xadc\xe2\xd99x"
 )
+
+
+_RETRYABLE_CODES = [
+    409,  # Conflict
+    429,  # TooManyRequests
+    503,  # ServiceUnavailable
+]
+
+
+def _not_retryable(response):
+    return response.status_code not in _RETRYABLE_CODES
+
+
+retry_transient_errors = RetryResult(_not_retryable)
 
 
 def get_encryption_headers(key=ENCRYPTION_KEY):

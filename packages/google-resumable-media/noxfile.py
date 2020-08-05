@@ -24,8 +24,12 @@ SYSTEM_TEST_ENV_VARS = (
 )
 GOOGLE_AUTH = 'google-auth >= 0.10.0'
 
+DEFAULT_PYTHON_VERSION = "3.8"
+SYSTEM_TEST_PYTHON_VERSIONS = ["2.7", "3.8"]
+UNIT_TEST_PYTHON_VERSIONS = ["2.7", "3.5", "3.6", "3.7", "3.8"]
 
-@nox.session(python=['2.7', '3.5', '3.6', '3.7', '3.8'])
+
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
     """Run the unit test suite."""
 
@@ -50,7 +54,7 @@ def unit(session):
     )
 
 
-@nox.session(python='3.8')
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def docs(session):
     """Build the docs for this library."""
 
@@ -71,7 +75,7 @@ def docs(session):
         os.path.join("docs", "_build", "html", ""),
     )
 
-@nox.session(python="3.8")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def docfx(session):
     """Build the docfx yaml files for this library."""
 
@@ -104,7 +108,7 @@ def docfx(session):
     )
 
 
-@nox.session(python='3.8')
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def doctest(session):
     """Run the doctests."""
     session.install("-e", ".[requests]")
@@ -129,7 +133,7 @@ def doctest(session):
     )
 
 
-@nox.session(python='3.8')
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
     """Run flake8.
 
@@ -146,7 +150,7 @@ def lint(session):
     session.run("black", "--check", os.path.join("google", "resumable_media"), "tests")
 
 
-@nox.session(python='3.8')
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.install('docutils', 'Pygments')
@@ -154,13 +158,13 @@ def lint_setup_py(session):
         'python', 'setup.py', 'check', '--restructuredtext', '--strict')
 
 
-@nox.session(python='3.8')
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
     session.install("black")
     session.run("black", os.path.join("google", "resumable_media"), "tests")
 
 
-@nox.session(python=['2.7', '3.8'])
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system(session):
     """Run the system test suite."""
 
@@ -178,7 +182,7 @@ def system(session):
 
     # Install all test dependencies, then install this package into the
     # virutalenv's dist-packages.
-    session.install('mock', 'pytest', GOOGLE_AUTH)
+    session.install('mock', 'pytest', GOOGLE_AUTH, 'google-cloud-testutils')
     session.install('-e', '.[requests]')
 
     # Run py.test against the system tests.
@@ -189,7 +193,7 @@ def system(session):
     )
 
 
-@nox.session(python='3.8')
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def cover(session):
     """Run the final coverage report.
 

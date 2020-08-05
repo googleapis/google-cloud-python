@@ -56,7 +56,7 @@ def cleanup():
 
     for blob_name, transport in to_delete:
         metadata_url = utils.METADATA_URL_TEMPLATE.format(blob_name=blob_name)
-        response = transport.delete(metadata_url)
+        response = utils.retry_transient_errors(transport.delete)(metadata_url)
         assert response.status_code == http_client.NO_CONTENT
 
 

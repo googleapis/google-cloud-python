@@ -37,7 +37,7 @@ def ensure_bucket(transport):
 
 
 def cleanup_bucket(transport):
-    del_response = transport.delete(utils.BUCKET_URL)
+    del_response = utils.retry_transient_errors(transport.delete)(utils.BUCKET_URL)
 
     if not del_response.ok:
         raise ValueError("{}: {}".format(del_response.status_code, del_response.reason))
