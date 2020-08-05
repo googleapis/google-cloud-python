@@ -3,15 +3,15 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-storage",
-        "sha": "0709ad5121098af68faf2432d8960650d238d8cd"
+        "remote": "https://github.com/googleapis/python-storage.git",
+        "sha": "e089b286fcf6bc60cbc6b8639ed20e07c5e7c528"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "303271797a360f8a439203413f13a160f2f5b3b4"
+        "sha": "bfcdbe0da977b2de6c1c0471bb6dc2f1e13bf669"
       }
     }
   ]
