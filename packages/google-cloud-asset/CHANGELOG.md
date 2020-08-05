@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-asset/compare/v1.3.0...v2.0.0) (2020-08-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* move to microgenerator (#58)
+
+### Features
+
+* **asset:** Add sample code for two new RPCs. [([#4080](https://www.github.com/googleapis/python-asset/issues/4080))](https://github.com/GoogleCloudPlatform/python-docs-samples/issues/4080) ([3e935de](https://www.github.com/googleapis/python-asset/commit/3e935dea2db2f8528b5e5ba3f899bd9601037276))
+* add sample code for ListAssets v1p5beta1 [([#4251](https://www.github.com/googleapis/python-asset/issues/4251))](https://github.com/GoogleCloudPlatform/python-docs-samples/issues/4251) ([187807f](https://www.github.com/googleapis/python-asset/commit/187807f07577f36daa88d5a2605c9eb1bf2918b7)), closes [#4250](https://www.github.com/googleapis/python-asset/issues/4250)
+* move to microgenerator ([#58](https://www.github.com/googleapis/python-asset/issues/58)) ([3219b64](https://www.github.com/googleapis/python-asset/commit/3219b64c091d60ea62d669ee904517f73b07c0af))
+
+
+### Bug Fixes
+
+* limit asset types to avoid exceeding quota ([00b43e8](https://www.github.com/googleapis/python-asset/commit/00b43e8af859b85be16a0e59be32ac4844df77c4))
+
 ## [1.3.0](https://www.github.com/googleapis/python-asset/compare/v1.2.0...v1.3.0) (2020-06-25)
 
 
