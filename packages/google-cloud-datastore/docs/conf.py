@@ -20,6 +20,10 @@ import shlex
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath(".."))
 
+# For plugins that can not read conf.py.
+# See also: https://github.com/docascode/sphinx-docfx-yaml/issues/85
+sys.path.insert(0, os.path.abspath("."))
+
 __version__ = ""
 
 # -- General configuration ------------------------------------------------
@@ -39,6 +43,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
+    "recommonmark",
 ]
 
 # autodoc/autosummary flags
@@ -49,10 +54,6 @@ autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
-
-# Allow markdown includes (so releases.md can include CHANGLEOG.md)
-# http://www.sphinx-doc.org/en/master/markdown.html
-source_parsers = {".md": "recommonmark.parser.CommonMarkParser"}
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:

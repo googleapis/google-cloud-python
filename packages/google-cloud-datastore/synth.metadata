@@ -3,7 +3,8 @@
     {
       "git": {
         "name": ".",
-        "sha": "0a5e07c0394709a4a4e79d937a281bec824415c3"
+        "remote": "https://github.com/googleapis/python-datastore.git",
+        "sha": "50ed94503da244434df0be58098a0ccf2da54b16"
       }
     },
     {
@@ -18,7 +19,7 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "d82deccf657a66e31bd5da9efdb96c6fa322fc7e"
+        "sha": "bfcdbe0da977b2de6c1c0471bb6dc2f1e13bf669"
       }
     }
   ],
