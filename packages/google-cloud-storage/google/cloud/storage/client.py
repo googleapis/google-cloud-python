@@ -79,6 +79,7 @@ class Client(ClientWithProject):
         requests. If ``None``, then default info will be used. Generally,
         you only need to set this if you're developing your own library
         or partner tool.
+
     :type client_options: :class:`~google.api_core.client_options.ClientOptions` or :class:`dict`
     :param client_options: (Optional) Client options used to set user options on the client.
         API Endpoint should be set through client_options.
@@ -100,15 +101,21 @@ class Client(ClientWithProject):
         client_options=None,
     ):
         self._base_connection = None
+
         if project is None:
             no_project = True
             project = "<none>"
         else:
             no_project = False
+
         if project is _marker:
             project = None
+
         super(Client, self).__init__(
-            project=project, credentials=credentials, _http=_http
+            project=project,
+            credentials=credentials,
+            client_options=client_options,
+            _http=_http,
         )
 
         kw_args = {"client_info": client_info}
@@ -126,6 +133,7 @@ class Client(ClientWithProject):
 
         if no_project:
             self.project = None
+
         self._connection = Connection(self, **kw_args)
         self._batch_stack = _LocalStack()
 
