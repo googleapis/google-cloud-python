@@ -155,6 +155,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.datastore.client import _CLIENT_INFO
         from google.cloud.datastore.client import _DATASTORE_BASE_URL
 
+        klass = self._get_target_class()
         other = "other"
         creds = _make_credentials()
 
@@ -180,7 +181,7 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(client.current_batch)
         self.assertIsNone(client.current_transaction)
 
-        default.assert_called_once_with()
+        default.assert_called_once_with(scopes=klass.SCOPE,)
         _determine_default_project.assert_called_once_with(None)
 
     def test_constructor_w_explicit_inputs(self):
