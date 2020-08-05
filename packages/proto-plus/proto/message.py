@@ -177,7 +177,8 @@ class MessageMeta(type):
         #
         # m = MyMessage()
         # MyMessage.field in m
-        mcls = type("AttrsMeta", (mcls,), opt_attrs)
+        if opt_attrs:
+            mcls = type("AttrsMeta", (mcls,), opt_attrs)
 
         # Determine the filename.
         # We determine an appropriate proto filename based on the
@@ -295,7 +296,10 @@ class MessageMeta(type):
             pb: A protocol buffer object, such as would be returned by
                 :meth:`pb`.
         """
-        return cls(pb, __wrap_original=True)
+        # Optimized fast path.
+        instance = cls.__new__(cls)
+        instance.__dict__["_pb"] = pb
+        return instance
 
     def serialize(cls, instance) -> bytes:
         """Return the serialized proto.
@@ -319,11 +323,7 @@ class MessageMeta(type):
             ~.Message: An instance of the message class against which this
             method was called.
         """
-        # Usually we don't wrap the original proto and are force to make a copy
-        # to prevent modifying user data.
-        # In this case it's perfectly reasonable to wrap the proto becasue it's
-        # never user visible, and it gives a huge performance boost.
-        return cls(cls.pb().FromString(payload), __wrap_original=True)
+        return cls.wrap(cls.pb().FromString(payload))
 
     def to_json(cls, instance) -> str:
         """Given a message instance, serialize it to json
@@ -373,7 +373,7 @@ class Message(metaclass=MessageMeta):
         if mapping is None:
             if not kwargs:
                 # Special fast path for empty construction.
-                self._pb = self._meta.pb()
+                self.__dict__["_pb"] = self._meta.pb()
                 return
 
             mapping = kwargs
@@ -383,15 +383,13 @@ class Message(metaclass=MessageMeta):
             # that it will not have side effects on the arguments being
             # passed in.
             #
-            # The `__wrap_original` argument is private API to override
-            # this behavior, because `MessageRule` actually does want to
-            # wrap the original argument it was given. The `wrap` method
-            # on the metaclass is the public API for this behavior.
-            if not kwargs.pop("__wrap_original", False):
-                mapping = copy.copy(mapping)
-            self._pb = mapping
+            # The `wrap` method on the metaclass is the public API for taking
+            # ownership of the passed in protobuf objet.
+            mapping = copy.copy(mapping)
             if kwargs:
-                self._pb.MergeFrom(self._meta.pb(**kwargs))
+                mapping.MergeFrom(self._meta.pb(**kwargs))
+
+            self.__dict__["_pb"] = mapping
             return
         elif isinstance(mapping, type(self)):
             # Just use the above logic on mapping's underlying pb.
@@ -420,7 +418,7 @@ class Message(metaclass=MessageMeta):
                 params[key] = pb_value
 
         # Create the internal protocol buffer.
-        self._pb = self._meta.pb(**params)
+        self.__dict__["_pb"] = self._meta.pb(**params)
 
     def __bool__(self):
         """Return True if any field is truthy, False otherwise."""

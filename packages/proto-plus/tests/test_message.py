@@ -216,3 +216,15 @@ def test_invalid_field_access():
     s = Squid()
     with pytest.raises(AttributeError):
         getattr(s, "shell")
+
+
+def test_setattr():
+    class Squid(proto.Message):
+        mass_kg = proto.Field(proto.INT32, number=1)
+
+    s1 = Squid()
+    s2 = Squid(mass_kg=20)
+
+    s1._pb = s2._pb
+
+    assert s1.mass_kg == 20
