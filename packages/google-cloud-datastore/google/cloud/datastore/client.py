@@ -239,7 +239,10 @@ class Client(ClientWithProject):
         _use_grpc=None,
     ):
         super(Client, self).__init__(
-            project=project, credentials=credentials, _http=_http
+            project=project,
+            credentials=credentials,
+            client_options=client_options,
+            _http=_http,
         )
         self.namespace = namespace
         self._client_info = client_info
