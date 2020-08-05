@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.0.0](https://www.github.com/googleapis/python-translate/compare/v2.0.2...v3.0.0) (2020-08-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate API to microgenerator (#31)
+
+### Features
+
+* migrate API to microgenerator ([#31](https://www.github.com/googleapis/python-translate/issues/31)) ([1c5b6e8](https://www.github.com/googleapis/python-translate/commit/1c5b6e89a0a3b55c41c909e4ee27e0bd23e4b579))
+
 ### [2.0.2](https://www.github.com/googleapis/python-translate/compare/v2.0.1...v2.0.2) (2020-08-03)
 
 
