@@ -114,7 +114,7 @@ def test_bigtable_create_instance():
     my_instance_id = "inst-my-" + UNIQUE_SUFFIX
     my_cluster_id = "clus-my-" + UNIQUE_SUFFIX
     location_id = "us-central1-f"
-    serve_nodes = 3
+    serve_nodes = 1
     storage_type = enums.StorageType.SSD
     production = enums.Instance.Type.PRODUCTION
     labels = {"prod-label": "prod-label"}
@@ -155,7 +155,7 @@ def test_bigtable_create_additional_cluster():
 
     cluster_id = "clus-my-" + UNIQUE_SUFFIX
     location_id = "us-central1-a"
-    serve_nodes = 3
+    serve_nodes = 1
     storage_type = enums.StorageType.SSD
 
     cluster = instance.cluster(
@@ -447,10 +447,11 @@ def test_bigtable_delete_cluster():
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
     cluster_id = "clus-my-" + UNIQUE_SUFFIX
+    serve_nodes = 1
     cluster = instance.cluster(
         cluster_id,
         location_id=ALT_LOCATION_ID,
-        serve_nodes=SERVER_NODES,
+        serve_nodes=serve_nodes,
         default_storage_type=STORAGE_TYPE,
     )
     operation = cluster.create()
@@ -477,10 +478,11 @@ def test_bigtable_delete_instance():
 
     instance_id = "snipt-inst-del" + UNIQUE_SUFFIX
     instance = client.instance(instance_id, instance_type=PRODUCTION, labels=LABELS)
+    serve_nodes = 1
     cluster = instance.cluster(
         "clus-to-delete" + UNIQUE_SUFFIX,
         location_id=ALT_LOCATION_ID,
-        serve_nodes=1,
+        serve_nodes=serve_nodes,
         default_storage_type=STORAGE_TYPE,
     )
     operation = instance.create(clusters=[cluster])
@@ -727,11 +729,12 @@ def test_bigtable_cluster_from_pb():
 
     name = cluster.name
     cluster_state = cluster.state
+    serve_nodes = 1
     cluster_pb = instance_pb2.Cluster(
         name=name,
         location=LOCATION_ID,
         state=cluster_state,
-        serve_nodes=SERVER_NODES,
+        serve_nodes=serve_nodes,
         default_storage_type=STORAGE_TYPE,
     )
 

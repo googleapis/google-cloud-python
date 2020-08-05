@@ -188,8 +188,9 @@ class TestInstanceAdminAPI(unittest.TestCase):
         ALT_INSTANCE_ID = "ndef" + UNIQUE_SUFFIX
         instance = Config.CLIENT.instance(ALT_INSTANCE_ID, labels=LABELS)
         ALT_CLUSTER_ID = ALT_INSTANCE_ID + "-cluster"
+        serve_nodes = 1
         cluster = instance.cluster(
-            ALT_CLUSTER_ID, location_id=LOCATION_ID, serve_nodes=SERVE_NODES
+            ALT_CLUSTER_ID, location_id=LOCATION_ID, serve_nodes=serve_nodes
         )
         operation = instance.create(clusters=[cluster])
 
@@ -267,16 +268,17 @@ class TestInstanceAdminAPI(unittest.TestCase):
         ALT_CLUSTER_ID_2 = ALT_INSTANCE_ID + "-c2"
         LOCATION_ID_2 = "us-central1-f"
         STORAGE_TYPE = enums.StorageType.HDD
+        serve_nodes = 1
         cluster_1 = instance.cluster(
             ALT_CLUSTER_ID_1,
             location_id=LOCATION_ID,
-            serve_nodes=SERVE_NODES,
+            serve_nodes=serve_nodes,
             default_storage_type=STORAGE_TYPE,
         )
         cluster_2 = instance.cluster(
             ALT_CLUSTER_ID_2,
             location_id=LOCATION_ID_2,
-            serve_nodes=SERVE_NODES,
+            serve_nodes=serve_nodes,
             default_storage_type=STORAGE_TYPE,
         )
         operation = instance.create(clusters=[cluster_1, cluster_2])
@@ -482,7 +484,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         instance = Config.CLIENT.instance(
             ALT_INSTANCE_ID, instance_type=_DEVELOPMENT, labels=LABELS
         )
-        operation = instance.create(location_id=LOCATION_ID, serve_nodes=None)
+        operation = instance.create(location_id=LOCATION_ID)
 
         # Make sure this instance gets deleted after the test case.
         self.instances_to_delete.append(instance)
@@ -532,7 +534,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
 
         ALT_CLUSTER_ID = INSTANCE_ID + "-c2"
         ALT_LOCATION_ID = "us-central1-f"
-        ALT_SERVE_NODES = 4
+        ALT_SERVE_NODES = 2
 
         cluster_2 = Config.INSTANCE.cluster(
             ALT_CLUSTER_ID,

@@ -89,7 +89,7 @@ def scale_bigtable(bigtable_instance, bigtable_cluster, scale_up):
     # SSD lusters, and 8 TB for HDD. The
     # "bigtable.googleapis.com/disk/bytes_used" metric is useful in figuring
     # out the minimum number of nodes.
-    min_node_count = 3
+    min_node_count = 1
 
     # The maximum number of nodes to use. The default maximum is 30 nodes per
     # zone. If you need more quota, you can request more by following the
