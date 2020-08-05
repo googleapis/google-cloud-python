@@ -1,42 +1,37 @@
 # -*- coding: utf-8 -*-
-#
+
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-
-from __future__ import absolute_import
-import sys
-import warnings
-
-from google.cloud.asset_v1p1beta1 import types
-from google.cloud.asset_v1p1beta1.gapic import asset_service_client
-
-
-if sys.version_info[:2] == (2, 7):
-    message = (
-        "A future version of this library will drop support for Python 2.7. "
-        "More details about Python 2 support for Google Cloud Client Libraries "
-        "can be found at https://cloud.google.com/python/docs/python2-sunset/"
-    )
-    warnings.warn(message, DeprecationWarning)
-
-
-class AssetServiceClient(asset_service_client.AssetServiceClient):
-    __doc__ = asset_service_client.AssetServiceClient.__doc__
+from .services.asset_service import AssetServiceClient
+from .types.asset_service import SearchAllIamPoliciesRequest
+from .types.asset_service import SearchAllIamPoliciesResponse
+from .types.asset_service import SearchAllResourcesRequest
+from .types.asset_service import SearchAllResourcesResponse
+from .types.assets import IamPolicySearchResult
+from .types.assets import Permissions
+from .types.assets import StandardResourceMetadata
 
 
 __all__ = (
-    "types",
+    "IamPolicySearchResult",
+    "Permissions",
+    "SearchAllIamPoliciesRequest",
+    "SearchAllIamPoliciesResponse",
+    "SearchAllResourcesRequest",
+    "SearchAllResourcesResponse",
+    "StandardResourceMetadata",
     "AssetServiceClient",
 )

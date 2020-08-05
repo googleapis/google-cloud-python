@@ -21,7 +21,6 @@ import pytest
 
 from google.api_core import exceptions
 from google.cloud import asset_v1
-from google.cloud.asset_v1 import enums
 from test_utils.vpcsc_config import vpcsc_config
 
 _VPCSC_PROHIBITED_MESSAGE = "Request is prohibited by organization's policy"
@@ -51,13 +50,17 @@ def parent_outside():
 @vpcsc_config.skip_unless_inside_vpcsc
 def test_export_assets_inside(client, output_config, parent_inside):
     with pytest.raises(exceptions.InvalidArgument):
-        client.export_assets(parent_inside, output_config)
+        client.export_assets(
+            request={"parent": parent_inside, "output_config": output_config}
+        )
 
 
 @vpcsc_config.skip_unless_inside_vpcsc
 def test_export_assets_outside(client, output_config, parent_outside):
     with pytest.raises(exceptions.PermissionDenied) as exc:
-        client.export_assets(parent_outside, output_config)
+        client.export_assets(
+            request={"parent": parent_outside, "output_config": output_config}
+        )
 
     assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message
 
@@ -66,21 +69,25 @@ def test_export_assets_outside(client, output_config, parent_outside):
 def test_batch_get_assets_history_inside(client, parent_inside):
     read_time_window = {}
     client.batch_get_assets_history(
-        parent_inside,
-        content_type=enums.ContentType.CONTENT_TYPE_UNSPECIFIED,
-        read_time_window={},
+        request={
+            "parent": parent_inside,
+            "asset_names": asset_v1.ContentType.CONTENT_TYPE_UNSPECIFIED,
+            "content_type": {},
+        }
     )
 
 
 @vpcsc_config.skip_unless_inside_vpcsc
 def test_batch_get_assets_history_outside(client, parent_outside):
-    content_type = enums.ContentType.CONTENT_TYPE_UNSPECIFIED
+    content_type = asset_v1.ContentType.CONTENT_TYPE_UNSPECIFIED
     read_time_window = {}
     with pytest.raises(exceptions.PermissionDenied) as exc:
         client.batch_get_assets_history(
-            parent_outside,
-            content_type=enums.ContentType.CONTENT_TYPE_UNSPECIFIED,
-            read_time_window={},
+            request={
+                "parent": parent_outside,
+                "asset_names": asset_v1.ContentType.CONTENT_TYPE_UNSPECIFIED,
+                "content_type": {},
+            }
         )
 
     assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message

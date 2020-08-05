@@ -4,14 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-asset.git",
-        "sha": "ecdc97eeabd3de75cb396830d685d5fe44d9a92f"
-      }
-    },
-    {
-      "git": {
-        "name": "synthtool",
-        "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "f1d8e6619ca2b9ebbc68c13af4ec5dba2803fc44"
+        "sha": "741d0bfc5b162a8a467ce030f910a800f43c56f6"
       }
     },
     {

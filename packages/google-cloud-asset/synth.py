@@ -36,144 +36,15 @@ for version in versions:
 
     s.move(library, excludes=excludes)
 
-s.replace(
-    "google/cloud/asset_v*/proto/assets_pb2.py",
-    "from google.iam.v1 import policy_pb2 as",
-    "from google.iam.v1 import iam_policy_pb2_grpc as",
-)
-
-s.replace(
-    "google/cloud/asset_v*/proto/assets_pb2.py",
-    "from google.iam.v1 import iam_policy_pb2_grpc "
-    "as google_dot_iam_dot_v1_dot_policy__pb2",
-    "from google.iam.v1 import iam_policy_pb2 "
-    "as google_dot_iam_dot_v1_dot_policy__pb2",
-)
-
-s.replace(
-    "google/cloud/asset_v*/proto/assets_pb2.py",
-    "_ASSET\.fields_by_name\['iam_policy'\]\.message_type "
-    "= google_dot_iam_dot_v1_dot_policy__pb2\._POLICY",
-    "_ASSET.fields_by_name['iam_policy'].message_type = google_dot_iam_dot"
-    "_v1_dot_policy__pb2.google_dot_iam_dot_v1_dot_policy__pb2._POLICY",
-)
-
-s.replace(
-    "google/cloud/asset_v*/proto/assets_pb2.py",
-    "_IAMPOLICYSEARCHRESULT\.fields_by_name\['policy'\]\.message_type "
-    "= google_dot_iam_dot_v1_dot_policy__pb2\._POLICY",
-    "_IAMPOLICYSEARCHRESULT.fields_by_name['policy'].message_type = google_dot_iam_dot"
-    "_v1_dot_policy__pb2.google_dot_iam_dot_v1_dot_policy__pb2._POLICY",
-)
-
-s.replace(
-    "google/cloud/asset_v*/proto/assets_pb2.py",
-    "_IAMPOLICYANALYSISRESULT\.fields_by_name\['iam_binding'\]\.message_type "
-    "= google_dot_iam_dot_v1_dot_policy__pb2\._BINDING",
-    "_IAMPOLICYANALYSISRESULT.fields_by_name['iam_binding'].message_type = google_dot_iam_dot"
-    "_v1_dot_policy__pb2.google_dot_iam_dot_v1_dot_policy__pb2._BINDING",
-)
-
-_BORKED_ASSET_DOCSTRING = """\
-          The full name of the asset. For example: ``//compute.googleapi
-          s.com/projects/my_project_123/zones/zone1/instances/instance1`
-          `. See `Resource Names <https://cloud.google.com/apis/design/r
-          esource_names#full_resource_name>`__ for more information.
-"""
-
-_FIXED_ASSET_DOCSTRING = """
-          The full name of the asset. For example:
-          ``//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1``.
-          See https://cloud.google.com/apis/design/resource_names#full_resource_name
-          for more information.
-"""
-
-s.replace(
-    "google/cloud/asset_v*/proto/assets_pb2.py",
-    _BORKED_ASSET_DOCSTRING,
-    _FIXED_ASSET_DOCSTRING,
-)
-
-s.replace(
-    "google/cloud/**/asset_service_client.py",
-    "google-cloud-cloudasset",
-    "google-cloud-asset",
-)
-# Fix docstrings with no summary line
-s.replace(
-    "google/cloud/**/proto/*_pb2.py",
-    r''''__doc__': """Attributes:''',
-    ''''__doc__' : """
-    Attributes:''',
-)
-
-# Fix accesscontextmanager and orgpolicy imports
-s.replace(
-    "google/cloud/asset_v*/types.py",
-    "from google\.cloud\.asset_(v.*)\.proto import ((access_level_pb2)|(service_perimeter_pb2)|(access_policy_pb2))",
-    "from google.identity.accesscontextmanager.v1 import \g<2>",
-)
-
-s.replace(
-    "google/cloud/asset_v*/types.py",
-    "from google\.cloud\.asset_v.*\.proto import orgpolicy_pb2",
-    "from google.cloud.orgpolicy.v1 import orgpolicy_pb2",
-)
-
-# Glue in Project Path Method.
-# TODO: Remove during microgenerator transition
-count = s.replace(
-    [
-        "google/cloud/asset_v1/gapic/asset_service_client.py",
-        "google/cloud/asset_v1beta1/gapic/asset_service_client.py",
-    ],
-    "(def __init__\()",
-    '''@classmethod
-    def project_path(cls, project):
-        """Return a fully-qualified project string."""
-        return google.api_core.path_template.expand(
-            "projects/{project}", project=project
-        )
-    \g<1>''',
-)
-if count != 2:
-    raise Exception("``project_path`` method not added.")
-
-# Keep same parameter order to avoid breaking existing calls
-# Not re-ordering the docstring as that is more likely to break
-# TODO: Remove during microgenerator transition
-count = s.replace(
-    [
-        "google/cloud/asset_v1/gapic/asset_service_client.py",
-        "google/cloud/asset_v1beta1/gapic/asset_service_client.py",
-    ],
-    """def batch_get_assets_history\(
-            self,
-            parent,
-            asset_names=None,
-            content_type=None,
-            read_time_window=None,
-            retry=google\.api_core\.gapic_v1\.method\.DEFAULT,
-            timeout=google\.api_core\.gapic_v1\.method\.DEFAULT,
-            metadata=None\):""",
-    """def batch_get_assets_history(
-            self,
-            parent,
-            content_type=None,
-            read_time_window=None,
-            asset_names=None,
-            retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT,
-            metadata=None):""",
-)
-if count != 2:
-    raise Exception("Parameter order replace not made.")
-
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = gcp.CommonTemplates().py_library(unit_cov_level=79, cov_level=80, samples=True)
-s.move(templated_files)
+templated_files = common.py_library(
+    samples=True,  # set to True only if there are samples
+    microgenerator=True,
+    cov_level=99,
+)
+s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
 # ----------------------------------------------------------------------------
 # Samples templates
@@ -183,5 +54,15 @@ python.py_samples(skip_readmes=True)
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition
 s.replace("noxfile.py", '''["']sphinx["']''', '"sphinx<3.0.0"')
+
+s.replace(
+    "noxfile.py",
+    "google.cloud.cloudasset",
+    "google.cloud.asset",
+)
+
+# Temporarily disable warnings due to
+# https://github.com/googleapis/gapic-generator-python/issues/525
+s.replace("noxfile.py", '[\"\']-W[\"\']', '# "-W"')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

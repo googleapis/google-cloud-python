@@ -13,13 +13,13 @@ v1 <v1>
 .. toctree::
     :maxdepth: 2
 
-    Client (v1) <gapic/v1/api>
-    Types (v1) <gapic/v1/types>
+    asset_v1/services
+    asset_v1/types
 
 Beta releases with additional features over the current stable version. These are expected to move into the stable release soon;
 until then, the usual beta admonishment (changes are possible, etc.) applies.
 
-In order to use it, you will want to import from 
+In order to use it, you will want to import from
 ``google.cloud.asset_v1p4beta1`` in lieu of ``google.cloud.asset_v1``.
 
 v1p1beta1
@@ -27,8 +27,8 @@ v1p1beta1
 .. toctree::
     :maxdepth: 2
 
-    Client (v1p1beta1) <gapic/v1p1beta1/api>
-    Types (v1p1beta1) <gapic/v1p1beta1/types>
+    asset_v1p1beta1/services
+    asset_v1p1beta1/types
 
 
 v1p2beta1
@@ -36,8 +36,8 @@ v1p2beta1
 .. toctree::
     :maxdepth: 2
 
-    Client (v1p1beta1) <gapic/v1p2beta1/api>
-    Types (v1p1beta1) <gapic/v1p2beta1/types>
+    asset_v1p2beta1/services
+    asset_v1p2beta1/types
 
 
 v1p4beta1
@@ -45,8 +45,8 @@ v1p4beta1
 .. toctree::
     :maxdepth: 2
 
-    Client (v1p4beta1) <gapic/v1p4beta1/api>
-    Types (v1p4beta1) <gapic/v1p4beta1/types>
+    asset_v1p4beta1/services
+    asset_v1p4beta1/types
 
 
 v1p5beta1
@@ -54,8 +54,8 @@ v1p5beta1
 .. toctree::
     :maxdepth: 2
 
-    Client (v1p5beta1) <gapic/v1p5beta1/api>
-    Types (v1p5beta1) <gapic/v1p5beta1/types>
+    asset_v1p5beta1/services
+    asset_v1p5beta1/types
 
 
 v1beta1
@@ -63,8 +63,19 @@ v1beta1
 .. toctree::
     :maxdepth: 2
 
-    Client (v1beta1) <gapic/v1beta1/api>
-    Types (v1beta1) <gapic/v1beta1/types>
+    asset_v1beta1/services
+    asset_v1beta1/types
+
+
+Migration Guide
+---------------
+
+See the guide below for instructions on migrating to the 2.x release of this library.
+
+.. toctree::
+    :maxdepth: 2
+
+    UPGRADING
 
 
 Changelog

@@ -28,11 +28,12 @@ version = "1.3.0"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    "google-api-core[grpc] >= 1.14.0, < 2.0.0dev",
-    'enum34; python_version < "3.4"',
+    "google-api-core[grpc] >= 1.22.0, < 2.0.0dev",
     "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
     "google-cloud-access-context-manager >= 0.1.2, < 0.2.0dev",
     "google-cloud-org-policy >= 0.1.2, < 0.2.0dev",
+    "proto-plus >= 0.4.0",
+    "libcst >= 0.2.5",
 ]
 
 # Setup boilerplate below this line.
@@ -46,7 +47,9 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
 # Only include packages under the 'google' namespace. Do not include tests,
 # benchmarks, etc.
 packages = [
-    package for package in setuptools.find_packages() if package.startswith("google")
+    package
+    for package in setuptools.PEP420PackageFinder.find()
+    if package.startswith("google")
 ]
 
 # Determine which namespaces are needed.
@@ -68,12 +71,10 @@ setuptools.setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Operating System :: OS Independent",
         "Topic :: Internet",
     ],
@@ -81,7 +82,15 @@ setuptools.setup(
     packages=packages,
     namespace_packages=namespaces,
     install_requires=dependencies,
-    python_requires=">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*",
+    python_requires=">=3.6",
+    scripts=[
+        "scripts/fixup_asset_v1_keywords.py",
+        "scripts/fixup_asset_v1beta1_keywords.py",
+        "scripts/fixup_asset_v1p1beta1_keywords.py",
+        "scripts/fixup_asset_v1p2beta1_keywords.py",
+        "scripts/fixup_asset_v1p4beta1_keywords.py",
+        "scripts/fixup_asset_v1p5beta1_keywords.py",
+    ],
     include_package_data=True,
     zip_safe=False,
 )
