@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-access-approval/compare/v0.2.0...v1.0.0) (2020-08-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate to use microgen (#23)
+
+### Features
+
+* migrate to use microgen ([#23](https://www.github.com/googleapis/python-access-approval/issues/23)) ([537de3d](https://www.github.com/googleapis/python-access-approval/commit/537de3d317f3a7c1d3c6734e07e8544f18cdd0ed))
+
 ## [0.2.0](https://www.github.com/googleapis/python-access-approval/compare/v0.1.0...v0.2.0) (2020-05-13)
 
 
