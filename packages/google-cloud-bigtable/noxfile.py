@@ -21,9 +21,12 @@ import shutil
 import nox
 
 
+DEFAULT_PYTHON_VERSION = "3.8"
+SYSTEM_TEST_PYTHON_VERSIONS = ["2.7", "3.8"]
+UNIT_TEST_PYTHON_VERSIONS = ["2.7", "3.5", "3.6", "3.7", "3.8"]
 LOCAL_DEPS = ()
 
-@nox.session(python="3.7")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
     """Run linters.
 
@@ -56,7 +59,7 @@ def blacken(session):
     )
 
 
-@nox.session(python="3.7")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.install("docutils", "pygments")
@@ -85,13 +88,26 @@ def default(session):
     )
 
 
-@nox.session(python=["2.7", "3.5", "3.6", "3.7"])
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
     """Run the unit test suite."""
     default(session)
 
 
-@nox.session(python=["2.7", "3.7"])
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def cover(session):
+    """Run the final coverage report.
+
+    This outputs the coverage report aggregating coverage from the unit
+    test runs (not system test runs), and then erases coverage data.
+    """
+    session.install("coverage", "pytest-cov")
+    session.run("coverage", "report", "--show-missing", "--fail-under=99")
+
+    session.run("coverage", "erase")
+
+
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system(session):
     """Run the system test suite."""
     system_test_path = os.path.join("tests", "system.py")
@@ -124,19 +140,35 @@ def system(session):
         session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)
 
 
-@nox.session(python="3.7")
-def cover(session):
-    """Run the final coverage report.
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+def snippets(session):
+    """Run the documentation example snippets."""
+    # Sanity check: Only run snippets system tests if the environment variable
+    # is set.
+    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
+        session.skip("Credentials must be set via environment variable.")
 
-    This outputs the coverage report aggregating coverage from the unit
-    test runs (not system test runs), and then erases coverage data.
-    """
-    session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=99")
+    # Install all test dependencies, then install local packages in place.
+    session.install("mock", "pytest")
+    for local_dep in LOCAL_DEPS:
+        session.install("-e", local_dep)
+    session.install("-e", "test_utils/")
+    session.install("-e", ".")
+    session.run(
+        "py.test",
+        "--quiet",
+        os.path.join("docs", "snippets.py"),
+        *session.posargs
+    )
+    session.run(
+        "py.test",
+        "--quiet",
+        os.path.join("docs", "snippets_table.py"),
+        *session.posargs
+    )
 
-    session.run("coverage", "erase")
 
-@nox.session(python="3.7")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def docs(session):
     """Build the docs for this library."""
 
@@ -157,29 +189,34 @@ def docs(session):
         os.path.join("docs", "_build", "html", ""),
     )
 
-@nox.session(python=['2.7', '3.7'])
-def snippets(session):
-    """Run the documentation example snippets."""
-    # Sanity check: Only run snippets system tests if the environment variable
-    # is set.
-    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
-        session.skip('Credentials must be set via environment variable.')
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def docfx(session):
+    """Build the docfx yaml files for this library."""
 
-    # Install all test dependencies, then install local packages in place.
-    session.install('mock', 'pytest')
-    for local_dep in LOCAL_DEPS:
-        session.install('-e', local_dep)
-    session.install('-e', 'test_utils/')
-    session.install('-e', '.')
+    session.install("-e", ".")
+    session.install("sphinx", "alabaster", "recommonmark", "sphinx-docfx-yaml")
+
+    shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
-        'py.test',
-        '--quiet',
-        os.path.join('docs', 'snippets.py'),
-        *session.posargs
-    )
-    session.run(
-        'py.test',
-        '--quiet',
-        os.path.join('docs', 'snippets_table.py'),
-        *session.posargs
+        "sphinx-build",
+        "-T",  # show full traceback on exception
+        "-N",  # no colors
+        "-D",
+        (
+            "extensions=sphinx.ext.autodoc,"
+            "sphinx.ext.autosummary,"
+            "docfx_yaml.extension,"
+            "sphinx.ext.intersphinx,"
+            "sphinx.ext.coverage,"
+            "sphinx.ext.napoleon,"
+            "sphinx.ext.todo,"
+            "sphinx.ext.viewcode,"
+            "recommonmark"
+        ),
+        "-b",
+        "html",
+        "-d",
+        os.path.join("docs", "_build", "doctrees", ""),
+        os.path.join("docs", ""),
+        os.path.join("docs", "_build", "html", ""),
     )
