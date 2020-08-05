@@ -34,6 +34,7 @@ from google.cloud.storage.bucket import LifecycleRuleDelete
 from google.cloud.storage.bucket import LifecycleRuleSetStorageClass
 from google.cloud import kms
 import google.api_core
+from google.api_core import path_template
 import google.oauth2
 from test_utils.retry import RetryErrors
 from test_utils.system import unique_resource_id
@@ -1280,7 +1281,7 @@ class TestStorageSignURLs(unittest.TestCase):
     def test_create_signed_read_url_v2_w_access_token(self):
         client = iam_credentials_v1.IAMCredentialsClient()
         service_account_email = Config.CLIENT._credentials.service_account_email
-        name = google.api_core.path_template.expand(
+        name = path_template.expand(
             "projects/{project}/serviceAccounts/{service_account}",
             project="-",
             service_account=service_account_email,
@@ -1298,7 +1299,7 @@ class TestStorageSignURLs(unittest.TestCase):
     def test_create_signed_read_url_v4_w_access_token(self):
         client = iam_credentials_v1.IAMCredentialsClient()
         service_account_email = Config.CLIENT._credentials.service_account_email
-        name = google.api_core.path_template.expand(
+        name = path_template.expand(
             "projects/{project}/serviceAccounts/{service_account}",
             project="-",
             service_account=service_account_email,
@@ -1828,6 +1829,14 @@ class TestAnonymousClient(unittest.TestCase):
             retry_429_503(blob.download_to_file)(stream)
 
 
+_KMS_2_0_BREAKAGE_MESSAGE = """\
+KMS 2.0.0 incompatible with our test setup.
+
+See https://github.com/googleapis/python-storage/issues/226
+"""
+
+
+@unittest.skipIf(six.PY3, reason=_KMS_2_0_BREAKAGE_MESSAGE)
 class TestKMSIntegration(TestStorageFiles):
 
     FILENAMES = ("file01.txt",)
