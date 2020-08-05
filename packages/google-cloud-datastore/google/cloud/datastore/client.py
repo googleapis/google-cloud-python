@@ -667,7 +667,7 @@ class Client(ClientWithProject):
         """Reserve a list of IDs from a complete key.
 
         :type complete_key: :class:`google.cloud.datastore.key.Key`
-        :param complete_key: Partial key to use as base for reserved IDs.
+        :param complete_key: Complete key to use as base for reserved IDs.
 
         :type num_ids: int
         :param num_ids: The number of IDs to reserve.
