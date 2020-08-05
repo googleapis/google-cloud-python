@@ -11,8 +11,8 @@
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "db69b46790b55a82ab7cfa473d031da787bc7591",
-        "internalRef": "320411362"
+        "sha": "868615a5c1c1059c636bb3d82a555edb1d5a251e",
+        "internalRef": "324294521"
       }
     },
     {
@@ -37,7 +37,7 @@
         "apiName": "translate",
         "apiVersion": "v3beta1",
         "language": "python",
-        "generator": "bazel"
+        "generator": "gapic-generator-python"
       }
     },
     {
@@ -46,7 +46,7 @@
         "apiName": "translate",
         "apiVersion": "v3",
         "language": "python",
-        "generator": "bazel"
+        "generator": "gapic-generator-python"
       }
     }
   ]

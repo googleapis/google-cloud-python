@@ -55,11 +55,12 @@ dependencies.
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.5
+Python >= 3.6
 
 Deprecated Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7. Python 2.7 support will be removed on January 1, 2020.
+Python == 2.7.
+The last version of this library compatible with Python 2.7 is google-cloud-translate==2.0.1.
 
 
 Mac/Linux

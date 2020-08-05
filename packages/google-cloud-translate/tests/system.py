@@ -14,9 +14,11 @@
 # limitations under the License.
 
 
+import os
 import unittest
 
 from google.cloud import translate_v2
+from google.cloud import translate
 
 
 class Config(object):
@@ -26,16 +28,20 @@ class Config(object):
     global state.
     """
 
-    CLIENT = None
+    CLIENT_V2 = None
+    CLIENT_V3 = None
+    location = "global"
+    project_id = os.environ["PROJECT_ID"]
 
 
 def setUpModule():
-    Config.CLIENT = translate_v2.Client()
+    Config.CLIENT_V2 = translate_v2.Client()
+    Config.CLIENT_V3 = translate.TranslationServiceClient()
 
 
 class TestTranslate(unittest.TestCase):
     def test_get_languages(self):
-        result = Config.CLIENT.get_languages()
+        result = Config.CLIENT_V2.get_languages()
         # There are **many** more than 10 languages.
         self.assertGreater(len(result), 10)
 
@@ -46,8 +52,8 @@ class TestTranslate(unittest.TestCase):
         self.assertEqual(lang_map["zu"], "Zulu")
 
     def test_detect_language(self):
-        values = ["takoy", u"fa\xe7ade", "s'il vous plait"]
-        detections = Config.CLIENT.detect_language(values)
+        values = ["takoy", "fa\xe7ade", "s'il vous plait"]
+        detections = Config.CLIENT_V2.detect_language(values)
         self.assertEqual(len(values), len(detections))
         self.assertEqual(detections[0]["language"], "ru")
         self.assertEqual(detections[1]["language"], "fr")
@@ -55,25 +61,72 @@ class TestTranslate(unittest.TestCase):
 
     def test_translate(self):
         values = ["petnaest", "dek kvin", "Me llamo Jeff", "My name is Jeff"]
-        translations = Config.CLIENT.translate(
+        translations = Config.CLIENT_V2.translate(
             values, target_language="de", model="nmt"
         )
         self.assertEqual(len(values), len(translations))
 
         self.assertEqual(translations[0]["detectedSourceLanguage"].lower(), "hr")
-        self.assertEqual(translations[0]["translatedText"].lower(), u"fünfzehn")
+        self.assertEqual(translations[0]["translatedText"].lower(), "fünfzehn")
 
         self.assertEqual(translations[1]["detectedSourceLanguage"], "eo")
-        self.assertEqual(translations[1]["translatedText"].lower(), u"fünfzehn")
+        self.assertEqual(translations[1]["translatedText"].lower(), "fünfzehn")
 
         self.assertEqual(translations[2]["detectedSourceLanguage"], "es")
         es_translation = translations[2]["translatedText"].lower()
         self.assertTrue(
-            es_translation == u"ich heiße jeff"
-            or es_translation == u"mein name ist jeff"
+            es_translation == "ich heiße jeff" or es_translation == "mein name ist jeff"
         )
 
         self.assertEqual(translations[3]["detectedSourceLanguage"], "en")
         self.assertEqual(
             translations[3]["translatedText"].lower(), "mein name ist jeff"
         )
+
+    def test_get_languages_v3(self):
+        parent = f"projects/{Config.project_id}/locations/{Config.location}"
+        result = Config.CLIENT_V3.get_supported_languages(parent=parent)
+        languages = [lang.language_code for lang in result.languages]
+        self.assertGreater(
+            len(languages), 10
+        )  # There are **many** more than 10 languages.
+        self.assertIn("zu", languages)  # Zulu is supported
+        self.assertIn("fr", languages)  # English is supported
+        self.assertIn("ga", languages)  # Irish is supported
+
+    def test_detect_language_v3(self):
+        parent = f"projects/{Config.project_id}/locations/{Config.location}"
+        value = "s'il vous plait"
+        response = Config.CLIENT_V3.detect_language(
+            request={"parent": parent, "content": value, "mime_type": "text/plain"}
+        )
+        languages = [detection.language_code for detection in response.languages]
+        self.assertEqual(languages[0], "fr")
+
+    def test_translate_v3(self):
+        parent = f"projects/{Config.project_id}/locations/{Config.location}"
+        values = ["petnaest", "dek kvin", "Me llamo Jeff", "My name is Jeff"]
+        translations = Config.CLIENT_V3.translate_text(
+            parent=parent, contents=values, target_language_code="de"
+        )
+
+        results_map = {
+            result.detected_language_code: result.translated_text
+            for result in translations.translations
+        }
+        self.assertEqual(len(values), len(results_map))
+
+        self.assertIn("hr", results_map.keys())
+        self.assertIn("eo", results_map.keys())
+        self.assertIn("es", results_map.keys())
+        self.assertIn("en", results_map.keys())
+
+        self.assertEqual(results_map["hr"].lower(), "fünfzehn")
+        self.assertEqual(results_map["eo"].lower(), "fünfzehn")
+
+        es_translation = results_map["es"].lower()
+        self.assertTrue(
+            es_translation == "ich heiße jeff" or es_translation == "mein name ist jeff"
+        )
+
+        self.assertEqual(results_map["en"].lower(), "mein name ist jeff")

@@ -33,3 +33,7 @@ omit =
   */proto/*.py
   */core/*.py
   */site-packages/*.py
+  google/cloud/__init__.py
+  google/cloud/translate.py
+  google/cloud/translate/__init__.py
+  google/cloud/translation*/*.py
