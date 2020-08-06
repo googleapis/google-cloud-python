@@ -20,6 +20,36 @@ import enum
 
 
 class Span(object):
+    class SpanKind(enum.IntEnum):
+        """
+        Type of span. Can be used to specify additional relationships between spans
+        in addition to a parent/child relationship.
+
+        Attributes:
+          SPAN_KIND_UNSPECIFIED (int): Unspecified. Do NOT use as default.
+          Implementations MAY assume SpanKind.INTERNAL to be default.
+          INTERNAL (int): Indicates that the span is used internally. Default value.
+          SERVER (int): Indicates that the span covers server-side handling of an RPC or other
+          remote network request.
+          CLIENT (int): Indicates that the span covers the client-side wrapper around an RPC or
+          other remote request.
+          PRODUCER (int): Indicates that the span describes producer sending a message to a broker.
+          Unlike client and  server, there is no direct critical path latency
+          relationship between producer and consumer spans (e.g. publishing a
+          message to a pubsub service).
+          CONSUMER (int): Indicates that the span describes consumer receiving a message from a
+          broker. Unlike client and  server, there is no direct critical path
+          latency relationship between producer and consumer spans (e.g. receiving
+          a message from a pubsub service subscription).
+        """
+
+        SPAN_KIND_UNSPECIFIED = 0
+        INTERNAL = 1
+        SERVER = 2
+        CLIENT = 3
+        PRODUCER = 4
+        CONSUMER = 5
+
     class TimeEvent(object):
         class MessageEvent(object):
             class Type(enum.IntEnum):

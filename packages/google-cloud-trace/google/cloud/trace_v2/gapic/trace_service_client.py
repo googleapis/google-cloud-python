@@ -225,6 +225,7 @@ class TraceServiceClient(object):
         status=None,
         same_process_as_parent_span=None,
         child_span_count=None,
+        span_kind=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
@@ -254,7 +255,7 @@ class TraceServiceClient(object):
             >>> response = client.create_span(name, span_id, display_name, start_time, end_time)
 
         Args:
-            name (str): The resource name of the span in the following format:
+            name (str): Required. The resource name of the span in the following format:
 
                 ::
 
@@ -265,8 +266,8 @@ class TraceServiceClient(object):
 
                 [SPAN_ID] is a unique identifier for a span within a trace; it is a
                 16-character hexadecimal encoding of an 8-byte array.
-            span_id (str): The [SPAN_ID] portion of the span's resource name.
-            display_name (Union[dict, ~google.cloud.trace_v2.types.TruncatableString]): A description of the span's operation (up to 128 bytes).
+            span_id (str): Required. The [SPAN_ID] portion of the span's resource name.
+            display_name (Union[dict, ~google.cloud.trace_v2.types.TruncatableString]): Required. A description of the span's operation (up to 128 bytes).
                 Stackdriver Trace displays the description in the
                 Google Cloud Platform Console.
                 For example, the display name can be a qualified method name or a file name
@@ -276,13 +277,13 @@ class TraceServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.TruncatableString`
-            start_time (Union[dict, ~google.cloud.trace_v2.types.Timestamp]): The start time of the span. On the client side, this is the time kept by
+            start_time (Union[dict, ~google.cloud.trace_v2.types.Timestamp]): Required. The start time of the span. On the client side, this is the time kept by
                 the local machine where the span execution starts. On the server side, this
                 is the time when the server's application handler starts running.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.Timestamp`
-            end_time (Union[dict, ~google.cloud.trace_v2.types.Timestamp]): The end time of the span. On the client side, this is the time kept by
+            end_time (Union[dict, ~google.cloud.trace_v2.types.Timestamp]): Required. The end time of the span. On the client side, this is the time kept by
                 the local machine where the span execution ends. On the server side, this
                 is the time when the server application handler stops running.
 
@@ -324,6 +325,10 @@ class TraceServiceClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.Int32Value`
+            span_kind (~google.cloud.trace_v2.types.SpanKind): Optional. Distinguishes between spans generated in a particular
+                context. For example, two spans with the same name may be distinguished
+                using ``CLIENT`` (caller) and ``SERVER`` (callee) to identify an RPC
+                call.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.
@@ -368,6 +373,7 @@ class TraceServiceClient(object):
             status=status,
             same_process_as_parent_span=same_process_as_parent_span,
             child_span_count=child_span_count,
+            span_kind=span_kind,
         )
         if metadata is None:
             metadata = []
