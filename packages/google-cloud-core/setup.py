@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-core"
 description = "Google Cloud API client core library"
-version = "1.4.0"
+version = "1.4.1"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
