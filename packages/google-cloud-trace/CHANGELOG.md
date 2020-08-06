@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## [0.24.0](https://www.github.com/googleapis/python-trace/compare/v0.23.0...v0.24.0) (2020-08-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **trace:** remove `span_path` resource helper method from v2; modify retry configs; standardize usage of 'optional' and 'required' for args in docstrings; add 2.7 deprecation warning (via synth)  (#10075)
+
+### Features
+
+* **trace:** add `client_options` to constructor ([#9154](https://www.github.com/googleapis/python-trace/issues/9154)) ([a5b4f7a](https://www.github.com/googleapis/python-trace/commit/a5b4f7aa4575364868ba80aa0a3b1289dc7f0c3e))
+* added support for span kind ([#28](https://www.github.com/googleapis/python-trace/issues/28)) ([23ba194](https://www.github.com/googleapis/python-trace/commit/23ba194fdc59c34bfa5f66aba89a6baa8d7bb527))
+
+
+### Bug Fixes
+
+* **trace:** remove `span_path` resource helper method from v2; modify retry configs; standardize usage of 'optional' and 'required' for args in docstrings; add 2.7 deprecation warning (via synth)  ([#10075](https://www.github.com/googleapis/python-trace/issues/10075)) ([4c02194](https://www.github.com/googleapis/python-trace/commit/4c02194a8c1390b2a382e1f3aaef8138baf02f07))
+
+
+### Documentation
+
+* add python 2 sunset banner to documentation ([#9036](https://www.github.com/googleapis/python-trace/issues/9036)) ([52f3ab5](https://www.github.com/googleapis/python-trace/commit/52f3ab5db26a2b49d1e292ea9b349c1b698fa695))
+
 ## 0.23.0
 
 10-15-2019 06:59 PDT
