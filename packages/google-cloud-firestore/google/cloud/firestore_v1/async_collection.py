@@ -21,7 +21,15 @@ from google.cloud.firestore_v1.base_collection import (
     _auto_id,
     _item_to_document_ref,
 )
-from google.cloud.firestore_v1 import async_query
+from google.cloud.firestore_v1 import (
+    async_query,
+    async_document,
+)
+
+from google.cloud.firestore_v1.document import DocumentReference
+
+from typing import AsyncIterator
+from typing import Any, AsyncGenerator, Tuple
 
 
 class AsyncCollectionReference(BaseCollectionReference):
@@ -50,10 +58,10 @@ class AsyncCollectionReference(BaseCollectionReference):
         TypeError: If a keyword other than ``client`` is used.
     """
 
-    def __init__(self, *path, **kwargs):
+    def __init__(self, *path, **kwargs) -> None:
         super(AsyncCollectionReference, self).__init__(*path, **kwargs)
 
-    def _query(self):
+    def _query(self) -> async_query.AsyncQuery:
         """Query factory.
 
         Returns:
@@ -61,7 +69,7 @@ class AsyncCollectionReference(BaseCollectionReference):
         """
         return async_query.AsyncQuery(self)
 
-    async def add(self, document_data, document_id=None):
+    async def add(self, document_data, document_id=None) -> Tuple[Any, Any]:
         """Create a document in the Firestore database with the provided data.
 
         Args:
@@ -92,7 +100,9 @@ class AsyncCollectionReference(BaseCollectionReference):
         write_result = await document_ref.create(document_data)
         return write_result.update_time, document_ref
 
-    async def list_documents(self, page_size=None):
+    async def list_documents(
+        self, page_size=None
+    ) -> AsyncGenerator[DocumentReference, None]:
         """List all subdocuments of the current collection.
 
         Args:
@@ -120,7 +130,9 @@ class AsyncCollectionReference(BaseCollectionReference):
         async for i in iterator:
             yield _item_to_document_ref(self, i)
 
-    async def get(self, transaction=None):
+    async def get(
+        self, transaction=None
+    ) -> AsyncGenerator[async_document.DocumentSnapshot, Any]:
         """Deprecated alias for :meth:`stream`."""
         warnings.warn(
             "'Collection.get' is deprecated:  please use 'Collection.stream' instead.",
@@ -128,9 +140,11 @@ class AsyncCollectionReference(BaseCollectionReference):
             stacklevel=2,
         )
         async for d in self.stream(transaction=transaction):
-            yield d
+            yield d  # pytype: disable=name-error
 
-    async def stream(self, transaction=None):
+    async def stream(
+        self, transaction=None
+    ) -> AsyncIterator[async_document.DocumentSnapshot]:
         """Read the documents in this collection.
 
         This sends a ``RunQuery`` RPC and then returns an iterator which
@@ -159,4 +173,4 @@ class AsyncCollectionReference(BaseCollectionReference):
         """
         query = async_query.AsyncQuery(self)
         async for d in query.stream(transaction=transaction):
-            yield d
+            yield d  # pytype: disable=name-error

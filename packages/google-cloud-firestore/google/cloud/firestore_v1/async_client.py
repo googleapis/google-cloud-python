@@ -28,8 +28,8 @@ from google.cloud.firestore_v1.base_client import (
     BaseClient,
     DEFAULT_DATABASE,
     _CLIENT_INFO,
-    _reference_info,
-    _parse_batch_get,
+    _reference_info,  # type: ignore
+    _parse_batch_get,  # type: ignore
     _get_doc_mask,
     _path_helper,
 )
@@ -38,7 +38,10 @@ from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.async_query import AsyncQuery
 from google.cloud.firestore_v1.async_batch import AsyncWriteBatch
 from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
-from google.cloud.firestore_v1.async_document import AsyncDocumentReference
+from google.cloud.firestore_v1.async_document import (
+    AsyncDocumentReference,
+    DocumentSnapshot,
+)
 from google.cloud.firestore_v1.async_transaction import AsyncTransaction
 from google.cloud.firestore_v1.services.firestore import (
     async_client as firestore_client,
@@ -46,6 +49,9 @@ from google.cloud.firestore_v1.services.firestore import (
 from google.cloud.firestore_v1.services.firestore.transports import (
     grpc_asyncio as firestore_grpc_transport,
 )
+from typing import Any, AsyncGenerator, NoReturn
+
+_CLIENT_INFO: Any
 
 
 class AsyncClient(BaseClient):
@@ -83,7 +89,7 @@ class AsyncClient(BaseClient):
         database=DEFAULT_DATABASE,
         client_info=_CLIENT_INFO,
         client_options=None,
-    ):
+    ) -> None:
         super(AsyncClient, self).__init__(
             project=project,
             credentials=credentials,
@@ -115,7 +121,7 @@ class AsyncClient(BaseClient):
         """
         return self._target_helper(firestore_client.FirestoreAsyncClient)
 
-    def collection(self, *collection_path):
+    def collection(self, *collection_path) -> AsyncCollectionReference:
         """Get a reference to a collection.
 
         For a top-level collection:
@@ -146,7 +152,7 @@ class AsyncClient(BaseClient):
         """
         return AsyncCollectionReference(*_path_helper(collection_path), client=self)
 
-    def collection_group(self, collection_id):
+    def collection_group(self, collection_id) -> NoReturn:
         """
         Creates and returns a new AsyncQuery that includes all documents in the
         database that are contained in a collection or subcollection with the
@@ -170,7 +176,7 @@ class AsyncClient(BaseClient):
             self._get_collection_reference(collection_id), all_descendants=True
         )
 
-    def document(self, *document_path):
+    def document(self, *document_path) -> AsyncDocumentReference:
         """Get a reference to a document in a collection.
 
         For a top-level document:
@@ -205,7 +211,9 @@ class AsyncClient(BaseClient):
             *self._document_path_helper(*document_path), client=self
         )
 
-    async def get_all(self, references, field_paths=None, transaction=None):
+    async def get_all(
+        self, references, field_paths=None, transaction=None
+    ) -> AsyncGenerator[DocumentSnapshot, Any]:
         """Retrieve a batch of documents.
 
         .. note::
@@ -255,7 +263,7 @@ class AsyncClient(BaseClient):
         async for get_doc_response in response_iterator:
             yield _parse_batch_get(get_doc_response, reference_map, self)
 
-    async def collections(self):
+    async def collections(self) -> AsyncGenerator[AsyncCollectionReference, Any]:
         """List top-level collections of the client's database.
 
         Returns:
@@ -288,7 +296,7 @@ class AsyncClient(BaseClient):
         # iterator.item_to_value = _item_to_collection_ref
         # return iterator
 
-    def batch(self):
+    def batch(self) -> AsyncWriteBatch:
         """Get a batch instance from this client.
 
         Returns:
@@ -298,7 +306,7 @@ class AsyncClient(BaseClient):
         """
         return AsyncWriteBatch(self)
 
-    def transaction(self, **kwargs):
+    def transaction(self, **kwargs) -> AsyncTransaction:
         """Get a transaction that uses this client.
 
         See :class:`~google.cloud.firestore_v1.async_transaction.AsyncTransaction` for

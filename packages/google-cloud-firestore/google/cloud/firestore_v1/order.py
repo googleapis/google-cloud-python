@@ -15,6 +15,7 @@
 from enum import Enum
 from google.cloud.firestore_v1._helpers import decode_value
 import math
+from typing import Any
 
 
 class TypeOrder(Enum):
@@ -31,7 +32,7 @@ class TypeOrder(Enum):
     OBJECT = 9
 
     @staticmethod
-    def from_value(value):
+    def from_value(value) -> Any:
         v = value._pb.WhichOneof("value_type")
 
         lut = {
@@ -59,7 +60,7 @@ class Order(object):
     """
 
     @classmethod
-    def compare(cls, left, right):
+    def compare(cls, left, right) -> Any:
         """
         Main comparison function for all Firestore types.
         @return -1 is left < right, 0 if left == right, otherwise 1
@@ -101,14 +102,14 @@ class Order(object):
             raise ValueError(f"Unknown ``value_type`` {value_type}")
 
     @staticmethod
-    def compare_blobs(left, right):
+    def compare_blobs(left, right) -> Any:
         left_bytes = left.bytes_value
         right_bytes = right.bytes_value
 
         return Order._compare_to(left_bytes, right_bytes)
 
     @staticmethod
-    def compare_timestamps(left, right):
+    def compare_timestamps(left, right) -> Any:
         left = left._pb.timestamp_value
         right = right._pb.timestamp_value
 
@@ -119,7 +120,7 @@ class Order(object):
         return Order._compare_to(left.nanos or 0, right.nanos or 0)
 
     @staticmethod
-    def compare_geo_points(left, right):
+    def compare_geo_points(left, right) -> Any:
         left_value = decode_value(left, None)
         right_value = decode_value(right, None)
         cmp = (left_value.latitude > right_value.latitude) - (
@@ -133,7 +134,7 @@ class Order(object):
         )
 
     @staticmethod
-    def compare_resource_paths(left, right):
+    def compare_resource_paths(left, right) -> int:
         left = left.reference_value
         right = right.reference_value
 
@@ -152,7 +153,7 @@ class Order(object):
         return (left_length > right_length) - (left_length < right_length)
 
     @staticmethod
-    def compare_arrays(left, right):
+    def compare_arrays(left, right) -> Any:
         l_values = left.array_value.values
         r_values = right.array_value.values
 
@@ -165,7 +166,7 @@ class Order(object):
         return Order._compare_to(len(l_values), len(r_values))
 
     @staticmethod
-    def compare_objects(left, right):
+    def compare_objects(left, right) -> Any:
         left_fields = left.map_value.fields
         right_fields = right.map_value.fields
 
@@ -183,13 +184,13 @@ class Order(object):
         return Order._compare_to(len(left_fields), len(right_fields))
 
     @staticmethod
-    def compare_numbers(left, right):
+    def compare_numbers(left, right) -> Any:
         left_value = decode_value(left, None)
         right_value = decode_value(right, None)
         return Order.compare_doubles(left_value, right_value)
 
     @staticmethod
-    def compare_doubles(left, right):
+    def compare_doubles(left, right) -> Any:
         if math.isnan(left):
             if math.isnan(right):
                 return 0
@@ -200,7 +201,7 @@ class Order(object):
         return Order._compare_to(left, right)
 
     @staticmethod
-    def _compare_to(left, right):
+    def _compare_to(left, right) -> Any:
         # We can't just use cmp(left, right) because cmp doesn't exist
         # in Python 3, so this is an equivalent suggested by
         # https://docs.python.org/3.0/whatsnew/3.0.html#ordering-comparisons

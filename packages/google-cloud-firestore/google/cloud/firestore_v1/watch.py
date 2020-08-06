@@ -18,14 +18,14 @@ import threading
 from enum import Enum
 import functools
 
-from google.api_core.bidi import ResumableBidiRpc
-from google.api_core.bidi import BackgroundConsumer
+from google.api_core.bidi import ResumableBidiRpc  # type: ignore
+from google.api_core.bidi import BackgroundConsumer  # type: ignore
 from google.cloud.firestore_v1.types import firestore
 from google.cloud.firestore_v1 import _helpers
 
-from google.api_core import exceptions
+from google.api_core import exceptions  # type: ignore
 
-import grpc
+import grpc  # type: ignore
 
 """Python client for Google Cloud Firestore Watch."""
 

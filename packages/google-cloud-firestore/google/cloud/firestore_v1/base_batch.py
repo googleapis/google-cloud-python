@@ -30,13 +30,13 @@ class BaseWriteBatch(object):
             The client that created this batch.
     """
 
-    def __init__(self, client):
+    def __init__(self, client) -> None:
         self._client = client
         self._write_pbs = []
         self.write_results = None
         self.commit_time = None
 
-    def _add_write_pbs(self, write_pbs):
+    def _add_write_pbs(self, write_pbs) -> None:
         """Add `Write`` protobufs to this transaction.
 
         This method intended to be over-ridden by subclasses.
@@ -47,7 +47,7 @@ class BaseWriteBatch(object):
         """
         self._write_pbs.extend(write_pbs)
 
-    def create(self, reference, document_data):
+    def create(self, reference, document_data) -> None:
         """Add a "change" to this batch to create a document.
 
         If the document given by ``reference`` already exists, then this
@@ -62,7 +62,7 @@ class BaseWriteBatch(object):
         write_pbs = _helpers.pbs_for_create(reference._document_path, document_data)
         self._add_write_pbs(write_pbs)
 
-    def set(self, reference, document_data, merge=False):
+    def set(self, reference, document_data, merge=False) -> None:
         """Add a "change" to replace a document.
 
         See
@@ -90,7 +90,7 @@ class BaseWriteBatch(object):
 
         self._add_write_pbs(write_pbs)
 
-    def update(self, reference, field_updates, option=None):
+    def update(self, reference, field_updates, option=None) -> None:
         """Add a "change" to update a document.
 
         See
@@ -113,7 +113,7 @@ class BaseWriteBatch(object):
         )
         self._add_write_pbs(write_pbs)
 
-    def delete(self, reference, option=None):
+    def delete(self, reference, option=None) -> None:
         """Add a "change" to delete a document.
 
         See

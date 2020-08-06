@@ -29,6 +29,7 @@ from google.cloud.firestore_v1.base_query import (
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1 import document
 from google.cloud.firestore_v1.watch import Watch
+from typing import Any, Generator
 
 
 class Query(BaseQuery):
@@ -98,7 +99,7 @@ class Query(BaseQuery):
         start_at=None,
         end_at=None,
         all_descendants=False,
-    ):
+    ) -> None:
         super(Query, self).__init__(
             parent=parent,
             projection=projection,
@@ -111,7 +112,7 @@ class Query(BaseQuery):
             all_descendants=all_descendants,
         )
 
-    def get(self, transaction=None):
+    def get(self, transaction=None) -> Generator[document.DocumentSnapshot, Any, None]:
         """Deprecated alias for :meth:`stream`."""
         warnings.warn(
             "'Query.get' is deprecated:  please use 'Query.stream' instead.",
@@ -120,7 +121,9 @@ class Query(BaseQuery):
         )
         return self.stream(transaction=transaction)
 
-    def stream(self, transaction=None):
+    def stream(
+        self, transaction=None
+    ) -> Generator[document.DocumentSnapshot, Any, None]:
         """Read the documents in the collection that match this query.
 
         This sends a ``RunQuery`` RPC and then returns an iterator which
@@ -169,7 +172,7 @@ class Query(BaseQuery):
             if snapshot is not None:
                 yield snapshot
 
-    def on_snapshot(self, callback):
+    def on_snapshot(self, callback) -> Watch:
         """Monitor the documents in this collection that match this query.
 
         This starts a watch on this query using a background thread. The

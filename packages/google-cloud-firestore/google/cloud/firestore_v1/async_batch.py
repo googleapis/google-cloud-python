@@ -30,10 +30,10 @@ class AsyncWriteBatch(BaseWriteBatch):
             The client that created this batch.
     """
 
-    def __init__(self, client):
+    def __init__(self, client) -> None:
         super(AsyncWriteBatch, self).__init__(client=client)
 
-    async def commit(self):
+    async def commit(self) -> list:
         """Commit the changes accumulated in this batch.
 
         Returns:

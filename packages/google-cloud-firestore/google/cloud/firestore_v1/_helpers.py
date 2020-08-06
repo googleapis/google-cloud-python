@@ -17,12 +17,12 @@
 import datetime
 
 from google.protobuf import struct_pb2
-from google.type import latlng_pb2
-import grpc
+from google.type import latlng_pb2  # type: ignore
+import grpc  # type: ignore
 
-from google.cloud import exceptions
-from google.cloud._helpers import _datetime_to_pb_timestamp
-from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+from google.cloud import exceptions  # type: ignore
+from google.cloud._helpers import _datetime_to_pb_timestamp  # type: ignore
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds  # type: ignore
 from google.cloud.firestore_v1.types.write import DocumentTransform
 from google.cloud.firestore_v1 import transforms
 from google.cloud.firestore_v1 import types
@@ -31,6 +31,11 @@ from google.cloud.firestore_v1.field_path import parse_field_path
 from google.cloud.firestore_v1.types import common
 from google.cloud.firestore_v1.types import document
 from google.cloud.firestore_v1.types import write
+from typing import Any, Generator, List, NoReturn, Optional, Tuple
+
+_EmptyDict: transforms.Sentinel
+_GRPC_ERROR_MAPPING: dict
+_datetime_to_pb_timestamp: Any
 
 
 BAD_PATH_TEMPLATE = "A path element must be a string. Received {}, which is a {}."
@@ -60,11 +65,11 @@ class GeoPoint(object):
         longitude (float): Longitude of a point.
     """
 
-    def __init__(self, latitude, longitude):
+    def __init__(self, latitude, longitude) -> None:
         self.latitude = latitude
         self.longitude = longitude
 
-    def to_protobuf(self):
+    def to_protobuf(self) -> Any:
         """Convert the current object to protobuf.
 
         Returns:
@@ -100,7 +105,7 @@ class GeoPoint(object):
             return not equality_val
 
 
-def verify_path(path, is_collection):
+def verify_path(path, is_collection) -> None:
     """Verifies that a ``path`` has the correct form.
 
     Checks that all of the elements in ``path`` are strings.
@@ -136,7 +141,7 @@ def verify_path(path, is_collection):
             raise ValueError(msg)
 
 
-def encode_value(value):
+def encode_value(value) -> types.document.Value:
     """Converts a native Python value into a Firestore protobuf ``Value``.
 
     Args:
@@ -200,7 +205,7 @@ def encode_value(value):
     )
 
 
-def encode_dict(values_dict):
+def encode_dict(values_dict) -> dict:
     """Encode a dictionary into protobuf ``Value``-s.
 
     Args:
@@ -214,7 +219,7 @@ def encode_dict(values_dict):
     return {key: encode_value(value) for key, value in values_dict.items()}
 
 
-def reference_value_to_document(reference_value, client):
+def reference_value_to_document(reference_value, client) -> Any:
     """Convert a reference value string to a document.
 
     Args:
@@ -248,7 +253,7 @@ def reference_value_to_document(reference_value, client):
     return document
 
 
-def decode_value(value, client):
+def decode_value(value, client) -> Any:
     """Converts a Firestore protobuf ``Value`` to a native Python value.
 
     Args:
@@ -294,7 +299,7 @@ def decode_value(value, client):
         raise ValueError("Unknown ``value_type``", value_type)
 
 
-def decode_dict(value_fields, client):
+def decode_dict(value_fields, client) -> dict:
     """Converts a protobuf map of Firestore ``Value``-s.
 
     Args:
@@ -311,7 +316,7 @@ def decode_dict(value_fields, client):
     return {key: decode_value(value, client) for key, value in value_fields.items()}
 
 
-def get_doc_id(document_pb, expected_prefix):
+def get_doc_id(document_pb, expected_prefix) -> Any:
     """Parse a document ID from a document protobuf.
 
     Args:
@@ -342,7 +347,9 @@ def get_doc_id(document_pb, expected_prefix):
 _EmptyDict = transforms.Sentinel("Marker for an empty dict value")
 
 
-def extract_fields(document_data, prefix_path, expand_dots=False):
+def extract_fields(
+    document_data, prefix_path: FieldPath, expand_dots=False
+) -> Generator[Tuple[Any, Any], Any, None]:
     """Do depth-first walk of tree, yielding field_path, value"""
     if not document_data:
         yield prefix_path, _EmptyDict
@@ -363,7 +370,7 @@ def extract_fields(document_data, prefix_path, expand_dots=False):
                 yield field_path, value
 
 
-def set_field_value(document_data, field_path, value):
+def set_field_value(document_data, field_path, value) -> None:
     """Set a value into a document for a field_path"""
     current = document_data
     for element in field_path.parts[:-1]:
@@ -373,7 +380,7 @@ def set_field_value(document_data, field_path, value):
     current[field_path.parts[-1]] = value
 
 
-def get_field_value(document_data, field_path):
+def get_field_value(document_data, field_path) -> Any:
     if not field_path.parts:
         raise ValueError("Empty path")
 
@@ -394,7 +401,7 @@ class DocumentExtractor(object):
             a document.
     """
 
-    def __init__(self, document_data):
+    def __init__(self, document_data) -> None:
         self.document_data = document_data
         self.field_paths = []
         self.deleted_fields = []
@@ -440,7 +447,9 @@ class DocumentExtractor(object):
                 self.field_paths.append(field_path)
                 set_field_value(self.set_fields, field_path, value)
 
-    def _get_document_iterator(self, prefix_path):
+    def _get_document_iterator(
+        self, prefix_path: FieldPath
+    ) -> Generator[Tuple[Any, Any], Any, None]:
         return extract_fields(self.document_data, prefix_path)
 
     @property
@@ -465,10 +474,12 @@ class DocumentExtractor(object):
             + list(self.minimums)
         )
 
-    def _get_update_mask(self, allow_empty_mask=False):
+    def _get_update_mask(self, allow_empty_mask=False) -> None:
         return None
 
-    def get_update_pb(self, document_path, exists=None, allow_empty_mask=False):
+    def get_update_pb(
+        self, document_path, exists=None, allow_empty_mask=False
+    ) -> types.write.Write:
 
         if exists is not None:
             current_document = common.Precondition(exists=exists)
@@ -485,7 +496,7 @@ class DocumentExtractor(object):
 
         return update_pb
 
-    def get_transform_pb(self, document_path, exists=None):
+    def get_transform_pb(self, document_path, exists=None) -> types.write.Write:
         def make_array_value(values):
             value_list = [encode_value(element) for element in values]
             return document.ArrayValue(values=value_list)
@@ -565,7 +576,7 @@ class DocumentExtractor(object):
         return transform_pb
 
 
-def pbs_for_create(document_path, document_data):
+def pbs_for_create(document_path, document_data) -> List[types.write.Write]:
     """Make ``Write`` protobufs for ``create()`` methods.
 
     Args:
@@ -597,7 +608,7 @@ def pbs_for_create(document_path, document_data):
     return write_pbs
 
 
-def pbs_for_set_no_merge(document_path, document_data):
+def pbs_for_set_no_merge(document_path, document_data) -> List[types.write.Write]:
     """Make ``Write`` protobufs for ``set()`` methods.
 
     Args:
@@ -632,7 +643,7 @@ class DocumentExtractorForMerge(DocumentExtractor):
     """ Break document data up into actual data and transforms.
     """
 
-    def __init__(self, document_data):
+    def __init__(self, document_data) -> None:
         super(DocumentExtractorForMerge, self).__init__(document_data)
         self.data_merge = []
         self.transform_merge = []
@@ -652,20 +663,20 @@ class DocumentExtractorForMerge(DocumentExtractor):
 
         return bool(update_paths)
 
-    def _apply_merge_all(self):
+    def _apply_merge_all(self) -> None:
         self.data_merge = sorted(self.field_paths + self.deleted_fields)
         # TODO: other transforms
         self.transform_merge = self.transform_paths
         self.merge = sorted(self.data_merge + self.transform_paths)
 
-    def _construct_merge_paths(self, merge):
+    def _construct_merge_paths(self, merge) -> Generator[Any, Any, None]:
         for merge_field in merge:
             if isinstance(merge_field, FieldPath):
                 yield merge_field
             else:
                 yield FieldPath(*parse_field_path(merge_field))
 
-    def _normalize_merge_paths(self, merge):
+    def _normalize_merge_paths(self, merge) -> list:
         merge_paths = sorted(self._construct_merge_paths(merge))
 
         # Raise if any merge path is a parent of another.  Leverage sorting
@@ -685,7 +696,7 @@ class DocumentExtractorForMerge(DocumentExtractor):
 
         return merge_paths
 
-    def _apply_merge_paths(self, merge):
+    def _apply_merge_paths(self, merge) -> None:
 
         if self.empty_document:
             raise ValueError("Cannot merge specific fields with empty document.")
@@ -749,13 +760,15 @@ class DocumentExtractorForMerge(DocumentExtractor):
             if path in merged_transform_paths
         }
 
-    def apply_merge(self, merge):
+    def apply_merge(self, merge) -> None:
         if merge is True:  # merge all fields
             self._apply_merge_all()
         else:
             self._apply_merge_paths(merge)
 
-    def _get_update_mask(self, allow_empty_mask=False):
+    def _get_update_mask(
+        self, allow_empty_mask=False
+    ) -> Optional[types.common.DocumentMask]:
         # Mask uses dotted / quoted paths.
         mask_paths = [
             field_path.to_api_repr()
@@ -767,7 +780,9 @@ class DocumentExtractorForMerge(DocumentExtractor):
             return common.DocumentMask(field_paths=mask_paths)
 
 
-def pbs_for_set_with_merge(document_path, document_data, merge):
+def pbs_for_set_with_merge(
+    document_path, document_data, merge
+) -> List[types.write.Write]:
     """Make ``Write`` protobufs for ``set()`` methods.
 
     Args:
@@ -804,7 +819,7 @@ class DocumentExtractorForUpdate(DocumentExtractor):
     """ Break document data up into actual data and transforms.
     """
 
-    def __init__(self, document_data):
+    def __init__(self, document_data) -> None:
         super(DocumentExtractorForUpdate, self).__init__(document_data)
         self.top_level_paths = sorted(
             [FieldPath.from_string(key) for key in document_data]
@@ -825,10 +840,12 @@ class DocumentExtractorForUpdate(DocumentExtractor):
                     "Cannot update with nest delete: {}".format(field_path)
                 )
 
-    def _get_document_iterator(self, prefix_path):
+    def _get_document_iterator(
+        self, prefix_path: FieldPath
+    ) -> Generator[Tuple[Any, Any], Any, None]:
         return extract_fields(self.document_data, prefix_path, expand_dots=True)
 
-    def _get_update_mask(self, allow_empty_mask=False):
+    def _get_update_mask(self, allow_empty_mask=False) -> types.common.DocumentMask:
         mask_paths = []
         for field_path in self.top_level_paths:
             if field_path not in self.transform_paths:
@@ -837,7 +854,7 @@ class DocumentExtractorForUpdate(DocumentExtractor):
         return common.DocumentMask(field_paths=mask_paths)
 
 
-def pbs_for_update(document_path, field_updates, option):
+def pbs_for_update(document_path, field_updates, option) -> List[types.write.Write]:
     """Make ``Write`` protobufs for ``update()`` methods.
 
     Args:
@@ -878,7 +895,7 @@ def pbs_for_update(document_path, field_updates, option):
     return write_pbs
 
 
-def pb_for_delete(document_path, option):
+def pb_for_delete(document_path, option) -> types.write.Write:
     """Make a ``Write`` protobuf for ``delete()`` methods.
 
     Args:
@@ -905,7 +922,7 @@ class ReadAfterWriteError(Exception):
     """
 
 
-def get_transaction_id(transaction, read_operation=True):
+def get_transaction_id(transaction, read_operation=True) -> Any:
     """Get the transaction ID from a ``Transaction`` object.
 
     Args:
@@ -935,7 +952,7 @@ def get_transaction_id(transaction, read_operation=True):
         return transaction.id
 
 
-def metadata_with_prefix(prefix, **kw):
+def metadata_with_prefix(prefix: str, **kw) -> List[Tuple[str, str]]:
     """Create RPC metadata containing a prefix.
 
     Args:
@@ -950,7 +967,7 @@ def metadata_with_prefix(prefix, **kw):
 class WriteOption(object):
     """Option used to assert a condition on a write operation."""
 
-    def modify_write(self, write, no_create_msg=None):
+    def modify_write(self, write, no_create_msg=None) -> NoReturn:
         """Modify a ``Write`` protobuf based on the state of this write option.
 
         This is a virtual method intended to be implemented by subclasses.
@@ -982,7 +999,7 @@ class LastUpdateOption(WriteOption):
             as part of a "write result" protobuf or directly.
     """
 
-    def __init__(self, last_update_time):
+    def __init__(self, last_update_time) -> None:
         self._last_update_time = last_update_time
 
     def __eq__(self, other):
@@ -990,7 +1007,7 @@ class LastUpdateOption(WriteOption):
             return NotImplemented
         return self._last_update_time == other._last_update_time
 
-    def modify_write(self, write, **unused_kwargs):
+    def modify_write(self, write, **unused_kwargs) -> None:
         """Modify a ``Write`` protobuf based on the state of this write option.
 
         The ``last_update_time`` is added to ``write_pb`` as an "update time"
@@ -1019,7 +1036,7 @@ class ExistsOption(WriteOption):
             should already exist.
     """
 
-    def __init__(self, exists):
+    def __init__(self, exists) -> None:
         self._exists = exists
 
     def __eq__(self, other):
@@ -1027,7 +1044,7 @@ class ExistsOption(WriteOption):
             return NotImplemented
         return self._exists == other._exists
 
-    def modify_write(self, write, **unused_kwargs):
+    def modify_write(self, write, **unused_kwargs) -> None:
         """Modify a ``Write`` protobuf based on the state of this write option.
 
         If:

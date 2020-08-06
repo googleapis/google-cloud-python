@@ -20,6 +20,9 @@ import proto  # type: ignore
 
 from google.cloud.firestore_v1.types import document
 from google.protobuf import wrappers_pb2 as wrappers  # type: ignore
+from typing import Any
+
+__protobuf__: Any
 
 
 __protobuf__ = proto.module(

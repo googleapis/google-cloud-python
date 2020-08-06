@@ -23,6 +23,7 @@ from google.cloud.firestore_v1.base_collection import (
 from google.cloud.firestore_v1 import query as query_mod
 from google.cloud.firestore_v1.watch import Watch
 from google.cloud.firestore_v1 import document
+from typing import Any, Generator, Tuple
 
 
 class CollectionReference(BaseCollectionReference):
@@ -51,10 +52,10 @@ class CollectionReference(BaseCollectionReference):
         TypeError: If a keyword other than ``client`` is used.
     """
 
-    def __init__(self, *path, **kwargs):
+    def __init__(self, *path, **kwargs) -> None:
         super(CollectionReference, self).__init__(*path, **kwargs)
 
-    def _query(self):
+    def _query(self) -> query_mod.Query:
         """Query factory.
 
         Returns:
@@ -62,7 +63,7 @@ class CollectionReference(BaseCollectionReference):
         """
         return query_mod.Query(self)
 
-    def add(self, document_data, document_id=None):
+    def add(self, document_data, document_id=None) -> Tuple[Any, Any]:
         """Create a document in the Firestore database with the provided data.
 
         Args:
@@ -93,7 +94,7 @@ class CollectionReference(BaseCollectionReference):
         write_result = document_ref.create(document_data)
         return write_result.update_time, document_ref
 
-    def list_documents(self, page_size=None):
+    def list_documents(self, page_size=None) -> Generator[Any, Any, None]:
         """List all subdocuments of the current collection.
 
         Args:
@@ -120,7 +121,7 @@ class CollectionReference(BaseCollectionReference):
         )
         return (_item_to_document_ref(self, i) for i in iterator)
 
-    def get(self, transaction=None):
+    def get(self, transaction=None) -> Generator[document.DocumentSnapshot, Any, None]:
         """Deprecated alias for :meth:`stream`."""
         warnings.warn(
             "'Collection.get' is deprecated:  please use 'Collection.stream' instead.",
@@ -129,7 +130,9 @@ class CollectionReference(BaseCollectionReference):
         )
         return self.stream(transaction=transaction)
 
-    def stream(self, transaction=None):
+    def stream(
+        self, transaction=None
+    ) -> Generator[document.DocumentSnapshot, Any, None]:
         """Read the documents in this collection.
 
         This sends a ``RunQuery`` RPC and then returns an iterator which
@@ -159,7 +162,7 @@ class CollectionReference(BaseCollectionReference):
         query = query_mod.Query(self)
         return query.stream(transaction=transaction)
 
-    def on_snapshot(self, callback):
+    def on_snapshot(self, callback) -> Watch:
         """Monitor the documents in this collection.
 
         This starts a watch on this collection using a background thread. The

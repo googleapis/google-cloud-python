@@ -20,10 +20,11 @@ from google.cloud.firestore_v1.base_document import (
     _first_write_result,
 )
 
-from google.api_core import exceptions
+from google.api_core import exceptions  # type: ignore
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.types import common
 from google.cloud.firestore_v1.watch import Watch
+from typing import Any, Generator
 
 
 class DocumentReference(BaseDocumentReference):
@@ -51,10 +52,10 @@ class DocumentReference(BaseDocumentReference):
         TypeError: If a keyword other than ``client`` is used.
     """
 
-    def __init__(self, *path, **kwargs):
+    def __init__(self, *path, **kwargs) -> None:
         super(DocumentReference, self).__init__(*path, **kwargs)
 
-    def create(self, document_data):
+    def create(self, document_data) -> Any:
         """Create the current document in the Firestore database.
 
         Args:
@@ -75,7 +76,7 @@ class DocumentReference(BaseDocumentReference):
         write_results = batch.commit()
         return _first_write_result(write_results)
 
-    def set(self, document_data, merge=False):
+    def set(self, document_data, merge=False) -> Any:
         """Replace the current document in the Firestore database.
 
         A write ``option`` can be specified to indicate preconditions of
@@ -106,7 +107,7 @@ class DocumentReference(BaseDocumentReference):
         write_results = batch.commit()
         return _first_write_result(write_results)
 
-    def update(self, field_updates, option=None):
+    def update(self, field_updates, option=None) -> Any:
         """Update an existing document in the Firestore database.
 
         By default, this method verifies that the document exists on the
@@ -254,7 +255,7 @@ class DocumentReference(BaseDocumentReference):
         write_results = batch.commit()
         return _first_write_result(write_results)
 
-    def delete(self, option=None):
+    def delete(self, option=None) -> Any:
         """Delete the current document in the Firestore database.
 
         Args:
@@ -281,7 +282,7 @@ class DocumentReference(BaseDocumentReference):
 
         return commit_response.commit_time
 
-    def get(self, field_paths=None, transaction=None):
+    def get(self, field_paths=None, transaction=None) -> DocumentSnapshot:
         """Retrieve a snapshot of the current document.
 
         See :meth:`~google.cloud.firestore_v1.base_client.BaseClient.field_path` for
@@ -346,7 +347,7 @@ class DocumentReference(BaseDocumentReference):
             update_time=update_time,
         )
 
-    def collections(self, page_size=None):
+    def collections(self, page_size=None) -> Generator[Any, Any, None]:
         """List subcollections of the current document.
 
         Args:
@@ -386,7 +387,7 @@ class DocumentReference(BaseDocumentReference):
         # iterator.item_to_value = _item_to_collection_ref
         # return iterator
 
-    def on_snapshot(self, callback):
+    def on_snapshot(self, callback) -> Watch:
         """Watch this document.
 
         This starts a watch on this document using a background thread. The

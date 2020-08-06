@@ -21,6 +21,9 @@ import proto  # type: ignore
 from google.protobuf import struct_pb2 as struct  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 from google.type import latlng_pb2 as latlng  # type: ignore
+from typing import Any
+
+__protobuf__: Any
 
 
 __protobuf__ = proto.module(

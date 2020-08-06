@@ -20,9 +20,10 @@ from google.cloud.firestore_v1.base_document import (
     _first_write_result,
 )
 
-from google.api_core import exceptions
+from google.api_core import exceptions  # type: ignore
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.types import common
+from typing import AsyncGenerator, Coroutine
 
 
 class AsyncDocumentReference(BaseDocumentReference):
@@ -50,10 +51,10 @@ class AsyncDocumentReference(BaseDocumentReference):
         TypeError: If a keyword other than ``client`` is used.
     """
 
-    def __init__(self, *path, **kwargs):
+    def __init__(self, *path, **kwargs) -> None:
         super(AsyncDocumentReference, self).__init__(*path, **kwargs)
 
-    async def create(self, document_data):
+    async def create(self, document_data) -> Coroutine:
         """Create the current document in the Firestore database.
 
         Args:
@@ -74,7 +75,7 @@ class AsyncDocumentReference(BaseDocumentReference):
         write_results = await batch.commit()
         return _first_write_result(write_results)
 
-    async def set(self, document_data, merge=False):
+    async def set(self, document_data, merge=False) -> Coroutine:
         """Replace the current document in the Firestore database.
 
         A write ``option`` can be specified to indicate preconditions of
@@ -105,7 +106,7 @@ class AsyncDocumentReference(BaseDocumentReference):
         write_results = await batch.commit()
         return _first_write_result(write_results)
 
-    async def update(self, field_updates, option=None):
+    async def update(self, field_updates, option=None) -> Coroutine:
         """Update an existing document in the Firestore database.
 
         By default, this method verifies that the document exists on the
@@ -253,7 +254,7 @@ class AsyncDocumentReference(BaseDocumentReference):
         write_results = await batch.commit()
         return _first_write_result(write_results)
 
-    async def delete(self, option=None):
+    async def delete(self, option=None) -> Coroutine:
         """Delete the current document in the Firestore database.
 
         Args:
@@ -280,7 +281,7 @@ class AsyncDocumentReference(BaseDocumentReference):
 
         return commit_response.commit_time
 
-    async def get(self, field_paths=None, transaction=None):
+    async def get(self, field_paths=None, transaction=None) -> DocumentSnapshot:
         """Retrieve a snapshot of the current document.
 
         See :meth:`~google.cloud.firestore_v1.base_client.BaseClient.field_path` for
@@ -345,7 +346,7 @@ class AsyncDocumentReference(BaseDocumentReference):
             update_time=update_time,
         )
 
-    async def collections(self, page_size=None):
+    async def collections(self, page_size=None) -> AsyncGenerator:
         """List subcollections of the current document.
 
         Args:

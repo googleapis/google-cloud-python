@@ -18,6 +18,7 @@ import copy
 
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1 import field_path as field_path_module
+from typing import Any, NoReturn
 
 
 class BaseDocumentReference(object):
@@ -47,7 +48,7 @@ class BaseDocumentReference(object):
 
     _document_path_internal = None
 
-    def __init__(self, *path, **kwargs):
+    def __init__(self, *path, **kwargs) -> None:
         _helpers.verify_path(path, is_collection=False)
         self._path = path
         self._client = kwargs.pop("client", None)
@@ -163,7 +164,7 @@ class BaseDocumentReference(object):
         parent_path = self._path[:-1]
         return self._client.collection(*parent_path)
 
-    def collection(self, collection_id):
+    def collection(self, collection_id) -> Any:
         """Create a sub-collection underneath the current document.
 
         Args:
@@ -177,25 +178,25 @@ class BaseDocumentReference(object):
         child_path = self._path + (collection_id,)
         return self._client.collection(*child_path)
 
-    def create(self, document_data):
+    def create(self, document_data) -> NoReturn:
         raise NotImplementedError
 
-    def set(self, document_data, merge=False):
+    def set(self, document_data, merge=False) -> NoReturn:
         raise NotImplementedError
 
-    def update(self, field_updates, option=None):
+    def update(self, field_updates, option=None) -> NoReturn:
         raise NotImplementedError
 
-    def delete(self, option=None):
+    def delete(self, option=None) -> NoReturn:
         raise NotImplementedError
 
-    def get(self, field_paths=None, transaction=None):
+    def get(self, field_paths=None, transaction=None) -> NoReturn:
         raise NotImplementedError
 
-    def collections(self, page_size=None):
+    def collections(self, page_size=None) -> NoReturn:
         raise NotImplementedError
 
-    def on_snapshot(self, callback):
+    def on_snapshot(self, callback) -> NoReturn:
         raise NotImplementedError
 
 
@@ -227,7 +228,9 @@ class DocumentSnapshot(object):
             The time that this document was last updated.
     """
 
-    def __init__(self, reference, data, exists, read_time, create_time, update_time):
+    def __init__(
+        self, reference, data, exists, read_time, create_time, update_time
+    ) -> None:
         self._reference = reference
         # We want immutable data, so callers can't modify this value
         # out from under us.
@@ -288,7 +291,7 @@ class DocumentSnapshot(object):
         """
         return self._reference
 
-    def get(self, field_path):
+    def get(self, field_path) -> Any:
         """Get a value from the snapshot data.
 
         If the data is nested, for example:
@@ -352,7 +355,7 @@ class DocumentSnapshot(object):
         nested_data = field_path_module.get_nested_value(field_path, self._data)
         return copy.deepcopy(nested_data)
 
-    def to_dict(self):
+    def to_dict(self) -> Any:
         """Retrieve the data contained in this snapshot.
 
         A copy is returned since the data may contain mutable values,
@@ -368,7 +371,7 @@ class DocumentSnapshot(object):
         return copy.deepcopy(self._data)
 
 
-def _get_document_path(client, path):
+def _get_document_path(client, path) -> str:
     """Convert a path tuple into a full path string.
 
     Of the form:
@@ -389,7 +392,7 @@ def _get_document_path(client, path):
     return _helpers.DOCUMENT_PATH_DELIMITER.join(parts)
 
 
-def _consume_single_get(response_iterator):
+def _consume_single_get(response_iterator) -> Any:
     """Consume a gRPC stream that should contain a single response.
 
     The stream will correspond to a ``BatchGetDocuments`` request made
@@ -420,7 +423,7 @@ def _consume_single_get(response_iterator):
     return all_responses[0]
 
 
-def _first_write_result(write_results):
+def _first_write_result(write_results) -> Any:
     """Get first write result from list.
 
     For cases where ``len(write_results) > 1``, this assumes the writes
@@ -446,7 +449,7 @@ def _first_write_result(write_results):
     return write_results[0]
 
 
-def _item_to_collection_ref(iterator, item):
+def _item_to_collection_ref(iterator, item) -> Any:
     """Convert collection ID to collection ref.
 
     Args:

@@ -16,6 +16,9 @@
 import random
 
 from google.cloud.firestore_v1 import _helpers
+from google.cloud.firestore_v1.document import DocumentReference
+from typing import Any, NoReturn, Tuple
+
 
 _AUTO_ID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
@@ -46,7 +49,7 @@ class BaseCollectionReference(object):
         TypeError: If a keyword other than ``client`` is used.
     """
 
-    def __init__(self, *path, **kwargs):
+    def __init__(self, *path, **kwargs) -> None:
         _helpers.verify_path(path, is_collection=True)
         self._path = path
         self._client = kwargs.pop("client", None)
@@ -84,10 +87,10 @@ class BaseCollectionReference(object):
             parent_path = self._path[:-1]
         return self._client.document(*parent_path)
 
-    def _query(self):
+    def _query(self) -> NoReturn:
         raise NotImplementedError
 
-    def document(self, document_id=None):
+    def document(self, document_id=None) -> Any:
         """Create a sub-document underneath the current collection.
 
         Args:
@@ -106,7 +109,7 @@ class BaseCollectionReference(object):
         child_path = self._path + (document_id,)
         return self._client.document(*child_path)
 
-    def _parent_info(self):
+    def _parent_info(self) -> Tuple[Any, str]:
         """Get fully-qualified parent path and prefix for this collection.
 
         Returns:
@@ -128,13 +131,13 @@ class BaseCollectionReference(object):
         expected_prefix = _helpers.DOCUMENT_PATH_DELIMITER.join((parent_path, self.id))
         return parent_path, expected_prefix
 
-    def add(self, document_data, document_id=None):
+    def add(self, document_data, document_id=None) -> NoReturn:
         raise NotImplementedError
 
-    def list_documents(self, page_size=None):
+    def list_documents(self, page_size=None) -> NoReturn:
         raise NotImplementedError
 
-    def select(self, field_paths):
+    def select(self, field_paths) -> NoReturn:
         """Create a "select" query with this collection as parent.
 
         See
@@ -153,7 +156,7 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.select(field_paths)
 
-    def where(self, field_path, op_string, value):
+    def where(self, field_path, op_string, value) -> NoReturn:
         """Create a "where" query with this collection as parent.
 
         See
@@ -177,7 +180,7 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.where(field_path, op_string, value)
 
-    def order_by(self, field_path, **kwargs):
+    def order_by(self, field_path, **kwargs) -> NoReturn:
         """Create an "order by" query with this collection as parent.
 
         See
@@ -199,7 +202,7 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.order_by(field_path, **kwargs)
 
-    def limit(self, count):
+    def limit(self, count) -> NoReturn:
         """Create a limited query with this collection as parent.
 
         See
@@ -217,7 +220,7 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.limit(count)
 
-    def offset(self, num_to_skip):
+    def offset(self, num_to_skip) -> NoReturn:
         """Skip to an offset in a query with this collection as parent.
 
         See
@@ -235,7 +238,7 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.offset(num_to_skip)
 
-    def start_at(self, document_fields):
+    def start_at(self, document_fields) -> NoReturn:
         """Start query at a cursor with this collection as parent.
 
         See
@@ -256,7 +259,7 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.start_at(document_fields)
 
-    def start_after(self, document_fields):
+    def start_after(self, document_fields) -> NoReturn:
         """Start query after a cursor with this collection as parent.
 
         See
@@ -277,7 +280,7 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.start_after(document_fields)
 
-    def end_before(self, document_fields):
+    def end_before(self, document_fields) -> NoReturn:
         """End query before a cursor with this collection as parent.
 
         See
@@ -298,7 +301,7 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.end_before(document_fields)
 
-    def end_at(self, document_fields):
+    def end_at(self, document_fields) -> NoReturn:
         """End query at a cursor with this collection as parent.
 
         See
@@ -319,17 +322,17 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.end_at(document_fields)
 
-    def get(self, transaction=None):
+    def get(self, transaction=None) -> NoReturn:
         raise NotImplementedError
 
-    def stream(self, transaction=None):
+    def stream(self, transaction=None) -> NoReturn:
         raise NotImplementedError
 
-    def on_snapshot(self, callback):
+    def on_snapshot(self, callback) -> NoReturn:
         raise NotImplementedError
 
 
-def _auto_id():
+def _auto_id() -> str:
     """Generate a "random" automatically generated ID.
 
     Returns:
@@ -339,11 +342,11 @@ def _auto_id():
     return "".join(random.choice(_AUTO_ID_CHARS) for _ in range(20))
 
 
-def _item_to_document_ref(collection_reference, item):
+def _item_to_document_ref(collection_reference, item) -> DocumentReference:
     """Convert Document resource to document ref.
 
     Args:
-        iterator (google.api_core.page_iterator.GRPCIterator):
+        collection_reference (google.api_core.page_iterator.GRPCIterator):
             iterator response
         item (dict): document resource
     """

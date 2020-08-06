@@ -44,6 +44,13 @@ from google.cloud.firestore_v1.services.firestore import client as firestore_cli
 from google.cloud.firestore_v1.services.firestore.transports import (
     grpc as firestore_grpc_transport,
 )
+from typing import Any, Generator
+
+_CLIENT_INFO: Any
+_get_doc_mask: Any
+_parse_batch_get: Any
+_path_helper: Any
+_reference_info: Any
 
 
 class Client(BaseClient):
@@ -81,7 +88,7 @@ class Client(BaseClient):
         database=DEFAULT_DATABASE,
         client_info=_CLIENT_INFO,
         client_options=None,
-    ):
+    ) -> None:
         super(Client, self).__init__(
             project=project,
             credentials=credentials,
@@ -113,7 +120,7 @@ class Client(BaseClient):
         """
         return self._target_helper(firestore_client.FirestoreClient)
 
-    def collection(self, *collection_path):
+    def collection(self, *collection_path) -> CollectionReference:
         """Get a reference to a collection.
 
         For a top-level collection:
@@ -144,7 +151,7 @@ class Client(BaseClient):
         """
         return CollectionReference(*_path_helper(collection_path), client=self)
 
-    def collection_group(self, collection_id):
+    def collection_group(self, collection_id) -> Query:
         """
         Creates and returns a new Query that includes all documents in the
         database that are contained in a collection or subcollection with the
@@ -168,7 +175,7 @@ class Client(BaseClient):
             self._get_collection_reference(collection_id), all_descendants=True
         )
 
-    def document(self, *document_path):
+    def document(self, *document_path) -> DocumentReference:
         """Get a reference to a document in a collection.
 
         For a top-level document:
@@ -203,7 +210,9 @@ class Client(BaseClient):
             *self._document_path_helper(*document_path), client=self
         )
 
-    def get_all(self, references, field_paths=None, transaction=None):
+    def get_all(
+        self, references, field_paths=None, transaction=None
+    ) -> Generator[Any, Any, None]:
         """Retrieve a batch of documents.
 
         .. note::
@@ -253,7 +262,7 @@ class Client(BaseClient):
         for get_doc_response in response_iterator:
             yield _parse_batch_get(get_doc_response, reference_map, self)
 
-    def collections(self):
+    def collections(self) -> Generator[Any, Any, None]:
         """List top-level collections of the client's database.
 
         Returns:
@@ -286,7 +295,7 @@ class Client(BaseClient):
         # iterator.item_to_value = _item_to_collection_ref
         # return iterator
 
-    def batch(self):
+    def batch(self) -> WriteBatch:
         """Get a batch instance from this client.
 
         Returns:
@@ -296,7 +305,7 @@ class Client(BaseClient):
         """
         return WriteBatch(self)
 
-    def transaction(self, **kwargs):
+    def transaction(self, **kwargs) -> Transaction:
         """Get a transaction that uses this client.
 
         See :class:`~google.cloud.firestore_v1.transaction.Transaction` for

@@ -18,7 +18,7 @@
 import abc
 import typing
 
-from google import auth
+from google import auth  #  type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.auth import credentials  # type: ignore
 

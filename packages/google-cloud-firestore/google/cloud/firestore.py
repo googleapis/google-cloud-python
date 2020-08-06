@@ -46,6 +46,10 @@ from google.cloud.firestore_v1 import types
 from google.cloud.firestore_v1 import Watch
 from google.cloud.firestore_v1 import WriteBatch
 from google.cloud.firestore_v1 import WriteOption
+from typing import List
+
+__all__: List[str]
+__version__: str
 
 
 __all__ = [

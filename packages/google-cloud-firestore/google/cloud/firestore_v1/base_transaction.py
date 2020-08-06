@@ -16,6 +16,18 @@
 
 
 from google.cloud.firestore_v1 import types
+from typing import NoReturn, Optional
+
+_CANT_BEGIN: str
+_CANT_COMMIT: str
+_CANT_RETRY_READ_ONLY: str
+_CANT_ROLLBACK: str
+_EXCEED_ATTEMPTS_TEMPLATE: str
+_INITIAL_SLEEP: float
+_MAX_SLEEP: float
+_MISSING_ID_TEMPLATE: str
+_MULTIPLIER: float
+_WRITE_READ_ONLY: str
 
 MAX_ATTEMPTS = 5
 """int: Default number of transaction attempts (with retries)."""
@@ -46,15 +58,15 @@ class BaseTransaction(object):
             :data:`False`.
     """
 
-    def __init__(self, max_attempts=MAX_ATTEMPTS, read_only=False):
+    def __init__(self, max_attempts=MAX_ATTEMPTS, read_only=False) -> None:
         self._max_attempts = max_attempts
         self._read_only = read_only
         self._id = None
 
-    def _add_write_pbs(self, write_pbs):
+    def _add_write_pbs(self, write_pbs) -> NoReturn:
         raise NotImplementedError
 
-    def _options_protobuf(self, retry_id):
+    def _options_protobuf(self, retry_id) -> Optional[types.common.TransactionOptions]:
         """Convert the current object to protobuf.
 
         The ``retry_id`` value is used when retrying a transaction that
@@ -109,7 +121,7 @@ class BaseTransaction(object):
         """
         return self._id
 
-    def _clean_up(self):
+    def _clean_up(self) -> None:
         """Clean up the instance after :meth:`_rollback`` or :meth:`_commit``.
 
         This intended to occur on success or failure of the associated RPCs.
@@ -117,19 +129,19 @@ class BaseTransaction(object):
         self._write_pbs = []
         self._id = None
 
-    def _begin(self, retry_id=None):
+    def _begin(self, retry_id=None) -> NoReturn:
         raise NotImplementedError
 
-    def _rollback(self):
+    def _rollback(self) -> NoReturn:
         raise NotImplementedError
 
-    def _commit(self):
+    def _commit(self) -> NoReturn:
         raise NotImplementedError
 
-    def get_all(self, references):
+    def get_all(self, references) -> NoReturn:
         raise NotImplementedError
 
-    def get(self, ref_or_query):
+    def get(self, ref_or_query) -> NoReturn:
         raise NotImplementedError
 
 
@@ -144,22 +156,22 @@ class _BaseTransactional(object):
             A callable that should be run (and retried) in a transaction.
     """
 
-    def __init__(self, to_wrap):
+    def __init__(self, to_wrap) -> None:
         self.to_wrap = to_wrap
         self.current_id = None
         """Optional[bytes]: The current transaction ID."""
         self.retry_id = None
         """Optional[bytes]: The ID of the first attempted transaction."""
 
-    def _reset(self):
+    def _reset(self) -> None:
         """Unset the transaction IDs."""
         self.current_id = None
         self.retry_id = None
 
-    def _pre_commit(self, transaction, *args, **kwargs):
+    def _pre_commit(self, transaction, *args, **kwargs) -> NoReturn:
         raise NotImplementedError
 
-    def _maybe_commit(self, transaction):
+    def _maybe_commit(self, transaction) -> NoReturn:
         raise NotImplementedError
 
     def __call__(self, transaction, *args, **kwargs):
