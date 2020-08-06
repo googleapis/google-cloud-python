@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.20.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.20.0...v1.20.1) (2020-08-06)
+
+
+### Bug Fixes
+
+* reduce refresh clock skew to 10 seconds ([#581](https://www.github.com/googleapis/google-auth-library-python/issues/581)) ([42321ba](https://www.github.com/googleapis/google-auth-library-python/commit/42321bafd38a8bd806f4d01bfa0eda3b5a961667))
+* set Content-Type header in the request to signBlob API to avoid Invalid JSON payload error ([#439](https://www.github.com/googleapis/google-auth-library-python/issues/439)) ([20f82e2](https://www.github.com/googleapis/google-auth-library-python/commit/20f82e22b7e8c6c7fdd29e08eaf7b4cf2abdcf37))
+
 ## [1.20.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.19.2...v1.20.0) (2020-07-23)
 
 
