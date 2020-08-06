@@ -22,7 +22,7 @@ import six
 from six.moves import urllib
 
 
-CLOCK_SKEW_SECS = 300  # 5 minutes in seconds
+CLOCK_SKEW_SECS = 10  # 10 seconds
 CLOCK_SKEW = datetime.timedelta(seconds=CLOCK_SKEW_SECS)
 
 
