@@ -3,23 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-automl.git",
-        "sha": "d6f05a13483cdeccc2532669686d8f6472867bd7"
+        "remote": "git@github.com:googleapis/python-automl.git",
+        "sha": "ec9cb308914fe2d5d19cf612c9a51a38ed77ee64"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "5b85137bf6fb01dcf8a949a6a04eee6ed0c22bec",
-        "internalRef": "317760971"
+        "sha": "fb84629a56703d04f0b5304c4a9ade7313ebd92d",
+        "internalRef": "325339219"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "cf2eff09d0f5319a4dc5cdce2b6356d85af4a798"
+        "sha": "5f2f711c91199ba2f609d3f06a2fe22aee4e5be3"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "5f2f711c91199ba2f609d3f06a2fe22aee4e5be3"
       }
     }
   ],

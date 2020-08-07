@@ -18,6 +18,7 @@ import re
 
 import synthtool as s
 from synthtool import gcp
+from synthtool.languages import python
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
@@ -142,8 +143,10 @@ s.replace(
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-    unit_cov_level=82, cov_level=83
+    unit_cov_level=82, cov_level=83, samples=True
 )
+
+python.py_samples(skip_readmes=True)
 
 s.move(templated_files)
 
