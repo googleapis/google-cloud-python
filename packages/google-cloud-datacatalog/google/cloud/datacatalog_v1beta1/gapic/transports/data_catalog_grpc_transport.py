@@ -136,42 +136,6 @@ class DataCatalogGrpcTransport(object):
         return self._stubs["data_catalog_stub"].SearchCatalog
 
     @property
-    def delete_entry_group(self):
-        """Return the gRPC stub for :meth:`DataCatalogClient.delete_entry_group`.
-
-        Deletes an EntryGroup. Only entry groups that do not contain entries
-        can be deleted. Users should enable the Data Catalog API in the project
-        identified by the ``name`` parameter (see [Data Catalog Resource
-        Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["data_catalog_stub"].DeleteEntryGroup
-
-    @property
-    def delete_entry(self):
-        """Return the gRPC stub for :meth:`DataCatalogClient.delete_entry`.
-
-        Deletes an existing entry. Only entries created through
-        ``CreateEntry`` method can be deleted. Users should enable the Data
-        Catalog API in the project identified by the ``name`` parameter (see
-        [Data Catalog Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["data_catalog_stub"].DeleteEntry
-
-    @property
     def get_entry(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.get_entry`.
 
@@ -198,84 +162,6 @@ class DataCatalogGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["data_catalog_stub"].LookupEntry
-
-    @property
-    def delete_tag_template(self):
-        """Return the gRPC stub for :meth:`DataCatalogClient.delete_tag_template`.
-
-        Deletes a tag template and all tags using the template. Users should
-        enable the Data Catalog API in the project identified by the ``name``
-        parameter (see [Data Catalog Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["data_catalog_stub"].DeleteTagTemplate
-
-    @property
-    def delete_tag_template_field(self):
-        """Return the gRPC stub for :meth:`DataCatalogClient.delete_tag_template_field`.
-
-        Deletes a field in a tag template and all uses of that field. Users
-        should enable the Data Catalog API in the project identified by the
-        ``name`` parameter (see [Data Catalog Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["data_catalog_stub"].DeleteTagTemplateField
-
-    @property
-    def delete_tag(self):
-        """Return the gRPC stub for :meth:`DataCatalogClient.delete_tag`.
-
-        Deletes a tag.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["data_catalog_stub"].DeleteTag
-
-    @property
-    def get_iam_policy(self):
-        """Return the gRPC stub for :meth:`DataCatalogClient.get_iam_policy`.
-
-        Gets the access control policy for a resource. A ``NOT_FOUND`` error
-        is returned if the resource does not exist. An empty policy is returned
-        if the resource exists but does not have a policy set on it.
-
-        Supported resources are:
-
-        -  Tag templates.
-        -  Entries.
-        -  Entry groups. Note, this method cannot be used to manage policies for
-           BigQuery, Pub/Sub and any external Google Cloud Platform resources
-           synced to Data Catalog.
-
-        Callers must have following Google IAM permission
-
-        -  ``datacatalog.tagTemplates.getIamPolicy`` to get policies on tag
-           templates.
-        -  ``datacatalog.entries.getIamPolicy`` to get policies on entries.
-        -  ``datacatalog.entryGroups.getIamPolicy`` to get policies on entry
-           groups.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["data_catalog_stub"].GetIamPolicy
 
     @property
     def create_entry_group(self):
@@ -327,6 +213,24 @@ class DataCatalogGrpcTransport(object):
         return self._stubs["data_catalog_stub"].GetEntryGroup
 
     @property
+    def delete_entry_group(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.delete_entry_group`.
+
+        Deletes an EntryGroup. Only entry groups that do not contain entries
+        can be deleted. Users should enable the Data Catalog API in the project
+        identified by the ``name`` parameter (see [Data Catalog Resource
+        Project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
+        for more information).
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].DeleteEntryGroup
+
+    @property
     def list_entry_groups(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.list_entry_groups`.
 
@@ -376,6 +280,24 @@ class DataCatalogGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["data_catalog_stub"].UpdateEntry
+
+    @property
+    def delete_entry(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.delete_entry`.
+
+        Deletes an existing entry. Only entries created through
+        ``CreateEntry`` method can be deleted. Users should enable the Data
+        Catalog API in the project identified by the ``name`` parameter (see
+        [Data Catalog Resource Project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
+        for more information).
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].DeleteEntry
 
     @property
     def list_entries(self):
@@ -441,6 +363,23 @@ class DataCatalogGrpcTransport(object):
         return self._stubs["data_catalog_stub"].UpdateTagTemplate
 
     @property
+    def delete_tag_template(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.delete_tag_template`.
+
+        Deletes a tag template and all tags using the template. Users should
+        enable the Data Catalog API in the project identified by the ``name``
+        parameter (see [Data Catalog Resource Project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
+        for more information).
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].DeleteTagTemplate
+
+    @property
     def create_tag_template_field(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.create_tag_template_field`.
 
@@ -493,6 +432,23 @@ class DataCatalogGrpcTransport(object):
         return self._stubs["data_catalog_stub"].RenameTagTemplateField
 
     @property
+    def delete_tag_template_field(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.delete_tag_template_field`.
+
+        Deletes a field in a tag template and all uses of that field. Users
+        should enable the Data Catalog API in the project identified by the
+        ``name`` parameter (see [Data Catalog Resource Project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
+        for more information).
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].DeleteTagTemplateField
+
+    @property
     def create_tag(self):
         """Return the gRPC stub for :meth:`DataCatalogClient.create_tag`.
 
@@ -522,6 +478,19 @@ class DataCatalogGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["data_catalog_stub"].UpdateTag
+
+    @property
+    def delete_tag(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.delete_tag`.
+
+        Deletes a tag.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].DeleteTag
 
     @property
     def list_tags(self):
@@ -563,6 +532,37 @@ class DataCatalogGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["data_catalog_stub"].SetIamPolicy
+
+    @property
+    def get_iam_policy(self):
+        """Return the gRPC stub for :meth:`DataCatalogClient.get_iam_policy`.
+
+        Gets the access control policy for a resource. A ``NOT_FOUND`` error
+        is returned if the resource does not exist. An empty policy is returned
+        if the resource exists but does not have a policy set on it.
+
+        Supported resources are:
+
+        -  Tag templates.
+        -  Entries.
+        -  Entry groups. Note, this method cannot be used to manage policies for
+           BigQuery, Pub/Sub and any external Google Cloud Platform resources
+           synced to Data Catalog.
+
+        Callers must have following Google IAM permission
+
+        -  ``datacatalog.tagTemplates.getIamPolicy`` to get policies on tag
+           templates.
+        -  ``datacatalog.entries.getIamPolicy`` to get policies on entries.
+        -  ``datacatalog.entryGroups.getIamPolicy`` to get policies on entry
+           groups.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_catalog_stub"].GetIamPolicy
 
     @property
     def test_iam_permissions(self):

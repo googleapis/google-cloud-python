@@ -112,68 +112,6 @@ class TestDataCatalogClient(object):
         with pytest.raises(CustomException):
             list(paged_list_response)
 
-    def test_delete_entry_group(self):
-        channel = ChannelStub()
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = datacatalog_v1beta1.DataCatalogClient()
-
-        # Setup Request
-        name = client.entry_group_path("[PROJECT]", "[LOCATION]", "[ENTRY_GROUP]")
-
-        client.delete_entry_group(name)
-
-        assert len(channel.requests) == 1
-        expected_request = datacatalog_pb2.DeleteEntryGroupRequest(name=name)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_entry_group_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = datacatalog_v1beta1.DataCatalogClient()
-
-        # Setup request
-        name = client.entry_group_path("[PROJECT]", "[LOCATION]", "[ENTRY_GROUP]")
-
-        with pytest.raises(CustomException):
-            client.delete_entry_group(name)
-
-    def test_delete_entry(self):
-        channel = ChannelStub()
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = datacatalog_v1beta1.DataCatalogClient()
-
-        # Setup Request
-        name = client.entry_path("[PROJECT]", "[LOCATION]", "[ENTRY_GROUP]", "[ENTRY]")
-
-        client.delete_entry(name)
-
-        assert len(channel.requests) == 1
-        expected_request = datacatalog_pb2.DeleteEntryRequest(name=name)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_entry_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = datacatalog_v1beta1.DataCatalogClient()
-
-        # Setup request
-        name = client.entry_path("[PROJECT]", "[LOCATION]", "[ENTRY_GROUP]", "[ENTRY]")
-
-        with pytest.raises(CustomException):
-            client.delete_entry(name)
-
     def test_get_entry(self):
         # Setup Expected Response
         name_2 = "name2-1052831874"
@@ -267,150 +205,6 @@ class TestDataCatalogClient(object):
 
         with pytest.raises(CustomException):
             client.lookup_entry()
-
-    def test_delete_tag_template(self):
-        channel = ChannelStub()
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = datacatalog_v1beta1.DataCatalogClient()
-
-        # Setup Request
-        name = client.tag_template_path("[PROJECT]", "[LOCATION]", "[TAG_TEMPLATE]")
-        force = False
-
-        client.delete_tag_template(name, force)
-
-        assert len(channel.requests) == 1
-        expected_request = datacatalog_pb2.DeleteTagTemplateRequest(
-            name=name, force=force
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_tag_template_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = datacatalog_v1beta1.DataCatalogClient()
-
-        # Setup request
-        name = client.tag_template_path("[PROJECT]", "[LOCATION]", "[TAG_TEMPLATE]")
-        force = False
-
-        with pytest.raises(CustomException):
-            client.delete_tag_template(name, force)
-
-    def test_delete_tag_template_field(self):
-        channel = ChannelStub()
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = datacatalog_v1beta1.DataCatalogClient()
-
-        # Setup Request
-        name = client.tag_template_field_path(
-            "[PROJECT]", "[LOCATION]", "[TAG_TEMPLATE]", "[FIELD]"
-        )
-        force = False
-
-        client.delete_tag_template_field(name, force)
-
-        assert len(channel.requests) == 1
-        expected_request = datacatalog_pb2.DeleteTagTemplateFieldRequest(
-            name=name, force=force
-        )
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_tag_template_field_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = datacatalog_v1beta1.DataCatalogClient()
-
-        # Setup request
-        name = client.tag_template_field_path(
-            "[PROJECT]", "[LOCATION]", "[TAG_TEMPLATE]", "[FIELD]"
-        )
-        force = False
-
-        with pytest.raises(CustomException):
-            client.delete_tag_template_field(name, force)
-
-    def test_delete_tag(self):
-        channel = ChannelStub()
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = datacatalog_v1beta1.DataCatalogClient()
-
-        # Setup Request
-        name = client.entry_path("[PROJECT]", "[LOCATION]", "[ENTRY_GROUP]", "[ENTRY]")
-
-        client.delete_tag(name)
-
-        assert len(channel.requests) == 1
-        expected_request = datacatalog_pb2.DeleteTagRequest(name=name)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_delete_tag_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = datacatalog_v1beta1.DataCatalogClient()
-
-        # Setup request
-        name = client.entry_path("[PROJECT]", "[LOCATION]", "[ENTRY_GROUP]", "[ENTRY]")
-
-        with pytest.raises(CustomException):
-            client.delete_tag(name)
-
-    def test_get_iam_policy(self):
-        # Setup Expected Response
-        version = 351608024
-        etag = b"21"
-        expected_response = {"version": version, "etag": etag}
-        expected_response = policy_pb2.Policy(**expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = datacatalog_v1beta1.DataCatalogClient()
-
-        # Setup Request
-        resource = "resource-341064690"
-
-        response = client.get_iam_policy(resource)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_get_iam_policy_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
-        with patch as create_channel:
-            create_channel.return_value = channel
-            client = datacatalog_v1beta1.DataCatalogClient()
-
-        # Setup request
-        resource = "resource-341064690"
-
-        with pytest.raises(CustomException):
-            client.get_iam_policy(resource)
 
     def test_create_entry_group(self):
         # Setup Expected Response
@@ -549,6 +343,37 @@ class TestDataCatalogClient(object):
 
         with pytest.raises(CustomException):
             client.get_entry_group(name)
+
+    def test_delete_entry_group(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datacatalog_v1beta1.DataCatalogClient()
+
+        # Setup Request
+        name = client.entry_group_path("[PROJECT]", "[LOCATION]", "[ENTRY_GROUP]")
+
+        client.delete_entry_group(name)
+
+        assert len(channel.requests) == 1
+        expected_request = datacatalog_pb2.DeleteEntryGroupRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_entry_group_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datacatalog_v1beta1.DataCatalogClient()
+
+        # Setup request
+        name = client.entry_group_path("[PROJECT]", "[LOCATION]", "[ENTRY_GROUP]")
+
+        with pytest.raises(CustomException):
+            client.delete_entry_group(name)
 
     def test_list_entry_groups(self):
         # Setup Expected Response
@@ -701,6 +526,37 @@ class TestDataCatalogClient(object):
 
         with pytest.raises(CustomException):
             client.update_entry(entry)
+
+    def test_delete_entry(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datacatalog_v1beta1.DataCatalogClient()
+
+        # Setup Request
+        name = client.entry_path("[PROJECT]", "[LOCATION]", "[ENTRY_GROUP]", "[ENTRY]")
+
+        client.delete_entry(name)
+
+        assert len(channel.requests) == 1
+        expected_request = datacatalog_pb2.DeleteEntryRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_entry_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datacatalog_v1beta1.DataCatalogClient()
+
+        # Setup request
+        name = client.entry_path("[PROJECT]", "[LOCATION]", "[ENTRY_GROUP]", "[ENTRY]")
+
+        with pytest.raises(CustomException):
+            client.delete_entry(name)
 
     def test_list_entries(self):
         # Setup Expected Response
@@ -870,6 +726,41 @@ class TestDataCatalogClient(object):
         with pytest.raises(CustomException):
             client.update_tag_template(tag_template)
 
+    def test_delete_tag_template(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datacatalog_v1beta1.DataCatalogClient()
+
+        # Setup Request
+        name = client.tag_template_path("[PROJECT]", "[LOCATION]", "[TAG_TEMPLATE]")
+        force = False
+
+        client.delete_tag_template(name, force)
+
+        assert len(channel.requests) == 1
+        expected_request = datacatalog_pb2.DeleteTagTemplateRequest(
+            name=name, force=force
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_tag_template_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datacatalog_v1beta1.DataCatalogClient()
+
+        # Setup request
+        name = client.tag_template_path("[PROJECT]", "[LOCATION]", "[TAG_TEMPLATE]")
+        force = False
+
+        with pytest.raises(CustomException):
+            client.delete_tag_template(name, force)
+
     def test_create_tag_template_field(self):
         # Setup Expected Response
         name = "name3373707"
@@ -1036,6 +927,45 @@ class TestDataCatalogClient(object):
         with pytest.raises(CustomException):
             client.rename_tag_template_field(name, new_tag_template_field_id)
 
+    def test_delete_tag_template_field(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datacatalog_v1beta1.DataCatalogClient()
+
+        # Setup Request
+        name = client.tag_template_field_path(
+            "[PROJECT]", "[LOCATION]", "[TAG_TEMPLATE]", "[FIELD]"
+        )
+        force = False
+
+        client.delete_tag_template_field(name, force)
+
+        assert len(channel.requests) == 1
+        expected_request = datacatalog_pb2.DeleteTagTemplateFieldRequest(
+            name=name, force=force
+        )
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_tag_template_field_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datacatalog_v1beta1.DataCatalogClient()
+
+        # Setup request
+        name = client.tag_template_field_path(
+            "[PROJECT]", "[LOCATION]", "[TAG_TEMPLATE]", "[FIELD]"
+        )
+        force = False
+
+        with pytest.raises(CustomException):
+            client.delete_tag_template_field(name, force)
+
     def test_create_tag(self):
         # Setup Expected Response
         name = "name3373707"
@@ -1134,6 +1064,37 @@ class TestDataCatalogClient(object):
         with pytest.raises(CustomException):
             client.update_tag(tag)
 
+    def test_delete_tag(self):
+        channel = ChannelStub()
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datacatalog_v1beta1.DataCatalogClient()
+
+        # Setup Request
+        name = client.entry_path("[PROJECT]", "[LOCATION]", "[ENTRY_GROUP]", "[ENTRY]")
+
+        client.delete_tag(name)
+
+        assert len(channel.requests) == 1
+        expected_request = datacatalog_pb2.DeleteTagRequest(name=name)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_delete_tag_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datacatalog_v1beta1.DataCatalogClient()
+
+        # Setup request
+        name = client.entry_path("[PROJECT]", "[LOCATION]", "[ENTRY_GROUP]", "[ENTRY]")
+
+        with pytest.raises(CustomException):
+            client.delete_tag(name)
+
     def test_list_tags(self):
         # Setup Expected Response
         next_page_token = ""
@@ -1223,6 +1184,45 @@ class TestDataCatalogClient(object):
 
         with pytest.raises(CustomException):
             client.set_iam_policy(resource, policy)
+
+    def test_get_iam_policy(self):
+        # Setup Expected Response
+        version = 351608024
+        etag = b"21"
+        expected_response = {"version": version, "etag": etag}
+        expected_response = policy_pb2.Policy(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datacatalog_v1beta1.DataCatalogClient()
+
+        # Setup Request
+        resource = "resource-341064690"
+
+        response = client.get_iam_policy(resource)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_get_iam_policy_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        patch = mock.patch("google.api_core.grpc_helpers.create_channel")
+        with patch as create_channel:
+            create_channel.return_value = channel
+            client = datacatalog_v1beta1.DataCatalogClient()
+
+        # Setup request
+        resource = "resource-341064690"
+
+        with pytest.raises(CustomException):
+            client.get_iam_policy(resource)
 
     def test_test_iam_permissions(self):
         # Setup Expected Response

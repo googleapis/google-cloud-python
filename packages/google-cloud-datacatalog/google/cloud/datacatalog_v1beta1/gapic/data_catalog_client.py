@@ -399,153 +399,6 @@ class DataCatalogClient(object):
         )
         return iterator
 
-    def delete_entry_group(
-        self,
-        name,
-        force=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Deletes an EntryGroup. Only entry groups that do not contain entries
-        can be deleted. Users should enable the Data Catalog API in the project
-        identified by the ``name`` parameter (see [Data Catalog Resource
-        Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
-
-        Example:
-            >>> from google.cloud import datacatalog_v1beta1
-            >>>
-            >>> client = datacatalog_v1beta1.DataCatalogClient()
-            >>>
-            >>> name = client.entry_group_path('[PROJECT]', '[LOCATION]', '[ENTRY_GROUP]')
-            >>>
-            >>> client.delete_entry_group(name)
-
-        Args:
-            name (str): Required. The name of the entry group. For example,
-                ``projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}``.
-            force (bool): Optional. If true, deletes all entries in the entry group.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "delete_entry_group" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "delete_entry_group"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_entry_group,
-                default_retry=self._method_configs["DeleteEntryGroup"].retry,
-                default_timeout=self._method_configs["DeleteEntryGroup"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = datacatalog_pb2.DeleteEntryGroupRequest(name=name, force=force)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        self._inner_api_calls["delete_entry_group"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def delete_entry(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Deletes an existing entry. Only entries created through
-        ``CreateEntry`` method can be deleted. Users should enable the Data
-        Catalog API in the project identified by the ``name`` parameter (see
-        [Data Catalog Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
-
-        Example:
-            >>> from google.cloud import datacatalog_v1beta1
-            >>>
-            >>> client = datacatalog_v1beta1.DataCatalogClient()
-            >>>
-            >>> name = client.entry_path('[PROJECT]', '[LOCATION]', '[ENTRY_GROUP]', '[ENTRY]')
-            >>>
-            >>> client.delete_entry(name)
-
-        Args:
-            name (str): Required. The name of the entry. Example:
-
-                -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "delete_entry" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "delete_entry"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_entry,
-                default_retry=self._method_configs["DeleteEntry"].retry,
-                default_timeout=self._method_configs["DeleteEntry"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = datacatalog_pb2.DeleteEntryRequest(name=name)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        self._inner_api_calls["delete_entry"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
     def get_entry(
         self,
         name,
@@ -699,329 +552,6 @@ class DataCatalogClient(object):
             linked_resource=linked_resource, sql_resource=sql_resource
         )
         return self._inner_api_calls["lookup_entry"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def delete_tag_template(
-        self,
-        name,
-        force,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Deletes a tag template and all tags using the template. Users should
-        enable the Data Catalog API in the project identified by the ``name``
-        parameter (see [Data Catalog Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
-
-        Example:
-            >>> from google.cloud import datacatalog_v1beta1
-            >>>
-            >>> client = datacatalog_v1beta1.DataCatalogClient()
-            >>>
-            >>> name = client.tag_template_path('[PROJECT]', '[LOCATION]', '[TAG_TEMPLATE]')
-            >>>
-            >>> # TODO: Initialize `force`:
-            >>> force = False
-            >>>
-            >>> client.delete_tag_template(name, force)
-
-        Args:
-            name (str): Required. The name of the tag template to delete. Example:
-
-                -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
-            force (bool): Required. Currently, this field must always be set to ``true``. This
-                confirms the deletion of any possible tags using this template.
-                ``force = false`` will be supported in the future.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "delete_tag_template" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "delete_tag_template"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_tag_template,
-                default_retry=self._method_configs["DeleteTagTemplate"].retry,
-                default_timeout=self._method_configs["DeleteTagTemplate"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = datacatalog_pb2.DeleteTagTemplateRequest(name=name, force=force)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        self._inner_api_calls["delete_tag_template"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def delete_tag_template_field(
-        self,
-        name,
-        force,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Deletes a field in a tag template and all uses of that field. Users
-        should enable the Data Catalog API in the project identified by the
-        ``name`` parameter (see [Data Catalog Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
-
-        Example:
-            >>> from google.cloud import datacatalog_v1beta1
-            >>>
-            >>> client = datacatalog_v1beta1.DataCatalogClient()
-            >>>
-            >>> name = client.tag_template_field_path('[PROJECT]', '[LOCATION]', '[TAG_TEMPLATE]', '[FIELD]')
-            >>>
-            >>> # TODO: Initialize `force`:
-            >>> force = False
-            >>>
-            >>> client.delete_tag_template_field(name, force)
-
-        Args:
-            name (str): Required. The name of the tag template field to delete. Example:
-
-                -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
-            force (bool): Required. Currently, this field must always be set to ``true``. This
-                confirms the deletion of this field from any tags using this field.
-                ``force = false`` will be supported in the future.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "delete_tag_template_field" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "delete_tag_template_field"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_tag_template_field,
-                default_retry=self._method_configs["DeleteTagTemplateField"].retry,
-                default_timeout=self._method_configs["DeleteTagTemplateField"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = datacatalog_pb2.DeleteTagTemplateFieldRequest(name=name, force=force)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        self._inner_api_calls["delete_tag_template_field"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def delete_tag(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Deletes a tag.
-
-        Example:
-            >>> from google.cloud import datacatalog_v1beta1
-            >>>
-            >>> client = datacatalog_v1beta1.DataCatalogClient()
-            >>>
-            >>> name = client.entry_path('[PROJECT]', '[LOCATION]', '[ENTRY_GROUP]', '[ENTRY]')
-            >>>
-            >>> client.delete_tag(name)
-
-        Args:
-            name (str): Required. The name of the tag to delete. Example:
-
-                -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}/tags/{tag_id}
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "delete_tag" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "delete_tag"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_tag,
-                default_retry=self._method_configs["DeleteTag"].retry,
-                default_timeout=self._method_configs["DeleteTag"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = datacatalog_pb2.DeleteTagRequest(name=name)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        self._inner_api_calls["delete_tag"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def get_iam_policy(
-        self,
-        resource,
-        options_=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Gets the access control policy for a resource. A ``NOT_FOUND`` error
-        is returned if the resource does not exist. An empty policy is returned
-        if the resource exists but does not have a policy set on it.
-
-        Supported resources are:
-
-        -  Tag templates.
-        -  Entries.
-        -  Entry groups. Note, this method cannot be used to manage policies for
-           BigQuery, Pub/Sub and any external Google Cloud Platform resources
-           synced to Data Catalog.
-
-        Callers must have following Google IAM permission
-
-        -  ``datacatalog.tagTemplates.getIamPolicy`` to get policies on tag
-           templates.
-        -  ``datacatalog.entries.getIamPolicy`` to get policies on entries.
-        -  ``datacatalog.entryGroups.getIamPolicy`` to get policies on entry
-           groups.
-
-        Example:
-            >>> from google.cloud import datacatalog_v1beta1
-            >>>
-            >>> client = datacatalog_v1beta1.DataCatalogClient()
-            >>>
-            >>> # TODO: Initialize `resource`:
-            >>> resource = ''
-            >>>
-            >>> response = client.get_iam_policy(resource)
-
-        Args:
-            resource (str): REQUIRED: The resource for which the policy is being requested.
-                See the operation documentation for the appropriate value for this field.
-            options_ (Union[dict, ~google.cloud.datacatalog_v1beta1.types.GetPolicyOptions]): OPTIONAL: A ``GetPolicyOptions`` object for specifying options to
-                ``GetIamPolicy``. This field is only used by Cloud IAM.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.datacatalog_v1beta1.types.GetPolicyOptions`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.datacatalog_v1beta1.types.Policy` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "get_iam_policy" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "get_iam_policy"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_iam_policy,
-                default_retry=self._method_configs["GetIamPolicy"].retry,
-                default_timeout=self._method_configs["GetIamPolicy"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = iam_policy_pb2.GetIamPolicyRequest(
-            resource=resource, options=options_
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("resource", resource)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["get_iam_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
@@ -1276,6 +806,80 @@ class DataCatalogClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls["get_entry_group"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def delete_entry_group(
+        self,
+        name,
+        force=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes an EntryGroup. Only entry groups that do not contain entries
+        can be deleted. Users should enable the Data Catalog API in the project
+        identified by the ``name`` parameter (see [Data Catalog Resource
+        Project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
+        for more information).
+
+        Example:
+            >>> from google.cloud import datacatalog_v1beta1
+            >>>
+            >>> client = datacatalog_v1beta1.DataCatalogClient()
+            >>>
+            >>> name = client.entry_group_path('[PROJECT]', '[LOCATION]', '[ENTRY_GROUP]')
+            >>>
+            >>> client.delete_entry_group(name)
+
+        Args:
+            name (str): Required. The name of the entry group. For example,
+                ``projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}``.
+            force (bool): Optional. If true, deletes all entries in the entry group.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_entry_group" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_entry_group"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_entry_group,
+                default_retry=self._method_configs["DeleteEntryGroup"].retry,
+                default_timeout=self._method_configs["DeleteEntryGroup"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = datacatalog_pb2.DeleteEntryGroupRequest(name=name, force=force)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["delete_entry_group"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
@@ -1588,6 +1192,79 @@ class DataCatalogClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls["update_entry"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def delete_entry(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes an existing entry. Only entries created through
+        ``CreateEntry`` method can be deleted. Users should enable the Data
+        Catalog API in the project identified by the ``name`` parameter (see
+        [Data Catalog Resource Project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
+        for more information).
+
+        Example:
+            >>> from google.cloud import datacatalog_v1beta1
+            >>>
+            >>> client = datacatalog_v1beta1.DataCatalogClient()
+            >>>
+            >>> name = client.entry_path('[PROJECT]', '[LOCATION]', '[ENTRY_GROUP]', '[ENTRY]')
+            >>>
+            >>> client.delete_entry(name)
+
+        Args:
+            name (str): Required. The name of the entry. Example:
+
+                -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_entry" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_entry"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_entry,
+                default_retry=self._method_configs["DeleteEntry"].retry,
+                default_timeout=self._method_configs["DeleteEntry"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = datacatalog_pb2.DeleteEntryRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["delete_entry"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
@@ -1962,6 +1639,85 @@ class DataCatalogClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
+    def delete_tag_template(
+        self,
+        name,
+        force,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes a tag template and all tags using the template. Users should
+        enable the Data Catalog API in the project identified by the ``name``
+        parameter (see [Data Catalog Resource Project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
+        for more information).
+
+        Example:
+            >>> from google.cloud import datacatalog_v1beta1
+            >>>
+            >>> client = datacatalog_v1beta1.DataCatalogClient()
+            >>>
+            >>> name = client.tag_template_path('[PROJECT]', '[LOCATION]', '[TAG_TEMPLATE]')
+            >>>
+            >>> # TODO: Initialize `force`:
+            >>> force = False
+            >>>
+            >>> client.delete_tag_template(name, force)
+
+        Args:
+            name (str): Required. The name of the tag template to delete. Example:
+
+                -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
+            force (bool): Required. Currently, this field must always be set to ``true``. This
+                confirms the deletion of any possible tags using this template.
+                ``force = false`` will be supported in the future.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_tag_template" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_tag_template"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_tag_template,
+                default_retry=self._method_configs["DeleteTagTemplate"].retry,
+                default_timeout=self._method_configs["DeleteTagTemplate"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = datacatalog_pb2.DeleteTagTemplateRequest(name=name, force=force)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["delete_tag_template"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def create_tag_template_field(
         self,
         parent,
@@ -2248,6 +2004,85 @@ class DataCatalogClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
+    def delete_tag_template_field(
+        self,
+        name,
+        force,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes a field in a tag template and all uses of that field. Users
+        should enable the Data Catalog API in the project identified by the
+        ``name`` parameter (see [Data Catalog Resource Project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
+        for more information).
+
+        Example:
+            >>> from google.cloud import datacatalog_v1beta1
+            >>>
+            >>> client = datacatalog_v1beta1.DataCatalogClient()
+            >>>
+            >>> name = client.tag_template_field_path('[PROJECT]', '[LOCATION]', '[TAG_TEMPLATE]', '[FIELD]')
+            >>>
+            >>> # TODO: Initialize `force`:
+            >>> force = False
+            >>>
+            >>> client.delete_tag_template_field(name, force)
+
+        Args:
+            name (str): Required. The name of the tag template field to delete. Example:
+
+                -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
+            force (bool): Required. Currently, this field must always be set to ``true``. This
+                confirms the deletion of this field from any tags using this field.
+                ``force = false`` will be supported in the future.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_tag_template_field" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_tag_template_field"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_tag_template_field,
+                default_retry=self._method_configs["DeleteTagTemplateField"].retry,
+                default_timeout=self._method_configs["DeleteTagTemplateField"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = datacatalog_pb2.DeleteTagTemplateFieldRequest(name=name, force=force)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["delete_tag_template_field"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def create_tag(
         self,
         parent,
@@ -2413,6 +2248,74 @@ class DataCatalogClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls["update_tag"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def delete_tag(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes a tag.
+
+        Example:
+            >>> from google.cloud import datacatalog_v1beta1
+            >>>
+            >>> client = datacatalog_v1beta1.DataCatalogClient()
+            >>>
+            >>> name = client.entry_path('[PROJECT]', '[LOCATION]', '[ENTRY_GROUP]', '[ENTRY]')
+            >>>
+            >>> client.delete_tag(name)
+
+        Args:
+            name (str): Required. The name of the tag to delete. Example:
+
+                -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}/tags/{tag_id}
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_tag" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_tag"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_tag,
+                default_retry=self._method_configs["DeleteTag"].retry,
+                default_timeout=self._method_configs["DeleteTag"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = datacatalog_pb2.DeleteTagRequest(name=name)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["delete_tag"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
@@ -2617,6 +2520,103 @@ class DataCatalogClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls["set_iam_policy"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def get_iam_policy(
+        self,
+        resource,
+        options_=None,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Gets the access control policy for a resource. A ``NOT_FOUND`` error
+        is returned if the resource does not exist. An empty policy is returned
+        if the resource exists but does not have a policy set on it.
+
+        Supported resources are:
+
+        -  Tag templates.
+        -  Entries.
+        -  Entry groups. Note, this method cannot be used to manage policies for
+           BigQuery, Pub/Sub and any external Google Cloud Platform resources
+           synced to Data Catalog.
+
+        Callers must have following Google IAM permission
+
+        -  ``datacatalog.tagTemplates.getIamPolicy`` to get policies on tag
+           templates.
+        -  ``datacatalog.entries.getIamPolicy`` to get policies on entries.
+        -  ``datacatalog.entryGroups.getIamPolicy`` to get policies on entry
+           groups.
+
+        Example:
+            >>> from google.cloud import datacatalog_v1beta1
+            >>>
+            >>> client = datacatalog_v1beta1.DataCatalogClient()
+            >>>
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
+            >>>
+            >>> response = client.get_iam_policy(resource)
+
+        Args:
+            resource (str): REQUIRED: The resource for which the policy is being requested.
+                See the operation documentation for the appropriate value for this field.
+            options_ (Union[dict, ~google.cloud.datacatalog_v1beta1.types.GetPolicyOptions]): OPTIONAL: A ``GetPolicyOptions`` object for specifying options to
+                ``GetIamPolicy``. This field is only used by Cloud IAM.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.datacatalog_v1beta1.types.GetPolicyOptions`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.datacatalog_v1beta1.types.Policy` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_iam_policy" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_iam_policy"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_iam_policy,
+                default_retry=self._method_configs["GetIamPolicy"].retry,
+                default_timeout=self._method_configs["GetIamPolicy"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = iam_policy_pb2.GetIamPolicyRequest(
+            resource=resource, options=options_
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["get_iam_policy"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
