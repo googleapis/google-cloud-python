@@ -1,6 +1,10 @@
 # `google-crc32c`
 
-This package wraps the [`google/crc32c`](https://github.com/google/crc32c) hardware-based implementation of the CRC32C hashing algorithm. Multiple wheels are distributed as well as source. If a wheel is not published for the python version and platform you are using, you will need to compile crc32c using a C toolchain.
+This package wraps the [`google/crc32c`](https://github.com/google/crc32c)
+hardware-based implementation of the CRC32C hashing algorithm. Multiple wheels
+are distributed as well as source. If a wheel is not published for the python
+version and platform you are using, you will need to compile crc32c using a
+C toolchain.
 
 
 # Building
