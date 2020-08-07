@@ -20,6 +20,10 @@ import shlex
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath(".."))
 
+# For plugins that can not read conf.py.
+# See also: https://github.com/docascode/sphinx-docfx-yaml/issues/85
+sys.path.insert(0, os.path.abspath("."))
+
 __version__ = ""
 
 # -- General configuration ------------------------------------------------
@@ -90,7 +94,12 @@ language = None
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ["_build"]
+exclude_patterns = [
+    "_build",
+    "samples/AUTHORING_GUIDE.md",
+    "samples/CONTRIBUTING.md",
+    "samples/snippets/README.rst",
+]
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.

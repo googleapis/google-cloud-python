@@ -118,8 +118,8 @@ config = {
                 },
                 "UpdateBackup": {
                     "timeout_millis": 3600000,
-                    "retry_codes_name": "no_retry_1_codes",
-                    "retry_params_name": "no_retry_1_params",
+                    "retry_codes_name": "retry_policy_1_codes",
+                    "retry_params_name": "retry_policy_1_params",
                 },
                 "DeleteBackup": {
                     "timeout_millis": 3600000,

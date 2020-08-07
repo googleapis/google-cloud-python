@@ -3,22 +3,59 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:larkee/python-spanner.git",
-        "sha": "3e54af6f8582e9620afb704e1d08994eab12c365"
+        "remote": "https://github.com/googleapis/python-spanner.git",
+        "sha": "891077105d5093a73caf96683d10afef2cd17823"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "6fd07563a2f1a6785066f5955ad9659a315e4492",
+        "internalRef": "324941614"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "2686d7075fa456972bf4d08680d99617f5eb32b1"
+        "sha": "4f8f5dc24af79694887385015294e4dbb214c352"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "2686d7075fa456972bf4d08680d99617f5eb32b1"
+        "sha": "4f8f5dc24af79694887385015294e4dbb214c352"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "spanner",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "bazel"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "spanner_admin_instance",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "bazel"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "spanner_admin_database",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "bazel"
       }
     }
   ]
