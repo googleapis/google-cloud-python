@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+### [1.15.1](https://www.github.com/googleapis/python-logging/compare/v1.15.0...v1.15.1) (2020-07-01)
+
+
+### Documentation
+
+* add initialization of LogEntry instance in the v2 example ([#46](https://www.github.com/googleapis/python-logging/issues/46)) ([251ac93](https://www.github.com/googleapis/python-logging/commit/251ac9355b192121572552c1c9cfd4df94a42802)), closes [#44](https://www.github.com/googleapis/python-logging/issues/44)
+* change descriptions for virtual environment ([#48](https://www.github.com/googleapis/python-logging/issues/48)) ([c5c3c15](https://www.github.com/googleapis/python-logging/commit/c5c3c153d1ae91f44c4104279baae9d9e4f88d03)), closes [#47](https://www.github.com/googleapis/python-logging/issues/47)
+
 ## [1.15.0](https://www.github.com/googleapis/python-logging/compare/v1.14.0...v1.15.0) (2020-02-26)
 
 
