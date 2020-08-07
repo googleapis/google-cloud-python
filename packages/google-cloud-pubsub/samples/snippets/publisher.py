@@ -273,6 +273,94 @@ def publish_messages_with_retry_settings(project_id, topic_id):
     # [END pubsub_publisher_retry_settings]
 
 
+def publish_with_ordering_keys(project_id, topic_id):
+    """Publishes messages with ordering keys."""
+    # [START pubsub_publish_with_ordering_keys]
+    from google.cloud import pubsub_v1
+
+    # TODO(developer): Choose an existing topic.
+    # project_id = "your-project-id"
+    # topic_id = "your-topic-id"
+
+    publisher_options = pubsub_v1.types.PublisherOptions(
+        enable_message_ordering=True
+    )
+    # Sending messages to the same region ensures they are received in order
+    # even when multiple publishers are used.
+    client_options = {"api_endpoint": "us-east1-pubsub.googleapis.com:443"}
+    publisher = pubsub_v1.PublisherClient(
+        publisher_options=publisher_options,
+        client_options=client_options
+    )
+    # The `topic_path` method creates a fully qualified identifier
+    # in the form `projects/{project_id}/topics/{topic_id}`
+    topic_path = publisher.topic_path(project_id, topic_id)
+
+    for message in [
+        ("message1", "key1"),
+        ("message2", "key2"),
+        ("message3", "key1"),
+        ("message4", "key2"),
+    ]:
+        # Data must be a bytestring
+        data = message[0].encode("utf-8")
+        ordering_key = message[1]
+        # When you publish a message, the client returns a future.
+        future = publisher.publish(
+            topic_path, data=data, ordering_key=ordering_key
+        )
+        print(future.result())
+
+    print("Published messages with ordering keys.")
+    # [END pubsub_publish_with_ordering_keys]
+
+
+def resume_publish_with_ordering_keys(project_id, topic_id):
+    """Resume publishing messages with ordering keys when unrecoverable errors occur."""
+    # [START pubsub_resume_publish_with_ordering_keys]
+    from google.cloud import pubsub_v1
+
+    # TODO(developer): Choose an existing topic.
+    # project_id = "your-project-id"
+    # topic_id = "your-topic-id"
+
+    publisher_options = pubsub_v1.types.PublisherOptions(
+        enable_message_ordering=True
+    )
+    # Sending messages to the same region ensures they are received in order
+    # even when multiple publishers are used.
+    client_options = {"api_endpoint": "us-east1-pubsub.googleapis.com:443"}
+    publisher = pubsub_v1.PublisherClient(
+        publisher_options=publisher_options,
+        client_options=client_options
+    )
+    # The `topic_path` method creates a fully qualified identifier
+    # in the form `projects/{project_id}/topics/{topic_id}`
+    topic_path = publisher.topic_path(project_id, topic_id)
+
+    for message in [
+        ("message1", "key1"),
+        ("message2", "key2"),
+        ("message3", "key1"),
+        ("message4", "key2"),
+    ]:
+        # Data must be a bytestring
+        data = message[0].encode("utf-8")
+        ordering_key = message[1]
+        # When you publish a message, the client returns a future.
+        future = publisher.publish(
+            topic_path, data=data, ordering_key=ordering_key
+        )
+        try:
+            print(future.result())
+        except RuntimeError:
+            # Resume publish on an ordering key that has had unrecoverable errors.
+            publisher.resume_publish(topic_path, ordering_key)
+
+    print("Published messages with ordering keys.")
+    # [END pubsub_resume_publish_with_ordering_keys]
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -288,7 +376,9 @@ if __name__ == "__main__":
     delete_parser = subparsers.add_parser("delete", help=delete_topic.__doc__)
     delete_parser.add_argument("topic_id")
 
-    publish_parser = subparsers.add_parser("publish", help=publish_messages.__doc__)
+    publish_parser = subparsers.add_parser(
+        "publish", help=publish_messages.__doc__
+    )
     publish_parser.add_argument("topic_id")
 
     publish_with_custom_attributes_parser = subparsers.add_parser(
@@ -298,7 +388,8 @@ if __name__ == "__main__":
     publish_with_custom_attributes_parser.add_argument("topic_id")
 
     publish_with_error_handler_parser = subparsers.add_parser(
-        "publish-with-error-handler", help=publish_messages_with_error_handler.__doc__,
+        "publish-with-error-handler",
+        help=publish_messages_with_error_handler.__doc__,
     )
     publish_with_error_handler_parser.add_argument("topic_id")
 
@@ -313,6 +404,17 @@ if __name__ == "__main__":
         help=publish_messages_with_retry_settings.__doc__,
     )
     publish_with_retry_settings_parser.add_argument("topic_id")
+
+    publish_with_ordering_keys_parser = subparsers.add_parser(
+        "publish-with-ordering-keys", help=publish_with_ordering_keys.__doc__,
+    )
+    publish_with_ordering_keys_parser.add_argument("topic_id")
+
+    resume_publish_with_ordering_keys_parser = subparsers.add_parser(
+        "resume-publish-with-ordering-keys",
+        help=resume_publish_with_ordering_keys.__doc__,
+    )
+    resume_publish_with_ordering_keys_parser.add_argument("topic_id")
 
     args = parser.parse_args()
 
@@ -332,3 +434,7 @@ if __name__ == "__main__":
         publish_messages_with_batch_settings(args.project_id, args.topic_id)
     elif args.command == "publish-with-retry-settings":
         publish_messages_with_retry_settings(args.project_id, args.topic_id)
+    elif args.command == "publish-with-ordering-keys":
+        publish_with_ordering_keys(args.project_id, args.topic_id)
+    elif args.command == "resume-publish-with-ordering-keys":
+        resume_publish_with_ordering_keys(args.project_id, args.topic_id)

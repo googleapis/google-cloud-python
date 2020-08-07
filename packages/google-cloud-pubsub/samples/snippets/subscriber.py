@@ -160,6 +160,28 @@ def create_push_subscription(project_id, topic_id, subscription_id, endpoint):
     # [END pubsub_create_push_subscription]
 
 
+def create_subscription_with_ordering(project_id, topic_id, subscription_id):
+    """Create a subscription with dead letter policy."""
+    # [START pubsub_enable_subscription_ordering]
+    from google.cloud import pubsub_v1
+
+    # TODO(developer): Choose an existing topic.
+    # project_id = "your-project-id"
+    # topic_id = "your-topic-id"
+    # subscription_id = "your-subscription-id"
+
+    subscriber = pubsub_v1.SubscriberClient()
+    topic_path = subscriber.topic_path(project_id, topic_id)
+    subscription_path = subscriber.subscription_path(project_id, subscription_id)
+
+    with subscriber:
+        subscription = subscriber.create_subscription(
+            subscription_path, topic_path, enable_message_ordering=True
+        )
+        print("Created subscription with ordering: {}".format(subscription))
+    # [END pubsub_enable_subscription_ordering]
+
+
 def delete_subscription(project_id, subscription_id):
     """Deletes an existing Pub/Sub topic."""
     # [START pubsub_delete_subscription]
@@ -654,6 +676,12 @@ if __name__ == "__main__":
     create_push_parser.add_argument("subscription_id")
     create_push_parser.add_argument("endpoint")
 
+    create_subscription_with_ordering_parser = subparsers.add_parser(
+        "create-with-ordering", help=create_subscription_with_ordering.__doc__
+    )
+    create_subscription_with_ordering_parser.add_argument("topic_id")
+    create_subscription_with_ordering_parser.add_argument("subscription_id")
+
     delete_parser = subparsers.add_parser("delete", help=delete_subscription.__doc__)
     delete_parser.add_argument("subscription_id")
 
@@ -745,6 +773,10 @@ if __name__ == "__main__":
     elif args.command == "create-push":
         create_push_subscription(
             args.project_id, args.topic_id, args.subscription_id, args.endpoint,
+        )
+    elif args.command == "create-with-ordering":
+        create_subscription_with_ordering(
+            args.project_id, args.topic_id, args.subscription_id
         )
     elif args.command == "delete":
         delete_subscription(args.project_id, args.subscription_id)

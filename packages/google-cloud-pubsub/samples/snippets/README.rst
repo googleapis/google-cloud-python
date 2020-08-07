@@ -110,11 +110,11 @@ To run this sample:
 
 .. code-block:: bash
 
-    $ python publisher.py
+    $ python publisher.py --help
 
     usage: publisher.py [-h]
                         project_id
-                        {list,create,delete,publish,publish-with-custom-attributes,publish-with-error-handler,publish-with-batch-settings,publish-with-retry-settings}
+                        {list,create,delete,publish,publish-with-custom-attributes,publish-with-error-handler,publish-with-batch-settings,publish-with-retry-settings,publish-with-ordering-keys,resume-publish-with-ordering-keys}
                         ...
 
     This application demonstrates how to perform basic operations on topics
@@ -125,7 +125,7 @@ To run this sample:
 
     positional arguments:
       project_id            Your Google Cloud project ID
-      {list,create,delete,publish,publish-with-custom-attributes,publish-with-error-handler,publish-with-batch-settings,publish-with-retry-settings}
+      {list,create,delete,publish,publish-with-custom-attributes,publish-with-error-handler,publish-with-batch-settings,publish-with-retry-settings,publish-with-ordering-keys,resume-publish-with-ordering-keys}
         list                Lists all Pub/Sub topics in the given project.
         create              Create a new Pub/Sub topic.
         delete              Deletes an existing Pub/Sub topic.
@@ -141,6 +141,11 @@ To run this sample:
                             batch settings.
         publish-with-retry-settings
                             Publishes messages with custom retry settings.
+        publish-with-ordering-keys
+                            Publishes messages with ordering keys.
+        resume-publish-with-ordering-keys
+                            Resume publishing messages with ordering keys when
+                            unrecoverable errors occur.
 
     optional arguments:
       -h, --help            show this help message and exit
@@ -160,11 +165,11 @@ To run this sample:
 
 .. code-block:: bash
 
-    $ python subscriber.py
+    $ python subscriber.py --help
 
     usage: subscriber.py [-h]
                          project_id
-                         {list-in-topic,list-in-project,create,create-with-dead-letter-policy,create-push,delete,update-push,update-dead-letter-policy,remove-dead-letter-policy,receive,receive-custom-attributes,receive-flow-control,receive-synchronously,receive-synchronously-with-lease,listen-for-errors,receive-messages-with-delivery-attempts}
+                         {list-in-topic,list-in-project,create,create-with-dead-letter-policy,create-push,create-with-ordering,delete,update-push,update-dead-letter-policy,remove-dead-letter-policy,receive,receive-custom-attributes,receive-flow-control,receive-synchronously,receive-synchronously-with-lease,listen-for-errors,receive-messages-with-delivery-attempts}
                          ...
 
     This application demonstrates how to perform basic operations on
@@ -175,13 +180,15 @@ To run this sample:
 
     positional arguments:
       project_id            Your Google Cloud project ID
-      {list-in-topic,list-in-project,create,create-with-dead-letter-policy,create-push,delete,update-push,update-dead-letter-policy,remove-dead-letter-policy,receive,receive-custom-attributes,receive-flow-control,receive-synchronously,receive-synchronously-with-lease,listen-for-errors,receive-messages-with-delivery-attempts}
+      {list-in-topic,list-in-project,create,create-with-dead-letter-policy,create-push,create-with-ordering,delete,update-push,update-dead-letter-policy,remove-dead-letter-policy,receive,receive-custom-attributes,receive-flow-control,receive-synchronously,receive-synchronously-with-lease,listen-for-errors,receive-messages-with-delivery-attempts}
         list-in-topic       Lists all subscriptions for a given topic.
         list-in-project     Lists all subscriptions in the current project.
         create              Create a new pull subscription on the given topic.
         create-with-dead-letter-policy
                             Create a subscription with dead letter policy.
         create-push         Create a new push subscription on the given topic.
+        create-with-ordering
+                            Create a subscription with dead letter policy.
         delete              Deletes an existing Pub/Sub topic.
         update-push         Updates an existing Pub/Sub subscription's push
                             endpoint URL. Note that certain properties of a
@@ -208,7 +215,6 @@ To run this sample:
       -h, --help            show this help message and exit
 
 
-
 Identity and Access Management
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -221,20 +227,15 @@ Identity and Access Management
 To run this sample:
 
 .. code-block:: bash
-
     $ python iam.py
-
     usage: iam.py [-h]
                   project
                   {get-topic-policy,get-subscription-policy,set-topic-policy,set-subscription-policy,check-topic-permissions,check-subscription-permissions}
                   ...
-
     This application demonstrates how to perform basic operations on IAM
     policies with the Cloud Pub/Sub API.
-
     For more information, see the README.md under /pubsub and the documentation
     at https://cloud.google.com/pubsub/docs.
-
     positional arguments:
       project               Your Google Cloud project ID
       {get-topic-policy,get-subscription-policy,set-topic-policy,set-subscription-policy,check-topic-permissions,check-subscription-permissions}
@@ -250,12 +251,8 @@ To run this sample:
         check-subscription-permissions
                             Checks to which permissions are available on the given
                             subscription.
-
     optional arguments:
       -h, --help            show this help message and exit
-
-
-
 
 
 The client library

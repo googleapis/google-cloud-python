@@ -144,3 +144,17 @@ def test_publish_with_error_handler(topic_publish, capsys):
 
     out, _ = capsys.readouterr()
     assert "Published" in out
+
+
+def test_publish_with_ordering_keys(topic_publish, capsys):
+    publisher.publish_with_ordering_keys(PROJECT, TOPIC_PUBLISH)
+
+    out, _ = capsys.readouterr()
+    assert "Published messages with ordering keys." in out
+
+
+def test_resume_publish_with_error_handler(topic_publish, capsys):
+    publisher.resume_publish_with_ordering_keys(PROJECT, TOPIC_PUBLISH)
+
+    out, _ = capsys.readouterr()
+    assert "Published messages with ordering keys." in out

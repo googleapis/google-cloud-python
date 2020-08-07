@@ -29,6 +29,7 @@ SUBSCRIPTION_ADMIN = "subscription-test-subscription-admin-" + UUID
 SUBSCRIPTION_ASYNC = "subscription-test-subscription-async-" + UUID
 SUBSCRIPTION_SYNC = "subscription-test-subscription-sync-" + UUID
 SUBSCRIPTION_DLQ = "subscription-test-subscription-dlq-" + UUID
+SUBSCRIPTION_ORDERING = "subscription-test-subscription-ordering-" + UUID
 ENDPOINT = "https://{}.appspot.com/push".format(PROJECT)
 NEW_ENDPOINT = "https://{}.appspot.com/push2".format(PROJECT)
 
@@ -207,6 +208,16 @@ def test_create_push(subscriber_client):
         assert subscriber_client.get_subscription(subscription_path)
 
     eventually_consistent_test()
+
+
+def test_create_subscription_with_ordering(subscriber_client, capsys):
+    subscriber.create_subscription_with_ordering(PROJECT, TOPIC, SUBSCRIPTION_ORDERING)
+    out, _ = capsys.readouterr()
+    assert "Created subscription with ordering" in out
+    assert "enable_message_ordering: true" in out
+
+    subscription_path = subscriber_client.subscription_path(PROJECT, SUBSCRIPTION_ORDERING)
+    subscriber_client.delete_subscription(subscription_path)
 
 
 def test_update(subscriber_client, subscription_admin, capsys):
