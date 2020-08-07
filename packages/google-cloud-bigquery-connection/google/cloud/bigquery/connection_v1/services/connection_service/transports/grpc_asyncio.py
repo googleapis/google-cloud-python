@@ -15,15 +15,14 @@
 # limitations under the License.
 #
 
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import grpc_helpers  # type: ignore
-from google import auth  # type: ignore
+from google.api_core import grpc_helpers_async  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
-
 import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
 
 from google.cloud.bigquery.connection_v1.types import connection
 from google.cloud.bigquery.connection_v1.types import connection as gcbc_connection
@@ -32,10 +31,11 @@ from google.iam.v1 import policy_pb2 as policy  # type: ignore
 from google.protobuf import empty_pb2 as empty  # type: ignore
 
 from .base import ConnectionServiceTransport
+from .grpc import ConnectionServiceGrpcTransport
 
 
-class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
-    """gRPC backend transport for ConnectionService.
+class ConnectionServiceGrpcAsyncIOTransport(ConnectionServiceTransport):
+    """gRPC AsyncIO backend transport for ConnectionService.
 
     Manages external data source connections and credentials.
 
@@ -47,19 +47,61 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _stubs: Dict[str, Callable]
+    _grpc_channel: aio.Channel
+    _stubs: Dict[str, Callable] = {}
+
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "bigqueryconnection.googleapis.com",
+        credentials: credentials.Credentials = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> aio.Channel:
+        """Create and return a gRPC AsyncIO channel object.
+        Args:
+            address (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is ignored if ``channel`` is provided.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            aio.Channel: A gRPC AsyncIO channel object.
+        """
+        scopes = scopes or cls.AUTH_SCOPES
+        return grpc_helpers_async.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            scopes=scopes,
+            quota_project_id=quota_project_id,
+            **kwargs,
+        )
 
     def __init__(
         self,
         *,
         host: str = "bigqueryconnection.googleapis.com",
         credentials: credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        channel: grpc.Channel = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        channel: aio.Channel = None,
         api_mtls_endpoint: str = None,
         client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
-        quota_project_id: Optional[str] = None
+        quota_project_id=None,
     ) -> None:
         """Instantiate the transport.
 
@@ -74,9 +116,10 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            channel (Optional[grpc.Channel]): A ``Channel`` instance through
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            channel (Optional[aio.Channel]): A ``Channel`` instance through
                 which to make calls.
             api_mtls_endpoint (Optional[str]): The mutual TLS endpoint. If
                 provided, it overrides the ``host`` argument and tries to create
@@ -90,7 +133,7 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
                 and quota.
 
         Raises:
-          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
               creation failed for any reason.
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
@@ -108,11 +151,6 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
                 if ":" in api_mtls_endpoint
                 else api_mtls_endpoint + ":443"
             )
-
-            if credentials is None:
-                credentials, _ = auth.default(
-                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
-                )
 
             # Create SSL credentials with client_cert_source or application
             # default SSL credentials.
@@ -134,8 +172,6 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
                 quota_project_id=quota_project_id,
             )
 
-        self._stubs = {}  # type: Dict[str, Callable]
-
         # Run the base constructor.
         super().__init__(
             host=host,
@@ -145,53 +181,10 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
             quota_project_id=quota_project_id,
         )
 
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "bigqueryconnection.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs
-    ) -> grpc.Channel:
-        """Create and return a gRPC channel object.
-        Args:
-            address (Optionsl[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is mutually exclusive with credentials.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            grpc.Channel: A gRPC channel object.
-
-        Raises:
-            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
-              and ``credentials_file`` are passed.
-        """
-        scopes = scopes or cls.AUTH_SCOPES
-        return grpc_helpers.create_channel(
-            host,
-            credentials=credentials,
-            credentials_file=credentials_file,
-            scopes=scopes,
-            quota_project_id=quota_project_id,
-            **kwargs
-        )
+        self._stubs = {}
 
     @property
-    def grpc_channel(self) -> grpc.Channel:
+    def grpc_channel(self) -> aio.Channel:
         """Create the channel designed to connect to this service.
 
         This property caches on the instance; repeated calls return
@@ -211,7 +204,7 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
     def create_connection(
         self,
     ) -> Callable[
-        [gcbc_connection.CreateConnectionRequest], gcbc_connection.Connection
+        [gcbc_connection.CreateConnectionRequest], Awaitable[gcbc_connection.Connection]
     ]:
         r"""Return a callable for the create connection method over gRPC.
 
@@ -219,7 +212,7 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
 
         Returns:
             Callable[[~.CreateConnectionRequest],
-                    ~.Connection]:
+                    Awaitable[~.Connection]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -238,14 +231,14 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
     @property
     def get_connection(
         self,
-    ) -> Callable[[connection.GetConnectionRequest], connection.Connection]:
+    ) -> Callable[[connection.GetConnectionRequest], Awaitable[connection.Connection]]:
         r"""Return a callable for the get connection method over gRPC.
 
         Returns specified connection.
 
         Returns:
             Callable[[~.GetConnectionRequest],
-                    ~.Connection]:
+                    Awaitable[~.Connection]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -265,7 +258,8 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
     def list_connections(
         self,
     ) -> Callable[
-        [connection.ListConnectionsRequest], connection.ListConnectionsResponse
+        [connection.ListConnectionsRequest],
+        Awaitable[connection.ListConnectionsResponse],
     ]:
         r"""Return a callable for the list connections method over gRPC.
 
@@ -273,7 +267,7 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
 
         Returns:
             Callable[[~.ListConnectionsRequest],
-                    ~.ListConnectionsResponse]:
+                    Awaitable[~.ListConnectionsResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -293,7 +287,7 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
     def update_connection(
         self,
     ) -> Callable[
-        [gcbc_connection.UpdateConnectionRequest], gcbc_connection.Connection
+        [gcbc_connection.UpdateConnectionRequest], Awaitable[gcbc_connection.Connection]
     ]:
         r"""Return a callable for the update connection method over gRPC.
 
@@ -303,7 +297,7 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
 
         Returns:
             Callable[[~.UpdateConnectionRequest],
-                    ~.Connection]:
+                    Awaitable[~.Connection]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -322,14 +316,14 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
     @property
     def delete_connection(
         self,
-    ) -> Callable[[connection.DeleteConnectionRequest], empty.Empty]:
+    ) -> Callable[[connection.DeleteConnectionRequest], Awaitable[empty.Empty]]:
         r"""Return a callable for the delete connection method over gRPC.
 
         Deletes connection and associated credential.
 
         Returns:
             Callable[[~.DeleteConnectionRequest],
-                    ~.Empty]:
+                    Awaitable[~.Empty]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -348,7 +342,7 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[[iam_policy.GetIamPolicyRequest], policy.Policy]:
+    ) -> Callable[[iam_policy.GetIamPolicyRequest], Awaitable[policy.Policy]]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the access control policy for a resource.
@@ -357,7 +351,7 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
 
         Returns:
             Callable[[~.GetIamPolicyRequest],
-                    ~.Policy]:
+                    Awaitable[~.Policy]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -376,7 +370,7 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[[iam_policy.SetIamPolicyRequest], policy.Policy]:
+    ) -> Callable[[iam_policy.SetIamPolicyRequest], Awaitable[policy.Policy]]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the access control policy on the specified resource.
@@ -387,7 +381,7 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
 
         Returns:
             Callable[[~.SetIamPolicyRequest],
-                    ~.Policy]:
+                    Awaitable[~.Policy]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -407,7 +401,8 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
     def test_iam_permissions(
         self,
     ) -> Callable[
-        [iam_policy.TestIamPermissionsRequest], iam_policy.TestIamPermissionsResponse
+        [iam_policy.TestIamPermissionsRequest],
+        Awaitable[iam_policy.TestIamPermissionsResponse],
     ]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
@@ -422,7 +417,7 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
 
         Returns:
             Callable[[~.TestIamPermissionsRequest],
-                    ~.TestIamPermissionsResponse]:
+                    Awaitable[~.TestIamPermissionsResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -439,4 +434,4 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
         return self._stubs["test_iam_permissions"]
 
 
-__all__ = ("ConnectionServiceGrpcTransport",)
+__all__ = ("ConnectionServiceGrpcAsyncIOTransport",)

@@ -15,7 +15,9 @@
 # limitations under the License.
 #
 
-
+from google.cloud.bigquery.connection_v1.services.connection_service.async_client import (
+    ConnectionServiceAsyncClient,
+)
 from google.cloud.bigquery.connection_v1.services.connection_service.client import (
     ConnectionServiceClient,
 )
@@ -33,6 +35,7 @@ __all__ = (
     "CloudSqlCredential",
     "CloudSqlProperties",
     "Connection",
+    "ConnectionServiceAsyncClient",
     "ConnectionServiceClient",
     "CreateConnectionRequest",
     "DeleteConnectionRequest",

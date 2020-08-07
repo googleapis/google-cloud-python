@@ -15,7 +15,6 @@
 # limitations under the License.
 #
 
-
 from .services.connection_service import ConnectionServiceClient
 from .types.connection import CloudSqlCredential
 from .types.connection import CloudSqlProperties

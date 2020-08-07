@@ -16,9 +16,9 @@
 #
 
 from collections import OrderedDict
-import os
+import functools
 import re
-from typing import Callable, Dict, Sequence, Tuple, Type, Union
+from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
@@ -26,8 +26,6 @@ from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
-from google.auth.transport import mtls  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.bigquery.connection_v1.services.connection_service import pagers
@@ -38,123 +36,32 @@ from google.iam.v1 import policy_pb2 as policy  # type: ignore
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 
 from .transports.base import ConnectionServiceTransport
-from .transports.grpc import ConnectionServiceGrpcTransport
 from .transports.grpc_asyncio import ConnectionServiceGrpcAsyncIOTransport
+from .client import ConnectionServiceClient
 
 
-class ConnectionServiceClientMeta(type):
-    """Metaclass for the ConnectionService client.
-
-    This provides class-level methods for building and retrieving
-    support objects (e.g. transport) without polluting the client instance
-    objects.
-    """
-
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[ConnectionServiceTransport]]
-    _transport_registry["grpc"] = ConnectionServiceGrpcTransport
-    _transport_registry["grpc_asyncio"] = ConnectionServiceGrpcAsyncIOTransport
-
-    def get_transport_class(
-        cls, label: str = None,
-    ) -> Type[ConnectionServiceTransport]:
-        """Return an appropriate transport class.
-
-        Args:
-            label: The name of the desired transport. If none is
-                provided, then the first transport in the registry is used.
-
-        Returns:
-            The transport class to use.
-        """
-        # If a specific transport is requested, return that one.
-        if label:
-            return cls._transport_registry[label]
-
-        # No transport is requested; return the default (that is, the first one
-        # in the dictionary).
-        return next(iter(cls._transport_registry.values()))
-
-
-class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
+class ConnectionServiceAsyncClient:
     """Manages external data source connections and credentials."""
 
-    @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
-        Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
-        "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
-        Args:
-            api_endpoint (Optional[str]): the api endpoint to convert.
-        Returns:
-            str: converted mTLS api endpoint.
-        """
-        if not api_endpoint:
-            return api_endpoint
+    _client: ConnectionServiceClient
 
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
+    DEFAULT_ENDPOINT = ConnectionServiceClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = ConnectionServiceClient.DEFAULT_MTLS_ENDPOINT
 
-        m = mtls_endpoint_re.match(api_endpoint)
-        name, mtls, sandbox, googledomain = m.groups()
-        if mtls or not googledomain:
-            return api_endpoint
+    connection_path = staticmethod(ConnectionServiceClient.connection_path)
 
-        if sandbox:
-            return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
-            )
-
-        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
-
-    DEFAULT_ENDPOINT = "bigqueryconnection.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
-        DEFAULT_ENDPOINT
-    )
-
-    @classmethod
-    def from_service_account_file(cls, filename: str, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials
-        file.
-
-        Args:
-            filename (str): The path to the service account private key json
-                file.
-            args: Additional arguments to pass to the constructor.
-            kwargs: Additional arguments to pass to the constructor.
-
-        Returns:
-            {@api.name}: The constructed client.
-        """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
-        return cls(*args, **kwargs)
-
+    from_service_account_file = ConnectionServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
-    @staticmethod
-    def connection_path(project: str, location: str, connection: str,) -> str:
-        """Return a fully-qualified connection string."""
-        return "projects/{project}/locations/{location}/connections/{connection}".format(
-            project=project, location=location, connection=connection,
-        )
-
-    @staticmethod
-    def parse_connection_path(path: str) -> Dict[str, str]:
-        """Parse a connection path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/connections/(?P<connection>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
+    get_transport_class = functools.partial(
+        type(ConnectionServiceClient).get_transport_class, type(ConnectionServiceClient)
+    )
 
     def __init__(
         self,
         *,
         credentials: credentials.Credentials = None,
-        transport: Union[str, ConnectionServiceTransport] = None,
+        transport: Union[str, ConnectionServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
     ) -> None:
         """Instantiate the connection service client.
@@ -183,64 +90,15 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
                 default SSL credentials will be used if present.
 
         Raises:
-            google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        if isinstance(client_options, dict):
-            client_options = ClientOptions.from_dict(client_options)
-        if client_options is None:
-            client_options = ClientOptions.ClientOptions()
 
-        if client_options.api_endpoint is None:
-            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS", "never")
-            if use_mtls_env == "never":
-                client_options.api_endpoint = self.DEFAULT_ENDPOINT
-            elif use_mtls_env == "always":
-                client_options.api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-            elif use_mtls_env == "auto":
-                has_client_cert_source = (
-                    client_options.client_cert_source is not None
-                    or mtls.has_default_client_cert_source()
-                )
-                client_options.api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT
-                    if has_client_cert_source
-                    else self.DEFAULT_ENDPOINT
-                )
-            else:
-                raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS value. Accepted values: never, auto, always"
-                )
+        self._client = ConnectionServiceClient(
+            credentials=credentials, transport=transport, client_options=client_options,
+        )
 
-        # Save or instantiate the transport.
-        # Ordinarily, we provide the transport, but allowing a custom transport
-        # instance provides an extensibility point for unusual situations.
-        if isinstance(transport, ConnectionServiceTransport):
-            # transport is a ConnectionServiceTransport instance.
-            if credentials or client_options.credentials_file:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its credentials directly."
-                )
-            if client_options.scopes:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
-                )
-            self._transport = transport
-        else:
-            Transport = type(self).get_transport_class(transport)
-            self._transport = Transport(
-                credentials=credentials,
-                credentials_file=client_options.credentials_file,
-                host=client_options.api_endpoint,
-                scopes=client_options.scopes,
-                api_mtls_endpoint=client_options.api_endpoint,
-                client_cert_source=client_options.client_cert_source,
-                quota_project_id=client_options.quota_project_id,
-            )
-
-    def create_connection(
+    async def create_connection(
         self,
         request: gcbc_connection.CreateConnectionRequest = None,
         *,
@@ -291,33 +149,31 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, connection, connection_id])
-        if request is not None and has_flattened_params:
+        if request is not None and any([parent, connection, connection_id]):
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcbc_connection.CreateConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, gcbc_connection.CreateConnectionRequest):
-            request = gcbc_connection.CreateConnectionRequest(request)
+        request = gcbc_connection.CreateConnectionRequest(request)
 
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
 
-            if parent is not None:
-                request.parent = parent
-            if connection is not None:
-                request.connection = connection
-            if connection_id is not None:
-                request.connection_id = connection_id
+        if parent is not None:
+            request.parent = parent
+        if connection is not None:
+            request.connection = connection
+        if connection_id is not None:
+            request.connection_id = connection_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_connection]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_connection,
+            default_timeout=60.0,
+            client_info=_client_info,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -326,12 +182,12 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def get_connection(
+    async def get_connection(
         self,
         request: connection.GetConnectionRequest = None,
         *,
@@ -369,29 +225,35 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
+        if request is not None and any([name]):
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a connection.GetConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, connection.GetConnectionRequest):
-            request = connection.GetConnectionRequest(request)
+        request = connection.GetConnectionRequest(request)
 
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
 
-            if name is not None:
-                request.name = name
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_connection]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_connection,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                ),
+            ),
+            default_timeout=60.0,
+            client_info=_client_info,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -400,12 +262,12 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def list_connections(
+    async def list_connections(
         self,
         request: connection.ListConnectionsRequest = None,
         *,
@@ -413,7 +275,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListConnectionsPager:
+    ) -> pagers.ListConnectionsAsyncPager:
         r"""Returns a list of connections in the given project.
 
         Args:
@@ -434,7 +296,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListConnectionsPager:
+            ~.pagers.ListConnectionsAsyncPager:
                 The response for
                 [ConnectionService.ListConnections][google.cloud.bigquery.connection.v1.ConnectionService.ListConnections].
 
@@ -445,29 +307,35 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
-        if request is not None and has_flattened_params:
+        if request is not None and any([parent]):
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a connection.ListConnectionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, connection.ListConnectionsRequest):
-            request = connection.ListConnectionsRequest(request)
+        request = connection.ListConnectionsRequest(request)
 
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
 
-            if parent is not None:
-                request.parent = parent
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_connections]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_connections,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                ),
+            ),
+            default_timeout=60.0,
+            client_info=_client_info,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -476,18 +344,18 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListConnectionsPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListConnectionsAsyncPager(
             method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def update_connection(
+    async def update_connection(
         self,
         request: gcbc_connection.UpdateConnectionRequest = None,
         *,
@@ -541,33 +409,31 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name, connection, update_mask])
-        if request is not None and has_flattened_params:
+        if request is not None and any([name, connection, update_mask]):
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a gcbc_connection.UpdateConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, gcbc_connection.UpdateConnectionRequest):
-            request = gcbc_connection.UpdateConnectionRequest(request)
+        request = gcbc_connection.UpdateConnectionRequest(request)
 
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
 
-            if name is not None:
-                request.name = name
-            if connection is not None:
-                request.connection = connection
-            if update_mask is not None:
-                request.update_mask = update_mask
+        if name is not None:
+            request.name = name
+        if connection is not None:
+            request.connection = connection
+        if update_mask is not None:
+            request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_connection]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_connection,
+            default_timeout=60.0,
+            client_info=_client_info,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -576,12 +442,12 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def delete_connection(
+    async def delete_connection(
         self,
         request: connection.DeleteConnectionRequest = None,
         *,
@@ -612,29 +478,35 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
+        if request is not None and any([name]):
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a connection.DeleteConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, connection.DeleteConnectionRequest):
-            request = connection.DeleteConnectionRequest(request)
+        request = connection.DeleteConnectionRequest(request)
 
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
 
-            if name is not None:
-                request.name = name
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_connection]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_connection,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                ),
+            ),
+            default_timeout=60.0,
+            client_info=_client_info,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -643,11 +515,11 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         )
 
         # Send the request.
-        rpc(
+        await rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,
         )
 
-    def get_iam_policy(
+    async def get_iam_policy(
         self,
         request: iam_policy.GetIamPolicyRequest = None,
         *,
@@ -751,8 +623,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([resource])
-        if request is not None and has_flattened_params:
+        if request is not None and any([resource]):
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -766,15 +637,19 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         elif not request:
             request = iam_policy.GetIamPolicyRequest()
 
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
 
-            if resource is not None:
-                request.resource = resource
+        if resource is not None:
+            request.resource = resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_iam_policy]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_iam_policy,
+            default_timeout=60.0,
+            client_info=_client_info,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -783,12 +658,12 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def set_iam_policy(
+    async def set_iam_policy(
         self,
         request: iam_policy.SetIamPolicyRequest = None,
         *,
@@ -894,8 +769,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([resource])
-        if request is not None and has_flattened_params:
+        if request is not None and any([resource]):
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -909,15 +783,19 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         elif not request:
             request = iam_policy.SetIamPolicyRequest()
 
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
 
-            if resource is not None:
-                request.resource = resource
+        if resource is not None:
+            request.resource = resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.set_iam_policy]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.set_iam_policy,
+            default_timeout=60.0,
+            client_info=_client_info,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -926,12 +804,12 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def test_iam_permissions(
+    async def test_iam_permissions(
         self,
         request: iam_policy.TestIamPermissionsRequest = None,
         *,
@@ -984,8 +862,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([resource, permissions])
-        if request is not None and has_flattened_params:
+        if request is not None and any([resource, permissions]):
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -999,18 +876,22 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         elif not request:
             request = iam_policy.TestIamPermissionsRequest()
 
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
 
-            if resource is not None:
-                request.resource = resource
+        if resource is not None:
+            request.resource = resource
 
-            if permissions:
-                request.permissions.extend(permissions)
+        if permissions:
+            request.permissions.extend(permissions)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.test_iam_permissions]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.test_iam_permissions,
+            default_timeout=60.0,
+            client_info=_client_info,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1019,7 +900,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1035,4 +916,4 @@ except pkg_resources.DistributionNotFound:
     _client_info = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("ConnectionServiceClient",)
+__all__ = ("ConnectionServiceAsyncClient",)

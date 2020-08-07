@@ -16,5 +16,9 @@
 #
 
 from .client import ConnectionServiceClient
+from .async_client import ConnectionServiceAsyncClient
 
-__all__ = ("ConnectionServiceClient",)
+__all__ = (
+    "ConnectionServiceClient",
+    "ConnectionServiceAsyncClient",
+)
