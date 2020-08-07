@@ -28,7 +28,7 @@ def modify_path():
         return
 
     try:
-        extra_dll_dir = pkg_resources.resource_filename("crc32c", "extra-dll")
+        extra_dll_dir = pkg_resources.resource_filename("google_crc32c", "extra-dll")
         if os.path.isdir(extra_dll_dir):
             os.environ["PATH"] = path + os.pathsep + extra_dll_dir
     except ImportError:

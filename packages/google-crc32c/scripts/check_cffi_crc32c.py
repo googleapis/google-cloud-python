@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from crc32c import _crc32c_cffi
+from google_crc32c import _crc32c_cffi
 
 
 def main():

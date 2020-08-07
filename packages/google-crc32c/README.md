@@ -84,17 +84,17 @@ On OS X:
 $ ./scripts/osx/check.sh
 ...
 + venv37/bin/python .../python-crc32c/check_cffi_crc32c.py
-_crc32c_cffi: <module 'crc32c._crc32c_cffi' from '.../python-crc32c/venv37/lib/python3.7/site-packages/crc32c/_crc32c_cffi.abi3.so'>
-_crc32c_cffi.lib: <Lib object for 'crc32c._crc32c_cffi'>
+_crc32c_cffi: <module 'google_crc32c._crc32c_cffi' from '.../python-crc32c/venv37/lib/python3.7/site-packages/google_crc32c/_crc32c_cffi.abi3.so'>
+_crc32c_cffi.lib: <Lib object for 'google_crc32c._crc32c_cffi'>
 dir(_crc32c_cffi.lib): ['crc32c_extend', 'crc32c_value']
 + /Library/Frameworks/Python.framework/Versions/3.7/bin/delocate-listdeps --all --depending .../python-crc32c/wheels/google_crc32c-0.0.1-cp37-cp37m-macosx_10_6_intel.whl
 /usr/lib/libSystem.B.dylib:
-    crc32c/_crc32c_cffi.abi3.so
-    crc32c/.dylibs/libcrc32c.dylib
+    google_crc32c/_crc32c_cffi.abi3.so
+    google_crc32c/.dylibs/libcrc32c.dylib
 /usr/lib/libc++.1.dylib:
-    crc32c/.dylibs/libcrc32c.dylib
+    google_crc32c/.dylibs/libcrc32c.dylib
 @loader_path/.dylibs/libcrc32c.dylib:
-    crc32c/_crc32c_cffi.abi3.so
+    google_crc32c/_crc32c_cffi.abi3.so
 ...
 ```
 
@@ -111,13 +111,13 @@ library using `cmake` / `make`:
 ```bash
 $ cd python-crc32c
 $ git submodule update --init --recursive
-$ python -m virtualenv venv
+$ python -m venv venv
 $ venv/bin/pip install --upgrade setuptools pip wheel
 $ venv/bin/pip install cmake
 $ mkdir usr
 $ export CRC32C_INSTALL_PREFIX=$(pwd)/usr
-$ mkdir crc32c/build
-$ cd crc32c/build
+$ mkdir google_crc32c/build
+$ cd google_crc32c/build
 $ ../../venv/bin/cmake \
 >   -DCRC32C_BUILD_TESTS=no \
 >   -DCRC32C_BUILD_BENCHMARKS=no \

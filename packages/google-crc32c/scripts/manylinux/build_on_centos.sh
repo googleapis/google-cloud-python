@@ -26,7 +26,7 @@ ${MAIN_PYTHON_BIN}/python -m pip install \
     --requirement /var/code/python-crc32c/scripts/dev-requirements.txt
 
 # Build and install `crc32c`
-cd /var/code/python-crc32c/crc32c/
+cd /var/code/python-crc32c/google_crc32c/
 mkdir build
 cd build/
 ${MAIN_PYTHON_BIN}/cmake \
@@ -73,5 +73,5 @@ for whl in dist_wheels/google_crc32c*.whl; do
 done
 
 # Clean up.
-rm -fr /var/code/python-crc32c/crc32c/build/
+rm -fr /var/code/python-crc32c/google_crc32c/build/
 rm -fr /var/code/python-crc32c/dist_wheels/

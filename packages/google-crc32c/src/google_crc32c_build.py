@@ -47,7 +47,7 @@ uint32_t crc32c_value(const uint8_t* data, size_t count);
 FFIBUILDER = cffi.FFI()
 FFIBUILDER.cdef(_HEADER)
 FFIBUILDER.set_source(
-    "crc32c._crc32c_cffi",
+    "google_crc32c._crc32c_cffi",
     '#include "crc32c/crc32c.h"',
     libraries=["crc32c"],
     **get_kwargs()
