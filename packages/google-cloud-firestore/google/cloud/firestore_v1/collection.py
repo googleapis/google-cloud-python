@@ -13,8 +13,6 @@
 # limitations under the License.
 
 """Classes for representing collections for the Google Cloud Firestore API."""
-import warnings
-
 from google.cloud.firestore_v1.base_collection import (
     BaseCollectionReference,
     _auto_id,
@@ -121,14 +119,26 @@ class CollectionReference(BaseCollectionReference):
         )
         return (_item_to_document_ref(self, i) for i in iterator)
 
-    def get(self, transaction=None) -> Generator[document.DocumentSnapshot, Any, None]:
-        """Deprecated alias for :meth:`stream`."""
-        warnings.warn(
-            "'Collection.get' is deprecated:  please use 'Collection.stream' instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.stream(transaction=transaction)
+    def get(self, transaction=None) -> list:
+        """Read the documents in this collection.
+
+        This sends a ``RunQuery`` RPC and returns a list of documents
+        returned in the stream of ``RunQueryResponse`` messages.
+
+        Args:
+            transaction
+                (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
+                An existing transaction that this query will run in.
+
+        If a ``transaction`` is used and it already has write operations
+        added, this method cannot be used (i.e. read-after-write is not
+        allowed).
+
+        Returns:
+            list: The documents in this collection that match the query.
+        """
+        query = query_mod.Query(self)
+        return query.get(transaction=transaction)
 
     def stream(
         self, transaction=None

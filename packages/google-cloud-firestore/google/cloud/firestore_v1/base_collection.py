@@ -205,6 +205,10 @@ class BaseCollectionReference(object):
     def limit(self, count) -> NoReturn:
         """Create a limited query with this collection as parent.
 
+        .. note::
+           `limit` and `limit_to_last` are mutually exclusive.
+           Setting `limit` will drop previously set `limit_to_last`.
+
         See
         :meth:`~google.cloud.firestore_v1.query.Query.limit` for
         more information on this method.
@@ -219,6 +223,24 @@ class BaseCollectionReference(object):
         """
         query = self._query()
         return query.limit(count)
+
+    def limit_to_last(self, count):
+        """Create a limited to last query with this collection as parent.
+        .. note::
+           `limit` and `limit_to_last` are mutually exclusive.
+           Setting `limit_to_last` will drop previously set `limit`.
+        See
+        :meth:`~google.cloud.firestore_v1.query.Query.limit_to_last`
+        for more information on this method.
+        Args:
+            count (int): Maximum number of documents to return that
+                match the query.
+        Returns:
+            :class:`~google.cloud.firestore_v1.query.Query`:
+            A limited to last query.
+        """
+        query = self._query()
+        return query.limit_to_last(count)
 
     def offset(self, num_to_skip) -> NoReturn:
         """Skip to an offset in a query with this collection as parent.

@@ -98,6 +98,8 @@ class BaseQuery(object):
             The "order by" entries to use in the query.
         limit (Optional[int]):
             The maximum number of documents the query is allowed to return.
+        limit_to_last (Optional[bool]):
+            Denotes whether a provided limit is applied to the end of the result set.
         offset (Optional[int]):
             The number of results to skip.
         start_at (Optional[Tuple[dict, bool]]):
@@ -146,6 +148,7 @@ class BaseQuery(object):
         field_filters=(),
         orders=(),
         limit=None,
+        limit_to_last=False,
         offset=None,
         start_at=None,
         end_at=None,
@@ -156,6 +159,7 @@ class BaseQuery(object):
         self._field_filters = field_filters
         self._orders = orders
         self._limit = limit
+        self._limit_to_last = limit_to_last
         self._offset = offset
         self._start_at = start_at
         self._end_at = end_at
@@ -170,6 +174,7 @@ class BaseQuery(object):
             and self._field_filters == other._field_filters
             and self._orders == other._orders
             and self._limit == other._limit
+            and self._limit_to_last == other._limit_to_last
             and self._offset == other._offset
             and self._start_at == other._start_at
             and self._end_at == other._end_at
@@ -224,6 +229,7 @@ class BaseQuery(object):
             field_filters=self._field_filters,
             orders=self._orders,
             limit=self._limit,
+            limit_to_last=self._limit_to_last,
             offset=self._offset,
             start_at=self._start_at,
             end_at=self._end_at,
@@ -294,6 +300,7 @@ class BaseQuery(object):
             orders=self._orders,
             limit=self._limit,
             offset=self._offset,
+            limit_to_last=self._limit_to_last,
             start_at=self._start_at,
             end_at=self._end_at,
             all_descendants=self._all_descendants,
@@ -345,6 +352,7 @@ class BaseQuery(object):
             field_filters=self._field_filters,
             orders=new_orders,
             limit=self._limit,
+            limit_to_last=self._limit_to_last,
             offset=self._offset,
             start_at=self._start_at,
             end_at=self._end_at,
@@ -352,14 +360,15 @@ class BaseQuery(object):
         )
 
     def limit(self, count) -> "BaseQuery":
-        """Limit a query to return a fixed number of results.
+        """Limit a query to return at most `count` matching results.
 
-        If the current query already has a limit set, this will overwrite it.
-
+        If the current query already has a `limit` set, this will override it.
+        .. note::
+           `limit` and `limit_to_last` are mutually exclusive.
+           Setting `limit` will drop previously set `limit_to_last`.
         Args:
             count (int): Maximum number of documents to return that match
                 the query.
-
         Returns:
             :class:`~google.cloud.firestore_v1.query.Query`:
             A limited query. Acts as a copy of the current query, modified
@@ -371,6 +380,35 @@ class BaseQuery(object):
             field_filters=self._field_filters,
             orders=self._orders,
             limit=count,
+            limit_to_last=False,
+            offset=self._offset,
+            start_at=self._start_at,
+            end_at=self._end_at,
+            all_descendants=self._all_descendants,
+        )
+
+    def limit_to_last(self, count):
+        """Limit a query to return the last `count` matching results.
+        If the current query already has a `limit_to_last`
+        set, this will override it.
+        .. note::
+           `limit` and `limit_to_last` are mutually exclusive.
+           Setting `limit_to_last` will drop previously set `limit`.
+        Args:
+            count (int): Maximum number of documents to return that match
+                the query.
+        Returns:
+            :class:`~google.cloud.firestore_v1.query.Query`:
+            A limited query. Acts as a copy of the current query, modified
+            with the newly added "limit" filter.
+        """
+        return self.__class__(
+            self._parent,
+            projection=self._projection,
+            field_filters=self._field_filters,
+            orders=self._orders,
+            limit=count,
+            limit_to_last=True,
             offset=self._offset,
             start_at=self._start_at,
             end_at=self._end_at,
@@ -398,6 +436,7 @@ class BaseQuery(object):
             field_filters=self._field_filters,
             orders=self._orders,
             limit=self._limit,
+            limit_to_last=self._limit_to_last,
             offset=num_to_skip,
             start_at=self._start_at,
             end_at=self._end_at,

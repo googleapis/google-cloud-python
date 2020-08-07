@@ -18,12 +18,11 @@ A :class:`~google.cloud.firestore_v1.query.Query` can be created directly from
 a :class:`~google.cloud.firestore_v1.collection.Collection` and that can be
 a more common way to create a query than direct usage of the constructor.
 """
-import warnings
-
 from google.cloud.firestore_v1.base_query import (
     BaseQuery,
     _query_response_to_snapshot,
     _collection_group_query_response_to_snapshot,
+    _enum_from_direction,
 )
 
 from google.cloud.firestore_v1 import _helpers
@@ -95,6 +94,7 @@ class Query(BaseQuery):
         field_filters=(),
         orders=(),
         limit=None,
+        limit_to_last=False,
         offset=None,
         start_at=None,
         end_at=None,
@@ -106,20 +106,49 @@ class Query(BaseQuery):
             field_filters=field_filters,
             orders=orders,
             limit=limit,
+            limit_to_last=limit_to_last,
             offset=offset,
             start_at=start_at,
             end_at=end_at,
             all_descendants=all_descendants,
         )
 
-    def get(self, transaction=None) -> Generator[document.DocumentSnapshot, Any, None]:
-        """Deprecated alias for :meth:`stream`."""
-        warnings.warn(
-            "'Query.get' is deprecated:  please use 'Query.stream' instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.stream(transaction=transaction)
+    def get(self, transaction=None) -> list:
+        """Read the documents in the collection that match this query.
+
+        This sends a ``RunQuery`` RPC and returns a list of documents
+        returned in the stream of ``RunQueryResponse`` messages.
+
+        Args:
+            transaction
+                (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
+                An existing transaction that this query will run in.
+        If a ``transaction`` is used and it already has write operations
+        added, this method cannot be used (i.e. read-after-write is not
+        allowed).
+
+        Returns:
+            list: The documents in the collection that match this query.
+        """
+        is_limited_to_last = self._limit_to_last
+
+        if self._limit_to_last:
+            # In order to fetch up to `self._limit` results from the end of the
+            # query flip the defined ordering on the query to start from the
+            # end, retrieving up to `self._limit` results from the backend.
+            for order in self._orders:
+                order.direction = _enum_from_direction(
+                    self.DESCENDING
+                    if order.direction == self.ASCENDING
+                    else self.ASCENDING
+                )
+            self._limit_to_last = False
+
+        result = self.stream(transaction=transaction)
+        if is_limited_to_last:
+            result = reversed(list(result))
+
+        return list(result)
 
     def stream(
         self, transaction=None
@@ -150,6 +179,12 @@ class Query(BaseQuery):
             :class:`~google.cloud.firestore_v1.document.DocumentSnapshot`:
             The next document that fulfills the query.
         """
+        if self._limit_to_last:
+            raise ValueError(
+                "Query results for queries that include limit_to_last() "
+                "constraints cannot be streamed. Use Query.get() instead."
+            )
+
         parent_path, expected_prefix = self._parent._parent_info()
         response_iterator = self._client._firestore_api.run_query(
             request={

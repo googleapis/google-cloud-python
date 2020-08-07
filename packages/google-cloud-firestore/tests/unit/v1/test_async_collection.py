@@ -249,47 +249,27 @@ class TestAsyncCollectionReference(aiounittest.AsyncTestCase):
     @mock.patch("google.cloud.firestore_v1.async_query.AsyncQuery", autospec=True)
     @pytest.mark.asyncio
     async def test_get(self, query_class):
-        import warnings
-
-        query_class.return_value.stream.return_value = AsyncIter(range(3))
-
         collection = self._make_one("collection")
-        with warnings.catch_warnings(record=True) as warned:
-            get_response = collection.get()
-
-            async for _ in get_response:
-                pass
+        get_response = await collection.get()
 
         query_class.assert_called_once_with(collection)
         query_instance = query_class.return_value
-        query_instance.stream.assert_called_once_with(transaction=None)
 
-        # Verify the deprecation
-        self.assertEqual(len(warned), 1)
-        self.assertIs(warned[0].category, DeprecationWarning)
+        self.assertIs(get_response, query_instance.get.return_value)
+        query_instance.get.assert_called_once_with(transaction=None)
 
     @mock.patch("google.cloud.firestore_v1.async_query.AsyncQuery", autospec=True)
     @pytest.mark.asyncio
     async def test_get_with_transaction(self, query_class):
-        import warnings
-
-        query_class.return_value.stream.return_value = AsyncIter(range(3))
-
         collection = self._make_one("collection")
         transaction = mock.sentinel.txn
-        with warnings.catch_warnings(record=True) as warned:
-            get_response = collection.get(transaction=transaction)
-
-            async for _ in get_response:
-                pass
+        get_response = await collection.get(transaction=transaction)
 
         query_class.assert_called_once_with(collection)
         query_instance = query_class.return_value
-        query_instance.stream.assert_called_once_with(transaction=transaction)
 
-        # Verify the deprecation
-        self.assertEqual(len(warned), 1)
-        self.assertIs(warned[0].category, DeprecationWarning)
+        self.assertIs(get_response, query_instance.get.return_value)
+        query_instance.get.assert_called_once_with(transaction=transaction)
 
     @mock.patch("google.cloud.firestore_v1.async_query.AsyncQuery", autospec=True)
     @pytest.mark.asyncio

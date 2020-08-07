@@ -13,9 +13,6 @@
 # limitations under the License.
 
 """Classes for representing collections for the Google Cloud Firestore API."""
-import warnings
-
-
 from google.cloud.firestore_v1.base_collection import (
     BaseCollectionReference,
     _auto_id,
@@ -130,17 +127,26 @@ class AsyncCollectionReference(BaseCollectionReference):
         async for i in iterator:
             yield _item_to_document_ref(self, i)
 
-    async def get(
-        self, transaction=None
-    ) -> AsyncGenerator[async_document.DocumentSnapshot, Any]:
-        """Deprecated alias for :meth:`stream`."""
-        warnings.warn(
-            "'Collection.get' is deprecated:  please use 'Collection.stream' instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        async for d in self.stream(transaction=transaction):
-            yield d  # pytype: disable=name-error
+    async def get(self, transaction=None) -> list:
+        """Read the documents in this collection.
+
+        This sends a ``RunQuery`` RPC and returns a list of documents
+        returned in the stream of ``RunQueryResponse`` messages.
+
+        Args:
+            transaction
+                (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
+                An existing transaction that this query will run in.
+
+        If a ``transaction`` is used and it already has write operations
+        added, this method cannot be used (i.e. read-after-write is not
+        allowed).
+
+        Returns:
+            list: The documents in this collection that match the query.
+        """
+        query = self._query()
+        return await query.get(transaction=transaction)
 
     async def stream(
         self, transaction=None

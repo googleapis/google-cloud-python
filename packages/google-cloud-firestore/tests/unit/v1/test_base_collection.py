@@ -235,6 +235,20 @@ class TestCollectionReference(unittest.TestCase):
             self.assertEqual(query, mock_query.limit.return_value)
 
     @mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
+    def test_limit_to_last(self, mock_query):
+        from google.cloud.firestore_v1.base_collection import BaseCollectionReference
+
+        with mock.patch.object(BaseCollectionReference, "_query") as _query:
+            _query.return_value = mock_query
+
+            collection = self._make_one("collection")
+            limit = 15
+            query = collection.limit_to_last(limit)
+
+            mock_query.limit_to_last.assert_called_once_with(limit)
+            self.assertEqual(query, mock_query.limit_to_last.return_value)
+
+    @mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
     def test_offset(self, mock_query):
         from google.cloud.firestore_v1.base_collection import BaseCollectionReference
 
