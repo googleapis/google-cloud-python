@@ -16,6 +16,7 @@
 
 import synthtool as s
 from synthtool import gcp
+from synthtool.languages import python
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
@@ -83,7 +84,14 @@ s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=79)
+templated_files = common.py_library(cov_level=79, samples=True)
 s.move(templated_files)
+
+# ----------------------------------------------------------------------------
+# Samples templates
+# ----------------------------------------------------------------------------
+python.py_samples(skip_readmes=True)
+
+s.replace("noxfile.py", '[\"\']-W[\"\']', '# "-W"')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
