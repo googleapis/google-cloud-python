@@ -188,31 +188,31 @@ class _AsyncTransactional(_BaseTransactional):
     :func:`~google.cloud.firestore_v1.async_transaction.transactional`.
 
     Args:
-        to_wrap (Callable[[:class:`~google.cloud.firestore_v1.async_transaction.AsyncTransaction`, ...], Any]):
-            A callable that should be run (and retried) in a transaction.
+        to_wrap (Coroutine[[:class:`~google.cloud.firestore_v1.async_transaction.AsyncTransaction`, ...], Any]):
+            A coroutine that should be run (and retried) in a transaction.
     """
 
     def __init__(self, to_wrap) -> None:
         super(_AsyncTransactional, self).__init__(to_wrap)
 
     async def _pre_commit(self, transaction, *args, **kwargs) -> Coroutine:
-        """Begin transaction and call the wrapped callable.
+        """Begin transaction and call the wrapped coroutine.
 
-        If the callable raises an exception, the transaction will be rolled
+        If the coroutine raises an exception, the transaction will be rolled
         back. If not, the transaction will be "ready" for ``Commit`` (i.e.
         it will have staged writes).
 
         Args:
             transaction
                 (:class:`~google.cloud.firestore_v1.async_transaction.AsyncTransaction`):
-                A transaction to execute the callable within.
+                A transaction to execute the coroutine within.
             args (Tuple[Any, ...]): The extra positional arguments to pass
-                along to the wrapped callable.
+                along to the wrapped coroutine.
             kwargs (Dict[str, Any]): The extra keyword arguments to pass
-                along to the wrapped callable.
+                along to the wrapped coroutine.
 
         Returns:
-            Any: result of the wrapped callable.
+            Any: result of the wrapped coroutine.
 
         Raises:
             Exception: Any failure caused by ``to_wrap``.
@@ -226,7 +226,7 @@ class _AsyncTransactional(_BaseTransactional):
         if self.retry_id is None:
             self.retry_id = self.current_id
         try:
-            return self.to_wrap(transaction, *args, **kwargs)
+            return await self.to_wrap(transaction, *args, **kwargs)
         except:  # noqa
             # NOTE: If ``rollback`` fails this will lose the information
             #       from the original failure.

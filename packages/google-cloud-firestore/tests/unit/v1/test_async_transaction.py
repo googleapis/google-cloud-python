@@ -339,7 +339,7 @@ class Test_Transactional(aiounittest.AsyncTestCase):
 
     @pytest.mark.asyncio
     async def test__pre_commit_success(self):
-        to_wrap = mock.Mock(return_value=mock.sentinel.result, spec=[])
+        to_wrap = AsyncMock(return_value=mock.sentinel.result, spec=[])
         wrapped = self._make_one(to_wrap)
 
         txn_id = b"totes-began"
@@ -368,7 +368,7 @@ class Test_Transactional(aiounittest.AsyncTestCase):
     async def test__pre_commit_retry_id_already_set_success(self):
         from google.cloud.firestore_v1.types import common
 
-        to_wrap = mock.Mock(return_value=mock.sentinel.result, spec=[])
+        to_wrap = AsyncMock(return_value=mock.sentinel.result, spec=[])
         wrapped = self._make_one(to_wrap)
         txn_id1 = b"already-set"
         wrapped.retry_id = txn_id1
@@ -401,7 +401,7 @@ class Test_Transactional(aiounittest.AsyncTestCase):
     @pytest.mark.asyncio
     async def test__pre_commit_failure(self):
         exc = RuntimeError("Nope not today.")
-        to_wrap = mock.Mock(side_effect=exc, spec=[])
+        to_wrap = AsyncMock(side_effect=exc, spec=[])
         wrapped = self._make_one(to_wrap)
 
         txn_id = b"gotta-fail"
@@ -438,7 +438,7 @@ class Test_Transactional(aiounittest.AsyncTestCase):
         from google.api_core import exceptions
 
         exc1 = ValueError("I will not be only failure.")
-        to_wrap = mock.Mock(side_effect=exc1, spec=[])
+        to_wrap = AsyncMock(side_effect=exc1, spec=[])
         wrapped = self._make_one(to_wrap)
 
         txn_id = b"both-will-fail"
@@ -614,7 +614,7 @@ class Test_Transactional(aiounittest.AsyncTestCase):
 
     @pytest.mark.asyncio
     async def test___call__success_first_attempt(self):
-        to_wrap = mock.Mock(return_value=mock.sentinel.result, spec=[])
+        to_wrap = AsyncMock(return_value=mock.sentinel.result, spec=[])
         wrapped = self._make_one(to_wrap)
 
         txn_id = b"whole-enchilada"
@@ -650,7 +650,7 @@ class Test_Transactional(aiounittest.AsyncTestCase):
         from google.cloud.firestore_v1.types import firestore
         from google.cloud.firestore_v1.types import write
 
-        to_wrap = mock.Mock(return_value=mock.sentinel.result, spec=[])
+        to_wrap = AsyncMock(return_value=mock.sentinel.result, spec=[])
         wrapped = self._make_one(to_wrap)
 
         txn_id = b"whole-enchilada"
@@ -707,7 +707,7 @@ class Test_Transactional(aiounittest.AsyncTestCase):
             _EXCEED_ATTEMPTS_TEMPLATE,
         )
 
-        to_wrap = mock.Mock(return_value=mock.sentinel.result, spec=[])
+        to_wrap = AsyncMock(return_value=mock.sentinel.result, spec=[])
         wrapped = self._make_one(to_wrap)
 
         txn_id = b"only-one-shot"
