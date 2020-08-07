@@ -16,9 +16,9 @@ import struct
 
 # NOTE: ``__config__`` **must** be the first import because it (may)
 #       modify the search path used to locate shared libraries.
-import crc32c.__config__
-import crc32c._crc32c_cffi
-from crc32c._checksum import CommonChecksum
+import google_crc32c.__config__
+import google_crc32c._crc32c_cffi
+from google_crc32c._checksum import CommonChecksum
 
 
 def extend(crc, chunk):
@@ -33,7 +33,7 @@ def extend(crc, chunk):
         int: New CRC checksum computed by extending existing CRC
         with ``chunk``.
     """
-    return crc32c._crc32c_cffi.lib.crc32c_extend(crc, chunk, len(chunk))
+    return google_crc32c._crc32c_cffi.lib.crc32c_extend(crc, chunk, len(chunk))
 
 
 def value(chunk):
@@ -46,7 +46,7 @@ def value(chunk):
     Returns
         int: New CRC checksum computed for ``chunk``.
     """
-    return crc32c._crc32c_cffi.lib.crc32c_value(chunk, len(chunk))
+    return google_crc32c._crc32c_cffi.lib.crc32c_value(chunk, len(chunk))
 
 
 class Checksum(CommonChecksum):

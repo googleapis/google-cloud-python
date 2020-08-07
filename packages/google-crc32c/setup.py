@@ -33,7 +33,7 @@ def copy_dll(build_lib):
         return
 
     installed_dll = os.path.join(install_prefix, "bin", _DLL_FILENAME)
-    lib_dlls = os.path.join(build_lib, "crc32c", _EXTRA_DLL)
+    lib_dlls = os.path.join(build_lib, "google_crc32c", _EXTRA_DLL)
     os.makedirs(lib_dlls)
     relocated_dll = os.path.join(lib_dlls, _DLL_FILENAME)
     shutil.copyfile(installed_dll, relocated_dll)
@@ -47,14 +47,14 @@ class BuildExtWithDLL(setuptools.command.build_ext.build_ext):
 
 
 def main(build_cffi=True):
-    build_path = os.path.join("src", "crc32c_build.py")
+    build_path = os.path.join("src", "google_crc32c_build.py")
     builder = "{}:FFIBUILDER".format(build_path)
     cffi_dep = "cffi >= 1.0.0"
 
     setuptools.setup(
-        packages=["crc32c"],
+        packages=["google_crc32c"],
         package_dir={"": "src"},
-        package_data={"crc32c": [os.path.join(_EXTRA_DLL, _DLL_FILENAME)]},
+        package_data={"google_crc32c": [os.path.join(_EXTRA_DLL, _DLL_FILENAME)]},
         setup_requires=[cffi_dep] if build_cffi else [],
         cffi_modules=[builder] if build_cffi else [],
         install_requires=[cffi_dep] if build_cffi else [],

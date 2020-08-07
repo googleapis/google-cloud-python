@@ -15,7 +15,7 @@
 import array
 import struct
 
-from crc32c._checksum import CommonChecksum
+from google_crc32c._checksum import CommonChecksum
 
 
 def extend(crc, chunk):

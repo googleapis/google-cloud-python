@@ -28,11 +28,10 @@ PYTHON=python3.6
 pyenv local 3.6.1
 
 # Make sure we can create a virtual environment.
-${PYTHON} -m pip install --upgrade pip
-${PYTHON} -m pip install --upgrade virtualenv wheel
+${PYTHON} -m pip install --upgrade setuptools pip wheel
 
 # Create a virtual environment.
-${PYTHON} -m virtualenv venv
+${PYTHON} -m venv venv
 
 # Install the wheel.
 venv/bin/pip install ${WHEEL_FILE}

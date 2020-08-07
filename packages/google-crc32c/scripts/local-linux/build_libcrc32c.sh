@@ -26,12 +26,11 @@ CRC32C_INSTALL_PREFIX=${REPO_ROOT}/usr
 
 # NOTE: This assumes the local install has an up-to-date `pip`.
 # Create a virtualenv where we can install `cmake`.
-${PY_BIN} -m pip install --upgrade virtualenv
 VENV=${REPO_ROOT}/venv
-${PY_BIN} -m virtualenv ${VENV}
+${PY_BIN} -m venv ${VENV}
 ${VENV}/bin/python -m pip install "cmake >= 3.12.0"
 # Build `libcrc32c`
-cd ${REPO_ROOT}/crc32c
+cd ${REPO_ROOT}/google_crc32c
 mkdir build
 cd build/
 ${VENV}/bin/cmake \
@@ -44,5 +43,5 @@ ${VENV}/bin/cmake \
 make all install
 
 # Clean up.
-rm -fr ${REPO_ROOT}/crc32c/build
+rm -fr ${REPO_ROOT}/google_crc32c/build
 rm -fr ${VENV}

@@ -1,1 +1,1 @@
-include src/crc32c_build.py
+include src/google_crc32c_build.py

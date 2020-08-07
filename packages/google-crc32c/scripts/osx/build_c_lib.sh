@@ -52,7 +52,7 @@ ${VENV}/bin/python -m pip install --upgrade pip
 ${VENV}/bin/python -m pip install "cmake >= 3.12.0"
 
 # Build `libcrc32c`
-cd ${REPO_ROOT}/crc32c
+cd ${REPO_ROOT}/google_crc32c
 mkdir -p build
 ls
 
@@ -71,5 +71,5 @@ ${VENV}/bin/cmake \
 make all install
 
 # Clean up.
-rm -fr ${REPO_ROOT}/crc32c/build
+rm -fr ${REPO_ROOT}/google_crc32c/build
 rm -fr ${VENV}
