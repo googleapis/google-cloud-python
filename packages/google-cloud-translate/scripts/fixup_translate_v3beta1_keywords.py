@@ -37,7 +37,7 @@ def partition(
     return results[1], results[0]
 
 
-class translationCallTransformer(cst.CSTTransformer):
+class translateCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
     'batch_translate_text': ('parent', 'source_language_code', 'target_language_codes', 'input_configs', 'output_config', 'models', 'glossaries', 'labels', ),
@@ -97,7 +97,7 @@ def fix_files(
     in_dir: pathlib.Path,
     out_dir: pathlib.Path,
     *,
-    transformer=translationCallTransformer(),
+    transformer=translateCallTransformer(),
 ):
     """Duplicate the input dir to the output dir, fixing file method calls.
 
@@ -130,7 +130,7 @@ def fix_files(
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description="""Fix up source that uses the translation client library.
+        description="""Fix up source that uses the translate client library.
 
 The existing sources are NOT overwritten but are copied to output_dir with changes made.
 

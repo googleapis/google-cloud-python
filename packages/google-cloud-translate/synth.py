@@ -18,7 +18,7 @@ import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICMicrogenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 versions = ["v3beta1", "v3"]
 
@@ -38,22 +38,9 @@ for version in versions:
     library = gapic.py_library(
         service="translate",
         version=version,
-        proto_path=f"google/cloud/translate/{version}"
+        bazel_target=f"//google/cloud/translate/{version}:translation-{version}-py",
     )
-
-    s.move(library / "google/cloud/translation", "google/cloud/translate")
-    s.move(library / f"google/cloud/translation_{version}", f"google/cloud/translate_{version}")
-    s.move(library / f"docs/translation_{version}", f"docs/translate_{version}")
-    s.move(library / f"tests/unit/gapic/translation_{version}", f"tests/unit/gapic/translate_{version}")
-    s.move(library / "scripts")
-
-# google.cloud.translation -> google.cloud.translate
-s.replace(
-    ["google/cloud/translate*/**/*.py", "docs/translate_v*/*"],
-    " google.cloud.translation",
-    " google.cloud.translate"
-)
-s.replace("tests/**/*.py", "google.cloud.translation", "google.cloud.translate")
+    s.move(library, excludes=excludes)
 
 # TODO(danoscarmike): remove once upstream protos have been fixed
 # Escape underscores in gs:\\ URLs
@@ -74,12 +61,6 @@ s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .
 
 # Correct namespace in noxfile
 s.replace("noxfile.py", "google.cloud.translation", "google.cloud.translate")
-
-# ----------------------------------------------------------------------------
-# Samples templates
-# ----------------------------------------------------------------------------
-
-python.py_samples()
 
 # ----------------------------------------------------------------------------
 # Samples templates

@@ -83,8 +83,8 @@ setuptools.setup(
     platforms="Posix; MacOS X; Windows",
     packages=packages,
     scripts=[
-        "scripts/fixup_translation_v3_keywords.py",
-        "scripts/fixup_translation_v3beta1_keywords.py",
+        "scripts/fixup_translate_v3_keywords.py",
+        "scripts/fixup_translate_v3beta1_keywords.py",
     ],
     namespace_packages=namespaces,
     install_requires=dependencies,

@@ -1057,9 +1057,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
 
 try:
     _client_info = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-translation",
-        ).version,
+        gapic_version=pkg_resources.get_distribution("google-cloud-translate",).version,
     )
 except pkg_resources.DistributionNotFound:
     _client_info = gapic_v1.client_info.ClientInfo()

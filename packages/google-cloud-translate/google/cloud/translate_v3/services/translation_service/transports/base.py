@@ -32,9 +32,7 @@ from google.longrunning import operations_pb2 as operations  # type: ignore
 
 try:
     _client_info = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            "google-cloud-translation",
-        ).version,
+        gapic_version=pkg_resources.get_distribution("google-cloud-translate",).version,
     )
 except pkg_resources.DistributionNotFound:
     _client_info = gapic_v1.client_info.ClientInfo()
@@ -106,32 +104,70 @@ class TranslationServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.translate_text: gapic_v1.method.wrap_method(
-                self.translate_text, default_timeout=None, client_info=_client_info,
+                self.translate_text, default_timeout=600.0, client_info=_client_info,
             ),
             self.detect_language: gapic_v1.method.wrap_method(
-                self.detect_language, default_timeout=None, client_info=_client_info,
+                self.detect_language, default_timeout=600.0, client_info=_client_info,
             ),
             self.get_supported_languages: gapic_v1.method.wrap_method(
                 self.get_supported_languages,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    ),
+                ),
+                default_timeout=600.0,
                 client_info=_client_info,
             ),
             self.batch_translate_text: gapic_v1.method.wrap_method(
                 self.batch_translate_text,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=_client_info,
             ),
             self.create_glossary: gapic_v1.method.wrap_method(
-                self.create_glossary, default_timeout=None, client_info=_client_info,
+                self.create_glossary, default_timeout=600.0, client_info=_client_info,
             ),
             self.list_glossaries: gapic_v1.method.wrap_method(
-                self.list_glossaries, default_timeout=None, client_info=_client_info,
+                self.list_glossaries,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    ),
+                ),
+                default_timeout=600.0,
+                client_info=_client_info,
             ),
             self.get_glossary: gapic_v1.method.wrap_method(
-                self.get_glossary, default_timeout=None, client_info=_client_info,
+                self.get_glossary,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    ),
+                ),
+                default_timeout=600.0,
+                client_info=_client_info,
             ),
             self.delete_glossary: gapic_v1.method.wrap_method(
-                self.delete_glossary, default_timeout=None, client_info=_client_info,
+                self.delete_glossary,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    ),
+                ),
+                default_timeout=600.0,
+                client_info=_client_info,
             ),
         }
 
