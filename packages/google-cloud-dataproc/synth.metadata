@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-dataproc.git",
-        "sha": "69424f2d7735fece95620520fc83ecf88bde7fbb"
+        "sha": "65c277120e136edd5648047fcb85f8d0cd104408"
       }
     },
     {
@@ -13,6 +13,13 @@
         "remote": "https://github.com/googleapis/googleapis.git",
         "sha": "6fd07563a2f1a6785066f5955ad9659a315e4492",
         "internalRef": "324941614"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "5f2f711c91199ba2f609d3f06a2fe22aee4e5be3"
       }
     },
     {
