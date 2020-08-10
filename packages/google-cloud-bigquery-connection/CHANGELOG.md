@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/googleapis/python-bigquery-connection/compare/v0.1.0...v0.2.0) (2020-08-10)
+
+
+### Features
+
+* add async client ([#12](https://www.github.com/googleapis/python-bigquery-connection/issues/12)) ([58eb861](https://www.github.com/googleapis/python-bigquery-connection/commit/58eb8615e1858b50a9727db7a56cec3610959d4f))
+
+
+### Documentation
+
+* **readme:** adds link to BQ external data sources docs ([#5](https://www.github.com/googleapis/python-bigquery-connection/issues/5)) ([4a740d0](https://www.github.com/googleapis/python-bigquery-connection/commit/4a740d0beba471bd5646a0c69045f69c9b158639))
+
 ## 0.1.0 (2020-05-19)
 
 
