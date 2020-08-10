@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-trace.git",
-        "sha": "0c495946742b8fae11022fb3545ae54ee4a4c3a1"
+        "sha": "a4fa87054a34c1dc4e9a69f3a96762ece9cec306"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "13d3b3ace10bd5a4865094ad2ba5e62b02e1e6bf",
-        "internalRef": "319788951"
+        "sha": "db69b46790b55a82ab7cfa473d031da787bc7591",
+        "internalRef": "320411362"
       }
     },
     {
