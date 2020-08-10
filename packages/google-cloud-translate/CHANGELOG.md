@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+### [3.0.1](https://www.github.com/googleapis/python-translate/compare/v3.0.0...v3.0.1) (2020-08-08)
+
+
+### Bug Fixes
+
+* update retry and timeout config ([#39](https://www.github.com/googleapis/python-translate/issues/39)) ([a334317](https://www.github.com/googleapis/python-translate/commit/a334317bc34b8927adfbc4a2559dbb71ee22c78d))
+
 ## [3.0.0](https://www.github.com/googleapis/python-translate/compare/v2.0.2...v3.0.0) (2020-08-05)
 
 
