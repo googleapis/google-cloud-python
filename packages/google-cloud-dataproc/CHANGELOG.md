@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+### [1.1.1](https://www.github.com/googleapis/python-dataproc/compare/v1.1.0...v1.1.1) (2020-08-10)
+
+
+### Documentation
+
+* change relative URLs to absolute URLs to fix broken links ([#65](https://www.github.com/googleapis/python-dataproc/issues/65)) ([65c2771](https://www.github.com/googleapis/python-dataproc/commit/65c277120e136edd5648047fcb85f8d0cd104408))
+
 ## [1.1.0](https://www.github.com/googleapis/python-dataproc/compare/v1.0.1...v1.1.0) (2020-07-31)
 
 
