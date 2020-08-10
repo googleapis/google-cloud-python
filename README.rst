@@ -341,15 +341,6 @@ You may also find the `authentication document`_ shared by all the
 .. _Authentication section: https://googleapis.dev/python/google-api-core/latest/auth.html
 .. _authentication document: https://github.com/googleapis/google-cloud-common/tree/master/authentication
 
-Contributing
-------------
-
-Contributions to this library are always welcome and highly encouraged.
-
-See the `CONTRIBUTING doc`_ for more information on how to get started.
-
-.. _CONTRIBUTING doc: https://github.com/googleapis/google-cloud-python/blob/master/CONTRIBUTING.rst
-
 
 
 License
