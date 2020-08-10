@@ -86,8 +86,8 @@ class ScalarQueryParameter(_AbstractQueryParameter):
             'FLOAT64', 'NUMERIC', 'BOOL', 'TIMESTAMP', 'DATETIME', or
             'DATE'.
 
-        value (Union[str, int, float, decimal.Decimal, bool,
-                 datetime.datetime, datetime.date]): The scalar parameter value.
+        value (Union[str, int, float, decimal.Decimal, bool, datetime.datetime, datetime.date]):
+            The scalar parameter value.
     """
 
     def __init__(self, name, type_, value):
@@ -105,9 +105,8 @@ class ScalarQueryParameter(_AbstractQueryParameter):
                 'FLOAT64', 'NUMERIC', 'BOOL', 'TIMESTAMP', 'DATETIME', or
                 'DATE'.
 
-            value (Union[str, int, float, decimal.Decimal, bool,
-                     datetime.datetime,
-                     datetime.date]): The scalar parameter value.
+            value (Union[str, int, float, decimal.Decimal, bool, datetime.datetime, datetime.date]):
+                The scalar parameter value.
 
         Returns:
             google.cloud.bigquery.query.ScalarQueryParameter: Instance without name
