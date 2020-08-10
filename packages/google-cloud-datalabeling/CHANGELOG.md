@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+### [0.4.1](https://www.github.com/googleapis/python-datalabeling/compare/v0.4.0...v0.4.1) (2020-08-07)
+
+
+### Bug Fixes
+
+* update retry configs ([#20](https://www.github.com/googleapis/python-datalabeling/issues/20)) ([b39f497](https://www.github.com/googleapis/python-datalabeling/commit/b39f4975eceee93eec20ccfb0e301e2ff514e023))
+
 ## [0.4.0](https://www.github.com/googleapis/python-datalabeling/compare/v0.3.0...v0.4.0) (2020-01-31)
 
 
