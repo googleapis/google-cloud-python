@@ -1829,14 +1829,6 @@ class TestAnonymousClient(unittest.TestCase):
             retry_429_503(blob.download_to_file)(stream)
 
 
-_KMS_2_0_BREAKAGE_MESSAGE = """\
-KMS 2.0.0 incompatible with our test setup.
-
-See https://github.com/googleapis/python-storage/issues/226
-"""
-
-
-@unittest.skipIf(six.PY3, reason=_KMS_2_0_BREAKAGE_MESSAGE)
 class TestKMSIntegration(TestStorageFiles):
 
     FILENAMES = ("file01.txt",)
