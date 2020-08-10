@@ -1417,7 +1417,7 @@ class Test_Blob(unittest.TestCase):
         stream = blob._do_download.mock_calls[0].args[1]
         self.assertEqual(stream.name, temp.name)
 
-    def _download_as_string_helper(self, raw_download, timeout=None):
+    def _download_as_bytes_helper(self, raw_download, timeout=None):
         blob_name = "blob-name"
         client = mock.Mock(spec=["_http"])
         bucket = _Bucket(client)
@@ -1428,13 +1428,10 @@ class Test_Blob(unittest.TestCase):
 
         if timeout is None:
             expected_timeout = self._get_default_timeout()
-            fetched = blob.download_as_string(raw_download=raw_download)
+            fetched = blob.download_as_bytes(raw_download=raw_download)
         else:
             expected_timeout = timeout
-            fetched = blob.download_as_string(
-                raw_download=raw_download, timeout=timeout
-            )
-
+            fetched = blob.download_as_bytes(raw_download=raw_download, timeout=timeout)
         self.assertEqual(fetched, b"")
 
         headers = {"accept-encoding": "gzip"}
@@ -1501,7 +1498,7 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.md5_hash)
         self.assertIsNone(blob.crc32c)
 
-    def test_download_as_string_w_generation_match(self):
+    def test_download_as_bytes_w_generation_match(self):
         GENERATION_NUMBER = 6
         MEDIA_LINK = "http://example.com/media/"
 
@@ -1511,7 +1508,7 @@ class Test_Blob(unittest.TestCase):
         )
         blob.download_to_file = mock.Mock()
 
-        fetched = blob.download_as_string(if_generation_match=GENERATION_NUMBER)
+        fetched = blob.download_as_bytes(if_generation_match=GENERATION_NUMBER)
         self.assertEqual(fetched, b"")
 
         blob.download_to_file.assert_called_once_with(
@@ -1527,14 +1524,119 @@ class Test_Blob(unittest.TestCase):
             timeout=self._get_default_timeout(),
         )
 
-    def test_download_as_string_wo_raw(self):
-        self._download_as_string_helper(raw_download=False)
+    def test_download_as_bytes_wo_raw(self):
+        self._download_as_bytes_helper(raw_download=False)
 
-    def test_download_as_string_w_raw(self):
-        self._download_as_string_helper(raw_download=True)
+    def test_download_as_bytes_w_raw(self):
+        self._download_as_bytes_helper(raw_download=True)
 
-    def test_download_as_string_w_custom_timeout(self):
-        self._download_as_string_helper(raw_download=False, timeout=9.58)
+    def test_download_as_byte_w_custom_timeout(self):
+        self._download_as_bytes_helper(raw_download=False, timeout=9.58)
+
+    def _download_as_text_helper(self, raw_download, encoding=None, timeout=None):
+        blob_name = "blob-name"
+        client = mock.Mock(spec=["_http"])
+        bucket = _Bucket(client)
+        media_link = "http://example.com/media/"
+        properties = {"mediaLink": media_link}
+        if encoding:
+            properties["contentEncoding"] = encoding
+        blob = self._make_one(blob_name, bucket=bucket, properties=properties)
+        blob._do_download = mock.Mock()
+
+        if timeout is None:
+            expected_timeout = self._get_default_timeout()
+            fetched = blob.download_as_text(raw_download=raw_download)
+        else:
+            expected_timeout = timeout
+            fetched = blob.download_as_text(raw_download=raw_download, timeout=timeout)
+
+        self.assertEqual(fetched, "")
+
+        headers = {"accept-encoding": "gzip"}
+        blob._do_download.assert_called_once_with(
+            client._http,
+            mock.ANY,
+            media_link,
+            headers,
+            None,
+            None,
+            raw_download,
+            timeout=expected_timeout,
+        )
+        stream = blob._do_download.mock_calls[0].args[1]
+        self.assertIsInstance(stream, io.BytesIO)
+
+    def test_download_as_text_w_generation_match(self):
+        GENERATION_NUMBER = 6
+        MEDIA_LINK = "http://example.com/media/"
+
+        client = mock.Mock(spec=["_http"])
+        blob = self._make_one(
+            "blob-name", bucket=_Bucket(client), properties={"mediaLink": MEDIA_LINK}
+        )
+        blob.download_to_file = mock.Mock()
+
+        fetched = blob.download_as_text(if_generation_match=GENERATION_NUMBER)
+        self.assertEqual(fetched, "")
+
+        blob.download_to_file.assert_called_once_with(
+            mock.ANY,
+            client=None,
+            start=None,
+            end=None,
+            raw_download=False,
+            if_generation_match=GENERATION_NUMBER,
+            if_generation_not_match=None,
+            if_metageneration_match=None,
+            if_metageneration_not_match=None,
+            timeout=self._get_default_timeout(),
+        )
+
+    def test_download_as_text_wo_raw(self):
+        self._download_as_text_helper(raw_download=False)
+
+    def test_download_as_text_w_raw(self):
+        self._download_as_text_helper(raw_download=True)
+
+    def test_download_as_text_w_custom_timeout(self):
+        self._download_as_text_helper(raw_download=False, timeout=9.58)
+
+    def test_download_as_text_w_encoding(self):
+        self._download_as_text_helper(raw_download=False, encoding="utf-8")
+
+    @mock.patch("warnings.warn")
+    def test_download_as_string(self, mock_warn):
+        MEDIA_LINK = "http://example.com/media/"
+
+        client = mock.Mock(spec=["_http"])
+        blob = self._make_one(
+            "blob-name", bucket=_Bucket(client), properties={"mediaLink": MEDIA_LINK}
+        )
+        blob.download_to_file = mock.Mock()
+
+        fetched = blob.download_as_string()
+        self.assertEqual(fetched, b"")
+
+        blob.download_to_file.assert_called_once_with(
+            mock.ANY,
+            client=None,
+            start=None,
+            end=None,
+            raw_download=False,
+            if_generation_match=None,
+            if_generation_not_match=None,
+            if_metageneration_match=None,
+            if_metageneration_not_match=None,
+            timeout=self._get_default_timeout(),
+        )
+
+        mock_warn.assert_called_with(
+            "Blob.download_as_string() is deprecated and will be removed in future."
+            "Use Blob.download_as_bytes() instead.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
 
     def test__get_content_type_explicit(self):
         blob = self._make_one(u"blob-name", bucket=None)
