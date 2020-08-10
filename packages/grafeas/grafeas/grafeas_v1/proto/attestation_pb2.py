@@ -24,7 +24,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     serialized_options=b"\n\rio.grafeas.v1P\001ZFgoogle.golang.org/genproto/googleapis/grafeas/grafeas_v1/proto;grafeas\242\002\003GRA",
     create_key=_descriptor._internal_create_key,
     serialized_pb=b'\n*grafeas/grafeas_v1/proto/attestation.proto\x12\ngrafeas.v1\x1a%grafeas/grafeas_v1/proto/common.proto"f\n\x0f\x41ttestationNote\x12.\n\x04hint\x18\x01 \x01(\x0b\x32 .grafeas.v1.AttestationNote.Hint\x1a#\n\x04Hint\x12\x1b\n\x13human_readable_name\x18\x01 \x01(\t"^\n\x15\x41ttestationOccurrence\x12\x1a\n\x12serialized_payload\x18\x01 \x01(\x0c\x12)\n\nsignatures\x18\x02 \x03(\x0b\x32\x15.grafeas.v1.SignatureB_\n\rio.grafeas.v1P\x01ZFgoogle.golang.org/genproto/googleapis/grafeas/grafeas_v1/proto;grafeas\xa2\x02\x03GRAb\x06proto3',
-    dependencies=[grafeas_dot_grafeas__v1_dot_proto_dot_common__pb2.DESCRIPTOR],
+    dependencies=[grafeas_dot_grafeas__v1_dot_proto_dot_common__pb2.DESCRIPTOR,],
 )
 
 
@@ -54,7 +54,7 @@ _ATTESTATIONNOTE_HINT = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -94,10 +94,10 @@ _ATTESTATIONNOTE = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
-    nested_types=[_ATTESTATIONNOTE_HINT],
+    nested_types=[_ATTESTATIONNOTE_HINT,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,

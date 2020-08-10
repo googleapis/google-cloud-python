@@ -49,7 +49,7 @@ class GrafeasGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -68,7 +68,9 @@ class GrafeasGrpcTransport(object):
 
         # gRPC uses objects called "stubs" that are bound to the
         # channel and provide a basic method for each RPC.
-        self._stubs = {"grafeas_stub": grafeas_pb2_grpc.GrafeasStub(channel)}
+        self._stubs = {
+            "grafeas_stub": grafeas_pb2_grpc.GrafeasStub(channel),
+        }
 
     @classmethod
     def create_channel(cls, address, scopes, credentials=None, **kwargs):

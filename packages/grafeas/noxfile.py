@@ -39,7 +39,9 @@ def lint(session):
     serious code quality issues.
     """
     session.install("flake8", BLACK_VERSION)
-    session.run("black", "--check", *BLACK_PATHS)
+    session.run(
+        "black", "--check", *BLACK_PATHS,
+    )
     session.run("flake8", "grafeas", "tests")
 
 
@@ -54,7 +56,9 @@ def blacken(session):
     check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
     """
     session.install(BLACK_VERSION)
-    session.run("black", *BLACK_PATHS)
+    session.run(
+        "black", *BLACK_PATHS,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -110,7 +114,9 @@ def system(session):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install("mock", "pytest", "google-cloud-testutils")
+    session.install(
+        "mock", "pytest", "google-cloud-testutils",
+    )
     session.install("-e", ".")
 
     # Run py.test against the system tests.

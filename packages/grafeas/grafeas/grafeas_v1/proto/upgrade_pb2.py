@@ -489,7 +489,7 @@ _WINDOWSUPDATE = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_WINDOWSUPDATE_IDENTITY, _WINDOWSUPDATE_CATEGORY],
+    nested_types=[_WINDOWSUPDATE_IDENTITY, _WINDOWSUPDATE_CATEGORY,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,

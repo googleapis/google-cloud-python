@@ -556,7 +556,7 @@ _VERSION = _descriptor.Descriptor(
     ],
     extensions=[],
     nested_types=[],
-    enum_types=[_VERSION_VERSIONKIND],
+    enum_types=[_VERSION_VERSIONKIND,],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
