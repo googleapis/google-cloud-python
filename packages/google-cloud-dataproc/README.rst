@@ -1,7 +1,7 @@
 Python Client for Google Cloud Dataproc API
 ===========================================
 
-|ga| |pypi| |versions| 
+|ga| |pypi| |versions|
 
 `Google Cloud Dataproc API`_: Manages Hadoop-based clusters and jobs on Google Cloud Platform.
 
@@ -49,11 +49,13 @@ dependencies.
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.5
+Python >= 3.6
 
 Deprecated Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7. Python 2.7 support will be removed on January 1, 2020.
+Python == 2.7.
+
+The last version of this library compatible with Python 2.7 is google-cloud-dataproc==1.1.0.
 
 
 Mac/Linux

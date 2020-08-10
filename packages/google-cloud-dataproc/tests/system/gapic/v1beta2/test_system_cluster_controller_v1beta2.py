@@ -18,7 +18,6 @@ import os
 import time
 
 from google.cloud import dataproc_v1beta2
-from google.cloud.dataproc_v1beta2.proto import clusters_pb2
 
 
 class TestSystemClusterController(object):
@@ -28,4 +27,6 @@ class TestSystemClusterController(object):
         client = dataproc_v1beta2.ClusterControllerClient()
         project_id_2 = project_id
         region = "global"
-        response = client.list_clusters(project_id_2, region)
+        response = client.list_clusters(
+            request={"project_id": project_id_2, "region": region}
+        )

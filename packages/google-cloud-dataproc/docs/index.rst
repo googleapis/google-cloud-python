@@ -7,11 +7,20 @@ API Reference
 .. toctree::
    :maxdepth: 2
 
-   gapic/v1/api
-   gapic/v1/types
-   gapic/v1beta2/api
-   gapic/v1beta2/types
+   dataproc_v1/services
+   dataproc_v1/types
+   dataproc_v1beta2/services
+   dataproc_v1beta2/types
 
+Migration Guide
+---------------
+
+See the guide below for instructions on migrating to the 2.x release of this library.
+
+.. toctree::
+   :maxdepth: 2
+
+   UPGRADING
 
 Changelog
 ---------
