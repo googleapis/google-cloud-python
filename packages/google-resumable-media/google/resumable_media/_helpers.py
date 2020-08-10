@@ -187,9 +187,9 @@ def _get_crc32c_object():
     to use CRCMod. CRCMod might be using a 'slow' varietal. If so, warn...
     """
     try:
-        import crc32c
+        import google_crc32c
 
-        crc_obj = crc32c.Checksum()
+        crc_obj = google_crc32c.Checksum()
     except ImportError:
         try:
             import crcmod
