@@ -366,19 +366,24 @@ class BigQueryDialect(DefaultDialect):
 
         return (project, dataset, table_name)
 
+    def _table_reference(self, provided_schema_name, provided_table_name,
+                         client_project):
+        project_id, dataset_id, table_id = self._split_table_name(provided_table_name)
+        project_id = project_id or client_project
+        dataset_id = dataset_id or provided_schema_name or self.dataset_id
+
+        table_ref = TableReference.from_string("{}.{}.{}".format(
+            project_id, dataset_id, table_id
+        ))
+        return table_ref
+
     def _get_table(self, connection, table_name, schema=None):
         if isinstance(connection, Engine):
             connection = connection.connect()
 
         client = connection.connection._client
 
-        project_id, dataset_id, table_id = self._split_table_name(table_name)
-        project_id = project_id or client.project
-        dataset_id = dataset_id or schema or self.dataset_id
-
-        table_ref = TableReference.from_string("{}.{}.{}".format(
-            project_id, dataset_id, table_id
-        ))
+        table_ref = self._table_reference(schema, table_name, client.project)
         try:
             table = client.get_table(table_ref)
         except NotFound:

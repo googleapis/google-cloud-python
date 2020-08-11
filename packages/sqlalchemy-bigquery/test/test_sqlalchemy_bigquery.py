@@ -477,6 +477,23 @@ def test_get_columns(inspector, inspector_using_test_dataset):
             assert col['type'].__class__.__name__ == sample_col['type'].__class__.__name__
 
 
+@pytest.mark.parametrize('provided_schema_name,provided_table_name,client_project',
+                         [
+                             ('dataset', 'table', 'project'),
+                             (None, 'dataset.table', 'project'),
+                             (None, 'project.dataset.table', 'other_project'),
+                             ('project.dataset', 'table', 'other_project'),
+                         ])
+def test_table_reference(engine, provided_schema_name,
+                         provided_table_name, client_project):
+    ref = engine.dialect._table_reference(provided_schema_name,
+                                          provided_table_name,
+                                          client_project)
+    assert ref.table_id == 'table'
+    assert ref.dataset_id == 'dataset'
+    assert ref.project == 'project'
+
+
 def test_has_table(engine, engine_using_test_dataset):
     assert engine.has_table('sample', 'test_pybigquery') is True
     assert engine.has_table('test_pybigquery.sample') is True
