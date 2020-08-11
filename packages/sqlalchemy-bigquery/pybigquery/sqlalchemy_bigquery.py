@@ -382,7 +382,8 @@ class BigQueryDialect(DefaultDialect):
                 else:
                     dataset_id_from_schema = provided_schema_name_split[0]
             elif len(provided_schema_name_split) == 2:
-                pass
+                project_id_from_schema = provided_schema_name_split[0]
+                dataset_id_from_schema = provided_schema_name_split[1]
             # TODO: Get a test for an else statement here
         project_id = project_id_from_schema or project_id_from_table or client_project
         dataset_id = dataset_id_from_schema or dataset_id_from_table or self.dataset_id
