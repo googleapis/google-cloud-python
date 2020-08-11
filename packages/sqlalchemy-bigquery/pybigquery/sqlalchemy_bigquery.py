@@ -369,12 +369,20 @@ class BigQueryDialect(DefaultDialect):
     def _table_reference(self, provided_schema_name, provided_table_name,
                          client_project):
         project_id_from_table, dataset_id_from_table, table_id = self._split_table_name(provided_table_name)
-        if project_id_from_table:
-            project_id = project_id_from_table
-        elif dataset_id_from_table:
-            project_id = provided_schema_name or client_project
-        else:
-            project_id = client_project
+        project_id_from_schema = None
+        if provided_schema_name is not None:
+            provided_schema_name_split = provided_schema_name.split('.')
+            if len(provided_schema_name_split) == 0:
+                pass
+            elif len(provided_schema_name_split) == 1:
+                if dataset_id_from_table:
+                    project_id_from_schema = provided_schema_name_split[0]
+                else:
+                    pass  # TODO: write a test case
+            elif len(provided_schema_name_split) == 2:
+                pass
+            # TODO: Get a test for an else statement here
+        project_id = project_id_from_schema or project_id_from_table or client_project
         dataset_id = dataset_id_from_table or provided_schema_name or self.dataset_id
 
         table_ref = TableReference.from_string("{}.{}.{}".format(
