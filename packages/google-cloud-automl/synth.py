@@ -157,8 +157,8 @@ s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
 # regex replaces are a brittle temporary solution. 
 s.replace(
 "noxfile.py", 
-""""-W",  # warnings as errors
-\s+"-T",  \# show full traceback on exception""",
+"""'-W',  # warnings as errors
+\s+'-T',  \# show full traceback on exception""",
 """"-T",  # show full traceback on exception""")
 
 
