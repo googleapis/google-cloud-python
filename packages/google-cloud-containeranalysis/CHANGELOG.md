@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.0.3](https://www.github.com/googleapis/python-containeranalysis/compare/v1.0.2...v1.0.3) (2020-08-11)
+
+
+### Bug Fixes
+
+* Use different versions of pytest for python 2 and python3 [([#2558](https://www.github.com/googleapis/python-containeranalysis/issues/2558))](https://github.com/GoogleCloudPlatform/python-docs-samples/issues/2558) ([7d21641](https://www.github.com/googleapis/python-containeranalysis/commit/7d21641eb50f574784ae7dfbb1d25a0d0af14699))
+* **deps:** add upper bound for grafeas ([#30](https://www.github.com/googleapis/python-containeranalysis/issues/30)) ([5ca8f79](https://www.github.com/googleapis/python-containeranalysis/commit/5ca8f7981349ed86438185f02681225f059cc9d9))
+
 ### [1.0.2](https://www.github.com/googleapis/python-containeranalysis/compare/v1.0.1...v1.0.2) (2020-07-16)
 
 
