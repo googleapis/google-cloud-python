@@ -488,7 +488,6 @@ def test_get_columns(inspector, inspector_using_test_dataset):
                              ('dataset', 'table', 'project'),
                              (None, 'dataset.table', 'project'),
                              (None, 'project.dataset.table', 'other_project'),
-                             ('dataset', 'table', 'project'),
                              ('project', 'dataset.table', 'other_project'),
                          ])
 def test_table_reference(dialect, provided_schema_name,
