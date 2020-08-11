@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-dataproc/compare/v1.1.1...v2.0.0) (2020-08-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate to use microgen (#71)
+
+### Features
+
+* migrate to use microgen ([#71](https://www.github.com/googleapis/python-dataproc/issues/71)) ([108d6ff](https://www.github.com/googleapis/python-dataproc/commit/108d6ff91c6442e743cdf449790f981709305a09))
+
 ### [1.1.1](https://www.github.com/googleapis/python-dataproc/compare/v1.1.0...v1.1.1) (2020-08-10)
 
 
