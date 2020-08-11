@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from google.api_core.exceptions import BadRequest
 from pybigquery.api import ApiClient
+from pybigquery.sqlalchemy_bigquery import BigQueryDialect
 from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import Table, MetaData, Column
 from sqlalchemy.ext.declarative import declarative_base
@@ -100,6 +101,11 @@ SAMPLE_COLUMNS = [
 def engine():
     engine = create_engine('bigquery://', echo=True)
     return engine
+
+
+@pytest.fixture(scope='session')
+def dialect():
+    return BigQueryDialect()
 
 
 @pytest.fixture(scope='session')
@@ -484,11 +490,11 @@ def test_get_columns(inspector, inspector_using_test_dataset):
                              (None, 'project.dataset.table', 'other_project'),
                              ('project.dataset', 'table', 'other_project'),
                          ])
-def test_table_reference(engine, provided_schema_name,
+def test_table_reference(dialect, provided_schema_name,
                          provided_table_name, client_project):
-    ref = engine.dialect._table_reference(provided_schema_name,
-                                          provided_table_name,
-                                          client_project)
+    ref = dialect._table_reference(provided_schema_name,
+                                   provided_table_name,
+                                   client_project)
     assert ref.table_id == 'table'
     assert ref.dataset_id == 'dataset'
     assert ref.project == 'project'
