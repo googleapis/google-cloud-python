@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-texttospeech/compare/v2.1.0...v2.2.0) (2020-08-10)
+
+
+### Features
+
+* incorporate upstream changes ([#73](https://www.github.com/googleapis/python-texttospeech/issues/73)) ([8ee5447](https://www.github.com/googleapis/python-texttospeech/commit/8ee544740f18497d9925bcf77e5ab96695503589))
+    * support MULAW audio encoding
+    * support MP3_64_KBPS audio encoding
+    * support timepointing via SSML tag
+    * support quota_project_id
+
 ## [2.1.0](https://www.github.com/googleapis/python-texttospeech/compare/v2.0.0...v2.1.0) (2020-06-20)
 
 
