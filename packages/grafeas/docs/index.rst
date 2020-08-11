@@ -7,8 +7,8 @@ Api Reference
 .. toctree::
     :maxdepth: 2
 
-    gapic/v1/api
-    gapic/v1/types
+    grafeas_v1/services
+    grafeas_v1/types
 
 Changelog
 ---------
@@ -19,3 +19,13 @@ For a list of all ``grafeas`` releases:
   :maxdepth: 2
 
   changelog
+
+Migration Guide
+---------------
+
+See the guide below for instructions on migrating to the 1.x release of this library.
+
+.. toctree::
+    :maxdepth: 2
+
+    UPGRADING

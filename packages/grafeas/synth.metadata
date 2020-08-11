@@ -3,23 +3,23 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-grafeas.git",
-        "sha": "8eac6101e9cf3af0de347495254c4bf9f50e079e"
+        "remote": "git@github.com:googleapis/python-grafeas",
+        "sha": "fb7debad7a8793929b91d38f999941b2708d84bd"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "b882b8e6bfcd708042ff00f7adc67ce750817dd0",
-        "internalRef": "318028816"
+        "sha": "96ef637adf148d54236ad83fefa30c7f75f29737",
+        "internalRef": "325052820"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "303271797a360f8a439203413f13a160f2f5b3b4"
+        "sha": "4530cc6ff080ef8aca258c1ec92c4db10a1bbfb4"
       }
     }
   ],
