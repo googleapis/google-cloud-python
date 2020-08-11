@@ -56,7 +56,6 @@ class DatastoreAdminClient(object):
 
     The Datastore Admin API provides several admin services for Cloud Datastore.
 
-    -----------------------------------------------------------------------------
     ## Concepts
 
     Project, namespace, kind, and entity as defined in the Google Cloud Datastore
@@ -68,7 +67,6 @@ class DatastoreAdminClient(object):
     specified as a combination of kinds and namespaces (either or both of which
     may be all).
 
-    -----------------------------------------------------------------------------
     ## Services
 
     # Export/Import

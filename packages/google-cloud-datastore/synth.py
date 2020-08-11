@@ -55,6 +55,13 @@ s.replace(
     "google-cloud-datstore"
 )
 
+# Remove spurious markup
+s.replace(
+    "google/**/datastore_admin_client.py",
+    "-----------------------------------------------------------------------------",
+    ""
+)
+
 # TODO(busunkim): Remove during the microgenerator transition.
 # This re-orders the parameters to avoid breaking existing code.
 num = s.replace(

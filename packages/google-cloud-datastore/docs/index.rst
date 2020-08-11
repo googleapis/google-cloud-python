@@ -13,6 +13,7 @@ API Reference
   transactions
   batches
   helpers
+  admin_client
 
 
 Changelog
