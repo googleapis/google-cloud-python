@@ -500,6 +500,20 @@ def test_table_reference(dialect, provided_schema_name,
     assert ref.dataset_id == 'dataset'
     assert ref.project == 'project'
 
+@pytest.mark.parametrize('provided_schema_name,provided_table_name,client_project',
+                         [
+                             ('project.dataset', 'other_dataset.table', 'project'),
+                             ('project.dataset', 'other_project.dataset.table', 'project'),
+                             ('project.dataset.something_else', 'table', 'project'),
+                             (None, 'project.dataset.table.something_else', 'project'),
+                         ])
+def test_invalid_table_reference(dialect, provided_schema_name,
+                                 provided_table_name, client_project):
+    with pytest.raises(ValueError):
+        dialect._table_reference(provided_schema_name,
+                                 provided_table_name,
+                                 client_project)
+
 
 def test_has_table(engine, engine_using_test_dataset):
     assert engine.has_table('sample', 'test_pybigquery') is True

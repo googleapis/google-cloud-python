@@ -363,7 +363,8 @@ class BigQueryDialect(DefaultDialect):
             dataset, table_name = table_name_split
         elif len(table_name_split) == 3:
             project, dataset, table_name = table_name_split
-        # TODO: Get a test for an else statement here
+        else:
+            raise ValueError(f"Did not understand table_name: {full_table_name}")
 
         return (project, dataset, table_name)
 
@@ -384,7 +385,15 @@ class BigQueryDialect(DefaultDialect):
             elif len(provided_schema_name_split) == 2:
                 project_id_from_schema = provided_schema_name_split[0]
                 dataset_id_from_schema = provided_schema_name_split[1]
+            else:
+                raise ValueError(f"Did not understand schema: {provided_schema_name}")
             # TODO: Get a test for an else statement here
+        if (dataset_id_from_schema and dataset_id_from_table and
+           dataset_id_from_schema != dataset_id_from_table):
+            raise ValueError(f"dataset_id specified in schema and table_name disagree: got {dataset_id_from_schema} in schema, and {dataset_id_from_table} in table_name")
+        if (project_id_from_schema and project_id_from_table and
+           project_id_from_schema != project_id_from_table):
+            raise ValueError(f"project_id specified in schema and table_name disagree: got {project_id_from_schema} in schema, and {project_id_from_table} in table_name")
         project_id = project_id_from_schema or project_id_from_table or client_project
         dataset_id = dataset_id_from_schema or dataset_id_from_table or self.dataset_id
 
