@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-grafeas/compare/v0.4.1...v1.0.0) (2020-08-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* generate with microgenerator (#36)
+
+### Features
+
+* generate with microgenerator ([#36](https://www.github.com/googleapis/python-grafeas/issues/36)) ([2785cc2](https://www.github.com/googleapis/python-grafeas/commit/2785cc23c3c59457d9f42a9ef1321c2ad0fade47))
+
 ### [0.4.1](https://www.github.com/googleapis/python-grafeas/compare/v0.4.0...v0.4.1) (2020-06-25)
 
 
