@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [1.5.0](https://www.github.com/googleapis/python-ndb/compare/v1.4.2...v1.5.0) (2020-08-12)
+
+
+### Features
+
+* use contextvars.ConvextVar instead of threading.local in Python 3 ([4c634f3](https://www.github.com/googleapis/python-ndb/commit/4c634f348f8847fda139fe469e0e8adfabfd649a)), closes [#504](https://www.github.com/googleapis/python-ndb/issues/504)
+
+
+### Bug Fixes
+
+* fix concurrency bug in redis cache implementation ([#503](https://www.github.com/googleapis/python-ndb/issues/503)) ([6c18b95](https://www.github.com/googleapis/python-ndb/commit/6c18b9522e83e5e599a491c6ed287de2d7cdf089)), closes [#496](https://www.github.com/googleapis/python-ndb/issues/496)
+* support polymodel in local structured property ([#497](https://www.github.com/googleapis/python-ndb/issues/497)) ([9ccbdd2](https://www.github.com/googleapis/python-ndb/commit/9ccbdd23448dcb401b111f03e951fa89ae65174f)), closes [#481](https://www.github.com/googleapis/python-ndb/issues/481)
+
 ### [1.4.2](https://www.github.com/googleapis/python-ndb/compare/v1.4.1...v1.4.2) (2020-07-30)
 
 
