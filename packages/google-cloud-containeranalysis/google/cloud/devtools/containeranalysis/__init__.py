@@ -15,7 +15,14 @@
 # limitations under the License.
 #
 
-from .services.container_analysis import ContainerAnalysisClient
+from google.cloud.devtools.containeranalysis_v1.services.container_analysis.async_client import (
+    ContainerAnalysisAsyncClient,
+)
+from google.cloud.devtools.containeranalysis_v1.services.container_analysis.client import (
+    ContainerAnalysisClient,
+)
 
-
-__all__ = ("ContainerAnalysisClient",)
+__all__ = (
+    "ContainerAnalysisAsyncClient",
+    "ContainerAnalysisClient",
+)

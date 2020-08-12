@@ -36,60 +36,86 @@ library = gapic.py_library(
 )
 
 excludes = [
-    "nox.py",
     "setup.py",
-    "google/cloud/containeranalysis_v1/proto",
-    "google/cloud/devtools/__init__.py",  # other packages also use this namespace
     "README.rst",
     "docs/index.rst",
 ]
 
 s.move(library, excludes=excludes)
 
+
+s.replace(
+    "google/**/*client.py",
+    r"""google-cloud-devtools-containeranalysis""",
+    r"""google-cloud-containeranalysis""",
+)
+
 # Insert helper method to get grafeas client
-s.replace(
-    "google/**/container_analysis_client.py",
-    r"""_GAPIC_LIBRARY_VERSION = pkg_resources\.get_distribution\(
-    'google-cloud-devtools-containeranalysis',
-\)\.version""",
-    r"""from grafeas import grafeas_v1
-from grafeas.grafeas_v1.gapic.transports import grafeas_grpc_transport
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-containeranalysis"
-).version
-""",
+s.replace(
+    "google/**/client.py",
+    "class ContainerAnalysisClientMeta\(type\):",
+    """from grafeas import grafeas_v1
+from grafeas.grafeas_v1.services.grafeas import transports
+
+class ContainerAnalysisClientMeta(type):""",
 )
 
 s.replace(
-    "google/**/container_analysis_client.py",
-    r"""    \# Service calls
-    def set_iam_policy\(""",
-    r'''    def get_grafeas_client(self):
-        """Returns an equivalent grafeas client.
+    "google/**/async_client.py",
+    "class ContainerAnalysisAsyncClient:",
+    """from grafeas import grafeas_v1
+from grafeas.grafeas_v1.services.grafeas import transports
 
-        Returns:
-            A :class:`~grafeas.grafeas_v1.GrafeasClient` instance.
-        """
-        grafeas_transport = grafeas_grpc_transport.GrafeasGrpcTransport(
-            self.SERVICE_ADDRESS,
-            self.transport._OAUTH_SCOPES)
-
-        return grafeas_v1.GrafeasClient(grafeas_transport)
-
-    # Service calls
-    def set_iam_policy(''',
+class ContainerAnalysisAsyncClient:""",
 )
+
+
+s.replace(
+    "google/**/client.py",
+    r"""(\s+)def set_iam_policy\(""",
+    r'''\n\g<1>def get_grafeas_client(
+        self
+    ) -> grafeas_v1.GrafeasClient:
+        transport = type(self).get_transport_class("grpc")()
+        grafeas_transport = grafeas_v1.services.grafeas.transports.GrafeasGrpcTransport(
+            host=transport._host,
+            scopes=transport.AUTH_SCOPES
+        )
+        return grafeas_v1.GrafeasClient(transport=grafeas_transport)
+
+\g<1># Service calls
+\g<1>def set_iam_policy(''',
+)
+
+s.replace(
+    "google/**/async_client.py",
+    r"""(\s+)async def set_iam_policy\(""",
+    r'''\n\g<1>def get_grafeas_client(
+        self
+    ) -> grafeas_v1.GrafeasClient:
+        transport = type(self).get_transport_class("grpc_asyncio")()
+        grafeas_transport = grafeas_v1.services.grafeas.transports.GrafeasGrpcTransport(
+            host=transport._host,
+            scopes=transport.AUTH_SCOPES
+        )
+        return grafeas_v1.GrafeasClient(transport=grafeas_transport)
+
+\g<1># Service calls
+\g<1>async def set_iam_policy(''',
+)
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=45, cov_level=45)
-s.move(templated_files)
+templated_files = common.py_library(
+    samples=False,  # set to True only if there are samples
+    microgenerator=True,
+    cov_level=98,
+)
+s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good coveragerc
 
 python.py_samples(skip_readmes=True)
-
-# TODO(busunkim): Use latest sphinx after microgenerator transition
-s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
 
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

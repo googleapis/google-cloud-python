@@ -48,6 +48,16 @@ dependencies.
 .. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
 
 
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Python >= 3.6
+
+Deprecated Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python == 2.7.
+
+The last version of this library compatible with Python 2.7 is google-cloud-containeranalysis==1.0.2.
+
 Mac/Linux
 ^^^^^^^^^
 

@@ -7,8 +7,8 @@ Api Reference
 .. toctree::
     :maxdepth: 2
 
-    gapic/v1/api
-    gapic/v1/types
+    containeranalysis_v1/services
+    containeranalysis_v1/types
 
 
 Changelog
@@ -20,3 +20,13 @@ For all previous ``google-cloud-containeranalysis`` releases:
     :maxdepth: 2
 
     changelog
+
+Migration Guide
+---------------
+
+See the guide below for instructions on migrating to the 2.x release of this library.
+
+.. toctree::
+    :maxdepth: 2
+
+    UPGRADING
