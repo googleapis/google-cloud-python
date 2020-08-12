@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://www.github.com/googleapis/python-containeranalysis/compare/v1.0.3...v2.0.0) (2020-08-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* move to microgen. See the [Migration Guide](https://github.com/googleapis/python-containeranalysis/blob/release-v2.0.0/UPGRADING.md) for details. (#33)
+
+### Features
+
+* move to microgen. See the [Migration Guide](https://github.com/googleapis/python-containeranalysis/blob/release-v2.0.0/UPGRADING.md) for details. ([#33](https://www.github.com/googleapis/python-containeranalysis/issues/33)) ([6098905](https://www.github.com/googleapis/python-containeranalysis/commit/60989058883a0ae35f3b913d6a06741c73186203))
+
 ### [1.0.3](https://www.github.com/googleapis/python-containeranalysis/compare/v1.0.2...v1.0.3) (2020-08-11)
 
 
