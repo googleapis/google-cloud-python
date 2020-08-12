@@ -170,6 +170,31 @@ Running System Tests
 
    $ export GOOGLE_APPLICATION_CREDENTIALS="/Users/<your_username>/path/to/app_credentials.json"
 
+- You'll need to create composite
+  `indexes <https://cloud.google.com/datastore/docs/tools/indexconfig>`__
+  with the ``gcloud`` command line
+  `tool <https://developers.google.com/cloud/sdk/gcloud/>`__::
+
+   # Install the app (App Engine Command Line Interface) component.
+   $ gcloud components install app-engine-python
+
+   # Authenticate the gcloud tool with your account.
+   $ GOOGLE_APPLICATION_CREDENTIALS="path/to/app_credentials.json"
+   $ gcloud auth activate-service-account    > --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
+
+   # Create the indexes
+   $ gcloud datastore indexes create tests/system/index.yaml
+
+- You'll also need stored data in your dataset. To populate this data, run::
+
+   $ python tests/system/utils/populate_datastore.py
+
+- If you make a mistake during development (i.e. a failing test that
+  prevents clean-up) you can clear all system test data from your
+  datastore instance via::
+
+   $ python tests/system/utils/clear_datastore.py
+
 
 *************
 Test Coverage

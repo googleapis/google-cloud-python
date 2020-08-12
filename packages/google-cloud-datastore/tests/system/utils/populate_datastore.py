@@ -156,7 +156,7 @@ def add_timestamp_keys(client=None):
         # Get a client that uses the test dataset.
         client = datastore.Client()
 
-    num_batches = 2
+    num_batches = 20
     batch_size = 500
 
     timestamp_micros = set()
