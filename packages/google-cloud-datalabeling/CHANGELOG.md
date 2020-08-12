@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-datalabeling/compare/v0.4.1...v1.0.0) (2020-08-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate to use microgen (#34)
+
+### Features
+
+* migrate to use microgen ([#34](https://www.github.com/googleapis/python-datalabeling/issues/34)) ([465eb36](https://www.github.com/googleapis/python-datalabeling/commit/465eb361d39d08029f30b36c769252c9f83e7949))
+
 ### [0.4.1](https://www.github.com/googleapis/python-datalabeling/compare/v0.4.0...v0.4.1) (2020-08-07)
 
 
