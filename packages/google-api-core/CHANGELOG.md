@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+### [1.22.1](https://www.github.com/googleapis/python-api-core/compare/v1.22.0...v1.22.1) (2020-08-12)
+
+
+### Documentation
+
+* fix spelling errors for amount in retry ([#69](https://www.github.com/googleapis/python-api-core/issues/69)) ([7bb713d](https://www.github.com/googleapis/python-api-core/commit/7bb713d13b1fe3cca58263f5e499136a84abc456))
+
 ## [1.22.0](https://www.github.com/googleapis/python-api-core/compare/v1.21.0...v1.22.0) (2020-07-21)
 
 
