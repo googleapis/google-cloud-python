@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+### [1.0.1](https://www.github.com/googleapis/python-grafeas/compare/v1.0.0...v1.0.1) (2020-08-12)
+
+
+### Bug Fixes
+
+* remove gapic surface ([#42](https://www.github.com/googleapis/python-grafeas/issues/42)) ([aed68fe](https://www.github.com/googleapis/python-grafeas/commit/aed68fe9a83f041097d8a34f95eb89a1042b7b14))
+
 ## [1.0.0](https://www.github.com/googleapis/python-grafeas/compare/v0.4.1...v1.0.0) (2020-08-11)
 
 
