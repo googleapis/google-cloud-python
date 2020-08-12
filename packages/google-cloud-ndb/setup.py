@@ -14,6 +14,7 @@
 
 import io
 import os
+import sys
 
 import setuptools
 
@@ -27,6 +28,9 @@ def main():
         "google-cloud-datastore >= 1.7.0",
         "redis",
     ]
+
+    if sys.version_info.major == 3 and sys.version_info.minor < 7:
+        dependencies.append("contextvars")
 
     setuptools.setup(
         name="google-cloud-ndb",
