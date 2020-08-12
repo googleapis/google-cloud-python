@@ -229,6 +229,46 @@ class TestBatch(unittest.TestCase):
         mode = datastore_pb2.CommitRequest.NON_TRANSACTIONAL
         commit_method.assert_called_with(project, mode, [], transaction=None)
 
+    def test_commit_w_timeout(self):
+        from google.cloud.datastore_v1.proto import datastore_pb2
+
+        project = "PROJECT"
+        client = _Client(project)
+        batch = self._make_one(client)
+        timeout = 100000
+
+        self.assertEqual(batch._status, batch._INITIAL)
+        batch.begin()
+        self.assertEqual(batch._status, batch._IN_PROGRESS)
+        batch.commit(timeout=timeout)
+        self.assertEqual(batch._status, batch._FINISHED)
+
+        commit_method = client._datastore_api.commit
+        mode = datastore_pb2.CommitRequest.NON_TRANSACTIONAL
+        commit_method.assert_called_with(
+            project, mode, [], transaction=None, timeout=timeout
+        )
+
+    def test_commit_w_retry(self):
+        from google.cloud.datastore_v1.proto import datastore_pb2
+
+        project = "PROJECT"
+        client = _Client(project)
+        batch = self._make_one(client)
+        retry = mock.Mock()
+
+        self.assertEqual(batch._status, batch._INITIAL)
+        batch.begin()
+        self.assertEqual(batch._status, batch._IN_PROGRESS)
+        batch.commit(retry=retry)
+        self.assertEqual(batch._status, batch._FINISHED)
+
+        commit_method = client._datastore_api.commit
+        mode = datastore_pb2.CommitRequest.NON_TRANSACTIONAL
+        commit_method.assert_called_with(
+            project, mode, [], transaction=None, retry=retry
+        )
+
     def test_commit_wrong_status(self):
         project = "PROJECT"
         client = _Client(project)

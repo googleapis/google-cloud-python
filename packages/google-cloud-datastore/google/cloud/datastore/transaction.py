@@ -18,6 +18,19 @@ from google.cloud.datastore.batch import Batch
 from google.cloud.datastore_v1.types import TransactionOptions
 
 
+def _make_retry_timeout_kwargs(retry, timeout):
+    """Helper: make optional retry / timeout kwargs dict."""
+    kwargs = {}
+
+    if retry is not None:
+        kwargs["retry"] = retry
+
+    if timeout is not None:
+        kwargs["timeout"] = timeout
+
+    return kwargs
+
+
 class Transaction(Batch):
     """An abstraction representing datastore Transactions.
 
@@ -193,40 +206,69 @@ class Transaction(Batch):
         if isinstance(top, Transaction):
             return top
 
-    def begin(self):
+    def begin(self, retry=None, timeout=None):
         """Begins a transaction.
 
         This method is called automatically when entering a with
         statement, however it can be called explicitly if you don't want
         to use a context manager.
 
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry:
+            A retry object used to retry requests. If ``None`` is specified,
+            requests will be retried using a default configuration.
+
+        :type timeout: float
+        :param timeout:
+            Time, in seconds, to wait for the request to complete.
+            Note that if ``retry`` is specified, the timeout applies
+            to each individual attempt.
+
         :raises: :class:`~exceptions.ValueError` if the transaction has
                  already begun.
         """
         super(Transaction, self).begin()
+
+        kwargs = _make_retry_timeout_kwargs(retry, timeout)
+
         try:
-            response_pb = self._client._datastore_api.begin_transaction(self.project)
+            response_pb = self._client._datastore_api.begin_transaction(
+                self.project, **kwargs
+            )
             self._id = response_pb.transaction
         except:  # noqa: E722 do not use bare except, specify exception instead
             self._status = self._ABORTED
             raise
 
-    def rollback(self):
+    def rollback(self, retry=None, timeout=None):
         """Rolls back the current transaction.
 
         This method has necessary side-effects:
 
         - Sets the current transaction's ID to None.
+
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry:
+            A retry object used to retry requests. If ``None`` is specified,
+            requests will be retried using a default configuration.
+
+        :type timeout: float
+        :param timeout:
+            Time, in seconds, to wait for the request to complete.
+            Note that if ``retry`` is specified, the timeout applies
+            to each individual attempt.
         """
+        kwargs = _make_retry_timeout_kwargs(retry, timeout)
+
         try:
             # No need to use the response it contains nothing.
-            self._client._datastore_api.rollback(self.project, self._id)
+            self._client._datastore_api.rollback(self.project, self._id, **kwargs)
         finally:
             super(Transaction, self).rollback()
             # Clear our own ID in case this gets accidentally reused.
             self._id = None
 
-    def commit(self):
+    def commit(self, retry=None, timeout=None):
         """Commits the transaction.
 
         This is called automatically upon exiting a with statement,
@@ -236,9 +278,22 @@ class Transaction(Batch):
         This method has necessary side-effects:
 
         - Sets the current transaction's ID to None.
+
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry:
+            A retry object used to retry requests. If ``None`` is specified,
+            requests will be retried using a default configuration.
+
+        :type timeout: float
+        :param timeout:
+            Time, in seconds, to wait for the request to complete.
+            Note that if ``retry`` is specified, the timeout applies
+            to each individual attempt.
         """
+        kwargs = _make_retry_timeout_kwargs(retry, timeout)
+
         try:
-            super(Transaction, self).commit()
+            super(Transaction, self).commit(**kwargs)
         finally:
             # Clear our own ID in case this gets accidentally reused.
             self._id = None

@@ -344,6 +344,8 @@ class Query(object):
         end_cursor=None,
         client=None,
         eventual=False,
+        retry=None,
+        timeout=None,
     ):
         """Execute the Query; return an iterator for the matching entities.
 
@@ -380,6 +382,17 @@ class Query(object):
                                     but cannot be used inside a transaction or
                                     will raise ValueError.
 
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry:
+            A retry object used to retry requests. If ``None`` is specified,
+            requests will be retried using a default configuration.
+
+        :type timeout: float
+        :param timeout:
+            Time, in seconds, to wait for the request to complete.
+            Note that if ``retry`` is specified, the timeout applies
+            to each individual attempt.
+
         :rtype: :class:`Iterator`
         :returns: The iterator for the query.
         """
@@ -394,6 +407,8 @@ class Query(object):
             start_cursor=start_cursor,
             end_cursor=end_cursor,
             eventual=eventual,
+            retry=retry,
+            timeout=timeout,
         )
 
 
@@ -427,6 +442,17 @@ class Iterator(page_iterator.Iterator):
                                 Setting True will use eventual consistency,
                                 but cannot be used inside a transaction or
                                 will raise ValueError.
+
+    :type retry: :class:`google.api_core.retry.Retry`
+    :param retry:
+        A retry object used to retry requests. If ``None`` is specified,
+        requests will be retried using a default configuration.
+
+    :type timeout: float
+    :param timeout:
+        Time, in seconds, to wait for the request to complete.
+        Note that if ``retry`` is specified, the timeout applies
+        to each individual attempt.
     """
 
     next_page_token = None
@@ -440,6 +466,8 @@ class Iterator(page_iterator.Iterator):
         start_cursor=None,
         end_cursor=None,
         eventual=False,
+        retry=None,
+        timeout=None,
     ):
         super(Iterator, self).__init__(
             client=client,
@@ -451,6 +479,8 @@ class Iterator(page_iterator.Iterator):
         self._offset = offset
         self._end_cursor = end_cursor
         self._eventual = eventual
+        self._retry = retry
+        self._timeout = timeout
         # The attributes below will change over the life of the iterator.
         self._more_results = True
         self._skipped_results = 0
@@ -536,8 +566,17 @@ class Iterator(page_iterator.Iterator):
         partition_id = entity_pb2.PartitionId(
             project_id=self._query.project, namespace_id=self._query.namespace
         )
+
+        kwargs = {}
+
+        if self._retry is not None:
+            kwargs["retry"] = self._retry
+
+        if self._timeout is not None:
+            kwargs["timeout"] = self._timeout
+
         response_pb = self.client._datastore_api.run_query(
-            self._query.project, partition_id, read_options, query=query_pb
+            self._query.project, partition_id, read_options, query=query_pb, **kwargs
         )
 
         while (
@@ -551,7 +590,11 @@ class Iterator(page_iterator.Iterator):
             query_pb.start_cursor = response_pb.batch.skipped_cursor
             query_pb.offset -= response_pb.batch.skipped_results
             response_pb = self.client._datastore_api.run_query(
-                self._query.project, partition_id, read_options, query=query_pb
+                self._query.project,
+                partition_id,
+                read_options,
+                query=query_pb,
+                **kwargs
             )
 
         entity_pbs = self._process_query_results(response_pb)

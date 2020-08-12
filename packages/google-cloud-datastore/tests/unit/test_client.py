@@ -356,25 +356,24 @@ class TestClient(unittest.TestCase):
         self.assertEqual(list(client._batch_stack), [])
 
     def test_get_miss(self):
-        _called_with = []
-
-        def _get_multi(*args, **kw):
-            _called_with.append((args, kw))
-            return []
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        client.get_multi = _get_multi
+        get_multi = client.get_multi = mock.Mock(return_value=[])
 
         key = object()
 
         self.assertIsNone(client.get(key))
 
-        self.assertEqual(_called_with[0][0], ())
-        self.assertEqual(_called_with[0][1]["keys"], [key])
-        self.assertIsNone(_called_with[0][1]["missing"])
-        self.assertIsNone(_called_with[0][1]["deferred"])
-        self.assertIsNone(_called_with[0][1]["transaction"])
+        get_multi.assert_called_once_with(
+            keys=[key],
+            missing=None,
+            deferred=None,
+            transaction=None,
+            eventual=False,
+            retry=None,
+            timeout=None,
+        )
 
     def test_get_hit(self):
         TXN_ID = "123"
@@ -554,13 +553,15 @@ class TestClient(unittest.TestCase):
             self.PROJECT, [key1_pb, key2_pb], read_options=read_options
         )
 
-    def test_get_multi_hit(self):
+    def test_get_multi_hit_w_retry_w_timeout(self):
         from google.cloud.datastore_v1.proto import datastore_pb2
         from google.cloud.datastore.key import Key
 
         kind = "Kind"
         id_ = 1234
         path = [{"kind": kind, "id": id_}]
+        retry = mock.Mock()
+        timeout = 100000
 
         # Make a found entity pb to be returned from mock backend.
         entity_pb = _make_entity_pb(self.PROJECT, kind, id_, "foo", "Foo")
@@ -573,7 +574,7 @@ class TestClient(unittest.TestCase):
         client._datastore_api_internal = ds_api
 
         key = Key(kind, id_, project=self.PROJECT)
-        (result,) = client.get_multi([key])
+        (result,) = client.get_multi([key], retry=retry, timeout=timeout)
         new_key = result.key
 
         # Check the returned value is as expected.
@@ -585,7 +586,11 @@ class TestClient(unittest.TestCase):
 
         read_options = datastore_pb2.ReadOptions()
         ds_api.lookup.assert_called_once_with(
-            self.PROJECT, [key.to_protobuf()], read_options=read_options
+            self.PROJECT,
+            [key.to_protobuf()],
+            read_options=read_options,
+            retry=retry,
+            timeout=timeout,
         )
 
     def test_get_multi_hit_w_transaction(self):
@@ -711,20 +716,30 @@ class TestClient(unittest.TestCase):
         ds_api.lookup.assert_not_called()
 
     def test_put(self):
-        _called_with = []
-
-        def _put_multi(*args, **kw):
-            _called_with.append((args, kw))
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        client.put_multi = _put_multi
-        entity = object()
+        put_multi = client.put_multi = mock.Mock()
+        entity = mock.Mock()
 
         client.put(entity)
 
-        self.assertEqual(_called_with[0][0], ())
-        self.assertEqual(_called_with[0][1]["entities"], [entity])
+        put_multi.assert_called_once_with(entities=[entity], retry=None, timeout=None)
+
+    def test_put_w_retry_w_timeout(self):
+
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        put_multi = client.put_multi = mock.Mock()
+        entity = mock.Mock()
+        retry = mock.Mock()
+        timeout = 100000
+
+        client.put(entity, retry=retry, timeout=timeout)
+
+        put_multi.assert_called_once_with(
+            entities=[entity], retry=retry, timeout=timeout
+        )
 
     def test_put_multi_no_entities(self):
         creds = _make_credentials()
@@ -739,13 +754,15 @@ class TestClient(unittest.TestCase):
         client = self._make_one(credentials=creds)
         self.assertRaises(ValueError, client.put_multi, Entity())
 
-    def test_put_multi_no_batch_w_partial_key(self):
+    def test_put_multi_no_batch_w_partial_key_w_retry_w_timeout(self):
         from google.cloud.datastore_v1.proto import datastore_pb2
         from google.cloud.datastore.helpers import _property_tuples
 
         entity = _Entity(foo=u"bar")
         key = entity.key = _Key(self.PROJECT)
         key._id = None
+        retry = mock.Mock()
+        timeout = 100000
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
@@ -753,12 +770,13 @@ class TestClient(unittest.TestCase):
         ds_api = _make_datastore_api(key_pb)
         client._datastore_api_internal = ds_api
 
-        result = client.put_multi([entity])
+        result = client.put_multi([entity], retry=retry, timeout=timeout)
         self.assertIsNone(result)
 
         self.assertEqual(ds_api.commit.call_count, 1)
         _, positional, keyword = ds_api.commit.mock_calls[0]
-        self.assertEqual(keyword, {"transaction": None})
+        expected_kw = {"transaction": None, "retry": retry, "timeout": timeout}
+        self.assertEqual(keyword, expected_kw)
 
         self.assertEqual(len(positional), 3)
         self.assertEqual(positional[0], self.PROJECT)
@@ -796,20 +814,26 @@ class TestClient(unittest.TestCase):
         self.assertEqual(value_pb.string_value, u"bar")
 
     def test_delete(self):
-        _called_with = []
-
-        def _delete_multi(*args, **kw):
-            _called_with.append((args, kw))
-
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        client.delete_multi = _delete_multi
-        key = object()
+        delete_multi = client.delete_multi = mock.Mock()
+        key = mock.Mock()
 
         client.delete(key)
 
-        self.assertEqual(_called_with[0][0], ())
-        self.assertEqual(_called_with[0][1]["keys"], [key])
+        delete_multi.assert_called_once_with(keys=[key], retry=None, timeout=None)
+
+    def test_delete_w_retry_w_timeout(self):
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        delete_multi = client.delete_multi = mock.Mock()
+        key = mock.Mock()
+        retry = mock.Mock()
+        timeout = 100000
+
+        client.delete(key, retry=retry, timeout=timeout)
+
+        delete_multi.assert_called_once_with(keys=[key], retry=retry, timeout=timeout)
 
     def test_delete_multi_no_keys(self):
         creds = _make_credentials()
@@ -820,22 +844,25 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(result)
         client._datastore_api_internal.commit.assert_not_called()
 
-    def test_delete_multi_no_batch(self):
+    def test_delete_multi_no_batch_w_retry_w_timeout(self):
         from google.cloud.datastore_v1.proto import datastore_pb2
 
         key = _Key(self.PROJECT)
+        retry = mock.Mock()
+        timeout = 100000
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
         ds_api = _make_datastore_api()
         client._datastore_api_internal = ds_api
 
-        result = client.delete_multi([key])
+        result = client.delete_multi([key], retry=retry, timeout=timeout)
         self.assertIsNone(result)
 
         self.assertEqual(ds_api.commit.call_count, 1)
         _, positional, keyword = ds_api.commit.mock_calls[0]
-        self.assertEqual(keyword, {"transaction": None})
+        expected_kw = {"transaction": None, "retry": retry, "timeout": timeout}
+        self.assertEqual(keyword, expected_kw)
 
         self.assertEqual(len(positional), 3)
         self.assertEqual(positional[0], self.PROJECT)
@@ -893,6 +920,36 @@ class TestClient(unittest.TestCase):
         # Check the IDs returned.
         self.assertEqual([key._id for key in result], list(range(num_ids)))
 
+        expected_keys = [incomplete_key.to_protobuf()] * num_ids
+        alloc_ids.assert_called_once_with(self.PROJECT, expected_keys)
+
+    def test_allocate_ids_w_partial_key_w_retry_w_timeout(self):
+        num_ids = 2
+
+        incomplete_key = _Key(self.PROJECT)
+        incomplete_key._id = None
+        retry = mock.Mock()
+        timeout = 100000
+
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds, _use_grpc=False)
+        allocated = mock.Mock(keys=[_KeyPB(i) for i in range(num_ids)], spec=["keys"])
+        alloc_ids = mock.Mock(return_value=allocated, spec=[])
+        ds_api = mock.Mock(allocate_ids=alloc_ids, spec=["allocate_ids"])
+        client._datastore_api_internal = ds_api
+
+        result = client.allocate_ids(
+            incomplete_key, num_ids, retry=retry, timeout=timeout
+        )
+
+        # Check the IDs returned.
+        self.assertEqual([key._id for key in result], list(range(num_ids)))
+
+        expected_keys = [incomplete_key.to_protobuf()] * num_ids
+        alloc_ids.assert_called_once_with(
+            self.PROJECT, expected_keys, retry=retry, timeout=timeout
+        )
+
     def test_allocate_ids_w_completed_key(self):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
@@ -912,6 +969,26 @@ class TestClient(unittest.TestCase):
         client.reserve_ids(complete_key, num_ids)
         expected_keys = [complete_key.to_protobuf()] * num_ids
         reserve_ids.assert_called_once_with(self.PROJECT, expected_keys)
+
+    def test_reserve_ids_w_completed_key_w_retry_w_timeout(self):
+        num_ids = 2
+        retry = mock.Mock()
+        timeout = 100000
+
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds, _use_grpc=False)
+        complete_key = _Key(self.PROJECT)
+        self.assertTrue(not complete_key.is_partial)
+        reserve_ids = mock.Mock()
+        ds_api = mock.Mock(reserve_ids=reserve_ids, spec=["reserve_ids"])
+        client._datastore_api_internal = ds_api
+
+        client.reserve_ids(complete_key, num_ids, retry=retry, timeout=timeout)
+
+        expected_keys = [complete_key.to_protobuf()] * num_ids
+        reserve_ids.assert_called_once_with(
+            self.PROJECT, expected_keys, retry=retry, timeout=timeout
+        )
 
     def test_reserve_ids_w_partial_key(self):
         num_ids = 2

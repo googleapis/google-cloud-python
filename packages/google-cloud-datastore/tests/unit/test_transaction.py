@@ -94,6 +94,23 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(xact.id, id_)
         ds_api.begin_transaction.assert_called_once_with(project)
 
+    def test_begin_w_retry_w_timeout(self):
+        project = "PROJECT"
+        id_ = 889
+        retry = mock.Mock()
+        timeout = 100000
+
+        ds_api = _make_datastore_api(xact_id=id_)
+        client = _Client(project, datastore_api=ds_api)
+        xact = self._make_one(client)
+
+        xact.begin(retry=retry, timeout=timeout)
+
+        self.assertEqual(xact.id, id_)
+        ds_api.begin_transaction.assert_called_once_with(
+            project, retry=retry, timeout=timeout
+        )
+
     def test_begin_tombstoned(self):
         project = "PROJECT"
         id_ = 1094
@@ -131,52 +148,77 @@ class TestTransaction(unittest.TestCase):
         client = _Client(project, datastore_api=ds_api)
         xact = self._make_one(client)
         xact.begin()
+
         xact.rollback()
-        client._datastore_api.rollback.assert_called_once_with(project, id_)
+
         self.assertIsNone(xact.id)
-        ds_api.begin_transaction.assert_called_once_with(project)
+        ds_api.rollback.assert_called_once_with(project, id_)
+
+    def test_rollback_w_retry_w_timeout(self):
+        project = "PROJECT"
+        id_ = 239
+        retry = mock.Mock()
+        timeout = 100000
+
+        ds_api = _make_datastore_api(xact_id=id_)
+        client = _Client(project, datastore_api=ds_api)
+        xact = self._make_one(client)
+        xact.begin()
+
+        xact.rollback(retry=retry, timeout=timeout)
+
+        self.assertIsNone(xact.id)
+        ds_api.rollback.assert_called_once_with(
+            project, id_, retry=retry, timeout=timeout
+        )
 
     def test_commit_no_partial_keys(self):
         from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = "PROJECT"
         id_ = 1002930
+        mode = datastore_pb2.CommitRequest.TRANSACTIONAL
+
         ds_api = _make_datastore_api(xact_id=id_)
         client = _Client(project, datastore_api=ds_api)
         xact = self._make_one(client)
         xact.begin()
         xact.commit()
 
-        mode = datastore_pb2.CommitRequest.TRANSACTIONAL
-        client._datastore_api.commit.assert_called_once_with(
-            project, mode, [], transaction=id_
-        )
+        ds_api.commit.assert_called_once_with(project, mode, [], transaction=id_)
         self.assertIsNone(xact.id)
-        ds_api.begin_transaction.assert_called_once_with(project)
 
-    def test_commit_w_partial_keys(self):
+    def test_commit_w_partial_keys_w_retry_w_timeout(self):
         from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = "PROJECT"
         kind = "KIND"
         id1 = 123
+        mode = datastore_pb2.CommitRequest.TRANSACTIONAL
         key = _make_key(kind, id1, project)
         id2 = 234
+        retry = mock.Mock()
+        timeout = 100000
+
         ds_api = _make_datastore_api(key, xact_id=id2)
         client = _Client(project, datastore_api=ds_api)
         xact = self._make_one(client)
         xact.begin()
         entity = _Entity()
-        xact.put(entity)
-        xact.commit()
 
-        mode = datastore_pb2.CommitRequest.TRANSACTIONAL
+        xact.put(entity)
+        xact.commit(retry=retry, timeout=timeout)
+
         ds_api.commit.assert_called_once_with(
-            project, mode, xact.mutations, transaction=id2
+            project,
+            mode,
+            xact.mutations,
+            transaction=id2,
+            retry=retry,
+            timeout=timeout,
         )
         self.assertIsNone(xact.id)
         self.assertEqual(entity.key.path, [{"kind": kind, "id": id1}])
-        ds_api.begin_transaction.assert_called_once_with(project)
 
     def test_context_manager_no_raise(self):
         from google.cloud.datastore_v1.proto import datastore_pb2
@@ -238,6 +280,7 @@ class TestTransaction(unittest.TestCase):
         entity = _Entity()
         xact = self._make_one(client, read_only=True)
         xact.begin()
+
         with self.assertRaises(RuntimeError):
             xact.put(entity)
 

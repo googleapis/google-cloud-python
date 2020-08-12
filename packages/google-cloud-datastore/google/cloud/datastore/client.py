@@ -89,6 +89,19 @@ def _determine_default_project(project=None):
     return project
 
 
+def _make_retry_timeout_kwargs(retry, timeout):
+    """Helper: make optional retry / timeout kwargs dict."""
+    kwargs = {}
+
+    if retry is not None:
+        kwargs["retry"] = retry
+
+    if timeout is not None:
+        kwargs["timeout"] = timeout
+
+    return kwargs
+
+
 def _extended_lookup(
     datastore_api,
     project,
@@ -97,6 +110,8 @@ def _extended_lookup(
     deferred=None,
     eventual=False,
     transaction_id=None,
+    retry=None,
+    timeout=None,
 ):
     """Repeat lookup until all keys found (unless stop requested).
 
@@ -133,6 +148,17 @@ def _extended_lookup(
                            the given transaction.  Incompatible with
                            ``eventual==True``.
 
+    :type retry: :class:`google.api_core.retry.Retry`
+    :param retry:
+        A retry object used to retry requests. If ``None`` is specified,
+        requests will be retried using a default configuration.
+
+    :type timeout: float
+    :param timeout:
+        Time, in seconds, to wait for the request to complete.
+        Note that if ``retry`` is specified, the timeout applies
+        to each individual attempt.
+
     :rtype: list of :class:`.entity_pb2.Entity`
     :returns: The requested entities.
     :raises: :class:`ValueError` if missing / deferred are not null or
@@ -144,6 +170,8 @@ def _extended_lookup(
     if deferred is not None and deferred != []:
         raise ValueError("deferred must be None or an empty list")
 
+    kwargs = _make_retry_timeout_kwargs(retry, timeout)
+
     results = []
 
     loop_num = 0
@@ -151,7 +179,7 @@ def _extended_lookup(
     while loop_num < _MAX_LOOPS:  # loop against possible deferred.
         loop_num += 1
         lookup_response = datastore_api.lookup(
-            project, key_pbs, read_options=read_options
+            project, key_pbs, read_options=read_options, **kwargs
         )
 
         # Accumulate the new results.
@@ -338,7 +366,16 @@ class Client(ClientWithProject):
         if isinstance(transaction, Transaction):
             return transaction
 
-    def get(self, key, missing=None, deferred=None, transaction=None, eventual=False):
+    def get(
+        self,
+        key,
+        missing=None,
+        deferred=None,
+        transaction=None,
+        eventual=False,
+        retry=None,
+        timeout=None,
+    ):
         """Retrieve an entity from a single key (if it exists).
 
         .. note::
@@ -369,6 +406,17 @@ class Client(ClientWithProject):
                          Setting True will use eventual consistency, but cannot
                          be used inside a transaction or will raise ValueError.
 
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry:
+            A retry object used to retry requests. If ``None`` is specified,
+            requests will be retried using a default configuration.
+
+        :type timeout: float
+        :param timeout:
+            Time, in seconds, to wait for the request to complete.
+            Note that if ``retry`` is specified, the timeout applies
+            to each individual attempt.
+
         :rtype: :class:`google.cloud.datastore.entity.Entity` or ``NoneType``
         :returns: The requested entity if it exists.
 
@@ -380,12 +428,21 @@ class Client(ClientWithProject):
             deferred=deferred,
             transaction=transaction,
             eventual=eventual,
+            retry=retry,
+            timeout=timeout,
         )
         if entities:
             return entities[0]
 
     def get_multi(
-        self, keys, missing=None, deferred=None, transaction=None, eventual=False
+        self,
+        keys,
+        missing=None,
+        deferred=None,
+        transaction=None,
+        eventual=False,
+        retry=None,
+        timeout=None,
     ):
         """Retrieve entities, along with their attributes.
 
@@ -412,6 +469,17 @@ class Client(ClientWithProject):
                          Setting True will use eventual consistency, but cannot
                          be used inside a transaction or will raise ValueError.
 
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry:
+            A retry object used to retry requests. If ``None`` is specified,
+            requests will be retried using a default configuration.
+
+        :type timeout: float
+        :param timeout:
+            Time, in seconds, to wait for the request to complete.
+            Note that if ``retry`` is specified, the timeout applies
+            to each individual attempt.
+
         :rtype: list of :class:`google.cloud.datastore.entity.Entity`
         :returns: The requested entities.
         :raises: :class:`ValueError` if one or more of ``keys`` has a project
@@ -437,6 +505,8 @@ class Client(ClientWithProject):
             missing=missing,
             deferred=deferred,
             transaction_id=transaction and transaction.id,
+            retry=retry,
+            timeout=timeout,
         )
 
         if missing is not None:
@@ -451,7 +521,7 @@ class Client(ClientWithProject):
 
         return [helpers.entity_from_protobuf(entity_pb) for entity_pb in entity_pbs]
 
-    def put(self, entity):
+    def put(self, entity, retry=None, timeout=None):
         """Save an entity in the Cloud Datastore.
 
         .. note::
@@ -462,14 +532,40 @@ class Client(ClientWithProject):
 
         :type entity: :class:`google.cloud.datastore.entity.Entity`
         :param entity: The entity to be saved to the datastore.
-        """
-        self.put_multi(entities=[entity])
 
-    def put_multi(self, entities):
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry:
+            A retry object used to retry requests. If ``None`` is specified,
+            requests will be retried using a default configuration.
+            Only meaningful outside of another batch / transaction.
+
+        :type timeout: float
+        :param timeout:
+            Time, in seconds, to wait for the request to complete.
+            Note that if ``retry`` is specified, the timeout applies
+            to each individual attempt.  Only meaningful outside of another
+            batch / transaction.
+        """
+        self.put_multi(entities=[entity], retry=retry, timeout=timeout)
+
+    def put_multi(self, entities, retry=None, timeout=None):
         """Save entities in the Cloud Datastore.
 
         :type entities: list of :class:`google.cloud.datastore.entity.Entity`
         :param entities: The entities to be saved to the datastore.
+
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry:
+            A retry object used to retry requests. If ``None`` is specified,
+            requests will be retried using a default configuration.
+            Only meaningful outside of another batch / transaction.
+
+        :type timeout: float
+        :param timeout:
+            Time, in seconds, to wait for the request to complete.
+            Note that if ``retry`` is specified, the timeout applies
+            to each individual attempt.  Only meaningful outside of another
+            batch / transaction.
 
         :raises: :class:`ValueError` if ``entities`` is a single entity.
         """
@@ -490,9 +586,9 @@ class Client(ClientWithProject):
             current.put(entity)
 
         if not in_batch:
-            current.commit()
+            current.commit(retry=retry, timeout=timeout)
 
-    def delete(self, key):
+    def delete(self, key, retry=None, timeout=None):
         """Delete the key in the Cloud Datastore.
 
         .. note::
@@ -503,14 +599,40 @@ class Client(ClientWithProject):
 
         :type key: :class:`google.cloud.datastore.key.Key`
         :param key: The key to be deleted from the datastore.
-        """
-        self.delete_multi(keys=[key])
 
-    def delete_multi(self, keys):
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry:
+            A retry object used to retry requests. If ``None`` is specified,
+            requests will be retried using a default configuration.
+            Only meaningful outside of another batch / transaction.
+
+        :type timeout: float
+        :param timeout:
+            Time, in seconds, to wait for the request to complete.
+            Note that if ``retry`` is specified, the timeout applies
+            to each individual attempt.  Only meaningful outside of another
+            batch / transaction.
+        """
+        self.delete_multi(keys=[key], retry=retry, timeout=timeout)
+
+    def delete_multi(self, keys, retry=None, timeout=None):
         """Delete keys from the Cloud Datastore.
 
         :type keys: list of :class:`google.cloud.datastore.key.Key`
         :param keys: The keys to be deleted from the Datastore.
+
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry:
+            A retry object used to retry requests. If ``None`` is specified,
+            requests will be retried using a default configuration.
+            Only meaningful outside of another batch / transaction.
+
+        :type timeout: float
+        :param timeout:
+            Time, in seconds, to wait for the request to complete.
+            Note that if ``retry`` is specified, the timeout applies
+            to each individual attempt.  Only meaningful outside of another
+            batch / transaction.
         """
         if not keys:
             return
@@ -527,9 +649,9 @@ class Client(ClientWithProject):
             current.delete(key)
 
         if not in_batch:
-            current.commit()
+            current.commit(retry=retry, timeout=timeout)
 
-    def allocate_ids(self, incomplete_key, num_ids):
+    def allocate_ids(self, incomplete_key, num_ids, retry=None, timeout=None):
         """Allocate a list of IDs from a partial key.
 
         :type incomplete_key: :class:`google.cloud.datastore.key.Key`
@@ -537,6 +659,17 @@ class Client(ClientWithProject):
 
         :type num_ids: int
         :param num_ids: The number of IDs to allocate.
+
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry:
+            A retry object used to retry requests. If ``None`` is specified,
+            requests will be retried using a default configuration.
+
+        :type timeout: float
+        :param timeout:
+            Time, in seconds, to wait for the request to complete.
+            Note that if ``retry`` is specified, the timeout applies
+            to each individual attempt.
 
         :rtype: list of :class:`google.cloud.datastore.key.Key`
         :returns: The (complete) keys allocated with ``incomplete_key`` as
@@ -550,8 +683,10 @@ class Client(ClientWithProject):
         incomplete_key_pb = incomplete_key.to_protobuf()
         incomplete_key_pbs = [incomplete_key_pb] * num_ids
 
+        kwargs = _make_retry_timeout_kwargs(retry, timeout)
+
         response_pb = self._datastore_api.allocate_ids(
-            incomplete_key.project, incomplete_key_pbs
+            incomplete_key.project, incomplete_key_pbs, **kwargs
         )
         allocated_ids = [
             allocated_key_pb.path[-1].id for allocated_key_pb in response_pb.keys
@@ -666,7 +801,7 @@ class Client(ClientWithProject):
             kwargs["namespace"] = self.namespace
         return Query(self, **kwargs)
 
-    def reserve_ids(self, complete_key, num_ids):
+    def reserve_ids(self, complete_key, num_ids, retry=None, timeout=None):
         """Reserve a list of IDs from a complete key.
 
         :type complete_key: :class:`google.cloud.datastore.key.Key`
@@ -674,6 +809,17 @@ class Client(ClientWithProject):
 
         :type num_ids: int
         :param num_ids: The number of IDs to reserve.
+
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry:
+            A retry object used to retry requests. If ``None`` is specified,
+            requests will be retried using a default configuration.
+
+        :type timeout: float
+        :param timeout:
+            Time, in seconds, to wait for the request to complete.
+            Note that if ``retry`` is specified, the timeout applies
+            to each individual attempt.
 
         :rtype: class:`NoneType`
         :returns: None
@@ -686,9 +832,13 @@ class Client(ClientWithProject):
         if not isinstance(num_ids, int):
             raise ValueError(("num_ids is not a valid integer.", num_ids))
 
+        kwargs = _make_retry_timeout_kwargs(retry, timeout)
+
         complete_key_pb = complete_key.to_protobuf()
         complete_key_pbs = [complete_key_pb] * num_ids
 
-        self._datastore_api.reserve_ids(complete_key.project, complete_key_pbs)
+        self._datastore_api.reserve_ids(
+            complete_key.project, complete_key_pbs, **kwargs
+        )
 
         return None

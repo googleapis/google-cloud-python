@@ -236,7 +236,7 @@ class Batch(object):
             raise ValueError("Batch already started previously.")
         self._status = self._IN_PROGRESS
 
-    def _commit(self):
+    def _commit(self, retry, timeout):
         """Commits the batch.
 
         This is called by :meth:`commit`.
@@ -246,8 +246,16 @@ class Batch(object):
         else:
             mode = _datastore_pb2.CommitRequest.TRANSACTIONAL
 
+        kwargs = {}
+
+        if retry is not None:
+            kwargs["retry"] = retry
+
+        if timeout is not None:
+            kwargs["timeout"] = timeout
+
         commit_response_pb = self._client._datastore_api.commit(
-            self.project, mode, self._mutations, transaction=self._id
+            self.project, mode, self._mutations, transaction=self._id, **kwargs
         )
         _, updated_keys = _parse_commit_response(commit_response_pb)
         # If the back-end returns without error, we are guaranteed that
@@ -257,12 +265,23 @@ class Batch(object):
             new_id = new_key_pb.path[-1].id
             entity.key = entity.key.completed_key(new_id)
 
-    def commit(self):
+    def commit(self, retry=None, timeout=None):
         """Commits the batch.
 
         This is called automatically upon exiting a with statement,
         however it can be called explicitly if you don't want to use a
         context manager.
+
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry:
+            A retry object used to retry requests. If ``None`` is specified,
+            requests will be retried using a default configuration.
+
+        :type timeout: float
+        :param timeout:
+            Time, in seconds, to wait for the request to complete.
+            Note that if ``retry`` is specified, the timeout applies
+            to each individual attempt.
 
         :raises: :class:`~exceptions.ValueError` if the batch is not
                  in progress.
@@ -271,7 +290,7 @@ class Batch(object):
             raise ValueError("Batch must be in progress to commit()")
 
         try:
-            self._commit()
+            self._commit(retry=retry, timeout=timeout)
         finally:
             self._status = self._FINISHED
 

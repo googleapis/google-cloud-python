@@ -332,6 +332,7 @@ class TestQuery(unittest.TestCase):
 
         client = self._make_client()
         query = self._make_one(client)
+
         iterator = query.fetch()
 
         self.assertIsInstance(iterator, Iterator)
@@ -339,19 +340,29 @@ class TestQuery(unittest.TestCase):
         self.assertIs(iterator.client, client)
         self.assertIsNone(iterator.max_results)
         self.assertEqual(iterator._offset, 0)
+        self.assertIsNone(iterator._retry)
+        self.assertIsNone(iterator._timeout)
 
-    def test_fetch_w_explicit_client(self):
+    def test_fetch_w_explicit_client_w_retry_w_timeout(self):
         from google.cloud.datastore.query import Iterator
 
         client = self._make_client()
         other_client = self._make_client()
         query = self._make_one(client)
-        iterator = query.fetch(limit=7, offset=8, client=other_client)
+        retry = mock.Mock()
+        timeout = 100000
+
+        iterator = query.fetch(
+            limit=7, offset=8, client=other_client, retry=retry, timeout=timeout
+        )
+
         self.assertIsInstance(iterator, Iterator)
         self.assertIs(iterator._query, query)
         self.assertIs(iterator.client, other_client)
         self.assertEqual(iterator.max_results, 7)
         self.assertEqual(iterator._offset, 8)
+        self.assertEqual(iterator._retry, retry)
+        self.assertEqual(iterator._timeout, timeout)
 
 
 class TestIterator(unittest.TestCase):
@@ -367,6 +378,7 @@ class TestIterator(unittest.TestCase):
     def test_constructor_defaults(self):
         query = object()
         client = object()
+
         iterator = self._make_one(query, client)
 
         self.assertFalse(iterator._started)
@@ -379,6 +391,8 @@ class TestIterator(unittest.TestCase):
         self.assertIsNone(iterator._offset)
         self.assertIsNone(iterator._end_cursor)
         self.assertTrue(iterator._more_results)
+        self.assertIsNone(iterator._retry)
+        self.assertIsNone(iterator._timeout)
 
     def test_constructor_explicit(self):
         query = object()
@@ -387,6 +401,9 @@ class TestIterator(unittest.TestCase):
         offset = 9
         start_cursor = b"8290\xff"
         end_cursor = b"so20rc\ta"
+        retry = mock.Mock()
+        timeout = 100000
+
         iterator = self._make_one(
             query,
             client,
@@ -394,6 +411,8 @@ class TestIterator(unittest.TestCase):
             offset=offset,
             start_cursor=start_cursor,
             end_cursor=end_cursor,
+            retry=retry,
+            timeout=timeout,
         )
 
         self.assertFalse(iterator._started)
@@ -406,6 +425,8 @@ class TestIterator(unittest.TestCase):
         self.assertEqual(iterator._offset, offset)
         self.assertEqual(iterator._end_cursor, end_cursor)
         self.assertTrue(iterator._more_results)
+        self.assertEqual(iterator._retry, retry)
+        self.assertEqual(iterator._timeout, timeout)
 
     def test__build_protobuf_empty(self):
         from google.cloud.datastore_v1.proto import query_pb2
@@ -513,7 +534,7 @@ class TestIterator(unittest.TestCase):
         with self.assertRaises(ValueError):
             iterator._process_query_results(response_pb)
 
-    def _next_page_helper(self, txn_id=None):
+    def _next_page_helper(self, txn_id=None, retry=None, timeout=None):
         from google.api_core import page_iterator
         from google.cloud.datastore_v1.proto import datastore_pb2
         from google.cloud.datastore_v1.proto import entity_pb2
@@ -531,9 +552,18 @@ class TestIterator(unittest.TestCase):
             client = _Client(project, datastore_api=ds_api, transaction=transaction)
 
         query = Query(client)
-        iterator = self._make_one(query, client)
+        kwargs = {}
+
+        if retry is not None:
+            kwargs["retry"] = retry
+
+        if timeout is not None:
+            kwargs["timeout"] = timeout
+
+        iterator = self._make_one(query, client, **kwargs)
 
         page = iterator._next_page()
+
         self.assertIsInstance(page, page_iterator.Page)
         self.assertIs(page._parent, iterator)
 
@@ -544,11 +574,17 @@ class TestIterator(unittest.TestCase):
             read_options = datastore_pb2.ReadOptions(transaction=txn_id)
         empty_query = query_pb2.Query()
         ds_api.run_query.assert_called_once_with(
-            project, partition_id, read_options, query=empty_query
+            project, partition_id, read_options, query=empty_query, **kwargs
         )
 
     def test__next_page(self):
         self._next_page_helper()
+
+    def test__next_page_w_retry(self):
+        self._next_page_helper(retry=mock.Mock())
+
+    def test__next_page_w_timeout(self):
+        self._next_page_helper(timeout=100000)
 
     def test__next_page_in_transaction(self):
         txn_id = b"1xo1md\xe2\x98\x83"
