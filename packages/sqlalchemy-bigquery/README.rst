@@ -54,11 +54,14 @@ To specify location of your datasets pass ``location`` to ``create_engine()``:
 Table names
 ___________
 
-To query tables from non-default projects, use the following format for the table name: ``project.dataset.table``, e.g.:
+To query tables from non-default projects or datasets, use the following format for the SQLAlchemy schema name: ``[project.]dataset``, e.g.:
 
 .. code-block:: python
 
-    sample_table = Table('bigquery-public-data.samples.natality')
+    # If neither dataset nor project are the default
+    sample_table_1 = Table('natality', schema='bigquery-public-data.samples')
+    # If just dataset is not the default
+    sample_table_2 = Table('natality', schema='bigquery-public-data')
 
 Batch size
 __________
@@ -85,7 +88,7 @@ When using a default dataset, don't include the dataset name in the table name, 
 
     table = Table('table_name')
 
-Note that specyfing a default dataset doesn't restrict execution of queries to that particular dataset when using raw queries, e.g.:
+Note that specifying a default dataset doesn't restrict execution of queries to that particular dataset when using raw queries, e.g.:
 
 .. code-block:: python
 
