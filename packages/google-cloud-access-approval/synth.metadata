@@ -4,7 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-access-approval.git",
-        "sha": "b08c8193640e2204bc409de069ed30ef06adf5e5"
+        "sha": "d9f8d2b37a041b49bad095f9d7c455226fb6251c"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "43a62a87b70010d9cf9be31e99ea230a535e1b47",
+        "internalRef": "326109811"
       }
     },
     {
