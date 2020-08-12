@@ -30,53 +30,7 @@ library = gapic.py_library(
     include_protos=True,
 )
 
-s.move(
-    library,
-    excludes=[
-        'docs/conf.py',
-        'docs/index.rst',
-        'google/cloud/datalabeling_v1beta1/__init__.py',
-        'README.rst',
-        'nox*.py',
-        'setup.py',
-        'setup.cfg',
-    ],
-)
-
-# Fixup issues in generated code
-s.replace(
-    "./**/gapic/**/*client.py",
-    r"operations_pb2.ImportDataOperationResponse",
-    "proto_operations_pb2.ImportDataOperationResponse",
-)
-
-s.replace(
-    "google/**/*client.py",
-    r"=operations_pb2",
-    "=proto_operations_pb2",
-)
-
-s.replace(
-    "tests/**/test*_client*.py",
-    r"operations_pb2.Operation\(",
-    "longrunning_operations_pb2.Operation(",
-)
-
-# Fix docstrings with no summary line
-s.replace(
-    "google/cloud/**/proto/*_pb2.py",
-    '''['"]__doc__['"]: """Attributes:''',
-    '''"__doc__": """
-    Attributes:''',
-)
-
-# Escape '_' at the end of the line in pb2 docstrings
-s.replace(
-"google/cloud/**/*_pb2.py",
-"""\_$""",
-"""\_""",
-)
-
+s.move(library, excludes=["docs/index.rst", "nox.py", "README.rst", "setup.py"])
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition
 s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
@@ -84,8 +38,12 @@ s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=79, samples=True)
-s.move(templated_files)
+templated_files = common.py_library(
+    samples=True,  # set to True only if there are samples
+    microgenerator=True,
+)
+s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
+
 
 # ----------------------------------------------------------------------------
 # Samples templates
