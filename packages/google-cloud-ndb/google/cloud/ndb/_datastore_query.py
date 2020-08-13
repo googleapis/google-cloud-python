@@ -30,6 +30,7 @@ from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
 from google.cloud.ndb import tasklets
+from google.cloud.ndb import utils
 
 log = logging.getLogger(__name__)
 
@@ -877,7 +878,7 @@ def _datastore_run_query(query):
     response = yield _datastore_api.make_call(
         "RunQuery", request, timeout=query.timeout
     )
-    log.debug(response)
+    utils.logging_debug(log, response)
     raise tasklets.Return(response)
 
 

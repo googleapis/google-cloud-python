@@ -17,17 +17,38 @@
 
 import functools
 import inspect
+import os
 import threading
 
+TRUTHY_STRINGS = {"t", "true", "y", "yes", "on", "1"}
 
-__all__ = []
+
+def asbool(value):
+    """Convert an arbitrary value to a boolean.
+
+    Usually, `value`, will be a string. If `value` is already a boolean, it's
+    just returned as-is.
+
+    Returns:
+        bool: `value` if `value` is a bool, `False` if `value` is `None`,
+            otherwise `True` if `value` converts to a lowercase string that is
+            "truthy" or `False` if it does not.
+    """
+    if value is None:
+        return False
+
+    if isinstance(value, bool):
+        return value
+
+    value = str(value).strip()
+    return value.lower() in TRUTHY_STRINGS
+
+
+DEBUG = asbool(os.environ.get("NDB_DEBUG", False))
 
 
 def code_info(*args, **kwargs):
     raise NotImplementedError
-
-
-DEBUG = True
 
 
 def decorator(*args, **kwargs):
@@ -50,8 +71,16 @@ def get_stack(*args, **kwargs):
     raise NotImplementedError
 
 
-def logging_debug(*args, **kwargs):
-    raise NotImplementedError
+def logging_debug(log, message, *args, **kwargs):
+    """Conditionally write to the debug log.
+
+    In some Google App Engine environments, writing to the debug log is a
+    significant performance hit. If the environment variable `NDB_DEBUG` is set
+    to a "truthy" value, this function will call `log.debug(message, *args,
+    **kwargs)`, otherwise this is a no-op.
+    """
+    if DEBUG:
+        log.debug(str(message).format(*args, **kwargs))
 
 
 class keyword_only(object):

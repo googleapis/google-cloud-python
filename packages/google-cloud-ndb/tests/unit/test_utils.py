@@ -14,22 +14,40 @@
 
 import threading
 
+try:
+    from unittest import mock
+except ImportError:  # pragma: NO PY3 COVER
+    import mock
+
 import pytest
 
 from google.cloud.ndb import utils
 
 
-def test___all__():
-    assert utils.__all__ == []
+class Test_asbool:
+    @staticmethod
+    def test_None():
+        assert utils.asbool(None) is False
+
+    @staticmethod
+    def test_bool():
+        assert utils.asbool(True) is True
+        assert utils.asbool(False) is False
+
+    @staticmethod
+    def test_truthy_int():
+        assert utils.asbool(0) is False
+        assert utils.asbool(1) is True
+
+    @staticmethod
+    def test_truthy_string():
+        assert utils.asbool("Y") is True
+        assert utils.asbool("f") is False
 
 
 def test_code_info():
     with pytest.raises(NotImplementedError):
         utils.code_info()
-
-
-def test_DEBUG():
-    assert utils.DEBUG is True
 
 
 def test_decorator():
@@ -57,9 +75,24 @@ def test_get_stack():
         utils.get_stack()
 
 
-def test_logging_debug():
-    with pytest.raises(NotImplementedError):
-        utils.logging_debug()
+class Test_logging_debug:
+    @staticmethod
+    @mock.patch("google.cloud.ndb.utils.DEBUG", False)
+    def test_noop():
+        log = mock.Mock(spec=("debug",))
+        utils.logging_debug(
+            log, "hello dad! {} {where}", "I'm", where="in jail"
+        )
+        log.debug.assert_not_called()
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb.utils.DEBUG", True)
+    def test_log_it():
+        log = mock.Mock(spec=("debug",))
+        utils.logging_debug(
+            log, "hello dad! {} {where}", "I'm", where="in jail"
+        )
+        log.debug.assert_called_once_with("hello dad! I'm in jail")
 
 
 def test_positional():

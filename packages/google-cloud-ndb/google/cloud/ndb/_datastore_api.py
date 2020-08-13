@@ -31,6 +31,7 @@ from google.cloud.ndb import _options
 from google.cloud.ndb import _remote
 from google.cloud.ndb import _retry
 from google.cloud.ndb import tasklets
+from google.cloud.ndb import utils
 
 EVENTUAL = datastore_pb2.ReadOptions.EVENTUAL
 EVENTUAL_CONSISTENCY = EVENTUAL  # Legacy NDB
@@ -85,9 +86,9 @@ def make_call(rpc_name, request, retries=None, timeout=None):
         context = context_module.get_toplevel_context()
 
         call = method.future(request, timeout=timeout)
-        rpc = _remote.RemoteCall(call, "{}({})".format(rpc_name, request))
-        log.debug(rpc)
-        log.debug("timeout={}".format(timeout))
+        rpc = _remote.RemoteCall(call, rpc_name)
+        utils.logging_debug(log, rpc)
+        utils.logging_debug(log, "timeout={}", timeout)
 
         try:
             result = yield rpc
@@ -248,7 +249,7 @@ class _LookupBatch(object):
 
         # Process results, which are divided into found, missing, and deferred
         results = rpc.result()
-        log.debug(results)
+        utils.logging_debug(log, results)
 
         # For all deferred keys, batch them up again with their original
         # futures
@@ -805,7 +806,7 @@ def _process_commit(rpc, futures):
     #
     # https://github.com/googleapis/googleapis/blob/master/google/datastore/v1/datastore.proto#L241
     response = rpc.result()
-    log.debug(response)
+    utils.logging_debug(log, response)
 
     results_futures = zip(response.mutation_results, futures)
     for mutation_result, future in results_futures:

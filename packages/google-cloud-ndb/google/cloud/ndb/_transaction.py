@@ -18,6 +18,7 @@ import logging
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import _retry
 from google.cloud.ndb import tasklets
+from google.cloud.ndb import utils
 
 log = logging.getLogger(__name__)
 
@@ -120,11 +121,11 @@ def _transaction_async(context, callback, read_only=False):
     from google.cloud.ndb import _datastore_api
 
     # Start the transaction
-    log.debug("Start transaction")
+    utils.logging_debug(log, "Start transaction")
     transaction_id = yield _datastore_api.begin_transaction(
         read_only, retries=0
     )
-    log.debug("Transaction Id: {}".format(transaction_id))
+    utils.logging_debug(log, "Transaction Id: {}", transaction_id)
 
     on_commit_callbacks = []
     tx_context = context.new(

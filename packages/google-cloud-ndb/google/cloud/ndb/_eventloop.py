@@ -27,6 +27,7 @@ try:
 except ImportError:  # pragma: NO PY3 COVER
     import Queue as queue
 
+from google.cloud.ndb import utils
 
 log = logging.getLogger(__name__)
 
@@ -135,21 +136,21 @@ class EventLoop(object):
             idlers = self.idlers
             queue = self.queue
             rpcs = self.rpcs
-            log.debug("Clearing stale EventLoop instance...")
+            utils.logging_debug(log, "Clearing stale EventLoop instance...")
             if current:
-                log.debug("  current = %s", current)
+                utils.logging_debug(log, "  current = {}", current)
             if idlers:
-                log.debug("  idlers = %s", idlers)
+                utils.logging_debug(log, "  idlers = {}", idlers)
             if queue:
-                log.debug("  queue = %s", queue)
+                utils.logging_debug(log, "  queue = {}", queue)
             if rpcs:
-                log.debug("  rpcs = %s", rpcs)
+                utils.logging_debug(log, "  rpcs = {}", rpcs)
             self.__init__()
             current.clear()
             idlers.clear()
             queue[:] = []
             rpcs.clear()
-            log.debug("Cleared")
+            utils.logging_debug(log, "Cleared")
 
     def insort_event_right(self, event):
         """Insert event in queue with sorting.
@@ -253,12 +254,12 @@ class EventLoop(object):
             return False
         idler = self.idlers.popleft()
         callback, args, kwargs = idler
-        log.debug("idler: %s", callback.__name__)
+        utils.logging_debug(log, "idler: {}", callback.__name__)
         result = callback(*args, **kwargs)
 
         # See add_idle() for meaning of callback return value.
         if result is None:
-            log.debug("idler %s removed", callback.__name__)
+            utils.logging_debug(log, "idler {} removed", callback.__name__)
         else:
             if result:
                 self.inactive = 0
@@ -297,7 +298,7 @@ class EventLoop(object):
             if delay <= 0:
                 self.inactive = 0
                 _, callback, args, kwargs = self.queue.pop(0)
-                log.debug("event: %s", callback.__name__)
+                utils.logging_debug(log, "event: {}", callback.__name__)
                 callback(*args, **kwargs)
                 return 0
 
@@ -313,7 +314,9 @@ class EventLoop(object):
             start_time = time.time()
             rpc_id, rpc = self.rpc_results.get()
             elapsed = time.time() - start_time
-            log.debug("Blocked for {}s awaiting RPC results.".format(elapsed))
+            utils.logging_debug(
+                log, "Blocked for {}s awaiting RPC results.", elapsed
+            )
             context.wait_time += elapsed
 
             callback = self.rpcs.pop(rpc_id)
