@@ -17,8 +17,12 @@
 
 import abc
 import typing
+import pkg_resources
 
 from google import auth
+from google.api_core import exceptions  # type: ignore
+from google.api_core import gapic_v1  # type: ignore
+from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 
 from google.cloud.bigquery.reservation_v1.types import reservation
@@ -26,7 +30,17 @@ from google.cloud.bigquery.reservation_v1.types import reservation as gcbr_reser
 from google.protobuf import empty_pb2 as empty  # type: ignore
 
 
-class ReservationServiceTransport(metaclass=abc.ABCMeta):
+try:
+    _client_info = gapic_v1.client_info.ClientInfo(
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-bigquery-reservation",
+        ).version,
+    )
+except pkg_resources.DistributionNotFound:
+    _client_info = gapic_v1.client_info.ClientInfo()
+
+
+class ReservationServiceTransport(abc.ABC):
     """Abstract transport class for ReservationService."""
 
     AUTH_SCOPES = (
@@ -39,6 +53,10 @@ class ReservationServiceTransport(metaclass=abc.ABCMeta):
         *,
         host: str = "bigqueryreservation.googleapis.com",
         credentials: credentials.Credentials = None,
+        credentials_file: typing.Optional[str] = None,
+        scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
+        quota_project_id: typing.Optional[str] = None,
+        **kwargs,
     ) -> None:
         """Instantiate the transport.
 
@@ -49,6 +67,12 @@ class ReservationServiceTransport(metaclass=abc.ABCMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is mutually exclusive with credentials.
+            scope (Optional[Sequence[str]]): A list of scopes.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ":" not in host:
@@ -57,153 +81,312 @@ class ReservationServiceTransport(metaclass=abc.ABCMeta):
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
-        if credentials is None:
-            credentials, _ = auth.default(scopes=self.AUTH_SCOPES)
+        if credentials and credentials_file:
+            raise exceptions.DuplicateCredentialArgs(
+                "'credentials_file' and 'credentials' are mutually exclusive"
+            )
+
+        if credentials_file is not None:
+            credentials, _ = auth.load_credentials_from_file(
+                credentials_file, scopes=scopes, quota_project_id=quota_project_id
+            )
+
+        elif credentials is None:
+            credentials, _ = auth.default(
+                scopes=scopes, quota_project_id=quota_project_id
+            )
 
         # Save the credentials.
         self._credentials = credentials
 
+        # Lifted into its own function so it can be stubbed out during tests.
+        self._prep_wrapped_messages()
+
+    def _prep_wrapped_messages(self):
+        # Precompute the wrapped methods.
+        self._wrapped_methods = {
+            self.create_reservation: gapic_v1.method.wrap_method(
+                self.create_reservation, default_timeout=None, client_info=_client_info,
+            ),
+            self.list_reservations: gapic_v1.method.wrap_method(
+                self.list_reservations, default_timeout=None, client_info=_client_info,
+            ),
+            self.get_reservation: gapic_v1.method.wrap_method(
+                self.get_reservation, default_timeout=None, client_info=_client_info,
+            ),
+            self.delete_reservation: gapic_v1.method.wrap_method(
+                self.delete_reservation, default_timeout=None, client_info=_client_info,
+            ),
+            self.update_reservation: gapic_v1.method.wrap_method(
+                self.update_reservation, default_timeout=None, client_info=_client_info,
+            ),
+            self.create_capacity_commitment: gapic_v1.method.wrap_method(
+                self.create_capacity_commitment,
+                default_timeout=None,
+                client_info=_client_info,
+            ),
+            self.list_capacity_commitments: gapic_v1.method.wrap_method(
+                self.list_capacity_commitments,
+                default_timeout=None,
+                client_info=_client_info,
+            ),
+            self.get_capacity_commitment: gapic_v1.method.wrap_method(
+                self.get_capacity_commitment,
+                default_timeout=None,
+                client_info=_client_info,
+            ),
+            self.delete_capacity_commitment: gapic_v1.method.wrap_method(
+                self.delete_capacity_commitment,
+                default_timeout=None,
+                client_info=_client_info,
+            ),
+            self.update_capacity_commitment: gapic_v1.method.wrap_method(
+                self.update_capacity_commitment,
+                default_timeout=None,
+                client_info=_client_info,
+            ),
+            self.split_capacity_commitment: gapic_v1.method.wrap_method(
+                self.split_capacity_commitment,
+                default_timeout=None,
+                client_info=_client_info,
+            ),
+            self.merge_capacity_commitments: gapic_v1.method.wrap_method(
+                self.merge_capacity_commitments,
+                default_timeout=None,
+                client_info=_client_info,
+            ),
+            self.create_assignment: gapic_v1.method.wrap_method(
+                self.create_assignment, default_timeout=None, client_info=_client_info,
+            ),
+            self.list_assignments: gapic_v1.method.wrap_method(
+                self.list_assignments, default_timeout=None, client_info=_client_info,
+            ),
+            self.delete_assignment: gapic_v1.method.wrap_method(
+                self.delete_assignment, default_timeout=None, client_info=_client_info,
+            ),
+            self.search_assignments: gapic_v1.method.wrap_method(
+                self.search_assignments, default_timeout=None, client_info=_client_info,
+            ),
+            self.move_assignment: gapic_v1.method.wrap_method(
+                self.move_assignment, default_timeout=None, client_info=_client_info,
+            ),
+            self.get_bi_reservation: gapic_v1.method.wrap_method(
+                self.get_bi_reservation, default_timeout=None, client_info=_client_info,
+            ),
+            self.update_bi_reservation: gapic_v1.method.wrap_method(
+                self.update_bi_reservation,
+                default_timeout=None,
+                client_info=_client_info,
+            ),
+        }
+
     @property
     def create_reservation(
-        self
+        self,
     ) -> typing.Callable[
-        [gcbr_reservation.CreateReservationRequest], gcbr_reservation.Reservation
+        [gcbr_reservation.CreateReservationRequest],
+        typing.Union[
+            gcbr_reservation.Reservation, typing.Awaitable[gcbr_reservation.Reservation]
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def list_reservations(
-        self
+        self,
     ) -> typing.Callable[
-        [reservation.ListReservationsRequest], reservation.ListReservationsResponse
+        [reservation.ListReservationsRequest],
+        typing.Union[
+            reservation.ListReservationsResponse,
+            typing.Awaitable[reservation.ListReservationsResponse],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def get_reservation(
-        self
-    ) -> typing.Callable[[reservation.GetReservationRequest], reservation.Reservation]:
-        raise NotImplementedError
+        self,
+    ) -> typing.Callable[
+        [reservation.GetReservationRequest],
+        typing.Union[
+            reservation.Reservation, typing.Awaitable[reservation.Reservation]
+        ],
+    ]:
+        raise NotImplementedError()
 
     @property
     def delete_reservation(
-        self
-    ) -> typing.Callable[[reservation.DeleteReservationRequest], empty.Empty]:
-        raise NotImplementedError
+        self,
+    ) -> typing.Callable[
+        [reservation.DeleteReservationRequest],
+        typing.Union[empty.Empty, typing.Awaitable[empty.Empty]],
+    ]:
+        raise NotImplementedError()
 
     @property
     def update_reservation(
-        self
+        self,
     ) -> typing.Callable[
-        [gcbr_reservation.UpdateReservationRequest], gcbr_reservation.Reservation
+        [gcbr_reservation.UpdateReservationRequest],
+        typing.Union[
+            gcbr_reservation.Reservation, typing.Awaitable[gcbr_reservation.Reservation]
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def create_capacity_commitment(
-        self
+        self,
     ) -> typing.Callable[
-        [reservation.CreateCapacityCommitmentRequest], reservation.CapacityCommitment
+        [reservation.CreateCapacityCommitmentRequest],
+        typing.Union[
+            reservation.CapacityCommitment,
+            typing.Awaitable[reservation.CapacityCommitment],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def list_capacity_commitments(
-        self
+        self,
     ) -> typing.Callable[
         [reservation.ListCapacityCommitmentsRequest],
-        reservation.ListCapacityCommitmentsResponse,
+        typing.Union[
+            reservation.ListCapacityCommitmentsResponse,
+            typing.Awaitable[reservation.ListCapacityCommitmentsResponse],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def get_capacity_commitment(
-        self
+        self,
     ) -> typing.Callable[
-        [reservation.GetCapacityCommitmentRequest], reservation.CapacityCommitment
+        [reservation.GetCapacityCommitmentRequest],
+        typing.Union[
+            reservation.CapacityCommitment,
+            typing.Awaitable[reservation.CapacityCommitment],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def delete_capacity_commitment(
-        self
-    ) -> typing.Callable[[reservation.DeleteCapacityCommitmentRequest], empty.Empty]:
-        raise NotImplementedError
+        self,
+    ) -> typing.Callable[
+        [reservation.DeleteCapacityCommitmentRequest],
+        typing.Union[empty.Empty, typing.Awaitable[empty.Empty]],
+    ]:
+        raise NotImplementedError()
 
     @property
     def update_capacity_commitment(
-        self
+        self,
     ) -> typing.Callable[
-        [reservation.UpdateCapacityCommitmentRequest], reservation.CapacityCommitment
+        [reservation.UpdateCapacityCommitmentRequest],
+        typing.Union[
+            reservation.CapacityCommitment,
+            typing.Awaitable[reservation.CapacityCommitment],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def split_capacity_commitment(
-        self
+        self,
     ) -> typing.Callable[
         [reservation.SplitCapacityCommitmentRequest],
-        reservation.SplitCapacityCommitmentResponse,
+        typing.Union[
+            reservation.SplitCapacityCommitmentResponse,
+            typing.Awaitable[reservation.SplitCapacityCommitmentResponse],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def merge_capacity_commitments(
-        self
+        self,
     ) -> typing.Callable[
-        [reservation.MergeCapacityCommitmentsRequest], reservation.CapacityCommitment
+        [reservation.MergeCapacityCommitmentsRequest],
+        typing.Union[
+            reservation.CapacityCommitment,
+            typing.Awaitable[reservation.CapacityCommitment],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def create_assignment(
-        self
-    ) -> typing.Callable[[reservation.CreateAssignmentRequest], reservation.Assignment]:
-        raise NotImplementedError
+        self,
+    ) -> typing.Callable[
+        [reservation.CreateAssignmentRequest],
+        typing.Union[reservation.Assignment, typing.Awaitable[reservation.Assignment]],
+    ]:
+        raise NotImplementedError()
 
     @property
     def list_assignments(
-        self
+        self,
     ) -> typing.Callable[
-        [reservation.ListAssignmentsRequest], reservation.ListAssignmentsResponse
+        [reservation.ListAssignmentsRequest],
+        typing.Union[
+            reservation.ListAssignmentsResponse,
+            typing.Awaitable[reservation.ListAssignmentsResponse],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def delete_assignment(
-        self
-    ) -> typing.Callable[[reservation.DeleteAssignmentRequest], empty.Empty]:
-        raise NotImplementedError
+        self,
+    ) -> typing.Callable[
+        [reservation.DeleteAssignmentRequest],
+        typing.Union[empty.Empty, typing.Awaitable[empty.Empty]],
+    ]:
+        raise NotImplementedError()
 
     @property
     def search_assignments(
-        self
+        self,
     ) -> typing.Callable[
-        [reservation.SearchAssignmentsRequest], reservation.SearchAssignmentsResponse
+        [reservation.SearchAssignmentsRequest],
+        typing.Union[
+            reservation.SearchAssignmentsResponse,
+            typing.Awaitable[reservation.SearchAssignmentsResponse],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def move_assignment(
-        self
-    ) -> typing.Callable[[reservation.MoveAssignmentRequest], reservation.Assignment]:
-        raise NotImplementedError
+        self,
+    ) -> typing.Callable[
+        [reservation.MoveAssignmentRequest],
+        typing.Union[reservation.Assignment, typing.Awaitable[reservation.Assignment]],
+    ]:
+        raise NotImplementedError()
 
     @property
     def get_bi_reservation(
-        self
+        self,
     ) -> typing.Callable[
-        [reservation.GetBiReservationRequest], reservation.BiReservation
+        [reservation.GetBiReservationRequest],
+        typing.Union[
+            reservation.BiReservation, typing.Awaitable[reservation.BiReservation]
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def update_bi_reservation(
-        self
+        self,
     ) -> typing.Callable[
-        [reservation.UpdateBiReservationRequest], reservation.BiReservation
+        [reservation.UpdateBiReservationRequest],
+        typing.Union[
+            reservation.BiReservation, typing.Awaitable[reservation.BiReservation]
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
 
 __all__ = ("ReservationServiceTransport",)

@@ -15,7 +15,6 @@
 # limitations under the License.
 #
 
-
 from .services.reservation_service import ReservationServiceClient
 from .types.reservation import Assignment
 from .types.reservation import BiReservation

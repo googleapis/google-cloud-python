@@ -15,7 +15,9 @@
 # limitations under the License.
 #
 
-
+from google.cloud.bigquery.reservation_v1.services.reservation_service.async_client import (
+    ReservationServiceAsyncClient,
+)
 from google.cloud.bigquery.reservation_v1.services.reservation_service.client import (
     ReservationServiceClient,
 )
@@ -114,6 +116,7 @@ __all__ = (
     "MergeCapacityCommitmentsRequest",
     "MoveAssignmentRequest",
     "Reservation",
+    "ReservationServiceAsyncClient",
     "ReservationServiceClient",
     "SearchAssignmentsRequest",
     "SearchAssignmentsResponse",

@@ -88,7 +88,9 @@ class Reservation(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
+
     slot_capacity = proto.Field(proto.INT64, number=2)
+
     ignore_idle_slots = proto.Field(proto.BOOL, number=4)
 
 
@@ -150,14 +152,20 @@ class CapacityCommitment(proto.Message):
         FAILED = 3
 
     name = proto.Field(proto.STRING, number=1)
+
     slot_count = proto.Field(proto.INT64, number=2)
-    plan = proto.Field(proto.ENUM, number=3, enum=CommitmentPlan)
-    state = proto.Field(proto.ENUM, number=4, enum=State)
+
+    plan = proto.Field(proto.ENUM, number=3, enum=CommitmentPlan,)
+
+    state = proto.Field(proto.ENUM, number=4, enum=State,)
+
     commitment_end_time = proto.Field(
-        proto.MESSAGE, number=5, message=timestamp.Timestamp
+        proto.MESSAGE, number=5, message=timestamp.Timestamp,
     )
-    failure_status = proto.Field(proto.MESSAGE, number=7, message=status.Status)
-    renewal_plan = proto.Field(proto.ENUM, number=8, enum=CommitmentPlan)
+
+    failure_status = proto.Field(proto.MESSAGE, number=7, message=status.Status,)
+
+    renewal_plan = proto.Field(proto.ENUM, number=8, enum=CommitmentPlan,)
 
 
 class CreateReservationRequest(proto.Message):
@@ -177,8 +185,10 @@ class CreateReservationRequest(proto.Message):
     """
 
     parent = proto.Field(proto.STRING, number=1)
+
     reservation_id = proto.Field(proto.STRING, number=2)
-    reservation = proto.Field(proto.MESSAGE, number=3, message=Reservation)
+
+    reservation = proto.Field(proto.MESSAGE, number=3, message=Reservation,)
 
 
 class ListReservationsRequest(proto.Message):
@@ -187,9 +197,8 @@ class ListReservationsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource name containing
-            project and location, e.g.:
-            "projects/myproject/locations/US".
+            Required. The parent resource name containing project and
+            location, e.g.: ``projects/myproject/locations/US``
         page_size (int):
             The maximum number of items to return per
             page.
@@ -199,7 +208,9 @@ class ListReservationsRequest(proto.Message):
     """
 
     parent = proto.Field(proto.STRING, number=1)
+
     page_size = proto.Field(proto.INT32, number=2)
+
     page_token = proto.Field(proto.STRING, number=3)
 
 
@@ -220,7 +231,8 @@ class ListReservationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    reservations = proto.RepeatedField(proto.MESSAGE, number=1, message=Reservation)
+    reservations = proto.RepeatedField(proto.MESSAGE, number=1, message=Reservation,)
+
     next_page_token = proto.Field(proto.STRING, number=2)
 
 
@@ -264,8 +276,9 @@ class UpdateReservationRequest(proto.Message):
             be updated.
     """
 
-    reservation = proto.Field(proto.MESSAGE, number=1, message=Reservation)
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask)
+    reservation = proto.Field(proto.MESSAGE, number=1, message=Reservation,)
+
+    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
 
 
 class CreateCapacityCommitmentRequest(proto.Message):
@@ -274,9 +287,8 @@ class CreateCapacityCommitmentRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the parent
-            reservation. E.g.,
-            projects/myproject/locations/US
+            Required. Resource name of the parent reservation. E.g.,
+            ``projects/myproject/locations/US``
         capacity_commitment (~.gcbr_reservation.CapacityCommitment):
             Content of the capacity commitment to create.
         enforce_single_admin_project_per_org (bool):
@@ -285,9 +297,11 @@ class CreateCapacityCommitmentRequest(proto.Message):
     """
 
     parent = proto.Field(proto.STRING, number=1)
+
     capacity_commitment = proto.Field(
-        proto.MESSAGE, number=2, message=CapacityCommitment
+        proto.MESSAGE, number=2, message=CapacityCommitment,
     )
+
     enforce_single_admin_project_per_org = proto.Field(proto.BOOL, number=4)
 
 
@@ -297,9 +311,8 @@ class ListCapacityCommitmentsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the parent
-            reservation. E.g.,
-            projects/myproject/locations/US
+            Required. Resource name of the parent reservation. E.g.,
+            ``projects/myproject/locations/US``
         page_size (int):
             The maximum number of items to return.
         page_token (str):
@@ -308,7 +321,9 @@ class ListCapacityCommitmentsRequest(proto.Message):
     """
 
     parent = proto.Field(proto.STRING, number=1)
+
     page_size = proto.Field(proto.INT32, number=2)
+
     page_token = proto.Field(proto.STRING, number=3)
 
 
@@ -331,8 +346,9 @@ class ListCapacityCommitmentsResponse(proto.Message):
         return self
 
     capacity_commitments = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=CapacityCommitment
+        proto.MESSAGE, number=1, message=CapacityCommitment,
     )
+
     next_page_token = proto.Field(proto.STRING, number=2)
 
 
@@ -342,9 +358,9 @@ class GetCapacityCommitmentRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Resource name of the capacity
-            commitment to retrieve. E.g.,
-            projects/myproject/locations/US/capacityCommitments/123
+            Required. Resource name of the capacity commitment to
+            retrieve. E.g.,
+            ``projects/myproject/locations/US/capacityCommitments/123``
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -356,9 +372,9 @@ class DeleteCapacityCommitmentRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Resource name of the capacity
-            commitment to delete. E.g.,
-            projects/myproject/locations/US/capacityCommitments/123
+            Required. Resource name of the capacity commitment to
+            delete. E.g.,
+            ``projects/myproject/locations/US/capacityCommitments/123``
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -377,9 +393,10 @@ class UpdateCapacityCommitmentRequest(proto.Message):
     """
 
     capacity_commitment = proto.Field(
-        proto.MESSAGE, number=1, message=CapacityCommitment
+        proto.MESSAGE, number=1, message=CapacityCommitment,
     )
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask)
+
+    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
 
 
 class SplitCapacityCommitmentRequest(proto.Message):
@@ -389,13 +406,14 @@ class SplitCapacityCommitmentRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name e.g.,:
-            projects/myproject/locations/US/capacityCommitments/123
+            ``projects/myproject/locations/US/capacityCommitments/123``
         slot_count (int):
             Number of slots in the capacity commitment
             after the split.
     """
 
     name = proto.Field(proto.STRING, number=1)
+
     slot_count = proto.Field(proto.INT64, number=2)
 
 
@@ -411,8 +429,9 @@ class SplitCapacityCommitmentResponse(proto.Message):
             split.
     """
 
-    first = proto.Field(proto.MESSAGE, number=1, message=CapacityCommitment)
-    second = proto.Field(proto.MESSAGE, number=2, message=CapacityCommitment)
+    first = proto.Field(proto.MESSAGE, number=1, message=CapacityCommitment,)
+
+    second = proto.Field(proto.MESSAGE, number=2, message=CapacityCommitment,)
 
 
 class MergeCapacityCommitmentsRequest(proto.Message):
@@ -421,17 +440,20 @@ class MergeCapacityCommitmentsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Parent resource that identifies admin project
-            and location e.g.,
-            projects/myproject/locations/us
+            Parent resource that identifies admin project and location
+            e.g., ``projects/myproject/locations/us``
         capacity_commitment_ids (Sequence[str]):
             Ids of capacity commitments to merge.
             These capacity commitments must exist under
             admin project and location specified in the
             parent.
+            ID is the last portion of capacity commitment
+            name e.g., 'abc' for
+            projects/myproject/locations/US/capacityCommitments/abc
     """
 
     parent = proto.Field(proto.STRING, number=1)
+
     capacity_commitment_ids = proto.RepeatedField(proto.STRING, number=2)
 
 
@@ -471,9 +493,12 @@ class Assignment(proto.Message):
         ACTIVE = 2
 
     name = proto.Field(proto.STRING, number=1)
+
     assignee = proto.Field(proto.STRING, number=4)
-    job_type = proto.Field(proto.ENUM, number=3, enum=JobType)
-    state = proto.Field(proto.ENUM, number=6, enum=State)
+
+    job_type = proto.Field(proto.ENUM, number=3, enum=JobType,)
+
+    state = proto.Field(proto.ENUM, number=6, enum=State,)
 
 
 class CreateAssignmentRequest(proto.Message):
@@ -491,7 +516,8 @@ class CreateAssignmentRequest(proto.Message):
     """
 
     parent = proto.Field(proto.STRING, number=1)
-    assignment = proto.Field(proto.MESSAGE, number=2, message=Assignment)
+
+    assignment = proto.Field(proto.MESSAGE, number=2, message=Assignment,)
 
 
 class ListAssignmentsRequest(proto.Message):
@@ -516,7 +542,9 @@ class ListAssignmentsRequest(proto.Message):
     """
 
     parent = proto.Field(proto.STRING, number=1)
+
     page_size = proto.Field(proto.INT32, number=2)
+
     page_token = proto.Field(proto.STRING, number=3)
 
 
@@ -537,7 +565,8 @@ class ListAssignmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    assignments = proto.RepeatedField(proto.MESSAGE, number=1, message=Assignment)
+    assignments = proto.RepeatedField(proto.MESSAGE, number=1, message=Assignment,)
+
     next_page_token = proto.Field(proto.STRING, number=2)
 
 
@@ -564,9 +593,9 @@ class SearchAssignmentsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the admin
-            project(containing project and location), e.g.:
-            "projects/myproject/locations/US".
+            Required. The resource name of the admin project(containing
+            project and location), e.g.:
+            ``projects/myproject/locations/US``.
         query (str):
             Please specify resource name as assignee in the query.
 
@@ -584,8 +613,11 @@ class SearchAssignmentsRequest(proto.Message):
     """
 
     parent = proto.Field(proto.STRING, number=1)
+
     query = proto.Field(proto.STRING, number=2)
+
     page_size = proto.Field(proto.INT32, number=3)
+
     page_token = proto.Field(proto.STRING, number=4)
 
 
@@ -606,7 +638,8 @@ class SearchAssignmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    assignments = proto.RepeatedField(proto.MESSAGE, number=1, message=Assignment)
+    assignments = proto.RepeatedField(proto.MESSAGE, number=1, message=Assignment,)
+
     next_page_token = proto.Field(proto.STRING, number=2)
 
 
@@ -631,6 +664,7 @@ class MoveAssignmentRequest(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
+
     destination_id = proto.Field(proto.STRING, number=3)
 
 
@@ -650,7 +684,9 @@ class BiReservation(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp)
+
+    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
+
     size = proto.Field(proto.INT64, number=4)
 
 
@@ -677,8 +713,9 @@ class UpdateBiReservationRequest(proto.Message):
             request.
     """
 
-    bi_reservation = proto.Field(proto.MESSAGE, number=1, message=BiReservation)
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask)
+    bi_reservation = proto.Field(proto.MESSAGE, number=1, message=BiReservation,)
+
+    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

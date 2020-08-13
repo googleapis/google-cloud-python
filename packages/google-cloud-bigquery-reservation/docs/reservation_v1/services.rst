@@ -1,6 +1,6 @@
-Client for Google Cloud Bigquery Reservation API
-================================================
+Services for Google Cloud Bigquery Reservation v1 API
+=====================================================
 
-.. automodule:: google.cloud.bigquery.reservation_v1
+.. automodule:: google.cloud.bigquery.reservation_v1.services.reservation_service
     :members:
     :inherited-members:

@@ -25,36 +25,24 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 # Generate access approval GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library(
-    "bigquery/reservation", "v1"
-)
+library = gapic.py_library("bigquery/reservation", "v1")
 
 s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
 
-# correct license headers
-python.fix_pb2_headers()
-python.fix_pb2_grpc_headers()
+s.replace(
+    ["google/cloud/bigquery/reservation_v1/services/reservation_service/client.py",
+    "google/cloud/bigquery/reservation_v1/services/reservation_service/async_client.py"],
+    "assignee=organizations/456``",
+    "assignee=organizations/456``\n",
+)
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=100)
+templated_files = common.py_library(cov_level=100, microgenerator=True)
 s.move(
-    templated_files, excludes=[".coveragerc"]
-)  # the microgenerator has a good coveragerc file
-
-# Remove 2.7 and 3.5 tests from noxfile.py
-s.replace("noxfile.py", """\["2\.7", """, "[")
-s.replace("noxfile.py", """"3.5", """, "")
-s.replace(
-    "google/cloud/bigquery/reservation_v1/services/reservation_service/client.py", 
-    "assignee=organizations/456``", "assignee=organizations/456``\n")
-
-# Expand flake errors permitted to accomodate the Microgenerator
-# TODO: remove extra error codes once issues below are resolved
-# F401: https://github.com/googleapis/gapic-generator-python/issues/324
-# F841: local variable 'client'/'response' is assigned to but never use
-s.replace(".flake8", "ignore = .*", "ignore = E203, E266, E501, W503, F401, F841")
-
+    templated_files,
+    excludes=[".coveragerc"],  # the microgenerator has a good coveragerc file
+) 
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
