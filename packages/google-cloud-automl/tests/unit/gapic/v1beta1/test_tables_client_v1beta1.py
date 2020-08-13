@@ -1299,6 +1299,7 @@ class TestTablesClient(object):
             "my_model",
             {"gcs_source": {"input_uris": ["gs://input"]}},
             {"gcs_destination": {"output_uri_prefix": "gs://output"}},
+            {},
         )
 
     def test_batch_predict_pandas_dataframe_init_gcs(self):
@@ -1333,6 +1334,7 @@ class TestTablesClient(object):
                 "my_model",
                 {"gcs_source": {"input_uris": ["gs://input"]}},
                 {"gcs_destination": {"output_uri_prefix": "gs://output"}},
+                {},
             )
 
     def test_batch_predict_gcs(self):
@@ -1346,6 +1348,7 @@ class TestTablesClient(object):
             "my_model",
             {"gcs_source": {"input_uris": ["gs://input"]}},
             {"gcs_destination": {"output_uri_prefix": "gs://output"}},
+            {},
         )
 
     def test_batch_predict_bigquery(self):
@@ -1359,6 +1362,7 @@ class TestTablesClient(object):
             "my_model",
             {"bigquery_source": {"input_uri": "bq://input"}},
             {"bigquery_destination": {"output_uri": "bq://output"}},
+            {},
         )
 
     def test_batch_predict_mixed(self):
@@ -1372,6 +1376,7 @@ class TestTablesClient(object):
             "my_model",
             {"gcs_source": {"input_uris": ["gs://input"]}},
             {"bigquery_destination": {"output_uri": "bq://output"}},
+            {},
         )
 
     def test_batch_predict_missing_input_gcs_uri(self):

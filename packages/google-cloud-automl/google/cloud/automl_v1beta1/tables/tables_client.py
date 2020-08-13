@@ -2762,6 +2762,7 @@ class TablesClient(object):
         region=None,
         credentials=None,
         inputs=None,
+        params={},
         **kwargs
     ):
         """Makes a batch prediction on a model. This does _not_ require the
@@ -2828,6 +2829,9 @@ class TablesClient(object):
                 The `model` instance you want to predict with . This must be
                 supplied if `model_display_name` or `model_name` are not
                 supplied.
+            params (Optional[dict]):
+                Additional domain-specific parameters for the predictions,
+                any string must be up to 25000 characters long.
 
         Returns:
             google.api_core.operation.Operation:
@@ -2886,7 +2890,7 @@ class TablesClient(object):
             )
 
         op = self.prediction_client.batch_predict(
-            model_name, input_request, output_request, **kwargs
+            model_name, input_request, output_request, params, **kwargs
         )
         self.__log_operation_info("Batch predict", op)
         return op
