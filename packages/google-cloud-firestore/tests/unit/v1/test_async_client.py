@@ -63,10 +63,12 @@ class TestAsyncClient(aiounittest.AsyncTestCase):
             getenv.assert_called_once_with(_FIRESTORE_EMULATOR_HOST)
 
     def test_constructor_explicit(self):
+        from google.api_core.client_options import ClientOptions
+
         credentials = _make_credentials()
         database = "now-db"
         client_info = mock.Mock()
-        client_options = mock.Mock()
+        client_options = ClientOptions("endpoint")
         client = self._make_one(
             project=self.PROJECT,
             credentials=credentials,
