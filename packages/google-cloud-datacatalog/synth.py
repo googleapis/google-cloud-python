@@ -68,5 +68,8 @@ s.move(templated_files)
 
 python.py_samples()
 
+# Temporarily disable warnings due to
+# https://github.com/googleapis/gapic-generator-python/issues/525
+s.replace("noxfile.py", '[\"\']-W[\"\']', '# "-W"')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

@@ -154,7 +154,7 @@ def docs(session):
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
         "sphinx-build",
-        "-W",  # warnings as errors
+        # "-W",  # warnings as errors
         "-T",  # show full traceback on exception
         "-N",  # no colors
         "-b",
