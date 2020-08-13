@@ -16,6 +16,7 @@
 
 import synthtool as s
 import synthtool.gcp as gcp
+from synthtool.languages import python
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
@@ -259,8 +260,17 @@ s.replace("google/cloud/dlp_v2/gapic/enums.py", ".*:raw-latex:.*\n", "")
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-    cov_level=73, system_test_dependencies=["test_utils"]
+    cov_level=73, system_test_dependencies=["test_utils"], samples=True
 )
 s.move(templated_files)
+
+# ----------------------------------------------------------------------------
+# Samples templates
+# ----------------------------------------------------------------------------
+python.py_samples()
+
+# Temporarily disable warnings due to
+# https://github.com/googleapis/gapic-generator-python/issues/525
+s.replace("noxfile.py", '[\"\']-W[\"\']', '# "-W"')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
