@@ -15,6 +15,7 @@
 """This script is used to synthesize generated parts of this library."""
 import synthtool as s
 from synthtool import gcp
+from synthtool.languages import python
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
@@ -117,9 +118,17 @@ if n != 1:
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-    unit_cov_level=97, cov_level=98, system_test_dependencies=["test_utils"]
+    samples=True,
+    unit_cov_level=97,
+    cov_level=98,
+    system_test_dependencies=["test_utils"]
 )
 s.move(templated_files)
+
+# ----------------------------------------------------------------------------
+# Samples templates
+# ----------------------------------------------------------------------------
+python.py_samples(skip_readmes=True)
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition
 s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
