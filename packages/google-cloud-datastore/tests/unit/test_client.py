@@ -52,10 +52,10 @@ class Test__get_gcd_project(unittest.TestCase):
             self.assertIsNone(project)
 
     def test_value_set(self):
-        from google.cloud.datastore.client import GCD_DATASET
+        from google.cloud.datastore.client import DATASTORE_DATASET
 
         MOCK_PROJECT = object()
-        environ = {GCD_DATASET: MOCK_PROJECT}
+        environ = {DATASTORE_DATASET: MOCK_PROJECT}
         with mock.patch("os.getenv", new=environ.get):
             project = self._call_fut()
             self.assertEqual(project, MOCK_PROJECT)
@@ -235,18 +235,33 @@ class TestClient(unittest.TestCase):
             )
             self.assertTrue(client4._use_grpc)
 
-    def test_constructor_gcd_host(self):
-        from google.cloud.environment_vars import GCD_HOST
+    def test_constructor_w_emulator_w_creds(self):
+        from google.cloud.datastore.client import DATASTORE_EMULATOR_HOST
 
         host = "localhost:1234"
-        fake_environ = {GCD_HOST: host}
+        fake_environ = {DATASTORE_EMULATOR_HOST: host}
         project = "PROJECT"
         creds = _make_credentials()
         http = object()
 
         with mock.patch("os.environ", new=fake_environ):
-            client = self._make_one(project=project, credentials=creds, _http=http)
-            self.assertEqual(client.base_url, "http://" + host)
+            with self.assertRaises(ValueError):
+                self._make_one(project=project, credentials=creds, _http=http)
+
+    def test_constructor_w_emulator_wo_creds(self):
+        from google.auth.credentials import AnonymousCredentials
+        from google.cloud.datastore.client import DATASTORE_EMULATOR_HOST
+
+        host = "localhost:1234"
+        fake_environ = {DATASTORE_EMULATOR_HOST: host}
+        project = "PROJECT"
+        http = object()
+
+        with mock.patch("os.environ", new=fake_environ):
+            client = self._make_one(project=project, _http=http)
+
+        self.assertEqual(client.base_url, "http://" + host)
+        self.assertIsInstance(client._credentials, AnonymousCredentials)
 
     def test_base_url_property(self):
         from google.cloud.datastore.client import _DATASTORE_BASE_URL

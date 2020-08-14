@@ -16,6 +16,7 @@
 import os
 
 import google.api_core.client_options
+from google.auth.credentials import AnonymousCredentials
 from google.cloud._helpers import _LocalStack
 from google.cloud._helpers import _determine_default_project as _base_default_project
 from google.cloud.client import ClientWithProject
@@ -27,9 +28,6 @@ from google.cloud.datastore.entity import Entity
 from google.cloud.datastore.key import Key
 from google.cloud.datastore.query import Query
 from google.cloud.datastore.transaction import Transaction
-from google.cloud.environment_vars import DISABLE_GRPC
-from google.cloud.environment_vars import GCD_DATASET
-from google.cloud.environment_vars import GCD_HOST
 
 try:
     from google.cloud.datastore._gapic import make_datastore_api
@@ -54,13 +52,20 @@ _MAX_LOOPS = 128
 _DATASTORE_BASE_URL = "https://datastore.googleapis.com"
 """Datastore API request URL base."""
 
+DATASTORE_EMULATOR_HOST = "DATASTORE_EMULATOR_HOST"
+"""Environment variable defining host for datastore emulator server."""
+DATASTORE_DATASET = "DATASTORE_DATASET"
+"""Environment variable defining default dataset ID under GCD."""
+DISABLE_GRPC = "GOOGLE_CLOUD_DISABLE_GRPC"
+"""Environment variable acting as flag to disable gRPC."""
+
 
 _USE_GRPC = _HAVE_GRPC and not os.getenv(DISABLE_GRPC, False)
 
 
 def _get_gcd_project():
     """Gets the GCD application ID if it can be inferred."""
-    return os.getenv(GCD_DATASET)
+    return os.getenv(DATASTORE_DATASET)
 
 
 def _determine_default_project(project=None):
@@ -266,6 +271,15 @@ class Client(ClientWithProject):
         _http=None,
         _use_grpc=None,
     ):
+        emulator_host = os.getenv(DATASTORE_EMULATOR_HOST)
+
+        if emulator_host is not None:
+            if credentials is not None:
+                raise ValueError(
+                    "Explicit credentials are incompatible with the emulator"
+                )
+            credentials = AnonymousCredentials()
+
         super(Client, self).__init__(
             project=project,
             credentials=credentials,
@@ -277,14 +291,15 @@ class Client(ClientWithProject):
         self._client_options = client_options
         self._batch_stack = _LocalStack()
         self._datastore_api_internal = None
+
         if _use_grpc is None:
             self._use_grpc = _USE_GRPC
         else:
             self._use_grpc = _use_grpc
-        try:
-            host = os.environ[GCD_HOST]
-            self._base_url = "http://" + host
-        except KeyError:
+
+        if emulator_host is not None:
+            self._base_url = "http://" + emulator_host
+        else:
             api_endpoint = _DATASTORE_BASE_URL
             if client_options:
                 if type(client_options) == dict:
