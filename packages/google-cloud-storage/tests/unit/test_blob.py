@@ -1476,8 +1476,8 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob.content_encoding, "gzip")
         self.assertEqual(blob.cache_control, "max-age=1337;public")
         self.assertEqual(blob.storage_class, "STANDARD")
-        self.assertEqual(blob.md5_hash, "CS9tHYTtyFntzj7B9nkkJQ")
-        self.assertEqual(blob.crc32c, "4gcgLQ")
+        self.assertEqual(blob.md5_hash, "CS9tHYTtyFntzj7B9nkkJQ==")
+        self.assertEqual(blob.crc32c, "4gcgLQ==")
 
     def test_download_as_string_w_hash_response_header_none(self):
         blob_name = "blob-name"
