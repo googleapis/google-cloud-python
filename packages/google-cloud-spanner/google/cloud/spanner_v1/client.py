@@ -192,7 +192,10 @@ class Client(ClientWithProject):
         #       will have no impact since the _http() @property only lazily
         #       creates a working HTTP object.
         super(Client, self).__init__(
-            project=project, credentials=credentials, _http=None
+            project=project,
+            credentials=credentials,
+            client_options=client_options,
+            _http=None,
         )
         self._client_info = client_info
 
