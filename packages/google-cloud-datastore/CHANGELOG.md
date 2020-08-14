@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [1.15.0](https://www.github.com/googleapis/python-datastore/compare/v1.14.0...v1.15.0) (2020-08-14)
+
+
+### Features
+
+* add retry and timeout args to API methods ([#67](https://www.github.com/googleapis/python-datastore/issues/67)) ([f3283e1](https://www.github.com/googleapis/python-datastore/commit/f3283e14c34c36c8386e4cb6b43c109d469f118c)), closes [#3](https://www.github.com/googleapis/python-datastore/issues/3)
+* supply anonymous credentials under emulator ([#71](https://www.github.com/googleapis/python-datastore/issues/71)) ([4db3c40](https://www.github.com/googleapis/python-datastore/commit/4db3c4048e53c220eee0aea2063c05292bbc5334)), closes [#70](https://www.github.com/googleapis/python-datastore/issues/70)
+
+
+### Bug Fixes
+
+* smooth over system test bumps ([#66](https://www.github.com/googleapis/python-datastore/issues/66)) ([8bb17ea](https://www.github.com/googleapis/python-datastore/commit/8bb17ea30ed94c0a298a54cc75c031b67d0a576a))
+
+
+### Documentation
+
+* add docs for admin client ([#63](https://www.github.com/googleapis/python-datastore/issues/63)) ([43ff64a](https://www.github.com/googleapis/python-datastore/commit/43ff64a5889aeac321fbead967ec527ede414fa2)), closes [#49](https://www.github.com/googleapis/python-datastore/issues/49)
+
 ## [1.14.0](https://www.github.com/googleapis/python-datastore/compare/v1.13.2...v1.14.0) (2020-08-05)
 
 
