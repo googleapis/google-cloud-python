@@ -21,6 +21,7 @@ import datetime
 import functools
 import logging
 import operator
+import pytz
 import warnings
 
 import six
@@ -1726,7 +1727,35 @@ class RowIterator(HTTPIterator):
                 bqstorage_client=bqstorage_client,
                 create_bqstorage_client=create_bqstorage_client,
             )
-            df = record_batch.to_pandas(date_as_object=date_as_object)
+
+            # When converting timestamp values to nanosecond precision, the result
+            # can be out of pyarrow bounds. To avoid the error when converting to
+            # Pandas, we set the timestamp_as_object parameter to True, if necessary.
+            #
+            # NOTE: Python 3+ only, as timestamp_as_object parameter is only supported
+            # in pyarrow>=1.0, but the latter is not compatible with Python 2.
+            if six.PY2:
+                extra_kwargs = {}
+            else:
+                types_to_check = {
+                    pyarrow.timestamp("us"),
+                    pyarrow.timestamp("us", tz=pytz.UTC),
+                }
+
+                for column in record_batch:
+                    if column.type in types_to_check:
+                        try:
+                            column.cast("timestamp[ns]")
+                        except pyarrow.lib.ArrowInvalid:
+                            timestamp_as_object = True
+                            break
+                else:
+                    timestamp_as_object = False
+
+                extra_kwargs = {"timestamp_as_object": timestamp_as_object}
+
+            df = record_batch.to_pandas(date_as_object=date_as_object, **extra_kwargs)
+
             for column in dtypes:
                 df[column] = pandas.Series(df[column], dtype=dtypes[column])
             return df

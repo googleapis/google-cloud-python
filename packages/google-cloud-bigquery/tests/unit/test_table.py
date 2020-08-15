@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime as dt
 import itertools
 import logging
 import time
@@ -2270,6 +2271,68 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(list(df), ["name", "age"])  # verify the column names
         self.assertEqual(df.name.dtype.name, "object")
         self.assertEqual(df.age.dtype.name, "int64")
+
+    @pytest.mark.xfail(
+        six.PY2,
+        reason=(
+            "Requires pyarrow>-1.0 to work, but the latter is not compatible "
+            "with Python 2 anymore."
+        ),
+    )
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_to_dataframe_timestamp_out_of_pyarrow_bounds(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [SchemaField("some_timestamp", "TIMESTAMP")]
+        rows = [
+            {"f": [{"v": "81953424000.0"}]},  # 4567-01-01 00:00:00  UTC
+            {"f": [{"v": "253402214400.0"}]},  # 9999-12-31 00:00:00  UTC
+        ]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
+
+        df = row_iterator.to_dataframe(create_bqstorage_client=False)
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 2)  # verify the number of rows
+        self.assertEqual(list(df.columns), ["some_timestamp"])
+        self.assertEqual(
+            list(df["some_timestamp"]),
+            [dt.datetime(4567, 1, 1), dt.datetime(9999, 12, 31)],
+        )
+
+    @pytest.mark.xfail(
+        six.PY2,
+        reason=(
+            "Requires pyarrow>-1.0 to work, but the latter is not compatible "
+            "with Python 2 anymore."
+        ),
+    )
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_to_dataframe_datetime_out_of_pyarrow_bounds(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [SchemaField("some_datetime", "DATETIME")]
+        rows = [
+            {"f": [{"v": "4567-01-01T00:00:00"}]},
+            {"f": [{"v": "9999-12-31T00:00:00"}]},
+        ]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
+
+        df = row_iterator.to_dataframe(create_bqstorage_client=False)
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 2)  # verify the number of rows
+        self.assertEqual(list(df.columns), ["some_datetime"])
+        self.assertEqual(
+            list(df["some_datetime"]),
+            [dt.datetime(4567, 1, 1), dt.datetime(9999, 12, 31)],
+        )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_warning_wo_pyarrow(self):
