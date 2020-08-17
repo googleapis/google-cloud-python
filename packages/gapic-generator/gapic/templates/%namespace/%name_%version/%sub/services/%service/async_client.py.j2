@@ -25,7 +25,7 @@ from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
 {% endif %}
 {% endfilter %}
-from .transports.base import {{ service.name }}Transport
+from .transports.base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import {{ service.grpc_asyncio_transport_name }}
 from .client import {{ service.client_name }}
 
@@ -52,6 +52,7 @@ class {{ service.async_client_name }}:
             credentials: credentials.Credentials = None,
             transport: Union[str, {{ service.name }}Transport] = 'grpc_asyncio',
             client_options: ClientOptions = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
         """Instantiate the {{ (service.client_name|snake_case).replace('_', ' ') }}.
 
@@ -87,6 +88,8 @@ class {{ service.async_client_name }}:
             credentials=credentials,
             transport=transport,
             client_options=client_options,
+            client_info=client_info,
+
         )
 
     {% for method in service.methods.values() -%}
@@ -202,7 +205,7 @@ class {{ service.async_client_name }}:
             ),
             {%- endif %}
             default_timeout={{ method.timeout }},
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
         {%- if method.field_headers %}
 
@@ -352,7 +355,7 @@ class {{ service.async_client_name }}:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.set_iam_policy,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -459,7 +462,7 @@ class {{ service.async_client_name }}:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_iam_policy,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -510,7 +513,7 @@ class {{ service.async_client_name }}:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.test_iam_permissions,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -527,13 +530,13 @@ class {{ service.async_client_name }}:
     {% endif %}
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
             '{{ api.naming.warehouse_package_name }}',
         ).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 __all__ = (

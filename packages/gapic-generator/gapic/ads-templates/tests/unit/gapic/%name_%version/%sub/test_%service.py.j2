@@ -24,9 +24,7 @@ from google.api_core import future
 from google.api_core import operations_v1
 from google.longrunning import operations_pb2
 {% endif -%}
-{% if service.has_pagers -%}
 from google.api_core import gapic_v1
-{% endif -%}
 {% for method in service.methods.values() -%}
 {% for ref_type in method.ref_types
    if not ((ref_type.ident.python_import.package == ('google', 'api_core') and ref_type.ident.python_import.module == 'operation')
@@ -109,6 +107,7 @@ def test_{{ service.client_name|snake_case }}_client_options():
             client_cert_source=None,
             credentials=None,
             host="squid.clam.whelk",
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
@@ -122,6 +121,7 @@ def test_{{ service.client_name|snake_case }}_client_options():
                 client_cert_source=None,
                 credentials=None,
                 host=client.DEFAULT_ENDPOINT,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
@@ -135,6 +135,7 @@ def test_{{ service.client_name|snake_case }}_client_options():
                 client_cert_source=None,
                 credentials=None,
                 host=client.DEFAULT_MTLS_ENDPOINT,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
 
     # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
@@ -149,6 +150,7 @@ def test_{{ service.client_name|snake_case }}_client_options():
                 client_cert_source=client_cert_source_callback,
                 credentials=None,
                 host=client.DEFAULT_MTLS_ENDPOINT,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
 
     # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
@@ -163,6 +165,7 @@ def test_{{ service.client_name|snake_case }}_client_options():
                     client_cert_source=None,
                     credentials=None,
                     host=client.DEFAULT_MTLS_ENDPOINT,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
                 )
 
     # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
@@ -177,6 +180,7 @@ def test_{{ service.client_name|snake_case }}_client_options():
                     client_cert_source=None,
                     credentials=None,
                     host=client.DEFAULT_ENDPOINT,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
                 )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS has
@@ -197,6 +201,7 @@ def test_{{ service.client_name|snake_case }}_client_options_from_dict():
             client_cert_source=None,
             credentials=None,
             host="squid.clam.whelk",
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
 
@@ -768,5 +773,24 @@ def test_parse_{{ message.resource_type|snake_case }}_path():
 
 {% endwith -%}
 {% endfor -%}
+
+def test_client_withDEFAULT_CLIENT_INFO():
+    client_info = gapic_v1.client_info.ClientInfo()
+
+    with mock.patch.object(transports.{{ service.name }}Transport, '_prep_wrapped_messages') as prep:
+        client = {{ service.client_name }}(
+            credentials=credentials.AnonymousCredentials(),
+            client_info=client_info,
+        )
+        prep.assert_called_once_with(client_info)
+
+    with mock.patch.object(transports.{{ service.name }}Transport, '_prep_wrapped_messages') as prep:
+        transport_class = {{ service.client_name }}.get_transport_class()
+        transport = transport_class(
+            credentials=credentials.AnonymousCredentials(),
+            client_info=client_info,
+        )
+        prep.assert_called_once_with(client_info)
+
 
 {% endblock %}

@@ -23,7 +23,7 @@ from google.oauth2 import service_account              # type: ignore
 {% endfor -%}
 {% endfor -%}
 {% endfilter %}
-from .transports.base import {{ service.name }}Transport
+from .transports.base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc import {{ service.name }}GrpcTransport
 
 
@@ -135,6 +135,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             credentials: credentials.Credentials = None,
             transport: Union[str, {{ service.name }}Transport] = None,
             client_options: ClientOptions = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
         """Instantiate the {{ (service.client_name|snake_case).replace('_', ' ') }}.
 
@@ -160,6 +161,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 (2) The ``client_cert_source`` property is used to provide client
                 SSL credentials for mutual TLS transport. If not provided, the
                 default SSL credentials will be used if present.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
+                The client info used to send a user-agent string along with	
+                API requests. If ``None``, then default info will be used.	
+                Generally, you only need to set this if you're developing	
+                your own client library.
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -209,6 +215,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 host=client_options.api_endpoint,
                 api_mtls_endpoint=client_options.api_endpoint,
                 client_cert_source=client_options.client_cert_source,
+                client_info=client_info,
               )
 
 
