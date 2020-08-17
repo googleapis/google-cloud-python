@@ -33,7 +33,13 @@ dependencies = [
     "google-cloud-core >= 1.4.1, < 2.0dev",
     "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
 ]
-extras = {}
+extras = {
+    "tracing": [
+        "opentelemetry-api==0.11b0",
+        "opentelemetry-sdk==0.11b0",
+        "opentelemetry-instrumentation==0.11b0",
+    ]
+}
 
 
 # Setup boilerplate below this line.
