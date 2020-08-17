@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.7.1](https://www.github.com/googleapis/proto-plus-python/compare/v1.7.0...v1.7.1) (2020-08-17)
+
+
+### Bug Fixes
+
+* revert algorithm for RepeatedComposite insertion. ([#101](https://www.github.com/googleapis/proto-plus-python/issues/101)) ([ae946aa](https://www.github.com/googleapis/proto-plus-python/commit/ae946aa2a3b394fa31590224fcf50593bde0ccaa))
+
 ## [1.7.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.6.0...v1.7.0) (2020-08-07)
 
 
