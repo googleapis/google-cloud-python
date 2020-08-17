@@ -125,4 +125,10 @@ class RepeatedComposite(Repeated):
     def insert(self, index: int, value):
         """Insert ``value`` in the sequence before ``index``."""
         pb_value = self._marshal.to_proto(self._pb_type, value, strict=True)
-        self.pb.insert(index, pb_value)
+
+        # Protocol buffers does not define a useful insert, so we have
+        # to pop everything after this point off the list and reload it.
+        after = [pb_value]
+        while self.pb[index:]:
+            after.append(self.pb.pop(index))
+        self.pb.extend(after)
