@@ -20,12 +20,16 @@ import inspect
 import os
 import threading
 
+try:
+    _getfullargspec = inspect.getfullargspec
+except AttributeError:  # pragma: NO PY3 COVER
+    _getfullargspec = inspect.getargspec
+
 TRUTHY_STRINGS = {"t", "true", "y", "yes", "on", "1"}
 
 
 def asbool(value):
     """Convert an arbitrary value to a boolean.
-
     Usually, `value`, will be a string. If `value` is already a boolean, it's
     just returned as-is.
 
@@ -122,7 +126,7 @@ def positional(max_pos_args):
     def positional_decorator(wrapped):
         root = getattr(wrapped, "_wrapped", wrapped)
         wrapped._positional_args = max_pos_args
-        argspec = inspect.getargspec(root)
+        argspec = _getfullargspec(root)
         wrapped._argspec = argspec
         wrapped._positional_names = argspec.args[:max_pos_args]
 

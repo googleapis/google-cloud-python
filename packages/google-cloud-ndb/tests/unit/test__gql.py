@@ -298,8 +298,8 @@ class TestGQL:
             "Query(kind='SomeKind', filters=AND(FilterNode('prop2', '=', {}"
             "), FilterNode('prop3', '>', 5)), order_by=[PropertyOrder(name="
             "'prop4', reverse=False), PropertyOrder(name='prop1', "
-            "reverse=True)], projection=['prop1', 'prop2'], "
-            "default_options=QueryOptions(limit=10, offset=5))"
+            "reverse=True)], limit=10, offset=5, "
+            "projection=['prop1', 'prop2'])"
         )
         gql = gql_module.GQL(GQL_QUERY)
         query = gql.get_query()
@@ -364,7 +364,8 @@ class TestGQL:
 
         gql = gql_module.GQL("SELECT __key__ FROM SomeKind WHERE prop1='a'")
         query = gql.get_query()
-        assert query.default_options.keys_only is True
+        assert query.keys_only is True
+        assert "keys_only=True" in query.__repr__()
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

@@ -2371,6 +2371,7 @@ class TestQuery:
 class TestGQL:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    @pytest.mark.filterwarnings("ignore")
     def test_gql():
         class SomeKind(model.Model):
             prop1 = model.StringProperty()
@@ -2381,8 +2382,8 @@ class TestGQL:
         rep = (
             "Query(kind='SomeKind', filters=AND(FilterNode('prop2', '=', {}"
             "), FilterNode('prop3', '>', 5)), order_by=[PropertyOrder(name="
-            "'prop4', reverse=False)], projection=['prop1', 'prop2'], "
-            "default_options=QueryOptions(limit=10, offset=5))"
+            "'prop4', reverse=False)], limit=10, offset=5, "
+            "projection=['prop1', 'prop2'])"
         )
         gql_query = (
             "SELECT prop1, prop2 FROM SomeKind WHERE prop3>5 and prop2='xxx' "
@@ -2406,8 +2407,8 @@ class TestGQL:
         rep = (
             "Query(kind='SomeKind', filters=AND(FilterNode('prop2', '=', {}"
             "), FilterNode('prop3', '>', 5)), order_by=[PropertyOrder(name="
-            "'prop4', reverse=False)], projection=['prop1', 'prop2'], "
-            "default_options=QueryOptions(limit=10, offset=5))"
+            "'prop4', reverse=False)], limit=10, offset=5, "
+            "projection=['prop1', 'prop2'])"
         )
         gql_query = (
             "SELECT prop1, prop2 FROM SomeKind WHERE prop3>:1 AND prop2=:2 "
@@ -2432,8 +2433,8 @@ class TestGQL:
         rep = (
             "Query(kind='SomeKind', filters=AND(FilterNode('prop2', '=', {}"
             "), FilterNode('prop3', '>', 5)), order_by=[PropertyOrder(name="
-            "'prop4', reverse=False)], projection=['prop1', 'prop2'], "
-            "default_options=QueryOptions(limit=10, offset=5))"
+            "'prop4', reverse=False)], limit=10, offset=5, "
+            "projection=['prop1', 'prop2'])"
         )
         gql_query = (
             "SELECT prop1, prop2 FROM SomeKind WHERE prop3 > :param1 and "
@@ -2458,8 +2459,8 @@ class TestGQL:
         rep = (
             "Query(kind='SomeKind', filters=AND(FilterNode('prop2', '=', {}"
             "), FilterNode('prop3', '>', 5)), order_by=[PropertyOrder(name="
-            "'prop4', reverse=False)], projection=['prop1', 'prop2'], "
-            "default_options=QueryOptions(limit=10, offset=5))"
+            "'prop4', reverse=False)], limit=10, offset=5, "
+            "projection=['prop1', 'prop2'])"
         )
         gql_query = (
             "SELECT prop1, prop2 FROM SomeKind WHERE prop3 > :1 and "

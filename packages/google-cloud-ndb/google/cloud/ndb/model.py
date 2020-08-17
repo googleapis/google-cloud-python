@@ -345,6 +345,12 @@ GeoPt = helpers.GeoPoint
 Rollback = exceptions.Rollback
 
 
+try:
+    _getfullargspec = inspect.getfullargspec
+except AttributeError:  # pragma: NO PY3 COVER
+    _getfullargspec = inspect.getargspec
+
+
 class KindError(exceptions.BadValueError):
     """Raised when an implementation for a kind can't be found.
 
@@ -1152,7 +1158,7 @@ class Property(ModelAttribute):
         # inspect.signature not available in Python 2.7, so we use positional
         # decorator combined with argspec instead.
         argspec = getattr(
-            self.__init__, "_argspec", inspect.getargspec(self.__init__)
+            self.__init__, "_argspec", _getfullargspec(self.__init__)
         )
         positional = getattr(self.__init__, "_positional_args", 1)
         for index, name in enumerate(argspec.args):
@@ -2610,7 +2616,7 @@ class CompressedTextProperty(BlobProperty):
         # inspect.signature not available in Python 2.7, so we use positional
         # decorator combined with argspec instead.
         argspec = getattr(
-            parent_init, "_argspec", inspect.getargspec(parent_init)
+            parent_init, "_argspec", _getfullargspec(parent_init)
         )
         positional = getattr(parent_init, "_positional_args", 1)
         for index, name in enumerate(argspec.args):
@@ -2772,7 +2778,7 @@ class TextProperty(Property):
         # inspect.signature not available in Python 2.7, so we use positional
         # decorator combined with argspec instead.
         argspec = getattr(
-            parent_init, "_argspec", inspect.getargspec(parent_init)
+            parent_init, "_argspec", _getfullargspec(parent_init)
         )
         positional = getattr(parent_init, "_positional_args", 1)
         for index, name in enumerate(argspec.args):

@@ -1658,6 +1658,7 @@ def test_gql(ds_entity):
     assert results[0].foo == 2
 
 
+@pytest.mark.filterwarnings("ignore")
 @pytest.mark.usefixtures("client_context")
 def test_IN(ds_entity):
     for i in range(5):

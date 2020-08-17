@@ -21,7 +21,10 @@ from google.cloud.ndb import _legacy_protocol_buffer as pb_module
 
 def _get_decoder(s):
     a = array.array("B")
-    a.fromstring(s)
+    try:
+        a.frombytes(s)
+    except AttributeError:  # pragma: NO PY3 COVER
+        a.fromstring(s)
     d = pb_module.Decoder(a, 0, len(a))
     return d
 

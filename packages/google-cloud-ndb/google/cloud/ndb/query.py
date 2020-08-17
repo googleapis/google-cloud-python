@@ -1304,6 +1304,10 @@ class Query(object):
             If not passed, uses the client's value.
         projection (list[Union[str, google.cloud.ndb.model.Property]]): The
             fields to return as part of the query results.
+        keys_only (bool): Return keys instead of entities.
+        offset (int): Number of query results to skip.
+        limit (Optional[int]): Maximum number of query results to return.
+            If not specified, there is no limit.
         distinct_on (list[str]): The field names used to group query
             results.
         group_by (list[str]): Deprecated. Synonym for distinct_on.
@@ -1326,6 +1330,9 @@ class Query(object):
         projection=None,
         distinct_on=None,
         group_by=None,
+        limit=None,
+        offset=None,
+        keys_only=None,
         default_options=None,
     ):
         # Avoid circular import in Python 2.7
@@ -1376,6 +1383,9 @@ class Query(object):
             projection = self._option("projection", projection)
             distinct_on = self._option("distinct_on", distinct_on)
             group_by = self._option("group_by", group_by)
+            limit = self._option("limit", limit)
+            offset = self._option("offset", offset)
+            keys_only = self._option("keys_only", keys_only)
 
         if ancestor is not None:
             if isinstance(ancestor, ParameterizedThing):
@@ -1430,6 +1440,9 @@ class Query(object):
         self.order_by = order_by
         self.project = project
         self.namespace = namespace
+        self.limit = limit
+        self.offset = offset
+        self.keys_only = keys_only
 
         self.projection = None
         if projection is not None:
@@ -1479,6 +1492,12 @@ class Query(object):
             args.append("filters=%r" % self.filters)
         if self.order_by is not None:
             args.append("order_by=%r" % self.order_by)
+        if self.limit is not None:
+            args.append("limit=%r" % self.limit)
+        if self.offset is not None:
+            args.append("offset=%r" % self.offset)
+        if self.keys_only is not None:
+            args.append("keys_only=%r" % self.keys_only)
         if self.projection:
             args.append(
                 "projection=%r" % (_to_property_names(self.projection))
@@ -1541,6 +1560,9 @@ class Query(object):
             default_options=self.default_options,
             projection=self.projection,
             distinct_on=self.distinct_on,
+            limit=self.limit,
+            offset=self.offset,
+            keys_only=self.keys_only,
         )
 
     def order(self, *props):
@@ -1571,6 +1593,9 @@ class Query(object):
             default_options=self.default_options,
             projection=self.projection,
             distinct_on=self.distinct_on,
+            limit=self.limit,
+            offset=self.offset,
+            keys_only=self.keys_only,
         )
 
     def analyze(self):
@@ -1649,6 +1674,9 @@ class Query(object):
             default_options=self.default_options,
             projection=self.projection,
             distinct_on=self.distinct_on,
+            limit=self.limit,
+            offset=self.offset,
+            keys_only=self.keys_only,
         )
 
     def _to_property_orders(self, order_by):
@@ -1698,8 +1726,6 @@ class Query(object):
         """Run a query, fetching results.
 
         Args:
-            limit (Optional[int]): Maximum number of results to fetch.
-                data:`None` or data:`0` indicates no limit.
             keys_only (bool): Return keys instead of entities.
             projection (list[Union[str, google.cloud.ndb.model.Property]]): The
                 fields to return as part of the query results.

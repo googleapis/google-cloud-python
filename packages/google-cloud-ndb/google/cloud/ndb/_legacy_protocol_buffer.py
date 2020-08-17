@@ -31,7 +31,10 @@ class ProtocolBufferDecodeError(Exception):
 class ProtocolMessage:
     def MergePartialFromString(self, s):
         a = array.array("B")
-        a.fromstring(s)
+        try:
+            a.frombytes(s)
+        except AttributeError:  # pragma: NO PY3 COVER
+            a.fromstring(s)
         d = Decoder(a, 0, len(a))
         self.TryMerge(d)
 
@@ -196,7 +199,11 @@ class Decoder:
             raise ProtocolBufferDecodeError("truncated")
         r = self.buf[self.idx : self.idx + length]  # noqa: E203
         self.idx += length
-        return r.tostring()
+        try:
+            prefixed = r.tobytes()
+        except AttributeError:  # pragma: NO PY3 COVER
+            prefixed = r.tostring()
+        return prefixed
 
 
 __all__ = [
