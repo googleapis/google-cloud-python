@@ -1,0 +1,44 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "sso://devrel/cloud/libraries/python/python-video-transcoder",
+        "sha": "d83d277c4513cf6c1caaf56ca3a6564cd5910c86"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "72eb54c45231d84266ca059473bc1793c394fcb2",
+        "internalRef": "328059685"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "05de3e1e14a0b07eab8b474e669164dbd31f81fb"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "05de3e1e14a0b07eab8b474e669164dbd31f81fb"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "transcoder",
+        "apiVersion": "v1beta1",
+        "language": "python",
+        "generator": "bazel"
+      }
+    }
+  ]
+}
