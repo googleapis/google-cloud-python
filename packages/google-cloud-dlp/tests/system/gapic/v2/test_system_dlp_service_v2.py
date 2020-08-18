@@ -16,8 +16,6 @@ import json
 import os
 
 from google.cloud import dlp_v2
-from google.cloud.dlp_v2 import enums
-from google.cloud.dlp_v2.proto import dlp_pb2
 
 
 class TestSystemDlpService(object):
@@ -33,9 +31,11 @@ class TestSystemDlpService(object):
         project_id = self._get_project_id()
 
         client = dlp_v2.DlpServiceClient()
-        min_likelihood = enums.Likelihood.POSSIBLE
+        min_likelihood = dlp_v2.Likelihood.POSSIBLE
         info_types = [{"name": "FIRST_NAME"}, {"name": "LAST_NAME"}]
         inspect_config = {"info_types": info_types, "min_likelihood": min_likelihood}
         item = {"value": "Robert Frost"}
-        parent = client.project_path(project_id)
-        response = client.inspect_content(parent, inspect_config, item)
+        parent = f"projects/{project_id}"
+        response = client.inspect_content(
+            request={"parent": parent, "inspect_config": inspect_config, "item": item}
+        )
