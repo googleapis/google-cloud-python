@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+### [1.27.2](https://www.github.com/googleapis/python-bigquery/compare/v1.27.1...v1.27.2) (2020-08-18)
+
+
+### Bug Fixes
+
+* rationalize platform constraints for 'pyarrow' extra ([#235](https://www.github.com/googleapis/python-bigquery/issues/235)) ([c9a0567](https://www.github.com/googleapis/python-bigquery/commit/c9a0567f59491b769a9e2fd535430423e39d4fa8))
+
 ### [1.27.1](https://www.github.com/googleapis/python-bigquery/compare/v1.27.0...v1.27.1) (2020-08-18)
 
 
