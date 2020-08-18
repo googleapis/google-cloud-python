@@ -59,7 +59,7 @@ class Cluster(object):
                                  Possible values are represented by the
                                  following constants:
                                  :data:`google.cloud.bigtable.enums.StorageType.SSD`.
-                                 :data:`google.cloud.bigtable.enums.StorageType.SHD`,
+                                 :data:`google.cloud.bigtable.enums.StorageType.HDD`,
                                  Defaults to
                                  :data:`google.cloud.bigtable.enums.StorageType.UNSPECIFIED`.
 
