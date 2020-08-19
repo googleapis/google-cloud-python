@@ -838,8 +838,8 @@ def test_{{ method.name|snake_case }}_pages():
             RuntimeError,
         )
         pages = list(client.{{ method.name|snake_case }}(request={}).pages)
-        for page, token in zip(pages, ['abc','def','ghi', '']):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
 
 @pytest.mark.asyncio
 async def test_{{ method.name|snake_case }}_async_pager():
@@ -928,10 +928,10 @@ async def test_{{ method.name|snake_case }}_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page in (await client.{{ method.name|snake_case }}(request={})).pages:
-            pages.append(page)
-        for page, token in zip(pages, ['abc','def','ghi', '']):
-            assert page.raw_page.next_page_token == token
+        async for page_ in (await client.{{ method.name|snake_case }}(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
 {% elif method.lro and "next_page_token" in method.lro.response_type.fields.keys() %}
 def test_{{ method.name|snake_case }}_raw_page_lro():
     response = {{ method.lro.response_type.ident }}()
