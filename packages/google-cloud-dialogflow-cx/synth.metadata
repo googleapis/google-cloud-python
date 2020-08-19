@@ -1,0 +1,36 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "sso://devrel/cloud/libraries/python/python-dialogflow-cx",
+        "sha": "c632279be56ff82fe7c6a1ae68a173fead8fbad7"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "05de3e1e14a0b07eab8b474e669164dbd31f81fb"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "05de3e1e14a0b07eab8b474e669164dbd31f81fb"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "dialogflow",
+        "apiVersion": "v3beta1",
+        "language": "python",
+        "generator": "bazel"
+      }
+    }
+  ]
+}
