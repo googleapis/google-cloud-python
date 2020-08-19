@@ -49,9 +49,7 @@ from google.cloud.firestore_v1.services.firestore import (
 from google.cloud.firestore_v1.services.firestore.transports import (
     grpc_asyncio as firestore_grpc_transport,
 )
-from typing import Any, AsyncGenerator, NoReturn
-
-_CLIENT_INFO: Any
+from typing import Any, AsyncGenerator
 
 
 class AsyncClient(BaseClient):
@@ -152,7 +150,7 @@ class AsyncClient(BaseClient):
         """
         return AsyncCollectionReference(*_path_helper(collection_path), client=self)
 
-    def collection_group(self, collection_id) -> NoReturn:
+    def collection_group(self, collection_id) -> AsyncQuery:
         """
         Creates and returns a new AsyncQuery that includes all documents in the
         database that are contained in a collection or subcollection with the

@@ -23,6 +23,7 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.firestore_v1.client.Client` owns a
   :class:`~google.cloud.firestore_v1.document.DocumentReference`
 """
+
 import os
 
 import google.api_core.client_options  # type: ignore
@@ -34,29 +35,38 @@ from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1 import __version__
 from google.cloud.firestore_v1 import types
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
-from google.cloud.firestore_v1.field_path import render_field_path
-from typing import Any, List, NoReturn, Optional, Tuple, Union
 
-_ACTIVE_TXN: str
-_BAD_DOC_TEMPLATE: str
-_BAD_OPTION_ERR: str
-_CLIENT_INFO: Any
-_FIRESTORE_EMULATOR_HOST: str
-_INACTIVE_TXN: str
-__version__: str
+from google.cloud.firestore_v1.field_path import render_field_path
+from typing import (
+    Any,
+    AsyncGenerator,
+    Generator,
+    List,
+    Optional,
+    Tuple,
+    Union,
+)
+
+# Types needed only for Type Hints
+from google.cloud.firestore_v1.base_collection import BaseCollectionReference
+from google.cloud.firestore_v1.base_document import BaseDocumentReference
+from google.cloud.firestore_v1.base_transaction import BaseTransaction
+from google.cloud.firestore_v1.base_batch import BaseWriteBatch
+from google.cloud.firestore_v1.base_query import BaseQuery
+
 
 DEFAULT_DATABASE = "(default)"
 """str: The default database used in a :class:`~google.cloud.firestore_v1.client.Client`."""
 _BAD_OPTION_ERR = (
     "Exactly one of ``last_update_time`` or ``exists`` " "must be provided."
 )
-_BAD_DOC_TEMPLATE = (
+_BAD_DOC_TEMPLATE: str = (
     "Document {!r} appeared in response but was not present among references"
 )
-_ACTIVE_TXN = "There is already an active transaction."
-_INACTIVE_TXN = "There is no active transaction."
-_CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
-_FIRESTORE_EMULATOR_HOST = "FIRESTORE_EMULATOR_HOST"
+_ACTIVE_TXN: str = "There is already an active transaction."
+_INACTIVE_TXN: str = "There is no active transaction."
+_CLIENT_INFO: Any = client_info.ClientInfo(client_library_version=__version__)
+_FIRESTORE_EMULATOR_HOST: str = "FIRESTORE_EMULATOR_HOST"
 
 
 class BaseClient(ClientWithProject):
@@ -214,13 +224,13 @@ class BaseClient(ClientWithProject):
 
         return self._rpc_metadata_internal
 
-    def collection(self, *collection_path) -> NoReturn:
+    def collection(self, *collection_path) -> BaseCollectionReference:
         raise NotImplementedError
 
-    def collection_group(self, collection_id) -> NoReturn:
+    def collection_group(self, collection_id) -> BaseQuery:
         raise NotImplementedError
 
-    def _get_collection_reference(self, collection_id) -> NoReturn:
+    def _get_collection_reference(self, collection_id) -> BaseCollectionReference:
         """Checks validity of collection_id and then uses subclasses collection implementation.
 
         Args:
@@ -241,7 +251,7 @@ class BaseClient(ClientWithProject):
 
         return self.collection(collection_id)
 
-    def document(self, *document_path) -> NoReturn:
+    def document(self, *document_path) -> BaseDocumentReference:
         raise NotImplementedError
 
     def _document_path_helper(self, *document_path) -> List[str]:
@@ -342,16 +352,25 @@ class BaseClient(ClientWithProject):
             extra = "{!r} was provided".format(name)
             raise TypeError(_BAD_OPTION_ERR, extra)
 
-    def get_all(self, references, field_paths=None, transaction=None) -> NoReturn:
+    def get_all(
+        self, references, field_paths=None, transaction=None
+    ) -> Union[
+        AsyncGenerator[DocumentSnapshot, Any], Generator[DocumentSnapshot, Any, Any]
+    ]:
         raise NotImplementedError
 
-    def collections(self) -> NoReturn:
+    def collections(
+        self,
+    ) -> Union[
+        AsyncGenerator[BaseCollectionReference, Any],
+        Generator[BaseCollectionReference, Any, Any],
+    ]:
         raise NotImplementedError
 
-    def batch(self) -> NoReturn:
+    def batch(self) -> BaseWriteBatch:
         raise NotImplementedError
 
-    def transaction(self, **kwargs) -> NoReturn:
+    def transaction(self, **kwargs) -> BaseTransaction:
         raise NotImplementedError
 
 

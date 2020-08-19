@@ -38,15 +38,6 @@ from google.cloud.firestore_v1.document import DocumentReference
 from google.cloud.firestore_v1.query import Query
 from typing import Any, Optional
 
-_CANT_BEGIN: str
-_CANT_COMMIT: str
-_CANT_ROLLBACK: str
-_EXCEED_ATTEMPTS_TEMPLATE: str
-_INITIAL_SLEEP: float
-_MAX_SLEEP: float
-_MULTIPLIER: float
-_WRITE_READ_ONLY: str
-
 
 class Transaction(batch.WriteBatch, BaseTransaction):
     """Accumulate read-and-write operations to be sent in a transaction.

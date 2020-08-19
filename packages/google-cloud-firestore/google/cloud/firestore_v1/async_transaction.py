@@ -37,17 +37,9 @@ from google.cloud.firestore_v1 import async_batch
 from google.cloud.firestore_v1 import types
 
 from google.cloud.firestore_v1.async_document import AsyncDocumentReference
+from google.cloud.firestore_v1.async_document import DocumentSnapshot
 from google.cloud.firestore_v1.async_query import AsyncQuery
-from typing import Coroutine
-
-_CANT_BEGIN: str
-_CANT_COMMIT: str
-_CANT_ROLLBACK: str
-_EXCEED_ATTEMPTS_TEMPLATE: str
-_INITIAL_SLEEP: float
-_MAX_SLEEP: float
-_MULTIPLIER: float
-_WRITE_READ_ONLY: str
+from typing import Any, AsyncGenerator, Coroutine
 
 
 class AsyncTransaction(async_batch.AsyncWriteBatch, BaseTransaction):
@@ -162,7 +154,7 @@ class AsyncTransaction(async_batch.AsyncWriteBatch, BaseTransaction):
         """
         return await self._client.get_all(references, transaction=self)
 
-    async def get(self, ref_or_query) -> Coroutine:
+    async def get(self, ref_or_query) -> AsyncGenerator[DocumentSnapshot, Any]:
         """
         Retrieve a document or a query result from the database.
         Args:

@@ -35,7 +35,6 @@ from typing import Any, Generator, List, NoReturn, Optional, Tuple
 
 _EmptyDict: transforms.Sentinel
 _GRPC_ERROR_MAPPING: dict
-_datetime_to_pb_timestamp: Any
 
 
 BAD_PATH_TEMPLATE = "A path element must be a string. Received {}, which is a {}."

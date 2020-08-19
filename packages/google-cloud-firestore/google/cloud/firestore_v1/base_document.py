@@ -190,7 +190,7 @@ class BaseDocumentReference(object):
     def delete(self, option=None) -> NoReturn:
         raise NotImplementedError
 
-    def get(self, field_paths=None, transaction=None) -> NoReturn:
+    def get(self, field_paths=None, transaction=None) -> "DocumentSnapshot":
         raise NotImplementedError
 
     def collections(self, page_size=None) -> NoReturn:

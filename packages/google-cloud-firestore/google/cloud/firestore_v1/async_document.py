@@ -23,7 +23,7 @@ from google.cloud.firestore_v1.base_document import (
 from google.api_core import exceptions  # type: ignore
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.types import common
-from typing import AsyncGenerator, Coroutine
+from typing import Any, AsyncGenerator, Coroutine, Union
 
 
 class AsyncDocumentReference(BaseDocumentReference):
@@ -281,7 +281,9 @@ class AsyncDocumentReference(BaseDocumentReference):
 
         return commit_response.commit_time
 
-    async def get(self, field_paths=None, transaction=None) -> DocumentSnapshot:
+    async def get(
+        self, field_paths=None, transaction=None
+    ) -> Union[DocumentSnapshot, Coroutine[Any, Any, DocumentSnapshot]]:
         """Retrieve a snapshot of the current document.
 
         See :meth:`~google.cloud.firestore_v1.base_client.BaseClient.field_path` for
