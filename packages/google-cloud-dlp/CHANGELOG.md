@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-dlp/compare/v1.0.0...v2.0.0) (2020-08-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate to use microgen (#34)
+
+### Features
+
+* migrate to use microgen ([#34](https://www.github.com/googleapis/python-dlp/issues/34)) ([c6001e2](https://www.github.com/googleapis/python-dlp/commit/c6001e20facb0bba957794c674c7b1121dc1774a))
+
 ## [1.0.0](https://www.github.com/googleapis/python-dlp/compare/v0.15.0...v1.0.0) (2020-06-10)
 
 
