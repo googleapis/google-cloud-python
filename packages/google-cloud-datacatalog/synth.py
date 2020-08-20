@@ -31,6 +31,7 @@ for version in versions:
         service='datacatalog',
         version=version,
         bazel_target=f"//google/cloud/datacatalog/{version}:datacatalog-{version}-py",
+        include_protos=True,
     )
 
     s.move(
@@ -57,10 +58,20 @@ s.replace(
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-    cov_level=79,
     samples=True,
+    microgenerator=True,
 )
-s.move(templated_files)
+s.move(templated_files, excludes=[".coveragerc"]) # microgenerator has a good .coveragerc file
+
+# ----------------------------------------------------------------------------
+# Samples templates
+# ----------------------------------------------------------------------------
+
+python.py_samples()
+
+# Temporarily disable warnings due to
+# https://github.com/googleapis/gapic-generator-python/issues/525
+s.replace("noxfile.py", '[\"\']-W[\"\']', '# "-W"')
 
 # ----------------------------------------------------------------------------
 # Samples templates

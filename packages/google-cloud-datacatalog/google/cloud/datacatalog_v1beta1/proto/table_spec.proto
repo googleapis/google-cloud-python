@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC.
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,7 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
 syntax = "proto3";
 
@@ -21,15 +20,17 @@ import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 
 option cc_enable_arenas = true;
+option csharp_namespace = "Google.Cloud.DataCatalog.V1Beta1";
 option go_package = "google.golang.org/genproto/googleapis/cloud/datacatalog/v1beta1;datacatalog";
 option java_multiple_files = true;
-option java_package = "com.google.cloud.datacatalog";
+option java_package = "com.google.cloud.datacatalog.v1beta1";
+option php_namespace = "Google\\Cloud\\DataCatalog\\V1beta1";
+option ruby_package = "Google::Cloud::DataCatalog::V1beta1";
 
 // Describes a BigQuery table.
 message BigQueryTableSpec {
   // Output only. The table source type.
-  TableSourceType table_source_type = 1
-      [(google.api.field_behavior) = OUTPUT_ONLY];
+  TableSourceType table_source_type = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // Output only.
   oneof type_spec {
@@ -63,9 +64,9 @@ message ViewSpec {
 
 // Normal BigQuery table spec.
 message TableSpec {
-  // Output only. If the table is a dated shard, i.e., with name pattern
-  // `[prefix]YYYYMMDD`, `grouped_entry` is the Data Catalog resource name of
-  // the date sharded grouped entry, for example,
+  // Output only. If the table is a dated shard, i.e., with name pattern `[prefix]YYYYMMDD`,
+  // `grouped_entry` is the Data Catalog resource name of the date sharded
+  // grouped entry, for example,
   // `projects/{project_id}/locations/{location}/entrygroups/{entry_group_id}/entries/{entry_id}`.
   // Otherwise, `grouped_entry` is empty.
   string grouped_entry = 1 [
@@ -80,8 +81,8 @@ message TableSpec {
 // Context:
 // https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding
 message BigQueryDateShardedSpec {
-  // Output only. The Data Catalog resource name of the dataset entry the
-  // current table belongs to, for example,
+  // Output only. The Data Catalog resource name of the dataset entry the current table
+  // belongs to, for example,
   // `projects/{project_id}/locations/{location}/entrygroups/{entry_group_id}/entries/{entry_id}`.
   string dataset = 1 [
     (google.api.field_behavior) = OUTPUT_ONLY,
@@ -90,8 +91,7 @@ message BigQueryDateShardedSpec {
     }
   ];
 
-  // Output only. The table name prefix of the shards. The name of any given
-  // shard is
+  // Output only. The table name prefix of the shards. The name of any given shard is
   // `[table_prefix]YYYYMMDD`, for example, for shard `MyTable20180101`, the
   // `table_prefix` is `MyTable`.
   string table_prefix = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
