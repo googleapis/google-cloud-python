@@ -16,6 +16,7 @@
 
 import synthtool as s
 import synthtool.gcp as gcp
+from synthtool.languages import python
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
@@ -49,7 +50,7 @@ for version in versions:
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=86)
+templated_files = common.py_library(cov_level=86, samples=True)
 s.move(templated_files)
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition
@@ -61,5 +62,12 @@ s.replace(
    """\_$""",
    """\_""",
 )
+
+# ----------------------------------------------------------------------------
+# Samples templates
+# ----------------------------------------------------------------------------
+
+python.py_samples(skip_readmes=True)
+
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

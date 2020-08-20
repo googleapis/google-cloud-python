@@ -3,23 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-scheduler.git",
-        "sha": "398fecfd1a32c660186c41cff017a5757b61ab22"
+        "remote": "git@github.com:googleapis/python-scheduler.git",
+        "sha": "6d3832f077065fe4648e6300097b464cb7e74507"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "b882b8e6bfcd708042ff00f7adc67ce750817dd0",
-        "internalRef": "318028816"
+        "sha": "65097bb8a18449d7ebbb5f61bc4eefed81640d71",
+        "internalRef": "327525660"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "bfcdbe0da977b2de6c1c0471bb6dc2f1e13bf669"
+        "sha": "9602086c6c5b05db77950c7f7495a2a3868f3537"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "9602086c6c5b05db77950c7f7495a2a3868f3537"
       }
     }
   ],
