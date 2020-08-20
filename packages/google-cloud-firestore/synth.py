@@ -137,3 +137,13 @@ s.replace(
 
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+
+s.replace(
+    ".kokoro/build.sh",
+    "# Setup service account credentials.",
+    """\
+# Setup firestore account credentials
+export FIRESTORE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/firebase-credentials.json
+
+# Setup service account credentials."""
+)

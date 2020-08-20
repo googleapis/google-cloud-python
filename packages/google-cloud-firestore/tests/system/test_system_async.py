@@ -40,10 +40,15 @@ _test_event_loop = asyncio.new_event_loop()
 pytestmark = pytest.mark.asyncio
 
 
-@pytest.fixture(scope=u"module")
-def client():
+def _get_credentials_and_project():
     credentials = service_account.Credentials.from_service_account_file(FIRESTORE_CREDS)
     project = FIRESTORE_PROJECT or credentials.project_id
+    return credentials, project
+
+
+@pytest.fixture(scope=u"module")
+def client():
+    credentials, project = _get_credentials_and_project()
     yield firestore.AsyncClient(project=project, credentials=credentials)
 
 
@@ -70,7 +75,8 @@ async def test_collections(client):
 async def test_collections_w_import():
     from google.cloud import firestore
 
-    client = firestore.AsyncClient()
+    credentials, project = _get_credentials_and_project()
+    client = firestore.AsyncClient(project=project, credentials=credentials)
     collections = [x async for x in client.collections()]
 
     assert isinstance(collections, list)

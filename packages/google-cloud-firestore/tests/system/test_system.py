@@ -38,10 +38,15 @@ from tests.system.test__helpers import (
 )
 
 
-@pytest.fixture(scope=u"module")
-def client():
+def _get_credentials_and_project():
     credentials = service_account.Credentials.from_service_account_file(FIRESTORE_CREDS)
     project = FIRESTORE_PROJECT or credentials.project_id
+    return credentials, project
+
+
+@pytest.fixture(scope=u"module")
+def client():
+    credentials, project = _get_credentials_and_project()
     yield firestore.Client(project=project, credentials=credentials)
 
 
@@ -62,7 +67,8 @@ def test_collections(client):
 def test_collections_w_import():
     from google.cloud import firestore
 
-    client = firestore.Client()
+    credentials, project = _get_credentials_and_project()
+    client = firestore.Client(project=project, credentials=credentials)
     collections = list(client.collections())
 
     assert isinstance(collections, list)
