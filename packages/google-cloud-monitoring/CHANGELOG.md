@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [1.1.0](https://www.github.com/googleapis/python-monitoring/compare/v1.0.0...v1.1.0) (2020-08-20)
+
+
+### Features
+
+* add "not equal" support to the query filter ([#11](https://www.github.com/googleapis/python-monitoring/issues/11)) ([e293f7f](https://www.github.com/googleapis/python-monitoring/commit/e293f7f90b0d1ccb285c16a32251e442fda06a8e))
+
 ## [1.0.0](https://www.github.com/googleapis/python-monitoring/compare/v0.36.0...v1.0.0) (2020-06-03)
 
 
