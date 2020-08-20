@@ -206,6 +206,8 @@ class Query(object):
     def select_resources(self, *args, **kwargs):
         """Copy the query and add filtering by resource labels.
 
+        See more documentation at: https://cloud.google.com/monitoring/api/v3/filters#comparisons.
+
         Examples::
 
             query = query.select_resources(zone='us-central1-a')
@@ -273,8 +275,14 @@ class Query(object):
 
             metric.label.<label> = "<value>"
 
-        However, by adding ``"_prefix"`` or ``"_suffix"`` to the keyword,
-        you can specify a partial match.
+        However, by adding ``"_notequal"`` to the keyword, you can inequality:
+
+        ``<label>_notequal=<value>`` generates::
+
+            metric.label.<label> != <value>
+
+        By adding ``"_prefix"`` or ``"_suffix"`` to the keyword, you can specify
+        a partial match.
 
         ``<label>_prefix=<value>`` generates::
 
@@ -596,7 +604,15 @@ def _build_label_filter(category, *args, **kwargs):
 
         suffix = None
         if key.endswith(
-            ("_prefix", "_suffix", "_greater", "_greaterequal", "_less", "_lessequal")
+            (
+                "_prefix",
+                "_suffix",
+                "_greater",
+                "_greaterequal",
+                "_less",
+                "_lessequal",
+                "_notequal",
+            )
         ):
             key, suffix = key.rsplit("_", 1)
 
@@ -617,6 +633,8 @@ def _build_label_filter(category, *args, **kwargs):
             term = "{key} < {value}"
         elif suffix == "lessequal":
             term = "{key} <= {value}"
+        elif suffix == "notequal":
+            term = "{key} != {value}"
         else:
             term = '{key} = "{value}"'
 

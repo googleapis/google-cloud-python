@@ -517,6 +517,11 @@ class Test__build_label_filter(unittest.TestCase):
         )
         self.assertEqual(actual, expected)
 
+    def test_metric_label_response_code_not_equal(self):
+        actual = self._call_fut("metric", response_code_notequal=200)
+        expected = "metric.label.response_code != 200"
+        self.assertEqual(actual, expected)
+
     def test_metric_label_response_code_greater_less(self):
         actual = self._call_fut(
             "metric", response_code_greater=500, response_code_less=600
