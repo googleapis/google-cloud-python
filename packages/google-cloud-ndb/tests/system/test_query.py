@@ -17,6 +17,7 @@ System tests for queries.
 """
 
 import datetime
+import functools
 import operator
 
 import pytest
@@ -649,6 +650,56 @@ def test_count_with_order_by_and_multiquery(ds_entity):
         ndb.OR(SomeKind.foo < 100, SomeKind.foo > -1)
     )
     eventually(query.count, equals(5))
+
+
+@pytest.mark.usefixtures("client_context")
+def test_keys_only_multiquery_with_order(ds_entity):
+    """Regression test for #509
+
+    https://github.com/googleapis/python-ndb/issues/509
+    """
+    keys = []
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=i)
+        keys.append(ndb.Key(KIND, entity_id))
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    query = (
+        SomeKind.query()
+        .order(SomeKind.foo)
+        .filter(ndb.OR(SomeKind.foo < 100, SomeKind.foo > -1))
+    )
+    results = eventually(
+        functools.partial(query.fetch, keys_only=True), length_equals(5)
+    )
+    assert keys == [entity.key for entity in results]
+
+
+@pytest.mark.usefixtures("client_context")
+def test_multiquery_with_projection_and_order(ds_entity):
+    """Regression test for #509
+
+    https://github.com/googleapis/python-ndb/issues/509
+    """
+    for i in range(5):
+        entity_id = test_utils.system.unique_resource_id()
+        ds_entity(KIND, entity_id, foo=i, bar="bar " + str(i))
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    query = (
+        SomeKind.query(projection=[SomeKind.bar])
+        .order(SomeKind.foo)
+        .filter(ndb.OR(SomeKind.foo < 100, SomeKind.foo > -1))
+    )
+    results = eventually(query.fetch, length_equals(5))
+    with pytest.raises(ndb.UnprojectedPropertyError):
+        results[0].foo
 
 
 @pytest.mark.usefixtures("client_context")

@@ -518,9 +518,29 @@ class _MultiQueryIteratorImpl(QueryIterator):
             internal use only.
     """
 
+    _extra_projections = None
+
     def __init__(self, query, raw=False):
+        projection = query.projection
+        if query.order_by and projection:
+            # In an ordered multiquery, result sets have to be merged in order
+            # by this iterator, so if there's a projection we may need to add a
+            # property or two to underlying Datastore queries to make sure we
+            # have the data needed for sorting.
+            projection = list(projection)
+            extra_projections = []
+            for order in query.order_by:
+                if order.name not in projection:
+                    projection.append(order.name)
+                    extra_projections.append(order.name)
+
+            if extra_projections:
+                self._extra_projections = extra_projections
+
         queries = [
-            query.copy(filters=node, offset=None, limit=None)
+            query.copy(
+                filters=node, projection=projection, offset=None, limit=None
+            )
             for node in query.filters._nodes
         ]
         self._result_sets = [iterate(_query, raw=True) for _query in queries]
@@ -620,6 +640,14 @@ class _MultiQueryIteratorImpl(QueryIterator):
         # Won't block
         next_result = self._next_result
         self._next_result = None
+
+        # If we had to set extra properties in the projection, elide them now
+        if self._extra_projections:
+            properties = next_result.result_pb.entity.properties
+            for name in self._extra_projections:
+                if name in properties:
+                    del properties[name]
+
         if self._raw:
             return next_result
         else:

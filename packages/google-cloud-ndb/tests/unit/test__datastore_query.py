@@ -741,6 +741,46 @@ class Test_MultiQueryIteratorImpl:
         assert iterator._sortable
 
     @staticmethod
+    def test_constructor_sortable_with_projection():
+        foo = model.StringProperty("foo")
+        order_by = [query_module.PropertyOrder("foo")]
+        query = query_module.QueryOptions(
+            filters=query_module.OR(foo == "this", foo == "that"),
+            order_by=order_by,
+            projection=["foo"],
+        )
+        iterator = _datastore_query._MultiQueryIteratorImpl(query)
+        assert iterator._result_sets[0]._query == query_module.QueryOptions(
+            filters=foo == "this", order_by=order_by, projection=["foo"],
+        )
+        assert iterator._result_sets[1]._query == query_module.QueryOptions(
+            filters=foo == "that", order_by=order_by, projection=["foo"],
+        )
+        assert iterator._sortable
+
+    @staticmethod
+    def test_constructor_sortable_with_projection_needs_extra():
+        foo = model.StringProperty("foo")
+        order_by = [query_module.PropertyOrder("foo")]
+        query = query_module.QueryOptions(
+            filters=query_module.OR(foo == "this", foo == "that"),
+            order_by=order_by,
+            projection=["bar"],
+        )
+        iterator = _datastore_query._MultiQueryIteratorImpl(query)
+        assert iterator._result_sets[0]._query == query_module.QueryOptions(
+            filters=foo == "this",
+            order_by=order_by,
+            projection=["bar", "foo"],
+        )
+        assert iterator._result_sets[1]._query == query_module.QueryOptions(
+            filters=foo == "that",
+            order_by=order_by,
+            projection=["bar", "foo"],
+        )
+        assert iterator._sortable
+
+    @staticmethod
     def test_iter():
         foo = model.StringProperty("foo")
         query = query_module.QueryOptions(
@@ -782,6 +822,34 @@ class Test_MultiQueryIteratorImpl:
         iterator = _datastore_query._MultiQueryIteratorImpl(query)
         iterator._result_sets = []
         assert not iterator.has_next_async().result()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_next_with_extra_projections():
+        foo = model.StringProperty("foo")
+        order_by = [
+            query_module.PropertyOrder("foo"),
+            query_module.PropertyOrder("food"),
+        ]
+        query = query_module.QueryOptions(
+            filters=query_module.OR(foo == "this", foo == "that"),
+            order_by=order_by,
+            projection=["bar"],
+        )
+        iterator = _datastore_query._MultiQueryIteratorImpl(query)
+        iterator._next_result = next_result = mock.Mock(
+            result_pb=mock.Mock(
+                entity=mock.Mock(
+                    properties={"foo": 1, "bar": "two"}, spec=("properties",),
+                ),
+                spec=("entity",),
+            ),
+            spec=("result_pb",),
+        )
+        iterator._raw = True
+
+        assert iterator.next() is next_result
+        assert "foo" not in next_result.result_pb.entity.properties
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

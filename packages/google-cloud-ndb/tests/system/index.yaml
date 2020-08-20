@@ -7,6 +7,11 @@ indexes:
 
 - kind: SomeKind
   properties:
+  - name: foo
+  - name: bar
+
+- kind: SomeKind
+  properties:
   - name: bar.one
   - name: bar.two
   - name: foo
