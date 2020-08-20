@@ -25,6 +25,7 @@ from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _eventloop
 from google.cloud.ndb import global_cache as global_cache_module
 from google.cloud.ndb import model
+from google.cloud.ndb import utils
 
 import pytest
 
@@ -33,6 +34,8 @@ try:
     from unittest import mock
 except ImportError:
     import mock
+
+utils.DEBUG = True
 
 
 class TestingEventLoop(_eventloop.EventLoop):

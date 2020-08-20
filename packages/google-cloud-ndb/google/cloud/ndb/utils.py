@@ -84,7 +84,10 @@ def logging_debug(log, message, *args, **kwargs):
     **kwargs)`, otherwise this is a no-op.
     """
     if DEBUG:
-        log.debug(str(message).format(*args, **kwargs))
+        message = str(message)
+        if args or kwargs:
+            message = message.format(*args, **kwargs)
+        log.debug(message)
 
 
 class keyword_only(object):
