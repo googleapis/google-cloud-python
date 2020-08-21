@@ -91,6 +91,9 @@ s.move(templated_files, excludes=['noxfile.py'])
 # Samples templates
 # ----------------------------------------------------------------------------
 
-python.py_samples(skip_readmes=True)
+sample_files = common.py_samples(samples=True)
+for path in sample_files:
+    s.move(path, excludes=['noxfile.py'])
+
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
