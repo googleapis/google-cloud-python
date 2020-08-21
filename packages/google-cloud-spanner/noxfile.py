@@ -67,7 +67,10 @@ def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install("mock", "pytest", "pytest-cov")
 
-    session.install("-e", ".")
+    if session.python != "2.7":
+        session.install("-e", ".[tracing]")
+    else:
+        session.install("-e", ".")
 
     # Run py.test against the unit tests.
     session.run(
@@ -116,7 +119,10 @@ def system(session):
     # virtualenv's dist-packages.
     session.install("mock", "pytest")
 
-    session.install("-e", ".")
+    if session.python != "2.7":
+        session.install("-e", ".[tracing]")
+    else:
+        session.install("-e", ".")
     session.install("-e", "test_utils/")
 
     # Run py.test against the system tests.
