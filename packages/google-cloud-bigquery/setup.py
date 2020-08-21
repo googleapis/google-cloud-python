@@ -62,15 +62,24 @@ extras = {
         "llvmlite<=0.34.0;python_version>='3.6'",
         "llvmlite<=0.31.0;python_version<'3.6'",
     ],
+    "opentelemetry": [
+        "opentelemetry-api==0.9b0",
+        "opentelemetry-sdk==0.9b0",
+        "opentelemetry-instrumentation==0.9b0 ",
+    ],
 }
 
 all_extras = []
 
 for extra in extras:
-    if extra == "fastparquet":
+    if extra in (
         # Skip fastparquet from "all" because it is redundant with pyarrow and
         # creates a dependency on pre-release versions of numpy. See:
         # https://github.com/googleapis/google-cloud-python/issues/8549
+        "fastparquet",
+        # Skip opentelemetry because the library is not compatible with Python 2.
+        "opentelemetry",
+    ):
         continue
     all_extras.extend(extras[extra])
 

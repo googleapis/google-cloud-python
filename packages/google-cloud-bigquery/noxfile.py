@@ -48,6 +48,11 @@ def default(session):
     else:
         session.install("ipython")
 
+    # opentelemetry was not added to [all] because opentelemetry does not support Python 2.
+    # Exporter does not need to be in nox thus it has been added to README documentation
+    if session.python != "2.7":
+        session.install("-e", ".[opentelemetry]")
+
     # Run py.test against the unit tests.
     session.run(
         "py.test",

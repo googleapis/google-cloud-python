@@ -34,6 +34,7 @@ from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery.external_config import HivePartitioningOptions
+from google.cloud.bigquery.opentelemetry_tracing import create_span
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.query import _query_param_from_api_repr
 from google.cloud.bigquery.query import ArrayQueryParameter
@@ -634,9 +635,17 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
 
         # jobs.insert is idempotent because we ensure that every new
         # job has an ID.
-        api_response = client._call_api(
-            retry, method="POST", path=path, data=self.to_api_repr(), timeout=timeout
-        )
+        span_attributes = {"path": path}
+        with create_span(
+            name="BigQuery.job.begin", attributes=span_attributes, job_ref=self
+        ):
+            api_response = client._call_api(
+                retry,
+                method="POST",
+                path=path,
+                data=self.to_api_repr(),
+                timeout=timeout,
+            )
         self._set_properties(api_response)
 
     def exists(self, client=None, retry=DEFAULT_RETRY, timeout=None):
@@ -665,13 +674,17 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             extra_params["location"] = self.location
 
         try:
-            client._call_api(
-                retry,
-                method="GET",
-                path=self.path,
-                query_params=extra_params,
-                timeout=timeout,
-            )
+            span_attributes = {"path": self.path}
+            with create_span(
+                name="BigQuery.job.exists", attributes=span_attributes, job_ref=self
+            ):
+                client._call_api(
+                    retry,
+                    method="GET",
+                    path=self.path,
+                    query_params=extra_params,
+                    timeout=timeout,
+                )
         except NotFound:
             return False
         else:
@@ -698,14 +711,17 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         extra_params = {}
         if self.location:
             extra_params["location"] = self.location
-
-        api_response = client._call_api(
-            retry,
-            method="GET",
-            path=self.path,
-            query_params=extra_params,
-            timeout=timeout,
-        )
+        span_attributes = {"path": self.path}
+        with create_span(
+            name="BigQuery.job.reload", attributes=span_attributes, job_ref=self
+        ):
+            api_response = client._call_api(
+                retry,
+                method="GET",
+                path=self.path,
+                query_params=extra_params,
+                timeout=timeout,
+            )
         self._set_properties(api_response)
 
     def cancel(self, client=None, retry=DEFAULT_RETRY, timeout=None):
@@ -732,13 +748,18 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         if self.location:
             extra_params["location"] = self.location
 
-        api_response = client._call_api(
-            retry,
-            method="POST",
-            path="{}/cancel".format(self.path),
-            query_params=extra_params,
-            timeout=timeout,
-        )
+        path = "{}/cancel".format(self.path)
+        span_attributes = {"path": path}
+        with create_span(
+            name="BigQuery.job.cancel", attributes=span_attributes, job_ref=self
+        ):
+            api_response = client._call_api(
+                retry,
+                method="POST",
+                path=path,
+                query_params=extra_params,
+                timeout=timeout,
+            )
         self._set_properties(api_response["job"])
         # The Future interface requires that we return True if the *attempt*
         # to cancel was successful.
