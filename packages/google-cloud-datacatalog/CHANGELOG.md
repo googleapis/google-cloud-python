@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-datacatalog/compare/v1.0.0...v2.0.0) (2020-08-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release has breaking changes. See the [2.0.0 Migration Guide](https://github.com/googleapis/python-datacatalog/blob/master/UPGRADING.md) for details.
+
+### Features
+
+* Migrate API client to Microgenerator ([#54](https://www.github.com/googleapis/python-datacatalog/issues/54)) ([14fbdb8](https://www.github.com/googleapis/python-datacatalog/commit/14fbdb811688296e3978b4dfe7d4c240b5b1da5d))
+
+
+### Bug Fixes
+
+* update retry config ([#47](https://www.github.com/googleapis/python-datacatalog/issues/47)) ([1c56be7](https://www.github.com/googleapis/python-datacatalog/commit/1c56be78f1aae8dd5cd93e81188135d72cc80fdc))
+
+
+### Documentation
+
+* fix readme link ([#58](https://www.github.com/googleapis/python-datacatalog/issues/58)) ([55da34c](https://www.github.com/googleapis/python-datacatalog/commit/55da34caac42dd5959c046a50ba79375f7a41788))
+
 ## [1.0.0](https://www.github.com/googleapis/python-datacatalog/compare/v0.8.0...v1.0.0) (2020-06-17)
 
 
