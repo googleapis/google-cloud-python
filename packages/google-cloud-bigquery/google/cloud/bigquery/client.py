@@ -289,9 +289,17 @@ class Client(ClientWithProject):
                 Iterator of :class:`~google.cloud.bigquery.client.Project`
                 accessible to the current client.
         """
+        span_attributes = {"path": "/projects"}
+
+        def api_request(*args, **kwargs):
+            with create_span(
+                name="BigQuery.listProjects", attributes=span_attributes, client=self
+            ):
+                return self._call_api(retry, *args, timeout=timeout, **kwargs)
+
         return page_iterator.HTTPIterator(
             client=self,
-            api_request=functools.partial(self._call_api, retry, timeout=timeout),
+            api_request=api_request,
             path="/projects",
             item_to_value=_item_to_project,
             items_key="projects",
@@ -353,9 +361,18 @@ class Client(ClientWithProject):
             # and converting it into a string here.
             extra_params["filter"] = filter
         path = "/projects/%s/datasets" % (project,)
+
+        span_attributes = {"path": path}
+
+        def api_request(*args, **kwargs):
+            with create_span(
+                name="BigQuery.listDatasets", attributes=span_attributes, client=self
+            ):
+                return self._call_api(retry, *args, timeout=timeout, **kwargs)
+
         return page_iterator.HTTPIterator(
             client=self,
-            api_request=functools.partial(self._call_api, retry, timeout=timeout),
+            api_request=api_request,
             path=path,
             item_to_value=_item_to_dataset,
             items_key="datasets",
@@ -1067,9 +1084,17 @@ class Client(ClientWithProject):
             raise TypeError("dataset must be a Dataset, DatasetReference, or string")
 
         path = "%s/models" % dataset.path
+        span_attributes = {"path": path}
+
+        def api_request(*args, **kwargs):
+            with create_span(
+                name="BigQuery.listModels", attributes=span_attributes, client=self
+            ):
+                return self._call_api(retry, *args, timeout=timeout, **kwargs)
+
         result = page_iterator.HTTPIterator(
             client=self,
-            api_request=functools.partial(self._call_api, retry, timeout=timeout),
+            api_request=api_request,
             path=path,
             item_to_value=_item_to_model,
             items_key="models",
@@ -1132,9 +1157,18 @@ class Client(ClientWithProject):
             raise TypeError("dataset must be a Dataset, DatasetReference, or string")
 
         path = "{}/routines".format(dataset.path)
+
+        span_attributes = {"path": path}
+
+        def api_request(*args, **kwargs):
+            with create_span(
+                name="BigQuery.listRoutines", attributes=span_attributes, client=self
+            ):
+                return self._call_api(retry, *args, timeout=timeout, **kwargs)
+
         result = page_iterator.HTTPIterator(
             client=self,
-            api_request=functools.partial(self._call_api, retry, timeout=timeout),
+            api_request=api_request,
             path=path,
             item_to_value=_item_to_routine,
             items_key="routines",
@@ -1197,9 +1231,17 @@ class Client(ClientWithProject):
             raise TypeError("dataset must be a Dataset, DatasetReference, or string")
 
         path = "%s/tables" % dataset.path
+        span_attributes = {"path": path}
+
+        def api_request(*args, **kwargs):
+            with create_span(
+                name="BigQuery.listTables", attributes=span_attributes, client=self
+            ):
+                return self._call_api(retry, *args, timeout=timeout, **kwargs)
+
         result = page_iterator.HTTPIterator(
             client=self,
-            api_request=functools.partial(self._call_api, retry, timeout=timeout),
+            api_request=api_request,
             path=path,
             item_to_value=_item_to_table,
             items_key="tables",
@@ -1765,9 +1807,18 @@ class Client(ClientWithProject):
             project = self.project
 
         path = "/projects/%s/jobs" % (project,)
+
+        span_attributes = {"path": path}
+
+        def api_request(*args, **kwargs):
+            with create_span(
+                name="BigQuery.listJobs", attributes=span_attributes, client=self
+            ):
+                return self._call_api(retry, *args, timeout=timeout, **kwargs)
+
         return page_iterator.HTTPIterator(
             client=self,
-            api_request=functools.partial(self._call_api, retry, timeout=timeout),
+            api_request=api_request,
             path=path,
             item_to_value=_item_to_job,
             items_key="jobs",

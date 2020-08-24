@@ -425,9 +425,14 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(PROJECT_1, creds)
         conn = client._connection = make_connection(DATA)
-
         iterator = client.list_projects()
-        page = six.next(iterator.pages)
+
+        with mock.patch(
+            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
+        ) as final_attributes:
+            page = six.next(iterator.pages)
+
+        final_attributes.assert_called_once_with({"path": "/projects"}, client, None)
         projects = list(page)
         token = iterator.next_page_token
 
@@ -455,7 +460,13 @@ class TestClient(unittest.TestCase):
         conn = client._connection = make_connection(DATA)
 
         iterator = client.list_projects(timeout=7.5)
-        six.next(iterator.pages)
+
+        with mock.patch(
+            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
+        ) as final_attributes:
+            six.next(iterator.pages)
+
+        final_attributes.assert_called_once_with({"path": "/projects"}, client, None)
 
         conn.api_request.assert_called_once_with(
             method="GET", path="/projects", query_params={}, timeout=7.5
@@ -469,7 +480,13 @@ class TestClient(unittest.TestCase):
         conn = client._connection = make_connection(DATA)
 
         iterator = client.list_projects(max_results=3, page_token=TOKEN)
-        page = six.next(iterator.pages)
+
+        with mock.patch(
+            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
+        ) as final_attributes:
+            page = six.next(iterator.pages)
+
+        final_attributes.assert_called_once_with({"path": "/projects"}, client, None)
         projects = list(page)
         token = iterator.next_page_token
 
@@ -518,7 +535,12 @@ class TestClient(unittest.TestCase):
         conn = client._connection = make_connection(DATA)
 
         iterator = client.list_datasets()
-        page = six.next(iterator.pages)
+        with mock.patch(
+            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
+        ) as final_attributes:
+            page = six.next(iterator.pages)
+
+        final_attributes.assert_called_once_with({"path": "/%s" % PATH}, client, None)
         datasets = list(page)
         token = iterator.next_page_token
 
@@ -538,7 +560,14 @@ class TestClient(unittest.TestCase):
         client = self._make_one(self.PROJECT, creds)
         conn = client._connection = make_connection({})
 
-        list(client.list_datasets(project="other-project", timeout=7.5))
+        with mock.patch(
+            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
+        ) as final_attributes:
+            list(client.list_datasets(project="other-project", timeout=7.5))
+
+        final_attributes.assert_called_once_with(
+            {"path": "/projects/other-project/datasets"}, client, None
+        )
 
         conn.api_request.assert_called_once_with(
             method="GET",
@@ -559,7 +588,12 @@ class TestClient(unittest.TestCase):
         iterator = client.list_datasets(
             include_all=True, filter=FILTER, max_results=3, page_token=TOKEN
         )
-        page = six.next(iterator.pages)
+        with mock.patch(
+            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
+        ) as final_attributes:
+            page = six.next(iterator.pages)
+
+        final_attributes.assert_called_once_with({"path": "/%s" % PATH}, client, None)
         datasets = list(page)
         token = iterator.next_page_token
 
@@ -2838,7 +2872,12 @@ class TestClient(unittest.TestCase):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         iterator = client.list_tables(dataset, timeout=7.5)
         self.assertIs(iterator.dataset, dataset)
-        page = six.next(iterator.pages)
+        with mock.patch(
+            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
+        ) as final_attributes:
+            page = six.next(iterator.pages)
+
+        final_attributes.assert_called_once_with({"path": path}, client, None)
         tables = list(page)
         token = iterator.next_page_token
 
@@ -2856,7 +2895,12 @@ class TestClient(unittest.TestCase):
 
         dataset_id = "{}.{}".format(self.PROJECT, self.DS_ID)
         iterator = client.list_models(dataset_id, timeout=7.5)
-        page = six.next(iterator.pages)
+        with mock.patch(
+            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
+        ) as final_attributes:
+            page = six.next(iterator.pages)
+
+        final_attributes.assert_called_once_with({"path": path}, client, None)
         models = list(page)
         token = iterator.next_page_token
 
@@ -2900,7 +2944,12 @@ class TestClient(unittest.TestCase):
 
         iterator = client.list_models(dataset)
         self.assertIs(iterator.dataset, dataset)
-        page = six.next(iterator.pages)
+        with mock.patch(
+            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
+        ) as final_attributes:
+            page = six.next(iterator.pages)
+
+        final_attributes.assert_called_once_with({"path": "/%s" % PATH}, client, None)
         models = list(page)
         token = iterator.next_page_token
 
@@ -2926,7 +2975,16 @@ class TestClient(unittest.TestCase):
         conn = client._connection = make_connection({})
 
         iterator = client.list_routines("test-routines.test_routines", timeout=7.5)
-        page = six.next(iterator.pages)
+        with mock.patch(
+            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
+        ) as final_attributes:
+            page = six.next(iterator.pages)
+
+        final_attributes.assert_called_once_with(
+            {"path": "/projects/test-routines/datasets/test_routines/routines"},
+            client,
+            None,
+        )
         routines = list(page)
         token = iterator.next_page_token
 
@@ -2975,7 +3033,12 @@ class TestClient(unittest.TestCase):
 
         iterator = client.list_routines(dataset)
         self.assertIs(iterator.dataset, dataset)
-        page = six.next(iterator.pages)
+        with mock.patch(
+            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
+        ) as final_attributes:
+            page = six.next(iterator.pages)
+
+        final_attributes.assert_called_once_with({"path": path}, client, None)
         routines = list(page)
         actual_token = iterator.next_page_token
 
@@ -3039,7 +3102,12 @@ class TestClient(unittest.TestCase):
 
         iterator = client.list_tables(dataset)
         self.assertIs(iterator.dataset, dataset)
-        page = six.next(iterator.pages)
+        with mock.patch(
+            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
+        ) as final_attributes:
+            page = six.next(iterator.pages)
+
+        final_attributes.assert_called_once_with({"path": "/%s" % PATH}, client, None)
         tables = list(page)
         token = iterator.next_page_token
 
@@ -3098,7 +3166,12 @@ class TestClient(unittest.TestCase):
             page_token=TOKEN,
         )
         self.assertEqual(iterator.dataset, dataset)
-        page = six.next(iterator.pages)
+        with mock.patch(
+            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
+        ) as final_attributes:
+            page = six.next(iterator.pages)
+
+        final_attributes.assert_called_once_with({"path": "/%s" % PATH}, client, None)
         tables = list(page)
         token = iterator.next_page_token
 
@@ -3921,7 +3994,12 @@ class TestClient(unittest.TestCase):
         conn = client._connection = make_connection(DATA)
 
         iterator = client.list_jobs()
-        page = six.next(iterator.pages)
+        with mock.patch(
+            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
+        ) as final_attributes:
+            page = six.next(iterator.pages)
+
+        final_attributes.assert_called_once_with({"path": "/%s" % PATH}, client, None)
         jobs = list(page)
         token = iterator.next_page_token
 
@@ -3966,7 +4044,12 @@ class TestClient(unittest.TestCase):
         conn = client._connection = make_connection(DATA)
 
         iterator = client.list_jobs()
-        page = six.next(iterator.pages)
+        with mock.patch(
+            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
+        ) as final_attributes:
+            page = six.next(iterator.pages)
+
+        final_attributes.assert_called_once_with({"path": "/%s" % PATH}, client, None)
         jobs = list(page)
         token = iterator.next_page_token
 
@@ -3995,7 +4078,12 @@ class TestClient(unittest.TestCase):
         iterator = client.list_jobs(
             max_results=1000, page_token=TOKEN, all_users=True, state_filter="done"
         )
-        page = six.next(iterator.pages)
+        with mock.patch(
+            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
+        ) as final_attributes:
+            page = six.next(iterator.pages)
+
+        final_attributes.assert_called_once_with({"path": "/%s" % PATH}, client, None)
         jobs = list(page)
         token = iterator.next_page_token
 
