@@ -50,6 +50,29 @@ Configuration
 
     Be sure to use the **Project ID**, not the **Project Number**.
 
+Using a Cloud Spanner Emulator
+------------------------------
+
+There are two ways to use the client with a Cloud Spanner emulator: programmatically or via an environment variable.
+
+To programmatically use an emulator, you must specify the project, the endpoint of the emulator, and use anonymous credentials:
+
+.. code:: python
+
+  from google.cloud import spanner
+  from google.auth.credentials import AnonymousCredentials
+
+  client = spanner.Client(
+      project='my-project',
+      client_options={"api_endpoint": "0.0.0.0:9010"},
+      credentials=AnonymousCredentials()
+  )
+
+To use an emulator via an environment variable, set the `SPANNER_EMULATOR_HOST` environment variable to the emulator endpoint:
+
+.. code::
+
+  export SPANNER_EMULATOR_HOST=0.0.0.0:9010
 
 Next Step
 ---------
