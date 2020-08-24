@@ -568,12 +568,12 @@ class TestStorageWriteFiles(TestStorageFiles):
             md5_hash = md5_hash.encode("utf-8")
         self.assertEqual(md5_hash, file_data["hash"])
 
-        temp_filename = tempfile.mktemp()
-        with open(temp_filename, "wb") as file_obj:
-            blob.download_to_file(file_obj)
+        with tempfile.NamedTemporaryFile() as temp_f:
+            with open(temp_f.name, "wb") as file_obj:
+                blob.download_to_file(file_obj)
 
-        with open(temp_filename, "rb") as file_obj:
-            md5_temp_hash = _base64_md5hash(file_obj)
+            with open(temp_f.name, "rb") as file_obj:
+                md5_temp_hash = _base64_md5hash(file_obj)
 
         self.assertEqual(md5_temp_hash, file_data["hash"])
 
@@ -777,12 +777,14 @@ class TestStorageWriteFiles(TestStorageFiles):
 
         same_blob = self.bucket.blob("MyBuffer")
         same_blob.reload()  # Initialize properties.
-        temp_filename = tempfile.mktemp()
-        with open(temp_filename, "wb") as file_obj:
-            same_blob.download_to_file(file_obj)
 
-        with open(temp_filename, "rb") as file_obj:
-            stored_contents = file_obj.read()
+        with tempfile.NamedTemporaryFile() as temp_f:
+
+            with open(temp_f.name, "wb") as file_obj:
+                same_blob.download_to_file(file_obj)
+
+            with open(temp_f.name, "rb") as file_obj:
+                stored_contents = file_obj.read()
 
         self.assertEqual(file_contents, stored_contents)
 
@@ -796,21 +798,23 @@ class TestStorageWriteFiles(TestStorageFiles):
 
         same_blob = self.bucket.blob("MyBuffer")
         same_blob.reload()  # Initialize properties.
-        temp_filename = tempfile.mktemp()
-        with open(temp_filename, "wb") as file_obj:
-            with self.assertRaises(google.api_core.exceptions.PreconditionFailed):
+
+        with tempfile.NamedTemporaryFile() as temp_f:
+
+            with open(temp_f.name, "wb") as file_obj:
+                with self.assertRaises(google.api_core.exceptions.PreconditionFailed):
+                    same_blob.download_to_file(
+                        file_obj, if_generation_match=WRONG_GENERATION_NUMBER
+                    )
+
                 same_blob.download_to_file(
-                    file_obj, if_generation_match=WRONG_GENERATION_NUMBER
+                    file_obj,
+                    if_generation_match=blob.generation,
+                    if_metageneration_match=blob.metageneration,
                 )
 
-            same_blob.download_to_file(
-                file_obj,
-                if_generation_match=blob.generation,
-                if_metageneration_match=blob.metageneration,
-            )
-
-        with open(temp_filename, "rb") as file_obj:
-            stored_contents = file_obj.read()
+            with open(temp_f.name, "rb") as file_obj:
+                stored_contents = file_obj.read()
 
         self.assertEqual(file_contents, stored_contents)
 
@@ -835,14 +839,15 @@ class TestStorageWriteFiles(TestStorageFiles):
         blob.upload_from_string(file_contents)
         self.case_blobs_to_delete.append(blob)
 
-        temp_filename = tempfile.mktemp()
-        with open(temp_filename, "wb") as file_obj:
-            Config.CLIENT.download_blob_to_file(
-                "gs://" + self.bucket.name + "/MyBuffer", file_obj
-            )
+        with tempfile.NamedTemporaryFile() as temp_f:
 
-        with open(temp_filename, "rb") as file_obj:
-            stored_contents = file_obj.read()
+            with open(temp_f.name, "wb") as file_obj:
+                Config.CLIENT.download_blob_to_file(
+                    "gs://" + self.bucket.name + "/MyBuffer", file_obj
+                )
+
+            with open(temp_f.name, "rb") as file_obj:
+                stored_contents = file_obj.read()
 
         self.assertEqual(file_contents, stored_contents)
 
