@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## [1.0.0](https://www.github.com/googleapis/google-resumable-media-python/compare/v0.7.1...v1.0.0) (2020-08-24)
+
+
+### Features
+
+* bump 'google-crc32c >= 1.0' ([#162](https://www.github.com/googleapis/google-resumable-media-python/issues/162)) ([eaf9faa](https://www.github.com/googleapis/google-resumable-media-python/commit/eaf9faa80dc51bd719161557584e151b30c7e082))
+
 ### [0.7.1](https://www.github.com/googleapis/google-resumable-media-python/compare/v0.7.0...v0.7.1) (2020-08-06)
 
 
