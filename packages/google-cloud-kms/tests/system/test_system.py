@@ -23,6 +23,7 @@ class TestKeyManagementServiceClient(object):
     def test_list_global_key_rings(self):
         project_id = os.environ["PROJECT_ID"]
 
+        # List key rings from the global location.
         client = kms_v1.KeyManagementServiceClient()
         parent = f"projects/{project_id}/locations/global"
         client.list_key_rings(request={"parent": parent})
