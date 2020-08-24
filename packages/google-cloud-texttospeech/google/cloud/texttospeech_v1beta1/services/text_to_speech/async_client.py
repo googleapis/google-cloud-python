@@ -30,7 +30,7 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.texttospeech_v1beta1.types import cloud_tts
 
-from .transports.base import TextToSpeechTransport
+from .transports.base import TextToSpeechTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import TextToSpeechGrpcAsyncIOTransport
 from .client import TextToSpeechClient
 
@@ -56,6 +56,7 @@ class TextToSpeechAsyncClient:
         credentials: credentials.Credentials = None,
         transport: Union[str, TextToSpeechTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the text to speech client.
 
@@ -88,7 +89,10 @@ class TextToSpeechAsyncClient:
         """
 
         self._client = TextToSpeechClient(
-            credentials=credentials, transport=transport, client_options=client_options,
+            credentials=credentials,
+            transport=transport,
+            client_options=client_options,
+            client_info=client_info,
         )
 
     async def list_voices(
@@ -155,7 +159,7 @@ class TextToSpeechAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_voices,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Send the request.
@@ -239,7 +243,7 @@ class TextToSpeechAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.synthesize_speech,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Send the request.
@@ -250,13 +254,13 @@ class TextToSpeechAsyncClient:
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
             "google-cloud-texttospeech",
         ).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 __all__ = ("TextToSpeechAsyncClient",)
