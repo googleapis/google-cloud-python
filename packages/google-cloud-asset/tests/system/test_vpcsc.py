@@ -71,8 +71,8 @@ def test_batch_get_assets_history_inside(client, parent_inside):
     client.batch_get_assets_history(
         request={
             "parent": parent_inside,
-            "asset_names": asset_v1.ContentType.CONTENT_TYPE_UNSPECIFIED,
-            "content_type": {},
+            "read_time_window": {},
+            "content_type": asset_v1.ContentType.CONTENT_TYPE_UNSPECIFIED,
         }
     )
 
@@ -85,8 +85,8 @@ def test_batch_get_assets_history_outside(client, parent_outside):
         client.batch_get_assets_history(
             request={
                 "parent": parent_outside,
-                "asset_names": asset_v1.ContentType.CONTENT_TYPE_UNSPECIFIED,
-                "content_type": {},
+                "read_time_window": {},
+                "content_type": asset_v1.ContentType.CONTENT_TYPE_UNSPECIFIED,
             }
         )
 
