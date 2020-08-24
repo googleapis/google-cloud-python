@@ -92,7 +92,6 @@ def system(session):
     # Install all test dependencies, then install local packages in place.
     session.install("mock", "pytest", "psutil", "google-cloud-testutils")
     session.install("google-cloud-storage")
-    session.install("fastavro")
     session.install("-e", ".[all]")
 
     # IPython does not support Python 2 after version 5.x
