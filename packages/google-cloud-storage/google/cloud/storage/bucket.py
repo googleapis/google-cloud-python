@@ -148,7 +148,7 @@ class LifecycleRuleConditions(dict):
     See: https://cloud.google.com/storage/docs/lifecycle
 
     :type age: int
-    :param age: (Optional) Apply rule action to items whos age, in days,
+    :param age: (Optional) Apply rule action to items whose age, in days,
                 exceeds this value.
 
     :type created_before: datetime.date
@@ -170,6 +170,19 @@ class LifecycleRuleConditions(dict):
     :param number_of_newer_versions: (Optional) Apply rule action to versioned
                                      items having N newer versions.
 
+    :type days_since_noncurrent_time: int
+    :param days_since_noncurrent_time: (Optional) Apply rule action to items whose number of days
+                                        elapsed since the non current timestamp. This condition
+                                        is relevant only for versioned objects. The value of the field
+                                        must be a non negative integer. If it's zero, the object version
+                                        will become eligible for lifecycle action as soon as it becomes
+                                        non current.
+
+    :type noncurrent_time_before: :class:`datetime.date`
+    :param noncurrent_time_before: (Optional) Date object parsed from RFC3339 valid date, apply
+                                   rule action to items whose non current time is before this date.
+                                   This condition is relevant only for versioned objects, e.g, 2019-03-16.
+
     :raises ValueError: if no arguments are passed.
     """
 
@@ -180,6 +193,8 @@ class LifecycleRuleConditions(dict):
         is_live=None,
         matches_storage_class=None,
         number_of_newer_versions=None,
+        days_since_noncurrent_time=None,
+        noncurrent_time_before=None,
         _factory=False,
     ):
         conditions = {}
@@ -201,6 +216,12 @@ class LifecycleRuleConditions(dict):
 
         if not _factory and not conditions:
             raise ValueError("Supply at least one condition")
+
+        if days_since_noncurrent_time is not None:
+            conditions["daysSinceNoncurrentTime"] = days_since_noncurrent_time
+
+        if noncurrent_time_before is not None:
+            conditions["noncurrentTimeBefore"] = noncurrent_time_before.isoformat()
 
         super(LifecycleRuleConditions, self).__init__(conditions)
 
@@ -245,6 +266,18 @@ class LifecycleRuleConditions(dict):
         """Conditon's 'number_of_newer_versions' value."""
         return self.get("numNewerVersions")
 
+    @property
+    def days_since_noncurrent_time(self):
+        """Conditon's 'days_since_noncurrent_time' value."""
+        return self.get("daysSinceNoncurrentTime")
+
+    @property
+    def noncurrent_time_before(self):
+        """Conditon's 'noncurrent_time_before' value."""
+        before = self.get("noncurrentTimeBefore")
+        if before is not None:
+            return datetime_helpers.from_iso8601_date(before)
+
 
 class LifecycleRuleDelete(dict):
     """Map a lifecycle rule deleting matching items.
@@ -274,7 +307,7 @@ class LifecycleRuleDelete(dict):
 
 
 class LifecycleRuleSetStorageClass(dict):
-    """Map a lifecycle rule upating storage class of matching items.
+    """Map a lifecycle rule updating storage class of matching items.
 
     :type storage_class: str, one of :attr:`Bucket.STORAGE_CLASSES`.
     :param storage_class: new storage class to assign to matching items.
