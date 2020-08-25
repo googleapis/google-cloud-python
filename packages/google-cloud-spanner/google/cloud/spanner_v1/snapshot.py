@@ -20,6 +20,7 @@ from google.protobuf.struct_pb2 import Struct
 from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionOptions
 from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionSelector
 
+from google.api_core.exceptions import InternalServerError
 from google.api_core.exceptions import ServiceUnavailable
 import google.api_core.gapic_v1.method
 from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -31,6 +32,11 @@ from google.cloud.spanner_v1._helpers import _SessionWrapper
 from google.cloud.spanner_v1.streamed import StreamedResultSet
 from google.cloud.spanner_v1.types import PartitionOptions
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
+
+_STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
+    "RST_STREAM",
+    "Received unexpected EOS on DATA frame from server",
+)
 
 
 def _restart_on_unavailable(restart, trace_name=None, session=None, attributes=None):
@@ -51,6 +57,17 @@ def _restart_on_unavailable(restart, trace_name=None, session=None, attributes=N
                     resume_token = item.resume_token
                     break
         except ServiceUnavailable:
+            del item_buffer[:]
+            with trace_call(trace_name, session, attributes):
+                iterator = restart(resume_token=resume_token)
+            continue
+        except InternalServerError as exc:
+            resumable_error = any(
+                resumable_message in exc.message
+                for resumable_message in _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES
+            )
+            if not resumable_error:
+                raise
             del item_buffer[:]
             with trace_call(trace_name, session, attributes):
                 iterator = restart(resume_token=resume_token)

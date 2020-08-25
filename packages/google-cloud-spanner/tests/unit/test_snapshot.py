@@ -86,12 +86,14 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         self.assertNoSpans()
 
     def test_iteration_w_raw_raising_unavailable_no_token(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
         ITEMS = (
             self._make_item(0),
             self._make_item(1, resume_token=RESUME_TOKEN),
             self._make_item(2),
         )
-        before = _MockIterator(fail_after=True)
+        before = _MockIterator(fail_after=True, error=ServiceUnavailable("testing"))
         after = _MockIterator(*ITEMS)
         restart = mock.Mock(spec=[], side_effect=[before, after])
         resumable = self._call_fut(restart)
@@ -99,11 +101,53 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         self.assertEqual(restart.mock_calls, [mock.call(), mock.call(resume_token=b"")])
         self.assertNoSpans()
 
+    def test_iteration_w_raw_raising_retryable_internal_error_no_token(self):
+        from google.api_core.exceptions import InternalServerError
+
+        ITEMS = (
+            self._make_item(0),
+            self._make_item(1, resume_token=RESUME_TOKEN),
+            self._make_item(2),
+        )
+        before = _MockIterator(
+            fail_after=True,
+            error=InternalServerError(
+                "Received unexpected EOS on DATA frame from server"
+            ),
+        )
+        after = _MockIterator(*ITEMS)
+        restart = mock.Mock(spec=[], side_effect=[before, after])
+        resumable = self._call_fut(restart)
+        self.assertEqual(list(resumable), list(ITEMS))
+        self.assertEqual(restart.mock_calls, [mock.call(), mock.call(resume_token=b"")])
+        self.assertNoSpans()
+
+    def test_iteration_w_raw_raising_non_retryable_internal_error_no_token(self):
+        from google.api_core.exceptions import InternalServerError
+
+        ITEMS = (
+            self._make_item(0),
+            self._make_item(1, resume_token=RESUME_TOKEN),
+            self._make_item(2),
+        )
+        before = _MockIterator(fail_after=True, error=InternalServerError("testing"))
+        after = _MockIterator(*ITEMS)
+        restart = mock.Mock(spec=[], side_effect=[before, after])
+        resumable = self._call_fut(restart)
+        with self.assertRaises(InternalServerError):
+            list(resumable)
+        self.assertEqual(restart.mock_calls, [mock.call()])
+        self.assertNoSpans()
+
     def test_iteration_w_raw_raising_unavailable(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
         FIRST = (self._make_item(0), self._make_item(1, resume_token=RESUME_TOKEN))
         SECOND = (self._make_item(2),)  # discarded after 503
         LAST = (self._make_item(3),)
-        before = _MockIterator(*(FIRST + SECOND), fail_after=True)
+        before = _MockIterator(
+            *(FIRST + SECOND), fail_after=True, error=ServiceUnavailable("testing")
+        )
         after = _MockIterator(*LAST)
         restart = mock.Mock(spec=[], side_effect=[before, after])
         resumable = self._call_fut(restart)
@@ -113,10 +157,53 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         )
         self.assertNoSpans()
 
+    def test_iteration_w_raw_raising_retryable_internal_error(self):
+        from google.api_core.exceptions import InternalServerError
+
+        FIRST = (self._make_item(0), self._make_item(1, resume_token=RESUME_TOKEN))
+        SECOND = (self._make_item(2),)  # discarded after 503
+        LAST = (self._make_item(3),)
+        before = _MockIterator(
+            *(FIRST + SECOND),
+            fail_after=True,
+            error=InternalServerError(
+                "Received unexpected EOS on DATA frame from server"
+            )
+        )
+        after = _MockIterator(*LAST)
+        restart = mock.Mock(spec=[], side_effect=[before, after])
+        resumable = self._call_fut(restart)
+        self.assertEqual(list(resumable), list(FIRST + LAST))
+        self.assertEqual(
+            restart.mock_calls, [mock.call(), mock.call(resume_token=RESUME_TOKEN)]
+        )
+        self.assertNoSpans()
+
+    def test_iteration_w_raw_raising_non_retryable_internal_error(self):
+        from google.api_core.exceptions import InternalServerError
+
+        FIRST = (self._make_item(0), self._make_item(1, resume_token=RESUME_TOKEN))
+        SECOND = (self._make_item(2),)  # discarded after 503
+        LAST = (self._make_item(3),)
+        before = _MockIterator(
+            *(FIRST + SECOND), fail_after=True, error=InternalServerError("testing")
+        )
+        after = _MockIterator(*LAST)
+        restart = mock.Mock(spec=[], side_effect=[before, after])
+        resumable = self._call_fut(restart)
+        with self.assertRaises(InternalServerError):
+            list(resumable)
+        self.assertEqual(restart.mock_calls, [mock.call()])
+        self.assertNoSpans()
+
     def test_iteration_w_raw_raising_unavailable_after_token(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
         FIRST = (self._make_item(0), self._make_item(1, resume_token=RESUME_TOKEN))
         SECOND = (self._make_item(2), self._make_item(3))
-        before = _MockIterator(*FIRST, fail_after=True)
+        before = _MockIterator(
+            *FIRST, fail_after=True, error=ServiceUnavailable("testing")
+        )
         after = _MockIterator(*SECOND)
         restart = mock.Mock(spec=[], side_effect=[before, after])
         resumable = self._call_fut(restart)
@@ -124,6 +211,43 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         self.assertEqual(
             restart.mock_calls, [mock.call(), mock.call(resume_token=RESUME_TOKEN)]
         )
+        self.assertNoSpans()
+
+    def test_iteration_w_raw_raising_retryable_internal_error_after_token(self):
+        from google.api_core.exceptions import InternalServerError
+
+        FIRST = (self._make_item(0), self._make_item(1, resume_token=RESUME_TOKEN))
+        SECOND = (self._make_item(2), self._make_item(3))
+        before = _MockIterator(
+            *FIRST,
+            fail_after=True,
+            error=InternalServerError(
+                "Received unexpected EOS on DATA frame from server"
+            )
+        )
+        after = _MockIterator(*SECOND)
+        restart = mock.Mock(spec=[], side_effect=[before, after])
+        resumable = self._call_fut(restart)
+        self.assertEqual(list(resumable), list(FIRST + SECOND))
+        self.assertEqual(
+            restart.mock_calls, [mock.call(), mock.call(resume_token=RESUME_TOKEN)]
+        )
+        self.assertNoSpans()
+
+    def test_iteration_w_raw_raising_non_retryable_internal_error_after_token(self):
+        from google.api_core.exceptions import InternalServerError
+
+        FIRST = (self._make_item(0), self._make_item(1, resume_token=RESUME_TOKEN))
+        SECOND = (self._make_item(2), self._make_item(3))
+        before = _MockIterator(
+            *FIRST, fail_after=True, error=InternalServerError("testing")
+        )
+        after = _MockIterator(*SECOND)
+        restart = mock.Mock(spec=[], side_effect=[before, after])
+        resumable = self._call_fut(restart)
+        with self.assertRaises(InternalServerError):
+            list(resumable)
+        self.assertEqual(restart.mock_calls, [mock.call()])
         self.assertNoSpans()
 
     def test_iteration_w_span_creation(self):
@@ -136,11 +260,15 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         self.assertSpanAttributes(name, attributes=dict(BASE_ATTRIBUTES, test_att=1))
 
     def test_iteration_w_multiple_span_creation(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
         if HAS_OPENTELEMETRY_INSTALLED:
             FIRST = (self._make_item(0), self._make_item(1, resume_token=RESUME_TOKEN))
             SECOND = (self._make_item(2),)  # discarded after 503
             LAST = (self._make_item(3),)
-            before = _MockIterator(*(FIRST + SECOND), fail_after=True)
+            before = _MockIterator(
+                *(FIRST + SECOND), fail_after=True, error=ServiceUnavailable("testing")
+            )
             after = _MockIterator(*LAST)
             restart = mock.Mock(spec=[], side_effect=[before, after])
             name = "TestSpan"
@@ -1153,18 +1281,17 @@ class _MockIterator(object):
     def __init__(self, *values, **kw):
         self._iter_values = iter(values)
         self._fail_after = kw.pop("fail_after", False)
+        self._error = kw.pop("error", Exception)
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        from google.api_core.exceptions import ServiceUnavailable
-
         try:
             return next(self._iter_values)
         except StopIteration:
             if self._fail_after:
-                raise ServiceUnavailable("testing")
+                raise self._error
             raise
 
     next = __next__
