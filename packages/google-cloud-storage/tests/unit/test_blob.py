@@ -4356,7 +4356,7 @@ class Test__raise_from_invalid_response(unittest.TestCase):
 
         return _raise_from_invalid_response(error)
 
-    def _helper(self, message, code=http_client.BAD_REQUEST, args=()):
+    def _helper(self, message, code=http_client.BAD_REQUEST, reason=None, args=()):
         import requests
 
         from google.resumable_media import InvalidResponse
@@ -4364,6 +4364,7 @@ class Test__raise_from_invalid_response(unittest.TestCase):
 
         response = requests.Response()
         response.request = requests.Request("GET", "http://example.com").prepare()
+        response._content = reason
         response.status_code = code
         error = InvalidResponse(response, message, *args)
 
@@ -4381,9 +4382,14 @@ class Test__raise_from_invalid_response(unittest.TestCase):
 
     def test_w_206_and_args(self):
         message = "Failure"
+        reason = b"Not available"
         args = ("one", "two")
-        exc_info = self._helper(message, code=http_client.PARTIAL_CONTENT, args=args)
-        expected = "GET http://example.com/: {}".format((message,) + args)
+        exc_info = self._helper(
+            message, code=http_client.PARTIAL_CONTENT, reason=reason, args=args
+        )
+        expected = "GET http://example.com/: {}: {}".format(
+            reason.decode("utf-8"), (message,) + args
+        )
         self.assertEqual(exc_info.exception.message, expected)
         self.assertEqual(exc_info.exception.errors, [])
 

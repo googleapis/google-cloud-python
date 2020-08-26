@@ -3427,7 +3427,13 @@ def _raise_from_invalid_response(error):
              to the failed status code
     """
     response = error.response
-    error_message = str(error)
+
+    # The 'response.text' gives the actual reason of error, where 'error' gives
+    # the message of expected status code.
+    if response.text:
+        error_message = response.text + ": " + str(error)
+    else:
+        error_message = str(error)
 
     message = u"{method} {url}: {error}".format(
         method=response.request.method, url=response.request.url, error=error_message
