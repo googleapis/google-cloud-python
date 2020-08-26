@@ -35,7 +35,7 @@ from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 from google.rpc import status_pb2 as status  # type: ignore
 
-from .transports.base import ReservationServiceTransport
+from .transports.base import ReservationServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import ReservationServiceGrpcAsyncIOTransport
 from .client import ReservationServiceClient
 
@@ -65,13 +65,13 @@ class ReservationServiceAsyncClient:
     DEFAULT_ENDPOINT = ReservationServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ReservationServiceClient.DEFAULT_MTLS_ENDPOINT
 
-    assignment_path = staticmethod(ReservationServiceClient.assignment_path)
-
     bi_reservation_path = staticmethod(ReservationServiceClient.bi_reservation_path)
 
     capacity_commitment_path = staticmethod(
         ReservationServiceClient.capacity_commitment_path
     )
+
+    assignment_path = staticmethod(ReservationServiceClient.assignment_path)
 
     reservation_path = staticmethod(ReservationServiceClient.reservation_path)
 
@@ -89,6 +89,7 @@ class ReservationServiceAsyncClient:
         credentials: credentials.Credentials = None,
         transport: Union[str, ReservationServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the reservation service client.
 
@@ -121,7 +122,10 @@ class ReservationServiceAsyncClient:
         """
 
         self._client = ReservationServiceClient(
-            credentials=credentials, transport=transport, client_options=client_options,
+            credentials=credentials,
+            transport=transport,
+            client_options=client_options,
+            client_info=client_info,
         )
 
     async def create_reservation(
@@ -200,7 +204,7 @@ class ReservationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_reservation,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -275,7 +279,7 @@ class ReservationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_reservations,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -353,7 +357,7 @@ class ReservationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_reservation,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -421,7 +425,7 @@ class ReservationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_reservation,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -499,7 +503,7 @@ class ReservationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_reservation,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -593,7 +597,7 @@ class ReservationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_capacity_commitment,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -668,7 +672,7 @@ class ReservationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_capacity_commitments,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -758,7 +762,7 @@ class ReservationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_capacity_commitment,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -826,7 +830,7 @@ class ReservationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_capacity_commitment,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -924,7 +928,7 @@ class ReservationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_capacity_commitment,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1014,7 +1018,7 @@ class ReservationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.split_capacity_commitment,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1120,7 +1124,7 @@ class ReservationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.merge_capacity_commitments,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1234,7 +1238,7 @@ class ReservationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_assignment,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1334,7 +1338,7 @@ class ReservationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_assignments,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1422,7 +1426,7 @@ class ReservationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_assignment,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1537,7 +1541,7 @@ class ReservationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.search_assignments,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1634,7 +1638,7 @@ class ReservationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.move_assignment,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1704,7 +1708,7 @@ class ReservationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_bi_reservation,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1788,7 +1792,7 @@ class ReservationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_bi_reservation,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1807,13 +1811,13 @@ class ReservationServiceAsyncClient:
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
             "google-cloud-bigquery-reservation",
         ).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 __all__ = ("ReservationServiceAsyncClient",)

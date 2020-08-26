@@ -31,13 +31,13 @@ from google.protobuf import empty_pb2 as empty  # type: ignore
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
             "google-cloud-bigquery-reservation",
         ).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 class ReservationServiceTransport(abc.ABC):
@@ -56,6 +56,7 @@ class ReservationServiceTransport(abc.ABC):
         credentials_file: typing.Optional[str] = None,
         scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
         quota_project_id: typing.Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
@@ -73,6 +74,11 @@ class ReservationServiceTransport(abc.ABC):
             scope (Optional[Sequence[str]]): A list of scopes.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
+                The client info used to send a user-agent string along with	
+                API requests. If ``None``, then default info will be used.	
+                Generally, you only need to set this if you're developing	
+                your own client library.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ":" not in host:
@@ -100,83 +106,83 @@ class ReservationServiceTransport(abc.ABC):
         self._credentials = credentials
 
         # Lifted into its own function so it can be stubbed out during tests.
-        self._prep_wrapped_messages()
+        self._prep_wrapped_messages(client_info)
 
-    def _prep_wrapped_messages(self):
+    def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_reservation: gapic_v1.method.wrap_method(
-                self.create_reservation, default_timeout=None, client_info=_client_info,
+                self.create_reservation, default_timeout=None, client_info=client_info,
             ),
             self.list_reservations: gapic_v1.method.wrap_method(
-                self.list_reservations, default_timeout=None, client_info=_client_info,
+                self.list_reservations, default_timeout=None, client_info=client_info,
             ),
             self.get_reservation: gapic_v1.method.wrap_method(
-                self.get_reservation, default_timeout=None, client_info=_client_info,
+                self.get_reservation, default_timeout=None, client_info=client_info,
             ),
             self.delete_reservation: gapic_v1.method.wrap_method(
-                self.delete_reservation, default_timeout=None, client_info=_client_info,
+                self.delete_reservation, default_timeout=None, client_info=client_info,
             ),
             self.update_reservation: gapic_v1.method.wrap_method(
-                self.update_reservation, default_timeout=None, client_info=_client_info,
+                self.update_reservation, default_timeout=None, client_info=client_info,
             ),
             self.create_capacity_commitment: gapic_v1.method.wrap_method(
                 self.create_capacity_commitment,
                 default_timeout=None,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.list_capacity_commitments: gapic_v1.method.wrap_method(
                 self.list_capacity_commitments,
                 default_timeout=None,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.get_capacity_commitment: gapic_v1.method.wrap_method(
                 self.get_capacity_commitment,
                 default_timeout=None,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.delete_capacity_commitment: gapic_v1.method.wrap_method(
                 self.delete_capacity_commitment,
                 default_timeout=None,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.update_capacity_commitment: gapic_v1.method.wrap_method(
                 self.update_capacity_commitment,
                 default_timeout=None,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.split_capacity_commitment: gapic_v1.method.wrap_method(
                 self.split_capacity_commitment,
                 default_timeout=None,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.merge_capacity_commitments: gapic_v1.method.wrap_method(
                 self.merge_capacity_commitments,
                 default_timeout=None,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.create_assignment: gapic_v1.method.wrap_method(
-                self.create_assignment, default_timeout=None, client_info=_client_info,
+                self.create_assignment, default_timeout=None, client_info=client_info,
             ),
             self.list_assignments: gapic_v1.method.wrap_method(
-                self.list_assignments, default_timeout=None, client_info=_client_info,
+                self.list_assignments, default_timeout=None, client_info=client_info,
             ),
             self.delete_assignment: gapic_v1.method.wrap_method(
-                self.delete_assignment, default_timeout=None, client_info=_client_info,
+                self.delete_assignment, default_timeout=None, client_info=client_info,
             ),
             self.search_assignments: gapic_v1.method.wrap_method(
-                self.search_assignments, default_timeout=None, client_info=_client_info,
+                self.search_assignments, default_timeout=None, client_info=client_info,
             ),
             self.move_assignment: gapic_v1.method.wrap_method(
-                self.move_assignment, default_timeout=None, client_info=_client_info,
+                self.move_assignment, default_timeout=None, client_info=client_info,
             ),
             self.get_bi_reservation: gapic_v1.method.wrap_method(
-                self.get_bi_reservation, default_timeout=None, client_info=_client_info,
+                self.get_bi_reservation, default_timeout=None, client_info=client_info,
             ),
             self.update_bi_reservation: gapic_v1.method.wrap_method(
                 self.update_bi_reservation,
                 default_timeout=None,
-                client_info=_client_info,
+                client_info=client_info,
             ),
         }
 

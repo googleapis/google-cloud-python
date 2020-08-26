@@ -17,6 +17,7 @@
 
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
 
+from google.api_core import gapic_v1  # type: ignore
 from google.api_core import grpc_helpers_async  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
@@ -28,7 +29,7 @@ from google.cloud.bigquery.reservation_v1.types import reservation
 from google.cloud.bigquery.reservation_v1.types import reservation as gcbr_reservation
 from google.protobuf import empty_pb2 as empty  # type: ignore
 
-from .base import ReservationServiceTransport
+from .base import ReservationServiceTransport, DEFAULT_CLIENT_INFO
 from .grpc import ReservationServiceGrpcTransport
 
 
@@ -116,6 +117,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         api_mtls_endpoint: str = None,
         client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
         quota_project_id=None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the transport.
 
@@ -145,6 +147,11 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
                 is None.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
+                The client info used to send a user-agent string along with	
+                API requests. If ``None``, then default info will be used.	
+                Generally, you only need to set this if you're developing	
+                your own client library.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -193,6 +200,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
             credentials_file=credentials_file,
             scopes=scopes or self.AUTH_SCOPES,
             quota_project_id=quota_project_id,
+            client_info=client_info,
         )
 
         self._stubs = {}
