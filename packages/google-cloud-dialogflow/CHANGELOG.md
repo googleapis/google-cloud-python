@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [1.1.0](https://www.github.com/googleapis/dialogflow-python-client-v2/compare/v1.0.0...v1.1.0) (2020-08-26)
+
+
+### Features
+
+* add environments client ([#217](https://www.github.com/googleapis/dialogflow-python-client-v2/issues/217)) ([7bf5926](https://www.github.com/googleapis/dialogflow-python-client-v2/commit/7bf592684b4d5df0cd1f66dd414efe2350d0461e))
+
+
+### Documentation
+
+* move to googleapisdotdev ([#155](https://www.github.com/googleapis/dialogflow-python-client-v2/issues/155)) ([89d071c](https://www.github.com/googleapis/dialogflow-python-client-v2/commit/89d071c55c5bf9c7f766c5b49de7ce33b75222d6))
+
 ## [1.0.0](https://www.github.com/googleapis/dialogflow-python-client-v2/compare/v0.8.0...v1.0.0) (2020-05-13)
 
 
