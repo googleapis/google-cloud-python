@@ -3543,10 +3543,13 @@ class Blob(_PropertyMixin):
 
     @custom_time.setter
     def custom_time(self, value):
-        """Set the custom time for the object. Once set it can't be unset
-        and only changed to a custom datetime in the future. If the
-        custom_time must be unset, you must either perform a rewrite operation
-        or upload the data again.
+        """Set the custom time for the object.
+
+        Once set on the server side object, this value can't be unset, but may
+        only changed to a custom datetime in the future.
+
+        If :attr:`custom_time` must be unset, either perform a rewrite
+        operation or upload the data again.
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
