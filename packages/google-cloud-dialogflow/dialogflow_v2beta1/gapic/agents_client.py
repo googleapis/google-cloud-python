@@ -39,6 +39,8 @@ from dialogflow_v2beta1.gapic import enums
 from dialogflow_v2beta1.gapic.transports import agents_grpc_transport
 from dialogflow_v2beta1.proto import agent_pb2
 from dialogflow_v2beta1.proto import agent_pb2_grpc
+from dialogflow_v2beta1.proto import environment_pb2
+from dialogflow_v2beta1.proto import environment_pb2_grpc
 from dialogflow_v2beta1.proto import validation_result_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
@@ -50,32 +52,7 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("dialogflow").version
 
 
 class AgentsClient(object):
-    """
-    Agents are best described as Natural Language Understanding (NLU)
-    modules that transform user requests into actionable data. You can
-    include agents in your app, product, or service to determine user intent
-    and respond to the user in a natural way.
-
-    After you create an agent, you can add ``Intents``, ``Contexts``,
-    ``Entity Types``, ``Webhooks``, and so on to manage the flow of a
-    conversation and match user input to predefined intents and actions.
-
-    You can create an agent using both Dialogflow Standard Edition and
-    Dialogflow Enterprise Edition. For details, see `Dialogflow
-    Editions <https://cloud.google.com/dialogflow/docs/editions>`__.
-
-    You can save your agent for backup or versioning by exporting the agent
-    by using the ``ExportAgent`` method. You can import a saved agent by
-    using the ``ImportAgent`` method.
-
-    Dialogflow provides several `prebuilt
-    agents <https://cloud.google.com/dialogflow/docs/agents-prebuilt>`__ for
-    common conversation scenarios such as determining a date and time,
-    converting currency, and so on.
-
-    For more information about agents, see the `Dialogflow
-    documentation <https://cloud.google.com/dialogflow/docs/agents-overview>`__.
-    """
+    """Service for managing ``Agents``."""
 
     SERVICE_ADDRESS = "dialogflow.googleapis.com:443"
     """The default address of the service."""
@@ -103,6 +80,15 @@ class AgentsClient(object):
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
+
+    @classmethod
+    def location_path(cls, project, location):
+        """Return a fully-qualified location string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}",
+            project=project,
+            location=location,
+        )
 
     @classmethod
     def project_path(cls, project):
@@ -224,6 +210,76 @@ class AgentsClient(object):
         self._inner_api_calls = {}
 
     # Service calls
+    def get_agent(
+        self,
+        parent,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Retrieves the specified agent.
+
+        Example:
+            >>> import dialogflow_v2beta1
+            >>>
+            >>> client = dialogflow_v2beta1.AgentsClient()
+            >>>
+            >>> parent = client.project_path('[PROJECT]')
+            >>>
+            >>> response = client.get_agent(parent)
+
+        Args:
+            parent (str): Required. The project that the agent to fetch is associated with.
+                Format: ``projects/<Project ID>``.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.dialogflow_v2beta1.types.Agent` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_agent" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_agent"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_agent,
+                default_retry=self._method_configs["GetAgent"].retry,
+                default_timeout=self._method_configs["GetAgent"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = agent_pb2.GetAgentRequest(parent=parent)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["get_agent"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def set_agent(
         self,
         agent,
@@ -369,76 +425,6 @@ class AgentsClient(object):
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
-    def get_agent(
-        self,
-        parent,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Retrieves the specified agent.
-
-        Example:
-            >>> import dialogflow_v2beta1
-            >>>
-            >>> client = dialogflow_v2beta1.AgentsClient()
-            >>>
-            >>> parent = client.project_path('[PROJECT]')
-            >>>
-            >>> response = client.get_agent(parent)
-
-        Args:
-            parent (str): Required. The project that the agent to fetch is associated with.
-                Format: ``projects/<Project ID>``.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.dialogflow_v2beta1.types.Agent` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "get_agent" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "get_agent"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_agent,
-                default_retry=self._method_configs["GetAgent"].retry,
-                default_timeout=self._method_configs["GetAgent"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = agent_pb2.GetAgentRequest(parent=parent)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("parent", parent)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["get_agent"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
     def search_agents(
         self,
         parent,
@@ -448,12 +434,10 @@ class AgentsClient(object):
         metadata=None,
     ):
         """
-        Returns the list of agents.
-
-        Since there is at most one conversational agent per project, this method
-        is useful primarily for listing all agents across projects the caller
-        has access to. One can achieve that with a wildcard project collection
-        id "-". Refer to `List
+        Returns the list of agents. Since there is at most one
+        conversational agent per project, this method is useful primarily for
+        listing all agents across projects the caller has access to. One can
+        achieve that with a wildcard project collection id "-". Refer to `List
         Sub-Collections <https://cloud.google.com/apis/design/design_patterns#list_sub-collections>`__.
 
         Example:
@@ -741,9 +725,15 @@ class AgentsClient(object):
 
         Uploads new intents and entity types without deleting the existing ones.
         Intents and entity types with the same name are replaced with the new
-        versions from ImportAgentRequest.
+        versions from ``ImportAgentRequest``. After the import, the imported
+        draft agent will be trained automatically (unless disabled in agent
+        settings). However, once the import is done, training may not be
+        completed yet. Please call ``TrainAgent`` and wait for the operation it
+        returns in order to train explicitly.
 
-        Operation <response: ``google.protobuf.Empty``>
+        Operation <response: ``google.protobuf.Empty``> An operation which
+        tracks when importing is complete. It only tracks when the draft agent
+        is updated not when it is done training.
 
         Example:
             >>> import dialogflow_v2beta1
@@ -844,9 +834,15 @@ class AgentsClient(object):
         Restores the specified agent from a ZIP file.
 
         Replaces the current agent version with a new one. All the intents and
-        entity types in the older version are deleted.
+        entity types in the older version are deleted. After the restore, the
+        restored draft agent will be trained automatically (unless disabled in
+        agent settings). However, once the restore is done, training may not be
+        completed yet. Please call ``TrainAgent`` and wait for the operation it
+        returns in order to train explicitly.
 
-        Operation <response: ``google.protobuf.Empty``>
+        Operation <response: ``google.protobuf.Empty``> An operation which
+        tracks when restoring is complete. It only tracks when the draft agent
+        is updated not when it is done training.
 
         Example:
             >>> import dialogflow_v2beta1
@@ -951,13 +947,15 @@ class AgentsClient(object):
             >>>
             >>> client = dialogflow_v2beta1.AgentsClient()
             >>>
-            >>> response = client.get_validation_result()
+            >>> parent = client.project_path('[PROJECT]')
+            >>>
+            >>> response = client.get_validation_result(parent)
 
         Args:
             parent (str): Required. The project that the agent is associated with. Format:
                 ``projects/<Project ID>``.
-            language_code (str): Optional. The language for which you want a validation result. If not
-                specified, the agent's default language is used. `Many
+            language_code (str): Optional. The language for which you want a validation result. If
+                not specified, the agent's default language is used. `Many
                 languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
                 are supported. Note: languages must be enabled in the agent before they
                 can be used.

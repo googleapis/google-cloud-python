@@ -83,7 +83,7 @@ class TestEntityTypesClient(object):
             client = dialogflow_v2.EntityTypesClient()
 
         # Setup Request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = client.agent_path("[PROJECT]")
 
         paged_list_response = client.list_entity_types(parent)
         resources = list(paged_list_response)
@@ -104,7 +104,7 @@ class TestEntityTypesClient(object):
             client = dialogflow_v2.EntityTypesClient()
 
         # Setup request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = client.agent_path("[PROJECT]")
 
         paged_list_response = client.list_entity_types(parent)
         with pytest.raises(CustomException):
@@ -174,7 +174,7 @@ class TestEntityTypesClient(object):
             client = dialogflow_v2.EntityTypesClient()
 
         # Setup Request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = client.agent_path("[PROJECT]")
         entity_type = {}
 
         response = client.create_entity_type(parent, entity_type)
@@ -196,7 +196,7 @@ class TestEntityTypesClient(object):
             client = dialogflow_v2.EntityTypesClient()
 
         # Setup request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = client.agent_path("[PROJECT]")
         entity_type = {}
 
         with pytest.raises(CustomException):
@@ -298,7 +298,7 @@ class TestEntityTypesClient(object):
             client = dialogflow_v2.EntityTypesClient()
 
         # Setup Request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = client.agent_path("[PROJECT]")
 
         response = client.batch_update_entity_types(parent)
         result = response.result()
@@ -325,7 +325,7 @@ class TestEntityTypesClient(object):
             client = dialogflow_v2.EntityTypesClient()
 
         # Setup Request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = client.agent_path("[PROJECT]")
 
         response = client.batch_update_entity_types(parent)
         exception = response.exception()
@@ -348,7 +348,7 @@ class TestEntityTypesClient(object):
             client = dialogflow_v2.EntityTypesClient()
 
         # Setup Request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = client.agent_path("[PROJECT]")
         entity_type_names = []
 
         response = client.batch_delete_entity_types(parent, entity_type_names)
@@ -378,7 +378,7 @@ class TestEntityTypesClient(object):
             client = dialogflow_v2.EntityTypesClient()
 
         # Setup Request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = client.agent_path("[PROJECT]")
         entity_type_names = []
 
         response = client.batch_delete_entity_types(parent, entity_type_names)

@@ -39,6 +39,8 @@ from dialogflow_v2.proto import context_pb2
 from dialogflow_v2.proto import context_pb2_grpc
 from dialogflow_v2.proto import entity_type_pb2
 from dialogflow_v2.proto import entity_type_pb2_grpc
+from dialogflow_v2.proto import environment_pb2
+from dialogflow_v2.proto import environment_pb2_grpc
 from dialogflow_v2.proto import intent_pb2
 from dialogflow_v2.proto import intent_pb2_grpc
 from dialogflow_v2.proto import session_entity_type_pb2
@@ -57,9 +59,10 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("dialogflow").version
 
 class SessionsClient(object):
     """
-    A session represents an interaction with a user. You retrieve user input
-    and pass it to the ``DetectIntent`` (or ``StreamingDetectIntent``)
-    method to determine user intent and respond.
+    A service used for session interactions.
+
+    For more information, see the `API interactions
+    guide <https://cloud.google.com/dialogflow/docs/api-overview>`__.
     """
 
     SERVICE_ADDRESS = "dialogflow.googleapis.com:443"
@@ -234,7 +237,8 @@ class SessionsClient(object):
             >>>
             >>> client = dialogflow_v2.SessionsClient()
             >>>
-            >>> session = client.session_path('[PROJECT]', '[SESSION]')
+            >>> # TODO: Initialize `session`:
+            >>> session = ''
             >>>
             >>> # TODO: Initialize `query_input`:
             >>> query_input = {}
@@ -251,6 +255,9 @@ class SessionsClient(object):
                 ``User Id``. They can be a random number or some type of user and
                 session identifiers (preferably hashed). The length of the
                 ``Session ID`` and ``User ID`` must not exceed 36 characters.
+
+                For more information, see the `API interactions
+                guide <https://cloud.google.com/dialogflow/docs/api-overview>`__.
             query_input (Union[dict, ~google.cloud.dialogflow_v2.types.QueryInput]): Required. The input specification. It can be set to:
 
                 1.  an audio config
@@ -281,9 +288,9 @@ class SessionsClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2.types.FieldMask`
-            input_audio (bytes): The natural language speech audio to be processed. This field should be
-                populated iff ``query_input`` is set to an input audio config. A single
-                request can contain up to 1 minute of speech audio data.
+            input_audio (bytes): The natural language speech audio to be processed. This field should
+                be populated iff ``query_input`` is set to an input audio config. A
+                single request can contain up to 1 minute of speech audio data.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
                 be retried using a default configuration.

@@ -80,7 +80,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2beta1.IntentsClient()
 
         # Setup Request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = "parent-995424086"
 
         paged_list_response = client.list_intents(parent)
         resources = list(paged_list_response)
@@ -101,7 +101,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2beta1.IntentsClient()
 
         # Setup request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = "parent-995424086"
 
         paged_list_response = client.list_intents(parent)
         with pytest.raises(CustomException):
@@ -143,7 +143,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2beta1.IntentsClient()
 
         # Setup Request
-        name = client.intent_path("[PROJECT]", "[INTENT]")
+        name = "name3373707"
 
         response = client.get_intent(name)
         assert expected_response == response
@@ -162,7 +162,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2beta1.IntentsClient()
 
         # Setup request
-        name = client.intent_path("[PROJECT]", "[INTENT]")
+        name = "name3373707"
 
         with pytest.raises(CustomException):
             client.get_intent(name)
@@ -203,7 +203,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2beta1.IntentsClient()
 
         # Setup Request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = "parent-995424086"
         intent = {}
 
         response = client.create_intent(parent, intent)
@@ -223,7 +223,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2beta1.IntentsClient()
 
         # Setup request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = "parent-995424086"
         intent = {}
 
         with pytest.raises(CustomException):
@@ -297,7 +297,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2beta1.IntentsClient()
 
         # Setup Request
-        name = client.intent_path("[PROJECT]", "[INTENT]")
+        name = "name3373707"
 
         client.delete_intent(name)
 
@@ -315,7 +315,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2beta1.IntentsClient()
 
         # Setup request
-        name = client.intent_path("[PROJECT]", "[INTENT]")
+        name = "name3373707"
 
         with pytest.raises(CustomException):
             client.delete_intent(name)
@@ -337,7 +337,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2beta1.IntentsClient()
 
         # Setup Request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = "parent-995424086"
 
         response = client.batch_update_intents(parent)
         result = response.result()
@@ -364,7 +364,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2beta1.IntentsClient()
 
         # Setup Request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = "parent-995424086"
 
         response = client.batch_update_intents(parent)
         exception = response.exception()
@@ -387,7 +387,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2beta1.IntentsClient()
 
         # Setup Request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = "parent-995424086"
         intents = []
 
         response = client.batch_delete_intents(parent, intents)
@@ -417,7 +417,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2beta1.IntentsClient()
 
         # Setup Request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = "parent-995424086"
         intents = []
 
         response = client.batch_delete_intents(parent, intents)

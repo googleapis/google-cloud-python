@@ -80,7 +80,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2.IntentsClient()
 
         # Setup Request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = client.agent_path("[PROJECT]", "[AGENT]")
 
         paged_list_response = client.list_intents(parent)
         resources = list(paged_list_response)
@@ -101,7 +101,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2.IntentsClient()
 
         # Setup request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = client.agent_path("[PROJECT]", "[AGENT]")
 
         paged_list_response = client.list_intents(parent)
         with pytest.raises(CustomException):
@@ -195,7 +195,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2.IntentsClient()
 
         # Setup Request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = client.agent_path("[PROJECT]", "[AGENT]")
         intent = {}
 
         response = client.create_intent(parent, intent)
@@ -215,7 +215,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2.IntentsClient()
 
         # Setup request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = client.agent_path("[PROJECT]", "[AGENT]")
         intent = {}
 
         with pytest.raises(CustomException):
@@ -325,7 +325,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2.IntentsClient()
 
         # Setup Request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = client.agent_path("[PROJECT]", "[AGENT]")
 
         response = client.batch_update_intents(parent)
         result = response.result()
@@ -352,7 +352,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2.IntentsClient()
 
         # Setup Request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = client.agent_path("[PROJECT]", "[AGENT]")
 
         response = client.batch_update_intents(parent)
         exception = response.exception()
@@ -375,7 +375,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2.IntentsClient()
 
         # Setup Request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = client.agent_path("[PROJECT]", "[AGENT]")
         intents = []
 
         response = client.batch_delete_intents(parent, intents)
@@ -405,7 +405,7 @@ class TestIntentsClient(object):
             client = dialogflow_v2.IntentsClient()
 
         # Setup Request
-        parent = client.project_agent_path("[PROJECT]")
+        parent = client.agent_path("[PROJECT]", "[AGENT]")
         intents = []
 
         response = client.batch_delete_intents(parent, intents)

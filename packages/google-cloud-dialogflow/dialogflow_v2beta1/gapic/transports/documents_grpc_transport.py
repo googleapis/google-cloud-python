@@ -157,9 +157,6 @@ class DocumentsGrpcTransport(object):
         Note: The ``projects.agent.knowledgeBases.documents`` resource is
         deprecated; only use ``projects.knowledgeBases.documents``.
 
-        Operation <response: ``Document``, metadata:
-        ``KnowledgeOperationMetadata``>
-
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
@@ -175,9 +172,6 @@ class DocumentsGrpcTransport(object):
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource is
         deprecated; only use ``projects.knowledgeBases.documents``.
-
-        Operation <response: ``google.protobuf.Empty``, metadata:
-        ``KnowledgeOperationMetadata``>
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -195,9 +189,6 @@ class DocumentsGrpcTransport(object):
         Note: The ``projects.agent.knowledgeBases.documents`` resource is
         deprecated; only use ``projects.knowledgeBases.documents``.
 
-        Operation <response: ``Document``, metadata:
-        ``KnowledgeOperationMetadata``>
-
         Returns:
             Callable: A callable which accepts the appropriate
                 deserialized request object and returns a
@@ -209,17 +200,14 @@ class DocumentsGrpcTransport(object):
     def reload_document(self):
         """Return the gRPC stub for :meth:`DocumentsClient.reload_document`.
 
-        Reloads the specified document from its specified source, content\_uri
-        or content. The previously loaded content of the document will be
-        deleted. Note: Even when the content of the document has not changed,
-        there still may be side effects because of internal implementation
-        changes.
+        Reloads the specified document from its specified source,
+        content_uri or content. The previously loaded content of the document
+        will be deleted. Note: Even when the content of the document has not
+        changed, there still may be side effects because of internal
+        implementation changes.
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource is
         deprecated; only use ``projects.knowledgeBases.documents``.
-
-        Operation <response: ``Document``, metadata:
-        ``KnowledgeOperationMetadata``>
 
         Returns:
             Callable: A callable which accepts the appropriate

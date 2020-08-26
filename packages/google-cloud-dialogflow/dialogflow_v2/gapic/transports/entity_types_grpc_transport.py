@@ -232,8 +232,8 @@ class EntityTypesGrpcTransport(object):
     def batch_update_entities(self):
         """Return the gRPC stub for :meth:`EntityTypesClient.batch_update_entities`.
 
-        Updates or creates multiple entities in the specified entity type. This
-        method does not affect entities in the entity type that aren't
+        Updates or creates multiple entities in the specified entity type.
+        This method does not affect entities in the entity type that aren't
         explicitly specified in the request.
 
         Operation <response: ``google.protobuf.Empty``>

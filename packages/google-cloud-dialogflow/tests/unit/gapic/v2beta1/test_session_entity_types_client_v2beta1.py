@@ -82,7 +82,7 @@ class TestSessionEntityTypesClient(object):
             client = dialogflow_v2beta1.SessionEntityTypesClient()
 
         # Setup Request
-        parent = client.session_path("[PROJECT]", "[SESSION]")
+        parent = "parent-995424086"
 
         paged_list_response = client.list_session_entity_types(parent)
         resources = list(paged_list_response)
@@ -105,7 +105,7 @@ class TestSessionEntityTypesClient(object):
             client = dialogflow_v2beta1.SessionEntityTypesClient()
 
         # Setup request
-        parent = client.session_path("[PROJECT]", "[SESSION]")
+        parent = "parent-995424086"
 
         paged_list_response = client.list_session_entity_types(parent)
         with pytest.raises(CustomException):
@@ -127,9 +127,7 @@ class TestSessionEntityTypesClient(object):
             client = dialogflow_v2beta1.SessionEntityTypesClient()
 
         # Setup Request
-        name = client.session_entity_type_path(
-            "[PROJECT]", "[SESSION]", "[ENTITY_TYPE]"
-        )
+        name = "name3373707"
 
         response = client.get_session_entity_type(name)
         assert expected_response == response
@@ -150,9 +148,7 @@ class TestSessionEntityTypesClient(object):
             client = dialogflow_v2beta1.SessionEntityTypesClient()
 
         # Setup request
-        name = client.session_entity_type_path(
-            "[PROJECT]", "[SESSION]", "[ENTITY_TYPE]"
-        )
+        name = "name3373707"
 
         with pytest.raises(CustomException):
             client.get_session_entity_type(name)
@@ -173,7 +169,7 @@ class TestSessionEntityTypesClient(object):
             client = dialogflow_v2beta1.SessionEntityTypesClient()
 
         # Setup Request
-        parent = client.session_path("[PROJECT]", "[SESSION]")
+        parent = "parent-995424086"
         session_entity_type = {}
 
         response = client.create_session_entity_type(parent, session_entity_type)
@@ -195,7 +191,7 @@ class TestSessionEntityTypesClient(object):
             client = dialogflow_v2beta1.SessionEntityTypesClient()
 
         # Setup request
-        parent = client.session_path("[PROJECT]", "[SESSION]")
+        parent = "parent-995424086"
         session_entity_type = {}
 
         with pytest.raises(CustomException):
@@ -251,9 +247,7 @@ class TestSessionEntityTypesClient(object):
             client = dialogflow_v2beta1.SessionEntityTypesClient()
 
         # Setup Request
-        name = client.session_entity_type_path(
-            "[PROJECT]", "[SESSION]", "[ENTITY_TYPE]"
-        )
+        name = "name3373707"
 
         client.delete_session_entity_type(name)
 
@@ -273,9 +267,7 @@ class TestSessionEntityTypesClient(object):
             client = dialogflow_v2beta1.SessionEntityTypesClient()
 
         # Setup request
-        name = client.session_entity_type_path(
-            "[PROJECT]", "[SESSION]", "[ENTITY_TYPE]"
-        )
+        name = "name3373707"
 
         with pytest.raises(CustomException):
             client.delete_session_entity_type(name)

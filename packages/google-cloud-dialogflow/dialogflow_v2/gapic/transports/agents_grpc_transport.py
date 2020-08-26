@@ -117,6 +117,19 @@ class AgentsGrpcTransport(object):
         return self._channel
 
     @property
+    def get_agent(self):
+        """Return the gRPC stub for :meth:`AgentsClient.get_agent`.
+
+        Retrieves the specified agent.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["agents_stub"].GetAgent
+
+    @property
     def set_agent(self):
         """Return the gRPC stub for :meth:`AgentsClient.set_agent`.
 
@@ -141,19 +154,6 @@ class AgentsGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["agents_stub"].DeleteAgent
-
-    @property
-    def get_agent(self):
-        """Return the gRPC stub for :meth:`AgentsClient.get_agent`.
-
-        Retrieves the specified agent.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["agents_stub"].GetAgent
 
     @property
     def search_agents(self):
@@ -212,9 +212,15 @@ class AgentsGrpcTransport(object):
 
         Uploads new intents and entity types without deleting the existing ones.
         Intents and entity types with the same name are replaced with the new
-        versions from ImportAgentRequest.
+        versions from ``ImportAgentRequest``. After the import, the imported
+        draft agent will be trained automatically (unless disabled in agent
+        settings). However, once the import is done, training may not be
+        completed yet. Please call ``TrainAgent`` and wait for the operation it
+        returns in order to train explicitly.
 
-        Operation <response: ``google.protobuf.Empty``>
+        Operation <response: ``google.protobuf.Empty``> An operation which
+        tracks when importing is complete. It only tracks when the draft agent
+        is updated not when it is done training.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -230,9 +236,15 @@ class AgentsGrpcTransport(object):
         Restores the specified agent from a ZIP file.
 
         Replaces the current agent version with a new one. All the intents and
-        entity types in the older version are deleted.
+        entity types in the older version are deleted. After the restore, the
+        restored draft agent will be trained automatically (unless disabled in
+        agent settings). However, once the restore is done, training may not be
+        completed yet. Please call ``TrainAgent`` and wait for the operation it
+        returns in order to train explicitly.
 
-        Operation <response: ``google.protobuf.Empty``>
+        Operation <response: ``google.protobuf.Empty``> An operation which
+        tracks when restoring is complete. It only tracks when the draft agent
+        is updated not when it is done training.
 
         Returns:
             Callable: A callable which accepts the appropriate

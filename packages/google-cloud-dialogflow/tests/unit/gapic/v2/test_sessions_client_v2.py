@@ -80,7 +80,7 @@ class TestSessionsClient(object):
             client = dialogflow_v2.SessionsClient()
 
         # Setup Request
-        session = client.session_path("[PROJECT]", "[SESSION]")
+        session = "session1984987798"
         query_input = {}
 
         response = client.detect_intent(session, query_input)
@@ -102,7 +102,7 @@ class TestSessionsClient(object):
             client = dialogflow_v2.SessionsClient()
 
         # Setup request
-        session = client.session_path("[PROJECT]", "[SESSION]")
+        session = "session1984987798"
         query_input = {}
 
         with pytest.raises(CustomException):

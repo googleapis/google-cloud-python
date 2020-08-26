@@ -1,26 +1,18 @@
 {
-  "updateTime": "2020-03-26T18:20:13.139271Z",
   "sources": [
-    {
-      "generator": {
-        "name": "artman",
-        "version": "1.1.1",
-        "dockerImage": "googleapis/artman@sha256:5ef340c8d9334719bc5c6981d95f4a5d2737b0a6a24f2b9a0d430e96fff85c5b"
-      }
-    },
     {
       "git": {
         "name": ".",
         "remote": "git@github.com:googleapis/dialogflow-python-client-v2.git",
-        "sha": "1c25409d4ee04503840a23d86adf31e3d3ec02ff"
+        "sha": "7ecac620897dc8c0805686737ba51354b3745d57"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "65816afa71e588252b7119dc723592abe51ea106",
-        "internalRef": "303150338"
+        "sha": "1a97126c6ced4e6179ade331a5372ec06e24f727",
+        "internalRef": "328383688"
       }
     }
   ],
@@ -31,8 +23,7 @@
         "apiName": "dialogflow",
         "apiVersion": "v2beta1",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/dialogflow/v2beta1/artman_dialogflow_v2beta1.yaml"
+        "generator": "bazel"
       }
     },
     {
@@ -41,8 +32,7 @@
         "apiName": "dialogflow",
         "apiVersion": "v2",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/cloud/dialogflow/v2/artman_dialogflow_v2.yaml"
+        "generator": "bazel"
       }
     }
   ]

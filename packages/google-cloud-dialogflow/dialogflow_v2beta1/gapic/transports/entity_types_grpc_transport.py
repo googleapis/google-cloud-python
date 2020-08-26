@@ -188,7 +188,6 @@ class EntityTypesGrpcTransport(object):
         """Return the gRPC stub for :meth:`EntityTypesClient.batch_update_entity_types`.
 
         Updates/Creates multiple entity types in the specified agent.
-
         Operation <response: ``BatchUpdateEntityTypesResponse``>
 
         Returns:
@@ -202,9 +201,8 @@ class EntityTypesGrpcTransport(object):
     def batch_delete_entity_types(self):
         """Return the gRPC stub for :meth:`EntityTypesClient.batch_delete_entity_types`.
 
-        Deletes entity types in the specified agent.
-
-        Operation <response: ``google.protobuf.Empty``>
+        Deletes entity types in the specified agent. Operation <response:
+        ``google.protobuf.Empty``>
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -232,8 +230,8 @@ class EntityTypesGrpcTransport(object):
     def batch_update_entities(self):
         """Return the gRPC stub for :meth:`EntityTypesClient.batch_update_entities`.
 
-        Updates or creates multiple entities in the specified entity type. This
-        method does not affect entities in the entity type that aren't
+        Updates or creates multiple entities in the specified entity type.
+        This method does not affect entities in the entity type that aren't
         explicitly specified in the request.
 
         Operation <response: ``google.protobuf.Empty``>

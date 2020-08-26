@@ -42,6 +42,8 @@ from dialogflow_v2beta1.proto import document_pb2
 from dialogflow_v2beta1.proto import document_pb2_grpc
 from dialogflow_v2beta1.proto import entity_type_pb2
 from dialogflow_v2beta1.proto import entity_type_pb2_grpc
+from dialogflow_v2beta1.proto import environment_pb2
+from dialogflow_v2beta1.proto import environment_pb2_grpc
 from dialogflow_v2beta1.proto import gcs_pb2
 from dialogflow_v2beta1.proto import intent_pb2
 from dialogflow_v2beta1.proto import intent_pb2_grpc
@@ -58,11 +60,7 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("dialogflow").version
 
 
 class KnowledgeBasesClient(object):
-    """
-    Manages knowledge bases.
-
-    Allows users to setup and maintain knowledge bases with their knowledge data.
-    """
+    """Service for managing ``KnowledgeBases``."""
 
     SERVICE_ADDRESS = "dialogflow.googleapis.com:443"
     """The default address of the service."""

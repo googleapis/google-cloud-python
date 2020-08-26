@@ -49,24 +49,7 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("dialogflow").version
 
 
 class ContextsClient(object):
-    """
-    A context represents additional information included with user input or
-    with an intent returned by the Dialogflow API. Contexts are helpful for
-    differentiating user input which may be vague or have a different
-    meaning depending on additional details from your application such as
-    user setting and preferences, previous user input, where the user is in
-    your application, geographic location, and so on.
-
-    You can include contexts as input parameters of a ``DetectIntent`` (or
-    ``StreamingDetectIntent``) request, or as output contexts included in
-    the returned intent. Contexts expire when an intent is matched, after
-    the number of ``DetectIntent`` requests specified by the
-    ``lifespan_count`` parameter, or after 20 minutes if no intents are
-    matched for a ``DetectIntent`` request.
-
-    For more information about contexts, see the `Dialogflow
-    documentation <https://cloud.google.com/dialogflow/docs/contexts-overview>`__.
-    """
+    """Service for managing ``Contexts``."""
 
     SERVICE_ADDRESS = "dialogflow.googleapis.com:443"
     """The default address of the service."""
@@ -243,7 +226,8 @@ class ContextsClient(object):
             >>>
             >>> client = dialogflow_v2.ContextsClient()
             >>>
-            >>> parent = client.session_path('[PROJECT]', '[SESSION]')
+            >>> # TODO: Initialize `parent`:
+            >>> parent = ''
             >>>
             >>> # Iterate over all results
             >>> for element in client.list_contexts(parent):
@@ -348,7 +332,8 @@ class ContextsClient(object):
             >>>
             >>> client = dialogflow_v2.ContextsClient()
             >>>
-            >>> name = client.context_path('[PROJECT]', '[SESSION]', '[CONTEXT]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> response = client.get_context(name)
 
@@ -426,7 +411,8 @@ class ContextsClient(object):
             >>>
             >>> client = dialogflow_v2.ContextsClient()
             >>>
-            >>> parent = client.session_path('[PROJECT]', '[SESSION]')
+            >>> # TODO: Initialize `parent`:
+            >>> parent = ''
             >>>
             >>> # TODO: Initialize `context`:
             >>> context = {}
@@ -587,7 +573,8 @@ class ContextsClient(object):
             >>>
             >>> client = dialogflow_v2.ContextsClient()
             >>>
-            >>> name = client.context_path('[PROJECT]', '[SESSION]', '[CONTEXT]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> client.delete_context(name)
 
@@ -659,13 +646,14 @@ class ContextsClient(object):
             >>>
             >>> client = dialogflow_v2.ContextsClient()
             >>>
-            >>> parent = client.session_path('[PROJECT]', '[SESSION]')
+            >>> # TODO: Initialize `parent`:
+            >>> parent = ''
             >>>
             >>> client.delete_all_contexts(parent)
 
         Args:
-            parent (str): Required. The name of the session to delete all contexts from. Format:
-                ``projects/<Project ID>/agent/sessions/<Session ID>`` or
+            parent (str): Required. The name of the session to delete all contexts from.
+                Format: ``projects/<Project ID>/agent/sessions/<Session ID>`` or
                 ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``.
                 If ``Environment ID`` is not specified we assume default 'draft'
                 environment. If ``User ID`` is not specified, we assume default '-'

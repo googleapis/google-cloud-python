@@ -29,8 +29,8 @@ class AudioEncoding(enum.IntEnum):
     Attributes:
       AUDIO_ENCODING_UNSPECIFIED (int): Not specified.
       AUDIO_ENCODING_LINEAR_16 (int): Uncompressed 16-bit signed little-endian samples (Linear PCM).
-      AUDIO_ENCODING_FLAC (int): ```FLAC`` <https://xiph.org/flac/documentation.html>`__ (Free Lossless
-      Audio Codec) is the recommended encoding because it is lossless
+      AUDIO_ENCODING_FLAC (int): ```FLAC`` <https://xiph.org/flac/documentation.html>`__ (Free
+      Lossless Audio Codec) is the recommended encoding because it is lossless
       (therefore recognition is not compromised) and requires only about half
       the bandwidth of ``LINEAR16``. ``FLAC`` stream encoding supports 16-bit
       and 24-bit samples, however, not all fields in ``STREAMINFO`` are
@@ -38,12 +38,13 @@ class AudioEncoding(enum.IntEnum):
       AUDIO_ENCODING_MULAW (int): 8-bit samples that compand 14-bit audio samples using G.711 PCMU/mu-law.
       AUDIO_ENCODING_AMR (int): Adaptive Multi-Rate Narrowband codec. ``sample_rate_hertz`` must be
       8000.
-      AUDIO_ENCODING_AMR_WB (int): Adaptive Multi-Rate Wideband codec. ``sample_rate_hertz`` must be 16000.
+      AUDIO_ENCODING_AMR_WB (int): Adaptive Multi-Rate Wideband codec. ``sample_rate_hertz`` must be
+      16000.
       AUDIO_ENCODING_OGG_OPUS (int): Opus encoded audio frames in Ogg container
       (`OggOpus <https://wiki.xiph.org/OggOpus>`__). ``sample_rate_hertz``
       must be 16000.
-      AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE (int): Although the use of lossy encodings is not recommended, if a very low
-      bitrate encoding is required, ``OGG_OPUS`` is highly preferred over
+      AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE (int): Although the use of lossy encodings is not recommended, if a very
+      low bitrate encoding is required, ``OGG_OPUS`` is highly preferred over
       Speex encoding. The `Speex <https://speex.org/>`__ encoding supported by
       Dialogflow API has a header byte in each block, as in MIME type
       ``audio/x-speex-with-header-byte``. It is a variant of the RTP Speex
@@ -83,8 +84,8 @@ class IntentView(enum.IntEnum):
 
 class NullValue(enum.IntEnum):
     """
-    ``NullValue`` is a singleton enumeration to represent the null value for
-    the ``Value`` type union.
+    ``NullValue`` is a singleton enumeration to represent the null value
+    for the ``Value`` type union.
 
     The JSON representation for ``NullValue`` is JSON ``null``.
 
@@ -122,22 +123,22 @@ class SpeechModelVariant(enum.IntEnum):
 
     See the `Cloud Speech
     documentation <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
-    for which models have different variants. For example, the "phone\_call"
+    for which models have different variants. For example, the "phone_call"
     model has both a standard and an enhanced variant. When you use an
     enhanced model, you will generally receive higher quality results than
     for a standard model.
 
     Attributes:
       SPEECH_MODEL_VARIANT_UNSPECIFIED (int): No model variant specified. In this case Dialogflow defaults to
-      USE\_BEST\_AVAILABLE.
-      USE_BEST_AVAILABLE (int): Use the best available variant of the ``Speech model`` that the caller
-      is eligible for.
+      USE_BEST_AVAILABLE.
+      USE_BEST_AVAILABLE (int): Use the best available variant of the ``Speech model`` that the
+      caller is eligible for.
 
       Please see the `Dialogflow
       docs <https://cloud.google.com/dialogflow/docs/data-logging>`__ for how
       to make your project eligible for enhanced models.
-      USE_STANDARD (int): Use standard model variant even if an enhanced model is available. See
-      the `Cloud Speech
+      USE_STANDARD (int): Use standard model variant even if an enhanced model is available.
+      See the `Cloud Speech
       documentation <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
       for details about enhanced models.
       USE_ENHANCED (int): Use an enhanced model variant:
@@ -290,6 +291,28 @@ class EntityType(object):
         KIND_REGEXP = 3
 
 
+class Environment(object):
+    class State(enum.IntEnum):
+        """
+        Represents an environment state. When an environment is pointed to a
+        new agent version, the environment is temporarily set to the ``LOADING``
+        state. During that time, the environment keeps on serving the previous
+        version of the agent. After the new agent version is done loading, the
+        environment is set back to the ``RUNNING`` state.
+
+        Attributes:
+          STATE_UNSPECIFIED (int): Not specified. This value is not used.
+          STOPPED (int): Stopped.
+          LOADING (int): Loading.
+          RUNNING (int): Running.
+        """
+
+        STATE_UNSPECIFIED = 0
+        STOPPED = 1
+        LOADING = 2
+        RUNNING = 3
+
+
 class Intent(object):
     class WebhookState(enum.IntEnum):
         """
@@ -341,67 +364,8 @@ class Intent(object):
               SKYPE (int): Skype.
               LINE (int): Line.
               VIBER (int): Viber.
-              ACTIONS_ON_GOOGLE (int): Actions on Google. When using Actions on Google, you can choose one of
-              the specific Intent.Message types that mention support for Actions on
-              Google, or you can use the advanced Intent.Message.payload field. The
-              payload field provides access to AoG features not available in the
-              specific message types. If using the Intent.Message.payload field, it
-              should have a structure similar to the JSON message shown here. For more
-              information, see `Actions on Google Webhook
-              Format <https://developers.google.com/actions/dialogflow/webhook>`__
-
-              .. raw:: html
-              <pre>{
-                    "expectUserResponse": true,
-                    "isSsml": false,
-                    "noInputPrompts": [],
-                    "richResponse": {
-                      "items": [
-                        {
-                          "simpleResponse": {
-                            "displayText": "hi",
-                            "textToSpeech": "hello"
-                          }
-                        }
-                      ],
-                      "suggestions": [
-                        {
-                          "title": "Say this"
-                        },
-                        {
-                          "title": "or this"
-                        }
-                      ]
-                    },
-                    "systemIntent": {
-                      "data": {
-                        "@type": "type.googleapis.com/google.actions.v2.OptionValueSpec",
-                        "listSelect": {
-                          "items": [
-                            {
-                              "optionInfo": {
-                                "key": "key1",
-                                "synonyms": [
-                                  "key one"
-                                ]
-                              },
-                              "title": "must not be empty, but unique"
-                            },
-                            {
-                              "optionInfo": {
-                                "key": "key2",
-                                "synonyms": [
-                                  "key two"
-                                ]
-                              },
-                              "title": "must not be empty, but unique"
-                            }
-                          ]
-                        }
-                      },
-                      "intent": "actions.intent.OPTION"
-                    }
-                  }</pre>
+              ACTIONS_ON_GOOGLE (int): Google Assistant See `Dialogflow webhook
+              format <https://developers.google.com/assistant/actions/build/json/dialogflow-webhook-json>`__
               TELEPHONY (int): Telephony Gateway.
               GOOGLE_HANGOUTS (int): Google Hangouts.
             """
@@ -607,8 +571,8 @@ class SessionEntityType(object):
           ENTITY_OVERRIDE_MODE_UNSPECIFIED (int): Not specified. This value should be never used.
           ENTITY_OVERRIDE_MODE_OVERRIDE (int): The collection of session entities overrides the collection of entities
           in the corresponding custom entity type.
-          ENTITY_OVERRIDE_MODE_SUPPLEMENT (int): The collection of session entities extends the collection of entities in
-          the corresponding custom entity type.
+          ENTITY_OVERRIDE_MODE_SUPPLEMENT (int): The collection of session entities extends the collection of
+          entities in the corresponding custom entity type.
 
           Note: Even in this override mode calls to ``ListSessionEntityTypes``,
           ``GetSessionEntityType``, ``CreateSessionEntityType`` and

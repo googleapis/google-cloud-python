@@ -43,6 +43,8 @@ from dialogflow_v2beta1.proto import context_pb2
 from dialogflow_v2beta1.proto import context_pb2_grpc
 from dialogflow_v2beta1.proto import document_pb2
 from dialogflow_v2beta1.proto import document_pb2_grpc
+from dialogflow_v2beta1.proto import environment_pb2
+from dialogflow_v2beta1.proto import environment_pb2_grpc
 from dialogflow_v2beta1.proto import gcs_pb2
 from dialogflow_v2beta1.proto import validation_result_pb2
 from google.longrunning import operations_pb2
@@ -55,7 +57,7 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("dialogflow").version
 
 
 class DocumentsClient(object):
-    """Manages documents of a knowledge base."""
+    """Service for managing knowledge ``Documents``."""
 
     SERVICE_ADDRESS = "dialogflow.googleapis.com:443"
     """The default address of the service."""
@@ -408,9 +410,6 @@ class DocumentsClient(object):
         Note: The ``projects.agent.knowledgeBases.documents`` resource is
         deprecated; only use ``projects.knowledgeBases.documents``.
 
-        Operation <response: ``Document``, metadata:
-        ``KnowledgeOperationMetadata``>
-
         Example:
             >>> import dialogflow_v2beta1
             >>>
@@ -506,9 +505,6 @@ class DocumentsClient(object):
         Note: The ``projects.agent.knowledgeBases.documents`` resource is
         deprecated; only use ``projects.knowledgeBases.documents``.
 
-        Operation <response: ``google.protobuf.Empty``, metadata:
-        ``KnowledgeOperationMetadata``>
-
         Example:
             >>> import dialogflow_v2beta1
             >>>
@@ -528,7 +524,7 @@ class DocumentsClient(object):
             >>> metadata = response.metadata()
 
         Args:
-            name (str): The name of the document to delete. Format:
+            name (str): Required. The name of the document to delete. Format:
                 ``projects/<Project ID>/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
@@ -597,9 +593,6 @@ class DocumentsClient(object):
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource is
         deprecated; only use ``projects.knowledgeBases.documents``.
-
-        Operation <response: ``Document``, metadata:
-        ``KnowledgeOperationMetadata``>
 
         Example:
             >>> import dialogflow_v2beta1
@@ -696,29 +689,38 @@ class DocumentsClient(object):
         metadata=None,
     ):
         """
-        Reloads the specified document from its specified source, content\_uri
-        or content. The previously loaded content of the document will be
-        deleted. Note: Even when the content of the document has not changed,
-        there still may be side effects because of internal implementation
-        changes.
+        Reloads the specified document from its specified source,
+        content_uri or content. The previously loaded content of the document
+        will be deleted. Note: Even when the content of the document has not
+        changed, there still may be side effects because of internal
+        implementation changes.
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource is
         deprecated; only use ``projects.knowledgeBases.documents``.
-
-        Operation <response: ``Document``, metadata:
-        ``KnowledgeOperationMetadata``>
 
         Example:
             >>> import dialogflow_v2beta1
             >>>
             >>> client = dialogflow_v2beta1.DocumentsClient()
             >>>
-            >>> response = client.reload_document()
+            >>> name = client.document_path('[PROJECT]', '[KNOWLEDGE_BASE]', '[DOCUMENT]')
+            >>>
+            >>> response = client.reload_document(name)
+            >>>
+            >>> def callback(operation_future):
+            ...     # Handle result.
+            ...     result = operation_future.result()
+            >>>
+            >>> response.add_done_callback(callback)
+            >>>
+            >>> # Handle metadata.
+            >>> metadata = response.metadata()
 
         Args:
-            name (str): The name of the document to reload. Format:
+            name (str): Required. The name of the document to reload. Format:
                 ``projects/<Project ID>/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>``
-            gcs_source (Union[dict, ~google.cloud.dialogflow_v2beta1.types.GcsSource]): The path of gcs source file for reloading document content.
+            gcs_source (Union[dict, ~google.cloud.dialogflow_v2beta1.types.GcsSource]): The path for a Cloud Storage source file for reloading document content.
+                If not provided, the Document's existing source will be reloaded.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.dialogflow_v2beta1.types.GcsSource`
@@ -732,7 +734,7 @@ class DocumentsClient(object):
                 that is provided to the method.
 
         Returns:
-            A :class:`~google.cloud.dialogflow_v2beta1.types.Operation` instance.
+            A :class:`~google.cloud.dialogflow_v2beta1.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -770,6 +772,12 @@ class DocumentsClient(object):
             )
             metadata.append(routing_metadata)
 
-        return self._inner_api_calls["reload_document"](
+        operation = self._inner_api_calls["reload_document"](
             request, retry=retry, timeout=timeout, metadata=metadata
+        )
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.transport._operations_client,
+            document_pb2.Document,
+            metadata_type=document_pb2.KnowledgeOperationMetadata,
         )

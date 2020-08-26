@@ -40,6 +40,8 @@ from dialogflow_v2.proto import context_pb2
 from dialogflow_v2.proto import context_pb2_grpc
 from dialogflow_v2.proto import entity_type_pb2
 from dialogflow_v2.proto import entity_type_pb2_grpc
+from dialogflow_v2.proto import environment_pb2
+from dialogflow_v2.proto import environment_pb2_grpc
 from dialogflow_v2.proto import intent_pb2
 from dialogflow_v2.proto import intent_pb2_grpc
 from dialogflow_v2.proto import session_entity_type_pb2
@@ -55,24 +57,7 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("dialogflow").version
 
 
 class SessionEntityTypesClient(object):
-    """
-    Entities are extracted from user input and represent parameters that are
-    meaningful to your application. For example, a date range, a proper name
-    such as a geographic location or landmark, and so on. Entities represent
-    actionable data for your application.
-
-    Session entity types are referred to as **User** entity types and are
-    entities that are built for an individual user such as favorites,
-    preferences, playlists, and so on. You can redefine a session entity
-    type at the session level.
-
-    Session entity methods do not work with Google Assistant integration.
-    Contact Dialogflow support if you need to use session entities with
-    Google Assistant integration.
-
-    For more information about entity types, see the `Dialogflow
-    documentation <https://cloud.google.com/dialogflow/docs/entities-overview>`__.
-    """
+    """Service for managing ``SessionEntityTypes``."""
 
     SERVICE_ADDRESS = "dialogflow.googleapis.com:443"
     """The default address of the service."""
@@ -253,7 +238,8 @@ class SessionEntityTypesClient(object):
             >>>
             >>> client = dialogflow_v2.SessionEntityTypesClient()
             >>>
-            >>> parent = client.session_path('[PROJECT]', '[SESSION]')
+            >>> # TODO: Initialize `parent`:
+            >>> parent = ''
             >>>
             >>> # Iterate over all results
             >>> for element in client.list_session_entity_types(parent):
@@ -364,7 +350,8 @@ class SessionEntityTypesClient(object):
             >>>
             >>> client = dialogflow_v2.SessionEntityTypesClient()
             >>>
-            >>> name = client.session_entity_type_path('[PROJECT]', '[SESSION]', '[ENTITY_TYPE]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> response = client.get_session_entity_type(name)
 
@@ -447,7 +434,8 @@ class SessionEntityTypesClient(object):
             >>>
             >>> client = dialogflow_v2.SessionEntityTypesClient()
             >>>
-            >>> parent = client.session_path('[PROJECT]', '[SESSION]')
+            >>> # TODO: Initialize `parent`:
+            >>> parent = ''
             >>>
             >>> # TODO: Initialize `session_entity_type`:
             >>> session_entity_type = {}
@@ -618,7 +606,8 @@ class SessionEntityTypesClient(object):
             >>>
             >>> client = dialogflow_v2.SessionEntityTypesClient()
             >>>
-            >>> name = client.session_entity_type_path('[PROJECT]', '[SESSION]', '[ENTITY_TYPE]')
+            >>> # TODO: Initialize `name`:
+            >>> name = ''
             >>>
             >>> client.delete_session_entity_type(name)
 

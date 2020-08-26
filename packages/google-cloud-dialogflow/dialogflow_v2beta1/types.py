@@ -25,6 +25,7 @@ from dialogflow_v2beta1.proto import audio_config_pb2
 from dialogflow_v2beta1.proto import context_pb2
 from dialogflow_v2beta1.proto import document_pb2
 from dialogflow_v2beta1.proto import entity_type_pb2
+from dialogflow_v2beta1.proto import environment_pb2
 from dialogflow_v2beta1.proto import gcs_pb2
 from dialogflow_v2beta1.proto import intent_pb2
 from dialogflow_v2beta1.proto import knowledge_base_pb2
@@ -38,6 +39,7 @@ from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import struct_pb2
+from google.protobuf import timestamp_pb2
 from google.rpc import status_pb2
 from google.type import latlng_pb2
 
@@ -49,6 +51,7 @@ _shared_modules = [
     empty_pb2,
     field_mask_pb2,
     struct_pb2,
+    timestamp_pb2,
     status_pb2,
     latlng_pb2,
 ]
@@ -59,6 +62,7 @@ _local_modules = [
     context_pb2,
     document_pb2,
     entity_type_pb2,
+    environment_pb2,
     gcs_pb2,
     intent_pb2,
     knowledge_base_pb2,

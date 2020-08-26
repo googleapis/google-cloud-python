@@ -122,4 +122,197 @@ s.replace("noxfile.py",
 """['"]-W['"],  # warnings as errors""",
 "")
 
+# Re-add dropped methods and re-order method args
+# TODO: remove during microgenerator transition
+count = s.replace(
+    "dialogflow_*/**/agents_client.py",
+    """(\s+)def export_agent\(
+(\s+)self,
+\s+parent,
+\s+agent_uri,""",
+    """\g<1>def export_agent(
+        self,
+        parent,
+        agent_uri=None,"""
+)
+
+if count != 1:
+    raise Exception("Required replacement not made.")
+
+count = s.replace(
+    "dialogflow_*/**/agents_client.py",
+    """(\s+)def get_validation_result\(
+(\s+)self,
+\s+parent,""",
+"""\g<1>def get_validation_result(
+        self,
+        parent=None,"""
+)
+
+if count != 2:
+    raise Exception("Required replacement not made.")
+
+
+count = s.replace(
+    "dialogflow_*/**/entity_types_client.py",
+    """@classmethod
+    def agent_path\(cls, project\):""",
+    '''@classmethod
+    def project_agent_path(cls, project):	
+        """Return a fully-qualified project_agent string."""	
+        return google.api_core.path_template.expand(	
+            "projects/{project}/agent", project=project	
+        )
+    
+    @classmethod
+    def agent_path(cls, project):'''
+)
+
+if count != 2:
+    raise Exception("Required replacement not made.")
+
+
+count = s.replace(
+    "dialogflow_*/**/intents_client.py",
+    '''@classmethod
+    def agent_path\(cls, project\):
+        """Return a fully-qualified agent string\."""
+        return google\.api_core\.path_template\.expand\(
+            'projects/{project}/agent',
+            project=project,
+        \)''',
+    '''@classmethod
+    def agent_path(cls, project, agent):
+        """Return a fully-qualified agent string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/agents/{agent}", project=project, agent=agent
+        )
+
+    @classmethod
+    def project_agent_path(cls, project):
+        """Return a fully-qualified project_agent string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/agent", project=project
+        )'''
+)
+
+if count != 2:
+    raise Exception("Required replacement not made.")
+
+
+count = s.replace(
+    "dialogflow_v2beta1/**/contexts_client.py",
+    """@classmethod
+    def session_path\(cls, project, session\):""",
+    '''@classmethod	
+    def environment_context_path(cls, project, environment, user, session, context):	
+        """Return a fully-qualified environment_context string."""	
+        return google.api_core.path_template.expand(	
+            "projects/{project}/agent/environments/{environment}/users/{user}/sessions/{session}/contexts/{context}",	
+            project=project,	
+            environment=environment,	
+            user=user,	
+            session=session,	
+            context=context,	
+        )	
+
+    @classmethod	
+    def environment_session_path(cls, project, environment, user, session):	
+        """Return a fully-qualified environment_session string."""	
+        return google.api_core.path_template.expand(	
+            "projects/{project}/agent/environments/{environment}/users/{user}/sessions/{session}",	
+            project=project,	
+            environment=environment,	
+            user=user,	
+            session=session,	
+        )
+
+    @classmethod
+    def session_path(cls, project, session):'''
+)
+
+if count != 1:
+    raise Exception("Required replacement not made.")
+
+
+count = s.replace(
+    "dialogflow_v2beta1/**/documents_client.py",
+    """(\s+)def reload_document\(
+\s+self,
+\s+name,""",
+    """\g<1>def reload_document(
+        self,
+        name=None,"""
+)
+
+if count != 1:
+    raise Exception("Required replacement not made.")
+
+
+count = s.replace(
+    "dialogflow_v2beta1/**/session_entity_types_client.py",
+    """@classmethod
+\s+def session_path\(cls, project, session\):""",
+    '''@classmethod	
+    def environment_session_path(cls, project, environment, user, session):	
+        """Return a fully-qualified environment_session string."""	
+        return google.api_core.path_template.expand(	
+            "projects/{project}/agent/environments/{environment}/users/{user}/sessions/{session}",	
+            project=project,	
+            environment=environment,	
+            user=user,	
+            session=session,	
+        )	
+
+    @classmethod	
+    def environment_session_entity_type_path(	
+        cls, project, environment, user, session, entity_type	
+    ):	
+        """Return a fully-qualified environment_session_entity_type string."""	
+        return google.api_core.path_template.expand(	
+            "projects/{project}/agent/environments/{environment}/users/{user}/sessions/{session}/entityTypes/{entity_type}",	
+            project=project,	
+            environment=environment,	
+            user=user,	
+            session=session,	
+            entity_type=entity_type,	
+        )
+    
+    @classmethod
+    def session_path(cls, project, session):'''
+)
+
+if count != 1:
+    raise Exception("Required replacement not made.")
+
+count = s.replace(
+    "dialogflow_v2beta1/**/sessions_client.py",
+    """@classmethod
+\s+def session_path\(cls, project, session\):""",
+    '''@classmethod	
+    def environment_session_path(cls, project, environment, user, session):	
+        """Return a fully-qualified environment_session string."""	
+        return google.api_core.path_template.expand(	
+            "projects/{project}/agent/environments/{environment}/users/{user}/sessions/{session}",	
+            project=project,	
+            environment=environment,	
+            user=user,	
+            session=session,	
+        )
+    
+    @classmethod
+    def session_path(cls, project, session):'''
+)
+
+if count != 1:
+    raise Exception("Required replacement not made.")
+
+
+# fix unit test 
+s.replace(
+    "tests/**/test_intents_client_v2.py",
+    """client\.agent_path\('\[PROJECT\]'\)""",
+    """client.agent_path("[PROJECT]", "[AGENT]")""",
+)
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

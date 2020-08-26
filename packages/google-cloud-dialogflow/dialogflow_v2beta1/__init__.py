@@ -25,6 +25,7 @@ from dialogflow_v2beta1.gapic import contexts_client
 from dialogflow_v2beta1.gapic import documents_client
 from dialogflow_v2beta1.gapic import entity_types_client
 from dialogflow_v2beta1.gapic import enums
+from dialogflow_v2beta1.gapic import environments_client
 from dialogflow_v2beta1.gapic import intents_client
 from dialogflow_v2beta1.gapic import knowledge_bases_client
 from dialogflow_v2beta1.gapic import session_entity_types_client
@@ -33,11 +34,16 @@ from dialogflow_v2beta1.gapic import sessions_client
 
 if sys.version_info[:2] == (2, 7):
     message = (
-        "A future version of this library will drop support for Python 2.7."
-        "More details about Python 2 support for Google Cloud Client Libraries"
+        "A future version of this library will drop support for Python 2.7. "
+        "More details about Python 2 support for Google Cloud Client Libraries "
         "can be found at https://cloud.google.com/python/docs/python2-sunset/"
     )
     warnings.warn(message, DeprecationWarning)
+
+
+class EnvironmentsClient(environments_client.EnvironmentsClient):
+    __doc__ = environments_client.EnvironmentsClient.__doc__
+    enums = enums
 
 
 class AgentsClient(agents_client.AgentsClient):
@@ -83,6 +89,7 @@ class SessionsClient(sessions_client.SessionsClient):
 __all__ = (
     "enums",
     "types",
+    "EnvironmentsClient",
     "AgentsClient",
     "ContextsClient",
     "DocumentsClient",

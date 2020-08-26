@@ -113,11 +113,13 @@ class TestDocumentsClient(object):
         display_name = "displayName1615086568"
         mime_type = "mimeType-196041627"
         content_uri = "contentUri-388807514"
+        enable_auto_reload = False
         expected_response = {
             "name": name_2,
             "display_name": display_name,
             "mime_type": mime_type,
             "content_uri": content_uri,
+            "enable_auto_reload": enable_auto_reload,
         }
         expected_response = document_pb2.Document(**expected_response)
 
@@ -159,11 +161,13 @@ class TestDocumentsClient(object):
         display_name = "displayName1615086568"
         mime_type = "mimeType-196041627"
         content_uri = "contentUri-388807514"
+        enable_auto_reload = False
         expected_response = {
             "name": name,
             "display_name": display_name,
             "mime_type": mime_type,
             "content_uri": content_uri,
+            "enable_auto_reload": enable_auto_reload,
         }
         expected_response = document_pb2.Document(**expected_response)
         operation = operations_pb2.Operation(
@@ -272,11 +276,13 @@ class TestDocumentsClient(object):
         display_name = "displayName1615086568"
         mime_type = "mimeType-196041627"
         content_uri = "contentUri-388807514"
+        enable_auto_reload = False
         expected_response = {
             "name": name,
             "display_name": display_name,
             "mime_type": mime_type,
             "content_uri": content_uri,
+            "enable_auto_reload": enable_auto_reload,
         }
         expected_response = document_pb2.Document(**expected_response)
         operation = operations_pb2.Operation(
@@ -327,33 +333,61 @@ class TestDocumentsClient(object):
 
     def test_reload_document(self):
         # Setup Expected Response
-        name = "name3373707"
-        done = True
-        expected_response = {"name": name, "done": done}
-        expected_response = operations_pb2.Operation(**expected_response)
+        name_2 = "name2-1052831874"
+        display_name = "displayName1615086568"
+        mime_type = "mimeType-196041627"
+        content_uri = "contentUri-388807514"
+        enable_auto_reload = False
+        expected_response = {
+            "name": name_2,
+            "display_name": display_name,
+            "mime_type": mime_type,
+            "content_uri": content_uri,
+            "enable_auto_reload": enable_auto_reload,
+        }
+        expected_response = document_pb2.Document(**expected_response)
+        operation = operations_pb2.Operation(
+            name="operations/test_reload_document", done=True
+        )
+        operation.response.Pack(expected_response)
 
         # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
+        channel = ChannelStub(responses=[operation])
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = dialogflow_v2beta1.DocumentsClient()
 
-        response = client.reload_document()
-        assert expected_response == response
+        # Setup Request
+        name = client.document_path("[PROJECT]", "[KNOWLEDGE_BASE]", "[DOCUMENT]")
+
+        response = client.reload_document(name)
+        result = response.result()
+        assert expected_response == result
 
         assert len(channel.requests) == 1
-        expected_request = document_pb2.ReloadDocumentRequest()
+        expected_request = document_pb2.ReloadDocumentRequest(name=name)
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
     def test_reload_document_exception(self):
+        # Setup Response
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name="operations/test_reload_document_exception", done=True
+        )
+        operation.error.CopyFrom(error)
+
         # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
+        channel = ChannelStub(responses=[operation])
         patch = mock.patch("google.api_core.grpc_helpers.create_channel")
         with patch as create_channel:
             create_channel.return_value = channel
             client = dialogflow_v2beta1.DocumentsClient()
 
-        with pytest.raises(CustomException):
-            client.reload_document()
+        # Setup Request
+        name = client.document_path("[PROJECT]", "[KNOWLEDGE_BASE]", "[DOCUMENT]")
+
+        response = client.reload_document(name)
+        exception = response.exception()
+        assert exception.errors[0] == error
