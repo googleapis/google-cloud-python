@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [1.31.0](https://www.github.com/googleapis/python-storage/compare/v1.30.0...v1.31.0) (2020-08-26)
+
+
+### Features
+
+* add configurable checksumming for blob uploads and downloads ([#246](https://www.github.com/googleapis/python-storage/issues/246)) ([23b7d1c](https://www.github.com/googleapis/python-storage/commit/23b7d1c3155deae3c804c510dee3a7cec97cd46c))
+* add support for 'Blob.custom_time' and lifecycle rules ([#199](https://www.github.com/googleapis/python-storage/issues/199)) ([180873d](https://www.github.com/googleapis/python-storage/commit/180873de139f7f8e00b7bef423bc15760cf68cc2))
+* error message return from api ([#235](https://www.github.com/googleapis/python-storage/issues/235)) ([a8de586](https://www.github.com/googleapis/python-storage/commit/a8de5868f32b45868f178f420138fcd2fe42f5fd))
+* **storage:** add support of daysSinceNoncurrentTime and noncurrentTimeBefore ([#162](https://www.github.com/googleapis/python-storage/issues/162)) ([136c097](https://www.github.com/googleapis/python-storage/commit/136c0970f8ef7ad4751104e3b8b7dd3204220a67))
+* pass 'client_options' to base class ctor ([#225](https://www.github.com/googleapis/python-storage/issues/225)) ([e1f91fc](https://www.github.com/googleapis/python-storage/commit/e1f91fcca6c001bc3b0c5f759a7a003fcf60c0a6)), closes [#210](https://www.github.com/googleapis/python-storage/issues/210)
+* rename 'Blob.download_as_{string,bytes}', add 'Blob.download_as_text' ([#182](https://www.github.com/googleapis/python-storage/issues/182)) ([73107c3](https://www.github.com/googleapis/python-storage/commit/73107c35f23c4a358e957c2b8188300a7fa958fe))
+
+
+### Bug Fixes
+
+* change datetime.now to utcnow ([#251](https://www.github.com/googleapis/python-storage/issues/251)) ([3465d08](https://www.github.com/googleapis/python-storage/commit/3465d08e098edb250dee5e97d1fb9ded8bae5700)), closes [#228](https://www.github.com/googleapis/python-storage/issues/228)
+* extract hashes correctly during download ([#238](https://www.github.com/googleapis/python-storage/issues/238)) ([23cfb65](https://www.github.com/googleapis/python-storage/commit/23cfb65c3a3b10759c67846e162e4ed77a3f5307))
+* repair mal-formed docstring ([#255](https://www.github.com/googleapis/python-storage/issues/255)) ([e722376](https://www.github.com/googleapis/python-storage/commit/e722376371cb8a3acc46d6c84fb41f4e874f41aa))
+
+
+### Documentation
+
+* update docs build (via synth) ([#222](https://www.github.com/googleapis/python-storage/issues/222)) ([4c5adfa](https://www.github.com/googleapis/python-storage/commit/4c5adfa6e05bf018d72ee1a7e99679fd55f2c662))
+
 ## [1.30.0](https://www.github.com/googleapis/python-storage/compare/v1.29.0...v1.30.0) (2020-07-24)
 
 
