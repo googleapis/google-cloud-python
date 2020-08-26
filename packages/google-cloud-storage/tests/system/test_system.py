@@ -22,6 +22,7 @@ import re
 import tempfile
 import time
 import unittest
+import mock
 
 import requests
 import six
@@ -33,6 +34,8 @@ from google.cloud.storage._helpers import _base64_md5hash
 from google.cloud.storage.bucket import LifecycleRuleDelete
 from google.cloud.storage.bucket import LifecycleRuleSetStorageClass
 from google.cloud import kms
+from google import resumable_media
+import google.auth
 import google.api_core
 from google.api_core import path_template
 import google.oauth2
@@ -573,6 +576,37 @@ class TestStorageWriteFiles(TestStorageFiles):
             md5_hash = md5_hash.encode("utf-8")
         self.assertEqual(md5_hash, file_data["hash"])
 
+    def test_large_file_write_from_stream_with_checksum(self):
+        blob = self.bucket.blob("LargeFile")
+
+        file_data = self.FILES["big"]
+        with open(file_data["path"], "rb") as file_obj:
+            blob.upload_from_file(file_obj, checksum="crc32c")
+            self.case_blobs_to_delete.append(blob)
+
+        md5_hash = blob.md5_hash
+        if not isinstance(md5_hash, six.binary_type):
+            md5_hash = md5_hash.encode("utf-8")
+        self.assertEqual(md5_hash, file_data["hash"])
+
+    def test_large_file_write_from_stream_with_failed_checksum(self):
+        blob = self.bucket.blob("LargeFile")
+
+        file_data = self.FILES["big"]
+
+        # Intercept the digest processing at the last stage and replace it with garbage.
+        # This is done with a patch to monkey-patch the resumable media library's checksum
+        # processing; it does not mock a remote interface like a unit test would. The
+        # remote API is still exercised.
+        with open(file_data["path"], "rb") as file_obj:
+            with mock.patch(
+                "google.resumable_media._helpers.prepare_checksum_digest",
+                return_value="FFFFFF==",
+            ):
+                with self.assertRaises(resumable_media.DataCorruption):
+                    blob.upload_from_file(file_obj, checksum="crc32c")
+                self.assertFalse(blob.exists())
+
     def test_large_encrypted_file_write_from_stream(self):
         blob = self.bucket.blob("LargeFile", encryption_key=self.ENCRYPTION_KEY)
 
@@ -606,6 +640,32 @@ class TestStorageWriteFiles(TestStorageFiles):
         if not isinstance(md5_hash, six.binary_type):
             md5_hash = md5_hash.encode("utf-8")
         self.assertEqual(md5_hash, file_data["hash"])
+
+    def test_small_file_write_from_filename_with_checksum(self):
+        blob = self.bucket.blob("SmallFile")
+
+        file_data = self.FILES["simple"]
+        blob.upload_from_filename(file_data["path"], checksum="crc32c")
+        self.case_blobs_to_delete.append(blob)
+
+        md5_hash = blob.md5_hash
+        if not isinstance(md5_hash, six.binary_type):
+            md5_hash = md5_hash.encode("utf-8")
+        self.assertEqual(md5_hash, file_data["hash"])
+
+    def test_small_file_write_from_filename_with_failed_checksum(self):
+        blob = self.bucket.blob("SmallFile")
+
+        file_data = self.FILES["simple"]
+        # Intercept the digest processing at the last stage and replace it with garbage
+        with mock.patch(
+            "google.resumable_media._helpers.prepare_checksum_digest",
+            return_value="FFFFFF==",
+        ):
+            with self.assertRaises(google.api_core.exceptions.BadRequest):
+                blob.upload_from_filename(file_data["path"], checksum="crc32c")
+
+        self.assertFalse(blob.exists())
 
     @unittest.skipUnless(USER_PROJECT, "USER_PROJECT not set in environment.")
     def test_crud_blob_w_user_project(self):
@@ -835,6 +895,35 @@ class TestStorageWriteFiles(TestStorageFiles):
                 stored_contents = file_obj.read()
 
         self.assertEqual(file_contents, stored_contents)
+
+    def test_download_w_failed_crc32c_checksum(self):
+        blob = self.bucket.blob("FailedChecksumBlob")
+        file_contents = b"Hello World"
+        blob.upload_from_string(file_contents)
+        self.case_blobs_to_delete.append(blob)
+
+        with tempfile.NamedTemporaryFile() as temp_f:
+            # Intercept the digest processing at the last stage and replace it with garbage.
+            # This is done with a patch to monkey-patch the resumable media library's checksum
+            # processing; it does not mock a remote interface like a unit test would. The
+            # remote API is still exercised.
+            with mock.patch(
+                "google.resumable_media._helpers.prepare_checksum_digest",
+                return_value="FFFFFF==",
+            ):
+                with self.assertRaises(resumable_media.DataCorruption):
+                    blob.download_to_filename(temp_f.name, checksum="crc32c")
+
+                # Confirm the file was deleted on failure
+                self.assertFalse(os.path.isfile(temp_f.name))
+
+                # Now download with checksumming turned off
+                blob.download_to_filename(temp_f.name, checksum=None)
+
+            with open(temp_f.name, "rb") as file_obj:
+                stored_contents = file_obj.read()
+
+            self.assertEqual(file_contents, stored_contents)
 
     def test_copy_existing_file(self):
         filename = self.FILES["logo"]["path"]
