@@ -196,7 +196,9 @@ class TestStorageBuckets(unittest.TestCase):
         from google.cloud.storage import constants
 
         new_bucket_name = "w-lifcycle-rules" + unique_resource_id("-")
+        custom_time_before = datetime.date(2018, 8, 1)
         noncurrent_before = datetime.date(2018, 8, 1)
+
         self.assertRaises(
             exceptions.NotFound, Config.CLIENT.get_bucket, new_bucket_name
         )
@@ -204,10 +206,11 @@ class TestStorageBuckets(unittest.TestCase):
         bucket.add_lifecycle_delete_rule(
             age=42,
             number_of_newer_versions=3,
+            days_since_custom_time=2,
+            custom_time_before=custom_time_before,
             days_since_noncurrent_time=2,
             noncurrent_time_before=noncurrent_before,
         )
-
         bucket.add_lifecycle_set_storage_class_rule(
             constants.COLDLINE_STORAGE_CLASS,
             is_live=False,
@@ -218,6 +221,8 @@ class TestStorageBuckets(unittest.TestCase):
             LifecycleRuleDelete(
                 age=42,
                 number_of_newer_versions=3,
+                days_since_custom_time=2,
+                custom_time_before=custom_time_before,
                 days_since_noncurrent_time=2,
                 noncurrent_time_before=noncurrent_before,
             ),

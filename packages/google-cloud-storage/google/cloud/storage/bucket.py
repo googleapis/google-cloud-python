@@ -170,6 +170,18 @@ class LifecycleRuleConditions(dict):
     :param number_of_newer_versions: (Optional) Apply rule action to versioned
                                      items having N newer versions.
 
+    :type days_since_custom_time: int
+    :param days_since_custom_time: (Optional) Apply rule action to items whose number of days
+                                   elapsed since the custom timestamp. This condition is relevant
+                                   only for versioned objects. The value of the field must be a non
+                                   negative integer. If it's zero, the object version will become
+                                   eligible for lifecycle action as soon as it becomes custom.
+
+    :type custom_time_before: :class:`datetime.date`
+    :param custom_time_before: (Optional)  Date object parsed from RFC3339 valid date, apply rule action
+                               to items whose custom time is before this date. This condition is relevant
+                               only for versioned objects, e.g., 2019-03-16.
+
     :type days_since_noncurrent_time: int
     :param days_since_noncurrent_time: (Optional) Apply rule action to items whose number of days
                                         elapsed since the non current timestamp. This condition
@@ -193,6 +205,8 @@ class LifecycleRuleConditions(dict):
         is_live=None,
         matches_storage_class=None,
         number_of_newer_versions=None,
+        days_since_custom_time=None,
+        custom_time_before=None,
         days_since_noncurrent_time=None,
         noncurrent_time_before=None,
         _factory=False,
@@ -213,6 +227,12 @@ class LifecycleRuleConditions(dict):
 
         if number_of_newer_versions is not None:
             conditions["numNewerVersions"] = number_of_newer_versions
+
+        if days_since_custom_time is not None:
+            conditions["daysSinceCustomTime"] = days_since_custom_time
+
+        if custom_time_before is not None:
+            conditions["customTimeBefore"] = custom_time_before.isoformat()
 
         if not _factory and not conditions:
             raise ValueError("Supply at least one condition")
@@ -265,6 +285,18 @@ class LifecycleRuleConditions(dict):
     def number_of_newer_versions(self):
         """Conditon's 'number_of_newer_versions' value."""
         return self.get("numNewerVersions")
+
+    @property
+    def days_since_custom_time(self):
+        """Conditon's 'days_since_custom_time' value."""
+        return self.get("daysSinceCustomTime")
+
+    @property
+    def custom_time_before(self):
+        """Conditon's 'custom_time_before' value."""
+        before = self.get("customTimeBefore")
+        if before is not None:
+            return datetime_helpers.from_iso8601_date(before)
 
     @property
     def days_since_noncurrent_time(self):
