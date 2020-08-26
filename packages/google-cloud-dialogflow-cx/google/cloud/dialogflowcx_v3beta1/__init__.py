@@ -239,7 +239,6 @@ __all__ = (
     "SessionEntityType",
     "SessionEntityTypesClient",
     "SessionInfo",
-    "SessionsClient",
     "SpeechModelVariant",
     "SpeechToTextSettings",
     "SpeechWordInfo",
@@ -270,4 +269,5 @@ __all__ = (
     "WebhookRequest",
     "WebhookResponse",
     "WebhooksClient",
+    "SessionsClient",
 )
