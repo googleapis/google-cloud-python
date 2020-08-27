@@ -25,6 +25,8 @@ from google.api_core import exceptions as core_exceptions
 from google.cloud.ndb import _retry
 from google.cloud.ndb import tasklets
 
+from . import utils
+
 
 class Test_retry:
     @staticmethod
@@ -76,6 +78,40 @@ class Test_retry:
         retry = _retry.retry_async(callback)
         sleep_future.set_result(None)
         assert retry().result() == "foo"
+
+        sleep.assert_called_once_with(0)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb.tasklets.sleep")
+    @mock.patch("google.cloud.ndb._retry.core_retry")
+    def test_transient_error_callback_is_tasklet(core_retry, sleep):
+        """Regression test for #519
+
+        https://github.com/googleapis/python-ndb/issues/519
+        """
+        core_retry.exponential_sleep_generator.return_value = itertools.count()
+        core_retry.if_transient_error.return_value = True
+
+        sleep_future = tasklets.Future("sleep")
+        sleep.return_value = sleep_future
+
+        callback = mock.Mock(
+            side_effect=[
+                utils.future_exception(Exception("Spurious error.")),
+                utils.future_result("foo"),
+            ]
+        )
+        retry = _retry.retry_async(callback)
+        future = retry()
+
+        # This is the important check for the bug in #519. We need to make sure
+        # that we're waiting for the sleep future to complete before moving on.
+        assert future.running()
+
+        # Finish sleeping
+        sleep_future.set_result(None)
+        assert future.result() == "foo"
 
         sleep.assert_called_once_with(0)
 

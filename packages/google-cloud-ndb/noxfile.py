@@ -28,6 +28,7 @@ DEFAULT_INTERPRETER = "3.7"
 ALL_INTERPRETERS = ("2.7", "3.6", "3.7")
 PY3_INTERPRETERS = ("3.6", "3.7")
 MAJOR_INTERPRETERS = ("2.7", "3.7")
+BLACK_VERSION = "black==19.10b0"
 
 
 def get_path(*names):
@@ -100,7 +101,7 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", "black")
+    session.install("flake8", BLACK_VERSION)
     run_black(session, use_check=True)
     session.run("flake8", "google", "tests")
 
@@ -108,7 +109,7 @@ def lint(session):
 @nox.session(py=DEFAULT_INTERPRETER)
 def blacken(session):
     # Install all dependencies.
-    session.install("black")
+    session.install(BLACK_VERSION)
     # Run ``black``.
     run_black(session)
 

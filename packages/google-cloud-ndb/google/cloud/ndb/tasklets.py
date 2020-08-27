@@ -309,10 +309,14 @@ class _TaskletFuture(Future):
                         traceback = error.__traceback__
                     except AttributeError:  # pragma: NO PY3 COVER  # pragma: NO BRANCH  # noqa: E501
                         traceback = None
-                    self.generator.throw(type(error), error, traceback)
 
-                # send_value will be None if this is the first time
-                yielded = self.generator.send(send_value)
+                    yielded = self.generator.throw(
+                        type(error), error, traceback
+                    )
+
+                else:
+                    # send_value will be None if this is the first time
+                    yielded = self.generator.send(send_value)
 
                 # Context may have changed in tasklet
                 self.context = context_module.get_context()

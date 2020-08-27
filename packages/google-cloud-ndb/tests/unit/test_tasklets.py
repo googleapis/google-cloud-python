@@ -372,6 +372,26 @@ class Test_TaskletFuture:
             future.result()
 
     @staticmethod
+    def test__advance_tasklet_dependency_raises_with_try_except(in_context):
+        def generator_function(dependency, error_handler):
+            try:
+                yield dependency
+            except Exception:
+                result = yield error_handler
+                raise tasklets.Return(result)
+
+        error = Exception("Spurious error.")
+        dependency = tasklets.Future()
+        error_handler = tasklets.Future()
+        generator = generator_function(dependency, error_handler)
+        future = tasklets._TaskletFuture(generator, in_context)
+        future._advance_tasklet()
+        dependency.set_exception(error)
+        assert future.running()
+        error_handler.set_result("hi mom!")
+        assert future.result() == "hi mom!"
+
+    @staticmethod
     def test__advance_tasklet_yields_rpc(in_context):
         def generator_function(dependency):
             value = yield dependency
