@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-kms/compare/v2.0.1...v2.1.0) (2020-08-27)
+
+
+### Features
+
+* accept custom client_info ([#41](https://www.github.com/googleapis/python-kms/issues/41)) ([6688e80](https://www.github.com/googleapis/python-kms/commit/6688e80aa4db74980d4a6194519c814a22cde177))
+
 ### [2.0.1](https://www.github.com/googleapis/python-kms/compare/v2.0.0...v2.0.1) (2020-08-24)
 
 
