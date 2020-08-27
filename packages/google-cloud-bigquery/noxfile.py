@@ -20,6 +20,7 @@ import shutil
 import nox
 
 
+BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ("docs", "google", "samples", "tests", "noxfile.py", "setup.py")
 
 
@@ -147,7 +148,7 @@ def lint(session):
     serious code quality issues.
     """
 
-    session.install("black", "flake8")
+    session.install("flake8", BLACK_VERSION)
     session.install("-e", ".")
     session.run("flake8", os.path.join("google", "cloud", "bigquery"))
     session.run("flake8", "tests")
@@ -173,7 +174,7 @@ def blacken(session):
     That run uses an image that doesn't have 3.6 installed. Before updating this
     check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
     """
-    session.install("black")
+    session.install(BLACK_VERSION)
     session.run("black", *BLACK_PATHS)
 
 
