@@ -50,18 +50,11 @@ for version in versions:
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=86, samples=True)
-s.move(templated_files)
-
-# TODO(busunkim): Use latest sphinx after microgenerator transition
-s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
-
-# Escape '_' in docstrings
-s.replace(
-   "google/cloud/**/*_pb2.py",
-   """\_$""",
-   """\_""",
+templated_files = common.py_library(
+  samples=True,
+  microgenerator=True,
 )
+s.move(templated_files, excludes=[".coveragerc"])
 
 # ----------------------------------------------------------------------------
 # Samples templates
