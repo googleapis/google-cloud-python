@@ -73,8 +73,47 @@
 * **firestore:** remove duplicated word in README ([#9297](https://www.github.com/googleapis/python-firestore/issues/9297)) ([250024c](https://www.github.com/googleapis/python-firestore/commit/250024c4e4fdc0186f52a0e224e6f4b3b7e5694e))
 * **firestore:** standardize use of 'required' and 'optional' in docstrings; add py2 deprecation warning; add 3.8 unit tests (via synth) ([#10068](https://www.github.com/googleapis/python-firestore/issues/10068)) ([0f72f2c](https://www.github.com/googleapis/python-firestore/commit/0f72f2c25bc6023155be49667cb917a1c217ecd3))
 
-
+### Tests
 * Refactor conformance tests. (#6291) ([4d29c1f](https://www.github.com/googleapis/python-firestore/commit/4d29c1fa7f4a4f10fdafd7797b1f513aa24b7c3c)), closes [#6291](https://www.github.com/googleapis/python-firestore/issues/6291) [#6290](https://www.github.com/googleapis/python-firestore/issues/6290)
+
+
+## [1.9.0](https://www.github.com/googleapis/python-firestore/compare/v1.8.1...v1.9.0) (2020-08-13)
+
+
+### Features
+
+* **firestore:** add client_options to base class ([#148](https://www.github.com/googleapis/python-firestore/issues/148)) ([91d6580](https://www.github.com/googleapis/python-firestore/commit/91d6580e2903ab55798d66bc53541faa86ca76fe))
+
+
+### [1.8.1](https://www.github.com/googleapis/python-firestore/compare/v1.8.0...v1.8.1) (2020-07-07)
+
+
+### Bug Fixes
+
+* **#82:** Add import back to generated client ([#83](https://www.github.com/googleapis/python-firestore/issues/83)) ([2d0ee60](https://www.github.com/googleapis/python-firestore/commit/2d0ee603926ffad484c9874e8745ea97d3c384eb)), closes [#82](https://www.github.com/googleapis/python-firestore/issues/82)
+
+
+## [1.8.0](https://www.github.com/googleapis/python-firestore/compare/v1.7.0...v1.8.0) (2020-07-06)
+
+
+### Features
+
+* support limit to last feature ([#57](https://www.github.com/googleapis/python-firestore/issues/57)) ([8c75e21](https://www.github.com/googleapis/python-firestore/commit/8c75e218331fda25ea3a789e84ba8dc11af2db02))
+* **firestore:** add support of emulator to run system tests on emulator ([#31](https://www.github.com/googleapis/python-firestore/issues/31)) ([891edc7](https://www.github.com/googleapis/python-firestore/commit/891edc7a9fd576cf0b61286502b0ba02223f89c6))
+* **firestore:** add v1beta1 deprecation annotation ([#34](https://www.github.com/googleapis/python-firestore/issues/34)) ([b9e2ab5](https://www.github.com/googleapis/python-firestore/commit/b9e2ab58a41c7bbab28028cb88f84bd6013816ed))
+* **v1:** add batch write ([#62](https://www.github.com/googleapis/python-firestore/issues/62)) ([1415bc4](https://www.github.com/googleapis/python-firestore/commit/1415bc47a7b9742c4a522ab2be67bbcb5ce39db4))
+
+
+### Bug Fixes
+
+* Support more Python sequence types when encoding to Protobuf ([#21](https://www.github.com/googleapis/python-firestore/issues/21)) ([b1c5987](https://www.github.com/googleapis/python-firestore/commit/b1c5987c606a14874b412e70f93015e161e278d6))
+* **firestore:** use specific naming convention ([#58](https://www.github.com/googleapis/python-firestore/issues/58)) ([c97a168](https://www.github.com/googleapis/python-firestore/commit/c97a168d9b1e4f2cd8625b02f66d6978381652dd))
+
+
+### Documentation
+
+* **firestore:** on_snapshot document changes ([#79](https://www.github.com/googleapis/python-firestore/issues/79)) ([c556fc5](https://www.github.com/googleapis/python-firestore/commit/c556fc5c656ed313c2b1d3eb37435c694601ee11))
+
 
 ## [1.7.0](https://www.github.com/googleapis/python-firestore/compare/v1.6.2...v1.7.0) (2020-05-18)
 
