@@ -75,13 +75,13 @@ def glossary_outside(glossary_name_outside):
 
 @vpcsc_config.skip_unless_inside_vpcsc
 def test_create_glossary_w_inside(client, parent_inside, glossary_inside):
-    client.create_glossary(parent_inside, glossary_inside)
+    client.create_glossary(parent=parent_inside, glossary=glossary_inside)
 
 
 @vpcsc_config.skip_unless_inside_vpcsc
 def test_create_glossary_w_outside(client, parent_outside, glossary_outside):
     with pytest.raises(exceptions.PermissionDenied) as exc:
-        client.create_glossary(parent_outside, glossary_outside)
+        client.create_glossary(parent=parent_outside, glossary=glossary_outside)
 
     assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
@@ -94,7 +94,7 @@ def test_list_glossaries_w_inside(client, parent_inside):
 @vpcsc_config.skip_unless_inside_vpcsc
 def test_list_glossaries_w_outside(client, parent_outside):
     with pytest.raises(exceptions.PermissionDenied) as exc:
-        list(client.list_glossaries(parent_outside))
+        list(client.list_glossaries(parent=parent_outside))
 
     assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
@@ -102,7 +102,7 @@ def test_list_glossaries_w_outside(client, parent_outside):
 @vpcsc_config.skip_unless_inside_vpcsc
 def test_get_glossary_w_inside(client, glossary_name_inside):
     try:
-        client.get_glossary(glossary_name_inside)
+        client.get_glossary(name=glossary_name_inside)
     except exceptions.NotFound:  # no perms issue
         pass
 
@@ -110,7 +110,7 @@ def test_get_glossary_w_inside(client, glossary_name_inside):
 @vpcsc_config.skip_unless_inside_vpcsc
 def test_get_glossary_w_outside(client, glossary_name_outside):
     with pytest.raises(exceptions.PermissionDenied) as exc:
-        client.get_glossary(glossary_name_outside)
+        client.get_glossary(name=glossary_name_outside)
 
     assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
@@ -118,7 +118,7 @@ def test_get_glossary_w_outside(client, glossary_name_outside):
 @vpcsc_config.skip_unless_inside_vpcsc
 def test_delete_glossary_w_inside(client, glossary_name_inside):
     try:
-        client.delete_glossary(glossary_name_inside)
+        client.delete_glossary(name=glossary_name_inside)
     except exceptions.NotFound:  # no perms issue
         pass
 
@@ -126,7 +126,7 @@ def test_delete_glossary_w_inside(client, glossary_name_inside):
 @vpcsc_config.skip_unless_inside_vpcsc
 def test_delete_glossary_w_outside(client, glossary_name_outside):
     with pytest.raises(exceptions.PermissionDenied) as exc:
-        client.delete_glossary(glossary_name_outside)
+        client.delete_glossary(name=glossary_name_outside)
 
     assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
@@ -140,11 +140,13 @@ def test_batch_translate_text_w_inside(client, parent_inside):
         "gcs_destination": {"output_uri_prefix": "gs://fake-bucket/output/"}
     }
     client.batch_translate_text(  # no perms issue
-        parent_inside,
-        source_language_code,
-        target_language_codes,
-        input_configs,
-        output_config,
+        request={
+            "parent": parent_inside,
+            "source_language_code": source_language_code,
+            "target_language_codes": target_language_codes,
+            "input_configs": input_configs,
+            "output_config": output_config,
+        }
     )
 
 
@@ -158,11 +160,13 @@ def test_batch_translate_text_w_outside(client, parent_outside):
     }
     with pytest.raises(exceptions.PermissionDenied) as exc:
         client.batch_translate_text(
-            parent_outside,
-            source_language_code,
-            target_language_codes,
-            input_configs,
-            output_config,
+            request={
+                "parent": parent_inside,
+                "source_language_code": source_language_code,
+                "target_language_codes": target_language_codes,
+                "input_configs": input_configs,
+                "output_config": output_config,
+            }
         )
 
     assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
