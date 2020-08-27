@@ -45,9 +45,7 @@ class TestKey:
     def test_constructor_default():
         key = key_module.Key("Kind", 42)
 
-        assert key._key == google.cloud.datastore.Key(
-            "Kind", 42, project="testing"
-        )
+        assert key._key == google.cloud.datastore.Key("Kind", 42, project="testing")
         assert key._reference is None
 
     @staticmethod
@@ -59,9 +57,7 @@ class TestKey:
         """
         key = key_module.Key(u"Kind", 42)
 
-        assert key._key == google.cloud.datastore.Key(
-            u"Kind", 42, project="testing"
-        )
+        assert key._key == google.cloud.datastore.Key(u"Kind", 42, project="testing")
         assert key._reference is None
 
     @staticmethod
@@ -117,9 +113,7 @@ class TestKey:
             pass
 
         key = key_module.Key(Simple, 47)
-        assert key._key == google.cloud.datastore.Key(
-            "Simple", 47, project="testing"
-        )
+        assert key._key == google.cloud.datastore.Key("Simple", 47, project="testing")
         assert key._reference is None
 
     @staticmethod
@@ -141,9 +135,7 @@ class TestKey:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     def test_constructor_with_serialized():
-        serialized = (
-            b"j\x18s~sample-app-no-locationr\n\x0b\x12\x04Zorp\x18X\x0c"
-        )
+        serialized = b"j\x18s~sample-app-no-locationr\n\x0b\x12\x04Zorp\x18X\x0c"
         key = key_module.Key(serialized=serialized)
 
         assert key._key == google.cloud.datastore.Key(
@@ -159,9 +151,7 @@ class TestKey:
     def test_constructor_with_urlsafe(self):
         key = key_module.Key(urlsafe=self.URLSAFE)
 
-        assert key._key == google.cloud.datastore.Key(
-            "Kind", "Thing", project="fire"
-        )
+        assert key._key == google.cloud.datastore.Key("Kind", "Thing", project="fire")
         assert key._reference == make_reference(
             path=({"type": "Kind", "name": "Thing"},),
             app="s~fire",
@@ -173,9 +163,7 @@ class TestKey:
     def test_constructor_with_pairs():
         key = key_module.Key(pairs=[("Kind", 1)])
 
-        assert key._key == google.cloud.datastore.Key(
-            "Kind", 1, project="testing"
-        )
+        assert key._key == google.cloud.datastore.Key("Kind", 1, project="testing")
         assert key._reference is None
 
     @staticmethod
@@ -183,9 +171,7 @@ class TestKey:
     def test_constructor_with_flat():
         key = key_module.Key(flat=["Kind", 1])
 
-        assert key._key == google.cloud.datastore.Key(
-            "Kind", 1, project="testing"
-        )
+        assert key._key == google.cloud.datastore.Key("Kind", 1, project="testing")
         assert key._reference is None
 
     @staticmethod
@@ -199,9 +185,7 @@ class TestKey:
     def test_constructor_with_app():
         key = key_module.Key("Kind", 10, app="s~foo")
 
-        assert key._key == google.cloud.datastore.Key(
-            "Kind", 10, project="foo"
-        )
+        assert key._key == google.cloud.datastore.Key("Kind", 10, project="foo")
         assert key._reference is None
 
     @staticmethod
@@ -209,9 +193,7 @@ class TestKey:
     def test_constructor_with_project():
         key = key_module.Key("Kind", 10, project="foo")
 
-        assert key._key == google.cloud.datastore.Key(
-            "Kind", 10, project="foo"
-        )
+        assert key._key == google.cloud.datastore.Key("Kind", 10, project="foo")
         assert key._reference is None
 
     @staticmethod
@@ -572,19 +554,13 @@ class TestKey:
     @pytest.mark.usefixtures("in_context")
     def test_to_legacy_urlsafe():
         key = key_module.Key("d", 123, app="f")
-        assert (
-            key.to_legacy_urlsafe(location_prefix="s~")
-            == b"agNzfmZyBwsSAWQYeww"
-        )
+        assert key.to_legacy_urlsafe(location_prefix="s~") == b"agNzfmZyBwsSAWQYeww"
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     def test_to_legacy_urlsafe_name():
         key = key_module.Key("d", "x", app="f")
-        assert (
-            key.to_legacy_urlsafe(location_prefix="s~")
-            == b"agNzfmZyCAsSAWQiAXgM"
-        )
+        assert key.to_legacy_urlsafe(location_prefix="s~") == b"agNzfmZyCAsSAWQiAXgM"
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -622,9 +598,7 @@ class TestKey:
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_api")
     @mock.patch("google.cloud.ndb.model._entity_from_protobuf")
-    def test_get_with_cache_hit(
-        _entity_from_protobuf, _datastore_api, in_context
-    ):
+    def test_get_with_cache_hit(_entity_from_protobuf, _datastore_api, in_context):
         class Simple(model.Model):
             pass
 
@@ -689,9 +663,7 @@ class TestKey:
         key = key_module.Key("Simple", 42)
         assert key.get() == "the entity"
 
-        _datastore_api.lookup.assert_called_once_with(
-            key._key, _options.ReadOptions()
-        )
+        _datastore_api.lookup.assert_called_once_with(key._key, _options.ReadOptions())
         _entity_from_protobuf.assert_called_once_with("ds_entity")
 
         assert Simple.pre_get_calls == [((key,), {})]
@@ -711,9 +683,7 @@ class TestKey:
         ds_future.set_result("ds_entity")
         assert future.result() == "the entity"
 
-        _datastore_api.lookup.assert_called_once_with(
-            key._key, _options.ReadOptions()
-        )
+        _datastore_api.lookup.assert_called_once_with(key._key, _options.ReadOptions())
         _entity_from_protobuf.assert_called_once_with("ds_entity")
 
     @staticmethod
@@ -741,9 +711,7 @@ class TestKey:
 
         key = key_module.Key("Simple", "b", app="c")
         assert key.delete() == "result"
-        _datastore_api.delete.assert_called_once_with(
-            key._key, _options.Options()
-        )
+        _datastore_api.delete.assert_called_once_with(key._key, _options.Options())
 
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_api")
@@ -808,9 +776,7 @@ class TestKey:
 
         key = key_module.Key("Simple", 42)
         assert key.delete() == "result"
-        _datastore_api.delete.assert_called_once_with(
-            key._key, _options.Options()
-        )
+        _datastore_api.delete.assert_called_once_with(key._key, _options.Options())
 
         assert Simple.pre_delete_calls == [((key,), {})]
         assert Simple.post_delete_calls == [((key,), {})]
@@ -824,9 +790,7 @@ class TestKey:
         with in_context.new(transaction=b"tx123").use():
             key = key_module.Key("a", "b", app="c")
             assert key.delete() is None
-            _datastore_api.delete.assert_called_once_with(
-                key._key, _options.Options()
-            )
+            _datastore_api.delete.assert_called_once_with(key._key, _options.Options())
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -840,9 +804,7 @@ class TestKey:
 
         result = key.delete_async().get_result()
 
-        _datastore_api.delete.assert_called_once_with(
-            key._key, _options.Options()
-        )
+        _datastore_api.delete.assert_called_once_with(key._key, _options.Options())
         assert result == "result"
 
     @staticmethod
@@ -946,9 +908,7 @@ class Test__from_serialized:
 
     @staticmethod
     def test_no_app_prefix():
-        serialized = (
-            b"j\x18s~sample-app-no-locationr\n\x0b\x12\x04Zorp\x18X\x0c"
-        )
+        serialized = b"j\x18s~sample-app-no-locationr\n\x0b\x12\x04Zorp\x18X\x0c"
         ds_key, reference = key_module._from_serialized(serialized, None, None)
         assert ds_key == google.cloud.datastore.Key(
             "Zorp", 88, project="sample-app-no-location"
@@ -985,9 +945,7 @@ class Test__from_urlsafe:
         urlsafe = b"agZzfmZpcmVyDwsSBEtpbmQiBVRoaW5nDA"
 
         ds_key, reference = key_module._from_urlsafe(urlsafe, None, None)
-        assert ds_key == google.cloud.datastore.Key(
-            "Kind", "Thing", project="fire"
-        )
+        assert ds_key == google.cloud.datastore.Key("Kind", "Thing", project="fire")
         assert reference == make_reference(
             path=({"type": "Kind", "name": "Thing"},),
             app="s~fire",
@@ -1030,9 +988,7 @@ def make_reference(
     app="s~sample-app",
     namespace="space",
 ):
-    elements = [
-        _app_engine_key_pb2.Path.Element(**element) for element in path
-    ]
+    elements = [_app_engine_key_pb2.Path.Element(**element) for element in path]
     return _app_engine_key_pb2.Reference(
         app=app,
         path=_app_engine_key_pb2.Path(element=elements),

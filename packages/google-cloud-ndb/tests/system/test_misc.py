@@ -334,9 +334,7 @@ def test_do_not_disclose_cache_contents(begin_transaction, client_context):
 
     https://github.com/googleapis/python-ndb/issues/482
     """
-    begin_transaction.side_effect = core_exceptions.ServiceUnavailable(
-        "Spurious Error"
-    )
+    begin_transaction.side_effect = core_exceptions.ServiceUnavailable("Spurious Error")
 
     client_context.cache["hello dad"] = "i'm in jail"
 

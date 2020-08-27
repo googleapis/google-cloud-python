@@ -179,12 +179,12 @@ _log = logging.getLogger(__name__)
 
 class PropertyOrder(object):
     """The sort order for a property name, to be used when ordering the
-       results of a query.
+    results of a query.
 
-       Args:
-           name (str): The name of the model property to use for ordering.
-           reverse (bool): Whether to reverse the sort order (descending)
-               or not (ascending). Default is False.
+    Args:
+        name (str): The name of the model property to use for ordering.
+        reverse (bool): Whether to reverse the sort order (descending)
+            or not (ascending). Default is False.
     """
 
     def __init__(self, name, reverse=False):
@@ -192,9 +192,7 @@ class PropertyOrder(object):
         self.reverse = reverse
 
     def __repr__(self):
-        return "PropertyOrder(name='{}', reverse={})".format(
-            self.name, self.reverse
-        )
+        return "PropertyOrder(name='{}', reverse={})".format(self.name, self.reverse)
 
     def __neg__(self):
         reverse = not self.reverse
@@ -257,8 +255,7 @@ class RepeatedStructuredPropertyPredicate(object):
                 subprop_name = prop_name.split(".", 1)[1]
                 if not subentities:
                     subentities = [
-                        {subprop_name: value}
-                        for value in prop_pb.array_value.values
+                        {subprop_name: value} for value in prop_pb.array_value.values
                     ]
                 else:
                     for subentity, value in zip(
@@ -308,9 +305,7 @@ class Parameter(ParameterizedThing):
     def __init__(self, key):
         if not isinstance(key, six.integer_types + six.string_types):
             raise TypeError(
-                "Parameter key must be an integer or string, not {}".format(
-                    key
-                )
+                "Parameter key must be an integer or string, not {}".format(key)
             )
         self._key = key
 
@@ -345,9 +340,7 @@ class Parameter(ParameterizedThing):
         """
         key = self._key
         if key not in bindings:
-            raise exceptions.BadArgumentError(
-                "Parameter :{} is not bound.".format(key)
-            )
+            raise exceptions.BadArgumentError("Parameter :{} is not bound.".format(key))
         value = bindings[key]
         used[key] = True
         return value
@@ -527,9 +520,7 @@ class ParameterNode(Node):
         if op not in _OPS:
             raise TypeError("Expected a valid operator, got {!r}".format(op))
         if not isinstance(param, ParameterizedThing):
-            raise TypeError(
-                "Expected a ParameterizedThing, got {!r}".format(param)
-            )
+            raise TypeError("Expected a ParameterizedThing, got {!r}".format(param))
         obj = super(ParameterNode, cls).__new__(cls)
         obj._prop = prop
         obj._op = op
@@ -657,9 +648,7 @@ class FilterNode(Node):
                     "in expected a list, tuple or set of values; "
                     "received {!r}".format(value)
                 )
-            nodes = [
-                FilterNode(name, _EQ_OP, sub_value) for sub_value in value
-            ]
+            nodes = [FilterNode(name, _EQ_OP, sub_value) for sub_value in value]
             if not nodes:
                 return FalseNode()
             if len(nodes) == 1:
@@ -730,9 +719,7 @@ class FilterNode(Node):
                 "to a single filter ({!r})".format(self._opsymbol)
             )
 
-        return _datastore_query.make_filter(
-            self._name, self._opsymbol, self._value
-        )
+        return _datastore_query.make_filter(self._name, self._opsymbol, self._value)
 
 
 class PostFilterNode(Node):
@@ -1191,9 +1178,7 @@ def _query_options(wrapped):
 
         if kwargs.get("keys_only"):
             if kwargs.get("projection"):
-                raise TypeError(
-                    "Cannot specify 'projection' with 'keys_only=True'"
-                )
+                raise TypeError("Cannot specify 'projection' with 'keys_only=True'")
             kwargs["projection"] = ["__key__"]
             del kwargs["keys_only"]
 
@@ -1392,14 +1377,12 @@ class Query(object):
                 if isinstance(ancestor, ParameterizedFunction):
                     if ancestor.func != "key":
                         raise TypeError(
-                            "ancestor cannot be a GQL function"
-                            "other than Key"
+                            "ancestor cannot be a GQL function" "other than Key"
                         )
             else:
                 if not isinstance(ancestor, model.Key):
                     raise TypeError(
-                        "ancestor must be a Key; "
-                        "received {}".format(ancestor)
+                        "ancestor must be a Key; " "received {}".format(ancestor)
                     )
                 if not ancestor.id():
                     raise ValueError("ancestor cannot be an incomplete key")
@@ -1499,13 +1482,9 @@ class Query(object):
         if self.keys_only is not None:
             args.append("keys_only=%r" % self.keys_only)
         if self.projection:
-            args.append(
-                "projection=%r" % (_to_property_names(self.projection))
-            )
+            args.append("projection=%r" % (_to_property_names(self.projection)))
         if self.distinct_on:
-            args.append(
-                "distinct_on=%r" % (_to_property_names(self.distinct_on))
-            )
+            args.append("distinct_on=%r" % (_to_property_names(self.distinct_on)))
         if self.default_options is not None:
             args.append("default_options=%r" % self.default_options)
         return "%s(%s)" % (self.__class__.__name__, ", ".join(args))
@@ -2303,9 +2282,7 @@ class Query(object):
                 result returned, and `more` indicates whether there are
                 (likely) more results after that.
         """
-        return self.fetch_page_async(
-            None, _options=kwargs["_options"]
-        ).result()
+        return self.fetch_page_async(None, _options=kwargs["_options"]).result()
 
     @tasklets.tasklet
     @_query_options
@@ -2395,8 +2372,7 @@ def _to_property_names(properties):
             fixed.append(prop._name)
         else:
             raise TypeError(
-                "Unexpected property {}; "
-                "should be string or Property".format(prop)
+                "Unexpected property {}; " "should be string or Property".format(prop)
             )
     return fixed
 

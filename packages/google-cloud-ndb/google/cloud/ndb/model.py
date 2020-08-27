@@ -652,13 +652,9 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
             return None if value is None else _BaseValue(value)
 
         if not (prop is not None and isinstance(prop, Property)):
-            if value is not None and isinstance(  # pragma: NO BRANCH
-                entity, Expando
-            ):
+            if value is not None and isinstance(entity, Expando):  # pragma: NO BRANCH
                 if isinstance(value, list):
-                    value = [
-                        base_value_or_none(sub_value) for sub_value in value
-                    ]
+                    value = [base_value_or_none(sub_value) for sub_value in value]
                 else:
                     value = _BaseValue(value)
                 setattr(entity, name, value)
@@ -670,9 +666,7 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
                 # projection query.
                 if isinstance(value, list):
                     # Not a projection
-                    value = [
-                        base_value_or_none(sub_value) for sub_value in value
-                    ]
+                    value = [base_value_or_none(sub_value) for sub_value in value]
                 else:
                     # Projection
                     value = [_BaseValue(value)]
@@ -769,9 +763,7 @@ def _entity_to_ds_entity(entity, set_key=True):
             key._key, exclude_from_indexes=exclude_from_indexes
         )
     else:
-        ds_entity = ds_entity_module.Entity(
-            exclude_from_indexes=exclude_from_indexes
-        )
+        ds_entity = ds_entity_module.Entity(exclude_from_indexes=exclude_from_indexes)
 
     # Some properties may need to set meanings for backwards compatibility,
     # so we look for them. They are set using the _to_datastore calls above.
@@ -1070,9 +1062,7 @@ class Property(ModelAttribute):
             raise TypeError("Name {!r} is not a string".format(name))
 
         if "." in name:
-            raise ValueError(
-                "Name {!r} cannot contain period characters".format(name)
-            )
+            raise ValueError("Name {!r} cannot contain period characters".format(name))
 
         return name
 
@@ -1084,9 +1074,7 @@ class Property(ModelAttribute):
                 ``required`` or ``default`` is set.
         """
         if self._repeated and (self._required or self._default is not None):
-            raise ValueError(
-                "repeated is incompatible with required or default"
-            )
+            raise ValueError("repeated is incompatible with required or default")
 
     @staticmethod
     def _verify_choices(choices):
@@ -1105,9 +1093,7 @@ class Property(ModelAttribute):
         """
         if not isinstance(choices, (list, tuple, set, frozenset)):
             raise TypeError(
-                "choices must be a list, tuple or set; received {!r}".format(
-                    choices
-                )
+                "choices must be a list, tuple or set; received {!r}".format(choices)
             )
         return frozenset(choices)
 
@@ -1141,9 +1127,7 @@ class Property(ModelAttribute):
         #       implementation. It's not clear why ``callable()`` was not used.
         if getattr(validator, "__call__", None) is None:
             raise TypeError(
-                "validator must be callable or None; received {!r}".format(
-                    validator
-                )
+                "validator must be callable or None; received {!r}".format(validator)
             )
 
         return validator
@@ -1157,9 +1141,7 @@ class Property(ModelAttribute):
         """
         # inspect.signature not available in Python 2.7, so we use positional
         # decorator combined with argspec instead.
-        argspec = getattr(
-            self.__init__, "_argspec", _getfullargspec(self.__init__)
-        )
+        argspec = getattr(self.__init__, "_argspec", _getfullargspec(self.__init__))
         positional = getattr(self.__init__, "_positional_args", 1)
         for index, name in enumerate(argspec.args):
             if name == "self":
@@ -1966,9 +1948,7 @@ class Property(ModelAttribute):
         """
         self._delete_value(entity)
 
-    def _serialize(
-        self, entity, pb, prefix="", parent_repeated=False, projection=None
-    ):
+    def _serialize(self, entity, pb, prefix="", parent_repeated=False, projection=None):
         """Serialize this property to a protocol buffer.
 
         Some subclasses may override this method.
@@ -2044,9 +2024,7 @@ class Property(ModelAttribute):
                 subproperties).
         """
         if require_indexed and not self._indexed:
-            raise InvalidPropertyError(
-                "Property is unindexed: {}".format(self._name)
-            )
+            raise InvalidPropertyError("Property is unindexed: {}".format(self._name))
 
         if rest:
             raise InvalidPropertyError(
@@ -2202,9 +2180,7 @@ class ModelKey(Property):
         if value is not None:
             return super(ModelKey, self)._comparison(op, value)
 
-        raise exceptions.BadValueError(
-            "__key__ filter query can't be compared to None"
-        )
+        raise exceptions.BadValueError("__key__ filter query can't be compared to None")
 
     def _validate(self, value):
         """Validate a ``value`` before setting it.
@@ -2272,9 +2248,7 @@ class BooleanProperty(Property):
             .BadValueError: If ``value`` is not a :class:`bool`.
         """
         if not isinstance(value, bool):
-            raise exceptions.BadValueError(
-                "Expected bool, got {!r}".format(value)
-            )
+            raise exceptions.BadValueError("Expected bool, got {!r}".format(value))
         return value
 
 
@@ -2303,9 +2277,7 @@ class IntegerProperty(Property):
                 to one.
         """
         if not isinstance(value, six.integer_types):
-            raise exceptions.BadValueError(
-                "Expected integer, got {!r}".format(value)
-            )
+            raise exceptions.BadValueError("Expected integer, got {!r}".format(value))
         return int(value)
 
 
@@ -2335,9 +2307,7 @@ class FloatProperty(Property):
                 to one.
         """
         if not isinstance(value, six.integer_types + (float,)):
-            raise exceptions.BadValueError(
-                "Expected float, got {!r}".format(value)
-            )
+            raise exceptions.BadValueError("Expected float, got {!r}".format(value))
         return float(value)
 
 
@@ -2468,9 +2438,7 @@ class BlobProperty(Property):
                 exceeds the maximum length (1500 bytes).
         """
         if not isinstance(value, bytes):
-            raise exceptions.BadValueError(
-                "Expected bytes, got {!r}".format(value)
-            )
+            raise exceptions.BadValueError("Expected bytes, got {!r}".format(value))
 
         if self._indexed and len(value) > _MAX_STRING_LENGTH:
             raise exceptions.BadValueError(
@@ -2615,9 +2583,7 @@ class CompressedTextProperty(BlobProperty):
         parent_init = super(CompressedTextProperty, self).__init__
         # inspect.signature not available in Python 2.7, so we use positional
         # decorator combined with argspec instead.
-        argspec = getattr(
-            parent_init, "_argspec", _getfullargspec(parent_init)
-        )
+        argspec = getattr(parent_init, "_argspec", _getfullargspec(parent_init))
         positional = getattr(parent_init, "_positional_args", 1)
         for index, name in enumerate(argspec.args):
             if name in ("self", "indexed", "compressed"):
@@ -2777,9 +2743,7 @@ class TextProperty(Property):
         parent_init = super(TextProperty, self).__init__
         # inspect.signature not available in Python 2.7, so we use positional
         # decorator combined with argspec instead.
-        argspec = getattr(
-            parent_init, "_argspec", _getfullargspec(parent_init)
-        )
+        argspec = getattr(parent_init, "_argspec", _getfullargspec(parent_init))
         positional = getattr(parent_init, "_positional_args", 1)
         for index, name in enumerate(argspec.args):
             if name == "self" or name == "indexed":
@@ -2816,9 +2780,7 @@ class TextProperty(Property):
         elif isinstance(value, six.string_types):
             encoded_length = len(value.encode("utf-8"))
         else:
-            raise exceptions.BadValueError(
-                "Expected string, got {!r}".format(value)
-            )
+            raise exceptions.BadValueError("Expected string, got {!r}".format(value))
 
         if self._indexed and encoded_length > _MAX_STRING_LENGTH:
             raise exceptions.BadValueError(
@@ -2919,9 +2881,7 @@ class GeoPtProperty(Property):
             .BadValueError: If ``value`` is not a :attr:`.GeoPt`.
         """
         if not isinstance(value, GeoPt):
-            raise exceptions.BadValueError(
-                "Expected GeoPt, got {!r}".format(value)
-            )
+            raise exceptions.BadValueError("Expected GeoPt, got {!r}".format(value))
 
 
 class PickleProperty(BlobProperty):
@@ -3041,9 +3001,7 @@ class JsonProperty(BlobProperty):
         if self._json_type is None:
             return
         if not isinstance(value, self._json_type):
-            raise TypeError(
-                "JSON property must be a {}".format(self._json_type)
-            )
+            raise TypeError("JSON property must be a {}".format(self._json_type))
 
     def _to_base_type(self, value):
         """Convert a value to the "base" value type for this property.
@@ -3206,10 +3164,7 @@ class User(object):
         if not isinstance(other, User):
             return NotImplemented
 
-        return (
-            self._email == other._email
-            and self._auth_domain == other._auth_domain
-        )
+        return self._email == other._email and self._auth_domain == other._auth_domain
 
     def __lt__(self, other):
         if not isinstance(other, User):  # pragma: NO PY2 COVER
@@ -3345,9 +3300,7 @@ class UserProperty(Property):
         """
         # Might be GAE User or our own version
         if type(value).__name__ != "User":
-            raise exceptions.BadValueError(
-                "Expected User, got {!r}".format(value)
-            )
+            raise exceptions.BadValueError("Expected User, got {!r}".format(value))
 
     def _prepare_for_put(self, entity):
         """Pre-put hook
@@ -3487,9 +3440,7 @@ class KeyProperty(Property):
                     kwargs["kind"] = arg
 
                 elif arg is not None:
-                    raise TypeError(
-                        "Unexpected positional argument: {!r}".format(arg)
-                    )
+                    raise TypeError("Unexpected positional argument: {!r}".format(arg))
 
             return wrapped(self, **kwargs)
 
@@ -3561,9 +3512,7 @@ class KeyProperty(Property):
                 and ``value`` does not match that kind.
         """
         if not isinstance(value, Key):
-            raise exceptions.BadValueError(
-                "Expected Key, got {!r}".format(value)
-            )
+            raise exceptions.BadValueError("Expected Key, got {!r}".format(value))
 
         # Reject incomplete keys.
         if not value.id():
@@ -3575,8 +3524,7 @@ class KeyProperty(Property):
         if self._kind is not None:
             if value.kind() != self._kind:
                 raise exceptions.BadValueError(
-                    "Expected Key with kind={!r}, got "
-                    "{!r}".format(self._kind, value)
+                    "Expected Key with kind={!r}, got " "{!r}".format(self._kind, value)
                 )
 
     def _to_base_type(self, value):
@@ -3627,9 +3575,7 @@ class BlobKeyProperty(Property):
                 :class:`~google.cloud.ndb.model.BlobKey`.
         """
         if not isinstance(value, BlobKey):
-            raise exceptions.BadValueError(
-                "Expected BlobKey, got {!r}".format(value)
-            )
+            raise exceptions.BadValueError("Expected BlobKey, got {!r}".format(value))
 
 
 class DateTimeProperty(Property):
@@ -3745,9 +3691,7 @@ class DateTimeProperty(Property):
             .BadValueError: If ``value`` is not a :class:`~datetime.datetime`.
         """
         if not isinstance(value, datetime.datetime):
-            raise exceptions.BadValueError(
-                "Expected datetime, got {!r}".format(value)
-            )
+            raise exceptions.BadValueError("Expected datetime, got {!r}".format(value))
 
         if self._tzinfo is None and value.tzinfo is not None:
             raise exceptions.BadValueError(
@@ -3778,9 +3722,7 @@ class DateTimeProperty(Property):
         Args:
             entity (Model): An entity with values.
         """
-        if self._auto_now or (
-            self._auto_now_add and not self._has_value(entity)
-        ):
+        if self._auto_now or (self._auto_now_add and not self._has_value(entity)):
             value = self._now()
             self._store_value(entity, value)
 
@@ -3844,9 +3786,7 @@ class DateProperty(DateTimeProperty):
             .BadValueError: If ``value`` is not a :class:`~datetime.date`.
         """
         if not isinstance(value, datetime.date):
-            raise exceptions.BadValueError(
-                "Expected date, got {!r}".format(value)
-            )
+            raise exceptions.BadValueError("Expected date, got {!r}".format(value))
 
     def _to_base_type(self, value):
         """Convert a value to the "base" value type for this property.
@@ -3904,9 +3844,7 @@ class TimeProperty(DateTimeProperty):
             .BadValueError: If ``value`` is not a :class:`~datetime.time`.
         """
         if not isinstance(value, datetime.time):
-            raise exceptions.BadValueError(
-                "Expected time, got {!r}".format(value)
-            )
+            raise exceptions.BadValueError("Expected time, got {!r}".format(value))
 
     def _to_base_type(self, value):
         """Convert a value to the "base" value type for this property.
@@ -3970,8 +3908,7 @@ class StructuredProperty(Property):
                 raise TypeError(
                     "This StructuredProperty cannot use repeated=True "
                     "because its model class (%s) contains repeated "
-                    "properties (directly or indirectly)."
-                    % model_class.__name__
+                    "properties (directly or indirectly)." % model_class.__name__
                 )
         self._model_class = model_class
 
@@ -4029,9 +3966,7 @@ class StructuredProperty(Property):
 
     def _comparison(self, op, value):
         if op != query_module._EQ_OP:
-            raise exceptions.BadFilterError(
-                "StructuredProperty filter can only use =="
-            )
+            raise exceptions.BadFilterError("StructuredProperty filter can only use ==")
         if not self._indexed:
             raise exceptions.BadFilterError(
                 "Cannot query for unindexed StructuredProperty %s" % self._name
@@ -4055,8 +3990,7 @@ class StructuredProperty(Property):
             if prop._repeated:
                 if subvalue:  # pragma: no branch
                     raise exceptions.BadFilterError(
-                        "Cannot query for non-empty repeated property %s"
-                        % prop._name
+                        "Cannot query for non-empty repeated property %s" % prop._name
                     )
                 continue  # pragma: NO COVER
 
@@ -4162,9 +4096,7 @@ class StructuredProperty(Property):
             raise InvalidPropertyError(
                 "Structured property %s requires a subproperty" % self._name
             )
-        self._model_class._check_properties(
-            [rest], require_indexed=require_indexed
-        )
+        self._model_class._check_properties([rest], require_indexed=require_indexed)
 
     def _to_base_type(self, value):
         """Convert a value to the "base" value type for this property.
@@ -4194,9 +4126,7 @@ class StructuredProperty(Property):
             The converted value with given class.
         """
         if isinstance(value, ds_entity_module.Entity):
-            value = _entity_from_ds_entity(
-                value, model_class=self._model_class
-            )
+            value = _entity_from_ds_entity(value, model_class=self._model_class)
         return value
 
     def _get_value_size(self, entity):
@@ -4317,9 +4247,7 @@ class LocalStructuredProperty(BlobProperty):
 
         if not isinstance(value, self._model_class):
             raise exceptions.BadValueError(
-                "Expected {}, got {!r}".format(
-                    self._model_class.__name__, value
-                )
+                "Expected {}, got {!r}".format(self._model_class.__name__, value)
             )
 
     def _get_for_dict(self, entity):
@@ -4413,9 +4341,7 @@ class LocalStructuredProperty(BlobProperty):
             for value in values:
                 ds_entity = None
                 if value is not None:
-                    ds_entity = _entity_to_ds_entity(
-                        value, set_key=self._keep_keys
-                    )
+                    ds_entity = _entity_to_ds_entity(value, set_key=self._keep_keys)
                 legacy_values.append(ds_entity)
             if not self._repeated:
                 legacy_values = legacy_values[0]
@@ -4497,9 +4423,7 @@ class ComputedProperty(GenericProperty):
     _kwargs = None
     _func = None
 
-    def __init__(
-        self, func, name=None, indexed=None, repeated=None, verbose_name=None
-    ):
+    def __init__(self, func, name=None, indexed=None, repeated=None, verbose_name=None):
         """Constructor.
 
         Args:
@@ -4879,9 +4803,7 @@ class Model(_NotEqualMixin):
             if value is None:
                 arg_repr = "None"
             elif prop._repeated:
-                arg_reprs = [
-                    prop._value_to_repr(sub_value) for sub_value in value
-                ]
+                arg_reprs = [prop._value_to_repr(sub_value) for sub_value in value]
                 arg_repr = "[{}]".format(", ".join(arg_reprs))
             else:
                 arg_repr = prop._value_to_repr(value)
@@ -5104,9 +5026,7 @@ class Model(_NotEqualMixin):
 
         for name in dir(cls):
             attr = getattr(cls, name, None)
-            if isinstance(attr, ModelAttribute) and not isinstance(
-                attr, ModelKey
-            ):
+            if isinstance(attr, ModelAttribute) and not isinstance(attr, ModelKey):
                 if name.startswith("_"):
                     raise TypeError(
                         "ModelAttribute {} cannot begin with an underscore "
@@ -5335,14 +5255,10 @@ class Model(_NotEqualMixin):
         # Validating distinct
         if kwargs["distinct"]:
             if kwargs["distinct_on"]:
-                raise TypeError(
-                    "Cannot use `distinct` and `distinct_on` together."
-                )
+                raise TypeError("Cannot use `distinct` and `distinct_on` together.")
 
             if kwargs["group_by"]:
-                raise TypeError(
-                    "Cannot use `distinct` and `group_by` together."
-                )
+                raise TypeError("Cannot use `distinct` and `group_by` together.")
 
             if not kwargs["projection"]:
                 raise TypeError("Cannot use `distinct` without `projection`.")
@@ -5498,16 +5414,11 @@ class Model(_NotEqualMixin):
         def allocate_ids():
             cls._pre_allocate_ids_hook(size, max, parent)
             kind = cls._get_kind()
-            keys = [
-                key_module.Key(kind, None, parent=parent)._key
-                for _ in range(size)
-            ]
+            keys = [key_module.Key(kind, None, parent=parent)._key for _ in range(size)]
             key_pbs = yield _datastore_api.allocate(keys, _options)
             keys = tuple(
                 (
-                    key_module.Key._from_ds_key(
-                        helpers.key_from_protobuf(key_pb)
-                    )
+                    key_module.Key._from_ds_key(helpers.key_from_protobuf(key_pb))
                     for key_pb in key_pbs
                 )
             )
@@ -5679,9 +5590,7 @@ class Model(_NotEqualMixin):
         """
         if app:
             if project:
-                raise TypeError(
-                    "Can't pass 'app' and 'project' arguments together."
-                )
+                raise TypeError("Can't pass 'app' and 'project' arguments together.")
 
             project = app
 
@@ -5876,18 +5785,14 @@ class Model(_NotEqualMixin):
                 or created.
         """
         if not isinstance(name, six.string_types):
-            raise TypeError(
-                "'name' must be a string; received {!r}".format(name)
-            )
+            raise TypeError("'name' must be a string; received {!r}".format(name))
 
         elif not name:
             raise TypeError("'name' must not be an empty string.")
 
         if app:
             if project:
-                raise TypeError(
-                    "Can't pass 'app' and 'project' arguments together."
-                )
+                raise TypeError("Can't pass 'app' and 'project' arguments together.")
 
             project = app
 
@@ -6459,12 +6364,10 @@ def delete_multi(
 
 
 def get_indexes_async(**options):
-    """Get a data structure representing the configured indexes.
-    """
+    """Get a data structure representing the configured indexes."""
     raise NotImplementedError
 
 
 def get_indexes(**options):
-    """Get a data structure representing the configured indexes.
-    """
+    """Get a data structure representing the configured indexes."""
     raise NotImplementedError

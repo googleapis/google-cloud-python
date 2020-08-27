@@ -80,18 +80,14 @@ class Test_logging_debug:
     @mock.patch("google.cloud.ndb.utils.DEBUG", False)
     def test_noop():
         log = mock.Mock(spec=("debug",))
-        utils.logging_debug(
-            log, "hello dad! {} {where}", "I'm", where="in jail"
-        )
+        utils.logging_debug(log, "hello dad! {} {where}", "I'm", where="in jail")
         log.debug.assert_not_called()
 
     @staticmethod
     @mock.patch("google.cloud.ndb.utils.DEBUG", True)
     def test_log_it():
         log = mock.Mock(spec=("debug",))
-        utils.logging_debug(
-            log, "hello dad! {} {where}", "I'm", where="in jail"
-        )
+        utils.logging_debug(log, "hello dad! {} {where}", "I'm", where="in jail")
         log.debug.assert_called_once_with("hello dad! I'm in jail")
 
 

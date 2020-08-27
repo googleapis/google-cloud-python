@@ -161,9 +161,7 @@ class Test_global_set:
     def test_without_expires(_batch):
         batch = _batch.get_batch.return_value
         assert _cache.global_set(b"key", b"value") is batch.add.return_value
-        _batch.get_batch.assert_called_once_with(
-            _cache._GlobalCacheSetBatch, {}
-        )
+        _batch.get_batch.assert_called_once_with(_cache._GlobalCacheSetBatch, {})
         batch.add.assert_called_once_with(b"key", b"value")
 
     @staticmethod
@@ -211,9 +209,7 @@ class Test_GlobalCacheSetBatch:
         with in_context.new(global_cache=cache).use():
             batch.idle_callback()
 
-        cache.set.assert_called_once_with(
-            {b"foo": b"one", b"bar": b"two"}, expires=5
-        )
+        cache.set.assert_called_once_with({b"foo": b"one", b"bar": b"two"}, expires=5)
         assert future1.result() is None
         assert future2.result() is None
 
@@ -294,8 +290,7 @@ class Test_global_compare_and_swap:
     def test_without_expires(_batch):
         batch = _batch.get_batch.return_value
         assert (
-            _cache.global_compare_and_swap(b"key", b"value")
-            is batch.add.return_value
+            _cache.global_compare_and_swap(b"key", b"value") is batch.add.return_value
         )
         _batch.get_batch.assert_called_once_with(
             _cache._GlobalCacheCompareAndSwapBatch, {}

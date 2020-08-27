@@ -88,10 +88,7 @@ def test_get_kinds(dispose_of):
 
     kinds = eventually(get_kinds, _length_at_least(4))
     assert (
-        all(
-            kind in kinds
-            for kind in ["AnyKind", "MyKind", "OtherKind", "SomeKind"]
-        )
+        all(kind in kinds for kind in ["AnyKind", "MyKind", "OtherKind", "SomeKind"])
         != []
     )
 
@@ -131,11 +128,7 @@ def test_namespace_metadata(dispose_of):
 
     names = [result.namespace_name for result in results]
     assert (
-        all(
-            name in names
-            for name in ["_test_namespace_", "_test_namespace_2_"]
-        )
-        != []
+        all(name in names for name in ["_test_namespace_", "_test_namespace_2_"]) != []
     )
 
 
@@ -161,21 +154,16 @@ def test_get_namespaces(dispose_of):
     names = eventually(get_namespaces, _length_at_least(3))
     assert (
         all(
-            name in names
-            for name in ["CoolNamespace", "MyNamespace", "OtherNamespace"]
+            name in names for name in ["CoolNamespace", "MyNamespace", "OtherNamespace"]
         )
         != []
     )
 
     names = get_namespaces(start="L")
-    assert (
-        all(name in names for name in ["MyNamespace", "OtherNamspace"]) != []
-    )
+    assert all(name in names for name in ["MyNamespace", "OtherNamspace"]) != []
 
     names = get_namespaces(end="N")
-    assert (
-        all(name in names for name in ["CoolNamespace", "MyNamespace"]) != []
-    )
+    assert all(name in names for name in ["CoolNamespace", "MyNamespace"]) != []
 
     names = get_namespaces(start="D", end="N")
     assert all(name in names for name in ["MyNamespace"]) != []
@@ -200,9 +188,7 @@ def test_property_metadata(dispose_of):
     results = eventually(query.fetch, _length_at_least(2))
 
     properties = [
-        result.property_name
-        for result in results
-        if result.kind_name == "AnyKind"
+        result.property_name for result in results if result.kind_name == "AnyKind"
     ]
     assert properties == ["bar", "foo"]
 
@@ -248,9 +234,7 @@ def test_get_properties_of_kind_different_namespace(dispose_of, namespace):
         baz = ndb.IntegerProperty()
         qux = ndb.StringProperty()
 
-    entity1 = AnyKind(
-        foo=1, bar="x", baz=3, qux="y", namespace="DiffNamespace"
-    )
+    entity1 = AnyKind(foo=1, bar="x", baz=3, qux="y", namespace="DiffNamespace")
     entity1.put()
     dispose_of(entity1.key._key)
 
@@ -301,7 +285,5 @@ def test_get_representations_of_kind(dispose_of):
     representations = get_representations_of_kind("AnyKind", end="e")
     assert representations == {"bar": ["STRING"], "baz": ["INT64"]}
 
-    representations = get_representations_of_kind(
-        "AnyKind", start="c", end="p"
-    )
+    representations = get_representations_of_kind("AnyKind", start="c", end="p")
     assert representations == {"foo": ["INT64"]}

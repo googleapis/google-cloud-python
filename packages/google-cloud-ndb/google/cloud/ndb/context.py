@@ -180,9 +180,7 @@ Defers to ``_use_global_cache`` on the Model class for the key's kind.
 See: :meth:`~google.cloud.ndb.context.Context.set_global_cache_policy`
 """
 
-_default_global_cache_timeout_policy = _default_policy(
-    "_global_cache_timeout", int
-)
+_default_global_cache_timeout_policy = _default_policy("_global_cache_timeout", int)
 """The default global cache timeout policy.
 
 Defers to ``_global_cache_timeout`` on the Model class for the key's kind.

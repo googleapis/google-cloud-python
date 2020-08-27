@@ -139,9 +139,7 @@ class TestOptions:
     @staticmethod
     def test_items():
         options = MyOptions(retries=8, bar="app")
-        items = [
-            (key, value) for key, value in options.items() if value is not None
-        ]
+        items = [(key, value) for key, value in options.items() if value is not None]
         assert items == [("bar", "app"), ("retries", 8)]
 
     @staticmethod
@@ -184,12 +182,8 @@ class TestOptions:
 class TestReadOptions:
     @staticmethod
     def test_constructor_w_read_policy():
-        options = _options.ReadOptions(
-            read_policy=_datastore_api.EVENTUAL_CONSISTENCY
-        )
-        assert options == _options.ReadOptions(
-            read_consistency=_datastore_api.EVENTUAL
-        )
+        options = _options.ReadOptions(read_policy=_datastore_api.EVENTUAL_CONSISTENCY)
+        assert options == _options.ReadOptions(read_consistency=_datastore_api.EVENTUAL)
 
     @staticmethod
     def test_constructor_w_read_policy_and_read_consistency():

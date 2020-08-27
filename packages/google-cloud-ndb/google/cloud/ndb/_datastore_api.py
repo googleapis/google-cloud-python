@@ -132,9 +132,7 @@ def lookup(key, options):
         use_global_cache = context._use_global_cache(key, options)
 
     if not (use_global_cache or use_datastore):
-        raise TypeError(
-            "use_global_cache and use_datastore can't both be False"
-        )
+        raise TypeError("use_global_cache and use_datastore can't both be False")
 
     entity_pb = _NOT_FOUND
     key_locked = False
@@ -160,9 +158,7 @@ def lookup(key, options):
         if use_global_cache and not key_locked and entity_pb is not _NOT_FOUND:
             expires = context._global_cache_timeout(key, options)
             serialized = entity_pb.SerializeToString()
-            yield _cache.global_compare_and_swap(
-                cache_key, serialized, expires=expires
-            )
+            yield _cache.global_compare_and_swap(cache_key, serialized, expires=expires)
 
     raise tasklets.Return(entity_pb)
 
@@ -257,9 +253,7 @@ class _LookupBatch(object):
             next_batch = _batch.get_batch(type(self), self.options)
             for key in results.deferred:
                 todo_key = key.SerializeToString()
-                next_batch.todo.setdefault(todo_key, []).extend(
-                    self.todo[todo_key]
-                )
+                next_batch.todo.setdefault(todo_key, []).extend(self.todo[todo_key])
 
         # For all missing keys, set result to _NOT_FOUND and let callers decide
         # how to handle
@@ -331,9 +325,7 @@ def get_read_options(options, default_read_consistency=None):
             read_consistency = default_read_consistency
 
     elif read_consistency is EVENTUAL:
-        raise ValueError(
-            "read_consistency must not be EVENTUAL when in transaction"
-        )
+        raise ValueError("read_consistency must not be EVENTUAL when in transaction")
 
     return datastore_pb2.ReadOptions(
         read_consistency=read_consistency, transaction=transaction
@@ -380,9 +372,7 @@ def put(entity, options):
     use_global_cache = context._use_global_cache(entity.key, options)
     use_datastore = context._use_datastore(entity.key, options)
     if not (use_global_cache or use_datastore):
-        raise TypeError(
-            "use_global_cache and use_datastore can't both be False"
-        )
+        raise TypeError("use_global_cache and use_datastore can't both be False")
 
     if not use_datastore and entity.key.is_partial:
         raise TypeError("Can't store partial keys when use_datastore is False")
@@ -990,9 +980,7 @@ def _datastore_allocate_ids(keys, retries=None, timeout=None):
             :class:`google.cloud.datastore_v1.datastore_pb2.AllocateIdsResponse`
     """
     client = context_module.get_context().client
-    request = datastore_pb2.AllocateIdsRequest(
-        project_id=client.project, keys=keys
-    )
+    request = datastore_pb2.AllocateIdsRequest(project_id=client.project, keys=keys)
 
     return make_call("AllocateIds", request, retries=retries, timeout=timeout)
 
@@ -1050,9 +1038,7 @@ def _datastore_begin_transaction(read_only, retries=None, timeout=None):
         project_id=client.project, transaction_options=options
     )
 
-    return make_call(
-        "BeginTransaction", request, retries=retries, timeout=timeout
-    )
+    return make_call("BeginTransaction", request, retries=retries, timeout=timeout)
 
 
 @tasklets.tasklet

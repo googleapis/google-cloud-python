@@ -154,9 +154,7 @@ class TestPropertyTypeStat:
 
     @staticmethod
     def test_constructor():
-        stat = stats.PropertyTypeStat(
-            property_type="test_property", **DEFAULTS
-        )
+        stat = stats.PropertyTypeStat(property_type="test_property", **DEFAULTS)
         assert stat.bytes == 4
         assert stat.count == 2
         assert stat.property_type == "test_property"
@@ -289,9 +287,7 @@ class TestNamespaceKindNonRootEntityStat:
 
     @staticmethod
     def test_constructor():
-        stat = stats.NamespaceKindNonRootEntityStat(
-            kind_name="test_stat", **DEFAULTS
-        )
+        stat = stats.NamespaceKindNonRootEntityStat(kind_name="test_stat", **DEFAULTS)
         assert stat.bytes == 4
         assert stat.count == 2
         assert stat.kind_name == "test_stat"
@@ -302,9 +298,7 @@ class TestNamespaceKindPropertyNamePropertyTypeStat:
     @staticmethod
     def test_get_kind():
         kind = stats.NamespaceKindPropertyNamePropertyTypeStat.STORED_KIND_NAME
-        assert (
-            stats.NamespaceKindPropertyNamePropertyTypeStat._get_kind() == kind
-        )
+        assert stats.NamespaceKindPropertyNamePropertyTypeStat._get_kind() == kind
 
     @staticmethod
     def test_constructor():
@@ -372,9 +366,7 @@ class TestNamespaceKindRootEntityStat:
 
     @staticmethod
     def test_constructor():
-        stat = stats.NamespaceKindRootEntityStat(
-            kind_name="test_stat", **DEFAULTS
-        )
+        stat = stats.NamespaceKindRootEntityStat(kind_name="test_stat", **DEFAULTS)
         assert stat.bytes == 4
         assert stat.count == 2
         assert stat.kind_name == "test_stat"

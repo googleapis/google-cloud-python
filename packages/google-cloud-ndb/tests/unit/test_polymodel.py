@@ -100,9 +100,7 @@ class TestPolyModel:
             pass
 
         assert Animal._default_filters() == ()
-        assert Cat._default_filters() == (
-            query.FilterNode("class", "=", "Cat"),
-        )
+        assert Cat._default_filters() == (query.FilterNode("class", "=", "Cat"),)
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

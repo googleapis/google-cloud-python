@@ -43,11 +43,7 @@ def get_batch(batch_cls, options=None):
     if options is not None:
         options_key = tuple(
             sorted(
-                (
-                    (key, value)
-                    for key, value in options.items()
-                    if value is not None
-                )
+                ((key, value) for key, value in options.items() if value is not None)
             )
         )
     else:

@@ -61,8 +61,7 @@ def test_make_composite_and_filter():
     expected = query_pb2.CompositeFilter(
         op=query_pb2.CompositeFilter.AND,
         filters=[
-            query_pb2.Filter(property_filter=sub_filter)
-            for sub_filter in filters
+            query_pb2.Filter(property_filter=sub_filter) for sub_filter in filters
         ],
     )
     assert _datastore_query.make_composite_and_filter(filters) == expected
@@ -107,14 +106,10 @@ class Test_iterate:
         QueryIterator.assert_called_once_with(query, raw=False)
 
     @staticmethod
-    @mock.patch(
-        "google.cloud.ndb._datastore_query._PostFilterQueryIteratorImpl"
-    )
+    @mock.patch("google.cloud.ndb._datastore_query._PostFilterQueryIteratorImpl")
     def test_iterate_single_with_post_filter(QueryIterator):
         query = mock.Mock(
-            filters=mock.Mock(
-                _multiquery=False, spec=("_multiquery", "_post_filters")
-            ),
+            filters=mock.Mock(_multiquery=False, spec=("_multiquery", "_post_filters")),
             spec=("filters", "_post_filters"),
         )
         iterator = QueryIterator.return_value
@@ -204,9 +199,7 @@ class Test_QueryIteratorImpl:
     @staticmethod
     def test_has_next():
         iterator = _datastore_query._QueryIteratorImpl("foo")
-        iterator.has_next_async = mock.Mock(
-            return_value=utils.future_result("bar")
-        )
+        iterator.has_next_async = mock.Mock(return_value=utils.future_result("bar"))
         assert iterator.has_next() == "bar"
 
     @staticmethod
@@ -498,13 +491,9 @@ class Test_PostFilterQueryIteratorImpl:
     @staticmethod
     def test_constructor():
         foo = model.StringProperty("foo")
-        query = query_module.QueryOptions(
-            offset=20, limit=10, filters=foo == u"this"
-        )
+        query = query_module.QueryOptions(offset=20, limit=10, filters=foo == u"this")
         predicate = object()
-        iterator = _datastore_query._PostFilterQueryIteratorImpl(
-            query, predicate
-        )
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(query, predicate)
         assert iterator._result_set._query == query_module.QueryOptions(
             filters=foo == u"this"
         )
@@ -515,21 +504,15 @@ class Test_PostFilterQueryIteratorImpl:
     @staticmethod
     def test_has_next():
         query = query_module.QueryOptions()
-        iterator = _datastore_query._PostFilterQueryIteratorImpl(
-            query, "predicate"
-        )
-        iterator.has_next_async = mock.Mock(
-            return_value=utils.future_result("bar")
-        )
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(query, "predicate")
+        iterator.has_next_async = mock.Mock(return_value=utils.future_result("bar"))
         assert iterator.has_next() == "bar"
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     def test_has_next_async_next_loaded():
         query = query_module.QueryOptions()
-        iterator = _datastore_query._PostFilterQueryIteratorImpl(
-            query, "predicate"
-        )
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(query, "predicate")
         iterator._next_result = "foo"
         assert iterator.has_next_async().result()
 
@@ -540,9 +523,7 @@ class Test_PostFilterQueryIteratorImpl:
             return result.result % 2 == 0
 
         query = query_module.QueryOptions()
-        iterator = _datastore_query._PostFilterQueryIteratorImpl(
-            query, predicate
-        )
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(query, predicate)
         iterator._result_set = MockResultSet([1, 2, 3, 4, 5, 6, 7])
 
         @tasklets.tasklet
@@ -592,9 +573,7 @@ class Test_PostFilterQueryIteratorImpl:
             return result.result % 2 == 0
 
         query = query_module.QueryOptions(offset=1, limit=2)
-        iterator = _datastore_query._PostFilterQueryIteratorImpl(
-            query, predicate
-        )
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(query, predicate)
         iterator._result_set = MockResultSet([1, 2, 3, 4, 5, 6, 7, 8])
 
         @tasklets.tasklet
@@ -613,9 +592,7 @@ class Test_PostFilterQueryIteratorImpl:
     @pytest.mark.usefixtures("in_context")
     def test_probably_has_next_next_loaded():
         query = query_module.QueryOptions()
-        iterator = _datastore_query._PostFilterQueryIteratorImpl(
-            query, "predicate"
-        )
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(query, "predicate")
         iterator._next_result = "foo"
         assert iterator.probably_has_next() is True
 
@@ -623,9 +600,7 @@ class Test_PostFilterQueryIteratorImpl:
     @pytest.mark.usefixtures("in_context")
     def test_probably_has_next_delegate():
         query = query_module.QueryOptions()
-        iterator = _datastore_query._PostFilterQueryIteratorImpl(
-            query, "predicate"
-        )
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(query, "predicate")
         iterator._result_set._next_result = "foo"
         assert iterator.probably_has_next() is True
 
@@ -633,9 +608,7 @@ class Test_PostFilterQueryIteratorImpl:
     @pytest.mark.usefixtures("in_context")
     def test_probably_has_next_doesnt():
         query = query_module.QueryOptions()
-        iterator = _datastore_query._PostFilterQueryIteratorImpl(
-            query, "predicate"
-        )
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(query, "predicate")
         iterator._result_set._batch = []
         iterator._result_set._index = 0
         assert iterator.probably_has_next() is False
@@ -644,9 +617,7 @@ class Test_PostFilterQueryIteratorImpl:
     @pytest.mark.usefixtures("in_context")
     def test_cursor_before():
         query = query_module.QueryOptions()
-        iterator = _datastore_query._PostFilterQueryIteratorImpl(
-            query, "predicate"
-        )
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(query, "predicate")
         iterator._cursor_before = "himom"
         assert iterator.cursor_before() == "himom"
 
@@ -654,9 +625,7 @@ class Test_PostFilterQueryIteratorImpl:
     @pytest.mark.usefixtures("in_context")
     def test_cursor_before_no_cursor():
         query = query_module.QueryOptions()
-        iterator = _datastore_query._PostFilterQueryIteratorImpl(
-            query, "predicate"
-        )
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(query, "predicate")
         with pytest.raises(exceptions.BadArgumentError):
             iterator.cursor_before()
 
@@ -664,9 +633,7 @@ class Test_PostFilterQueryIteratorImpl:
     @pytest.mark.usefixtures("in_context")
     def test_cursor_after():
         query = query_module.QueryOptions()
-        iterator = _datastore_query._PostFilterQueryIteratorImpl(
-            query, "predicate"
-        )
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(query, "predicate")
         iterator._cursor_after = "himom"
         assert iterator.cursor_after() == "himom"
 
@@ -674,22 +641,16 @@ class Test_PostFilterQueryIteratorImpl:
     @pytest.mark.usefixtures("in_context")
     def test_cursor_after_no_cursor():
         query = query_module.QueryOptions()
-        iterator = _datastore_query._PostFilterQueryIteratorImpl(
-            query, "predicate"
-        )
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(query, "predicate")
         with pytest.raises(exceptions.BadArgumentError):
             iterator.cursor_after()
 
     @staticmethod
     def test__more_results_after_limit():
         foo = model.StringProperty("foo")
-        query = query_module.QueryOptions(
-            offset=20, limit=10, filters=foo == u"this"
-        )
+        query = query_module.QueryOptions(offset=20, limit=10, filters=foo == u"this")
         predicate = object()
-        iterator = _datastore_query._PostFilterQueryIteratorImpl(
-            query, predicate
-        )
+        iterator = _datastore_query._PostFilterQueryIteratorImpl(query, predicate)
         assert iterator._result_set._query == query_module.QueryOptions(
             filters=foo == u"this"
         )
@@ -751,10 +712,14 @@ class Test_MultiQueryIteratorImpl:
         )
         iterator = _datastore_query._MultiQueryIteratorImpl(query)
         assert iterator._result_sets[0]._query == query_module.QueryOptions(
-            filters=foo == "this", order_by=order_by, projection=["foo"],
+            filters=foo == "this",
+            order_by=order_by,
+            projection=["foo"],
         )
         assert iterator._result_sets[1]._query == query_module.QueryOptions(
-            filters=foo == "that", order_by=order_by, projection=["foo"],
+            filters=foo == "that",
+            order_by=order_by,
+            projection=["foo"],
         )
         assert iterator._sortable
 
@@ -796,9 +761,7 @@ class Test_MultiQueryIteratorImpl:
             filters=query_module.OR(foo == "this", foo == "that")
         )
         iterator = _datastore_query._MultiQueryIteratorImpl(query)
-        iterator.has_next_async = mock.Mock(
-            return_value=utils.future_result("bar")
-        )
+        iterator.has_next_async = mock.Mock(return_value=utils.future_result("bar"))
         assert iterator.has_next() == "bar"
 
     @staticmethod
@@ -840,7 +803,8 @@ class Test_MultiQueryIteratorImpl:
         iterator._next_result = next_result = mock.Mock(
             result_pb=mock.Mock(
                 entity=mock.Mock(
-                    properties={"foo": 1, "bar": "two"}, spec=("properties",),
+                    properties={"foo": 1, "bar": "two"},
+                    spec=("properties",),
                 ),
                 spec=("entity",),
             ),
@@ -1197,9 +1161,7 @@ class Test_Result:
             model._entity_from_protobuf.return_value = entity
             result = _datastore_query._Result(
                 _datastore_query.RESULT_TYPE_FULL,
-                mock.Mock(
-                    entity=entity, cursor=b"123", spec=("entity", "cursor")
-                ),
+                mock.Mock(entity=entity, cursor=b"123", spec=("entity", "cursor")),
             )
             assert result.entity() is entity
 
@@ -1224,15 +1186,11 @@ class Test_Result:
     @mock.patch("google.cloud.ndb._datastore_query.model")
     def test_entity_projection(model):
         entity = mock.Mock(spec=("_set_projection",))
-        entity_pb = mock.Mock(
-            properties={"a": 0, "b": 1}, spec=("properties",)
-        )
+        entity_pb = mock.Mock(properties={"a": 0, "b": 1}, spec=("properties",))
         model._entity_from_protobuf.return_value = entity
         result = _datastore_query._Result(
             _datastore_query.RESULT_TYPE_PROJECTION,
-            mock.Mock(
-                entity=entity_pb, cursor=b"123", spec=("entity", "cursor")
-            ),
+            mock.Mock(entity=entity_pb, cursor=b"123", spec=("entity", "cursor")),
         )
 
         assert result.entity() is entity
@@ -1348,12 +1306,8 @@ class Test__query_to_protobuf:
         query = query_module.QueryOptions(projection=("a", "b"))
         expected_pb = query_pb2.Query(
             projection=[
-                query_pb2.Projection(
-                    property=query_pb2.PropertyReference(name="a")
-                ),
-                query_pb2.Projection(
-                    property=query_pb2.PropertyReference(name="b")
-                ),
+                query_pb2.Projection(property=query_pb2.PropertyReference(name="a")),
+                query_pb2.Projection(property=query_pb2.PropertyReference(name="b")),
             ]
         )
         assert _datastore_query._query_to_protobuf(query) == expected_pb
@@ -1411,9 +1365,7 @@ class Test__query_to_protobuf:
     @staticmethod
     def test_offset():
         query = query_module.QueryOptions(offset=20)
-        assert _datastore_query._query_to_protobuf(query) == query_pb2.Query(
-            offset=20
-        )
+        assert _datastore_query._query_to_protobuf(query) == query_pb2.Query(offset=20)
 
     @staticmethod
     def test_limit():
@@ -1424,18 +1376,14 @@ class Test__query_to_protobuf:
 
     @staticmethod
     def test_start_cursor():
-        query = query_module.QueryOptions(
-            start_cursor=_datastore_query.Cursor(b"abc")
-        )
+        query = query_module.QueryOptions(start_cursor=_datastore_query.Cursor(b"abc"))
         assert _datastore_query._query_to_protobuf(query) == query_pb2.Query(
             start_cursor=b"abc"
         )
 
     @staticmethod
     def test_end_cursor():
-        query = query_module.QueryOptions(
-            end_cursor=_datastore_query.Cursor(b"abc")
-        )
+        query = query_module.QueryOptions(end_cursor=_datastore_query.Cursor(b"abc"))
         assert _datastore_query._query_to_protobuf(query) == query_pb2.Query(
             end_cursor=b"abc"
         )
@@ -1452,9 +1400,7 @@ class Test__datastore_run_query:
         read_options = datastore_pb2.ReadOptions()
         request = datastore_pb2.RunQueryRequest(
             project_id="testing",
-            partition_id=entity_pb2.PartitionId(
-                project_id="testing", namespace_id=""
-            ),
+            partition_id=entity_pb2.PartitionId(project_id="testing", namespace_id=""),
             query=query_pb,
             read_options=read_options,
         )

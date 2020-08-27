@@ -124,9 +124,7 @@ class Future(object):
         """
         while not self._done:
             if not _eventloop.run1():
-                raise RuntimeError(
-                    "Eventloop is exhausted with unfinished futures."
-                )
+                raise RuntimeError("Eventloop is exhausted with unfinished futures.")
 
     def check_success(self):
         """Check whether a future has completed without raising an exception.
@@ -310,9 +308,7 @@ class _TaskletFuture(Future):
                     except AttributeError:  # pragma: NO PY3 COVER  # pragma: NO BRANCH  # noqa: E501
                         traceback = None
 
-                    yielded = self.generator.throw(
-                        type(error), error, traceback
-                    )
+                    yielded = self.generator.throw(type(error), error, traceback)
 
                 else:
                     # send_value will be None if this is the first time
@@ -355,9 +351,7 @@ class _TaskletFuture(Future):
 
             error = yielded.exception()
             if error:
-                self.context.eventloop.call_soon(
-                    self._advance_tasklet, error=error
-                )
+                self.context.eventloop.call_soon(self._advance_tasklet, error=error)
             else:
                 self.context.eventloop.call_soon(
                     self._advance_tasklet, yielded.result()
@@ -527,9 +521,7 @@ def wait_any(futures):
                 return future
 
         if not _eventloop.run1():
-            raise RuntimeError(
-                "Eventloop is exhausted with unfinished futures."
-            )
+            raise RuntimeError("Eventloop is exhausted with unfinished futures.")
 
 
 def wait_all(futures):

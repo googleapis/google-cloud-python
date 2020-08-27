@@ -28,7 +28,8 @@ DEFAULT_INTERPRETER = "3.7"
 ALL_INTERPRETERS = ("2.7", "3.6", "3.7")
 PY3_INTERPRETERS = ("3.6", "3.7")
 MAJOR_INTERPRETERS = ("2.7", "3.7")
-BLACK_VERSION = "black==19.10b0"
+
+BLACK_VERSION = "black==20.8b1"
 
 
 def get_path(*names):
@@ -84,7 +85,6 @@ def run_black(session, use_check=False):
 
     args.extend(
         [
-            "--line-length=79",
             get_path("docs"),
             get_path("noxfile.py"),
             get_path("google"),
@@ -119,9 +119,7 @@ def docs(session):
     """Build the docs for this library."""
 
     session.install("-e", ".")
-    session.install(
-        "sphinx", "alabaster", "recommonmark", "sphinxcontrib.spelling"
-    )
+    session.install("sphinx", "alabaster", "recommonmark", "sphinxcontrib.spelling")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
@@ -190,6 +188,4 @@ def system(session):
     if system_test_exists:
         session.run("py.test", "--quiet", system_test_path, *session.posargs)
     if system_test_folder_exists:
-        session.run(
-            "py.test", "--quiet", system_test_folder_path, *session.posargs
-        )
+        session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)

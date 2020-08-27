@@ -39,9 +39,7 @@ class TestGlobalCache:
                 return super(MockImpl, self).watch(keys)
 
             def compare_and_swap(self, items, expires=None):
-                return super(MockImpl, self).compare_and_swap(
-                    items, expires=expires
-                )
+                return super(MockImpl, self).compare_and_swap(items, expires=expires)
 
         return MockImpl()
 
@@ -215,9 +213,7 @@ class TestRedisCache:
     @mock.patch("google.cloud.ndb.global_cache.uuid")
     def test_watch(uuid):
         uuid.uuid4.return_value = "abc123"
-        redis = mock.Mock(
-            pipeline=mock.Mock(spec=("watch",)), spec=("pipeline",)
-        )
+        redis = mock.Mock(pipeline=mock.Mock(spec=("watch",)), spec=("pipeline",))
         pipe = redis.pipeline.return_value
         keys = ["foo", "bar"]
         cache = global_cache.RedisCache(redis)
@@ -256,9 +252,7 @@ class TestRedisCache:
         pipe1.reset.assert_called_once_with()
         pipe2.reset.assert_called_once_with()
 
-        assert cache.pipes == {
-            "whatevs": global_cache._Pipeline(None, "himom!")
-        }
+        assert cache.pipes == {"whatevs": global_cache._Pipeline(None, "himom!")}
 
     @staticmethod
     def test_compare_and_swap_w_expires():
@@ -298,7 +292,5 @@ class TestRedisCache:
         pipe1.reset.assert_called_once_with()
         pipe2.reset.assert_called_once_with()
 
-        assert cache.pipes == {
-            "whatevs": global_cache._Pipeline(None, "himom!")
-        }
+        assert cache.pipes == {"whatevs": global_cache._Pipeline(None, "himom!")}
         assert expired == {"ay": 32, "be": 32, "see": 32}

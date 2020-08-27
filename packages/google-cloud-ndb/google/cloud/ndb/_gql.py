@@ -93,9 +93,7 @@ class GQL(object):
     _limit = -1
     _hint = ""
 
-    def __init__(
-        self, query_string, _app=None, _auth_domain=None, namespace=None
-    ):
+    def __init__(self, query_string, _app=None, _auth_domain=None, namespace=None):
         """Parses the input query into the class as a pre-compiled query.
 
         Args:
@@ -191,9 +189,7 @@ class GQL(object):
     _quoted_identifier_regex = re.compile(r'((?:"[^"\s]+")+)$')
     _conditions_regex = re.compile(r"(<=|>=|!=|=|<|>|is|in)$", re.IGNORECASE)
     _number_regex = re.compile(r"(\d+)$")
-    _cast_regex = re.compile(
-        r"(geopt|user|key|date|time|datetime)$", re.IGNORECASE
-    )
+    _cast_regex = re.compile(r"(geopt|user|key|date|time|datetime)$", re.IGNORECASE)
 
     def _Error(self, error_message):
         """Generic query error.
@@ -216,8 +212,7 @@ class GQL(object):
             )
 
     def _Accept(self, symbol_string):
-        """Advance the symbol and return true if the next symbol matches input.
-        """
+        """Advance the symbol and return true if the next symbol matches input."""
         if self._next_symbol < len(self._symbols):
             if self._symbols[self._next_symbol].upper() == symbol_string:
                 self._next_symbol += 1
@@ -335,9 +330,7 @@ class GQL(object):
 
         if not self._AddSimpleFilter(identifier, condition, self._Reference()):
 
-            if not self._AddSimpleFilter(
-                identifier, condition, self._Literal()
-            ):
+            if not self._AddSimpleFilter(identifier, condition, self._Literal()):
 
                 type_cast = self._TypeCast()
                 if not type_cast or not self._AddProcessedParameterFilter(
@@ -389,13 +382,9 @@ class GQL(object):
             else:
                 self._Error('"IS" expected to follow "ANCESTOR"')
         elif condition.lower() == "is":
-            self._Error(
-                '"IS" can only be used when comparing against "ANCESTOR"'
-            )
+            self._Error('"IS" can only be used when comparing against "ANCESTOR"')
 
-    def _AddProcessedParameterFilter(
-        self, identifier, condition, operator, parameters
-    ):
+    def _AddProcessedParameterFilter(self, identifier, condition, operator, parameters):
         """Add a filter with post-processing required.
 
         Args:
@@ -424,9 +413,7 @@ class GQL(object):
         if operator == "list" and condition.lower() != "in":
             self._Error("Only IN can process a list of values")
 
-        self._filters.setdefault(filter_rule, []).append(
-            (operator, parameters)
-        )
+        self._filters.setdefault(filter_rule, []).append((operator, parameters))
         return True
 
     def _AddSimpleFilter(self, identifier, condition, parameter):
@@ -776,9 +763,7 @@ class Literal(object):
 
 def _raise_not_implemented(func):
     def raise_inner(value):
-        raise NotImplementedError(
-            "GQL function {} is not implemented".format(func)
-        )
+        raise NotImplementedError("GQL function {} is not implemented".format(func))
 
     return raise_inner
 
@@ -795,9 +780,7 @@ def _time_function(values):
                 time_tuple = time.strptime(value, "%H:%M:%S")
             except ValueError as error:
                 _raise_cast_error(
-                    "Error during time conversion, {}, {}".format(
-                        error, values
-                    )
+                    "Error during time conversion, {}, {}".format(error, values)
                 )
             time_tuple = time_tuple[3:]
             time_tuple = time_tuple[0:3]
@@ -812,9 +795,7 @@ def _time_function(values):
     try:
         return datetime.time(*time_tuple)
     except ValueError as error:
-        _raise_cast_error(
-            "Error during time conversion, {}, {}".format(error, values)
-        )
+        _raise_cast_error("Error during time conversion, {}, {}".format(error, values))
 
 
 def _date_function(values):
@@ -825,9 +806,7 @@ def _date_function(values):
                 time_tuple = time.strptime(value, "%Y-%m-%d")[0:6]
             except ValueError as error:
                 _raise_cast_error(
-                    "Error during date conversion, {}, {}".format(
-                        error, values
-                    )
+                    "Error during date conversion, {}, {}".format(error, values)
                 )
         else:
             _raise_cast_error("Invalid argument for date(), {}".format(value))
@@ -838,9 +817,7 @@ def _date_function(values):
     try:
         return datetime.datetime(*time_tuple)
     except ValueError as error:
-        _raise_cast_error(
-            "Error during date conversion, {}, {}".format(error, values)
-        )
+        _raise_cast_error("Error during date conversion, {}, {}".format(error, values))
 
 
 def _datetime_function(values):
@@ -851,14 +828,10 @@ def _datetime_function(values):
                 time_tuple = time.strptime(value, "%Y-%m-%d %H:%M:%S")[0:6]
             except ValueError as error:
                 _raise_cast_error(
-                    "Error during date conversion, {}, {}".format(
-                        error, values
-                    )
+                    "Error during date conversion, {}, {}".format(error, values)
                 )
         else:
-            _raise_cast_error(
-                "Invalid argument for datetime(), {}".format(value)
-            )
+            _raise_cast_error("Invalid argument for datetime(), {}".format(value))
     else:
         time_tuple = values
     try:
@@ -883,9 +856,7 @@ def _key_function(values):
             *values, namespace=context.get_namespace(), project=client.project
         )
     _raise_cast_error(
-        "Key requires even number of operands or single string, {}".format(
-            values
-        )
+        "Key requires even number of operands or single string, {}".format(values)
     )
 
 

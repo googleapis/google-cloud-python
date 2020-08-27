@@ -181,9 +181,7 @@ class Test_make_call:
 
 def _mock_key(key_str):
     key = mock.Mock(kind="SomeKind", spec=("to_protobuf", "kind"))
-    key.to_protobuf.return_value = protobuf = mock.Mock(
-        spec=("SerializeToString",)
-    )
+    key.to_protobuf.return_value = protobuf = mock.Mock(spec=("SerializeToString",))
     protobuf.SerializeToString.return_value = key_str
     return key
 
@@ -237,9 +235,7 @@ class Test_lookup:
             _api.lookup(_mock_key("foo"), _options.ReadOptions())
             _api.lookup(_mock_key("bar"), _options.ReadOptions())
 
-            batch = new_context.batches[_api._LookupBatch][
-                (("transaction", b"tx123"),)
-            ]
+            batch = new_context.batches[_api._LookupBatch][(("transaction", b"tx123"),)]
             assert len(batch.todo["foo"]) == 2
             assert len(batch.todo["bar"]) == 1
             assert new_context.eventloop.add_idle.call_count == 1
@@ -286,9 +282,7 @@ class Test_lookup_WithGlobalCache:
         batch = _LookupBatch.return_value
         batch.add.side_effect = Exception("Shouldn't use Datastore")
 
-        future = _api.lookup(
-            key._key, _options.ReadOptions(use_datastore=False)
-        )
+        future = _api.lookup(key._key, _options.ReadOptions(use_datastore=False))
         assert future.result() is _api._NOT_FOUND
 
         assert global_cache.get([cache_key]) == [None]
@@ -378,9 +372,7 @@ class Test_LookupBatch:
             batch.idle_callback()
 
             called_with = _datastore_lookup.call_args[0]
-            called_with_keys = set(
-                (mock_key.key for mock_key in called_with[0])
-            )
+            called_with_keys = set((mock_key.key for mock_key in called_with[0]))
             assert called_with_keys == set(["foo", "bar"])
             called_with_options = called_with[1]
             assert called_with_options == datastore_pb2.ReadOptions()
@@ -507,9 +499,7 @@ class Test_LookupBatch:
         with context.new(eventloop=eventloop).use() as context:
             future1, future2, future3 = (tasklets.Future() for _ in range(3))
             batch = _api._LookupBatch(_options.ReadOptions())
-            batch.todo.update(
-                {"foo": [future1], "bar": [future2], "baz": [future3]}
-            )
+            batch.todo.update({"foo": [future1], "bar": [future2], "baz": [future3]})
 
             entity1 = mock.Mock(key=key_pb("foo"), spec=("key",))
             entity2 = mock.Mock(key=key_pb("bar"), spec=("key",))
@@ -545,9 +535,7 @@ def test__datastore_lookup(datastore_pb2, context):
         future = tasklets.Future()
         future.set_result("response")
         Lookup.future.return_value = future
-        assert (
-            _api._datastore_lookup(["foo", "bar"], None).result() == "response"
-        )
+        assert _api._datastore_lookup(["foo", "bar"], None).result() == "response"
 
         datastore_pb2.LookupRequest.assert_called_once_with(
             project_id="theproject", keys=["foo", "bar"], read_options=None
@@ -563,8 +551,7 @@ class Test_get_read_options:
     @pytest.mark.usefixtures("in_context")
     def test_no_args_no_transaction():
         assert (
-            _api.get_read_options(_options.ReadOptions())
-            == datastore_pb2.ReadOptions()
+            _api.get_read_options(_options.ReadOptions()) == datastore_pb2.ReadOptions()
         )
 
     @staticmethod
@@ -576,9 +563,7 @@ class Test_get_read_options:
     @staticmethod
     def test_args_override_transaction(context):
         with context.new(transaction=b"txfoo").use():
-            options = _api.get_read_options(
-                _options.ReadOptions(transaction=b"txbar")
-            )
+            options = _api.get_read_options(_options.ReadOptions(transaction=b"txbar"))
             assert options == datastore_pb2.ReadOptions(transaction=b"txbar")
 
     @staticmethod
@@ -682,9 +667,7 @@ class Test_put:
 
         mock_entity = MockEntity("what", "ever")
         with pytest.raises(TypeError):
-            _api.put(
-                mock_entity, _options.Options(use_datastore=False)
-            ).result()
+            _api.put(mock_entity, _options.Options(use_datastore=False)).result()
 
 
 class Test_put_WithGlobalCache:
@@ -701,9 +684,7 @@ class Test_put_WithGlobalCache:
         batch = Batch.return_value
         batch.put.return_value = future_result(None)
 
-        future = _api.put(
-            model._entity_to_ds_entity(entity), _options.Options()
-        )
+        future = _api.put(model._entity_to_ds_entity(entity), _options.Options())
         assert future.result() is None
 
         assert global_cache.get([cache_key]) == [None]
@@ -722,9 +703,7 @@ class Test_put_WithGlobalCache:
         batch = Batch.return_value
         batch.put.return_value = future_result(key_pb)
 
-        future = _api.put(
-            model._entity_to_ds_entity(entity), _options.Options()
-        )
+        future = _api.put(model._entity_to_ds_entity(entity), _options.Options())
         assert future.result() == key._key
 
         assert global_cache.get([cache_key]) == [None]
@@ -862,9 +841,7 @@ class Test_delete_WithGlobalCache:
         batch = Batch.return_value
         batch.delete.return_value = future_result(None)
 
-        future = _api.delete(
-            key._key, _options.Options(use_global_cache=False)
-        )
+        future = _api.delete(key._key, _options.Options(use_global_cache=False))
         assert future.result() is None
 
         assert global_cache.get([cache_key]) == [None]
@@ -960,18 +937,10 @@ class Test__TransactionalCommitBatch:
                 mock.Mock(
                     keys=[
                         entity_pb2.Key(
-                            path=[
-                                entity_pb2.Key.PathElement(
-                                    kind="SomeKind", id=1
-                                )
-                            ]
+                            path=[entity_pb2.Key.PathElement(kind="SomeKind", id=1)]
                         ),
                         entity_pb2.Key(
-                            path=[
-                                entity_pb2.Key.PathElement(
-                                    kind="SomeKind", id=2
-                                )
-                            ]
+                            path=[entity_pb2.Key.PathElement(kind="SomeKind", id=2)]
                         ),
                     ]
                 )
@@ -1070,9 +1039,7 @@ class Test__TransactionalCommitBatch:
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_api._process_commit")
     @mock.patch("google.cloud.ndb._datastore_api._datastore_commit")
-    def test_commit_allocating_ids(
-        datastore_commit, process_commit, in_context
-    ):
+    def test_commit_allocating_ids(datastore_commit, process_commit, in_context):
         batch = _api._TransactionalCommitBatch(b"123", _options.Options())
         batch.futures = object()
         batch.mutations = object()
@@ -1202,9 +1169,7 @@ class Test_datastore_commit:
         future = tasklets.Future()
         future.set_result("response")
         api.Commit.future.return_value = future
-        assert (
-            _api._datastore_commit(mutations, b"tx123").result() == "response"
-        )
+        assert _api._datastore_commit(mutations, b"tx123").result() == "response"
 
         datastore_pb2.CommitRequest.assert_called_once_with(
             project_id="testing",
@@ -1261,9 +1226,7 @@ class Test_AllocateIdsBatch:
             key_pbs, retries=None, timeout=None
         )
         rpc = _datastore_allocate_ids.return_value
-        rpc.add_done_callback.assert_called_once_with(
-            batch.allocate_ids_callback
-        )
+        rpc.add_done_callback.assert_called_once_with(batch.allocate_ids_callback)
 
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_api._datastore_allocate_ids")
@@ -1271,9 +1234,7 @@ class Test_AllocateIdsBatch:
         options = _options.Options()
         batch = _api._AllocateIdsBatch(options)
         batch.futures = futures = [tasklets.Future(), tasklets.Future()]
-        rpc = utils.future_result(
-            mock.Mock(keys=["key1", "key2"], spec=("key",))
-        )
+        rpc = utils.future_result(mock.Mock(keys=["key1", "key2"], spec=("key",)))
         batch.allocate_ids_callback(rpc)
         results = [future.result() for future in futures]
         assert results == ["key1", "key2"]
@@ -1380,9 +1341,7 @@ def test_rollback(_datastore_rollback):
     _datastore_rollback.return_value = rpc
     future = _api.rollback(b"tx123")
 
-    _datastore_rollback.assert_called_once_with(
-        b"tx123", retries=None, timeout=None
-    )
+    _datastore_rollback.assert_called_once_with(b"tx123", retries=None, timeout=None)
     rpc.set_result(None)
 
     assert future.result() is None

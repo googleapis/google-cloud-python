@@ -184,9 +184,7 @@ class TestGQL:
     @staticmethod
     def test_cast():
         gql = gql_module.GQL("SELECT * FROM SomeKind WHERE prop1=user('js')")
-        assert gql.filters() == {
-            ("prop1", "="): [("user", [gql_module.Literal("js")])]
-        }
+        assert gql.filters() == {("prop1", "="): [("user", [gql_module.Literal("js")])]}
 
     @staticmethod
     def test_in_list():
@@ -208,12 +206,8 @@ class TestGQL:
 
     @staticmethod
     def test_ancestor_is():
-        gql = gql_module.GQL(
-            "SELECT * FROM SomeKind WHERE ANCESTOR IS 'AnyKind'"
-        )
-        assert gql.filters() == {
-            (-1, "is"): [("nop", [gql_module.Literal("AnyKind")])]
-        }
+        gql = gql_module.GQL("SELECT * FROM SomeKind WHERE ANCESTOR IS 'AnyKind'")
+        assert gql.filters() == {(-1, "is"): [("nop", [gql_module.Literal("AnyKind")])]}
 
     @staticmethod
     def test_ancestor_multiple_ancestors():
@@ -243,37 +237,27 @@ class TestGQL:
     @staticmethod
     def test_null():
         gql = gql_module.GQL("SELECT * FROM SomeKind WHERE prop1=NULL")
-        assert gql.filters() == {
-            ("prop1", "="): [("nop", [gql_module.Literal(None)])]
-        }
+        assert gql.filters() == {("prop1", "="): [("nop", [gql_module.Literal(None)])]}
 
     @staticmethod
     def test_true():
         gql = gql_module.GQL("SELECT * FROM SomeKind WHERE prop1=TRUE")
-        assert gql.filters() == {
-            ("prop1", "="): [("nop", [gql_module.Literal(True)])]
-        }
+        assert gql.filters() == {("prop1", "="): [("nop", [gql_module.Literal(True)])]}
 
     @staticmethod
     def test_false():
         gql = gql_module.GQL("SELECT * FROM SomeKind WHERE prop1=FALSE")
-        assert gql.filters() == {
-            ("prop1", "="): [("nop", [gql_module.Literal(False)])]
-        }
+        assert gql.filters() == {("prop1", "="): [("nop", [gql_module.Literal(False)])]}
 
     @staticmethod
     def test_float():
         gql = gql_module.GQL("SELECT * FROM SomeKind WHERE prop1=3.14")
-        assert gql.filters() == {
-            ("prop1", "="): [("nop", [gql_module.Literal(3.14)])]
-        }
+        assert gql.filters() == {("prop1", "="): [("nop", [gql_module.Literal(3.14)])]}
 
     @staticmethod
     def test_quoted_identifier():
         gql = gql_module.GQL('SELECT * FROM SomeKind WHERE "prop1"=3.14')
-        assert gql.filters() == {
-            ("prop1", "="): [("nop", [gql_module.Literal(3.14)])]
-        }
+        assert gql.filters() == {("prop1", "="): [("nop", [gql_module.Literal(3.14)])]}
 
     @staticmethod
     def test_order_by_ascending():
@@ -334,9 +318,7 @@ class TestGQL:
         class SomeKind(model.Model):
             prop1 = model.IntegerProperty()
 
-        gql = gql_module.GQL(
-            "SELECT prop1 FROM SomeKind WHERE prop1 IN (1, 2, 3)"
-        )
+        gql = gql_module.GQL("SELECT prop1 FROM SomeKind WHERE prop1 IN (1, 2, 3)")
         query = gql.get_query()
         assert query.filters == query_module.OR(
             query_module.FilterNode("prop1", "=", 1),
@@ -350,9 +332,7 @@ class TestGQL:
         class SomeKind(model.Model):
             prop1 = model.StringProperty()
 
-        gql = gql_module.GQL(
-            "SELECT prop1 FROM SomeKind WHERE prop1 IN (:1, :2, :3)"
-        )
+        gql = gql_module.GQL("SELECT prop1 FROM SomeKind WHERE prop1 IN (:1, :2, :3)")
         query = gql.get_query()
         assert "'in'," in str(query.filters)
 
@@ -401,9 +381,7 @@ class TestGQL:
         class SomeKind(model.Model):
             prop1 = model.DateProperty()
 
-        gql = gql_module.GQL(
-            "SELECT prop1 FROM SomeKind WHERE prop1 = Date(:1)"
-        )
+        gql = gql_module.GQL("SELECT prop1 FROM SomeKind WHERE prop1 = Date(:1)")
         query = gql.get_query()
         assert "'date'" in str(query.filters)
 
@@ -425,9 +403,7 @@ class TestGQL:
         class SomeKind(model.Model):
             prop1 = model.DateProperty()
 
-        gql = gql_module.GQL(
-            "SELECT prop1 FROM SomeKind WHERE prop1 = Date(42)"
-        )
+        gql = gql_module.GQL("SELECT prop1 FROM SomeKind WHERE prop1 = Date(42)")
         with pytest.raises(exceptions.BadQueryError):
             gql.get_query()
 
@@ -491,9 +467,7 @@ class TestGQL:
         class SomeKind(model.Model):
             prop1 = model.DateTimeProperty()
 
-        gql = gql_module.GQL(
-            "SELECT prop1 FROM SomeKind WHERE prop1 = DateTime(:1)"
-        )
+        gql = gql_module.GQL("SELECT prop1 FROM SomeKind WHERE prop1 = DateTime(:1)")
         query = gql.get_query()
         assert "'datetime'" in str(query.filters)
 
@@ -515,9 +489,7 @@ class TestGQL:
         class SomeKind(model.Model):
             prop1 = model.DateTimeProperty()
 
-        gql = gql_module.GQL(
-            "SELECT prop1 FROM SomeKind WHERE prop1 = DateTime(42)"
-        )
+        gql = gql_module.GQL("SELECT prop1 FROM SomeKind WHERE prop1 = DateTime(42)")
         with pytest.raises(exceptions.BadQueryError):
             gql.get_query()
 
@@ -539,9 +511,7 @@ class TestGQL:
         class SomeKind(model.Model):
             prop1 = model.TimeProperty()
 
-        gql = gql_module.GQL(
-            "SELECT prop1 FROM SomeKind WHERE prop1 = Time(12, 45, 5)"
-        )
+        gql = gql_module.GQL("SELECT prop1 FROM SomeKind WHERE prop1 = Time(12, 45, 5)")
         query = gql.get_query()
         assert query.filters == query_module.FilterNode(
             "prop1", "=", datetime.datetime(1970, 1, 1, 12, 45, 5)
@@ -567,9 +537,7 @@ class TestGQL:
         class SomeKind(model.Model):
             prop1 = model.TimeProperty()
 
-        gql = gql_module.GQL(
-            "SELECT prop1 FROM SomeKind WHERE prop1 = Time(12)"
-        )
+        gql = gql_module.GQL("SELECT prop1 FROM SomeKind WHERE prop1 = Time(12)")
         query = gql.get_query()
         assert query.filters == query_module.FilterNode(
             "prop1", "=", datetime.datetime(1970, 1, 1, 12)
@@ -581,9 +549,7 @@ class TestGQL:
         class SomeKind(model.Model):
             prop1 = model.TimeProperty()
 
-        gql = gql_module.GQL(
-            "SELECT prop1 FROM SomeKind WHERE prop1 = Time(:1)"
-        )
+        gql = gql_module.GQL("SELECT prop1 FROM SomeKind WHERE prop1 = Time(:1)")
         query = gql.get_query()
         assert "'time'" in str(query.filters)
 
@@ -605,9 +571,7 @@ class TestGQL:
         class SomeKind(model.Model):
             prop1 = model.TimeProperty()
 
-        gql = gql_module.GQL(
-            "SELECT prop1 FROM SomeKind WHERE prop1 = Time(3.141592)"
-        )
+        gql = gql_module.GQL("SELECT prop1 FROM SomeKind WHERE prop1 = Time(3.141592)")
         with pytest.raises(exceptions.BadQueryError):
             gql.get_query()
 
@@ -655,9 +619,7 @@ class TestGQL:
         class SomeKind(model.Model):
             prop1 = model.GeoPtProperty()
 
-        gql = gql_module.GQL(
-            "SELECT prop1 FROM SomeKind WHERE prop1 = GeoPt(:1)"
-        )
+        gql = gql_module.GQL("SELECT prop1 FROM SomeKind WHERE prop1 = GeoPt(:1)")
         query = gql.get_query()
         assert "'geopt'" in str(query.filters)
 
@@ -668,8 +630,7 @@ class TestGQL:
             prop1 = model.GeoPtProperty()
 
         gql = gql_module.GQL(
-            "SELECT prop1 FROM SomeKind WHERE prop1 = "
-            "GeoPt(20.67,-100.32, 1.5)"
+            "SELECT prop1 FROM SomeKind WHERE prop1 = " "GeoPt(20.67,-100.32, 1.5)"
         )
         with pytest.raises(exceptions.BadQueryError):
             gql.get_query()
@@ -695,9 +656,7 @@ class TestGQL:
         class SomeKind(model.Model):
             prop1 = model.KeyProperty()
 
-        gql = gql_module.GQL(
-            "SELECT prop1 FROM SomeKind WHERE prop1 = Key(:1)"
-        )
+        gql = gql_module.GQL("SELECT prop1 FROM SomeKind WHERE prop1 = Key(:1)")
         query = gql.get_query()
         assert "'key'" in str(query.filters)
 

@@ -31,9 +31,7 @@ from google.cloud.ndb import utils
 
 log = logging.getLogger(__name__)
 
-_Event = collections.namedtuple(
-    "_Event", ("when", "callback", "args", "kwargs")
-)
+_Event = collections.namedtuple("_Event", ("when", "callback", "args", "kwargs"))
 
 
 class EventLoop(object):
@@ -314,9 +312,7 @@ class EventLoop(object):
             start_time = time.time()
             rpc_id, rpc = self.rpc_results.get()
             elapsed = time.time() - start_time
-            utils.logging_debug(
-                log, "Blocked for {}s awaiting RPC results.", elapsed
-            )
+            utils.logging_debug(log, "Blocked for {}s awaiting RPC results.", elapsed)
             context.wait_time += elapsed
 
             callback = self.rpcs.pop(rpc_id)

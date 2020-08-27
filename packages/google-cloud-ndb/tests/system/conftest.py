@@ -78,9 +78,7 @@ def with_ds_client(ds_client, to_delete, deleted_keys, other_namespace):
         if entity.key not in deleted_keys
     ]
     if not_deleted:
-        log.warning(
-            "CLEAN UP: Entities not deleted from test: {}".format(not_deleted)
-        )
+        log.warning("CLEAN UP: Entities not deleted from test: {}".format(not_deleted))
 
 
 @pytest.fixture
@@ -137,7 +135,9 @@ def other_namespace():
 def client_context(namespace):
     client = ndb.Client()
     context_manager = client.context(
-        cache_policy=False, legacy_data=False, namespace=namespace,
+        cache_policy=False,
+        legacy_data=False,
+        namespace=namespace,
     )
     with context_manager as context:
         yield context

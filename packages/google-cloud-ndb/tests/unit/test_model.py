@@ -130,9 +130,7 @@ class TestIndex:
     @staticmethod
     def test_constructor():
         index_prop = model.IndexProperty(name="a", direction="asc")
-        index = model.Index(
-            kind="IndK", properties=(index_prop,), ancestor=False
-        )
+        index = model.Index(kind="IndK", properties=(index_prop,), ancestor=False)
         assert index._kind == "IndK"
         assert index._properties == (index_prop,)
         assert not index._ancestor
@@ -159,9 +157,7 @@ class TestIndex:
     @staticmethod
     def test___repr__():
         index_prop = model.IndexProperty(name="a", direction="asc")
-        index = model.Index(
-            kind="IndK", properties=[index_prop], ancestor=False
-        )
+        index = model.Index(kind="IndK", properties=[index_prop], ancestor=False)
         expected = "Index(kind='IndK', properties=[{!r}], ancestor=False)"
         expected = expected.format(index_prop)
         assert repr(index) == expected
@@ -211,17 +207,13 @@ class TestIndexState:
     INDEX = mock.sentinel.index
 
     def test_constructor(self):
-        index_state = model.IndexState(
-            definition=self.INDEX, state="error", id=42
-        )
+        index_state = model.IndexState(definition=self.INDEX, state="error", id=42)
         assert index_state._definition is self.INDEX
         assert index_state._state == "error"
         assert index_state._id == 42
 
     def test_definition(self):
-        index_state = model.IndexState(
-            definition=self.INDEX, state="serving", id=1
-        )
+        index_state = model.IndexState(definition=self.INDEX, state="serving", id=1)
         assert index_state.definition is self.INDEX
 
     @staticmethod
@@ -237,12 +229,8 @@ class TestIndexState:
     @staticmethod
     def test___repr__():
         index_prop = model.IndexProperty(name="a", direction="asc")
-        index = model.Index(
-            kind="IndK", properties=[index_prop], ancestor=False
-        )
-        index_state = model.IndexState(
-            definition=index, state="building", id=1337
-        )
+        index = model.Index(kind="IndK", properties=[index_prop], ancestor=False)
+        index_state = model.IndexState(definition=index, state="building", id=1337)
         expected = (
             "IndexState(definition=Index(kind='IndK', properties=["
             "IndexProperty(name='a', direction='asc')], ancestor=False), "
@@ -251,18 +239,12 @@ class TestIndexState:
         assert repr(index_state) == expected
 
     def test___eq__(self):
-        index_state1 = model.IndexState(
-            definition=self.INDEX, state="error", id=20
-        )
+        index_state1 = model.IndexState(definition=self.INDEX, state="error", id=20)
         index_state2 = model.IndexState(
             definition=mock.sentinel.not_index, state="error", id=20
         )
-        index_state3 = model.IndexState(
-            definition=self.INDEX, state="serving", id=20
-        )
-        index_state4 = model.IndexState(
-            definition=self.INDEX, state="error", id=80
-        )
+        index_state3 = model.IndexState(definition=self.INDEX, state="serving", id=20)
+        index_state4 = model.IndexState(definition=self.INDEX, state="error", id=80)
         index_state5 = mock.sentinel.index_state
         assert index_state1 == index_state1
         assert not index_state1 == index_state2
@@ -271,22 +253,14 @@ class TestIndexState:
         assert not index_state1 == index_state5
 
     def test___ne__(self):
-        index_state1 = model.IndexState(
-            definition=self.INDEX, state="error", id=20
-        )
+        index_state1 = model.IndexState(definition=self.INDEX, state="error", id=20)
         index_state2 = model.IndexState(
             definition=mock.sentinel.not_index, state="error", id=20
         )
-        index_state3 = model.IndexState(
-            definition=self.INDEX, state="serving", id=20
-        )
-        index_state4 = model.IndexState(
-            definition=self.INDEX, state="error", id=80
-        )
+        index_state3 = model.IndexState(definition=self.INDEX, state="serving", id=20)
+        index_state4 = model.IndexState(definition=self.INDEX, state="error", id=80)
         index_state5 = mock.sentinel.index_state
-        index_state6 = model.IndexState(
-            definition=self.INDEX, state="error", id=20
-        )
+        index_state6 = model.IndexState(definition=self.INDEX, state="error", id=20)
         assert not index_state1 != index_state1
         assert index_state1 != index_state2
         assert index_state1 != index_state3
@@ -295,12 +269,8 @@ class TestIndexState:
         assert not index_state1 != index_state6
 
     def test___hash__(self):
-        index_state1 = model.IndexState(
-            definition=self.INDEX, state="error", id=88
-        )
-        index_state2 = model.IndexState(
-            definition=self.INDEX, state="error", id=88
-        )
+        index_state1 = model.IndexState(definition=self.INDEX, state="error", id=88)
+        index_state2 = model.IndexState(definition=self.INDEX, state="error", id=88)
         assert index_state1 is not index_state2
         assert hash(index_state1) == hash(index_state2)
         assert hash(index_state1) == hash((self.INDEX, "error", 88))
@@ -453,9 +423,7 @@ class TestProperty:
         expected = (
             "Property('val', indexed=False, required=True, "
             "default='zorp', choices={}, validator={}, "
-            "verbose_name='VALUE FOR READING')".format(
-                prop._choices, prop._validator
-            )
+            "verbose_name='VALUE FOR READING')".format(prop._choices, prop._validator)
         )
         assert repr(prop) == expected
 
@@ -1014,9 +982,7 @@ class TestProperty:
         assert methods == expected
         # Check cache
         key = "{}.{}".format(SomeProperty.__module__, SomeProperty.__name__)
-        assert model.Property._FIND_METHODS_CACHE == {
-            key: {("IN", "find_me"): methods}
-        }
+        assert model.Property._FIND_METHODS_CACHE == {key: {("IN", "find_me"): methods}}
 
     def test__find_methods_reverse(self):
         SomeProperty = self._property_subtype()
@@ -1043,9 +1009,7 @@ class TestProperty:
         # Set cache
         methods = mock.sentinel.methods
         key = "{}.{}".format(SomeProperty.__module__, SomeProperty.__name__)
-        model.Property._FIND_METHODS_CACHE = {
-            key: {("IN", "find_me"): methods}
-        }
+        model.Property._FIND_METHODS_CACHE = {key: {("IN", "find_me"): methods}}
         assert SomeProperty._find_methods("IN", "find_me") is methods
 
     def test__find_methods_cached_reverse(self):
@@ -1053,9 +1017,7 @@ class TestProperty:
         # Set cache
         methods = ["a", "b"]
         key = "{}.{}".format(SomeProperty.__module__, SomeProperty.__name__)
-        model.Property._FIND_METHODS_CACHE = {
-            key: {("IN", "find_me"): methods}
-        }
+        model.Property._FIND_METHODS_CACHE = {key: {("IN", "find_me"): methods}}
         assert SomeProperty._find_methods("IN", "find_me", reverse=True) == [
             "b",
             "a",
@@ -1347,9 +1309,7 @@ class TestProperty:
 
         entity = SomeKind(prop="foo")
         data = {}
-        assert SomeKind.prop._to_datastore(entity, data, prefix="pre.") == (
-            "pre.prop",
-        )
+        assert SomeKind.prop._to_datastore(entity, data, prefix="pre.") == ("pre.prop",)
         assert data == {"pre.prop": "foo"}
 
     @staticmethod
@@ -1892,9 +1852,7 @@ class TestBlobProperty:
         compressed_value_one = zlib.compress(uncompressed_value_one)
         uncompressed_value_two = b"xyz" * 1000
         compressed_value_two = zlib.compress(uncompressed_value_two)
-        datastore_entity.update(
-            {"foo": [compressed_value_one, compressed_value_two]}
-        )
+        datastore_entity.update({"foo": [compressed_value_one, compressed_value_two]})
         meanings = {
             "foo": (
                 model._MEANING_COMPRESSED,
@@ -2289,9 +2247,7 @@ class TestUser:
 
     @staticmethod
     def test_nickname_mismatch_domain():
-        user_value = model.User(
-            email="foo@example.org", _auth_domain="example.com"
-        )
+        user_value = model.User(email="foo@example.org", _auth_domain="example.com")
         assert user_value.nickname() == "foo@example.org"
 
     def test_email(self):
@@ -2332,12 +2288,8 @@ class TestUser:
 
     def test___eq__(self):
         user_value1 = self._make_default()
-        user_value2 = model.User(
-            email="foo@example.org", _auth_domain="example.com"
-        )
-        user_value3 = model.User(
-            email="foo@example.com", _auth_domain="example.org"
-        )
+        user_value2 = model.User(email="foo@example.org", _auth_domain="example.com")
+        user_value3 = model.User(email="foo@example.com", _auth_domain="example.org")
         user_value4 = mock.sentinel.blob_key
         assert user_value1 == user_value1
         assert not user_value1 == user_value2
@@ -2346,12 +2298,8 @@ class TestUser:
 
     def test___lt__(self):
         user_value1 = self._make_default()
-        user_value2 = model.User(
-            email="foo@example.org", _auth_domain="example.com"
-        )
-        user_value3 = model.User(
-            email="foo@example.com", _auth_domain="example.org"
-        )
+        user_value2 = model.User(email="foo@example.org", _auth_domain="example.com")
+        user_value3 = model.User(email="foo@example.com", _auth_domain="example.org")
         user_value4 = mock.sentinel.blob_key
         assert not user_value1 < user_value1
         assert user_value1 < user_value2
@@ -2368,13 +2316,16 @@ class TestUser:
 
     @staticmethod
     def test__from_ds_entity_with_user_id():
-        assert model.User._from_ds_entity(
-            {
-                "email": "foo@example.com",
-                "auth_domain": "gmail.com",
-                "user_id": "12345",
-            }
-        ) == model.User("foo@example.com", "gmail.com", "12345")
+        assert (
+            model.User._from_ds_entity(
+                {
+                    "email": "foo@example.com",
+                    "auth_domain": "gmail.com",
+                    "user_id": "12345",
+                }
+            )
+            == model.User("foo@example.com", "gmail.com", "12345")
+        )
 
 
 class TestUserProperty:
@@ -2397,9 +2348,7 @@ class TestUserProperty:
     @staticmethod
     def test__validate():
         prop = model.UserProperty(name="u")
-        user_value = model.User(
-            email="foo@example.com", _auth_domain="example.com"
-        )
+        user_value = model.User(email="foo@example.com", _auth_domain="example.com")
         assert prop._validate(user_value) is None
 
     @staticmethod
@@ -2428,7 +2377,12 @@ class TestUserProperty:
     @staticmethod
     def test__to_base_type():
         prop = model.UserProperty(name="u")
-        entity = prop._to_base_type(model.User("email", "auth_domain",))
+        entity = prop._to_base_type(
+            model.User(
+                "email",
+                "auth_domain",
+            )
+        )
         assert entity["email"] == "email"
         assert "email" in entity.exclude_from_indexes
         assert entity["auth_domain"] == "auth_domain"
@@ -2438,9 +2392,7 @@ class TestUserProperty:
     @staticmethod
     def test__to_base_type_w_user_id():
         prop = model.UserProperty(name="u")
-        entity = prop._to_base_type(
-            model.User("email", "auth_domain", "user_id")
-        )
+        entity = prop._to_base_type(model.User("email", "auth_domain", "user_id"))
         assert entity["email"] == "email"
         assert "email" in entity.exclude_from_indexes
         assert entity["auth_domain"] == "auth_domain"
@@ -2721,9 +2673,7 @@ class TestDateTimeProperty:
         with pytest.raises(ValueError):
             model.DateTimeProperty(name="dt_val", auto_now=True, repeated=True)
         with pytest.raises(ValueError):
-            model.DateTimeProperty(
-                name="dt_val", auto_now_add=True, repeated=True
-            )
+            model.DateTimeProperty(name="dt_val", auto_now_add=True, repeated=True)
 
         prop = model.DateTimeProperty(name="dt_val", repeated=True)
         assert prop._repeated
@@ -2741,9 +2691,7 @@ class TestDateTimeProperty:
         )
         value = "2020-08-08 12:53:54"
         # validator must be called first to convert to datetime
-        assert prop._do_validate(value) == datetime.datetime(
-            2020, 8, 8, 12, 53, 54
-        )
+        assert prop._do_validate(value) == datetime.datetime(2020, 8, 8, 12, 53, 54)
 
     @staticmethod
     def test__validate_invalid():
@@ -2840,9 +2788,7 @@ class TestDateTimeProperty:
     def test__from_base_type_int():
         prop = model.DateTimeProperty(name="dt_val")
         value = 1273632120000000
-        assert prop._from_base_type(value) == datetime.datetime(
-            2010, 5, 12, 2, 42
-        )
+        assert prop._from_base_type(value) == datetime.datetime(2010, 5, 12, 2, 42)
 
     @staticmethod
     def test__to_base_type_noop():
@@ -3116,9 +3062,7 @@ class TestStructuredProperty:
 
         prop = model.StructuredProperty(Mine)
         prop._name = "bar"
-        assert prop._comparison("=", None) == query_module.FilterNode(
-            "bar", "=", None
-        )
+        assert prop._comparison("=", None) == query_module.FilterNode("bar", "=", None)
 
     @staticmethod
     def test__comparison_repeated():
@@ -3208,12 +3152,8 @@ class TestStructuredProperty:
         conjunction_nodes = sorted(
             conjunction._nodes, key=lambda a: getattr(a, "_name", "z")
         )
-        assert conjunction_nodes[0] == query_module.FilterNode(
-            "bar.bar", "=", u"y"
-        )
-        assert conjunction_nodes[1] == query_module.FilterNode(
-            "bar.foo", "=", u"x"
-        )
+        assert conjunction_nodes[0] == query_module.FilterNode("bar.bar", "=", u"y")
+        assert conjunction_nodes[1] == query_module.FilterNode("bar.foo", "=", u"x")
         assert conjunction_nodes[2].predicate.name == "bar"
         assert sorted(conjunction_nodes[2].predicate.match_keys) == [
             "bar",
@@ -3717,17 +3657,13 @@ class TestLocalStructuredProperty:
             bar = model.Property()
 
         class SomeKind(model.Model):
-            foo = model.LocalStructuredProperty(
-                SubKind, repeated=True, indexed=False
-            )
+            foo = model.LocalStructuredProperty(SubKind, repeated=True, indexed=False)
 
         entity = SomeKind(foo=[SubKind(bar="baz")])
         data = {"_exclude_from_indexes": []}
         protobuf = model._entity_to_protobuf(entity.foo[0], set_key=False)
         protobuf = protobuf.SerializePartialToString()
-        assert SomeKind.foo._to_datastore(entity, data, repeated=True) == (
-            "foo",
-        )
+        assert SomeKind.foo._to_datastore(entity, data, repeated=True) == ("foo",)
         assert data.pop("_exclude_from_indexes") == ["foo"]
         assert data == {"foo": [[protobuf]]}
 
@@ -3737,19 +3673,13 @@ class TestLocalStructuredProperty:
             bar = model.Property()
 
         class SomeKind(model.Model):
-            foo = model.LocalStructuredProperty(
-                SubKind, repeated=True, indexed=False
-            )
+            foo = model.LocalStructuredProperty(SubKind, repeated=True, indexed=False)
 
         with in_context.new(legacy_data=True).use():
             entity = SomeKind(foo=[SubKind(bar="baz")])
             data = {"_exclude_from_indexes": []}
-            ds_entity = model._entity_to_ds_entity(
-                entity.foo[0], set_key=False
-            )
-            assert SomeKind.foo._to_datastore(entity, data, repeated=True) == (
-                "foo",
-            )
+            ds_entity = model._entity_to_ds_entity(entity.foo[0], set_key=False)
+            assert SomeKind.foo._to_datastore(entity, data, repeated=True) == ("foo",)
             assert data.pop("_exclude_from_indexes") == ["foo"]
             assert data == {"foo": [ds_entity]}
 
@@ -3774,9 +3704,7 @@ class TestLocalStructuredProperty:
         class SubKind(model.Model):
             bar = model.TextProperty()
 
-        prop = model.LocalStructuredProperty(
-            SubKind, repeated=True, compressed=True
-        )
+        prop = model.LocalStructuredProperty(SubKind, repeated=True, compressed=True)
         entity = SubKind(bar="baz")
         ds_entity = model._entity_to_ds_entity(entity, set_key=False)
         assert prop._call_from_base_type(ds_entity) == entity
@@ -3788,9 +3716,7 @@ class TestLocalStructuredProperty:
             bar = model.StringProperty()
             baz = model.StringProperty()
 
-        prop = model.LocalStructuredProperty(
-            SubKind, repeated=True, compressed=True
-        )
+        prop = model.LocalStructuredProperty(SubKind, repeated=True, compressed=True)
         entity = SubKind(foo="so", bar="much", baz="code")
         compressed = b"".join(
             [
@@ -3857,9 +3783,7 @@ class TestLocalStructuredProperty:
         with in_context.new(legacy_data=True).use():
             entity = ContainerA(child_a=ContainerB())
             data = {"_exclude_from_indexes": []}
-            assert ContainerA.child_a._to_datastore(entity, data) == (
-                "child_a",
-            )
+            assert ContainerA.child_a._to_datastore(entity, data) == ("child_a",)
             assert data.pop("_exclude_from_indexes") == ["child_a"]
             assert data["child_a"]["child_b"] is None
 
@@ -3906,9 +3830,7 @@ class TestGenericProperty:
     @staticmethod
     def test_constructor_compressed_and_indexed():
         with pytest.raises(NotImplementedError):
-            model.GenericProperty(
-                name="generic", compressed=True, indexed=True
-            )
+            model.GenericProperty(name="generic", compressed=True, indexed=True)
 
     @staticmethod
     def test__db_get_value():
@@ -4056,8 +3978,7 @@ class TestMetaModel:
             second = model.StringProperty()
 
         expected = (
-            "Mine<first=IntegerProperty('first'), "
-            "second=StringProperty('second')>"
+            "Mine<first=IntegerProperty('first'), " "second=StringProperty('second')>"
         )
         assert repr(Mine) == expected
 
@@ -4173,9 +4094,7 @@ class TestModel:
             author = model.StringProperty()
             publisher = model.StringProperty()
 
-        entity = Book(
-            pages=287, author="Tim Robert", projection=("pages", "author")
-        )
+        entity = Book(pages=287, author="Tim Robert", projection=("pages", "author"))
         assert entity.__dict__ == {
             "_values": {"pages": 287, "author": "Tim Robert"},
             "_projection": ("pages", "author"),
@@ -4265,9 +4184,7 @@ class TestModel:
     @pytest.mark.usefixtures("in_context")
     def test_repr_with_property_named_key():
         ManyFields = ManyFieldsFactory()
-        entity = ManyFields(
-            self=909, id="hi", key=[88.5, 0.0], value=None, _id=78
-        )
+        entity = ManyFields(self=909, id="hi", key=[88.5, 0.0], value=None, _id=78)
         expected = (
             "ManyFields(_key=Key('ManyFields', 78), id='hi', key=[88.5, 0.0], "
             "self=909, value=None)"
@@ -4280,8 +4197,7 @@ class TestModel:
         ManyFields = ManyFieldsFactory()
         entity = ManyFields(self=909, id="hi", value=None, _id=78)
         expected = (
-            "ManyFields(_key=Key('ManyFields', 78), id='hi', "
-            "self=909, value=None)"
+            "ManyFields(_key=Key('ManyFields', 78), id='hi', " "self=909, value=None)"
         )
         assert repr(entity) == expected
 
@@ -4353,9 +4269,7 @@ class TestModel:
     def test___eq__wrong_projection():
         ManyFields = ManyFieldsFactory()
         entity1 = ManyFields(self=90, projection=("self",))
-        entity2 = ManyFields(
-            value="a", unused=0.0, projection=("value", "unused")
-        )
+        entity2 = ManyFields(value="a", unused=0.0, projection=("value", "unused"))
         assert not entity1 == entity2
 
     @staticmethod
@@ -4457,9 +4371,7 @@ class TestModel:
             hi = model.StringProperty()
 
         entity1 = SomeKind(hi="mom", foo=[OtherKind(bar=42)])
-        entity2 = SomeKind(
-            hi="mom", foo=[OtherKind(bar=42), OtherKind(bar=43)]
-        )
+        entity2 = SomeKind(hi="mom", foo=[OtherKind(bar=42), OtherKind(bar=43)])
 
         assert not entity1 == entity2
 
@@ -4869,9 +4781,7 @@ class TestModel:
                 cls, size, max, parent, future, *args, **kwargs
             ):
                 assert isinstance(future, tasklets.Future)
-                cls.post_allocate_id_calls.append(
-                    ((size, max, parent) + args, kwargs)
-                )
+                cls.post_allocate_id_calls.append(((size, max, parent) + args, kwargs))
 
         keys = Simple.allocate_ids(2)
         assert keys == (
@@ -4969,8 +4879,7 @@ class TestModel:
             pass
 
         assert (
-            Simple.get_by_id(1, parent="foo", project="baz", namespace="bar")
-            is entity
+            Simple.get_by_id(1, parent="foo", project="baz", namespace="bar") is entity
         )
 
         key_module.Key.assert_called_once_with(
@@ -4992,9 +4901,7 @@ class TestModel:
 
         assert Simple.get_by_id(1, app="baz") is entity
 
-        key_module.Key.assert_called_once_with(
-            "Simple", 1, parent=None, app="baz"
-        )
+        key_module.Key.assert_called_once_with("Simple", 1, parent=None, app="baz")
 
         key.get_async.assert_called_once_with(_options=_options.ReadOptions())
 
@@ -5111,9 +5018,7 @@ class TestModel:
     @pytest.mark.usefixtures("in_context")
     @mock.patch("google.cloud.ndb.model._transaction")
     @mock.patch("google.cloud.ndb.model.key_module")
-    def test_get_or_insert_insert_in_transaction(
-        patched_key_module, _transaction
-    ):
+    def test_get_or_insert_insert_in_transaction(patched_key_module, _transaction):
         class MockKey(key_module.Key):
             get_async = mock.Mock(return_value=utils.future_result(None))
 
@@ -5129,21 +5034,15 @@ class TestModel:
         entity = Simple.get_or_insert("one", foo=42)
         assert entity.foo == 42
         assert entity._key == MockKey("Simple", "one")
-        assert entity.put_async.called_once_with(
-            _options=_options.ReadOptions()
-        )
+        assert entity.put_async.called_once_with(_options=_options.ReadOptions())
 
-        entity._key.get_async.assert_called_once_with(
-            _options=_options.ReadOptions()
-        )
+        entity._key.get_async.assert_called_once_with(_options=_options.ReadOptions())
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     @mock.patch("google.cloud.ndb.model._transaction")
     @mock.patch("google.cloud.ndb.model.key_module")
-    def test_get_or_insert_insert_not_in_transaction(
-        patched_key_module, _transaction
-    ):
+    def test_get_or_insert_insert_not_in_transaction(patched_key_module, _transaction):
         class MockKey(key_module.Key):
             get_async = mock.Mock(return_value=utils.future_result(None))
 
@@ -5160,13 +5059,9 @@ class TestModel:
         entity = Simple.get_or_insert("one", foo=42)
         assert entity.foo == 42
         assert entity._key == MockKey("Simple", "one")
-        assert entity.put_async.called_once_with(
-            _options=_options.ReadOptions()
-        )
+        assert entity.put_async.called_once_with(_options=_options.ReadOptions())
 
-        entity._key.get_async.assert_called_once_with(
-            _options=_options.ReadOptions()
-        )
+        entity._key.get_async.assert_called_once_with(_options=_options.ReadOptions())
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -5446,9 +5341,7 @@ class Test_entity_from_protobuf:
 
         key = datastore.Key("ThisKind", 123, project="testing")
         datastore_entity = datastore.Entity(key=key)
-        datastore_entity.update(
-            {"baz.foo": 42, "baz.bar": "himom", "copacetic": True}
-        )
+        datastore_entity.update({"baz.foo": 42, "baz.bar": "himom", "copacetic": True})
         protobuf = helpers.entity_to_protobuf(datastore_entity)
         entity = model._entity_from_protobuf(protobuf)
         assert isinstance(entity, ThisKind)
@@ -5870,9 +5763,7 @@ def test_serialization():
         def _get_kind(cls):
             return "SomeKind"
 
-    entity = SomeKind(
-        other=OtherKind(foo=1, namespace="Test"), namespace="Test"
-    )
+    entity = SomeKind(other=OtherKind(foo=1, namespace="Test"), namespace="Test")
     assert entity.other.key is None or entity.other.key.id() is None
     entity = pickle.loads(pickle.dumps(entity))
     assert entity.other.foo == 1

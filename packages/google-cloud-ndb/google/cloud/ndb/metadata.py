@@ -242,8 +242,7 @@ class Property(_BaseMetadata):
 
 
 class EntityGroup(object):
-    """Model for __entity_group__ metadata. No longer supported by datastore.
-    """
+    """Model for __entity_group__ metadata. No longer supported by datastore."""
 
     def __new__(self, *args, **kwargs):
         raise exceptions.NoLongerImplementedError()
@@ -299,9 +298,7 @@ def get_namespaces(start=None, end=None):
 
     query = query_module.Query(kind=Namespace._get_kind())
     if start is not None:
-        query = query.filter(
-            Namespace.key >= Namespace.key_for_namespace(start)
-        )
+        query = query.filter(Namespace.key >= Namespace.key_for_namespace(start))
     if end is not None:
         query = query.filter(Namespace.key < Namespace.key_for_namespace(end))
 
@@ -330,15 +327,11 @@ def get_properties_of_kind(kind, start=None, end=None):
         kind=Property._get_kind(), ancestor=Property.key_for_kind(kind)
     )
     if start is not None and start != "":
-        query = query.filter(
-            Property.key >= Property.key_for_property(kind, start)
-        )
+        query = query.filter(Property.key >= Property.key_for_property(kind, start))
     if end is not None:
         if end == "":
             return []
-        query = query.filter(
-            Property.key < Property.key_for_property(kind, end)
-        )
+        query = query.filter(Property.key < Property.key_for_property(kind, end))
 
     results = query.fetch()
     return [prop.property_name for prop in results]
@@ -364,21 +357,15 @@ def get_representations_of_kind(kind, start=None, end=None):
         kind=Property._get_kind(), ancestor=Property.key_for_kind(kind)
     )
     if start is not None and start != "":
-        query = query.filter(
-            Property.key >= Property.key_for_property(kind, start)
-        )
+        query = query.filter(Property.key >= Property.key_for_property(kind, start))
     if end is not None:
         if end == "":
             return {}
-        query = query.filter(
-            Property.key < Property.key_for_property(kind, end)
-        )
+        query = query.filter(Property.key < Property.key_for_property(kind, end))
 
     representations = {}
     results = query.fetch()
     for property in results:
-        representations[
-            property.property_name
-        ] = property.property_representation
+        representations[property.property_name] = property.property_representation
 
     return representations

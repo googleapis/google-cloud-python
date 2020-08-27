@@ -122,9 +122,7 @@ def _transaction_async(context, callback, read_only=False):
 
     # Start the transaction
     utils.logging_debug(log, "Start transaction")
-    transaction_id = yield _datastore_api.begin_transaction(
-        read_only, retries=0
-    )
+    transaction_id = yield _datastore_api.begin_transaction(read_only, retries=0)
     utils.logging_debug(log, "Transaction Id: {}", transaction_id)
 
     on_commit_callbacks = []
@@ -330,9 +328,7 @@ def non_transactional(allow_existing=True):
                 return wrapped(*args, **kwargs)
             if not allow_existing:
                 raise exceptions.BadRequestError(
-                    "{} cannot be called within a transaction".format(
-                        wrapped.__name__
-                    )
+                    "{} cannot be called within a transaction".format(wrapped.__name__)
                 )
             new_ctx = ctx.new(transaction=None)
             with new_ctx.use():

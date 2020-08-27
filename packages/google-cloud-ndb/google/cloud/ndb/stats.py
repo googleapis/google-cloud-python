@@ -403,9 +403,7 @@ class NamespaceKindPropertyNameStat(KindPropertyNameStat):
     STORED_KIND_NAME = "__Stat_Ns_PropertyName_Kind__"
 
 
-class NamespaceKindPropertyNamePropertyTypeStat(
-    KindPropertyNamePropertyTypeStat
-):
+class NamespaceKindPropertyNamePropertyTypeStat(KindPropertyNamePropertyTypeStat):
     """KindPropertyNamePropertyTypeStat equivalent for a specific namespace.
 
     These may be found in each specific namespace and represent stats for that

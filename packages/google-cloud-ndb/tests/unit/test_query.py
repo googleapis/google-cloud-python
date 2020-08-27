@@ -49,12 +49,8 @@ class TestQueryOptions:
 
     @staticmethod
     def test_constructor_with_config():
-        config = query_module.QueryOptions(
-            kind="other", namespace="config_test"
-        )
-        options = query_module.QueryOptions(
-            config=config, kind="test", project="app"
-        )
+        config = query_module.QueryOptions(kind="other", namespace="config_test")
+        options = query_module.QueryOptions(config=config, kind="test", project="app")
         assert options.kind == "test"
         assert options.project == "app"
         assert options.namespace == "config_test"
@@ -304,9 +300,7 @@ class TestParameter:
 class TestParameterizedFunction:
     @staticmethod
     def test_constructor():
-        query = query_module.ParameterizedFunction(
-            "user", [query_module.Parameter(1)]
-        )
+        query = query_module.ParameterizedFunction("user", [query_module.Parameter(1)])
         assert query.func == "user"
         assert query.values == [query_module.Parameter(1)]
 
@@ -317,39 +311,27 @@ class TestParameterizedFunction:
 
     @staticmethod
     def test___repr__():
-        query = query_module.ParameterizedFunction(
-            "user", [query_module.Parameter(1)]
-        )
-        assert (
-            query.__repr__() == "ParameterizedFunction('user', [Parameter(1)])"
-        )
+        query = query_module.ParameterizedFunction("user", [query_module.Parameter(1)])
+        assert query.__repr__() == "ParameterizedFunction('user', [Parameter(1)])"
 
     @staticmethod
     def test___eq__parameter():
-        query = query_module.ParameterizedFunction(
-            "user", [query_module.Parameter(1)]
-        )
+        query = query_module.ParameterizedFunction("user", [query_module.Parameter(1)])
         assert (
             query.__eq__(
-                query_module.ParameterizedFunction(
-                    "user", [query_module.Parameter(1)]
-                )
+                query_module.ParameterizedFunction("user", [query_module.Parameter(1)])
             )
             is True
         )
 
     @staticmethod
     def test___eq__no_parameter():
-        query = query_module.ParameterizedFunction(
-            "user", [query_module.Parameter(1)]
-        )
+        query = query_module.ParameterizedFunction("user", [query_module.Parameter(1)])
         assert query.__eq__(42) is NotImplemented
 
     @staticmethod
     def test_is_parameterized_True():
-        query = query_module.ParameterizedFunction(
-            "user", [query_module.Parameter(1)]
-        )
+        query = query_module.ParameterizedFunction("user", [query_module.Parameter(1)])
         assert query.is_parameterized()
 
     @staticmethod
@@ -661,9 +643,7 @@ class TestFilterNode:
 
         filter_node1 = query_module.FilterNode("a", "<", 2.5)
         filter_node2 = query_module.FilterNode("a", ">", 2.5)
-        assert or_node == query_module.DisjunctionNode(
-            filter_node1, filter_node2
-        )
+        assert or_node == query_module.DisjunctionNode(filter_node1, filter_node2)
 
     @staticmethod
     def test_pickling():
@@ -907,9 +887,7 @@ class TestConjunctionNode:
         with pytest.raises(RuntimeError):
             query_module.ConjunctionNode(node1, node2)
 
-        boolean_clauses.assert_called_once_with(
-            "ConjunctionNode", combine_or=False
-        )
+        boolean_clauses.assert_called_once_with("ConjunctionNode", combine_or=False)
         assert clauses.add_node.call_count == 2
         clauses.add_node.assert_has_calls([mock.call(node1), mock.call(node2)])
 
@@ -1320,9 +1298,7 @@ class TestQuery:
     @pytest.mark.usefixtures("in_context")
     @mock.patch("google.cloud.ndb.model.Model._check_properties")
     def test_constructor_with_projection_as_property(_check_props):
-        query = query_module.Query(
-            kind="Foo", projection=[model.Property(name="X")]
-        )
+        query = query_module.Query(kind="Foo", projection=[model.Property(name="X")])
         assert query.projection == ("X",)
         _check_props.assert_not_called()
 
@@ -1333,9 +1309,7 @@ class TestQuery:
         class Foo(model.Model):
             x = model.IntegerProperty()
 
-        query = query_module.Query(
-            kind="Foo", projection=[model.Property(name="x")]
-        )
+        query = query_module.Query(kind="Foo", projection=[model.Property(name="x")])
         assert query.projection == ("x",)
         _check_props.assert_called_once_with(["x"])
 
@@ -1360,9 +1334,7 @@ class TestQuery:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     def test_constructor_with_filters():
-        query = query_module.Query(
-            filters=query_module.FilterNode("f", None, None)
-        )
+        query = query_module.Query(filters=query_module.FilterNode("f", None, None))
         assert isinstance(query.filters, query_module.Node)
 
     @staticmethod
@@ -1706,9 +1678,7 @@ class TestQuery:
         response = _datastore_query.fetch.return_value
         assert query.fetch_async(keys_only=True) is response
         _datastore_query.fetch.assert_called_once_with(
-            query_module.QueryOptions(
-                project="testing", projection=["__key__"]
-            )
+            query_module.QueryOptions(project="testing", projection=["__key__"])
         )
 
     @staticmethod
@@ -1738,9 +1708,7 @@ class TestQuery:
         response = _datastore_query.fetch.return_value
         assert query.fetch_async(projection=("foo", "bar")) is response
         _datastore_query.fetch.assert_called_once_with(
-            query_module.QueryOptions(
-                project="testing", projection=["foo", "bar"]
-            )
+            query_module.QueryOptions(project="testing", projection=["foo", "bar"])
         )
 
     @staticmethod
@@ -1755,9 +1723,7 @@ class TestQuery:
         bar._name = "bar"
         assert query.fetch_async(projection=(foo, bar)) is response
         _datastore_query.fetch.assert_called_once_with(
-            query_module.QueryOptions(
-                project="testing", projection=["foo", "bar"]
-            )
+            query_module.QueryOptions(project="testing", projection=["foo", "bar"])
         )
 
     @staticmethod
@@ -1769,9 +1735,7 @@ class TestQuery:
         response = _datastore_query.fetch.return_value
         assert query.fetch_async(options=options) is response
         _datastore_query.fetch.assert_called_once_with(
-            query_module.QueryOptions(
-                project="testing", projection=("foo", "bar")
-            )
+            query_module.QueryOptions(project="testing", projection=("foo", "bar"))
         )
 
     @staticmethod
@@ -1898,9 +1862,7 @@ class TestQuery:
         response = _datastore_query.fetch.return_value
         assert query.fetch_async(read_policy="foo") is response
         _datastore_query.fetch.assert_called_once_with(
-            query_module.QueryOptions(
-                project="testing", read_consistency="foo"
-            )
+            query_module.QueryOptions(project="testing", read_consistency="foo")
         )
 
     @staticmethod
@@ -1930,9 +1892,7 @@ class TestQuery:
     def test_fetch_async_with_tx_and_read_policy(_datastore_query):
         query = query_module.Query()
         with pytest.raises(TypeError):
-            query.fetch_async(
-                transaction="foo", read_policy=_datastore_api.EVENTUAL
-            )
+            query.fetch_async(transaction="foo", read_policy=_datastore_api.EVENTUAL)
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -2096,9 +2056,7 @@ class TestQuery:
     @mock.patch("google.cloud.ndb._datastore_query")
     def test_get(_datastore_query):
         query = query_module.Query()
-        _datastore_query.fetch.return_value = utils.future_result(
-            ["foo", "bar"]
-        )
+        _datastore_query.fetch.return_value = utils.future_result(["foo", "bar"])
         assert query.get() == "foo"
         _datastore_query.fetch.assert_called_once_with(
             query_module.QueryOptions(project="testing", limit=1)
@@ -2117,9 +2075,7 @@ class TestQuery:
     @mock.patch("google.cloud.ndb._datastore_query")
     def test_get_async(_datastore_query):
         query = query_module.Query()
-        _datastore_query.fetch.return_value = utils.future_result(
-            ["foo", "bar"]
-        )
+        _datastore_query.fetch.return_value = utils.future_result(["foo", "bar"])
         future = query.get_async()
         assert future.result() == "foo"
 
@@ -2141,9 +2097,7 @@ class TestQuery:
         query = query_module.Query()
         assert query.count() == 5
         _datastore_query.iterate.assert_called_once_with(
-            query_module.QueryOptions(
-                project="testing", projection=["__key__"]
-            ),
+            query_module.QueryOptions(project="testing", projection=["__key__"]),
             raw=True,
         )
 
@@ -2190,9 +2144,7 @@ class TestQuery:
         future = query.count_async()
         assert future.result() == 5
         _datastore_query.iterate.assert_called_once_with(
-            query_module.QueryOptions(
-                project="testing", projection=["__key__"]
-            ),
+            query_module.QueryOptions(project="testing", projection=["__key__"]),
             raw=True,
         )
 
@@ -2227,7 +2179,8 @@ class TestQuery:
         _datastore_query.iterate.return_value = DummyQueryIterator()
         query = query_module.Query()
         query.filters = mock.Mock(
-            _multiquery=False, _post_filters=mock.Mock(return_value=False),
+            _multiquery=False,
+            _post_filters=mock.Mock(return_value=False),
         )
         results, cursor, more = query.fetch_page(5)
         assert results == [0, 1, 2, 3, 4]
@@ -2321,7 +2274,8 @@ class TestQuery:
         _datastore_query.iterate.return_value = DummyQueryIterator()
         query = query_module.Query()
         query.filters = mock.Mock(
-            _multiquery=False, _post_filters=mock.Mock(return_value=False),
+            _multiquery=False,
+            _post_filters=mock.Mock(return_value=False),
         )
         results, cursor, more = query.fetch_page(5)
         assert results == []

@@ -311,9 +311,7 @@ class _QueryIteratorImpl(QueryIterator):
             batch.more_results == MORE_RESULTS_TYPE_NOT_FINISHED
         )
 
-        self._more_results_after_limit = (
-            batch.more_results == MORE_RESULTS_AFTER_LIMIT
-        )
+        self._more_results_after_limit = batch.more_results == MORE_RESULTS_AFTER_LIMIT
 
         if more_results:
             # Fix up query for next batch
@@ -538,9 +536,7 @@ class _MultiQueryIteratorImpl(QueryIterator):
                 self._extra_projections = extra_projections
 
         queries = [
-            query.copy(
-                filters=node, projection=projection, offset=None, limit=None
-            )
+            query.copy(filters=node, projection=projection, offset=None, limit=None)
             for node in query.filters._nodes
         ]
         self._result_sets = [iterate(_query, raw=True) for _query in queries]
@@ -625,10 +621,7 @@ class _MultiQueryIteratorImpl(QueryIterator):
     def probably_has_next(self):
         """Implements :meth:`QueryIterator.probably_has_next`."""
         return bool(self._next_result) or any(
-            [
-                result_set.probably_has_next()
-                for result_set in self._result_sets
-            ]
+            [result_set.probably_has_next() for result_set in self._result_sets]
         )
 
     def next(self):
@@ -774,9 +767,7 @@ class _Result(object):
             key = key_module.Key._from_ds_key(ds_key)
             return key
 
-        raise NotImplementedError(
-            "Got unexpected entity result type for query."
-        )
+        raise NotImplementedError("Got unexpected entity result type for query.")
 
 
 def _query_to_protobuf(query):
@@ -794,16 +785,13 @@ def _query_to_protobuf(query):
 
     if query.projection:
         query_args["projection"] = [
-            query_pb2.Projection(
-                property=query_pb2.PropertyReference(name=name)
-            )
+            query_pb2.Projection(property=query_pb2.PropertyReference(name=name))
             for name in query.projection
         ]
 
     if query.distinct_on:
         query_args["distinct_on"] = [
-            query_pb2.PropertyReference(name=name)
-            for name in query.distinct_on
+            query_pb2.PropertyReference(name=name) for name in query.distinct_on
         ]
 
     if query.order_by:

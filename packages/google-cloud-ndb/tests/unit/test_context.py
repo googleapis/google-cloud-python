@@ -129,9 +129,7 @@ class TestContext:
         assert not context.cache
 
     def test__clear_global_cache(self):
-        context = self._make_one(
-            global_cache=global_cache._InProcessGlobalCache()
-        )
+        context = self._make_one(global_cache=global_cache._InProcessGlobalCache())
         with context.use():
             key = key_module.Key("SomeKind", 1)
             cache_key = _cache.global_cache_key(key._key)
@@ -143,9 +141,7 @@ class TestContext:
         assert context.global_cache.cache == {"anotherkey": "otherdata"}
 
     def test__clear_global_cache_nothing_to_do(self):
-        context = self._make_one(
-            global_cache=global_cache._InProcessGlobalCache()
-        )
+        context = self._make_one(global_cache=global_cache._InProcessGlobalCache())
         with context.use():
             context.global_cache.cache["anotherkey"] = "otherdata"
             context._clear_global_cache().result()
@@ -160,9 +156,7 @@ class TestContext:
 
     def test_get_cache_policy(self):
         context = self._make_one()
-        assert (
-            context.get_cache_policy() is context_module._default_cache_policy
-        )
+        assert context.get_cache_policy() is context_module._default_cache_policy
 
     def test_get_datastore_policy(self):
         context = self._make_one()
@@ -193,16 +187,14 @@ class TestContext:
         context = self._make_one()
         context.get_memcache_policy()
         assert (
-            context.get_memcache_policy()
-            is context_module._default_global_cache_policy
+            context.get_memcache_policy() is context_module._default_global_cache_policy
         )
 
     def test_get_global_cache_policy(self):
         context = self._make_one()
         context.get_global_cache_policy()
         assert (
-            context.get_memcache_policy()
-            is context_module._default_global_cache_policy
+            context.get_memcache_policy() is context_module._default_global_cache_policy
         )
 
     def test_get_memcache_timeout_policy(self):
@@ -228,9 +220,7 @@ class TestContext:
     def test_set_cache_policy_to_None(self):
         context = self._make_one()
         context.set_cache_policy(None)
-        assert (
-            context.get_cache_policy() is context_module._default_cache_policy
-        )
+        assert context.get_cache_policy() is context_module._default_cache_policy
 
     def test_set_cache_policy_with_bool(self):
         context = self._make_one()
@@ -260,10 +250,7 @@ class TestContext:
     def test_set_datastore_policy(self):
         context = self._make_one()
         context.set_datastore_policy(None)
-        assert (
-            context.datastore_policy
-            is context_module._default_datastore_policy
-        )
+        assert context.datastore_policy is context_module._default_datastore_policy
 
     def test_set_datastore_policy_as_bool(self):
         context = self._make_one()
@@ -274,16 +261,14 @@ class TestContext:
         context = self._make_one()
         context.set_memcache_policy(None)
         assert (
-            context.global_cache_policy
-            is context_module._default_global_cache_policy
+            context.global_cache_policy is context_module._default_global_cache_policy
         )
 
     def test_set_global_cache_policy(self):
         context = self._make_one()
         context.set_global_cache_policy(None)
         assert (
-            context.global_cache_policy
-            is context_module._default_global_cache_policy
+            context.global_cache_policy is context_module._default_global_cache_policy
         )
 
     def test_set_global_cache_policy_as_bool(self):
@@ -364,9 +349,7 @@ class TestContext:
     def test_call_on_commit_with_transaction(self):
         callbacks = []
         callback = "himom!"
-        context = self._make_one(
-            transaction=b"tx123", on_commit_callbacks=callbacks
-        )
+        context = self._make_one(transaction=b"tx123", on_commit_callbacks=callbacks)
         context.call_on_commit(callback)
         assert context.on_commit_callbacks == ["himom!"]
 
@@ -543,9 +526,7 @@ class Test_default_global_cache_policy:
 class Test_default_global_cache_timeout_policy:
     @staticmethod
     def test_key_is_None():
-        assert (
-            context_module._default_global_cache_timeout_policy(None) is None
-        )
+        assert context_module._default_global_cache_timeout_policy(None) is None
 
     @staticmethod
     def test_no_model_class():
@@ -559,10 +540,7 @@ class Test_default_global_cache_timeout_policy:
             pass
 
         key = key_module.Key("ThisKind", 0)
-        assert (
-            context_module._default_global_cache_timeout_policy(key._key)
-            is None
-        )
+        assert context_module._default_global_cache_timeout_policy(key._key) is None
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -573,9 +551,7 @@ class Test_default_global_cache_timeout_policy:
                 return 13
 
         key = key_module.Key("ThisKind", 0)
-        assert (
-            context_module._default_global_cache_timeout_policy(key._key) == 13
-        )
+        assert context_module._default_global_cache_timeout_policy(key._key) == 13
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -584,6 +560,4 @@ class Test_default_global_cache_timeout_policy:
             _global_cache_timeout = 12
 
         key = key_module.Key("ThisKind", 0)
-        assert (
-            context_module._default_global_cache_timeout_policy(key._key) == 12
-        )
+        assert context_module._default_global_cache_timeout_policy(key._key) == 12

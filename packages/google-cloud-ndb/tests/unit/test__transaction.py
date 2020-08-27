@@ -101,9 +101,7 @@ class Test_transaction_async:
 
         future = _transaction.transaction_async(callback)
 
-        _datastore_api.begin_transaction.assert_called_once_with(
-            False, retries=0
-        )
+        _datastore_api.begin_transaction.assert_called_once_with(False, retries=0)
         begin_future.set_result(b"tx123")
 
         _datastore_api.commit.assert_called_once_with(b"tx123", retries=0)
@@ -150,9 +148,7 @@ class Test_transaction_async:
 
         future = _transaction.transaction_async(callback, retries=0)
 
-        _datastore_api.begin_transaction.assert_called_once_with(
-            False, retries=0
-        )
+        _datastore_api.begin_transaction.assert_called_once_with(False, retries=0)
         begin_future.set_result(b"tx123")
 
         _datastore_api.commit.assert_called_once_with(b"tx123", retries=0)
@@ -177,9 +173,7 @@ class Test_transaction_async:
 
         future = _transaction.transaction_async(callback)
 
-        _datastore_api.begin_transaction.assert_called_once_with(
-            False, retries=0
-        )
+        _datastore_api.begin_transaction.assert_called_once_with(False, retries=0)
         begin_future.set_result(b"tx123")
 
         tasklet.set_result("I tried, momma.")
@@ -256,9 +250,7 @@ class Test_transaction_async:
 
         future = _transaction.transaction_async(callback)
 
-        _datastore_api.begin_transaction.assert_called_once_with(
-            False, retries=0
-        )
+        _datastore_api.begin_transaction.assert_called_once_with(False, retries=0)
         begin_future.set_result(b"tx123")
 
         _datastore_api.rollback.assert_called_once_with(b"tx123")
@@ -430,7 +422,7 @@ def test_non_transactional_in_transaction(in_context):
         assert res == 142
 
         with pytest.raises(exceptions.BadRequestError):
-            wrapped_function = _transaction.non_transactional(
-                allow_existing=False
-            )(simple_function)
+            wrapped_function = _transaction.non_transactional(allow_existing=False)(
+                simple_function
+            )
             wrapped_function(100, 42)

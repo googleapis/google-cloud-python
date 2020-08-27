@@ -101,8 +101,7 @@ _APP_ID_ENVIRONMENT = "APPLICATION_ID"
 _APP_ID_DEFAULT = "_"
 _WRONG_TYPE = "Cannot construct Key reference on non-Key class; received {!r}"
 _REFERENCE_APP_MISMATCH = (
-    "Key reference constructed uses a different app {!r} than "
-    "the one specified {!r}"
+    "Key reference constructed uses a different app {!r} than " "the one specified {!r}"
 )
 _REFERENCE_NAMESPACE_MISMATCH = (
     "Key reference constructed uses a different namespace {!r} than "
@@ -112,12 +111,8 @@ _INVALID_ID_TYPE = "Key ID must be a string or a number; received {!r}"
 _NO_LEGACY = "The `google.appengine.ext.db` module is not available."
 _MAX_INTEGER_ID = 0x7FFFFFFFFFFFFFFF  # 2 ** 63 - 1
 _MAX_KEYPART_BYTES = 1500
-_BAD_KIND = (
-    "Key kind string must be a non-empty string up to {:d} bytes; received {}"
-)
-_BAD_INTEGER_ID = (
-    "Key ID number is outside of range [1, 2^63 - 1]; received {:d}"
-)
+_BAD_KIND = "Key kind string must be a non-empty string up to {:d} bytes; received {}"
+_BAD_INTEGER_ID = "Key ID number is outside of range [1, 2^63 - 1]; received {:d}"
 _BAD_STRING_ID = (
     "Key name strings must be non-empty strings up to {:d} bytes; received {}"
 )
@@ -295,19 +290,13 @@ class Key(object):
             context = context_module.get_context()
             kwargs["namespace"] = context.get_namespace()
 
-        if (
-            "reference" in kwargs
-            or "serialized" in kwargs
-            or "urlsafe" in kwargs
-        ):
+        if "reference" in kwargs or "serialized" in kwargs or "urlsafe" in kwargs:
             ds_key, reference = _parse_from_ref(cls, **kwargs)
         elif "pairs" in kwargs or "flat" in kwargs:
             ds_key = _parse_from_args(**kwargs)
             reference = None
         else:
-            raise TypeError(
-                "Key() cannot create a Key instance without arguments."
-            )
+            raise TypeError("Key() cannot create a Key instance without arguments.")
 
         instance._key = ds_key
         instance._reference = reference
@@ -453,9 +442,7 @@ class Key(object):
             TypeError: If the single element in ``state`` is not a dictionary.
         """
         if len(state) != 1:
-            msg = "Invalid state length, expected 1; received {:d}".format(
-                len(state)
-            )
+            msg = "Invalid state length, expected 1; received {:d}".format(len(state))
             raise TypeError(msg)
 
         kwargs = state[0]
@@ -925,9 +912,7 @@ class Key(object):
 
         future = get()
         if cls:
-            future.add_done_callback(
-                functools.partial(cls._post_get_hook, self)
-            )
+            future.add_done_callback(functools.partial(cls._post_get_hook, self))
         return future
 
     @_options.Options.options
@@ -1048,9 +1033,7 @@ class Key(object):
         future = delete()
 
         if cls:
-            future.add_done_callback(
-                functools.partial(cls._post_delete_hook, self)
-            )
+            future.add_done_callback(functools.partial(cls._post_delete_hook, self))
 
         return future
 
@@ -1141,17 +1124,13 @@ def _from_reference(reference, app, namespace):
     project = _project_from_app(reference.app)
     if app is not None:
         if _project_from_app(app) != project:
-            raise RuntimeError(
-                _REFERENCE_APP_MISMATCH.format(reference.app, app)
-            )
+            raise RuntimeError(_REFERENCE_APP_MISMATCH.format(reference.app, app))
 
     parsed_namespace = _key_module._get_empty(reference.name_space, "")
     if namespace is not None:
         if namespace != parsed_namespace:
             raise RuntimeError(
-                _REFERENCE_NAMESPACE_MISMATCH.format(
-                    reference.name_space, namespace
-                )
+                _REFERENCE_NAMESPACE_MISMATCH.format(reference.name_space, namespace)
             )
 
     _key_module._check_database_id(reference.database_id)
@@ -1324,8 +1303,7 @@ def _parse_from_ref(
 
     if kwargs or not _exactly_one_specified(reference, serialized, urlsafe):
         raise TypeError(
-            "Cannot construct Key reference from incompatible "
-            "keyword arguments."
+            "Cannot construct Key reference from incompatible " "keyword arguments."
         )
 
     if reference:
@@ -1370,9 +1348,7 @@ def _parse_from_args(
     _clean_flat_path(flat)
 
     if project and app:
-        raise TypeError(
-            "Can't specify both 'project' and 'app'. They are synonyms."
-        )
+        raise TypeError("Can't specify both 'project' and 'app'. They are synonyms.")
     elif not app:
         app = project
 
@@ -1417,13 +1393,9 @@ def _get_path(flat, pairs):
     """
     if flat:
         if pairs is not None:
-            raise TypeError(
-                "Key() cannot accept both flat and pairs arguments."
-            )
+            raise TypeError("Key() cannot accept both flat and pairs arguments.")
         if len(flat) % 2:
-            raise ValueError(
-                "Key() must have an even number of positional arguments."
-            )
+            raise ValueError("Key() must have an even number of positional arguments.")
         flat = list(flat)
     else:
         flat = []
@@ -1470,9 +1442,7 @@ def _clean_flat_path(flat):
         id_ = flat[i + 1]
         if id_ is None:
             if i + 2 < len(flat):
-                raise exceptions.BadArgumentError(
-                    "Incomplete Key entry must be last"
-                )
+                raise exceptions.BadArgumentError("Incomplete Key entry must be last")
         elif not isinstance(id_, six.string_types + six.integer_types):
             raise TypeError(_INVALID_ID_TYPE.format(id_))
 
@@ -1539,9 +1509,7 @@ def _to_legacy_path(dict_path):
     """
     elements = []
     for part in dict_path:
-        element_kwargs = {
-            "type": _verify_path_value(part["kind"], True, is_kind=True)
-        }
+        element_kwargs = {"type": _verify_path_value(part["kind"], True, is_kind=True)}
         if "id" in part:
             element_kwargs["id"] = _verify_path_value(part["id"], False)
         elif "name" in part:

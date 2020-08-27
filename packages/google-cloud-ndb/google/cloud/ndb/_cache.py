@@ -33,8 +33,8 @@ class ContextCache(dict):
 
     def get_and_validate(self, key):
         """Verify that the entity's key has not changed since it was added
-           to the cache. If it has changed, consider this a cache miss.
-           See issue 13.  http://goo.gl/jxjOP"""
+        to the cache. If it has changed, consider this a cache miss.
+        See issue 13.  http://goo.gl/jxjOP"""
         entity = self[key]  # May be None, meaning "doesn't exist".
         if entity is None or entity._key == key:
             return entity
@@ -58,8 +58,7 @@ def _future_result(result):
 
 
 class _GlobalCacheBatch(object):
-    """Abstract base for classes used to batch operations for the global cache.
-    """
+    """Abstract base for classes used to batch operations for the global cache."""
 
     def full(self):
         """Indicates whether more work can be added to this batch.

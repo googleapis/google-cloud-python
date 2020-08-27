@@ -98,8 +98,7 @@ class _ClassKeyProperty(model.StringProperty):
         return value
 
     def _prepare_for_put(self, entity):
-        """Ensure the class_ property is initialized before it is serialized.
-        """
+        """Ensure the class_ property is initialized before it is serialized."""
         self._get_value(entity)  # For its side effects.
 
 

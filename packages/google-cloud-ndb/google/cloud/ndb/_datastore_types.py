@@ -55,8 +55,7 @@ class BlobKey(object):
         if isinstance(blob_key, bytes):
             if len(blob_key) > _MAX_STRING_LENGTH:
                 raise exceptions.BadValueError(
-                    "blob key must be under {:d} "
-                    "bytes.".format(_MAX_STRING_LENGTH)
+                    "blob key must be under {:d} " "bytes.".format(_MAX_STRING_LENGTH)
                 )
         elif blob_key is not None:
             raise exceptions.BadValueError(

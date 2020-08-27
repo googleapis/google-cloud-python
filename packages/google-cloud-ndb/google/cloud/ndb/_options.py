@@ -103,9 +103,7 @@ class Options(object):
     def __init__(self, config=None, **kwargs):
         cls = type(self)
         if config is not None and not isinstance(config, cls):
-            raise TypeError(
-                "Config must be a {} instance.".format(cls.__name__)
-            )
+            raise TypeError("Config must be a {} instance.".format(cls.__name__))
 
         deadline = kwargs.pop("deadline", None)
         if deadline is not None:
@@ -207,8 +205,7 @@ class ReadOptions(Options):
             )
             if kwargs.get("read_consistency"):
                 raise TypeError(
-                    "Cannot use both 'read_policy' and 'read_consistency' "
-                    "options."
+                    "Cannot use both 'read_policy' and 'read_consistency' " "options."
                 )
             kwargs["read_consistency"] = read_policy
 

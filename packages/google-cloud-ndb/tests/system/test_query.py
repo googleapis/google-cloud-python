@@ -336,9 +336,7 @@ def test_query_default_namespace_when_context_namespace_is_other(
     entity2.put()
     dispose_of(entity2.key._key)
 
-    eventually(
-        SomeKind.query(namespace=other_namespace).fetch, length_equals(1)
-    )
+    eventually(SomeKind.query(namespace=other_namespace).fetch, length_equals(1))
 
     with client_context.new(namespace=other_namespace).use():
         query = SomeKind.query(namespace="")
@@ -743,9 +741,7 @@ def test_fetch_page(dispose_of):
 
     safe_cursor = cursor.urlsafe()
     next_cursor = ndb.Cursor(urlsafe=safe_cursor)
-    results, cursor, more = query.fetch_page(
-        page_size, start_cursor=next_cursor
-    )
+    results, cursor, more = query.fetch_page(page_size, start_cursor=next_cursor)
     assert [entity.foo for entity in results] == [5, 6, 7, 8, 9]
 
     results, cursor, more = query.fetch_page(page_size, start_cursor=cursor)
@@ -860,12 +856,8 @@ def test_query_structured_property(dispose_of):
 
     @ndb.synctasklet
     def make_entities():
-        entity1 = SomeKind(
-            foo=1, bar=OtherKind(one="pish", two="posh", three="pash")
-        )
-        entity2 = SomeKind(
-            foo=2, bar=OtherKind(one="pish", two="posh", three="push")
-        )
+        entity1 = SomeKind(foo=1, bar=OtherKind(one="pish", two="posh", three="pash"))
+        entity2 = SomeKind(foo=2, bar=OtherKind(one="pish", two="posh", three="push"))
         entity3 = SomeKind(
             foo=3,
             bar=OtherKind(one="pish", two="moppish", three="pass the peas"),
@@ -908,12 +900,8 @@ def test_query_structured_property_legacy_data(client_context, dispose_of):
 
     @ndb.synctasklet
     def make_entities():
-        entity1 = SomeKind(
-            foo=1, bar=OtherKind(one="pish", two="posh", three="pash")
-        )
-        entity2 = SomeKind(
-            foo=2, bar=OtherKind(one="pish", two="posh", three="push")
-        )
+        entity1 = SomeKind(foo=1, bar=OtherKind(one="pish", two="posh", three="pash"))
+        entity2 = SomeKind(foo=2, bar=OtherKind(one="pish", two="posh", three="push"))
         entity3 = SomeKind(
             foo=3,
             bar=OtherKind(one="pish", two="moppish", three="pass the peas"),
@@ -1008,12 +996,8 @@ def test_query_structured_property_with_projection(dispose_of):
 
     @ndb.synctasklet
     def make_entities():
-        entity1 = SomeKind(
-            foo=1, bar=OtherKind(one="pish", two="posh", three="pash")
-        )
-        entity2 = SomeKind(
-            foo=2, bar=OtherKind(one="bish", two="bosh", three="bush")
-        )
+        entity1 = SomeKind(foo=1, bar=OtherKind(one="pish", two="posh", three="pash"))
+        entity2 = SomeKind(foo=2, bar=OtherKind(one="bish", two="bosh", three="bush"))
         entity3 = SomeKind(
             foo=3,
             bar=OtherKind(one="pish", two="moppish", three="pass the peas"),
@@ -1368,9 +1352,7 @@ def test_query_repeated_structured_property_with_projection(dispose_of):
         dispose_of(key._key)
 
     eventually(SomeKind.query().fetch, length_equals(3))
-    query = SomeKind.query(projection=("bar.one", "bar.two")).filter(
-        SomeKind.foo < 2
-    )
+    query = SomeKind.query(projection=("bar.one", "bar.two")).filter(SomeKind.foo < 2)
 
     # This counter-intuitive result is consistent with Legacy NDB behavior and
     # is a result of the odd way Datastore handles projection queries with
@@ -1757,9 +1739,7 @@ def test_projection_with_json_property(dispose_of):
 def test_DateTime(ds_entity):
     for i in range(5):
         entity_id = test_utils.system.unique_resource_id()
-        ds_entity(
-            KIND, entity_id, foo=datetime.datetime(2020, i + 1, 1, 12, 0, 0)
-        )
+        ds_entity(KIND, entity_id, foo=datetime.datetime(2020, i + 1, 1, 12, 0, 0))
 
     class SomeKind(ndb.Model):
         foo = ndb.DateTimeProperty()
@@ -1797,9 +1777,7 @@ def test_Date(ds_entity):
 def test_Time(ds_entity):
     for i in range(5):
         entity_id = test_utils.system.unique_resource_id()
-        ds_entity(
-            KIND, entity_id, foo=datetime.datetime(1970, 1, 1, i + 1, 0, 0)
-        )
+        ds_entity(KIND, entity_id, foo=datetime.datetime(1970, 1, 1, i + 1, 0, 0))
 
     class SomeKind(ndb.Model):
         foo = ndb.TimeProperty()

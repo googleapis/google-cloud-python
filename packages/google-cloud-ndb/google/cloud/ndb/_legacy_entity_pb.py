@@ -451,9 +451,7 @@ class Property(ProtocolBuffer.ProtocolMessage):
                 continue
             if tt == 42:
                 length = d.getVarInt32()
-                tmp = ProtocolBuffer.Decoder(
-                    d.buffer(), d.pos(), d.pos() + length
-                )
+                tmp = ProtocolBuffer.Decoder(d.buffer(), d.pos(), d.pos() + length)
                 d.skip(length)
                 self.mutable_value().TryMerge(tmp)
                 continue
@@ -611,9 +609,7 @@ class Reference(ProtocolBuffer.ProtocolMessage):
                 continue
             if tt == 114:
                 length = d.getVarInt32()
-                tmp = ProtocolBuffer.Decoder(
-                    d.buffer(), d.pos(), d.pos() + length
-                )
+                tmp = ProtocolBuffer.Decoder(d.buffer(), d.pos(), d.pos() + length)
                 d.skip(length)
                 self.mutable_path().TryMerge(tmp)
                 continue
@@ -692,25 +688,19 @@ class EntityProto(ProtocolBuffer.ProtocolMessage):
                 continue
             if tt == 106:
                 length = d.getVarInt32()
-                tmp = ProtocolBuffer.Decoder(
-                    d.buffer(), d.pos(), d.pos() + length
-                )
+                tmp = ProtocolBuffer.Decoder(d.buffer(), d.pos(), d.pos() + length)
                 d.skip(length)
                 self.mutable_key().TryMerge(tmp)
                 continue
             if tt == 114:
                 length = d.getVarInt32()
-                tmp = ProtocolBuffer.Decoder(
-                    d.buffer(), d.pos(), d.pos() + length
-                )
+                tmp = ProtocolBuffer.Decoder(d.buffer(), d.pos(), d.pos() + length)
                 d.skip(length)
                 self.add_property().TryMerge(tmp)
                 continue
             if tt == 122:
                 length = d.getVarInt32()
-                tmp = ProtocolBuffer.Decoder(
-                    d.buffer(), d.pos(), d.pos() + length
-                )
+                tmp = ProtocolBuffer.Decoder(d.buffer(), d.pos(), d.pos() + length)
                 d.skip(length)
                 self.add_property().TryMerge(tmp)
                 continue
@@ -739,9 +729,7 @@ class EntityProto(ProtocolBuffer.ProtocolMessage):
         for prop in self.property_list():
             name = prop.name().decode("utf-8")
             entity_props[name] = (
-                prop.has_value()
-                and self._get_property_value(prop.value())
-                or None
+                prop.has_value() and self._get_property_value(prop.value()) or None
             )
         return entity_props
 

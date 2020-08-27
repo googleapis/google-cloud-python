@@ -303,9 +303,7 @@ class Test_TaskletFuture:
     @staticmethod
     def test___repr__():
         future = tasklets._TaskletFuture(None, None, info="Female")
-        assert repr(future) == "_TaskletFuture('Female') <{}>".format(
-            id(future)
-        )
+        assert repr(future) == "_TaskletFuture('Female') <{}>".format(id(future))
 
     @staticmethod
     def test__advance_tasklet_return(in_context):

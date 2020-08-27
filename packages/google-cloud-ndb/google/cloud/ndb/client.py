@@ -35,9 +35,7 @@ _CLIENT_INFO = client_info.ClientInfo(
     user_agent="google-cloud-ndb/{}".format(__version__)
 )
 
-DATASTORE_API_HOST = datastore_client.DatastoreClient.SERVICE_ADDRESS.rsplit(
-    ":", 1
-)[0]
+DATASTORE_API_HOST = datastore_client.DatastoreClient.SERVICE_ADDRESS.rsplit(":", 1)[0]
 
 
 def _get_gcd_project():
@@ -48,19 +46,19 @@ def _get_gcd_project():
 def _determine_default_project(project=None):
     """Determine default project explicitly or implicitly as fall-back.
 
-    In implicit case, supports four environments. In order of precedence, the
-    implicit environments are:
+        In implicit case, supports four environments. In order of precedence, the
+        implicit environments are:
 
-    * DATASTORE_DATASET environment variable (for ``gcd`` / emulator testing)
-    * GOOGLE_CLOUD_PROJECT environment variable
-    * Google App Engine application ID
-    * Google Compute Engine project ID (from metadata server)
-_
-    Arguments:
-        project (Optional[str]): The project to use as default.
+        * DATASTORE_DATASET environment variable (for ``gcd`` / emulator testing)
+        * GOOGLE_CLOUD_PROJECT environment variable
+        * Google App Engine application ID
+        * Google Compute Engine project ID (from metadata server)
+    _
+        Arguments:
+            project (Optional[str]): The project to use as default.
 
-    Returns:
-        Union([str, None]): Default project if it can be determined.
+        Returns:
+            Union([str, None]): Default project if it can be determined.
     """
     if project is None:
         project = _get_gcd_project()
@@ -92,9 +90,7 @@ class Client(google_client.ClientWithProject):
 
     def __init__(self, project=None, namespace=None, credentials=None):
         self.namespace = namespace
-        self.host = os.environ.get(
-            environment_vars.GCD_HOST, DATASTORE_API_HOST
-        )
+        self.host = os.environ.get(environment_vars.GCD_HOST, DATASTORE_API_HOST)
         self.client_info = _CLIENT_INFO
 
         # Use insecure connection when using Datastore Emulator, otherwise
@@ -114,9 +110,7 @@ class Client(google_client.ClientWithProject):
                 _http=requests.Session,
             )
         else:
-            super(Client, self).__init__(
-                project=project, credentials=credentials
-            )
+            super(Client, self).__init__(project=project, credentials=credentials)
 
         if emulator:
             channel = grpc.insecure_channel(self.host)

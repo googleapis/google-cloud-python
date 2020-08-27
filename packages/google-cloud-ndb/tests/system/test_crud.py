@@ -449,10 +449,7 @@ def test_retrieve_entity_with_legacy_compressed_property(
     compressed_value = zlib.compress(value)
     entity_id = test_utils.system.unique_resource_id()
     ds_entity_with_meanings(
-        {"blob": (22, compressed_value)},
-        KIND,
-        entity_id,
-        **{"blob": compressed_value}
+        {"blob": (22, compressed_value)}, KIND, entity_id, **{"blob": compressed_value}
     )
 
     key = ndb.Key(KIND, entity_id)
@@ -766,9 +763,7 @@ def test_delete_entity_in_transaction(ds_entity):
     assert key.get() is None
 
 
-def test_delete_entity_in_transaction_with_global_cache(
-    client_context, ds_entity
-):
+def test_delete_entity_in_transaction_with_global_cache(client_context, ds_entity):
     """Regression test for #426
 
     https://github.com/googleapis/python-ndb/issues/426
@@ -952,9 +947,7 @@ def test_retrieve_entity_with_legacy_structured_property(ds_entity):
         bar = ndb.StructuredProperty(OtherKind)
 
     entity_id = test_utils.system.unique_resource_id()
-    ds_entity(
-        KIND, entity_id, **{"foo": 42, "bar.one": "hi", "bar.two": "mom"}
-    )
+    ds_entity(KIND, entity_id, **{"foo": 42, "bar.one": "hi", "bar.two": "mom"})
 
     key = ndb.Key(KIND, entity_id)
     retrieved = key.get()
@@ -1398,9 +1391,7 @@ def test_serialization(dispose_of):
         def _get_kind(cls):
             return "SomeKind"
 
-    entity = SomeKind(
-        other=OtherKind(foo=1, namespace="Test"), namespace="Test"
-    )
+    entity = SomeKind(other=OtherKind(foo=1, namespace="Test"), namespace="Test")
     key = entity.put()
     dispose_of(key._key)
 
