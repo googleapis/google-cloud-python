@@ -18,6 +18,7 @@ import time
 
 import google.auth
 import google.auth.credentials
+from google.auth import environment_vars
 from google.auth.transport import mtls
 import google.auth.transport.requests
 import google.auth.transport.urllib3
@@ -33,7 +34,8 @@ def test_requests():
     )
 
     authed_session = google.auth.transport.requests.AuthorizedSession(credentials)
-    authed_session.configure_mtls_channel()
+    with mock.patch.dict(os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}):
+        authed_session.configure_mtls_channel()
 
     # If the devices has default client cert source, then a mutual TLS channel
     # is supposed to be created.
@@ -57,7 +59,8 @@ def test_urllib3():
     )
 
     authed_http = google.auth.transport.urllib3.AuthorizedHttp(credentials)
-    is_mtls = authed_http.configure_mtls_channel()
+    with mock.patch.dict(os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}):
+        is_mtls = authed_http.configure_mtls_channel()
 
     # If the devices has default client cert source, then a mutual TLS channel
     # is supposed to be created.
@@ -83,9 +86,10 @@ def test_requests_with_default_client_cert_source():
     authed_session = google.auth.transport.requests.AuthorizedSession(credentials)
 
     if mtls.has_default_client_cert_source():
-        authed_session.configure_mtls_channel(
-            client_cert_callback=mtls.default_client_cert_source()
-        )
+        with mock.patch.dict(os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}):
+            authed_session.configure_mtls_channel(
+                client_cert_callback=mtls.default_client_cert_source()
+            )
 
         assert authed_session.is_mtls
 
@@ -105,9 +109,10 @@ def test_urllib3_with_default_client_cert_source():
     authed_http = google.auth.transport.urllib3.AuthorizedHttp(credentials)
 
     if mtls.has_default_client_cert_source():
-        assert authed_http.configure_mtls_channel(
-            client_cert_callback=mtls.default_client_cert_source()
-        )
+        with mock.patch.dict(os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}):
+            assert authed_http.configure_mtls_channel(
+                client_cert_callback=mtls.default_client_cert_source()
+            )
 
         # Sleep 1 second to avoid 503 error.
         time.sleep(1)

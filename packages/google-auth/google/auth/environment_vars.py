@@ -53,3 +53,9 @@ the system falls back to the old variable.
 GCE_METADATA_IP = "GCE_METADATA_IP"
 """Environment variable providing an alternate ip:port to be used for ip-only
 GCE metadata requests."""
+
+GOOGLE_API_USE_CLIENT_CERTIFICATE = "GOOGLE_API_USE_CLIENT_CERTIFICATE"
+"""Environment variable controlling whether to use client certificate or not.
+
+The default value is false. Users have to explicitly set this value to true
+in order to use client certificate to establish a mutual TLS channel."""

@@ -19,6 +19,7 @@ from __future__ import absolute_import
 import functools
 import logging
 import numbers
+import os
 import time
 
 try:
@@ -40,6 +41,7 @@ from requests.packages.urllib3.util.ssl_ import (
 )  # pylint: disable=ungrouped-imports
 import six  # pylint: disable=ungrouped-imports
 
+from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth import transport
 import google.auth.transport._mtls_helper
@@ -249,13 +251,18 @@ class AuthorizedSession(requests.Session):
     credentials' headers to the request and refreshing credentials as needed.
 
     This class also supports mutual TLS via :meth:`configure_mtls_channel`
-    method. If client_cert_callback is provided, client certificate and private
+    method. In order to use this method, the `GOOGLE_API_USE_CLIENT_CERTIFICATE`
+    environment variable must be explicitly set to `true`, otherwise it does
+    nothing. Assume the environment is set to `true`, the method behaves in the
+    following manner:
+    If client_cert_callback is provided, client certificate and private
     key are loaded using the callback; if client_cert_callback is None,
     application default SSL credentials will be used. Exceptions are raised if
     there are problems with the certificate, private key, or the loading process,
     so it should be called within a try/except block.
 
-    First we create an :class:`AuthorizedSession` instance and specify the endpoints::
+    First we set the environment variable to `true`, then create an :class:`AuthorizedSession`
+    instance and specify the endpoints::
 
         regular_endpoint = 'https://pubsub.googleapis.com/v1/projects/{my_project_id}/topics'
         mtls_endpoint = 'https://pubsub.mtls.googleapis.com/v1/projects/{my_project_id}/topics'
@@ -343,9 +350,11 @@ class AuthorizedSession(requests.Session):
     def configure_mtls_channel(self, client_cert_callback=None):
         """Configure the client certificate and key for SSL connection.
 
-        If client certificate and key are successfully obtained (from the given
-        client_cert_callback or from application default SSL credentials), a
-        :class:`_MutualTlsAdapter` instance will be mounted to "https://" prefix.
+        The function does nothing unless `GOOGLE_API_USE_CLIENT_CERTIFICATE` is
+        explicitly set to `true`. In this case if client certificate and key are
+        successfully obtained (from the given client_cert_callback or from application
+        default SSL credentials), a :class:`_MutualTlsAdapter` instance will be mounted
+        to "https://" prefix.
 
         Args:
             client_cert_callback (Optional[Callable[[], (bytes, bytes)]]):
@@ -358,6 +367,13 @@ class AuthorizedSession(requests.Session):
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
                 creation failed for any reason.
         """
+        use_client_cert = os.getenv(
+            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, "false"
+        )
+        if use_client_cert != "true":
+            self._is_mtls = False
+            return
+
         try:
             import OpenSSL
         except ImportError as caught_exc:
