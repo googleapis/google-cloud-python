@@ -17,6 +17,7 @@ API Reference
   transaction
   transforms
   types
+  admin_client
 
 
 Changelog
