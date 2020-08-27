@@ -91,7 +91,9 @@ def get_expiration_seconds_v2(expiration):
     """Convert 'expiration' to a number of seconds in the future.
 
     :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
-    :param expiration: Point in time when the signed URL should expire.
+    :param expiration: Point in time when the signed URL should expire. If
+                       a ``datetime`` instance is passed without an explicit
+                       ``tzinfo`` set,  it will be assumed to be ``UTC``.
 
     :raises: :exc:`TypeError` when expiration is not a valid type.
 
@@ -123,7 +125,9 @@ def get_expiration_seconds_v4(expiration):
     """Convert 'expiration' to a number of seconds offset from the current time.
 
     :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
-    :param expiration: Point in time when the signed URL should expire.
+    :param expiration: Point in time when the signed URL should expire. If
+                       a ``datetime`` instance is passed without an explicit
+                       ``tzinfo`` set,  it will be assumed to be ``UTC``.
 
     :raises: :exc:`TypeError` when expiration is not a valid type.
     :raises: :exc:`ValueError` when expiration is too large.
@@ -299,7 +303,9 @@ def generate_signed_url_v2(
                      Caller should have already URL-encoded the value.
 
     :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
-    :param expiration: Point in time when the signed URL should expire.
+    :param expiration: Point in time when the signed URL should expire. If
+                       a ``datetime`` instance is passed without an explicit
+                       ``tzinfo`` set,  it will be assumed to be ``UTC``.
 
     :type api_access_endpoint: str
     :param api_access_endpoint: (Optional) URI base. Defaults to empty string.
@@ -461,7 +467,9 @@ def generate_signed_url_v4(
                      Caller should have already URL-encoded the value.
 
     :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
-    :param expiration: Point in time when the signed URL should expire.
+    :param expiration: Point in time when the signed URL should expire. If
+                       a ``datetime`` instance is passed without an explicit
+                       ``tzinfo`` set,  it will be assumed to be ``UTC``.
 
     :type api_access_endpoint: str
     :param api_access_endpoint: (Optional) URI base. Defaults to

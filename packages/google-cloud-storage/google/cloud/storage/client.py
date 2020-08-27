@@ -962,7 +962,9 @@ class Client(ClientWithProject):
         :param blob_name: Object name.
 
         :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
-        :param expiration: Policy expiration time.
+        :param expiration: Policy expiration time. If a ``datetime`` instance is
+                           passed without an explicit ``tzinfo`` set,  it will be
+                           assumed to be ``UTC``.
 
         :type conditions: list
         :param conditions: (Optional) List of POST policy conditions, which are
@@ -1004,11 +1006,13 @@ class Client(ClientWithProject):
             Generate signed POST policy and upload a file.
 
             >>> from google.cloud import storage
+            >>> import pytz
             >>> client = storage.Client()
+            >>> tz = pytz.timezone('America/New_York')
             >>> policy = client.generate_signed_post_policy_v4(
                 "bucket-name",
                 "blob-name",
-                expiration=datetime.datetime(2020, 3, 17),
+                expiration=datetime.datetime(2020, 3, 17, tzinfo=tz),
                 conditions=[
                     ["content-length-range", 0, 255]
                 ],
