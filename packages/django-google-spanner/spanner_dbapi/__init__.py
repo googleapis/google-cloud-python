@@ -4,83 +4,122 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
-from google.cloud import spanner_v1 as spanner
+"""Connection-based DB API for Cloud Spanner."""
+
+from google.cloud import spanner_v1
 
 from .connection import Connection
-# These need to be included in the top-level package for PEP-0249 DB API v2.
 from .exceptions import (
-    DatabaseError, DataError, Error, IntegrityError, InterfaceError,
-    InternalError, NotSupportedError, OperationalError, ProgrammingError,
+    DatabaseError,
+    DataError,
+    Error,
+    IntegrityError,
+    InterfaceError,
+    InternalError,
+    NotSupportedError,
+    OperationalError,
+    ProgrammingError,
     Warning,
 )
 from .parse_utils import get_param_types
 from .types import (
-    BINARY, DATETIME, NUMBER, ROWID, STRING, Binary, Date, DateFromTicks, Time,
-    TimeFromTicks, Timestamp, TimestampFromTicks,
+    BINARY,
+    DATETIME,
+    NUMBER,
+    ROWID,
+    STRING,
+    Binary,
+    Date,
+    DateFromTicks,
+    Time,
+    TimeFromTicks,
+    Timestamp,
+    TimestampFromTicks,
 )
 from .version import google_client_info
 
-# Globals that MUST be defined ###
-apilevel = "2.0"  # Implements the Python Database API specification 2.0 version.
-# We accept arguments in the format '%s' aka ANSI C print codes.
-# as per https://www.python.org/dev/peps/pep-0249/#paramstyle
-paramstyle = 'format'
-# Threads may share the module but not connections. This is a paranoid threadsafety level,
-# but it is necessary for starters to use when debugging failures. Eventually once transactions
-# are working properly, we'll update the threadsafety level.
+apilevel = "2.0"  # supports DP-API 2.0 level.
+paramstyle = "format"  # ANSI C printf format codes, e.g. ...WHERE name=%s.
+
+# Threads may share the module, but not connections. This is a paranoid threadsafety
+# level, but it is necessary for starters to use when debugging failures.
+# Eventually once transactions are working properly, we'll update the
+# threadsafety level.
 threadsafety = 1
 
 
-def connect(project=None, instance=None, database=None, credentials_uri=None, user_agent=None):
+def connect(instance_id, database_id, project=None, credentials=None, user_agent=None):
     """
-    Connect to Cloud Spanner.
+    Create a connection to Cloud Spanner database.
 
-    Args:
-        project: The id of a project that already exists.
-        instance: The id of an instance that already exists.
-        database: The name of a database that already exists.
-        credentials_uri: An optional string specifying where to retrieve the service
-                         account JSON for the credentials to connect to Cloud Spanner.
+    :type instance_id: :class:`str`
+    :param instance_id: ID of the instance to connect to.
 
-    Returns:
-        The Connection object associated to the Cloud Spanner instance.
+    :type database_id: :class:`str`
+    :param database_id: The name of the database to connect to.
 
-    Raises:
-        Error if it encounters any unexpected inputs.
+    :type project: :class:`str`
+    :param project: (Optional) The ID of the project which owns the
+                    instances, tables and data. If not provided, will
+                    attempt to determine from the environment.
+
+    :type credentials: :class:`google.auth.credentials.Credentials`
+    :param credentials: (Optional) The authorization credentials to attach to requests.
+                        These credentials identify this application to the service.
+                        If none are specified, the client will attempt to ascertain
+                        the credentials from the environment.
+
+    :rtype: :class:`google.cloud.spanner_dbapi.connection.Connection`
+    :returns: Connection object associated with the given Cloud Spanner resource.
+
+    :raises: :class:`ValueError` in case of given instance/database
+             doesn't exist.
     """
-    if not project:
-        raise Error("'project' is required.")
-    if not instance:
-        raise Error("'instance' is required.")
-    if not database:
-        raise Error("'database' is required.")
+    client = spanner_v1.Client(
+        project=project,
+        credentials=credentials,
+        client_info=google_client_info(user_agent),
+    )
 
-    client_kwargs = {
-        'project': project,
-        'client_info': google_client_info(user_agent),
-    }
-    if credentials_uri:
-        client = spanner.Client.from_service_account_json(credentials_uri, **client_kwargs)
-    else:
-        client = spanner.Client(**client_kwargs)
+    instance = client.instance(instance_id)
+    if not instance.exists():
+        raise ValueError("instance '%s' does not exist." % instance_id)
 
-    client_instance = client.instance(instance)
-    if not client_instance.exists():
-        raise ProgrammingError("instance '%s' does not exist." % instance)
+    database = instance.database(database_id, pool=spanner_v1.pool.BurstyPool())
+    if not database.exists():
+        raise ValueError("database '%s' does not exist." % database_id)
 
-    db = client_instance.database(database, pool=spanner.pool.BurstyPool())
-    if not db.exists():
-        raise ProgrammingError("database '%s' does not exist." % database)
-
-    return Connection(db)
+    return Connection(database)
 
 
 __all__ = [
-    'DatabaseError', 'DataError', 'Error', 'IntegrityError', 'InterfaceError',
-    'InternalError', 'NotSupportedError', 'OperationalError', 'ProgrammingError',
-    'Warning', 'DEFAULT_USER_AGENT', 'apilevel', 'connect', 'paramstyle', 'threadsafety',
-    'get_param_types',
-    'Binary', 'Date', 'DateFromTicks', 'Time', 'TimeFromTicks', 'Timestamp',
-    'TimestampFromTicks',
-    'BINARY', 'STRING', 'NUMBER', 'DATETIME', 'ROWID', 'TimestampStr',
+    "DatabaseError",
+    "DataError",
+    "Error",
+    "IntegrityError",
+    "InterfaceError",
+    "InternalError",
+    "NotSupportedError",
+    "OperationalError",
+    "ProgrammingError",
+    "Warning",
+    "DEFAULT_USER_AGENT",
+    "apilevel",
+    "connect",
+    "paramstyle",
+    "threadsafety",
+    "get_param_types",
+    "Binary",
+    "Date",
+    "DateFromTicks",
+    "Time",
+    "TimeFromTicks",
+    "Timestamp",
+    "TimestampFromTicks",
+    "BINARY",
+    "STRING",
+    "NUMBER",
+    "DATETIME",
+    "ROWID",
+    "TimestampStr",
 ]
