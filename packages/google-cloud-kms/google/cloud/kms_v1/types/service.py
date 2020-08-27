@@ -20,6 +20,7 @@ import proto  # type: ignore
 
 from google.cloud.kms_v1.types import resources
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+from google.protobuf import wrappers_pb2 as wrappers  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -684,6 +685,52 @@ class EncryptRequest(proto.Message):
             combined length of the plaintext and
             additional_authenticated_data fields must be no larger than
             8KiB.
+        plaintext_crc32c (~.wrappers.Int64Value):
+            Optional. An optional CRC32C checksum of the
+            [EncryptRequest.plaintext][google.cloud.kms.v1.EncryptRequest.plaintext].
+            If specified,
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            will verify the integrity of the received
+            [EncryptRequest.plaintext][google.cloud.kms.v1.EncryptRequest.plaintext]
+            using this checksum.
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            will report an error if the checksum verification fails. If
+            you receive a checksum error, your client should verify that
+            CRC32C([EncryptRequest.plaintext][google.cloud.kms.v1.EncryptRequest.plaintext])
+            is equal to
+            [EncryptRequest.plaintext_crc32c][google.cloud.kms.v1.EncryptRequest.plaintext_crc32c],
+            and if so, perform a limited number of retries. A persistent
+            mismatch may indicate an issue in your computation of the
+            CRC32C checksum. Note: This field is defined as int64 for
+            reasons of compatibility across different languages.
+            However, it is a non-negative integer, which will never
+            exceed 2^32-1, and can be safely downconverted to uint32 in
+            languages that support this type.
+
+            NOTE: This field is in Beta.
+        additional_authenticated_data_crc32c (~.wrappers.Int64Value):
+            Optional. An optional CRC32C checksum of the
+            [EncryptRequest.additional_authenticated_data][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data].
+            If specified,
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            will verify the integrity of the received
+            [EncryptRequest.additional_authenticated_data][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data]
+            using this checksum.
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            will report an error if the checksum verification fails. If
+            you receive a checksum error, your client should verify that
+            CRC32C([EncryptRequest.additional_authenticated_data][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data])
+            is equal to
+            [EncryptRequest.additional_authenticated_data_crc32c][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data_crc32c],
+            and if so, perform a limited number of retries. A persistent
+            mismatch may indicate an issue in your computation of the
+            CRC32C checksum. Note: This field is defined as int64 for
+            reasons of compatibility across different languages.
+            However, it is a non-negative integer, which will never
+            exceed 2^32-1, and can be safely downconverted to uint32 in
+            languages that support this type.
+
+            NOTE: This field is in Beta.
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -691,6 +738,14 @@ class EncryptRequest(proto.Message):
     plaintext = proto.Field(proto.BYTES, number=2)
 
     additional_authenticated_data = proto.Field(proto.BYTES, number=3)
+
+    plaintext_crc32c = proto.Field(
+        proto.MESSAGE, number=7, message=wrappers.Int64Value,
+    )
+
+    additional_authenticated_data_crc32c = proto.Field(
+        proto.MESSAGE, number=8, message=wrappers.Int64Value,
+    )
 
 
 class DecryptRequest(proto.Message):
@@ -709,6 +764,52 @@ class DecryptRequest(proto.Message):
             Optional. Optional data that must match the data originally
             supplied in
             [EncryptRequest.additional_authenticated_data][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data].
+        ciphertext_crc32c (~.wrappers.Int64Value):
+            Optional. An optional CRC32C checksum of the
+            [DecryptRequest.ciphertext][google.cloud.kms.v1.DecryptRequest.ciphertext].
+            If specified,
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            will verify the integrity of the received
+            [DecryptRequest.ciphertext][google.cloud.kms.v1.DecryptRequest.ciphertext]
+            using this checksum.
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            will report an error if the checksum verification fails. If
+            you receive a checksum error, your client should verify that
+            CRC32C([DecryptRequest.ciphertext][google.cloud.kms.v1.DecryptRequest.ciphertext])
+            is equal to
+            [DecryptRequest.ciphertext_crc32c][google.cloud.kms.v1.DecryptRequest.ciphertext_crc32c],
+            and if so, perform a limited number of retries. A persistent
+            mismatch may indicate an issue in your computation of the
+            CRC32C checksum. Note: This field is defined as int64 for
+            reasons of compatibility across different languages.
+            However, it is a non-negative integer, which will never
+            exceed 2^32-1, and can be safely downconverted to uint32 in
+            languages that support this type.
+
+            NOTE: This field is in Beta.
+        additional_authenticated_data_crc32c (~.wrappers.Int64Value):
+            Optional. An optional CRC32C checksum of the
+            [DecryptRequest.additional_authenticated_data][google.cloud.kms.v1.DecryptRequest.additional_authenticated_data].
+            If specified,
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            will verify the integrity of the received
+            [DecryptRequest.additional_authenticated_data][google.cloud.kms.v1.DecryptRequest.additional_authenticated_data]
+            using this checksum.
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            will report an error if the checksum verification fails. If
+            you receive a checksum error, your client should verify that
+            CRC32C([DecryptRequest.additional_authenticated_data][google.cloud.kms.v1.DecryptRequest.additional_authenticated_data])
+            is equal to
+            [DecryptRequest.additional_authenticated_data_crc32c][google.cloud.kms.v1.DecryptRequest.additional_authenticated_data_crc32c],
+            and if so, perform a limited number of retries. A persistent
+            mismatch may indicate an issue in your computation of the
+            CRC32C checksum. Note: This field is defined as int64 for
+            reasons of compatibility across different languages.
+            However, it is a non-negative integer, which will never
+            exceed 2^32-1, and can be safely downconverted to uint32 in
+            languages that support this type.
+
+            NOTE: This field is in Beta.
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -716,6 +817,14 @@ class DecryptRequest(proto.Message):
     ciphertext = proto.Field(proto.BYTES, number=2)
 
     additional_authenticated_data = proto.Field(proto.BYTES, number=3)
+
+    ciphertext_crc32c = proto.Field(
+        proto.MESSAGE, number=5, message=wrappers.Int64Value,
+    )
+
+    additional_authenticated_data_crc32c = proto.Field(
+        proto.MESSAGE, number=6, message=wrappers.Int64Value,
+    )
 
 
 class AsymmetricSignRequest(proto.Message):
@@ -732,11 +841,36 @@ class AsymmetricSignRequest(proto.Message):
             produced with the same digest algorithm as specified by the
             key version's
             [algorithm][google.cloud.kms.v1.CryptoKeyVersion.algorithm].
+        digest_crc32c (~.wrappers.Int64Value):
+            Optional. An optional CRC32C checksum of the
+            [AsymmetricSignRequest.digest][google.cloud.kms.v1.AsymmetricSignRequest.digest].
+            If specified,
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            will verify the integrity of the received
+            [AsymmetricSignRequest.digest][google.cloud.kms.v1.AsymmetricSignRequest.digest]
+            using this checksum.
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            will report an error if the checksum verification fails. If
+            you receive a checksum error, your client should verify that
+            CRC32C([AsymmetricSignRequest.digest][google.cloud.kms.v1.AsymmetricSignRequest.digest])
+            is equal to
+            [AsymmetricSignRequest.digest_crc32c][google.cloud.kms.v1.AsymmetricSignRequest.digest_crc32c],
+            and if so, perform a limited number of retries. A persistent
+            mismatch may indicate an issue in your computation of the
+            CRC32C checksum. Note: This field is defined as int64 for
+            reasons of compatibility across different languages.
+            However, it is a non-negative integer, which will never
+            exceed 2^32-1, and can be safely downconverted to uint32 in
+            languages that support this type.
+
+            NOTE: This field is in Beta.
     """
 
     name = proto.Field(proto.STRING, number=1)
 
     digest = proto.Field(proto.MESSAGE, number=3, message="Digest",)
+
+    digest_crc32c = proto.Field(proto.MESSAGE, number=4, message=wrappers.Int64Value,)
 
 
 class AsymmetricDecryptRequest(proto.Message):
@@ -752,11 +886,38 @@ class AsymmetricDecryptRequest(proto.Message):
             Required. The data encrypted with the named
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s
             public key using OAEP.
+        ciphertext_crc32c (~.wrappers.Int64Value):
+            Optional. An optional CRC32C checksum of the
+            [AsymmetricDecryptRequest.ciphertext][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext].
+            If specified,
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            will verify the integrity of the received
+            [AsymmetricDecryptRequest.ciphertext][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext]
+            using this checksum.
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            will report an error if the checksum verification fails. If
+            you receive a checksum error, your client should verify that
+            CRC32C([AsymmetricDecryptRequest.ciphertext][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext])
+            is equal to
+            [AsymmetricDecryptRequest.ciphertext_crc32c][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext_crc32c],
+            and if so, perform a limited number of retries. A persistent
+            mismatch may indicate an issue in your computation of the
+            CRC32C checksum. Note: This field is defined as int64 for
+            reasons of compatibility across different languages.
+            However, it is a non-negative integer, which will never
+            exceed 2^32-1, and can be safely downconverted to uint32 in
+            languages that support this type.
+
+            NOTE: This field is in Beta.
     """
 
     name = proto.Field(proto.STRING, number=1)
 
     ciphertext = proto.Field(proto.BYTES, number=3)
+
+    ciphertext_crc32c = proto.Field(
+        proto.MESSAGE, number=4, message=wrappers.Int64Value,
+    )
 
 
 class DecryptResponse(proto.Message):
@@ -767,9 +928,37 @@ class DecryptResponse(proto.Message):
         plaintext (bytes):
             The decrypted data originally supplied in
             [EncryptRequest.plaintext][google.cloud.kms.v1.EncryptRequest.plaintext].
+        plaintext_crc32c (~.wrappers.Int64Value):
+            Integrity verification field. A CRC32C checksum of the
+            returned
+            [DecryptResponse.plaintext][google.cloud.kms.v1.DecryptResponse.plaintext].
+            An integrity check of
+            [DecryptResponse.plaintext][google.cloud.kms.v1.DecryptResponse.plaintext]
+            can be performed by computing the CRC32C checksum of
+            [DecryptResponse.plaintext][google.cloud.kms.v1.DecryptResponse.plaintext]
+            and comparing your results to this field. Discard the
+            response in case of non-matching checksum values, and
+            perform a limited number of retries. A persistent mismatch
+            may indicate an issue in your computation of the CRC32C
+            checksum. Note: receiving this response message indicates
+            that
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            is able to successfully decrypt the
+            [ciphertext][google.cloud.kms.v1.DecryptRequest.ciphertext].
+            Note: This field is defined as int64 for reasons of
+            compatibility across different languages. However, it is a
+            non-negative integer, which will never exceed 2^32-1, and
+            can be safely downconverted to uint32 in languages that
+            support this type.
+
+            NOTE: This field is in Beta.
     """
 
     plaintext = proto.Field(proto.BYTES, number=1)
+
+    plaintext_crc32c = proto.Field(
+        proto.MESSAGE, number=2, message=wrappers.Int64Value,
+    )
 
 
 class EncryptResponse(proto.Message):
@@ -784,11 +973,72 @@ class EncryptResponse(proto.Message):
             intended resource was used for encryption.
         ciphertext (bytes):
             The encrypted data.
+        ciphertext_crc32c (~.wrappers.Int64Value):
+            Integrity verification field. A CRC32C checksum of the
+            returned
+            [EncryptResponse.ciphertext][google.cloud.kms.v1.EncryptResponse.ciphertext].
+            An integrity check of
+            [EncryptResponse.ciphertext][google.cloud.kms.v1.EncryptResponse.ciphertext]
+            can be performed by computing the CRC32C checksum of
+            [EncryptResponse.ciphertext][google.cloud.kms.v1.EncryptResponse.ciphertext]
+            and comparing your results to this field. Discard the
+            response in case of non-matching checksum values, and
+            perform a limited number of retries. A persistent mismatch
+            may indicate an issue in your computation of the CRC32C
+            checksum. Note: This field is defined as int64 for reasons
+            of compatibility across different languages. However, it is
+            a non-negative integer, which will never exceed 2^32-1, and
+            can be safely downconverted to uint32 in languages that
+            support this type.
+
+            NOTE: This field is in Beta.
+        verified_plaintext_crc32c (bool):
+            Integrity verification field. A flag indicating whether
+            [EncryptRequest.plaintext_crc32c][google.cloud.kms.v1.EncryptRequest.plaintext_crc32c]
+            was received by
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            and used for the integrity verification of the
+            [plaintext][google.cloud.kms.v1.EncryptRequest.plaintext]. A
+            false value of this field indicates either that
+            [EncryptRequest.plaintext_crc32c][google.cloud.kms.v1.EncryptRequest.plaintext_crc32c]
+            was left unset or that it was not delivered to
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService].
+            If you've set
+            [EncryptRequest.plaintext_crc32c][google.cloud.kms.v1.EncryptRequest.plaintext_crc32c]
+            but this field is still false, discard the response and
+            perform a limited number of retries.
+
+            NOTE: This field is in Beta.
+        verified_additional_authenticated_data_crc32c (bool):
+            Integrity verification field. A flag indicating whether
+            [EncryptRequest.additional_authenticated_data_crc32c][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data_crc32c]
+            was received by
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            and used for the integrity verification of the
+            [AAD][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data].
+            A false value of this field indicates either that
+            [EncryptRequest.additional_authenticated_data_crc32c][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data_crc32c]
+            was left unset or that it was not delivered to
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService].
+            If you've set
+            [EncryptRequest.additional_authenticated_data_crc32c][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data_crc32c]
+            but this field is still false, discard the response and
+            perform a limited number of retries.
+
+            NOTE: This field is in Beta.
     """
 
     name = proto.Field(proto.STRING, number=1)
 
     ciphertext = proto.Field(proto.BYTES, number=2)
+
+    ciphertext_crc32c = proto.Field(
+        proto.MESSAGE, number=4, message=wrappers.Int64Value,
+    )
+
+    verified_plaintext_crc32c = proto.Field(proto.BOOL, number=5)
+
+    verified_additional_authenticated_data_crc32c = proto.Field(proto.BOOL, number=6)
 
 
 class AsymmetricSignResponse(proto.Message):
@@ -798,9 +1048,60 @@ class AsymmetricSignResponse(proto.Message):
     Attributes:
         signature (bytes):
             The created signature.
+        signature_crc32c (~.wrappers.Int64Value):
+            Integrity verification field. A CRC32C checksum of the
+            returned
+            [AsymmetricSignResponse.signature][google.cloud.kms.v1.AsymmetricSignResponse.signature].
+            An integrity check of
+            [AsymmetricSignResponse.signature][google.cloud.kms.v1.AsymmetricSignResponse.signature]
+            can be performed by computing the CRC32C checksum of
+            [AsymmetricSignResponse.signature][google.cloud.kms.v1.AsymmetricSignResponse.signature]
+            and comparing your results to this field. Discard the
+            response in case of non-matching checksum values, and
+            perform a limited number of retries. A persistent mismatch
+            may indicate an issue in your computation of the CRC32C
+            checksum. Note: This field is defined as int64 for reasons
+            of compatibility across different languages. However, it is
+            a non-negative integer, which will never exceed 2^32-1, and
+            can be safely downconverted to uint32 in languages that
+            support this type.
+
+            NOTE: This field is in Beta.
+        verified_digest_crc32c (bool):
+            Integrity verification field. A flag indicating whether
+            [AsymmetricSignRequest.digest_crc32c][google.cloud.kms.v1.AsymmetricSignRequest.digest_crc32c]
+            was received by
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            and used for the integrity verification of the
+            [digest][google.cloud.kms.v1.AsymmetricSignRequest.digest].
+            A false value of this field indicates either that
+            [AsymmetricSignRequest.digest_crc32c][google.cloud.kms.v1.AsymmetricSignRequest.digest_crc32c]
+            was left unset or that it was not delivered to
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService].
+            If you've set
+            [AsymmetricSignRequest.digest_crc32c][google.cloud.kms.v1.AsymmetricSignRequest.digest_crc32c]
+            but this field is still false, discard the response and
+            perform a limited number of retries.
+
+            NOTE: This field is in Beta.
+        name (str):
+            The resource name of the
+            [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+            used for signing. Check this field to verify that the
+            intended resource was used for signing.
+
+            NOTE: This field is in Beta.
     """
 
     signature = proto.Field(proto.BYTES, number=1)
+
+    signature_crc32c = proto.Field(
+        proto.MESSAGE, number=2, message=wrappers.Int64Value,
+    )
+
+    verified_digest_crc32c = proto.Field(proto.BOOL, number=3)
+
+    name = proto.Field(proto.STRING, number=4)
 
 
 class AsymmetricDecryptResponse(proto.Message):
@@ -811,9 +1112,51 @@ class AsymmetricDecryptResponse(proto.Message):
         plaintext (bytes):
             The decrypted data originally encrypted with
             the matching public key.
+        plaintext_crc32c (~.wrappers.Int64Value):
+            Integrity verification field. A CRC32C checksum of the
+            returned
+            [AsymmetricDecryptResponse.plaintext][google.cloud.kms.v1.AsymmetricDecryptResponse.plaintext].
+            An integrity check of
+            [AsymmetricDecryptResponse.plaintext][google.cloud.kms.v1.AsymmetricDecryptResponse.plaintext]
+            can be performed by computing the CRC32C checksum of
+            [AsymmetricDecryptResponse.plaintext][google.cloud.kms.v1.AsymmetricDecryptResponse.plaintext]
+            and comparing your results to this field. Discard the
+            response in case of non-matching checksum values, and
+            perform a limited number of retries. A persistent mismatch
+            may indicate an issue in your computation of the CRC32C
+            checksum. Note: This field is defined as int64 for reasons
+            of compatibility across different languages. However, it is
+            a non-negative integer, which will never exceed 2^32-1, and
+            can be safely downconverted to uint32 in languages that
+            support this type.
+
+            NOTE: This field is in Beta.
+        verified_ciphertext_crc32c (bool):
+            Integrity verification field. A flag indicating whether
+            [AsymmetricDecryptRequest.ciphertext_crc32c][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext_crc32c]
+            was received by
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            and used for the integrity verification of the
+            [ciphertext][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext].
+            A false value of this field indicates either that
+            [AsymmetricDecryptRequest.ciphertext_crc32c][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext_crc32c]
+            was left unset or that it was not delivered to
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService].
+            If you've set
+            [AsymmetricDecryptRequest.ciphertext_crc32c][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext_crc32c]
+            but this field is still false, discard the response and
+            perform a limited number of retries.
+
+            NOTE: This field is in Beta.
     """
 
     plaintext = proto.Field(proto.BYTES, number=1)
+
+    plaintext_crc32c = proto.Field(
+        proto.MESSAGE, number=2, message=wrappers.Int64Value,
+    )
+
+    verified_ciphertext_crc32c = proto.Field(proto.BOOL, number=3)
 
 
 class UpdateCryptoKeyPrimaryVersionRequest(proto.Message):

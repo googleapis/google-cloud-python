@@ -20,6 +20,7 @@ import proto  # type: ignore
 
 from google.protobuf import duration_pb2 as duration  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import wrappers_pb2 as wrappers  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -73,7 +74,7 @@ class CryptoKey(proto.Message):
     r"""A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents a logical
     key that can be used for cryptographic operations.
 
-    A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made up of one or
+    A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made up of zero or
     more [versions][google.cloud.kms.v1.CryptoKeyVersion], which
     represent the actual key material used in cryptographic operations.
 
@@ -473,6 +474,30 @@ class PublicKey(proto.Message):
             The
             [Algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm]
             associated with this key.
+        pem_crc32c (~.wrappers.Int64Value):
+            Integrity verification field. A CRC32C checksum of the
+            returned [PublicKey.pem][google.cloud.kms.v1.PublicKey.pem].
+            An integrity check of
+            [PublicKey.pem][google.cloud.kms.v1.PublicKey.pem] can be
+            performed by computing the CRC32C checksum of
+            [PublicKey.pem][google.cloud.kms.v1.PublicKey.pem] and
+            comparing your results to this field. Discard the response
+            in case of non-matching checksum values, and perform a
+            limited number of retries. A persistent mismatch may
+            indicate an issue in your computation of the CRC32C
+            checksum. Note: This field is defined as int64 for reasons
+            of compatibility across different languages. However, it is
+            a non-negative integer, which will never exceed 2^32-1, and
+            can be safely downconverted to uint32 in languages that
+            support this type.
+
+            NOTE: This field is in Beta.
+        name (str):
+            The [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
+            [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+            public key. Provided here for verification.
+
+            NOTE: This field is in Beta.
     """
 
     pem = proto.Field(proto.STRING, number=1)
@@ -480,6 +505,10 @@ class PublicKey(proto.Message):
     algorithm = proto.Field(
         proto.ENUM, number=2, enum=CryptoKeyVersion.CryptoKeyVersionAlgorithm,
     )
+
+    pem_crc32c = proto.Field(proto.MESSAGE, number=3, message=wrappers.Int64Value,)
+
+    name = proto.Field(proto.STRING, number=4)
 
 
 class ImportJob(proto.Message):

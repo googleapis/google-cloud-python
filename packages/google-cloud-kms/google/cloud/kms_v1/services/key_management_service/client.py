@@ -38,8 +38,9 @@ from google.iam.v1 import policy_pb2 as policy  # type: ignore
 from google.protobuf import duration_pb2 as duration  # type: ignore
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import wrappers_pb2 as wrappers  # type: ignore
 
-from .transports.base import KeyManagementServiceTransport
+from .transports.base import KeyManagementServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import KeyManagementServiceGrpcTransport
 from .transports.grpc_asyncio import KeyManagementServiceGrpcAsyncIOTransport
 
@@ -241,6 +242,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         credentials: credentials.Credentials = None,
         transport: Union[str, KeyManagementServiceTransport] = None,
         client_options: ClientOptions = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the key management service client.
 
@@ -267,6 +269,11 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 (2) The ``client_cert_source`` property is used to provide client
                 SSL credentials for mutual TLS transport. If not provided, the
                 default SSL credentials will be used if present.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
+                The client info used to send a user-agent string along with	
+                API requests. If ``None``, then default info will be used.	
+                Generally, you only need to set this if you're developing	
+                your own client library.
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -324,6 +331,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 api_mtls_endpoint=client_options.api_endpoint,
                 client_cert_source=client_options.client_cert_source,
                 quota_project_id=client_options.quota_project_id,
+                client_info=client_info,
             )
 
     def list_key_rings(
@@ -368,19 +376,25 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.ListKeyRingsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.ListKeyRingsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.ListKeyRingsRequest):
+            request = service.ListKeyRingsRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -446,19 +460,25 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.ListCryptoKeysRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.ListCryptoKeysRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.ListCryptoKeysRequest):
+            request = service.ListCryptoKeysRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -525,19 +545,25 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.ListCryptoKeyVersionsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.ListCryptoKeyVersionsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.ListCryptoKeyVersionsRequest):
+            request = service.ListCryptoKeyVersionsRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -603,19 +629,25 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.ListImportJobsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.ListImportJobsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.ListImportJobsRequest):
+            request = service.ListImportJobsRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -679,19 +711,25 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.GetKeyRingRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.GetKeyRingRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.GetKeyRingRequest):
+            request = service.GetKeyRingRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -749,7 +787,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 operations.
 
                 A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made up
-                of one or more
+                of zero or more
                 [versions][google.cloud.kms.v1.CryptoKeyVersion], which
                 represent the actual key material used in cryptographic
                 operations.
@@ -758,19 +796,25 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.GetCryptoKeyRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.GetCryptoKeyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.GetCryptoKeyRequest):
+            request = service.GetCryptoKeyRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -842,19 +886,25 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.GetCryptoKeyVersionRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.GetCryptoKeyVersionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.GetCryptoKeyVersionRequest):
+            request = service.GetCryptoKeyVersionRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -920,19 +970,25 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.GetPublicKeyRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.GetPublicKeyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.GetPublicKeyRequest):
+            request = service.GetPublicKeyRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1033,19 +1089,25 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.GetImportJobRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.GetImportJobRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.GetImportJobRequest):
+            request = service.GetImportJobRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1118,23 +1180,29 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, key_ring_id, key_ring]):
+        has_flattened_params = any([parent, key_ring_id, key_ring])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateKeyRingRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.CreateKeyRingRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.CreateKeyRingRequest):
+            request = service.CreateKeyRingRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
-        if key_ring_id is not None:
-            request.key_ring_id = key_ring_id
-        if key_ring is not None:
-            request.key_ring = key_ring
+            if parent is not None:
+                request.parent = parent
+            if key_ring_id is not None:
+                request.key_ring_id = key_ring_id
+            if key_ring is not None:
+                request.key_ring = key_ring
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1208,7 +1276,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 operations.
 
                 A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made up
-                of one or more
+                of zero or more
                 [versions][google.cloud.kms.v1.CryptoKeyVersion], which
                 represent the actual key material used in cryptographic
                 operations.
@@ -1217,23 +1285,29 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, crypto_key_id, crypto_key]):
+        has_flattened_params = any([parent, crypto_key_id, crypto_key])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateCryptoKeyRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.CreateCryptoKeyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.CreateCryptoKeyRequest):
+            request = service.CreateCryptoKeyRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
-        if crypto_key_id is not None:
-            request.crypto_key_id = crypto_key_id
-        if crypto_key is not None:
-            request.crypto_key = crypto_key
+            if parent is not None:
+                request.parent = parent
+            if crypto_key_id is not None:
+                request.crypto_key_id = crypto_key_id
+            if crypto_key is not None:
+                request.crypto_key = crypto_key
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1319,21 +1393,27 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, crypto_key_version]):
+        has_flattened_params = any([parent, crypto_key_version])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateCryptoKeyVersionRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.CreateCryptoKeyVersionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.CreateCryptoKeyVersionRequest):
+            request = service.CreateCryptoKeyVersionRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
-        if crypto_key_version is not None:
-            request.crypto_key_version = crypto_key_version
+            if parent is not None:
+                request.parent = parent
+            if crypto_key_version is not None:
+                request.crypto_key_version = crypto_key_version
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1402,7 +1482,12 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         """
         # Create or coerce a protobuf request object.
 
-        request = service.ImportCryptoKeyVersionRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.ImportCryptoKeyVersionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.ImportCryptoKeyVersionRequest):
+            request = service.ImportCryptoKeyVersionRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1522,23 +1607,29 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, import_job_id, import_job]):
+        has_flattened_params = any([parent, import_job_id, import_job])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.CreateImportJobRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.CreateImportJobRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.CreateImportJobRequest):
+            request = service.CreateImportJobRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
-        if import_job_id is not None:
-            request.import_job_id = import_job_id
-        if import_job is not None:
-            request.import_job = import_job
+            if parent is not None:
+                request.parent = parent
+            if import_job_id is not None:
+                request.import_job_id = import_job_id
+            if import_job is not None:
+                request.import_job = import_job
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1599,7 +1690,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 operations.
 
                 A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made up
-                of one or more
+                of zero or more
                 [versions][google.cloud.kms.v1.CryptoKeyVersion], which
                 represent the actual key material used in cryptographic
                 operations.
@@ -1608,21 +1699,27 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([crypto_key, update_mask]):
+        has_flattened_params = any([crypto_key, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateCryptoKeyRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.UpdateCryptoKeyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.UpdateCryptoKeyRequest):
+            request = service.UpdateCryptoKeyRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if crypto_key is not None:
-            request.crypto_key = crypto_key
-        if update_mask is not None:
-            request.update_mask = update_mask
+            if crypto_key is not None:
+                request.crypto_key = crypto_key
+            if update_mask is not None:
+                request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1714,21 +1811,27 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([crypto_key_version, update_mask]):
+        has_flattened_params = any([crypto_key_version, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateCryptoKeyVersionRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.UpdateCryptoKeyVersionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.UpdateCryptoKeyVersionRequest):
+            request = service.UpdateCryptoKeyVersionRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if crypto_key_version is not None:
-            request.crypto_key_version = crypto_key_version
-        if update_mask is not None:
-            request.update_mask = update_mask
+            if crypto_key_version is not None:
+                request.crypto_key_version = crypto_key_version
+            if update_mask is not None:
+                request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1815,21 +1918,27 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, plaintext]):
+        has_flattened_params = any([name, plaintext])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.EncryptRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.EncryptRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.EncryptRequest):
+            request = service.EncryptRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
-        if plaintext is not None:
-            request.plaintext = plaintext
+            if name is not None:
+                request.name = name
+            if plaintext is not None:
+                request.plaintext = plaintext
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1898,21 +2007,27 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, ciphertext]):
+        has_flattened_params = any([name, ciphertext])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.DecryptRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.DecryptRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.DecryptRequest):
+            request = service.DecryptRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
-        if ciphertext is not None:
-            request.ciphertext = ciphertext
+            if name is not None:
+                request.name = name
+            if ciphertext is not None:
+                request.ciphertext = ciphertext
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1983,21 +2098,27 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, digest]):
+        has_flattened_params = any([name, digest])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.AsymmetricSignRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.AsymmetricSignRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.AsymmetricSignRequest):
+            request = service.AsymmetricSignRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
-        if digest is not None:
-            request.digest = digest
+            if name is not None:
+                request.name = name
+            if digest is not None:
+                request.digest = digest
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2068,21 +2189,27 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, ciphertext]):
+        has_flattened_params = any([name, ciphertext])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.AsymmetricDecryptRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.AsymmetricDecryptRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.AsymmetricDecryptRequest):
+            request = service.AsymmetricDecryptRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
-        if ciphertext is not None:
-            request.ciphertext = ciphertext
+            if name is not None:
+                request.name = name
+            if ciphertext is not None:
+                request.ciphertext = ciphertext
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2148,7 +2275,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 operations.
 
                 A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made up
-                of one or more
+                of zero or more
                 [versions][google.cloud.kms.v1.CryptoKeyVersion], which
                 represent the actual key material used in cryptographic
                 operations.
@@ -2157,21 +2284,27 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, crypto_key_version_id]):
+        has_flattened_params = any([name, crypto_key_version_id])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateCryptoKeyPrimaryVersionRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.UpdateCryptoKeyPrimaryVersionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.UpdateCryptoKeyPrimaryVersionRequest):
+            request = service.UpdateCryptoKeyPrimaryVersionRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
-        if crypto_key_version_id is not None:
-            request.crypto_key_version_id = crypto_key_version_id
+            if name is not None:
+                request.name = name
+            if crypto_key_version_id is not None:
+                request.crypto_key_version_id = crypto_key_version_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2263,19 +2396,25 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.DestroyCryptoKeyVersionRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.DestroyCryptoKeyVersionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.DestroyCryptoKeyVersionRequest):
+            request = service.DestroyCryptoKeyVersionRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2358,19 +2497,25 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.RestoreCryptoKeyVersionRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.RestoreCryptoKeyVersionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.RestoreCryptoKeyVersionRequest):
+            request = service.RestoreCryptoKeyVersionRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2485,7 +2630,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         rpc = gapic_v1.method.wrap_method(
             self._transport.set_iam_policy,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2596,7 +2741,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         rpc = gapic_v1.method.wrap_method(
             self._transport.get_iam_policy,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2648,7 +2793,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         rpc = gapic_v1.method.wrap_method(
             self._transport.test_iam_permissions,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2665,11 +2810,11 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution("google-cloud-kms",).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 __all__ = ("KeyManagementServiceClient",)

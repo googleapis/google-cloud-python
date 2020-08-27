@@ -3,16 +3,16 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-kms",
-        "sha": "b86cb3a61661e102bff02e592dd6ec952e008162"
+        "remote": "https://github.com/googleapis/python-kms.git",
+        "sha": "9edcc9abceb6f790f4d1968aef3ba61903e30824"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "1907f0fdbd1c51e62d8452a4007bf2134a8bd4c2",
-        "internalRef": "323657371"
+        "sha": "1a85976e6bcecdaee1242f6e7fd8b3db81904f56",
+        "internalRef": "328476173"
       }
     },
     {

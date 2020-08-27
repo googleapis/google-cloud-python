@@ -40,15 +40,15 @@ def partition(
 class kmsCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'asymmetric_decrypt': ('name', 'ciphertext', ),
-    'asymmetric_sign': ('name', 'digest', ),
+    'asymmetric_decrypt': ('name', 'ciphertext', 'ciphertext_crc32c', ),
+    'asymmetric_sign': ('name', 'digest', 'digest_crc32c', ),
     'create_crypto_key': ('parent', 'crypto_key_id', 'crypto_key', 'skip_initial_version_creation', ),
     'create_crypto_key_version': ('parent', 'crypto_key_version', ),
     'create_import_job': ('parent', 'import_job_id', 'import_job', ),
     'create_key_ring': ('parent', 'key_ring_id', 'key_ring', ),
-    'decrypt': ('name', 'ciphertext', 'additional_authenticated_data', ),
+    'decrypt': ('name', 'ciphertext', 'additional_authenticated_data', 'ciphertext_crc32c', 'additional_authenticated_data_crc32c', ),
     'destroy_crypto_key_version': ('name', ),
-    'encrypt': ('name', 'plaintext', 'additional_authenticated_data', ),
+    'encrypt': ('name', 'plaintext', 'additional_authenticated_data', 'plaintext_crc32c', 'additional_authenticated_data_crc32c', ),
     'get_crypto_key': ('name', ),
     'get_crypto_key_version': ('name', ),
     'get_import_job': ('name', ),
