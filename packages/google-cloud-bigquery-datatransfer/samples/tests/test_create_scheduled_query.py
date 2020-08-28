@@ -27,7 +27,7 @@ from .. import create_scheduled_query
 
 @pytest.fixture
 def project_id():
-    return os.environ["PROJECT_ID"]
+    return os.environ["GOOGLE_CLOUD_PROJECT"]
 
 
 @pytest.fixture(scope="module")
