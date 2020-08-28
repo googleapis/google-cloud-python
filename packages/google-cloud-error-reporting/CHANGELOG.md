@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-error-reporting/compare/v0.34.0...v1.0.0) (2020-08-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate to use microgen (#23)
+
+### Features
+
+* migrate to use microgen ([#23](https://www.github.com/googleapis/python-error-reporting/issues/23)) ([cb41e3a](https://www.github.com/googleapis/python-error-reporting/commit/cb41e3a1003cb4ef4e32efc8b5c5b5ba7d670f7d))
+
+
+### Documentation
+
+* add multiprocessing note ([#13](https://www.github.com/googleapis/python-error-reporting/issues/13)) ([840d67c](https://www.github.com/googleapis/python-error-reporting/commit/840d67c09502ae99ce4771c66bde1cefb961a367))
+
 ## [0.34.0](https://www.github.com/googleapis/python-error-reporting/compare/v0.33.0...v0.34.0) (2020-05-03)
 
 
