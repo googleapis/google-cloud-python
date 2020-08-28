@@ -748,7 +748,7 @@ def test_{{ service.name|snake_case }}_grpc_lro_client():
 
 {% endif -%}
 
-{% for message in service.resource_messages -%}
+{% for message in service.resource_messages|sort(attribute="resource_type") -%}
 {% with molluscs = cycler("squid", "clam", "whelk", "octopus", "oyster", "nudibranch", "cuttlefish", "mussel", "winkle", "nautilus", "scallop", "abalone") -%}
 def test_{{ message.resource_type|snake_case }}_path():
     {% for arg in message.resource_path_args -%}

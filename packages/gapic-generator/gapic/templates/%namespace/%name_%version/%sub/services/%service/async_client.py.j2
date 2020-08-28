@@ -38,9 +38,9 @@ class {{ service.async_client_name }}:
     DEFAULT_ENDPOINT = {{ service.client_name }}.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = {{ service.client_name }}.DEFAULT_MTLS_ENDPOINT
 
-    {% for message in service.resource_messages -%}
+    {% for message in service.resource_messages|sort(attribute="resource_type") -%}
     {{ message.resource_type|snake_case }}_path = staticmethod({{ service.client_name }}.{{ message.resource_type|snake_case }}_path)
-
+    parse_{{ message.resource_type|snake_case}}_path = staticmethod({{ service.client_name }}.parse_{{ message.resource_type|snake_case }}_path)
     {% endfor %}
 
     from_service_account_file = {{ service.client_name }}.from_service_account_file
