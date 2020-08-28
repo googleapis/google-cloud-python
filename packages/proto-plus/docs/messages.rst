@@ -165,12 +165,3 @@ via the :meth:`~.Message.to_json` and :meth:`~.Message.from_json` methods.
 
     new_song = Song.from_json(json)
 
-The behavior of JSON serialization can be customized to use strings to
-represent enum values.
-
-.. code-block:: python
-
-   song = Song(genre=Genre.JAZZ)
-   json = Song.to_json(song, use_integers_for_enums=False)
-
-   assert "JAZZ" in json

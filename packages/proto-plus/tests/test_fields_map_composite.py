@@ -22,12 +22,7 @@ def test_composite_map():
         bar = proto.Field(proto.INT32, number=1)
 
     class Baz(proto.Message):
-        foos = proto.MapField(
-            proto.STRING,
-            proto.MESSAGE,
-            number=1,
-            message=Foo,
-        )
+        foos = proto.MapField(proto.STRING, proto.MESSAGE, number=1, message=Foo,)
 
     baz = Baz(foos={"i": Foo(bar=42), "j": Foo(bar=24)})
     assert len(baz.foos) == 2
@@ -41,12 +36,7 @@ def test_composite_map_dict():
         bar = proto.Field(proto.INT32, number=1)
 
     class Baz(proto.Message):
-        foos = proto.MapField(
-            proto.STRING,
-            proto.MESSAGE,
-            number=1,
-            message=Foo,
-        )
+        foos = proto.MapField(proto.STRING, proto.MESSAGE, number=1, message=Foo,)
 
     baz = Baz(foos={"i": {"bar": 42}, "j": {"bar": 24}})
     assert len(baz.foos) == 2
@@ -62,12 +52,7 @@ def test_composite_map_set():
         bar = proto.Field(proto.INT32, number=1)
 
     class Baz(proto.Message):
-        foos = proto.MapField(
-            proto.STRING,
-            proto.MESSAGE,
-            number=1,
-            message=Foo,
-        )
+        foos = proto.MapField(proto.STRING, proto.MESSAGE, number=1, message=Foo,)
 
     baz = Baz()
     baz.foos["i"] = Foo(bar=42)
@@ -83,12 +68,7 @@ def test_composite_map_deep_set():
         bar = proto.Field(proto.INT32, number=1)
 
     class Baz(proto.Message):
-        foos = proto.MapField(
-            proto.STRING,
-            proto.MESSAGE,
-            number=1,
-            message=Foo,
-        )
+        foos = proto.MapField(proto.STRING, proto.MESSAGE, number=1, message=Foo,)
 
     baz = Baz()
     baz.foos["i"] = Foo()
@@ -102,12 +82,7 @@ def test_composite_map_del():
         bar = proto.Field(proto.INT32, number=1)
 
     class Baz(proto.Message):
-        foos = proto.MapField(
-            proto.STRING,
-            proto.MESSAGE,
-            number=1,
-            message=Foo,
-        )
+        foos = proto.MapField(proto.STRING, proto.MESSAGE, number=1, message=Foo,)
 
     baz = Baz()
     baz.foos["i"] = Foo(bar=42)

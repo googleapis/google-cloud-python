@@ -245,11 +245,11 @@ jobs:
       - run:
           name: Install black
           command: |
-            pip install black
+            pip install black==19.10b0
       - run:
           name: Format files
           command: |
-            black -l 88 .
+            black .
       - run:
           name: Check diff
           command: |

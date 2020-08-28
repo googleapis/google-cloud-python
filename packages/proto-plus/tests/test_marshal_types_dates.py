@@ -28,9 +28,7 @@ from proto.datetime_helpers import DatetimeWithNanoseconds
 def test_timestamp_read():
     class Foo(proto.Message):
         event_time = proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=timestamp_pb2.Timestamp,
+            proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
         )
 
     foo = Foo(event_time=timestamp_pb2.Timestamp(seconds=1335020400))
@@ -47,9 +45,7 @@ def test_timestamp_read():
 def test_timestamp_write_init():
     class Foo(proto.Message):
         event_time = proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=timestamp_pb2.Timestamp,
+            proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
         )
 
     foo = Foo(event_time=DatetimeWithNanoseconds(2012, 4, 21, 15, tzinfo=timezone.utc))
@@ -64,9 +60,7 @@ def test_timestamp_write_init():
 def test_timestamp_write():
     class Foo(proto.Message):
         event_time = proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=timestamp_pb2.Timestamp,
+            proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
         )
 
     foo = Foo()
@@ -83,9 +77,7 @@ def test_timestamp_write():
 def test_timestamp_write_pb2():
     class Foo(proto.Message):
         event_time = proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=timestamp_pb2.Timestamp,
+            proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
         )
 
     foo = Foo()
@@ -101,9 +93,7 @@ def test_timestamp_write_pb2():
 def test_timestamp_rmw_nanos():
     class Foo(proto.Message):
         event_time = proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=timestamp_pb2.Timestamp,
+            proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
         )
 
     foo = Foo()
@@ -120,9 +110,7 @@ def test_timestamp_rmw_nanos():
 def test_timestamp_absence():
     class Foo(proto.Message):
         event_time = proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=timestamp_pb2.Timestamp,
+            proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
         )
 
     foo = Foo()
@@ -132,9 +120,7 @@ def test_timestamp_absence():
 def test_timestamp_del():
     class Foo(proto.Message):
         event_time = proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=timestamp_pb2.Timestamp,
+            proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
         )
 
     foo = Foo(event_time=DatetimeWithNanoseconds(2012, 4, 21, 15, tzinfo=timezone.utc))
@@ -144,11 +130,7 @@ def test_timestamp_del():
 
 def test_duration_read():
     class Foo(proto.Message):
-        ttl = proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=duration_pb2.Duration,
-        )
+        ttl = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
 
     foo = Foo(ttl=duration_pb2.Duration(seconds=60, nanos=1000))
     assert isinstance(foo.ttl, timedelta)
@@ -160,11 +142,7 @@ def test_duration_read():
 
 def test_duration_write_init():
     class Foo(proto.Message):
-        ttl = proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=duration_pb2.Duration,
-        )
+        ttl = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
 
     foo = Foo(ttl=timedelta(days=2))
     assert isinstance(foo.ttl, timedelta)
@@ -177,11 +155,7 @@ def test_duration_write_init():
 
 def test_duration_write():
     class Foo(proto.Message):
-        ttl = proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=duration_pb2.Duration,
-        )
+        ttl = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
 
     foo = Foo()
     foo.ttl = timedelta(seconds=120)
@@ -193,11 +167,7 @@ def test_duration_write():
 
 def test_duration_write_pb2():
     class Foo(proto.Message):
-        ttl = proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=duration_pb2.Duration,
-        )
+        ttl = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
 
     foo = Foo()
     foo.ttl = duration_pb2.Duration(seconds=120)
@@ -209,11 +179,7 @@ def test_duration_write_pb2():
 
 def test_duration_del():
     class Foo(proto.Message):
-        ttl = proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=duration_pb2.Duration,
-        )
+        ttl = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
 
     foo = Foo(ttl=timedelta(seconds=900))
     del foo.ttl
@@ -225,11 +191,7 @@ def test_duration_del():
 
 def test_duration_nanos_rmw():
     class Foo(proto.Message):
-        ttl = proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=duration_pb2.Duration,
-        )
+        ttl = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
 
     foo = Foo(ttl=timedelta(microseconds=50))
     assert foo.ttl.microseconds == 50

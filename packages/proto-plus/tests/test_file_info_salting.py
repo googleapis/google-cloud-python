@@ -34,9 +34,7 @@ def sample_file_info(name):
         filename,
         _file_info._FileInfo(
             descriptor=descriptor_pb2.FileDescriptorProto(
-                name=filename,
-                package=package,
-                syntax="proto3",
+                name=filename, package=package, syntax="proto3",
             ),
             enums=collections.OrderedDict(),
             messages=collections.OrderedDict(),

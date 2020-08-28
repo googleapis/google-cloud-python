@@ -17,8 +17,7 @@ import collections
 
 
 _ProtoModule = collections.namedtuple(
-    "ProtoModule",
-    ["package", "marshal", "manifest"],
+    "ProtoModule", ["package", "marshal", "manifest"],
 )
 
 
@@ -40,11 +39,7 @@ def define_module(
     """
     if not marshal:
         marshal = package
-    return _ProtoModule(
-        package=package,
-        marshal=marshal,
-        manifest=frozenset(manifest),
-    )
+    return _ProtoModule(package=package, marshal=marshal, manifest=frozenset(manifest),)
 
 
 __all__ = ("define_module",)

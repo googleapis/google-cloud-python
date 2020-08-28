@@ -12,11 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import collections
+import collections.abc
 import inspect
 import logging
 
-from google.protobuf import descriptor_pb2
 from google.protobuf import descriptor_pool
 from google.protobuf import message
 from google.protobuf import reflection
@@ -32,28 +31,6 @@ class _FileInfo(
     )
 ):
     registry = {}  # Mapping[str, '_FileInfo']
-
-    @classmethod
-    def maybe_add_descriptor(cls, filename, package):
-        descriptor = cls.registry.get(filename)
-        if not descriptor:
-            descriptor = cls.registry[filename] = cls(
-                descriptor=descriptor_pb2.FileDescriptorProto(
-                    name=filename,
-                    package=package,
-                    syntax="proto3",
-                ),
-                enums=collections.OrderedDict(),
-                messages=collections.OrderedDict(),
-                name=filename,
-                nested={},
-            )
-
-        return descriptor
-
-    @staticmethod
-    def proto_file_name(name):
-        return "{0}.proto".format(name).replace(".", "/")
 
     def _get_manifest(self, new_class):
         module = inspect.getmodule(new_class)
