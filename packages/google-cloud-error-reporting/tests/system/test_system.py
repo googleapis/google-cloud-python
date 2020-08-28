@@ -17,8 +17,7 @@ import operator
 import unittest
 
 from google.cloud import error_reporting
-from google.cloud.errorreporting_v1beta1.gapic import error_stats_service_client
-from google.cloud.errorreporting_v1beta1.proto import error_stats_service_pb2
+import google.cloud.errorreporting_v1beta1
 from google.protobuf.duration_pb2 import Duration
 
 from test_utils.retry import RetryResult
@@ -53,20 +52,26 @@ def _list_groups(client):
     :param client: The client containing a project and credentials.
 
     :rtype: :class:`~google.gax.ResourceIterator`
-    :returns: Iterable of :class:`~.error_stats_service_pb2.ErrorGroupStats`.
+    :returns: Iterable of :class:`~.google.cloud.errorreporting_v1beta1.ErrorGroupStats`.
     """
-    gax_api = error_stats_service_client.ErrorStatsServiceClient(
+    gax_api = google.cloud.errorreporting_v1beta1.ErrorStatsServiceClient(
         credentials=client._credentials
     )
-    project_name = gax_api.project_path(client.project)
+    project_name = f"projects/{client.project}"
 
-    time_range = error_stats_service_pb2.QueryTimeRange()
-    time_range.period = error_stats_service_pb2.QueryTimeRange.PERIOD_1_HOUR
+    time_range = google.cloud.errorreporting_v1beta1.QueryTimeRange()
+    time_range.period = (
+        google.cloud.errorreporting_v1beta1.QueryTimeRange.Period.PERIOD_1_HOUR
+    )
 
     duration = Duration(seconds=60 * 60)
 
     return gax_api.list_group_stats(
-        project_name, time_range, timed_count_duration=duration
+        request={
+            "project_name": project_name,
+            "time_range": time_range,
+            "timed_count_duration": duration,
+        }
     )
 
 

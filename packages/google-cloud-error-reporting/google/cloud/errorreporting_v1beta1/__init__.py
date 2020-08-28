@@ -1,45 +1,75 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-from __future__ import absolute_import
-
-from google.cloud.errorreporting_v1beta1 import types
-from google.cloud.errorreporting_v1beta1.gapic import enums
-from google.cloud.errorreporting_v1beta1.gapic import error_group_service_client
-from google.cloud.errorreporting_v1beta1.gapic import error_stats_service_client
-from google.cloud.errorreporting_v1beta1.gapic import report_errors_service_client
-
-
-class ErrorGroupServiceClient(error_group_service_client.ErrorGroupServiceClient):
-    __doc__ = error_group_service_client.ErrorGroupServiceClient.__doc__
-    enums = enums
-
-
-class ErrorStatsServiceClient(error_stats_service_client.ErrorStatsServiceClient):
-    __doc__ = error_stats_service_client.ErrorStatsServiceClient.__doc__
-    enums = enums
-
-
-class ReportErrorsServiceClient(report_errors_service_client.ReportErrorsServiceClient):
-    __doc__ = report_errors_service_client.ReportErrorsServiceClient.__doc__
-    enums = enums
+from .services.error_group_service import ErrorGroupServiceClient
+from .services.error_stats_service import ErrorStatsServiceClient
+from .services.report_errors_service import ReportErrorsServiceClient
+from .types.common import ErrorContext
+from .types.common import ErrorEvent
+from .types.common import ErrorGroup
+from .types.common import HttpRequestContext
+from .types.common import ServiceContext
+from .types.common import SourceLocation
+from .types.common import TrackingIssue
+from .types.error_group_service import GetGroupRequest
+from .types.error_group_service import UpdateGroupRequest
+from .types.error_stats_service import DeleteEventsRequest
+from .types.error_stats_service import DeleteEventsResponse
+from .types.error_stats_service import ErrorGroupOrder
+from .types.error_stats_service import ErrorGroupStats
+from .types.error_stats_service import ListEventsRequest
+from .types.error_stats_service import ListEventsResponse
+from .types.error_stats_service import ListGroupStatsRequest
+from .types.error_stats_service import ListGroupStatsResponse
+from .types.error_stats_service import QueryTimeRange
+from .types.error_stats_service import ServiceContextFilter
+from .types.error_stats_service import TimedCount
+from .types.error_stats_service import TimedCountAlignment
+from .types.report_errors_service import ReportErrorEventRequest
+from .types.report_errors_service import ReportErrorEventResponse
+from .types.report_errors_service import ReportedErrorEvent
 
 
 __all__ = (
-    "enums",
-    "types",
+    "DeleteEventsRequest",
+    "DeleteEventsResponse",
+    "ErrorContext",
+    "ErrorEvent",
+    "ErrorGroup",
+    "ErrorGroupOrder",
     "ErrorGroupServiceClient",
+    "ErrorGroupStats",
     "ErrorStatsServiceClient",
+    "GetGroupRequest",
+    "HttpRequestContext",
+    "ListEventsRequest",
+    "ListEventsResponse",
+    "ListGroupStatsRequest",
+    "ListGroupStatsResponse",
+    "QueryTimeRange",
+    "ReportErrorEventRequest",
+    "ReportErrorEventResponse",
+    "ReportedErrorEvent",
+    "ServiceContext",
+    "ServiceContextFilter",
+    "SourceLocation",
+    "TimedCount",
+    "TimedCountAlignment",
+    "TrackingIssue",
+    "UpdateGroupRequest",
     "ReportErrorsServiceClient",
 )

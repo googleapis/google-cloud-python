@@ -19,8 +19,8 @@ API Reference
 
    client
    util
-   gapic/v1beta1/api
-   gapic/v1beta1/types
+   errorreporting_v1beta1/services
+   errorreporting_v1beta1/types
 
 
 Changelog

@@ -13,10 +13,9 @@
 # limitations under the License.
 
 """GAX wrapper for Error Reporting API requests."""
+import json
 
-from google.cloud.errorreporting_v1beta1.gapic import report_errors_service_client
-from google.cloud.errorreporting_v1beta1.proto import report_errors_service_pb2
-from google.protobuf.json_format import ParseDict
+import google.cloud.errorreporting_v1beta1
 
 
 def make_report_error_api(client):
@@ -28,7 +27,7 @@ def make_report_error_api(client):
     :rtype: :class:_ErrorReportingGapicApi
     :returns: An Error Reporting API instance.
     """
-    gapic_api = report_errors_service_client.ReportErrorsServiceClient(
+    gapic_api = google.cloud.errorreporting_v1beta1.ReportErrorsServiceClient(
         credentials=client._credentials,
         client_info=client._client_info,
         client_options=client._client_options,
@@ -40,7 +39,7 @@ class _ErrorReportingGapicApi(object):
     """Helper mapping Error Reporting-related APIs
 
     :type gapic:
-        :class:`report_errors_service_client.ReportErrorsServiceClient`
+        :class:`google.cloud.errorreporting_v1beta1.ReportErrorsServiceClient`
     :param gapic: API object used to make RPCs.
 
     :type project: str
@@ -62,7 +61,15 @@ class _ErrorReportingGapicApi(object):
             Use
             :meth:~`google.cloud.error_reporting.client._build_error_report`
         """
-        project_name = self._gapic_api.project_path(self._project)
-        error_report_payload = report_errors_service_pb2.ReportedErrorEvent()
-        ParseDict(error_report, error_report_payload)
-        self._gapic_api.report_error_event(project_name, error_report_payload)
+        project_name = f"projects/{self._project}"
+
+        # Since error_report uses camel case for key names (like serviceContext),
+        # but ReportedErrorEvent uses snake case for key names (like service_context),
+        # we need to route throught json.
+        error_report_payload = google.cloud.errorreporting_v1beta1.ReportedErrorEvent.from_json(
+            json.dumps(error_report)
+        )
+
+        self._gapic_api.report_error_event(
+            project_name=project_name, event=error_report_payload
+        )

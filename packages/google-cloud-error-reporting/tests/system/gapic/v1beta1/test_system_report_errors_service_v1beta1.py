@@ -18,8 +18,6 @@ import os
 import time
 
 from google.cloud import errorreporting_v1beta1
-from google.cloud.errorreporting_v1beta1.proto import common_pb2
-from google.cloud.errorreporting_v1beta1.proto import report_errors_service_pb2
 
 
 class TestSystemReportErrorsService(object):
@@ -27,7 +25,7 @@ class TestSystemReportErrorsService(object):
         project_id = os.environ["PROJECT_ID"]
 
         client = errorreporting_v1beta1.ReportErrorsServiceClient()
-        project_name = client.project_path(project_id)
+        project_name = f"projects/{project_id}"
         message = "[MESSAGE]"
         service = "[SERVICE]"
         service_context = {"service": service}
@@ -45,4 +43,6 @@ class TestSystemReportErrorsService(object):
             "service_context": service_context,
             "context": context,
         }
-        response = client.report_error_event(project_name, event)
+        response = client.report_error_event(
+            request={"project_name": project_name, "event": event}
+        )

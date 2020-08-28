@@ -31,8 +31,7 @@ class Test_make_report_error_api(unittest.TestCase):
 
         # Call the function being tested.
         patch = mock.patch(
-            "google.cloud.errorreporting_v1beta1."
-            "gapic.report_errors_service_client.ReportErrorsServiceClient"
+            "google.cloud.errorreporting_v1beta1.ReportErrorsServiceClient"
         )
 
         with patch as patched:
@@ -66,17 +65,18 @@ class Test_ErrorReportingGapicApi(unittest.TestCase):
         self.assertEqual(gapic_client_wrapper._gapic_api, gapic_api)
 
     def test_report_error_event(self):
-        from google.cloud.errorreporting_v1beta1.proto import report_errors_service_pb2
+        import google.cloud.errorreporting_v1beta1
 
-        gapic_api = mock.Mock(spec=["project_path", "report_error_event"])
+        gapic_api = mock.Mock(spec=["report_error_event"])
         gapic_client_wrapper = self._make_one(gapic_api, self.PROJECT)
 
         error_report = {"message": "The cabs are here."}
         gapic_client_wrapper.report_error_event(error_report)
 
-        gapic_api.project_path.assert_called_once_with(self.PROJECT)
-        project_name = gapic_api.project_path.return_value
-        error_pb = report_errors_service_pb2.ReportedErrorEvent(
+        project_name = f"projects/{self.PROJECT}"
+        error_pb = google.cloud.errorreporting_v1beta1.ReportedErrorEvent(
             message=error_report["message"]
         )
-        gapic_api.report_error_event.assert_called_once_with(project_name, error_pb)
+        gapic_api.report_error_event.assert_called_once_with(
+            project_name=project_name, event=error_pb
+        )
