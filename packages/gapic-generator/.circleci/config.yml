@@ -23,23 +23,17 @@ workflows:
       - showcase-unit-3.6:
           requires:
             - unit-3.6
-            - unit-3.7
-            - unit-3.8
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+$/
       - showcase-unit-3.7:
           requires:
-            - unit-3.6
             - unit-3.7
-            - unit-3.8
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+$/
       - showcase-unit-3.8:
           requires:
-            - unit-3.6
-            - unit-3.7
             - unit-3.8
           filters:
             tags:
@@ -47,31 +41,23 @@ workflows:
       - showcase-unit-alternative-templates-3.6:
           requires:
             - unit-3.6
-            - unit-3.7
-            - unit-3.8
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+$/
       - showcase-unit-alternative-templates-3.7:
           requires:
-            - unit-3.6
             - unit-3.7
-            - unit-3.8
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+$/
       - showcase-unit-alternative-templates-3.8:
           requires:
-            - unit-3.6
-            - unit-3.7
             - unit-3.8
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+$/
       - showcase-unit-add-iam-methods:
           requires:
-            - unit-3.6
-            - unit-3.7
             - unit-3.8
           filters:
             tags:
