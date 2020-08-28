@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.7.1...v1.8.0) (2020-08-28)
+
+
+### Features
+
+* allow enum strings in json serialization and deserialization ([#107](https://www.github.com/googleapis/proto-plus-python/issues/107)) ([a082f85](https://www.github.com/googleapis/proto-plus-python/commit/a082f85ffcb72e2c53c0e33e40e6df2927a41259))
+
 ### [1.7.1](https://www.github.com/googleapis/proto-plus-python/compare/v1.7.0...v1.7.1) (2020-08-17)
 
 
