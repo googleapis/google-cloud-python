@@ -2172,7 +2172,6 @@ class Query(object):
         """
         return self.count_async(_options=kwargs["_options"]).result()
 
-    @tasklets.tasklet
     @_query_options
     @utils.keyword_only(
         offset=None,
@@ -2201,19 +2200,7 @@ class Query(object):
         # Avoid circular import in Python 2.7
         from google.cloud.ndb import _datastore_query
 
-        _options = kwargs["_options"]
-        options = _options.copy(projection=["__key__"], order_by=None)
-        results = _datastore_query.iterate(options, raw=True)
-        count = 0
-        limit = options.limit
-        while (yield results.has_next_async()):
-            count += 1
-            if limit and count == limit:
-                break
-
-            results.next()
-
-        raise tasklets.Return(count)
+        return _datastore_query.count(kwargs["_options"])
 
     @_query_options
     @utils.keyword_only(

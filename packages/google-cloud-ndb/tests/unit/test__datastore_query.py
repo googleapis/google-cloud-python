@@ -81,6 +81,172 @@ class Test_fetch:
         iterate.assert_called_once_with("foo")
 
 
+class Test_count:
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_query.iterate")
+    def test_count_brute_force(iterate):
+        class DummyQueryIterator:
+            def __init__(self, items):
+                self.items = list(items)
+
+            def has_next_async(self):
+                return utils.future_result(bool(self.items))
+
+            def next(self):
+                return self.items.pop()
+
+        iterate.return_value = DummyQueryIterator(range(5))
+        query = query_module.QueryOptions(
+            filters=mock.Mock(_multiquery=True, spec=("_multiquery",))
+        )
+
+        future = _datastore_query.count(query)
+        assert future.result() == 5
+        iterate.assert_called_once_with(
+            query_module.QueryOptions(filters=query.filters, projection=["__key__"]),
+            raw=True,
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_query.iterate")
+    def test_count_brute_force_with_limit(iterate):
+        class DummyQueryIterator:
+            def __init__(self, items):
+                self.items = list(items)
+
+            def has_next_async(self):
+                return utils.future_result(bool(self.items))
+
+            def next(self):
+                return self.items.pop()
+
+        iterate.return_value = DummyQueryIterator(range(5))
+        query = query_module.QueryOptions(
+            filters=mock.Mock(
+                _multiquery=False,
+                _post_filters=mock.Mock(return_value=True),
+                spec=("_multiquery", "_post_filters"),
+            ),
+            limit=3,
+        )
+
+        future = _datastore_query.count(query)
+        assert future.result() == 3
+        iterate.assert_called_once_with(
+            query_module.QueryOptions(
+                filters=query.filters, projection=["__key__"], limit=3
+            ),
+            raw=True,
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_query._datastore_run_query")
+    def test_count_by_skipping(run_query):
+        run_query.side_effect = utils.future_results(
+            mock.Mock(
+                batch=mock.Mock(
+                    more_results=_datastore_query.NOT_FINISHED,
+                    skipped_results=1000,
+                    entity_results=[],
+                    end_cursor=b"himom",
+                    spec=(
+                        "more_results",
+                        "skipped_results",
+                        "entity_results",
+                        "end_cursor",
+                    ),
+                ),
+                spec=("batch",),
+            ),
+            mock.Mock(
+                batch=mock.Mock(
+                    more_results=_datastore_query.NO_MORE_RESULTS,
+                    skipped_results=100,
+                    entity_results=[],
+                    end_cursor=b"hellodad",
+                    spec=(
+                        "more_results",
+                        "skipped_results",
+                        "entity_results",
+                        "end_cursor",
+                    ),
+                ),
+                spec=("batch",),
+            ),
+        )
+
+        query = query_module.QueryOptions()
+        future = _datastore_query.count(query)
+        assert future.result() == 1100
+
+        expected = [
+            mock.call(
+                query_module.QueryOptions(
+                    limit=1,
+                    offset=10000,
+                    projection=["__key__"],
+                )
+            ),
+            (
+                (
+                    query_module.QueryOptions(
+                        limit=1,
+                        offset=10000,
+                        projection=["__key__"],
+                        start_cursor=_datastore_query.Cursor(b"himom"),
+                    ),
+                ),
+                {},
+            ),
+        ]
+        assert run_query.call_args_list == expected
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_query._datastore_run_query")
+    def test_count_by_skipping_with_limit(run_query):
+        run_query.return_value = utils.future_result(
+            mock.Mock(
+                batch=mock.Mock(
+                    more_results=_datastore_query.MORE_RESULTS_AFTER_LIMIT,
+                    skipped_results=99,
+                    entity_results=[object()],
+                    end_cursor=b"himom",
+                    spec=(
+                        "more_results",
+                        "skipped_results",
+                        "entity_results",
+                        "end_cursor",
+                    ),
+                ),
+                spec=("batch",),
+            )
+        )
+
+        query = query_module.QueryOptions(
+            filters=mock.Mock(
+                _multiquery=False,
+                _post_filters=mock.Mock(return_value=None),
+                spec=("_multiquery", "_post_filters"),
+            ),
+            limit=100,
+        )
+        future = _datastore_query.count(query)
+        assert future.result() == 100
+
+        run_query.assert_called_once_with(
+            query_module.QueryOptions(
+                limit=1,
+                offset=99,
+                projection=["__key__"],
+                filters=query.filters,
+            )
+        )
+
+
 class Test_iterate:
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_query._QueryIteratorImpl")
@@ -1448,3 +1614,22 @@ class TestCursor:
         urlsafe = base64.urlsafe_b64encode(b"123")
         cursor = _datastore_query.Cursor(b"123")
         assert cursor.urlsafe() == urlsafe
+
+    @staticmethod
+    def test__eq__same():
+        assert _datastore_query.Cursor(b"123") == _datastore_query.Cursor(b"123")
+        assert not _datastore_query.Cursor(b"123") != _datastore_query.Cursor(b"123")
+
+    @staticmethod
+    def test__eq__different():
+        assert _datastore_query.Cursor(b"123") != _datastore_query.Cursor(b"234")
+        assert not _datastore_query.Cursor(b"123") == _datastore_query.Cursor(b"234")
+
+    @staticmethod
+    def test__eq__different_type():
+        assert _datastore_query.Cursor(b"123") != b"234"
+        assert not _datastore_query.Cursor(b"123") == b"234"
+
+    @staticmethod
+    def test__hash__():
+        assert hash(_datastore_query.Cursor(b"123")) == hash(b"123")

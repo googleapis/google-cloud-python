@@ -35,7 +35,8 @@ from google.cloud.ndb import utils
 log = logging.getLogger(__name__)
 
 MoreResultsType = query_pb2.QueryResultBatch.MoreResultsType
-MORE_RESULTS_TYPE_NOT_FINISHED = MoreResultsType.Value("NOT_FINISHED")
+NO_MORE_RESULTS = MoreResultsType.Value("NO_MORE_RESULTS")
+NOT_FINISHED = MoreResultsType.Value("NOT_FINISHED")
 MORE_RESULTS_AFTER_LIMIT = MoreResultsType.Value("MORE_RESULTS_AFTER_LIMIT")
 
 ResultType = query_pb2.EntityResult.ResultType
@@ -110,6 +111,70 @@ def fetch(query):
         entities.append(results.next())
 
     raise tasklets.Return(entities)
+
+
+def count(query):
+    """Count query results.
+
+    Args:
+        query (query.QueryOptions): The query spec.
+
+    Returns:
+        tasklets.Future: Results is int: Number of results that would be
+            returned by the query.
+    """
+    filters = query.filters
+    if filters:
+        if filters._multiquery or filters._post_filters():
+            return _count_brute_force(query)
+
+    return _count_by_skipping(query)
+
+
+@tasklets.tasklet
+def _count_brute_force(query):
+    query = query.copy(projection=["__key__"], order_by=None)
+    results = iterate(query, raw=True)
+    count = 0
+    limit = query.limit
+    while (yield results.has_next_async()):
+        count += 1
+        if limit and count == limit:
+            break
+
+        results.next()
+
+    raise tasklets.Return(count)
+
+
+@tasklets.tasklet
+def _count_by_skipping(query):
+    limit = query.limit
+    query = query.copy(projection=["__key__"], order_by=None, limit=1)
+    count = 0
+    more_results = NOT_FINISHED
+    cursor = None
+
+    while more_results != NO_MORE_RESULTS:
+        if limit:
+            offset = limit - count - 1
+        else:
+            offset = 10000
+
+        query = query.copy(offset=offset, start_cursor=cursor)
+        response = yield _datastore_run_query(query)
+        batch = response.batch
+
+        more_results = batch.more_results
+        count += batch.skipped_results
+        count += len(batch.entity_results)
+
+        if limit and count >= limit:
+            break
+
+        cursor = Cursor(batch.end_cursor)
+
+    raise tasklets.Return(count)
 
 
 def iterate(query, raw=False):
@@ -307,9 +372,7 @@ class _QueryIteratorImpl(QueryIterator):
             for result_pb in response.batch.entity_results
         ]
 
-        self._has_next_batch = more_results = (
-            batch.more_results == MORE_RESULTS_TYPE_NOT_FINISHED
-        )
+        self._has_next_batch = more_results = batch.more_results == NOT_FINISHED
 
         self._more_results_after_limit = batch.more_results == MORE_RESULTS_AFTER_LIMIT
 
@@ -935,3 +998,19 @@ class Cursor(object):
     def urlsafe(self):
         # Documented in official Legacy NDB docs
         return base64.urlsafe_b64encode(self.cursor)
+
+    def __eq__(self, other):
+        if isinstance(other, Cursor):
+            return self.cursor == other.cursor
+
+        return NotImplemented
+
+    def __ne__(self, other):
+        # required for Python 2.7 compatibility
+        result = self.__eq__(other)
+        if result is NotImplemented:
+            result = False
+        return not result
+
+    def __hash__(self):
+        return hash(self.cursor)
