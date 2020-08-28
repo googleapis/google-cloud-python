@@ -44,7 +44,8 @@ class TimestampRule:
             return value.timestamp_pb()
         if isinstance(value, datetime):
             return timestamp_pb2.Timestamp(
-                seconds=int(value.timestamp()), nanos=value.microsecond * 1000,
+                seconds=int(value.timestamp()),
+                nanos=value.microsecond * 1000,
             )
         return value
 

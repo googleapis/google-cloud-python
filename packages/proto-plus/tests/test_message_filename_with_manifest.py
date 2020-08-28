@@ -15,7 +15,10 @@
 import proto
 
 PACKAGE = "a.test.package.with.manifest"
-__protobuf__ = proto.module(package=PACKAGE, manifest={"ThisFoo", "ThisBar"},)
+__protobuf__ = proto.module(
+    package=PACKAGE,
+    manifest={"ThisFoo", "ThisBar"},
+)
 
 
 class ThisFoo(proto.Message):

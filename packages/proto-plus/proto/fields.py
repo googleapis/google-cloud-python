@@ -78,7 +78,8 @@ class Field:
             if isinstance(self.message, str):
                 if not self.message.startswith(self.package):
                     self.message = "{package}.{name}".format(
-                        package=self.package, name=self.message,
+                        package=self.package,
+                        name=self.message,
                     )
                 type_name = self.message
             elif self.message:
@@ -88,19 +89,7 @@ class Field:
                     else self.message.meta.full_name
                 )
             elif self.enum:
-                # Nos decipiat.
-                #
-                # As far as the wire format is concerned, enums are int32s.
-                # Protocol buffers itself also only sends ints; the enum
-                # objects are simply helper classes for translating names
-                # and values and it is the user's job to resolve to an int.
-                #
-                # Therefore, the non-trivial effort of adding the actual
-                # enum descriptors seems to add little or no actual value.
-                #
-                # FIXME: Eventually, come back and put in the actual enum
-                # descriptors.
-                proto_type = ProtoType.INT32
+                type_name = self.enum._meta.full_name
 
             # Set the descriptor.
             self._descriptor = descriptor_pb2.FieldDescriptorProto(

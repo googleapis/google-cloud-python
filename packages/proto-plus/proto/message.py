@@ -68,7 +68,9 @@ class MessageMeta(type):
             # Determine the name of the entry message.
             msg_name = "{pascal_key}Entry".format(
                 pascal_key=re.sub(
-                    r"_\w", lambda m: m.group()[1:].upper(), key,
+                    r"_\w",
+                    lambda m: m.group()[1:].upper(),
+                    key,
                 ).replace(key[0], key[0].upper(), 1),
             )
 
@@ -84,20 +86,26 @@ class MessageMeta(type):
                 {
                     "__module__": attrs.get("__module__", None),
                     "__qualname__": "{prefix}.{name}".format(
-                        prefix=attrs.get("__qualname__", name), name=msg_name,
+                        prefix=attrs.get("__qualname__", name),
+                        name=msg_name,
                     ),
                     "_pb_options": {"map_entry": True},
                 }
             )
             entry_attrs["key"] = Field(field.map_key_type, number=1)
             entry_attrs["value"] = Field(
-                field.proto_type, number=2, enum=field.enum, message=field.message,
+                field.proto_type,
+                number=2,
+                enum=field.enum,
+                message=field.message,
             )
             map_fields[msg_name] = MessageMeta(msg_name, (Message,), entry_attrs)
 
             # Create the repeated field for the entry message.
             map_fields[key] = RepeatedField(
-                ProtoType.MESSAGE, number=field.number, message=map_fields[msg_name],
+                ProtoType.MESSAGE,
+                number=field.number,
+                message=map_fields[msg_name],
             )
 
         # Add the new entries to the attrs
@@ -183,24 +191,13 @@ class MessageMeta(type):
         # Determine the filename.
         # We determine an appropriate proto filename based on the
         # Python module.
-        filename = "{0}.proto".format(
-            new_attrs.get("__module__", name.lower()).replace(".", "/")
+        filename = _file_info._FileInfo.proto_file_name(
+            new_attrs.get("__module__", name.lower())
         )
 
         # Get or create the information about the file, including the
         # descriptor to which the new message descriptor shall be added.
-        file_info = _file_info._FileInfo.registry.setdefault(
-            filename,
-            _file_info._FileInfo(
-                descriptor=descriptor_pb2.FileDescriptorProto(
-                    name=filename, package=package, syntax="proto3",
-                ),
-                enums=collections.OrderedDict(),
-                messages=collections.OrderedDict(),
-                name=filename,
-                nested={},
-            ),
-        )
+        file_info = _file_info._FileInfo.maybe_add_descriptor(filename, package)
 
         # Ensure any imports that would be necessary are assigned to the file
         # descriptor proto being created.
@@ -286,7 +283,13 @@ class MessageMeta(type):
             if coerce:
                 obj = cls(obj)
             else:
-                raise TypeError("%r is not an instance of %s" % (obj, cls.__name__,))
+                raise TypeError(
+                    "%r is not an instance of %s"
+                    % (
+                        obj,
+                        cls.__name__,
+                    )
+                )
         return obj._pb
 
     def wrap(cls, pb):
@@ -325,17 +328,24 @@ class MessageMeta(type):
         """
         return cls.wrap(cls.pb().FromString(payload))
 
-    def to_json(cls, instance) -> str:
+    def to_json(cls, instance, *, use_integers_for_enums=True) -> str:
         """Given a message instance, serialize it to json
 
         Args:
             instance: An instance of this message type, or something
                 compatible (accepted by the type's constructor).
+            use_integers_for_enums (Optional(bool)): An option that determines whether enum
+                values should be represented by strings (False) or integers (True).
+                Default is True.
 
         Returns:
             str: The json string representation of the protocol buffer.
         """
-        return MessageToJson(cls.pb(instance))
+        return MessageToJson(
+            cls.pb(instance),
+            use_integers_for_enums=use_integers_for_enums,
+            including_default_value_fields=True,
+        )
 
     def from_json(cls, payload) -> "Message":
         """Given a json string representing an instance,
@@ -399,7 +409,10 @@ class Message(metaclass=MessageMeta):
             # Sanity check: Did we get something not a map? Error if so.
             raise TypeError(
                 "Invalid constructor input for %s: %r"
-                % (self.__class__.__name__, mapping,)
+                % (
+                    self.__class__.__name__,
+                    mapping,
+                )
             )
         else:
             # Can't have side effects on mapping.

@@ -38,7 +38,8 @@ def test_module_package():
 
 def test_module_package_explicit_marshal():
     sys.modules[__name__].__protobuf__ = proto.module(
-        package="spam.eggs.v1", marshal="foo",
+        package="spam.eggs.v1",
+        marshal="foo",
     )
     try:
 
@@ -54,7 +55,10 @@ def test_module_package_explicit_marshal():
 
 
 def test_module_manifest():
-    __protobuf__ = proto.module(manifest={"Foo", "Bar", "Baz"}, package="spam.eggs.v1",)
+    __protobuf__ = proto.module(
+        manifest={"Foo", "Bar", "Baz"},
+        package="spam.eggs.v1",
+    )
 
     # We want to fake a module, but modules have attribute access, and
     # `frame.f_locals` is a dictionary. Since we only actually care about

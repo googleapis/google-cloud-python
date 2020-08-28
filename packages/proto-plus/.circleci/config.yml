@@ -249,7 +249,7 @@ jobs:
       - run:
           name: Format files
           command: |
-            black .
+            black -l 88 .
       - run:
           name: Check diff
           command: |

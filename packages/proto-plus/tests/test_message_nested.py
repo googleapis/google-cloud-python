@@ -56,7 +56,8 @@ def test_forking_nested_messages():
         baz = proto.Field(proto.MESSAGE, number=2, message=Baz)
 
     foo = Foo(
-        bar={"spam": "xyz", "eggs": False}, baz=Foo.Baz(bacon=Foo.Baz.Bacon(value=42)),
+        bar={"spam": "xyz", "eggs": False},
+        baz=Foo.Baz(bacon=Foo.Baz.Bacon(value=42)),
     )
     assert foo.bar.spam == "xyz"
     assert not foo.bar.eggs

@@ -20,7 +20,11 @@ from proto.marshal.marshal import BaseMarshal
 
 def test_bool_value_init():
     class Foo(proto.Message):
-        bar = proto.Field(proto.MESSAGE, message=wrappers_pb2.BoolValue, number=1,)
+        bar = proto.Field(
+            proto.MESSAGE,
+            message=wrappers_pb2.BoolValue,
+            number=1,
+        )
 
     assert Foo(bar=True).bar is True
     assert Foo(bar=False).bar is False
@@ -29,7 +33,11 @@ def test_bool_value_init():
 
 def test_bool_value_init_dict():
     class Foo(proto.Message):
-        bar = proto.Field(proto.MESSAGE, message=wrappers_pb2.BoolValue, number=1,)
+        bar = proto.Field(
+            proto.MESSAGE,
+            message=wrappers_pb2.BoolValue,
+            number=1,
+        )
 
     assert Foo({"bar": True}).bar is True
     assert Foo({"bar": False}).bar is False
@@ -38,7 +46,11 @@ def test_bool_value_init_dict():
 
 def test_bool_value_distinction_from_bool():
     class Foo(proto.Message):
-        bar = proto.Field(proto.MESSAGE, message=wrappers_pb2.BoolValue, number=1,)
+        bar = proto.Field(
+            proto.MESSAGE,
+            message=wrappers_pb2.BoolValue,
+            number=1,
+        )
         baz = proto.Field(proto.BOOL, number=2)
 
     assert Foo().bar is None
@@ -63,7 +75,11 @@ def test_bool_value_rmw():
 
 def test_bool_value_write_bool_value():
     class Foo(proto.Message):
-        bar = proto.Field(proto.MESSAGE, message=wrappers_pb2.BoolValue, number=1,)
+        bar = proto.Field(
+            proto.MESSAGE,
+            message=wrappers_pb2.BoolValue,
+            number=1,
+        )
 
     foo = Foo(bar=True)
     foo.bar = wrappers_pb2.BoolValue()
@@ -72,7 +88,11 @@ def test_bool_value_write_bool_value():
 
 def test_bool_value_del():
     class Foo(proto.Message):
-        bar = proto.Field(proto.MESSAGE, message=wrappers_pb2.BoolValue, number=1,)
+        bar = proto.Field(
+            proto.MESSAGE,
+            message=wrappers_pb2.BoolValue,
+            number=1,
+        )
 
     foo = Foo(bar=False)
     assert foo.bar is False

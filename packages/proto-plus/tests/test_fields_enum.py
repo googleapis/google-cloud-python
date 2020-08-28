@@ -252,3 +252,16 @@ def test_enum_del():
     assert "color" not in foo
     assert not foo.color
     assert Foo.pb(foo).color == 0
+
+
+class Zone(proto.Enum):
+    EPIPELAGIC = 0
+    MESOPELAGIC = 1
+    ABYSSOPELAGIC = 2
+    HADOPELAGIC = 3
+
+
+def test_enum_outest():
+    z = Zone(value=Zone.MESOPELAGIC)
+
+    assert z == Zone.MESOPELAGIC
