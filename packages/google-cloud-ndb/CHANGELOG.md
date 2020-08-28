@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+### [1.5.1](https://www.github.com/googleapis/python-ndb/compare/v1.5.0...v1.5.1) (2020-08-28)
+
+
+### Bug Fixes
+
+* fix exception handling bug in tasklets ([#520](https://www.github.com/googleapis/python-ndb/issues/520)) ([fc0366a](https://www.github.com/googleapis/python-ndb/commit/fc0366a9db9fa5263533631cb08ccb5be07960ad)), closes [#519](https://www.github.com/googleapis/python-ndb/issues/519)
+* fix format exceptions in `utils.logging_debug` ([#514](https://www.github.com/googleapis/python-ndb/issues/514)) ([d38c0a3](https://www.github.com/googleapis/python-ndb/commit/d38c0a36dac1dc183d344a08050815010b256638)), closes [#508](https://www.github.com/googleapis/python-ndb/issues/508)
+* transparently add sort properties to projection for multiqueries ([#511](https://www.github.com/googleapis/python-ndb/issues/511)) ([4e46327](https://www.github.com/googleapis/python-ndb/commit/4e463273a36b5fe69f87d429260fba1a690d55b9)), closes [#509](https://www.github.com/googleapis/python-ndb/issues/509)
+
 ## [1.5.0](https://www.github.com/googleapis/python-ndb/compare/v1.4.2...v1.5.0) (2020-08-12)
 
 
