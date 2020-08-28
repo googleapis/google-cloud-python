@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-bigquery-reservation/compare/v0.2.0...v0.3.0) (2020-08-26)
+
+
+### Features
+
+* add support for new client options ([#23](https://www.github.com/googleapis/python-bigquery-reservation/issues/23)) ([a0e818d](https://www.github.com/googleapis/python-bigquery-reservation/commit/a0e818d526dc60f0eb24787333e1041b02f26816))
+
 ## [0.2.0](https://www.github.com/googleapis/python-bigquery-reservation/compare/v0.1.0...v0.2.0) (2020-05-27)
 
 
