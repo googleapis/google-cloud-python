@@ -11,6 +11,7 @@ from __future__ import absolute_import
 
 import nox
 import os
+import shutil
 
 
 def default(session):
@@ -31,3 +32,25 @@ def default(session):
 def unit(session):
     """Run the unit test suite."""
     default(session)
+
+
+@nox.session(python="3.8")
+def docs(session):
+    """Build the docs for this library."""
+
+    session.install("-e", ".")
+    session.install("sphinx<3.0.0", "alabaster", "recommonmark")
+
+    shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
+    session.run(
+        "sphinx-build",
+        "-W",  # warnings as errors
+        "-T",  # show full traceback on exception
+        "-N",  # no colors
+        "-b",
+        "html",
+        "-d",
+        os.path.join("docs", "_build", "doctrees", ""),
+        os.path.join("docs", ""),
+        os.path.join("docs", "_build", "html", ""),
+    )

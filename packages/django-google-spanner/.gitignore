@@ -14,3 +14,6 @@ django_tests
 
 # JetBrains
 .idea
+
+# Built documentation
+docs/_build
