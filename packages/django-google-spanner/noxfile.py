@@ -69,6 +69,13 @@ def default(session):
     session.run(
         "py.test",
         "--quiet",
+        "--cov=django_spanner",
+        "--cov=spanner_dbapi",
+        "--cov=tests.spanner_dbapi",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
         os.path.join("tests", "spanner_dbapi"),
         *session.posargs
     )
@@ -78,6 +85,18 @@ def default(session):
 def unit(session):
     """Run the unit test suite."""
     default(session)
+
+
+@nox.session(python="3.8")
+def cover(session):
+    """Run the final coverage report.
+
+    This outputs the coverage report aggregating coverage from the unit
+    test runs (not system test runs), and then erases coverage data.
+    """
+    session.install("coverage", "pytest-cov")
+    session.run("coverage", "report", "--show-missing", "--fail-under=20")
+    session.run("coverage", "erase")
 
 
 @nox.session(python="3.8")
