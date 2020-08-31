@@ -299,7 +299,7 @@ def rows_for_insert_or_update(columns, params, pyformat_args=None):
     # Now chop up the strides.
     strides = []
     for step in range(0, len(params), n_stride):
-        stride = tuple(params[step: step + n_stride:])
+        stride = tuple(params[step : step + n_stride :])
         strides.append(stride)
 
     return strides

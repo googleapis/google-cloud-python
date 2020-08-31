@@ -104,9 +104,7 @@ class Cursor:
             raise OperationalError(e.details if hasattr(e, "details") else e)
 
     def __handle_update(self, sql, params):
-        self._connection.in_transaction(
-            self.__do_execute_update, sql, params,
-        )
+        self._connection.in_transaction(self.__do_execute_update, sql, params)
 
     def __do_execute_update(self, transaction, sql, params, param_types=None):
         sql = ensure_where_clause(sql)
@@ -141,14 +139,14 @@ class Cursor:
             # The common case of multiple values being passed in
             # non-complex pyformat args and need to be uploaded in one RPC.
             return self._connection.in_transaction(
-                self.__do_execute_insert_homogenous, parts,
+                self.__do_execute_insert_homogenous, parts
             )
         else:
             # All the other cases that are esoteric and need
             #   transaction.execute_sql
             sql_params_list = parts.get("sql_params_list")
             return self._connection.in_transaction(
-                self.__do_execute_insert_heterogenous, sql_params_list,
+                self.__do_execute_insert_heterogenous, sql_params_list
             )
 
     def __do_execute_insert_heterogenous(self, transaction, sql_params_list):

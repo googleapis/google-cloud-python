@@ -81,9 +81,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
     # expression or the result of a bilateral transformation). In those cases,
     # special characters for REGEXP_CONTAINS operators (e.g. \, *, _) must be
     # escaped on database side.
-    pattern_esc = (
-        r'REPLACE(REPLACE(REPLACE({}, "\\", "\\\\"), "%%", r"\%%"), "_", r"\_")'
-    )
+    pattern_esc = r'REPLACE(REPLACE(REPLACE({}, "\\", "\\\\"), "%%", r"\%%"), "_", r"\_")'
     # These are all no-ops in favor of using REGEXP_CONTAINS in the customized
     # lookups.
     pattern_ops = {

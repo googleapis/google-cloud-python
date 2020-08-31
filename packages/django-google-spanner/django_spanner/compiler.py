@@ -7,15 +7,9 @@
 from django.core.exceptions import EmptyResultSet
 from django.db.models.sql.compiler import (
     SQLAggregateCompiler as BaseSQLAggregateCompiler,
-)
-from django.db.models.sql.compiler import SQLCompiler as BaseSQLCompiler
-from django.db.models.sql.compiler import (
+    SQLCompiler as BaseSQLCompiler,
     SQLDeleteCompiler as BaseSQLDeleteCompiler,
-)
-from django.db.models.sql.compiler import (
     SQLInsertCompiler as BaseSQLInsertCompiler,
-)
-from django.db.models.sql.compiler import (
     SQLUpdateCompiler as BaseSQLUpdateCompiler,
 )
 from django.db.utils import DatabaseError

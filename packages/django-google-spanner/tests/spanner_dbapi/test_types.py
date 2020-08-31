@@ -85,8 +85,8 @@ class TypesTests(TestCase):
         cases = [
             ("list", [1, 2, 3, 4, 6, 7], [1, 2, 3, 4, 6, 7]),
             ("iter_from_list", iter([1, 2, 3, 4, 6, 7]), [1, 2, 3, 4, 6, 7]),
-            ("tuple", ("a", 12, 0xFF,), ["a", 12, 0xFF]),
-            ("iter_from_tuple", iter(("a", 12, 0xFF,)), ["a", 12, 0xFF]),
+            ("tuple", ("a", 12, 0xFF), ["a", 12, 0xFF]),
+            ("iter_from_tuple", iter(("a", 12, 0xFF)), ["a", 12, 0xFF]),
             ("no_args", (), []),
         ]
 

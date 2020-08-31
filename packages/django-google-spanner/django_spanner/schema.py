@@ -75,7 +75,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                     )
             # Add the SQL to our big list
             column_sqls.append(
-                "%s %s" % (self.quote_name(field.column), definition,)
+                "%s %s" % (self.quote_name(field.column), definition)
             )
             # Create a unique constraint separately because Spanner doesn't
             # allow them inline on a column.
@@ -279,7 +279,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         nullability_changed = old_field.null != new_field.null
         if nullability_changed:
             index_names = self._constraint_names(
-                model, [old_field.column], index=True,
+                model, [old_field.column], index=True
             )
             if index_names and not old_field.db_index:
                 raise NotSupportedError(

@@ -36,19 +36,26 @@ class Test_connect(unittest.TestCase):
             ) as client_info_mock:
 
                 connection = connect(
-                    "test-instance", "test-database", PROJECT, CREDENTIALS, USER_AGENT
+                    "test-instance",
+                    "test-database",
+                    PROJECT,
+                    CREDENTIALS,
+                    USER_AGENT,
                 )
 
                 self.assertIsInstance(connection, Connection)
                 client_info_mock.assert_called_once_with(USER_AGENT)
 
             client_mock.assert_called_once_with(
-                project=PROJECT, credentials=CREDENTIALS, client_info=CLIENT_INFO
+                project=PROJECT,
+                credentials=CREDENTIALS,
+                client_info=CLIENT_INFO,
             )
 
     def test_instance_not_found(self):
         with mock.patch(
-            "google.cloud.spanner_v1.instance.Instance.exists", return_value=False
+            "google.cloud.spanner_v1.instance.Instance.exists",
+            return_value=False,
         ) as exists_mock:
 
             with self.assertRaises(ValueError):
@@ -58,10 +65,12 @@ class Test_connect(unittest.TestCase):
 
     def test_database_not_found(self):
         with mock.patch(
-            "google.cloud.spanner_v1.instance.Instance.exists", return_value=True
+            "google.cloud.spanner_v1.instance.Instance.exists",
+            return_value=True,
         ):
             with mock.patch(
-                "google.cloud.spanner_v1.database.Database.exists", return_value=False
+                "google.cloud.spanner_v1.database.Database.exists",
+                return_value=False,
             ) as exists_mock:
 
                 with self.assertRaises(ValueError):
@@ -88,7 +97,8 @@ class Test_connect(unittest.TestCase):
             "google.cloud.spanner_v1.instance.Instance.database"
         ) as database_mock:
             with mock.patch(
-                "google.cloud.spanner_v1.instance.Instance.exists", return_value=True
+                "google.cloud.spanner_v1.instance.Instance.exists",
+                return_value=True,
             ):
                 connection = connect("test-instance", DATABASE)
 

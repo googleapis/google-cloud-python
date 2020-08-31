@@ -163,7 +163,7 @@ class ParserTests(TestCase):
                                 pyfmt_str,
                                 func("LOWER", a_args([pyfmt_str, pyfmt_str])),
                             ]
-                        ),
+                        )
                     ]
                 ),
             ),
@@ -172,8 +172,8 @@ class ParserTests(TestCase):
                 "",
                 values(
                     [
-                        a_args([func("UPPER", a_args([pyfmt_str])),]),
-                        a_args([pyfmt_str,]),
+                        a_args([func("UPPER", a_args([pyfmt_str]))]),
+                        a_args([pyfmt_str]),
                     ]
                 ),
             ),

@@ -8,7 +8,6 @@ import sys
 from unittest import TestCase
 
 from google.api_core.gapic_v1.client_info import ClientInfo
-
 from spanner_dbapi.version import DEFAULT_USER_AGENT, google_client_info
 
 vers = sys.version_info

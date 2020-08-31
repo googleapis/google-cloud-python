@@ -108,7 +108,7 @@ class Connection:
         column_details = {}
         for column_name, is_nullable, spanner_type in rows:
             column_details[column_name] = ColumnDetails(
-                null_ok=is_nullable == "YES", spanner_type=spanner_type,
+                null_ok=is_nullable == "YES", spanner_type=spanner_type
             )
         return column_details
 

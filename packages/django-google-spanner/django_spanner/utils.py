@@ -15,6 +15,6 @@ def check_django_compatability():
         raise ImproperlyConfigured(
             "You must use the latest version of django-spanner {A}.{B}.x "
             "with Django {A}.{B}.y (found django-spanner {C}).".format(
-                A=django.VERSION[0], B=django.VERSION[1], C=__version__,
+                A=django.VERSION[0], B=django.VERSION[1], C=__version__
             )
         )

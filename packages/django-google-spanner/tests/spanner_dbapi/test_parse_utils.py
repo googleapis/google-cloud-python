@@ -9,7 +9,6 @@ import decimal
 from unittest import TestCase
 
 from google.cloud.spanner_v1 import param_types
-
 from spanner_dbapi.exceptions import Error, ProgrammingError
 from spanner_dbapi.parse_utils import (
     STMT_DDL,
@@ -31,8 +30,8 @@ from spanner_dbapi.utils import backtick_unicode
 class ParseUtilsTests(TestCase):
     def test_classify_stmt(self):
         cases = [
-            ("SELECT 1", STMT_NON_UPDATING,),
-            ("SELECT s.SongName FROM Songs AS s", STMT_NON_UPDATING,),
+            ("SELECT 1", STMT_NON_UPDATING),
+            ("SELECT s.SongName FROM Songs AS s", STMT_NON_UPDATING),
             (
                 "WITH sq AS (SELECT SchoolID FROM Roster) SELECT * from sq",
                 STMT_NON_UPDATING,
@@ -47,7 +46,7 @@ class ParseUtilsTests(TestCase):
                 "Songs(SingerId, AlbumId, SongName DESC), INTERLEAVE IN Albums",
                 STMT_DDL,
             ),
-            ("CREATE INDEX SongsBySongName ON Songs(SongName)", STMT_DDL,),
+            ("CREATE INDEX SongsBySongName ON Songs(SongName)", STMT_DDL),
             (
                 "CREATE INDEX AlbumsByAlbumTitle2 ON Albums(AlbumTitle) STORING (MarketingBudget)",
                 STMT_DDL,
@@ -72,13 +71,13 @@ class ParseUtilsTests(TestCase):
                     "sql_params_list": [
                         (
                             "INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s)",
-                            (1, 2, 3,),
+                            (1, 2, 3),
                         ),
                         (
                             "INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s)",
-                            (4, 5, 6,),
+                            (4, 5, 6),
                         ),
-                    ],
+                    ]
                 },
             ),
             (
@@ -88,13 +87,13 @@ class ParseUtilsTests(TestCase):
                     "sql_params_list": [
                         (
                             "INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s)",
-                            (1, 2, 3,),
+                            (1, 2, 3),
                         ),
                         (
                             "INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s)",
-                            (4, 5, 6,),
+                            (4, 5, 6),
                         ),
-                    ],
+                    ]
                 },
             ),
             (
@@ -110,7 +109,7 @@ class ParseUtilsTests(TestCase):
                             "ORDER BY first_name, last_name",
                             None,
                         )
-                    ],
+                    ]
                 },
             ),
             (
@@ -121,17 +120,17 @@ class ParseUtilsTests(TestCase):
                     "sql_params_list": [
                         (
                             "INSERT INTO ap (n, ct, cn) VALUES (%s, %s, %s)",
-                            (1, 2, 3,),
+                            (1, 2, 3),
                         ),
                         (
                             "INSERT INTO ap (n, ct, cn) VALUES (%s, %s, %s)",
-                            (4, 5, 6,),
+                            (4, 5, 6),
                         ),
                         (
                             "INSERT INTO ap (n, ct, cn) VALUES (%s, %s, %s)",
-                            (7, 8, 9,),
+                            (7, 8, 9),
                         ),
-                    ],
+                    ]
                 },
             ),
             (
@@ -139,10 +138,10 @@ class ParseUtilsTests(TestCase):
                 (1, 4, 5),
                 {
                     "sql_params_list": [
-                        ("INSERT INTO `no` (`yes`) VALUES (%s)", (1,),),
-                        ("INSERT INTO `no` (`yes`) VALUES (%s)", (4,),),
-                        ("INSERT INTO `no` (`yes`) VALUES (%s)", (5,),),
-                    ],
+                        ("INSERT INTO `no` (`yes`) VALUES (%s)", (1,)),
+                        ("INSERT INTO `no` (`yes`) VALUES (%s)", (4,)),
+                        ("INSERT INTO `no` (`yes`) VALUES (%s)", (5,)),
+                    ]
                 },
             ),
             (
@@ -150,8 +149,8 @@ class ParseUtilsTests(TestCase):
                 None,
                 {
                     "sql_params_list": [
-                        ("INSERT INTO T (f1, f2) VALUES (1, 2)", None,),
-                    ],
+                        ("INSERT INTO T (f1, f2) VALUES (1, 2)", None)
+                    ]
                 },
             ),
             (
@@ -161,7 +160,7 @@ class ParseUtilsTests(TestCase):
                     "sql_params_list": [
                         (
                             "INSERT INTO `no` (`yes`, tiff)  VALUES(%s, LOWER(%s))",
-                            (1, "FOO",),
+                            (1, "FOO"),
                         ),
                         (
                             "INSERT INTO `no` (`yes`, tiff)  VALUES(%s, %s)",
@@ -171,7 +170,7 @@ class ParseUtilsTests(TestCase):
                             "INSERT INTO `no` (`yes`, tiff)  VALUES(%s, %s)",
                             (11, 29),
                         ),
-                    ],
+                    ]
                 },
             ),
         ]
@@ -214,41 +213,41 @@ class ParseUtilsTests(TestCase):
         cases = [
             (
                 ["id", "app", "name"],
-                [(5, "ap", "n",), (6, "bp", "m",)],
+                [(5, "ap", "n"), (6, "bp", "m")],
                 None,
-                [(5, "ap", "n",), (6, "bp", "m",)],
+                [(5, "ap", "n"), (6, "bp", "m")],
             ),
             (
                 ["app", "name"],
-                [("ap", "n",), ("bp", "m",)],
+                [("ap", "n"), ("bp", "m")],
                 None,
-                [("ap", "n"), ("bp", "m",)],
+                [("ap", "n"), ("bp", "m")],
             ),
             (
                 ["app", "name", "fn"],
                 ["ap", "n", "f1", "bp", "m", "f2", "cp", "o", "f3"],
                 ["(%s, %s, %s)", "(%s, %s, %s)", "(%s, %s, %s)"],
-                [("ap", "n", "f1",), ("bp", "m", "f2",), ("cp", "o", "f3",)],
+                [("ap", "n", "f1"), ("bp", "m", "f2"), ("cp", "o", "f3")],
             ),
             (
                 ["app", "name", "fn", "ln"],
                 [
-                    ("ap", "n", (45, "nested",), "ll",),
-                    ("bp", "m", "f2", "mt",),
-                    ("fp", "cp", "o", "f3",),
+                    ("ap", "n", (45, "nested"), "ll"),
+                    ("bp", "m", "f2", "mt"),
+                    ("fp", "cp", "o", "f3"),
                 ],
                 None,
                 [
-                    ("ap", "n", (45, "nested",), "ll",),
-                    ("bp", "m", "f2", "mt",),
-                    ("fp", "cp", "o", "f3",),
+                    ("ap", "n", (45, "nested"), "ll"),
+                    ("bp", "m", "f2", "mt"),
+                    ("fp", "cp", "o", "f3"),
                 ],
             ),
             (
                 ["app", "name", "fn"],
                 ["ap", "n", "f1"],
                 None,
-                [("ap", "n", "f1",)],
+                [("ap", "n", "f1")],
             ),
         ]
 
@@ -262,7 +261,7 @@ class ParseUtilsTests(TestCase):
             (
                 (
                     "SELECT * from t WHERE f1=%s, f2 = %s, f3=%s",
-                    (10, "abc", "y**$22l3f",),
+                    (10, "abc", "y**$22l3f"),
                 ),
                 (
                     "SELECT * from t WHERE f1=@a0, f2 = @a1, f3=@a2",
@@ -272,7 +271,7 @@ class ParseUtilsTests(TestCase):
             (
                 (
                     "INSERT INTO t (f1, f2, f2) VALUES (%s, %s, %s)",
-                    ("app", "name", "applied",),
+                    ("app", "name", "applied"),
                 ),
                 (
                     "INSERT INTO t (f1, f2, f2) VALUES (@a0, @a1, @a2)",
@@ -306,7 +305,7 @@ class ParseUtilsTests(TestCase):
             (
                 (
                     "SELECT (an.p + %s) AS np FROM an WHERE (an.p + %s) = %s",
-                    (1, 1.0, decimal.Decimal("31"),),
+                    (1, 1.0, decimal.Decimal("31")),
                 ),
                 (
                     "SELECT (an.p + @a0) AS np FROM an WHERE (an.p + @a1) = @a2",
@@ -329,8 +328,8 @@ class ParseUtilsTests(TestCase):
         cases = [
             (
                 "SELECT * from t WHERE f1=%s, f2 = %s, f3=%s, extra=%s",
-                (10, "abc", "y**$22l3f",),
-            ),
+                (10, "abc", "y**$22l3f"),
+            )
         ]
         for sql, params in cases:
             with self.subTest(sql=sql):
@@ -470,7 +469,7 @@ class ParseUtilsTests(TestCase):
                 "UPDATE T SET r=r*0.9 WHERE id IN (SELECT id FROM items WHERE r / w >= 1.3 AND q > 100)",
                 "UPDATE T SET r=r*0.9 WHERE id IN (SELECT id FROM items WHERE r / w >= 1.3 AND q > 100)",
             ),
-            ("DELETE * FROM TABLE", "DELETE * FROM TABLE WHERE 1=1",),
+            ("DELETE * FROM TABLE", "DELETE * FROM TABLE WHERE 1=1"),
         ]
 
         for sql, want in cases:
@@ -493,10 +492,7 @@ class ParseUtilsTests(TestCase):
                 self.assertEqual(got, want)
 
     def test_strip_backticks(self):
-        cases = [
-            ("foo", "foo"),
-            ("`foo`", "foo"),
-        ]
+        cases = [("foo", "foo"), ("`foo`", "foo")]
         for name, want in cases:
             with self.subTest(name=name):
                 got = strip_backticks(name)

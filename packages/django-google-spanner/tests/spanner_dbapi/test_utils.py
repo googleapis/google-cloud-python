@@ -26,10 +26,10 @@ class UtilsTests(TestCase):
         self.assertEqual(list(seventeen), [(17,)])
 
         pit = PeekIterator([["%", "%d"]])
-        self.assertEqual(next(pit), ("%", "%d",))
+        self.assertEqual(next(pit), ("%", "%d"))
 
         pit = PeekIterator([("Clark", "Kent")])
-        self.assertEqual(next(pit), ("Clark", "Kent",))
+        self.assertEqual(next(pit), ("Clark", "Kent"))
 
     def test_peekIterator_nonlist_rows_unconverted(self):
         pi = PeekIterator(["a", "b", "c", "d", "e"])

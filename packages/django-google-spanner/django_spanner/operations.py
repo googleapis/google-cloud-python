@@ -16,15 +16,11 @@ from django.db.backends.base.operations import BaseDatabaseOperations
 from django.db.utils import DatabaseError
 from django.utils import timezone
 from django.utils.duration import duration_microseconds
-
 from spanner_dbapi.parse_utils import DateStr, TimestampStr, escape_name
 
 
 class DatabaseOperations(BaseDatabaseOperations):
-    cast_data_types = {
-        "CharField": "STRING",
-        "TextField": "STRING",
-    }
+    cast_data_types = {"CharField": "STRING", "TextField": "STRING"}
     cast_char_field_without_max_length = "STRING"
     compiler_module = "django_spanner.compiler"
     # Django's lookup names that require a different name in Spanner's
@@ -247,8 +243,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         # TIMESTAMP to another time zone.
         return (
             "TIMESTAMP(FORMAT_TIMESTAMP("
-            "'%%Y-%%m-%%d %%R:%%E9S %%Z', %s, '%s'))"
-            % (field_name, tzname,)
+            "'%%Y-%%m-%%d %%R:%%E9S %%Z', %s, '%s'))" % (field_name, tzname)
         )
 
     def date_interval_sql(self, timedelta):

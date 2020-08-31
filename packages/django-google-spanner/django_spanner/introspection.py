@@ -95,7 +95,7 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
                 rc.UNIQUE_CONSTRAINT_NAME = ccu.CONSTRAINT_NAME
             WHERE
                 tc.TABLE_NAME="%s"'''
-            % self.connection.ops.quote_name(table_name),
+            % self.connection.ops.quote_name(table_name)
         )
         return {
             column: (referred_column, referred_table)
@@ -116,7 +116,7 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
             WHERE
                 tc.TABLE_NAME="%s" AND tc.CONSTRAINT_TYPE='PRIMARY KEY' AND tc.TABLE_SCHEMA=''
             """
-            % self.connection.ops.quote_name(table_name),
+            % self.connection.ops.quote_name(table_name)
         )
         return results[0][0] if results else None
 
@@ -133,7 +133,7 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
                 INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE
                WHERE TABLE_NAME="{table}"'''.format(
                 table=quoted_table_name
-            ),
+            )
         )
         for constraint, column_name in constraint_columns:
             if constraint not in constraints:
@@ -160,7 +160,7 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
             WHERE
                 TABLE_NAME="{table}"'''.format(
                 table=quoted_table_name
-            ),
+            )
         )
         for constraint, constraint_type in constraint_types:
             already_added = constraint in constraints
@@ -208,7 +208,7 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
                 idx_col.ORDINAL_POSITION
             """.format(
                 table=quoted_table_name
-            ),
+            )
         )
         for (
             index_name,

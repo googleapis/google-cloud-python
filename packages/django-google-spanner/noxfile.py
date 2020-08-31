@@ -14,6 +14,52 @@ import os
 import shutil
 
 
+BLACK_VERSION = "black==19.10b0"
+BLACK_PATHS = [
+    "django_spanner",
+    "docs",
+    "spanner_dbapi",
+    "tests",
+    "noxfile.py",
+    "setup.py",
+]
+
+
+@nox.session(python="3.8")
+def lint(session):
+    """Run linters.
+
+    Returns a failure if the linters find linting errors or sufficiently
+    serious code quality issues.
+    """
+    session.install("flake8", BLACK_VERSION)
+    session.run("black", "--check", *BLACK_PATHS)
+    session.run("flake8", "django_spanner", "spanner_dbapi", "tests")
+
+
+@nox.session(python="3.8")
+def blacken(session):
+    """Run black.
+
+    Format code to uniform standard.
+
+    This currently uses Python 3.6 due to the automated Kokoro run of synthtool.
+    That run uses an image that doesn't have 3.6 installed. Before updating this
+    check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
+    """
+    session.install(BLACK_VERSION)
+    session.run("black", *BLACK_PATHS)
+
+
+@nox.session(python="3.8")
+def lint_setup_py(session):
+    """Verify that setup.py is valid (including RST check)."""
+    session.install("docutils", "pygments")
+    session.run(
+        "python", "setup.py", "check", "--restructuredtext", "--strict"
+    )
+
+
 def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install("mock", "pytest", "pytest-cov")
@@ -24,7 +70,7 @@ def default(session):
         "py.test",
         "--quiet",
         os.path.join("tests", "spanner_dbapi"),
-        *session.posargs,
+        *session.posargs
     )
 
 
