@@ -184,7 +184,9 @@ _CREATETABLEREQUEST = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_CREATETABLEREQUEST_SPLIT,],
+    nested_types=[
+        _CREATETABLEREQUEST_SPLIT,
+    ],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -776,7 +778,9 @@ _MODIFYCOLUMNFAMILIESREQUEST = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_MODIFYCOLUMNFAMILIESREQUEST_MODIFICATION,],
+    nested_types=[
+        _MODIFYCOLUMNFAMILIESREQUEST_MODIFICATION,
+    ],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,

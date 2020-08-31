@@ -332,8 +332,13 @@ _INSTANCE = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_INSTANCE_LABELSENTRY,],
-    enum_types=[_INSTANCE_STATE, _INSTANCE_TYPE,],
+    nested_types=[
+        _INSTANCE_LABELSENTRY,
+    ],
+    enum_types=[
+        _INSTANCE_STATE,
+        _INSTANCE_TYPE,
+    ],
     serialized_options=b"\352AK\n bigtable.googleapis.com/Instance\022'projects/{project}/instances/{instance}",
     is_extendable=False,
     syntax="proto3",
@@ -450,7 +455,9 @@ _CLUSTER = _descriptor.Descriptor(
     ],
     extensions=[],
     nested_types=[],
-    enum_types=[_CLUSTER_STATE,],
+    enum_types=[
+        _CLUSTER_STATE,
+    ],
     serialized_options=b"\352A]\n\037bigtable.googleapis.com/Cluster\022:projects/{project}/instances/{instance}/clusters/{cluster}",
     is_extendable=False,
     syntax="proto3",

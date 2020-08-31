@@ -295,7 +295,7 @@ class DirectRow(_SetDeleteRow):
         return self._pb_mutations
 
     def get_mutations_size(self):
-        """ Gets the total mutations size for current row
+        """Gets the total mutations size for current row
 
         For example:
 

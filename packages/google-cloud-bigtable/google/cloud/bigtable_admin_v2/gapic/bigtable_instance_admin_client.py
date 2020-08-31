@@ -130,7 +130,8 @@ class BigtableInstanceAdminClient(object):
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project,
+            "projects/{project}",
+            project=project,
         )
 
     def __init__(
@@ -220,7 +221,9 @@ class BigtableInstanceAdminClient(object):
                 self.transport = transport
         else:
             self.transport = bigtable_instance_admin_grpc_transport.BigtableInstanceAdminGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials,
+                address=api_endpoint,
+                channel=channel,
+                credentials=credentials,
             )
 
         if client_info is None:
@@ -416,7 +419,9 @@ class BigtableInstanceAdminClient(object):
                 client_info=self._client_info,
             )
 
-        request = bigtable_instance_admin_pb2.GetInstanceRequest(name=name,)
+        request = bigtable_instance_admin_pb2.GetInstanceRequest(
+            name=name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -489,7 +494,8 @@ class BigtableInstanceAdminClient(object):
             )
 
         request = bigtable_instance_admin_pb2.ListInstancesRequest(
-            parent=parent, page_token=page_token,
+            parent=parent,
+            page_token=page_token,
         )
         if metadata is None:
             metadata = []
@@ -683,7 +689,8 @@ class BigtableInstanceAdminClient(object):
             )
 
         request = bigtable_instance_admin_pb2.PartialUpdateInstanceRequest(
-            instance=instance, update_mask=update_mask,
+            instance=instance,
+            update_mask=update_mask,
         )
         if metadata is None:
             metadata = []
@@ -757,7 +764,9 @@ class BigtableInstanceAdminClient(object):
                 client_info=self._client_info,
             )
 
-        request = bigtable_instance_admin_pb2.DeleteInstanceRequest(name=name,)
+        request = bigtable_instance_admin_pb2.DeleteInstanceRequest(
+            name=name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -854,7 +863,9 @@ class BigtableInstanceAdminClient(object):
             )
 
         request = bigtable_instance_admin_pb2.CreateClusterRequest(
-            parent=parent, cluster_id=cluster_id, cluster=cluster,
+            parent=parent,
+            cluster_id=cluster_id,
+            cluster=cluster,
         )
         if metadata is None:
             metadata = []
@@ -931,7 +942,9 @@ class BigtableInstanceAdminClient(object):
                 client_info=self._client_info,
             )
 
-        request = bigtable_instance_admin_pb2.GetClusterRequest(name=name,)
+        request = bigtable_instance_admin_pb2.GetClusterRequest(
+            name=name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1007,7 +1020,8 @@ class BigtableInstanceAdminClient(object):
             )
 
         request = bigtable_instance_admin_pb2.ListClustersRequest(
-            parent=parent, page_token=page_token,
+            parent=parent,
+            page_token=page_token,
         )
         if metadata is None:
             metadata = []
@@ -1181,7 +1195,9 @@ class BigtableInstanceAdminClient(object):
                 client_info=self._client_info,
             )
 
-        request = bigtable_instance_admin_pb2.DeleteClusterRequest(name=name,)
+        request = bigtable_instance_admin_pb2.DeleteClusterRequest(
+            name=name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1346,7 +1362,9 @@ class BigtableInstanceAdminClient(object):
                 client_info=self._client_info,
             )
 
-        request = bigtable_instance_admin_pb2.GetAppProfileRequest(name=name,)
+        request = bigtable_instance_admin_pb2.GetAppProfileRequest(
+            name=name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1441,7 +1459,8 @@ class BigtableInstanceAdminClient(object):
             )
 
         request = bigtable_instance_admin_pb2.ListAppProfilesRequest(
-            parent=parent, page_size=page_size,
+            parent=parent,
+            page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -1627,7 +1646,8 @@ class BigtableInstanceAdminClient(object):
             )
 
         request = bigtable_instance_admin_pb2.DeleteAppProfileRequest(
-            name=name, ignore_warnings=ignore_warnings,
+            name=name,
+            ignore_warnings=ignore_warnings,
         )
         if metadata is None:
             metadata = []
@@ -1707,7 +1727,8 @@ class BigtableInstanceAdminClient(object):
             )
 
         request = iam_policy_pb2.GetIamPolicyRequest(
-            resource=resource, options=options_,
+            resource=resource,
+            options=options_,
         )
         if metadata is None:
             metadata = []
@@ -1791,7 +1812,10 @@ class BigtableInstanceAdminClient(object):
                 client_info=self._client_info,
             )
 
-        request = iam_policy_pb2.SetIamPolicyRequest(resource=resource, policy=policy,)
+        request = iam_policy_pb2.SetIamPolicyRequest(
+            resource=resource,
+            policy=policy,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1871,7 +1895,8 @@ class BigtableInstanceAdminClient(object):
             )
 
         request = iam_policy_pb2.TestIamPermissionsRequest(
-            resource=resource, permissions=permissions,
+            resource=resource,
+            permissions=permissions,
         )
         if metadata is None:
             metadata = []

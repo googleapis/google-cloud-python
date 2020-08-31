@@ -232,8 +232,12 @@ class BigtableTableAdminClient(object):
                     )
                 self.transport = transport
         else:
-            self.transport = bigtable_table_admin_grpc_transport.BigtableTableAdminGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials,
+            self.transport = (
+                bigtable_table_admin_grpc_transport.BigtableTableAdminGrpcTransport(
+                    address=api_endpoint,
+                    channel=channel,
+                    credentials=credentials,
+                )
             )
 
         if client_info is None:
@@ -457,7 +461,9 @@ class BigtableTableAdminClient(object):
             )
 
         request = bigtable_table_admin_pb2.CreateTableFromSnapshotRequest(
-            parent=parent, table_id=table_id, source_snapshot=source_snapshot,
+            parent=parent,
+            table_id=table_id,
+            source_snapshot=source_snapshot,
         )
         if metadata is None:
             metadata = []
@@ -560,7 +566,9 @@ class BigtableTableAdminClient(object):
             )
 
         request = bigtable_table_admin_pb2.ListTablesRequest(
-            parent=parent, view=view, page_size=page_size,
+            parent=parent,
+            view=view,
+            page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -645,7 +653,10 @@ class BigtableTableAdminClient(object):
                 client_info=self._client_info,
             )
 
-        request = bigtable_table_admin_pb2.GetTableRequest(name=name, view=view,)
+        request = bigtable_table_admin_pb2.GetTableRequest(
+            name=name,
+            view=view,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -712,7 +723,9 @@ class BigtableTableAdminClient(object):
                 client_info=self._client_info,
             )
 
-        request = bigtable_table_admin_pb2.DeleteTableRequest(name=name,)
+        request = bigtable_table_admin_pb2.DeleteTableRequest(
+            name=name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -798,7 +811,8 @@ class BigtableTableAdminClient(object):
             )
 
         request = bigtable_table_admin_pb2.ModifyColumnFamiliesRequest(
-            name=name, modifications=modifications,
+            name=name,
+            modifications=modifications,
         )
         if metadata is None:
             metadata = []
@@ -961,7 +975,9 @@ class BigtableTableAdminClient(object):
                 client_info=self._client_info,
             )
 
-        request = bigtable_table_admin_pb2.GenerateConsistencyTokenRequest(name=name,)
+        request = bigtable_table_admin_pb2.GenerateConsistencyTokenRequest(
+            name=name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1040,7 +1056,8 @@ class BigtableTableAdminClient(object):
             )
 
         request = bigtable_table_admin_pb2.CheckConsistencyRequest(
-            name=name, consistency_token=consistency_token,
+            name=name,
+            consistency_token=consistency_token,
         )
         if metadata is None:
             metadata = []
@@ -1121,7 +1138,8 @@ class BigtableTableAdminClient(object):
             )
 
         request = iam_policy_pb2.GetIamPolicyRequest(
-            resource=resource, options=options_,
+            resource=resource,
+            options=options_,
         )
         if metadata is None:
             metadata = []
@@ -1205,7 +1223,10 @@ class BigtableTableAdminClient(object):
                 client_info=self._client_info,
             )
 
-        request = iam_policy_pb2.SetIamPolicyRequest(resource=resource, policy=policy,)
+        request = iam_policy_pb2.SetIamPolicyRequest(
+            resource=resource,
+            policy=policy,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1285,7 +1306,8 @@ class BigtableTableAdminClient(object):
             )
 
         request = iam_policy_pb2.TestIamPermissionsRequest(
-            resource=resource, permissions=permissions,
+            resource=resource,
+            permissions=permissions,
         )
         if metadata is None:
             metadata = []
@@ -1485,7 +1507,9 @@ class BigtableTableAdminClient(object):
                 client_info=self._client_info,
             )
 
-        request = bigtable_table_admin_pb2.GetSnapshotRequest(name=name,)
+        request = bigtable_table_admin_pb2.GetSnapshotRequest(
+            name=name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1586,7 +1610,8 @@ class BigtableTableAdminClient(object):
             )
 
         request = bigtable_table_admin_pb2.ListSnapshotsRequest(
-            parent=parent, page_size=page_size,
+            parent=parent,
+            page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -1672,7 +1697,9 @@ class BigtableTableAdminClient(object):
                 client_info=self._client_info,
             )
 
-        request = bigtable_table_admin_pb2.DeleteSnapshotRequest(name=name,)
+        request = bigtable_table_admin_pb2.DeleteSnapshotRequest(
+            name=name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1777,7 +1804,9 @@ class BigtableTableAdminClient(object):
             )
 
         request = bigtable_table_admin_pb2.CreateBackupRequest(
-            parent=parent, backup_id=backup_id, backup=backup,
+            parent=parent,
+            backup_id=backup_id,
+            backup=backup,
         )
         if metadata is None:
             metadata = []
@@ -1854,7 +1883,9 @@ class BigtableTableAdminClient(object):
                 client_info=self._client_info,
             )
 
-        request = bigtable_table_admin_pb2.GetBackupRequest(name=name,)
+        request = bigtable_table_admin_pb2.GetBackupRequest(
+            name=name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -2000,7 +2031,10 @@ class BigtableTableAdminClient(object):
             )
 
         request = bigtable_table_admin_pb2.ListBackupsRequest(
-            parent=parent, filter=filter_, order_by=order_by, page_size=page_size,
+            parent=parent,
+            filter=filter_,
+            order_by=order_by,
+            page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -2102,7 +2136,8 @@ class BigtableTableAdminClient(object):
             )
 
         request = bigtable_table_admin_pb2.UpdateBackupRequest(
-            backup=backup, update_mask=update_mask,
+            backup=backup,
+            update_mask=update_mask,
         )
         if metadata is None:
             metadata = []
@@ -2170,7 +2205,9 @@ class BigtableTableAdminClient(object):
                 client_info=self._client_info,
             )
 
-        request = bigtable_table_admin_pb2.DeleteBackupRequest(name=name,)
+        request = bigtable_table_admin_pb2.DeleteBackupRequest(
+            name=name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -2263,10 +2300,14 @@ class BigtableTableAdminClient(object):
 
         # Sanity check: We have some fields which are mutually exclusive;
         # raise ValueError if more than one is sent.
-        google.api_core.protobuf_helpers.check_oneof(backup=backup,)
+        google.api_core.protobuf_helpers.check_oneof(
+            backup=backup,
+        )
 
         request = bigtable_table_admin_pb2.RestoreTableRequest(
-            parent=parent, table_id=table_id, backup=backup,
+            parent=parent,
+            table_id=table_id,
+            backup=backup,
         )
         if metadata is None:
             metadata = []

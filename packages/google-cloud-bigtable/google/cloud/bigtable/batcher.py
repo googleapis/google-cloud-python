@@ -25,7 +25,7 @@ class MaxMutationsError(ValueError):
 
 
 class MutationsBatcher(object):
-    """ A MutationsBatcher is used in batch cases where the number of mutations
+    """A MutationsBatcher is used in batch cases where the number of mutations
     is large or unknown. It will store DirectRows in memory until one of the
     size limits is reached, or an explicit call to flush() is performed. When
     a flush event occurs, the DirectRows in memory will be sent to Cloud
@@ -65,7 +65,7 @@ class MutationsBatcher(object):
         self.max_row_bytes = max_row_bytes
 
     def mutate(self, row):
-        """ Add a row to the batch. If the current batch meets one of the size
+        """Add a row to the batch. If the current batch meets one of the size
         limits, the batch is sent synchronously.
 
         For example:
@@ -105,7 +105,7 @@ class MutationsBatcher(object):
             self.flush()
 
     def mutate_rows(self, rows):
-        """ Add a row to the batch. If the current batch meets one of the size
+        """Add a row to the batch. If the current batch meets one of the size
         limits, the batch is sent synchronously.
 
         For example:
@@ -130,7 +130,7 @@ class MutationsBatcher(object):
             self.mutate(row)
 
     def flush(self):
-        """ Sends the current. batch to Cloud Bigtable.
+        """Sends the current. batch to Cloud Bigtable.
         For example:
 
         .. literalinclude:: snippets.py

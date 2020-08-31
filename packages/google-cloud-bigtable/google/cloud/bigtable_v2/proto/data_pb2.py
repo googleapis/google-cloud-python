@@ -1294,7 +1294,11 @@ _ROWFILTER = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_ROWFILTER_CHAIN, _ROWFILTER_INTERLEAVE, _ROWFILTER_CONDITION,],
+    nested_types=[
+        _ROWFILTER_CHAIN,
+        _ROWFILTER_INTERLEAVE,
+        _ROWFILTER_CONDITION,
+    ],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,

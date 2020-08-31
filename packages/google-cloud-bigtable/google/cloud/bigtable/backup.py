@@ -208,7 +208,7 @@ class Backup(object):
 
     @property
     def state(self):
-        """ The current state of this Backup.
+        """The current state of this Backup.
 
         :rtype: :class:`~google.cloud.bigtable_admin_v2.gapic.enums.Backup.State`
         :returns: The current state of this Backup.
@@ -358,7 +358,8 @@ class Backup(object):
         :param new_expire_time: the new expiration time timestamp
         """
         backup_update = table_pb2.Backup(
-            name=self.name, expire_time=_datetime_to_pb_timestamp(new_expire_time),
+            name=self.name,
+            expire_time=_datetime_to_pb_timestamp(new_expire_time),
         )
         update_mask = field_mask_pb2.FieldMask(paths=["expire_time"])
         api = self._instance._client.table_admin_client

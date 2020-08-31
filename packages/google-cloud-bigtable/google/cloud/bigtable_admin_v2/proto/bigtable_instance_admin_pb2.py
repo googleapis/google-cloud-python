@@ -197,7 +197,9 @@ _CREATEINSTANCEREQUEST = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_CREATEINSTANCEREQUEST_CLUSTERSENTRY,],
+    nested_types=[
+        _CREATEINSTANCEREQUEST_CLUSTERSENTRY,
+    ],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,

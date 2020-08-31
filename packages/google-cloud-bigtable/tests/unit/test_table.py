@@ -1187,7 +1187,9 @@ class TestTable(unittest.TestCase):
         table = self._make_one(self.TABLE_ID, instance)
         timestamp = datetime.datetime.utcnow().replace(tzinfo=UTC)
         backup = table.backup(
-            self.BACKUP_ID, cluster_id=self.CLUSTER_ID, expire_time=timestamp,
+            self.BACKUP_ID,
+            cluster_id=self.CLUSTER_ID,
+            expire_time=timestamp,
         )
 
         self.assertIsInstance(backup, Backup)
@@ -1295,7 +1297,9 @@ class TestTable(unittest.TestCase):
         self.assertIs(future, op_future)
 
         api.restore_table.assert_called_once_with(
-            parent=self.INSTANCE_NAME, table_id=self.TABLE_ID, backup=self.BACKUP_NAME,
+            parent=self.INSTANCE_NAME,
+            table_id=self.TABLE_ID,
+            backup=self.BACKUP_NAME,
         )
 
     def test_restore_table_w_backup_id(self):

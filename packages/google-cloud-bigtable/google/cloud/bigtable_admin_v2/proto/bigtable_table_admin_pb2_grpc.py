@@ -174,22 +174,19 @@ class BigtableTableAdminServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def ListTables(self, request, context):
-        """Lists all tables served from a specified instance.
-        """
+        """Lists all tables served from a specified instance."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def GetTable(self, request, context):
-        """Gets metadata information about the specified table.
-        """
+        """Gets metadata information about the specified table."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def DeleteTable(self, request, context):
-        """Permanently deletes a specified table and all of its data.
-        """
+        """Permanently deletes a specified table and all of its data."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
@@ -300,22 +297,19 @@ class BigtableTableAdminServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def GetBackup(self, request, context):
-        """Gets metadata on a pending or completed Cloud Bigtable Backup.
-        """
+        """Gets metadata on a pending or completed Cloud Bigtable Backup."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def UpdateBackup(self, request, context):
-        """Updates a pending or completed Cloud Bigtable Backup.
-        """
+        """Updates a pending or completed Cloud Bigtable Backup."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def DeleteBackup(self, request, context):
-        """Deletes a pending or completed Cloud Bigtable backup.
-        """
+        """Deletes a pending or completed Cloud Bigtable backup."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
@@ -360,8 +354,7 @@ class BigtableTableAdminServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def TestIamPermissions(self, request, context):
-        """Returns permissions that the caller has on the specified table resource.
-        """
+        """Returns permissions that the caller has on the specified table resource."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")

@@ -408,7 +408,9 @@ _READROWSRESPONSE = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_READROWSRESPONSE_CELLCHUNK,],
+    nested_types=[
+        _READROWSRESPONSE_CELLCHUNK,
+    ],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -785,7 +787,9 @@ _MUTATEROWSREQUEST = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_MUTATEROWSREQUEST_ENTRY,],
+    nested_types=[
+        _MUTATEROWSREQUEST_ENTRY,
+    ],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -885,7 +889,9 @@ _MUTATEROWSRESPONSE = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_MUTATEROWSRESPONSE_ENTRY,],
+    nested_types=[
+        _MUTATEROWSRESPONSE_ENTRY,
+    ],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,

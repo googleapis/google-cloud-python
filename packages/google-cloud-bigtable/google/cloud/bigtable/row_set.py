@@ -19,10 +19,10 @@ from google.cloud._helpers import _to_bytes
 
 
 class RowSet(object):
-    """ Convenience wrapper of google.bigtable.v2.RowSet
+    """Convenience wrapper of google.bigtable.v2.RowSet
 
-        Useful for creating a set of row keys and row ranges, which can
-        be passed to yield_rows method of class:`.Table.yield_rows`.
+    Useful for creating a set of row keys and row ranges, which can
+    be passed to yield_rows method of class:`.Table.yield_rows`.
     """
 
     def __init__(self):
@@ -145,7 +145,7 @@ class RowSet(object):
 
 
 class RowRange(object):
-    """ Convenience wrapper of google.bigtable.v2.RowRange
+    """Convenience wrapper of google.bigtable.v2.RowRange
 
     :type start_key: bytes
     :param start_key: (Optional) Start key of the row range. If left empty,
@@ -195,7 +195,7 @@ class RowRange(object):
         return not self == other
 
     def get_range_kwargs(self):
-        """ Convert row range object to dict which can be passed to
+        """Convert row range object to dict which can be passed to
         google.bigtable.v2.RowRange add method.
         """
         range_kwargs = {}

@@ -132,22 +132,19 @@ class BigtableInstanceAdminServicer(object):
     """
 
     def CreateInstance(self, request, context):
-        """Create an instance within a project.
-        """
+        """Create an instance within a project."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def GetInstance(self, request, context):
-        """Gets information about an instance.
-        """
+        """Gets information about an instance."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def ListInstances(self, request, context):
-        """Lists information about instances in a project.
-        """
+        """Lists information about instances in a project."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
@@ -170,78 +167,67 @@ class BigtableInstanceAdminServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def DeleteInstance(self, request, context):
-        """Delete an instance from a project.
-        """
+        """Delete an instance from a project."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def CreateCluster(self, request, context):
-        """Creates a cluster within an instance.
-        """
+        """Creates a cluster within an instance."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def GetCluster(self, request, context):
-        """Gets information about a cluster.
-        """
+        """Gets information about a cluster."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def ListClusters(self, request, context):
-        """Lists information about clusters in an instance.
-        """
+        """Lists information about clusters in an instance."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def UpdateCluster(self, request, context):
-        """Updates a cluster within an instance.
-        """
+        """Updates a cluster within an instance."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def DeleteCluster(self, request, context):
-        """Deletes a cluster from an instance.
-        """
+        """Deletes a cluster from an instance."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def CreateAppProfile(self, request, context):
-        """Creates an app profile within an instance.
-        """
+        """Creates an app profile within an instance."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def GetAppProfile(self, request, context):
-        """Gets information about an app profile.
-        """
+        """Gets information about an app profile."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def ListAppProfiles(self, request, context):
-        """Lists information about app profiles in an instance.
-        """
+        """Lists information about app profiles in an instance."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def UpdateAppProfile(self, request, context):
-        """Updates an app profile within an instance.
-        """
+        """Updates an app profile within an instance."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def DeleteAppProfile(self, request, context):
-        """Deletes an app profile from an instance.
-        """
+        """Deletes an app profile from an instance."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
@@ -263,8 +249,7 @@ class BigtableInstanceAdminServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def TestIamPermissions(self, request, context):
-        """Returns permissions that the caller has on the specified instance resource.
-        """
+        """Returns permissions that the caller has on the specified instance resource."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")

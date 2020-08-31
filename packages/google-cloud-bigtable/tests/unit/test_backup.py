@@ -186,7 +186,10 @@ class TestBackup(unittest.TestCase):
         self.assertEqual(backup.cluster, self.CLUSTER_ID)
 
     def test_property_parent_none(self):
-        backup = self._make_one(self.BACKUP_ID, _Instance(self.INSTANCE_NAME),)
+        backup = self._make_one(
+            self.BACKUP_ID,
+            _Instance(self.INSTANCE_NAME),
+        )
         self.assertIsNone(backup.parent)
 
     def test_property_parent_w_cluster(self):
@@ -318,7 +321,9 @@ class TestBackup(unittest.TestCase):
             backup.create(self.CLUSTER_ID)
 
         api.create_backup.assert_called_once_with(
-            parent=self.CLUSTER_NAME, backup_id=self.BACKUP_ID, backup=backup_pb,
+            parent=self.CLUSTER_NAME,
+            backup_id=self.BACKUP_ID,
+            backup=backup_pb,
         )
 
     def test_create_already_exists(self):
@@ -347,7 +352,9 @@ class TestBackup(unittest.TestCase):
             backup.create(self.CLUSTER_ID)
 
         api.create_backup.assert_called_once_with(
-            parent=self.CLUSTER_NAME, backup_id=self.BACKUP_ID, backup=backup_pb,
+            parent=self.CLUSTER_NAME,
+            backup_id=self.BACKUP_ID,
+            backup=backup_pb,
         )
 
     def test_create_instance_not_found(self):
@@ -376,7 +383,9 @@ class TestBackup(unittest.TestCase):
             backup.create(self.CLUSTER_ID)
 
         api.create_backup.assert_called_once_with(
-            parent=self.CLUSTER_NAME, backup_id=self.BACKUP_ID, backup=backup_pb,
+            parent=self.CLUSTER_NAME,
+            backup_id=self.BACKUP_ID,
+            backup=backup_pb,
         )
 
     def test_create_cluster_not_set(self):
@@ -402,7 +411,9 @@ class TestBackup(unittest.TestCase):
 
     def test_create_expire_time_not_set(self):
         backup = self._make_one(
-            self.BACKUP_ID, _Instance(self.INSTANCE_NAME), table_id=self.TABLE_ID,
+            self.BACKUP_ID,
+            _Instance(self.INSTANCE_NAME),
+            table_id=self.TABLE_ID,
         )
 
         with self.assertRaises(ValueError):
@@ -435,7 +446,9 @@ class TestBackup(unittest.TestCase):
         self.assertIs(future, op_future)
 
         api.create_backup.assert_called_once_with(
-            parent=self.CLUSTER_NAME, backup_id=self.BACKUP_ID, backup=backup_pb,
+            parent=self.CLUSTER_NAME,
+            backup_id=self.BACKUP_ID,
+            backup=backup_pb,
         )
 
     def test_exists_grpc_error(self):
@@ -598,11 +611,13 @@ class TestBackup(unittest.TestCase):
             backup.update_expire_time(expire_time)
 
         backup_update = table_pb2.Backup(
-            name=self.BACKUP_NAME, expire_time=_datetime_to_pb_timestamp(expire_time),
+            name=self.BACKUP_NAME,
+            expire_time=_datetime_to_pb_timestamp(expire_time),
         )
         update_mask = field_mask_pb2.FieldMask(paths=["expire_time"])
         api.update_backup.assert_called_once_with(
-            backup_update, update_mask,
+            backup_update,
+            update_mask,
         )
 
     def test_update_expire_time_not_found(self):
@@ -622,11 +637,13 @@ class TestBackup(unittest.TestCase):
             backup.update_expire_time(expire_time)
 
         backup_update = table_pb2.Backup(
-            name=self.BACKUP_NAME, expire_time=_datetime_to_pb_timestamp(expire_time),
+            name=self.BACKUP_NAME,
+            expire_time=_datetime_to_pb_timestamp(expire_time),
         )
         update_mask = field_mask_pb2.FieldMask(paths=["expire_time"])
         api.update_backup.assert_called_once_with(
-            backup_update, update_mask,
+            backup_update,
+            update_mask,
         )
 
     def test_update_expire_time_success(self):
@@ -644,11 +661,13 @@ class TestBackup(unittest.TestCase):
         backup.update_expire_time(expire_time)
 
         backup_update = table_pb2.Backup(
-            name=self.BACKUP_NAME, expire_time=_datetime_to_pb_timestamp(expire_time),
+            name=self.BACKUP_NAME,
+            expire_time=_datetime_to_pb_timestamp(expire_time),
         )
         update_mask = field_mask_pb2.FieldMask(paths=["expire_time"])
         api.update_backup.assert_called_once_with(
-            backup_update, update_mask,
+            backup_update,
+            update_mask,
         )
 
     def test_restore_grpc_error(self):
@@ -672,7 +691,9 @@ class TestBackup(unittest.TestCase):
             backup.restore(self.TABLE_ID)
 
         api.restore_table.assert_called_once_with(
-            parent=self.INSTANCE_NAME, table_id=self.TABLE_ID, backup=self.BACKUP_NAME,
+            parent=self.INSTANCE_NAME,
+            table_id=self.TABLE_ID,
+            backup=self.BACKUP_NAME,
         )
 
     def test_restore_cluster_not_set(self):
@@ -708,7 +729,9 @@ class TestBackup(unittest.TestCase):
         self.assertIs(future, op_future)
 
         api.restore_table.assert_called_once_with(
-            parent=self.INSTANCE_NAME, table_id=self.TABLE_ID, backup=self.BACKUP_NAME,
+            parent=self.INSTANCE_NAME,
+            table_id=self.TABLE_ID,
+            backup=self.BACKUP_NAME,
         )
 
 

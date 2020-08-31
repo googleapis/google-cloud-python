@@ -168,7 +168,9 @@ class BigtableClient(object):
                 self.transport = transport
         else:
             self.transport = bigtable_grpc_transport.BigtableGrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials,
+                address=api_endpoint,
+                channel=channel,
+                credentials=credentials,
             )
 
         if client_info is None:
@@ -356,7 +358,8 @@ class BigtableClient(object):
             )
 
         request = bigtable_pb2.SampleRowKeysRequest(
-            table_name=table_name, app_profile_id=app_profile_id,
+            table_name=table_name,
+            app_profile_id=app_profile_id,
         )
         if metadata is None:
             metadata = []
@@ -541,7 +544,9 @@ class BigtableClient(object):
             )
 
         request = bigtable_pb2.MutateRowsRequest(
-            table_name=table_name, entries=entries, app_profile_id=app_profile_id,
+            table_name=table_name,
+            entries=entries,
+            app_profile_id=app_profile_id,
         )
         if metadata is None:
             metadata = []

@@ -175,7 +175,9 @@ class Client(ClientWithProject):
         self._channel = channel
         self.SCOPE = self._get_scopes()
         super(Client, self).__init__(
-            project=project, credentials=credentials, client_options=client_options,
+            project=project,
+            credentials=credentials,
+            client_options=client_options,
         )
 
     def _get_scopes(self):

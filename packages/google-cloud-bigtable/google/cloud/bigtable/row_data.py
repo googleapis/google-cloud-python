@@ -595,7 +595,7 @@ class PartialRowsData(object):
 
 
 class _ReadRowsRequestManager(object):
-    """ Update the ReadRowsRequest message in case of failures by
+    """Update the ReadRowsRequest message in case of failures by
         filtering the already read keys.
 
     :type message: class:`data_messages_v2_pb2.ReadRowsRequest`
@@ -617,8 +617,7 @@ class _ReadRowsRequestManager(object):
         self.rows_read_so_far = rows_read_so_far
 
     def build_updated_request(self):
-        """ Updates the given message request as per last scanned key
-        """
+        """Updates the given message request as per last scanned key"""
         r_kwargs = {
             "table_name": self.message.table_name,
             "filter": self.message.filter,

@@ -8,8 +8,7 @@ from google.cloud.bigtable_v2.proto import (
 
 
 class BigtableStub(object):
-    """Service for reading from and writing to existing Bigtable tables.
-    """
+    """Service for reading from and writing to existing Bigtable tables."""
 
     def __init__(self, channel):
         """Constructor.
@@ -50,8 +49,7 @@ class BigtableStub(object):
 
 
 class BigtableServicer(object):
-    """Service for reading from and writing to existing Bigtable tables.
-    """
+    """Service for reading from and writing to existing Bigtable tables."""
 
     def ReadRows(self, request, context):
         """Streams back the contents of all requested rows in key order, optionally
@@ -92,8 +90,7 @@ class BigtableServicer(object):
         raise NotImplementedError("Method not implemented!")
 
     def CheckAndMutateRow(self, request, context):
-        """Mutates a row atomically based on the output of a predicate Reader filter.
-        """
+        """Mutates a row atomically based on the output of a predicate Reader filter."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
@@ -151,8 +148,7 @@ def add_BigtableServicer_to_server(servicer, server):
 
 # This class is part of an EXPERIMENTAL API.
 class Bigtable(object):
-    """Service for reading from and writing to existing Bigtable tables.
-    """
+    """Service for reading from and writing to existing Bigtable tables."""
 
     @staticmethod
     def ReadRows(

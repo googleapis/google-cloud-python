@@ -23,7 +23,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     serialized_options=b'\n\034com.google.bigtable.admin.v2B\013CommonProtoP\001Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\252\002\036Google.Cloud.Bigtable.Admin.V2\312\002\036Google\\Cloud\\Bigtable\\Admin\\V2\352\002"Google::Cloud::Bigtable::Admin::V2',
     create_key=_descriptor._internal_create_key,
     serialized_pb=b'\n1google/cloud/bigtable_admin_v2/proto/common.proto\x12\x18google.bigtable.admin.v2\x1a\x1fgoogle/protobuf/timestamp.proto"\x8b\x01\n\x11OperationProgress\x12\x18\n\x10progress_percent\x18\x01 \x01(\x05\x12.\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp*=\n\x0bStorageType\x12\x1c\n\x18STORAGE_TYPE_UNSPECIFIED\x10\x00\x12\x07\n\x03SSD\x10\x01\x12\x07\n\x03HDD\x10\x02\x42\xd3\x01\n\x1c\x63om.google.bigtable.admin.v2B\x0b\x43ommonProtoP\x01Z=google.golang.org/genproto/googleapis/bigtable/admin/v2;admin\xaa\x02\x1eGoogle.Cloud.Bigtable.Admin.V2\xca\x02\x1eGoogle\\Cloud\\Bigtable\\Admin\\V2\xea\x02"Google::Cloud::Bigtable::Admin::V2b\x06proto3',
-    dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,],
+    dependencies=[
+        google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,
+    ],
 )
 
 _STORAGETYPE = _descriptor.EnumDescriptor(
