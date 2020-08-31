@@ -165,3 +165,9 @@ location = 'us-east1'
 
 location_path = f'projects/{project}/locations/{location}'
 ```
+
+The resource path helper method `crypto_key_path_path` has been renamed to `crypto_key_path`.
+
+```py
+name = client.crypto_key_path('PROJECT_ID', 'LOCATION_ID', 'KEY_RING_ID', 'CRYPTO_KEY_ID')
+```
