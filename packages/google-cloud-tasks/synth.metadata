@@ -4,22 +4,21 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-tasks.git",
-        "sha": "6b8ba85de5998b0c2138bbf771fa16ba8f9bbf07"
-      }
-    },
-    {
-      "git": {
-        "name": "googleapis",
-        "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "b882b8e6bfcd708042ff00f7adc67ce750817dd0",
-        "internalRef": "318028816"
+        "sha": "bb3fdb26ff34eaff9e9aa869687de5a7ce5a43a2"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "303271797a360f8a439203413f13a160f2f5b3b4"
+        "sha": "80f46100c047bc47efe0025ee537dc8ee413ad04"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "80f46100c047bc47efe0025ee537dc8ee413ad04"
       }
     }
   ],

@@ -16,6 +16,7 @@
 
 import synthtool as s
 import synthtool.gcp as gcp
+from synthtool.languages import python
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
@@ -115,8 +116,13 @@ s.replace("google/cloud/**/*.py",
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=86)
+templated_files = common.py_library(cov_level=86, samples=True)
 s.move(templated_files)
+
+# ----------------------------------------------------------------------------
+# Samples templates
+# ----------------------------------------------------------------------------
+python.py_samples(skip_readmes=True)
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition
 s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
