@@ -43,7 +43,7 @@ extras = {
         # as `google-api-core[grpc]`. We thus need to explicitly specify it here.
         # See: https://github.com/googleapis/python-bigquery/issues/83
         "grpcio >= 1.8.2, < 2.0dev",
-        "pyarrow>=0.16.0, < 2.0dev",
+        "pyarrow >= 1.0.0, < 2.0dev; python_version >= '3.5'",
     ],
     "pandas": ["pandas>=0.17.1"],
     # Exclude PyArrow dependency from Windows Python 2.7.
