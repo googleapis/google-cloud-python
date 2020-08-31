@@ -10,12 +10,11 @@ def check_django_compatability():
     with Django 2.2.y.
     """
     from . import __version__
+
     if django.VERSION[:2] != get_version_tuple(__version__)[:2]:
         raise ImproperlyConfigured(
-            'You must use the latest version of django-spanner {A}.{B}.x '
-            'with Django {A}.{B}.y (found django-spanner {C}).'.format(
-                A=django.VERSION[0],
-                B=django.VERSION[1],
-                C=__version__,
+            "You must use the latest version of django-spanner {A}.{B}.x "
+            "with Django {A}.{B}.y (found django-spanner {C}).".format(
+                A=django.VERSION[0], B=django.VERSION[1], C=__version__,
             )
         )

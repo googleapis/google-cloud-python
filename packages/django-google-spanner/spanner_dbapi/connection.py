@@ -11,7 +11,7 @@ from google.cloud import spanner_v1 as spanner
 from .cursor import Cursor
 from .exceptions import InterfaceError
 
-ColumnDetails = namedtuple('column_details', ['null_ok', 'spanner_type'])
+ColumnDetails = namedtuple("column_details", ["null_ok", "spanner_type"])
 
 
 class Connection:
@@ -30,7 +30,7 @@ class Connection:
         Raise an exception if attempting to use an already closed connection.
         """
         if self._closed:
-            raise InterfaceError('connection already closed')
+            raise InterfaceError("connection already closed")
 
     def __handle_update_ddl(self, ddl_statements):
         """
@@ -69,14 +69,16 @@ class Connection:
         return self.__handle_update_ddl(ddl_statements)
 
     def list_tables(self):
-        return self.run_sql_in_snapshot("""
+        return self.run_sql_in_snapshot(
+            """
             SELECT
               t.table_name
             FROM
               information_schema.tables AS t
             WHERE
               t.table_catalog = '' and t.table_schema = ''
-            """)
+            """
+        )
 
     def run_sql_in_snapshot(self, sql, params=None, param_types=None):
         # Some SQL e.g. for INFORMATION_SCHEMA cannot be run in read-write transactions
@@ -84,28 +86,29 @@ class Connection:
         self.run_prior_DDL_statements()
 
         with self._dbhandle.snapshot() as snapshot:
-            res = snapshot.execute_sql(sql, params=params, param_types=param_types)
+            res = snapshot.execute_sql(
+                sql, params=params, param_types=param_types
+            )
             return list(res)
 
     def get_table_column_schema(self, table_name):
         rows = self.run_sql_in_snapshot(
-            '''SELECT
+            """SELECT
                 COLUMN_NAME, IS_NULLABLE, SPANNER_TYPE
             FROM
                 INFORMATION_SCHEMA.COLUMNS
             WHERE
                 TABLE_SCHEMA = ''
             AND
-                TABLE_NAME = @table_name''',
-            params={'table_name': table_name},
-            param_types={'table_name': spanner.param_types.STRING},
+                TABLE_NAME = @table_name""",
+            params={"table_name": table_name},
+            param_types={"table_name": spanner.param_types.STRING},
         )
 
         column_details = {}
         for column_name, is_nullable, spanner_type in rows:
             column_details[column_name] = ColumnDetails(
-                null_ok=is_nullable == 'YES',
-                spanner_type=spanner_type,
+                null_ok=is_nullable == "YES", spanner_type=spanner_type,
             )
         return column_details
 

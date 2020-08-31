@@ -5,13 +5,16 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 import datetime
+
 # Monkey-patch AutoField to generate a random value since Cloud Spanner can't
 # do that.
 from uuid import uuid4
 
 import pkg_resources
 from django.db.models.fields import AutoField, Field
-# Monkey-patch google.DatetimeWithNanoseconds's __eq__ compare against datetime.datetime.
+
+# Monkey-patch google.DatetimeWithNanoseconds's __eq__ compare against
+# datetime.datetime.
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 
 from .expressions import register_expressions
@@ -33,14 +36,16 @@ def gen_rand_int64():
 
 
 def autofield_init(self, *args, **kwargs):
-    kwargs['blank'] = True
+    kwargs["blank"] = True
     Field.__init__(self, *args, **kwargs)
     self.default = gen_rand_int64
 
 
 AutoField.__init__ = autofield_init
 
-old_datetimewithnanoseconds_eq = getattr(DatetimeWithNanoseconds, '__eq__', None)
+old_datetimewithnanoseconds_eq = getattr(
+    DatetimeWithNanoseconds, "__eq__", None
+)
 
 
 def datetimewithnanoseconds_eq(self, other):
@@ -62,12 +67,13 @@ def datetimewithnanoseconds_eq(self, other):
 DatetimeWithNanoseconds.__eq__ = datetimewithnanoseconds_eq
 
 # Sanity check here since tests can't easily be run for this file:
-if __name__ == '__main__':
+if __name__ == "__main__":
     from django.utils import timezone
+
     UTC = timezone.utc
 
     dt = datetime.datetime(2020, 1, 10, 2, 44, 57, 999, UTC)
     dtns = DatetimeWithNanoseconds(2020, 1, 10, 2, 44, 57, 999, UTC)
     equal = dtns == dt
     if not equal:
-        raise Exception('%s\n!=\n%s' % (dtns, dt))
+        raise Exception("%s\n!=\n%s" % (dtns, dt))

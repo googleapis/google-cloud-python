@@ -6,8 +6,19 @@
 
 from django.db.models import DecimalField
 from django.db.models.lookups import (
-    Contains, EndsWith, Exact, GreaterThan, GreaterThanOrEqual, IContains,
-    IEndsWith, IExact, IRegex, IStartsWith, LessThan, LessThanOrEqual, Regex,
+    Contains,
+    EndsWith,
+    Exact,
+    GreaterThan,
+    GreaterThanOrEqual,
+    IContains,
+    IEndsWith,
+    IExact,
+    IRegex,
+    IStartsWith,
+    LessThan,
+    LessThanOrEqual,
+    Regex,
     StartsWith,
 )
 
@@ -17,7 +28,7 @@ def contains(self, compiler, connection):
     lhs_sql, params = self.process_lhs(compiler, connection)
     rhs_sql, rhs_params = self.process_rhs(compiler, connection)
     params.extend(rhs_params)
-    is_icontains = self.lookup_name.startswith('i')
+    is_icontains = self.lookup_name.startswith("i")
     if self.rhs_is_direct_value() and params and not self.bilateral_transforms:
         rhs_sql = self.get_rhs_op(connection, rhs_sql)
         # Chop the leading and trailing percent signs that Django adds to the
@@ -25,7 +36,7 @@ def contains(self, compiler, connection):
         params[0] = params[0][1:-1]
         # Add the case insensitive flag for icontains.
         if is_icontains:
-            params[0] = '(?i)' + params[0]
+            params[0] = "(?i)" + params[0]
         # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
         return rhs_sql % lhs_sql, params
     else:
@@ -33,7 +44,11 @@ def contains(self, compiler, connection):
         # expression.
         if is_icontains:
             rhs_sql = "CONCAT('(?i)', " + rhs_sql + ")"
-        return 'REGEXP_CONTAINS(%s, %s)' % (lhs_sql, connection.pattern_esc.format(rhs_sql)), params
+        return (
+            "REGEXP_CONTAINS(%s, %s)"
+            % (lhs_sql, connection.pattern_esc.format(rhs_sql)),
+            params,
+        )
 
 
 def iexact(self, compiler, connection):
@@ -43,12 +58,12 @@ def iexact(self, compiler, connection):
     rhs_sql = self.get_rhs_op(connection, rhs_sql)
     # Wrap the parameter in ^ and $ to restrict the regex to an exact match.
     if self.rhs_is_direct_value() and params and not self.bilateral_transforms:
-        params[0] = '^(?i)%s$' % params[0]
+        params[0] = "^(?i)%s$" % params[0]
     else:
         # lhs_sql is the expression/column to use as the regular expression.
         # Use concat to make the value case-insensitive.
         lhs_sql = "CONCAT('^(?i)', " + lhs_sql + ", '$')"
-        rhs_sql = rhs_sql.replace('%%s', '%s')
+        rhs_sql = rhs_sql.replace("%%s", "%s")
     # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
     return rhs_sql % lhs_sql, params
 
@@ -58,11 +73,11 @@ def regex(self, compiler, connection):
     lhs_sql, params = self.process_lhs(compiler, connection)
     rhs_sql, rhs_params = self.process_rhs(compiler, connection)
     params.extend(rhs_params)
-    is_iregex = self.lookup_name.startswith('i')
+    is_iregex = self.lookup_name.startswith("i")
     if self.rhs_is_direct_value() and params and not self.bilateral_transforms:
         rhs_sql = self.get_rhs_op(connection, rhs_sql)
         if is_iregex:
-            params[0] = '(?i)%s' % params[0]
+            params[0] = "(?i)%s" % params[0]
         else:
             params[0] = str(params[0])
         # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
@@ -72,7 +87,7 @@ def regex(self, compiler, connection):
         # expression.
         if is_iregex:
             rhs_sql = "CONCAT('(?i)', " + rhs_sql + ")"
-        return 'REGEXP_CONTAINS(%s, %s)' % (lhs_sql, rhs_sql), params
+        return "REGEXP_CONTAINS(%s, %s)" % (lhs_sql, rhs_sql), params
 
 
 def startswith_endswith(self, compiler, connection):
@@ -80,20 +95,20 @@ def startswith_endswith(self, compiler, connection):
     lhs_sql, params = self.process_lhs(compiler, connection)
     rhs_sql, rhs_params = self.process_rhs(compiler, connection)
     params.extend(rhs_params)
-    is_startswith = 'startswith' in self.lookup_name
-    is_endswith = 'endswith' in self.lookup_name
-    is_insensitive = self.lookup_name.startswith('i')
+    is_startswith = "startswith" in self.lookup_name
+    is_endswith = "endswith" in self.lookup_name
+    is_insensitive = self.lookup_name.startswith("i")
     # Chop the leading (endswith) or trailing (startswith) percent sign that
     # Django adds to the param since this isn't a LIKE query as Django expects.
     if self.rhs_is_direct_value() and params and not self.bilateral_transforms:
         rhs_sql = self.get_rhs_op(connection, rhs_sql)
         if is_endswith:
-            params[0] = str(params[0][1:]) + '$'
+            params[0] = str(params[0][1:]) + "$"
         else:
-            params[0] = '^' + str(params[0][:-1])
+            params[0] = "^" + str(params[0][:-1])
         # Add the case insensitive flag for istartswith or iendswith.
         if is_insensitive:
-            params[0] = '(?i)' + params[0]
+            params[0] = "(?i)" + params[0]
         # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
         return rhs_sql % lhs_sql, params
     else:
@@ -101,14 +116,18 @@ def startswith_endswith(self, compiler, connection):
         # expression.
         sql = "CONCAT('"
         if is_startswith:
-            sql += '^'
+            sql += "^"
         if is_insensitive:
-            sql += '(?i)'
+            sql += "(?i)"
         sql += "', " + rhs_sql
         if is_endswith:
             sql += ", '$'"
         sql += ")"
-        return 'REGEXP_CONTAINS(%s, %s)' % (lhs_sql, connection.pattern_esc.format(sql)), params
+        return (
+            "REGEXP_CONTAINS(%s, %s)"
+            % (lhs_sql, connection.pattern_esc.format(sql)),
+            params,
+        )
 
 
 def cast_param_to_float(self, compiler, connection):
@@ -120,9 +139,13 @@ def cast_param_to_float(self, compiler, connection):
         if isinstance(self.lhs.output_field, DecimalField):
             params[0] = float(params[0])
         # Cast remote field lookups that must be integer but come in as string.
-        elif hasattr(self.lhs.output_field, 'get_path_info'):
-            for i, field in enumerate(self.lhs.output_field.get_path_info()[-1].target_fields):
-                if field.rel_db_type(connection) == 'INT64' and isinstance(params[i], str):
+        elif hasattr(self.lhs.output_field, "get_path_info"):
+            for i, field in enumerate(
+                self.lhs.output_field.get_path_info()[-1].target_fields
+            ):
+                if field.rel_db_type(connection) == "INT64" and isinstance(
+                    params[i], str
+                ):
                     params[i] = int(params[i])
     return sql, params
 

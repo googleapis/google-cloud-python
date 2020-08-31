@@ -16,23 +16,24 @@ from django.db.backends.base.operations import BaseDatabaseOperations
 from django.db.utils import DatabaseError
 from django.utils import timezone
 from django.utils.duration import duration_microseconds
+
 from spanner_dbapi.parse_utils import DateStr, TimestampStr, escape_name
 
 
 class DatabaseOperations(BaseDatabaseOperations):
     cast_data_types = {
-        'CharField': 'STRING',
-        'TextField': 'STRING',
+        "CharField": "STRING",
+        "TextField": "STRING",
     }
-    cast_char_field_without_max_length = 'STRING'
-    compiler_module = 'django_spanner.compiler'
+    cast_char_field_without_max_length = "STRING"
+    compiler_module = "django_spanner.compiler"
     # Django's lookup names that require a different name in Spanner's
     # EXTRACT() function.
     # https://cloud.google.com/spanner/docs/functions-and-operators#extract
     extract_names = {
-        'iso_year': 'isoyear',
-        'week': 'isoweek',
-        'week_day': 'dayofweek',
+        "iso_year": "isoyear",
+        "week": "isoweek",
+        "week_day": "dayofweek",
     }
 
     def max_name_length(self):
@@ -46,8 +47,8 @@ class DatabaseOperations(BaseDatabaseOperations):
         # Django tests to prevent crashes. (Don't modify names in normal
         # operation to prevent the possibility of colliding with another
         # column.) https://github.com/orijtech/spanner-orm/issues/204
-        if os.environ.get('RUNNING_SPANNER_BACKEND_TESTS') == '1':
-            name = name.replace(' ', '_').replace('-', '_')
+        if os.environ.get("RUNNING_SPANNER_BACKEND_TESTS") == "1":
+            name = name.replace(" ", "_").replace("-", "_")
         return escape_name(name)
 
     def bulk_batch_size(self, fields, objs):
@@ -62,9 +63,9 @@ class DatabaseOperations(BaseDatabaseOperations):
         # Cloud Spanner doesn't support TRUNCATE so DELETE instead.
         # A dummy WHERE clause is required.
         if tables:
-            delete_sql = '%s %s %%s' % (
-                style.SQL_KEYWORD('DELETE'),
-                style.SQL_KEYWORD('FROM'),
+            delete_sql = "%s %s %%s" % (
+                style.SQL_KEYWORD("DELETE"),
+                style.SQL_KEYWORD("FROM"),
             )
             return [
                 delete_sql % style.SQL_FIELD(self.quote_name(table))
@@ -82,7 +83,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         if value is None:
             return None
         # Expression values are adapted by the database.
-        if hasattr(value, 'resolve_expression'):
+        if hasattr(value, "resolve_expression"):
             return value
         # Cloud Spanner doesn't support tz-aware datetimes
         if timezone.is_aware(value):
@@ -93,9 +94,11 @@ class DatabaseOperations(BaseDatabaseOperations):
                     "The Cloud Spanner backend does not support "
                     "timezone-aware datetimes when USE_TZ is False."
                 )
-        return TimestampStr(value.isoformat(timespec='microseconds') + 'Z')
+        return TimestampStr(value.isoformat(timespec="microseconds") + "Z")
 
-    def adapt_decimalfield_value(self, value, max_digits=None, decimal_places=None):
+    def adapt_decimalfield_value(
+        self, value, max_digits=None, decimal_places=None
+    ):
         """
         Convert value from decimal.Decimal into float, for a direct mapping
         and correct serialization with RPCs to Cloud Spanner.
@@ -108,23 +111,25 @@ class DatabaseOperations(BaseDatabaseOperations):
         if value is None:
             return None
         # Expression values are adapted by the database.
-        if hasattr(value, 'resolve_expression'):
+        if hasattr(value, "resolve_expression"):
             return value
         # Column is TIMESTAMP, so prefix a dummy date to the datetime.time.
-        return TimestampStr('0001-01-01T' + value.isoformat(timespec='microseconds') + 'Z')
+        return TimestampStr(
+            "0001-01-01T" + value.isoformat(timespec="microseconds") + "Z"
+        )
 
     def get_db_converters(self, expression):
         converters = super().get_db_converters(expression)
         internal_type = expression.output_field.get_internal_type()
-        if internal_type == 'DateTimeField':
+        if internal_type == "DateTimeField":
             converters.append(self.convert_datetimefield_value)
-        elif internal_type == 'DecimalField':
+        elif internal_type == "DecimalField":
             converters.append(self.convert_decimalfield_value)
-        elif internal_type == 'TimeField':
+        elif internal_type == "TimeField":
             converters.append(self.convert_timefield_value)
-        elif internal_type == 'BinaryField':
+        elif internal_type == "BinaryField":
             converters.append(self.convert_binaryfield_value)
-        elif internal_type == 'UUIDField':
+        elif internal_type == "UUIDField":
             converters.append(self.convert_uuidfield_value)
         return converters
 
@@ -143,10 +148,19 @@ class DatabaseOperations(BaseDatabaseOperations):
         # connection's timezone). Django doesn't support nanoseconds so that
         # part is ignored.
         dt = datetime(
-            value.year, value.month, value.day,
-            value.hour, value.minute, value.second, value.microsecond,
+            value.year,
+            value.month,
+            value.day,
+            value.hour,
+            value.minute,
+            value.second,
+            value.microsecond,
         )
-        return timezone.make_aware(dt, self.connection.timezone) if settings.USE_TZ else dt
+        return (
+            timezone.make_aware(dt, self.connection.timezone)
+            if settings.USE_TZ
+            else dt
+        )
 
     def convert_decimalfield_value(self, value, expression, connection):
         if value is None:
@@ -167,42 +181,55 @@ class DatabaseOperations(BaseDatabaseOperations):
 
     def date_extract_sql(self, lookup_type, field_name):
         lookup_type = self.extract_names.get(lookup_type, lookup_type)
-        return 'EXTRACT(%s FROM %s)' % (lookup_type, field_name)
+        return "EXTRACT(%s FROM %s)" % (lookup_type, field_name)
 
     def datetime_extract_sql(self, lookup_type, field_name, tzname):
-        tzname = tzname if settings.USE_TZ else 'UTC'
+        tzname = tzname if settings.USE_TZ else "UTC"
         lookup_type = self.extract_names.get(lookup_type, lookup_type)
-        return 'EXTRACT(%s FROM %s AT TIME ZONE "%s")' % (lookup_type, field_name, tzname)
+        return 'EXTRACT(%s FROM %s AT TIME ZONE "%s")' % (
+            lookup_type,
+            field_name,
+            tzname,
+        )
 
     def time_extract_sql(self, lookup_type, field_name):
         # Time is stored as TIMESTAMP with UTC time zone.
-        return 'EXTRACT(%s FROM %s AT TIME ZONE "UTC")' % (lookup_type, field_name)
+        return 'EXTRACT(%s FROM %s AT TIME ZONE "UTC")' % (
+            lookup_type,
+            field_name,
+        )
 
     def date_trunc_sql(self, lookup_type, field_name):
         # https://cloud.google.com/spanner/docs/functions-and-operators#date_trunc
-        if lookup_type == 'week':
+        if lookup_type == "week":
             # Spanner truncates to Sunday but Django expects Monday. First,
             # subtract a day so that a Sunday will be truncated to the previous
             # week...
-            field_name = 'DATE_SUB(CAST(' + field_name + ' AS DATE), INTERVAL 1 DAY)'
-        sql = 'DATE_TRUNC(CAST(%s AS DATE), %s)' % (field_name, lookup_type)
-        if lookup_type == 'week':
+            field_name = (
+                "DATE_SUB(CAST(" + field_name + " AS DATE), INTERVAL 1 DAY)"
+            )
+        sql = "DATE_TRUNC(CAST(%s AS DATE), %s)" % (field_name, lookup_type)
+        if lookup_type == "week":
             # ...then add a day to get from Sunday to Monday.
-            sql = 'DATE_ADD(CAST(' + sql + ' AS DATE), INTERVAL 1 DAY)'
+            sql = "DATE_ADD(CAST(" + sql + " AS DATE), INTERVAL 1 DAY)"
         return sql
 
     def datetime_trunc_sql(self, lookup_type, field_name, tzname):
         # https://cloud.google.com/spanner/docs/functions-and-operators#timestamp_trunc
-        tzname = tzname if settings.USE_TZ else 'UTC'
-        if lookup_type == 'week':
+        tzname = tzname if settings.USE_TZ else "UTC"
+        if lookup_type == "week":
             # Spanner truncates to Sunday but Django expects Monday. First,
             # subtract a day so that a Sunday will be truncated to the previous
             # week...
-            field_name = 'TIMESTAMP_SUB(' + field_name + ', INTERVAL 1 DAY)'
-        sql = 'TIMESTAMP_TRUNC(%s, %s, "%s")' % (field_name, lookup_type, tzname)
-        if lookup_type == 'week':
+            field_name = "TIMESTAMP_SUB(" + field_name + ", INTERVAL 1 DAY)"
+        sql = 'TIMESTAMP_TRUNC(%s, %s, "%s")' % (
+            field_name,
+            lookup_type,
+            tzname,
+        )
+        if lookup_type == "week":
             # ...then add a day to get from Sunday to Monday.
-            sql = 'TIMESTAMP_ADD(' + sql + ', INTERVAL 1 DAY)'
+            sql = "TIMESTAMP_ADD(" + sql + ", INTERVAL 1 DAY)"
         return sql
 
     def time_trunc_sql(self, lookup_type, field_name):
@@ -211,50 +238,70 @@ class DatabaseOperations(BaseDatabaseOperations):
 
     def datetime_cast_date_sql(self, field_name, tzname):
         # https://cloud.google.com/spanner/docs/functions-and-operators#date
-        tzname = tzname if settings.USE_TZ else 'UTC'
+        tzname = tzname if settings.USE_TZ else "UTC"
         return 'DATE(%s, "%s")' % (field_name, tzname)
 
     def datetime_cast_time_sql(self, field_name, tzname):
-        tzname = tzname if settings.USE_TZ else 'UTC'
+        tzname = tzname if settings.USE_TZ else "UTC"
         # Cloud Spanner doesn't have a function for converting
         # TIMESTAMP to another time zone.
-        return "TIMESTAMP(FORMAT_TIMESTAMP('%%Y-%%m-%%d %%R:%%E9S %%Z', %s, '%s'))" % (field_name, tzname)
+        return (
+            "TIMESTAMP(FORMAT_TIMESTAMP("
+            "'%%Y-%%m-%%d %%R:%%E9S %%Z', %s, '%s'))"
+            % (field_name, tzname,)
+        )
 
     def date_interval_sql(self, timedelta):
-        return 'INTERVAL %s MICROSECOND' % duration_microseconds(timedelta)
+        return "INTERVAL %s MICROSECOND" % duration_microseconds(timedelta)
 
     def format_for_duration_arithmetic(self, sql):
-        return 'INTERVAL %s MICROSECOND' % sql
+        return "INTERVAL %s MICROSECOND" % sql
 
     def combine_expression(self, connector, sub_expressions):
-        if connector == '%%':
-            return 'MOD(%s)' % ', '.join(sub_expressions)
-        elif connector == '^':
-            return 'POWER(%s)' % ', '.join(sub_expressions)
-        elif connector == '>>':
+        if connector == "%%":
+            return "MOD(%s)" % ", ".join(sub_expressions)
+        elif connector == "^":
+            return "POWER(%s)" % ", ".join(sub_expressions)
+        elif connector == ">>":
             lhs, rhs = sub_expressions
-            # Use an alternate computation because Cloud Sapnner's '>>' operator does not do
-            # sign bit extension with a signed type (i.e. produces different results for
-            # negative numbers than what Django's tests expect). Cast float result as INT64 to
-            # allow assigning to both INT64 and FLOAT64 columns (otherwise the FLOAT result
-            # couldn't be assigned to INT64 columns).
-            return 'CAST(FLOOR(%(lhs)s / POW(2, %(rhs)s)) AS INT64)' % {'lhs': lhs, 'rhs': rhs}
+            # Use an alternate computation because Cloud Sapnner's '>>'
+            # operator does not do sign bit extension with a signed type (i.e.
+            # produces different results for negative numbers than what
+            # Django's tests expect). Cast float result as INT64 to allow
+            # assigning to both INT64 and FLOAT64 columns (otherwise the FLOAT
+            # result couldn't be assigned to INT64 columns).
+            return "CAST(FLOOR(%(lhs)s / POW(2, %(rhs)s)) AS INT64)" % {
+                "lhs": lhs,
+                "rhs": rhs,
+            }
         return super().combine_expression(connector, sub_expressions)
 
     def combine_duration_expression(self, connector, sub_expressions):
-        if connector == '+':
-            return 'TIMESTAMP_ADD(' + ', '.join(sub_expressions) + ')'
-        elif connector == '-':
-            return 'TIMESTAMP_SUB(' + ', '.join(sub_expressions) + ')'
+        if connector == "+":
+            return "TIMESTAMP_ADD(" + ", ".join(sub_expressions) + ")"
+        elif connector == "-":
+            return "TIMESTAMP_SUB(" + ", ".join(sub_expressions) + ")"
         else:
-            raise DatabaseError('Invalid connector for timedelta: %s.' % connector)
+            raise DatabaseError(
+                "Invalid connector for timedelta: %s." % connector
+            )
 
     def lookup_cast(self, lookup_type, internal_type=None):
-        # Cast text lookups to string to allow things like filter(x__contains=4)
-        if lookup_type in ('contains', 'icontains', 'startswith', 'istartswith',
-                           'endswith', 'iendswith', 'regex', 'iregex', 'iexact'):
-            return 'CAST(%s AS STRING)'
-        return '%s'
+        # Cast text lookups to string to allow things like
+        # filter(x__contains=4)
+        if lookup_type in (
+            "contains",
+            "icontains",
+            "startswith",
+            "istartswith",
+            "endswith",
+            "iendswith",
+            "regex",
+            "iregex",
+            "iexact",
+        ):
+            return "CAST(%s AS STRING)"
+        return "%s"
 
     def prep_for_like_query(self, x):
         """Lookups that use this method use REGEXP_CONTAINS instead of LIKE."""

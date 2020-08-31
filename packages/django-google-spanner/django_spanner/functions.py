@@ -8,46 +8,72 @@ import math
 
 from django.db.models.expressions import Func, Value
 from django.db.models.functions import (
-    Cast, Chr, ConcatPair, Cot, Degrees, Left, Log, Ord, Pi, Radians, Right,
-    StrIndex, Substr,
+    Cast,
+    Chr,
+    ConcatPair,
+    Cot,
+    Degrees,
+    Left,
+    Log,
+    Ord,
+    Pi,
+    Radians,
+    Right,
+    StrIndex,
+    Substr,
 )
 
 
 class IfNull(Func):
-    function = 'IFNULL'
+    function = "IFNULL"
     arity = 2
 
 
 def cast(self, compiler, connection, **extra_context):
     # Account for a field's max_length using SUBSTR.
-    max_length = getattr(self.output_field, 'max_length', None)
+    max_length = getattr(self.output_field, "max_length", None)
     if max_length is not None:
-        template = 'SUBSTR(' + self.template + ', 0, %s)' % max_length
+        template = "SUBSTR(" + self.template + ", 0, %s)" % max_length
     else:
         template = self.template
-    return self.as_sql(compiler, connection, template=template, **extra_context)
+    return self.as_sql(
+        compiler, connection, template=template, **extra_context
+    )
 
 
 def chr_(self, compiler, connection, **extra_context):
-    return self.as_sql(compiler, connection, template='CODE_POINTS_TO_STRING([%(expressions)s])', **extra_context)
+    return self.as_sql(
+        compiler,
+        connection,
+        template="CODE_POINTS_TO_STRING([%(expressions)s])",
+        **extra_context
+    )
 
 
 def concatpair(self, compiler, connection, **extra_context):
     # Spanner's CONCAT function returns null if any of its arguments are null.
     # Prevent that by converting null arguments to an empty string.
     clone = self.copy()
-    clone.set_source_expressions(IfNull(e, Value('')) for e in self.get_source_expressions())
+    clone.set_source_expressions(
+        IfNull(e, Value("")) for e in self.get_source_expressions()
+    )
     return clone.as_sql(compiler, connection, **extra_context)
 
 
 def cot(self, compiler, connection, **extra_context):
-    return self.as_sql(compiler, connection, template='(1 / TAN(%(expressions)s))', **extra_context)
+    return self.as_sql(
+        compiler,
+        connection,
+        template="(1 / TAN(%(expressions)s))",
+        **extra_context
+    )
 
 
 def degrees(self, compiler, connection, **extra_context):
     return self.as_sql(
-        compiler, connection,
-        template='((%%(expressions)s) * 180 / %s)' % math.pi,
+        compiler,
+        connection,
+        template="((%%(expressions)s) * 180 / %s)" % math.pi,
         **extra_context
     )
 
@@ -65,27 +91,39 @@ def log(self, compiler, connection, **extra_context):
 
 
 def ord_(self, compiler, connection, **extra_context):
-    return self.as_sql(compiler, connection, template='TO_CODE_POINTS(%(expressions)s)[OFFSET(0)]', **extra_context)
+    return self.as_sql(
+        compiler,
+        connection,
+        template="TO_CODE_POINTS(%(expressions)s)[OFFSET(0)]",
+        **extra_context
+    )
 
 
 def pi(self, compiler, connection, **extra_context):
-    return self.as_sql(compiler, connection, template=str(math.pi), **extra_context)
+    return self.as_sql(
+        compiler, connection, template=str(math.pi), **extra_context
+    )
 
 
 def radians(self, compiler, connection, **extra_context):
     return self.as_sql(
-        compiler, connection,
-        template='((%%(expressions)s) * %s / 180)' % math.pi,
+        compiler,
+        connection,
+        template="((%%(expressions)s) * %s / 180)" % math.pi,
         **extra_context
     )
 
 
 def strindex(self, compiler, connection, **extra_context):
-    return self.as_sql(compiler, connection, function='STRPOS', **extra_context)
+    return self.as_sql(
+        compiler, connection, function="STRPOS", **extra_context
+    )
 
 
 def substr(self, compiler, connection, **extra_context):
-    return self.as_sql(compiler, connection, function='SUBSTR', **extra_context)
+    return self.as_sql(
+        compiler, connection, function="SUBSTR", **extra_context
+    )
 
 
 def register_functions():

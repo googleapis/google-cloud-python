@@ -15,6 +15,7 @@ class PeekIterator:
     If next's result is an instance of list, it'll be converted into a tuple
     to conform with DBAPI v2's sequence expectations.
     """
+
     def __init__(self, source):
         itr_src = iter(source)
 
@@ -46,7 +47,7 @@ class PeekIterator:
         return self
 
 
-re_UNICODE_POINTS = re.compile(r'([^\s]*[\u0080-\uFFFF]+[^\s]*)')
+re_UNICODE_POINTS = re.compile(r"([^\s]*[\u0080-\uFFFF]+[^\s]*)")
 
 
 def backtick_unicode(sql):
@@ -59,14 +60,14 @@ def backtick_unicode(sql):
     last_end = 0
     for match in matches:
         start, end = match.span()
-        if sql[start] != '`' and sql[end-1] != '`':
-            segments.append(sql[last_end:start] + '`' + sql[start:end] + '`')
+        if sql[start] != "`" and sql[end - 1] != "`":
+            segments.append(sql[last_end:start] + "`" + sql[start:end] + "`")
         else:
             segments.append(sql[last_end:end])
 
         last_end = end
 
-    return ''.join(segments)
+    return "".join(segments)
 
 
 def sanitize_literals_for_upload(s):
@@ -77,4 +78,4 @@ def sanitize_literals_for_upload(s):
     uses placeholders like @a0 and doesn't expect percent signs to be escaped.
     2. Quote words containing non-ASCII, with backticks, for example föö to `föö`.
     """
-    return backtick_unicode(s.replace('%%', '%'))
+    return backtick_unicode(s.replace("%%", "%"))

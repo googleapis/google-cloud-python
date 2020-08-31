@@ -47,6 +47,7 @@ class BINARY:
     """
     This object describes (long) binary columns in a database (e.g. LONG, RAW, BLOBS).
     """
+
     # TODO: Implement me.
     pass
 
@@ -55,6 +56,7 @@ class STRING:
     """
     This object describes columns in a database that are string-based (e.g. CHAR).
     """
+
     # TODO: Implement me.
     pass
 
@@ -63,6 +65,7 @@ class NUMBER:
     """
     This object describes numeric columns in a database.
     """
+
     # TODO: Implement me.
     pass
 
@@ -71,6 +74,7 @@ class DATETIME:
     """
     This object describes date/time columns in a database.
     """
+
     # TODO: Implement me.
     pass
 
@@ -79,6 +83,7 @@ class ROWID:
     """
     This object describes the "Row ID" column in a database.
     """
+
     # TODO: Implement me.
     pass
 
@@ -90,6 +95,7 @@ class TimestampStr(str):
     queries, it'll help differentiate between normal strings and the case of
     types that should be TIMESTAMP.
     """
+
     pass
 
 
@@ -100,4 +106,5 @@ class DateStr(str):
     queries, it'll help differentiate between normal strings and the case of
     types that should be DATE.
     """
+
     pass

@@ -9,4 +9,4 @@ from django.db.backends.base.client import BaseDatabaseClient
 
 class DatabaseClient(BaseDatabaseClient):
     def runshell(self):
-        raise NotImplementedError('dbshell is not implemented.')
+        raise NotImplementedError("dbshell is not implemented.")

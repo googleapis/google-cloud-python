@@ -110,7 +110,9 @@ class DatabaseWrapper(BaseDatabaseWrapper):
 
     @property
     def _nodb_connection(self):
-        raise NotImplementedError('Spanner does not have a "no db" connection.')
+        raise NotImplementedError(
+            'Spanner does not have a "no db" connection.'
+        )
 
     def get_connection_params(self):
         return {

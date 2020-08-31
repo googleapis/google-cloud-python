@@ -8,11 +8,19 @@ import google.api_core.exceptions as grpc_exceptions
 from google.cloud.spanner_v1 import param_types
 
 from .exceptions import (
-    IntegrityError, InterfaceError, OperationalError, ProgrammingError,
+    IntegrityError,
+    InterfaceError,
+    OperationalError,
+    ProgrammingError,
 )
 from .parse_utils import (
-    STMT_DDL, STMT_INSERT, STMT_NON_UPDATING, classify_stmt,
-    ensure_where_clause, get_param_types, parse_insert,
+    STMT_DDL,
+    STMT_INSERT,
+    STMT_NON_UPDATING,
+    classify_stmt,
+    ensure_where_clause,
+    get_param_types,
+    parse_insert,
     sql_pyformat_args_to_spanner,
 )
 from .utils import PeekIterator
@@ -64,7 +72,7 @@ class Cursor:
         self._raise_if_already_closed()
 
         if not self._connection:
-            raise ProgrammingError('Cursor is not connected to the database')
+            raise ProgrammingError("Cursor is not connected to the database")
 
         self._res = None
 
@@ -85,24 +93,28 @@ class Cursor:
                 self.__handle_insert(sql, args or None)
             else:
                 self.__handle_update(sql, args or None)
-        except (grpc_exceptions.AlreadyExists, grpc_exceptions.FailedPrecondition) as e:
-            raise IntegrityError(e.details if hasattr(e, 'details') else e)
+        except (
+            grpc_exceptions.AlreadyExists,
+            grpc_exceptions.FailedPrecondition,
+        ) as e:
+            raise IntegrityError(e.details if hasattr(e, "details") else e)
         except grpc_exceptions.InvalidArgument as e:
-            raise ProgrammingError(e.details if hasattr(e, 'details') else e)
+            raise ProgrammingError(e.details if hasattr(e, "details") else e)
         except grpc_exceptions.InternalServerError as e:
-            raise OperationalError(e.details if hasattr(e, 'details') else e)
+            raise OperationalError(e.details if hasattr(e, "details") else e)
 
     def __handle_update(self, sql, params):
         self._connection.in_transaction(
-            self.__do_execute_update,
-            sql, params,
+            self.__do_execute_update, sql, params,
         )
 
     def __do_execute_update(self, transaction, sql, params, param_types=None):
         sql = ensure_where_clause(sql)
         sql, params = sql_pyformat_args_to_spanner(sql, params)
 
-        res = transaction.execute_update(sql, params=params, param_types=get_param_types(params))
+        res = transaction.execute_update(
+            sql, params=params, param_types=get_param_types(params)
+        )
         self._itr = None
         if type(res) == int:
             self._row_count = res
@@ -125,36 +137,36 @@ class Cursor:
         #           transaction.execute_sql(sql, params, param_types)
         # which invokes more RPCs and is more costly.
 
-        if parts.get('homogenous'):
+        if parts.get("homogenous"):
             # The common case of multiple values being passed in
             # non-complex pyformat args and need to be uploaded in one RPC.
             return self._connection.in_transaction(
-                self.__do_execute_insert_homogenous,
-                parts,
+                self.__do_execute_insert_homogenous, parts,
             )
         else:
             # All the other cases that are esoteric and need
             #   transaction.execute_sql
-            sql_params_list = parts.get('sql_params_list')
+            sql_params_list = parts.get("sql_params_list")
             return self._connection.in_transaction(
-                self.__do_execute_insert_heterogenous,
-                sql_params_list,
+                self.__do_execute_insert_heterogenous, sql_params_list,
             )
 
     def __do_execute_insert_heterogenous(self, transaction, sql_params_list):
         for sql, params in sql_params_list:
             sql, params = sql_pyformat_args_to_spanner(sql, params)
             param_types = get_param_types(params)
-            res = transaction.execute_sql(sql, params=params, param_types=param_types)
+            res = transaction.execute_sql(
+                sql, params=params, param_types=param_types
+            )
             # TODO: File a bug with Cloud Spanner and the Python client maintainers
             # about a lost commit when res isn't read from.
             _ = list(res)
 
     def __do_execute_insert_homogenous(self, transaction, parts):
         # Perform an insert in one shot.
-        table = parts.get('table')
-        columns = parts.get('columns')
-        values = parts.get('values')
+        table = parts.get("table")
+        columns = parts.get("columns")
+        values = parts.get("values")
         return transaction.insert(table, columns, values)
 
     def __handle_DQL(self, sql, params):
@@ -162,7 +174,9 @@ class Cursor:
             # Reference
             #  https://googleapis.dev/python/spanner/latest/session-api.html#google.cloud.spanner_v1.session.Session.execute_sql
             sql, params = sql_pyformat_args_to_spanner(sql, params)
-            res = snapshot.execute_sql(sql, params=params, param_types=get_param_types(params))
+            res = snapshot.execute_sql(
+                sql, params=params, param_types=get_param_types(params)
+            )
             if type(res) == int:
                 self._row_count = res
                 self._itr = None
@@ -221,7 +235,7 @@ class Cursor:
         Raise an exception if attempting to use an already closed connection.
         """
         if self._closed:
-            raise InterfaceError('cursor already closed')
+            raise InterfaceError("cursor already closed")
 
     def close(self):
         self.__clear()
@@ -229,19 +243,19 @@ class Cursor:
 
     def executemany(self, operation, seq_of_params):
         if not self._connection:
-            raise ProgrammingError('Cursor is not connected to the database')
+            raise ProgrammingError("Cursor is not connected to the database")
 
         for params in seq_of_params:
             self.execute(operation, params)
 
     def __next__(self):
         if self._itr is None:
-            raise ProgrammingError('no results to return')
+            raise ProgrammingError("no results to return")
         return next(self._itr)
 
     def __iter__(self):
         if self._itr is None:
-            raise ProgrammingError('no results to return')
+            raise ProgrammingError("no results to return")
         return self._itr
 
     def fetchone(self):
@@ -289,10 +303,10 @@ class Cursor:
         return None
 
     def setinputsizes(sizes):
-        raise ProgrammingError('Unimplemented')
+        raise ProgrammingError("Unimplemented")
 
     def setoutputsize(size, column=None):
-        raise ProgrammingError('Unimplemented')
+        raise ProgrammingError("Unimplemented")
 
     def _run_prior_DDL_statements(self):
         return self._connection.run_prior_DDL_statements()
@@ -308,8 +322,16 @@ class Cursor:
 
 
 class Column:
-    def __init__(self, name, type_code, display_size=None, internal_size=None,
-                 precision=None, scale=None, null_ok=False):
+    def __init__(
+        self,
+        name,
+        type_code,
+        display_size=None,
+        internal_size=None,
+        precision=None,
+        scale=None,
+        null_ok=False,
+    ):
         self.name = name
         self.type_code = type_code
         self.display_size = display_size
@@ -338,14 +360,28 @@ class Column:
             return self.null_ok
 
     def __str__(self):
-        rstr = ', '.join([field for field in [
-            "name='%s'" % self.name,
-            "type_code=%d" % self.type_code,
-            None if not self.display_size else "display_size=%d" % self.display_size,
-            None if not self.internal_size else "internal_size=%d" % self.internal_size,
-            None if not self.precision else "precision='%s'" % self.precision,
-            None if not self.scale else "scale='%s'" % self.scale,
-            None if not self.null_ok else "null_ok='%s'" % self.null_ok,
-        ] if field])
+        rstr = ", ".join(
+            [
+                field
+                for field in [
+                    "name='%s'" % self.name,
+                    "type_code=%d" % self.type_code,
+                    None
+                    if not self.display_size
+                    else "display_size=%d" % self.display_size,
+                    None
+                    if not self.internal_size
+                    else "internal_size=%d" % self.internal_size,
+                    None
+                    if not self.precision
+                    else "precision='%s'" % self.precision,
+                    None if not self.scale else "scale='%s'" % self.scale,
+                    None
+                    if not self.null_ok
+                    else "null_ok='%s'" % self.null_ok,
+                ]
+                if field
+            ]
+        )
 
-        return 'Column(%s)' % rstr
+        return "Column(%s)" % rstr

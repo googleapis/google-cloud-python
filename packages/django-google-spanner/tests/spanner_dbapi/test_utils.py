@@ -15,22 +15,24 @@ class UtilsTests(TestCase):
         # PeekIterator is used by BaseCursor in its fetch* methods.
         # This test ensures that anything passed into PeekIterator
         # will be returned as a tuple.
-        pit = PeekIterator([['a'], ['b'], ['c'], ['d'], ['e']])
+        pit = PeekIterator([["a"], ["b"], ["c"], ["d"], ["e"]])
         got = list(pit)
-        want = [('a',), ('b',), ('c',), ('d',), ('e',)]
-        self.assertEqual(got, want, 'Rows of type list must be returned as tuples')
+        want = [("a",), ("b",), ("c",), ("d",), ("e",)]
+        self.assertEqual(
+            got, want, "Rows of type list must be returned as tuples"
+        )
 
         seventeen = PeekIterator([[17]])
         self.assertEqual(list(seventeen), [(17,)])
 
-        pit = PeekIterator([['%', '%d']])
-        self.assertEqual(next(pit), ('%', '%d',))
+        pit = PeekIterator([["%", "%d"]])
+        self.assertEqual(next(pit), ("%", "%d",))
 
-        pit = PeekIterator([('Clark', 'Kent')])
-        self.assertEqual(next(pit), ('Clark', 'Kent',))
+        pit = PeekIterator([("Clark", "Kent")])
+        self.assertEqual(next(pit), ("Clark", "Kent",))
 
     def test_peekIterator_nonlist_rows_unconverted(self):
-        pi = PeekIterator(['a', 'b', 'c', 'd', 'e'])
+        pi = PeekIterator(["a", "b", "c", "d", "e"])
         got = list(pi)
-        want = ['a', 'b', 'c', 'd', 'e']
-        self.assertEqual(got, want, 'Values should be returned unchanged')
+        want = ["a", "b", "c", "d", "e"]
+        self.assertEqual(got, want, "Values should be returned unchanged")

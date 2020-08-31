@@ -17,20 +17,21 @@ from .parser import parse_values
 from .types import DateStr, TimestampStr
 from .utils import sanitize_literals_for_upload
 
-STMT_DDL = 'DDL'
-STMT_NON_UPDATING = 'NON_UPDATING'
-STMT_UPDATING = 'UPDATING'
-STMT_INSERT = 'INSERT'
+STMT_DDL = "DDL"
+STMT_NON_UPDATING = "NON_UPDATING"
+STMT_UPDATING = "UPDATING"
+STMT_INSERT = "INSERT"
 
 # Heuristic for identifying statements that don't need to be run as updates.
-re_NON_UPDATE = re.compile(r'^\s*(SELECT)', re.IGNORECASE)
+re_NON_UPDATE = re.compile(r"^\s*(SELECT)", re.IGNORECASE)
 
-re_WITH = re.compile(r'^\s*(WITH)', re.IGNORECASE)
+re_WITH = re.compile(r"^\s*(WITH)", re.IGNORECASE)
 
-# DDL statements follow https://cloud.google.com/spanner/docs/data-definition-language
-re_DDL = re.compile(r'^\s*(CREATE|ALTER|DROP)', re.IGNORECASE | re.DOTALL)
+# DDL statements follow
+# https://cloud.google.com/spanner/docs/data-definition-language
+re_DDL = re.compile(r"^\s*(CREATE|ALTER|DROP)", re.IGNORECASE | re.DOTALL)
 
-re_IS_INSERT = re.compile(r'^\s*(INSERT)', re.IGNORECASE | re.DOTALL)
+re_IS_INSERT = re.compile(r"^\s*(INSERT)", re.IGNORECASE | re.DOTALL)
 
 
 def classify_stmt(sql):
@@ -43,7 +44,8 @@ def classify_stmt(sql):
     elif re_WITH.match(sql):
         # As of Fri-13th-March-2020, Cloud Spanner only supports WITH for DQL
         # statements and doesn't yet support WITH for DML statements.
-        # When WITH for DML is added, we'll need to update this classifier accordingly.
+        # When WITH for DML is added, we'll need to update this classifier
+        # accordingly.
         return STMT_NON_UPDATING
     else:
         return STMT_UPDATING
@@ -53,18 +55,15 @@ re_INSERT = re.compile(
     # Only match the `INSERT INTO <table_name> (columns...)
     # otherwise the rest of the statement could be a complex
     # operation.
-    r'^\s*INSERT INTO (?P<table_name>[^\s\(\)]+)\s*\((?P<columns>[^\(\)]+)\)',
+    r"^\s*INSERT INTO (?P<table_name>[^\s\(\)]+)\s*\((?P<columns>[^\(\)]+)\)",
     re.IGNORECASE | re.DOTALL,
 )
 
-re_VALUES_TILL_END = re.compile(
-    r'VALUES\s*\(.+$',
-    re.IGNORECASE | re.DOTALL,
-)
+re_VALUES_TILL_END = re.compile(r"VALUES\s*\(.+$", re.IGNORECASE | re.DOTALL)
 
 re_VALUES_PYFORMAT = re.compile(
     # To match: (%s, %s,....%s)
-    r'(\(\s*%s[^\(\)]+\))',
+    r"(\(\s*%s[^\(\)]+\))",
     re.DOTALL,
 )
 
@@ -74,7 +73,7 @@ def strip_backticks(name):
     Strip backticks off of quoted names For example, '`no`' (a Spanner reserved
     word) becomes 'no'.
     """
-    has_quotes = name.startswith('`') and name.endswith('`')
+    has_quotes = name.startswith("`") and name.endswith("`")
     return name[1:-1] if has_quotes else name
 
 
@@ -135,34 +134,34 @@ def parse_insert(insert_sql, params):
                     ('INSERT INTO T (f1, f2) VALUES (UPPER(%s), %s)', ('c', 'd',))
                 ],
             }
-    """
+    """  # noqa
     match = re_INSERT.search(insert_sql)
 
     if not match:
-        raise ProgrammingError('Could not parse an INSERT statement from %s' % insert_sql)
+        raise ProgrammingError(
+            "Could not parse an INSERT statement from %s" % insert_sql
+        )
 
     after_values_sql = re_VALUES_TILL_END.findall(insert_sql)
     if not after_values_sql:
         # Case b)
         insert_sql = sanitize_literals_for_upload(insert_sql)
-        return {
-            'sql_params_list': [(insert_sql, None,)],
-        }
+        return {"sql_params_list": [(insert_sql, None)]}
 
     if not params:
         # Case a) perhaps?
         # Check if any %s exists.
-        pyformat_str_count = after_values_sql.count('%s')
+        pyformat_str_count = after_values_sql.count("%s")
         if pyformat_str_count > 0:
-            raise ProgrammingError('no params yet there are %d "%s" tokens' % pyformat_str_count)
+            raise ProgrammingError(
+                'no params yet there are %d "%s" tokens' % pyformat_str_count
+            )
 
         insert_sql = sanitize_literals_for_upload(insert_sql)
         # Confirmed case of:
         # SQL: INSERT INTO T (a1, a2) VALUES (1, 2)
         # Params: None
-        return {
-            'sql_params_list': [(insert_sql, None,)],
-        }
+        return {"sql_params_list": [(insert_sql, None)]}
 
     values_str = after_values_sql[0]
     _, values = parse_values(values_str)
@@ -172,21 +171,21 @@ def parse_insert(insert_sql, params):
 
         columns = [
             strip_backticks(mi.strip())
-            for mi in match.group('columns').split(',')
+            for mi in match.group("columns").split(",")
         ]
         sql_params_list = []
-        insert_sql_preamble = 'INSERT INTO %s (%s) VALUES %s' % (
-                match.group('table_name'), match.group('columns'), values.argv[0],
+        insert_sql_preamble = "INSERT INTO %s (%s) VALUES %s" % (
+            match.group("table_name"),
+            match.group("columns"),
+            values.argv[0],
         )
         values_pyformat = [str(arg) for arg in values.argv]
         rows_list = rows_for_insert_or_update(columns, params, values_pyformat)
         insert_sql_preamble = sanitize_literals_for_upload(insert_sql_preamble)
         for row in rows_list:
-            sql_params_list.append((insert_sql_preamble, row,))
+            sql_params_list.append((insert_sql_preamble, row))
 
-        return {
-            'sql_params_list': sql_params_list,
-        }
+        return {"sql_params_list": sql_params_list}
 
     # Case d)
     # insert_sql is of the form:
@@ -194,10 +193,11 @@ def parse_insert(insert_sql, params):
 
     # Sanity check:
     #  length(all_args) == len(params)
-    args_len = reduce(lambda a, b: a+b, [len(arg) for arg in values.argv])
+    args_len = reduce(lambda a, b: a + b, [len(arg) for arg in values.argv])
     if args_len != len(params):
-        raise ProgrammingError('Invalid length: VALUES(...) len: %d != len(params): %d' % (
-            args_len, len(params)),
+        raise ProgrammingError(
+            "Invalid length: VALUES(...) len: %d != len(params): %d"
+            % (args_len, len(params))
         )
 
     trim_index = insert_sql.find(values_str)
@@ -205,14 +205,15 @@ def parse_insert(insert_sql, params):
 
     sql_param_tuples = []
     for token_arg in values.argv:
-        row_sql = before_values_sql + ' VALUES%s' % token_arg
+        row_sql = before_values_sql + " VALUES%s" % token_arg
         row_sql = sanitize_literals_for_upload(row_sql)
-        row_params, params = tuple(params[0:len(token_arg)]), params[len(token_arg):]
-        sql_param_tuples.append((row_sql, row_params,))
+        row_params, params = (
+            tuple(params[0 : len(token_arg)]),
+            params[len(token_arg) :],
+        )
+        sql_param_tuples.append((row_sql, row_params))
 
-    return {
-        'sql_params_list': sql_param_tuples,
-    }
+    return {"sql_params_list": sql_param_tuples}
 
 
 def rows_for_insert_or_update(columns, params, pyformat_args=None):
@@ -225,7 +226,7 @@ def rows_for_insert_or_update(columns, params, pyformat_args=None):
 
     We'll have to convert both params types into:
         Params: [(1, 2, 3,), (4, 5, 6,), (7, 8, 9,)]
-    """
+    """  # noqa
 
     if not pyformat_args:
         # This is the case where we have for example:
@@ -247,8 +248,10 @@ def rows_for_insert_or_update(columns, params, pyformat_args=None):
             columns_len = len(columns)
             for param in params:
                 if columns_len != len(param):
-                    raise Error('\nlen(`%s`)=%d\n!=\ncolum_len(`%s`)=%d' % (
-                        param, len(param), columns, columns_len))
+                    raise Error(
+                        "\nlen(`%s`)=%d\n!=\ncolum_len(`%s`)=%d"
+                        % (param, len(param), columns, columns_len)
+                    )
             return params
         else:
             # The case with Params B: [1, 2, 3]
@@ -259,22 +262,27 @@ def rows_for_insert_or_update(columns, params, pyformat_args=None):
             n_stride = len(columns)
     else:
         # This is the case where we have for example:
-        # SQL:      'INSERT INTO t (f1, f2, f3) VALUES (%s, %s, %s), (%s, %s, %s), (%s, %s, %s)'
+        # SQL:      'INSERT INTO t (f1, f2, f3) VALUES (%s, %s, %s),
+        #           (%s, %s, %s), (%s, %s, %s)'
         # Params:   [1, 2, 3, 4, 5, 6, 7, 8, 9]
         #    which should become
         # Columns:      (f1, f2, f3)
         # new_params:   [(1, 2, 3,), (4, 5, 6,), (7, 8, 9,)]
 
-        # Sanity check 1: all the pyformat_values should have the exact same length.
+        # Sanity check 1: all the pyformat_values should have the exact same
+        # length.
         first, rest = pyformat_args[0], pyformat_args[1:]
-        n_stride = first.count('%s')
+        n_stride = first.count("%s")
         for pyfmt_value in rest:
-            n = pyfmt_value.count('%s')
+            n = pyfmt_value.count("%s")
             if n_stride != n:
-                raise Error('\nlen(`%s`)=%d\n!=\nlen(`%s`)=%d' % (
-                    first, n_stride, pyfmt_value, n))
+                raise Error(
+                    "\nlen(`%s`)=%d\n!=\nlen(`%s`)=%d"
+                    % (first, n_stride, pyfmt_value, n)
+                )
 
-        # Sanity check 2: len(params) MUST be a multiple of n_stride aka len(count of %s).
+        # Sanity check 2: len(params) MUST be a multiple of n_stride aka
+        # len(count of %s).
         # so that we can properly group for example:
         #  Given pyformat args:
         #   (%s, %s, %s)
@@ -283,20 +291,21 @@ def rows_for_insert_or_update(columns, params, pyformat_args=None):
         # into
         #   [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
         if (len(params) % n_stride) != 0:
-            raise ProgrammingError('Invalid length: len(params)=%d MUST be a multiple of len(pyformat_args)=%d' % (
-                len(params), n_stride),
+            raise ProgrammingError(
+                "Invalid length: len(params)=%d MUST be a multiple of "
+                "len(pyformat_args)=%d" % (len(params), n_stride)
             )
 
     # Now chop up the strides.
     strides = []
     for step in range(0, len(params), n_stride):
-        stride = tuple(params[step:step+n_stride:])
+        stride = tuple(params[step: step + n_stride:])
         strides.append(stride)
 
     return strides
 
 
-re_PYFORMAT = re.compile(r'(%s|%\([^\(\)]+\)s)+', re.DOTALL)
+re_PYFORMAT = re.compile(r"(%s|%\([^\(\)]+\)s)+", re.DOTALL)
 
 
 def sql_pyformat_args_to_spanner(sql, params):
@@ -332,8 +341,10 @@ def sql_pyformat_args_to_spanner(sql, params):
         n_matches = len(found_pyformat_placeholders)
         if n_matches != n_params:
             raise Error(
-                'pyformat_args mismatch\ngot %d args from %s\n'
-                'want %d args in %s' % (n_matches, found_pyformat_placeholders, n_params, params))
+                "pyformat_args mismatch\ngot %d args from %s\n"
+                "want %d args in %s"
+                % (n_matches, found_pyformat_placeholders, n_params, params)
+            )
 
     if len(params) == 0:
         return sanitize_literals_for_upload(sql), params
@@ -345,8 +356,8 @@ def sql_pyformat_args_to_spanner(sql, params):
     #   Params:   ('a', 23, '888***')
     # Case b) Params is a dict and the matches are %(value)s'
     for i, pyfmt in enumerate(found_pyformat_placeholders):
-        key = 'a%d' % i
-        sql = sql.replace(pyfmt, '@'+key, 1)
+        key = "a%d" % i
+        sql = sql.replace(pyfmt, "@" + key, 1)
         if params_is_dict:
             # The '%(key)s' case, so interpolate it.
             resolved_value = pyfmt % params
@@ -379,9 +390,9 @@ def get_param_types(params):
             param_types[key] = spanner.param_types.FLOAT64
         elif isinstance(value, int):
             param_types[key] = spanner.param_types.INT64
-        elif isinstance(value, (TimestampStr, datetime.datetime,)):
+        elif isinstance(value, (TimestampStr, datetime.datetime)):
             param_types[key] = spanner.param_types.TIMESTAMP
-        elif isinstance(value, (DateStr, datetime.date,)):
+        elif isinstance(value, (DateStr, datetime.date)):
             param_types[key] = spanner.param_types.DATE
         elif isinstance(value, str):
             param_types[key] = spanner.param_types.STRING
@@ -395,108 +406,111 @@ def ensure_where_clause(sql):
     Cloud Spanner requires a WHERE clause on UPDATE and DELETE statements.
     Add a dummy WHERE clause if necessary.
     """
-    if any(isinstance(token, sqlparse.sql.Where) for token in sqlparse.parse(sql)[0]):
+    if any(
+        isinstance(token, sqlparse.sql.Where)
+        for token in sqlparse.parse(sql)[0]
+    ):
         return sql
-    return sql + ' WHERE 1=1'
+    return sql + " WHERE 1=1"
 
 
 SPANNER_RESERVED_KEYWORDS = {
-    'ALL',
-    'AND',
-    'ANY',
-    'ARRAY',
-    'AS',
-    'ASC',
-    'ASSERT_ROWS_MODIFIED',
-    'AT',
-    'BETWEEN',
-    'BY',
-    'CASE',
-    'CAST',
-    'COLLATE',
-    'CONTAINS',
-    'CREATE',
-    'CROSS',
-    'CUBE',
-    'CURRENT',
-    'DEFAULT',
-    'DEFINE',
-    'DESC',
-    'DISTINCT',
-    'DROP',
-    'ELSE',
-    'END',
-    'ENUM',
-    'ESCAPE',
-    'EXCEPT',
-    'EXCLUDE',
-    'EXISTS',
-    'EXTRACT',
-    'FALSE',
-    'FETCH',
-    'FOLLOWING',
-    'FOR',
-    'FROM',
-    'FULL',
-    'GROUP',
-    'GROUPING',
-    'GROUPS',
-    'HASH',
-    'HAVING',
-    'IF',
-    'IGNORE',
-    'IN',
-    'INNER',
-    'INTERSECT',
-    'INTERVAL',
-    'INTO',
-    'IS',
-    'JOIN',
-    'LATERAL',
-    'LEFT',
-    'LIKE',
-    'LIMIT',
-    'LOOKUP',
-    'MERGE',
-    'NATURAL',
-    'NEW',
-    'NO',
-    'NOT',
-    'NULL',
-    'NULLS',
-    'OF',
-    'ON',
-    'OR',
-    'ORDER',
-    'OUTER',
-    'OVER',
-    'PARTITION',
-    'PRECEDING',
-    'PROTO',
-    'RANGE',
-    'RECURSIVE',
-    'RESPECT',
-    'RIGHT',
-    'ROLLUP',
-    'ROWS',
-    'SELECT',
-    'SET',
-    'SOME',
-    'STRUCT',
-    'TABLESAMPLE',
-    'THEN',
-    'TO',
-    'TREAT',
-    'TRUE',
-    'UNBOUNDED',
-    'UNION',
-    'UNNEST',
-    'USING',
-    'WHEN',
-    'WHERE',
-    'WINDOW',
-    'WITH',
-    'WITHIN',
+    "ALL",
+    "AND",
+    "ANY",
+    "ARRAY",
+    "AS",
+    "ASC",
+    "ASSERT_ROWS_MODIFIED",
+    "AT",
+    "BETWEEN",
+    "BY",
+    "CASE",
+    "CAST",
+    "COLLATE",
+    "CONTAINS",
+    "CREATE",
+    "CROSS",
+    "CUBE",
+    "CURRENT",
+    "DEFAULT",
+    "DEFINE",
+    "DESC",
+    "DISTINCT",
+    "DROP",
+    "ELSE",
+    "END",
+    "ENUM",
+    "ESCAPE",
+    "EXCEPT",
+    "EXCLUDE",
+    "EXISTS",
+    "EXTRACT",
+    "FALSE",
+    "FETCH",
+    "FOLLOWING",
+    "FOR",
+    "FROM",
+    "FULL",
+    "GROUP",
+    "GROUPING",
+    "GROUPS",
+    "HASH",
+    "HAVING",
+    "IF",
+    "IGNORE",
+    "IN",
+    "INNER",
+    "INTERSECT",
+    "INTERVAL",
+    "INTO",
+    "IS",
+    "JOIN",
+    "LATERAL",
+    "LEFT",
+    "LIKE",
+    "LIMIT",
+    "LOOKUP",
+    "MERGE",
+    "NATURAL",
+    "NEW",
+    "NO",
+    "NOT",
+    "NULL",
+    "NULLS",
+    "OF",
+    "ON",
+    "OR",
+    "ORDER",
+    "OUTER",
+    "OVER",
+    "PARTITION",
+    "PRECEDING",
+    "PROTO",
+    "RANGE",
+    "RECURSIVE",
+    "RESPECT",
+    "RIGHT",
+    "ROLLUP",
+    "ROWS",
+    "SELECT",
+    "SET",
+    "SOME",
+    "STRUCT",
+    "TABLESAMPLE",
+    "THEN",
+    "TO",
+    "TREAT",
+    "TRUE",
+    "UNBOUNDED",
+    "UNION",
+    "UNNEST",
+    "USING",
+    "WHEN",
+    "WHERE",
+    "WINDOW",
+    "WITH",
+    "WITHIN",
 }
 
 
@@ -505,6 +519,6 @@ def escape_name(name):
     Escape name by applying backticks to value that either
     contain '-' or are any of Cloud Spanner's reserved keywords.
     """
-    if '-' in name or ' ' in name or name.upper() in SPANNER_RESERVED_KEYWORDS:
-        return '`' + name + '`'
+    if "-" in name or " " in name or name.upper() in SPANNER_RESERVED_KEYWORDS:
+        return "`" + name + "`"
     return name

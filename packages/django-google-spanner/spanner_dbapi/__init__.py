@@ -48,7 +48,9 @@ paramstyle = "format"  # ANSI C printf format codes, e.g. ...WHERE name=%s.
 threadsafety = 1
 
 
-def connect(instance_id, database_id, project=None, credentials=None, user_agent=None):
+def connect(
+    instance_id, database_id, project=None, credentials=None, user_agent=None
+):
     """
     Create a connection to Cloud Spanner database.
 
@@ -85,7 +87,9 @@ def connect(instance_id, database_id, project=None, credentials=None, user_agent
     if not instance.exists():
         raise ValueError("instance '%s' does not exist." % instance_id)
 
-    database = instance.database(database_id, pool=spanner_v1.pool.BurstyPool())
+    database = instance.database(
+        database_id, pool=spanner_v1.pool.BurstyPool()
+    )
     if not database.exists():
         raise ValueError("database '%s' does not exist." % database_id)
 

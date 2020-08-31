@@ -8,8 +8,8 @@ import sys
 
 from google.api_core.gapic_v1.client_info import ClientInfo
 
-VERSION = '0.0.1'
-DEFAULT_USER_AGENT = 'django_spanner/' + VERSION
+VERSION = "0.0.1"
+DEFAULT_USER_AGENT = "django_spanner/" + VERSION
 
 vers = sys.version_info
 
@@ -22,5 +22,5 @@ def google_client_info(user_agent=None):
 
     return ClientInfo(
         user_agent=user_agent or DEFAULT_USER_AGENT,
-        python_version='%d.%d.%d' % (vers.major, vers.minor, vers.micro or 0),
+        python_version="%d.%d.%d" % (vers.major, vers.minor, vers.micro or 0),
     )
