@@ -443,7 +443,7 @@ class BaseQuery(object):
             all_descendants=self._all_descendants,
         )
 
-    def _check_snapshot(self, document_fields) -> None:
+    def _check_snapshot(self, document_snapshot) -> None:
         """Validate local snapshots for non-collection-group queries.
 
         Raises:
@@ -453,26 +453,26 @@ class BaseQuery(object):
         if self._all_descendants:
             return
 
-        if document_fields.reference._path[:-1] != self._parent._path:
+        if document_snapshot.reference._path[:-1] != self._parent._path:
             raise ValueError("Cannot use snapshot from another collection as a cursor.")
 
-    def _cursor_helper(self, document_fields, before, start) -> "BaseQuery":
+    def _cursor_helper(self, document_fields_or_snapshot, before, start) -> "BaseQuery":
         """Set values to be used for a ``start_at`` or ``end_at`` cursor.
 
         The values will later be used in a query protobuf.
 
-        When the query is sent to the server, the ``document_fields`` will
+        When the query is sent to the server, the ``document_fields_or_snapshot`` will
         be used in the order given by fields set by
         :meth:`~google.cloud.firestore_v1.query.Query.order_by`.
 
         Args:
-            document_fields
+            document_fields_or_snapshot
                 (Union[:class:`~google.cloud.firestore_v1.document.DocumentSnapshot`, dict, list, tuple]):
                 a document snapshot or a dictionary/list/tuple of fields
                 representing a query results cursor. A cursor is a collection
                 of values that represent a position in a query result set.
             before (bool): Flag indicating if the document in
-                ``document_fields`` should (:data:`False`) or
+                ``document_fields_or_snapshot`` should (:data:`False`) or
                 shouldn't (:data:`True`) be included in the result set.
             start (Optional[bool]): determines if the cursor is a ``start_at``
                 cursor (:data:`True`) or an ``end_at`` cursor (:data:`False`).
@@ -482,15 +482,15 @@ class BaseQuery(object):
             A query with cursor. Acts as a copy of the current query, modified
             with the newly added "start at" cursor.
         """
-        if isinstance(document_fields, tuple):
-            document_fields = list(document_fields)
-        elif isinstance(document_fields, document.DocumentSnapshot):
-            self._check_snapshot(document_fields)
+        if isinstance(document_fields_or_snapshot, tuple):
+            document_fields_or_snapshot = list(document_fields_or_snapshot)
+        elif isinstance(document_fields_or_snapshot, document.DocumentSnapshot):
+            self._check_snapshot(document_fields_or_snapshot)
         else:
             # NOTE: We copy so that the caller can't modify after calling.
-            document_fields = copy.deepcopy(document_fields)
+            document_fields_or_snapshot = copy.deepcopy(document_fields_or_snapshot)
 
-        cursor_pair = document_fields, before
+        cursor_pair = document_fields_or_snapshot, before
         query_kwargs = {
             "projection": self._projection,
             "field_filters": self._field_filters,
@@ -508,11 +508,11 @@ class BaseQuery(object):
 
         return self.__class__(self._parent, **query_kwargs)
 
-    def start_at(self, document_fields) -> "BaseQuery":
+    def start_at(self, document_fields_or_snapshot) -> "BaseQuery":
         """Start query results at a particular document value.
 
         The result set will **include** the document specified by
-        ``document_fields``.
+        ``document_fields_or_snapshot``.
 
         If the current query already has specified a start cursor -- either
         via this method or
@@ -524,7 +524,7 @@ class BaseQuery(object):
         :meth:`~google.cloud.firestore_v1.query.Query.order_by`.
 
         Args:
-            document_fields
+            document_fields_or_snapshot
                 (Union[:class:`~google.cloud.firestore_v1.document.DocumentSnapshot`, dict, list, tuple]):
                 a document snapshot or a dictionary/list/tuple of fields
                 representing a query results cursor. A cursor is a collection
@@ -536,25 +536,25 @@ class BaseQuery(object):
             a copy of the current query, modified with the newly added
             "start at" cursor.
         """
-        return self._cursor_helper(document_fields, before=True, start=True)
+        return self._cursor_helper(document_fields_or_snapshot, before=True, start=True)
 
-    def start_after(self, document_fields) -> "BaseQuery":
+    def start_after(self, document_fields_or_snapshot) -> "BaseQuery":
         """Start query results after a particular document value.
 
         The result set will **exclude** the document specified by
-        ``document_fields``.
+        ``document_fields_or_snapshot``.
 
         If the current query already has specified a start cursor -- either
         via this method or
         :meth:`~google.cloud.firestore_v1.query.Query.start_at` -- this will
         overwrite it.
 
-        When the query is sent to the server, the ``document_fields`` will
+        When the query is sent to the server, the ``document_fields_or_snapshot`` will
         be used in the order given by fields set by
         :meth:`~google.cloud.firestore_v1.query.Query.order_by`.
 
         Args:
-            document_fields
+            document_fields_or_snapshot
                 (Union[:class:`~google.cloud.firestore_v1.document.DocumentSnapshot`, dict, list, tuple]):
                 a document snapshot or a dictionary/list/tuple of fields
                 representing a query results cursor. A cursor is a collection
@@ -565,25 +565,27 @@ class BaseQuery(object):
             A query with cursor. Acts as a copy of the current query, modified
             with the newly added "start after" cursor.
         """
-        return self._cursor_helper(document_fields, before=False, start=True)
+        return self._cursor_helper(
+            document_fields_or_snapshot, before=False, start=True
+        )
 
-    def end_before(self, document_fields) -> "BaseQuery":
+    def end_before(self, document_fields_or_snapshot) -> "BaseQuery":
         """End query results before a particular document value.
 
         The result set will **exclude** the document specified by
-        ``document_fields``.
+        ``document_fields_or_snapshot``.
 
         If the current query already has specified an end cursor -- either
         via this method or
         :meth:`~google.cloud.firestore_v1.query.Query.end_at` -- this will
         overwrite it.
 
-        When the query is sent to the server, the ``document_fields`` will
+        When the query is sent to the server, the ``document_fields_or_snapshot`` will
         be used in the order given by fields set by
         :meth:`~google.cloud.firestore_v1.query.Query.order_by`.
 
         Args:
-            document_fields
+            document_fields_or_snapshot
                 (Union[:class:`~google.cloud.firestore_v1.document.DocumentSnapshot`, dict, list, tuple]):
                 a document snapshot or a dictionary/list/tuple of fields
                 representing a query results cursor. A cursor is a collection
@@ -594,25 +596,27 @@ class BaseQuery(object):
             A query with cursor. Acts as a copy of the current query, modified
             with the newly added "end before" cursor.
         """
-        return self._cursor_helper(document_fields, before=True, start=False)
+        return self._cursor_helper(
+            document_fields_or_snapshot, before=True, start=False
+        )
 
-    def end_at(self, document_fields) -> "BaseQuery":
+    def end_at(self, document_fields_or_snapshot) -> "BaseQuery":
         """End query results at a particular document value.
 
         The result set will **include** the document specified by
-        ``document_fields``.
+        ``document_fields_or_snapshot``.
 
         If the current query already has specified an end cursor -- either
         via this method or
         :meth:`~google.cloud.firestore_v1.query.Query.end_before` -- this will
         overwrite it.
 
-        When the query is sent to the server, the ``document_fields`` will
+        When the query is sent to the server, the ``document_fields_or_snapshot`` will
         be used in the order given by fields set by
         :meth:`~google.cloud.firestore_v1.query.Query.order_by`.
 
         Args:
-            document_fields
+            document_fields_or_snapshot
                 (Union[:class:`~google.cloud.firestore_v1.document.DocumentSnapshot`, dict, list, tuple]):
                 a document snapshot or a dictionary/list/tuple of fields
                 representing a query results cursor. A cursor is a collection
@@ -623,7 +627,9 @@ class BaseQuery(object):
             A query with cursor. Acts as a copy of the current query, modified
             with the newly added "end at" cursor.
         """
-        return self._cursor_helper(document_fields, before=False, start=False)
+        return self._cursor_helper(
+            document_fields_or_snapshot, before=False, start=False
+        )
 
     def _filters_pb(self) -> Any:
         """Convert all the filters into a single generic Filter protobuf.
