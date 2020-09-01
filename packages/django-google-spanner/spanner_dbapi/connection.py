@@ -17,20 +17,25 @@ ColumnDetails = namedtuple("column_details", ["null_ok", "spanner_type"])
 class Connection:
     def __init__(self, db_handle):
         self._dbhandle = db_handle
-        self._closed = False
         self._ddl_statements = []
 
+        self.is_closed = False
+
     def cursor(self):
-        self.__raise_if_already_closed()
+        self._raise_if_closed()
 
         return Cursor(self)
 
-    def __raise_if_already_closed(self):
+    def _raise_if_closed(self):
+        """Raise an exception if this connection is closed.
+
+        Helper to check the connection state before
+        running a SQL/DDL/DML query.
+
+        :raises: :class:`InterfaceError` if this connection is closed.
         """
-        Raise an exception if attempting to use an already closed connection.
-        """
-        if self._closed:
-            raise InterfaceError("connection already closed")
+        if self.is_closed:
+            raise InterfaceError("connection is already closed")
 
     def __handle_update_ddl(self, ddl_statements):
         """
@@ -41,24 +46,24 @@ class Connection:
         Returns:
             google.api_core.operation.Operation.result()
         """
-        self.__raise_if_already_closed()
+        self._raise_if_closed()
         # Synchronously wait on the operation's completion.
         return self._dbhandle.update_ddl(ddl_statements).result()
 
     def read_snapshot(self):
-        self.__raise_if_already_closed()
+        self._raise_if_closed()
         return self._dbhandle.snapshot()
 
     def in_transaction(self, fn, *args, **kwargs):
-        self.__raise_if_already_closed()
+        self._raise_if_closed()
         return self._dbhandle.run_in_transaction(fn, *args, **kwargs)
 
     def append_ddl_statement(self, ddl_statement):
-        self.__raise_if_already_closed()
+        self._raise_if_closed()
         self._ddl_statements.append(ddl_statement)
 
     def run_prior_DDL_statements(self):
-        self.__raise_if_already_closed()
+        self._raise_if_closed()
 
         if not self._ddl_statements:
             return
@@ -113,17 +118,21 @@ class Connection:
         return column_details
 
     def close(self):
+        """Close this connection.
+
+        The connection will be unusable from this point forward.
+        """
         self.rollback()
         self.__dbhandle = None
-        self._closed = True
+        self.is_closed = True
 
     def commit(self):
-        self.__raise_if_already_closed()
+        self._raise_if_closed()
 
         self.run_prior_DDL_statements()
 
     def rollback(self):
-        self.__raise_if_already_closed()
+        self._raise_if_closed()
 
         # TODO: to be added.
 
