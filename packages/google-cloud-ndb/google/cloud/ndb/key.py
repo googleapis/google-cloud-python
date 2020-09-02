@@ -253,7 +253,7 @@ class Key(object):
             ~google.cloud.datastore._app_engine_key_pb2.Reference]): A
             reference protobuf representing a key.
         serialized (Optional[bytes]): A reference protobuf serialized to bytes.
-        urlsafe (Optional[str]): A reference protobuf serialized to bytes. The
+        urlsafe (Optional[bytes]): A reference protobuf serialized to bytes. The
             raw bytes are then converted to a websafe base64-encoded string.
         pairs (Optional[Iterable[Tuple[str, Union[str, int]]]]): An iterable
             of ``(kind, id)`` pairs. If this argument is used, then
@@ -1276,7 +1276,7 @@ def _parse_from_ref(
             ~google.cloud.datastore._app_engine_key_pb2.Reference]): A
             reference protobuf representing a key.
         serialized (Optional[bytes]): A reference protobuf serialized to bytes.
-        urlsafe (Optional[str]): A reference protobuf serialized to bytes. The
+        urlsafe (Optional[bytes]): A reference protobuf serialized to bytes. The
             raw bytes are then converted to a websafe base64-encoded string.
         app (Optional[str]): The Google Cloud Platform project (previously
             on Google App Engine, this was called the Application ID).
