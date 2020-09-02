@@ -422,7 +422,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(table.clustering_fields, ["user_email", "store_code"])
 
     def test_delete_dataset_with_string(self):
-        dataset_id = _make_dataset_id("delete_table_true")
+        dataset_id = _make_dataset_id("delete_table_true_with_string")
         project = Config.CLIENT.project
         dataset_ref = bigquery.DatasetReference(project, dataset_id)
         retry_403(Config.CLIENT.create_dataset)(Dataset(dataset_ref))
@@ -431,7 +431,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertFalse(_dataset_exists(dataset_ref))
 
     def test_delete_dataset_delete_contents_true(self):
-        dataset_id = _make_dataset_id("delete_table_true")
+        dataset_id = _make_dataset_id("delete_table_true_with_content")
         project = Config.CLIENT.project
         dataset_ref = bigquery.DatasetReference(project, dataset_id)
         dataset = retry_403(Config.CLIENT.create_dataset)(Dataset(dataset_ref))
