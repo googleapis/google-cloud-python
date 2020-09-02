@@ -404,7 +404,14 @@ class PartialRowsData(object):
         self.read_method = read_method
         self.request = request
         self.retry = retry
-        self.response_iterator = read_method(request)
+
+        # The `timeout` parameter must be somewhat greater than the value
+        # contained in `self.retry`, in order to avoid race-like condition and
+        # allow registering the first deadline error before invoking the retry.
+        # Otherwise there is a risk of entering an infinite loop that resets
+        # the timeout counter just before it being triggered. The increment
+        # by 1 second here is customary but should not be much less than that.
+        self.response_iterator = read_method(request, timeout=self.retry._deadline + 1)
 
         self.rows = {}
         self._state = self.STATE_NEW_ROW

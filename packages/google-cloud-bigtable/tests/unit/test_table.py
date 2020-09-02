@@ -654,6 +654,7 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable import table as MUT
         from google.cloud.bigtable_v2.gapic import bigtable_client
         from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS
 
         data_api = bigtable_client.BigtableClient(mock.Mock())
         table_api = mock.create_autospec(
@@ -670,7 +671,8 @@ class TestTable(unittest.TestCase):
         table = self._make_one(self.TABLE_ID, instance, app_profile_id=app_profile_id)
 
         # Create request_pb
-        request = retry = object()  # Returned by our mock.
+        request = object()  # Returned by our mock.
+        retry = DEFAULT_RETRY_READ_ROWS
         mock_created = []
 
         def mock_create_row_request(table_name, **kwargs):

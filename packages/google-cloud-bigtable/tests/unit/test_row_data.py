@@ -385,10 +385,16 @@ class TestPartialRowsData(unittest.TestCase):
         self.assertEqual(partial_rows_data.retry, DEFAULT_RETRY_READ_ROWS)
 
     def test_constructor_with_retry(self):
+        from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS
+
         client = _Client()
         client._data_stub = mock.MagicMock()
-        request = retry = object()
+        request = object()
+        retry = DEFAULT_RETRY_READ_ROWS
         partial_rows_data = self._make_one(client._data_stub.ReadRows, request, retry)
+        partial_rows_data.read_method.assert_called_once_with(
+            request, timeout=DEFAULT_RETRY_READ_ROWS.deadline + 1
+        )
         self.assertIs(partial_rows_data.request, request)
         self.assertEqual(partial_rows_data.rows, {})
         self.assertEqual(partial_rows_data.retry, retry)
@@ -471,6 +477,7 @@ class TestPartialRowsData(unittest.TestCase):
         request = object()
 
         yrd = self._make_one(client._table_data_client.transport.read_rows, request)
+        self.assertEqual(yrd.retry._deadline, 60.0)
 
         yrd._response_iterator = iterator
         rows = [row for row in yrd]
