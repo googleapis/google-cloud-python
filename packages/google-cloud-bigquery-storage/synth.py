@@ -16,6 +16,7 @@
 
 import synthtool as s
 from synthtool import gcp
+from synthtool.languages import python
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
@@ -165,8 +166,17 @@ templated_files = common.py_library(
     samples_test=True,
     system_test_dependencies=system_test_deps,
     unit_test_dependencies=optional_deps,
+    samples=True,
 )
 s.move(templated_files)
+
+
+# ----------------------------------------------------------------------------
+# Samples templates
+# ----------------------------------------------------------------------------
+
+python.py_samples(skip_readmes=True)
+
 
 # install bigquery as a (non-editable) package
 s.replace(
