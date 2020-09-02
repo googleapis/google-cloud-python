@@ -31,12 +31,12 @@ def client():
 
 @pytest.fixture(scope="module")
 def parent_inside(client):
-    return client.location_path(vpcsc_config.project_inside, "us-central1")
+    return f"projects/{vpcsc_config.project_inside}/locations/us-central1"
 
 
 @pytest.fixture(scope="module")
 def parent_outside(client):
-    return client.location_path(vpcsc_config.project_outside, "us-central1")
+    return f"projects/{vpcsc_config.project_outside}/locations/us-central1"
 
 
 @pytest.fixture(scope="module")
