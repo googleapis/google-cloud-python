@@ -288,7 +288,9 @@ def decode(token, certs=None, verify=True, audience=None):
     return payload
 
 
-class Credentials(google.auth.credentials.Signing, google.auth.credentials.Credentials):
+class Credentials(
+    google.auth.credentials.Signing, google.auth.credentials.CredentialsWithQuotaProject
+):
     """Credentials that use a JWT as the bearer token.
 
     These credentials require an "audience" claim. This claim identifies the
@@ -493,7 +495,7 @@ class Credentials(google.auth.credentials.Signing, google.auth.credentials.Crede
             quota_project_id=self._quota_project_id,
         )
 
-    @_helpers.copy_docstring(google.auth.credentials.Credentials)
+    @_helpers.copy_docstring(google.auth.credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
         return self.__class__(
             self._signer,
@@ -554,7 +556,7 @@ class Credentials(google.auth.credentials.Signing, google.auth.credentials.Crede
 
 
 class OnDemandCredentials(
-    google.auth.credentials.Signing, google.auth.credentials.Credentials
+    google.auth.credentials.Signing, google.auth.credentials.CredentialsWithQuotaProject
 ):
     """On-demand JWT credentials.
 
@@ -721,7 +723,7 @@ class OnDemandCredentials(
             quota_project_id=self._quota_project_id,
         )
 
-    @_helpers.copy_docstring(google.auth.credentials.Credentials)
+    @_helpers.copy_docstring(google.auth.credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
 
         return self.__class__(

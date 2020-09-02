@@ -115,12 +115,6 @@ def test_anonymous_credentials_before_request():
     assert headers == {}
 
 
-def test_anonymous_credentials_with_quota_project():
-    with pytest.raises(ValueError):
-        anon = credentials.AnonymousCredentials()
-        anon.with_quota_project("project-foo")
-
-
 class ReadOnlyScopedCredentialsImpl(credentials.ReadOnlyScoped, CredentialsImpl):
     @property
     def requires_scopes(self):

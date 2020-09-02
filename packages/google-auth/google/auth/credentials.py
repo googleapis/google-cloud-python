@@ -133,6 +133,10 @@ class Credentials(object):
             self.refresh(request)
         self.apply(headers)
 
+
+class CredentialsWithQuotaProject(Credentials):
+    """Abstract base for credentials supporting ``with_quota_project`` factory"""
+
     def with_quota_project(self, quota_project_id):
         """Returns a copy of these credentials with a modified quota project
 
@@ -143,7 +147,7 @@ class Credentials(object):
         Returns:
             google.oauth2.credentials.Credentials: A new credentials instance.
         """
-        raise NotImplementedError("This class does not support quota project.")
+        raise NotImplementedError("This credential does not support quota project.")
 
 
 class AnonymousCredentials(Credentials):
@@ -181,9 +185,6 @@ class AnonymousCredentials(Credentials):
 
     def before_request(self, request, method, url, headers):
         """Anonymous credentials do nothing to the request."""
-
-    def with_quota_project(self, quota_project_id):
-        raise ValueError("Anonymous credentials don't support quota project.")
 
 
 @six.add_metaclass(abc.ABCMeta)

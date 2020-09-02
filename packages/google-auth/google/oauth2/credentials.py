@@ -47,7 +47,7 @@ from google.oauth2 import _client
 _GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
 
 
-class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
+class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaProject):
     """Credentials using OAuth 2.0 access and refresh tokens.
 
     The credentials are considered immutable. If you want to modify the
@@ -161,7 +161,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
         the initial token is requested and can not be changed."""
         return False
 
-    @_helpers.copy_docstring(credentials.Credentials)
+    @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
 
         return self.__class__(
@@ -305,7 +305,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
         return json.dumps(prep)
 
 
-class UserAccessTokenCredentials(credentials.Credentials):
+class UserAccessTokenCredentials(credentials.CredentialsWithQuotaProject):
     """Access token credentials for user account.
 
     Obtain the access token for a given user account or the current active
@@ -336,7 +336,7 @@ class UserAccessTokenCredentials(credentials.Credentials):
         """
         return self.__class__(account=account, quota_project_id=self._quota_project_id)
 
-    @_helpers.copy_docstring(credentials.Credentials)
+    @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
         return self.__class__(account=self._account, quota_project_id=quota_project_id)
 

@@ -49,7 +49,7 @@ CLIENT_SECRETS_FILE = os.path.join(DATA_DIR, "client_secrets.json")
 with open(SERVICE_ACCOUNT_FILE) as fh:
     SERVICE_ACCOUNT_FILE_DATA = json.load(fh)
 
-MOCK_CREDENTIALS = mock.Mock(spec=credentials.Credentials)
+MOCK_CREDENTIALS = mock.Mock(spec=credentials.CredentialsWithQuotaProject)
 MOCK_CREDENTIALS.with_quota_project.return_value = MOCK_CREDENTIALS
 
 LOAD_FILE_PATCH = mock.patch(

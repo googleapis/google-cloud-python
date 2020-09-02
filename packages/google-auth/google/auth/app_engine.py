@@ -77,7 +77,9 @@ def get_project_id():
     return app_identity.get_application_id()
 
 
-class Credentials(credentials.Scoped, credentials.Signing, credentials.Credentials):
+class Credentials(
+    credentials.Scoped, credentials.Signing, credentials.CredentialsWithQuotaProject
+):
     """App Engine standard environment credentials.
 
     These credentials use the App Engine App Identity API to obtain access
@@ -145,7 +147,7 @@ class Credentials(credentials.Scoped, credentials.Signing, credentials.Credentia
             quota_project_id=self.quota_project_id,
         )
 
-    @_helpers.copy_docstring(credentials.Credentials)
+    @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
         return self.__class__(
             scopes=self._scopes,

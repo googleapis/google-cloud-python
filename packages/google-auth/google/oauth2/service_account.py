@@ -82,7 +82,9 @@ from google.oauth2 import _client
 _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
 
 
-class Credentials(credentials.Signing, credentials.Scoped, credentials.Credentials):
+class Credentials(
+    credentials.Signing, credentials.Scoped, credentials.CredentialsWithQuotaProject
+):
     """Service account credentials
 
     Usually, you'll create these credentials with one of the helper
@@ -306,7 +308,7 @@ class Credentials(credentials.Signing, credentials.Scoped, credentials.Credentia
             additional_claims=new_additional_claims,
         )
 
-    @_helpers.copy_docstring(credentials.Credentials)
+    @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
 
         return self.__class__(
@@ -375,7 +377,7 @@ class Credentials(credentials.Signing, credentials.Scoped, credentials.Credentia
         return self._service_account_email
 
 
-class IDTokenCredentials(credentials.Signing, credentials.Credentials):
+class IDTokenCredentials(credentials.Signing, credentials.CredentialsWithQuotaProject):
     """Open ID Connect ID Token-based service account credentials.
 
     These credentials are largely similar to :class:`.Credentials`, but instead
@@ -533,7 +535,7 @@ class IDTokenCredentials(credentials.Signing, credentials.Credentials):
             quota_project_id=self.quota_project_id,
         )
 
-    @_helpers.copy_docstring(credentials.Credentials)
+    @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
         return self.__class__(
             self._signer,

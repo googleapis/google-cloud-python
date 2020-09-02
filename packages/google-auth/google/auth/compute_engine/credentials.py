@@ -32,7 +32,7 @@ from google.auth.compute_engine import _metadata
 from google.oauth2 import _client
 
 
-class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
+class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaProject):
     """Compute Engine Credentials.
 
     These credentials use the Google Compute Engine metadata server to obtain
@@ -118,7 +118,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
         """False: Compute Engine credentials can not be scoped."""
         return False
 
-    @_helpers.copy_docstring(credentials.Credentials)
+    @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
         return self.__class__(
             service_account_email=self._service_account_email,
@@ -130,7 +130,7 @@ _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
 _DEFAULT_TOKEN_URI = "https://www.googleapis.com/oauth2/v4/token"
 
 
-class IDTokenCredentials(credentials.Credentials, credentials.Signing):
+class IDTokenCredentials(credentials.CredentialsWithQuotaProject, credentials.Signing):
     """Open ID Connect ID Token-based service account credentials.
 
     These credentials relies on the default service account of a GCE instance.
@@ -254,7 +254,7 @@ class IDTokenCredentials(credentials.Credentials, credentials.Signing):
                 quota_project_id=self._quota_project_id,
             )
 
-    @_helpers.copy_docstring(credentials.Credentials)
+    @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
 
         # since the signer is already instantiated,

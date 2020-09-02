@@ -115,7 +115,7 @@ def _make_iam_token_request(request, principal, headers, body):
         six.raise_from(new_exc, caught_exc)
 
 
-class Credentials(credentials.Credentials, credentials.Signing):
+class Credentials(credentials.CredentialsWithQuotaProject, credentials.Signing):
     """This module defines impersonated credentials which are essentially
     impersonated identities.
 
@@ -293,7 +293,7 @@ class Credentials(credentials.Credentials, credentials.Signing):
     def signer(self):
         return self
 
-    @_helpers.copy_docstring(credentials.Credentials)
+    @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
         return self.__class__(
             self._source_credentials,
@@ -305,7 +305,7 @@ class Credentials(credentials.Credentials, credentials.Signing):
         )
 
 
-class IDTokenCredentials(credentials.Credentials):
+class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
     """Open ID Connect ID Token-based service account credentials.
 
     """
@@ -359,7 +359,7 @@ class IDTokenCredentials(credentials.Credentials):
             quota_project_id=self._quota_project_id,
         )
 
-    @_helpers.copy_docstring(credentials.Credentials)
+    @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
         return self.__class__(
             target_credentials=self._target_credentials,
