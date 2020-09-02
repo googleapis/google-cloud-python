@@ -1488,3 +1488,31 @@ def test_local_structured_property_with_polymodel(dispose_of):
 
     entity = entity.key.get()
     assert entity.child.foo == "bar"
+
+
+@pytest.mark.usefixtures("client_context")
+def test_local_structured_property_with_inheritance(dispose_of):
+    """Regression test for #523
+
+    https://github.com/googleapis/python-ndb/issues/523
+    """
+
+    class Base(ndb.Model):
+        pass
+
+    class SubKind(Base):
+        foo = ndb.StringProperty()
+
+    class Container(ndb.Model):
+        children = ndb.LocalStructuredProperty(Base, repeated=True)
+
+    entity = Container()
+
+    subkind = SubKind(foo="bar")
+    entity.children.append(subkind)
+    key = entity.put()
+
+    dispose_of(key._key)
+
+    entity = entity.key.get()
+    assert isinstance(entity.children[0], Base)

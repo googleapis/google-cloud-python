@@ -642,7 +642,7 @@ def _entity_from_ds_entity(ds_entity, model_class=None):
 
                 continue
 
-        if prop is None and kind != model_class.__name__:
+        if prop is None and kind is not None and kind != model_class.__name__:
             # kind and model_class name do not match, so this is probably a
             # polymodel. We need to check if the prop belongs to the subclass.
             model_subclass = Model._lookup_model(kind)
