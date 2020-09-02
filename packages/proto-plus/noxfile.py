@@ -30,11 +30,16 @@ def unit(session, proto="python"):
         "py.test",
         "-W=error",
         "--quiet",
-        "--cov=proto",
-        "--cov-config=.coveragerc",
-        "--cov-report=term",
-        "--cov-report=html",
-        os.path.join("tests", ""),
+        *(
+            session.posargs  # Coverage info when running individual tests is annoying.
+            or [
+                "--cov=proto",
+                "--cov-config=.coveragerc",
+                "--cov-report=term",
+                "--cov-report=html",
+                os.path.join("tests", ""),
+            ]
+        ),
     )
 
 

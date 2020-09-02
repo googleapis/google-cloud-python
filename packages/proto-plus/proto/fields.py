@@ -72,7 +72,6 @@ class Field:
     def descriptor(self):
         """Return the descriptor for the field."""
         if not self._descriptor:
-            proto_type = self.proto_type
             # Resolve the message type, if any, to a string.
             type_name = None
             if isinstance(self.message, str):
@@ -85,29 +84,23 @@ class Field:
                 type_name = (
                     self.message.DESCRIPTOR.full_name
                     if hasattr(self.message, "DESCRIPTOR")
-                    else self.message.meta.full_name
+                    else self.message._meta.full_name
                 )
+            elif isinstance(self.enum, str):
+                if not self.enum.startswith(self.package):
+                    self.enum = "{package}.{name}".format(
+                        package=self.package, name=self.enum,
+                    )
+                type_name = self.enum
             elif self.enum:
-                # Nos decipiat.
-                #
-                # As far as the wire format is concerned, enums are int32s.
-                # Protocol buffers itself also only sends ints; the enum
-                # objects are simply helper classes for translating names
-                # and values and it is the user's job to resolve to an int.
-                #
-                # Therefore, the non-trivial effort of adding the actual
-                # enum descriptors seems to add little or no actual value.
-                #
-                # FIXME: Eventually, come back and put in the actual enum
-                # descriptors.
-                proto_type = ProtoType.INT32
+                type_name = self.enum._meta.full_name
 
             # Set the descriptor.
             self._descriptor = descriptor_pb2.FieldDescriptorProto(
                 name=self.name,
                 number=self.number,
                 label=3 if self.repeated else 1,
-                type=proto_type,
+                type=self.proto_type,
                 type_name=type_name,
                 json_name=self.json_name,
                 proto3_optional=self.optional,
