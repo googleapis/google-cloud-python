@@ -15,6 +15,7 @@
 import datetime
 import os
 import unittest
+import warnings
 
 import requests
 import six
@@ -100,6 +101,32 @@ class TestDatastoreAllocateIDs(TestDatastore):
             self.assertNotEqual(key.id, None)
 
         self.assertEqual(len(unique_ids), num_ids)
+
+
+class TestDatastoreReserveIDs(TestDatastore):
+    def test_reserve_ids_sequential(self):
+        # Smoke test to make sure it doesn't blow up. No return value or
+        # verifiable side effect to verify.
+        num_ids = 10
+        Config.CLIENT.reserve_ids_sequential(Config.CLIENT.key("Kind", 1234), num_ids)
+
+    def test_reserve_ids(self):
+        with warnings.catch_warnings(record=True) as warned:
+            num_ids = 10
+            Config.CLIENT.reserve_ids(Config.CLIENT.key("Kind", 1234), num_ids)
+
+        warned = [
+            warning
+            for warning in warned
+            if "reserve_ids_sequential" in str(warning.message)
+        ]
+        assert len(warned) == 1
+
+    def test_reserve_ids_multi(self):
+        # Smoke test to make sure it doesn't blow up. No return value or
+        # verifiable side effect to verify.
+        keys = [Config.CLIENT.key("KIND", 1234), Config.CLIENT.key("KIND", 1235)]
+        Config.CLIENT.reserve_ids_multi(keys)
 
 
 class TestDatastoreSave(TestDatastore):

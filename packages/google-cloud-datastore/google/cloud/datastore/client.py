@@ -14,6 +14,7 @@
 """Convenience wrapper for invoking APIs/factories w/ a project."""
 
 import os
+import warnings
 
 import google.api_core.client_options
 from google.auth.credentials import AnonymousCredentials
@@ -816,11 +817,18 @@ class Client(ClientWithProject):
             kwargs["namespace"] = self.namespace
         return Query(self, **kwargs)
 
-    def reserve_ids(self, complete_key, num_ids, retry=None, timeout=None):
-        """Reserve a list of IDs from a complete key.
+    def reserve_ids_sequential(self, complete_key, num_ids, retry=None, timeout=None):
+        """Reserve a list of IDs sequentially from a complete key.
+
+        This will reserve the key passed as `complete_key` as well as
+        additional keys derived by incrementing the last ID in the path of
+        `complete_key` sequentially to obtain the number of keys specified in
+        `num_ids`.
 
         :type complete_key: :class:`google.cloud.datastore.key.Key`
-        :param complete_key: Complete key to use as base for reserved IDs.
+        :param complete_key:
+            Complete key to use as base for reserved IDs. Key must use a
+            numeric ID and not a string name.
 
         :type num_ids: int
         :param num_ids: The number of IDs to reserve.
@@ -844,16 +852,75 @@ class Client(ClientWithProject):
         if complete_key.is_partial:
             raise ValueError(("Key is not Complete.", complete_key))
 
+        if complete_key.id is None:
+            raise ValueError(("Key must use numeric id.", complete_key))
+
         if not isinstance(num_ids, int):
             raise ValueError(("num_ids is not a valid integer.", num_ids))
 
+        key_class = type(complete_key)
+        namespace = complete_key._namespace
+        project = complete_key._project
+        flat_path = list(complete_key._flat_path[:-1])
+        start_id = complete_key._flat_path[-1]
+
+        key_pbs = []
+        for id in range(start_id, start_id + num_ids):
+            path = flat_path + [id]
+            key = key_class(*path, project=project, namespace=namespace)
+            key_pbs.append(key.to_protobuf())
+
         kwargs = _make_retry_timeout_kwargs(retry, timeout)
+        self._datastore_api.reserve_ids(complete_key.project, key_pbs, **kwargs)
 
-        complete_key_pb = complete_key.to_protobuf()
-        complete_key_pbs = [complete_key_pb] * num_ids
+        return None
 
-        self._datastore_api.reserve_ids(
-            complete_key.project, complete_key_pbs, **kwargs
+    def reserve_ids(self, complete_key, num_ids, retry=None, timeout=None):
+        """Reserve a list of IDs sequentially from a complete key.
+
+        DEPRECATED. Alias for :meth:`reserve_ids_sequential`.
+
+        Please use either :meth:`reserve_ids_multi` (recommended) or
+        :meth:`reserve_ids_sequential`.
+        """
+        message = (
+            "Client.reserve_ids is deprecated. Please use "
+            "Client.reserve_ids_multi or Client.reserve_ids_sequential",
         )
+        warnings.warn(message, DeprecationWarning)
+        return self.reserve_ids_sequential(
+            complete_key, num_ids, retry=retry, timeout=timeout
+        )
+
+    def reserve_ids_multi(self, complete_keys, retry=None, timeout=None):
+        """Reserve IDs from a list of complete keys.
+
+        :type complete_keys: `list` of :class:`google.cloud.datastore.key.Key`
+        :param complete_keys:
+            Complete keys for which to reserve IDs.
+
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry:
+            A retry object used to retry requests. If ``None`` is specified,
+            requests will be retried using a default configuration.
+
+        :type timeout: float
+        :param timeout:
+            Time, in seconds, to wait for the request to complete.
+            Note that if ``retry`` is specified, the timeout applies
+            to each individual attempt.
+
+        :rtype: class:`NoneType`
+        :returns: None
+        :raises: :class:`ValueError` if any of `complete_keys`` is not a
+                 Complete key.
+        """
+        for complete_key in complete_keys:
+            if complete_key.is_partial:
+                raise ValueError(("Key is not Complete.", complete_key))
+
+        kwargs = _make_retry_timeout_kwargs(retry, timeout)
+        key_pbs = [key.to_protobuf() for key in complete_keys]
+        self._datastore_api.reserve_ids(complete_keys[0].project, key_pbs, **kwargs)
 
         return None

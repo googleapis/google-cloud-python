@@ -774,8 +774,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.datastore.helpers import _property_tuples
 
         entity = _Entity(foo=u"bar")
-        key = entity.key = _Key(self.PROJECT)
-        key._id = None
+        key = entity.key = _Key(_Key.kind, None)
         retry = mock.Mock()
         timeout = 100000
 
@@ -813,7 +812,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
         entity = _Entity(foo=u"bar")
-        key = entity.key = _Key(self.PROJECT)
+        key = entity.key = _Key()
 
         with _NoCommitBatch(client) as CURR_BATCH:
             result = client.put_multi([entity])
@@ -862,7 +861,7 @@ class TestClient(unittest.TestCase):
     def test_delete_multi_no_batch_w_retry_w_timeout(self):
         from google.cloud.datastore_v1.proto import datastore_pb2
 
-        key = _Key(self.PROJECT)
+        key = _Key()
         retry = mock.Mock()
         timeout = 100000
 
@@ -892,7 +891,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(credentials=creds)
         client._datastore_api_internal = _make_datastore_api()
 
-        key = _Key(self.PROJECT)
+        key = _Key()
 
         with _NoCommitBatch(client) as CURR_BATCH:
             result = client.delete_multi([key])
@@ -907,7 +906,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(credentials=creds)
         client._datastore_api_internal = _make_datastore_api()
 
-        key = _Key(self.PROJECT)
+        key = _Key()
 
         with _NoCommitTransaction(client) as CURR_XACT:
             result = client.delete_multi([key])
@@ -920,8 +919,7 @@ class TestClient(unittest.TestCase):
     def test_allocate_ids_w_partial_key(self):
         num_ids = 2
 
-        incomplete_key = _Key(self.PROJECT)
-        incomplete_key._id = None
+        incomplete_key = _Key(_Key.kind, None)
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds, _use_grpc=False)
@@ -933,7 +931,7 @@ class TestClient(unittest.TestCase):
         result = client.allocate_ids(incomplete_key, num_ids)
 
         # Check the IDs returned.
-        self.assertEqual([key._id for key in result], list(range(num_ids)))
+        self.assertEqual([key.id for key in result], list(range(num_ids)))
 
         expected_keys = [incomplete_key.to_protobuf()] * num_ids
         alloc_ids.assert_called_once_with(self.PROJECT, expected_keys)
@@ -941,8 +939,7 @@ class TestClient(unittest.TestCase):
     def test_allocate_ids_w_partial_key_w_retry_w_timeout(self):
         num_ids = 2
 
-        incomplete_key = _Key(self.PROJECT)
-        incomplete_key._id = None
+        incomplete_key = _Key(_Key.kind, None)
         retry = mock.Mock()
         timeout = 100000
 
@@ -958,7 +955,7 @@ class TestClient(unittest.TestCase):
         )
 
         # Check the IDs returned.
-        self.assertEqual([key._id for key in result], list(range(num_ids)))
+        self.assertEqual([key.id for key in result], list(range(num_ids)))
 
         expected_keys = [incomplete_key.to_protobuf()] * num_ids
         alloc_ids.assert_called_once_with(
@@ -969,20 +966,114 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
-        complete_key = _Key(self.PROJECT)
+        complete_key = _Key()
         self.assertRaises(ValueError, client.allocate_ids, complete_key, 2)
+
+    def test_reserve_ids_sequential_w_completed_key(self):
+        num_ids = 2
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds, _use_grpc=False)
+        complete_key = _Key()
+        reserve_ids = mock.Mock()
+        ds_api = mock.Mock(reserve_ids=reserve_ids, spec=["reserve_ids"])
+        client._datastore_api_internal = ds_api
+        self.assertTrue(not complete_key.is_partial)
+
+        client.reserve_ids_sequential(complete_key, num_ids)
+
+        reserved_keys = (
+            _Key(_Key.kind, id)
+            for id in range(complete_key.id, complete_key.id + num_ids)
+        )
+        expected_keys = [key.to_protobuf() for key in reserved_keys]
+        reserve_ids.assert_called_once_with(self.PROJECT, expected_keys)
+
+    def test_reserve_ids_sequential_w_completed_key_w_retry_w_timeout(self):
+        num_ids = 2
+        retry = mock.Mock()
+        timeout = 100000
+
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds, _use_grpc=False)
+        complete_key = _Key()
+        self.assertTrue(not complete_key.is_partial)
+        reserve_ids = mock.Mock()
+        ds_api = mock.Mock(reserve_ids=reserve_ids, spec=["reserve_ids"])
+        client._datastore_api_internal = ds_api
+
+        client.reserve_ids_sequential(
+            complete_key, num_ids, retry=retry, timeout=timeout
+        )
+
+        reserved_keys = (
+            _Key(_Key.kind, id)
+            for id in range(complete_key.id, complete_key.id + num_ids)
+        )
+        expected_keys = [key.to_protobuf() for key in reserved_keys]
+        reserve_ids.assert_called_once_with(
+            self.PROJECT, expected_keys, retry=retry, timeout=timeout
+        )
+
+    def test_reserve_ids_sequential_w_completed_key_w_ancestor(self):
+        num_ids = 2
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds, _use_grpc=False)
+        complete_key = _Key("PARENT", "SINGLETON", _Key.kind, 1234)
+        reserve_ids = mock.Mock()
+        ds_api = mock.Mock(reserve_ids=reserve_ids, spec=["reserve_ids"])
+        client._datastore_api_internal = ds_api
+        self.assertTrue(not complete_key.is_partial)
+
+        client.reserve_ids_sequential(complete_key, num_ids)
+
+        reserved_keys = (
+            _Key("PARENT", "SINGLETON", _Key.kind, id)
+            for id in range(complete_key.id, complete_key.id + num_ids)
+        )
+        expected_keys = [key.to_protobuf() for key in reserved_keys]
+        reserve_ids.assert_called_once_with(self.PROJECT, expected_keys)
+
+    def test_reserve_ids_sequential_w_partial_key(self):
+        num_ids = 2
+        incomplete_key = _Key(_Key.kind, None)
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        with self.assertRaises(ValueError):
+            client.reserve_ids_sequential(incomplete_key, num_ids)
+
+    def test_reserve_ids_sequential_w_wrong_num_ids(self):
+        num_ids = "2"
+        complete_key = _Key()
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        with self.assertRaises(ValueError):
+            client.reserve_ids_sequential(complete_key, num_ids)
+
+    def test_reserve_ids_sequential_w_non_numeric_key_name(self):
+        num_ids = 2
+        complete_key = _Key(_Key.kind, "batman")
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        with self.assertRaises(ValueError):
+            client.reserve_ids_sequential(complete_key, num_ids)
 
     def test_reserve_ids_w_completed_key(self):
         num_ids = 2
         creds = _make_credentials()
         client = self._make_one(credentials=creds, _use_grpc=False)
-        complete_key = _Key(self.PROJECT)
+        complete_key = _Key()
         reserve_ids = mock.Mock()
         ds_api = mock.Mock(reserve_ids=reserve_ids, spec=["reserve_ids"])
         client._datastore_api_internal = ds_api
         self.assertTrue(not complete_key.is_partial)
+
         client.reserve_ids(complete_key, num_ids)
-        expected_keys = [complete_key.to_protobuf()] * num_ids
+
+        reserved_keys = (
+            _Key(_Key.kind, id)
+            for id in range(complete_key.id, complete_key.id + num_ids)
+        )
+        expected_keys = [key.to_protobuf() for key in reserved_keys]
         reserve_ids.assert_called_once_with(self.PROJECT, expected_keys)
 
     def test_reserve_ids_w_completed_key_w_retry_w_timeout(self):
@@ -992,7 +1083,7 @@ class TestClient(unittest.TestCase):
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds, _use_grpc=False)
-        complete_key = _Key(self.PROJECT)
+        complete_key = _Key()
         self.assertTrue(not complete_key.is_partial)
         reserve_ids = mock.Mock()
         ds_api = mock.Mock(reserve_ids=reserve_ids, spec=["reserve_ids"])
@@ -1000,15 +1091,37 @@ class TestClient(unittest.TestCase):
 
         client.reserve_ids(complete_key, num_ids, retry=retry, timeout=timeout)
 
-        expected_keys = [complete_key.to_protobuf()] * num_ids
+        reserved_keys = (
+            _Key(_Key.kind, id)
+            for id in range(complete_key.id, complete_key.id + num_ids)
+        )
+        expected_keys = [key.to_protobuf() for key in reserved_keys]
         reserve_ids.assert_called_once_with(
             self.PROJECT, expected_keys, retry=retry, timeout=timeout
         )
 
+    def test_reserve_ids_w_completed_key_w_ancestor(self):
+        num_ids = 2
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds, _use_grpc=False)
+        complete_key = _Key("PARENT", "SINGLETON", _Key.kind, 1234)
+        reserve_ids = mock.Mock()
+        ds_api = mock.Mock(reserve_ids=reserve_ids, spec=["reserve_ids"])
+        client._datastore_api_internal = ds_api
+        self.assertTrue(not complete_key.is_partial)
+
+        client.reserve_ids(complete_key, num_ids)
+
+        reserved_keys = (
+            _Key("PARENT", "SINGLETON", _Key.kind, id)
+            for id in range(complete_key.id, complete_key.id + num_ids)
+        )
+        expected_keys = [key.to_protobuf() for key in reserved_keys]
+        reserve_ids.assert_called_once_with(self.PROJECT, expected_keys)
+
     def test_reserve_ids_w_partial_key(self):
         num_ids = 2
-        incomplete_key = _Key(self.PROJECT)
-        incomplete_key._id = None
+        incomplete_key = _Key(_Key.kind, None)
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
         with self.assertRaises(ValueError):
@@ -1016,11 +1129,40 @@ class TestClient(unittest.TestCase):
 
     def test_reserve_ids_w_wrong_num_ids(self):
         num_ids = "2"
-        complete_key = _Key(self.PROJECT)
+        complete_key = _Key()
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
         with self.assertRaises(ValueError):
             client.reserve_ids(complete_key, num_ids)
+
+    def test_reserve_ids_w_non_numeric_key_name(self):
+        num_ids = 2
+        complete_key = _Key(_Key.kind, "batman")
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        with self.assertRaises(ValueError):
+            client.reserve_ids(complete_key, num_ids)
+
+    def test_reserve_ids_multi(self):
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds, _use_grpc=False)
+        key1 = _Key(_Key.kind, "one")
+        key2 = _Key(_Key.kind, "two")
+        reserve_ids = mock.Mock()
+        ds_api = mock.Mock(reserve_ids=reserve_ids, spec=["reserve_ids"])
+        client._datastore_api_internal = ds_api
+
+        client.reserve_ids_multi([key1, key2])
+
+        expected_keys = [key1.to_protobuf(), key2.to_protobuf()]
+        reserve_ids.assert_called_once_with(self.PROJECT, expected_keys)
+
+    def test_reserve_ids_multi_w_partial_key(self):
+        incomplete_key = _Key(_Key.kind, None)
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        with self.assertRaises(ValueError):
+            client.reserve_ids_multi([incomplete_key])
 
     def test_key_w_project(self):
         KIND = "KIND"
@@ -1252,38 +1394,64 @@ class _Entity(dict):
 
 
 class _Key(object):
-    _MARKER = object()
-    _kind = "KIND"
+    kind = "KIND"
+    id = 1234
+    name = None
+    _project = project = "PROJECT"
+    _namespace = None
+
     _key = "KEY"
     _path = None
-    _id = 1234
     _stored = None
 
-    def __init__(self, project):
-        self.project = project
+    def __init__(self, *flat_path, **kwargs):
+        if flat_path:
+            self._flat_path = flat_path
+            self.kind = flat_path[-2]
+            id_or_name = flat_path[-1]
+            if isinstance(id_or_name, int):
+                self.id = id_or_name
+            else:
+                self.id = None
+                self.name = id_or_name
+
+        else:
+            self._flat_path = [self.kind, self.id]
+
+        self.__dict__.update(kwargs)
+        self._kw_args = kwargs
 
     @property
     def is_partial(self):
-        return self._id is None
+        return self.id is None and self.name is None
 
     def to_protobuf(self):
         from google.cloud.datastore_v1.proto import entity_pb2
 
         key = self._key = entity_pb2.Key()
-        # Don't assign it, because it will just get ripped out
-        # key.partition_id.project_id = self.project
 
-        element = key.path.add()
-        element.kind = self._kind
-        if self._id is not None:
-            element.id = self._id
+        path = self._flat_path
+        while path:
+            element = key.path.add()
+            kind, id_or_name = path[:2]
+            element.kind = kind
+            if isinstance(id_or_name, int):
+                element.id = id_or_name
+            elif id_or_name is not None:
+                element.name = id_or_name
+
+            path = path[2:]
 
         return key
 
     def completed_key(self, new_id):
         assert self.is_partial
-        new_key = self.__class__(self.project)
-        new_key._id = new_id
+
+        path = list(self._flat_path)
+        path[-1] = new_id
+
+        key_class = type(self)
+        new_key = key_class(*path, **self._kw_args)
         return new_key
 
 
