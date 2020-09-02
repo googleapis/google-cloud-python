@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-tasks/compare/v1.5.0...v2.0.0) (2020-09-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate to use microgen (#38)
+
+### Features
+
+* introduce field Queue.type; update default retry configs ([#29](https://www.github.com/googleapis/python-tasks/issues/29)) ([6b8ba85](https://www.github.com/googleapis/python-tasks/commit/6b8ba85de5998b0c2138bbf771fa16ba8f9bbf07))
+* migrate to use microgen ([#38](https://www.github.com/googleapis/python-tasks/issues/38)) ([18e146c](https://www.github.com/googleapis/python-tasks/commit/18e146cab5e2b669538ca6b1d58603e72d58ae88))
+
+
+### Documentation
+
+* add samples from python-docs-samples/tasks ([#36](https://www.github.com/googleapis/python-tasks/issues/36)) ([9d022f7](https://www.github.com/googleapis/python-tasks/commit/9d022f736912df8a0f4d13e2a98dd53cf506f2dc)), closes [#1068](https://www.github.com/googleapis/python-tasks/issues/1068) [#1116](https://www.github.com/googleapis/python-tasks/issues/1116) [#1133](https://www.github.com/googleapis/python-tasks/issues/1133) [#1186](https://www.github.com/googleapis/python-tasks/issues/1186) [#1217](https://www.github.com/googleapis/python-tasks/issues/1217) [#1254](https://www.github.com/googleapis/python-tasks/issues/1254) [#1271](https://www.github.com/googleapis/python-tasks/issues/1271) [#1288](https://www.github.com/googleapis/python-tasks/issues/1288) [#1309](https://www.github.com/googleapis/python-tasks/issues/1309) [#1311](https://www.github.com/googleapis/python-tasks/issues/1311) [#1329](https://www.github.com/googleapis/python-tasks/issues/1329) [#1320](https://www.github.com/googleapis/python-tasks/issues/1320) [#1355](https://www.github.com/googleapis/python-tasks/issues/1355) [#1359](https://www.github.com/googleapis/python-tasks/issues/1359) [#1529](https://www.github.com/googleapis/python-tasks/issues/1529) [#1532](https://www.github.com/googleapis/python-tasks/issues/1532) [#1541](https://www.github.com/googleapis/python-tasks/issues/1541) [#1563](https://www.github.com/googleapis/python-tasks/issues/1563) [#1552](https://www.github.com/googleapis/python-tasks/issues/1552) [#1566](https://www.github.com/googleapis/python-tasks/issues/1566) [#1698](https://www.github.com/googleapis/python-tasks/issues/1698) [#2114](https://www.github.com/googleapis/python-tasks/issues/2114) [#2113](https://www.github.com/googleapis/python-tasks/issues/2113) [#2156](https://www.github.com/googleapis/python-tasks/issues/2156) [#2208](https://www.github.com/googleapis/python-tasks/issues/2208) [#2250](https://www.github.com/googleapis/python-tasks/issues/2250) [#2316](https://www.github.com/googleapis/python-tasks/issues/2316) [#2187](https://www.github.com/googleapis/python-tasks/issues/2187) [#2439](https://www.github.com/googleapis/python-tasks/issues/2439) [#2516](https://www.github.com/googleapis/python-tasks/issues/2516) [#2543](https://www.github.com/googleapis/python-tasks/issues/2543) [#2700](https://www.github.com/googleapis/python-tasks/issues/2700) [#3168](https://www.github.com/googleapis/python-tasks/issues/3168) [#3171](https://www.github.com/googleapis/python-tasks/issues/3171)
+
 ## [1.5.0](https://www.github.com/googleapis/python-tasks/compare/v1.4.0...v1.5.0) (2020-02-24)
 
 
