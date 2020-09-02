@@ -1522,6 +1522,24 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob.md5_hash, "CS9tHYTtyFntzj7B9nkkJQ==")
         self.assertEqual(blob.crc32c, "4gcgLQ==")
 
+        response = self._mock_requests_response(
+            http_client.OK,
+            headers={
+                "Content-Type": "application/octet-stream",
+                "Content-Language": "en-US",
+                "Cache-Control": "max-age=1337;public",
+                "Content-Encoding": "gzip",
+                "X-Goog-Storage-Class": "STANDARD",
+                "X-Goog-Hash": "crc32c=4/c+LQ==,md5=CS9tHYTt/+ntzj7B9nkkJQ==",
+            },
+            content=b"",
+        )
+        blob._extract_headers_from_download(response)
+        self.assertEqual(blob.content_type, "application/octet-stream")
+        self.assertEqual(blob.content_language, "en-US")
+        self.assertEqual(blob.md5_hash, "CS9tHYTt/+ntzj7B9nkkJQ==")
+        self.assertEqual(blob.crc32c, "4/c+LQ==")
+
     def test_download_as_string_w_hash_response_header_none(self):
         blob_name = "blob-name"
         client = mock.Mock(spec=["_http"])
