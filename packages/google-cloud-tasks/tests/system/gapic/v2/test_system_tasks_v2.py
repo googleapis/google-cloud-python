@@ -22,5 +22,6 @@ class TestSystemTasks(object):
         client = tasks_v2.CloudTasksClient()
 
         # Setup Request
-        parent = client.location_path(os.environ["PROJECT_ID"], "us-central1")
-        client.list_queues(parent)
+        project_id = os.environ["PROJECT_ID"]
+        parent = f"projects/{project_id}/locations/us-central1"
+        client.list_queues(request={"parent": parent})
