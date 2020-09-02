@@ -673,7 +673,7 @@ def test_keys_only_multiquery_with_order(ds_entity):
     results = eventually(
         functools.partial(query.fetch, keys_only=True), length_equals(5)
     )
-    assert keys == [entity.key for entity in results]
+    assert keys == results
 
 
 @pytest.mark.usefixtures("client_context")

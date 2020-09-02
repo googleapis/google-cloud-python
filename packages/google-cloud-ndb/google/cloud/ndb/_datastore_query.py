@@ -580,6 +580,7 @@ class _MultiQueryIteratorImpl(QueryIterator):
     """
 
     _extra_projections = None
+    _coerce_keys_only = False
 
     def __init__(self, query, raw=False):
         projection = query.projection
@@ -592,10 +593,12 @@ class _MultiQueryIteratorImpl(QueryIterator):
             extra_projections = []
             for order in query.order_by:
                 if order.name not in projection:
-                    projection.append(order.name)
                     extra_projections.append(order.name)
 
             if extra_projections:
+                if projection == ["__key__"]:
+                    self._coerce_keys_only = True
+                projection.extend(extra_projections)
                 self._extra_projections = extra_projections
 
         queries = [
@@ -707,7 +710,10 @@ class _MultiQueryIteratorImpl(QueryIterator):
         if self._raw:
             return next_result
         else:
-            return next_result.entity()
+            entity = next_result.entity()
+            if self._coerce_keys_only:
+                return entity._key
+            return entity
 
     __next__ = next
 
