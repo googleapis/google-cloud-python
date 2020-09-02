@@ -144,14 +144,16 @@ class Test_count:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     @mock.patch("google.cloud.ndb._datastore_query._datastore_run_query")
-    def test_count_by_skipping(run_query):
+    def test_count_by_skipping_w_a_result(run_query):
+        # These results should technically be impossible, but better safe than sorry.
         run_query.side_effect = utils.future_results(
             mock.Mock(
                 batch=mock.Mock(
                     more_results=_datastore_query.NOT_FINISHED,
                     skipped_results=1000,
                     entity_results=[],
-                    end_cursor=b"himom",
+                    end_cursor=b"dontlookatme",
+                    skipped_cursor=b"himom",
                     spec=(
                         "more_results",
                         "skipped_results",
@@ -164,14 +166,16 @@ class Test_count:
             mock.Mock(
                 batch=mock.Mock(
                     more_results=_datastore_query.NO_MORE_RESULTS,
-                    skipped_results=100,
-                    entity_results=[],
-                    end_cursor=b"hellodad",
+                    skipped_results=99,
+                    entity_results=[object()],
+                    end_cursor=b"ohhaithere",
+                    skipped_cursor=b"hellodad",
                     spec=(
                         "more_results",
                         "skipped_results",
                         "entity_results",
                         "end_cursor",
+                        "skipped_cursor",
                     ),
                 ),
                 spec=("batch",),
@@ -197,6 +201,172 @@ class Test_count:
                         offset=10000,
                         projection=["__key__"],
                         start_cursor=_datastore_query.Cursor(b"himom"),
+                    ),
+                ),
+                {},
+            ),
+        ]
+        assert run_query.call_args_list == expected
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_query._datastore_run_query")
+    def test_count_by_skipping(run_query):
+        run_query.side_effect = utils.future_results(
+            mock.Mock(
+                batch=mock.Mock(
+                    more_results=_datastore_query.NOT_FINISHED,
+                    skipped_results=1000,
+                    entity_results=[],
+                    end_cursor=b"dontlookatme",
+                    skipped_cursor=b"himom",
+                    spec=(
+                        "more_results",
+                        "skipped_results",
+                        "entity_results",
+                        "end_cursor",
+                    ),
+                ),
+                spec=("batch",),
+            ),
+            mock.Mock(
+                batch=mock.Mock(
+                    more_results=_datastore_query.NO_MORE_RESULTS,
+                    skipped_results=100,
+                    entity_results=[],
+                    end_cursor=b"nopenuhuh",
+                    skipped_cursor=b"hellodad",
+                    spec=(
+                        "more_results",
+                        "skipped_results",
+                        "entity_results",
+                        "end_cursor",
+                        "skipped_cursor",
+                    ),
+                ),
+                spec=("batch",),
+            ),
+        )
+
+        query = query_module.QueryOptions()
+        future = _datastore_query.count(query)
+        assert future.result() == 1100
+
+        expected = [
+            mock.call(
+                query_module.QueryOptions(
+                    limit=1,
+                    offset=10000,
+                    projection=["__key__"],
+                )
+            ),
+            (
+                (
+                    query_module.QueryOptions(
+                        limit=1,
+                        offset=10000,
+                        projection=["__key__"],
+                        start_cursor=_datastore_query.Cursor(b"himom"),
+                    ),
+                ),
+                {},
+            ),
+        ]
+        assert run_query.call_args_list == expected
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_query._datastore_run_query")
+    def test_count_by_skipping_emulator(run_query):
+        """Regression test for #525
+
+        Test differences between emulator and the real Datastore.
+
+        https://github.com/googleapis/python-ndb/issues/525
+        """
+        run_query.side_effect = utils.future_results(
+            mock.Mock(
+                batch=mock.Mock(
+                    more_results=_datastore_query.MORE_RESULTS_AFTER_LIMIT,
+                    skipped_results=1000,
+                    entity_results=[],
+                    end_cursor=b"dontlookatme",
+                    skipped_cursor=b"himom",
+                    spec=(
+                        "more_results",
+                        "skipped_results",
+                        "entity_results",
+                        "end_cursor",
+                    ),
+                ),
+                spec=("batch",),
+            ),
+            mock.Mock(
+                batch=mock.Mock(
+                    more_results=_datastore_query.MORE_RESULTS_AFTER_LIMIT,
+                    skipped_results=100,
+                    entity_results=[],
+                    end_cursor=b"nopenuhuh",
+                    skipped_cursor=b"hellodad",
+                    spec=(
+                        "more_results",
+                        "skipped_results",
+                        "entity_results",
+                        "end_cursor",
+                        "skipped_cursor",
+                    ),
+                ),
+                spec=("batch",),
+            ),
+            mock.Mock(
+                batch=mock.Mock(
+                    more_results=_datastore_query.MORE_RESULTS_AFTER_LIMIT,
+                    skipped_results=0,
+                    entity_results=[],
+                    end_cursor=b"nopenuhuh",
+                    skipped_cursor=b"hellodad",
+                    spec=(
+                        "more_results",
+                        "skipped_results",
+                        "entity_results",
+                        "end_cursor",
+                        "skipped_cursor",
+                    ),
+                ),
+                spec=("batch",),
+            ),
+        )
+
+        query = query_module.QueryOptions()
+        future = _datastore_query.count(query)
+        assert future.result() == 1100
+
+        expected = [
+            mock.call(
+                query_module.QueryOptions(
+                    limit=1,
+                    offset=10000,
+                    projection=["__key__"],
+                )
+            ),
+            (
+                (
+                    query_module.QueryOptions(
+                        limit=1,
+                        offset=10000,
+                        projection=["__key__"],
+                        start_cursor=_datastore_query.Cursor(b"himom"),
+                    ),
+                ),
+                {},
+            ),
+            (
+                (
+                    query_module.QueryOptions(
+                        limit=1,
+                        offset=10000,
+                        projection=["__key__"],
+                        start_cursor=_datastore_query.Cursor(b"hellodad"),
                     ),
                 ),
                 {},

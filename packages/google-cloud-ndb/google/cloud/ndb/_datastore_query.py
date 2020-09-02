@@ -165,14 +165,25 @@ def _count_by_skipping(query):
         response = yield _datastore_run_query(query)
         batch = response.batch
 
-        more_results = batch.more_results
-        count += batch.skipped_results
-        count += len(batch.entity_results)
+        # The Datastore emulator will never set more_results to NO_MORE_RESULTS,
+        # so for a workaround, just bail as soon as we neither skip nor retrieve any
+        # results
+        new_count = batch.skipped_results + len(batch.entity_results)
+        if new_count == 0:
+            break
 
+        count += new_count
         if limit and count >= limit:
             break
 
-        cursor = Cursor(batch.end_cursor)
+        # The Datastore emulator won't set end_cursor to something useful if no results
+        # are returned, so the workaround is to use skipped_cursor in that case
+        if len(batch.entity_results):
+            cursor = Cursor(batch.end_cursor)
+        else:
+            cursor = Cursor(batch.skipped_cursor)
+
+        more_results = batch.more_results
 
     raise tasklets.Return(count)
 
