@@ -326,7 +326,10 @@ def test_rows_w_scalars_arrow(class_under_test, mock_client):
     arrow_batches = _bq_to_arrow_batches(SCALAR_BLOCKS, arrow_schema)
 
     reader = class_under_test(arrow_batches, mock_client, "", 0, {})
-    got = tuple(reader.rows(read_session))
+    got = tuple(
+        dict((key, value.as_py()) for key, value in row_dict.items())
+        for row_dict in reader.rows(read_session)
+    )
 
     expected = tuple(itertools.chain.from_iterable(SCALAR_BLOCKS))
     assert got == expected

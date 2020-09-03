@@ -306,7 +306,12 @@ def test_ingestion_time_partitioned_table(
     rows = list(client.read_rows(stream_pos).rows(session))
     assert len(rows) == 2
 
-    actual_items = {(row["shape"], row["altitude"]) for row in rows}
+    if data_format == bigquery_storage_v1beta1.enums.DataFormat.AVRO:
+        actual_items = {(row["shape"], row["altitude"]) for row in rows}
+    else:
+        assert data_format == bigquery_storage_v1beta1.enums.DataFormat.ARROW
+        actual_items = {(row["shape"].as_py(), row["altitude"].as_py()) for row in rows}
+
     expected_items = {("sphere", 3500), ("doughnut", 100)}
     assert actual_items == expected_items
 
@@ -382,7 +387,14 @@ def test_decoding_data_types(
         stream=session.streams[0]
     )
 
-    rows = list(client.read_rows(stream_pos).rows(session))
+    if data_format == bigquery_storage_v1beta1.enums.DataFormat.AVRO:
+        rows = list(client.read_rows(stream_pos).rows(session))
+    else:
+        assert data_format == bigquery_storage_v1beta1.enums.DataFormat.ARROW
+        rows = list(
+            dict((key, value.as_py()) for key, value in row_dict.items())
+            for row_dict in client.read_rows(stream_pos).rows(session)
+        )
 
     expected_result = {
         u"string_field": u"Price: € 9.95.",
