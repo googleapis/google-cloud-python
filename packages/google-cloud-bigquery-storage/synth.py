@@ -14,6 +14,8 @@
 
 """This script is used to synthesize generated parts of this library."""
 
+import re
+
 import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
@@ -185,8 +187,23 @@ s.replace(
     '\g<0>\n\n    session.install("google-cloud-bigquery")',
 )
 
+# remove the samples session from the main noxfile
+s.replace(
+    "noxfile.py",
+    r"""
+        @nox\.session\([^)]*\)\s+
+        def\ samples\(session\):
+            .*?
+        (?=
+            @nox\.session\([^)]*\)\s+
+            def\ cover\(session\):
+        )
+    """,
+    "",
+    flags=re.VERBOSE | re.DOTALL
+)
+
 # TODO(busunkim): Use latest sphinx after microgenerator transition
 s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
-
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

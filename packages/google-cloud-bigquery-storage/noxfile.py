@@ -135,23 +135,6 @@ def system(session):
         session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)
 
 
-@nox.session(python=["2.7", "3.7"])
-def samples(session):
-    requirements_path = os.path.join("samples", "requirements.txt")
-    requirements_exists = os.path.exists(requirements_path)
-
-    # Sanity check: Only run tests if the environment variable is set.
-    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
-        session.skip("Credentials must be set via environment variable")
-
-    session.install("mock", "pytest")
-    if requirements_exists:
-        session.install("-r", requirements_path)
-    session.install("-e", ".")
-
-    session.run("py.test", "--quiet", "samples", *session.posargs)
-
-
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def cover(session):
     """Run the final coverage report.
