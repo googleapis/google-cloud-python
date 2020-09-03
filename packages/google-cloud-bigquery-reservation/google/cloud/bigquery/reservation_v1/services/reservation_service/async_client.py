@@ -65,15 +65,22 @@ class ReservationServiceAsyncClient:
     DEFAULT_ENDPOINT = ReservationServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ReservationServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    assignment_path = staticmethod(ReservationServiceClient.assignment_path)
+    parse_assignment_path = staticmethod(ReservationServiceClient.parse_assignment_path)
     bi_reservation_path = staticmethod(ReservationServiceClient.bi_reservation_path)
-
+    parse_bi_reservation_path = staticmethod(
+        ReservationServiceClient.parse_bi_reservation_path
+    )
     capacity_commitment_path = staticmethod(
         ReservationServiceClient.capacity_commitment_path
     )
-
-    assignment_path = staticmethod(ReservationServiceClient.assignment_path)
-
+    parse_capacity_commitment_path = staticmethod(
+        ReservationServiceClient.parse_capacity_commitment_path
+    )
     reservation_path = staticmethod(ReservationServiceClient.reservation_path)
+    parse_reservation_path = staticmethod(
+        ReservationServiceClient.parse_reservation_path
+    )
 
     from_service_account_file = ReservationServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file

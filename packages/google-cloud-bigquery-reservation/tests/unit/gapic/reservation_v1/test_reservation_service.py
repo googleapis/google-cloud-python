@@ -883,8 +883,8 @@ def test_list_reservations_pages():
             RuntimeError,
         )
         pages = list(client.list_reservations(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
@@ -964,10 +964,10 @@ async def test_list_reservations_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page in (await client.list_reservations(request={})).pages:
-            pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        async for page_ in (await client.list_reservations(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_get_reservation(
@@ -2130,8 +2130,8 @@ def test_list_capacity_commitments_pages():
             RuntimeError,
         )
         pages = list(client.list_capacity_commitments(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
@@ -2219,10 +2219,10 @@ async def test_list_capacity_commitments_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page in (await client.list_capacity_commitments(request={})).pages:
-            pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        async for page_ in (await client.list_capacity_commitments(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_get_capacity_commitment(
@@ -3857,8 +3857,8 @@ def test_list_assignments_pages():
             RuntimeError,
         )
         pages = list(client.list_assignments(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
@@ -3934,10 +3934,10 @@ async def test_list_assignments_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page in (await client.list_assignments(request={})).pages:
-            pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        async for page_ in (await client.list_assignments(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_delete_assignment(
@@ -4419,8 +4419,8 @@ def test_search_assignments_pages():
             RuntimeError,
         )
         pages = list(client.search_assignments(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
@@ -4500,10 +4500,10 @@ async def test_search_assignments_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page in (await client.search_assignments(request={})).pages:
-            pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        async for page_ in (await client.search_assignments(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_move_assignment(
@@ -5535,6 +5535,38 @@ def test_reservation_service_grpc_asyncio_transport_channel_mtls_with_adc(
         assert transport.grpc_channel == mock_grpc_channel
 
 
+def test_assignment_path():
+    project = "squid"
+    location = "clam"
+    reservation = "whelk"
+    assignment = "octopus"
+
+    expected = "projects/{project}/locations/{location}/reservations/{reservation}/assignments/{assignment}".format(
+        project=project,
+        location=location,
+        reservation=reservation,
+        assignment=assignment,
+    )
+    actual = ReservationServiceClient.assignment_path(
+        project, location, reservation, assignment
+    )
+    assert expected == actual
+
+
+def test_parse_assignment_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "reservation": "cuttlefish",
+        "assignment": "mussel",
+    }
+    path = ReservationServiceClient.assignment_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ReservationServiceClient.parse_assignment_path(path)
+    assert expected == actual
+
+
 def test_bi_reservation_path():
     project = "squid"
     location = "clam"
@@ -5582,38 +5614,6 @@ def test_parse_capacity_commitment_path():
 
     # Check that the path construction is reversible.
     actual = ReservationServiceClient.parse_capacity_commitment_path(path)
-    assert expected == actual
-
-
-def test_assignment_path():
-    project = "squid"
-    location = "clam"
-    reservation = "whelk"
-    assignment = "octopus"
-
-    expected = "projects/{project}/locations/{location}/reservations/{reservation}/assignments/{assignment}".format(
-        project=project,
-        location=location,
-        reservation=reservation,
-        assignment=assignment,
-    )
-    actual = ReservationServiceClient.assignment_path(
-        project, location, reservation, assignment
-    )
-    assert expected == actual
-
-
-def test_parse_assignment_path():
-    expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "reservation": "cuttlefish",
-        "assignment": "mussel",
-    }
-    path = ReservationServiceClient.assignment_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = ReservationServiceClient.parse_assignment_path(path)
     assert expected == actual
 
 
