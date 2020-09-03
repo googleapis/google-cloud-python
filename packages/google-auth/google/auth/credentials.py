@@ -138,7 +138,7 @@ class CredentialsWithQuotaProject(Credentials):
     """Abstract base for credentials supporting ``with_quota_project`` factory"""
 
     def with_quota_project(self, quota_project_id):
-        """Returns a copy of these credentials with a modified quota project
+        """Returns a copy of these credentials with a modified quota project.
 
         Args:
             quota_project_id (str): The project to use for quota and
