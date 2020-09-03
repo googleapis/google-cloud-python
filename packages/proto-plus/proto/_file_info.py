@@ -12,11 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import collections
+import collections.abc
 import inspect
 import logging
 
-from google.protobuf import descriptor_pb2
 from google.protobuf import descriptor_pool
 from google.protobuf import message
 from google.protobuf import reflection
@@ -28,32 +27,10 @@ log = logging.getLogger("_FileInfo")
 
 class _FileInfo(
     collections.namedtuple(
-        "_FileInfo",
-        ["descriptor", "messages", "enums", "name", "nested", "nested_enum"],
+        "_FileInfo", ["descriptor", "messages", "enums", "name", "nested"]
     )
 ):
     registry = {}  # Mapping[str, '_FileInfo']
-
-    @classmethod
-    def maybe_add_descriptor(cls, filename, package):
-        descriptor = cls.registry.get(filename)
-        if not descriptor:
-            descriptor = cls.registry[filename] = cls(
-                descriptor=descriptor_pb2.FileDescriptorProto(
-                    name=filename, package=package, syntax="proto3",
-                ),
-                enums=collections.OrderedDict(),
-                messages=collections.OrderedDict(),
-                name=filename,
-                nested={},
-                nested_enum={},
-            )
-
-        return descriptor
-
-    @staticmethod
-    def proto_file_name(name):
-        return "{0}.proto".format(name.replace(".", "/"))
 
     def _get_manifest(self, new_class):
         module = inspect.getmodule(new_class)
@@ -130,13 +107,6 @@ class _FileInfo(
             for field in proto_plus_message._meta.fields.values():
                 if field.message and isinstance(field.message, str):
                     field.message = self.messages[field.message]
-                elif field.enum and isinstance(field.enum, str):
-                    field.enum = self.enums[field.enum]
-
-        # Same thing for enums
-        for full_name, proto_plus_enum in self.enums.items():
-            descriptor = pool.FindEnumTypeByName(full_name)
-            proto_plus_enum._meta.pb = descriptor
 
         # We no longer need to track this file's info; remove it from
         # the module's registry and from this object.
@@ -160,16 +130,14 @@ class _FileInfo(
         """
         # If there are any nested descriptors that have not been assigned to
         # the descriptors that should contain them, then we are not ready.
-        if len(self.nested) or len(self.nested_enum):
+        if len(self.nested):
             return False
 
         # If there are any unresolved fields (fields with a composite message
         # declared as a string), ensure that the corresponding message is
         # declared.
         for field in self.unresolved_fields:
-            if (field.message and field.message not in self.messages) or (
-                field.enum and field.enum not in self.enums
-            ):
+            if field.message not in self.messages:
                 return False
 
         # If the module in which this class is defined provides a
@@ -188,7 +156,5 @@ class _FileInfo(
         """Return fields with referencing message types as strings."""
         for proto_plus_message in self.messages.values():
             for field in proto_plus_message._meta.fields.values():
-                if (field.message and isinstance(field.message, str)) or (
-                    field.enum and isinstance(field.enum, str)
-                ):
+                if field.message and isinstance(field.message, str):
                     yield field

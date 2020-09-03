@@ -40,7 +40,6 @@ def sample_file_info(name):
             messages=collections.OrderedDict(),
             name=filename,
             nested={},
-            nested_enum={},
         ),
     )
 

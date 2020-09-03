@@ -145,6 +145,7 @@ class MessageMeta(type):
                 field_msg = field.message
                 if hasattr(field_msg, "pb") and callable(field_msg.pb):
                     field_msg = field_msg.pb()
+
                 # Sanity check: The field's message may not yet be defined if
                 # it was a Message defined in the same file, and the file
                 # descriptor proto has not yet been generated.
@@ -153,13 +154,7 @@ class MessageMeta(type):
                 # correctly when the file descriptor is created later.
                 if field_msg:
                     proto_imports.add(field_msg.DESCRIPTOR.file.name)
-
-            # Same thing, but for enums.
-            elif field.enum and not isinstance(field.enum, str):
-                field_enum = field.enum._meta.pb
-
-                if field_enum:
-                    proto_imports.add(field_enum.file.name)
+                    symbol_database.Default().RegisterMessage(field_msg)
 
             # Increment the field index counter.
             index += 1
@@ -188,13 +183,24 @@ class MessageMeta(type):
         # Determine the filename.
         # We determine an appropriate proto filename based on the
         # Python module.
-        filename = _file_info._FileInfo.proto_file_name(
-            new_attrs.get("__module__", name.lower())
+        filename = "{0}.proto".format(
+            new_attrs.get("__module__", name.lower()).replace(".", "/")
         )
 
         # Get or create the information about the file, including the
         # descriptor to which the new message descriptor shall be added.
-        file_info = _file_info._FileInfo.maybe_add_descriptor(filename, package)
+        file_info = _file_info._FileInfo.registry.setdefault(
+            filename,
+            _file_info._FileInfo(
+                descriptor=descriptor_pb2.FileDescriptorProto(
+                    name=filename, package=package, syntax="proto3",
+                ),
+                enums=collections.OrderedDict(),
+                messages=collections.OrderedDict(),
+                name=filename,
+                nested={},
+            ),
+        )
 
         # Ensure any imports that would be necessary are assigned to the file
         # descriptor proto being created.
@@ -220,11 +226,6 @@ class MessageMeta(type):
         child_paths = [p for p in file_info.nested.keys() if local_path == p[:-1]]
         for child_path in child_paths:
             desc.nested_type.add().MergeFrom(file_info.nested.pop(child_path))
-
-        # Same thing, but for enums
-        child_paths = [p for p in file_info.nested_enum.keys() if local_path == p[:-1]]
-        for child_path in child_paths:
-            desc.enum_type.add().MergeFrom(file_info.nested_enum.pop(child_path))
 
         # Add the descriptor to the file if it is a top-level descriptor,
         # or to a "holding area" for nested messages otherwise.
@@ -324,24 +325,17 @@ class MessageMeta(type):
         """
         return cls.wrap(cls.pb().FromString(payload))
 
-    def to_json(cls, instance, *, use_integers_for_enums=True) -> str:
+    def to_json(cls, instance) -> str:
         """Given a message instance, serialize it to json
 
         Args:
             instance: An instance of this message type, or something
                 compatible (accepted by the type's constructor).
-            use_integers_for_enums (Optional(bool)): An option that determines whether enum
-                values should be represented by strings (False) or integers (True).
-                Default is True.
 
         Returns:
             str: The json string representation of the protocol buffer.
         """
-        return MessageToJson(
-            cls.pb(instance),
-            use_integers_for_enums=use_integers_for_enums,
-            including_default_value_fields=True,
-        )
+        return MessageToJson(cls.pb(instance))
 
     def from_json(cls, payload) -> "Message":
         """Given a json string representing an instance,
