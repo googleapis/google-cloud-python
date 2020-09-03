@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.21.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.21.0...v1.21.1) (2020-09-03)
+
+
+### Bug Fixes
+
+* dummy commit to trigger a auto release ([#597](https://www.github.com/googleapis/google-auth-library-python/issues/597)) ([d32f7df](https://www.github.com/googleapis/google-auth-library-python/commit/d32f7df4895122ef23b664672d7db3f58d9b7d36))
+
 ## [1.21.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.20.1...v1.21.0) (2020-08-27)
 
 
