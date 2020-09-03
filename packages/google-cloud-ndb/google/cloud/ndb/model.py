@@ -3747,6 +3747,8 @@ class DateTimeProperty(Property):
             value = datetime.datetime.fromtimestamp(seconds, pytz.utc)
 
         if self._tzinfo is not None:
+            if value.tzinfo is None:
+                value = value.replace(tzinfo=pytz.utc)
             return value.astimezone(self._tzinfo)
 
         elif value.tzinfo is not None:

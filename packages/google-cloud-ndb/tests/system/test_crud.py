@@ -18,6 +18,7 @@ System tests for Create, Update, Delete. (CRUD)
 import datetime
 import os
 import pickle
+import pytz
 import random
 import threading
 import zlib
@@ -38,6 +39,11 @@ from google.cloud.ndb import global_cache as global_cache_module
 from . import KIND, eventually, equals
 
 USE_REDIS_CACHE = bool(os.environ.get("REDIS_CACHE_URL"))
+
+
+def _assert_contemporaneous(timestamp1, timestamp2, delta_margin=2):
+    delta_margin = datetime.timedelta(seconds=delta_margin)
+    assert delta_margin > abs(timestamp1 - timestamp2)
 
 
 @pytest.mark.usefixtures("client_context")
@@ -1041,6 +1047,59 @@ def test_insert_autonow_property(dispose_of):
 
     assert isinstance(retrieved.created_at, datetime.datetime)
     assert isinstance(retrieved.updated_at, datetime.datetime)
+
+
+@pytest.mark.usefixtures("client_context")
+def test_insert_autonow_property_with_tz(dispose_of):
+    """Regression test for #517
+
+    https://github.com/googleapis/python-ndb/issues/517
+    """
+
+    class SomeKind(ndb.Model):
+        created_at = ndb.DateTimeProperty(auto_now_add=True, tzinfo=pytz.utc)
+        updated_at = ndb.DateTimeProperty(auto_now=True, tzinfo=pytz.utc)
+
+    now = datetime.datetime.now(pytz.utc)
+    entity = SomeKind()
+    key = entity.put()
+    dispose_of(key._key)
+
+    _assert_contemporaneous(entity.created_at, now)
+    _assert_contemporaneous(entity.updated_at, now)
+
+    retrieved = key.get()
+
+    _assert_contemporaneous(retrieved.created_at, now)
+    _assert_contemporaneous(retrieved.updated_at, now)
+
+
+@pytest.mark.usefixtures("client_context")
+def test_insert_datetime_property_with_tz(dispose_of):
+    """Regression test for #517
+
+    https://github.com/googleapis/python-ndb/issues/517
+    """
+
+    class SomeKind(ndb.Model):
+        alarm1 = ndb.DateTimeProperty(tzinfo=pytz.utc)
+        alarm2 = ndb.DateTimeProperty(tzinfo=pytz.utc)
+
+    now = datetime.datetime.now(pytz.utc)
+    entity = SomeKind(
+        alarm1=now,
+        alarm2=datetime.datetime.utcnow(),  # naive
+    )
+    key = entity.put()
+    dispose_of(key._key)
+
+    _assert_contemporaneous(entity.alarm1, now)
+    _assert_contemporaneous(entity.alarm2, now)
+
+    retrieved = key.get()
+
+    _assert_contemporaneous(retrieved.alarm1, now)
+    _assert_contemporaneous(retrieved.alarm2, now)
 
 
 @pytest.mark.usefixtures("client_context")
