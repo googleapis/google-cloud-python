@@ -56,6 +56,9 @@ class Field:
     )
     oneof: Optional[str] = None
 
+    # Arbitrary cap set via heuristic rule of thumb.
+    MAX_MOCK_DEPTH: int = 20
+
     def __getattr__(self, name):
         return getattr(self.field_pb, name)
 
@@ -85,6 +88,17 @@ class Field:
 
     @utils.cached_property
     def mock_value(self) -> str:
+        depth = 0
+        stack = [self]
+        answer = "{}"
+        while stack:
+            expr = stack.pop()
+            answer = answer.format(expr.inner_mock(stack, depth))
+            depth += 1
+
+        return answer
+
+    def inner_mock(self, stack, depth):
         """Return a repr of a valid, usually truthy mock value."""
         # For primitives, send a truthy value computed from the
         # field name.
@@ -113,9 +127,18 @@ class Field:
             answer = f'{self.type.ident}.{mock_value.name}'
 
         # If this is another message, set one value on the message.
-        if isinstance(self.type, MessageType) and len(self.type.fields):
+        if (
+                not self.map    # Maps are handled separately
+                and isinstance(self.type, MessageType)
+                and len(self.type.fields)
+                # Nested message types need to terminate eventually
+                and depth < self.MAX_MOCK_DEPTH
+        ):
             sub = next(iter(self.type.fields.values()))
-            answer = f'{self.type.ident}({sub.name}={sub.mock_value})'
+            stack.append(sub)
+            # Don't do the recursive rendering here, just set up
+            # where the nested value should go with the double {}.
+            answer = f'{self.type.ident}({sub.name}={{}})'
 
         if self.map:
             # Maps are a special case beacuse they're represented internally as
