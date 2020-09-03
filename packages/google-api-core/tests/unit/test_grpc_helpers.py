@@ -341,7 +341,7 @@ def test_create_channel_explicit_with_quota_project(grpc_secure_channel, composi
     target = "example.com:443"
     composite_creds = composite_creds_call.return_value
 
-    credentials = mock.create_autospec(google.auth.credentials.Credentials, instance=True)
+    credentials = mock.create_autospec(google.auth.credentials.CredentialsWithQuotaProject, instance=True)
 
     channel = grpc_helpers.create_channel(
         target,

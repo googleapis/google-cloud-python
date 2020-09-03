@@ -216,7 +216,7 @@ def _create_composite_credentials(
     else:
         credentials, _ = google.auth.default(scopes=scopes)
 
-    if quota_project_id:
+    if quota_project_id and isinstance(credentials, google.auth.credentials.CredentialsWithQuotaProject):
         credentials = credentials.with_quota_project(quota_project_id)
 
     request = google.auth.transport.requests.Request()
