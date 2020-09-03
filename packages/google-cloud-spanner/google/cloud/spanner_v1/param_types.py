@@ -25,6 +25,7 @@ INT64 = type_pb2.Type(code=type_pb2.INT64)
 FLOAT64 = type_pb2.Type(code=type_pb2.FLOAT64)
 DATE = type_pb2.Type(code=type_pb2.DATE)
 TIMESTAMP = type_pb2.Type(code=type_pb2.TIMESTAMP)
+NUMERIC = type_pb2.Type(code=type_pb2.NUMERIC)
 
 
 def Array(element_type):  # pylint: disable=invalid-name

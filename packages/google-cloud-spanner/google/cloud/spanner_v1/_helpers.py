@@ -15,6 +15,7 @@
 """Helper functions for Cloud Spanner."""
 
 import datetime
+import decimal
 import math
 
 import six
@@ -127,6 +128,8 @@ def _make_value_pb(value):
         return Value(string_value=value)
     if isinstance(value, ListValue):
         return Value(list_value=value)
+    if isinstance(value, decimal.Decimal):
+        return Value(string_value=str(value))
     raise ValueError("Unknown type: %s" % (value,))
 
 
@@ -201,6 +204,8 @@ def _parse_value_pb(value_pb, field_type):
             _parse_value_pb(item_pb, field_type.struct_type.fields[i].type)
             for (i, item_pb) in enumerate(value_pb.list_value.values)
         ]
+    elif field_type.code == type_pb2.NUMERIC:
+        result = decimal.Decimal(value_pb.string_value)
     else:
         raise ValueError("Unknown type: %s" % (field_type,))
     return result

@@ -14,6 +14,7 @@
 
 import collections
 import datetime
+import decimal
 import math
 import operator
 import os
@@ -38,6 +39,7 @@ from google.cloud.spanner_v1.proto.type_pb2 import FLOAT64
 from google.cloud.spanner_v1.proto.type_pb2 import INT64
 from google.cloud.spanner_v1.proto.type_pb2 import STRING
 from google.cloud.spanner_v1.proto.type_pb2 import TIMESTAMP
+from google.cloud.spanner_v1.proto.type_pb2 import NUMERIC
 from google.cloud.spanner_v1.proto.type_pb2 import Type
 
 from google.cloud._helpers import UTC
@@ -52,11 +54,13 @@ from test_utils.retry import RetryInstanceState
 from test_utils.retry import RetryResult
 from test_utils.system import unique_resource_id
 from tests._fixtures import DDL_STATEMENTS
+from tests._fixtures import EMULATOR_DDL_STATEMENTS
 from tests._helpers import OpenTelemetryBase, HAS_OPENTELEMETRY_INSTALLED
 
 
 CREATE_INSTANCE = os.getenv("GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE") is not None
 USE_EMULATOR = os.getenv("SPANNER_EMULATOR_HOST") is not None
+SKIP_BACKUP_TESTS = os.getenv("SKIP_BACKUP_TESTS") is not None
 
 if CREATE_INSTANCE:
     INSTANCE_ID = "google-cloud" + unique_resource_id("-")
@@ -92,7 +96,8 @@ class Config(object):
 
 
 def _has_all_ddl(database):
-    return len(database.ddl_statements) == len(DDL_STATEMENTS)
+    ddl_statements = EMULATOR_DDL_STATEMENTS if USE_EMULATOR else DDL_STATEMENTS
+    return len(database.ddl_statements) == len(ddl_statements)
 
 
 def _list_instances():
@@ -284,8 +289,9 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
     @classmethod
     def setUpClass(cls):
         pool = BurstyPool(labels={"testcase": "database_api"})
+        ddl_statements = EMULATOR_DDL_STATEMENTS if USE_EMULATOR else DDL_STATEMENTS
         cls._db = Config.INSTANCE.database(
-            cls.DATABASE_NAME, ddl_statements=DDL_STATEMENTS, pool=pool
+            cls.DATABASE_NAME, ddl_statements=ddl_statements, pool=pool
         )
         operation = cls._db.create()
         operation.result(30)  # raises on failure / timeout.
@@ -359,12 +365,13 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         temp_db = Config.INSTANCE.database(temp_db_id, pool=pool)
         create_op = temp_db.create()
         self.to_delete.append(temp_db)
+        ddl_statements = EMULATOR_DDL_STATEMENTS if USE_EMULATOR else DDL_STATEMENTS
 
         # We want to make sure the operation completes.
         create_op.result(240)  # raises on failure / timeout.
         # random but shortish always start with letter
         operation_id = "a" + str(uuid.uuid4())[:8]
-        operation = temp_db.update_ddl(DDL_STATEMENTS, operation_id=operation_id)
+        operation = temp_db.update_ddl(ddl_statements, operation_id=operation_id)
 
         self.assertEqual(operation_id, operation.operation.name.split("/")[-1])
 
@@ -373,7 +380,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
         temp_db.reload()
 
-        self.assertEqual(len(temp_db.ddl_statements), len(DDL_STATEMENTS))
+        self.assertEqual(len(temp_db.ddl_statements), len(ddl_statements))
 
     def test_db_batch_insert_then_db_snapshot_read(self):
         retry = RetryInstanceState(_has_all_ddl)
@@ -447,6 +454,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
 
 @unittest.skipIf(USE_EMULATOR, "Skipping backup tests")
+@unittest.skipIf(SKIP_BACKUP_TESTS, "Skipping backup tests")
 class TestBackupAPI(unittest.TestCase, _TestData):
     DATABASE_NAME = "test_database" + unique_resource_id("_")
     DATABASE_NAME_2 = "test_database2" + unique_resource_id("_")
@@ -454,8 +462,9 @@ class TestBackupAPI(unittest.TestCase, _TestData):
     @classmethod
     def setUpClass(cls):
         pool = BurstyPool(labels={"testcase": "database_api"})
+        ddl_statements = EMULATOR_DDL_STATEMENTS if USE_EMULATOR else DDL_STATEMENTS
         db1 = Config.INSTANCE.database(
-            cls.DATABASE_NAME, ddl_statements=DDL_STATEMENTS, pool=pool
+            cls.DATABASE_NAME, ddl_statements=ddl_statements, pool=pool
         )
         db2 = Config.INSTANCE.database(cls.DATABASE_NAME_2, pool=pool)
         cls._db = db1
@@ -736,6 +745,8 @@ NEG_INF = float("-inf")
 (OTHER_NAN,) = struct.unpack("<d", b"\x01\x00\x01\x00\x00\x00\xf8\xff")
 BYTES_1 = b"Ymlu"
 BYTES_2 = b"Ym9vdHM="
+NUMERIC_1 = decimal.Decimal("0.123456789")
+NUMERIC_2 = decimal.Decimal("1234567890")
 ALL_TYPES_TABLE = "all_types"
 ALL_TYPES_COLUMNS = (
     "pkey",
@@ -753,9 +764,18 @@ ALL_TYPES_COLUMNS = (
     "string_array",
     "timestamp_value",
     "timestamp_array",
+    "numeric_value",
+    "numeric_array",
 )
+EMULATOR_ALL_TYPES_COLUMNS = ALL_TYPES_COLUMNS[:-2]
 AllTypesRowData = collections.namedtuple("AllTypesRowData", ALL_TYPES_COLUMNS)
 AllTypesRowData.__new__.__defaults__ = tuple([None for colum in ALL_TYPES_COLUMNS])
+EmulatorAllTypesRowData = collections.namedtuple(
+    "EmulatorAllTypesRowData", EMULATOR_ALL_TYPES_COLUMNS
+)
+EmulatorAllTypesRowData.__new__.__defaults__ = tuple(
+    [None for colum in EMULATOR_ALL_TYPES_COLUMNS]
+)
 
 ALL_TYPES_ROWDATA = (
     # all nulls
@@ -769,6 +789,7 @@ ALL_TYPES_ROWDATA = (
     AllTypesRowData(pkey=106, string_value=u"VALUE"),
     AllTypesRowData(pkey=107, timestamp_value=SOME_TIME),
     AllTypesRowData(pkey=108, timestamp_value=NANO_TIME),
+    AllTypesRowData(pkey=109, numeric_value=NUMERIC_1),
     # empty array values
     AllTypesRowData(pkey=201, int_array=[]),
     AllTypesRowData(pkey=202, bool_array=[]),
@@ -777,6 +798,7 @@ ALL_TYPES_ROWDATA = (
     AllTypesRowData(pkey=205, float_array=[]),
     AllTypesRowData(pkey=206, string_array=[]),
     AllTypesRowData(pkey=207, timestamp_array=[]),
+    AllTypesRowData(pkey=208, numeric_array=[]),
     # non-empty array values, including nulls
     AllTypesRowData(pkey=301, int_array=[123, 456, None]),
     AllTypesRowData(pkey=302, bool_array=[True, False, None]),
@@ -785,6 +807,36 @@ ALL_TYPES_ROWDATA = (
     AllTypesRowData(pkey=305, float_array=[3.1415926, 2.71828, None]),
     AllTypesRowData(pkey=306, string_array=[u"One", u"Two", None]),
     AllTypesRowData(pkey=307, timestamp_array=[SOME_TIME, NANO_TIME, None]),
+    AllTypesRowData(pkey=308, numeric_array=[NUMERIC_1, NUMERIC_2, None]),
+)
+EMULATOR_ALL_TYPES_ROWDATA = (
+    # all nulls
+    EmulatorAllTypesRowData(pkey=0),
+    # Non-null values
+    EmulatorAllTypesRowData(pkey=101, int_value=123),
+    EmulatorAllTypesRowData(pkey=102, bool_value=False),
+    EmulatorAllTypesRowData(pkey=103, bytes_value=BYTES_1),
+    EmulatorAllTypesRowData(pkey=104, date_value=SOME_DATE),
+    EmulatorAllTypesRowData(pkey=105, float_value=1.4142136),
+    EmulatorAllTypesRowData(pkey=106, string_value=u"VALUE"),
+    EmulatorAllTypesRowData(pkey=107, timestamp_value=SOME_TIME),
+    EmulatorAllTypesRowData(pkey=108, timestamp_value=NANO_TIME),
+    # empty array values
+    EmulatorAllTypesRowData(pkey=201, int_array=[]),
+    EmulatorAllTypesRowData(pkey=202, bool_array=[]),
+    EmulatorAllTypesRowData(pkey=203, bytes_array=[]),
+    EmulatorAllTypesRowData(pkey=204, date_array=[]),
+    EmulatorAllTypesRowData(pkey=205, float_array=[]),
+    EmulatorAllTypesRowData(pkey=206, string_array=[]),
+    EmulatorAllTypesRowData(pkey=207, timestamp_array=[]),
+    # non-empty array values, including nulls
+    EmulatorAllTypesRowData(pkey=301, int_array=[123, 456, None]),
+    EmulatorAllTypesRowData(pkey=302, bool_array=[True, False, None]),
+    EmulatorAllTypesRowData(pkey=303, bytes_array=[BYTES_1, BYTES_2, None]),
+    EmulatorAllTypesRowData(pkey=304, date_array=[SOME_DATE, None]),
+    EmulatorAllTypesRowData(pkey=305, float_array=[3.1415926, 2.71828, None]),
+    EmulatorAllTypesRowData(pkey=306, string_array=[u"One", u"Two", None]),
+    EmulatorAllTypesRowData(pkey=307, timestamp_array=[SOME_TIME, NANO_TIME, None]),
 )
 
 
@@ -794,8 +846,9 @@ class TestSessionAPI(OpenTelemetryBase, _TestData):
     @classmethod
     def setUpClass(cls):
         pool = BurstyPool(labels={"testcase": "session_api"})
+        ddl_statements = EMULATOR_DDL_STATEMENTS if USE_EMULATOR else DDL_STATEMENTS
         cls._db = Config.INSTANCE.database(
-            cls.DATABASE_NAME, ddl_statements=DDL_STATEMENTS, pool=pool
+            cls.DATABASE_NAME, ddl_statements=ddl_statements, pool=pool
         )
         operation = cls._db.create()
         operation.result(30)  # raises on failure / timeout.
@@ -899,13 +952,19 @@ class TestSessionAPI(OpenTelemetryBase, _TestData):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
+        if USE_EMULATOR:
+            all_types_columns = EMULATOR_ALL_TYPES_COLUMNS
+            all_types_rowdata = EMULATOR_ALL_TYPES_ROWDATA
+        else:
+            all_types_columns = ALL_TYPES_COLUMNS
+            all_types_rowdata = ALL_TYPES_ROWDATA
         with self._db.batch() as batch:
             batch.delete(ALL_TYPES_TABLE, self.ALL)
-            batch.insert(ALL_TYPES_TABLE, ALL_TYPES_COLUMNS, ALL_TYPES_ROWDATA)
+            batch.insert(ALL_TYPES_TABLE, all_types_columns, all_types_rowdata)
 
         with self._db.snapshot(read_timestamp=batch.committed) as snapshot:
-            rows = list(snapshot.read(ALL_TYPES_TABLE, ALL_TYPES_COLUMNS, self.ALL))
-        self._check_rows_data(rows, expected=ALL_TYPES_ROWDATA)
+            rows = list(snapshot.read(ALL_TYPES_TABLE, all_types_columns, self.ALL))
+        self._check_rows_data(rows, expected=all_types_rowdata)
 
     def test_batch_insert_or_update_then_query(self):
         retry = RetryInstanceState(_has_all_ddl)
@@ -1704,9 +1763,10 @@ class TestSessionAPI(OpenTelemetryBase, _TestData):
         MY_COLUMNS = self.COLUMNS[0], self.COLUMNS[2]
         EXTRA_DDL = ["CREATE INDEX contacts_by_last_name ON contacts(last_name)"]
         pool = BurstyPool(labels={"testcase": "read_w_index"})
+        ddl_statements = EMULATOR_DDL_STATEMENTS if USE_EMULATOR else DDL_STATEMENTS
         temp_db = Config.INSTANCE.database(
             "test_read" + unique_resource_id("_"),
-            ddl_statements=DDL_STATEMENTS + EXTRA_DDL,
+            ddl_statements=ddl_statements + EXTRA_DDL,
             pool=pool,
         )
         operation = temp_db.create()
@@ -2281,6 +2341,10 @@ class TestSessionAPI(OpenTelemetryBase, _TestData):
 
         dates = [SOME_DATE, SOME_DATE + datetime.timedelta(days=1)]
         self._bind_test_helper(DATE, SOME_DATE, dates)
+
+    @unittest.skipIf(USE_EMULATOR, "Skipping NUMERIC")
+    def test_execute_sql_w_numeric_bindings(self):
+        self._bind_test_helper(NUMERIC, NUMERIC_1, [NUMERIC_1, NUMERIC_2])
 
     def test_execute_sql_w_query_param_struct(self):
         NAME = "Phred"

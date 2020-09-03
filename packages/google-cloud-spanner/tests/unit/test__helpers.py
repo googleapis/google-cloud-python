@@ -208,6 +208,15 @@ class Test_make_value_pb(unittest.TestCase):
         self.assertIsInstance(value_pb, Value)
         self.assertEqual(value_pb.string_value, datetime_helpers.to_rfc3339(now))
 
+    def test_w_numeric(self):
+        import decimal
+        from google.protobuf.struct_pb2 import Value
+
+        value = decimal.Decimal("9999999999999999999999999999.999999999")
+        value_pb = self._callFUT(value)
+        self.assertIsInstance(value_pb, Value)
+        self.assertEqual(value_pb.string_value, str(value))
+
     def test_w_unknown_type(self):
         with self.assertRaises(ValueError):
             self._callFUT(object())
@@ -430,6 +439,17 @@ class Test_parse_value_pb(unittest.TestCase):
         value_pb = Value(list_value=_make_list_value_pb(VALUES))
 
         self.assertEqual(self._callFUT(value_pb, field_type), VALUES)
+
+    def test_w_numeric(self):
+        import decimal
+        from google.protobuf.struct_pb2 import Value
+        from google.cloud.spanner_v1.proto.type_pb2 import Type, NUMERIC
+
+        VALUE = decimal.Decimal("99999999999999999999999999999.999999999")
+        field_type = Type(code=NUMERIC)
+        value_pb = Value(string_value=str(VALUE))
+
+        self.assertEqual(self._callFUT(value_pb, field_type), VALUE)
 
     def test_w_unknown_type(self):
         from google.protobuf.struct_pb2 import Value
