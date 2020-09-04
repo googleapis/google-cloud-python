@@ -29,10 +29,17 @@ library = gapic.py_library(
     service="tables",
     version="v1alpha1",
     bazel_target="//google/area120/tables/v1alpha1:area120-tables-v1alpha1-py",
-
 )
 
-s.move(library)
+s.move(
+    library,
+    excludes=[
+        "setup.py",
+        "README.rst",
+        "docs/index.rst",
+        "scripts/fixup_tables_v1alpha1_keywords.py",
+    ],
+)
 
 # ----------------------------------------------------------------------------
 # Add templated files
@@ -42,6 +49,13 @@ s.move(
     templated_files, excludes=[".coveragerc"]
 )  # the microgenerator has a good coveragerc file
 
+# fix coverage target
+s.replace(
+    "noxfile.py",
+    """["']--cov=google.cloud.area120tables",
+(\s+)[""]--cov=google.cloud["'],""",
+    """"--cov=google.area120.tables",
+\g<1>"--cov=google.area120",""",
+)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
-
