@@ -1,0 +1,35 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "sso://devrel/cloud/libraries/python/python-analytics-data"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "b2c32f1c8a4094f0f47fcf5d10f0b6f2bfb3387d"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "b2c32f1c8a4094f0f47fcf5d10f0b6f2bfb3387d"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "analyticsdata",
+        "apiVersion": "v1alpha1",
+        "language": "python",
+        "generator": "bazel"
+      }
+    }
+  ]
+}
