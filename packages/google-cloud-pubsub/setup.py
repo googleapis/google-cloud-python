@@ -22,19 +22,17 @@ import setuptools
 
 name = "google-cloud-pubsub"
 description = "Google Cloud Pub/Sub API client library"
-version = "1.7.0"
+version = "2.0.0"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    # google-api-core[grpc] 1.17.0 up to 1.19.1 causes problems with stream
-    # recovery, thus those versions should not be used.
-    # https://github.com/googleapis/python-pubsub/issues/74
-    "google-api-core[grpc] >= 1.14.0, != 1.17.*, != 1.18.*, != 1.19.*",
+    "google-api-core[grpc] >= 1.22.1, < 2.0.0dev",
+    "libcst >= 0.3.10",
+    "proto-plus >= 1.7.1",
     "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
-    'enum34; python_version < "3.4"',
 ]
 extras = {}
 
@@ -50,7 +48,9 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
 # Only include packages under the 'google' namespace. Do not include tests,
 # benchmarks, etc.
 packages = [
-    package for package in setuptools.find_packages() if package.startswith("google")
+    package
+    for package in setuptools.PEP420PackageFinder.find()
+    if package.startswith("google")
 ]
 
 # Determine which namespaces are needed.
@@ -73,12 +73,10 @@ setuptools.setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Operating System :: OS Independent",
         "Topic :: Internet",
     ],
@@ -87,7 +85,8 @@ setuptools.setup(
     namespace_packages=namespaces,
     install_requires=dependencies,
     extras_require=extras,
-    python_requires=">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*",
+    python_requires=">=3.6",
+    scripts=["scripts/fixup_pubsub_v1_keywords.py"],
     include_package_data=True,
     zip_safe=False,
 )

@@ -63,7 +63,7 @@ def pub(project_id, topic_id):
     ref = dict({"num_messages": 0})
 
     # When you publish a message, the client returns a future.
-    api_future = client.publish(topic_path, data=data)
+    api_future = client.publish(topic_path, data)
     api_future.add_done_callback(get_callback(api_future, data, ref))
 
     # Keep the main thread from exiting while the message future

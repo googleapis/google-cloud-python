@@ -36,7 +36,7 @@ def get_topic_policy(project, topic_id):
     client = pubsub_v1.PublisherClient()
     topic_path = client.topic_path(project, topic_id)
 
-    policy = client.get_iam_policy(topic_path)
+    policy = client.get_iam_policy(request={"resource": topic_path})
 
     print("Policy for topic {}:".format(topic_path))
     for binding in policy.bindings:
@@ -56,7 +56,7 @@ def get_subscription_policy(project, subscription_id):
     client = pubsub_v1.SubscriberClient()
     subscription_path = client.subscription_path(project, subscription_id)
 
-    policy = client.get_iam_policy(subscription_path)
+    policy = client.get_iam_policy(request={"resource": subscription_path})
 
     print("Policy for subscription {}:".format(subscription_path))
     for binding in policy.bindings:
@@ -78,7 +78,7 @@ def set_topic_policy(project, topic_id):
     client = pubsub_v1.PublisherClient()
     topic_path = client.topic_path(project, topic_id)
 
-    policy = client.get_iam_policy(topic_path)
+    policy = client.get_iam_policy(request={"resource": topic_path})
 
     # Add all users as viewers.
     policy.bindings.add(role="roles/pubsub.viewer", members=["allUsers"])
@@ -89,7 +89,7 @@ def set_topic_policy(project, topic_id):
     )
 
     # Set the policy
-    policy = client.set_iam_policy(topic_path, policy)
+    policy = client.set_iam_policy(request={"resource": topic_path, "policy": policy})
 
     print("IAM policy for topic {} set: {}".format(topic_id, policy))
     # [END pubsub_set_topic_policy]
@@ -107,7 +107,7 @@ def set_subscription_policy(project, subscription_id):
     client = pubsub_v1.SubscriberClient()
     subscription_path = client.subscription_path(project, subscription_id)
 
-    policy = client.get_iam_policy(subscription_path)
+    policy = client.get_iam_policy(request={"resource": subscription_path})
 
     # Add all users as viewers.
     policy.bindings.add(role="roles/pubsub.viewer", members=["allUsers"])
@@ -116,7 +116,9 @@ def set_subscription_policy(project, subscription_id):
     policy.bindings.add(role="roles/editor", members=["group:cloud-logs@google.com"])
 
     # Set the policy
-    policy = client.set_iam_policy(subscription_path, policy)
+    policy = client.set_iam_policy(
+        request={"resource": subscription_path, "policy": policy}
+    )
 
     print("IAM policy for subscription {} set: {}".format(subscription_id, policy))
 
@@ -138,7 +140,9 @@ def check_topic_permissions(project, topic_id):
 
     permissions_to_check = ["pubsub.topics.publish", "pubsub.topics.update"]
 
-    allowed_permissions = client.test_iam_permissions(topic_path, permissions_to_check)
+    allowed_permissions = client.test_iam_permissions(
+        request={"resource": topic_path, "permissions": permissions_to_check}
+    )
 
     print(
         "Allowed permissions for topic {}: {}".format(topic_path, allowed_permissions)
@@ -164,7 +168,7 @@ def check_subscription_permissions(project, subscription_id):
     ]
 
     allowed_permissions = client.test_iam_permissions(
-        subscription_path, permissions_to_check
+        request={"resource": subscription_path, "permissions": permissions_to_check}
     )
 
     print(

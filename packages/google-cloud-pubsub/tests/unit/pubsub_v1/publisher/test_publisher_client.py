@@ -15,18 +15,38 @@
 from __future__ import absolute_import
 from __future__ import division
 
+import inspect
+
 from google.auth import credentials
 
 import mock
 import pytest
 import time
 
-from google.cloud.pubsub_v1.gapic import publisher_client
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
 
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher._sequencer import ordered_sequencer
+
+from google.pubsub_v1 import types as gapic_types
+from google.pubsub_v1.services.publisher import client as publisher_client
+from google.pubsub_v1.services.publisher.transports.grpc import PublisherGrpcTransport
+
+
+def _assert_retries_equal(retry, retry2):
+    # Retry instances cannot be directly compared, because their predicates are
+    # different instances of the same function. We thus manually compare their other
+    # attributes, and then heuristically compare their predicates.
+    for attr in ("_deadline", "_initial", "_maximum", "_multiplier"):
+        assert getattr(retry, attr) == getattr(retry2, attr)
+
+    pred = retry._predicate
+    pred2 = retry2._predicate
+    assert inspect.getsource(pred) == inspect.getsource(pred2)
+    assert inspect.getclosurevars(pred) == inspect.getclosurevars(pred2)
 
 
 def test_init():
@@ -42,13 +62,13 @@ def test_init():
 
 
 def test_init_w_custom_transport():
-    transport = object()
+    transport = PublisherGrpcTransport()
     client = publisher.Client(transport=transport)
 
     # A plain client should have an `api` (the underlying GAPIC) and a
     # batch settings object, which should have the defaults.
     assert isinstance(client.api, publisher_client.PublisherClient)
-    assert client.api.transport is transport
+    assert client.api._transport is transport
     assert client.batch_settings.max_bytes == 1 * 1000 * 1000
     assert client.batch_settings.max_latency == 0.01
     assert client.batch_settings.max_messages == 100
@@ -59,7 +79,7 @@ def test_init_w_api_endpoint():
     client = publisher.Client(client_options=client_options)
 
     assert isinstance(client.api, publisher_client.PublisherClient)
-    assert (client.api.transport._channel._channel.target()).decode(
+    assert (client.api._transport.grpc_channel._channel.target()).decode(
         "utf-8"
     ) == "testendpoint.google.com"
 
@@ -69,7 +89,7 @@ def test_init_w_unicode_api_endpoint():
     client = publisher.Client(client_options=client_options)
 
     assert isinstance(client.api, publisher_client.PublisherClient)
-    assert (client.api.transport._channel._channel.target()).decode(
+    assert (client.api._transport.grpc_channel._channel.target()).decode(
         "utf-8"
     ) == "testendpoint.google.com"
 
@@ -78,7 +98,7 @@ def test_init_w_empty_client_options():
     client = publisher.Client(client_options={})
 
     assert isinstance(client.api, publisher_client.PublisherClient)
-    assert (client.api.transport._channel._channel.target()).decode(
+    assert (client.api._transport.grpc_channel._channel.target()).decode(
         "utf-8"
     ) == publisher_client.PublisherClient.SERVICE_ADDRESS
 
@@ -93,7 +113,7 @@ def test_init_emulator(monkeypatch):
     #
     # Sadly, there seems to be no good way to do this without poking at
     # the private API of gRPC.
-    channel = client.api.transport.publish._channel
+    channel = client.api._transport.publish._channel
     assert channel.target().decode("utf8") == "/foo/bar/"
 
 
@@ -107,19 +127,6 @@ def test_message_ordering_enabled():
         credentials=creds,
     )
     assert client._enable_message_ordering
-
-
-def test_message_ordering_changes_retry_deadline():
-    creds = mock.Mock(spec=credentials.Credentials)
-
-    client = publisher.Client(credentials=creds)
-    assert client.api._method_configs["Publish"].retry._deadline == 60
-
-    client = publisher.Client(
-        publisher_options=types.PublisherOptions(enable_message_ordering=True),
-        credentials=creds,
-    )
-    assert client.api._method_configs["Publish"].retry._deadline == 2 ** 32 / 1000
 
 
 def test_publish():
@@ -150,8 +157,10 @@ def test_publish():
     # Check mock.
     batch.publish.assert_has_calls(
         [
-            mock.call(types.PubsubMessage(data=b"spam")),
-            mock.call(types.PubsubMessage(data=b"foo", attributes={"bar": "baz"})),
+            mock.call(gapic_types.PubsubMessage(data=b"spam")),
+            mock.call(
+                gapic_types.PubsubMessage(data=b"foo", attributes={"bar": "baz"})
+            ),
         ]
     )
 
@@ -207,6 +216,46 @@ def test_publish_empty_ordering_key_when_message_ordering_enabled():
     assert client.publish(topic, b"bytestring body", ordering_key="") is not None
 
 
+def test_publish_with_ordering_key_uses_extended_retry_deadline():
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(
+        credentials=creds,
+        publisher_options=types.PublisherOptions(enable_message_ordering=True),
+    )
+
+    # Use mocks in lieu of the actual batch class.
+    batch = mock.Mock(spec=client._batch_class)
+    future = mock.sentinel.future
+    future.add_done_callback = mock.Mock(spec=["__call__"])
+    batch.publish.return_value = future
+
+    topic = "topic/path"
+    client._set_batch(topic, batch)
+
+    # Actually mock the batch class now.
+    batch_class = mock.Mock(spec=(), return_value=batch)
+    client._set_batch_class(batch_class)
+
+    # Publish a message with custom retry settings.
+    custom_retry = retries.Retry(
+        initial=1,
+        maximum=20,
+        multiplier=3.3,
+        deadline=999,
+        predicate=retries.if_exception_type(TimeoutError, KeyboardInterrupt),
+    )
+    future = client.publish(topic, b"foo", ordering_key="first", retry=custom_retry)
+    assert future is mock.sentinel.future
+
+    # Check the retry settings used for the batch.
+    batch_class.assert_called_once()
+    _, kwargs = batch_class.call_args
+
+    batch_commit_retry = kwargs["commit_retry"]
+    expected_retry = custom_retry.with_deadline(2.0 ** 32)
+    _assert_retries_equal(batch_commit_retry, expected_retry)
+
+
 def test_publish_attrs_bytestring():
     creds = mock.Mock(spec=credentials.Credentials)
     client = publisher.Client(credentials=creds)
@@ -225,7 +274,7 @@ def test_publish_attrs_bytestring():
 
     # The attributes should have been sent as text.
     batch.publish.assert_called_once_with(
-        types.PubsubMessage(data=b"foo", attributes={"bar": u"baz"})
+        gapic_types.PubsubMessage(data=b"foo", attributes={"bar": u"baz"})
     )
 
 
@@ -262,8 +311,9 @@ def test_publish_new_batch_needed():
         settings=client.batch_settings,
         batch_done_callback=None,
         commit_when_full=True,
+        commit_retry=gapic_v1.method.DEFAULT,
     )
-    message_pb = types.PubsubMessage(data=b"foo", attributes={"bar": u"baz"})
+    message_pb = gapic_types.PubsubMessage(data=b"foo", attributes={"bar": u"baz"})
     batch1.publish.assert_called_once_with(message_pb)
     batch2.publish.assert_called_once_with(message_pb)
 
@@ -302,13 +352,21 @@ def test_gapic_instance_method():
     creds = mock.Mock(spec=credentials.Credentials)
     client = publisher.Client(credentials=creds)
 
-    ct = mock.Mock()
-    client.api._inner_api_calls["create_topic"] = ct
+    transport_mock = mock.Mock(create_topic=mock.sentinel)
+    fake_create_topic_rpc = mock.Mock()
+    transport_mock._wrapped_methods = {
+        transport_mock.create_topic: fake_create_topic_rpc
+    }
+    patcher = mock.patch.object(client.api, "_transport", new=transport_mock)
 
-    client.create_topic("projects/foo/topics/bar")
-    assert ct.call_count == 1
-    _, args, _ = ct.mock_calls[0]
-    assert args[0] == types.Topic(name="projects/foo/topics/bar")
+    topic = gapic_types.Topic(name="projects/foo/topics/bar")
+
+    with patcher:
+        client.create_topic(topic)
+
+    assert fake_create_topic_rpc.call_count == 1
+    _, args, _ = fake_create_topic_rpc.mock_calls[0]
+    assert args[0] == gapic_types.Topic(name="projects/foo/topics/bar")
 
 
 def test_gapic_class_method_on_class():
@@ -444,9 +502,9 @@ def test_publish_with_ordering_key():
     # Check mock.
     batch.publish.assert_has_calls(
         [
-            mock.call(types.PubsubMessage(data=b"spam", ordering_key="k1")),
+            mock.call(gapic_types.PubsubMessage(data=b"spam", ordering_key="k1")),
             mock.call(
-                types.PubsubMessage(
+                gapic_types.PubsubMessage(
                     data=b"foo", attributes={"bar": "baz"}, ordering_key="k1"
                 )
             ),

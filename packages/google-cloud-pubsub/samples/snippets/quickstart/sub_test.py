@@ -38,12 +38,12 @@ def topic_path():
     topic_path = publisher_client.topic_path(PROJECT, TOPIC)
 
     try:
-        topic = publisher_client.create_topic(topic_path)
+        topic = publisher_client.create_topic(request={"name": topic_path})
         yield topic.name
     except AlreadyExists:
         yield topic_path
 
-    publisher_client.delete_topic(topic_path)
+    publisher_client.delete_topic(request={"topic": topic_path})
 
 
 @pytest.fixture(scope="module")
@@ -52,18 +52,18 @@ def subscription_path(topic_path):
 
     try:
         subscription = subscriber_client.create_subscription(
-            subscription_path, topic_path
+            request={"name": subscription_path, "topic": topic_path}
         )
         yield subscription.name
     except AlreadyExists:
         yield subscription_path
 
-    subscriber_client.delete_subscription(subscription_path)
+    subscriber_client.delete_subscription(request={"subscription": subscription_path})
     subscriber_client.close()
 
 
 def _publish_messages(topic_path):
-    publish_future = publisher_client.publish(topic_path, data=b"Hello World!")
+    publish_future = publisher_client.publish(topic_path, b"Hello World!")
     publish_future.result()
 
 

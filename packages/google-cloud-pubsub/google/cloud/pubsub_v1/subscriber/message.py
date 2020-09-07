@@ -14,12 +14,12 @@
 
 from __future__ import absolute_import
 
-import datetime
+import datetime as dt
 import json
 import math
+import pytz
 import time
 
-from google.api_core import datetime_helpers
 from google.cloud.pubsub_v1.subscriber._protocol import requests
 
 
@@ -81,7 +81,9 @@ class Message(object):
 
         Args:
             message (~.pubsub_v1.types.PubsubMessage): The message received
-                from Pub/Sub.
+                from Pub/Sub. For performance reasons it should be the the raw
+                protobuf message wrapped by the ``PubsubMessage`` class obtained
+                through the message's ``.pb()`` method.
             ack_id (str): The ack_id received from Pub/Sub.
             delivery_attempt (int): The delivery attempt counter received
                 from Pub/Sub if a DeadLetterPolicy is set on the subscription,
@@ -100,6 +102,18 @@ class Message(object):
         # was received. Tracking this provides us a way to be smart about
         # the default lease deadline.
         self._received_timestamp = time.time()
+
+        # Store the message attributes directly to speed up attribute access, i.e.
+        # to avoid two lookups if self._message.<attribute> pattern was used in
+        # properties.
+        self._attributes = message.attributes
+        self._data = message.data
+        self._publish_time = dt.datetime.fromtimestamp(
+            message.publish_time.seconds + message.publish_time.nanos / 1e9,
+            tz=pytz.UTC,
+        )
+        self._ordering_key = message.ordering_key
+        self._size = message.ByteSize()
 
     def __repr__(self):
         # Get an abbreviated version of the data.
@@ -132,7 +146,7 @@ class Message(object):
             .ScalarMapContainer: The message's attributes. This is a
             ``dict``-like object provided by ``google.protobuf``.
         """
-        return self._message.attributes
+        return self._attributes
 
     @property
     def data(self):
@@ -142,7 +156,7 @@ class Message(object):
             bytes: The message data. This is always a bytestring; if you
                 want a text string, call :meth:`bytes.decode`.
         """
-        return self._message.data
+        return self._data
 
     @property
     def publish_time(self):
@@ -151,21 +165,17 @@ class Message(object):
         Returns:
             datetime: The date and time that the message was published.
         """
-        timestamp = self._message.publish_time
-        delta = datetime.timedelta(
-            seconds=timestamp.seconds, microseconds=timestamp.nanos // 1000
-        )
-        return datetime_helpers._UTC_EPOCH + delta
+        return self._publish_time
 
     @property
     def ordering_key(self):
         """str: the ordering key used to publish the message."""
-        return self._message.ordering_key
+        return self._ordering_key
 
     @property
     def size(self):
         """Return the size of the underlying message, in bytes."""
-        return self._message.ByteSize()
+        return self._size
 
     @property
     def ack_id(self):

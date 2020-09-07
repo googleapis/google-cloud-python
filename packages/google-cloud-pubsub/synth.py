@@ -45,234 +45,75 @@ s.move(
     ],
 )
 
-# Adjust tests to import the clients directly.
+# DEFAULT SCOPES and SERVICE_ADDRESS are being used. so let's force them in.
 s.replace(
-    "tests/unit/gapic/v1/test_publisher_client_v1.py",
-    "from google.cloud import pubsub_v1",
-    "from google.cloud.pubsub_v1.gapic import publisher_client",
-)
-
-s.replace(
-    "tests/unit/gapic/v1/test_publisher_client_v1.py", " pubsub_v1", " publisher_client"
-)
-
-s.replace(
-    "tests/unit/gapic/v1/test_subscriber_client_v1.py",
-    "from google.cloud import pubsub_v1",
-    "from google.cloud.pubsub_v1.gapic import subscriber_client",
-)
-
-s.replace(
-    "tests/unit/gapic/v1/test_subscriber_client_v1.py",
-    " pubsub_v1",
-    " subscriber_client",
-)
-
-# DEFAULT SCOPES are being used. so let's force them in.
-s.replace(
-    "google/cloud/pubsub_v1/gapic/*er_client.py",
-    "# The name of the interface for this client. This is the key used to",
-    """# The scopes needed to make gRPC calls to all of the methods defined in
+    "google/pubsub_v1/services/*er/*client.py",
+    r"DEFAULT_ENDPOINT = 'pubsub\.googleapis\.com'",
+    """
+    # The scopes needed to make gRPC calls to all of the methods defined in
     # this service
     _DEFAULT_SCOPES = (
         'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/pubsub', )
+        'https://www.googleapis.com/auth/pubsub',
+    )
+
+    SERVICE_ADDRESS = "pubsub.googleapis.com:443"
+    \"""The default address of the service.\"""
 
     \g<0>""",
-)
-
-s.replace(
-    "google/cloud/pubsub_v1/gapic/publisher_client.py",
-    "import google.api_core.gapic_v1.method\n",
-    "\g<0>import google.api_core.path_template\n",
-)
-
-# Doc strings are formatted poorly
-s.replace(
-    "google/cloud/pubsub_v1/proto/pubsub_pb2.py",
-    'DESCRIPTOR = _MESSAGESTORAGEPOLICY,\n\s+__module__.*\n\s+,\n\s+__doc__ = """',
-    "\g<0>A message storage policy.\n\n\n    ",
-)
-
-s.replace(
-    "google/cloud/pubsub_v1/gapic/subscriber_client.py",
-    "subscription \(str\): The subscription whose backlog .*\n(.*\n)+?"
-    "\s+Format is .*",
-    """subscription (str): The subscription whose backlog the snapshot retains.
-                Specifically, the created snapshot is guaranteed to retain: \\
-                 (a) The existing backlog on the subscription. More precisely, this is \\
-                     defined as the messages in the subscription's backlog that are \\
-                     unacknowledged upon the successful completion of the \\
-                     `CreateSnapshot` request; as well as: \\
-                 (b) Any messages published to the subscription's topic following the \\
-                     successful completion of the CreateSnapshot request. \\
-
-                Format is ``projects/{project}/subscriptions/{sub}``.""",
-)
-
-s.replace(
-    "google/cloud/pubsub_v1/gapic/publisher_client.py",
-    "import functools\n",
-    "import collections\n"
-    "from copy import deepcopy\n\g<0>"
-)
-
-s.replace(
-    "google/cloud/pubsub_v1/gapic/publisher_client.py",
-    "import pkg_resources\n",
-    "\g<0>import six\n"
-)
-
-s.replace(
-    "google/cloud/pubsub_v1/gapic/publisher_client.py",
-    "class PublisherClient",
-    """# TODO: remove conditional import after Python 2 support is dropped
-if six.PY2:
-    from collections import Mapping
-else:
-    from collections.abc import Mapping
-    
-
-def _merge_dict(d1, d2):
-    # Modifies d1 in-place to take values from d2
-    # if the nested keys from d2 are present in d1.
-    # https://stackoverflow.com/a/10704003/4488789
-    for k, v2 in d2.items():
-        v1 = d1.get(k) # returns None if v1 has no such key
-        if v1 is None:
-            raise Exception("{} is not recognized by client_config".format(k))
-        if isinstance(v1, Mapping) and isinstance(v2, Mapping):
-            _merge_dict(v1, v2)
-        else:
-            d1[k] = v2
-    return d1
-    \n\n\g<0>"""
-)
-
-s.replace(
-    "google/cloud/pubsub_v1/gapic/publisher_client.py",
-    "client_config \(dict\): DEPRECATED.",
-    "client_config (dict):"
-)
-
-s.replace(
-    "google/cloud/pubsub_v1/gapic/publisher_client.py",
-    "# Raise deprecation warnings .*\n.*\n.*\n.*\n.*\n.*\n",
-    """default_client_config = deepcopy(publisher_client_config.config)
-
-        if client_config is None:
-            client_config = default_client_config
-        else:
-            client_config = _merge_dict(default_client_config, client_config)
-    """
-)
-
-s.replace(
-    "google/cloud/pubsub_v1/gapic/publisher_client.py",
-    "~google.api_core.page_iterator.PageIterator",
-    "~google.api_core.page_iterator.GRPCIterator"
-)
-
-s.replace(
-    "google/cloud/pubsub_v1/gapic/subscriber_client.py",
-    "~google.api_core.page_iterator.PageIterator",
-    "~google.api_core.page_iterator.GRPCIterator"
-)
-
-# Temporary fixup for 'grpc-google-iam-vi 0.12.4' (before generation).
-s.replace(
-    "google/cloud/pubsub_v1/gapic/transports/*_grpc_transport.py",
-    "from google.iam.v1 import iam_policy_pb2",
-    "from google.iam.v1 import iam_policy_pb2_grpc as iam_policy_pb2",
 )
 
 # Monkey patch the streaming_pull() GAPIC method to disable pre-fetching stream
 # results.
 s.replace(
-    "google/cloud/pubsub_v1/gapic/subscriber_client.py",
-    r"return self\._inner_api_calls\['streaming_pull'\]\(.*",
+    "google/pubsub_v1/services/subscriber/client.py",
+    (
+        r"# Wrap the RPC method.*\n"
+        r"\s+# and friendly error.*\n"
+        r"\s+rpc = self\._transport\._wrapped_methods\[self\._transport\.streaming_pull\]"
+    ),
     """
-            # Wrappers in api-core should not automatically pre-fetch the first
-            # stream result, as this breaks the stream when re-opening it.
-            # https://github.com/googleapis/python-pubsub/issues/93#issuecomment-630762257
-            self.transport.streaming_pull._prefetch_first_result_ = False
+        # Wrappers in api-core should not automatically pre-fetch the first
+        # stream result, as this breaks the stream when re-opening it.
+        # https://github.com/googleapis/python-pubsub/issues/93#issuecomment-630762257
+        self._transport.streaming_pull._prefetch_first_result_ = False
 
-        \g<0>"""
+        \g<0>""",
 )
 
-# Add missing blank line before Attributes: in generated docstrings
-# https://github.com/googleapis/protoc-docs-plugin/pull/31
+# Docstrings of *_iam_policy() methods are formatted poorly and must be fixed
+# in order to avoid docstring format warnings in docs.
 s.replace(
-    "google/cloud/pubsub_v1/proto/pubsub_pb2.py",
-    "(\s+)Attributes:",
-    "\n\g<1>Attributes:"
+    "google/pubsub_v1/services/*er/client.py",
+    r"(\s+)Args:",
+    "\n\g<1>Args:"
 )
-
-# Fix incomplete docstring examples.
 s.replace(
-    "google/cloud/pubsub_v1/gapic/subscriber_client.py",
-    r"\s+>>> subscription = \{'ack_deadline_seconds': ack_deadline_seconds\}",
-    textwrap.indent(
-        """
->>> subscription_name = 'projects/my-project/subscriptions/my-subscription'
->>> subscription = {
-...    'name': subscription_name,
-...    'ack_deadline_seconds': ack_deadline_seconds,
-... }""",
-        prefix=" " * 12,
-    )
+    "google/pubsub_v1/services/*er/client.py",
+    r"(\s+)\*\*JSON Example\*\*\s+::",
+    "\n\g<1>**JSON Example**::\n",
 )
-
 s.replace(
-    "google/cloud/pubsub_v1/gapic/subscriber_client.py",
-    r"\s+>>> snapshot = \{'expire_time': expire_time\}",
-    textwrap.indent(
-        """
->>> snapshot_name = 'projects/my-project/snapshots/my-snapshot'
->>> snapshot = {
-...    'name': snapshot_name,
-...    'expire_time': expire_time,
-... }""",
-        prefix=" " * 12,
-    )
+    "google/pubsub_v1/services/*er/client.py",
+    r"(\s+)\*\*YAML Example\*\*\s+::",
+    "\n\g<1>**YAML Example**::\n",
 )
-
 s.replace(
-    "google/cloud/pubsub_v1/gapic/publisher_client.py",
-    r"\s+>>> # TODO: Initialize `topic`:\n\s+>>> topic = \{\}\n",
-    textwrap.indent(
-        """
->>> topic_name = 'projects/my-project/topics/my-topic'
->>> topic_labels = {'source': 'external'}
->>> topic = {'name': topic_name, 'labels': topic_labels}
-""",
-        prefix=" " * 12,
-    ),
-)
-
-s.replace(
-    "google/cloud/pubsub_v1/gapic/publisher_client.py",
-    r"\s+>>> # TODO: Initialize `update_mask`:\n\s+>>> update_mask = \{\}\n",
-    textwrap.indent(
-        """
->>> paths_element = 'labels'
->>> paths = [paths_element]
->>> update_mask = {'paths': paths}
-""",
-        prefix=" " * 12,
-    ),
+    "google/pubsub_v1/services/*er/client.py",
+    r"(\s+)For a description of IAM and its features, see",
+    "\n\g<0>",
 )
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = gcp.CommonTemplates().py_library(
-    unit_cov_level=97,
+    microgenerator=True,
+    samples=True,
     cov_level=99,
     system_test_external_dependencies=["psutil"],
-    samples=True,
 )
-s.move(templated_files)
+s.move(templated_files, excludes=[".coveragerc"])
 
 # ----------------------------------------------------------------------------
 # Samples templates

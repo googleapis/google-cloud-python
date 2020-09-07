@@ -17,6 +17,7 @@ import collections
 import concurrent.futures as futures
 import threading
 
+from google.api_core import gapic_v1
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher._sequencer import base as sequencer_base
 from google.cloud.pubsub_v1.publisher._batch import base as batch_base
@@ -225,9 +226,13 @@ class OrderedSequencer(sequencer_base.Sequencer):
                 raise RuntimeError("Ordering key is not paused.")
             self._state = _OrderedSequencerStatus.ACCEPTING_MESSAGES
 
-    def _create_batch(self):
+    def _create_batch(self, commit_retry=gapic_v1.method.DEFAULT):
         """ Create a new batch using the client's batch class and other stored
             settings.
+
+        Args:
+            commit_retry (Optional[google.api_core.retry.Retry]):
+                The retry settings to apply when publishing the batch.
         """
         return self._client._batch_class(
             client=self._client,
@@ -235,13 +240,17 @@ class OrderedSequencer(sequencer_base.Sequencer):
             settings=self._client.batch_settings,
             batch_done_callback=self._batch_done_callback,
             commit_when_full=False,
+            commit_retry=commit_retry,
         )
 
-    def publish(self, message):
+    def publish(self, message, retry=gapic_v1.method.DEFAULT):
         """ Publish message for this ordering key.
 
         Args:
-            message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.
+            message (~.pubsub_v1.types.PubsubMessage):
+                The Pub/Sub message.
+            retry (Optional[google.api_core.retry.Retry]):
+                The retry settings to apply when publishing the message.
 
         Returns:
             A class instance that conforms to Python Standard library's
@@ -278,13 +287,13 @@ class OrderedSequencer(sequencer_base.Sequencer):
             ), "Publish is only allowed in accepting-messages state."
 
             if not self._ordered_batches:
-                new_batch = self._create_batch()
+                new_batch = self._create_batch(commit_retry=retry)
                 self._ordered_batches.append(new_batch)
 
             batch = self._ordered_batches[-1]
             future = batch.publish(message)
             while future is None:
-                batch = self._create_batch()
+                batch = self._create_batch(commit_retry=retry)
                 self._ordered_batches.append(batch)
                 future = batch.publish(message)
 

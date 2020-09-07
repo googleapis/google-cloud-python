@@ -25,10 +25,12 @@ from google.oauth2 import service_account
 
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.gapic import subscriber_client
-from google.cloud.pubsub_v1.gapic.transports import subscriber_grpc_transport
 from google.cloud.pubsub_v1.subscriber import futures
 from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
+from google.pubsub_v1.services.subscriber import client as subscriber_client
+from google.pubsub_v1.services.subscriber.transports import (
+    grpc as subscriber_grpc_transport,
+)
 
 
 __version__ = pkg_resources.get_distribution("google-cloud-pubsub").version
@@ -250,7 +252,7 @@ class Client(object):
 
         This method is idempotent.
         """
-        self.api.transport.channel.close()
+        self.api._transport.grpc_channel.close()
 
     def __enter__(self):
         return self

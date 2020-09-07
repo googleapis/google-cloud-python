@@ -24,19 +24,23 @@ import time
 import grpc
 import six
 
+from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.oauth2 import service_account
 
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.gapic import publisher_client
-from google.cloud.pubsub_v1.gapic.transports import publisher_grpc_transport
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher import futures
 from google.cloud.pubsub_v1.publisher._batch import thread
 from google.cloud.pubsub_v1.publisher._sequencer import ordered_sequencer
 from google.cloud.pubsub_v1.publisher._sequencer import unordered_sequencer
 from google.cloud.pubsub_v1.publisher.flow_controller import FlowController
+from google.pubsub_v1 import types as gapic_types
+from google.pubsub_v1.services.publisher import client as publisher_client
+from google.pubsub_v1.services.publisher.transports import (
+    grpc as publisher_grpc_transport,
+)
 
 __version__ = pkg_resources.get_distribution("google-cloud-pubsub").version
 
@@ -47,6 +51,8 @@ _BLACKLISTED_METHODS = (
     "from_service_account_file",
     "from_service_account_json",
 )
+
+_raw_proto_pubbsub_message = gapic_types.PubsubMessage.pb()
 
 
 def _set_nested_value(container, value, keys):
@@ -75,11 +81,8 @@ class Client(object):
             arguments to the underlying
             :class:`~google.cloud.pubsub_v1.gapic.publisher_client.PublisherClient`.
             Generally you should not need to set additional keyword
-            arguments. Optionally, publish retry settings can be set via
-            ``client_config`` where user-provided retry configurations are
-            applied to default retry settings. And regional endpoints can be
-            set via ``client_options`` that takes a single key-value pair that
-            defines the endpoint.
+            arguments. Regional endpoints can be set via ``client_options`` that
+            takes a single key-value pair that defines the endpoint.
 
     Example:
 
@@ -102,19 +105,6 @@ class Client(object):
                     limit_exceeded_behavior=pubsub_v1.types.LimitExceededBehavior.BLOCK,
                 ),
             ),
-
-            # Optional
-            client_config = {
-                "interfaces": {
-                    "google.pubsub.v1.Publisher": {
-                        "retry_params": {
-                            "messaging": {
-                                'total_timeout_millis': 650000,  # default: 600000
-                            }
-                        }
-                    }
-                }
-            },
 
             # Optional
             client_options = {
@@ -173,22 +163,6 @@ class Client(object):
         # For a transient failure, retry publishing the message infinitely.
         self.publisher_options = types.PublisherOptions(*publisher_options)
         self._enable_message_ordering = self.publisher_options[0]
-        if self._enable_message_ordering:
-            # Set retry timeout to "infinite" when message ordering is enabled.
-            # Note that this then also impacts messages added with an empty ordering
-            # key.
-            client_config = _set_nested_value(
-                kwargs.pop("client_config", {}),
-                2 ** 32,
-                [
-                    "interfaces",
-                    "google.pubsub.v1.Publisher",
-                    "retry_params",
-                    "messaging",
-                    "total_timeout_millis",
-                ],
-            )
-            kwargs["client_config"] = client_config
 
         # Add the metrics headers, and instantiate the underlying GAPIC
         # client.
@@ -292,7 +266,9 @@ class Client(object):
             else:
                 sequencer.unpause()
 
-    def publish(self, topic, data, ordering_key="", **attrs):
+    def publish(
+        self, topic, data, ordering_key="", retry=gapic_v1.method.DEFAULT, **attrs
+    ):
         """Publish a single message.
 
         .. note::
@@ -327,6 +303,9 @@ class Client(object):
                 enabled for this client to use this feature.
                 EXPERIMENTAL: This feature is currently available in a closed
                 alpha. Please contact the Cloud Pub/Sub team to use it.
+            retry (Optional[google.api_core.retry.Retry]): Designation of what
+                errors, if any, should be retried. If `ordering_key` is specified,
+                the total retry deadline will be changed to "infinity".
             attrs (Mapping[str, str]): A dictionary of attributes to be
                 sent as metadata. (These may be text strings or byte strings.)
 
@@ -369,10 +348,13 @@ class Client(object):
                 "be sent as text strings."
             )
 
-        # Create the Pub/Sub message object.
-        message = types.PubsubMessage(
+        # Create the Pub/Sub message object. For performance reasons, the message
+        # should be constructed by directly using the raw protobuf class, and only
+        # then wrapping it into the higher-level PubsubMessage class.
+        vanilla_pb = _raw_proto_pubbsub_message(
             data=data, ordering_key=ordering_key, attributes=attrs
         )
+        message = gapic_types.PubsubMessage.wrap(vanilla_pb)
 
         # Messages should go through flow control to prevent excessive
         # queuing on the client side (depending on the settings).
@@ -390,10 +372,19 @@ class Client(object):
             if self._is_stopped:
                 raise RuntimeError("Cannot publish on a stopped publisher.")
 
-            sequencer = self._get_or_create_sequencer(topic, ordering_key)
+            # Set retry timeout to "infinite" when message ordering is enabled.
+            # Note that this then also impacts messages added with an empty
+            # ordering key.
+            if self._enable_message_ordering:
+                if retry is gapic_v1.method.DEFAULT:
+                    # use the default retry for the publish GRPC method as a base
+                    transport = self.api._transport
+                    retry = transport._wrapped_methods[transport.publish]._retry
+                retry = retry.with_deadline(2.0 ** 32)
 
             # Delegate the publishing to the sequencer.
-            future = sequencer.publish(message)
+            sequencer = self._get_or_create_sequencer(topic, ordering_key)
+            future = sequencer.publish(message, retry=retry)
             future.add_done_callback(on_publish_done)
 
             # Create a timer thread if necessary to enforce the batching

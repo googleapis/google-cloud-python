@@ -14,14 +14,14 @@
 
 from six.moves import queue
 
-from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import message
 from google.cloud.pubsub_v1.subscriber._protocol import messages_on_hold
+from google.pubsub_v1 import types as gapic_types
 
 
 def make_message(ack_id, ordering_key):
-    proto_msg = types.PubsubMessage(data=b"Q", ordering_key=ordering_key)
-    return message.Message(proto_msg, ack_id, 0, queue.Queue())
+    proto_msg = gapic_types.PubsubMessage(data=b"Q", ordering_key=ordering_key)
+    return message.Message(proto_msg._pb, ack_id, 0, queue.Queue())
 
 
 def test_init():

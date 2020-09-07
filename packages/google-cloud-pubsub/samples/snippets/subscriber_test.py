@@ -44,13 +44,13 @@ def topic(publisher_client):
     topic_path = publisher_client.topic_path(PROJECT, TOPIC)
 
     try:
-        topic = publisher_client.get_topic(topic_path)
+        topic = publisher_client.get_topic(request={"topic": topic_path})
     except:  # noqa
-        topic = publisher_client.create_topic(topic_path)
+        topic = publisher_client.create_topic(request={"name": topic_path})
 
     yield topic.name
 
-    publisher_client.delete_topic(topic.name)
+    publisher_client.delete_topic(request={"topic": topic.name})
 
 
 @pytest.fixture(scope="module")
@@ -58,13 +58,13 @@ def dead_letter_topic(publisher_client):
     topic_path = publisher_client.topic_path(PROJECT, DEAD_LETTER_TOPIC)
 
     try:
-        dead_letter_topic = publisher_client.get_topic(topic_path)
+        dead_letter_topic = publisher_client.get_topic(request={"topic": topic_path})
     except:  # noqa
-        dead_letter_topic = publisher_client.create_topic(topic_path)
+        dead_letter_topic = publisher_client.create_topic(request={"name": topic_path})
 
     yield dead_letter_topic.name
 
-    publisher_client.delete_topic(dead_letter_topic.name)
+    publisher_client.delete_topic(request={"topic": dead_letter_topic.name})
 
 
 @pytest.fixture(scope="module")
@@ -79,10 +79,12 @@ def subscription_admin(subscriber_client, topic):
     subscription_path = subscriber_client.subscription_path(PROJECT, SUBSCRIPTION_ADMIN)
 
     try:
-        subscription = subscriber_client.get_subscription(subscription_path)
+        subscription = subscriber_client.get_subscription(
+            request={"subscription": subscription_path}
+        )
     except:  # noqa
         subscription = subscriber_client.create_subscription(
-            subscription_path, topic=topic
+            request={"name": subscription_path, "topic": topic}
         )
 
     yield subscription.name
@@ -93,15 +95,17 @@ def subscription_sync(subscriber_client, topic):
     subscription_path = subscriber_client.subscription_path(PROJECT, SUBSCRIPTION_SYNC)
 
     try:
-        subscription = subscriber_client.get_subscription(subscription_path)
+        subscription = subscriber_client.get_subscription(
+            request={"subscription": subscription_path}
+        )
     except:  # noqa
         subscription = subscriber_client.create_subscription(
-            subscription_path, topic=topic
+            request={"name": subscription_path, "topic": topic}
         )
 
     yield subscription.name
 
-    subscriber_client.delete_subscription(subscription.name)
+    subscriber_client.delete_subscription(request={"subscription": subscription.name})
 
 
 @pytest.fixture(scope="module")
@@ -109,15 +113,17 @@ def subscription_async(subscriber_client, topic):
     subscription_path = subscriber_client.subscription_path(PROJECT, SUBSCRIPTION_ASYNC)
 
     try:
-        subscription = subscriber_client.get_subscription(subscription_path)
+        subscription = subscriber_client.get_subscription(
+            request={"subscription": subscription_path}
+        )
     except:  # noqa
         subscription = subscriber_client.create_subscription(
-            subscription_path, topic=topic
+            request={"name": subscription_path, "topic": topic}
         )
 
     yield subscription.name
 
-    subscriber_client.delete_subscription(subscription.name)
+    subscriber_client.delete_subscription(request={"subscription": subscription.name})
 
 
 @pytest.fixture(scope="module")
@@ -125,15 +131,17 @@ def subscription_dlq(subscriber_client, topic):
     subscription_path = subscriber_client.subscription_path(PROJECT, SUBSCRIPTION_DLQ)
 
     try:
-        subscription = subscriber_client.get_subscription(subscription_path)
+        subscription = subscriber_client.get_subscription(
+            request={"subscription": subscription_path}
+        )
     except:  # noqa
         subscription = subscriber_client.create_subscription(
-            subscription_path, topic=topic
+            request={"name": subscription_path, "topic": topic}
         )
 
     yield subscription.name
 
-    subscriber_client.delete_subscription(subscription.name)
+    subscriber_client.delete_subscription(request={"subscription": subscription.name})
 
 
 def test_list_in_topic(subscription_admin, capsys):
@@ -160,7 +168,9 @@ def test_create(subscriber_client):
     subscription_path = subscriber_client.subscription_path(PROJECT, SUBSCRIPTION_ADMIN)
 
     try:
-        subscriber_client.delete_subscription(subscription_path)
+        subscriber_client.delete_subscription(
+            request={"subscription": subscription_path}
+        )
     except Exception:
         pass
 
@@ -168,7 +178,9 @@ def test_create(subscriber_client):
 
     @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
     def eventually_consistent_test():
-        assert subscriber_client.get_subscription(subscription_path)
+        assert subscriber_client.get_subscription(
+            request={"subscription": subscription_path}
+        )
 
     eventually_consistent_test()
 
@@ -180,7 +192,9 @@ def test_create_subscription_with_dead_letter_policy(
     dead_letter_topic_path = publisher_client.topic_path(PROJECT, DEAD_LETTER_TOPIC)
 
     try:
-        subscriber_client.delete_subscription(subscription_path)
+        subscriber_client.delete_subscription(
+            request={"subscription": subscription_path}
+        )
     except Exception:
         pass
 
@@ -197,7 +211,9 @@ def test_create_subscription_with_dead_letter_policy(
 def test_create_push(subscriber_client):
     subscription_path = subscriber_client.subscription_path(PROJECT, SUBSCRIPTION_ADMIN)
     try:
-        subscriber_client.delete_subscription(subscription_path)
+        subscriber_client.delete_subscription(
+            request={"subscription": subscription_path}
+        )
     except Exception:
         pass
 
@@ -205,7 +221,9 @@ def test_create_push(subscriber_client):
 
     @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
     def eventually_consistent_test():
-        assert subscriber_client.get_subscription(subscription_path)
+        assert subscriber_client.get_subscription(
+            request={"subscription": subscription_path}
+        )
 
     eventually_consistent_test()
 
@@ -217,7 +235,7 @@ def test_create_subscription_with_ordering(subscriber_client, capsys):
     assert "enable_message_ordering: true" in out
 
     subscription_path = subscriber_client.subscription_path(PROJECT, SUBSCRIPTION_ORDERING)
-    subscriber_client.delete_subscription(subscription_path)
+    subscriber_client.delete_subscription(request={"subscription": subscription_path})
 
 
 def test_update(subscriber_client, subscription_admin, capsys):
@@ -246,17 +264,17 @@ def test_delete(subscriber_client, subscription_admin):
     @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
     def eventually_consistent_test():
         with pytest.raises(Exception):
-            subscriber_client.get_subscription(subscription_admin)
+            subscriber_client.get_subscription(
+                request={"subscription": subscription_admin}
+            )
 
     eventually_consistent_test()
 
 
-def _publish_messages(publisher_client, topic):
+def _publish_messages(publisher_client, topic, **attrs):
     for n in range(5):
         data = u"message {}".format(n).encode("utf-8")
-        publish_future = publisher_client.publish(
-            topic, data=data, origin="python-sample"
-        )
+        publish_future = publisher_client.publish(topic, data, **attrs)
         publish_future.result()
 
 
@@ -275,7 +293,7 @@ def test_receive_with_custom_attributes(
     publisher_client, topic, subscription_async, capsys
 ):
 
-    _publish_messages(publisher_client, topic)
+    _publish_messages(publisher_client, topic, origin="python-sample")
 
     subscriber.receive_messages_with_custom_attributes(PROJECT, SUBSCRIPTION_ASYNC, 5)
 

@@ -21,6 +21,7 @@ from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher._batch.base import BatchStatus
 from google.cloud.pubsub_v1.publisher._batch.thread import Batch
+from google.pubsub_v1 import types as gapic_types
 
 
 def create_batch(status=None, settings=types.BatchSettings()):
@@ -44,5 +45,5 @@ def create_batch(status=None, settings=types.BatchSettings()):
 def test_len():
     batch = create_batch(status=BatchStatus.ACCEPTING_MESSAGES)
     assert len(batch) == 0
-    batch.publish(types.PubsubMessage(data=b"foo"))
+    batch.publish(gapic_types.PubsubMessage(data=b"foo"))
     assert len(batch) == 1

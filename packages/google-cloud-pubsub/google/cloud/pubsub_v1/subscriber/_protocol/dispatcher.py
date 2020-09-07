@@ -21,9 +21,9 @@ import logging
 import math
 import threading
 
-from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber._protocol import helper_threads
 from google.cloud.pubsub_v1.subscriber._protocol import requests
+from google.pubsub_v1 import types as gapic_types
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -140,7 +140,7 @@ class Dispatcher(object):
         total_chunks = int(math.ceil(len(items) / _ACK_IDS_BATCH_SIZE))
 
         for _ in range(total_chunks):
-            request = types.StreamingPullRequest(
+            request = gapic_types.StreamingPullRequest(
                 ack_ids=itertools.islice(ack_ids, _ACK_IDS_BATCH_SIZE)
             )
             self._manager.send(request)
@@ -181,7 +181,7 @@ class Dispatcher(object):
         total_chunks = int(math.ceil(len(items) / _ACK_IDS_BATCH_SIZE))
 
         for _ in range(total_chunks):
-            request = types.StreamingPullRequest(
+            request = gapic_types.StreamingPullRequest(
                 modify_deadline_ack_ids=itertools.islice(ack_ids, _ACK_IDS_BATCH_SIZE),
                 modify_deadline_seconds=itertools.islice(seconds, _ACK_IDS_BATCH_SIZE),
             )

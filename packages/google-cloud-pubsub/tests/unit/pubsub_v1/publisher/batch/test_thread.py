@@ -20,6 +20,7 @@ import mock
 import pytest
 
 import google.api_core.exceptions
+from google.api_core import gapic_v1
 from google.auth import credentials
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
@@ -28,6 +29,7 @@ from google.cloud.pubsub_v1.publisher._batch.base import BatchStatus
 from google.cloud.pubsub_v1.publisher._batch.base import BatchCancellationReason
 from google.cloud.pubsub_v1.publisher._batch import thread
 from google.cloud.pubsub_v1.publisher._batch.thread import Batch
+from google.pubsub_v1 import types as gapic_types
 
 
 def create_client():
@@ -39,6 +41,7 @@ def create_batch(
     topic="topic_name",
     batch_done_callback=None,
     commit_when_full=True,
+    commit_retry=gapic_v1.method.DEFAULT,
     **batch_settings
 ):
     """Return a batch object suitable for testing.
@@ -49,6 +52,8 @@ def create_batch(
             the batch is done, either with a success or a failure flag.
         commit_when_full (bool): Whether to commit the batch when the batch
             has reached byte-size or number-of-messages limits.
+        commit_retry (Optional[google.api_core.retry.Retry]): The retry settings
+            for the batch commit call.
         batch_settings (Mapping[str, str]): Arguments passed on to the
             :class:``~.pubsub_v1.types.BatchSettings`` constructor.
 
@@ -63,6 +68,7 @@ def create_batch(
         settings,
         batch_done_callback=batch_done_callback,
         commit_when_full=commit_when_full,
+        commit_retry=commit_retry,
     )
 
 
@@ -116,7 +122,7 @@ def test_blocking__commit():
     )
 
     # Set up the underlying API publish method to return a PublishResponse.
-    publish_response = types.PublishResponse(message_ids=["a", "b"])
+    publish_response = gapic_types.PublishResponse(message_ids=["a", "b"])
     patch = mock.patch.object(
         type(batch.client.api), "publish", return_value=publish_response
     )
@@ -126,11 +132,12 @@ def test_blocking__commit():
     # Establish that the underlying API call was made with expected
     # arguments.
     publish.assert_called_once_with(
-        "topic_name",
-        [
-            types.PubsubMessage(data=b"This is my message."),
-            types.PubsubMessage(data=b"This is another message."),
+        topic="topic_name",
+        messages=[
+            gapic_types.PubsubMessage(data=b"This is my message."),
+            gapic_types.PubsubMessage(data=b"This is another message."),
         ],
+        retry=gapic_v1.method.DEFAULT,
     )
 
     # Establish that all of the futures are done, and that they have the
@@ -141,15 +148,36 @@ def test_blocking__commit():
     assert futures[1].result() == "b"
 
 
+def test_blocking__commit_custom_retry():
+    batch = create_batch(commit_retry=mock.sentinel.custom_retry)
+    batch.publish({"data": b"This is my message."})
+
+    # Set up the underlying API publish method to return a PublishResponse.
+    publish_response = gapic_types.PublishResponse(message_ids=["a"])
+    patch = mock.patch.object(
+        type(batch.client.api), "publish", return_value=publish_response
+    )
+    with patch as publish:
+        batch._commit()
+
+    # Establish that the underlying API call was made with expected
+    # arguments.
+    publish.assert_called_once_with(
+        topic="topic_name",
+        messages=[gapic_types.PubsubMessage(data=b"This is my message.")],
+        retry=mock.sentinel.custom_retry,
+    )
+
+
 def test_client_api_publish_not_blocking_additional_publish_calls():
     batch = create_batch(max_messages=1)
     api_publish_called = threading.Event()
 
-    def api_publish_delay(_, messages):
+    def api_publish_delay(topic="", messages=(), retry=None):
         api_publish_called.set()
         time.sleep(1.0)
         message_ids = [str(i) for i in range(len(messages))]
-        return types.PublishResponse(message_ids=message_ids)
+        return gapic_types.PublishResponse(message_ids=message_ids)
 
     api_publish_patch = mock.patch.object(
         type(batch.client.api), "publish", side_effect=api_publish_delay
@@ -210,7 +238,7 @@ def test_blocking__commit_wrong_messageid_length():
     )
 
     # Set up a PublishResponse that only returns one message ID.
-    publish_response = types.PublishResponse(message_ids=["a"])
+    publish_response = gapic_types.PublishResponse(message_ids=["a"])
     patch = mock.patch.object(
         type(batch.client.api), "publish", return_value=publish_response
     )
@@ -264,9 +292,9 @@ def test_block__commmit_retry_error():
 def test_publish_updating_batch_size():
     batch = create_batch(topic="topic_foo")
     messages = (
-        types.PubsubMessage(data=b"foobarbaz"),
-        types.PubsubMessage(data=b"spameggs"),
-        types.PubsubMessage(data=b"1335020400"),
+        gapic_types.PubsubMessage(data=b"foobarbaz"),
+        gapic_types.PubsubMessage(data=b"spameggs"),
+        gapic_types.PubsubMessage(data=b"1335020400"),
     )
 
     # Publish each of the messages, which should save them to the batch.
@@ -278,9 +306,9 @@ def test_publish_updating_batch_size():
 
     # The size should have been incremented by the sum of the size
     # contributions of each message to the PublishRequest.
-    base_request_size = types.PublishRequest(topic="topic_foo").ByteSize()
+    base_request_size = gapic_types.PublishRequest(topic="topic_foo")._pb.ByteSize()
     expected_request_size = base_request_size + sum(
-        types.PublishRequest(messages=[msg]).ByteSize() for msg in messages
+        gapic_types.PublishRequest(messages=[msg])._pb.ByteSize() for msg in messages
     )
 
     assert batch.size == expected_request_size
@@ -289,7 +317,7 @@ def test_publish_updating_batch_size():
 
 def test_publish():
     batch = create_batch()
-    message = types.PubsubMessage()
+    message = gapic_types.PubsubMessage()
     future = batch.publish(message)
 
     assert len(batch.messages) == 1
@@ -299,7 +327,7 @@ def test_publish():
 def test_publish_max_messages_zero():
     batch = create_batch(topic="topic_foo", max_messages=0)
 
-    message = types.PubsubMessage(data=b"foobarbaz")
+    message = gapic_types.PubsubMessage(data=b"foobarbaz")
     with mock.patch.object(batch, "commit") as commit:
         future = batch.publish(message)
 
@@ -312,8 +340,8 @@ def test_publish_max_messages_zero():
 def test_publish_max_messages_enforced():
     batch = create_batch(topic="topic_foo", max_messages=1)
 
-    message = types.PubsubMessage(data=b"foobarbaz")
-    message2 = types.PubsubMessage(data=b"foobarbaz2")
+    message = gapic_types.PubsubMessage(data=b"foobarbaz")
+    message2 = gapic_types.PubsubMessage(data=b"foobarbaz2")
 
     future = batch.publish(message)
     future2 = batch.publish(message2)
@@ -327,8 +355,8 @@ def test_publish_max_messages_enforced():
 def test_publish_max_bytes_enforced():
     batch = create_batch(topic="topic_foo", max_bytes=15)
 
-    message = types.PubsubMessage(data=b"foobarbaz")
-    message2 = types.PubsubMessage(data=b"foobarbaz2")
+    message = gapic_types.PubsubMessage(data=b"foobarbaz")
+    message2 = gapic_types.PubsubMessage(data=b"foobarbaz2")
 
     future = batch.publish(message)
     future2 = batch.publish(message2)
@@ -343,9 +371,9 @@ def test_publish_exceed_max_messages():
     max_messages = 4
     batch = create_batch(max_messages=max_messages)
     messages = (
-        types.PubsubMessage(data=b"foobarbaz"),
-        types.PubsubMessage(data=b"spameggs"),
-        types.PubsubMessage(data=b"1335020400"),
+        gapic_types.PubsubMessage(data=b"foobarbaz"),
+        gapic_types.PubsubMessage(data=b"spameggs"),
+        gapic_types.PubsubMessage(data=b"1335020400"),
     )
 
     # Publish each of the messages, which should save them to the batch.
@@ -359,7 +387,7 @@ def test_publish_exceed_max_messages():
 
         # When a fourth message is published, commit should be called.
         # No future will be returned in this case.
-        future = batch.publish(types.PubsubMessage(data=b"last one"))
+        future = batch.publish(gapic_types.PubsubMessage(data=b"last one"))
         commit.assert_called_once_with()
 
         assert future is None
@@ -374,11 +402,11 @@ def test_publish_single_message_size_exceeds_server_size_limit():
         max_bytes=1000 * 1000,  # way larger than (mocked) server side limit
     )
 
-    big_message = types.PubsubMessage(data=b"x" * 984)
+    big_message = gapic_types.PubsubMessage(data=b"x" * 984)
 
-    request_size = types.PublishRequest(
+    request_size = gapic_types.PublishRequest(
         topic="topic_foo", messages=[big_message]
-    ).ByteSize()
+    )._pb.ByteSize()
     assert request_size == 1001  # sanity check, just above the (mocked) server limit
 
     with pytest.raises(exceptions.MessageTooLargeError):
@@ -390,13 +418,15 @@ def test_publish_total_messages_size_exceeds_server_size_limit():
     batch = create_batch(topic="topic_foo", max_messages=10, max_bytes=1500)
 
     messages = (
-        types.PubsubMessage(data=b"x" * 500),
-        types.PubsubMessage(data=b"x" * 600),
+        gapic_types.PubsubMessage(data=b"x" * 500),
+        gapic_types.PubsubMessage(data=b"x" * 600),
     )
 
     # Sanity check - request size is still below BatchSettings.max_bytes,
     # but it exceeds the server-side size limit.
-    request_size = types.PublishRequest(topic="topic_foo", messages=messages).ByteSize()
+    request_size = gapic_types.PublishRequest(
+        topic="topic_foo", messages=messages
+    )._pb.ByteSize()
     assert 1000 < request_size < 1500
 
     with mock.patch.object(batch, "commit") as fake_commit:
@@ -412,7 +442,7 @@ def test_publish_dict():
     future = batch.publish({"data": b"foobarbaz", "attributes": {"spam": "eggs"}})
 
     # There should be one message on the batch.
-    expected_message = types.PubsubMessage(
+    expected_message = gapic_types.PubsubMessage(
         data=b"foobarbaz", attributes={"spam": "eggs"}
     )
     assert batch.messages == [expected_message]
@@ -440,9 +470,9 @@ def test_do_not_commit_when_full_when_flag_is_off():
     # Set commit_when_full flag to False
     batch = create_batch(max_messages=max_messages, commit_when_full=False)
     messages = (
-        types.PubsubMessage(data=b"foobarbaz"),
-        types.PubsubMessage(data=b"spameggs"),
-        types.PubsubMessage(data=b"1335020400"),
+        gapic_types.PubsubMessage(data=b"foobarbaz"),
+        gapic_types.PubsubMessage(data=b"spameggs"),
+        gapic_types.PubsubMessage(data=b"1335020400"),
     )
 
     with mock.patch.object(batch, "commit") as commit:
@@ -451,7 +481,7 @@ def test_do_not_commit_when_full_when_flag_is_off():
         assert len(futures) == 3
 
         # When a fourth message is published, commit should not be called.
-        future = batch.publish(types.PubsubMessage(data=b"last one"))
+        future = batch.publish(gapic_types.PubsubMessage(data=b"last one"))
         assert commit.call_count == 0
         assert future is None
 
@@ -471,11 +501,11 @@ def test_batch_done_callback_called_on_success():
     batch = create_batch(batch_done_callback=batch_done_callback_tracker)
 
     # Ensure messages exist.
-    message = types.PubsubMessage(data=b"foobarbaz")
+    message = gapic_types.PubsubMessage(data=b"foobarbaz")
     batch.publish(message)
 
     # One response for one published message.
-    publish_response = types.PublishResponse(message_ids=["a"])
+    publish_response = gapic_types.PublishResponse(message_ids=["a"])
 
     with mock.patch.object(
         type(batch.client.api), "publish", return_value=publish_response
@@ -491,11 +521,11 @@ def test_batch_done_callback_called_on_publish_failure():
     batch = create_batch(batch_done_callback=batch_done_callback_tracker)
 
     # Ensure messages exist.
-    message = types.PubsubMessage(data=b"foobarbaz")
+    message = gapic_types.PubsubMessage(data=b"foobarbaz")
     batch.publish(message)
 
     # One response for one published message.
-    publish_response = types.PublishResponse(message_ids=["a"])
+    publish_response = gapic_types.PublishResponse(message_ids=["a"])
 
     # Induce publish error.
     error = google.api_core.exceptions.InternalServerError("uh oh")
@@ -517,11 +547,11 @@ def test_batch_done_callback_called_on_publish_response_invalid():
     batch = create_batch(batch_done_callback=batch_done_callback_tracker)
 
     # Ensure messages exist.
-    message = types.PubsubMessage(data=b"foobarbaz")
+    message = gapic_types.PubsubMessage(data=b"foobarbaz")
     batch.publish(message)
 
     # No message ids returned in successful publish response -> invalid.
-    publish_response = types.PublishResponse(message_ids=[])
+    publish_response = gapic_types.PublishResponse(message_ids=[])
 
     with mock.patch.object(
         type(batch.client.api), "publish", return_value=publish_response

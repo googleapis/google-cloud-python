@@ -17,13 +17,13 @@ import pytest
 
 from google.auth import credentials
 from google.cloud.pubsub_v1 import publisher
-from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher._batch import base
 from google.cloud.pubsub_v1.publisher._sequencer import unordered_sequencer
+from google.pubsub_v1 import types as gapic_types
 
 
 def create_message():
-    return types.PubsubMessage(data=b"foo", attributes={"bar": u"baz"})
+    return gapic_types.PubsubMessage(data=b"foo", attributes={"bar": u"baz"})
 
 
 def create_client():
@@ -87,6 +87,17 @@ def test_basic_publish():
 
     sequencer.publish(message)
     batch.publish.assert_called_once_with(message)
+
+
+def test_publish_custom_retry():
+    client = create_client()
+    message = create_message()
+    sequencer = unordered_sequencer.UnorderedSequencer(client, "topic_name")
+
+    sequencer.publish(message, retry=mock.sentinel.custom_retry)
+
+    assert sequencer._current_batch is not None
+    assert sequencer._current_batch._commit_retry is mock.sentinel.custom_retry
 
 
 def test_publish_batch_full():

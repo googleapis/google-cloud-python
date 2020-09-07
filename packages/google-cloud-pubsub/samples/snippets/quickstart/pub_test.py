@@ -39,13 +39,13 @@ def topic(publisher_client):
     topic_path = publisher_client.topic_path(PROJECT, TOPIC)
 
     try:
-        publisher_client.create_topic(topic_path)
+        publisher_client.create_topic(request={"name": topic_path})
     except AlreadyExists:
         pass
 
     yield TOPIC
 
-    publisher_client.delete_topic(topic_path)
+    publisher_client.delete_topic(request={"topic": topic_path})
 
 
 def test_pub(publisher_client, topic, capsys):

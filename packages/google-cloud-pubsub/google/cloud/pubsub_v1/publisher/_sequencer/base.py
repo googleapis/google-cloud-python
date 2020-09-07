@@ -48,11 +48,14 @@ class Sequencer(object):
 
     @staticmethod
     @abc.abstractmethod
-    def publish(self, message):
+    def publish(self, message, retry=None):
         """ Publish message for this ordering key.
 
         Args:
-            message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.
+            message (~.pubsub_v1.types.PubsubMessage):
+                The Pub/Sub message.
+            retry (Optional[google.api_core.retry.Retry]):
+                The retry settings to apply when publishing the message.
 
         Returns:
             A class instance that conforms to Python Standard library's

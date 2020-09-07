@@ -3,37 +3,29 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-pubsub.git",
-        "sha": "c8f63788636c2e3436c8ce6a01ef3b59e3df772a"
-      }
-    },
-    {
-      "git": {
-        "name": "googleapis",
-        "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "b882b8e6bfcd708042ff00f7adc67ce750817dd0",
-        "internalRef": "318028816"
+        "remote": "git@github.com:plamut/python-pubsub.git",
+        "sha": "c29d7f891c776e1a3fcb1cbfc7f549ca0772f38e"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "303271797a360f8a439203413f13a160f2f5b3b4"
+        "sha": "b2c32f1c8a4094f0f47fcf5d10f0b6f2bfb3387d"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "303271797a360f8a439203413f13a160f2f5b3b4"
+        "sha": "b2c32f1c8a4094f0f47fcf5d10f0b6f2bfb3387d"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "303271797a360f8a439203413f13a160f2f5b3b4"
+        "sha": "b2c32f1c8a4094f0f47fcf5d10f0b6f2bfb3387d"
       }
     }
   ],

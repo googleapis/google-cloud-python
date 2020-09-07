@@ -15,11 +15,11 @@
 import collections
 import threading
 
-from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
 from google.cloud.pubsub_v1.subscriber._protocol import helper_threads
 from google.cloud.pubsub_v1.subscriber._protocol import requests
 from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
+from google.pubsub_v1 import types as gapic_types
 
 import mock
 from six.moves import queue
@@ -76,7 +76,7 @@ def test_ack():
     dispatcher_.ack(items)
 
     manager.send.assert_called_once_with(
-        types.StreamingPullRequest(ack_ids=["ack_id_string"])
+        gapic_types.StreamingPullRequest(ack_ids=["ack_id_string"])
     )
 
     manager.leaser.remove.assert_called_once_with(items)
@@ -98,7 +98,7 @@ def test_ack_no_time():
     dispatcher_.ack(items)
 
     manager.send.assert_called_once_with(
-        types.StreamingPullRequest(ack_ids=["ack_id_string"])
+        gapic_types.StreamingPullRequest(ack_ids=["ack_id_string"])
     )
 
     manager.ack_histogram.add.assert_not_called()
@@ -127,7 +127,7 @@ def test_ack_splitting_large_payload():
 
     for call in calls:
         message = call.args[0]
-        assert message.ByteSize() <= 524288  # server-side limit (2**19)
+        assert message._pb.ByteSize() <= 524288  # server-side limit (2**19)
         sent_ack_ids.update(message.ack_ids)
 
     assert set(sent_ack_ids) == all_ack_ids  # all messages should have been ACK-ed
@@ -195,7 +195,7 @@ def test_nack():
     dispatcher_.nack(items)
 
     manager.send.assert_called_once_with(
-        types.StreamingPullRequest(
+        gapic_types.StreamingPullRequest(
             modify_deadline_ack_ids=["ack_id_string"], modify_deadline_seconds=[0]
         )
     )
@@ -211,7 +211,7 @@ def test_modify_ack_deadline():
     dispatcher_.modify_ack_deadline(items)
 
     manager.send.assert_called_once_with(
-        types.StreamingPullRequest(
+        gapic_types.StreamingPullRequest(
             modify_deadline_ack_ids=["ack_id_string"], modify_deadline_seconds=[60]
         )
     )
@@ -238,7 +238,7 @@ def test_modify_ack_deadline_splitting_large_payload():
 
     for call in calls:
         message = call.args[0]
-        assert message.ByteSize() <= 524288  # server-side limit (2**19)
+        assert message._pb.ByteSize() <= 524288  # server-side limit (2**19)
         sent_ack_ids.update(message.modify_deadline_ack_ids)
 
     assert set(sent_ack_ids) == all_ack_ids  # all messages should have been MODACK-ed

@@ -16,7 +16,10 @@ from __future__ import absolute_import
 
 import collections
 import enum
+import inspect
 import sys
+
+import proto
 
 from google.api import http_pb2
 from google.iam.v1 import iam_policy_pb2
@@ -29,7 +32,8 @@ from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
 
 from google.api_core.protobuf_helpers import get_messages
-from google.cloud.pubsub_v1.proto import pubsub_pb2
+
+from google.pubsub_v1.types import pubsub as pubsub_gapic_types
 
 
 # Define the default values for batching.
@@ -45,23 +49,21 @@ BatchSettings.__new__.__defaults__ = (
     0.01,  # max_latency: 10 ms
     100,  # max_messages: 100
 )
-
-if sys.version_info >= (3, 5):
-    BatchSettings.__doc__ = "The settings for batch publishing the messages."
-    BatchSettings.max_bytes.__doc__ = (
-        "The maximum total size of the messages to collect before automatically "
-        "publishing the batch, including any byte size overhead of the publish "
-        "request itself. The maximum value is bound by the server-side limit of "
-        "10_000_000 bytes."
-    )
-    BatchSettings.max_latency.__doc__ = (
-        "The maximum number of seconds to wait for additional messages before "
-        "automatically publishing the batch."
-    )
-    BatchSettings.max_messages.__doc__ = (
-        "The maximum number of messages to collect before automatically "
-        "publishing the batch."
-    )
+BatchSettings.__doc__ = "The settings for batch publishing the messages."
+BatchSettings.max_bytes.__doc__ = (
+    "The maximum total size of the messages to collect before automatically "
+    "publishing the batch, including any byte size overhead of the publish "
+    "request itself. The maximum value is bound by the server-side limit of "
+    "10_000_000 bytes."
+)
+BatchSettings.max_latency.__doc__ = (
+    "The maximum number of seconds to wait for additional messages before "
+    "automatically publishing the batch."
+)
+BatchSettings.max_messages.__doc__ = (
+    "The maximum number of messages to collect before automatically "
+    "publishing the batch."
+)
 
 
 class LimitExceededBehavior(str, enum.Enum):
@@ -80,20 +82,16 @@ PublishFlowControl.__new__.__defaults__ = (
     10 * BatchSettings.__new__.__defaults__[0],  # byte limit
     LimitExceededBehavior.IGNORE,  # desired behavior
 )
-
-if sys.version_info >= (3, 5):
-    PublishFlowControl.__doc__ = (
-        "The client flow control settings for message publishing."
-    )
-    PublishFlowControl.message_limit.__doc__ = (
-        "The maximum number of messages awaiting to be published."
-    )
-    PublishFlowControl.byte_limit.__doc__ = (
-        "The maximum total size of messages awaiting to be published."
-    )
-    PublishFlowControl.limit_exceeded_behavior.__doc__ = (
-        "The action to take when publish flow control limits are exceeded."
-    )
+PublishFlowControl.__doc__ = "The client flow control settings for message publishing."
+PublishFlowControl.message_limit.__doc__ = (
+    "The maximum number of messages awaiting to be published."
+)
+PublishFlowControl.byte_limit.__doc__ = (
+    "The maximum total size of messages awaiting to be published."
+)
+PublishFlowControl.limit_exceeded_behavior.__doc__ = (
+    "The action to take when publish flow control limits are exceeded."
+)
 
 # Define the default publisher options.
 #
@@ -106,20 +104,17 @@ PublisherOptions.__new__.__defaults__ = (
     False,  # enable_message_ordering: False
     PublishFlowControl(),  # default flow control settings
 )
-
-if sys.version_info >= (3, 5):
-    PublisherOptions.__doc__ = "The options for the publisher client."
-    PublisherOptions.enable_message_ordering.__doc__ = (
-        "Whether to order messages in a batch by a supplied ordering key."
-        "EXPERIMENTAL: Message ordering is an alpha feature that requires "
-        "special permissions to use. Please contact the Cloud Pub/Sub team for "
-        "more information."
-    )
-    PublisherOptions.flow_control.__doc__ = (
-        "Flow control settings for message publishing by the client. By default "
-        "the publisher client does not do any throttling."
-    )
-
+PublisherOptions.__doc__ = "The options for the publisher client."
+PublisherOptions.enable_message_ordering.__doc__ = (
+    "Whether to order messages in a batch by a supplied ordering key."
+    "EXPERIMENTAL: Message ordering is an alpha feature that requires "
+    "special permissions to use. Please contact the Cloud Pub/Sub team for "
+    "more information."
+)
+PublisherOptions.flow_control.__doc__ = (
+    "Flow control settings for message publishing by the client. By default "
+    "the publisher client does not do any throttling."
+)
 
 # Define the type class and default values for flow control settings.
 #
@@ -141,29 +136,50 @@ FlowControl.__new__.__defaults__ = (
     1 * 60 * 60,  # max_lease_duration: 1 hour.
     0,  # max_duration_per_lease_extension: disabled
 )
+FlowControl.__doc__ = (
+    "The settings for controlling the rate at which messages are pulled "
+    "with an asynchronous subscription."
+)
+FlowControl.max_bytes.__doc__ = (
+    "The maximum total size of received - but not yet processed - messages "
+    "before pausing the message stream."
+)
+FlowControl.max_messages.__doc__ = (
+    "The maximum number of received - but not yet processed - messages before "
+    "pausing the message stream."
+)
+FlowControl.max_lease_duration.__doc__ = (
+    "The maximum amount of time in seconds to hold a lease on a message "
+    "before dropping it from the lease management."
+)
+FlowControl.max_duration_per_lease_extension.__doc__ = (
+    "The max amount of time in seconds for a single lease extension attempt. "
+    "Bounds the delay before a message redelivery if the subscriber "
+    "fails to extend the deadline."
+)
 
-if sys.version_info >= (3, 5):
-    FlowControl.__doc__ = (
-        "The settings for controlling the rate at which messages are pulled "
-        "with an asynchronous subscription."
-    )
-    FlowControl.max_bytes.__doc__ = (
-        "The maximum total size of received - but not yet processed - messages "
-        "before pausing the message stream."
-    )
-    FlowControl.max_messages.__doc__ = (
-        "The maximum number of received - but not yet processed - messages before "
-        "pausing the message stream."
-    )
-    FlowControl.max_lease_duration.__doc__ = (
-        "The maximum amount of time in seconds to hold a lease on a message "
-        "before dropping it from the lease management."
-    )
-    FlowControl.max_duration_per_lease_extension.__doc__ = (
-        "The max amount of time in seconds for a single lease extension attempt. "
-        "Bounds the delay before a message redelivery if the subscriber "
-        "fails to extend the deadline."
-    )
+
+# The current api core helper does not find new proto messages of type proto.Message,
+# thus we need our own helper. Adjusted from
+# https://github.com/googleapis/python-api-core/blob/8595f620e7d8295b6a379d6fd7979af3bef717e2/google/api_core/protobuf_helpers.py#L101-L118
+def _get_protobuf_messages(module):
+    """Discover all protobuf Message classes in a given import module.
+
+    Args:
+        module (module): A Python module; :func:`dir` will be run against this
+            module to find Message subclasses.
+
+    Returns:
+        dict[str, proto.Message]: A dictionary with the
+            Message class names as keys, and the Message subclasses themselves
+            as values.
+    """
+    answer = collections.OrderedDict()
+    for name in dir(module):
+        candidate = getattr(module, name)
+        if inspect.isclass(candidate) and issubclass(candidate, proto.Message):
+            answer[name] = candidate
+    return answer
 
 
 _shared_modules = [
@@ -178,11 +194,15 @@ _shared_modules = [
     timestamp_pb2,
 ]
 
-_local_modules = [pubsub_pb2]
+_local_modules = [pubsub_gapic_types]
 
-
-names = ["BatchSettings", "FlowControl"]
-
+names = [
+    "BatchSettings",
+    "LimitExceededBehavior",
+    "PublishFlowControl",
+    "PublisherOptions",
+    "FlowControl",
+]
 
 for module in _shared_modules:
     for name, message in get_messages(module).items():
@@ -190,7 +210,7 @@ for module in _shared_modules:
         names.append(name)
 
 for module in _local_modules:
-    for name, message in get_messages(module).items():
+    for name, message in _get_protobuf_messages(module).items():
         message.__module__ = "google.cloud.pubsub_v1.types"
         setattr(sys.modules[__name__], name, message)
         names.append(name)

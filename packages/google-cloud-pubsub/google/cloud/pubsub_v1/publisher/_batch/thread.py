@@ -21,15 +21,18 @@ import time
 import six
 
 import google.api_core.exceptions
-from google.cloud.pubsub_v1 import types
+from google.api_core import gapic_v1
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher import futures
 from google.cloud.pubsub_v1.publisher._batch import base
+from google.pubsub_v1 import types as gapic_types
 
 
 _LOGGER = logging.getLogger(__name__)
 _CAN_COMMIT = (base.BatchStatus.ACCEPTING_MESSAGES, base.BatchStatus.STARTING)
 _SERVER_PUBLISH_MAX_BYTES = 10 * 1000 * 1000  # max accepted size of PublishRequest
+
+_raw_proto_pubbsub_message = gapic_types.PubsubMessage.pb()
 
 
 class Batch(base.Batch):
@@ -69,10 +72,19 @@ class Batch(base.Batch):
             at a lower level.
         commit_when_full (bool): Whether to commit the batch when the batch
             is full.
+        commit_retry (Optional[google.api_core.retry.Retry]): Designation of what
+            errors, if any, should be retried when commiting the batch. If not
+            provided, a default retry is used.
     """
 
     def __init__(
-        self, client, topic, settings, batch_done_callback=None, commit_when_full=True
+        self,
+        client,
+        topic,
+        settings,
+        batch_done_callback=None,
+        commit_when_full=True,
+        commit_retry=gapic_v1.method.DEFAULT,
     ):
         self._client = client
         self._topic = topic
@@ -92,8 +104,10 @@ class Batch(base.Batch):
 
         # The initial size is not zero, we need to account for the size overhead
         # of the PublishRequest message itself.
-        self._base_request_size = types.PublishRequest(topic=topic).ByteSize()
+        self._base_request_size = gapic_types.PublishRequest(topic=topic)._pb.ByteSize()
         self._size = self._base_request_size
+
+        self._commit_retry = commit_retry
 
     @staticmethod
     def make_lock():
@@ -245,9 +259,10 @@ class Batch(base.Batch):
 
         batch_transport_succeeded = True
         try:
-            # Performs retries for errors defined in retry_codes.publish in the
-            # publisher_client_config.py file.
-            response = self._client.api.publish(self._topic, self._messages)
+            # Performs retries for errors defined by the retry configuration.
+            response = self._client.api.publish(
+                topic=self._topic, messages=self._messages, retry=self._commit_retry
+            )
         except google.api_core.exceptions.GoogleAPIError as exc:
             # We failed to publish, even after retries, so set the exception on
             # all futures and exit.
@@ -323,8 +338,12 @@ class Batch(base.Batch):
         """
 
         # Coerce the type, just in case.
-        if not isinstance(message, types.PubsubMessage):
-            message = types.PubsubMessage(**message)
+        if not isinstance(message, gapic_types.PubsubMessage):
+            # For performance reasons, the message should be constructed by directly
+            # using the raw protobuf class, and only then wrapping it into the
+            # higher-level PubsubMessage class.
+            vanilla_pb = _raw_proto_pubbsub_message(**message)
+            message = gapic_types.PubsubMessage.wrap(vanilla_pb)
 
         future = None
 
@@ -336,7 +355,9 @@ class Batch(base.Batch):
             if self.status != base.BatchStatus.ACCEPTING_MESSAGES:
                 return
 
-            size_increase = types.PublishRequest(messages=[message]).ByteSize()
+            size_increase = gapic_types.PublishRequest(
+                messages=[message]
+            )._pb.ByteSize()
 
             if (self._base_request_size + size_increase) > _SERVER_PUBLISH_MAX_BYTES:
                 err_msg = (

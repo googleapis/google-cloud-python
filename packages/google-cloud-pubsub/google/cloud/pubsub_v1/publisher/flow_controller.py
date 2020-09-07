@@ -88,7 +88,7 @@ class FlowController(object):
         with self._operational_lock:
             if not self._would_overflow(message):
                 self._message_count += 1
-                self._total_bytes += message.ByteSize()
+                self._total_bytes += message._pb.ByteSize()
                 return
 
             # Adding a message would overflow, react.
@@ -101,7 +101,7 @@ class FlowController(object):
                 # load if we accepted the message.
                 load_info = self._load_info(
                     message_count=self._message_count + 1,
-                    total_bytes=self._total_bytes + message.ByteSize(),
+                    total_bytes=self._total_bytes + message._pb.ByteSize(),
                 )
                 error_msg = "Flow control limits would be exceeded - {}.".format(
                     load_info
@@ -116,11 +116,11 @@ class FlowController(object):
             # Sanity check - if a message exceeds total flow control limits all
             # by itself, it would block forever, thus raise error.
             if (
-                message.ByteSize() > self._settings.byte_limit
+                message._pb.ByteSize() > self._settings.byte_limit
                 or self._settings.message_limit < 1
             ):
                 load_info = self._load_info(
-                    message_count=1, total_bytes=message.ByteSize()
+                    message_count=1, total_bytes=message._pb.ByteSize()
                 )
                 error_msg = (
                     "Total flow control limits too low for the message, "
@@ -134,7 +134,7 @@ class FlowController(object):
                 if current_thread not in self._byte_reservations:
                     self._waiting.append(current_thread)
                     self._byte_reservations[current_thread] = _QuantityReservation(
-                        reserved=0, needed=message.ByteSize()
+                        reserved=0, needed=message._pb.ByteSize()
                     )
 
                 _LOGGER.debug(
@@ -151,7 +151,7 @@ class FlowController(object):
 
             # Message accepted, increase the load and remove thread stats.
             self._message_count += 1
-            self._total_bytes += message.ByteSize()
+            self._total_bytes += message._pb.ByteSize()
             self._reserved_bytes -= self._byte_reservations[current_thread].reserved
             del self._byte_reservations[current_thread]
             self._waiting.remove(current_thread)
@@ -169,7 +169,7 @@ class FlowController(object):
         with self._operational_lock:
             # Releasing a message decreases the load.
             self._message_count -= 1
-            self._total_bytes -= message.ByteSize()
+            self._total_bytes -= message._pb.ByteSize()
 
             if self._message_count < 0 or self._total_bytes < 0:
                 warnings.warn(
@@ -252,7 +252,7 @@ class FlowController(object):
         else:
             enough_reserved = False
 
-        bytes_taken = self._total_bytes + self._reserved_bytes + message.ByteSize()
+        bytes_taken = self._total_bytes + self._reserved_bytes + message._pb.ByteSize()
         size_overflow = bytes_taken > self._settings.byte_limit and not enough_reserved
         msg_count_overflow = self._message_count + 1 > self._settings.message_limit
 
