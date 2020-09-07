@@ -586,6 +586,21 @@ class HivePartitioningOptions(object):
     def source_uri_prefix(self, value):
         self._properties["sourceUriPrefix"] = value
 
+    @property
+    def require_partition_filter(self):
+        """Optional[bool]: If set to true, queries over the partitioned table require a
+        partition filter that can be used for partition elimination to be
+        specified.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#HivePartitioningOptions.FIELDS.mode
+        """
+        return self._properties.get("requirePartitionFilter")
+
+    @require_partition_filter.setter
+    def require_partition_filter(self, value):
+        self._properties["requirePartitionFilter"] = value
+
     def to_api_repr(self):
         """Build an API representation of this object.
 

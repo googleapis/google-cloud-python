@@ -181,6 +181,7 @@ class TestExternalConfig(unittest.TestCase):
                 "hivePartitioningOptions": {
                     "sourceUriPrefix": "http://foo/bar",
                     "mode": "STRINGS",
+                    "requirePartitionFilter": True,
                 },
             },
         )
@@ -194,6 +195,7 @@ class TestExternalConfig(unittest.TestCase):
         )
         self.assertEqual(ec.hive_partitioning.source_uri_prefix, "http://foo/bar")
         self.assertEqual(ec.hive_partitioning.mode, "STRINGS")
+        self.assertEqual(ec.hive_partitioning.require_partition_filter, True)
 
         # converting back to API representation should yield the same result
         got_resource = ec.to_api_repr()
@@ -210,6 +212,7 @@ class TestExternalConfig(unittest.TestCase):
         hive_partitioning = external_config.HivePartitioningOptions()
         hive_partitioning.source_uri_prefix = "http://foo/bar"
         hive_partitioning.mode = "STRINGS"
+        hive_partitioning.require_partition_filter = False
 
         ec = external_config.ExternalConfig("FORMAT_FOO")
         ec.hive_partitioning = hive_partitioning
@@ -221,6 +224,7 @@ class TestExternalConfig(unittest.TestCase):
             "hivePartitioningOptions": {
                 "sourceUriPrefix": "http://foo/bar",
                 "mode": "STRINGS",
+                "requirePartitionFilter": False,
             },
         }
         self.assertEqual(got_resource, expected_resource)
