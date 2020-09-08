@@ -1,5 +1,17 @@
 # Changelog
 
+### [1.9.1](https://www.github.com/googleapis/proto-plus-python/compare/v1.9.0...v1.9.1) (2020-09-08)
+
+
+### Reverts
+
+* Revert "feat: json serialization and deserialization support stringy enums (#112)" (#116) ([91c6d7b](https://www.github.com/googleapis/proto-plus-python/commit/91c6d7bb27d198439bb323d2454fb94e197bf3dd)), closes [#112](https://www.github.com/googleapis/proto-plus-python/issues/112) [#116](https://www.github.com/googleapis/proto-plus-python/issues/116)
+
+
+### Documentation
+
+* update README ([#120](https://www.github.com/googleapis/proto-plus-python/issues/120)) ([2077390](https://www.github.com/googleapis/proto-plus-python/commit/2077390d614acb278ab94077f131a895d7184881))
+
 ## [1.9.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.8.1...v1.9.0) (2020-09-02)
 
 
