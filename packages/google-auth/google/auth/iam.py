@@ -28,7 +28,7 @@ from google.auth import _helpers
 from google.auth import crypt
 from google.auth import exceptions
 
-_IAM_API_ROOT_URI = "https://iam.googleapis.com/v1"
+_IAM_API_ROOT_URI = "https://iamcredentials.googleapis.com/v1"
 _SIGN_BLOB_URI = _IAM_API_ROOT_URI + "/projects/-/serviceAccounts/{}:signBlob?alt=json"
 
 
@@ -71,7 +71,7 @@ class Signer(crypt.Signer):
         url = _SIGN_BLOB_URI.format(self._service_account_email)
         headers = {"Content-Type": "application/json"}
         body = json.dumps(
-            {"bytesToSign": base64.b64encode(message).decode("utf-8")}
+            {"payload": base64.b64encode(message).decode("utf-8")}
         ).encode("utf-8")
 
         self._credentials.before_request(self._request, method, url, headers)
@@ -97,4 +97,4 @@ class Signer(crypt.Signer):
     @_helpers.copy_docstring(crypt.Signer)
     def sign(self, message):
         response = self._make_signing_request(message)
-        return base64.b64decode(response["signature"])
+        return base64.b64decode(response["signedBlob"])

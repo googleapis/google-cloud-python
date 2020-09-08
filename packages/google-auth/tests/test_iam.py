@@ -81,7 +81,7 @@ class TestSigner(object):
     def test_sign_bytes(self):
         signature = b"DEADBEEF"
         encoded_signature = base64.b64encode(signature).decode("utf-8")
-        request = make_request(http_client.OK, data={"signature": encoded_signature})
+        request = make_request(http_client.OK, data={"signedBlob": encoded_signature})
         credentials = make_credentials()
 
         signer = iam.Signer(request, credentials, mock.sentinel.service_account_email)
