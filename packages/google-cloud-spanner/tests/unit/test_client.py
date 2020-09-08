@@ -624,8 +624,9 @@ class TestClient(unittest.TestCase):
         )
 
         token = "token"
+        filter = "name:instance"
         page_size = 42
-        list(client.list_instances(page_token=token, page_size=42))
+        list(client.list_instances(filter_=filter, page_token=token, page_size=42))
 
         expected_metadata = [
             ("google-cloud-resource-prefix", client.project_name),
@@ -633,7 +634,7 @@ class TestClient(unittest.TestCase):
         ]
         li_api.assert_called_once_with(
             spanner_instance_admin_pb2.ListInstancesRequest(
-                parent=self.PATH, page_size=page_size, page_token=token
+                parent=self.PATH, filter=filter, page_size=page_size, page_token=token
             ),
             metadata=expected_metadata,
             retry=mock.ANY,
