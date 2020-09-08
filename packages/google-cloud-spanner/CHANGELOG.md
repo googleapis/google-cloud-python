@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [1.19.0](https://www.github.com/googleapis/python-spanner/compare/v1.18.0...v1.19.0) (2020-09-08)
+
+
+### Features
+
+* add support for NUMERIC type ([#86](https://www.github.com/googleapis/python-spanner/issues/86)) ([a79786e](https://www.github.com/googleapis/python-spanner/commit/a79786ec3620da21aa3ce1c8bc820dab5983531d))
+
+
+### Bug Fixes
+
+* list_instances() uses filter_ arg ([#143](https://www.github.com/googleapis/python-spanner/issues/143)) ([340028c](https://www.github.com/googleapis/python-spanner/commit/340028c8eafcb715e6e440c6d98048ecea802807))
+* Remove stray bigquery lines ([#138](https://www.github.com/googleapis/python-spanner/issues/138)) ([cbfcc8b](https://www.github.com/googleapis/python-spanner/commit/cbfcc8b06e1a5803a9b9a943a3bbf29467d9f2ed))
+
 ## [1.18.0](https://www.github.com/googleapis/python-spanner/compare/v1.17.1...v1.18.0) (2020-08-25)
 
 
