@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+### [1.5.2](https://www.github.com/googleapis/python-ndb/compare/v1.5.1...v1.5.2) (2020-09-03)
+
+
+### Bug Fixes
+
+* avoid kind error when using subclasses in local structured properties ([#531](https://www.github.com/googleapis/python-ndb/issues/531)) ([49f9e48](https://www.github.com/googleapis/python-ndb/commit/49f9e48a7d8bf9c3c8cc8a30ae385bcbcb95dbaa))
+* fix bug when setting naive datetime on `DateTimeProperty` with timezone ([#534](https://www.github.com/googleapis/python-ndb/issues/534)) ([ad42606](https://www.github.com/googleapis/python-ndb/commit/ad426063257f8633bb4207a77b29b35fc0173ec1)), closes [#517](https://www.github.com/googleapis/python-ndb/issues/517)
+* make optimized `Query.count()` work with the datastore emulator ([#528](https://www.github.com/googleapis/python-ndb/issues/528)) ([e5df1e3](https://www.github.com/googleapis/python-ndb/commit/e5df1e37c97fc0765f8f95ada6d4dadd7b4bb445)), closes [#525](https://www.github.com/googleapis/python-ndb/issues/525)
+* make sure `keys_only` ordered multiquery returns keys not entities ([#527](https://www.github.com/googleapis/python-ndb/issues/527)) ([2078dc1](https://www.github.com/googleapis/python-ndb/commit/2078dc1c2239299729d8ecade2e3592f49bc65db)), closes [#526](https://www.github.com/googleapis/python-ndb/issues/526)
+
+
+### Documentation
+
+* fix type hint for urlsafe ([#532](https://www.github.com/googleapis/python-ndb/issues/532)) ([87a3475](https://www.github.com/googleapis/python-ndb/commit/87a347536b459c461a02c401b8a8c097e276d3ea)), closes [#529](https://www.github.com/googleapis/python-ndb/issues/529)
+
 ### [1.5.1](https://www.github.com/googleapis/python-ndb/compare/v1.5.0...v1.5.1) (2020-08-28)
 
 
