@@ -1,16 +1,22 @@
-*.py[co]
+*.py[cod]
 *.sw[op]
 
 # Packages
+*.egg
 *.egg-info
-build
-MANIFEST
 dist
+build
+eggs
+.eggs
+bin
+MANIFEST
 django_tests
+__pycache__
 
 # Unit test / coverage reports
 .coverage
 .nox
+.pytest_cache
 
 # JetBrains
 .idea
