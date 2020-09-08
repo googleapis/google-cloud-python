@@ -30,3 +30,4 @@ Documentation
   :target: https://circleci.com/gh/googleapis/proto-plus-python
 .. |codecov| image:: https://codecov.io/gh/googleapis/proto-plus-python/graph/badge.svg
   :target: https://codecov.io/gh/googleapis/proto-plus-python
+
