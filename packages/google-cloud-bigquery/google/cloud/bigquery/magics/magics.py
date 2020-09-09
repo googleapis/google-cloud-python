@@ -65,13 +65,6 @@
           the variable name (ex. ``$my_dict_var``). See ``In[6]`` and ``In[7]``
           in the Examples section below.
 
-        .. note::
-
-            Due to the way IPython argument parser works, negative numbers in
-            dictionaries are incorrectly "recognized" as additional arguments,
-            resulting in an error ("unrecognized arguments"). To get around this,
-            pass such dictionary as a JSON string variable.
-
     * ``<query>`` (required, cell argument):
         SQL query to run. If the query does not contain any whitespace (aside
         from leading and trailing whitespace), it is assumed to represent a
@@ -159,13 +152,15 @@ try:
 except ImportError:  # pragma: NO COVER
     raise ImportError("This module can only be loaded in IPython.")
 
+import six
+
 from google.api_core import client_info
 from google.api_core.exceptions import NotFound
 import google.auth
 from google.cloud import bigquery
 import google.cloud.bigquery.dataset
 from google.cloud.bigquery.dbapi import _helpers
-import six
+from google.cloud.bigquery.magics import line_arg_parser as lap
 
 
 IPYTHON_USER_AGENT = "ipython-{}".format(IPython.__version__)
@@ -473,7 +468,27 @@ def _cell_magic(line, query):
     Returns:
         pandas.DataFrame: the query results.
     """
-    args = magic_arguments.parse_argstring(_cell_magic, line)
+    # The built-in parser does not recognize Python structures such as dicts, thus
+    # we extract the "--params" option and inteprpret it separately.
+    try:
+        params_option_value, rest_of_args = _split_args_line(line)
+    except lap.exceptions.QueryParamsParseError as exc:
+        rebranded_error = SyntaxError(
+            "--params is not a correctly formatted JSON string or a JSON "
+            "serializable dictionary"
+        )
+        six.raise_from(rebranded_error, exc)
+    except lap.exceptions.DuplicateQueryParamsError as exc:
+        rebranded_error = ValueError("Duplicate --params option.")
+        six.raise_from(rebranded_error, exc)
+    except lap.exceptions.ParseError as exc:
+        rebranded_error = ValueError(
+            "Unrecognized input, are option values correct? "
+            "Error details: {}".format(exc.args[0])
+        )
+        six.raise_from(rebranded_error, exc)
+
+    args = magic_arguments.parse_argstring(_cell_magic, rest_of_args)
 
     if args.use_bqstorage_api is not None:
         warnings.warn(
@@ -484,16 +499,16 @@ def _cell_magic(line, query):
     use_bqstorage_api = not args.use_rest_api
 
     params = []
-    if args.params is not None:
-        try:
-            params = _helpers.to_query_parameters(
-                ast.literal_eval("".join(args.params))
+    if params_option_value:
+        # A non-existing params variable is not expanded and ends up in the input
+        # in its raw form, e.g. "$query_params".
+        if params_option_value.startswith("$"):
+            msg = 'Parameter expansion failed, undefined variable "{}".'.format(
+                params_option_value[1:]
             )
-        except Exception:
-            raise SyntaxError(
-                "--params is not a correctly formatted JSON string or a JSON "
-                "serializable dictionary"
-            )
+            raise NameError(msg)
+
+        params = _helpers.to_query_parameters(ast.literal_eval(params_option_value))
 
     project = args.project or context.project
     client = bigquery.Client(
@@ -596,6 +611,25 @@ def _cell_magic(line, query):
             return result
     finally:
         close_transports()
+
+
+def _split_args_line(line):
+    """Split out the --params option value from the input line arguments.
+
+    Args:
+        line (str): The line arguments passed to the cell magic.
+
+    Returns:
+        Tuple[str, str]
+    """
+    lexer = lap.Lexer(line)
+    scanner = lap.Parser(lexer)
+    tree = scanner.input_line()
+
+    extractor = lap.QueryParamsExtractor()
+    params_option_value, rest_of_args = extractor.visit(tree)
+
+    return params_option_value, rest_of_args
 
 
 def _make_bqstorage_client(use_bqstorage_api, credentials):
