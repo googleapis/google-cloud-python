@@ -1205,7 +1205,7 @@ class TablesClient(object):
             ...     credentials=service_account.Credentials.from_service_account_file('~/.gcp/account.json'),
             ...     project='my-project', region='us-central1')
             ...
-            >>> client.update_column_specs(dataset_display_name='my_dataset',
+            >>> client.update_column_spec(dataset_display_name='my_dataset',
             ...     column_spec_display_name='Outcome', type_code='CATEGORY')
             ...
 
