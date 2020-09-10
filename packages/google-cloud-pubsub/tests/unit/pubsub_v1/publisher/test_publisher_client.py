@@ -435,9 +435,7 @@ def test_wait_and_commit_sequencers():
 
     # Mock out time so no sleep is actually done.
     with mock.patch.object(time, "sleep"):
-        with mock.patch.object(
-            publisher.Client, "_commit_sequencers"
-        ) as _commit_sequencers:
+        with mock.patch.object(client, "_commit_sequencers") as _commit_sequencers:
             assert (
                 client.publish("topic", b"bytestring body", ordering_key="") is not None
             )
@@ -456,9 +454,7 @@ def test_stopped_client_does_not_commit_sequencers():
 
     # Mock out time so no sleep is actually done.
     with mock.patch.object(time, "sleep"):
-        with mock.patch.object(
-            publisher.Client, "_commit_sequencers"
-        ) as _commit_sequencers:
+        with mock.patch.object(client, "_commit_sequencers") as _commit_sequencers:
             assert (
                 client.publish("topic", b"bytestring body", ordering_key="") is not None
             )
