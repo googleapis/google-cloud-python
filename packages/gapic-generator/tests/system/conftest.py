@@ -71,16 +71,17 @@ def construct_client(client_class,
                      transport="grpc",
                      channel_creator=grpc.insecure_channel):
     if use_mtls:
-        with mock.patch("grpc.ssl_channel_credentials", autospec=True) as mock_ssl_cred:
-            mock_ssl_cred.return_value = ssl_credentials
-            client = client_class(
-                credentials=credentials.AnonymousCredentials(),
-                client_options=client_options,
-            )
-            mock_ssl_cred.assert_called_once_with(
-                certificate_chain=cert, private_key=key
-            )
-            return client
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+            with mock.patch("grpc.ssl_channel_credentials", autospec=True) as mock_ssl_cred:
+                mock_ssl_cred.return_value = ssl_credentials
+                client = client_class(
+                    credentials=credentials.AnonymousCredentials(),
+                    client_options=client_options,
+                )
+                mock_ssl_cred.assert_called_once_with(
+                    certificate_chain=cert, private_key=key
+                )
+                return client
     else:
         transport = client_class.get_transport_class(transport)(
             channel=channel_creator("localhost:7469")
