@@ -311,11 +311,12 @@ def test__DoNothingHash():
 
 
 class Test__get_expected_checksum(object):
+    @pytest.mark.parametrize("template", [u"crc32c={},md5={}", u"crc32c={}, md5={}"])
     @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
     @mock.patch("google.resumable_media._helpers._LOGGER")
-    def test__w_header_present(self, _LOGGER, checksum):
+    def test__w_header_present(self, _LOGGER, template, checksum):
         checksums = {"md5": u"b2twdXNodGhpc2J1dHRvbg==", "crc32c": u"3q2+7w=="}
-        header_value = u"crc32c={},md5={}".format(checksums["crc32c"], checksums["md5"])
+        header_value = template.format(checksums["crc32c"], checksums["md5"])
         headers = {_helpers._HASH_HEADER: header_value}
         response = _mock_response(headers=headers)
 

@@ -317,7 +317,8 @@ def _parse_checksum_header(header_value, response, checksum_label):
     matches = []
     for checksum in header_value.split(u","):
         name, value = checksum.split(u"=", 1)
-        if name == checksum_label:
+        # Official docs say "," is the separator, but real-world responses have encountered ", "
+        if name.lstrip() == checksum_label:
             matches.append(value)
 
     if len(matches) == 0:
