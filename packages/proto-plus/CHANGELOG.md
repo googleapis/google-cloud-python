@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0-dev1](https://www.github.com/googleapis/proto-plus-python/compare/v1.9.1...v1.10.0-dev1) (2020-09-10)
+
+
+### Bug Fixes
+
+* third party enums don't break first class enums ([#118](https://www.github.com/googleapis/proto-plus-python/issues/118)) ([50b87af](https://www.github.com/googleapis/proto-plus-python/commit/50b87af481bb1f19d10d64e88dc9ee39c2d5b6f8)), closes [#103](https://www.github.com/googleapis/proto-plus-python/issues/103)
+
 ### [1.9.1](https://www.github.com/googleapis/proto-plus-python/compare/v1.9.0...v1.9.1) (2020-09-08)
 
 
