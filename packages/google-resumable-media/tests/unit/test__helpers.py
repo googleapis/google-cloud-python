@@ -430,4 +430,8 @@ class Test__parse_checksum_header(object):
 
 
 def _mock_response(headers):
-    return mock.Mock(headers=headers, status_code=200, spec=["status_code", "headers"],)
+    return mock.Mock(
+        headers=headers,
+        status_code=200,
+        spec=["status_code", "headers"],
+    )

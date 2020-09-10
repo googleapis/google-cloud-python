@@ -73,7 +73,11 @@ class TestSimpleUpload(object):
 
         expected_headers = {u"content-type": content_type}
         transport.request.assert_called_once_with(
-            u"POST", SIMPLE_URL, data=data, headers=expected_headers, timeout=12.6,
+            u"POST",
+            SIMPLE_URL,
+            data=data,
+            headers=expected_headers,
+            timeout=12.6,
         )
 
 
@@ -209,7 +213,12 @@ class TestResumableUpload(object):
         transport.request.return_value = post_response
 
         upload.initiate(
-            transport, stream, metadata, BASIC_CONTENT, total_bytes=100, timeout=12.6,
+            transport,
+            stream,
+            metadata,
+            BASIC_CONTENT,
+            total_bytes=100,
+            timeout=12.6,
         )
 
         # Make sure timeout was passed to the transport

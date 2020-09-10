@@ -622,7 +622,11 @@ class TestChunkedDownload(object):
         range_bytes = u"bytes={:d}-{:d}".format(start, start + chunk_size - 1)
         download_headers = {u"range": range_bytes}
         transport.request.assert_called_once_with(
-            u"GET", EXAMPLE_URL, data=None, headers=download_headers, timeout=14.7,
+            u"GET",
+            EXAMPLE_URL,
+            data=None,
+            headers=download_headers,
+            timeout=14.7,
         )
 
 

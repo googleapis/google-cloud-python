@@ -530,7 +530,7 @@ def get_range_info(response, get_headers, callback=_helpers.do_nothing):
 
 
 def _check_for_zero_content_range(response, get_status_code, get_headers):
-    """ Validate if response status code is 416 and content range is zero.
+    """Validate if response status code is 416 and content range is zero.
 
     This is the special case for handling zero bytes files.
 
