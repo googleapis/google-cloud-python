@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [0.7.0](https://www.github.com/googleapis/python-securitycenter/compare/v0.6.0...v0.7.0) (2020-09-10)
+
+
+### Features
+
+* add field severity to findings; update retry configs ([#53](https://www.github.com/googleapis/python-securitycenter/issues/53)) ([80494a9](https://www.github.com/googleapis/python-securitycenter/commit/80494a915ca33d260862694be889b817869ff01a))
+
+
+### Documentation
+
+* Update Security Command Center UpdateNotificationConfig sample, adding filter to mutable field ([#39](https://www.github.com/googleapis/python-securitycenter/issues/39)) ([c70d790](https://www.github.com/googleapis/python-securitycenter/commit/c70d7904425ae5ac252ffa7317ec6d08234a6c27))
+
 ## [0.6.0](https://www.github.com/googleapis/python-securitycenter/compare/v0.5.0...v0.6.0) (2020-07-01)
 
 
