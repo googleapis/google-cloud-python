@@ -30,12 +30,19 @@ def pytest_runtest_setup(item):
 
     # Replace the descriptor pool and symbol database to avoid tests
     # polluting one another.
-    pool = descriptor_pool.DescriptorPool()
+    pool = type(descriptor_pool.Default())()
     sym_db = symbol_database.SymbolDatabase(pool=pool)
-    item._mocks = (
+    item._mocks = [
         mock.patch.object(descriptor_pool, "Default", return_value=pool),
         mock.patch.object(symbol_database, "Default", return_value=sym_db),
-    )
+    ]
+    if descriptor_pool._USE_C_DESCRIPTORS:
+        from google.protobuf.pyext import _message
+
+        item._mocks.append(
+            mock.patch("google.protobuf.pyext._message.default_pool", pool)
+        )
+
     [i.start() for i in item._mocks]
 
     # Importing a pb2 module registers those messages with the pool.

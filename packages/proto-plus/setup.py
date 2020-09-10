@@ -37,6 +37,7 @@ setup(
     platforms="Posix; MacOS X",
     include_package_data=True,
     install_requires=("protobuf >= 3.12.0",),
+    extras_require={"testing": ["google-api-core[grpc] >= 1.22.2",],},
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",

@@ -18,6 +18,8 @@ import warnings
 import proto
 from proto.marshal.rules.enums import EnumRule
 
+__protobuf__ = proto.module(package="test.marshal.enum")
+
 
 def test_to_proto():
     class Foo(proto.Enum):

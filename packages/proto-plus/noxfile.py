@@ -24,17 +24,22 @@ def unit(session, proto="python"):
 
     session.env["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = proto
     session.install("coverage", "pytest", "pytest-cov", "pytz")
-    session.install("-e", ".")
+    session.install("-e", ".[testing]")
 
     session.run(
         "py.test",
         "-W=error",
         "--quiet",
-        "--cov=proto",
-        "--cov-config=.coveragerc",
-        "--cov-report=term",
-        "--cov-report=html",
-        os.path.join("tests", ""),
+        *(
+            session.posargs  # Coverage info when running individual tests is annoying.
+            or [
+                "--cov=proto",
+                "--cov-config=.coveragerc",
+                "--cov-report=term",
+                "--cov-report=html",
+                os.path.join("tests", ""),
+            ]
+        ),
     )
 
 
