@@ -88,7 +88,7 @@ def test_create_glossary_w_outside(client, parent_outside, glossary_outside):
 
 @vpcsc_config.skip_unless_inside_vpcsc
 def test_list_glossaries_w_inside(client, parent_inside):
-    list(client.list_glossaries(parent_inside))
+    list(client.list_glossaries(parent=parent_inside))
 
 
 @vpcsc_config.skip_unless_inside_vpcsc
@@ -161,7 +161,7 @@ def test_batch_translate_text_w_outside(client, parent_outside):
     with pytest.raises(exceptions.PermissionDenied) as exc:
         client.batch_translate_text(
             request={
-                "parent": parent_inside,
+                "parent": parent_outside,
                 "source_language_code": source_language_code,
                 "target_language_codes": target_language_codes,
                 "input_configs": input_configs,
