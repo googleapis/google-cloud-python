@@ -376,8 +376,6 @@ class SecurityCenterClient(object):
             parent (str): Required. Resource name of the new finding's parent. Its format
                 should be "organizations/[organization_id]/sources/[source_id]".
             finding_id (str): Required. Unique identifier provided by the client within the parent scope.
-                It must be alphanumeric and less than or equal to 32 characters and
-                greater than 0 characters in length.
             finding (Union[dict, ~google.cloud.securitycenter_v1p1beta1.types.Finding]): Required. The Finding being created. The name and security_marks
                 will be ignored as they are both output only fields on this resource.
 
@@ -467,9 +465,8 @@ class SecurityCenterClient(object):
                 Unique identifier provided by the client within the parent scope.
                 It must be between 1 and 128 characters, and contains alphanumeric
                 characters, underscores or hyphens only.
-            notification_config (Union[dict, ~google.cloud.securitycenter_v1p1beta1.types.NotificationConfig]): Required. The notification config being created. The name and the service
-                account will be ignored as they are both output only fields on this
-                resource.
+            notification_config (Union[dict, ~google.cloud.securitycenter_v1p1beta1.types.NotificationConfig]): Required. The notification config being created. The name and the service account
+                will be ignored as they are both output only fields on this resource.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1p1beta1.types.NotificationConfig`
@@ -1526,8 +1523,7 @@ class SecurityCenterClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1p1beta1.types.Duration`
-            field_mask (Union[dict, ~google.cloud.securitycenter_v1p1beta1.types.FieldMask]): Optional.
-                A field mask to specify the ListAssetsResult fields to be listed in the
+            field_mask (Union[dict, ~google.cloud.securitycenter_v1p1beta1.types.FieldMask]): A field mask to specify the ListAssetsResult fields to be listed in the
                 response.
                 An empty field mask will list all fields.
 
@@ -1748,8 +1744,7 @@ class SecurityCenterClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.securitycenter_v1p1beta1.types.Duration`
-            field_mask (Union[dict, ~google.cloud.securitycenter_v1p1beta1.types.FieldMask]): Optional.
-                A field mask to specify the Finding fields to be listed in the response.
+            field_mask (Union[dict, ~google.cloud.securitycenter_v1p1beta1.types.FieldMask]): A field mask to specify the Finding fields to be listed in the response.
                 An empty field mask will list all fields.
 
                 If a dict is provided, it must be of the same form as the protobuf

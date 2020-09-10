@@ -121,63 +121,6 @@ class SecurityCenterGrpcTransport(object):
         return self._channel
 
     @property
-    def get_iam_policy(self):
-        """Return the gRPC stub for :meth:`SecurityCenterClient.get_iam_policy`.
-
-        Gets the access control policy on the specified Source.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["security_center_stub"].GetIamPolicy
-
-    @property
-    def group_assets(self):
-        """Return the gRPC stub for :meth:`SecurityCenterClient.group_assets`.
-
-        Filters an organization's assets and  groups them by their specified
-        properties.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["security_center_stub"].GroupAssets
-
-    @property
-    def group_findings(self):
-        """Return the gRPC stub for :meth:`SecurityCenterClient.group_findings`.
-
-        Filters an organization or source's findings and groups them by
-        their specified properties.
-
-        To group across all sources provide a ``-`` as the source id. Example:
-        /v1/organizations/{organization_id}/sources/-/findings
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["security_center_stub"].GroupFindings
-
-    @property
-    def test_iam_permissions(self):
-        """Return the gRPC stub for :meth:`SecurityCenterClient.test_iam_permissions`.
-
-        Returns the permissions that a caller has on the specified source.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["security_center_stub"].TestIamPermissions
-
-    @property
     def create_source(self):
         """Return the gRPC stub for :meth:`SecurityCenterClient.create_source`.
 
@@ -231,6 +174,19 @@ class SecurityCenterGrpcTransport(object):
         return self._stubs["security_center_stub"].DeleteNotificationConfig
 
     @property
+    def get_iam_policy(self):
+        """Return the gRPC stub for :meth:`SecurityCenterClient.get_iam_policy`.
+
+        Gets the access control policy on the specified Source.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["security_center_stub"].GetIamPolicy
+
+    @property
     def get_notification_config(self):
         """Return the gRPC stub for :meth:`SecurityCenterClient.get_notification_config`.
 
@@ -268,6 +224,37 @@ class SecurityCenterGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["security_center_stub"].GetSource
+
+    @property
+    def group_assets(self):
+        """Return the gRPC stub for :meth:`SecurityCenterClient.group_assets`.
+
+        Filters an organization's assets and  groups them by their specified
+        properties.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["security_center_stub"].GroupAssets
+
+    @property
+    def group_findings(self):
+        """Return the gRPC stub for :meth:`SecurityCenterClient.group_findings`.
+
+        Filters an organization or source's findings and groups them by
+        their specified properties.
+
+        To group across all sources provide a ``-`` as the source id. Example:
+        /v1/organizations/{organization_id}/sources/-/findings
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["security_center_stub"].GroupFindings
 
     @property
     def list_assets(self):
@@ -367,6 +354,19 @@ class SecurityCenterGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["security_center_stub"].SetIamPolicy
+
+    @property
+    def test_iam_permissions(self):
+        """Return the gRPC stub for :meth:`SecurityCenterClient.test_iam_permissions`.
+
+        Returns the permissions that a caller has on the specified source.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["security_center_stub"].TestIamPermissions
 
     @property
     def update_finding(self):

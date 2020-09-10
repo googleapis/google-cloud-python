@@ -34,6 +34,24 @@ class NullValue(enum.IntEnum):
 
 
 class Finding(object):
+    class Severity(enum.IntEnum):
+        """
+        The severity of the finding.
+
+        Attributes:
+          SEVERITY_UNSPECIFIED (int): No severity specified. The default value.
+          CRITICAL (int): Critical severity.
+          HIGH (int): High severity.
+          MEDIUM (int): Medium severity.
+          LOW (int): Low severity.
+        """
+
+        SEVERITY_UNSPECIFIED = 0
+        CRITICAL = 1
+        HIGH = 2
+        MEDIUM = 3
+        LOW = 4
+
     class State(enum.IntEnum):
         """
         The state of the finding.

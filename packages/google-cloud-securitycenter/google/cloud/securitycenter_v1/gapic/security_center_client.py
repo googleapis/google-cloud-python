@@ -282,6 +282,337 @@ class SecurityCenterClient(object):
         self._inner_api_calls = {}
 
     # Service calls
+    def create_source(
+        self,
+        parent,
+        source,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Creates a source.
+
+        Example:
+            >>> from google.cloud import securitycenter_v1
+            >>>
+            >>> client = securitycenter_v1.SecurityCenterClient()
+            >>>
+            >>> parent = client.organization_path('[ORGANIZATION]')
+            >>>
+            >>> # TODO: Initialize `source`:
+            >>> source = {}
+            >>>
+            >>> response = client.create_source(parent, source)
+
+        Args:
+            parent (str): Required. Resource name of the new source's parent. Its format
+                should be "organizations/[organization_id]".
+            source (Union[dict, ~google.cloud.securitycenter_v1.types.Source]): Required. The Source being created, only the display_name and
+                description will be used. All other fields will be ignored.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.securitycenter_v1.types.Source`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.securitycenter_v1.types.Source` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "create_source" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "create_source"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_source,
+                default_retry=self._method_configs["CreateSource"].retry,
+                default_timeout=self._method_configs["CreateSource"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = securitycenter_service_pb2.CreateSourceRequest(
+            parent=parent, source=source,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["create_source"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def create_finding(
+        self,
+        parent,
+        finding_id,
+        finding,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Creates a finding. The corresponding source must exist for finding creation
+        to succeed.
+
+        Example:
+            >>> from google.cloud import securitycenter_v1
+            >>>
+            >>> client = securitycenter_v1.SecurityCenterClient()
+            >>>
+            >>> parent = client.source_path('[ORGANIZATION]', '[SOURCE]')
+            >>>
+            >>> # TODO: Initialize `finding_id`:
+            >>> finding_id = ''
+            >>>
+            >>> # TODO: Initialize `finding`:
+            >>> finding = {}
+            >>>
+            >>> response = client.create_finding(parent, finding_id, finding)
+
+        Args:
+            parent (str): Required. Resource name of the new finding's parent. Its format
+                should be "organizations/[organization_id]/sources/[source_id]".
+            finding_id (str): Required. Unique identifier provided by the client within the parent scope.
+                It must be alphanumeric and less than or equal to 32 characters and
+                greater than 0 characters in length.
+            finding (Union[dict, ~google.cloud.securitycenter_v1.types.Finding]): Required. The Finding being created. The name and security_marks
+                will be ignored as they are both output only fields on this resource.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.securitycenter_v1.types.Finding`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.securitycenter_v1.types.Finding` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "create_finding" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "create_finding"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_finding,
+                default_retry=self._method_configs["CreateFinding"].retry,
+                default_timeout=self._method_configs["CreateFinding"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = securitycenter_service_pb2.CreateFindingRequest(
+            parent=parent, finding_id=finding_id, finding=finding,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["create_finding"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def create_notification_config(
+        self,
+        parent,
+        config_id,
+        notification_config,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Creates a notification config.
+
+        Example:
+            >>> from google.cloud import securitycenter_v1
+            >>>
+            >>> client = securitycenter_v1.SecurityCenterClient()
+            >>>
+            >>> parent = client.organization_path('[ORGANIZATION]')
+            >>>
+            >>> # TODO: Initialize `config_id`:
+            >>> config_id = ''
+            >>>
+            >>> # TODO: Initialize `notification_config`:
+            >>> notification_config = {}
+            >>>
+            >>> response = client.create_notification_config(parent, config_id, notification_config)
+
+        Args:
+            parent (str): Required. Resource name of the new notification config's parent. Its
+                format is "organizations/[organization_id]".
+            config_id (str): Required.
+                Unique identifier provided by the client within the parent scope.
+                It must be between 1 and 128 characters, and contains alphanumeric
+                characters, underscores or hyphens only.
+            notification_config (Union[dict, ~google.cloud.securitycenter_v1.types.NotificationConfig]): Required. The notification config being created. The name and the service
+                account will be ignored as they are both output only fields on this
+                resource.
+
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.securitycenter_v1.types.NotificationConfig`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.securitycenter_v1.types.NotificationConfig` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "create_notification_config" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "create_notification_config"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.create_notification_config,
+                default_retry=self._method_configs["CreateNotificationConfig"].retry,
+                default_timeout=self._method_configs[
+                    "CreateNotificationConfig"
+                ].timeout,
+                client_info=self._client_info,
+            )
+
+        request = securitycenter_service_pb2.CreateNotificationConfigRequest(
+            parent=parent, config_id=config_id, notification_config=notification_config,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("parent", parent)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["create_notification_config"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def delete_notification_config(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Deletes a notification config.
+
+        Example:
+            >>> from google.cloud import securitycenter_v1
+            >>>
+            >>> client = securitycenter_v1.SecurityCenterClient()
+            >>>
+            >>> name = client.notification_config_path('[ORGANIZATION]', '[NOTIFICATION_CONFIG]')
+            >>>
+            >>> client.delete_notification_config(name)
+
+        Args:
+            name (str): Required. Name of the notification config to delete. Its format is
+                "organizations/[organization_id]/notificationConfigs/[config_id]".
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "delete_notification_config" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "delete_notification_config"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.delete_notification_config,
+                default_retry=self._method_configs["DeleteNotificationConfig"].retry,
+                default_timeout=self._method_configs[
+                    "DeleteNotificationConfig"
+                ].timeout,
+                client_info=self._client_info,
+            )
+
+        request = securitycenter_service_pb2.DeleteNotificationConfigRequest(name=name,)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        self._inner_api_calls["delete_notification_config"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
     def get_iam_policy(
         self,
         resource,
@@ -358,6 +689,216 @@ class SecurityCenterClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls["get_iam_policy"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def get_notification_config(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Gets a notification config.
+
+        Example:
+            >>> from google.cloud import securitycenter_v1
+            >>>
+            >>> client = securitycenter_v1.SecurityCenterClient()
+            >>>
+            >>> name = client.notification_config_path('[ORGANIZATION]', '[NOTIFICATION_CONFIG]')
+            >>>
+            >>> response = client.get_notification_config(name)
+
+        Args:
+            name (str): Required. Name of the notification config to get. Its format is
+                "organizations/[organization_id]/notificationConfigs/[config_id]".
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.securitycenter_v1.types.NotificationConfig` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_notification_config" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_notification_config"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_notification_config,
+                default_retry=self._method_configs["GetNotificationConfig"].retry,
+                default_timeout=self._method_configs["GetNotificationConfig"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = securitycenter_service_pb2.GetNotificationConfigRequest(name=name,)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["get_notification_config"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def get_organization_settings(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Gets the settings for an organization.
+
+        Example:
+            >>> from google.cloud import securitycenter_v1
+            >>>
+            >>> client = securitycenter_v1.SecurityCenterClient()
+            >>>
+            >>> name = client.organization_settings_path('[ORGANIZATION]')
+            >>>
+            >>> response = client.get_organization_settings(name)
+
+        Args:
+            name (str): Required. Name of the organization to get organization settings for.
+                Its format is "organizations/[organization_id]/organizationSettings".
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.securitycenter_v1.types.OrganizationSettings` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_organization_settings" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_organization_settings"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_organization_settings,
+                default_retry=self._method_configs["GetOrganizationSettings"].retry,
+                default_timeout=self._method_configs["GetOrganizationSettings"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = securitycenter_service_pb2.GetOrganizationSettingsRequest(name=name,)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["get_organization_settings"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def get_source(
+        self,
+        name,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Gets a source.
+
+        Example:
+            >>> from google.cloud import securitycenter_v1
+            >>>
+            >>> client = securitycenter_v1.SecurityCenterClient()
+            >>>
+            >>> name = client.source_path('[ORGANIZATION]', '[SOURCE]')
+            >>>
+            >>> response = client.get_source(name)
+
+        Args:
+            name (str): Required. Relative resource name of the source. Its format is
+                "organizations/[organization_id]/source/[source_id]".
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.securitycenter_v1.types.Source` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "get_source" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "get_source"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.get_source,
+                default_retry=self._method_configs["GetSource"].retry,
+                default_timeout=self._method_configs["GetSource"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = securitycenter_service_pb2.GetSourceRequest(name=name,)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("name", name)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["get_source"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 
@@ -840,628 +1381,6 @@ class SecurityCenterClient(object):
             response_token_field="next_page_token",
         )
         return iterator
-
-    def test_iam_permissions(
-        self,
-        resource,
-        permissions,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Returns the permissions that a caller has on the specified source.
-
-        Example:
-            >>> from google.cloud import securitycenter_v1
-            >>>
-            >>> client = securitycenter_v1.SecurityCenterClient()
-            >>>
-            >>> # TODO: Initialize `resource`:
-            >>> resource = ''
-            >>>
-            >>> # TODO: Initialize `permissions`:
-            >>> permissions = []
-            >>>
-            >>> response = client.test_iam_permissions(resource, permissions)
-
-        Args:
-            resource (str): REQUIRED: The resource for which the policy detail is being requested.
-                See the operation documentation for the appropriate value for this field.
-            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions
-                with wildcards (such as '*' or 'storage.*') are not allowed. For more
-                information see `IAM
-                Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.securitycenter_v1.types.TestIamPermissionsResponse` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "test_iam_permissions" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "test_iam_permissions"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.test_iam_permissions,
-                default_retry=self._method_configs["TestIamPermissions"].retry,
-                default_timeout=self._method_configs["TestIamPermissions"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = iam_policy_pb2.TestIamPermissionsRequest(
-            resource=resource, permissions=permissions,
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("resource", resource)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["test_iam_permissions"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def create_source(
-        self,
-        parent,
-        source,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Creates a source.
-
-        Example:
-            >>> from google.cloud import securitycenter_v1
-            >>>
-            >>> client = securitycenter_v1.SecurityCenterClient()
-            >>>
-            >>> parent = client.organization_path('[ORGANIZATION]')
-            >>>
-            >>> # TODO: Initialize `source`:
-            >>> source = {}
-            >>>
-            >>> response = client.create_source(parent, source)
-
-        Args:
-            parent (str): Required. Resource name of the new source's parent. Its format
-                should be "organizations/[organization_id]".
-            source (Union[dict, ~google.cloud.securitycenter_v1.types.Source]): Required. The Source being created, only the display_name and
-                description will be used. All other fields will be ignored.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.securitycenter_v1.types.Source`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.securitycenter_v1.types.Source` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "create_source" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "create_source"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_source,
-                default_retry=self._method_configs["CreateSource"].retry,
-                default_timeout=self._method_configs["CreateSource"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = securitycenter_service_pb2.CreateSourceRequest(
-            parent=parent, source=source,
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("parent", parent)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["create_source"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def create_finding(
-        self,
-        parent,
-        finding_id,
-        finding,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Creates a finding. The corresponding source must exist for finding creation
-        to succeed.
-
-        Example:
-            >>> from google.cloud import securitycenter_v1
-            >>>
-            >>> client = securitycenter_v1.SecurityCenterClient()
-            >>>
-            >>> parent = client.source_path('[ORGANIZATION]', '[SOURCE]')
-            >>>
-            >>> # TODO: Initialize `finding_id`:
-            >>> finding_id = ''
-            >>>
-            >>> # TODO: Initialize `finding`:
-            >>> finding = {}
-            >>>
-            >>> response = client.create_finding(parent, finding_id, finding)
-
-        Args:
-            parent (str): Required. Resource name of the new finding's parent. Its format
-                should be "organizations/[organization_id]/sources/[source_id]".
-            finding_id (str): Required. Unique identifier provided by the client within the parent scope.
-                It must be alphanumeric and less than or equal to 32 characters and
-                greater than 0 characters in length.
-            finding (Union[dict, ~google.cloud.securitycenter_v1.types.Finding]): Required. The Finding being created. The name and security_marks
-                will be ignored as they are both output only fields on this resource.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.securitycenter_v1.types.Finding`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.securitycenter_v1.types.Finding` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "create_finding" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "create_finding"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_finding,
-                default_retry=self._method_configs["CreateFinding"].retry,
-                default_timeout=self._method_configs["CreateFinding"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = securitycenter_service_pb2.CreateFindingRequest(
-            parent=parent, finding_id=finding_id, finding=finding,
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("parent", parent)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["create_finding"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def create_notification_config(
-        self,
-        parent,
-        config_id,
-        notification_config,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Creates a notification config.
-
-        Example:
-            >>> from google.cloud import securitycenter_v1
-            >>>
-            >>> client = securitycenter_v1.SecurityCenterClient()
-            >>>
-            >>> parent = client.organization_path('[ORGANIZATION]')
-            >>>
-            >>> # TODO: Initialize `config_id`:
-            >>> config_id = ''
-            >>>
-            >>> # TODO: Initialize `notification_config`:
-            >>> notification_config = {}
-            >>>
-            >>> response = client.create_notification_config(parent, config_id, notification_config)
-
-        Args:
-            parent (str): Required. Resource name of the new notification config's parent. Its
-                format is "organizations/[organization_id]".
-            config_id (str): Required.
-                Unique identifier provided by the client within the parent scope.
-                It must be between 1 and 128 characters, and contains alphanumeric
-                characters, underscores or hyphens only.
-            notification_config (Union[dict, ~google.cloud.securitycenter_v1.types.NotificationConfig]): Required. The notification config being created. The name and the service
-                account will be ignored as they are both output only fields on this
-                resource.
-
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.securitycenter_v1.types.NotificationConfig`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.securitycenter_v1.types.NotificationConfig` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "create_notification_config" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "create_notification_config"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.create_notification_config,
-                default_retry=self._method_configs["CreateNotificationConfig"].retry,
-                default_timeout=self._method_configs[
-                    "CreateNotificationConfig"
-                ].timeout,
-                client_info=self._client_info,
-            )
-
-        request = securitycenter_service_pb2.CreateNotificationConfigRequest(
-            parent=parent, config_id=config_id, notification_config=notification_config,
-        )
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("parent", parent)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["create_notification_config"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def delete_notification_config(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Deletes a notification config.
-
-        Example:
-            >>> from google.cloud import securitycenter_v1
-            >>>
-            >>> client = securitycenter_v1.SecurityCenterClient()
-            >>>
-            >>> name = client.notification_config_path('[ORGANIZATION]', '[NOTIFICATION_CONFIG]')
-            >>>
-            >>> client.delete_notification_config(name)
-
-        Args:
-            name (str): Required. Name of the notification config to delete. Its format is
-                "organizations/[organization_id]/notificationConfigs/[config_id]".
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "delete_notification_config" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "delete_notification_config"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.delete_notification_config,
-                default_retry=self._method_configs["DeleteNotificationConfig"].retry,
-                default_timeout=self._method_configs[
-                    "DeleteNotificationConfig"
-                ].timeout,
-                client_info=self._client_info,
-            )
-
-        request = securitycenter_service_pb2.DeleteNotificationConfigRequest(name=name,)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        self._inner_api_calls["delete_notification_config"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def get_notification_config(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Gets a notification config.
-
-        Example:
-            >>> from google.cloud import securitycenter_v1
-            >>>
-            >>> client = securitycenter_v1.SecurityCenterClient()
-            >>>
-            >>> name = client.notification_config_path('[ORGANIZATION]', '[NOTIFICATION_CONFIG]')
-            >>>
-            >>> response = client.get_notification_config(name)
-
-        Args:
-            name (str): Required. Name of the notification config to get. Its format is
-                "organizations/[organization_id]/notificationConfigs/[config_id]".
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.securitycenter_v1.types.NotificationConfig` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "get_notification_config" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "get_notification_config"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_notification_config,
-                default_retry=self._method_configs["GetNotificationConfig"].retry,
-                default_timeout=self._method_configs["GetNotificationConfig"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = securitycenter_service_pb2.GetNotificationConfigRequest(name=name,)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["get_notification_config"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def get_organization_settings(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Gets the settings for an organization.
-
-        Example:
-            >>> from google.cloud import securitycenter_v1
-            >>>
-            >>> client = securitycenter_v1.SecurityCenterClient()
-            >>>
-            >>> name = client.organization_settings_path('[ORGANIZATION]')
-            >>>
-            >>> response = client.get_organization_settings(name)
-
-        Args:
-            name (str): Required. Name of the organization to get organization settings for.
-                Its format is "organizations/[organization_id]/organizationSettings".
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.securitycenter_v1.types.OrganizationSettings` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "get_organization_settings" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "get_organization_settings"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_organization_settings,
-                default_retry=self._method_configs["GetOrganizationSettings"].retry,
-                default_timeout=self._method_configs["GetOrganizationSettings"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = securitycenter_service_pb2.GetOrganizationSettingsRequest(name=name,)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["get_organization_settings"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
-
-    def get_source(
-        self,
-        name,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
-    ):
-        """
-        Gets a source.
-
-        Example:
-            >>> from google.cloud import securitycenter_v1
-            >>>
-            >>> client = securitycenter_v1.SecurityCenterClient()
-            >>>
-            >>> name = client.source_path('[ORGANIZATION]', '[SOURCE]')
-            >>>
-            >>> response = client.get_source(name)
-
-        Args:
-            name (str): Required. Relative resource name of the source. Its format is
-                "organizations/[organization_id]/source/[source_id]".
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will
-                be retried using a default configuration.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
-                that is provided to the method.
-
-        Returns:
-            A :class:`~google.cloud.securitycenter_v1.types.Source` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        # Wrap the transport method to add retry and timeout logic.
-        if "get_source" not in self._inner_api_calls:
-            self._inner_api_calls[
-                "get_source"
-            ] = google.api_core.gapic_v1.method.wrap_method(
-                self.transport.get_source,
-                default_retry=self._method_configs["GetSource"].retry,
-                default_timeout=self._method_configs["GetSource"].timeout,
-                client_info=self._client_info,
-            )
-
-        request = securitycenter_service_pb2.GetSourceRequest(name=name,)
-        if metadata is None:
-            metadata = []
-        metadata = list(metadata)
-        try:
-            routing_header = [("name", name)]
-        except AttributeError:
-            pass
-        else:
-            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
-                routing_header
-            )
-            metadata.append(routing_metadata)
-
-        return self._inner_api_calls["get_source"](
-            request, retry=retry, timeout=timeout, metadata=metadata
-        )
 
     def list_assets(
         self,
@@ -2391,6 +2310,87 @@ class SecurityCenterClient(object):
             metadata.append(routing_metadata)
 
         return self._inner_api_calls["set_iam_policy"](
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
+
+    def test_iam_permissions(
+        self,
+        resource,
+        permissions,
+        retry=google.api_core.gapic_v1.method.DEFAULT,
+        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        metadata=None,
+    ):
+        """
+        Returns the permissions that a caller has on the specified source.
+
+        Example:
+            >>> from google.cloud import securitycenter_v1
+            >>>
+            >>> client = securitycenter_v1.SecurityCenterClient()
+            >>>
+            >>> # TODO: Initialize `resource`:
+            >>> resource = ''
+            >>>
+            >>> # TODO: Initialize `permissions`:
+            >>> permissions = []
+            >>>
+            >>> response = client.test_iam_permissions(resource, permissions)
+
+        Args:
+            resource (str): REQUIRED: The resource for which the policy detail is being requested.
+                See the operation documentation for the appropriate value for this field.
+            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions
+                with wildcards (such as '*' or 'storage.*') are not allowed. For more
+                information see `IAM
+                Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will
+                be retried using a default configuration.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.securitycenter_v1.types.TestIamPermissionsResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        # Wrap the transport method to add retry and timeout logic.
+        if "test_iam_permissions" not in self._inner_api_calls:
+            self._inner_api_calls[
+                "test_iam_permissions"
+            ] = google.api_core.gapic_v1.method.wrap_method(
+                self.transport.test_iam_permissions,
+                default_retry=self._method_configs["TestIamPermissions"].retry,
+                default_timeout=self._method_configs["TestIamPermissions"].timeout,
+                client_info=self._client_info,
+            )
+
+        request = iam_policy_pb2.TestIamPermissionsRequest(
+            resource=resource, permissions=permissions,
+        )
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        try:
+            routing_header = [("resource", resource)]
+        except AttributeError:
+            pass
+        else:
+            routing_metadata = google.api_core.gapic_v1.routing_header.to_grpc_metadata(
+                routing_header
+            )
+            metadata.append(routing_metadata)
+
+        return self._inner_api_calls["test_iam_permissions"](
             request, retry=retry, timeout=timeout, metadata=metadata
         )
 

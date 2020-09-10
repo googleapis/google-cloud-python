@@ -55,6 +55,24 @@ message Finding {
     INACTIVE = 2;
   }
 
+  // The severity of the finding.
+  enum Severity {
+    // No severity specified. The default value.
+    SEVERITY_UNSPECIFIED = 0;
+
+    // Critical severity.
+    CRITICAL = 1;
+
+    // High severity.
+    HIGH = 2;
+
+    // Medium severity.
+    MEDIUM = 3;
+
+    // Low severity.
+    LOW = 4;
+  }
+
   // The relative resource name of this finding. See:
   // https://cloud.google.com/apis/design/resource_names#relative_resource_name
   // Example:
@@ -100,11 +118,16 @@ message Finding {
   // to the finding.
   SecurityMarks security_marks = 8 [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  // The time at which the event took place. For example, if the finding
-  // represents an open firewall it would capture the time the detector believes
-  // the firewall became open. The accuracy is determined by the detector.
+  // The time at which the event took place, or when an update to the finding
+  // occurred. For example, if the finding represents an open firewall it would
+  // capture the time the detector believes the firewall became open. The
+  // accuracy is determined by the detector. If the finding were to be resolved
+  // afterward, this time would reflect when the finding was resolved.
   google.protobuf.Timestamp event_time = 9;
 
   // The time at which the finding was created in Security Command Center.
   google.protobuf.Timestamp create_time = 10;
+
+  // The severity of the finding.
+  Severity severity = 13;
 }
