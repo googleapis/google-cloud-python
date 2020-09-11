@@ -250,6 +250,54 @@ class TestClient(unittest.TestCase):
             [mock.call(foo="bar"), mock.call(foo="bar")],  # was retried once
         )
 
+    def test__call_api_span_creator_not_called(self):
+        from concurrent.futures import TimeoutError
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+
+        api_request_patcher = mock.patch.object(
+            client._connection, "api_request", side_effect=[TimeoutError, "result"],
+        )
+        retry = DEFAULT_RETRY.with_deadline(1).with_predicate(
+            lambda exc: isinstance(exc, TimeoutError)
+        )
+
+        with api_request_patcher:
+            with mock.patch(
+                "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
+            ) as final_attributes:
+                client._call_api(retry)
+
+            final_attributes.assert_not_called()
+
+    def test__call_api_span_creator_called(self):
+        from concurrent.futures import TimeoutError
+        from google.cloud.bigquery.retry import DEFAULT_RETRY
+
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+
+        api_request_patcher = mock.patch.object(
+            client._connection, "api_request", side_effect=[TimeoutError, "result"],
+        )
+        retry = DEFAULT_RETRY.with_deadline(1).with_predicate(
+            lambda exc: isinstance(exc, TimeoutError)
+        )
+
+        with api_request_patcher:
+            with mock.patch(
+                "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
+            ) as final_attributes:
+                client._call_api(
+                    retry,
+                    span_name="test_name",
+                    span_attributes={"test_attribute": "test_attribute-value"},
+                )
+
+            final_attributes.assert_called_once()
+
     def test__get_query_results_miss_w_explicit_project_and_timeout(self):
         from google.cloud.exceptions import NotFound
 

@@ -621,15 +621,17 @@ class Test_AsyncJob(unittest.TestCase):
         call_api = job._client._call_api = mock.Mock()
         call_api.return_value = resource
         path = "/projects/{}/jobs".format(self.PROJECT)
-        with mock.patch(
-            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
-        ) as final_attributes:
-            job._begin()
-
-        final_attributes.assert_called_with({"path": path}, None, job)
+        job._begin()
 
         call_api.assert_called_once_with(
-            DEFAULT_RETRY, method="POST", path=path, data=resource, timeout=None,
+            DEFAULT_RETRY,
+            span_name="BigQuery.job.begin",
+            span_attributes={"path": path},
+            job_ref=job,
+            method="POST",
+            path=path,
+            data=resource,
+            timeout=None,
         )
         self.assertEqual(job._properties, resource)
 
@@ -653,15 +655,17 @@ class Test_AsyncJob(unittest.TestCase):
         call_api.return_value = resource
         retry = DEFAULT_RETRY.with_deadline(1)
         path = "/projects/{}/jobs".format(self.PROJECT)
-        with mock.patch(
-            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
-        ) as final_attributes:
-            job._begin(client=client, retry=retry, timeout=7.5)
-
-        final_attributes.assert_called_with({"path": path}, None, job)
+        job._begin(client=client, retry=retry, timeout=7.5)
 
         call_api.assert_called_once_with(
-            retry, method="POST", path=path, data=resource, timeout=7.5,
+            retry,
+            span_name="BigQuery.job.begin",
+            span_attributes={"path": path},
+            job_ref=job,
+            method="POST",
+            path=path,
+            data=resource,
+            timeout=7.5,
         )
         self.assertEqual(job._properties, resource)
 
@@ -673,20 +677,15 @@ class Test_AsyncJob(unittest.TestCase):
         job._properties["jobReference"]["location"] = self.LOCATION
         call_api = job._client._call_api = mock.Mock()
         call_api.side_effect = NotFound("testing")
-
-        with mock.patch(
-            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
-        ) as final_attributes:
-            self.assertFalse(job.exists())
-
-        final_attributes.assert_called_with(
-            {"path": "/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID)},
-            None,
-            job,
-        )
+        self.assertFalse(job.exists())
 
         call_api.assert_called_once_with(
             DEFAULT_RETRY,
+            span_name="BigQuery.job.exists",
+            span_attributes={
+                "path": "/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID)
+            },
+            job_ref=job,
             method="GET",
             path="/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID),
             query_params={"fields": "id", "location": self.LOCATION},
@@ -710,19 +709,15 @@ class Test_AsyncJob(unittest.TestCase):
         call_api = client._call_api = mock.Mock()
         call_api.return_value = resource
         retry = DEFAULT_RETRY.with_deadline(1)
-        with mock.patch(
-            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
-        ) as final_attributes:
-            self.assertTrue(job.exists(client=client, retry=retry))
-
-        final_attributes.assert_called_with(
-            {"path": "/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID)},
-            None,
-            job,
-        )
+        self.assertTrue(job.exists(client=client, retry=retry))
 
         call_api.assert_called_once_with(
             retry,
+            span_name="BigQuery.job.exists",
+            span_attributes={
+                "path": "/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID)
+            },
+            job_ref=job,
             method="GET",
             path="/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID),
             query_params={"fields": "id"},
@@ -735,15 +730,13 @@ class Test_AsyncJob(unittest.TestCase):
         PATH = "/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID)
         job = self._set_properties_job()
         call_api = job._client._call_api = mock.Mock()
-        with mock.patch(
-            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
-        ) as final_attributes:
-            job.exists(timeout=7.5)
-
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        job.exists(timeout=7.5)
 
         call_api.assert_called_once_with(
             DEFAULT_RETRY,
+            span_name="BigQuery.job.exists",
+            span_attributes={"path": PATH},
+            job_ref=job,
             method="GET",
             path=PATH,
             query_params={"fields": "id"},
@@ -765,19 +758,15 @@ class Test_AsyncJob(unittest.TestCase):
         job._properties["jobReference"]["location"] = self.LOCATION
         call_api = job._client._call_api = mock.Mock()
         call_api.return_value = resource
-        with mock.patch(
-            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
-        ) as final_attributes:
-            job.reload()
-
-        final_attributes.assert_called_with(
-            {"path": "/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID)},
-            None,
-            job,
-        )
+        job.reload()
 
         call_api.assert_called_once_with(
             DEFAULT_RETRY,
+            span_name="BigQuery.job.reload",
+            span_attributes={
+                "path": "/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID)
+            },
+            job_ref=job,
             method="GET",
             path="/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID),
             query_params={"location": self.LOCATION},
@@ -802,19 +791,15 @@ class Test_AsyncJob(unittest.TestCase):
         call_api = client._call_api = mock.Mock()
         call_api.return_value = resource
         retry = DEFAULT_RETRY.with_deadline(1)
-        with mock.patch(
-            "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
-        ) as final_attributes:
-            job.reload(client=client, retry=retry, timeout=4.2)
-
-        final_attributes.assert_called_with(
-            {"path": "/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID)},
-            None,
-            job,
-        )
+        job.reload(client=client, retry=retry, timeout=4.2)
 
         call_api.assert_called_once_with(
             retry,
+            span_name="BigQuery.job.reload",
+            span_attributes={
+                "path": "/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID)
+            },
+            job_ref=job,
             method="GET",
             path="/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID),
             query_params={},
@@ -840,11 +825,7 @@ class Test_AsyncJob(unittest.TestCase):
         ) as final_attributes:
             self.assertTrue(job.cancel())
 
-        final_attributes.assert_called_with(
-            {"path": "/projects/{}/jobs/{}/cancel".format(self.PROJECT, self.JOB_ID)},
-            None,
-            job,
-        )
+        final_attributes.assert_called()
 
         connection.api_request.assert_called_once_with(
             method="POST",
@@ -875,7 +856,7 @@ class Test_AsyncJob(unittest.TestCase):
 
         final_attributes.assert_called_with(
             {"path": "/projects/{}/jobs/{}/cancel".format(self.PROJECT, self.JOB_ID)},
-            None,
+            client,
             job,
         )
 
@@ -915,7 +896,7 @@ class Test_AsyncJob(unittest.TestCase):
             ) as final_attributes:
                 result = job.cancel(retry=retry, timeout=7.5)
 
-            final_attributes.assert_called_with({"path": api_path}, None, job)
+            final_attributes.assert_called()
 
         self.assertTrue(result)
         self.assertEqual(job._properties, resource)
@@ -2409,7 +2390,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job._begin()
 
-        final_attributes.assert_called_with({"path": path}, None, job)
+        final_attributes.assert_called_with({"path": path}, client, job)
 
         conn.api_request.assert_called_once_with(
             method="POST",
@@ -2454,7 +2435,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job._begin()
 
-        final_attributes.assert_called_with({"path": path}, None, job)
+        final_attributes.assert_called_with({"path": path}, client, job)
 
         sent = {
             "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
@@ -2553,7 +2534,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job._begin(client=client2)
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client2, job)
 
         conn1.api_request.assert_not_called()
         self.assertEqual(len(conn2.api_request.call_args_list), 1)
@@ -2583,7 +2564,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         ) as final_attributes:
             load_job._begin()
         final_attributes.assert_called_with(
-            {"path": "/projects/alternative-project/jobs"}, None, load_job
+            {"path": "/projects/alternative-project/jobs"}, client, load_job
         )
 
         conn.api_request.assert_called_once()
@@ -2608,7 +2589,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         final_attributes.assert_called_with(
             {"path": "/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID)},
-            None,
+            client,
             job,
         )
 
@@ -2630,7 +2611,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         final_attributes.assert_called_with(
             {"path": "/projects/{}/jobs/{}".format(self.PROJECT, self.JOB_ID)},
-            None,
+            client2,
             job,
         )
 
@@ -2652,7 +2633,7 @@ class TestLoadJob(unittest.TestCase, _Base):
             self.assertFalse(load_job.exists())
 
         final_attributes.assert_called_with(
-            {"path": "/projects/other-project/jobs/my-job-id"}, None, load_job
+            {"path": "/projects/other-project/jobs/my-job-id"}, client, load_job
         )
 
         conn.api_request.assert_called_once_with(
@@ -2673,7 +2654,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job.reload()
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client, job)
 
         conn.api_request.assert_called_once_with(
             method="GET", path=PATH, query_params={}, timeout=None
@@ -2693,7 +2674,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job.reload(client=client2)
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client2, job)
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
@@ -2718,7 +2699,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         final_attributes.assert_called_with(
             {"path": "/projects/alternative-project/jobs/{}".format(self.JOB_ID)},
-            None,
+            client,
             load_job,
         )
 
@@ -2741,7 +2722,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job.cancel()
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client, job)
 
         conn.api_request.assert_called_once_with(
             method="POST", path=PATH, query_params={}, timeout=None,
@@ -2762,7 +2743,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job.cancel(client=client2)
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client2, job)
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
@@ -2791,7 +2772,7 @@ class TestLoadJob(unittest.TestCase, _Base):
                     self.JOB_ID
                 )
             },
-            None,
+            client,
             load_job,
         )
         conn.api_request.assert_called_once_with(
@@ -3093,7 +3074,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job._begin()
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client, job)
 
         conn.api_request.assert_called_once_with(
             method="POST",
@@ -3161,7 +3142,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job._begin(client=client2)
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client2, job)
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
@@ -3188,7 +3169,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         ) as final_attributes:
             self.assertFalse(job.exists())
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client, job)
 
         conn.api_request.assert_called_once_with(
             method="GET", path=PATH, query_params={"fields": "id"}, timeout=None,
@@ -3208,7 +3189,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         ) as final_attributes:
             self.assertTrue(job.exists(client=client2))
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client2, job)
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
@@ -3228,7 +3209,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job.reload()
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client, job)
 
         conn.api_request.assert_called_once_with(
             method="GET", path=PATH, query_params={}, timeout=None
@@ -3250,7 +3231,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job.reload(client=client2)
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client2, job)
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
@@ -3515,7 +3496,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job._begin()
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client, job)
 
         conn.api_request.assert_called_once_with(
             method="POST",
@@ -3577,7 +3558,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job._begin(client=client2)
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client2, job)
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
@@ -3603,7 +3584,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         ) as final_attributes:
             self.assertFalse(job.exists())
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client, job)
 
         conn.api_request.assert_called_once_with(
             method="GET", path=PATH, query_params={"fields": "id"}, timeout=None,
@@ -3623,7 +3604,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         ) as final_attributes:
             self.assertTrue(job.exists(client=client2))
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client2, job)
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
@@ -3645,7 +3626,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job.reload()
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client, job)
         conn.api_request.assert_called_once_with(
             method="GET", path=PATH, query_params={}, timeout=None
         )
@@ -3668,7 +3649,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job.reload(client=client2)
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client2, job)
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
@@ -5012,7 +4993,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job._begin(timeout=7.5)
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client, job)
 
         conn.api_request.assert_called_once_with(
             method="POST",
@@ -5049,7 +5030,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job._begin()
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client, job)
 
         self.assertIsNone(job.default_dataset)
         self.assertEqual(job.udf_resources, [])
@@ -5133,7 +5114,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job._begin(client=client2)
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client2, job)
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
@@ -5179,7 +5160,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job._begin()
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client, job)
 
         self.assertEqual(job.udf_resources, udf_resources)
         conn.api_request.assert_called_once_with(
@@ -5233,7 +5214,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job._begin()
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client, job)
 
         self.assertEqual(job.query_parameters, query_parameters)
         conn.api_request.assert_called_once_with(
@@ -5281,7 +5262,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job._begin()
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client, job)
 
         self.assertEqual(job.query_parameters, query_parameters)
         conn.api_request.assert_called_once_with(
@@ -5361,7 +5342,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job._begin()
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client, job)
 
         conn.api_request.assert_called_once_with(
             method="POST",
@@ -5404,7 +5385,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job._begin()
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client, job)
         self.assertEqual(job.udf_resources, [])
         conn.api_request.assert_called_once_with(
             method="POST",
@@ -5430,7 +5411,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         ) as final_attributes:
             self.assertFalse(job.exists())
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client, job)
 
         conn.api_request.assert_called_once_with(
             method="GET", path=PATH, query_params={"fields": "id"}, timeout=None
@@ -5448,7 +5429,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         ) as final_attributes:
             self.assertTrue(job.exists(client=client2))
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client2, job)
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
@@ -5475,7 +5456,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job.reload()
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client, job)
 
         self.assertNotEqual(job.destination, table_ref)
 
@@ -5505,7 +5486,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job.reload(client=client2)
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client2, job)
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
@@ -5533,7 +5514,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         ) as final_attributes:
             job.reload(timeout=4.2)
 
-        final_attributes.assert_called_with({"path": PATH}, None, job)
+        final_attributes.assert_called_with({"path": PATH}, client, job)
 
         self.assertNotEqual(job.destination, table_ref)
 
