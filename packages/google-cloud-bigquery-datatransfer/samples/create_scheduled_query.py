@@ -90,7 +90,7 @@ def main():
     parser.add_argument("--authorization_code", type=str, default="")
     args = parser.parse_args()
 
-    sample_create_transfer_config(args.project_id, args.authorization_code)
+    sample_create_transfer_config(args.project_id, args.dataset_id, args.authorization_code)
 
 
 if __name__ == "__main__":
