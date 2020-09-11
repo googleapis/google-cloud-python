@@ -20,14 +20,27 @@ ROOT=$( dirname "$DIR" )
 # Work from the project root.
 cd $ROOT
 
+# Prevent it from overriding files.
+# We recommend that sample authors use their own service account files and cloud project.
+# In that case, they are supposed to prepare these files by themselves.
+if [[ -f "testing/test-env.sh" ]] || \
+       [[ -f "testing/service-account.json" ]] || \
+       [[ -f "testing/client-secrets.json" ]]; then
+    echo "One or more target files exist, aborting."
+    exit 1
+fi
+
 # Use SECRET_MANAGER_PROJECT if set, fallback to cloud-devrel-kokoro-resources.
 PROJECT_ID="${SECRET_MANAGER_PROJECT:-cloud-devrel-kokoro-resources}"
 
 gcloud secrets versions access latest --secret="python-docs-samples-test-env" \
+       --project="${PROJECT_ID}" \
        > testing/test-env.sh
 gcloud secrets versions access latest \
        --secret="python-docs-samples-service-account" \
+       --project="${PROJECT_ID}" \
        > testing/service-account.json
 gcloud secrets versions access latest \
        --secret="python-docs-samples-client-secrets" \
+       --project="${PROJECT_ID}" \
        > testing/client-secrets.json
