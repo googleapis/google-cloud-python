@@ -6,7 +6,7 @@
 
 from unittest import TestCase
 
-from spanner_dbapi.utils import PeekIterator
+from google.cloud.spanner_dbapi.utils import PeekIterator
 
 
 class UtilsTests(TestCase):

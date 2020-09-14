@@ -6,8 +6,8 @@
 
 from unittest import TestCase
 
-from spanner_dbapi.exceptions import ProgrammingError
-from spanner_dbapi.parser import (
+from google.cloud.spanner_dbapi.exceptions import ProgrammingError
+from google.cloud.spanner_dbapi.parser import (
     ARGS,
     FUNC,
     TERMINAL,

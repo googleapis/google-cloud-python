@@ -9,8 +9,8 @@ import decimal
 from unittest import TestCase
 
 from google.cloud.spanner_v1 import param_types
-from spanner_dbapi.exceptions import Error, ProgrammingError
-from spanner_dbapi.parse_utils import (
+from google.cloud.spanner_dbapi.exceptions import Error, ProgrammingError
+from google.cloud.spanner_dbapi.parse_utils import (
     STMT_DDL,
     STMT_NON_UPDATING,
     DateStr,
@@ -24,7 +24,7 @@ from spanner_dbapi.parse_utils import (
     sql_pyformat_args_to_spanner,
     strip_backticks,
 )
-from spanner_dbapi.utils import backtick_unicode
+from google.cloud.spanner_dbapi.utils import backtick_unicode
 
 
 class ParseUtilsTests(TestCase):

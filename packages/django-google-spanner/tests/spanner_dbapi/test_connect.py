@@ -11,7 +11,7 @@ from unittest import mock
 
 import google.auth.credentials
 from google.api_core.gapic_v1.client_info import ClientInfo
-from spanner_dbapi import connect, Connection
+from google.cloud.spanner_dbapi import connect, Connection
 
 
 def _make_credentials():
@@ -30,9 +30,12 @@ class Test_connect(unittest.TestCase):
         CREDENTIALS = _make_credentials()
         CLIENT_INFO = ClientInfo(user_agent=USER_AGENT)
 
-        with mock.patch("spanner_dbapi.spanner_v1.Client") as client_mock:
+        with mock.patch(
+            "google.cloud.spanner_dbapi.spanner_v1.Client"
+        ) as client_mock:
             with mock.patch(
-                "spanner_dbapi.google_client_info", return_value=CLIENT_INFO
+                "google.cloud.spanner_dbapi.google_client_info",
+                return_value=CLIENT_INFO,
             ) as client_info_mock:
 
                 connection = connect(

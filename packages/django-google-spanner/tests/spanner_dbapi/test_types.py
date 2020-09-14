@@ -7,7 +7,7 @@
 import datetime
 from unittest import TestCase
 
-from spanner_dbapi.types import (
+from google.cloud.spanner_dbapi.types import (
     Date,
     DateFromTicks,
     Time,
@@ -15,7 +15,7 @@ from spanner_dbapi.types import (
     Timestamp,
     TimestampFromTicks,
 )
-from spanner_dbapi.utils import PeekIterator
+from google.cloud.spanner_dbapi.utils import PeekIterator
 
 tzUTC = 0  # 0 hours offset from UTC
 

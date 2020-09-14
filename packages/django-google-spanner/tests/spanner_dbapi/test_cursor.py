@@ -9,7 +9,7 @@
 import unittest
 from unittest import mock
 
-from spanner_dbapi import connect, InterfaceError
+from google.cloud.spanner_dbapi import connect, InterfaceError
 
 
 class TestCursor(unittest.TestCase):

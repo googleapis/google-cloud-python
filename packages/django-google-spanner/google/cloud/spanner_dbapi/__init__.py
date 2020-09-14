@@ -97,6 +97,7 @@ def connect(
 
 
 __all__ = [
+    "Connection",
     "DatabaseError",
     "DataError",
     "Error",
