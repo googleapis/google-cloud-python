@@ -80,7 +80,7 @@ class TestBigQueryStorageClient(object):
 
         # Setup Request
         table_reference = {}
-        parent = "parent-995424086"
+        parent = client.project_path("[PROJECT]")
 
         response = client.create_read_session(table_reference, parent)
         assert expected_response == response
@@ -102,7 +102,7 @@ class TestBigQueryStorageClient(object):
 
         # Setup request
         table_reference = {}
-        parent = "parent-995424086"
+        parent = client.project_path("[PROJECT]")
 
         with pytest.raises(CustomException):
             client.create_read_session(table_reference, parent)

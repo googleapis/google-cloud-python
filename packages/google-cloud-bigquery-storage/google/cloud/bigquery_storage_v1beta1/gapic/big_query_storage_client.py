@@ -27,6 +27,7 @@ import google.api_core.gapic_v1.method
 import google.api_core.path_template
 import google.api_core.gapic_v1.routing_header
 import google.api_core.grpc_helpers
+import google.api_core.path_template
 import grpc
 
 from google.cloud.bigquery_storage_v1beta1.gapic import big_query_storage_client_config
@@ -79,6 +80,33 @@ class BigQueryStorageClient(object):
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
+
+    @classmethod
+    def project_path(cls, project):
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}", project=project,
+        )
+
+    @classmethod
+    def read_session_path(cls, project, location, session):
+        """Return a fully-qualified read_session string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/sessions/{session}",
+            project=project,
+            location=location,
+            session=session,
+        )
+
+    @classmethod
+    def stream_path(cls, project, location, stream):
+        """Return a fully-qualified stream string."""
+        return google.api_core.path_template.expand(
+            "projects/{project}/locations/{location}/streams/{stream}",
+            project=project,
+            location=location,
+            stream=stream,
+        )
 
     def __init__(
         self,
@@ -227,9 +255,7 @@ class BigQueryStorageClient(object):
             >>>
             >>> # TODO: Initialize `table_reference`:
             >>> table_reference = {}
-            >>>
-            >>> # TODO: Initialize `parent`:
-            >>> parent = ''
+            >>> parent = client.project_path('[PROJECT]')
             >>>
             >>> response = client.create_read_session(table_reference, parent)
 
@@ -238,9 +264,13 @@ class BigQueryStorageClient(object):
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.bigquery_storage_v1beta1.types.TableReference`
-            parent (str): Required. String of the form ``projects/{project_id}`` indicating
-                the project this ReadSession is associated with. This is the project
-                that will be billed for usage.
+            parent (str): A value in the range [0.0, 1.0] that represents the fraction of rows
+                assigned to this stream that have been processed by the server. In the
+                presence of read filters, the server may process more rows than it
+                returns, so this value reflects progress through the pre-filtering rows.
+
+                This value is only populated for sessions created through the BALANCED
+                sharding strategy.
             table_modifiers (Union[dict, ~google.cloud.bigquery_storage_v1beta1.types.TableModifiers]): Any modifiers to the Table (e.g. snapshot timestamp).
 
                 If a dict is provided, it must be of the same form as the protobuf
@@ -584,20 +614,8 @@ class BigQueryStorageClient(object):
         metadata=None,
     ):
         """
-        Splits a given read stream into two Streams. These streams are
-        referred to as the primary and the residual of the split. The original
-        stream can still be read from in the same manner as before. Both of the
-        returned streams can also be read from, and the total rows return by
-        both child streams will be the same as the rows read from the original
-        stream.
-
-        Moreover, the two child streams will be allocated back to back in the
-        original Stream. Concretely, it is guaranteed that for streams Original,
-        Primary, and Residual, that Original[0-j] = Primary[0-j] and
-        Original[j-n] = Residual[0-m] once the streams have been read to
-        completion.
-
-        This method is guaranteed to be idempotent.
+        An annotation that describes a resource definition, see
+        ``ResourceDescriptor``.
 
         Example:
             >>> from google.cloud import bigquery_storage_v1beta1
