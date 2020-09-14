@@ -1,10 +1,12 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,17 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-import time
-
-from google.cloud import trace_v2
+from google.cloud import trace_v1
 
 
-class TestSystemTraceService(object):
-    def test_batch_write_spans(self):
-        project_id = os.environ["PROJECT_ID"]
+def list_traces(project_id: str):
+    """List traces for a project."""
 
-        client = trace_v2.TraceServiceClient()
-        name = f"projects/{project_id}"
-        spans = []
-        client.batch_write_spans(name=name, spans=spans)
+    client = trace_v1.TraceServiceClient()
+
+    request = trace_v1.ListTracesRequest(project_id=project_id)
+    traces = client.list_traces(request=request)
+
+    for trace in traces:
+        print(trace)
+
+    return traces

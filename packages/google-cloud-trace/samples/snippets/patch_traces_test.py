@@ -13,23 +13,25 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-from .services.trace_service import TraceServiceClient
-from .types.trace import AttributeValue
-from .types.trace import Module
-from .types.trace import Span
-from .types.trace import StackTrace
-from .types.trace import TruncatableString
-from .types.tracing import BatchWriteSpansRequest
+import os
+
+from google.cloud import trace_v1
+import pytest
+
+import patch_traces
+
+PROJECT_ID = os.environ["GOOGLE_CLOUD_PROJECT"]
 
 
-__all__ = (
-    "AttributeValue",
-    "BatchWriteSpansRequest",
-    "Module",
-    "Span",
-    "StackTrace",
-    "TruncatableString",
-    "TraceServiceClient",
-)
+@pytest.fixture(scope="module")
+def trace_id():
+    # list all traces in the project and return the first
+    client = trace_v1.TraceServiceClient()
+    traces = client.list_traces(project_id=PROJECT_ID)
+
+    return list(traces)[0].trace_id
+
+
+def test_patch_traces():
+    patch_traces.patch_traces(project_id=PROJECT_ID)

@@ -33,15 +33,15 @@ def client():
 
 @vpcsc_config.skip_unless_inside_vpcsc
 def test_batch_write_spans_w_inside(client):
-    project_inside = client.project_path(vpcsc_config.project_inside)
-    client.batch_write_spans(project_inside, [])  # no raise
+    project_inside = f"projects/{vpcsc_config.project_inside}"
+    client.batch_write_spans(name=project_inside, spans=[])  # no raise
 
 
 @vpcsc_config.skip_unless_inside_vpcsc
 def test_batch_write_spans_w_outside(client):
-    project_outside = client.project_path(vpcsc_config.project_outside)
+    project_outside = f"projects/{vpcsc_config.project_outside}"
 
     with pytest.raises(exceptions.PermissionDenied) as exc:
-        client.batch_write_spans(project_outside, [])
+        client.batch_write_spans(name=project_outside, spans=[])
 
     assert _VPCSC_PROHIBITED_MESSAGE in exc.value.message

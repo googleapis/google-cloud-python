@@ -15,21 +15,22 @@
 # limitations under the License.
 #
 
-from .services.trace_service import TraceServiceClient
-from .types.trace import AttributeValue
-from .types.trace import Module
-from .types.trace import Span
-from .types.trace import StackTrace
-from .types.trace import TruncatableString
-from .types.tracing import BatchWriteSpansRequest
+from collections import OrderedDict
+from typing import Dict, Type
+
+from .base import TraceServiceTransport
+from .grpc import TraceServiceGrpcTransport
+from .grpc_asyncio import TraceServiceGrpcAsyncIOTransport
+
+
+# Compile a registry of transports.
+_transport_registry = OrderedDict()  # type: Dict[str, Type[TraceServiceTransport]]
+_transport_registry["grpc"] = TraceServiceGrpcTransport
+_transport_registry["grpc_asyncio"] = TraceServiceGrpcAsyncIOTransport
 
 
 __all__ = (
-    "AttributeValue",
-    "BatchWriteSpansRequest",
-    "Module",
-    "Span",
-    "StackTrace",
-    "TruncatableString",
-    "TraceServiceClient",
+    "TraceServiceTransport",
+    "TraceServiceGrpcTransport",
+    "TraceServiceGrpcAsyncIOTransport",
 )

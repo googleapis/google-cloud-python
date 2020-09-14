@@ -16,9 +16,6 @@ import os
 import time
 
 from google.cloud import trace_v1
-from google.cloud.trace_v1 import enums
-from google.cloud.trace_v1.proto import trace_pb2
-from google.protobuf import timestamp_pb2
 
 
 class TestSystemTraceService(object):
@@ -27,4 +24,4 @@ class TestSystemTraceService(object):
 
         client = trace_v1.TraceServiceClient()
         project_id_2 = project_id
-        response = client.list_traces(project_id_2)
+        response = client.list_traces(project_id=project_id_2)

@@ -56,7 +56,9 @@ Python >= 3.5
 
 Deprecated Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7. Python 2.7 support will be removed on January 1, 2020.
+Python == 2.7.
+
+The last version of this library compatible with Python 2.7 is google-cloud-trace==0.24.0
 
 
 Mac/Linux
@@ -85,22 +87,6 @@ such as installing ``pip`` and ``virtualenv`` on your system, please refer
 to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
 
 .. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
-
-
-Example Usage
-~~~~~~~~~~~~~
-
-.. code-block:: python
-
-  from google.cloud.trace import trace_service_client
-
-  client = trace_service_client.TraceServiceClient()
-  project_id = 'your-project-123'
-
-  # Iterate over all results
-  for element in client.list_traces(project_id):
-      # process element
-      pass
 
 
 Next Steps

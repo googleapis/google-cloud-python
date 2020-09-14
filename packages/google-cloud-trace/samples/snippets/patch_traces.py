@@ -13,23 +13,25 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-from .services.trace_service import TraceServiceClient
-from .types.trace import AttributeValue
-from .types.trace import Module
-from .types.trace import Span
-from .types.trace import StackTrace
-from .types.trace import TruncatableString
-from .types.tracing import BatchWriteSpansRequest
+import uuid
+
+from google.cloud import trace_v1
 
 
-__all__ = (
-    "AttributeValue",
-    "BatchWriteSpansRequest",
-    "Module",
-    "Span",
-    "StackTrace",
-    "TruncatableString",
-    "TraceServiceClient",
-)
+def patch_traces(project_id: str):
+    """Send new traces or update existing traces."""
+
+    client = trace_v1.TraceServiceClient()
+
+    trace = trace_v1.Trace(
+        project_id=project_id,
+        trace_id=str(uuid.uuid4()).replace("-", ""),
+        spans=[trace_v1.TraceSpan(span_id=1, name="test-span")],
+    )
+
+    request = trace_v1.PatchTracesRequest(
+        project_id=project_id, traces=trace_v1.Traces(traces=[trace])
+    )
+
+    client.patch_traces(request=request)

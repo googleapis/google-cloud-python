@@ -14,6 +14,7 @@
 
 """This script is used to synthesize generated parts of this library."""
 
+from synthtool.languages import python
 import synthtool as s
 import synthtool.gcp as gcp
 
@@ -32,34 +33,18 @@ for version in ["v1", "v2"]:
         include_protos=True,
     )
 
-    s.move(library / f"google/cloud/trace_{version}")
-    s.move(library / f"tests/unit/gapic/{version}")
-    s.move(library/ f"google/cloud/devtools/cloudtrace_{version}/proto",
-           f"google/cloud/trace_{version}/proto")
+    s.move(library, excludes=["docs/index.rst", "setup.py"])
 
-    # Fix up imports
-    s.replace(
-        "google/**/*.py",
-        f"from google.cloud.devtools.cloudtrace_{version}.proto import ",
-        f"from google.cloud.trace_{version}.proto import ",
-    )
-
-    s.replace(
-        f"google/cloud/trace_{version}/gapic/trace_service_client.py",
-        "google-cloud-devtools-cloudtrace",
-        "google-cloud-trace",
-    )
-
-# Copy docs configuration
-s.move(library / f"docs/conf.py")
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=98)
-s.move(templated_files)
+templated_files = common.py_library(
+    samples=True,  # set to True only if there are samples
+    microgenerator=True,
+)
 
-# TODO(busunkim): Use latest sphinx after microgenerator transition
-s.replace("noxfile.py", '''['"]sphinx["']''', '"sphinx<3.0.0"')
+python.py_samples(skip_readmes=True)
 
+s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
