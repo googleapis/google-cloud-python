@@ -176,6 +176,8 @@ class AuthorizedHttp(object):
         self._request = Request(self.http)
 
     def request(self, uri, method='GET', body=None, headers=None,
+                redirections=httplib2.DEFAULT_MAX_REDIRECTS,
+                connection_type=None,
                 **kwargs):
         """Implementation of httplib2's Http.request."""
 
@@ -198,7 +200,9 @@ class AuthorizedHttp(object):
 
         # Make the request.
         response, content = self.http.request(
-            uri, method, body=body, headers=request_headers, **kwargs)
+            uri, method, body=body, headers=request_headers,
+            redirections=redirections, connection_type=connection_type,
+            **kwargs)
 
         # If the response indicated that the credentials needed to be
         # refreshed, then refresh the credentials and re-attempt the
@@ -222,6 +226,7 @@ class AuthorizedHttp(object):
             # Recurse. Pass in the original headers, not our modified set.
             return self.request(
                 uri, method, body=body, headers=headers,
+                redirections=redirections, connection_type=connection_type,
                 _credential_refresh_attempt=_credential_refresh_attempt + 1,
                 **kwargs)
 

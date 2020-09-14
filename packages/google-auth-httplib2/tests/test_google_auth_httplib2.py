@@ -28,8 +28,11 @@ class MockHttp(object):
         self.headers = headers or {}
         self.add_certificate = mock.Mock(return_value=None)
 
-    def request(self, url, method='GET', body=None, headers=None, **kwargs):
-        self.requests.append((method, url, body, headers, kwargs))
+    def request(self, url, method='GET', body=None, headers=None,
+                redirections=httplib2.DEFAULT_MAX_REDIRECTS,
+                connection_type=None):
+        self.requests.append(
+            (method, url, body, headers, redirections, connection_type))
         return self.responses.pop(0)
 
 
@@ -55,7 +58,7 @@ class TestRequestResponse(compliance.RequestResponseTests):
         request(url=url, method='GET', timeout=5)
 
         assert http.requests[0] == (
-            'GET', url, None, None, {})
+            'GET', url, None, None, httplib2.DEFAULT_MAX_REDIRECTS, None)
 
 
 def test__make_default_http():
@@ -155,7 +158,8 @@ class TestAuthorizedHttp(object):
         assert mock_credentials.before_request.called
         assert not mock_credentials.refresh.called
         assert mock_http.requests == [
-            ('GET', self.TEST_URL, None, {'authorization': 'token'}, {})]
+            ('GET', self.TEST_URL, None, {'authorization': 'token'},
+                httplib2.DEFAULT_MAX_REDIRECTS, None)]
 
     def test_request_refresh(self):
         mock_credentials = mock.Mock(wraps=MockCredentials())
@@ -175,8 +179,10 @@ class TestAuthorizedHttp(object):
         assert mock_credentials.before_request.call_count == 2
         assert mock_credentials.refresh.called
         assert mock_http.requests == [
-            ('GET', self.TEST_URL, None, {'authorization': 'token'}, {}),
-            ('GET', self.TEST_URL, None, {'authorization': 'token1'}, {})]
+            ('GET', self.TEST_URL, None, {'authorization': 'token'},
+                httplib2.DEFAULT_MAX_REDIRECTS, None),
+            ('GET', self.TEST_URL, None, {'authorization': 'token1'},
+                httplib2.DEFAULT_MAX_REDIRECTS, None)]
 
     def test_request_stream_body(self):
         mock_credentials = mock.Mock(wraps=MockCredentials())
@@ -198,5 +204,28 @@ class TestAuthorizedHttp(object):
         assert response == mock_response
         assert data == mock_response.data
         assert mock_http.requests == [
-            ('POST', self.TEST_URL, body, {'authorization': 'token'}, {}),
-            ('POST', self.TEST_URL, body, {'authorization': 'token1'}, {})]
+            ('POST', self.TEST_URL, body, {'authorization': 'token'},
+                httplib2.DEFAULT_MAX_REDIRECTS, None),
+            ('POST', self.TEST_URL, body, {'authorization': 'token1'},
+                httplib2.DEFAULT_MAX_REDIRECTS, None)]
+
+    def test_request_positional_args(self):
+        """Verifies that clients can pass args to request as positioanls."""
+        mock_credentials = mock.Mock(wraps=MockCredentials())
+        mock_response = MockResponse()
+        mock_http = MockHttp([mock_response])
+
+        authed_http = google_auth_httplib2.AuthorizedHttp(
+            mock_credentials, http=mock_http)
+
+        response, data = authed_http.request(
+            self.TEST_URL, 'GET', None, None,
+            httplib2.DEFAULT_MAX_REDIRECTS, None)
+
+        assert response == mock_response
+        assert data == mock_response.data
+        assert mock_credentials.before_request.called
+        assert not mock_credentials.refresh.called
+        assert mock_http.requests == [
+            ('GET', self.TEST_URL, None, {'authorization': 'token'},
+                httplib2.DEFAULT_MAX_REDIRECTS, None)]
