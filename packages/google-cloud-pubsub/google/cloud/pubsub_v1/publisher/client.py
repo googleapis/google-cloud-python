@@ -130,7 +130,7 @@ class Client(object):
                 target=os.environ.get("PUBSUB_EMULATOR_HOST")
             )
 
-        client_options = kwargs.pop("client_options", None)
+        client_options = kwargs.get("client_options", None)
         if (
             client_options
             and "api_endpoint" in client_options

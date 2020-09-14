@@ -83,7 +83,7 @@ class Client(object):
             )
 
         # api_endpoint wont be applied if 'transport' is passed in.
-        client_options = kwargs.pop("client_options", None)
+        client_options = kwargs.get("client_options", None)
         if (
             client_options
             and "api_endpoint" in client_options

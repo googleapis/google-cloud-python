@@ -103,6 +103,24 @@ def test_init_w_empty_client_options():
     ) == publisher_client.PublisherClient.SERVICE_ADDRESS
 
 
+def test_init_client_options_pass_through():
+    def init(self, *args, **kwargs):
+        self.kwargs = kwargs
+
+    with mock.patch.object(publisher_client.PublisherClient, "__init__", init):
+        client = publisher.Client(
+            client_options={
+                "quota_project_id": "42",
+                "scopes": [],
+                "credentials_file": "file.json",
+            }
+        )
+        client_options = client.api.kwargs["client_options"]
+        assert client_options.get("quota_project_id") == "42"
+        assert client_options.get("scopes") == []
+        assert client_options.get("credentials_file") == "file.json"
+
+
 def test_init_emulator(monkeypatch):
     monkeypatch.setenv("PUBSUB_EMULATOR_HOST", "/foo/bar/")
     # NOTE: When the emulator host is set, a custom channel will be used, so
