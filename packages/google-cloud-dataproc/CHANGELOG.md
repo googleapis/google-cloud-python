@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+### [2.0.1](https://www.github.com/googleapis/python-dataproc/compare/v2.0.0...v2.0.1) (2020-09-14)
+
+
+### Documentation
+
+* remove example usage from README ([#77](https://www.github.com/googleapis/python-dataproc/issues/77)) ([66c7af1](https://www.github.com/googleapis/python-dataproc/commit/66c7af157ca5f740ebfec95abb7267e361d855f6))
+
 ## [2.0.0](https://www.github.com/googleapis/python-dataproc/compare/v1.1.1...v2.0.0) (2020-08-10)
 
 
