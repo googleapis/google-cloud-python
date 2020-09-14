@@ -5,7 +5,8 @@
 # https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners#codeowners-syntax
 
 
-# The python-samples-owners team is the default owner for anything not
-# explicitly taken by someone else.
+# The @googleapis/api-pubsub is the default owner for changes in this repo
+*               @googleapis/api-pubsub
 
- /samples/ @anguillanneuf @hongalex @googleapis/python-samples-owners
+# The python-samples-reviewers team is the default owner for samples changes
+/samples/   @googleapis/python-samples-owners
