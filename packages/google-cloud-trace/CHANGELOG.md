@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-trace/compare/v0.24.0...v1.0.0) (2020-09-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate to microgenerator. See [Migration Guide](https://github.com/googleapis/python-trace/blob/master/UPGRADING.md) (#29)
+
+### Features
+
+* migrate to microgenerator ([#29](https://www.github.com/googleapis/python-trace/issues/29)) ([f0d9d91](https://www.github.com/googleapis/python-trace/commit/f0d9d9161d7aee344ad1765c477947cd04505bf5))
+
 ## [0.24.0](https://www.github.com/googleapis/python-trace/compare/v0.23.0...v0.24.0) (2020-08-06)
 
 
