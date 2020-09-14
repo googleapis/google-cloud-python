@@ -21,9 +21,9 @@ import pytest
 import iam
 
 UUID = uuid.uuid4().hex
-PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
-TOPIC = "iam-test-topic-" + UUID
-SUBSCRIPTION = "iam-test-subscription-" + UUID
+PROJECT_ID = os.environ["GOOGLE_CLOUD_PROJECT"]
+TOPIC_ID = "iam-test-topic-" + UUID
+SUBSCRIPTION_ID = "iam-test-subscription-" + UUID
 
 
 @pytest.fixture(scope="module")
@@ -33,7 +33,7 @@ def publisher_client():
 
 @pytest.fixture(scope="module")
 def topic(publisher_client):
-    topic_path = publisher_client.topic_path(PROJECT, TOPIC)
+    topic_path = publisher_client.topic_path(PROJECT_ID, TOPIC_ID)
 
     try:
         publisher_client.delete_topic(request={"topic": topic_path})
@@ -56,7 +56,7 @@ def subscriber_client():
 
 @pytest.fixture
 def subscription(subscriber_client, topic):
-    subscription_path = subscriber_client.subscription_path(PROJECT, SUBSCRIPTION)
+    subscription_path = subscriber_client.subscription_path(PROJECT_ID, SUBSCRIPTION_ID)
 
     try:
         subscriber_client.delete_subscription(
@@ -75,21 +75,21 @@ def subscription(subscriber_client, topic):
 
 
 def test_get_topic_policy(topic, capsys):
-    iam.get_topic_policy(PROJECT, TOPIC)
+    iam.get_topic_policy(PROJECT_ID, TOPIC_ID)
 
     out, _ = capsys.readouterr()
     assert topic in out
 
 
 def test_get_subscription_policy(subscription, capsys):
-    iam.get_subscription_policy(PROJECT, SUBSCRIPTION)
+    iam.get_subscription_policy(PROJECT_ID, SUBSCRIPTION_ID)
 
     out, _ = capsys.readouterr()
     assert subscription in out
 
 
 def test_set_topic_policy(publisher_client, topic):
-    iam.set_topic_policy(PROJECT, TOPIC)
+    iam.set_topic_policy(PROJECT_ID, TOPIC_ID)
 
     policy = publisher_client.get_iam_policy(request={"resource": topic})
     assert "roles/pubsub.publisher" in str(policy)
@@ -97,7 +97,7 @@ def test_set_topic_policy(publisher_client, topic):
 
 
 def test_set_subscription_policy(subscriber_client, subscription):
-    iam.set_subscription_policy(PROJECT, SUBSCRIPTION)
+    iam.set_subscription_policy(PROJECT_ID, SUBSCRIPTION_ID)
 
     policy = subscriber_client.get_iam_policy(request={"resource": subscription})
     assert "roles/pubsub.viewer" in str(policy)
@@ -105,7 +105,7 @@ def test_set_subscription_policy(subscriber_client, subscription):
 
 
 def test_check_topic_permissions(topic, capsys):
-    iam.check_topic_permissions(PROJECT, TOPIC)
+    iam.check_topic_permissions(PROJECT_ID, TOPIC_ID)
 
     out, _ = capsys.readouterr()
 
@@ -114,9 +114,17 @@ def test_check_topic_permissions(topic, capsys):
 
 
 def test_check_subscription_permissions(subscription, capsys):
-    iam.check_subscription_permissions(PROJECT, SUBSCRIPTION)
+    iam.check_subscription_permissions(PROJECT_ID, SUBSCRIPTION_ID)
 
     out, _ = capsys.readouterr()
 
     assert subscription in out
     assert "pubsub.subscriptions.consume" in out
+
+
+def test_detach_subscription(subscription, capsys):
+    iam.detach_subscription(PROJECT_ID, SUBSCRIPTION_ID)
+
+    out, _ = capsys.readouterr()
+
+    assert "Subscription is detached." in out

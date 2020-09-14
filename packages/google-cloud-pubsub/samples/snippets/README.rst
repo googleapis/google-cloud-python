@@ -251,8 +251,8 @@ To run this sample:
 
 
     usage: iam.py [-h]
-                  project
-                  {get-topic-policy,get-subscription-policy,set-topic-policy,set-subscription-policy,check-topic-permissions,check-subscription-permissions}
+                  project_id
+                  {get-topic-policy,get-subscription-policy,set-topic-policy,set-subscription-policy,check-topic-permissions,check-subscription-permissions,detach-subscription}
                   ...
 
     This application demonstrates how to perform basic operations on IAM
@@ -262,8 +262,8 @@ To run this sample:
     at https://cloud.google.com/pubsub/docs.
 
     positional arguments:
-      project               Your Google Cloud project ID
-      {get-topic-policy,get-subscription-policy,set-topic-policy,set-subscription-policy,check-topic-permissions,check-subscription-permissions}
+      project_id            Your Google Cloud project ID
+      {get-topic-policy,get-subscription-policy,set-topic-policy,set-subscription-policy,check-topic-permissions,check-subscription-permissions,detach-subscription}
         get-topic-policy    Prints the IAM policy for the given topic.
         get-subscription-policy
                             Prints the IAM policy for the given subscription.
@@ -276,6 +276,9 @@ To run this sample:
         check-subscription-permissions
                             Checks to which permissions are available on the given
                             subscription.
+        detach-subscription
+                            Detaches a subscription from a topic and drops all
+                            messages retained in it.
 
     optional arguments:
       -h, --help            show this help message and exit
