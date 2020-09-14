@@ -30,7 +30,6 @@ To run this sample:
         python main.py
 
 
-
 <pre>usage: main.py [-h] [--table TABLE] project_id instance_id <br><br> <br>positional arguments: <br>&nbsp; project_id &nbsp; &nbsp; Your Cloud Platform project ID. <br>&nbsp; instance_id &nbsp; &nbsp;ID of the Cloud Bigtable instance to connect to. <br><br> <br>optional arguments: <br>&nbsp; -h, --help &nbsp; &nbsp; show this help message and exit <br>&nbsp; --table TABLE &nbsp;Existing table used in the quickstart. (default: my-table)</pre>
 
 ## Additional Information
