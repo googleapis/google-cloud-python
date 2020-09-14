@@ -51,7 +51,7 @@ dependencies.
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.5
+Python >= 3.6
 
 
 Deprecated Python Versions
