@@ -38,6 +38,7 @@ from google.cloud.ndb._datastore_api import STRONG
 from google.cloud.ndb._datastore_query import Cursor
 from google.cloud.ndb._datastore_query import QueryIterator
 from google.cloud.ndb.global_cache import GlobalCache
+from google.cloud.ndb.global_cache import MemcacheCache
 from google.cloud.ndb.global_cache import RedisCache
 from google.cloud.ndb.key import Key
 from google.cloud.ndb.model import BlobKey
@@ -171,6 +172,7 @@ __all__ = [
     "KindError",
     "LocalStructuredProperty",
     "make_connection",
+    "MemcacheCache",
     "MetaModel",
     "Model",
     "ModelAdapter",

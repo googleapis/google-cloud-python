@@ -39,6 +39,7 @@ RUN apt-get update \
     libsnappy-dev \
     libssl-dev \
     libsqlite3-dev \
+    memcached \
     portaudio19-dev \
     redis-server \
     software-properties-common \

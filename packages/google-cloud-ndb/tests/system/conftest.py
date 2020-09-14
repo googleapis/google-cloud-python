@@ -149,3 +149,11 @@ def redis_context(client_context):
     with client_context.new(global_cache=global_cache).use() as context:
         context.set_global_cache_policy(None)  # Use default
         yield context
+
+
+@pytest.fixture
+def memcache_context(client_context):
+    global_cache = global_cache_module.MemcacheCache.from_environment()
+    with client_context.new(global_cache=global_cache).use() as context:
+        context.set_global_cache_policy(None)  # Use default
+        yield context

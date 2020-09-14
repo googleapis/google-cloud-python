@@ -39,6 +39,7 @@ from google.cloud.ndb import global_cache as global_cache_module
 from . import KIND, eventually, equals
 
 USE_REDIS_CACHE = bool(os.environ.get("REDIS_CACHE_URL"))
+USE_MEMCACHE = bool(os.environ.get("MEMCACHED_HOSTS"))
 
 
 def _assert_contemporaneous(timestamp1, timestamp2, delta_margin=2):
@@ -138,6 +139,37 @@ def test_retrieve_entity_with_redis_cache(ds_entity, redis_context):
 
     cache_key = _cache.global_cache_key(key._key)
     assert redis_context.global_cache.redis.get(cache_key) is not None
+
+    patch = mock.patch("google.cloud.ndb._datastore_api._LookupBatch.add")
+    patch.side_effect = Exception("Shouldn't call this")
+    with patch:
+        entity = key.get()
+        assert isinstance(entity, SomeKind)
+        assert entity.foo == 42
+        assert entity.bar == "none"
+        assert entity.baz == "night"
+
+
+@pytest.mark.skipif(not USE_MEMCACHE, reason="Memcache is not configured")
+def test_retrieve_entity_with_memcache(ds_entity, memcache_context):
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id, foo=42, bar="none", baz=b"night")
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+        baz = ndb.StringProperty()
+
+    key = ndb.Key(KIND, entity_id)
+    entity = key.get()
+    assert isinstance(entity, SomeKind)
+    assert entity.foo == 42
+    assert entity.bar == "none"
+    assert entity.baz == "night"
+
+    cache_key = _cache.global_cache_key(key._key)
+    cache_key = global_cache_module.MemcacheCache._key(cache_key)
+    assert memcache_context.global_cache.client.get(cache_key) is not None
 
     patch = mock.patch("google.cloud.ndb._datastore_api._LookupBatch.add")
     patch.side_effect = Exception("Shouldn't call this")
@@ -586,6 +618,33 @@ def test_insert_entity_with_redis_cache(dispose_of, redis_context):
     assert redis_context.global_cache.redis.get(cache_key) is None
 
 
+@pytest.mark.skipif(not USE_MEMCACHE, reason="Memcache is not configured")
+def test_insert_entity_with_memcache(dispose_of, memcache_context):
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StringProperty()
+
+    entity = SomeKind(foo=42, bar="none")
+    key = entity.put()
+    dispose_of(key._key)
+    cache_key = _cache.global_cache_key(key._key)
+    cache_key = global_cache_module.MemcacheCache._key(cache_key)
+    assert memcache_context.global_cache.client.get(cache_key) is None
+
+    retrieved = key.get()
+    assert retrieved.foo == 42
+    assert retrieved.bar == "none"
+
+    assert memcache_context.global_cache.client.get(cache_key) is not None
+
+    entity.foo = 43
+    entity.put()
+
+    # This is py27 behavior. I can see a case being made for caching the
+    # entity on write rather than waiting for a subsequent lookup.
+    assert memcache_context.global_cache.client.get(cache_key) is None
+
+
 @pytest.mark.usefixtures("client_context")
 def test_update_entity(ds_entity):
     entity_id = test_utils.system.unique_resource_id()
@@ -748,6 +807,30 @@ def test_delete_entity_with_redis_cache(ds_entity, redis_context):
     # Datastore misses.
     assert key.get() is None
     assert redis_context.global_cache.redis.get(cache_key) == b"0"
+
+
+@pytest.mark.skipif(not USE_MEMCACHE, reason="Memcache is not configured")
+def test_delete_entity_with_memcache(ds_entity, memcache_context):
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id, foo=42)
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    key = ndb.Key(KIND, entity_id)
+    cache_key = _cache.global_cache_key(key._key)
+    cache_key = global_cache_module.MemcacheCache._key(cache_key)
+
+    assert key.get().foo == 42
+    assert memcache_context.global_cache.client.get(cache_key) is not None
+
+    assert key.delete() is None
+    assert memcache_context.global_cache.client.get(cache_key) is None
+
+    # This is py27 behavior. Not entirely sold on leaving _LOCKED value for
+    # Datastore misses.
+    assert key.get() is None
+    assert memcache_context.global_cache.client.get(cache_key) == b"0"
 
 
 @pytest.mark.usefixtures("client_context")

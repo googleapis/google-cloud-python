@@ -294,3 +294,193 @@ class TestRedisCache:
 
         assert cache.pipes == {"whatevs": global_cache._Pipeline(None, "himom!")}
         assert expired == {"ay": 32, "be": 32, "see": 32}
+
+
+class TestMemcacheCache:
+    @staticmethod
+    @mock.patch("google.cloud.ndb.global_cache.pymemcache")
+    def test_from_environment_not_configured(pymemcache):
+        with mock.patch.dict("os.environ", {"MEMCACHED_HOSTS": None}):
+            assert global_cache.MemcacheCache.from_environment() is None
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb.global_cache.pymemcache")
+    def test_from_environment_one_host_no_port(pymemcache):
+        with mock.patch.dict("os.environ", {"MEMCACHED_HOSTS": "somehost"}):
+            cache = global_cache.MemcacheCache.from_environment()
+            assert cache.client is pymemcache.PooledClient.return_value
+            pymemcache.PooledClient.assert_called_once_with(
+                ("somehost", 11211), max_pool_size=4
+            )
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb.global_cache.pymemcache")
+    def test_from_environment_one_host_with_port(pymemcache):
+        with mock.patch.dict("os.environ", {"MEMCACHED_HOSTS": "somehost:22422"}):
+            cache = global_cache.MemcacheCache.from_environment()
+            assert cache.client is pymemcache.PooledClient.return_value
+            pymemcache.PooledClient.assert_called_once_with(
+                ("somehost", 22422), max_pool_size=4
+            )
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb.global_cache.pymemcache")
+    def test_from_environment_two_hosts_with_port(pymemcache):
+        with mock.patch.dict(
+            "os.environ", {"MEMCACHED_HOSTS": "somehost:22422 otherhost:33633"}
+        ):
+            cache = global_cache.MemcacheCache.from_environment()
+            assert cache.client is pymemcache.HashClient.return_value
+            pymemcache.HashClient.assert_called_once_with(
+                [("somehost", 22422), ("otherhost", 33633)],
+                use_pooling=True,
+                max_pool_size=4,
+            )
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb.global_cache.pymemcache")
+    def test_from_environment_two_hosts_no_port(pymemcache):
+        with mock.patch.dict("os.environ", {"MEMCACHED_HOSTS": "somehost otherhost"}):
+            cache = global_cache.MemcacheCache.from_environment()
+            assert cache.client is pymemcache.HashClient.return_value
+            pymemcache.HashClient.assert_called_once_with(
+                [("somehost", 11211), ("otherhost", 11211)],
+                use_pooling=True,
+                max_pool_size=4,
+            )
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb.global_cache.pymemcache")
+    def test_from_environment_one_host_no_port_pool_size_zero(pymemcache):
+        with mock.patch.dict("os.environ", {"MEMCACHED_HOSTS": "somehost"}):
+            cache = global_cache.MemcacheCache.from_environment(max_pool_size=0)
+            assert cache.client is pymemcache.PooledClient.return_value
+            pymemcache.PooledClient.assert_called_once_with(
+                ("somehost", 11211), max_pool_size=1
+            )
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb.global_cache.pymemcache")
+    def test_from_environment_bad_host_extra_colon(pymemcache):
+        with mock.patch.dict("os.environ", {"MEMCACHED_HOSTS": "somehost:say:what?"}):
+            with pytest.raises(ValueError):
+                global_cache.MemcacheCache.from_environment()
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb.global_cache.pymemcache")
+    def test_from_environment_bad_host_port_not_an_integer(pymemcache):
+        with mock.patch.dict("os.environ", {"MEMCACHED_HOSTS": "somehost:saywhat?"}):
+            with pytest.raises(ValueError):
+                global_cache.MemcacheCache.from_environment()
+
+    @staticmethod
+    def test_get():
+        client = mock.Mock(spec=("get_many",))
+        cache = global_cache.MemcacheCache(client)
+        key1 = cache._key(b"one")
+        key2 = cache._key(b"two")
+        client.get_many.return_value = {key1: "bun", key2: "shoe"}
+        assert cache.get((b"one", b"two")) == ["bun", "shoe"]
+        client.get_many.assert_called_once_with([key1, key2])
+
+    @staticmethod
+    def test_set():
+        client = mock.Mock(spec=("set_many",))
+        cache = global_cache.MemcacheCache(client)
+        key1 = cache._key(b"one")
+        key2 = cache._key(b"two")
+        cache.set(
+            {
+                b"one": "bun",
+                b"two": "shoe",
+            }
+        )
+        client.set_many.assert_called_once_with(
+            {
+                key1: "bun",
+                key2: "shoe",
+            },
+            expire=0,
+        )
+
+    @staticmethod
+    def test_set_w_expires():
+        client = mock.Mock(spec=("set_many",))
+        cache = global_cache.MemcacheCache(client)
+        key1 = cache._key(b"one")
+        key2 = cache._key(b"two")
+        cache.set(
+            {
+                b"one": "bun",
+                b"two": "shoe",
+            },
+            expires=5,
+        )
+        client.set_many.assert_called_once_with(
+            {
+                key1: "bun",
+                key2: "shoe",
+            },
+            expire=5,
+        )
+
+    @staticmethod
+    def test_delete():
+        client = mock.Mock(spec=("delete_many",))
+        cache = global_cache.MemcacheCache(client)
+        key1 = cache._key(b"one")
+        key2 = cache._key(b"two")
+        cache.delete((b"one", b"two"))
+        client.delete_many.assert_called_once_with([key1, key2])
+
+    @staticmethod
+    def test_watch():
+        client = mock.Mock(spec=("gets_many",))
+        cache = global_cache.MemcacheCache(client)
+        key1 = cache._key(b"one")
+        key2 = cache._key(b"two")
+        client.gets_many.return_value = {
+            key1: ("bun", b"0"),
+            key2: ("shoe", b"1"),
+        }
+        cache.watch((b"one", b"two"))
+        client.gets_many.assert_called_once_with([key1, key2])
+        assert cache.caskeys == {
+            key1: b"0",
+            key2: b"1",
+        }
+
+    @staticmethod
+    def test_compare_and_swap():
+        client = mock.Mock(spec=("cas",))
+        cache = global_cache.MemcacheCache(client)
+        key2 = cache._key(b"two")
+        cache.caskeys[key2] = b"5"
+        cache.caskeys["whatevs"] = b"6"
+        cache.compare_and_swap(
+            {
+                b"one": "bun",
+                b"two": "shoe",
+            }
+        )
+
+        client.cas.assert_called_once_with(key2, "shoe", b"5", expire=0)
+        assert cache.caskeys == {"whatevs": b"6"}
+
+    @staticmethod
+    def test_compare_and_swap_and_expires():
+        client = mock.Mock(spec=("cas",))
+        cache = global_cache.MemcacheCache(client)
+        key2 = cache._key(b"two")
+        cache.caskeys[key2] = b"5"
+        cache.caskeys["whatevs"] = b"6"
+        cache.compare_and_swap(
+            {
+                b"one": "bun",
+                b"two": "shoe",
+            },
+            expires=5,
+        )
+
+        client.cas.assert_called_once_with(key2, "shoe", b"5", expire=5)
+        assert cache.caskeys == {"whatevs": b"6"}
