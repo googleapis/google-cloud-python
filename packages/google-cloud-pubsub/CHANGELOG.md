@@ -5,7 +5,29 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## 2.0.0
+
+09-11-2020 05:03 PDT
+
+
+### Implementation Changes
+
+- Transition the library to microgenerator. ([#158](https://github.com/googleapis/python-pubsub/pull/158))
+  This is a **breaking change** that introduces several **method signature changes** and **drops support
+  for Python 2.7 and 3.5**.
+
+### Documentation
+
+- Add samples for using ordering keys. ([#156](https://github.com/googleapis/python-pubsub/pull/156))
+- Remove extra white space in delivery attempt sample. ([#159](https://github.com/googleapis/python-pubsub/pull/159))
+
+### Internal / Testing Changes
+
+- Fix flaky sequencer unit tests. ([#187](https://github.com/googleapis/python-pubsub/pull/187))
+
 ## [1.7.0](https://www.github.com/googleapis/python-pubsub/compare/v1.6.1...v1.7.0) (2020-07-13)
+
+This is the last release that supports Python 2.7 and 3.5.
 
 ### New Features
 
