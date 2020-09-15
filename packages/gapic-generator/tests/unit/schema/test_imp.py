@@ -35,6 +35,11 @@ def test_str_untyped_pb2():
     assert str(i) == 'from foo.bar import baz_pb2 as bacon  # type: ignore'
 
 
+def test_str_untyped_api_core():
+    i = imp.Import(package=('foo', 'api_core'), module='baz', alias='bacon')
+    assert str(i) == 'from foo.api_core import baz as bacon  # type: ignore'
+
+
 def test_str_eq():
     i1 = imp.Import(package=('foo', 'bar'), module='baz')
     i2 = imp.Import(package=('foo', 'bar'), module='baz')
