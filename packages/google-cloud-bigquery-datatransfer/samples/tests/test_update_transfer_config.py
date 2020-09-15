@@ -14,13 +14,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .. import create_scheduled_query
+from .. import create_scheduled_query, update_transfer_config
 
 
-def test_sample(project_id, dataset_id, capsys, to_delete):
+def test_update_config_sample(project_id, dataset_id, capsys, to_delete):
     config_name = create_scheduled_query.sample_create_transfer_config(
         project_id, dataset_id
     )
-    to_delete.append(config_name)
+
+    display_name = "Transfer config updated"
+    config = update_transfer_config.sample_update_transfer_config(config_name, display_name)
+    to_delete.append(config.name)
     out, err = capsys.readouterr()
-    assert config_name in out
+    assert config.name in out
+    assert config.display_name == display_name
