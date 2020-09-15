@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.33.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.33.2...v0.33.3) (2020-09-15)
+
+
+### Bug Fixes
+
+* module names can no longer collide with keywords or builtins ([#595](https://www.github.com/googleapis/gapic-generator-python/issues/595)) ([960d550](https://www.github.com/googleapis/gapic-generator-python/commit/960d550c4a8fd09b052cce785d76243a5d4525d7))
+
 ### [0.33.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.33.1...v0.33.2) (2020-09-15)
 
 
