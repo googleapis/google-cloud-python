@@ -34,6 +34,7 @@ from google.protobuf import descriptor_pb2
 from gapic.schema import imp
 from gapic.schema import naming
 from gapic.utils import cached_property
+from gapic.utils import RESERVED_NAMES
 
 
 @dataclasses.dataclass(frozen=True)
@@ -47,6 +48,9 @@ class Address:
         default_factory=naming.NewNaming,
     )
     collisions: FrozenSet[str] = dataclasses.field(default_factory=frozenset)
+
+    def __post_init__(self):
+        super().__setattr__("collisions", self.collisions | RESERVED_NAMES)
 
     def __eq__(self, other) -> bool:
         return all([getattr(self, i) == getattr(other, i) for i

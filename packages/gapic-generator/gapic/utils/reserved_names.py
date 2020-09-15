@@ -12,7 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import builtins
+import itertools
 import keyword
 
 
-RESERVED_NAMES = frozenset(keyword.kwlist)
+# The filter and map builtins are a historical artifact;
+# they are not used in modern, idiomatic python,
+# nor are they used in the gapic surface.
+# They are too useful to reserve.
+RESERVED_NAMES = frozenset(
+    itertools.chain(
+        keyword.kwlist,
+        set(dir(builtins)) - {"filter", "map"},
+    )
+)

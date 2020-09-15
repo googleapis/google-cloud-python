@@ -20,6 +20,7 @@ from test_utils.test_utils import make_doc_meta
 
 from gapic.schema import metadata
 from gapic.schema import naming
+from gapic.utils import RESERVED_NAMES
 
 
 def test_address_str():
@@ -160,9 +161,28 @@ def test_address_subpackage_empty():
 
 def test_metadata_with_context():
     meta = metadata.Metadata()
-    assert meta.with_context(
+    collisions = meta.with_context(
         collisions={'foo', 'bar'},
-    ).address.collisions == {'foo', 'bar'}
+    ).address.collisions - RESERVED_NAMES
+    assert collisions == {'foo', 'bar'}
+
+
+def test_address_name_builtin_keyword():
+    addr_builtin = metadata.Address(
+        name="Any",
+        module="any",
+        package=("google", "protobuf"),
+        api_naming=naming.NewNaming(proto_package="foo.bar.baz.v1"),
+    )
+    assert addr_builtin.module_alias == "gp_any"
+
+    addr_kword = metadata.Address(
+        name="Class",
+        module="class",
+        package=("google", "protobuf"),
+        api_naming=naming.NewNaming(proto_package="foo.bar.baz.v1"),
+    )
+    assert addr_kword.module_alias == "gp_class"
 
 
 def test_doc_nothing():

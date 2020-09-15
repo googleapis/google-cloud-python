@@ -19,6 +19,7 @@ through an :class:`~.API` object.
 
 import collections
 import dataclasses
+import keyword
 import os
 import sys
 from typing import Callable, Container, Dict, FrozenSet, Mapping, Optional, Sequence, Set, Tuple
@@ -229,7 +230,7 @@ class API:
                 visited_names: Container[str]) -> str:
             path, fname = os.path.split(full_path)
             name, ext = os.path.splitext(fname)
-            if name in RESERVED_NAMES or full_path in visited_names:
+            if name in keyword.kwlist or full_path in visited_names:
                 name += "_"
                 full_path = os.path.join(path, name + ext)
                 if full_path in visited_names:
