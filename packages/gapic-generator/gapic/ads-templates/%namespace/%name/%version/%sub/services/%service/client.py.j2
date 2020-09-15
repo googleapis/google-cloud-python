@@ -5,18 +5,18 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union
+from typing import Callable, Dict, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions # type: ignore
-from google.api_core import exceptions                 # type: ignore
-from google.api_core import gapic_v1                   # type: ignore
-from google.api_core import retry as retries           # type: ignore
-from google.auth import credentials                    # type: ignore
-from google.auth.transport import mtls                 # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
-from google.oauth2 import service_account              # type: ignore
+from google.api_core import client_options as client_options_lib  # type: ignore
+from google.api_core import exceptions                            # type: ignore
+from google.api_core import gapic_v1                              # type: ignore
+from google.api_core import retry as retries                      # type: ignore
+from google.auth import credentials                               # type: ignore
+from google.auth.transport import mtls                            # type: ignore
+from google.auth.transport.grpc import SslCredentials             # type: ignore
+from google.auth.exceptions import MutualTLSChannelError          # type: ignore
+from google.oauth2 import service_account                         # type: ignore
 
 {% filter sort_lines -%}
 {% for method in service.methods.values() -%}
@@ -134,9 +134,9 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     {% endfor %}
 
     def __init__(self, *,
-            credentials: credentials.Credentials = None,
-            transport: Union[str, {{ service.name }}Transport] = None,
-            client_options: ClientOptions = None,
+            credentials: Optional[credentials.Credentials] = None,
+            transport: Union[str, {{ service.name }}Transport, None] = None,
+            client_options: Optional[client_options_lib.ClientOptions] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
         """Instantiate the {{ (service.client_name|snake_case).replace('_', ' ') }}.
@@ -150,8 +150,8 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             transport (Union[str, ~.{{ service.name }}Transport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (ClientOptions): Custom options for the client. It
-                won't take effect unless ``transport`` is None.
+            client_options (client_options_lib.ClientOptions): Custom options for the
+                client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
@@ -171,19 +171,19 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 API requests. If ``None``, then default info will be used.	
                 Generally, you only need to set this if you're developing	
                 your own client library.
-
+                
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
         if isinstance(client_options, dict):
-            client_options = ClientOptions.from_dict(client_options)
+            client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
-            client_options = ClientOptions.ClientOptions()
+            client_options = client_options_lib.ClientOptions()
         
         # Create SSL credentials for mutual TLS if needed.
         use_client_cert = bool(util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")))
-
+        
         ssl_credentials = None
         is_mtls = False
         if use_client_cert:
