@@ -10,10 +10,8 @@ import os
 from setuptools import find_packages, setup
 
 # Package metadata.
-
 name = "django-google-spanner"
 description = "Bridge to enable using Django with Spanner."
-version = "2.2a0"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
@@ -22,15 +20,20 @@ release_status = "Development Status :: 3 - Alpha"
 dependencies = ["sqlparse >= 0.3.0", "google-cloud-spanner >= 1.8.0"]
 extras = {}
 
+BASE_DIR = os.path.dirname(__file__)
+VERSION_FILENAME = os.path.join(BASE_DIR, "version.py")
+PACKAGE_INFO = {}
+with open(VERSION_FILENAME) as f:
+    exec(f.read(), PACKAGE_INFO)
+version = PACKAGE_INFO["__version__"]
 
 # Setup boilerplate below this line.
 
-package_root = os.path.abspath(os.path.dirname(__file__))
+package_root = os.path.abspath(BASE_DIR)
 
 readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
-
 
 setup(
     name=name,
@@ -38,7 +41,7 @@ setup(
     description=description,
     long_description=readme,
     author="Google LLC",
-    author_email="cloud-spanner-developers@googlegroups.com",
+    author_email="googleapis-packages@google.com",
     license="BSD",
     packages=find_packages(exclude=["tests"]),
     install_requires=dependencies,

@@ -19,6 +19,8 @@
 import sys
 import os
 
+from version import __version__
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add this directory to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -27,8 +29,6 @@ sys.path.insert(0, os.path.abspath(".."))
 # For plugins that can not read conf.py.
 # See also: https://github.com/docascode/sphinx-docfx-yaml/issues/85
 sys.path.insert(0, os.path.abspath("."))
-
-__version__ = "alpha"
 
 # -- General configuration ------------------------------------------------
 

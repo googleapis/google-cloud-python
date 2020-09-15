@@ -5,7 +5,7 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 from django.db.backends.base.base import BaseDatabaseWrapper
-from google.cloud import spanner_v1 as spanner, spanner_dbapi as Database
+from google.cloud import spanner_dbapi as Database, spanner_v1 as spanner
 
 from .client import DatabaseClient
 from .creation import DatabaseCreation
@@ -116,7 +116,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
             "project": self.settings_dict["PROJECT"],
             "instance_id": self.settings_dict["INSTANCE"],
             "database_id": self.settings_dict["NAME"],
-            "user_agent": "django_spanner/0.0.1",
+            "user_agent": "django_spanner/2.2.0a1",
             **self.settings_dict["OPTIONS"],
         }
 
