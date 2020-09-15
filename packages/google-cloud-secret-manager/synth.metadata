@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-secret-manager.git",
-        "sha": "8e2ef9921c7af1c8bd3620c728413470c790a02f"
+        "sha": "538071bbe633d02303572a56cf5894abff141201"
       }
     },
     {

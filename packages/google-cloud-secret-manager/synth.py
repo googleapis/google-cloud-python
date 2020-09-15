@@ -21,6 +21,7 @@ from synthtool.languages import python
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
+excludes = ["README.rst", "setup.py", "nox*.py", "docs/index.rst"]
 
 # ----------------------------------------------------------------------------
 # Generate secret manager GAPIC layer
@@ -38,68 +39,17 @@ for version, bazel_target in versions:
         version=version,
         bazel_target=bazel_target,
     )
-
-    s.move(
-        library,
-        excludes=[
-            f"google/cloud/secrets_{version}/proto",
-            "nox.py",
-            "setup.py",
-            "README.rst",
-            "docs/index.rst",
-        ],
-    )
-
-    # protos are copied to the wrong location by default, so move separately
-    s.move(
-        library / f"google/cloud/secrets_{version}/proto",
-        f"google/cloud/secretmanager_{version}/proto",
-    )
-
-    # correct proto import parth
-    s.replace(
-        "google/cloud/**/proto/*.py",
-        rf"from google\.cloud\.secrets_{version}\.proto",
-        f"from google.cloud.secretmanager_{version}.proto",
-    )
-
-# fix import path for iam
-s.replace(
-    "google/**/gapic/transports/*_grpc_transport.py",
-    "from google.iam.v1 import iam_policy_pb2 ",
-    "from google.iam.v1 import iam_policy_pb2_grpc as iam_policy_pb2",
-)
-
-# correct license headers
-python.fix_pb2_headers()
-python.fix_pb2_grpc_headers()
-
-# Fix package name (v1beta1)
-s.replace(
-    ["docs/conf.py", "google/**/*.py", "README.rst", "setup.py"],
-    "google-cloud-secretmanager",
-    "google-cloud-secret-manager",
-)
-
-# Fix package name (v1)
-s.replace(
-    ["docs/conf.py", "google/**/*.py", "README.rst", "setup.py"],
-    "google-cloud-secrets",
-    "google-cloud-secret-manager",
-)
-
-# fix links in README
-s.replace(
-    "README.rst",
-    "https://cloud\.google\.com/secrets",
-    "https://cloud.google.com/secret-manager",
-)
+    s.copy(library, excludes=excludes)
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=75, samples=True)
-s.move(templated_files)
+templated_files = common.py_library(
+    samples=True,  # set to True only if there are samples
+    microgenerator=True,
+    cov_level=99,
+)
+s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
 # ----------------------------------------------------------------------------
 # Samples templates
