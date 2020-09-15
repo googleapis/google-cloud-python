@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.33.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.33.0...v0.33.1) (2020-09-15)
+
+
+### Bug Fixes
+
+* Fix client template type hints ([#593](https://www.github.com/googleapis/gapic-generator-python/issues/593)) ([93f34e8](https://www.github.com/googleapis/gapic-generator-python/commit/93f34e8a2a351a24a49424c1722baec2893dc764))
+
 ## [0.33.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.32.4...v0.33.0) (2020-09-10)
 
 
