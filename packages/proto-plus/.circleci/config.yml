@@ -7,7 +7,7 @@ workflows:
       - style-check:
           filters:
             tags:
-              only: /^v\d+\.\d+\.\d+$/
+              only: /^v\d+\.\d+\.\d+.*/
       - publish_package:
           requires:
             - style-check
@@ -15,7 +15,7 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /^v\d+\.\d+\.\d+\.*$/
+              only: /^v\d+\.\d+\.\d+.*/
       - unit-3.5:
           filters:
             tags:
