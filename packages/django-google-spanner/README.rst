@@ -1,61 +1,50 @@
-django-spanner
-==============
+Cloud Spanner support for Django
+================================
 
-ORM plugin for using Cloud Spanner as a database for Django.
+ORM plugin for using Cloud Spanner as a `database backend
+<https://docs.djangoproject.com/en/2.2/ref/databases/#using-a-3rd-party-database-backend>`__
+for Django.
 
-🚨THIS CODE IS STILL UNDER DEVELOPMENT🚨
-========================================
 
-Table of contents
------------------
+Installation
+------------
 
--  `Installing it <#installing-it>`__
--  `Using it <#using-it>`__
+To use this library you'll need a Google Cloud Platform project with the Cloud
+Spanner API enabled. See the `Cloud Spanner Python client docs
+<https://github.com/googleapis/python-spanner/#quick-start>`__ for details.
 
-   -  `Format <#format>`__
-   -  `Example <#example>`__
+Use the version of ``python-spanner-django`` that corresponds to your version
+of Django.  For example, ``python-spanner-django`` 2.2.x works with Django
+2.2.y. (This is the only supported version at this time.)
 
--  `Functional tests <#functional-tests>`__
--  `Django integration tests <#django-integration-tests>`__
+The minor release number of Django doesn't correspond to the minor release
+number of ``python-spanner-django``. Use the latest minor release of each.
 
-   -  `django\_test\_suite.sh <#django_test_suitesh>`__
-
-      -  `Environment variables <#environment-variables>`__
-      -  `Example run <#example-run>`__
-
-   -  `Parallelization script <#parallelization-script>`__
-
-      -  `Environment variables <#environment-variables>`__
-      -  `Example run <#example-run>`__
-
--  `Limitations <#limitations>`__
--  `How it works <#how-it-works>`__
-
-   -  `Overall design <#overall-design>`__
-   -  `Internals <#internals>`__
-
-Installing it
--------------
-
-Use the version of django-spanner that corresponds to your version of
-Django. For example, django-spanner 2.2.x works with Django 2.2.y. (This
-is the only supported version at this time.)
-
-The minor release number of Django doesn't correspond to the minor
-release number of django-spanner. Use the latest minor release of each.
+To install from PyPI:
 
 .. code:: shell
 
-    pip3 install --user .
+    pip3 install django-google-spanner
 
-Using it
---------
 
-After `installing it <#installing-it>`__, you'll need to edit your
-Django ``settings.py`` file:
+To install from source:
 
--  Add ``django_spanner`` as the very first entry in the
-   ``INSTALLED_APPS`` setting
+.. code:: shell
+
+    git clone git@github.com:googleapis/python-spanner-django.git
+    cd python-spanner-django
+    pip3 install -e .
+
+
+Useage
+------
+
+After `installattion <#Installation>`__, you'll need to edit your Django
+``settings.py`` file:
+
+-  Add ``django_spanner`` as the very first entry in the ``INSTALLED_APPS``
+   setting
+
 
    .. code:: python
 
@@ -107,18 +96,19 @@ Limitations
 Transaction management isn't supported
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-django-spanner always works in Django's default transaction behavior,
-``autocommit`` mode. Transactions cannot be controlled manually with
-calls like ``django.db.transaction.atomic()``.
+``python-spanner-django`` always works in ``autocommit`` mode, which is
+Django's default behavior even for backends that support manual transaction
+management. Transactions cannot be controlled manually with calls like
+``django.db.transaction.atomic()``.
 
 ``AutoField`` generates random IDs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Spanner doesn't have support for auto-generating primary key values.
-Therefore, django-spanner monkey-patches ``AutoField`` to generate a
-random UUID4. It generates a default using ``Field``'s ``default``
-option which means ``AutoField``\ s will have a value when a model
-instance is created. For example:
+Therefore, ``python-spanner-django`` monkey-patches ``AutoField`` to generate a
+random UUID4. It generates a default using ``Field``'s ``default`` option which
+means ``AutoField``\ s will have a value when a model instance is created. For
+example:
 
 ::
 
@@ -136,16 +126,18 @@ were created.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Spanner doesn't support ``ON DELETE CASCADE`` when creating foreign-key
-constraints so django-spanner `doesn't support foreign key
-constraints <https://github.com/googleapis/python-spanner-django/issues/313>`__.
+constraints so ``python-spanner-django`` `doesn't support foreign key
+constraints
+<https://github.com/googleapis/python-spanner-django/issues/313>`__.
 
 Check constraints aren't supported
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Spanner doesn't support ``CHECK`` constraints so one isn't created for
-```PositiveIntegerField`` <https://docs.djangoproject.com/en/stable/ref/models/fields/#positiveintegerfield>`__
-and
-```CheckConstraint`` <https://docs.djangoproject.com/en/stable/ref/models/constraints/#checkconstraint>`__
+`PositiveIntegerField
+<https://docs.djangoproject.com/en/stable/ref/models/fields/#positiveintegerfield>`__
+and `CheckConstraint
+<https://docs.djangoproject.com/en/stable/ref/models/constraints/#checkconstraint>`__
 can't be used.
 
 ``DecimalField`` isn't supported
@@ -185,7 +177,7 @@ Spanner has some limitations on schema changes which you must respect:
 -  Renaming tables and columns isn't supported.
 -  A column's type can't be changed.
 -  A table's primary key can't be altered.
--  Migrations aren't atomic since django-spanner doesn't support
+-  Migrations aren't atomic since ``python-spanner-django`` doesn't support
    transactions.
 
 ``DurationField`` arithmetic doesn't work with ``DateField`` values (`#253 <https://github.com/googleapis/python-spanner-django/issues/253>`__)
@@ -247,6 +239,3 @@ Internals
 
 .. figure:: ./assets/internals.png
    :alt:
-
-🚨🚨THIS CODE IS STILL UNDER DEVELOPMENT🚨🚨
-============================================
