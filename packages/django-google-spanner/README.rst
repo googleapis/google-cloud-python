@@ -39,7 +39,7 @@ To install from source:
 Useage
 ------
 
-After `installattion <#Installation>`__, you'll need to edit your Django
+After `installation <#Installation>`__, you'll need to edit your Django
 ``settings.py`` file:
 
 -  Add ``django_spanner`` as the very first entry in the ``INSTALLED_APPS``
