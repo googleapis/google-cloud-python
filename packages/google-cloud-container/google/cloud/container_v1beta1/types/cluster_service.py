@@ -1565,11 +1565,11 @@ class OperationProgress(proto.Message):
 
         name = proto.Field(proto.STRING, number=1)
 
-        int_value = proto.Field(proto.INT64, number=2)
+        int_value = proto.Field(proto.INT64, number=2, oneof="value")
 
-        double_value = proto.Field(proto.DOUBLE, number=3)
+        double_value = proto.Field(proto.DOUBLE, number=3, oneof="value")
 
-        string_value = proto.Field(proto.STRING, number=4)
+        string_value = proto.Field(proto.STRING, number=4, oneof="value")
 
     name = proto.Field(proto.STRING, number=1)
 
@@ -2653,11 +2653,11 @@ class MaintenanceWindow(proto.Message):
     """
 
     daily_maintenance_window = proto.Field(
-        proto.MESSAGE, number=2, message="DailyMaintenanceWindow",
+        proto.MESSAGE, number=2, oneof="policy", message="DailyMaintenanceWindow",
     )
 
     recurring_window = proto.Field(
-        proto.MESSAGE, number=3, message="RecurringTimeWindow",
+        proto.MESSAGE, number=3, oneof="policy", message="RecurringTimeWindow",
     )
 
     maintenance_exclusions = proto.MapField(

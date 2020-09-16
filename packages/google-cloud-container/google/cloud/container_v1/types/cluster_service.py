@@ -2499,11 +2499,11 @@ class MaintenanceWindow(proto.Message):
     """
 
     daily_maintenance_window = proto.Field(
-        proto.MESSAGE, number=2, message="DailyMaintenanceWindow",
+        proto.MESSAGE, number=2, oneof="policy", message="DailyMaintenanceWindow",
     )
 
     recurring_window = proto.Field(
-        proto.MESSAGE, number=3, message="RecurringTimeWindow",
+        proto.MESSAGE, number=3, oneof="policy", message="RecurringTimeWindow",
     )
 
     maintenance_exclusions = proto.MapField(

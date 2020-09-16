@@ -31,7 +31,7 @@ from google.oauth2 import service_account  # type: ignore
 from google.cloud.container_v1.services.cluster_manager import pagers
 from google.cloud.container_v1.types import cluster_service
 
-from .transports.base import ClusterManagerTransport
+from .transports.base import ClusterManagerTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import ClusterManagerGrpcAsyncIOTransport
 from .client import ClusterManagerClient
 
@@ -57,6 +57,7 @@ class ClusterManagerAsyncClient:
         credentials: credentials.Credentials = None,
         transport: Union[str, ClusterManagerTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the cluster manager client.
 
@@ -72,16 +73,19 @@ class ClusterManagerAsyncClient:
             client_options (ClientOptions): Custom options for the client. It
                 won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS
+                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint, this is the default value for
-                the environment variable) and "auto" (auto switch to the default
-                mTLS endpoint if client SSL credentials is present). However,
-                the ``api_endpoint`` property takes precedence if provided.
-                (2) The ``client_cert_source`` property is used to provide client
-                SSL credentials for mutual TLS transport. If not provided, the
-                default SSL credentials will be used if present.
+                use the default regular endpoint) and "auto" (auto switch to the
+                default mTLS endpoint if client certificate is present, this is
+                the default value). However, the ``api_endpoint`` property takes
+                precedence if provided.
+                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                is "true", then the ``client_cert_source`` property can be used
+                to provide client certificate for mutual TLS transport. If
+                not provided, the default SSL client certificate will be used if
+                present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
+                set, no client certificate will be used.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -89,7 +93,10 @@ class ClusterManagerAsyncClient:
         """
 
         self._client = ClusterManagerClient(
-            credentials=credentials, transport=transport, client_options=client_options,
+            credentials=credentials,
+            transport=transport,
+            client_options=client_options,
+            client_info=client_info,
         )
 
     async def list_clusters(
@@ -173,8 +180,16 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_clusters,
-            default_timeout=None,
-            client_info=_client_info,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                ),
+            ),
+            default_timeout=20.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -277,8 +292,16 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_cluster,
-            default_timeout=None,
-            client_info=_client_info,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                ),
+            ),
+            default_timeout=20.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -395,8 +418,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_cluster,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -512,8 +535,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_cluster,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -566,8 +589,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_node_pool,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -620,8 +643,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.set_node_pool_autoscaling,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -743,8 +766,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.set_logging_service,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -869,8 +892,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.set_monitoring_service,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -989,8 +1012,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.set_addons_config,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1113,8 +1136,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.set_locations,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1244,8 +1267,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_master,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1300,8 +1323,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.set_master_auth,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1417,8 +1440,16 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_cluster,
-            default_timeout=None,
-            client_info=_client_info,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                ),
+            ),
+            default_timeout=20.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1504,8 +1535,16 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_operations,
-            default_timeout=None,
-            client_info=_client_info,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                ),
+            ),
+            default_timeout=20.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1601,8 +1640,16 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_operation,
-            default_timeout=None,
-            client_info=_client_info,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                ),
+            ),
+            default_timeout=20.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1700,8 +1747,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.cancel_operation,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1794,8 +1841,16 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_server_config,
-            default_timeout=None,
-            client_info=_client_info,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                ),
+            ),
+            default_timeout=20.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1899,8 +1954,16 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_node_pools,
-            default_timeout=None,
-            client_info=_client_info,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                ),
+            ),
+            default_timeout=20.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2024,8 +2087,16 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_node_pool,
-            default_timeout=None,
-            client_info=_client_info,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                ),
+            ),
+            default_timeout=20.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2141,8 +2212,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_node_pool,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2261,8 +2332,16 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_node_pool,
-            default_timeout=None,
-            client_info=_client_info,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                ),
+            ),
+            default_timeout=20.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2387,8 +2466,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.rollback_node_pool_upgrade,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2440,8 +2519,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.set_node_pool_management,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2495,8 +2574,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.set_labels,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2613,8 +2692,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.set_legacy_abac,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2721,8 +2800,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.start_ip_rotation,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2828,8 +2907,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.complete_ip_rotation,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2881,8 +2960,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.set_node_pool_size,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2999,8 +3078,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.set_network_policy,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -3114,8 +3193,8 @@ class ClusterManagerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.set_maintenance_policy,
-            default_timeout=None,
-            client_info=_client_info,
+            default_timeout=45.0,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -3173,7 +3252,7 @@ class ClusterManagerAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_usable_subnetworks,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -3196,11 +3275,11 @@ class ClusterManagerAsyncClient:
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-container",).version,
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+        gapic_version=pkg_resources.get_distribution("google-cloud-container",).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 __all__ = ("ClusterManagerAsyncClient",)

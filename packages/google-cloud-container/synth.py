@@ -63,6 +63,13 @@ for version in versions:
         f"google.cloud.container_{version}",
     )
 
+# Fix package name
+s.replace(
+    "google/cloud/**/*.py",
+    "google-container",
+    "google-cloud-container"
+)
+
 # Issues exist where python files should define the source encoding
 # https://github.com/googleapis/gapic-generator/issues/2097
 s.replace(
