@@ -4,6 +4,8 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
+"SQL parsing and classification utils."
+
 import datetime
 import decimal
 import re
@@ -23,35 +25,17 @@ STMT_UPDATING = "UPDATING"
 STMT_INSERT = "INSERT"
 
 # Heuristic for identifying statements that don't need to be run as updates.
-re_NON_UPDATE = re.compile(r"^\s*(SELECT)", re.IGNORECASE)
+RE_NON_UPDATE = re.compile(r"^\s*(SELECT)", re.IGNORECASE)
 
-re_WITH = re.compile(r"^\s*(WITH)", re.IGNORECASE)
+RE_WITH = re.compile(r"^\s*(WITH)", re.IGNORECASE)
 
 # DDL statements follow
 # https://cloud.google.com/spanner/docs/data-definition-language
-re_DDL = re.compile(r"^\s*(CREATE|ALTER|DROP)", re.IGNORECASE | re.DOTALL)
+RE_DDL = re.compile(r"^\s*(CREATE|ALTER|DROP)", re.IGNORECASE | re.DOTALL)
 
-re_IS_INSERT = re.compile(r"^\s*(INSERT)", re.IGNORECASE | re.DOTALL)
+RE_IS_INSERT = re.compile(r"^\s*(INSERT)", re.IGNORECASE | re.DOTALL)
 
-
-def classify_stmt(sql):
-    if re_DDL.match(sql):
-        return STMT_DDL
-    elif re_IS_INSERT.match(sql):
-        return STMT_INSERT
-    elif re_NON_UPDATE.match(sql):
-        return STMT_NON_UPDATING
-    elif re_WITH.match(sql):
-        # As of Fri-13th-March-2020, Cloud Spanner only supports WITH for DQL
-        # statements and doesn't yet support WITH for DML statements.
-        # When WITH for DML is added, we'll need to update this classifier
-        # accordingly.
-        return STMT_NON_UPDATING
-    else:
-        return STMT_UPDATING
-
-
-re_INSERT = re.compile(
+RE_INSERT = re.compile(
     # Only match the `INSERT INTO <table_name> (columns...)
     # otherwise the rest of the statement could be a complex
     # operation.
@@ -59,13 +43,45 @@ re_INSERT = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 
-re_VALUES_TILL_END = re.compile(r"VALUES\s*\(.+$", re.IGNORECASE | re.DOTALL)
+RE_VALUES_TILL_END = re.compile(r"VALUES\s*\(.+$", re.IGNORECASE | re.DOTALL)
 
-re_VALUES_PYFORMAT = re.compile(
+RE_VALUES_PYFORMAT = re.compile(
     # To match: (%s, %s,....%s)
     r"(\(\s*%s[^\(\)]+\))",
     re.DOTALL,
 )
+
+
+def classify_stmt(query):
+    """Determine SQL query type.
+
+    :type query: :class:`str`
+    :param query: SQL query.
+
+    :rtype: :class:`str`
+    :returns: Query type name.
+    """
+    if RE_DDL.match(query):
+        return STMT_DDL
+
+    if RE_IS_INSERT.match(query):
+        return STMT_INSERT
+
+    if RE_NON_UPDATE.match(query) or RE_WITH.match(query):
+        # As of 13-March-2020, Cloud Spanner only supports WITH for DQL
+        # statements and doesn't yet support WITH for DML statements.
+        return STMT_NON_UPDATING
+
+    return STMT_UPDATING
+
+
+def strip_backticks(name):
+    """
+    Strip backticks off of quoted names For example, '`no`' (a Spanner reserved
+    word) becomes 'no'.
+    """
+    has_quotes = name.startswith("`") and name.endswith("`")
+    return name[1:-1] if has_quotes else name
 
 
 def parse_insert(insert_sql, params):
@@ -126,14 +142,14 @@ def parse_insert(insert_sql, params):
                 ],
             }
     """  # noqa
-    match = re_INSERT.search(insert_sql)
+    match = RE_INSERT.search(insert_sql)
 
     if not match:
         raise ProgrammingError(
             "Could not parse an INSERT statement from %s" % insert_sql
         )
 
-    after_values_sql = re_VALUES_TILL_END.findall(insert_sql)
+    after_values_sql = RE_VALUES_TILL_END.findall(insert_sql)
     if not after_values_sql:
         # Case b)
         insert_sql = sanitize_literals_for_upload(insert_sql)
