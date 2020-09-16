@@ -36,8 +36,8 @@ To install from source:
     pip3 install -e .
 
 
-Useage
-------
+Usage
+-----
 
 After `installation <#Installation>`__, you'll need to edit your Django
 ``settings.py`` file:
