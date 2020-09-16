@@ -14,10 +14,7 @@
 
 """Utilities for managing / converting field paths to / from strings."""
 
-try:
-    from collections import abc as collections_abc
-except ImportError:  # Python 2.7
-    import collections as collections_abc
+from collections import abc
 
 import re
 
@@ -232,7 +229,7 @@ def get_nested_value(field_path, data):
 
     nested_data = data
     for index, field_name in enumerate(field_names):
-        if isinstance(nested_data, collections_abc.Mapping):
+        if isinstance(nested_data, abc.Mapping):
             if field_name in nested_data:
                 nested_data = nested_data[field_name]
             else:
