@@ -22,7 +22,6 @@ from google.cloud.spanner_dbapi.parse_utils import (
     parse_insert,
     rows_for_insert_or_update,
     sql_pyformat_args_to_spanner,
-    strip_backticks,
 )
 from google.cloud.spanner_dbapi.utils import backtick_unicode
 
@@ -489,13 +488,6 @@ class ParseUtilsTests(TestCase):
         for name, want in cases:
             with self.subTest(name=name):
                 got = escape_name(name)
-                self.assertEqual(got, want)
-
-    def test_strip_backticks(self):
-        cases = [("foo", "foo"), ("`foo`", "foo")]
-        for name, want in cases:
-            with self.subTest(name=name):
-                got = strip_backticks(name)
                 self.assertEqual(got, want)
 
     def test_backtick_unicode(self):

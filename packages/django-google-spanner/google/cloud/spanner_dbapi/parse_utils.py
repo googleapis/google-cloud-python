@@ -68,15 +68,6 @@ re_VALUES_PYFORMAT = re.compile(
 )
 
 
-def strip_backticks(name):
-    """
-    Strip backticks off of quoted names For example, '`no`' (a Spanner reserved
-    word) becomes 'no'.
-    """
-    has_quotes = name.startswith("`") and name.endswith("`")
-    return name[1:-1] if has_quotes else name
-
-
 def parse_insert(insert_sql, params):
     """
     Parse an INSERT statement an generate a list of tuples of the form:
@@ -169,10 +160,7 @@ def parse_insert(insert_sql, params):
     if values.homogenous():
         # Case c)
 
-        columns = [
-            strip_backticks(mi.strip())
-            for mi in match.group("columns").split(",")
-        ]
+        columns = [mi.strip(" `") for mi in match.group("columns").split(",")]
         sql_params_list = []
         insert_sql_preamble = "INSERT INTO %s (%s) VALUES %s" % (
             match.group("table_name"),
