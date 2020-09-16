@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.0.0](https://www.github.com/googleapis/python-secret-manager/compare/v1.0.0...v2.0.0) (2020-09-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate to use microgen (#44)
+
+### Features
+
+* migrate to use microgen ([#44](https://www.github.com/googleapis/python-secret-manager/issues/44)) ([4196032](https://www.github.com/googleapis/python-secret-manager/commit/41960323415701f3b358be201857fe04f58652be))
+
+
+### Bug Fixes
+
+* update default retry configs ([#31](https://www.github.com/googleapis/python-secret-manager/issues/31)) ([5f8689c](https://www.github.com/googleapis/python-secret-manager/commit/5f8689c9a1d6001d2873158c13cbb9a95b33fb97))
+
 ## [1.0.0](https://www.github.com/googleapis/python-secret-manager/compare/v0.2.0...v1.0.0) (2020-05-20)
 
 
