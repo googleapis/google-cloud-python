@@ -811,15 +811,16 @@ class Blob(_PropertyMixin):
         #  'X-Goog-Hash': 'crc32c=4gcgLQ==,md5=CS9tHYTtyFntzj7B9nkkJQ==',
         x_goog_hash = response.headers.get("X-Goog-Hash", "")
 
-        digests = {}
-        for encoded_digest in x_goog_hash.split(","):
-            match = re.match(r"(crc32c|md5)=([\w\d/\+/]+={0,3})", encoded_digest)
-            if match:
-                method, digest = match.groups()
-                digests[method] = digest
+        if x_goog_hash:
+            digests = {}
+            for encoded_digest in x_goog_hash.split(","):
+                match = re.match(r"(crc32c|md5)=([\w\d/\+/]+={0,3})", encoded_digest)
+                if match:
+                    method, digest = match.groups()
+                    digests[method] = digest
 
-        self.crc32c = digests.get("crc32c", None)
-        self.md5_hash = digests.get("md5", None)
+            self.crc32c = digests.get("crc32c", None)
+            self.md5_hash = digests.get("md5", None)
 
     def _do_download(
         self,
