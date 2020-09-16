@@ -1,0 +1,665 @@
+# -*- coding: utf-8 -*-
+
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+
+from google.cloud.automl_v1beta1.types import column_spec
+from google.cloud.automl_v1beta1.types import dataset
+from google.cloud.automl_v1beta1.types import model
+from google.cloud.automl_v1beta1.types import model_evaluation
+from google.cloud.automl_v1beta1.types import service
+from google.cloud.automl_v1beta1.types import table_spec
+
+
+class ListDatasetsPager:
+    """A pager for iterating through ``list_datasets`` requests.
+
+    This class thinly wraps an initial
+    :class:`~.service.ListDatasetsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``datasets`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListDatasets`` requests and continue to iterate
+    through the ``datasets`` field on the
+    corresponding responses.
+
+    All the usual :class:`~.service.ListDatasetsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., service.ListDatasetsResponse],
+        request: service.ListDatasetsRequest,
+        response: service.ListDatasetsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (:class:`~.service.ListDatasetsRequest`):
+                The initial request object.
+            response (:class:`~.service.ListDatasetsResponse`):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListDatasetsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterable[service.ListDatasetsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterable[dataset.Dataset]:
+        for page in self.pages:
+            yield from page.datasets
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListDatasetsAsyncPager:
+    """A pager for iterating through ``list_datasets`` requests.
+
+    This class thinly wraps an initial
+    :class:`~.service.ListDatasetsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``datasets`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListDatasets`` requests and continue to iterate
+    through the ``datasets`` field on the
+    corresponding responses.
+
+    All the usual :class:`~.service.ListDatasetsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[service.ListDatasetsResponse]],
+        request: service.ListDatasetsRequest,
+        response: service.ListDatasetsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (:class:`~.service.ListDatasetsRequest`):
+                The initial request object.
+            response (:class:`~.service.ListDatasetsResponse`):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListDatasetsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterable[service.ListDatasetsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterable[dataset.Dataset]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.datasets:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListTableSpecsPager:
+    """A pager for iterating through ``list_table_specs`` requests.
+
+    This class thinly wraps an initial
+    :class:`~.service.ListTableSpecsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``table_specs`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListTableSpecs`` requests and continue to iterate
+    through the ``table_specs`` field on the
+    corresponding responses.
+
+    All the usual :class:`~.service.ListTableSpecsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., service.ListTableSpecsResponse],
+        request: service.ListTableSpecsRequest,
+        response: service.ListTableSpecsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (:class:`~.service.ListTableSpecsRequest`):
+                The initial request object.
+            response (:class:`~.service.ListTableSpecsResponse`):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListTableSpecsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterable[service.ListTableSpecsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterable[table_spec.TableSpec]:
+        for page in self.pages:
+            yield from page.table_specs
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListTableSpecsAsyncPager:
+    """A pager for iterating through ``list_table_specs`` requests.
+
+    This class thinly wraps an initial
+    :class:`~.service.ListTableSpecsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``table_specs`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListTableSpecs`` requests and continue to iterate
+    through the ``table_specs`` field on the
+    corresponding responses.
+
+    All the usual :class:`~.service.ListTableSpecsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[service.ListTableSpecsResponse]],
+        request: service.ListTableSpecsRequest,
+        response: service.ListTableSpecsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (:class:`~.service.ListTableSpecsRequest`):
+                The initial request object.
+            response (:class:`~.service.ListTableSpecsResponse`):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListTableSpecsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterable[service.ListTableSpecsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterable[table_spec.TableSpec]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.table_specs:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListColumnSpecsPager:
+    """A pager for iterating through ``list_column_specs`` requests.
+
+    This class thinly wraps an initial
+    :class:`~.service.ListColumnSpecsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``column_specs`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListColumnSpecs`` requests and continue to iterate
+    through the ``column_specs`` field on the
+    corresponding responses.
+
+    All the usual :class:`~.service.ListColumnSpecsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., service.ListColumnSpecsResponse],
+        request: service.ListColumnSpecsRequest,
+        response: service.ListColumnSpecsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (:class:`~.service.ListColumnSpecsRequest`):
+                The initial request object.
+            response (:class:`~.service.ListColumnSpecsResponse`):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListColumnSpecsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterable[service.ListColumnSpecsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterable[column_spec.ColumnSpec]:
+        for page in self.pages:
+            yield from page.column_specs
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListColumnSpecsAsyncPager:
+    """A pager for iterating through ``list_column_specs`` requests.
+
+    This class thinly wraps an initial
+    :class:`~.service.ListColumnSpecsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``column_specs`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListColumnSpecs`` requests and continue to iterate
+    through the ``column_specs`` field on the
+    corresponding responses.
+
+    All the usual :class:`~.service.ListColumnSpecsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[service.ListColumnSpecsResponse]],
+        request: service.ListColumnSpecsRequest,
+        response: service.ListColumnSpecsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (:class:`~.service.ListColumnSpecsRequest`):
+                The initial request object.
+            response (:class:`~.service.ListColumnSpecsResponse`):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListColumnSpecsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterable[service.ListColumnSpecsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterable[column_spec.ColumnSpec]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.column_specs:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListModelsPager:
+    """A pager for iterating through ``list_models`` requests.
+
+    This class thinly wraps an initial
+    :class:`~.service.ListModelsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``model`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListModels`` requests and continue to iterate
+    through the ``model`` field on the
+    corresponding responses.
+
+    All the usual :class:`~.service.ListModelsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., service.ListModelsResponse],
+        request: service.ListModelsRequest,
+        response: service.ListModelsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (:class:`~.service.ListModelsRequest`):
+                The initial request object.
+            response (:class:`~.service.ListModelsResponse`):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListModelsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterable[service.ListModelsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterable[model.Model]:
+        for page in self.pages:
+            yield from page.model
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListModelsAsyncPager:
+    """A pager for iterating through ``list_models`` requests.
+
+    This class thinly wraps an initial
+    :class:`~.service.ListModelsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``model`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListModels`` requests and continue to iterate
+    through the ``model`` field on the
+    corresponding responses.
+
+    All the usual :class:`~.service.ListModelsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[service.ListModelsResponse]],
+        request: service.ListModelsRequest,
+        response: service.ListModelsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (:class:`~.service.ListModelsRequest`):
+                The initial request object.
+            response (:class:`~.service.ListModelsResponse`):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListModelsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterable[service.ListModelsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterable[model.Model]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.model:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListModelEvaluationsPager:
+    """A pager for iterating through ``list_model_evaluations`` requests.
+
+    This class thinly wraps an initial
+    :class:`~.service.ListModelEvaluationsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``model_evaluation`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListModelEvaluations`` requests and continue to iterate
+    through the ``model_evaluation`` field on the
+    corresponding responses.
+
+    All the usual :class:`~.service.ListModelEvaluationsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., service.ListModelEvaluationsResponse],
+        request: service.ListModelEvaluationsRequest,
+        response: service.ListModelEvaluationsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (:class:`~.service.ListModelEvaluationsRequest`):
+                The initial request object.
+            response (:class:`~.service.ListModelEvaluationsResponse`):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListModelEvaluationsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterable[service.ListModelEvaluationsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterable[model_evaluation.ModelEvaluation]:
+        for page in self.pages:
+            yield from page.model_evaluation
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListModelEvaluationsAsyncPager:
+    """A pager for iterating through ``list_model_evaluations`` requests.
+
+    This class thinly wraps an initial
+    :class:`~.service.ListModelEvaluationsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``model_evaluation`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListModelEvaluations`` requests and continue to iterate
+    through the ``model_evaluation`` field on the
+    corresponding responses.
+
+    All the usual :class:`~.service.ListModelEvaluationsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[service.ListModelEvaluationsResponse]],
+        request: service.ListModelEvaluationsRequest,
+        response: service.ListModelEvaluationsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (:class:`~.service.ListModelEvaluationsRequest`):
+                The initial request object.
+            response (:class:`~.service.ListModelEvaluationsResponse`):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListModelEvaluationsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterable[service.ListModelEvaluationsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterable[model_evaluation.ModelEvaluation]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.model_evaluation:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

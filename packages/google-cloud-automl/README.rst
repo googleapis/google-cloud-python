@@ -56,7 +56,9 @@ Python >= 3.5
 
 Deprecated Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7. Python 2.7 support will be removed on January 1, 2020.
+Python == 2.7.
+
+The last version of this library compatible with Python 2.7 is google-cloud-automl==1.0.1.
 
 
 Mac/Linux
@@ -80,18 +82,6 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-automl
 
-Example Usage
-~~~~~~~~~~~~~
-
-.. code-block:: python
-
-   from google.cloud.automl_v1beta1 import PredictionServiceClient
-
-   client = PredictionServiceClient()
-   model_path = client.model_path('my-project-123', 'us-central', 'model-name')
-   payload = {...}
-   params = {'foo': 1}
-   response = client.predict(model_path, payload, params=params)
 
 Next Steps
 ~~~~~~~~~~
@@ -100,32 +90,3 @@ Next Steps
    API to see other available methods on the client.
 -  Read the `Product documentation`_ to learn
    more about the product and see How-to Guides.
-
-Making & Testing Local Changes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If you want to make changes to this library, here is how to set up your
-development environment:
-
-1. Make sure you have `virtualenv`_ installed and activated as shown above.
-2. Run the following one-time setup (it will be persisted in your virtualenv):
-
-   .. code-block:: console
-
-       pip install -r ../docs/requirements.txt
-       pip install -U nox mock pytest
-
-3. If you want to run all tests, you will need a billing-enabled 
-   `GCP project`_, and a `service account`_ with access to the AutoML APIs.
-   Note: the first time the tests run in a new project it will take a _long_
-   time, on the order of 2-3 hours. This is one-time setup that will be skipped
-   in future runs.
-
-.. _service account: https://cloud.google.com/iam/docs/creating-managing-service-accounts
-.. _GCP project: https://cloud.google.com/resource-manager/docs/creating-managing-projects
-
-.. code-block:: console
-
-    export PROJECT_ID=<project-id> GOOGLE_APPLICATION_CREDENTIALS=</path/to/creds.json>
-    nox
-

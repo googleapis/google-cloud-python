@@ -24,7 +24,6 @@ import unittest
 
 from google.cloud import automl_v1beta1
 from google.api_core import exceptions
-from google.cloud.automl_v1beta1.gapic import enums
 
 from test_utils.vpcsc_config import vpcsc_config
 
@@ -270,7 +269,7 @@ class TestSystemTablesClient(object):
 
     def ensure_model_online(self, client):
         model = self.ensure_model_ready(client)
-        if model.deployment_state != enums.Model.DeploymentState.DEPLOYED:
+        if model.deployment_state != automl_v1beta1.Model.DeploymentState.DEPLOYED:
             client.deploy_model(model=model).result()
 
         return client.get_model(model_name=model.name)
