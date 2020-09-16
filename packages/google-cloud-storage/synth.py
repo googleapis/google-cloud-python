@@ -28,7 +28,7 @@ templated_files = common.py_library(
     cov_level=99,
     system_test_external_dependencies=[
         "google-cloud-iam",
-        "google-cloud-pubsub",
+        "google-cloud-pubsub < 2.0.0",
         # See: https://github.com/googleapis/python-storage/issues/226
         "google-cloud-kms < 2.0dev",
     ],
