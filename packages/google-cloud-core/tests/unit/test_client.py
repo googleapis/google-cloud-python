@@ -22,7 +22,7 @@ import mock
 def _make_credentials():
     import google.auth.credentials
 
-    return mock.Mock(spec=google.auth.credentials.Credentials)
+    return mock.Mock(spec=google.auth.credentials.CredentialsWithQuotaProject)
 
 
 class Test_ClientFactoryMixin(unittest.TestCase):
