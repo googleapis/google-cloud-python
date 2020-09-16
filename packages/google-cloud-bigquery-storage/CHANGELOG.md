@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## 1.1.0
+
+09-14-2020 08:51 PDT
+
+
+### Implementation Changes
+
+- Change default retry policies timeouts (via synth). ([#53](https://github.com/googleapis/python-bigquery-storage/pull/53))
+
+
+### New Features
+
+- Add resource path helper methods. ([#40](https://github.com/googleapis/python-bigquery-storage/pull/40))
+
+
+### Documentation
+
+- Move code samples from the common [samples repo](https://github.com/GoogleCloudPlatform/python-docs-samples/) to this library. ([#50](https://github.com/googleapis/python-bigquery-storage/pull/50))
+- Fix `read_rows()` docstring sample. ([#44](https://github.com/googleapis/python-bigquery-storage/pull/44))
+
+
+### Internal / Testing Changes
+
+- Update CODEOWNERS for samples and library code. ([#56](https://github.com/googleapis/python-bigquery-storage/pull/56))
+- Update language of py2 admonition, add 3.8 unit tests. ([#45](https://github.com/googleapis/python-bigquery-storage/pull/45))
+- Install google-cloud-testutils (via synth). ([#26](https://github.com/googleapis/python-bigquery-storage/pull/26))
+
 ## [1.0.0](https://www.github.com/googleapis/python-bigquery-storage/compare/v0.8.0...v1.0.0) (2020-06-04)
 
 
