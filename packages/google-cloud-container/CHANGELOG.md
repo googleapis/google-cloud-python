@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-container/compare/v2.0.1...v2.1.0) (2020-09-16)
+
+
+### Features
+
+* regenerate client lib to pick up new mtls env ([#44](https://www.github.com/googleapis/python-container/issues/44)) ([c4ffea0](https://www.github.com/googleapis/python-container/commit/c4ffea02fbc6c6566a4e772e2b353a5b4dc5b2fc))
+
 ### [2.0.1](https://www.github.com/googleapis/python-container/compare/v2.0.0...v2.0.1) (2020-07-24)
 
 
