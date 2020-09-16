@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.21.2](https://www.github.com/googleapis/google-auth-library-python/compare/v1.21.1...v1.21.2) (2020-09-08)
+
+
+### Bug Fixes
+
+* migrate signBlob to iamcredentials.googleapis.com ([#600](https://www.github.com/googleapis/google-auth-library-python/issues/600)) ([694d83f](https://www.github.com/googleapis/google-auth-library-python/commit/694d83fd23c0e8c2fde27136d1b3f8f6db6338a6))
+
 ### [1.21.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.21.0...v1.21.1) (2020-09-03)
 
 
