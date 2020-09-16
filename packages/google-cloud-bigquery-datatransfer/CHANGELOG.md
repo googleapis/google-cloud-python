@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## 1.1.1
+
+09-16-2020 11:12 PDT
+
+
+### Implementation Changes
+
+- Change default retry policies timeouts (via synth). ([#48](https://github.com/googleapis/python-bigquery-datatransfer/pull/48))
+
+
+### Documentation
+
+- Add sample for updating transfer config. ([#46](https://github.com/googleapis/python-bigquery-datatransfer/pull/46))
+- Add dataset ID in function call in samples. ([#44](https://github.com/googleapis/python-bigquery-datatransfer/pull/44))
+- Move code samples from the common samples repo to this library. ([#38](https://github.com/googleapis/python-bigquery-datatransfer/pull/38))
+
+
+### Internal / Testing Changes
+
+- Update CODEOWNERS for samples and library code. ([#47](https://github.com/googleapis/python-bigquery-datatransfer/pull/47))
+
 ## [1.1.0](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v1.0.0...v1.1.0) (2020-06-20)
 
 
