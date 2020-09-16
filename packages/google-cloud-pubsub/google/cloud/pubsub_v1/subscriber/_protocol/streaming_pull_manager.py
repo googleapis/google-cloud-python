@@ -54,11 +54,22 @@ _RESUME_THRESHOLD = 0.8
 """The load threshold below which to resume the incoming message stream."""
 
 
-def _maybe_wrap_exception(exception):
-    """Wraps a gRPC exception class, if needed."""
-    if isinstance(exception, grpc.RpcError):
-        return exceptions.from_grpc_error(exception)
-    return exception
+def _wrap_as_exception(maybe_exception):
+    """Wrap an object as a Python exception, if needed.
+
+    Args:
+        maybe_exception (Any): The object to wrap, usually a gRPC exception class.
+
+    Returns:
+         The argument itself if an instance of ``BaseException``, otherwise
+         the argument represented as an instance of ``Exception`` (sub)class.
+    """
+    if isinstance(maybe_exception, grpc.RpcError):
+        return exceptions.from_grpc_error(maybe_exception)
+    elif isinstance(maybe_exception, BaseException):
+        return maybe_exception
+
+    return Exception(maybe_exception)
 
 
 def _wrap_callback_errors(callback, on_callback_error, message):
@@ -656,7 +667,7 @@ class StreamingPullManager(object):
             Will be :data:`True` if the ``exception`` is "acceptable", i.e.
             in a list of retryable / idempotent exceptions.
         """
-        exception = _maybe_wrap_exception(exception)
+        exception = _wrap_as_exception(exception)
         # If this is in the list of idempotent exceptions, then we want to
         # recover.
         if isinstance(exception, _RETRYABLE_STREAM_ERRORS):
@@ -678,7 +689,7 @@ class StreamingPullManager(object):
             Will be :data:`True` if the ``exception`` is "acceptable", i.e.
             in a list of terminating exceptions.
         """
-        exception = _maybe_wrap_exception(exception)
+        exception = _wrap_as_exception(exception)
         if isinstance(exception, _TERMINATING_STREAM_ERRORS):
             _LOGGER.info("Observed terminating stream error %s", exception)
             return True
@@ -697,9 +708,9 @@ class StreamingPullManager(object):
         background consumer and preventing it from being ``joined()``.
         """
         _LOGGER.info("RPC termination has signaled streaming pull manager shutdown.")
-        future = _maybe_wrap_exception(future)
+        error = _wrap_as_exception(future)
         thread = threading.Thread(
-            name=_RPC_ERROR_THREAD_NAME, target=self.close, kwargs={"reason": future}
+            name=_RPC_ERROR_THREAD_NAME, target=self.close, kwargs={"reason": error}
         )
         thread.daemon = True
         thread.start()

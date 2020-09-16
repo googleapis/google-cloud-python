@@ -44,11 +44,13 @@ import grpc
             mock.create_autospec(grpc.RpcError, instance=True),
             exceptions.GoogleAPICallError,
         ),
+        ({"error": "RPC terminated"}, Exception),
+        ("something broke", Exception),
     ],
 )
-def test__maybe_wrap_exception(exception, expected_cls):
+def test__wrap_as_exception(exception, expected_cls):
     assert isinstance(
-        streaming_pull_manager._maybe_wrap_exception(exception), expected_cls
+        streaming_pull_manager._wrap_as_exception(exception), expected_cls
     )
 
 
@@ -948,8 +950,12 @@ def test__on_rpc_done(thread):
     manager._on_rpc_done(mock.sentinel.error)
 
     thread.assert_called_once_with(
-        name=mock.ANY, target=manager.close, kwargs={"reason": mock.sentinel.error}
+        name=mock.ANY, target=manager.close, kwargs={"reason": mock.ANY}
     )
+    _, kwargs = thread.call_args
+    reason = kwargs["kwargs"]["reason"]
+    assert isinstance(reason, Exception)
+    assert reason.args == (mock.sentinel.error,)  # Exception wraps the original error
 
 
 def test_activate_ordering_keys():
