@@ -50,14 +50,20 @@ s.replace(
 
 s.replace(
     "google/cloud/bigquery_datatransfer_v1/gapic/" "data_transfer_service_client.py",
-    "google-cloud-bigquerydatatransfer",
-    "google-cloud-bigquery-datatransfer",
-)
-
-s.replace(
-    "google/cloud/bigquery_datatransfer_v1/gapic/" "data_transfer_service_client.py",
     "import google.api_core.gapic_v1.method\n",
     "\g<0>import google.api_core.path_template\n",
+)
+
+# Fix docstring fromatting to avoid warnings when generating the docs.
+s.replace(
+    "google/cloud/bigquery_datatransfer_v1/gapic/" "data_transfer_service_client.py",
+    r'"""Creates an instance of this client using the provided credentials\s+file.',
+    '"""Creates an instance of this client using the provided credentials file.',
+)
+s.replace(
+    "google/cloud/bigquery_datatransfer_v1/gapic/" "data_transfer_service_client.py",
+    r'should be set through client_options\.',
+    "\g<0>\n",  # add missing newline
 )
 
 # ----------------------------------------------------------------------------
@@ -74,6 +80,6 @@ python.py_samples(skip_readmes=True)
 
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition
-s.replace("noxfile.py", '"sphinx"', '"sphinx<3.0.0"')
+s.replace("noxfile.py", "'sphinx'", '"sphinx<3.0.0"')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

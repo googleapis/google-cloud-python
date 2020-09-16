@@ -56,7 +56,7 @@ class DataTransferServiceGrpcTransport(object):
         # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                "The `channel` and `credentials` arguments are mutually " "exclusive."
+                "The `channel` and `credentials` arguments are mutually " "exclusive.",
             )
 
         # Create the channel.
@@ -77,7 +77,7 @@ class DataTransferServiceGrpcTransport(object):
         self._stubs = {
             "data_transfer_service_stub": datatransfer_pb2_grpc.DataTransferServiceStub(
                 channel
-            )
+            ),
         }
 
     @classmethod
@@ -114,51 +114,6 @@ class DataTransferServiceGrpcTransport(object):
             grpc.Channel: A gRPC channel object.
         """
         return self._channel
-
-    @property
-    def delete_transfer_config(self):
-        """Return the gRPC stub for :meth:`DataTransferServiceClient.delete_transfer_config`.
-
-        Deletes a data transfer configuration,
-        including any associated transfer runs and logs.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["data_transfer_service_stub"].DeleteTransferConfig
-
-    @property
-    def delete_transfer_run(self):
-        """Return the gRPC stub for :meth:`DataTransferServiceClient.delete_transfer_run`.
-
-        Deletes the specified transfer run.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["data_transfer_service_stub"].DeleteTransferRun
-
-    @property
-    def check_valid_creds(self):
-        """Return the gRPC stub for :meth:`DataTransferServiceClient.check_valid_creds`.
-
-        Returns true if valid credentials exist for the given data source and
-        requesting user.
-        Some data sources doesn't support service account, so we need to talk to
-        them on behalf of the end user. This API just checks whether we have OAuth
-        token for the particular user, which is a pre-requisite before user can
-        create a transfer config.
-
-        Returns:
-            Callable: A callable which accepts the appropriate
-                deserialized request object and returns a
-                deserialized response object.
-        """
-        return self._stubs["data_transfer_service_stub"].CheckValidCreds
 
     @property
     def get_data_source(self):
@@ -216,6 +171,20 @@ class DataTransferServiceGrpcTransport(object):
         return self._stubs["data_transfer_service_stub"].UpdateTransferConfig
 
     @property
+    def delete_transfer_config(self):
+        """Return the gRPC stub for :meth:`DataTransferServiceClient.delete_transfer_config`.
+
+        Deletes a data transfer configuration,
+        including any associated transfer runs and logs.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_transfer_service_stub"].DeleteTransferConfig
+
+    @property
     def get_transfer_config(self):
         """Return the gRPC stub for :meth:`DataTransferServiceClient.get_transfer_config`.
 
@@ -245,10 +214,9 @@ class DataTransferServiceGrpcTransport(object):
     def schedule_transfer_runs(self):
         """Return the gRPC stub for :meth:`DataTransferServiceClient.schedule_transfer_runs`.
 
-        Creates transfer runs for a time range [start_time, end_time]. For
-        each date - or whatever granularity the data source supports - in the
-        range, one transfer run is created. Note that runs are created per UTC
-        time in the time range. DEPRECATED: use StartManualTransferRuns instead.
+        If type_name is set, this need not be set. If both this and
+        type_name are set, this must be one of TYPE_ENUM, TYPE_MESSAGE or
+        TYPE_GROUP.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -261,10 +229,11 @@ class DataTransferServiceGrpcTransport(object):
     def start_manual_transfer_runs(self):
         """Return the gRPC stub for :meth:`DataTransferServiceClient.start_manual_transfer_runs`.
 
-        Start manual transfer runs to be executed now with schedule_time
-        equal to current time. The transfer runs can be created for a time range
-        where the run_time is between start_time (inclusive) and end_time
-        (exclusive), or for a specific run_time.
+        Pagination token, which can be used to request a specific page of
+        ``ListTransferRunsRequest`` list results. For multiple-page results,
+        ``ListTransferRunsResponse`` outputs a ``next_page`` token, which can be
+        used as the ``page_token`` value to request the next page of list
+        results.
 
         Returns:
             Callable: A callable which accepts the appropriate
@@ -285,6 +254,19 @@ class DataTransferServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["data_transfer_service_stub"].GetTransferRun
+
+    @property
+    def delete_transfer_run(self):
+        """Return the gRPC stub for :meth:`DataTransferServiceClient.delete_transfer_run`.
+
+        Deletes the specified transfer run.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_transfer_service_stub"].DeleteTransferRun
 
     @property
     def list_transfer_runs(self):
@@ -311,3 +293,21 @@ class DataTransferServiceGrpcTransport(object):
                 deserialized response object.
         """
         return self._stubs["data_transfer_service_stub"].ListTransferLogs
+
+    @property
+    def check_valid_creds(self):
+        """Return the gRPC stub for :meth:`DataTransferServiceClient.check_valid_creds`.
+
+        Returns true if valid credentials exist for the given data source and
+        requesting user.
+        Some data sources doesn't support service account, so we need to talk to
+        them on behalf of the end user. This API just checks whether we have OAuth
+        token for the particular user, which is a pre-requisite before user can
+        create a transfer config.
+
+        Returns:
+            Callable: A callable which accepts the appropriate
+                deserialized request object and returns a
+                deserialized response object.
+        """
+        return self._stubs["data_transfer_service_stub"].CheckValidCreds

@@ -3,30 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-bigquery-datatransfer.git",
-        "sha": "bfcbe8e310e7a79343fc113f33a397a928091c69"
+        "remote": "git@github.com:plamut/python-bigquery-datatransfer.git",
+        "sha": "b0741fedddc1eee65f6ca3558465b380951aa583"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "96eb8c021fe574d2fe9840c4990515347274ea82",
-        "internalRef": "328959737"
+        "sha": "5e53d6b6dde0e72fa9510ec1d796176d128afa40",
+        "internalRef": "331912851"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "80f46100c047bc47efe0025ee537dc8ee413ad04"
+        "sha": "fdd03c161003ab97657cc0218f25c82c89ddf4b6"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "80f46100c047bc47efe0025ee537dc8ee413ad04"
+        "sha": "fdd03c161003ab97657cc0218f25c82c89ddf4b6"
       }
     }
   ],

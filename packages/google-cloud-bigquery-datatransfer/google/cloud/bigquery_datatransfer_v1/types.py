@@ -43,7 +43,10 @@ _shared_modules = [
     status_pb2,
 ]
 
-_local_modules = [datatransfer_pb2, transfer_pb2]
+_local_modules = [
+    datatransfer_pb2,
+    transfer_pb2,
+]
 
 names = []
 
