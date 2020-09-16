@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-automl/compare/v1.0.1...v2.0.0) (2020-09-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* move to microgen. See [Migration Guide](https://github.com/googleapis/python-automl/blob/release-v2.0.0/UPGRADING.md) (#61)
+
+### Features
+
+* move to microgen ([#61](https://www.github.com/googleapis/python-automl/issues/61)) ([009085e](https://www.github.com/googleapis/python-automl/commit/009085e0a82d1d7729349746c2c8954d5d60e0a9))
+
+
+### Bug Fixes
+
+* **translate:** fix a broken test [([#4360](https://www.github.com/googleapis/python-automl/issues/4360))](https://github.com/GoogleCloudPlatform/python-docs-samples/issues/4360) ([5f7d141](https://www.github.com/googleapis/python-automl/commit/5f7d141afe732acf7458a9ac98618e93baa93d38)), closes [#4353](https://www.github.com/googleapis/python-automl/issues/4353)
+* `update_column_spec` typo in TablesClient docstring ([#18](https://www.github.com/googleapis/python-automl/issues/18)) ([9feb4cc](https://www.github.com/googleapis/python-automl/commit/9feb4cc5e04a01a4199da43400457cca6c0bfa05)), closes [#17](https://www.github.com/googleapis/python-automl/issues/17)
+* update retry configs ([#44](https://www.github.com/googleapis/python-automl/issues/44)) ([7df9059](https://www.github.com/googleapis/python-automl/commit/7df905910b86721a6ee3a3b6c916a4f8e27d0aa7))
+
+
+### Documentation
+
+* add cancel operation sample ([abc5070](https://www.github.com/googleapis/python-automl/commit/abc507005d5255ed5adf2c4b8e0b23042a0bdf47))
+* add samples from tables/automl ([#54](https://www.github.com/googleapis/python-automl/issues/54)) ([d225a5f](https://www.github.com/googleapis/python-automl/commit/d225a5f97c2823218b91a79e77d3383132875231)), closes [#2090](https://www.github.com/googleapis/python-automl/issues/2090) [#2100](https://www.github.com/googleapis/python-automl/issues/2100) [#2102](https://www.github.com/googleapis/python-automl/issues/2102) [#2103](https://www.github.com/googleapis/python-automl/issues/2103) [#2101](https://www.github.com/googleapis/python-automl/issues/2101) [#2110](https://www.github.com/googleapis/python-automl/issues/2110) [#2115](https://www.github.com/googleapis/python-automl/issues/2115) [#2150](https://www.github.com/googleapis/python-automl/issues/2150) [#2145](https://www.github.com/googleapis/python-automl/issues/2145) [#2203](https://www.github.com/googleapis/python-automl/issues/2203) [#2340](https://www.github.com/googleapis/python-automl/issues/2340) [#2337](https://www.github.com/googleapis/python-automl/issues/2337) [#2336](https://www.github.com/googleapis/python-automl/issues/2336) [#2339](https://www.github.com/googleapis/python-automl/issues/2339) [#2338](https://www.github.com/googleapis/python-automl/issues/2338) [#2276](https://www.github.com/googleapis/python-automl/issues/2276) [#2257](https://www.github.com/googleapis/python-automl/issues/2257) [#2424](https://www.github.com/googleapis/python-automl/issues/2424) [#2407](https://www.github.com/googleapis/python-automl/issues/2407) [#2501](https://www.github.com/googleapis/python-automl/issues/2501) [#2459](https://www.github.com/googleapis/python-automl/issues/2459) [#2601](https://www.github.com/googleapis/python-automl/issues/2601) [#2523](https://www.github.com/googleapis/python-automl/issues/2523) [#2005](https://www.github.com/googleapis/python-automl/issues/2005) [#3033](https://www.github.com/googleapis/python-automl/issues/3033) [#2806](https://www.github.com/googleapis/python-automl/issues/2806) [#3750](https://www.github.com/googleapis/python-automl/issues/3750) [#3571](https://www.github.com/googleapis/python-automl/issues/3571) [#3929](https://www.github.com/googleapis/python-automl/issues/3929) [#4022](https://www.github.com/googleapis/python-automl/issues/4022) [#4127](https://www.github.com/googleapis/python-automl/issues/4127)
+
 ### [1.0.1](https://www.github.com/googleapis/python-automl/compare/v1.0.0...v1.0.1) (2020-06-18)
 
 
