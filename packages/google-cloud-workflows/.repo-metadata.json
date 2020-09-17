@@ -1,0 +1,12 @@
+{
+    "name": "workflows",
+    "name_pretty": "Cloud Workflows",
+    "product_documentation": "https://cloud.google.com/workflows/",
+    "client_documentation": "https://googleapis.dev/python/workflows/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/559729",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-workflows",
+    "distribution_name": "google-cloud-workflows",
+    "api_id": "workflows.googleapis.com"
+  }
