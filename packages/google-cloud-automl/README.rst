@@ -52,10 +52,10 @@ dependencies.
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.5
+Python >= 3.6
 
-Deprecated Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Python == 2.7.
 
 The last version of this library compatible with Python 2.7 is google-cloud-automl==1.0.1.
