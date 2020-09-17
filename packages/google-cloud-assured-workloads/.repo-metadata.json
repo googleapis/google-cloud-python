@@ -1,0 +1,12 @@
+{
+    "name": "assuredworkloads",
+    "name_pretty": "Assured Workloads for Government",
+    "product_documentation": "https://cloud.google.com/assured-workloads/",
+    "client_documentation": "https://googleapis.dev/python/assuredworkloads/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-assured-workloads",
+    "distribution_name": "google-cloud-assured-workflows",
+    "api_id": "workflows.googleapis.com"
+  }
