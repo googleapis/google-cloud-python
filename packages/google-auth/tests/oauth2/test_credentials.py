@@ -359,6 +359,20 @@ class TestCredentials(object):
         assert creds.token_uri == credentials._GOOGLE_OAUTH2_TOKEN_ENDPOINT
         assert creds.scopes == scopes
 
+        info["scopes"] = "email"  # single non-array scope from file
+        creds = credentials.Credentials.from_authorized_user_info(info)
+        assert creds.scopes == [info["scopes"]]
+
+        info["scopes"] = ["email", "profile"]  # array scope from file
+        creds = credentials.Credentials.from_authorized_user_info(info)
+        assert creds.scopes == info["scopes"]
+
+        expiry = datetime.datetime(2020, 8, 14, 15, 54, 1)
+        info["expiry"] = expiry.isoformat() + "Z"
+        creds = credentials.Credentials.from_authorized_user_info(info)
+        assert creds.expiry == expiry
+        assert creds.expired
+
     def test_from_authorized_user_file(self):
         info = AUTH_USER_INFO.copy()
 
@@ -381,7 +395,10 @@ class TestCredentials(object):
 
     def test_to_json(self):
         info = AUTH_USER_INFO.copy()
+        expiry = datetime.datetime(2020, 8, 14, 15, 54, 1)
+        info["expiry"] = expiry.isoformat() + "Z"
         creds = credentials.Credentials.from_authorized_user_info(info)
+        assert creds.expiry == expiry
 
         # Test with no `strip` arg
         json_output = creds.to_json()
@@ -392,6 +409,7 @@ class TestCredentials(object):
         assert json_asdict.get("client_id") == creds.client_id
         assert json_asdict.get("scopes") == creds.scopes
         assert json_asdict.get("client_secret") == creds.client_secret
+        assert json_asdict.get("expiry") == info["expiry"]
 
         # Test with a `strip` arg
         json_output = creds.to_json(strip=["client_secret"])
@@ -402,6 +420,12 @@ class TestCredentials(object):
         assert json_asdict.get("client_id") == creds.client_id
         assert json_asdict.get("scopes") == creds.scopes
         assert json_asdict.get("client_secret") is None
+
+        # Test with no expiry
+        creds.expiry = None
+        json_output = creds.to_json()
+        json_asdict = json.loads(json_output)
+        assert json_asdict.get("expiry") is None
 
     def test_pickle_and_unpickle(self):
         creds = self.make_credentials()
