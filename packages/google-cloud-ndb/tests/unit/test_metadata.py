@@ -100,11 +100,17 @@ class TestNamespace:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test_key_for_namespace_default():
+        key = key_module.Key(metadata.Namespace.KIND_NAME, "")
+        assert key == metadata.Namespace.key_for_namespace("")
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_key_for_namespace_empty():
         key = key_module.Key(
             metadata.Namespace.KIND_NAME, metadata.Namespace.EMPTY_NAMESPACE_ID
         )
-        assert key == metadata.Namespace.key_for_namespace("")
+        assert key == metadata.Namespace.key_for_namespace(None)
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

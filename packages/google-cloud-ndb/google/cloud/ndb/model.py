@@ -5603,7 +5603,7 @@ class Model(_NotEqualMixin):
         if project:
             key_args["app"] = project
 
-        if namespace:
+        if namespace is not None:
             key_args["namespace"] = namespace
 
         key = key_module.Key(cls._get_kind(), id, parent=parent, **key_args)
@@ -5805,7 +5805,7 @@ class Model(_NotEqualMixin):
         if project:
             key_args["app"] = project
 
-        if namespace:
+        if namespace is not None:
             key_args["namespace"] = namespace
 
         key = key_module.Key(cls._get_kind(), name, parent=parent, **key_args)

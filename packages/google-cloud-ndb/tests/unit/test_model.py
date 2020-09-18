@@ -4899,6 +4899,23 @@ class TestModel:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     @mock.patch("google.cloud.ndb.model.key_module")
+    def test_get_by_id_w_default_namespace(key_module):
+        entity = object()
+        key = key_module.Key.return_value
+        key.get_async.return_value = utils.future_result(entity)
+
+        class Simple(model.Model):
+            pass
+
+        assert Simple.get_by_id(1, namespace="") is entity
+
+        key_module.Key.assert_called_once_with("Simple", 1, namespace="", parent=None)
+
+        key.get_async.assert_called_once_with(_options=_options.ReadOptions())
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb.model.key_module")
     def test_get_by_id_w_app(key_module):
         entity = object()
         key = key_module.Key.return_value
@@ -4991,6 +5008,25 @@ class TestModel:
 
         key_module.Key.assert_called_once_with(
             "Simple", "one", parent=None, namespace="himom"
+        )
+
+        key.get_async.assert_called_once_with(_options=_options.ReadOptions())
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb.model.key_module")
+    def test_get_or_insert_get_w_default_namespace(key_module):
+        entity = object()
+        key = key_module.Key.return_value
+        key.get_async.return_value = utils.future_result(entity)
+
+        class Simple(model.Model):
+            foo = model.IntegerProperty()
+
+        assert Simple.get_or_insert("one", foo=0, namespace="") is entity
+
+        key_module.Key.assert_called_once_with(
+            "Simple", "one", parent=None, namespace=""
         )
 
         key.get_async.assert_called_once_with(_options=_options.ReadOptions())

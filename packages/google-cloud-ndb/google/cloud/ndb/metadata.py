@@ -102,7 +102,7 @@ class Namespace(_BaseMetadata):
         Returns:
             key.Key: The Key for the namespace.
         """
-        if namespace:
+        if namespace is not None:
             return model.Key(cls.KIND_NAME, namespace)
         else:
             return model.Key(cls.KIND_NAME, cls.EMPTY_NAMESPACE_ID)

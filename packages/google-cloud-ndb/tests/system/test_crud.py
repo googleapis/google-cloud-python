@@ -974,6 +974,47 @@ def test_get_or_insert_in_transaction(dispose_of):
     assert entity.foo == 42
 
 
+def test_get_by_id_default_namespace_when_context_namespace_is_other(
+    client_context, dispose_of, other_namespace
+):
+    """Regression test for #535.
+
+    https://github.com/googleapis/python-ndb/issues/535
+    """
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    entity1 = SomeKind(foo=1, id="x", namespace="")
+    entity1.put()
+    dispose_of(entity1.key._key)
+
+    with client_context.new(namespace=other_namespace).use():
+        result = SomeKind.get_by_id("x", namespace="")
+
+    assert result is not None
+    assert result.foo == 1
+
+
+def test_get_or_insert_default_namespace_when_context_namespace_is_other(
+    client_context, dispose_of, other_namespace
+):
+    """Regression test for #535.
+
+    https://github.com/googleapis/python-ndb/issues/535
+    """
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    with client_context.new(namespace=other_namespace).use():
+        SomeKind.get_or_insert("x", namespace="", foo=1)
+        result = SomeKind.get_by_id("x", namespace="")
+
+    assert result is not None
+    assert result.foo == 1
+
+
 @pytest.mark.usefixtures("client_context")
 def test_insert_entity_with_structured_property(dispose_of):
     class OtherKind(ndb.Model):
