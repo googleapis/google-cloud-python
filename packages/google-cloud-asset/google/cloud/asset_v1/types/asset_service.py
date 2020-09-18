@@ -39,8 +39,11 @@ __protobuf__ = proto.module(
         "UpdateFeedRequest",
         "DeleteFeedRequest",
         "OutputConfig",
+        "OutputResult",
+        "GcsOutputResult",
         "GcsDestination",
         "BigQueryDestination",
+        "PartitionSpec",
         "PubsubDestination",
         "FeedOutputConfig",
         "Feed",
@@ -82,10 +85,26 @@ class ExportAssetsRequest(proto.Message):
             window during which running the same query may
             get different results.
         asset_types (Sequence[str]):
-            A list of asset types of which to take a snapshot for.
-            Example: "compute.googleapis.com/Disk". If specified, only
-            matching assets will be returned. See `Introduction to Cloud
-            Asset
+            A list of asset types to take a snapshot for. For example:
+            "compute.googleapis.com/Disk".
+
+            Regular expressions are also supported. For example:
+
+            -  "compute.googleapis.com.*" snapshots resources whose
+               asset type starts with "compute.googleapis.com".
+            -  ".*Instance" snapshots resources whose asset type ends
+               with "Instance".
+            -  ".*Instance.*" snapshots resources whose asset type
+               contains "Instance".
+
+            See `RE2 <https://github.com/google/re2/wiki/Syntax>`__ for
+            all supported regular expression syntax. If the regular
+            expression does not match any supported asset type, an
+            INVALID_ARGUMENT error will be returned.
+
+            If specified, only matching assets will be returned,
+            otherwise, it will snapshot all asset types. See
+            `Introduction to Cloud Asset
             Inventory <https://cloud.google.com/asset-inventory/docs/overview>`__
             for all supported asset types.
         content_type (~.asset_service.ContentType):
@@ -120,11 +139,20 @@ class ExportAssetsResponse(proto.Message):
         output_config (~.asset_service.OutputConfig):
             Output configuration indicating where the
             results were output to.
+        output_result (~.asset_service.OutputResult):
+            Output result indicating where the assets were exported to.
+            For example, a set of actual Google Cloud Storage object
+            uris where the assets are exported to. The uris can be
+            different from what [output_config] has specified, as the
+            service will split the output object into multiple ones once
+            it exceeds a single Google Cloud Storage object limit.
     """
 
     read_time = proto.Field(proto.MESSAGE, number=1, message=timestamp.Timestamp,)
 
     output_config = proto.Field(proto.MESSAGE, number=2, message="OutputConfig",)
+
+    output_result = proto.Field(proto.MESSAGE, number=3, message="OutputResult",)
 
 
 class BatchGetAssetsHistoryRequest(proto.Message):
@@ -312,6 +340,31 @@ class OutputConfig(proto.Message):
     )
 
 
+class OutputResult(proto.Message):
+    r"""Output result of export assets.
+
+    Attributes:
+        gcs_result (~.asset_service.GcsOutputResult):
+            Export result on Cloud Storage.
+    """
+
+    gcs_result = proto.Field(
+        proto.MESSAGE, number=1, oneof="result", message="GcsOutputResult",
+    )
+
+
+class GcsOutputResult(proto.Message):
+    r"""A Cloud Storage output result.
+
+    Attributes:
+        uris (Sequence[str]):
+            List of uris of the Cloud Storage objects. Example:
+            "gs://bucket_name/object_name".
+    """
+
+    uris = proto.RepeatedField(proto.STRING, number=1)
+
+
 class GcsDestination(proto.Message):
     r"""A Cloud Storage location.
 
@@ -359,6 +412,61 @@ class BigQueryDestination(proto.Message):
             assets snapshot. If the flag is ``FALSE`` or unset and the
             destination table already exists, the export call returns an
             INVALID_ARGUMEMT error.
+        partition_spec (~.asset_service.PartitionSpec):
+            [partition_spec] determines whether to export to partitioned
+            table(s) and how to partition the data.
+
+            If [partition_spec] is unset or [partition_spec.partion_key]
+            is unset or ``PARTITION_KEY_UNSPECIFIED``, the snapshot
+            results will be exported to non-partitioned table(s).
+            [force] will decide whether to overwrite existing table(s).
+
+            If [partition_spec] is specified. First, the snapshot
+            results will be written to partitioned table(s) with two
+            additional timestamp columns, readTime and requestTime, one
+            of which will be the partition key. Secondly, in the case
+            when any destination table already exists, it will first try
+            to update existing table's schema as necessary by appending
+            additional columns. Then, if [force] is ``TRUE``, the
+            corresponding partition will be overwritten by the snapshot
+            results (data in different partitions will remain intact);
+            if [force] is unset or ``FALSE``, it will append the data.
+            An error will be returned if the schema update or data
+            appension fails.
+        separate_tables_per_asset_type (bool):
+            If this flag is ``TRUE``, the snapshot results will be
+            written to one or multiple tables, each of which contains
+            results of one asset type. The [force] and [partition_spec]
+            fields will apply to each of them.
+
+            Field [table] will be concatenated with "*" and the asset
+            type names (see
+            https://cloud.google.com/asset-inventory/docs/supported-asset-types
+            for supported asset types) to construct per-asset-type table
+            names, in which all non-alphanumeric characters like "." and
+            "/" will be substituted by "*". Example: if field [table] is
+            "mytable" and snapshot results contain
+            "storage.googleapis.com/Bucket" assets, the corresponding
+            table name will be "mytable_storage_googleapis_com_Bucket".
+            If any of these tables does not exist, a new table with the
+            concatenated name will be created.
+
+            When [content_type] in the ExportAssetsRequest is
+            ``RESOURCE``, the schema of each table will include
+            RECORD-type columns mapped to the nested fields in the
+            Asset.resource.data field of that asset type (up to the 15
+            nested level BigQuery supports
+            (https://cloud.google.com/bigquery/docs/nested-repeated#limitations)).
+            The fields in >15 nested levels will be stored in JSON
+            format string as a child column of its parent RECORD column.
+
+            If error occurs when exporting to any table, the whole
+            export call will return an error but the export results that
+            already succeed will persist. Example: if exporting to
+            table_type_A succeeds when exporting to table_type_B fails
+            during one export call, the results in table_type_A will
+            persist and there will not be partial results persisting in
+            a table.
     """
 
     dataset = proto.Field(proto.STRING, number=1)
@@ -366,6 +474,34 @@ class BigQueryDestination(proto.Message):
     table = proto.Field(proto.STRING, number=2)
 
     force = proto.Field(proto.BOOL, number=3)
+
+    partition_spec = proto.Field(proto.MESSAGE, number=4, message="PartitionSpec",)
+
+    separate_tables_per_asset_type = proto.Field(proto.BOOL, number=5)
+
+
+class PartitionSpec(proto.Message):
+    r"""Specifications of BigQuery partitioned table as export
+    destination.
+
+    Attributes:
+        partition_key (~.asset_service.PartitionSpec.PartitionKey):
+            The partition key for BigQuery partitioned
+            table.
+    """
+
+    class PartitionKey(proto.Enum):
+        r"""This enum is used to determine the partition key column when
+        exporting assets to BigQuery partitioned table(s). Note that, if the
+        partition key is a timestamp column, the actual partition is based
+        on its date value (expressed in UTC. see details in
+        https://cloud.google.com/bigquery/docs/partitioned-tables#date_timestamp_partitioned_tables).
+        """
+        PARTITION_KEY_UNSPECIFIED = 0
+        READ_TIME = 1
+        REQUEST_TIME = 2
+
+    partition_key = proto.Field(proto.ENUM, number=1, enum=PartitionKey,)
 
 
 class PubsubDestination(proto.Message):
@@ -446,8 +582,12 @@ class Feed(proto.Message):
             expression] (https://github.com/google/cel-spec) on a
             TemporalAsset with name ``temporal_asset``. Example: a Feed
             with expression ("temporal_asset.deleted == true") will only
-            publish Asset deletions. Other fields in ``Expr`` are
+            publish Asset deletions. Other fields of ``Expr`` are
             optional.
+
+            See our `user
+            guide <https://cloud.google.com/asset-inventory/docs/monitoring-asset-changes#feed_with_condition>`__
+            for detailed instructions.
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -468,51 +608,57 @@ class SearchAllResourcesRequest(proto.Message):
 
     Attributes:
         scope (str):
-            Required. A scope can be a project, a folder or an
+            Required. A scope can be a project, a folder, or an
             organization. The search is limited to the resources within
-            the ``scope``.
+            the ``scope``. The caller must be granted the
+            ```cloudasset.assets.searchAllResources`` <http://cloud.google.com/asset-inventory/docs/access-control#required_permissions>`__
+            permission on the desired scope.
 
             The allowed values are:
 
-            -  projects/{PROJECT_ID}
-            -  projects/{PROJECT_NUMBER}
-            -  folders/{FOLDER_NUMBER}
-            -  organizations/{ORGANIZATION_NUMBER}
+            -  projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+            -  projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
+            -  folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
+            -  organizations/{ORGANIZATION_NUMBER} (e.g.,
+               "organizations/123456")
         query (str):
-            Optional. The query statement. An empty query can be
-            specified to search all the resources of certain
-            ``asset_types`` within the given ``scope``.
+            Optional. The query statement. See `how to construct a
+            query <http://cloud.google.com/asset-inventory/docs/searching-resources#how_to_construct_a_query>`__
+            for more information. If not specified or empty, it will
+            search all the resources within the specified ``scope``.
+            Note that the query string is compared against each Cloud
+            IAM policy binding, including its members, roles, and Cloud
+            IAM conditions. The returned Cloud IAM policies will only
+            contain the bindings that match your query. To learn more
+            about the IAM policy structure, see `IAM policy
+            doc <https://cloud.google.com/iam/docs/policies#structure>`__.
 
             Examples:
 
-            -  ``name : "Important"`` to find Cloud resources whose name
+            -  ``name:Important`` to find Cloud resources whose name
                contains "Important" as a word.
-            -  ``displayName : "Impor*"`` to find Cloud resources whose
-               display name contains "Impor" as a word prefix.
-            -  ``description : "*por*"`` to find Cloud resources whose
+            -  ``displayName:Impor*`` to find Cloud resources whose
+               display name contains "Impor" as a prefix.
+            -  ``description:*por*`` to find Cloud resources whose
                description contains "por" as a substring.
-            -  ``location : "us-west*"`` to find Cloud resources whose
+            -  ``location:us-west*`` to find Cloud resources whose
                location is prefixed with "us-west".
-            -  ``labels : "prod"`` to find Cloud resources whose labels
+            -  ``labels:prod`` to find Cloud resources whose labels
                contain "prod" as a key or value.
-            -  ``labels.env : "prod"`` to find Cloud resources which
-               have a label "env" and its value is "prod".
-            -  ``labels.env : *`` to find Cloud resources which have a
+            -  ``labels.env:prod`` to find Cloud resources that have a
+               label "env" and its value is "prod".
+            -  ``labels.env:*`` to find Cloud resources that have a
                label "env".
-            -  ``"Important"`` to find Cloud resources which contain
+            -  ``Important`` to find Cloud resources that contain
                "Important" as a word in any of the searchable fields.
-            -  ``"Impor*"`` to find Cloud resources which contain
-               "Impor" as a word prefix in any of the searchable fields.
-            -  ``"*por*"`` to find Cloud resources which contain "por"
-               as a substring in any of the searchable fields.
-            -  ``("Important" AND location : ("us-west1" OR "global"))``
-               to find Cloud resources which contain "Important" as a
-               word in any of the searchable fields and are also located
-               in the "us-west1" region or the "global" location.
-
-            See `how to construct a
-            query <https://cloud.google.com/asset-inventory/docs/searching-resources#how_to_construct_a_query>`__
-            for more details.
+            -  ``Impor*`` to find Cloud resources that contain "Impor"
+               as a prefix in any of the searchable fields.
+            -  ``*por*`` to find Cloud resources that contain "por" as a
+               substring in any of the searchable fields.
+            -  ``Important location:(us-west1 OR global)`` to find Cloud
+               resources that contain "Important" as a word in any of
+               the searchable fields and are also located in the
+               "us-west1" region or the "global" location.
         asset_types (Sequence[str]):
             Optional. A list of asset types that this request searches
             for. If empty, it will search all the `searchable asset
@@ -535,10 +681,12 @@ class SearchAllResourcesRequest(proto.Message):
             sorting order of the results. The default order is
             ascending. Add " DESC" after the field name to indicate
             descending order. Redundant space characters are ignored.
-            Example: "location DESC, name". See `supported resource
-            metadata
-            fields <https://cloud.google.com/asset-inventory/docs/searching-resources#query_on_resource_metadata_fields>`__
-            for more details.
+            Example: "location DESC, name". Only string fields in the
+            response are sortable, including ``name``, ``displayName``,
+            ``description``, ``location``. All the other fields such as
+            repeated fields (e.g., ``networkTags``), map fields (e.g.,
+            ``labels``) and struct fields (e.g.,
+            ``additionalAttributes``) are not supported.
     """
 
     scope = proto.Field(proto.STRING, number=1)
@@ -585,40 +733,48 @@ class SearchAllIamPoliciesRequest(proto.Message):
 
     Attributes:
         scope (str):
-            Required. A scope can be a project, a folder or an
+            Required. A scope can be a project, a folder, or an
             organization. The search is limited to the IAM policies
-            within the ``scope``.
+            within the ``scope``. The caller must be granted the
+            ```cloudasset.assets.searchAllIamPolicies`` <http://cloud.google.com/asset-inventory/docs/access-control#required_permissions>`__
+            permission on the desired scope.
 
             The allowed values are:
 
-            -  projects/{PROJECT_ID}
-            -  projects/{PROJECT_NUMBER}
-            -  folders/{FOLDER_NUMBER}
-            -  organizations/{ORGANIZATION_NUMBER}
+            -  projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+            -  projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
+            -  folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
+            -  organizations/{ORGANIZATION_NUMBER} (e.g.,
+               "organizations/123456")
         query (str):
-            Optional. The query statement. An empty query can be
-            specified to search all the IAM policies within the given
-            ``scope``.
+            Optional. The query statement. See `how to construct a
+            query <https://cloud.google.com/asset-inventory/docs/searching-iam-policies#how_to_construct_a_query>`__
+            for more information. If not specified or empty, it will
+            search all the IAM policies within the specified ``scope``.
 
             Examples:
 
-            -  ``policy : "amy@gmail.com"`` to find Cloud IAM policy
-               bindings that specify user "amy@gmail.com".
-            -  ``policy : "roles/compute.admin"`` to find Cloud IAM
-               policy bindings that specify the Compute Admin role.
-            -  ``policy.role.permissions : "storage.buckets.update"`` to
-               find Cloud IAM policy bindings that specify a role
-               containing "storage.buckets.update" permission.
-            -  ``resource : "organizations/123"`` to find Cloud IAM
-               policy bindings that are set on "organizations/123".
-            -  ``(resource : ("organizations/123" OR "folders/1234") AND policy : "amy")``
-               to find Cloud IAM policy bindings that are set on
-               "organizations/123" or "folders/1234", and also specify
-               user "amy".
-
-            See `how to construct a
-            query <https://cloud.google.com/asset-inventory/docs/searching-iam-policies#how_to_construct_a_query>`__
-            for more details.
+            -  ``policy:amy@gmail.com`` to find IAM policy bindings that
+               specify user "amy@gmail.com".
+            -  ``policy:roles/compute.admin`` to find IAM policy
+               bindings that specify the Compute Admin role.
+            -  ``policy.role.permissions:storage.buckets.update`` to
+               find IAM policy bindings that specify a role containing
+               "storage.buckets.update" permission. Note that if callers
+               don't have ``iam.roles.get`` access to a role's included
+               permissions, policy bindings that specify this role will
+               be dropped from the search results.
+            -  ``resource:organizations/123456`` to find IAM policy
+               bindings that are set on "organizations/123456".
+            -  ``Important`` to find IAM policy bindings that contain
+               "Important" as a word in any of the searchable fields
+               (except for the included permissions).
+            -  ``*por*`` to find IAM policy bindings that contain "por"
+               as a substring in any of the searchable fields (except
+               for the included permissions).
+            -  ``resource:(instance1 OR instance2) policy:amy`` to find
+               IAM policy bindings that are set on resources "instance1"
+               or "instance2" and also specify user "amy".
         page_size (int):
             Optional. The page size for search result pagination. Page
             size is capped at 500 even if a larger value is given. If

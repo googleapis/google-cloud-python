@@ -35,7 +35,7 @@ from google.cloud.asset_v1.types import asset_service
 from google.cloud.asset_v1.types import assets
 from google.type import expr_pb2 as expr  # type: ignore
 
-from .transports.base import AssetServiceTransport
+from .transports.base import AssetServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import AssetServiceGrpcAsyncIOTransport
 from .client import AssetServiceClient
 
@@ -49,6 +49,7 @@ class AssetServiceAsyncClient:
     DEFAULT_MTLS_ENDPOINT = AssetServiceClient.DEFAULT_MTLS_ENDPOINT
 
     feed_path = staticmethod(AssetServiceClient.feed_path)
+    parse_feed_path = staticmethod(AssetServiceClient.parse_feed_path)
 
     from_service_account_file = AssetServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
@@ -63,6 +64,7 @@ class AssetServiceAsyncClient:
         credentials: credentials.Credentials = None,
         transport: Union[str, AssetServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the asset service client.
 
@@ -78,16 +80,19 @@ class AssetServiceAsyncClient:
             client_options (ClientOptions): Custom options for the client. It
                 won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS
+                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint, this is the default value for
-                the environment variable) and "auto" (auto switch to the default
-                mTLS endpoint if client SSL credentials is present). However,
-                the ``api_endpoint`` property takes precedence if provided.
-                (2) The ``client_cert_source`` property is used to provide client
-                SSL credentials for mutual TLS transport. If not provided, the
-                default SSL credentials will be used if present.
+                use the default regular endpoint) and "auto" (auto switch to the
+                default mTLS endpoint if client certificate is present, this is
+                the default value). However, the ``api_endpoint`` property takes
+                precedence if provided.
+                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                is "true", then the ``client_cert_source`` property can be used
+                to provide client certificate for mutual TLS transport. If
+                not provided, the default SSL client certificate will be used if
+                present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
+                set, no client certificate will be used.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -95,7 +100,10 @@ class AssetServiceAsyncClient:
         """
 
         self._client = AssetServiceClient(
-            credentials=credentials, transport=transport, client_options=client_options,
+            credentials=credentials,
+            transport=transport,
+            client_options=client_options,
+            client_info=client_info,
         )
 
     async def export_assets(
@@ -152,7 +160,7 @@ class AssetServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.export_assets,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -222,7 +230,7 @@ class AssetServiceAsyncClient:
                 ),
             ),
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -306,7 +314,7 @@ class AssetServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_feed,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -391,7 +399,7 @@ class AssetServiceAsyncClient:
                 ),
             ),
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -472,7 +480,7 @@ class AssetServiceAsyncClient:
                 ),
             ),
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -550,7 +558,7 @@ class AssetServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_feed,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -626,7 +634,7 @@ class AssetServiceAsyncClient:
                 ),
             ),
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -651,67 +659,71 @@ class AssetServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAllResourcesAsyncPager:
-        r"""Searches all the resources within the given
-        accessible scope (e.g., a project, a folder or an
-        organization). Callers should have
-        cloud.assets.SearchAllResources permission upon the
-        requested scope, otherwise the request will be rejected.
+        r"""Searches all Cloud resources within the specified scope, such as
+        a project, folder, or organization. The caller must be granted
+        the ``cloudasset.assets.searchAllResources`` permission on the
+        desired scope, otherwise the request will be rejected.
 
         Args:
             request (:class:`~.asset_service.SearchAllResourcesRequest`):
                 The request object. Search all resources request.
             scope (:class:`str`):
-                Required. A scope can be a project, a folder or an
+                Required. A scope can be a project, a folder, or an
                 organization. The search is limited to the resources
-                within the ``scope``.
+                within the ``scope``. The caller must be granted the
+                ```cloudasset.assets.searchAllResources`` <http://cloud.google.com/asset-inventory/docs/access-control#required_permissions>`__
+                permission on the desired scope.
 
                 The allowed values are:
 
-                -  projects/{PROJECT_ID}
-                -  projects/{PROJECT_NUMBER}
-                -  folders/{FOLDER_NUMBER}
-                -  organizations/{ORGANIZATION_NUMBER}
+                -  projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+                -  projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
+                -  folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
+                -  organizations/{ORGANIZATION_NUMBER} (e.g.,
+                   "organizations/123456")
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             query (:class:`str`):
-                Optional. The query statement. An empty query can be
-                specified to search all the resources of certain
-                ``asset_types`` within the given ``scope``.
+                Optional. The query statement. See `how to construct a
+                query <http://cloud.google.com/asset-inventory/docs/searching-resources#how_to_construct_a_query>`__
+                for more information. If not specified or empty, it will
+                search all the resources within the specified ``scope``.
+                Note that the query string is compared against each
+                Cloud IAM policy binding, including its members, roles,
+                and Cloud IAM conditions. The returned Cloud IAM
+                policies will only contain the bindings that match your
+                query. To learn more about the IAM policy structure, see
+                `IAM policy
+                doc <https://cloud.google.com/iam/docs/policies#structure>`__.
 
                 Examples:
 
-                -  ``name : "Important"`` to find Cloud resources whose
-                   name contains "Important" as a word.
-                -  ``displayName : "Impor*"`` to find Cloud resources
-                   whose display name contains "Impor" as a word prefix.
-                -  ``description : "*por*"`` to find Cloud resources
-                   whose description contains "por" as a substring.
-                -  ``location : "us-west*"`` to find Cloud resources
-                   whose location is prefixed with "us-west".
-                -  ``labels : "prod"`` to find Cloud resources whose
-                   labels contain "prod" as a key or value.
-                -  ``labels.env : "prod"`` to find Cloud resources which
-                   have a label "env" and its value is "prod".
-                -  ``labels.env : *`` to find Cloud resources which have
-                   a label "env".
-                -  ``"Important"`` to find Cloud resources which contain
+                -  ``name:Important`` to find Cloud resources whose name
+                   contains "Important" as a word.
+                -  ``displayName:Impor*`` to find Cloud resources whose
+                   display name contains "Impor" as a prefix.
+                -  ``description:*por*`` to find Cloud resources whose
+                   description contains "por" as a substring.
+                -  ``location:us-west*`` to find Cloud resources whose
+                   location is prefixed with "us-west".
+                -  ``labels:prod`` to find Cloud resources whose labels
+                   contain "prod" as a key or value.
+                -  ``labels.env:prod`` to find Cloud resources that have
+                   a label "env" and its value is "prod".
+                -  ``labels.env:*`` to find Cloud resources that have a
+                   label "env".
+                -  ``Important`` to find Cloud resources that contain
                    "Important" as a word in any of the searchable
                    fields.
-                -  ``"Impor*"`` to find Cloud resources which contain
-                   "Impor" as a word prefix in any of the searchable
-                   fields.
-                -  ``"*por*"`` to find Cloud resources which contain
-                   "por" as a substring in any of the searchable fields.
-                -  ``("Important" AND location : ("us-west1" OR "global"))``
-                   to find Cloud resources which contain "Important" as
-                   a word in any of the searchable fields and are also
-                   located in the "us-west1" region or the "global"
-                   location.
-
-                See `how to construct a
-                query <https://cloud.google.com/asset-inventory/docs/searching-resources#how_to_construct_a_query>`__
-                for more details.
+                -  ``Impor*`` to find Cloud resources that contain
+                   "Impor" as a prefix in any of the searchable fields.
+                -  ``*por*`` to find Cloud resources that contain "por"
+                   as a substring in any of the searchable fields.
+                -  ``Important location:(us-west1 OR global)`` to find
+                   Cloud resources that contain "Important" as a word in
+                   any of the searchable fields and are also located in
+                   the "us-west1" region or the "global" location.
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -772,7 +784,7 @@ class AssetServiceAsyncClient:
                 ),
             ),
             default_timeout=15.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -803,53 +815,64 @@ class AssetServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAllIamPoliciesAsyncPager:
-        r"""Searches all the IAM policies within the given
-        accessible scope (e.g., a project, a folder or an
-        organization). Callers should have
-        cloud.assets.SearchAllIamPolicies permission upon the
-        requested scope, otherwise the request will be rejected.
+        r"""Searches all IAM policies within the specified scope, such as a
+        project, folder, or organization. The caller must be granted the
+        ``cloudasset.assets.searchAllIamPolicies`` permission on the
+        desired scope, otherwise the request will be rejected.
 
         Args:
             request (:class:`~.asset_service.SearchAllIamPoliciesRequest`):
                 The request object. Search all IAM policies request.
             scope (:class:`str`):
-                Required. A scope can be a project, a folder or an
+                Required. A scope can be a project, a folder, or an
                 organization. The search is limited to the IAM policies
-                within the ``scope``.
+                within the ``scope``. The caller must be granted the
+                ```cloudasset.assets.searchAllIamPolicies`` <http://cloud.google.com/asset-inventory/docs/access-control#required_permissions>`__
+                permission on the desired scope.
 
                 The allowed values are:
 
-                -  projects/{PROJECT_ID}
-                -  projects/{PROJECT_NUMBER}
-                -  folders/{FOLDER_NUMBER}
-                -  organizations/{ORGANIZATION_NUMBER}
+                -  projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+                -  projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
+                -  folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
+                -  organizations/{ORGANIZATION_NUMBER} (e.g.,
+                   "organizations/123456")
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             query (:class:`str`):
-                Optional. The query statement. An empty query can be
-                specified to search all the IAM policies within the
-                given ``scope``.
+                Optional. The query statement. See `how to construct a
+                query <https://cloud.google.com/asset-inventory/docs/searching-iam-policies#how_to_construct_a_query>`__
+                for more information. If not specified or empty, it will
+                search all the IAM policies within the specified
+                ``scope``.
 
                 Examples:
 
-                -  ``policy : "amy@gmail.com"`` to find Cloud IAM policy
-                   bindings that specify user "amy@gmail.com".
-                -  ``policy : "roles/compute.admin"`` to find Cloud IAM
-                   policy bindings that specify the Compute Admin role.
-                -  ``policy.role.permissions : "storage.buckets.update"``
-                   to find Cloud IAM policy bindings that specify a role
-                   containing "storage.buckets.update" permission.
-                -  ``resource : "organizations/123"`` to find Cloud IAM
-                   policy bindings that are set on "organizations/123".
-                -  ``(resource : ("organizations/123" OR "folders/1234") AND policy : "amy")``
-                   to find Cloud IAM policy bindings that are set on
-                   "organizations/123" or "folders/1234", and also
-                   specify user "amy".
-
-                See `how to construct a
-                query <https://cloud.google.com/asset-inventory/docs/searching-iam-policies#how_to_construct_a_query>`__
-                for more details.
+                -  ``policy:amy@gmail.com`` to find IAM policy bindings
+                   that specify user "amy@gmail.com".
+                -  ``policy:roles/compute.admin`` to find IAM policy
+                   bindings that specify the Compute Admin role.
+                -  ``policy.role.permissions:storage.buckets.update`` to
+                   find IAM policy bindings that specify a role
+                   containing "storage.buckets.update" permission. Note
+                   that if callers don't have ``iam.roles.get`` access
+                   to a role's included permissions, policy bindings
+                   that specify this role will be dropped from the
+                   search results.
+                -  ``resource:organizations/123456`` to find IAM policy
+                   bindings that are set on "organizations/123456".
+                -  ``Important`` to find IAM policy bindings that
+                   contain "Important" as a word in any of the
+                   searchable fields (except for the included
+                   permissions).
+                -  ``*por*`` to find IAM policy bindings that contain
+                   "por" as a substring in any of the searchable fields
+                   (except for the included permissions).
+                -  ``resource:(instance1 OR instance2) policy:amy`` to
+                   find IAM policy bindings that are set on resources
+                   "instance1" or "instance2" and also specify user
+                   "amy".
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -900,7 +923,7 @@ class AssetServiceAsyncClient:
                 ),
             ),
             default_timeout=15.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -923,11 +946,11 @@ class AssetServiceAsyncClient:
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution("google-cloud-asset",).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 __all__ = ("AssetServiceAsyncClient",)

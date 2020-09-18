@@ -27,10 +27,13 @@ from .types.asset_service import ExportAssetsResponse
 from .types.asset_service import Feed
 from .types.asset_service import FeedOutputConfig
 from .types.asset_service import GcsDestination
+from .types.asset_service import GcsOutputResult
 from .types.asset_service import GetFeedRequest
 from .types.asset_service import ListFeedsRequest
 from .types.asset_service import ListFeedsResponse
 from .types.asset_service import OutputConfig
+from .types.asset_service import OutputResult
+from .types.asset_service import PartitionSpec
 from .types.asset_service import PubsubDestination
 from .types.asset_service import SearchAllIamPoliciesRequest
 from .types.asset_service import SearchAllIamPoliciesResponse
@@ -58,11 +61,14 @@ __all__ = (
     "Feed",
     "FeedOutputConfig",
     "GcsDestination",
+    "GcsOutputResult",
     "GetFeedRequest",
     "IamPolicySearchResult",
     "ListFeedsRequest",
     "ListFeedsResponse",
     "OutputConfig",
+    "OutputResult",
+    "PartitionSpec",
     "PubsubDestination",
     "Resource",
     "ResourceSearchResult",

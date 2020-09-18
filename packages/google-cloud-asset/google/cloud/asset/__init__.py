@@ -30,10 +30,13 @@ from google.cloud.asset_v1.types.asset_service import ExportAssetsResponse
 from google.cloud.asset_v1.types.asset_service import Feed
 from google.cloud.asset_v1.types.asset_service import FeedOutputConfig
 from google.cloud.asset_v1.types.asset_service import GcsDestination
+from google.cloud.asset_v1.types.asset_service import GcsOutputResult
 from google.cloud.asset_v1.types.asset_service import GetFeedRequest
 from google.cloud.asset_v1.types.asset_service import ListFeedsRequest
 from google.cloud.asset_v1.types.asset_service import ListFeedsResponse
 from google.cloud.asset_v1.types.asset_service import OutputConfig
+from google.cloud.asset_v1.types.asset_service import OutputResult
+from google.cloud.asset_v1.types.asset_service import PartitionSpec
 from google.cloud.asset_v1.types.asset_service import PubsubDestination
 from google.cloud.asset_v1.types.asset_service import SearchAllIamPoliciesRequest
 from google.cloud.asset_v1.types.asset_service import SearchAllIamPoliciesResponse
@@ -62,11 +65,14 @@ __all__ = (
     "Feed",
     "FeedOutputConfig",
     "GcsDestination",
+    "GcsOutputResult",
     "GetFeedRequest",
     "IamPolicySearchResult",
     "ListFeedsRequest",
     "ListFeedsResponse",
     "OutputConfig",
+    "OutputResult",
+    "PartitionSpec",
     "PubsubDestination",
     "Resource",
     "ResourceSearchResult",
