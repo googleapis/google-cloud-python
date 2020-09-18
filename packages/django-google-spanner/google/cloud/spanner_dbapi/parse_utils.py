@@ -51,6 +51,8 @@ RE_VALUES_PYFORMAT = re.compile(
     re.DOTALL,
 )
 
+RE_PYFORMAT = re.compile(r"(%s|%\([^\(\)]+\)s)+", re.DOTALL)
+
 
 def classify_stmt(query):
     """Determine SQL query type.
@@ -73,15 +75,6 @@ def classify_stmt(query):
         return STMT_NON_UPDATING
 
     return STMT_UPDATING
-
-
-def strip_backticks(name):
-    """
-    Strip backticks off of quoted names For example, '`no`' (a Spanner reserved
-    word) becomes 'no'.
-    """
-    has_quotes = name.startswith("`") and name.endswith("`")
-    return name[1:-1] if has_quotes else name
 
 
 def parse_insert(insert_sql, params):
@@ -309,9 +302,6 @@ def rows_for_insert_or_update(columns, params, pyformat_args=None):
     return strides
 
 
-re_PYFORMAT = re.compile(r"(%s|%\([^\(\)]+\)s)+", re.DOTALL)
-
-
 def sql_pyformat_args_to_spanner(sql, params):
     """
     Transform pyformat set SQL to named arguments for Cloud Spanner.
@@ -334,7 +324,7 @@ def sql_pyformat_args_to_spanner(sql, params):
     if not params:
         return sanitize_literals_for_upload(sql), params
 
-    found_pyformat_placeholders = re_PYFORMAT.findall(sql)
+    found_pyformat_placeholders = RE_PYFORMAT.findall(sql)
     params_is_dict = isinstance(params, dict)
 
     if params_is_dict:
@@ -349,9 +339,6 @@ def sql_pyformat_args_to_spanner(sql, params):
                 "want %d args in %s"
                 % (n_matches, found_pyformat_placeholders, n_params, params)
             )
-
-    if len(params) == 0:
-        return sanitize_literals_for_upload(sql), params
 
     named_args = {}
     # We've now got for example:
