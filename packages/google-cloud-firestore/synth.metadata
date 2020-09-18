@@ -4,22 +4,14 @@
       "git": {
         "name": ".",
         "remote": "git@github.com:crwilcox/python-firestore.git",
-        "sha": "cc25d5ebfb8cc39b63bff2383e81d16793d42b20"
-      }
-    },
-    {
-      "git": {
-        "name": "googleapis",
-        "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "5099a037c974066832474771c5dfab504b8daaf6",
-        "internalRef": "321186647"
+        "sha": "0e5ec9466334f6ffd07d4f2cb54c77b71421ca7c"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "3a89215abd0e66dfc4f21d07d552d0b543abf082"
+        "sha": "dba48bb9bc6959c232bec9150ac6313b608fe7bd"
       }
     }
   ],
@@ -30,7 +22,7 @@
         "apiName": "firestore",
         "apiVersion": "v1",
         "language": "python",
-        "generator": "gapic-generator-python"
+        "generator": "bazel"
       }
     },
     {
@@ -39,7 +31,7 @@
         "apiName": "firestore_admin",
         "apiVersion": "v1",
         "language": "python",
-        "generator": "gapic-generator-python"
+        "generator": "bazel"
       }
     }
   ]

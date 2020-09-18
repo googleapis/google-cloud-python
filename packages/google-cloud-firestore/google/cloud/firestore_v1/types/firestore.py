@@ -24,9 +24,6 @@ from google.cloud.firestore_v1.types import query as gf_query
 from google.cloud.firestore_v1.types import write
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 from google.rpc import status_pb2 as gr_status  # type: ignore
-from typing import Any
-
-__protobuf__: Any
 
 
 __protobuf__ = proto.module(
@@ -579,14 +576,16 @@ class PartitionQueryRequest(proto.Message):
             resource names can be specified.
         structured_query (~.gf_query.StructuredQuery):
             A structured query.
-            Filters, order bys, limits, offsets, and
+            Query must specify collection with all
+            descendants and be ordered by name ascending.
+            Other filters, order bys, limits, offsets, and
             start/end cursors are not supported.
         partition_count (int):
             The desired maximum number of partition
             points. The partitions may be returned across
             multiple pages of results. The number must be
-            strictly positive. The actual number of
-            partitions returned may be fewer.
+            positive. The actual number of partitions
+            returned may be fewer.
 
             For example, this may be set to one fewer than
             the number of parallel queries to be run, or in
@@ -655,6 +654,9 @@ class PartitionQueryResponse(proto.Message):
             -  query, end_at A
             -  query, start_at A, end_at B
             -  query, start_at B
+
+            An empty result may indicate that the query has too few
+            results to be partitioned.
         next_page_token (str):
             A page token that may be used to request an additional set
             of results, up to the number specified by

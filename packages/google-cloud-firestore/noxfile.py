@@ -22,6 +22,7 @@ import shutil
 
 import nox
 
+
 PYTYPE_VERSION = "pytype==2020.7.24"
 BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
@@ -76,7 +77,7 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-def default(session, test_dir, ignore_dir=None):
+def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install("pytest-asyncio", "aiounittest")
 
@@ -84,7 +85,8 @@ def default(session, test_dir, ignore_dir=None):
     session.install("-e", ".")
 
     # Run py.test against the unit tests.
-    args = [
+    session.run(
+        "py.test",
         "--quiet",
         "--cov=google.cloud.firestore",
         "--cov=google.cloud",
@@ -93,22 +95,15 @@ def default(session, test_dir, ignore_dir=None):
         "--cov-config=.coveragerc",
         "--cov-report=",
         "--cov-fail-under=0",
-        test_dir,
+        os.path.join("tests", "unit"),
         *session.posargs,
-    ]
-
-    if ignore_dir:
-        args.insert(0, f"--ignore={ignore_dir}")
-
-    session.run("py.test", *args)
+    )
 
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
-    """Run the unit test suite for sync tests."""
-    default(
-        session, os.path.join("tests", "unit"),
-    )
+    """Run the unit test suite."""
+    default(session)
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
@@ -116,6 +111,10 @@ def system(session):
     """Run the system test suite."""
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
+
+    # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
+    if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
+        session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
     # Sanity check: Only run tests if the environment variable is set.
     if not os.environ.get("FIRESTORE_APPLICATION_CREDENTIALS", ""):
         session.skip("Credentials must be set via environment variable")
@@ -151,7 +150,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing")
+    session.run("coverage", "report", "--show-missing", "--fail-under=100")
 
     session.run("coverage", "erase")
 
@@ -169,6 +168,41 @@ def docs(session):
         "-W",  # warnings as errors
         "-T",  # show full traceback on exception
         "-N",  # no colors
+        "-b",
+        "html",
+        "-d",
+        os.path.join("docs", "_build", "doctrees", ""),
+        os.path.join("docs", ""),
+        os.path.join("docs", "_build", "html", ""),
+    )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def docfx(session):
+    """Build the docfx yaml files for this library."""
+
+    session.install("-e", ".")
+    # sphinx-docfx-yaml supports up to sphinx version 1.5.5.
+    # https://github.com/docascode/sphinx-docfx-yaml/issues/97
+    session.install("sphinx==1.5.5", "alabaster", "recommonmark", "sphinx-docfx-yaml")
+
+    shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
+    session.run(
+        "sphinx-build",
+        "-T",  # show full traceback on exception
+        "-N",  # no colors
+        "-D",
+        (
+            "extensions=sphinx.ext.autodoc,"
+            "sphinx.ext.autosummary,"
+            "docfx_yaml.extension,"
+            "sphinx.ext.intersphinx,"
+            "sphinx.ext.coverage,"
+            "sphinx.ext.napoleon,"
+            "sphinx.ext.todo,"
+            "sphinx.ext.viewcode,"
+            "recommonmark"
+        ),
         "-b",
         "html",
         "-d",

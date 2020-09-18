@@ -19,7 +19,7 @@ from synthtool import gcp
 AUTOSYNTH_MULTIPLE_PRS = True
 AUTOSYNTH_MULTIPLE_COMMITS = True
 
-gapic = gcp.GAPICMicrogenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 versions = ["v1"]
 admin_versions = ["v1"]
@@ -32,17 +32,20 @@ for version in versions:
     library = gapic.py_library(
         service="firestore",
         version=version,
-        proto_path=f"google/firestore/{version}",
-        generator_version="v0.26.5"
+        bazel_target=f"//google/firestore/{version}:firestore-{version}-py",
     )
 
     s.move(
-        library / f"google/firestore_{version}",
+        library / f"google/cloud/firestore_{version}",
         f"google/cloud/firestore_{version}",
-        excludes=[ library / f"google/firestore_{version}/__init__.py"]
+        excludes=[library / f"google/cloud/firestore_{version}/__init__.py"],
     )
-    
-    s.move(library / "scripts" )
+
+    s.move(
+        library / f"tests/",
+        f"tests",
+    )
+    s.move(library / "scripts")
 
 
 # ----------------------------------------------------------------------------
@@ -52,60 +55,21 @@ for version in admin_versions:
     library = gapic.py_library(
         service="firestore_admin",
         version=version,
-        # bazel_target=f"//google/firestore/admin/{version}:firestore-admin-{version}-py",
-        # include_protos=True,
-        proto_path=f"google/firestore/admin/{version}",
+        bazel_target=f"//google/firestore/admin/{version}:firestore-admin-{version}-py",
     )
-    s.move(library / f"google/firestore/admin_{version}", f"google/cloud/firestore_admin_{version}")
-    s.move(library / "tests")
+    s.move(
+        library / f"google/cloud/firestore_admin_{version}",
+        f"google/cloud/firestore_admin_{version}",
+        excludes=[library / f"google/cloud/admin_{version}/__init__.py"],
+    )
+    s.move(library / f"tests", f"tests")
     s.move(library / "scripts")
 
-    s.replace(
-        f"google/cloud/**/*.py",
-        f"google.firestore.admin_v1",
-        f"google.cloud.firestore_admin_v1",
-    )
-    s.replace(
-        f"tests/unit/gapic/**/*.py",
-        f"google.firestore.admin_v1",
-        f"google.cloud.firestore_admin_v1",
-    )
     s.replace(
         f"google/cloud/firestore_admin_v1/services/firestore_admin/client.py",
         f"from google.api_core import operation as ga_operation",
         f"from google.api_core import operation as ga_operation\nfrom google.api_core import operation",
     )
-
-
-# ----------------------------------------------------------------------------
-# Edit paths to firestore remove after resolving 
-# https://github.com/googleapis/gapic-generator-python/issues/471
-# ----------------------------------------------------------------------------
-s.replace(
-    f"tests/unit/gapic/**/*.py",
-    f"google.firestore",
-    f"google.cloud.firestore",
-)
-s.replace(
-    f"google/cloud/**/*.py",
-    f"google-firestore-admin",
-    f"google-cloud-firestore",
-)
-s.replace(
-    f"google/cloud/**/*.py",
-    f"google-firestore",
-    f"google-cloud-firestore",
-)
-s.replace(
-    f"google/cloud/**/*.py",
-    f"from google.firestore",
-    f"from google.cloud.firestore",
-)
-s.replace(
-    f"docs/**/*.rst",
-    f"google.firestore",
-    f"google.cloud.firestore",
-)
 
 
 # ----------------------------------------------------------------------------
@@ -120,7 +84,7 @@ templated_files = common.py_library(
 
 s.move(
     templated_files,
-    excludes=[".coveragerc"] # microgenerator has a good .coveragerc file
+    excludes=[".coveragerc"],  # microgenerator has a good .coveragerc file
 )
 
 s.replace(
@@ -135,6 +99,85 @@ s.replace(
     '"--verbose", system_test',
 )
 
+# Add pytype support
+s.replace(
+    ".gitignore",
+    """\
+.pytest_cache
+""",
+    """\
+.pytest_cache
+.pytype
+""",
+)
+
+s.replace(
+    "setup.cfg",
+    """\
+universal = 1
+""",
+    """\
+universal = 1
+[pytype]
+python_version = 3.8
+inputs =
+    google/cloud/
+exclude =
+    tests/
+output = .pytype/
+# Workaround for https://github.com/google/pytype/issues/150
+disable = pyi-error
+""",
+)
+
+s.replace(
+    "noxfile.py",
+    """\
+BLACK_VERSION = "black==19.10b0"
+""",
+    """\
+PYTYPE_VERSION = "pytype==2020.7.24"
+BLACK_VERSION = "black==19.10b0"
+""",
+)
+
+s.replace(
+    "noxfile.py",
+    """\
+@nox.session\(python=DEFAULT_PYTHON_VERSION\)
+def lint_setup_py\(session\):
+""",
+    '''\
+@nox.session(python="3.7")
+def pytype(session):
+    """Run pytype
+    """
+    session.install(PYTYPE_VERSION)
+    session.run("pytype",)
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def lint_setup_py(session):
+''',
+)
+
+# Fix up unit test dependencies
+
+s.replace(
+    "noxfile.py",
+    """\
+    session.install\("asyncmock", "pytest-asyncio"\)
+""",
+    """\
+    session.install("pytest-asyncio", "aiounittest")
+""",
+)
+
+# Fix up system test dependencies
+
+s.replace(
+    "noxfile.py",
+    """"mock", "pytest", "google-cloud-testutils",""",
+    """"mock", "pytest", "pytest-asyncio", "google-cloud-testutils",""",
+)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 
@@ -145,5 +188,5 @@ s.replace(
 # Setup firestore account credentials
 export FIRESTORE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/firebase-credentials.json
 
-# Setup service account credentials."""
+# Setup service account credentials.""",
 )

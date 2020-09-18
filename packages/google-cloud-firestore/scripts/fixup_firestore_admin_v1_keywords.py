@@ -37,24 +37,18 @@ def partition(
     return results[1], results[0]
 
 
-class firestoreCallTransformer(cst.CSTTransformer):
+class firestore_adminCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'batch_get_documents': ('database', 'documents', 'mask', 'transaction', 'new_transaction', 'read_time', ),
-    'batch_write': ('database', 'writes', 'labels', ),
-    'begin_transaction': ('database', 'options', ),
-    'commit': ('database', 'writes', 'transaction', ),
-    'create_document': ('parent', 'collection_id', 'document', 'document_id', 'mask', ),
-    'delete_document': ('name', 'current_document', ),
-    'get_document': ('name', 'mask', 'transaction', 'read_time', ),
-    'list_collection_ids': ('parent', 'page_size', 'page_token', ),
-    'list_documents': ('parent', 'collection_id', 'page_size', 'page_token', 'order_by', 'mask', 'transaction', 'read_time', 'show_missing', ),
-    'listen': ('database', 'add_target', 'remove_target', 'labels', ),
-    'partition_query': ('parent', 'structured_query', 'partition_count', 'page_token', 'page_size', ),
-    'rollback': ('database', 'transaction', ),
-    'run_query': ('parent', 'structured_query', 'transaction', 'new_transaction', 'read_time', ),
-    'update_document': ('document', 'update_mask', 'mask', 'current_document', ),
-    'write': ('database', 'stream_id', 'writes', 'stream_token', 'labels', ),
+    'create_index': ('parent', 'index', ),
+    'delete_index': ('name', ),
+    'export_documents': ('name', 'collection_ids', 'output_uri_prefix', ),
+    'get_field': ('name', ),
+    'get_index': ('name', ),
+    'import_documents': ('name', 'collection_ids', 'input_uri_prefix', ),
+    'list_fields': ('parent', 'filter', 'page_size', 'page_token', ),
+    'list_indexes': ('parent', 'filter', 'page_size', 'page_token', ),
+    'update_field': ('field', 'update_mask', ),
 
     }
 
@@ -104,7 +98,7 @@ def fix_files(
     in_dir: pathlib.Path,
     out_dir: pathlib.Path,
     *,
-    transformer=firestoreCallTransformer(),
+    transformer=firestore_adminCallTransformer(),
 ):
     """Duplicate the input dir to the output dir, fixing file method calls.
 
@@ -137,7 +131,7 @@ def fix_files(
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description="""Fix up source that uses the firestore client library.
+        description="""Fix up source that uses the firestore_admin client library.
 
 The existing sources are NOT overwritten but are copied to output_dir with changes made.
 

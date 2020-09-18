@@ -26,6 +26,10 @@ from .document import (
     ArrayValue,
     MapValue,
 )
+from .query import (
+    StructuredQuery,
+    Cursor,
+)
 from .write import (
     Write,
     DocumentTransform,
@@ -34,10 +38,6 @@ from .write import (
     DocumentDelete,
     DocumentRemove,
     ExistenceFilter,
-)
-from .query import (
-    StructuredQuery,
-    Cursor,
 )
 from .firestore import (
     GetDocumentRequest,
@@ -68,54 +68,6 @@ from .firestore import (
     BatchWriteRequest,
     BatchWriteResponse,
 )
-from typing import Tuple
-
-
-__all__: Tuple[
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-    str,
-]
 
 
 __all__ = (
@@ -126,6 +78,8 @@ __all__ = (
     "Value",
     "ArrayValue",
     "MapValue",
+    "StructuredQuery",
+    "Cursor",
     "Write",
     "DocumentTransform",
     "WriteResult",
@@ -133,8 +87,6 @@ __all__ = (
     "DocumentDelete",
     "DocumentRemove",
     "ExistenceFilter",
-    "StructuredQuery",
-    "Cursor",
     "GetDocumentRequest",
     "ListDocumentsRequest",
     "ListDocumentsResponse",

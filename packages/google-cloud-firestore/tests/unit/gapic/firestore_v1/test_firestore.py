@@ -55,6 +55,17 @@ def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
 
 
+# If default endpoint is localhost, then default mtls endpoint will be the same.
+# This method modifies the default endpoint so the client can produce a different
+# mtls endpoint for endpoint testing purposes.
+def modify_default_endpoint(client):
+    return (
+        "foo.googleapis.com"
+        if ("localhost" in client.DEFAULT_ENDPOINT)
+        else client.DEFAULT_ENDPOINT
+    )
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
@@ -114,6 +125,14 @@ def test_firestore_client_get_transport_class():
         ),
     ],
 )
+@mock.patch.object(
+    FirestoreClient, "DEFAULT_ENDPOINT", modify_default_endpoint(FirestoreClient)
+)
+@mock.patch.object(
+    FirestoreAsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(FirestoreAsyncClient),
+)
 def test_firestore_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(FirestoreClient, "get_transport_class") as gtc:
@@ -136,85 +155,15 @@ def test_firestore_client_client_options(client_class, transport_class, transpor
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=None,
+            ssl_channel_credentials=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
     # "never".
-    os.environ["GOOGLE_API_USE_MTLS"] = "never"
-    with mock.patch.object(transport_class, "__init__") as patched:
-        patched.return_value = None
-        client = client_class()
-        patched.assert_called_once_with(
-            credentials=None,
-            credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
-            scopes=None,
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
-        )
-
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
-    # "always".
-    os.environ["GOOGLE_API_USE_MTLS"] = "always"
-    with mock.patch.object(transport_class, "__init__") as patched:
-        patched.return_value = None
-        client = client_class()
-        patched.assert_called_once_with(
-            credentials=None,
-            credentials_file=None,
-            host=client.DEFAULT_MTLS_ENDPOINT,
-            scopes=None,
-            api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-            client_cert_source=None,
-        )
-
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", and client_cert_source is provided.
-    os.environ["GOOGLE_API_USE_MTLS"] = "auto"
-    options = client_options.ClientOptions(
-        client_cert_source=client_cert_source_callback
-    )
-    with mock.patch.object(transport_class, "__init__") as patched:
-        patched.return_value = None
-        client = client_class(client_options=options)
-        patched.assert_called_once_with(
-            credentials=None,
-            credentials_file=None,
-            host=client.DEFAULT_MTLS_ENDPOINT,
-            scopes=None,
-            api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-            client_cert_source=client_cert_source_callback,
-        )
-
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", and default_client_cert_source is provided.
-    os.environ["GOOGLE_API_USE_MTLS"] = "auto"
-    with mock.patch.object(transport_class, "__init__") as patched:
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=True,
-        ):
-            patched.return_value = None
-            client = client_class()
-            patched.assert_called_once_with(
-                credentials=None,
-                credentials_file=None,
-                host=client.DEFAULT_MTLS_ENDPOINT,
-                scopes=None,
-                api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                client_cert_source=None,
-            )
-
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", but client_cert_source and default_client_cert_source are None.
-    os.environ["GOOGLE_API_USE_MTLS"] = "auto"
-    with mock.patch.object(transport_class, "__init__") as patched:
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=False,
-        ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class()
             patched.assert_called_once_with(
@@ -222,17 +171,189 @@ def test_firestore_client_client_options(client_class, transport_class, transpor
                 credentials_file=None,
                 host=client.DEFAULT_ENDPOINT,
                 scopes=None,
-                api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-                client_cert_source=None,
+                ssl_channel_credentials=None,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
 
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS has
-    # unsupported value.
-    os.environ["GOOGLE_API_USE_MTLS"] = "Unsupported"
-    with pytest.raises(MutualTLSChannelError):
-        client = client_class()
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
+    # "always".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            patched.return_value = None
+            client = client_class()
+            patched.assert_called_once_with(
+                credentials=None,
+                credentials_file=None,
+                host=client.DEFAULT_MTLS_ENDPOINT,
+                scopes=None,
+                ssl_channel_credentials=None,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+            )
 
-    del os.environ["GOOGLE_API_USE_MTLS"]
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
+    # unsupported value.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError):
+            client = client_class()
+
+    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+    ):
+        with pytest.raises(ValueError):
+            client = client_class()
+
+    # Check the case quota_project_id is provided
+    options = client_options.ClientOptions(quota_project_id="octopus")
+    with mock.patch.object(transport_class, "__init__") as patched:
+        patched.return_value = None
+        client = client_class(client_options=options)
+        patched.assert_called_once_with(
+            credentials=None,
+            credentials_file=None,
+            host=client.DEFAULT_ENDPOINT,
+            scopes=None,
+            ssl_channel_credentials=None,
+            quota_project_id="octopus",
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
+        )
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name,use_client_cert_env",
+    [
+        (FirestoreClient, transports.FirestoreGrpcTransport, "grpc", "true"),
+        (
+            FirestoreAsyncClient,
+            transports.FirestoreGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "true",
+        ),
+        (FirestoreClient, transports.FirestoreGrpcTransport, "grpc", "false"),
+        (
+            FirestoreAsyncClient,
+            transports.FirestoreGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "false",
+        ),
+    ],
+)
+@mock.patch.object(
+    FirestoreClient, "DEFAULT_ENDPOINT", modify_default_endpoint(FirestoreClient)
+)
+@mock.patch.object(
+    FirestoreAsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(FirestoreAsyncClient),
+)
+@mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
+def test_firestore_client_mtls_env_auto(
+    client_class, transport_class, transport_name, use_client_cert_env
+):
+    # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
+    # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
+
+    # Check the case client_cert_source is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        options = client_options.ClientOptions(
+            client_cert_source=client_cert_source_callback
+        )
+        with mock.patch.object(transport_class, "__init__") as patched:
+            ssl_channel_creds = mock.Mock()
+            with mock.patch(
+                "grpc.ssl_channel_credentials", return_value=ssl_channel_creds
+            ):
+                patched.return_value = None
+                client = client_class(client_options=options)
+
+                if use_client_cert_env == "false":
+                    expected_ssl_channel_creds = None
+                    expected_host = client.DEFAULT_ENDPOINT
+                else:
+                    expected_ssl_channel_creds = ssl_channel_creds
+                    expected_host = client.DEFAULT_MTLS_ENDPOINT
+
+                patched.assert_called_once_with(
+                    credentials=None,
+                    credentials_file=None,
+                    host=expected_host,
+                    scopes=None,
+                    ssl_channel_credentials=expected_ssl_channel_creds,
+                    quota_project_id=None,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
+                )
+
+    # Check the case ADC client cert is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+            ):
+                with mock.patch(
+                    "google.auth.transport.grpc.SslCredentials.is_mtls",
+                    new_callable=mock.PropertyMock,
+                ) as is_mtls_mock:
+                    with mock.patch(
+                        "google.auth.transport.grpc.SslCredentials.ssl_credentials",
+                        new_callable=mock.PropertyMock,
+                    ) as ssl_credentials_mock:
+                        if use_client_cert_env == "false":
+                            is_mtls_mock.return_value = False
+                            ssl_credentials_mock.return_value = None
+                            expected_host = client.DEFAULT_ENDPOINT
+                            expected_ssl_channel_creds = None
+                        else:
+                            is_mtls_mock.return_value = True
+                            ssl_credentials_mock.return_value = mock.Mock()
+                            expected_host = client.DEFAULT_MTLS_ENDPOINT
+                            expected_ssl_channel_creds = (
+                                ssl_credentials_mock.return_value
+                            )
+
+                        patched.return_value = None
+                        client = client_class()
+                        patched.assert_called_once_with(
+                            credentials=None,
+                            credentials_file=None,
+                            host=expected_host,
+                            scopes=None,
+                            ssl_channel_credentials=expected_ssl_channel_creds,
+                            quota_project_id=None,
+                            client_info=transports.base.DEFAULT_CLIENT_INFO,
+                        )
+
+    # Check the case client_cert_source and ADC client cert are not provided.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+            ):
+                with mock.patch(
+                    "google.auth.transport.grpc.SslCredentials.is_mtls",
+                    new_callable=mock.PropertyMock,
+                ) as is_mtls_mock:
+                    is_mtls_mock.return_value = False
+                    patched.return_value = None
+                    client = client_class()
+                    patched.assert_called_once_with(
+                        credentials=None,
+                        credentials_file=None,
+                        host=client.DEFAULT_ENDPOINT,
+                        scopes=None,
+                        ssl_channel_credentials=None,
+                        quota_project_id=None,
+                        client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    )
 
 
 @pytest.mark.parametrize(
@@ -259,8 +380,9 @@ def test_firestore_client_client_options_scopes(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=["1", "2"],
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
 
@@ -288,8 +410,9 @@ def test_firestore_client_client_options_credentials_file(
             credentials_file="credentials.json",
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
 
@@ -304,19 +427,22 @@ def test_firestore_client_client_options_from_dict():
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=None,
+            ssl_channel_credentials=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
 
-def test_get_document(transport: str = "grpc"):
+def test_get_document(
+    transport: str = "grpc", request_type=firestore.GetDocumentRequest
+):
     client = FirestoreClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore.GetDocumentRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.get_document), "__call__") as call:
@@ -329,12 +455,16 @@ def test_get_document(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore.GetDocumentRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document.Document)
 
     assert response.name == "name_value"
+
+
+def test_get_document_from_dict():
+    test_get_document(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -421,14 +551,16 @@ async def test_get_document_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_list_documents(transport: str = "grpc"):
+def test_list_documents(
+    transport: str = "grpc", request_type=firestore.ListDocumentsRequest
+):
     client = FirestoreClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore.ListDocumentsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.list_documents), "__call__") as call:
@@ -443,12 +575,16 @@ def test_list_documents(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore.ListDocumentsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDocumentsPager)
 
     assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_documents_from_dict():
+    test_list_documents(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -600,8 +736,8 @@ def test_list_documents_pages():
             RuntimeError,
         )
         pages = list(client.list_documents(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
@@ -673,20 +809,22 @@ async def test_list_documents_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page in (await client.list_documents(request={})).pages:
-            pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        async for page_ in (await client.list_documents(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
-def test_update_document(transport: str = "grpc"):
+def test_update_document(
+    transport: str = "grpc", request_type=firestore.UpdateDocumentRequest
+):
     client = FirestoreClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore.UpdateDocumentRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.update_document), "__call__") as call:
@@ -699,12 +837,16 @@ def test_update_document(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore.UpdateDocumentRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gf_document.Document)
 
     assert response.name == "name_value"
+
+
+def test_update_document_from_dict():
+    test_update_document(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -884,14 +1026,16 @@ async def test_update_document_flattened_error_async():
         )
 
 
-def test_delete_document(transport: str = "grpc"):
+def test_delete_document(
+    transport: str = "grpc", request_type=firestore.DeleteDocumentRequest
+):
     client = FirestoreClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore.DeleteDocumentRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.delete_document), "__call__") as call:
@@ -904,10 +1048,14 @@ def test_delete_document(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore.DeleteDocumentRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+def test_delete_document_from_dict():
+    test_delete_document(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -1057,14 +1205,16 @@ async def test_delete_document_flattened_error_async():
         )
 
 
-def test_batch_get_documents(transport: str = "grpc"):
+def test_batch_get_documents(
+    transport: str = "grpc", request_type=firestore.BatchGetDocumentsRequest
+):
     client = FirestoreClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore.BatchGetDocumentsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1079,11 +1229,15 @@ def test_batch_get_documents(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore.BatchGetDocumentsRequest()
 
     # Establish that the response is the type that we expect.
     for message in response:
         assert isinstance(message, firestore.BatchGetDocumentsResponse)
+
+
+def test_batch_get_documents_from_dict():
+    test_batch_get_documents(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -1175,14 +1329,16 @@ async def test_batch_get_documents_field_headers_async():
     assert ("x-goog-request-params", "database=database/value",) in kw["metadata"]
 
 
-def test_begin_transaction(transport: str = "grpc"):
+def test_begin_transaction(
+    transport: str = "grpc", request_type=firestore.BeginTransactionRequest
+):
     client = FirestoreClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore.BeginTransactionRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1199,12 +1355,16 @@ def test_begin_transaction(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore.BeginTransactionRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, firestore.BeginTransactionResponse)
 
     assert response.transaction == b"transaction_blob"
+
+
+def test_begin_transaction_from_dict():
+    test_begin_transaction(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -1366,14 +1526,14 @@ async def test_begin_transaction_flattened_error_async():
         )
 
 
-def test_commit(transport: str = "grpc"):
+def test_commit(transport: str = "grpc", request_type=firestore.CommitRequest):
     client = FirestoreClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore.CommitRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.commit), "__call__") as call:
@@ -1386,10 +1546,14 @@ def test_commit(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore.CommitRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, firestore.CommitResponse)
+
+
+def test_commit_from_dict():
+    test_commit(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -1557,14 +1721,14 @@ async def test_commit_flattened_error_async():
         )
 
 
-def test_rollback(transport: str = "grpc"):
+def test_rollback(transport: str = "grpc", request_type=firestore.RollbackRequest):
     client = FirestoreClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore.RollbackRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.rollback), "__call__") as call:
@@ -1577,10 +1741,14 @@ def test_rollback(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore.RollbackRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+def test_rollback_from_dict():
+    test_rollback(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -1742,14 +1910,14 @@ async def test_rollback_flattened_error_async():
         )
 
 
-def test_run_query(transport: str = "grpc"):
+def test_run_query(transport: str = "grpc", request_type=firestore.RunQueryRequest):
     client = FirestoreClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore.RunQueryRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.run_query), "__call__") as call:
@@ -1762,11 +1930,15 @@ def test_run_query(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore.RunQueryRequest()
 
     # Establish that the response is the type that we expect.
     for message in response:
         assert isinstance(message, firestore.RunQueryResponse)
+
+
+def test_run_query_from_dict():
+    test_run_query(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -1856,14 +2028,16 @@ async def test_run_query_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_partition_query(transport: str = "grpc"):
+def test_partition_query(
+    transport: str = "grpc", request_type=firestore.PartitionQueryRequest
+):
     client = FirestoreClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore.PartitionQueryRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.partition_query), "__call__") as call:
@@ -1878,12 +2052,16 @@ def test_partition_query(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore.PartitionQueryRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.PartitionQueryPager)
 
     assert response.next_page_token == "next_page_token_value"
+
+
+def test_partition_query_from_dict():
+    test_partition_query(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -2027,8 +2205,8 @@ def test_partition_query_pages():
             RuntimeError,
         )
         pages = list(client.partition_query(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
@@ -2092,20 +2270,20 @@ async def test_partition_query_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page in (await client.partition_query(request={})).pages:
-            pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        async for page_ in (await client.partition_query(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
-def test_write(transport: str = "grpc"):
+def test_write(transport: str = "grpc", request_type=firestore.WriteRequest):
     client = FirestoreClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore.WriteRequest()
+    request = request_type()
 
     requests = [request]
 
@@ -2125,6 +2303,10 @@ def test_write(transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     for message in response:
         assert isinstance(message, firestore.WriteResponse)
+
+
+def test_write_from_dict():
+    test_write(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -2158,14 +2340,14 @@ async def test_write_async(transport: str = "grpc_asyncio"):
     assert isinstance(message, firestore.WriteResponse)
 
 
-def test_listen(transport: str = "grpc"):
+def test_listen(transport: str = "grpc", request_type=firestore.ListenRequest):
     client = FirestoreClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore.ListenRequest()
+    request = request_type()
 
     requests = [request]
 
@@ -2185,6 +2367,10 @@ def test_listen(transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     for message in response:
         assert isinstance(message, firestore.ListenResponse)
+
+
+def test_listen_from_dict():
+    test_listen(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -2220,14 +2406,16 @@ async def test_listen_async(transport: str = "grpc_asyncio"):
     assert isinstance(message, firestore.ListenResponse)
 
 
-def test_list_collection_ids(transport: str = "grpc"):
+def test_list_collection_ids(
+    transport: str = "grpc", request_type=firestore.ListCollectionIdsRequest
+):
     client = FirestoreClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore.ListCollectionIdsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2245,14 +2433,18 @@ def test_list_collection_ids(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore.ListCollectionIdsRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, firestore.ListCollectionIdsResponse)
+    assert isinstance(response, pagers.ListCollectionIdsPager)
 
     assert response.collection_ids == ["collection_ids_value"]
 
     assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_collection_ids_from_dict():
+    test_list_collection_ids(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -2286,7 +2478,7 @@ async def test_list_collection_ids_async(transport: str = "grpc_asyncio"):
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, firestore.ListCollectionIdsResponse)
+    assert isinstance(response, pagers.ListCollectionIdsAsyncPager)
 
     assert response.collection_ids == ["collection_ids_value"]
 
@@ -2419,14 +2611,140 @@ async def test_list_collection_ids_flattened_error_async():
         )
 
 
-def test_batch_write(transport: str = "grpc"):
+def test_list_collection_ids_pager():
+    client = FirestoreClient(credentials=credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client._transport.list_collection_ids), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            firestore.ListCollectionIdsResponse(
+                collection_ids=[str(), str(), str(),], next_page_token="abc",
+            ),
+            firestore.ListCollectionIdsResponse(
+                collection_ids=[], next_page_token="def",
+            ),
+            firestore.ListCollectionIdsResponse(
+                collection_ids=[str(),], next_page_token="ghi",
+            ),
+            firestore.ListCollectionIdsResponse(collection_ids=[str(), str(),],),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_collection_ids(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
+        assert len(results) == 6
+        assert all(isinstance(i, str) for i in results)
+
+
+def test_list_collection_ids_pages():
+    client = FirestoreClient(credentials=credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client._transport.list_collection_ids), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            firestore.ListCollectionIdsResponse(
+                collection_ids=[str(), str(), str(),], next_page_token="abc",
+            ),
+            firestore.ListCollectionIdsResponse(
+                collection_ids=[], next_page_token="def",
+            ),
+            firestore.ListCollectionIdsResponse(
+                collection_ids=[str(),], next_page_token="ghi",
+            ),
+            firestore.ListCollectionIdsResponse(collection_ids=[str(), str(),],),
+            RuntimeError,
+        )
+        pages = list(client.list_collection_ids(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_collection_ids_async_pager():
+    client = FirestoreAsyncClient(credentials=credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client._client._transport.list_collection_ids),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            firestore.ListCollectionIdsResponse(
+                collection_ids=[str(), str(), str(),], next_page_token="abc",
+            ),
+            firestore.ListCollectionIdsResponse(
+                collection_ids=[], next_page_token="def",
+            ),
+            firestore.ListCollectionIdsResponse(
+                collection_ids=[str(),], next_page_token="ghi",
+            ),
+            firestore.ListCollectionIdsResponse(collection_ids=[str(), str(),],),
+            RuntimeError,
+        )
+        async_pager = await client.list_collection_ids(request={},)
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, str) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_collection_ids_async_pages():
+    client = FirestoreAsyncClient(credentials=credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client._client._transport.list_collection_ids),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            firestore.ListCollectionIdsResponse(
+                collection_ids=[str(), str(), str(),], next_page_token="abc",
+            ),
+            firestore.ListCollectionIdsResponse(
+                collection_ids=[], next_page_token="def",
+            ),
+            firestore.ListCollectionIdsResponse(
+                collection_ids=[str(),], next_page_token="ghi",
+            ),
+            firestore.ListCollectionIdsResponse(collection_ids=[str(), str(),],),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.list_collection_ids(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_batch_write(transport: str = "grpc", request_type=firestore.BatchWriteRequest):
     client = FirestoreClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore.BatchWriteRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.batch_write), "__call__") as call:
@@ -2439,10 +2757,14 @@ def test_batch_write(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore.BatchWriteRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, firestore.BatchWriteResponse)
+
+
+def test_batch_write_from_dict():
+    test_batch_write(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -2529,14 +2851,16 @@ async def test_batch_write_field_headers_async():
     assert ("x-goog-request-params", "database=database/value",) in kw["metadata"]
 
 
-def test_create_document(transport: str = "grpc"):
+def test_create_document(
+    transport: str = "grpc", request_type=firestore.CreateDocumentRequest
+):
     client = FirestoreClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore.CreateDocumentRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.create_document), "__call__") as call:
@@ -2549,12 +2873,16 @@ def test_create_document(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore.CreateDocumentRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document.Document)
 
     assert response.name == "name_value"
+
+
+def test_create_document_from_dict():
+    test_create_document(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -2695,6 +3023,18 @@ def test_transport_get_channel():
     assert channel
 
 
+@pytest.mark.parametrize(
+    "transport_class",
+    [transports.FirestoreGrpcTransport, transports.FirestoreGrpcAsyncIOTransport],
+)
+def test_transport_adc(transport_class):
+    # Test default credentials are used if not provided.
+    with mock.patch.object(auth, "default") as adc:
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transport_class()
+        adc.assert_called_once()
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = FirestoreClient(credentials=credentials.AnonymousCredentials(),)
@@ -2712,9 +3052,13 @@ def test_firestore_base_transport_error():
 
 def test_firestore_base_transport():
     # Instantiate the base transport.
-    transport = transports.FirestoreTransport(
-        credentials=credentials.AnonymousCredentials(),
-    )
+    with mock.patch(
+        "google.cloud.firestore_v1.services.firestore.transports.FirestoreTransport.__init__"
+    ) as Transport:
+        Transport.return_value = None
+        transport = transports.FirestoreTransport(
+            credentials=credentials.AnonymousCredentials(),
+        )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
@@ -2742,16 +3086,35 @@ def test_firestore_base_transport():
 
 def test_firestore_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(auth, "load_credentials_from_file") as load_creds:
+    with mock.patch.object(
+        auth, "load_credentials_from_file"
+    ) as load_creds, mock.patch(
+        "google.cloud.firestore_v1.services.firestore.transports.FirestoreTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
         load_creds.return_value = (credentials.AnonymousCredentials(), None)
-        transport = transports.FirestoreTransport(credentials_file="credentials.json",)
+        transport = transports.FirestoreTransport(
+            credentials_file="credentials.json", quota_project_id="octopus",
+        )
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/datastore",
             ),
+            quota_project_id="octopus",
         )
+
+
+def test_firestore_base_transport_with_adc():
+    # Test the default credentials are used if credentials and credentials_file are None.
+    with mock.patch.object(auth, "default") as adc, mock.patch(
+        "google.cloud.firestore_v1.services.firestore.transports.FirestoreTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transport = transports.FirestoreTransport()
+        adc.assert_called_once()
 
 
 def test_firestore_auth_adc():
@@ -2763,7 +3126,8 @@ def test_firestore_auth_adc():
             scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/datastore",
-            )
+            ),
+            quota_project_id=None,
         )
 
 
@@ -2772,12 +3136,15 @@ def test_firestore_transport_auth_adc():
     # ADC credentials.
     with mock.patch.object(auth, "default") as adc:
         adc.return_value = (credentials.AnonymousCredentials(), None)
-        transports.FirestoreGrpcTransport(host="squid.clam.whelk")
+        transports.FirestoreGrpcTransport(
+            host="squid.clam.whelk", quota_project_id="octopus"
+        )
         adc.assert_called_once_with(
             scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/datastore",
-            )
+            ),
+            quota_project_id="octopus",
         )
 
 
@@ -2804,184 +3171,126 @@ def test_firestore_host_with_port():
 def test_firestore_grpc_transport_channel():
     channel = grpc.insecure_channel("http://localhost/")
 
-    # Check that if channel is provided, mtls endpoint and client_cert_source
-    # won't be used.
-    callback = mock.MagicMock()
+    # Check that channel is used if provided.
     transport = transports.FirestoreGrpcTransport(
-        host="squid.clam.whelk",
-        channel=channel,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=callback,
+        host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
-    assert not callback.called
 
 
 def test_firestore_grpc_asyncio_transport_channel():
     channel = aio.insecure_channel("http://localhost/")
 
-    # Check that if channel is provided, mtls endpoint and client_cert_source
-    # won't be used.
-    callback = mock.MagicMock()
+    # Check that channel is used if provided.
     transport = transports.FirestoreGrpcAsyncIOTransport(
-        host="squid.clam.whelk",
-        channel=channel,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=callback,
+        host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
-    assert not callback.called
-
-
-@mock.patch("grpc.ssl_channel_credentials", autospec=True)
-@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
-def test_firestore_grpc_transport_channel_mtls_with_client_cert_source(
-    grpc_create_channel, grpc_ssl_channel_cred
-):
-    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
-    # are provided, then a mTLS channel will be created.
-    mock_cred = mock.Mock()
-
-    mock_ssl_cred = mock.Mock()
-    grpc_ssl_channel_cred.return_value = mock_ssl_cred
-
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    transport = transports.FirestoreGrpcTransport(
-        host="squid.clam.whelk",
-        credentials=mock_cred,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=client_cert_source_callback,
-    )
-    grpc_ssl_channel_cred.assert_called_once_with(
-        certificate_chain=b"cert bytes", private_key=b"key bytes"
-    )
-    grpc_create_channel.assert_called_once_with(
-        "mtls.squid.clam.whelk:443",
-        credentials=mock_cred,
-        credentials_file=None,
-        scopes=(
-            "https://www.googleapis.com/auth/cloud-platform",
-            "https://www.googleapis.com/auth/datastore",
-        ),
-        ssl_credentials=mock_ssl_cred,
-    )
-    assert transport.grpc_channel == mock_grpc_channel
-
-
-@mock.patch("grpc.ssl_channel_credentials", autospec=True)
-@mock.patch("google.api_core.grpc_helpers_async.create_channel", autospec=True)
-def test_firestore_grpc_asyncio_transport_channel_mtls_with_client_cert_source(
-    grpc_create_channel, grpc_ssl_channel_cred
-):
-    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
-    # are provided, then a mTLS channel will be created.
-    mock_cred = mock.Mock()
-
-    mock_ssl_cred = mock.Mock()
-    grpc_ssl_channel_cred.return_value = mock_ssl_cred
-
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    transport = transports.FirestoreGrpcAsyncIOTransport(
-        host="squid.clam.whelk",
-        credentials=mock_cred,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=client_cert_source_callback,
-    )
-    grpc_ssl_channel_cred.assert_called_once_with(
-        certificate_chain=b"cert bytes", private_key=b"key bytes"
-    )
-    grpc_create_channel.assert_called_once_with(
-        "mtls.squid.clam.whelk:443",
-        credentials=mock_cred,
-        credentials_file=None,
-        scopes=(
-            "https://www.googleapis.com/auth/cloud-platform",
-            "https://www.googleapis.com/auth/datastore",
-        ),
-        ssl_credentials=mock_ssl_cred,
-    )
-    assert transport.grpc_channel == mock_grpc_channel
 
 
 @pytest.mark.parametrize(
-    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
+    "transport_class",
+    [transports.FirestoreGrpcTransport, transports.FirestoreGrpcAsyncIOTransport],
 )
-@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
-def test_firestore_grpc_transport_channel_mtls_with_adc(
-    grpc_create_channel, api_mtls_endpoint
-):
-    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
-    # is provided, then a mTLS channel will be created with SSL ADC.
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
+def test_firestore_transport_channel_mtls_with_client_cert_source(transport_class):
+    with mock.patch(
+        "grpc.ssl_channel_credentials", autospec=True
+    ) as grpc_ssl_channel_cred:
+        with mock.patch.object(
+            transport_class, "create_channel", autospec=True
+        ) as grpc_create_channel:
+            mock_ssl_cred = mock.Mock()
+            grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
-    # Mock google.auth.transport.grpc.SslCredentials class.
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+
+            cred = credentials.AnonymousCredentials()
+            with pytest.warns(DeprecationWarning):
+                with mock.patch.object(auth, "default") as adc:
+                    adc.return_value = (cred, None)
+                    transport = transport_class(
+                        host="squid.clam.whelk",
+                        api_mtls_endpoint="mtls.squid.clam.whelk",
+                        client_cert_source=client_cert_source_callback,
+                    )
+                    adc.assert_called_once()
+
+            grpc_ssl_channel_cred.assert_called_once_with(
+                certificate_chain=b"cert bytes", private_key=b"key bytes"
+            )
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=cred,
+                credentials_file=None,
+                scopes=(
+                    "https://www.googleapis.com/auth/cloud-platform",
+                    "https://www.googleapis.com/auth/datastore",
+                ),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+            )
+            assert transport.grpc_channel == mock_grpc_channel
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [transports.FirestoreGrpcTransport, transports.FirestoreGrpcAsyncIOTransport],
+)
+def test_firestore_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        mock_cred = mock.Mock()
-        transport = transports.FirestoreGrpcTransport(
-            host="squid.clam.whelk",
-            credentials=mock_cred,
-            api_mtls_endpoint=api_mtls_endpoint,
-            client_cert_source=None,
-        )
-        grpc_create_channel.assert_called_once_with(
-            "mtls.squid.clam.whelk:443",
-            credentials=mock_cred,
-            credentials_file=None,
-            scopes=(
-                "https://www.googleapis.com/auth/cloud-platform",
-                "https://www.googleapis.com/auth/datastore",
-            ),
-            ssl_credentials=mock_ssl_cred,
-        )
-        assert transport.grpc_channel == mock_grpc_channel
+        with mock.patch.object(
+            transport_class, "create_channel", autospec=True
+        ) as grpc_create_channel:
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+            mock_cred = mock.Mock()
+
+            with pytest.warns(DeprecationWarning):
+                transport = transport_class(
+                    host="squid.clam.whelk",
+                    credentials=mock_cred,
+                    api_mtls_endpoint="mtls.squid.clam.whelk",
+                    client_cert_source=None,
+                )
+
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=mock_cred,
+                credentials_file=None,
+                scopes=(
+                    "https://www.googleapis.com/auth/cloud-platform",
+                    "https://www.googleapis.com/auth/datastore",
+                ),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+            )
+            assert transport.grpc_channel == mock_grpc_channel
 
 
-@pytest.mark.parametrize(
-    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
-)
-@mock.patch("google.api_core.grpc_helpers_async.create_channel", autospec=True)
-def test_firestore_grpc_asyncio_transport_channel_mtls_with_adc(
-    grpc_create_channel, api_mtls_endpoint
-):
-    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
-    # is provided, then a mTLS channel will be created with SSL ADC.
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
+def test_client_withDEFAULT_CLIENT_INFO():
+    client_info = gapic_v1.client_info.ClientInfo()
 
-    # Mock google.auth.transport.grpc.SslCredentials class.
-    mock_ssl_cred = mock.Mock()
-    with mock.patch.multiple(
-        "google.auth.transport.grpc.SslCredentials",
-        __init__=mock.Mock(return_value=None),
-        ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
-    ):
-        mock_cred = mock.Mock()
-        transport = transports.FirestoreGrpcAsyncIOTransport(
-            host="squid.clam.whelk",
-            credentials=mock_cred,
-            api_mtls_endpoint=api_mtls_endpoint,
-            client_cert_source=None,
+    with mock.patch.object(
+        transports.FirestoreTransport, "_prep_wrapped_messages"
+    ) as prep:
+        client = FirestoreClient(
+            credentials=credentials.AnonymousCredentials(), client_info=client_info,
         )
-        grpc_create_channel.assert_called_once_with(
-            "mtls.squid.clam.whelk:443",
-            credentials=mock_cred,
-            credentials_file=None,
-            scopes=(
-                "https://www.googleapis.com/auth/cloud-platform",
-                "https://www.googleapis.com/auth/datastore",
-            ),
-            ssl_credentials=mock_ssl_cred,
+        prep.assert_called_once_with(client_info)
+
+    with mock.patch.object(
+        transports.FirestoreTransport, "_prep_wrapped_messages"
+    ) as prep:
+        transport_class = FirestoreClient.get_transport_class()
+        transport = transport_class(
+            credentials=credentials.AnonymousCredentials(), client_info=client_info,
         )
-        assert transport.grpc_channel == mock_grpc_channel
+        prep.assert_called_once_with(client_info)

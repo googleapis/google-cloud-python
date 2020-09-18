@@ -30,6 +30,7 @@ from .firestore_admin import (
     ExportDocumentsRequest,
     ImportDocumentsRequest,
 )
+from .location import LocationMetadata
 from .operation import (
     IndexOperationMetadata,
     FieldOperationMetadata,
@@ -38,7 +39,6 @@ from .operation import (
     ExportDocumentsResponse,
     Progress,
 )
-from .location import LocationMetadata
 
 
 __all__ = (
@@ -55,11 +55,11 @@ __all__ = (
     "ListFieldsResponse",
     "ExportDocumentsRequest",
     "ImportDocumentsRequest",
+    "LocationMetadata",
     "IndexOperationMetadata",
     "FieldOperationMetadata",
     "ExportDocumentsMetadata",
     "ImportDocumentsMetadata",
     "ExportDocumentsResponse",
     "Progress",
-    "LocationMetadata",
 )
