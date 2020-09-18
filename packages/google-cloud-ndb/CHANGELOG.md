@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [1.6.0](https://www.github.com/googleapis/python-ndb/compare/v1.5.2...v1.6.0) (2020-09-14)
+
+
+### Features
+
+* memcached integration ([#536](https://www.github.com/googleapis/python-ndb/issues/536)) ([2bd43da](https://www.github.com/googleapis/python-ndb/commit/2bd43dabbd6b6fbffbb4390520e47ae06262c858))
+
 ### [1.5.2](https://www.github.com/googleapis/python-ndb/compare/v1.5.1...v1.5.2) (2020-09-03)
 
 
