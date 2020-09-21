@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+### [0.7.1](https://www.github.com/googleapis/python-securitycenter/compare/v0.7.0...v0.7.1) (2020-09-18)
+
+
+### Bug Fixes
+
+* **sample:** fix a broken test ([#63](https://www.github.com/googleapis/python-securitycenter/issues/63)) ([7062b1c](https://www.github.com/googleapis/python-securitycenter/commit/7062b1c18a6f787275b325d2a7713cf0b2627094)), closes [#59](https://www.github.com/googleapis/python-securitycenter/issues/59)
+
 ## [0.7.0](https://www.github.com/googleapis/python-securitycenter/compare/v0.6.0...v0.7.0) (2020-09-10)
 
 
