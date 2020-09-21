@@ -32,11 +32,13 @@ need to be deleted during teardown.
 import datetime
 import pytest
 
-from test_utils.system import unique_resource_id
-from test_utils.retry import RetryErrors
+from google.api_core.exceptions import DeadlineExceeded
 from google.api_core.exceptions import NotFound
 from google.api_core.exceptions import TooManyRequests
-from google.api_core.exceptions import DeadlineExceeded
+from google.api_core.exceptions import ServiceUnavailable
+from test_utils.system import unique_resource_id
+from test_utils.retry import RetryErrors
+
 from google.cloud._helpers import UTC
 from google.cloud.bigtable import Client
 from google.cloud.bigtable import enums
@@ -62,7 +64,7 @@ LABEL_STAMP = (
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
 INSTANCES_TO_DELETE = []
 
-retry_429 = RetryErrors(TooManyRequests, max_tries=9)
+retry_429_503 = RetryErrors((ServiceUnavailable, TooManyRequests), max_tries=9)
 retry_504 = RetryErrors(DeadlineExceeded, max_tries=4)
 
 
@@ -97,11 +99,11 @@ def setup_module():
 
 
 def teardown_module():
-    retry_429(Config.INSTANCE.delete)()
+    retry_429_503(Config.INSTANCE.delete)()
 
     for instance in INSTANCES_TO_DELETE:
         try:
-            retry_429(instance.delete)()
+            retry_429_503(instance.delete)()
         except NotFound:
             pass
 
@@ -137,7 +139,7 @@ def test_bigtable_create_instance():
     try:
         assert instance.exists()
     finally:
-        retry_429(instance.delete)()
+        retry_429_503(instance.delete)()
 
 
 def test_bigtable_create_additional_cluster():
@@ -172,7 +174,7 @@ def test_bigtable_create_additional_cluster():
     try:
         assert cluster.exists()
     finally:
-        retry_429(cluster.delete)()
+        retry_429_503(cluster.delete)()
 
 
 def test_bigtable_create_reload_delete_app_profile():
@@ -318,7 +320,7 @@ def test_bigtable_list_app_profiles():
     try:
         assert len(app_profiles_list) > 0
     finally:
-        retry_429(app_profile.delete)(ignore_warnings=True)
+        retry_429_503(app_profile.delete)(ignore_warnings=True)
 
 
 def test_bigtable_instance_exists():
@@ -423,7 +425,7 @@ def test_bigtable_create_table():
     try:
         assert table.exists()
     finally:
-        retry_429(table.delete)()
+        retry_429_503(table.delete)()
 
 
 def test_bigtable_list_tables():

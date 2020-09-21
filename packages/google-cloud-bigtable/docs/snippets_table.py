@@ -32,9 +32,11 @@ need to be deleted during teardown.
 import datetime
 import pytest
 
+from google.api_core.exceptions import TooManyRequests
+from google.api_core.exceptions import ServiceUnavailable
 from test_utils.system import unique_resource_id
 from test_utils.retry import RetryErrors
-from google.api_core.exceptions import TooManyRequests
+
 from google.cloud._helpers import UTC
 from google.cloud.bigtable import Client
 from google.cloud.bigtable import enums
@@ -66,7 +68,7 @@ COL_NAME2 = b"col-name2"
 CELL_VAL2 = b"cell-val2"
 ROW_KEY2 = b"row_key_id2"
 
-retry_429 = RetryErrors(TooManyRequests, max_tries=9)
+retry_429_503 = RetryErrors((ServiceUnavailable, TooManyRequests), max_tries=9)
 
 
 class Config(object):
@@ -106,7 +108,7 @@ def setup_module():
 
 
 def teardown_module():
-    retry_429(Config.INSTANCE.delete)()
+    retry_429_503(Config.INSTANCE.delete)()
 
 
 def test_bigtable_create_table():
