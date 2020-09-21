@@ -38,7 +38,7 @@ to subscribe to, and it must already exist. Once you have that, it is easy:
     # your application.
     sub_path = subscriber.subscription_path(PROJECT, SUBSCRIPTION)
     topic_path = subscriber.topic_path(PROJECT, TOPIC)
-    subscriber.create_subscription(sub_path, topic_path)
+    subscriber.create_subscription(request={"name": sub_path, "topic": topic_path})
 
 Once you have created a subscription (or if you already had one), the next
 step is to pull data from it.
@@ -55,13 +55,23 @@ To pull the messages synchronously, use the client's
     # Substitute PROJECT and SUBSCRIPTION with appropriate values for your
     # application.
     subscription_path = subscriber.subscription_path(PROJECT, SUBSCRIPTION)
-    response = subscriber.pull(subscription_path, max_messages=5)
+    response = subscriber.pull(
+        request={
+            "subscription": subscription_path,
+            "max_messages": 5,
+        }
+    )
 
     for msg in response.received_messages:
         print("Received message:", msg.message.data)
 
     ack_ids = [msg.ack_id for msg in response.received_messages]
-    subscriber.acknowledge(subscription_path, ack_ids)
+    subscriber.acknowledge(
+        request={
+            "subscription": subscription_path,
+            "ack_ids": ack_ids,
+        }
+    )
 
 The method returns a :class:`~.pubsub_v1.types.PullResponse` instance that
 contains a list of received :class:`~.pubsub_v1.types.ReceivedMessage`
@@ -76,7 +86,13 @@ be dropped by this client and the backend will try to re-deliver them.
 
     ack_ids = []  # TODO: populate with `ack_ids` of the messages to NACK
     ack_deadline_seconds = 0
-    subscriber.modify_ack_deadline(subscription_path, ack_ids, ack_deadline_seconds)
+    subscriber.modify_ack_deadline(
+        request={
+            "subscription": subscription_path,
+            "ack_ids": ack_ids,
+            "ack_deadline_seconds": ack_deadline_seconds,
+        }
+    )
 
 
 Pulling a Subscription Asynchronously
