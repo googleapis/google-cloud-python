@@ -211,8 +211,12 @@ class JSONConnection(Connection):
         )
 
         query_params = query_params or {}
-        if query_params:
-            url += "?" + urlencode(query_params, doseq=True)
+
+        if "prettyPrint" not in query_params:
+            query_params = query_params.copy()
+            query_params["prettyPrint"] = "false"
+
+        url += "?" + urlencode(query_params, doseq=True)
 
         return url
 

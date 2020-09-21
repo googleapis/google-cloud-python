@@ -184,8 +184,15 @@ class TestJSONConnection(unittest.TestCase):
         client = object()
         conn = self._make_mock_one(client)
         # Intended to emulate self.mock_template
-        URI = "/".join([conn.API_BASE_URL, "mock", conn.API_VERSION, "foo"])
+        URI = "/".join([conn.API_BASE_URL, "mock", conn.API_VERSION, "foo?prettyPrint=false"])
         self.assertEqual(conn.build_api_url("/foo"), URI)
+
+    def test_build_api_url_w_pretty_print_query_params(self):
+        client = object()
+        conn = self._make_mock_one(client)
+        uri = conn.build_api_url("/foo", {"prettyPrint": "true"})
+        URI = "/".join([conn.API_BASE_URL, "mock", conn.API_VERSION, "foo?prettyPrint=true"])
+        self.assertEqual(uri, URI)
 
     def test_build_api_url_w_extra_query_params(self):
         from six.moves.urllib.parse import parse_qs
@@ -319,7 +326,7 @@ class TestJSONConnection(unittest.TestCase):
             "User-Agent": conn.user_agent,
             CLIENT_INFO_HEADER: conn.user_agent,
         }
-        expected_url = "{base}/mock/{version}{path}".format(
+        expected_url = "{base}/mock/{version}{path}?prettyPrint=false".format(
             base=conn.API_BASE_URL, version=conn.API_VERSION, path=path
         )
         http.request.assert_called_once_with(
@@ -481,7 +488,7 @@ class TestJSONConnection(unittest.TestCase):
             "User-Agent": conn.user_agent,
             CLIENT_INFO_HEADER: conn.user_agent,
         }
-        expected_url = "{base}/mock/{version}{path}".format(
+        expected_url = "{base}/mock/{version}{path}?prettyPrint=false".format(
             base=conn.API_BASE_URL, version=conn.API_VERSION, path=path
         )
         http.request.assert_called_once_with(
