@@ -21,7 +21,9 @@ Install this library using ``pip``:
     $ pip install proto-plus
 
 This library carries a dependency on the official implementation
-(``protobuf``), which may install a C component.
+(protobuf_), which may install a C component.
+
+.. _protobuf: https://pypi.org/project/protobuf/
 
 
 Table of Contents
