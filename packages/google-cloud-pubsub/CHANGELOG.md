@@ -5,6 +5,32 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## 2.1.0
+
+09-21-2020 02:19 PDT
+
+
+### Implementation Changes
+
+- Convert all RPC error types to exceptions. ([#163](https://github.com/googleapis/python-pubsub/issues/163)) ([#170](https://github.com/googleapis/python-pubsub/pull/170))
+- Pass client options to publisher and subscriber clients. ([#166](https://github.com/googleapis/python-pubsub/issues/166)) ([#190](https://github.com/googleapis/python-pubsub/pull/190))
+
+
+### New Features
+
+- Regenerate the client lib to pick new mtls env (via synth). ([#197](https://github.com/googleapis/python-pubsub/pull/197))
+
+
+### Documentation
+
+- Add subscription detachment sample. ([#152](https://github.com/googleapis/python-pubsub/pull/152))
+- Use new call syntax in subscriber docs. ([#198](https://github.com/googleapis/python-pubsub/issues/198)) ([#203](https://github.com/googleapis/python-pubsub/pull/203))
+
+
+### Internal / Testing Changes
+
+- Update CODEOWNERS. ([#193](https://github.com/googleapis/python-pubsub/pull/193))
+
 ## 2.0.0
 
 09-11-2020 05:03 PDT
