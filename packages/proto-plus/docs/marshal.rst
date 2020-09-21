@@ -23,9 +23,9 @@ Protocol buffer type                Python type             Nullable
 ``google.protobuf.FloatValue``      ``float``                    Yes
 ``google.protobuf.Int32Value``      ``int``                      Yes
 ``google.protobuf.Int64Value``      ``int``                      Yes
-``google.protobuf.ListValue``       ``MutableSequence``            –
+``google.protobuf.ListValue``       ``MutableSequence``          Yes
 ``google.protobuf.StringValue``     ``str``                      Yes
-``google.protobuf.Struct``          ``MutableMapping``             –
+``google.protobuf.Struct``          ``MutableMapping``           Yes
 ``google.protobuf.Timestamp``       ``datetime.datetime``        Yes
 ``google.protobuf.UInt32Value``     ``int``                      Yes
 ``google.protobuf.UInt64Value``     ``int``                      Yes

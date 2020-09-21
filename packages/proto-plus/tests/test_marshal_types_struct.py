@@ -64,6 +64,22 @@ def test_value_lists_read():
     assert foo.value == ["3", None, "foo", True]
 
 
+def test_value_lists_null():
+    class Foo(proto.Message):
+        value = proto.Field(struct_pb2.ListValue, number=1)
+
+    foo = Foo()
+    assert foo.value is None
+
+
+def test_value_struct_null():
+    class Foo(proto.Message):
+        value = proto.Field(struct_pb2.Struct, number=1)
+
+    foo = Foo()
+    assert foo.value is None
+
+
 def test_value_lists_rmw():
     class Foo(proto.Message):
         value = proto.Field(struct_pb2.Value, number=1)

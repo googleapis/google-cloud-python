@@ -82,7 +82,11 @@ class ListValueRule:
 
     def to_python(self, value, *, absent: bool = None):
         """Coerce the given value to a Python sequence."""
-        return repeated.RepeatedComposite(value.values, marshal=self._marshal)
+        return (
+            None
+            if absent
+            else repeated.RepeatedComposite(value.values, marshal=self._marshal)
+        )
 
     def to_proto(self, value) -> struct_pb2.ListValue:
         # We got a proto, or else something we sent originally.
@@ -106,7 +110,9 @@ class StructRule:
 
     def to_python(self, value, *, absent: bool = None):
         """Coerce the given value to a Python mapping."""
-        return maps.MapComposite(value.fields, marshal=self._marshal)
+        return (
+            None if absent else maps.MapComposite(value.fields, marshal=self._marshal)
+        )
 
     def to_proto(self, value) -> struct_pb2.Struct:
         # We got a proto, or else something we sent originally.
