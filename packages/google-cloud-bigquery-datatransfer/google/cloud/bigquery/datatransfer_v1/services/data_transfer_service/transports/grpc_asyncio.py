@@ -1,0 +1,653 @@
+# -*- coding: utf-8 -*-
+
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
+
+from google.api_core import gapic_v1  # type: ignore
+from google.api_core import grpc_helpers_async  # type: ignore
+from google import auth  # type: ignore
+from google.auth import credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+
+import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
+
+from google.cloud.bigquery.datatransfer_v1.types import datatransfer
+from google.cloud.bigquery.datatransfer_v1.types import transfer
+from google.protobuf import empty_pb2 as empty  # type: ignore
+
+from .base import DataTransferServiceTransport, DEFAULT_CLIENT_INFO
+from .grpc import DataTransferServiceGrpcTransport
+
+
+class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
+    """gRPC AsyncIO backend transport for DataTransferService.
+
+    The Google BigQuery Data Transfer Service API enables
+    BigQuery users to configure the transfer of their data from
+    other Google Products into BigQuery. This service contains
+    methods that are end user exposed. It backs up the frontend.
+
+    This class defines the same methods as the primary client, so the
+    primary client can load the underlying transport implementation
+    and call it.
+
+    It sends protocol buffers over the wire using gRPC (which is built on
+    top of HTTP/2); the ``grpcio`` package must be installed.
+    """
+
+    _grpc_channel: aio.Channel
+    _stubs: Dict[str, Callable] = {}
+
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "bigquerydatatransfer.googleapis.com",
+        credentials: credentials.Credentials = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> aio.Channel:
+        """Create and return a gRPC AsyncIO channel object.
+        Args:
+            address (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is ignored if ``channel`` is provided.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            aio.Channel: A gRPC AsyncIO channel object.
+        """
+        scopes = scopes or cls.AUTH_SCOPES
+        return grpc_helpers_async.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            scopes=scopes,
+            quota_project_id=quota_project_id,
+            **kwargs,
+        )
+
+    def __init__(
+        self,
+        *,
+        host: str = "bigquerydatatransfer.googleapis.com",
+        credentials: credentials.Credentials = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        channel: aio.Channel = None,
+        api_mtls_endpoint: str = None,
+        client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
+        ssl_channel_credentials: grpc.ChannelCredentials = None,
+        quota_project_id=None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+    ) -> None:
+        """Instantiate the transport.
+
+        Args:
+            host (Optional[str]): The hostname to connect to.
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify the application to the service; if none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
+                This argument is ignored if ``channel`` is provided.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is ignored if ``channel`` is provided.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            channel (Optional[aio.Channel]): A ``Channel`` instance through
+                which to make calls.
+            api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
+                If provided, it overrides the ``host`` argument and tries to create
+                a mutual TLS channel with client SSL credentials from
+                ``client_cert_source`` or applicatin default SSL credentials.
+            client_cert_source (Optional[Callable[[], Tuple[bytes, bytes]]]):
+                Deprecated. A callback to provide client SSL certificate bytes and
+                private key bytes, both in PEM format. It is ignored if
+                ``api_mtls_endpoint`` is None.
+            ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
+                for grpc channel. It is ignored if ``channel`` is provided.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
+                The client info used to send a user-agent string along with	
+                API requests. If ``None``, then default info will be used.	
+                Generally, you only need to set this if you're developing	
+                your own client library.
+
+        Raises:
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+              creation failed for any reason.
+          google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
+              and ``credentials_file`` are passed.
+        """
+        if channel:
+            # Sanity check: Ensure that channel and credentials are not both
+            # provided.
+            credentials = False
+
+            # If a channel was explicitly provided, set it.
+            self._grpc_channel = channel
+        elif api_mtls_endpoint:
+            warnings.warn(
+                "api_mtls_endpoint and client_cert_source are deprecated",
+                DeprecationWarning,
+            )
+
+            host = (
+                api_mtls_endpoint
+                if ":" in api_mtls_endpoint
+                else api_mtls_endpoint + ":443"
+            )
+
+            if credentials is None:
+                credentials, _ = auth.default(
+                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
+                )
+
+            # Create SSL credentials with client_cert_source or application
+            # default SSL credentials.
+            if client_cert_source:
+                cert, key = client_cert_source()
+                ssl_credentials = grpc.ssl_channel_credentials(
+                    certificate_chain=cert, private_key=key
+                )
+            else:
+                ssl_credentials = SslCredentials().ssl_credentials
+
+            # create a new channel. The provided one is ignored.
+            self._grpc_channel = type(self).create_channel(
+                host,
+                credentials=credentials,
+                credentials_file=credentials_file,
+                ssl_credentials=ssl_credentials,
+                scopes=scopes or self.AUTH_SCOPES,
+                quota_project_id=quota_project_id,
+            )
+        else:
+            host = host if ":" in host else host + ":443"
+
+            if credentials is None:
+                credentials, _ = auth.default(
+                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
+                )
+
+            # create a new channel. The provided one is ignored.
+            self._grpc_channel = type(self).create_channel(
+                host,
+                credentials=credentials,
+                credentials_file=credentials_file,
+                ssl_credentials=ssl_channel_credentials,
+                scopes=scopes or self.AUTH_SCOPES,
+                quota_project_id=quota_project_id,
+            )
+
+        # Run the base constructor.
+        super().__init__(
+            host=host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            scopes=scopes or self.AUTH_SCOPES,
+            quota_project_id=quota_project_id,
+            client_info=client_info,
+        )
+
+        self._stubs = {}
+
+    @property
+    def grpc_channel(self) -> aio.Channel:
+        """Create the channel designed to connect to this service.
+
+        This property caches on the instance; repeated calls return
+        the same channel.
+        """
+        # Return the channel from cache.
+        return self._grpc_channel
+
+    @property
+    def get_data_source(
+        self,
+    ) -> Callable[
+        [datatransfer.GetDataSourceRequest], Awaitable[datatransfer.DataSource]
+    ]:
+        r"""Return a callable for the get data source method over gRPC.
+
+        Retrieves a supported data source and returns its
+        settings, which can be used for UI rendering.
+
+        Returns:
+            Callable[[~.GetDataSourceRequest],
+                    Awaitable[~.DataSource]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_data_source" not in self._stubs:
+            self._stubs["get_data_source"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.datatransfer.v1.DataTransferService/GetDataSource",
+                request_serializer=datatransfer.GetDataSourceRequest.serialize,
+                response_deserializer=datatransfer.DataSource.deserialize,
+            )
+        return self._stubs["get_data_source"]
+
+    @property
+    def list_data_sources(
+        self,
+    ) -> Callable[
+        [datatransfer.ListDataSourcesRequest],
+        Awaitable[datatransfer.ListDataSourcesResponse],
+    ]:
+        r"""Return a callable for the list data sources method over gRPC.
+
+        Lists supported data sources and returns their
+        settings, which can be used for UI rendering.
+
+        Returns:
+            Callable[[~.ListDataSourcesRequest],
+                    Awaitable[~.ListDataSourcesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_data_sources" not in self._stubs:
+            self._stubs["list_data_sources"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ListDataSources",
+                request_serializer=datatransfer.ListDataSourcesRequest.serialize,
+                response_deserializer=datatransfer.ListDataSourcesResponse.deserialize,
+            )
+        return self._stubs["list_data_sources"]
+
+    @property
+    def create_transfer_config(
+        self,
+    ) -> Callable[
+        [datatransfer.CreateTransferConfigRequest], Awaitable[transfer.TransferConfig]
+    ]:
+        r"""Return a callable for the create transfer config method over gRPC.
+
+        Creates a new data transfer configuration.
+
+        Returns:
+            Callable[[~.CreateTransferConfigRequest],
+                    Awaitable[~.TransferConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_transfer_config" not in self._stubs:
+            self._stubs["create_transfer_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.datatransfer.v1.DataTransferService/CreateTransferConfig",
+                request_serializer=datatransfer.CreateTransferConfigRequest.serialize,
+                response_deserializer=transfer.TransferConfig.deserialize,
+            )
+        return self._stubs["create_transfer_config"]
+
+    @property
+    def update_transfer_config(
+        self,
+    ) -> Callable[
+        [datatransfer.UpdateTransferConfigRequest], Awaitable[transfer.TransferConfig]
+    ]:
+        r"""Return a callable for the update transfer config method over gRPC.
+
+        Updates a data transfer configuration.
+        All fields must be set, even if they are not updated.
+
+        Returns:
+            Callable[[~.UpdateTransferConfigRequest],
+                    Awaitable[~.TransferConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_transfer_config" not in self._stubs:
+            self._stubs["update_transfer_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.datatransfer.v1.DataTransferService/UpdateTransferConfig",
+                request_serializer=datatransfer.UpdateTransferConfigRequest.serialize,
+                response_deserializer=transfer.TransferConfig.deserialize,
+            )
+        return self._stubs["update_transfer_config"]
+
+    @property
+    def delete_transfer_config(
+        self,
+    ) -> Callable[[datatransfer.DeleteTransferConfigRequest], Awaitable[empty.Empty]]:
+        r"""Return a callable for the delete transfer config method over gRPC.
+
+        Deletes a data transfer configuration,
+        including any associated transfer runs and logs.
+
+        Returns:
+            Callable[[~.DeleteTransferConfigRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_transfer_config" not in self._stubs:
+            self._stubs["delete_transfer_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.datatransfer.v1.DataTransferService/DeleteTransferConfig",
+                request_serializer=datatransfer.DeleteTransferConfigRequest.serialize,
+                response_deserializer=empty.Empty.FromString,
+            )
+        return self._stubs["delete_transfer_config"]
+
+    @property
+    def get_transfer_config(
+        self,
+    ) -> Callable[
+        [datatransfer.GetTransferConfigRequest], Awaitable[transfer.TransferConfig]
+    ]:
+        r"""Return a callable for the get transfer config method over gRPC.
+
+        Returns information about a data transfer config.
+
+        Returns:
+            Callable[[~.GetTransferConfigRequest],
+                    Awaitable[~.TransferConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_transfer_config" not in self._stubs:
+            self._stubs["get_transfer_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.datatransfer.v1.DataTransferService/GetTransferConfig",
+                request_serializer=datatransfer.GetTransferConfigRequest.serialize,
+                response_deserializer=transfer.TransferConfig.deserialize,
+            )
+        return self._stubs["get_transfer_config"]
+
+    @property
+    def list_transfer_configs(
+        self,
+    ) -> Callable[
+        [datatransfer.ListTransferConfigsRequest],
+        Awaitable[datatransfer.ListTransferConfigsResponse],
+    ]:
+        r"""Return a callable for the list transfer configs method over gRPC.
+
+        Returns information about all data transfers in the
+        project.
+
+        Returns:
+            Callable[[~.ListTransferConfigsRequest],
+                    Awaitable[~.ListTransferConfigsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_transfer_configs" not in self._stubs:
+            self._stubs["list_transfer_configs"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ListTransferConfigs",
+                request_serializer=datatransfer.ListTransferConfigsRequest.serialize,
+                response_deserializer=datatransfer.ListTransferConfigsResponse.deserialize,
+            )
+        return self._stubs["list_transfer_configs"]
+
+    @property
+    def schedule_transfer_runs(
+        self,
+    ) -> Callable[
+        [datatransfer.ScheduleTransferRunsRequest],
+        Awaitable[datatransfer.ScheduleTransferRunsResponse],
+    ]:
+        r"""Return a callable for the schedule transfer runs method over gRPC.
+
+        Creates transfer runs for a time range [start_time, end_time].
+        For each date - or whatever granularity the data source supports
+        - in the range, one transfer run is created. Note that runs are
+        created per UTC time in the time range. DEPRECATED: use
+        StartManualTransferRuns instead.
+
+        Returns:
+            Callable[[~.ScheduleTransferRunsRequest],
+                    Awaitable[~.ScheduleTransferRunsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "schedule_transfer_runs" not in self._stubs:
+            self._stubs["schedule_transfer_runs"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ScheduleTransferRuns",
+                request_serializer=datatransfer.ScheduleTransferRunsRequest.serialize,
+                response_deserializer=datatransfer.ScheduleTransferRunsResponse.deserialize,
+            )
+        return self._stubs["schedule_transfer_runs"]
+
+    @property
+    def start_manual_transfer_runs(
+        self,
+    ) -> Callable[
+        [datatransfer.StartManualTransferRunsRequest],
+        Awaitable[datatransfer.StartManualTransferRunsResponse],
+    ]:
+        r"""Return a callable for the start manual transfer runs method over gRPC.
+
+        Start manual transfer runs to be executed now with schedule_time
+        equal to current time. The transfer runs can be created for a
+        time range where the run_time is between start_time (inclusive)
+        and end_time (exclusive), or for a specific run_time.
+
+        Returns:
+            Callable[[~.StartManualTransferRunsRequest],
+                    Awaitable[~.StartManualTransferRunsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "start_manual_transfer_runs" not in self._stubs:
+            self._stubs["start_manual_transfer_runs"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.datatransfer.v1.DataTransferService/StartManualTransferRuns",
+                request_serializer=datatransfer.StartManualTransferRunsRequest.serialize,
+                response_deserializer=datatransfer.StartManualTransferRunsResponse.deserialize,
+            )
+        return self._stubs["start_manual_transfer_runs"]
+
+    @property
+    def get_transfer_run(
+        self,
+    ) -> Callable[
+        [datatransfer.GetTransferRunRequest], Awaitable[transfer.TransferRun]
+    ]:
+        r"""Return a callable for the get transfer run method over gRPC.
+
+        Returns information about the particular transfer
+        run.
+
+        Returns:
+            Callable[[~.GetTransferRunRequest],
+                    Awaitable[~.TransferRun]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_transfer_run" not in self._stubs:
+            self._stubs["get_transfer_run"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.datatransfer.v1.DataTransferService/GetTransferRun",
+                request_serializer=datatransfer.GetTransferRunRequest.serialize,
+                response_deserializer=transfer.TransferRun.deserialize,
+            )
+        return self._stubs["get_transfer_run"]
+
+    @property
+    def delete_transfer_run(
+        self,
+    ) -> Callable[[datatransfer.DeleteTransferRunRequest], Awaitable[empty.Empty]]:
+        r"""Return a callable for the delete transfer run method over gRPC.
+
+        Deletes the specified transfer run.
+
+        Returns:
+            Callable[[~.DeleteTransferRunRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_transfer_run" not in self._stubs:
+            self._stubs["delete_transfer_run"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.datatransfer.v1.DataTransferService/DeleteTransferRun",
+                request_serializer=datatransfer.DeleteTransferRunRequest.serialize,
+                response_deserializer=empty.Empty.FromString,
+            )
+        return self._stubs["delete_transfer_run"]
+
+    @property
+    def list_transfer_runs(
+        self,
+    ) -> Callable[
+        [datatransfer.ListTransferRunsRequest],
+        Awaitable[datatransfer.ListTransferRunsResponse],
+    ]:
+        r"""Return a callable for the list transfer runs method over gRPC.
+
+        Returns information about running and completed jobs.
+
+        Returns:
+            Callable[[~.ListTransferRunsRequest],
+                    Awaitable[~.ListTransferRunsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_transfer_runs" not in self._stubs:
+            self._stubs["list_transfer_runs"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ListTransferRuns",
+                request_serializer=datatransfer.ListTransferRunsRequest.serialize,
+                response_deserializer=datatransfer.ListTransferRunsResponse.deserialize,
+            )
+        return self._stubs["list_transfer_runs"]
+
+    @property
+    def list_transfer_logs(
+        self,
+    ) -> Callable[
+        [datatransfer.ListTransferLogsRequest],
+        Awaitable[datatransfer.ListTransferLogsResponse],
+    ]:
+        r"""Return a callable for the list transfer logs method over gRPC.
+
+        Returns user facing log messages for the data
+        transfer run.
+
+        Returns:
+            Callable[[~.ListTransferLogsRequest],
+                    Awaitable[~.ListTransferLogsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_transfer_logs" not in self._stubs:
+            self._stubs["list_transfer_logs"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ListTransferLogs",
+                request_serializer=datatransfer.ListTransferLogsRequest.serialize,
+                response_deserializer=datatransfer.ListTransferLogsResponse.deserialize,
+            )
+        return self._stubs["list_transfer_logs"]
+
+    @property
+    def check_valid_creds(
+        self,
+    ) -> Callable[
+        [datatransfer.CheckValidCredsRequest],
+        Awaitable[datatransfer.CheckValidCredsResponse],
+    ]:
+        r"""Return a callable for the check valid creds method over gRPC.
+
+        Returns true if valid credentials exist for the given
+        data source and requesting user.
+        Some data sources doesn't support service account, so we
+        need to talk to them on behalf of the end user. This API
+        just checks whether we have OAuth token for the
+        particular user, which is a pre-requisite before user
+        can create a transfer config.
+
+        Returns:
+            Callable[[~.CheckValidCredsRequest],
+                    Awaitable[~.CheckValidCredsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "check_valid_creds" not in self._stubs:
+            self._stubs["check_valid_creds"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.datatransfer.v1.DataTransferService/CheckValidCreds",
+                request_serializer=datatransfer.CheckValidCredsRequest.serialize,
+                response_deserializer=datatransfer.CheckValidCredsResponse.deserialize,
+            )
+        return self._stubs["check_valid_creds"]
+
+
+__all__ = ("DataTransferServiceGrpcAsyncIOTransport",)

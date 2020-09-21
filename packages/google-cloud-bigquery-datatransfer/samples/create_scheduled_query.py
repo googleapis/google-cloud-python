@@ -20,10 +20,9 @@
 
 def sample_create_transfer_config(project_id, dataset_id, authorization_code=""):
     # [START bigquerydatatransfer_create_scheduled_query]
-    from google.cloud import bigquery_datatransfer_v1
-    import google.protobuf.json_format
+    from google.cloud.bigquery import datatransfer_v1
 
-    client = bigquery_datatransfer_v1.DataTransferServiceClient()
+    client = datatransfer_v1.DataTransferServiceClient()
 
     # TODO(developer): Set the project_id to the project that contains the
     #                  destination dataset.
@@ -53,26 +52,27 @@ def sample_create_transfer_config(project_id, dataset_id, authorization_code="")
       17 as some_integer
     """
 
-    parent = client.project_path(project_id)
+    parent = f"projects/{project_id}"
 
-    transfer_config = google.protobuf.json_format.ParseDict(
-        {
-            "destination_dataset_id": dataset_id,
-            "display_name": "Your Scheduled Query Name",
-            "data_source_id": "scheduled_query",
-            "params": {
-                "query": query_string,
-                "destination_table_name_template": "your_table_{run_date}",
-                "write_disposition": "WRITE_TRUNCATE",
-                "partitioning_field": "",
-            },
-            "schedule": "every 24 hours",
+    transfer_config = datatransfer_v1.types.TransferConfig(
+        destination_dataset_id=dataset_id,
+        display_name="Your Scheduled Query Name",
+        data_source_id="scheduled_query",
+        params={
+            "query": query_string,
+            "destination_table_name_template": "your_table_{run_date}",
+            "write_disposition": "WRITE_TRUNCATE",
+            "partitioning_field": "",
         },
-        bigquery_datatransfer_v1.types.TransferConfig(),
+        schedule="every 24 hours",
     )
 
     response = client.create_transfer_config(
-        parent, transfer_config, authorization_code=authorization_code
+        request={
+            "parent": parent,
+            "transfer_config": transfer_config,
+            "authorization_code": authorization_code,
+        }
     )
 
     print("Created scheduled query '{}'".format(response.name))

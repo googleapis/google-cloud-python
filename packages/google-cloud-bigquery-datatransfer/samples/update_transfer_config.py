@@ -20,9 +20,9 @@
 
 def sample_update_transfer_config(config_name, display_name):
     # [START bigquerydatatransfer_update_transfer_config]
-    from google.cloud import bigquery_datatransfer_v1
+    from google.cloud.bigquery import datatransfer_v1
 
-    client = bigquery_datatransfer_v1.DataTransferServiceClient()
+    client = datatransfer_v1.DataTransferServiceClient()
     # TODO(developer): Set the config_name which user wants to update.
     # config_name = "your-created-transfer-config-name"
 
@@ -32,7 +32,9 @@ def sample_update_transfer_config(config_name, display_name):
     transfer_config = client.get_transfer_config(name=config_name)
     transfer_config.display_name = display_name
     field_mask = {"paths": ["display_name"]}
-    response = client.update_transfer_config(transfer_config, field_mask)
+    response = client.update_transfer_config(
+        transfer_config=transfer_config, update_mask=field_mask
+    )
 
     print("Transfer config updated for '{}'".format(response.name))
     # [END bigquerydatatransfer_update_transfer_config]

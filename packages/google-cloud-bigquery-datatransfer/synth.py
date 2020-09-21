@@ -22,61 +22,47 @@ from synthtool.languages import python
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-version = "v1"
+versions = ["v1"]
 
 # ----------------------------------------------------------------------------
 # Generate bigquery_datatransfer GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="bigquery_datatransfer",
-    version=version,
-    bazel_target="//google/cloud/bigquery/datatransfer/v1:bigquery-datatransfer-v1-py",
-    include_protos=True,
-)
+for version in versions:
+    library = gapic.py_library(
+        service="bigquery_datatransfer",
+        version=version,
+        bazel_target=(
+            f"//google/cloud/bigquery/datatransfer/{version}:"
+            "bigquery-datatransfer-v1-py"
+        ),
+        include_protos=True,
+    )
+    s.move(library, excludes=["setup.py", "docs/index.rst"])
 
-s.move(
-    library,
-    excludes=["docs/conf.py", "docs/index.rst", "README.rst", "nox.py", "setup.py"],
-)
-
-s.replace(
-    [
-        "google/cloud/bigquery_datatransfer_v1/proto/datatransfer_pb2.py",
-        "google/cloud/bigquery_datatransfer_v1/proto/datatransfer_pb2_grpc.py",
-    ],
-    "from google.cloud.bigquery.datatransfer_v1.proto",
-    "from google.cloud.bigquery_datatransfer_v1.proto",
-)
-
-s.replace(
-    "google/cloud/bigquery_datatransfer_v1/gapic/" "data_transfer_service_client.py",
-    "import google.api_core.gapic_v1.method\n",
-    "\g<0>import google.api_core.path_template\n",
-)
-
-# Fix docstring fromatting to avoid warnings when generating the docs.
-s.replace(
-    "google/cloud/bigquery_datatransfer_v1/gapic/" "data_transfer_service_client.py",
-    r'"""Creates an instance of this client using the provided credentials\s+file.',
-    '"""Creates an instance of this client using the provided credentials file.',
-)
-s.replace(
-    "google/cloud/bigquery_datatransfer_v1/gapic/" "data_transfer_service_client.py",
-    r'should be set through client_options\.',
-    "\g<0>\n",  # add missing newline
-)
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=70, samples=True)
-s.move(templated_files)
+templated_files = common.py_library(microgenerator=True, samples=True, cov_level=99)
+s.move(templated_files, excludes=[".coveragerc"])
 
 # ----------------------------------------------------------------------------
 # Samples templates
 # ----------------------------------------------------------------------------
 
 python.py_samples(skip_readmes=True)
+
+# Fix missing async client in datatransfer_v1
+s.replace(
+    "google/cloud/bigquery/datatransfer_v1/__init__.py",
+    r"from \.services\.data_transfer_service import DataTransferServiceClient",
+    "\g<0>\nfrom .services.data_transfer_service import DataTransferServiceAsyncClient",
+)
+s.replace(
+    "google/cloud/bigquery/datatransfer_v1/__init__.py",
+    r"'DataTransferServiceClient',",
+    '\g<0>\n    "DataTransferServiceAsyncClient"',
+)
 
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition

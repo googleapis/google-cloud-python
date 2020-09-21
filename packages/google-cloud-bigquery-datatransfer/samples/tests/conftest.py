@@ -39,9 +39,9 @@ def credentials():
 
 @pytest.fixture(scope="module")
 def bqdts_client(credentials):
-    from google.cloud import bigquery_datatransfer_v1
+    from google.cloud.bigquery import datatransfer_v1
 
-    return bigquery_datatransfer_v1.DataTransferServiceClient(credentials=credentials)
+    return datatransfer_v1.DataTransferServiceClient(credentials=credentials)
 
 
 @pytest.fixture(scope="module")
@@ -69,6 +69,6 @@ def to_delete(bqdts_client):
 
     for resource_name in doomed:
         try:
-            bqdts_client.delete_transfer_config(resource_name)
+            bqdts_client.delete_transfer_config(name=resource_name)
         except Exception:
             pass
