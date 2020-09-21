@@ -3,8 +3,8 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:tmatsuo/python-bigquery.git",
-        "sha": "5ed817523a85a6f332951e10c0bf7dbb86d7e1cf"
+        "remote": "https://github.com/googleapis/python-bigquery.git",
+        "sha": "a125160696d1453b04a66c967819f90e70e03a52"
       }
     },
     {
@@ -13,6 +13,20 @@
         "remote": "https://github.com/googleapis/googleapis.git",
         "sha": "868615a5c1c1059c636bb3d82a555edb1d5a251e",
         "internalRef": "324294521"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "32c758f11b8c578f515a746c9d263b82a615a77c"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "32c758f11b8c578f515a746c9d263b82a615a77c"
       }
     }
   ],
@@ -26,5 +40,88 @@
         "generator": "bazel"
       }
     }
+  ],
+  "generatedFiles": [
+    ".coveragerc",
+    ".flake8",
+    ".github/CONTRIBUTING.md",
+    ".github/ISSUE_TEMPLATE/bug_report.md",
+    ".github/ISSUE_TEMPLATE/feature_request.md",
+    ".github/ISSUE_TEMPLATE/support_request.md",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/release-please.yml",
+    ".github/snippet-bot.yml",
+    ".gitignore",
+    ".kokoro/build.sh",
+    ".kokoro/continuous/common.cfg",
+    ".kokoro/continuous/continuous.cfg",
+    ".kokoro/docker/docs/Dockerfile",
+    ".kokoro/docker/docs/fetch_gpg_keys.sh",
+    ".kokoro/docs/common.cfg",
+    ".kokoro/docs/docs-presubmit.cfg",
+    ".kokoro/docs/docs.cfg",
+    ".kokoro/presubmit/common.cfg",
+    ".kokoro/presubmit/presubmit.cfg",
+    ".kokoro/presubmit/system-2.7.cfg",
+    ".kokoro/presubmit/system-3.8.cfg",
+    ".kokoro/publish-docs.sh",
+    ".kokoro/release.sh",
+    ".kokoro/release/common.cfg",
+    ".kokoro/release/release.cfg",
+    ".kokoro/samples/lint/common.cfg",
+    ".kokoro/samples/lint/continuous.cfg",
+    ".kokoro/samples/lint/periodic.cfg",
+    ".kokoro/samples/lint/presubmit.cfg",
+    ".kokoro/samples/python3.6/common.cfg",
+    ".kokoro/samples/python3.6/continuous.cfg",
+    ".kokoro/samples/python3.6/periodic.cfg",
+    ".kokoro/samples/python3.6/presubmit.cfg",
+    ".kokoro/samples/python3.7/common.cfg",
+    ".kokoro/samples/python3.7/continuous.cfg",
+    ".kokoro/samples/python3.7/periodic.cfg",
+    ".kokoro/samples/python3.7/presubmit.cfg",
+    ".kokoro/samples/python3.8/common.cfg",
+    ".kokoro/samples/python3.8/continuous.cfg",
+    ".kokoro/samples/python3.8/periodic.cfg",
+    ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/test-samples.sh",
+    ".kokoro/trampoline.sh",
+    ".kokoro/trampoline_v2.sh",
+    ".trampolinerc",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.rst",
+    "LICENSE",
+    "MANIFEST.in",
+    "docs/_static/custom.css",
+    "docs/_templates/layout.html",
+    "docs/conf.py",
+    "google/cloud/bigquery_v2/gapic/enums.py",
+    "google/cloud/bigquery_v2/proto/encryption_config.proto",
+    "google/cloud/bigquery_v2/proto/encryption_config_pb2.py",
+    "google/cloud/bigquery_v2/proto/encryption_config_pb2_grpc.py",
+    "google/cloud/bigquery_v2/proto/model.proto",
+    "google/cloud/bigquery_v2/proto/model_pb2.py",
+    "google/cloud/bigquery_v2/proto/model_pb2_grpc.py",
+    "google/cloud/bigquery_v2/proto/model_reference.proto",
+    "google/cloud/bigquery_v2/proto/model_reference_pb2.py",
+    "google/cloud/bigquery_v2/proto/model_reference_pb2_grpc.py",
+    "google/cloud/bigquery_v2/proto/standard_sql.proto",
+    "google/cloud/bigquery_v2/proto/standard_sql_pb2.py",
+    "google/cloud/bigquery_v2/proto/standard_sql_pb2_grpc.py",
+    "google/cloud/bigquery_v2/types.py",
+    "renovate.json",
+    "samples/AUTHORING_GUIDE.md",
+    "samples/CONTRIBUTING.md",
+    "samples/snippets/README.rst",
+    "samples/snippets/noxfile.py",
+    "scripts/decrypt-secrets.sh",
+    "scripts/readme-gen/readme_gen.py",
+    "scripts/readme-gen/templates/README.tmpl.rst",
+    "scripts/readme-gen/templates/auth.tmpl.rst",
+    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
+    "scripts/readme-gen/templates/install_deps.tmpl.rst",
+    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
+    "setup.cfg",
+    "testing/.gitignore"
   ]
 }
