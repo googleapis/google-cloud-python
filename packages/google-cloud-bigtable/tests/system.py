@@ -287,7 +287,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.instances_to_delete.append(instance)
 
         # We want to make sure the operation completes.
-        operation.result(timeout=30)
+        operation.result(timeout=60)
 
         # Create a new instance instance and make sure it is the same.
         instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID)
@@ -526,7 +526,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         # other test cases.
         Config.CLUSTER.serve_nodes = SERVE_NODES
         operation = Config.CLUSTER.update()
-        operation.result(timeout=10)
+        operation.result(timeout=20)
 
     def test_create_cluster(self):
         from google.cloud.bigtable.enums import StorageType
