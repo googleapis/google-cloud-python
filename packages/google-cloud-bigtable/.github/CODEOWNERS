@@ -5,7 +5,7 @@
 # https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners#codeowners-syntax
 
 
-# The bigtable-dpe team is the default owner for anything not
+# The api-bigtable team is the default owner for anything not
 # explicitly taken by someone else.
-*                               @googleapis/bigtable-dpe
-/samples/                       @googleapis/bigtable-dpe @googleapis/python-samples-owners
+*                               @googleapis/api-bigtable
+/samples/                       @googleapis/api-bigtable @googleapis/python-samples-owners
