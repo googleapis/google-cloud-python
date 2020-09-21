@@ -34,4 +34,19 @@ gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS 
 gcloud --quiet --verbosity=debug datastore indexes create tests/system/index.yaml
 """)
 
+s.replace(
+    ".kokoro/docker/docs/Dockerfile",
+    "libsqlite3-dev.*\n",
+    "\g<0>    memcached \\\n"\
+)
+
+s.replace(
+    ".kokoro/docker/docs/Dockerfile",
+    "# Install dependencies.\n",
+    """\g<0># Spell check related
+RUN apt-get update && apt-get install -y dictionaries-common aspell aspell-en \\
+  hunspell-en-us libenchant1c2a enchant
+"""
+)
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
