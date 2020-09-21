@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+### [1.31.1](https://www.github.com/googleapis/python-storage/compare/v1.31.0...v1.31.1) (2020-09-16)
+
+
+### Bug Fixes
+
+* add requests as a dependency ([#271](https://www.github.com/googleapis/python-storage/issues/271)) ([ec52b38](https://www.github.com/googleapis/python-storage/commit/ec52b38df211fad18a86d7e16d83db79de59d5f5))
+* preserve existing blob hashes when 'X-Goog-Hash header' is not present ([#267](https://www.github.com/googleapis/python-storage/issues/267)) ([277afb8](https://www.github.com/googleapis/python-storage/commit/277afb83f464d77b163f2722272092df4180411e))
+* **blob:** base64 includes additional characters ([#258](https://www.github.com/googleapis/python-storage/issues/258)) ([cf0774a](https://www.github.com/googleapis/python-storage/commit/cf0774aa8ffd45d340aff9a7d2236d8d65c8ae93))
+
+
+### Documentation
+
+* add docs signed_url expiration take default utc ([#250](https://www.github.com/googleapis/python-storage/issues/250)) ([944ab18](https://www.github.com/googleapis/python-storage/commit/944ab1827b3ca0bd1d3aafc2829245290e9bde59))
+
 ## [1.31.0](https://www.github.com/googleapis/python-storage/compare/v1.30.0...v1.31.0) (2020-08-26)
 
 
