@@ -94,9 +94,23 @@ if num != 1:
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(unit_cov_level=97, cov_level=99)
-s.move(templated_files, excludes=["docs/conf.py", "docs/multiprocessing.rst"])
+s.move(templated_files, excludes=["docs/multiprocessing.rst"])
 
 s.replace("noxfile.py", """["']sphinx['"]""", '''"sphinx<3.0.0"''')
+
+# Add the `sphinx-ext-doctest` extenaion
+s.replace(
+    "docs/conf.py",
+    """\
+    "sphinx.ext.coverage",
+    "sphinx.ext.napoleon",
+""",
+    """\
+    "sphinx.ext.coverage",
+    "sphinx.ext.doctest",
+    "sphinx.ext.napoleon",
+""",
+)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 
