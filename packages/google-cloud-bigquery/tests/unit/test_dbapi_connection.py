@@ -41,9 +41,11 @@ class TestConnection(unittest.TestCase):
         return mock_client
 
     def _mock_bqstorage_client(self):
-        from google.cloud.bigquery_storage_v1 import client
-
-        mock_client = mock.create_autospec(client.BigQueryReadClient)
+        if bigquery_storage_v1 is None:
+            return None
+        mock_client = mock.create_autospec(
+            bigquery_storage_v1.client.BigQueryReadClient
+        )
         mock_client.transport = mock.Mock(spec=["channel"])
         mock_client.transport.channel = mock.Mock(spec=["close"])
         return mock_client
@@ -127,6 +129,9 @@ class TestConnection(unittest.TestCase):
             ):
                 getattr(connection, method)()
 
+    @unittest.skipIf(
+        bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
     def test_close_closes_all_created_bigquery_clients(self):
         client = self._mock_client()
         bqstorage_client = self._mock_bqstorage_client()
@@ -147,6 +152,9 @@ class TestConnection(unittest.TestCase):
         self.assertTrue(client.close.called)
         self.assertTrue(bqstorage_client.transport.channel.close.called)
 
+    @unittest.skipIf(
+        bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
+    )
     def test_close_does_not_close_bigquery_clients_passed_to_it(self):
         client = self._mock_client()
         bqstorage_client = self._mock_bqstorage_client()

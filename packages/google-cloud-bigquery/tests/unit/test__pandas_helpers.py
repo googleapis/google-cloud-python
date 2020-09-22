@@ -774,6 +774,26 @@ def test_dataframe_to_bq_schema_dict_sequence(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(not six.PY2, reason="Requires Python 2.7")
+def test_dataframe_to_bq_schema_w_struct_raises_py27(module_under_test):
+    dataframe = pandas.DataFrame(
+        data=[{"struct_field": {"int_col": 1}}, {"struct_field": {"int_col": 2}}]
+    )
+    bq_schema = [
+        schema.SchemaField(
+            "struct_field",
+            field_type="STRUCT",
+            fields=[schema.SchemaField("int_col", field_type="INT64")],
+        ),
+    ]
+
+    with pytest.raises(ValueError) as excinfo:
+        module_under_test.dataframe_to_bq_schema(dataframe, bq_schema=bq_schema)
+
+    assert "struct (record) column types is not supported" in str(excinfo.value)
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 @pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_dataframe_to_arrow_with_multiindex(module_under_test):
     bq_schema = (

@@ -2472,7 +2472,10 @@ class TestRowIterator(unittest.TestCase):
         with warnings.catch_warnings(record=True) as warned:
             df = row_iterator.to_dataframe(create_bqstorage_client=False)
 
-        self.assertEqual(len(warned), 0)
+        user_warnings = [
+            warning for warning in warned if warning.category is UserWarning
+        ]
+        self.assertEqual(len(user_warnings), 0)
         self.assertEqual(len(df), 4)
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
@@ -2499,9 +2502,10 @@ class TestRowIterator(unittest.TestCase):
                 progress_bar_type="tqdm", create_bqstorage_client=False,
             )
 
-        self.assertEqual(len(warned), 1)
-        for warning in warned:
-            self.assertIs(warning.category, UserWarning)
+        user_warnings = [
+            warning for warning in warned if warning.category is UserWarning
+        ]
+        self.assertEqual(len(user_warnings), 1)
 
         # Even though the progress bar won't show, downloading the dataframe
         # should still work.

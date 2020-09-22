@@ -64,6 +64,7 @@ except ImportError:  # pragma: NO COVER
 
 from google.api_core.exceptions import PreconditionFailed
 from google.api_core.exceptions import BadRequest
+from google.api_core.exceptions import ClientError
 from google.api_core.exceptions import Conflict
 from google.api_core.exceptions import Forbidden
 from google.api_core.exceptions import GoogleAPICallError
@@ -130,9 +131,17 @@ retry_storage_errors = RetryErrors(
 )
 
 PANDAS_MINIMUM_VERSION = pkg_resources.parse_version("1.0.0")
-PANDAS_INSTALLED_VERSION = pkg_resources.get_distribution("pandas").parsed_version
 PYARROW_MINIMUM_VERSION = pkg_resources.parse_version("0.17.0")
-PYARROW_INSTALLED_VERSION = pkg_resources.get_distribution("pyarrow").parsed_version
+
+if pandas:
+    PANDAS_INSTALLED_VERSION = pkg_resources.get_distribution("pandas").parsed_version
+else:
+    PANDAS_INSTALLED_VERSION = None
+
+if pyarrow:
+    PYARROW_INSTALLED_VERSION = pkg_resources.get_distribution("pyarrow").parsed_version
+else:
+    PYARROW_INSTALLED_VERSION = None
 
 
 def _has_rows(result):
@@ -1312,9 +1321,9 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual("EU", load_job.location)
 
         # Cannot cancel the job from the US.
-        with self.assertRaises(NotFound):
+        with self.assertRaises(ClientError):
             client.cancel_job(job_id, location="US")
-        with self.assertRaises(NotFound):
+        with self.assertRaises(ClientError):
             load_job_us.cancel()
 
         # Can list the table rows.
@@ -2897,7 +2906,7 @@ def test_bigquery_magic():
         LIMIT 10
     """
     with io.capture_output() as captured:
-        result = ip.run_cell_magic("bigquery", "", sql)
+        result = ip.run_cell_magic("bigquery", "--use_rest_api", sql)
 
     conn_count_end = len(current_process.connections())
 

@@ -25,21 +25,10 @@ try:
     import pandas
 except ImportError:  # pragma: NO COVER
     pandas = None
-try:
-    import IPython
-    from IPython.utils import io
-    from IPython.testing import tools
-    from IPython.terminal import interactiveshell
-except ImportError:  # pragma: NO COVER
-    IPython = None
 
 from google.api_core import exceptions
 import google.auth.credentials
 
-try:
-    from google.cloud import bigquery_storage_v1
-except ImportError:  # pragma: NO COVER
-    bigquery_storage_v1 = None
 from google.cloud import bigquery
 from google.cloud.bigquery import job
 from google.cloud.bigquery import table
@@ -48,7 +37,11 @@ from tests.unit.helpers import make_connection
 from test_utils.imports import maybe_fail_import
 
 
-pytestmark = pytest.mark.skipif(IPython is None, reason="Requires `ipython`")
+IPython = pytest.importorskip("IPython")
+io = pytest.importorskip("IPython.utils.io")
+tools = pytest.importorskip("IPython.testing.tools")
+interactiveshell = pytest.importorskip("IPython.terminal.interactiveshell")
+bigquery_storage_v1 = pytest.importorskip("google.cloud.bigquery_storage_v1")
 
 
 @pytest.fixture(scope="session")

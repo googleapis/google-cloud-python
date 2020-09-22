@@ -32,7 +32,7 @@ dependencies = [
     'enum34; python_version < "3.4"',
     "google-api-core >= 1.21.0, < 2.0dev",
     "google-cloud-core >= 1.4.1, < 2.0dev",
-    "google-resumable-media >= 0.5.0, < 2.0dev",
+    "google-resumable-media >= 0.6.0, < 2.0dev",
     "six >=1.13.0,< 2.0.0dev",
 ]
 extras = {
@@ -41,18 +41,19 @@ extras = {
         # Due to an issue in pip's dependency resolver, the `grpc` extra is not
         # installed, even though `google-cloud-bigquery-storage` specifies it
         # as `google-api-core[grpc]`. We thus need to explicitly specify it here.
-        # See: https://github.com/googleapis/python-bigquery/issues/83
-        "grpcio >= 1.8.2, < 2.0dev",
-        "pyarrow >= 1.0.0, < 2.0dev; python_version >= '3.5'",
+        # See: https://github.com/googleapis/python-bigquery/issues/83 The
+        # grpc.Channel.close() method isn't added until 1.32.0.
+        # https://github.com/grpc/grpc/pull/15254
+        "grpcio >= 1.32.0, < 2.0dev",
+        "pyarrow >= 1.0.0, < 2.0dev",
     ],
-    "pandas": ["pandas>=0.17.1"],
-    # Exclude PyArrow dependency from Windows Python 2.7.
+    "pandas": ["pandas>=0.23.0"],
     "pyarrow": [
-        "pyarrow >= 1.0.0, < 2.0dev; python_version >= '3.5'",
-        # Pyarrow >= 0.17.0 is not compatible with Python 2 anymore.
-        "pyarrow < 0.17.0; python_version < '3.0' and platform_system != 'Windows'",
+        # pyarrow 1.0.0 is required for the use of timestamp_as_object keyword.
+        "pyarrow >= 1.0.0, < 2.0de ; python_version>='3.5'",
+        "pyarrow >= 0.16.0, < 0.17.0dev ; python_version<'3.5'",
     ],
-    "tqdm": ["tqdm >= 4.0.0, <5.0.0dev"],
+    "tqdm": ["tqdm >= 4.7.4, <5.0.0dev"],
     "fastparquet": [
         "fastparquet",
         "python-snappy",
@@ -77,8 +78,6 @@ for extra in extras:
         # creates a dependency on pre-release versions of numpy. See:
         # https://github.com/googleapis/google-cloud-python/issues/8549
         "fastparquet",
-        # Skip opentelemetry because the library is not compatible with Python 2.
-        "opentelemetry",
     ):
         continue
     all_extras.extend(extras[extra])
