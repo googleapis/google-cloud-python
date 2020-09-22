@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.33.6](https://www.github.com/googleapis/gapic-generator-python/compare/v0.33.5...v0.33.6) (2020-09-22)
+
+
+### Bug Fixes
+
+* operation module is properly aliased if necessary ([#615](https://www.github.com/googleapis/gapic-generator-python/issues/615)) ([8f92fd9](https://www.github.com/googleapis/gapic-generator-python/commit/8f92fd9999286ef3f916119be78dbeb838a15550)), closes [#610](https://www.github.com/googleapis/gapic-generator-python/issues/610)
+
 ### [0.33.5](https://www.github.com/googleapis/gapic-generator-python/compare/v0.33.4...v0.33.5) (2020-09-22)
 
 
