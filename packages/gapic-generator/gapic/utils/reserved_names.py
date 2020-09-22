@@ -17,13 +17,11 @@ import itertools
 import keyword
 
 
-# The filter and map builtins are a historical artifact;
-# they are not used in modern, idiomatic python,
-# nor are they used in the gapic surface.
-# They are too useful to reserve.
+# The exceptions to builtins are frequent and useful.
+# They are explicitly allowed message, module, and field names.
 RESERVED_NAMES = frozenset(
     itertools.chain(
         keyword.kwlist,
-        set(dir(builtins)) - {"filter", "map", "id"},
+        set(dir(builtins)) - {"filter", "map", "id", "property"},
     )
 )
