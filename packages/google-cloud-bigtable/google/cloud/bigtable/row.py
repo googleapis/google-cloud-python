@@ -457,11 +457,17 @@ class DirectRow(_SetDeleteRow):
             :end-before: [END bigtable_row_commit]
             :dedent: 4
 
+        :rtype: :class:`~google.rpc.status_pb2.Status`
+        :returns: A response status (`google.rpc.status_pb2.Status`)
+                  representing success or failure of the row committed.
         :raises: :exc:`~.table.TooManyMutationsError` if the number of
                  mutations is greater than 100,000.
         """
-        self._table.mutate_rows([self])
+        response = self._table.mutate_rows([self])
+
         self.clear()
+
+        return response[0]
 
     def clear(self):
         """Removes all currently accumulated mutations on the current row.

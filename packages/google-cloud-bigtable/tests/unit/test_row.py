@@ -359,6 +359,29 @@ class TestDirectRow(unittest.TestCase):
         row.commit()
         self.assertEqual(table.mutated_rows, [row])
 
+    def test_commit_with_exception(self):
+        from google.rpc import status_pb2
+
+        project_id = "project-id"
+        row_key = b"row_key"
+        table_name = "projects/more-stuff"
+        column_family_id = u"column_family_id"
+        column = b"column"
+
+        credentials = _make_credentials()
+        client = self._make_client(
+            project=project_id, credentials=credentials, admin=True
+        )
+        table = _Table(table_name, client=client)
+        row = self._make_one(row_key, table)
+        value = b"bytes-value"
+
+        # Perform the method and check the result.
+        row.set_cell(column_family_id, column, value)
+        result = row.commit()
+        expected = status_pb2.Status(code=0)
+        self.assertEqual(result, expected)
+
 
 class TestConditionalRow(unittest.TestCase):
     @staticmethod
@@ -832,4 +855,7 @@ class _Table(object):
         self.mutated_rows = []
 
     def mutate_rows(self, rows):
+        from google.rpc import status_pb2
+
         self.mutated_rows.extend(rows)
+        return [status_pb2.Status(code=0)]
