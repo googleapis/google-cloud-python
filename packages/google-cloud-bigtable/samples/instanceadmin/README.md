@@ -30,6 +30,7 @@ To run this sample:
         python instanceadmin.py
 
 
+
 <pre>usage: instanceadmin.py [-h] [run] [dev-instance] [del-instance] [add-cluster] [del-cluster] project_id instance_id cluster_id<br>Demonstrates how to connect to Cloud Bigtable and run some basic operations.<br>Prerequisites: - Create a Cloud Bigtable cluster.<br>https://cloud.google.com/bigtable/docs/creating-cluster - Set your Google<br>Application Default Credentials.<br>https://developers.google.com/identity/protocols/application-default-<br>credentials<br><br><br>positional arguments:<br>&nbsp; project_id &nbsp; &nbsp; Your Cloud Platform project ID.<br>&nbsp; instance_id &nbsp; &nbsp;ID of the Cloud Bigtable instance to connect to.<br><br><br>optional arguments:<br>&nbsp; -h, --help &nbsp; &nbsp; show this help message and exit<br>&nbsp; --table TABLE &nbsp;Table to create and destroy. (default: Hello-Bigtable)</pre>
 
 ## Additional Information

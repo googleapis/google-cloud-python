@@ -13,6 +13,7 @@ This folder contains snippets for Python Cloud Bigtable.
 
 
 
+
 ## Additional Information
 
 You can read the documentation for more details on API usage and use GitHub
