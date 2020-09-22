@@ -240,7 +240,7 @@ class {{ service.async_client_name }}:
         {%- if method.lro %}
 
         # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
+        response = {{ method.client_output_async.ident.module_alias or method.client_output_async.ident.module }}.from_gapic(
             response,
             self._client._transport.operations_client,
             {{ method.lro.response_type.ident }},
