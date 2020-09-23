@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+### [1.15.1](https://www.github.com/googleapis/python-datastore/compare/v1.15.0...v1.15.1) (2020-09-23)
+
+
+### Bug Fixes
+
+* repair implementation of `Client.reserve_ids` ([#76](https://www.github.com/googleapis/python-datastore/issues/76)) ([7df727d](https://www.github.com/googleapis/python-datastore/commit/7df727d00dce7c022f2b6a3c03b31ff7c3836d49)), closes [#37](https://www.github.com/googleapis/python-datastore/issues/37)
+
+
+### Documentation
+
+* document thread-safety of client ([#75](https://www.github.com/googleapis/python-datastore/issues/75)) ([ae0339c](https://www.github.com/googleapis/python-datastore/commit/ae0339ce94aa8557534e3be24890d7f5a69e806b))
+
 ## [1.15.0](https://www.github.com/googleapis/python-datastore/compare/v1.14.0...v1.15.0) (2020-08-14)
 
 
