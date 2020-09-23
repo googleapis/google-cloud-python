@@ -407,7 +407,7 @@ class Blob(_PropertyMixin):
             >>> from google.cloud import storage
             >>> client = storage.Client()
             >>> bucket = client.get_bucket('my-bucket-name')
-            >>> blob = client.get_blob('my-blob-name')
+            >>> blob = bucket.get_blob('my-blob-name')
             >>> url = blob.generate_signed_url(expiration='url-expiration-time', bucket_bound_hostname='mydomain.tld',
             >>>                                  version='v4')
             >>> url = blob.generate_signed_url(expiration='url-expiration-time', bucket_bound_hostname='mydomain.tld',
