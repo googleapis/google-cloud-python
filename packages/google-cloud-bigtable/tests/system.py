@@ -18,6 +18,7 @@ import os
 import time
 import unittest
 
+from google.api_core.exceptions import DeadlineExceeded
 from google.api_core.exceptions import TooManyRequests
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 from test_utils.retry import RetryErrors
@@ -831,7 +832,8 @@ class TestTableAdminAPI(unittest.TestCase):
         col_fams = temp_table.list_column_families()
         self.assertEqual(list(col_fams.keys()), [COLUMN_FAMILY_ID1])
 
-        column_family.delete()
+        retry_504 = RetryErrors(DeadlineExceeded)
+        retry_504(column_family.delete)()
         # Make sure we have successfully deleted it.
         self.assertEqual(temp_table.list_column_families(), {})
 
