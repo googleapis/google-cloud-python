@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.21.3](https://www.github.com/googleapis/google-auth-library-python/compare/v1.21.2...v1.21.3) (2020-09-22)
+
+
+### Bug Fixes
+
+* fix expiry for `to_json()` ([#589](https://www.github.com/googleapis/google-auth-library-python/issues/589)) ([d0e0aba](https://www.github.com/googleapis/google-auth-library-python/commit/d0e0aba0a9f665268ffa1b22d44f4bd7e9b449d6)), closes [/github.com/googleapis/oauth2client/blob/master/oauth2client/client.py#L55](https://www.github.com/googleapis//github.com/googleapis/oauth2client/blob/master/oauth2client/client.py/issues/L55)
+
 ### [1.21.2](https://www.github.com/googleapis/google-auth-library-python/compare/v1.21.1...v1.21.2) (2020-09-08)
 
 
