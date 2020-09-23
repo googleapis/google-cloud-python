@@ -65,12 +65,6 @@ for version in admin_versions:
     s.move(library / f"tests", f"tests")
     s.move(library / "scripts")
 
-    s.replace(
-        f"google/cloud/firestore_admin_v1/services/firestore_admin/client.py",
-        f"from google.api_core import operation as ga_operation",
-        f"from google.api_core import operation as ga_operation\nfrom google.api_core import operation",
-    )
-
 
 # ----------------------------------------------------------------------------
 # Add templated files
@@ -178,22 +172,6 @@ s.replace(
     "noxfile.py",
     """"mock", "pytest", "google-cloud-testutils",""",
     """"mock", "pytest", "pytest-asyncio", "google-cloud-testutils",""",
-)
-
-# Turn of `pytype` on CI for now.
-
-s.replace(
-    ".kokoro/build.sh",
-    """\
-else
-    python3.6 -m nox
-""",
-    """\
-else
-    # TODO: Currently generated type metadata, ignores, cause many errors.
-    # For now, disable pytype in CI runs
-    python3.6 -m nox -k "not pytype"
-""",
 )
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
