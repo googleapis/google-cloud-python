@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+### [1.31.2](https://www.github.com/googleapis/python-storage/compare/v1.31.1...v1.31.2) (2020-09-23)
+
+
+### Documentation
+
+* fix docstring example for 'blob.generate_signed_url' ([#278](https://www.github.com/googleapis/python-storage/issues/278)) ([2dc91c9](https://www.github.com/googleapis/python-storage/commit/2dc91c947e3693023b4478a15c460693808ea2d9))
+
 ### [1.31.1](https://www.github.com/googleapis/python-storage/compare/v1.31.0...v1.31.1) (2020-09-16)
 
 
