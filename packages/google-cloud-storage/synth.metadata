@@ -4,14 +4,14 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-storage.git",
-        "sha": "944ab1827b3ca0bd1d3aafc2829245290e9bde59"
+        "sha": "e190f1cd8f2c454da34a79e22ddb58ff54bc1a10"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "80f46100c047bc47efe0025ee537dc8ee413ad04"
+        "sha": "d91dd8aac77f7a9c5506c238038a26fa4f9e361e"
       }
     }
   ],
@@ -24,6 +24,7 @@
     ".github/ISSUE_TEMPLATE/support_request.md",
     ".github/PULL_REQUEST_TEMPLATE.md",
     ".github/release-please.yml",
+    ".github/snippet-bot.yml",
     ".gitignore",
     ".kokoro/build.sh",
     ".kokoro/continuous/common.cfg",
