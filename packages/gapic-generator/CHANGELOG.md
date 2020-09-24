@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.33.7](https://www.github.com/googleapis/gapic-generator-python/compare/v0.33.6...v0.33.7) (2020-09-24)
+
+
+### Bug Fixes
+
+* retriable exceptions are deterministically ordered in GAPICs ([#619](https://www.github.com/googleapis/gapic-generator-python/issues/619)) ([f7b1164](https://www.github.com/googleapis/gapic-generator-python/commit/f7b11640b74d8c64747b33783976d6e0ab9c61c4))
+
 ### [0.33.6](https://www.github.com/googleapis/gapic-generator-python/compare/v0.33.5...v0.33.6) (2020-09-22)
 
 
