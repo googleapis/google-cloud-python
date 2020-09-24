@@ -30,7 +30,7 @@ class TestSystemSpeech(object):
         client = speech_v1p1beta1.SpeechClient()
 
         config = {
-            "encoding": speech_v1p1beta1.enums.RecognitionConfig.AudioEncoding.FLAC,
+            "encoding": speech_v1p1beta1.RecognitionConfig.AudioEncoding.FLAC,
             "language_code": "en-US",
             "sample_rate_hertz": 16000,
         }
@@ -38,7 +38,7 @@ class TestSystemSpeech(object):
         uri = "gs://{}/speech/brooklyn.flac".format(BUCKET)
         audio = {"uri": uri}
 
-        response = client.recognize(config, audio)
+        response = client.recognize(config=config, audio=audio)
 
         assert response.results[0].alternatives[0].transcript is not None
 
@@ -52,7 +52,7 @@ class TestSystemSpeech(object):
         client = speech_v1p1beta1.SpeechClient()
 
         config = speech_v1p1beta1.types.RecognitionConfig(
-            encoding=speech_v1p1beta1.enums.RecognitionConfig.AudioEncoding.FLAC,
+            encoding=speech_v1p1beta1.RecognitionConfig.AudioEncoding.FLAC,
             language_code="en-US",
             sample_rate_hertz=16000,
         )
@@ -60,7 +60,7 @@ class TestSystemSpeech(object):
         uri = "gs://{}/speech/brooklyn.flac".format(BUCKET)
         audio = {"uri": uri}
 
-        response = client.long_running_recognize(config, audio)
+        response = client.long_running_recognize(config=config, audio=audio)
 
         assert response.result() is not None
 
@@ -73,23 +73,23 @@ class TestSystemSpeech(object):
 
         client = speech_v1p1beta1.SpeechClient()
 
-        config = speech_v1p1beta1.types.RecognitionConfig(
-            encoding=speech_v1p1beta1.enums.RecognitionConfig.AudioEncoding.FLAC,
+        config = speech_v1p1beta1.RecognitionConfig(
+            encoding=speech_v1p1beta1.RecognitionConfig.AudioEncoding.FLAC,
             language_code="en-US",
             sample_rate_hertz=16000,
         )
-        streamingConfig = speech_v1p1beta1.types.StreamingRecognitionConfig(
-            config=config
-        )
+        streamingConfig = speech_v1p1beta1.StreamingRecognitionConfig(config=config)
 
         uri = "https://storage.googleapis.com/{}/speech/brooklyn.flac".format(BUCKET)
         streaming_requests = [
-            speech_v1p1beta1.types.StreamingRecognizeRequest(
+            speech_v1p1beta1.StreamingRecognizeRequest(
                 audio_content=requests.get(uri).content
             )
         ]
 
-        responses = client.streaming_recognize(streamingConfig, streaming_requests)
+        responses = client.streaming_recognize(
+            config=streamingConfig, requests=streaming_requests
+        )
 
         for response in responses:
             for result in response.results:
