@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-speech/compare/v1.3.2...v2.0.0) (2020-09-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate to microgenerator (#61)
+
+### Features
+
+* Migrate to microgenerator ([#61](https://www.github.com/googleapis/python-speech/issues/61)) ([283b49d](https://www.github.com/googleapis/python-speech/commit/283b49d2cb34dcfcbd12038582ca3ed37e5ab90b)). See the [migration guide](https://github.com/googleapis/python-speech/blob/release-v2.0.0/UPGRADING.md) for details.
+
+
+### Documentation
+
+* remove example usage from READMe ([#46](https://www.github.com/googleapis/python-speech/issues/46)) ([4214630](https://www.github.com/googleapis/python-speech/commit/4214630c3318e6c9bc0a5156e20344956faf7d52))
+
 ### [1.3.2](https://www.github.com/googleapis/python-speech/compare/v1.3.1...v1.3.2) (2020-02-03)
 
 
