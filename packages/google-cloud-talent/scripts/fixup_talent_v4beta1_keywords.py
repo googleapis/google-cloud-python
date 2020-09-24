@@ -43,7 +43,7 @@ class talentCallTransformer(cst.CSTTransformer):
     'batch_create_jobs': ('parent', 'jobs', ),
     'batch_delete_jobs': ('parent', 'filter', ),
     'batch_update_jobs': ('parent', 'jobs', 'update_mask', ),
-    'complete_query': ('parent', 'query', 'page_size', 'language_codes', 'company', 'scope', 'type', ),
+    'complete_query': ('parent', 'query', 'page_size', 'language_codes', 'company', 'scope', 'type_', ),
     'create_application': ('parent', 'application', ),
     'create_client_event': ('parent', 'client_event', ),
     'create_company': ('parent', 'company', ),

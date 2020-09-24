@@ -16,6 +16,7 @@
 
 import synthtool as s
 from synthtool import gcp
+from synthtool.languages import python
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
@@ -51,7 +52,7 @@ s.replace(
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-    samples=False,  # set to True only if there are samples
+    samples=True,  # set to True only if there are samples
     microgenerator=True,
     cov_level=99,
 )
@@ -62,5 +63,11 @@ s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
 # Temporarily disable warnings due to
 # https://github.com/googleapis/gapic-generator-python/issues/525
 s.replace("noxfile.py", '[\"\']-W[\"\']', '# "-W"')
+
+# ----------------------------------------------------------------------------
+# Samples templates
+# ----------------------------------------------------------------------------
+
+python.py_samples(skip_readmes=True)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
