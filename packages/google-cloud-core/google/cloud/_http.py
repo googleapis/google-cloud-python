@@ -14,11 +14,13 @@
 
 """Shared implementation of connections to API servers."""
 
+import collections
 import json
 import platform
 import warnings
 
 from pkg_resources import get_distribution
+from six.moves import collections_abc
 from six.moves.urllib.parse import urlencode
 
 from google.api_core.client_info import ClientInfo
@@ -212,9 +214,15 @@ class JSONConnection(Connection):
 
         query_params = query_params or {}
 
-        if "prettyPrint" not in query_params:
+        if isinstance(query_params, collections_abc.Mapping):
             query_params = query_params.copy()
-            query_params["prettyPrint"] = "false"
+        else:
+            query_params_dict = collections.defaultdict(list)
+            for key, value in query_params:
+                query_params_dict[key].append(value)
+            query_params = query_params_dict
+
+        query_params.setdefault("prettyPrint", "false")
 
         url += "?" + urlencode(query_params, doseq=True)
 
