@@ -3,30 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-speech.git",
-        "sha": "97b9e2481b2ed0817cd34238f240a013fb5dd6a5"
+        "remote": "git@github.com:googleapis/python-speech",
+        "sha": "64076bb484d3cf716f0a663f50956f147190e7c8"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "2db5725bf898b544a0cf951e1694d3b0fce5eda3",
-        "internalRef": "329384854"
+        "sha": "3dbeac0d54125b123c8dfd39c774b37473c36944",
+        "internalRef": "333159182"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "d91dd8aac77f7a9c5506c238038a26fa4f9e361e"
+        "sha": "f3c04883d6c43261ff13db1f52d03a283be06871"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "d91dd8aac77f7a9c5506c238038a26fa4f9e361e"
+        "sha": "f3c04883d6c43261ff13db1f52d03a283be06871"
       }
     }
   ],
