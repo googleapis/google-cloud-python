@@ -1,4 +1,6 @@
-# Copyright 2017 Google LLC
+# -*- coding: utf-8 -*-
+
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,20 +13,52 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-from __future__ import absolute_import
+from .services.speech import SpeechClient
+from .types.cloud_speech import LongRunningRecognizeMetadata
+from .types.cloud_speech import LongRunningRecognizeRequest
+from .types.cloud_speech import LongRunningRecognizeResponse
+from .types.cloud_speech import RecognitionAudio
+from .types.cloud_speech import RecognitionConfig
+from .types.cloud_speech import RecognitionMetadata
+from .types.cloud_speech import RecognizeRequest
+from .types.cloud_speech import RecognizeResponse
+from .types.cloud_speech import SpeakerDiarizationConfig
+from .types.cloud_speech import SpeechContext
+from .types.cloud_speech import SpeechRecognitionAlternative
+from .types.cloud_speech import SpeechRecognitionResult
+from .types.cloud_speech import StreamingRecognitionConfig
+from .types.cloud_speech import StreamingRecognitionResult
+from .types.cloud_speech import StreamingRecognizeRequest
+from .types.cloud_speech import StreamingRecognizeResponse
+from .types.cloud_speech import WordInfo
 
-from google.cloud.speech_v1.gapic import speech_client
-from google.cloud.speech_v1.gapic import enums
 
 from google.cloud.speech_v1.helpers import SpeechHelpers
-from google.cloud.speech_v1 import types
 
 
-class SpeechClient(SpeechHelpers, speech_client.SpeechClient):
-    __doc__ = speech_client.SpeechClient.__doc__
-    enums = enums
-    types = types
+class SpeechClient(SpeechHelpers, SpeechClient):
+    __doc__ = SpeechClient.__doc__
 
 
-__all__ = ("enums", "SpeechClient", "types")
+__all__ = (
+    "LongRunningRecognizeMetadata",
+    "LongRunningRecognizeRequest",
+    "LongRunningRecognizeResponse",
+    "RecognitionAudio",
+    "RecognitionConfig",
+    "RecognitionMetadata",
+    "RecognizeRequest",
+    "RecognizeResponse",
+    "SpeakerDiarizationConfig",
+    "SpeechContext",
+    "SpeechRecognitionAlternative",
+    "SpeechRecognitionResult",
+    "StreamingRecognitionConfig",
+    "StreamingRecognitionResult",
+    "StreamingRecognizeRequest",
+    "StreamingRecognizeResponse",
+    "WordInfo",
+    "SpeechClient",
+)

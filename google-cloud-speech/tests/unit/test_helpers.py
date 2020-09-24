@@ -33,7 +33,7 @@ def test_streaming_recognize():
     config = types.StreamingRecognitionConfig()
     requests = [types.StreamingRecognizeRequest(audio_content=b"...")]
     super_patch = mock.patch(
-        "google.cloud.speech_v1.speech_client.SpeechClient." "streaming_recognize",
+        "google.cloud.speech_v1.services.speech.SpeechClient.streaming_recognize",
         autospec=True,
     )
 
@@ -43,10 +43,10 @@ def test_streaming_recognize():
     # Assert that we called streaming recognize with an iterable
     # that evaluates to the correct format.
     _, args, kwargs = streaming_recognize.mock_calls[0]
-    api_requests = args[1]
+    api_requests = kwargs["requests"]
     assert isinstance(api_requests, GeneratorType)
     assert list(api_requests) == [
-        types.StreamingRecognizeRequest(streaming_config=config),
+        {"streaming_config": config},
         requests[0],
     ]
     assert "retry" in kwargs
