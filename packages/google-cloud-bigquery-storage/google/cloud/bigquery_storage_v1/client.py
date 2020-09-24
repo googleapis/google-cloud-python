@@ -23,8 +23,8 @@ from __future__ import absolute_import
 
 import google.api_core.gapic_v1.method
 
+from google.cloud.bigquery import storage_v1
 from google.cloud.bigquery_storage_v1 import reader
-from google.cloud.bigquery_storage_v1.gapic import big_query_read_client  # noqa
 
 
 _SCOPES = (
@@ -33,7 +33,7 @@ _SCOPES = (
 )
 
 
-class BigQueryReadClient(big_query_read_client.BigQueryReadClient):
+class BigQueryReadClient(storage_v1.BigQueryReadClient):
     """Client for interacting with BigQuery Storage API.
 
     The BigQuery storage API can be used to read data stored in BigQuery.
@@ -45,7 +45,7 @@ class BigQueryReadClient(big_query_read_client.BigQueryReadClient):
         offset=0,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
-        metadata=None,
+        metadata=(),
     ):
         """
         Reads rows from the table in the format prescribed by the read
@@ -60,9 +60,9 @@ class BigQueryReadClient(big_query_read_client.BigQueryReadClient):
         to read data.
 
         Example:
-            >>> from google.cloud import bigquery_storage_v1
+            >>> from google.cloud.bigquery import storage
             >>>
-            >>> client = bigquery_storage_v1.BigQueryReadClient()
+            >>> client = storage.BigQueryReadClient()
             >>>
             >>> # TODO: Initialize ``table``:
             >>> table = "projects/{}/datasets/{}/tables/{}".format(
@@ -74,11 +74,13 @@ class BigQueryReadClient(big_query_read_client.BigQueryReadClient):
             >>> # TODO: Initialize `parent`:
             >>> parent = 'projects/your-billing-project-id'
             >>>
-            >>> requested_session = bigquery_storage_v1.types.ReadSession(
+            >>> requested_session = storage.types.ReadSession(
             ...     table=table,
-            ...     data_format=bigquery_storage_v1.enums.DataFormat.AVRO,
+            ...     data_format=storage.types.DataFormat.AVRO,
             ... )
-            >>> session = client.create_read_session(parent, requested_session)
+            >>> session = client.create_read_session(
+            ...     parent=parent, read_session=requested_session
+            ... )
             >>>
             >>> stream = session.streams[0],  # TODO: Also read any other streams.
             >>> read_rows_stream = client.read_rows(stream.name)

@@ -2,20 +2,6 @@
 
 .. include:: multiprocessing.rst
 
-API Reference
--------------
-.. toctree::
-    :maxdepth: 2
-
-    gapic/v1beta1/api
-    gapic/v1beta1/reader
-    gapic/v1beta1/types
-
-    gapic/v1beta2/api
-    gapic/v1beta2/types
-
-    gapic/v1/api
-    gapic/v1/types
 
 Example Usage
 -------------
@@ -25,3 +11,24 @@ Example Usage
    :dedent: 4
    :start-after: [START bigquerystorage_quickstart]
    :end-before: [END bigquerystorage_quickstart]
+
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    storage_v1/library
+    storage_v1/services
+    storage_v1/types
+
+
+Migration Guide
+---------------
+
+See the guide below for instructions on migrating to the 2.x release of this library.
+
+.. toctree::
+    :maxdepth: 2
+
+    UPGRADING

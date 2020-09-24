@@ -24,8 +24,7 @@ import pytest
 import pytz
 
 from google.cloud import bigquery
-from google.cloud import bigquery_storage_v1
-from google.protobuf import timestamp_pb2
+from google.cloud.bigquery.storage import types
 
 
 def _to_bq_table_ref(table_name_string, partition_suffix=""):
@@ -55,25 +54,26 @@ def _to_bq_table_ref(table_name_string, partition_suffix=""):
 
 @pytest.mark.parametrize(
     "data_format,expected_schema_type",
-    (
-        (bigquery_storage_v1.enums.DataFormat.AVRO, "avro_schema"),
-        (bigquery_storage_v1.enums.DataFormat.ARROW, "arrow_schema"),
-    ),
+    ((types.DataFormat.AVRO, "avro_schema"), (types.DataFormat.ARROW, "arrow_schema")),
 )
 def test_read_rows_as_blocks_full_table(
     client, project_id, small_table_reference, data_format, expected_schema_type
 ):
 
-    read_session = bigquery_storage_v1.types.ReadSession()
+    read_session = types.ReadSession()
     read_session.table = small_table_reference
     read_session.data_format = data_format
 
     session = client.create_read_session(
-        "projects/{}".format(project_id), read_session, max_stream_count=1
+        request={
+            "parent": "projects/{}".format(project_id),
+            "read_session": read_session,
+            "max_stream_count": 1,
+        }
     )
     stream = session.streams[0].name
 
-    schema_type = session.WhichOneof("schema")
+    schema_type = session._pb.WhichOneof("schema")
     assert schema_type == expected_schema_type
 
     blocks = list(client.read_rows(stream))
@@ -83,21 +83,22 @@ def test_read_rows_as_blocks_full_table(
 
 @pytest.mark.parametrize(
     "data_format,expected_schema_type",
-    (
-        (bigquery_storage_v1.enums.DataFormat.AVRO, "avro_schema"),
-        (bigquery_storage_v1.enums.DataFormat.ARROW, "arrow_schema"),
-    ),
+    ((types.DataFormat.AVRO, "avro_schema"), (types.DataFormat.ARROW, "arrow_schema")),
 )
 def test_read_rows_as_rows_full_table(
     client, project_id, small_table_reference, data_format, expected_schema_type
 ):
 
-    read_session = bigquery_storage_v1.types.ReadSession()
+    read_session = types.ReadSession()
     read_session.table = small_table_reference
     read_session.data_format = data_format
 
     session = client.create_read_session(
-        "projects/{}".format(project_id), read_session, max_stream_count=1
+        request={
+            "parent": "projects/{}".format(project_id),
+            "read_session": read_session,
+            "max_stream_count": 1,
+        }
     )
     stream = session.streams[0].name
 
@@ -107,19 +108,19 @@ def test_read_rows_as_rows_full_table(
 
 
 @pytest.mark.parametrize(
-    "data_format",
-    (
-        (bigquery_storage_v1.enums.DataFormat.AVRO),
-        (bigquery_storage_v1.enums.DataFormat.ARROW),
-    ),
+    "data_format", ((types.DataFormat.AVRO), (types.DataFormat.ARROW))
 )
 def test_basic_nonfiltered_read(client, project_id, table_with_data_ref, data_format):
-    read_session = bigquery_storage_v1.types.ReadSession()
+    read_session = types.ReadSession()
     read_session.table = table_with_data_ref
     read_session.data_format = data_format
 
     session = client.create_read_session(
-        "projects/{}".format(project_id), read_session, max_stream_count=1
+        request={
+            "parent": "projects/{}".format(project_id),
+            "read_session": read_session,
+            "max_stream_count": 1,
+        }
     )
     stream = session.streams[0].name
 
@@ -129,13 +130,17 @@ def test_basic_nonfiltered_read(client, project_id, table_with_data_ref, data_fo
 
 
 def test_filtered_rows_read(client, project_id, table_with_data_ref):
-    read_session = bigquery_storage_v1.types.ReadSession()
+    read_session = types.ReadSession()
     read_session.table = table_with_data_ref
-    read_session.data_format = bigquery_storage_v1.enums.DataFormat.AVRO
+    read_session.data_format = types.DataFormat.AVRO
     read_session.read_options.row_restriction = "age >= 50"
 
     session = client.create_read_session(
-        "projects/{}".format(project_id), read_session, max_stream_count=1
+        request={
+            "parent": "projects/{}".format(project_id),
+            "read_session": read_session,
+            "max_stream_count": 1,
+        }
     )
     stream = session.streams[0].name
 
@@ -145,22 +150,22 @@ def test_filtered_rows_read(client, project_id, table_with_data_ref):
 
 
 @pytest.mark.parametrize(
-    "data_format",
-    (
-        (bigquery_storage_v1.enums.DataFormat.AVRO),
-        (bigquery_storage_v1.enums.DataFormat.ARROW),
-    ),
+    "data_format", ((types.DataFormat.AVRO), (types.DataFormat.ARROW))
 )
 def test_column_selection_read(client, project_id, table_with_data_ref, data_format):
 
-    read_session = bigquery_storage_v1.types.ReadSession()
+    read_session = types.ReadSession()
     read_session.table = table_with_data_ref
     read_session.data_format = data_format
     read_session.read_options.selected_fields.append("first_name")
     read_session.read_options.selected_fields.append("age")
 
     session = client.create_read_session(
-        "projects/{}".format(project_id), read_session, max_stream_count=1
+        request={
+            "parent": "projects/{}".format(project_id),
+            "read_session": read_session,
+            "max_stream_count": 1,
+        }
     )
     stream = session.streams[0].name
 
@@ -171,7 +176,7 @@ def test_column_selection_read(client, project_id, table_with_data_ref, data_for
 
 
 def test_snapshot(client, project_id, table_with_data_ref, bq_client):
-    before_new_data = timestamp_pb2.Timestamp()
+    before_new_data = types.Timestamp()
     before_new_data.GetCurrentTime()
 
     # load additional data into the table
@@ -185,13 +190,17 @@ def test_snapshot(client, project_id, table_with_data_ref, bq_client):
 
     # read data using the timestamp before the additional data load
 
-    read_session = bigquery_storage_v1.types.ReadSession()
+    read_session = types.ReadSession()
     read_session.table = table_with_data_ref
-    read_session.table_modifiers.snapshot_time.CopyFrom(before_new_data)
-    read_session.data_format = bigquery_storage_v1.enums.DataFormat.AVRO
+    read_session.table_modifiers.snapshot_time = before_new_data
+    read_session.data_format = types.DataFormat.AVRO
 
     session = client.create_read_session(
-        "projects/{}".format(project_id), read_session, max_stream_count=1
+        request={
+            "parent": "projects/{}".format(project_id),
+            "read_session": read_session,
+            "max_stream_count": 1,
+        }
     )
     stream = session.streams[0].name
 
@@ -221,13 +230,17 @@ def test_column_partitioned_table(
     # Read from the table with a partition filter specified, and verify that
     # only the expected data is returned.
 
-    read_session = bigquery_storage_v1.types.ReadSession()
+    read_session = types.ReadSession()
     read_session.table = col_partition_table_ref
-    read_session.data_format = bigquery_storage_v1.enums.DataFormat.AVRO
+    read_session.data_format = types.DataFormat.AVRO
     read_session.read_options.row_restriction = "occurred = '2018-02-15'"
 
     session = client.create_read_session(
-        "projects/{}".format(project_id), read_session, max_stream_count=1
+        request={
+            "parent": "projects/{}".format(project_id),
+            "read_session": read_session,
+            "max_stream_count": 1,
+        }
     )
 
     assert session.streams  # there should be some data to fetch
@@ -244,11 +257,7 @@ def test_column_partitioned_table(
 
 
 @pytest.mark.parametrize(
-    "data_format",
-    (
-        (bigquery_storage_v1.enums.DataFormat.AVRO),
-        (bigquery_storage_v1.enums.DataFormat.ARROW),
-    ),
+    "data_format", ((types.DataFormat.AVRO), (types.DataFormat.ARROW))
 )
 def test_ingestion_time_partitioned_table(
     client, project_id, ingest_partition_table_ref, bq_client, data_format
@@ -277,13 +286,17 @@ def test_ingestion_time_partitioned_table(
     )
     bq_client.load_table_from_json(data, destination).result()
 
-    read_session = bigquery_storage_v1.types.ReadSession()
+    read_session = types.ReadSession()
     read_session.table = ingest_partition_table_ref
     read_session.data_format = data_format
     read_session.read_options.row_restriction = "DATE(_PARTITIONTIME) = '2019-08-10'"
 
     session = client.create_read_session(
-        "projects/{}".format(project_id), read_session, max_stream_count=1
+        request={
+            "parent": "projects/{}".format(project_id),
+            "read_session": read_session,
+            "max_stream_count": 1,
+        }
     )
 
     assert session.streams  # there should be some data to fetch
@@ -293,10 +306,10 @@ def test_ingestion_time_partitioned_table(
     rows = list(client.read_rows(stream).rows(session))
     assert len(rows) == 2
 
-    if data_format == bigquery_storage_v1.enums.DataFormat.AVRO:
+    if data_format == types.DataFormat.AVRO:
         actual_items = {(row["shape"], row["altitude"]) for row in rows}
     else:
-        assert data_format == bigquery_storage_v1.enums.DataFormat.ARROW
+        assert data_format == types.DataFormat.ARROW
         actual_items = {(row["shape"].as_py(), row["altitude"].as_py()) for row in rows}
 
     expected_items = {("sphere", 3500), ("doughnut", 100)}
@@ -304,11 +317,7 @@ def test_ingestion_time_partitioned_table(
 
 
 @pytest.mark.parametrize(
-    "data_format",
-    (
-        (bigquery_storage_v1.enums.DataFormat.AVRO),
-        (bigquery_storage_v1.enums.DataFormat.ARROW),
-    ),
+    "data_format", ((types.DataFormat.AVRO), (types.DataFormat.ARROW))
 )
 def test_decoding_data_types(
     client, project_id, all_types_table_ref, bq_client, data_format
@@ -361,22 +370,26 @@ def test_decoding_data_types(
     destination = _to_bq_table_ref(all_types_table_ref)
     bq_client.load_table_from_json(data, destination, job_config=job_config).result()
 
-    read_session = bigquery_storage_v1.types.ReadSession()
+    read_session = types.ReadSession()
     read_session.table = all_types_table_ref
     read_session.data_format = data_format
 
     session = client.create_read_session(
-        "projects/{}".format(project_id), read_session, max_stream_count=1
+        request={
+            "parent": "projects/{}".format(project_id),
+            "read_session": read_session,
+            "max_stream_count": 1,
+        }
     )
 
     assert session.streams  # there should be data available
 
     stream = session.streams[0].name
 
-    if data_format == bigquery_storage_v1.enums.DataFormat.AVRO:
+    if data_format == types.DataFormat.AVRO:
         rows = list(client.read_rows(stream).rows(session))
     else:
-        assert data_format == bigquery_storage_v1.enums.DataFormat.ARROW
+        assert data_format == types.DataFormat.ARROW
         rows = list(
             dict((key, value.as_py()) for key, value in row_dict.items())
             for row_dict in client.read_rows(stream).rows(session)
@@ -409,22 +422,22 @@ def test_decoding_data_types(
 
 
 @pytest.mark.parametrize(
-    "data_format",
-    (
-        (bigquery_storage_v1.enums.DataFormat.AVRO),
-        (bigquery_storage_v1.enums.DataFormat.ARROW),
-    ),
+    "data_format", ((types.DataFormat.AVRO), (types.DataFormat.ARROW))
 )
 def test_resuming_read_from_offset(
     client, project_id, data_format, local_shakespeare_table_reference
 ):
 
-    read_session = bigquery_storage_v1.types.ReadSession()
+    read_session = types.ReadSession()
     read_session.table = local_shakespeare_table_reference
     read_session.data_format = data_format
 
     session = client.create_read_session(
-        "projects/{}".format(project_id), read_session, max_stream_count=1
+        request={
+            "parent": "projects/{}".format(project_id),
+            "read_session": read_session,
+            "max_stream_count": 1,
+        }
     )
 
     assert session.streams  # there should be data available
@@ -441,7 +454,7 @@ def test_resuming_read_from_offset(
     # fetch the rest of the rows using the stream offset
     offset = some_rows.row_count + more_rows.row_count
     remaining_rows_count = sum(
-        1 for _ in client.read_rows(stream, offset).rows(session)
+        1 for _ in client.read_rows(stream, offset=offset).rows(session)
     )
 
     # verify that the counts match

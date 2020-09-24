@@ -19,11 +19,11 @@ import numpy
 import pyarrow.types
 import pytest
 
-from google.cloud import bigquery_storage_v1
+from google.cloud.bigquery.storage import types
 
 
 def test_read_v1(client, project_id):
-    read_session = bigquery_storage_v1.types.ReadSession()
+    read_session = types.ReadSession()
     read_session.table = "projects/{}/datasets/{}/tables/{}".format(
         "bigquery-public-data", "new_york_citibike", "citibike_stations"
     )
@@ -32,10 +32,14 @@ def test_read_v1(client, project_id):
     read_session.read_options.selected_fields.append("latitude")
     read_session.read_options.selected_fields.append("longitude")
     read_session.read_options.selected_fields.append("name")
-    read_session.data_format = bigquery_storage_v1.enums.DataFormat.ARROW
+    read_session.data_format = types.DataFormat.ARROW
 
     session = client.create_read_session(
-        "projects/{}".format(project_id), read_session, max_stream_count=1
+        request={
+            "parent": "projects/{}".format(project_id),
+            "read_session": read_session,
+            "max_stream_count": 1,
+        }
     )
 
     assert len(session.streams) == 1
@@ -56,22 +60,23 @@ def test_read_v1(client, project_id):
 
 @pytest.mark.parametrize(
     "data_format,expected_schema_type",
-    (
-        (bigquery_storage_v1.enums.DataFormat.AVRO, "avro_schema"),
-        (bigquery_storage_v1.enums.DataFormat.ARROW, "arrow_schema"),
-    ),
+    ((types.DataFormat.AVRO, "avro_schema"), (types.DataFormat.ARROW, "arrow_schema")),
 )
 def test_read_rows_to_dataframe(client, project_id, data_format, expected_schema_type):
-    read_session = bigquery_storage_v1.types.ReadSession()
+    read_session = types.ReadSession()
     read_session.table = "projects/{}/datasets/{}/tables/{}".format(
         "bigquery-public-data", "new_york_citibike", "citibike_stations"
     )
     read_session.data_format = data_format
 
     session = client.create_read_session(
-        "projects/{}".format(project_id), read_session, max_stream_count=1
+        request={
+            "parent": "projects/{}".format(project_id),
+            "read_session": read_session,
+            "max_stream_count": 1,
+        }
     )
-    schema_type = session.WhichOneof("schema")
+    schema_type = session._pb.WhichOneof("schema")
     assert schema_type == expected_schema_type
 
     stream = session.streams[0].name

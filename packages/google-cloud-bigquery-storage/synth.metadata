@@ -4,51 +4,25 @@
       "git": {
         "name": ".",
         "remote": "git@github.com:plamut/python-bigquery-storage.git",
-        "sha": "ba84d5b22ec1270a362687854f51d74c5d96d862"
-      }
-    },
-    {
-      "git": {
-        "name": "googleapis",
-        "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "7a906c83566d0d429b23da434a4dc2b4de7b117a",
-        "internalRef": "331220195"
+        "sha": "e019d01628884bb3a24495f48f5036c9160deabd"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "fdd03c161003ab97657cc0218f25c82c89ddf4b6"
+        "sha": "916c10e8581804df2b48a0f0457d848f3faa582e"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "fdd03c161003ab97657cc0218f25c82c89ddf4b6"
+        "sha": "916c10e8581804df2b48a0f0457d848f3faa582e"
       }
     }
   ],
   "destinations": [
-    {
-      "client": {
-        "source": "googleapis",
-        "apiName": "bigquery_storage",
-        "apiVersion": "v1beta1",
-        "language": "python",
-        "generator": "bazel"
-      }
-    },
-    {
-      "client": {
-        "source": "googleapis",
-        "apiName": "bigquery_storage",
-        "apiVersion": "v1beta2",
-        "language": "python",
-        "generator": "bazel"
-      }
-    },
     {
       "client": {
         "source": "googleapis",
