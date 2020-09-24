@@ -36,56 +36,47 @@ for version in versions:
 
     # Don't move over __init__.py, as we modify it to make the generated client
     # use helpers.py.
-    s.move(library / f"google/cloud/speech_{version}/types.py")
-    s.move(library / f"google/cloud/speech_{version}/gapic")
-    s.move(library / f"google/cloud/speech_{version}/proto")
-    s.move(library / f"tests/unit/gapic/{version}")
-    s.move(library / f"docs/gapic/{version}")
-    s.move(library / f"samples")
+    s.move(library, excludes=["setup.py", "docs/index.rst", "README.rst"])
 
 
-# Use the highest version library to generate documentation import alias.
-s.move(library / "google/cloud/speech.py")
+# Add the manually written SpeechHelpers to v1 and v1p1beta1
+# See google/cloud/speech_v1/helpers.py for details
+count = s.replace(
+["google/cloud/speech_v1/__init__.py", "google/cloud/speech_v1p1beta1/__init__.py"],
+"""__all__ = \(""",
+"""from google.cloud.speech_v1.helpers import SpeechHelpers
 
+class SpeechClient(SpeechHelpers, SpeechClient):
+    __doc__ = SpeechClient.__doc__
 
-# Fix tests to use the direct gapic client instead of the wrapped helper
-# client.
-s.replace(
-    "tests/unit/**/test*client*.py",
-    r"from google\.cloud import speech_(.+?)$",
-    r"from google.cloud.speech_\1.gapic import speech_client as speech_\1",
+__all__ = (
+""",
+    )
+
+# Import from speech_v1 to get the client with SpeechHelpers
+count = s.replace(
+"google/cloud/speech/__init__.py",
+"""from google\.cloud\.speech_v1\.services\.speech\.client import SpeechClient""",
+"""from google.cloud.speech_v1 import SpeechClient"""
 )
 
-
-# Fix bad docstring
-s.replace(
-    "google/**/resource_pb2.py",
-    """``\\\\ ``e\.g\.``\\\\
-    \$MONTH\\\\ ``\.""",
-    """``\ ``e.g.``\$MONTH\ ``."""
-)
-
-s.replace(
-    "google/**/resource_pb2.py",
-    """\(e\.g\. ``\\\\ \{my-
-    months\}`\)\.""",
-    """(e.g. ``\ {my-months}``)."""
-)
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=87, samples=True)
-s.move(templated_files)
+templated_files = common.py_library(
+    samples=True,  # set to True only if there are samples
+    microgenerator=True,
+    cov_level=99,
+)
+s.move(
+    templated_files, excludes=[".coveragerc"]
+)  # microgenerator has a good .coveragerc file
+
 
 # ----------------------------------------------------------------------------
 # Samples templates
 # ----------------------------------------------------------------------------
 
 python.py_samples(skip_readmes=True)
-
-
-# TODO(busunkim): Use latest sphinx after microgenerator transition
-s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
-
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
