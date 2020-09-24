@@ -114,11 +114,9 @@ class {{ service.name }}Transport(abc.ABC):
                     {% if method.retry.max_backoff %}maximum={{ method.retry.max_backoff }},{% endif %}
                     {% if method.retry.backoff_multiplier %}multiplier={{ method.retry.backoff_multiplier }},{% endif %}
                     predicate=retries.if_exception_type(
-                        {%- filter sort_lines %}
-                        {%- for ex in method.retry.retryable_exceptions %}
+                        {%- for ex in method.retry.retryable_exceptions|sort(attribute='__name__') %}
                         exceptions.{{ ex.__name__ }},
                         {%- endfor %}
-                        {%- endfilter %}
                     ),
                 ),
                 {%- endif %}
