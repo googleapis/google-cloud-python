@@ -11,7 +11,7 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "80f46100c047bc47efe0025ee537dc8ee413ad04"
+        "sha": "dba48bb9bc6959c232bec9150ac6313b608fe7bd"
       }
     }
   ],
@@ -24,6 +24,7 @@
     ".kokoro/docs/common.cfg",
     ".kokoro/docs/docs-presubmit.cfg",
     ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
     ".kokoro/presubmit/common.cfg",
     ".kokoro/presubmit/presubmit.cfg",
     ".kokoro/publish-docs.sh",
