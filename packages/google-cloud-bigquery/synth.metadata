@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-bigquery.git",
-        "sha": "a125160696d1453b04a66c967819f90e70e03a52"
+        "sha": "b716e1c8ecd90142b498b95e7f8830835529cf4a"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "32c758f11b8c578f515a746c9d263b82a615a77c"
+        "sha": "27f4406999b1eee29e04b09b2423a8e4646c7e24"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "32c758f11b8c578f515a746c9d263b82a615a77c"
+        "sha": "27f4406999b1eee29e04b09b2423a8e4646c7e24"
       }
     }
   ],
@@ -60,6 +60,7 @@
     ".kokoro/docs/common.cfg",
     ".kokoro/docs/docs-presubmit.cfg",
     ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
     ".kokoro/presubmit/common.cfg",
     ".kokoro/presubmit/presubmit.cfg",
     ".kokoro/presubmit/system-2.7.cfg",
