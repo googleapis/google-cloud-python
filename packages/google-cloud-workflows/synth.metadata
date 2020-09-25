@@ -3,21 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "sso://devrel/cloud/libraries/python/python-workflows"
+        "remote": "https://github.com/googleapis/python-workflows.git",
+        "sha": "ff52f3b063bdd0e84984c8256706b2a7eef59037"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "2987612c6aacc1857ee35468e7aeb1c393460799",
+        "internalRef": "333583499"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "538a68019eb4a36a0cdfa4021f324dd01b784395"
+        "sha": "a651c5fb763c69a921aecdd3e1d8dc51dbf20f8d"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "538a68019eb4a36a0cdfa4021f324dd01b784395"
+        "sha": "a651c5fb763c69a921aecdd3e1d8dc51dbf20f8d"
       }
     }
   ],
@@ -40,5 +49,109 @@
         "generator": "bazel"
       }
     }
+  ],
+  "generatedFiles": [
+    ".flake8",
+    ".github/CONTRIBUTING.md",
+    ".github/ISSUE_TEMPLATE/bug_report.md",
+    ".github/ISSUE_TEMPLATE/feature_request.md",
+    ".github/ISSUE_TEMPLATE/support_request.md",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/release-please.yml",
+    ".github/snippet-bot.yml",
+    ".gitignore",
+    ".kokoro/build.sh",
+    ".kokoro/continuous/common.cfg",
+    ".kokoro/continuous/continuous.cfg",
+    ".kokoro/docker/docs/Dockerfile",
+    ".kokoro/docker/docs/fetch_gpg_keys.sh",
+    ".kokoro/docs/common.cfg",
+    ".kokoro/docs/docs-presubmit.cfg",
+    ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
+    ".kokoro/presubmit/common.cfg",
+    ".kokoro/presubmit/presubmit.cfg",
+    ".kokoro/publish-docs.sh",
+    ".kokoro/release.sh",
+    ".kokoro/release/common.cfg",
+    ".kokoro/release/release.cfg",
+    ".kokoro/samples/lint/common.cfg",
+    ".kokoro/samples/lint/continuous.cfg",
+    ".kokoro/samples/lint/periodic.cfg",
+    ".kokoro/samples/lint/presubmit.cfg",
+    ".kokoro/samples/python3.6/common.cfg",
+    ".kokoro/samples/python3.6/continuous.cfg",
+    ".kokoro/samples/python3.6/periodic.cfg",
+    ".kokoro/samples/python3.6/presubmit.cfg",
+    ".kokoro/samples/python3.7/common.cfg",
+    ".kokoro/samples/python3.7/continuous.cfg",
+    ".kokoro/samples/python3.7/periodic.cfg",
+    ".kokoro/samples/python3.7/presubmit.cfg",
+    ".kokoro/samples/python3.8/common.cfg",
+    ".kokoro/samples/python3.8/continuous.cfg",
+    ".kokoro/samples/python3.8/periodic.cfg",
+    ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/test-samples.sh",
+    ".kokoro/trampoline.sh",
+    ".kokoro/trampoline_v2.sh",
+    ".trampolinerc",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.rst",
+    "LICENSE",
+    "MANIFEST.in",
+    "docs/_static/custom.css",
+    "docs/_templates/layout.html",
+    "docs/conf.py",
+    "docs/executions_v1beta/services.rst",
+    "docs/executions_v1beta/types.rst",
+    "docs/multiprocessing.rst",
+    "docs/workflows_v1beta/services.rst",
+    "docs/workflows_v1beta/types.rst",
+    "google/cloud/workflows/__init__.py",
+    "google/cloud/workflows/executions/__init__.py",
+    "google/cloud/workflows/executions/py.typed",
+    "google/cloud/workflows/executions_v1beta/__init__.py",
+    "google/cloud/workflows/executions_v1beta/py.typed",
+    "google/cloud/workflows/executions_v1beta/services/__init__.py",
+    "google/cloud/workflows/executions_v1beta/services/executions/__init__.py",
+    "google/cloud/workflows/executions_v1beta/services/executions/async_client.py",
+    "google/cloud/workflows/executions_v1beta/services/executions/client.py",
+    "google/cloud/workflows/executions_v1beta/services/executions/pagers.py",
+    "google/cloud/workflows/executions_v1beta/services/executions/transports/__init__.py",
+    "google/cloud/workflows/executions_v1beta/services/executions/transports/base.py",
+    "google/cloud/workflows/executions_v1beta/services/executions/transports/grpc.py",
+    "google/cloud/workflows/executions_v1beta/services/executions/transports/grpc_asyncio.py",
+    "google/cloud/workflows/executions_v1beta/types/__init__.py",
+    "google/cloud/workflows/executions_v1beta/types/executions.py",
+    "google/cloud/workflows/py.typed",
+    "google/cloud/workflows_v1beta/__init__.py",
+    "google/cloud/workflows_v1beta/py.typed",
+    "google/cloud/workflows_v1beta/services/__init__.py",
+    "google/cloud/workflows_v1beta/services/workflows/__init__.py",
+    "google/cloud/workflows_v1beta/services/workflows/async_client.py",
+    "google/cloud/workflows_v1beta/services/workflows/client.py",
+    "google/cloud/workflows_v1beta/services/workflows/pagers.py",
+    "google/cloud/workflows_v1beta/services/workflows/transports/__init__.py",
+    "google/cloud/workflows_v1beta/services/workflows/transports/base.py",
+    "google/cloud/workflows_v1beta/services/workflows/transports/grpc.py",
+    "google/cloud/workflows_v1beta/services/workflows/transports/grpc_asyncio.py",
+    "google/cloud/workflows_v1beta/types/__init__.py",
+    "google/cloud/workflows_v1beta/types/workflows.py",
+    "mypy.ini",
+    "noxfile.py",
+    "renovate.json",
+    "scripts/decrypt-secrets.sh",
+    "scripts/readme-gen/readme_gen.py",
+    "scripts/readme-gen/templates/README.tmpl.rst",
+    "scripts/readme-gen/templates/auth.tmpl.rst",
+    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
+    "scripts/readme-gen/templates/install_deps.tmpl.rst",
+    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
+    "setup.cfg",
+    "testing/.gitignore",
+    "tests/unit/gapic/executions_v1beta/__init__.py",
+    "tests/unit/gapic/executions_v1beta/test_executions.py",
+    "tests/unit/gapic/workflows_v1beta/__init__.py",
+    "tests/unit/gapic/workflows_v1beta/test_workflows.py"
   ]
 }
