@@ -134,7 +134,7 @@ def publish_messages_with_custom_attributes(project_id, topic_id):
 
 
 def publish_messages_with_error_handler(project_id, topic_id):
-    # [START pubsub_publish_messages_error_handler]
+    # [START pubsub_publish_with_error_handler]
     """Publishes multiple messages to a Pub/Sub topic with an error handler."""
     import time
 
@@ -173,7 +173,7 @@ def publish_messages_with_error_handler(project_id, topic_id):
         time.sleep(5)
 
     print("Published message with error handler.")
-    # [END pubsub_publish_messages_error_handler]
+    # [END pubsub_publish_with_error_handler]
 
 
 def publish_messages_with_batch_settings(project_id, topic_id):

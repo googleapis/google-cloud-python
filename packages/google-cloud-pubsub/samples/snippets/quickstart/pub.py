@@ -14,14 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START pubsub_quickstart_pub_all]
 import argparse
 import time
 
-# [START pubsub_quickstart_pub_deps]
 from google.cloud import pubsub_v1
-
-# [END pubsub_quickstart_pub_deps]
 
 
 def get_callback(api_future, data, ref):
@@ -48,10 +44,8 @@ def get_callback(api_future, data, ref):
 
 def pub(project_id, topic_id):
     """Publishes a message to a Pub/Sub topic."""
-    # [START pubsub_quickstart_pub_client]
     # Initialize a Publisher client.
     client = pubsub_v1.PublisherClient()
-    # [END pubsub_quickstart_pub_client]
     # Create a fully qualified identifier in the form of
     # `projects/{project_id}/topics/{topic_id}`
     topic_path = client.topic_path(project_id, topic_id)
@@ -83,4 +77,3 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     pub(args.project_id, args.topic_id)
-# [END pubsub_quickstart_pub_all]
