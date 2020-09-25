@@ -25,36 +25,36 @@ RUN apt-get update && apt-get install -y dictionaries-common aspell aspell-en \
   hunspell-en-us libenchant1c2a enchant
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
-  apt-transport-https \
-  build-essential \
-  ca-certificates \
-  curl \
-  dirmngr \
-  git \
-  gpg-agent \
-  graphviz \
-  libbz2-dev \
-  libdb5.3-dev \
-  libexpat1-dev \
-  libffi-dev \
-  liblzma-dev \
-  libreadline-dev \
-  libsnappy-dev \
-  libssl-dev \
-  libsqlite3-dev \
-  memcached \
-  portaudio19-dev \
-  redis-server \
-  software-properties-common \
-  ssh \
-  sudo \
-  tcl \
-  tcl-dev \
-  tk \
-  tk-dev \
-  uuid-dev \
-  wget \
-  zlib1g-dev \
+    apt-transport-https \
+    build-essential \
+    ca-certificates \
+    curl \
+    dirmngr \
+    git \
+    gpg-agent \
+    graphviz \
+    libbz2-dev \
+    libdb5.3-dev \
+    libexpat1-dev \
+    libffi-dev \
+    liblzma-dev \
+    libreadline-dev \
+    libsnappy-dev \
+    libssl-dev \
+    libsqlite3-dev \
+    memcached \
+    portaudio19-dev \
+    redis-server \
+    software-properties-common \
+    ssh \
+    sudo \
+    tcl \
+    tcl-dev \
+    tk \
+    tk-dev \
+    uuid-dev \
+    wget \
+    zlib1g-dev \
   && add-apt-repository universe \
   && apt-get update \
   && apt-get -y install jq \
@@ -67,28 +67,28 @@ RUN apt-get update \
 COPY fetch_gpg_keys.sh /tmp
 # Install the desired versions of Python.
 RUN set -ex \
-  && export GNUPGHOME="$(mktemp -d)" \
-  && echo "disable-ipv6" >> "${GNUPGHOME}/dirmngr.conf" \
-  && /tmp/fetch_gpg_keys.sh \
-  && for PYTHON_VERSION in 3.7.8 3.8.5; do \
-  wget --no-check-certificate -O python-${PYTHON_VERSION}.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
-  && wget --no-check-certificate -O python-${PYTHON_VERSION}.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
-  && gpg --batch --verify python-${PYTHON_VERSION}.tar.xz.asc python-${PYTHON_VERSION}.tar.xz \
-  && rm -r python-${PYTHON_VERSION}.tar.xz.asc \
-  && mkdir -p /usr/src/python-${PYTHON_VERSION} \
-  && tar -xJC /usr/src/python-${PYTHON_VERSION} --strip-components=1 -f python-${PYTHON_VERSION}.tar.xz \
-  && rm python-${PYTHON_VERSION}.tar.xz \
-  && cd /usr/src/python-${PYTHON_VERSION} \
-  && ./configure \
-  --enable-shared \
-  # This works only on Python 2.7 and throws a warning on every other
-  # version, but seems otherwise harmless.
-  --enable-unicode=ucs4 \
-  --with-system-ffi \
-  --without-ensurepip \
-  && make -j$(nproc) \
-  && make install \
-  && ldconfig \
+    && export GNUPGHOME="$(mktemp -d)" \
+    && echo "disable-ipv6" >> "${GNUPGHOME}/dirmngr.conf" \
+    && /tmp/fetch_gpg_keys.sh \
+    && for PYTHON_VERSION in 3.7.8 3.8.5; do \
+        wget --no-check-certificate -O python-${PYTHON_VERSION}.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
+        && wget --no-check-certificate -O python-${PYTHON_VERSION}.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
+        && gpg --batch --verify python-${PYTHON_VERSION}.tar.xz.asc python-${PYTHON_VERSION}.tar.xz \
+        && rm -r python-${PYTHON_VERSION}.tar.xz.asc \
+        && mkdir -p /usr/src/python-${PYTHON_VERSION} \
+        && tar -xJC /usr/src/python-${PYTHON_VERSION} --strip-components=1 -f python-${PYTHON_VERSION}.tar.xz \
+        && rm python-${PYTHON_VERSION}.tar.xz \
+        && cd /usr/src/python-${PYTHON_VERSION} \
+        && ./configure \
+            --enable-shared \
+            # This works only on Python 2.7 and throws a warning on every other
+            # version, but seems otherwise harmless.
+            --enable-unicode=ucs4 \
+            --with-system-ffi \
+            --without-ensurepip \
+        && make -j$(nproc) \
+        && make install \
+        && ldconfig \
   ; done \
   && rm -rf "${GNUPGHOME}" \
   && rm -rf /usr/src/python* \
