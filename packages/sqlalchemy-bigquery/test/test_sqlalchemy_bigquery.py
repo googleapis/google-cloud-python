@@ -162,10 +162,14 @@ def query():
     def query(table):
         col1 = literal_column("TIMESTAMP_TRUNC(timestamp, DAY)").label("timestamp_label")
         col2 = func.sum(table.c.integer)
+        # Test rendering of nested labels. Full expression should render in SELECT, but
+        # ORDER/GROUP BY should use label only.
+        col3 = func.sum(func.sum(table.c.integer.label("inner")).label("outer")).over().label('outer')
         query = (
             select([
                 col1,
                 col2,
+                col3,
             ])
             .where(col1 < '2017-01-01 00:00:00')
             .group_by(col1)
