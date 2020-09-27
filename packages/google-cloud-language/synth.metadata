@@ -3,23 +3,29 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-language.git",
-        "sha": "3db1fa4508b7891733d362e81d3e20fe8e71b996"
+        "remote": "git@github.com:googleapis/python-language.git",
+        "sha": "2084dc18f3f495ceb753e4131ca616c17b25cf86"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "fa4d2ecd0804eb92f27a65fe65ce2a554a361b93",
-        "internalRef": "317110673"
+        "sha": "b7f574bddb451d81aa222dad7dcecf3477cb97ed"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "cd522c3b4dde821766d95c80ae5aeb43d7a41170"
+        "sha": "da29da32b3a988457b49ae290112b74f14b713cc"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "da29da32b3a988457b49ae290112b74f14b713cc"
       }
     }
   ],
