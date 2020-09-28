@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-asset/compare/v2.0.0...v2.1.0) (2020-09-25)
+
+
+### Features
+
+* add support for per type and partition export ([#86](https://www.github.com/googleapis/python-asset/issues/86)) ([cd26192](https://www.github.com/googleapis/python-asset/commit/cd2619262bbea00c01d054b783b218009171284e))
+
+
+### Bug Fixes
+
+* **sample:** mark a test with flaky ([#81](https://www.github.com/googleapis/python-asset/issues/81)) ([aa153dc](https://www.github.com/googleapis/python-asset/commit/aa153dce2f62c18101472c40964cc3cee9188d78)), closes [#75](https://www.github.com/googleapis/python-asset/issues/75)
+
 ## [2.0.0](https://www.github.com/googleapis/python-asset/compare/v1.3.0...v2.0.0) (2020-08-05)
 
 
