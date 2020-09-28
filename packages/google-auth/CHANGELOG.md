@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [1.22.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.21.3...v1.22.0) (2020-09-28)
+
+
+### Features
+
+* add asyncio based auth flow ([#612](https://www.github.com/googleapis/google-auth-library-python/issues/612)) ([7e15258](https://www.github.com/googleapis/google-auth-library-python/commit/7e1525822d51bd9ce7dffca42d71313e6e776fcd)), closes [#572](https://www.github.com/googleapis/google-auth-library-python/issues/572)
+
 ### [1.21.3](https://www.github.com/googleapis/google-auth-library-python/compare/v1.21.2...v1.21.3) (2020-09-22)
 
 
