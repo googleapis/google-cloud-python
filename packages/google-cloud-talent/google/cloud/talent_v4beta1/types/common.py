@@ -631,7 +631,7 @@ class CompensationInfo(proto.Message):
            [expected_units_per_year][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.expected_units_per_year].
 
         Attributes:
-            type (~.common.CompensationInfo.CompensationType):
+            type_ (~.common.CompensationInfo.CompensationType):
                 Compensation type.
 
                 Default is
@@ -643,7 +643,7 @@ class CompensationInfo(proto.Message):
                 [CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED][google.cloud.talent.v4beta1.CompensationInfo.CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED].
             amount (~.money.Money):
                 Compensation amount.
-            range (~.common.CompensationInfo.CompensationRange):
+            range_ (~.common.CompensationInfo.CompensationRange):
                 Compensation range.
             description (str):
                 Compensation description.  For example, could
@@ -664,7 +664,7 @@ class CompensationInfo(proto.Message):
                 -  ANNUAL: 1
         """
 
-        type = proto.Field(
+        type_ = proto.Field(
             proto.ENUM, number=1, enum="CompensationInfo.CompensationType",
         )
 
@@ -676,7 +676,7 @@ class CompensationInfo(proto.Message):
             proto.MESSAGE, number=3, oneof="compensation_amount", message=money.Money,
         )
 
-        range = proto.Field(
+        range_ = proto.Field(
             proto.MESSAGE,
             number=4,
             oneof="compensation_amount",
@@ -810,9 +810,9 @@ class Rating(proto.Message):
     Attributes:
         overall (float):
             Overall score.
-        min (float):
+        min_ (float):
             The minimum value for the score.
-        max (float):
+        max_ (float):
             The maximum value for the score.
         interval (float):
             The steps within the score (for example,
@@ -822,9 +822,9 @@ class Rating(proto.Message):
 
     overall = proto.Field(proto.DOUBLE, number=1)
 
-    min = proto.Field(proto.DOUBLE, number=2)
+    min_ = proto.Field(proto.DOUBLE, number=2)
 
-    max = proto.Field(proto.DOUBLE, number=3)
+    max_ = proto.Field(proto.DOUBLE, number=3)
 
     interval = proto.Field(proto.DOUBLE, number=4)
 

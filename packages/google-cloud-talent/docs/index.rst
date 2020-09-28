@@ -2,19 +2,20 @@
 
 .. include:: multiprocessing.rst
 
-Api Reference
+API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
+    talent_v4/services
+    talent_v4/types
     talent_v4beta1/services
     talent_v4beta1/types
-    changelog
 
 Migration Guide
 ---------------
 
-See the guide below for instructions on migrating to the 2.x release of this library.
+See the guide below for instructions on migrating to the 1.x release of this library.
 
 .. toctree::
     :maxdepth: 2

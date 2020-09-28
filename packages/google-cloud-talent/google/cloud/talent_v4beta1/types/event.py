@@ -81,7 +81,7 @@ class JobEvent(proto.Message):
     application that implements Cloud Talent Solution.
 
     Attributes:
-        type (~.event.JobEvent.JobEventType):
+        type_ (~.event.JobEvent.JobEventType):
             Required. The type of the event (see
             [JobEventType][google.cloud.talent.v4beta1.JobEvent.JobEventType]).
         jobs (Sequence[str]):
@@ -127,7 +127,7 @@ class JobEvent(proto.Message):
         SENT_CV = 14
         INTERVIEW_GRANTED = 15
 
-    type = proto.Field(proto.ENUM, number=1, enum=JobEventType,)
+    type_ = proto.Field(proto.ENUM, number=1, enum=JobEventType,)
 
     jobs = proto.RepeatedField(proto.STRING, number=2)
 
@@ -139,7 +139,7 @@ class ProfileEvent(proto.Message):
     application that implements Cloud Talent Solution.
 
     Attributes:
-        type (~.event.ProfileEvent.ProfileEventType):
+        type_ (~.event.ProfileEvent.ProfileEventType):
             Required. Type of event.
         profiles (Sequence[str]):
             Required. The [profile
@@ -168,7 +168,7 @@ class ProfileEvent(proto.Message):
         VIEW = 2
         BOOKMARK = 3
 
-    type = proto.Field(proto.ENUM, number=1, enum=ProfileEventType,)
+    type_ = proto.Field(proto.ENUM, number=1, enum=ProfileEventType,)
 
     profiles = proto.RepeatedField(proto.STRING, number=2)
 

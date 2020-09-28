@@ -701,12 +701,12 @@ class CompensationFilter(proto.Message):
     r"""Filter on job compensation type and amount.
 
     Attributes:
-        type (~.filters.CompensationFilter.FilterType):
+        type_ (~.filters.CompensationFilter.FilterType):
             Required. Type of filter.
         units (Sequence[~.common.CompensationInfo.CompensationUnit]):
             Required. Specify desired ``base compensation entry's``
             [CompensationInfo.CompensationUnit][google.cloud.talent.v4beta1.CompensationInfo.CompensationUnit].
-        range (~.common.CompensationInfo.CompensationRange):
+        range_ (~.common.CompensationInfo.CompensationRange):
             Compensation range.
         include_jobs_with_unspecified_compensation_range (bool):
             If set to true, jobs with unspecified
@@ -721,13 +721,13 @@ class CompensationFilter(proto.Message):
         ANNUALIZED_BASE_AMOUNT = 3
         ANNUALIZED_TOTAL_AMOUNT = 4
 
-    type = proto.Field(proto.ENUM, number=1, enum=FilterType,)
+    type_ = proto.Field(proto.ENUM, number=1, enum=FilterType,)
 
     units = proto.RepeatedField(
         proto.ENUM, number=2, enum=common.CompensationInfo.CompensationUnit,
     )
 
-    range = proto.Field(
+    range_ = proto.Field(
         proto.MESSAGE, number=3, message=common.CompensationInfo.CompensationRange,
     )
 
@@ -1045,7 +1045,7 @@ class AvailabilityFilter(proto.Message):
     Attributes:
         signal_type (~.common.AvailabilitySignalType):
             Required. Type of signal to apply filter on.
-        range (~.common.TimestampRange):
+        range_ (~.common.TimestampRange):
             Required. Range of times to filter candidate
             signals by.
         required (bool):
@@ -1060,7 +1060,7 @@ class AvailabilityFilter(proto.Message):
 
     signal_type = proto.Field(proto.ENUM, number=1, enum=common.AvailabilitySignalType,)
 
-    range = proto.Field(proto.MESSAGE, number=2, message=common.TimestampRange,)
+    range_ = proto.Field(proto.MESSAGE, number=2, message=common.TimestampRange,)
 
     required = proto.Field(proto.BOOL, number=3)
 

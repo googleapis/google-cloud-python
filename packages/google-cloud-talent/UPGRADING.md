@@ -37,7 +37,7 @@ response = client.batch_create_jobs(parent, jobs)
 
 **After:**
 ```py
-response = client.batch_create_jobs(request={"parent": "''", "jobs": "[]"})
+response = client.batch_create_jobs(request={"parent": "parent", "jobs": []})
 ```
 
 ### More Details
@@ -103,4 +103,56 @@ response = client.batch_create_jobs(
     },
     jobs=jobs
 )
+```
+
+## v4beta1 -> v4
+
+In addition, this release adds the v4 API surface, which has breaking changes from the v4beta1.
+The `google.cloud.talent` import now resolves to `google.cloud.talent_v4`. To continue
+to use the `v4beta1`, import from it explicitly.
+
+The `v4` surface merges functionalty in the  `v3p1beta1` and `v4beta1`.
+
+```py
+from google.cloud import talent_v4beta1
+```
+
+
+### search_jobs
+
+`search_jobs` returns `SearchJobsResponse`. Matching jobs are in `SearchJobsResponse.matching_jobs`.
+
+
+**v4beta1:**
+```py
+from google.cloud import talent_v4beta1
+
+
+client = talent_v4beta1.JobServiceClient()
+
+#...
+request = talent_v4beta1.SearchJobsRequest(
+    parent=parent,
+    request_metadata=request_metadata,
+    job_query=job_query,
+)
+for response_item in client.search_jobs(request=request):
+    # ...
+```
+
+**v4**
+```py
+from google.cloud import talent_v4
+
+
+client = talent_v4.JobServiceClient()
+
+#...
+request = talent_v4.SearchJobsRequest(
+    parent=parent,
+    request_metadata=request_metadata,
+    job_query=job_query,
+)
+for response_item in client.search_jobs(request=request).matching_jobs:
+    # ...
 ```

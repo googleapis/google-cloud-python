@@ -66,7 +66,7 @@ class CompleteQueryRequest(proto.Message):
         scope (~.completion_service.CompleteQueryRequest.CompletionScope):
             The scope of the completion. The defaults is
             [CompletionScope.PUBLIC][google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionScope.PUBLIC].
-        type (~.completion_service.CompleteQueryRequest.CompletionType):
+        type_ (~.completion_service.CompleteQueryRequest.CompletionType):
             The completion topic. The default is
             [CompletionType.COMBINED][google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionType.COMBINED].
     """
@@ -96,7 +96,7 @@ class CompleteQueryRequest(proto.Message):
 
     scope = proto.Field(proto.ENUM, number=6, enum=CompletionScope,)
 
-    type = proto.Field(proto.ENUM, number=7, enum=CompletionType,)
+    type_ = proto.Field(proto.ENUM, number=7, enum=CompletionType,)
 
 
 class CompleteQueryResponse(proto.Message):
@@ -117,7 +117,7 @@ class CompleteQueryResponse(proto.Message):
         Attributes:
             suggestion (str):
                 The suggestion for the query.
-            type (~.completion_service.CompleteQueryRequest.CompletionType):
+            type_ (~.completion_service.CompleteQueryRequest.CompletionType):
                 The completion topic.
             image_uri (str):
                 The URI of the company image for
@@ -126,7 +126,7 @@ class CompleteQueryResponse(proto.Message):
 
         suggestion = proto.Field(proto.STRING, number=1)
 
-        type = proto.Field(
+        type_ = proto.Field(
             proto.ENUM, number=2, enum=CompleteQueryRequest.CompletionType,
         )
 

@@ -39,6 +39,15 @@
         "language": "python",
         "generator": "bazel"
       }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "talent",
+        "apiVersion": "v4",
+        "language": "python",
+        "generator": "bazel"
+      }
     }
   ]
 }

@@ -19,7 +19,7 @@ import abc
 import typing
 import pkg_resources
 
-from google import auth
+from google import auth  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
@@ -32,11 +32,11 @@ from google.protobuf import empty_pb2 as empty  # type: ignore
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution("google-cloud-talent",).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 class TenantServiceTransport(abc.ABC):
@@ -55,6 +55,7 @@ class TenantServiceTransport(abc.ABC):
         credentials_file: typing.Optional[str] = None,
         scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
         quota_project_id: typing.Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
@@ -72,6 +73,11 @@ class TenantServiceTransport(abc.ABC):
             scope (Optional[Sequence[str]]): A list of scopes.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
+                The client info used to send a user-agent string along with	
+                API requests. If ``None``, then default info will be used.	
+                Generally, you only need to set this if you're developing	
+                your own client library.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ":" not in host:
@@ -99,13 +105,13 @@ class TenantServiceTransport(abc.ABC):
         self._credentials = credentials
 
         # Lifted into its own function so it can be stubbed out during tests.
-        self._prep_wrapped_messages()
+        self._prep_wrapped_messages(client_info)
 
-    def _prep_wrapped_messages(self):
+    def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_tenant: gapic_v1.method.wrap_method(
-                self.create_tenant, default_timeout=30.0, client_info=_client_info,
+                self.create_tenant, default_timeout=30.0, client_info=client_info,
             ),
             self.get_tenant: gapic_v1.method.wrap_method(
                 self.get_tenant,
@@ -114,14 +120,14 @@ class TenantServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.update_tenant: gapic_v1.method.wrap_method(
-                self.update_tenant, default_timeout=30.0, client_info=_client_info,
+                self.update_tenant, default_timeout=30.0, client_info=client_info,
             ),
             self.delete_tenant: gapic_v1.method.wrap_method(
                 self.delete_tenant,
@@ -130,11 +136,11 @@ class TenantServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.list_tenants: gapic_v1.method.wrap_method(
                 self.list_tenants,
@@ -143,11 +149,11 @@ class TenantServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
         }
 

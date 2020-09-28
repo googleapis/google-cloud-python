@@ -390,7 +390,7 @@ class AvailabilitySignal(proto.Message):
     r"""Candidate availability signal.
 
     Attributes:
-        type (~.common.AvailabilitySignalType):
+        type_ (~.common.AvailabilitySignalType):
             Type of signal.
         last_update_time (~.timestamp.Timestamp):
             Timestamp of when the given availability
@@ -411,7 +411,7 @@ class AvailabilitySignal(proto.Message):
             [type][google.cloud.talent.v4beta1.AvailabilitySignal.type].
     """
 
-    type = proto.Field(proto.ENUM, number=1, enum=common.AvailabilitySignalType,)
+    type_ = proto.Field(proto.ENUM, number=1, enum=common.AvailabilitySignalType,)
 
     last_update_time = proto.Field(
         proto.MESSAGE, number=2, message=timestamp.Timestamp,
@@ -590,7 +590,7 @@ class Phone(proto.Message):
         usage (~.common.ContactInfoUsage):
             The usage of the phone. For example, SCHOOL,
             WORK, PERSONAL.
-        type (~.profile.Phone.PhoneType):
+        type_ (~.profile.Phone.PhoneType):
             The phone type. For example, LANDLINE,
             MOBILE, FAX.
         number (str):
@@ -623,7 +623,7 @@ class Phone(proto.Message):
 
     usage = proto.Field(proto.ENUM, number=1, enum=common.ContactInfoUsage,)
 
-    type = proto.Field(proto.ENUM, number=2, enum=PhoneType,)
+    type_ = proto.Field(proto.ENUM, number=2, enum=PhoneType,)
 
     number = proto.Field(proto.STRING, number=3)
 

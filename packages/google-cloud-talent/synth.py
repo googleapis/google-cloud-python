@@ -20,7 +20,7 @@ from synthtool.languages import python
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = ["v4beta1"]
+versions = ["v4beta1", "v4"]
 
 excludes = ["setup.py", "nox*.py", "README.rst", "docs/conf.py", "docs/index.rst"]
 # ----------------------------------------------------------------------------
@@ -30,7 +30,7 @@ for version in versions:
    library = gapic.py_library(
       service="talent",
       version=version,
-       bazel_target=f"//google/cloud/talent/{version}:talent-{version}-py",
+      bazel_target=f"//google/cloud/talent/{version}:talent-{version}-py",
       include_protos=True
    )
    s.move(library, excludes=excludes)
@@ -58,8 +58,6 @@ templated_files = common.py_library(
 )
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
-# TODO(busunkim): Use latest sphinx after microgenerator transition
-s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
 # Temporarily disable warnings due to
 # https://github.com/googleapis/gapic-generator-python/issues/525
 s.replace("noxfile.py", '[\"\']-W[\"\']', '# "-W"')
