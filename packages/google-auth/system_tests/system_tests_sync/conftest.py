@@ -24,12 +24,11 @@ import urllib3
 
 
 HERE = os.path.dirname(__file__)
-DATA_DIR = os.path.join(HERE, "data")
+DATA_DIR = os.path.join(HERE, "../data")
 IMPERSONATED_SERVICE_ACCOUNT_FILE = os.path.join(
     DATA_DIR, "impersonated_service_account.json"
 )
 SERVICE_ACCOUNT_FILE = os.path.join(DATA_DIR, "service_account.json")
-AUTHORIZED_USER_FILE = os.path.join(DATA_DIR, "authorized_user.json")
 URLLIB3_HTTP = urllib3.PoolManager(retries=False)
 REQUESTS_SESSION = requests.Session()
 REQUESTS_SESSION.verify = False

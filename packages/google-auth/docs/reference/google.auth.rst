@@ -24,8 +24,10 @@ Submodules
 
    google.auth.app_engine
    google.auth.credentials
+   google.auth._credentials_async
    google.auth.environment_vars
    google.auth.exceptions
    google.auth.iam
    google.auth.impersonated_credentials
    google.auth.jwt
+   google.auth.jwt_async

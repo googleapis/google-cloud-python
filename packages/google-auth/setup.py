@@ -27,6 +27,7 @@ DEPENDENCIES = (
     'rsa>=3.1.4,<5; python_version >= "3.5"',
     "setuptools>=40.3.0",
     "six>=1.9.0",
+    'aiohttp >= 3.6.2, < 4.0.0dev; python_version>="3.6"',
 )
 
 

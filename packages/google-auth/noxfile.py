@@ -29,8 +29,18 @@ TEST_DEPENDENCIES = [
     "responses",
     "grpcio",
 ]
+
+ASYNC_DEPENDENCIES = ["pytest-asyncio", "aioresponses"]
+
 BLACK_VERSION = "black==19.3b0"
-BLACK_PATHS = ["google", "tests", "noxfile.py", "setup.py", "docs/conf.py"]
+BLACK_PATHS = [
+    "google",
+    "tests",
+    "tests_async",
+    "noxfile.py",
+    "setup.py",
+    "docs/conf.py",
+]
 
 
 @nox.session(python="3.7")
@@ -44,6 +54,7 @@ def lint(session):
         "--application-import-names=google,tests,system_tests",
         "google",
         "tests",
+        "tests_async",
     )
     session.run(
         "python", "setup.py", "check", "--metadata", "--restructuredtext", "--strict"
@@ -64,8 +75,23 @@ def blacken(session):
     session.run("black", *BLACK_PATHS)
 
 
-@nox.session(python=["2.7", "3.5", "3.6", "3.7", "3.8"])
+@nox.session(python=["3.6", "3.7", "3.8"])
 def unit(session):
+    session.install(*TEST_DEPENDENCIES)
+    session.install(*(ASYNC_DEPENDENCIES))
+    session.install(".")
+    session.run(
+        "pytest",
+        "--cov=google.auth",
+        "--cov=google.oauth2",
+        "--cov=tests",
+        "tests",
+        "tests_async",
+    )
+
+
+@nox.session(python=["2.7", "3.5"])
+def unit_prev_versions(session):
     session.install(*TEST_DEPENDENCIES)
     session.install(".")
     session.run(
@@ -76,14 +102,17 @@ def unit(session):
 @nox.session(python="3.7")
 def cover(session):
     session.install(*TEST_DEPENDENCIES)
+    session.install(*(ASYNC_DEPENDENCIES))
     session.install(".")
     session.run(
         "pytest",
         "--cov=google.auth",
         "--cov=google.oauth2",
         "--cov=tests",
+        "--cov=tests_async",
         "--cov-report=",
         "tests",
+        "tests_async",
     )
     session.run("coverage", "report", "--show-missing", "--fail-under=100")
 
@@ -117,5 +146,10 @@ def pypy(session):
     session.install(*TEST_DEPENDENCIES)
     session.install(".")
     session.run(
-        "pytest", "--cov=google.auth", "--cov=google.oauth2", "--cov=tests", "tests"
+        "pytest",
+        "--cov=google.auth",
+        "--cov=google.oauth2",
+        "--cov=tests",
+        "tests",
+        "tests_async",
     )

@@ -86,9 +86,12 @@ def default_client_encrypted_cert_source(cert_path, key_path):
 
     def callback():
         try:
-            _, cert_bytes, key_bytes, passphrase_bytes = _mtls_helper.get_client_ssl_credentials(
-                generate_encrypted_key=True
-            )
+            (
+                _,
+                cert_bytes,
+                key_bytes,
+                passphrase_bytes,
+            ) = _mtls_helper.get_client_ssl_credentials(generate_encrypted_key=True)
             with open(cert_path, "wb") as cert_file:
                 cert_file.write(cert_bytes)
             with open(key_path, "wb") as key_file:

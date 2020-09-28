@@ -1,4 +1,4 @@
-# Copyright 2016 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Google Auth Library for Python."""
+import os
+import pytest
 
-import logging
+import google.auth
 
-from google.auth._default import default, load_credentials_from_file
+EXPECT_PROJECT_ID = os.environ.get("EXPECT_PROJECT_ID")
 
-__all__ = ["default", "load_credentials_from_file"]
+@pytest.mark.asyncio
+async def test_application_default_credentials(verify_refresh):
+    credentials, project_id = google.auth.default_async()
+    #breakpoint()
 
-# Set default logging handler to avoid "No handler found" warnings.
-logging.getLogger(__name__).addHandler(logging.NullHandler())
+    if EXPECT_PROJECT_ID is not None:
+        assert project_id is not None
+
+    await verify_refresh(credentials)

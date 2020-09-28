@@ -1,0 +1,205 @@
+# Copyright 2020 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import os
+
+import mock
+import pytest
+
+from google.auth import environment_vars
+from google.auth import exceptions
+import google.auth.compute_engine._metadata
+from google.oauth2 import _id_token_async as id_token
+from google.oauth2 import id_token as sync_id_token
+from tests.oauth2 import test_id_token
+
+
+def make_request(status, data=None):
+    response = mock.AsyncMock(spec=["transport.Response"])
+    response.status = status
+
+    if data is not None:
+        response.data = mock.AsyncMock(spec=["__call__", "read"])
+        response.data.read = mock.AsyncMock(spec=["__call__"], return_value=data)
+
+    request = mock.AsyncMock(spec=["transport.Request"])
+    request.return_value = response
+    return request
+
+
+@pytest.mark.asyncio
+async def test__fetch_certs_success():
+    certs = {"1": "cert"}
+    request = make_request(200, certs)
+
+    returned_certs = await id_token._fetch_certs(request, mock.sentinel.cert_url)
+
+    request.assert_called_once_with(mock.sentinel.cert_url, method="GET")
+    assert returned_certs == certs
+
+
+@pytest.mark.asyncio
+async def test__fetch_certs_failure():
+    request = make_request(404)
+
+    with pytest.raises(exceptions.TransportError):
+        await id_token._fetch_certs(request, mock.sentinel.cert_url)
+
+    request.assert_called_once_with(mock.sentinel.cert_url, method="GET")
+
+
+@mock.patch("google.auth.jwt.decode", autospec=True)
+@mock.patch("google.oauth2._id_token_async._fetch_certs", autospec=True)
+@pytest.mark.asyncio
+async def test_verify_token(_fetch_certs, decode):
+    result = await id_token.verify_token(mock.sentinel.token, mock.sentinel.request)
+
+    assert result == decode.return_value
+    _fetch_certs.assert_called_once_with(
+        mock.sentinel.request, sync_id_token._GOOGLE_OAUTH2_CERTS_URL
+    )
+    decode.assert_called_once_with(
+        mock.sentinel.token, certs=_fetch_certs.return_value, audience=None
+    )
+
+
+@mock.patch("google.auth.jwt.decode", autospec=True)
+@mock.patch("google.oauth2._id_token_async._fetch_certs", autospec=True)
+@pytest.mark.asyncio
+async def test_verify_token_args(_fetch_certs, decode):
+    result = await id_token.verify_token(
+        mock.sentinel.token,
+        mock.sentinel.request,
+        audience=mock.sentinel.audience,
+        certs_url=mock.sentinel.certs_url,
+    )
+
+    assert result == decode.return_value
+    _fetch_certs.assert_called_once_with(mock.sentinel.request, mock.sentinel.certs_url)
+    decode.assert_called_once_with(
+        mock.sentinel.token,
+        certs=_fetch_certs.return_value,
+        audience=mock.sentinel.audience,
+    )
+
+
+@mock.patch("google.oauth2._id_token_async.verify_token", autospec=True)
+@pytest.mark.asyncio
+async def test_verify_oauth2_token(verify_token):
+    verify_token.return_value = {"iss": "accounts.google.com"}
+    result = await id_token.verify_oauth2_token(
+        mock.sentinel.token, mock.sentinel.request, audience=mock.sentinel.audience
+    )
+
+    assert result == verify_token.return_value
+    verify_token.assert_called_once_with(
+        mock.sentinel.token,
+        mock.sentinel.request,
+        audience=mock.sentinel.audience,
+        certs_url=sync_id_token._GOOGLE_OAUTH2_CERTS_URL,
+    )
+
+
+@mock.patch("google.oauth2._id_token_async.verify_token", autospec=True)
+@pytest.mark.asyncio
+async def test_verify_oauth2_token_invalid_iss(verify_token):
+    verify_token.return_value = {"iss": "invalid_issuer"}
+
+    with pytest.raises(exceptions.GoogleAuthError):
+        await id_token.verify_oauth2_token(
+            mock.sentinel.token, mock.sentinel.request, audience=mock.sentinel.audience
+        )
+
+
+@mock.patch("google.oauth2._id_token_async.verify_token", autospec=True)
+@pytest.mark.asyncio
+async def test_verify_firebase_token(verify_token):
+    result = await id_token.verify_firebase_token(
+        mock.sentinel.token, mock.sentinel.request, audience=mock.sentinel.audience
+    )
+
+    assert result == verify_token.return_value
+    verify_token.assert_called_once_with(
+        mock.sentinel.token,
+        mock.sentinel.request,
+        audience=mock.sentinel.audience,
+        certs_url=sync_id_token._GOOGLE_APIS_CERTS_URL,
+    )
+
+
+@pytest.mark.asyncio
+async def test_fetch_id_token_from_metadata_server():
+    def mock_init(self, request, audience, use_metadata_identity_endpoint):
+        assert use_metadata_identity_endpoint
+        self.token = "id_token"
+
+    with mock.patch.multiple(
+        google.auth.compute_engine.IDTokenCredentials,
+        __init__=mock_init,
+        refresh=mock.Mock(),
+    ):
+        request = mock.AsyncMock()
+        token = await id_token.fetch_id_token(request, "https://pubsub.googleapis.com")
+        assert token == "id_token"
+
+
+@mock.patch.object(
+    google.auth.compute_engine.IDTokenCredentials,
+    "__init__",
+    side_effect=exceptions.TransportError(),
+)
+@pytest.mark.asyncio
+async def test_fetch_id_token_from_explicit_cred_json_file(mock_init, monkeypatch):
+    monkeypatch.setenv(environment_vars.CREDENTIALS, test_id_token.SERVICE_ACCOUNT_FILE)
+
+    async def mock_refresh(self, request):
+        self.token = "id_token"
+
+    with mock.patch.object(
+        google.oauth2._service_account_async.IDTokenCredentials, "refresh", mock_refresh
+    ):
+        request = mock.AsyncMock()
+        token = await id_token.fetch_id_token(request, "https://pubsub.googleapis.com")
+        assert token == "id_token"
+
+
+@mock.patch.object(
+    google.auth.compute_engine.IDTokenCredentials,
+    "__init__",
+    side_effect=exceptions.TransportError(),
+)
+@pytest.mark.asyncio
+async def test_fetch_id_token_no_cred_json_file(mock_init, monkeypatch):
+    monkeypatch.delenv(environment_vars.CREDENTIALS, raising=False)
+
+    with pytest.raises(exceptions.DefaultCredentialsError):
+        request = mock.AsyncMock()
+        await id_token.fetch_id_token(request, "https://pubsub.googleapis.com")
+
+
+@mock.patch.object(
+    google.auth.compute_engine.IDTokenCredentials,
+    "__init__",
+    side_effect=exceptions.TransportError(),
+)
+@pytest.mark.asyncio
+async def test_fetch_id_token_invalid_cred_file(mock_init, monkeypatch):
+    not_json_file = os.path.join(
+        os.path.dirname(__file__), "../../tests/data/public_cert.pem"
+    )
+    monkeypatch.setenv(environment_vars.CREDENTIALS, not_json_file)
+
+    with pytest.raises(exceptions.DefaultCredentialsError):
+        request = mock.AsyncMock()
+        await id_token.fetch_id_token(request, "https://pubsub.googleapis.com")
