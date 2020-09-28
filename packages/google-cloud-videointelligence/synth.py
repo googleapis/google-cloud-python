@@ -13,11 +13,15 @@
 # limitations under the License.
 
 """This script is used to synthesize generated parts of this library."""
+import logging
 import re
 
 import synthtool as s
-from synthtool import gcp
 
+from synthtool import gcp
+from synthtool.languages import python
+
+logging.basicConfig(level=logging.DEBUG)
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
@@ -77,7 +81,7 @@ s.replace(
     """(?P<input_uri>\s+input_uri \(str\).+?should be unset\.\n)"""
     """(?P<input_content>\s+input_content \(bytes\).+?should be unset\.)""",
     """\n\g<input_uri>\g<input_content>\g<features>""",
-    re.DOTALL|re.MULTILINE,
+    re.DOTALL | re.MULTILINE,
 )
 
 s.replace(
@@ -107,31 +111,30 @@ s.replace(
             metadata=None""",
 )
 
-s.replace("tests/**/test_video_intelligence_service_client_v1.py",
-"response = client\.annotate_video\(features, input_uri=input_uri\)",
-"response = client.annotate_video(input_uri=input_uri, features=features)")
+s.replace(
+    "tests/**/test_video_intelligence_service_client_v1.py",
+    "response = client\.annotate_video\(features, input_uri=input_uri\)",
+    "response = client.annotate_video(input_uri=input_uri, features=features)",
+)
 
 # Add missing blank line before Attributes: in generated docstrings
-# Remove after 
+# Remove after
 # https://github.com/googleapis/protoc-docs-plugin/pull/31
-s.replace(
-    "google/cloud/**/*_pb2.py",
-    "(\s+)Attributes:",
-    "\n\g<1>Attributes:"
-)
+s.replace("google/cloud/**/*_pb2.py", "(\s+)Attributes:", "\n\g<1>Attributes:")
 
 # Add noindex to types docs to silence warnings about duplicates
 # TODO: Remove during microgenerator transition
-s.replace(
-    "docs/gapic/**/types.rst",
-    "(\s+):members:",
-    "\g<1>:members:\g<1>:noindex:"
-)
+s.replace("docs/gapic/**/types.rst", "(\s+):members:", "\g<1>:members:\g<1>:noindex:")
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=87)
+templated_files = common.py_library(cov_level=70, samples=True)
 s.move(templated_files)
+
+# ----------------------------------------------------------------------------
+# Samples templates
+# ----------------------------------------------------------------------------
+python.py_samples()
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
