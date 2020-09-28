@@ -36,8 +36,12 @@ to subscribe to, and it must already exist. Once you have that, it is easy:
 
     # Substitute PROJECT, SUBSCRIPTION, and TOPIC with appropriate values for
     # your application.
+
+    # from google.cloud import pubsub
+    # publisher = pubsub.PublisherClient()
+
+    topic_path = publisher.topic_path(PROJECT, TOPIC)
     sub_path = subscriber.subscription_path(PROJECT, SUBSCRIPTION)
-    topic_path = subscriber.topic_path(PROJECT, TOPIC)
     subscriber.create_subscription(request={"name": sub_path, "topic": topic_path})
 
 Once you have created a subscription (or if you already had one), the next
