@@ -31,8 +31,8 @@ import collections
 import dataclasses
 import re
 from itertools import chain
-from typing import (cast, Dict, FrozenSet, Iterable, List, Mapping, Optional,
-                    Sequence, Set, Tuple, Union)
+from typing import (cast, Dict, FrozenSet, Iterable, List, Mapping,
+                    ClassVar, Optional, Sequence, Set, Tuple, Union)
 
 from google.api import annotations_pb2      # type: ignore
 from google.api import client_pb2
@@ -856,12 +856,59 @@ class Method:
 
 
 @dataclasses.dataclass(frozen=True)
+class CommonResource:
+    type_name: str
+    pattern: str
+
+    @utils.cached_property
+    def message_type(self):
+        message_pb = descriptor_pb2.DescriptorProto()
+        res_pb = message_pb.options.Extensions[resource_pb2.resource]
+        res_pb.type = self.type_name
+        res_pb.pattern.append(self.pattern)
+
+        return MessageType(
+            message_pb=message_pb,
+            fields={},
+            nested_enums={},
+            nested_messages={},
+        )
+
+
+@dataclasses.dataclass(frozen=True)
 class Service:
     """Description of a service (defined with the ``service`` keyword)."""
     service_pb: descriptor_pb2.ServiceDescriptorProto
     methods: Mapping[str, Method]
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
+    )
+
+    common_resources: ClassVar[Sequence[CommonResource]] = dataclasses.field(
+        default=(
+            CommonResource(
+                "cloudresourcemanager.googleapis.com/Project",
+                "projects/{project}",
+            ),
+            CommonResource(
+                "cloudresourcemanager.googleapis.com/Organization",
+                "organizations/{organization}",
+            ),
+            CommonResource(
+                "cloudresourcemanager.googleapis.com/Folder",
+                "folders/{folder}",
+            ),
+            CommonResource(
+                "cloudbilling.googleapis.com/BillingAccount",
+                "billingAccounts/{billing_account}",
+            ),
+            CommonResource(
+                "locations.googleapis.com/Location",
+                "projects/{project}/locations/{location}",
+            ),
+        ),
+        init=False,
+        compare=False,
     )
 
     def __getattr__(self, name):

@@ -20,6 +20,7 @@ from google.api import resource_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import imp
+from gapic.schema.wrappers import CommonResource
 
 from test_utils.test_utils import (
     get_method,
@@ -295,3 +296,43 @@ def test_has_pagers():
         ),
     )
     assert not other_service.has_pagers
+
+
+def test_default_common_resources():
+    service = make_service(name="MolluscMaker")
+
+    assert service.common_resources == (
+        CommonResource(
+            "cloudresourcemanager.googleapis.com/Project",
+            "projects/{project}",
+        ),
+        CommonResource(
+            "cloudresourcemanager.googleapis.com/Organization",
+            "organizations/{organization}",
+        ),
+        CommonResource(
+            "cloudresourcemanager.googleapis.com/Folder",
+            "folders/{folder}",
+        ),
+        CommonResource(
+            "cloudbilling.googleapis.com/BillingAccount",
+            "billingAccounts/{billing_account}",
+        ),
+        CommonResource(
+            "locations.googleapis.com/Location",
+            "projects/{project}/locations/{location}",
+        ),
+    )
+
+
+def test_common_resource_patterns():
+    species = CommonResource(
+        "nomenclature.linnaen.com/Species",
+        "families/{family}/genera/{genus}/species/{species}",
+    )
+    species_msg = species.message_type
+
+    assert species_msg.resource_path == "families/{family}/genera/{genus}/species/{species}"
+    assert species_msg.resource_type == "Species"
+    assert species_msg.resource_path_args == ["family", "genus", "species"]
+    assert species_msg.path_regex_str == '^families/(?P<family>.+?)/genera/(?P<genus>.+?)/species/(?P<species>.+?)$'

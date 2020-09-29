@@ -1304,8 +1304,8 @@ def test_{{ service.name|snake_case }}_grpc_lro_async_client():
 
 {% endif -%}
 
-{% for message in service.resource_messages|sort(attribute="resource_type") -%}
 {% with molluscs = cycler("squid", "clam", "whelk", "octopus", "oyster", "nudibranch", "cuttlefish", "mussel", "winkle", "nautilus", "scallop", "abalone") -%}
+{% for message in service.resource_messages|sort(attribute="resource_type") -%}
 def test_{{ message.resource_type|snake_case }}_path():
     {% for arg in message.resource_path_args -%}
     {{ arg }} = "{{ molluscs.next() }}"
@@ -1327,8 +1327,31 @@ def test_parse_{{ message.resource_type|snake_case }}_path():
     actual = {{ service.client_name }}.parse_{{ message.resource_type|snake_case }}_path(path)
     assert expected == actual
 
-{% endwith -%}
 {% endfor -%}
+{% for resource_msg in service.common_resources -%}
+def test_common_{{ resource_msg.message_type.resource_type|snake_case }}_path():
+    {% for arg in resource_msg.message_type.resource_path_args -%}
+    {{ arg }} = "{{ molluscs.next() }}"
+    {% endfor %}
+    expected = "{{ resource_msg.message_type.resource_path }}".format({% for arg in resource_msg.message_type.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
+    actual = {{ service.client_name }}.common_{{ resource_msg.message_type.resource_type|snake_case }}_path({{ resource_msg.message_type.resource_path_args|join(", ") }})
+    assert expected == actual
+
+
+def test_parse_common_{{ resource_msg.message_type.resource_type|snake_case }}_path():
+    expected = {
+    {% for arg in resource_msg.message_type.resource_path_args -%}
+        "{{ arg }}": "{{ molluscs.next() }}",
+    {% endfor %}
+    }
+    path = {{ service.client_name }}.common_{{ resource_msg.message_type.resource_type|snake_case }}_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = {{ service.client_name }}.parse_common_{{ resource_msg.message_type.resource_type|snake_case }}_path(path)
+    assert expected == actual
+
+{% endfor -%} {# common resources#}
+{% endwith -%} {# cycler #}
 
 
 def test_client_withDEFAULT_CLIENT_INFO():
