@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## 2.1.0
+
+09-29-2020 09:34 PDT
+
+
+### Implementation Changes
+
+Adjust gapic namespace to `google.cloud.bigquery_datatransfer` ([#61](https://github.com/googleapis/python-bigquery-datatransfer/pull/61))
+
 ## 2.0.0
 
 09-21-2020 08:36 PDT
