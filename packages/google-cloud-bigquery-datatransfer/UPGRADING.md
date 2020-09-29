@@ -38,8 +38,24 @@ The 2.0.0 release requires Python 3.6+.
 
 > **WARNING**: Breaking change
 
-The library was moved into `google.cloud.bigquery` namespace. Existing imports
-need to be updated.
+
+### Version 2.1.0
+
+The library had its old namespace restored, since importing from
+`google.cloud.bigquery` clashed with the `google-cloud-bigquery` library when the
+latter was also installed.
+
+The import paths that were changed in version `2.0.0` should be reverted:
+
+```py
+from google.cloud import bigquery_datatransfer
+from google.cloud import bigquery_datatransfer_v1
+```
+
+### Version 2.0.0
+
+(obsolete) The library was moved into `google.cloud.bigquery` namespace. Existing
+imports need to be updated, unless using a version `>=2.1.0`.
 
 **Before:**
 ```py

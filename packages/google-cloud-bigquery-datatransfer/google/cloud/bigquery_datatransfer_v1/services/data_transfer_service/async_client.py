@@ -28,9 +28,9 @@ from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.bigquery.datatransfer_v1.services.data_transfer_service import pagers
-from google.cloud.bigquery.datatransfer_v1.types import datatransfer
-from google.cloud.bigquery.datatransfer_v1.types import transfer
+from google.cloud.bigquery_datatransfer_v1.services.data_transfer_service import pagers
+from google.cloud.bigquery_datatransfer_v1.types import datatransfer
+from google.cloud.bigquery_datatransfer_v1.types import transfer
 from google.protobuf import duration_pb2 as duration  # type: ignore
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import struct_pb2 as struct  # type: ignore

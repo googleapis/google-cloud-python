@@ -26,8 +26,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
-from google.cloud.bigquery.datatransfer_v1.types import datatransfer
-from google.cloud.bigquery.datatransfer_v1.types import transfer
+from google.cloud.bigquery_datatransfer_v1.types import datatransfer
+from google.cloud.bigquery_datatransfer_v1.types import transfer
 from google.protobuf import empty_pb2 as empty  # type: ignore
 
 from .base import DataTransferServiceTransport, DEFAULT_CLIENT_INFO

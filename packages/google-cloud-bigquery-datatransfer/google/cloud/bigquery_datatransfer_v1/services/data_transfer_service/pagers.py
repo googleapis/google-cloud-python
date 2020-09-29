@@ -17,8 +17,8 @@
 
 from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
 
-from google.cloud.bigquery.datatransfer_v1.types import datatransfer
-from google.cloud.bigquery.datatransfer_v1.types import transfer
+from google.cloud.bigquery_datatransfer_v1.types import datatransfer
+from google.cloud.bigquery_datatransfer_v1.types import transfer
 
 
 class ListDataSourcesPager:

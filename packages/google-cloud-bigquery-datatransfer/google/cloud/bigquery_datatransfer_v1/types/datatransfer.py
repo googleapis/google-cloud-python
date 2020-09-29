@@ -18,7 +18,7 @@
 import proto  # type: ignore
 
 
-from google.cloud.bigquery.datatransfer_v1.types import transfer
+from google.cloud.bigquery_datatransfer_v1.types import transfer
 from google.protobuf import duration_pb2 as duration  # type: ignore
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore

@@ -18,12 +18,14 @@
 
 
 def test_shim():
-    from google.cloud.bigquery import datatransfer
-    from google.cloud.bigquery import datatransfer_v1
+    from google.cloud import bigquery_datatransfer
+    from google.cloud import bigquery_datatransfer_v1
 
-    assert sorted(datatransfer.__all__) == sorted(datatransfer_v1.__all__)
+    assert sorted(bigquery_datatransfer.__all__) == sorted(
+        bigquery_datatransfer_v1.__all__
+    )
 
-    for name in datatransfer.__all__:
-        found = getattr(datatransfer, name)
-        expected = getattr(datatransfer_v1, name)
+    for name in bigquery_datatransfer.__all__:
+        found = getattr(bigquery_datatransfer, name)
+        expected = getattr(bigquery_datatransfer_v1, name)
         assert found is expected

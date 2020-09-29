@@ -32,18 +32,18 @@ from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.bigquery.datatransfer_v1.services.data_transfer_service import (
+from google.cloud.bigquery_datatransfer_v1.services.data_transfer_service import (
     DataTransferServiceAsyncClient,
 )
-from google.cloud.bigquery.datatransfer_v1.services.data_transfer_service import (
+from google.cloud.bigquery_datatransfer_v1.services.data_transfer_service import (
     DataTransferServiceClient,
 )
-from google.cloud.bigquery.datatransfer_v1.services.data_transfer_service import pagers
-from google.cloud.bigquery.datatransfer_v1.services.data_transfer_service import (
+from google.cloud.bigquery_datatransfer_v1.services.data_transfer_service import pagers
+from google.cloud.bigquery_datatransfer_v1.services.data_transfer_service import (
     transports,
 )
-from google.cloud.bigquery.datatransfer_v1.types import datatransfer
-from google.cloud.bigquery.datatransfer_v1.types import transfer
+from google.cloud.bigquery_datatransfer_v1.types import datatransfer
+from google.cloud.bigquery_datatransfer_v1.types import transfer
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2 as duration  # type: ignore
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
@@ -455,7 +455,7 @@ def test_data_transfer_service_client_client_options_credentials_file(
 
 def test_data_transfer_service_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.bigquery.datatransfer_v1.services.data_transfer_service.transports.DataTransferServiceGrpcTransport.__init__"
+        "google.cloud.bigquery_datatransfer_v1.services.data_transfer_service.transports.DataTransferServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
         client = DataTransferServiceClient(
@@ -4318,7 +4318,7 @@ def test_data_transfer_service_base_transport_error():
 def test_data_transfer_service_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.bigquery.datatransfer_v1.services.data_transfer_service.transports.DataTransferServiceTransport.__init__"
+        "google.cloud.bigquery_datatransfer_v1.services.data_transfer_service.transports.DataTransferServiceTransport.__init__"
     ) as Transport:
         Transport.return_value = None
         transport = transports.DataTransferServiceTransport(
@@ -4353,7 +4353,7 @@ def test_data_transfer_service_base_transport_with_credentials_file():
     with mock.patch.object(
         auth, "load_credentials_from_file"
     ) as load_creds, mock.patch(
-        "google.cloud.bigquery.datatransfer_v1.services.data_transfer_service.transports.DataTransferServiceTransport._prep_wrapped_messages"
+        "google.cloud.bigquery_datatransfer_v1.services.data_transfer_service.transports.DataTransferServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (credentials.AnonymousCredentials(), None)
@@ -4370,7 +4370,7 @@ def test_data_transfer_service_base_transport_with_credentials_file():
 def test_data_transfer_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(auth, "default") as adc, mock.patch(
-        "google.cloud.bigquery.datatransfer_v1.services.data_transfer_service.transports.DataTransferServiceTransport._prep_wrapped_messages"
+        "google.cloud.bigquery_datatransfer_v1.services.data_transfer_service.transports.DataTransferServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (credentials.AnonymousCredentials(), None)

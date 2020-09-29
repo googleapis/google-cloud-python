@@ -54,12 +54,12 @@ python.py_samples(skip_readmes=True)
 
 # Fix missing async client in datatransfer_v1
 s.replace(
-    "google/cloud/bigquery/datatransfer_v1/__init__.py",
+    "google/cloud/bigquery_datatransfer_v1/__init__.py",
     r"from \.services\.data_transfer_service import DataTransferServiceClient",
     "\g<0>\nfrom .services.data_transfer_service import DataTransferServiceAsyncClient",
 )
 s.replace(
-    "google/cloud/bigquery/datatransfer_v1/__init__.py",
+    "google/cloud/bigquery_datatransfer_v1/__init__.py",
     r"'DataTransferServiceClient',",
     '\g<0>\n    "DataTransferServiceAsyncClient"',
 )

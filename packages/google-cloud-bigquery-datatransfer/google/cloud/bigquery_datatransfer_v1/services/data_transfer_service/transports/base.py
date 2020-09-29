@@ -25,8 +25,8 @@ from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 
-from google.cloud.bigquery.datatransfer_v1.types import datatransfer
-from google.cloud.bigquery.datatransfer_v1.types import transfer
+from google.cloud.bigquery_datatransfer_v1.types import datatransfer
+from google.cloud.bigquery_datatransfer_v1.types import transfer
 from google.protobuf import empty_pb2 as empty  # type: ignore
 
 

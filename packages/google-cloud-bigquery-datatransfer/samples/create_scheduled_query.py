@@ -20,9 +20,9 @@
 
 def sample_create_transfer_config(project_id, dataset_id, authorization_code=""):
     # [START bigquerydatatransfer_create_scheduled_query]
-    from google.cloud.bigquery import datatransfer_v1
+    from google.cloud import bigquery_datatransfer
 
-    client = datatransfer_v1.DataTransferServiceClient()
+    client = bigquery_datatransfer.DataTransferServiceClient()
 
     # TODO(developer): Set the project_id to the project that contains the
     #                  destination dataset.
@@ -54,7 +54,7 @@ def sample_create_transfer_config(project_id, dataset_id, authorization_code="")
 
     parent = f"projects/{project_id}"
 
-    transfer_config = datatransfer_v1.types.TransferConfig(
+    transfer_config = bigquery_datatransfer.TransferConfig(
         destination_dataset_id=dataset_id,
         display_name="Your Scheduled Query Name",
         data_source_id="scheduled_query",

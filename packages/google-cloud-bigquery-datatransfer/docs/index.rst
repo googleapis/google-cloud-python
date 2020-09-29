@@ -8,8 +8,8 @@ API Reference
 .. toctree::
    :maxdepth: 2
 
-    Client <datatransfer_v1/services>
-    Types <datatransfer_v1/types>
+    Client <bigquery_datatransfer_v1/services>
+    Types <bigquery_datatransfer_v1/types>
 
 
 Migration Guide

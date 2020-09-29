@@ -39,9 +39,9 @@ def credentials():
 
 @pytest.fixture(scope="module")
 def bqdts_client(credentials):
-    from google.cloud.bigquery import datatransfer_v1
+    from google.cloud import bigquery_datatransfer
 
-    return datatransfer_v1.DataTransferServiceClient(credentials=credentials)
+    return bigquery_datatransfer.DataTransferServiceClient(credentials=credentials)
 
 
 @pytest.fixture(scope="module")
