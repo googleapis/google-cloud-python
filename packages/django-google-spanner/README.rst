@@ -74,10 +74,8 @@ Format
         },
     }
 
-Example
-~~~~~~~
-
-For example:
+Database configurations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -89,6 +87,25 @@ For example:
             'NAME': 'db1', # Or the Cloud Spanner database to use
         }
     }
+
+Execute a query
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    from google.cloud.spanner_dbapi import connect
+
+    connection = connect("instance-id", "database-id")
+    cursor = connection.cursor()
+
+    cursor.execute(
+        "SELECT *"
+        "FROM Singers"
+        "WHERE SingerId = 15"
+    )
+
+    results = cur.fetchall()
+
 
 Limitations
 -----------
