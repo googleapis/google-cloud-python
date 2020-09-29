@@ -16,6 +16,20 @@
 
 * update docs build (via synth) ([#14](https://www.github.com/googleapis/python-cloud-core/issues/14)) ([f1a95ce](https://www.github.com/googleapis/python-cloud-core/commit/f1a95ce89c25f5297470299ca1ef7e1e05a9e99f))
 
+
+## 1.4.2rc2
+
+09-24-2020 09:29 PDT
+
+### Implementation Changes
+
+- fix: handle query_params tuples in JSONConnection.build_api_url ([#34](https://github.com/googleapis/python-cloud-core/pull/34))
+
+### Internal / Testing Changes
+
+- chore: add default CODEOWNERS ([#33](https://github.com/googleapis/python-cloud-core/pull/33))
+
+
 ## 1.4.2rc1
 
 09-21-2020 14:45 PDT
