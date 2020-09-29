@@ -6,7 +6,7 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
-# python-spanner-django documentation build configuration file
+# django-google-spanner documentation build configuration file
 #
 # This file is executedd with the current directory set to its containing dir.
 #
@@ -270,7 +270,7 @@ latex_elements = {
 # latex_documents = [
 #     (
 #         master_doc,
-#         "python-spanner-django.tex",
+#         "django-google-spanner.tex",
 #         u"Spanner Django Documentation",
 #         author,
 #         "manual",
@@ -305,8 +305,8 @@ latex_elements = {
 man_pages = [
     (
         master_doc,
-        "python-spanner-django",
-        u"python-spanner-django Documentation",
+        "django-google-spanner",
+        u"django-google-spanner Documentation",
         [author],
         1,
     )
@@ -324,11 +324,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "python-spanner-django",
-        u"python-spanner-django Documentation",
+        "django-google-spanner",
+        u"django-google-spanner Documentation",
         author,
-        "python-spanner-django",
-        "python-spanner-django Library",
+        "django-google-spanner",
+        "django-google-spanner Library",
         "APIs",
     )
 ]
